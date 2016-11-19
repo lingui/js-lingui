@@ -1,0 +1,1 @@
+<Trans>Hello World</Trans>;
