@@ -6,11 +6,19 @@ export default function({ types: t }) {
   return {
     visitor: {
       JSXElement({ node }, state) {
-        const text = node.children[0].value
         const attrs = node.openingElement.attributes
 
         // Don't add ID attribute if already exists
         if (attrs.some(isIdAttribute)) return
+
+        const child = node.children[0]
+        let text
+
+        if (t.isJSXText(child)) {
+          text = child.value
+        } else if (t.isJSXExpressionContainer(child)) {
+          text = child.expression.value
+        }
 
         attrs.push(
           t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text))
