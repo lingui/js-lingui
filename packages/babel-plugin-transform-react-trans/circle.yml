@@ -1,0 +1,5 @@
+test:
+  override:
+    - npm test
+  post:
+    - npm run semantic-release || true
