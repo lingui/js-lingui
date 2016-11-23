@@ -21,6 +21,7 @@ export default function({ types: t }) {
 
         let text = ""
         let params = []
+        let unnamedIndex = 0
 
         for (const child of children) {
           if (t.isJSXText(child)) {
@@ -32,6 +33,24 @@ export default function({ types: t }) {
             if (t.isIdentifier(exp)) {
               text += `{${exp.name}}`
               params.push(t.objectProperty(exp, exp))
+
+            } else if (t.isTemplateLiteral(exp)) {
+              let parts = []
+
+              exp.quasis.forEach((item, index) => {
+                parts.push(item)
+
+                if (!item.tail) parts.push(exp.expressions[index])
+              })
+
+              parts.forEach((item) => {
+                if (t.isTemplateElement(item)) {
+                  text += item.value.raw
+                } else {
+                  text += `{${item.name}}`
+                  params.push(t.objectProperty(item, item))
+                }
+              })
 
             } else {
               text += exp.value

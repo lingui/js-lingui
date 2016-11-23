@@ -9,3 +9,7 @@ var expression = "6 * 7";
   expression: expression,
   count: count
 }} />;
+<Trans id="How much is {expression}? {count}" params={{
+  expression: expression,
+  count: count
+}} />;
