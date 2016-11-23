@@ -26,6 +26,7 @@
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "condition-circle": "^1.5.0",
+    "cz-conventional-changelog": "^1.2.0",
     "glob": "^7.1.1",
     "mocha": "^3.1.2",
     "mocha-junit-reporter": "^1.12.1",
@@ -42,5 +43,10 @@
   },
   "release": {
     "verifyConditions": "condition-circle"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
