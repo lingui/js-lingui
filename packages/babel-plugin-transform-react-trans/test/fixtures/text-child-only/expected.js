@@ -1,4 +1,2 @@
-"use strict";
-
-<Trans id="Hello World">Hello World</Trans>;
-<Trans id="msg.hello">Hello World</Trans>;
+<Trans id="Hello World" />;
+<Trans id="msg.hello" />;

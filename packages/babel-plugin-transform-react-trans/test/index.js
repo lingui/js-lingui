@@ -24,6 +24,7 @@ describe('babel-plugin-transform-react-t9n', function() {
         plugins: [
           'external-helpers',
           'syntax-jsx',
+          'transform-remove-strict-mode',
           plugin
         ]
       }).code
