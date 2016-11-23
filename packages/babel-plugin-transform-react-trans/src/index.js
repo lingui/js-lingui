@@ -12,23 +12,44 @@ export default function({ types: t }) {
     visitor: {
       JSXElement({ node }, state) {
         const attrs = node.openingElement.attributes
-        const child = node.children[0]
+        const children = node.children
 
         cleanChildren(node)
 
         // Don't add ID attribute if already exists
         if (attrs.some(isIdAttribute)) return
 
-        let text
-        if (t.isJSXText(child)) {
-          text = child.value
-        } else if (t.isJSXExpressionContainer(child)) {
-          text = child.expression.value
+        let text = ""
+        let params = []
+
+        for (const child of children) {
+          if (t.isJSXText(child)) {
+            text += child.value
+
+          } else if (t.isJSXExpressionContainer(child)) {
+            const exp = child.expression
+
+            if (t.isIdentifier(exp)) {
+              text += `{${exp.name}}`
+              params.push(t.objectProperty(exp, exp))
+
+            } else {
+              text += exp.value
+            }
+          }
         }
 
         attrs.push(
           t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text))
         )
+
+        if (params.length) {
+          attrs.push(
+            t.JSXAttribute(
+              t.JSXIdentifier("params"),
+              t.JSXExpressionContainer(t.objectExpression(params)))
+          )
+        }
       },
     }
   }
