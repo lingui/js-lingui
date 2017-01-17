@@ -10,7 +10,7 @@ export default function({ types: t }) {
 
   return {
     visitor: {
-      JSXElement({ node }, state) {
+      JSXElement({ node }) {
         const attrs = node.openingElement.attributes
         const children = node.children
 
@@ -21,7 +21,6 @@ export default function({ types: t }) {
 
         let text = ""
         let params = []
-        let unnamedIndex = 0
 
         for (const child of children) {
           if (t.isJSXText(child)) {
