@@ -7,7 +7,6 @@
   "scripts": {
     "test": "jest",
     "watch": "jest --watch",
-    "ci": "jest --reporter mocha-junit-reporter",
     "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
   },
   "devDependencies": {
@@ -49,10 +48,7 @@
       "node_modules",
       "scripts"
     ],
-    "coverageFormats": [
-      "json",
-      "html"
-    ],
+    "coverageReporters": ["text", "html"],
     "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest-env.js"
   }
 }
