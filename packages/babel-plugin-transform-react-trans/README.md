@@ -1,5 +1,5 @@
-react-plugin-transform-react-t9n - Syntactic sugar for translations
-===================================================================
+react-plugin-transform-react-trans - Syntactic sugar for translations
+=====================================================================
 
 Babel plugin for human-friendly definitions of strings for translation in React.
 Works in combination with `react-t9n` component.

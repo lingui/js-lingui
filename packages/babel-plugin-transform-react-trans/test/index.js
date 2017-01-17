@@ -1,4 +1,3 @@
-
 import { assert } from 'chai'
 import fs from "fs"
 import glob from 'glob'
@@ -12,7 +11,7 @@ function getTestName(testPath) {
 }
 
 
-describe('babel-plugin-transform-react-t9n', function() {
+describe('babel-plugin-transform-react-trans', function() {
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
     const actualPath = path.join(testPath, 'actual.js')
