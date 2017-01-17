@@ -2,7 +2,7 @@ import { assert } from 'chai'
 import fs from "fs"
 import glob from 'glob'
 import path from "path"
-import plugin from '../src'
+import plugin from '../index'
 import { transformFileSync } from 'babel-core'
 
 

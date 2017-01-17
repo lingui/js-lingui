@@ -57,10 +57,12 @@ export default function({ types: t }) {
           }
         }
 
+        // Add generated ID...
         attrs.push(
           t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text))
         )
 
+        // ... and params if any.
         if (params.length) {
           attrs.push(
             t.JSXAttribute(
@@ -68,7 +70,7 @@ export default function({ types: t }) {
               t.JSXExpressionContainer(t.objectExpression(params)))
           )
         }
-      },
+      }
     }
   }
 }

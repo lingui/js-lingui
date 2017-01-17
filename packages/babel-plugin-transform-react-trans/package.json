@@ -2,13 +2,7 @@
   "name": "babel-plugin-transform-react-trans",
   "version": "0.0.0-development",
   "description": "React components for translations",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "mocha --check-leaks --compilers js:babel-register",
-    "watch": "mocha --compilers js:babel-register --watch",
-    "ci": "mocha --check-leaks --compilers js:babel-register --reporter mocha-junit-reporter",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
-  },
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -16,10 +10,5 @@
   "license": "MIT",
   "keywords": [
     "babel-plugin"
-  ],
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  }
+  ]
 }

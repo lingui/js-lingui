@@ -4,10 +4,10 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
-
   "scripts": {
-    "test": "lerna run test",
-    "ci": "lerna run ci",
+    "test": "jest",
+    "watch": "jest --watch",
+    "ci": "jest --reporter mocha-junit-reporter",
     "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
   },
   "devDependencies": {
@@ -21,16 +21,15 @@
     "condition-circle": "^1.5.0",
     "cz-lerna-changelog": "^1.0.0",
     "glob": "^7.1.1",
+    "jasmine-reporters": "^2.2.0",
+    "jest": "^18.1.0",
     "lerna": "2.0.0-beta.32",
-    "lerna-semantic-release": "^8.0.2",
-    "mocha": "^3.1.2",
-    "mocha-junit-reporter": "^1.12.1"
+    "lerna-semantic-release": "^8.0.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
   },
-
   "release": {
     "verifyConditions": "condition-circle"
   },
@@ -38,5 +37,23 @@
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "jest": {
+    "testRegex": "/test/[^/]*\\.jsx?$",
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "scripts"
+    ],
+    "coverageFormats": [
+      "json",
+      "html"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest-env.js"
   }
 }

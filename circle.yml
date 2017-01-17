@@ -1,0 +1,7 @@
+test:
+  override:
+    - npm run ci
+    - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
+
+  post:
+    - npm run semantic-release || true

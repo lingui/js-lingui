@@ -1,8 +1,0 @@
-test:
-  override:
-    - npm run ci:
-        environment:
-          MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
-
-  post:
-    - npm run semantic-release || true
