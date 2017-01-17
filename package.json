@@ -1,0 +1,43 @@
+{
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+
+  "scripts": {
+    "test": "mocha --check-leaks --compilers js:babel-register",
+    "watch": "mocha --compilers js:babel-register --watch",
+    "ci": "mocha --check-leaks --compilers js:babel-register --reporter mocha-junit-reporter",
+    "semantic-release": "lerna-semantic-release pre"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-plugin-external-helpers": "^6.18.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-remove-strict-mode": "^0.0.2",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-register": "^6.18.0",
+    "chai": "^3.5.0",
+    "condition-circle": "^1.5.0",
+    "cz-lerna-changelog": "^1.0.0",
+    "glob": "^7.1.1",
+    "lerna": "2.0.0-beta.32",
+    "lerna-semantic-release": "^8.0.2",
+    "mocha": "^3.1.2",
+    "mocha-junit-reporter": "^1.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+
+  "release": {
+    "verifyConditions": "condition-circle"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
+    }
+  }
+}
