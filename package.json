@@ -6,10 +6,9 @@
   "license": "MIT",
 
   "scripts": {
-    "test": "mocha --check-leaks --compilers js:babel-register",
-    "watch": "mocha --compilers js:babel-register --watch",
-    "ci": "mocha --check-leaks --compilers js:babel-register --reporter mocha-junit-reporter",
-    "semantic-release": "lerna-semantic-release pre"
+    "test": "lerna run test",
+    "ci": "lerna run ci",
+    "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
