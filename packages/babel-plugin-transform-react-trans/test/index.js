@@ -1,4 +1,3 @@
-import { assert } from 'chai'
 import fs from "fs"
 import glob from 'glob'
 import path from "path"
@@ -28,7 +27,7 @@ describe('babel-plugin-transform-react-trans', function() {
         ]
       }).code
 
-      assert.strictEqual(actual.trim(), expected.trim())
+      expect(actual.trim()).toEqual(expected.trim())
     })
   })
 })
