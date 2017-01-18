@@ -3,6 +3,10 @@ export default function({ types: t }) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
 
+  function isTransComponent(node) {
+    return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name: 'Trans' })
+  }
+
   function cleanChildren(node) {
     node.children = []
     node.openingElement.selfClosing = true
@@ -11,6 +15,8 @@ export default function({ types: t }) {
   return {
     visitor: {
       JSXElement({ node }) {
+        if (!isTransComponent(node)) return
+
         const attrs = node.openingElement.attributes
         const children = node.children
 
