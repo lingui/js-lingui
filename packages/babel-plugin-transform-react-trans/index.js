@@ -22,9 +22,6 @@ export default function({ types: t }) {
 
         cleanChildren(node)
 
-        // Don't add ID attribute if already exists
-        if (attrs.some(isIdAttribute)) return
-
         let text = ""
         let params = []
 
@@ -63,10 +60,18 @@ export default function({ types: t }) {
           }
         }
 
-        // Add generated ID...
-        attrs.push(
-          t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text))
-        )
+        // If `id` prop already exists and generated ID is different,
+        // add it as a `default` prop
+        const idAttr = attrs.filter(isIdAttribute)[0]
+        if (idAttr && idAttr.value.value !== text) {
+          attrs.push(
+            t.JSXAttribute(t.JSXIdentifier("default"), t.StringLiteral(text))
+          )
+        } else if (!idAttr) {
+          attrs.push(
+            t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text))
+          )
+        }
 
         // ... and params if any.
         if (params.length) {
