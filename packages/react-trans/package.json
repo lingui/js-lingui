@@ -1,0 +1,19 @@
+{
+  "name": "react-trans",
+  "version": "0.0.0-development",
+  "description": "React components for translations",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "component"
+  ],
+
+  "peerDependencies": {
+    "react": "15.x"
+  }
+}
