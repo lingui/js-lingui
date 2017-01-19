@@ -2,7 +2,7 @@ react-plugin-transform-react-trans - Syntactic sugar for translations
 =====================================================================
 
 Babel plugin for human-friendly definitions of strings for translation in React.
-Works in combination with `react-t9n` component.
+Works in combination with `react-trans` component.
 
 Cookbook
 --------
@@ -54,10 +54,11 @@ Component name and props aren't included in translation ID.
 becomes:
 
 ```js
-<Trans id="Hi, my name is <0>{name}</0>" params={{name: name}}>{(parts) => [
-  parts[0],
-  <a href="/profile">{parts[1]}</a>
-]}</Trans>
+<Trans 
+  id="Hi, my name is <0>{name}</0>!" 
+  params={{name: name}} 
+  components={[
+    <a href="/profile" />
+  ]}
+/>
 ```
-
-**NOTE:** The transformation is a bit messy, but it works. Sort of :)
