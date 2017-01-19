@@ -12,9 +12,10 @@ export default function({ types: t }) {
     node.openingElement.selfClosing = true
   }
 
-  function extractTextAndParams(node) {
-    let text = ''
-    let params = []
+  function extract(node) {
+    let text = '',
+      params = [],
+      components = []
 
     if (t.isJSXText(node)) {
       text += node.value
@@ -48,19 +49,30 @@ export default function({ types: t }) {
         text += exp.value
       }
     } else if (t.isJSXElement(node)) {
-      text += `<${this.inlineElementCounter}>`
+      const index = this.inlineElementCounter++
+      const selfClosing = node.openingElement.selfClosing
+
+      text += !selfClosing ? `<${index}>` : `<${index}/>`
 
       for (const child of node.children) {
-        const { text: newText, params: newParams } = extractTextAndParams.bind(this)(child)
+        const {
+          text: newText, params: newParams, components: newComponents
+        } = extract.bind(this)(child)
+
         text += newText
         params = params.concat(newParams)
+        components = components.concat(newComponents)
       }
 
-      text += `</${this.inlineElementCounter}>`
-      this.inlineElementCounter++
+      if (!selfClosing) text += `</${index}>`
+
+      cleanChildren(node)
+      components.unshift(node)
     }
 
-    return { text, params }
+    text = text.replace(/\n\s+/g, "\n")
+
+    return { text, params, components }
   }
 
   return {
@@ -72,16 +84,26 @@ export default function({ types: t }) {
         const attrs = node.openingElement.attributes
         const children = node.children
 
-        cleanChildren(node)
+        // 1. Collect all parameters and inline elements and generate message ID
 
-        let text = ""
-        let params = []
+        let text = "",
+          params = [],
+          components = []
 
         for (const child of children) {
-          const { text: newText, params: newParams } = extractTextAndParams.bind(this)(child)
+          const {
+            text: newText, params: newParams, components: newComponents
+          } = extract.bind(this)(child)
+
           text += newText
           params = params.concat(newParams)
+          components = components.concat(newComponents)
         }
+
+        // 2. Replace children and add collected data
+
+        cleanChildren(node)
+        text = text.trim()
 
         // If `id` prop already exists and generated ID is different,
         // add it as a `default` prop
@@ -96,12 +118,22 @@ export default function({ types: t }) {
           )
         }
 
-        // ... and params if any.
+        // Parameters for variable substitution
         if (params.length) {
           attrs.push(
             t.JSXAttribute(
               t.JSXIdentifier("params"),
               t.JSXExpressionContainer(t.objectExpression(params)))
+          )
+        }
+
+        // Inline elements
+        if (components.length) {
+          attrs.push(
+            t.JSXAttribute(
+              t.JSXIdentifier("components"),
+              t.JSXExpressionContainer(t.arrayExpression(components))
+            )
           )
         }
       }
