@@ -1,0 +1,1 @@
+<Trans>{...spread}</Trans>

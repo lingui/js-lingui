@@ -17,10 +17,7 @@ export default function({ types: t }) {
       params = [],
       components = []
 
-    if (t.isJSXText(node)) {
-      text += node.value
-
-    } else if (t.isJSXExpressionContainer(node)) {
+    if (t.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
       if (t.isIdentifier(exp)) {
@@ -48,6 +45,7 @@ export default function({ types: t }) {
       } else {
         text += exp.value
       }
+
     } else if (t.isJSXElement(node)) {
       const index = this.inlineElementCounter++
       const selfClosing = node.openingElement.selfClosing
@@ -68,8 +66,15 @@ export default function({ types: t }) {
 
       cleanChildren(node)
       components.unshift(node)
+
+    } else if (t.isJSXSpreadChild(node)) {
+      // TODO: I don't have a clue what's the usecase
+
+    } else {
+      text += node.value
     }
 
+    // normalize spaces
     text = text.replace(/\n\s+/g, "\n")
 
     return { text, params, components }
