@@ -8,7 +8,7 @@ describe('Trans component', function() {
    */
   const context = {
     i18n: {
-      catalog: {
+      messages: {
         'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
       }
     }
