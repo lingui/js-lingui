@@ -115,7 +115,7 @@ export default function({ types: t }) {
         const idAttr = attrs.filter(isIdAttribute)[0]
         if (idAttr && idAttr.value.value !== text) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier("default"), t.StringLiteral(text))
+            t.JSXAttribute(t.JSXIdentifier("defaults"), t.StringLiteral(text))
           )
         } else if (!idAttr) {
           attrs.push(
