@@ -1,6 +1,6 @@
 {
   "name": "react-trans",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "description": "React components for translations",
   "main": "index.js",
   "author": {
