@@ -16,6 +16,7 @@ dependencies:
       fi
   override:
     - yarn install
+    - lerna bootstrap
   cache_directories:
     - ~/.yarn
     - ~/.cache/yarn
