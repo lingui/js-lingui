@@ -21,7 +21,8 @@ class I18nProvider extends React.Component {
   }
 
   render() {
-    return this.props.children
+    const { children } = this.props
+    return children.length > 1 ? <div>{children}</div> : children
   }
 }
 

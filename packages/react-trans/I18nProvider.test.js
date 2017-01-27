@@ -24,4 +24,13 @@ describe('I18nProvider', function() {
       <I18nProvider {...props}>{child}</I18nProvider>
     ).contains(child)).toBeTruthy()
   })
+
+  it('should render multiple children wrapped in div', function() {
+    expect(shallow(
+      <I18nProvider {...props}>
+        <span />
+        <span />
+      </I18nProvider>
+    ).find('div').length).toEqual(1)
+  })
 })

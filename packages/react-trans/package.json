@@ -12,8 +12,10 @@
     "react",
     "component"
   ],
-
   "peerDependencies": {
     "react": "15.x"
+  },
+  "dependencies": {
+    "format-message": "^5.1.1"
   }
 }

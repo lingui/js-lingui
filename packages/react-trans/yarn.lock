@@ -2,3 +2,35 @@
 # yarn lockfile v1
 
 
+format-message-formats@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/format-message-formats/-/format-message-formats-5.1.0.tgz#c9c49334a0891bf74dd9d4bbb3f626ab2de30b1d"
+
+format-message-interpret@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/format-message-interpret/-/format-message-interpret-5.1.0.tgz#60d2f638528bde2368dd8a388227072926c12d59"
+  dependencies:
+    format-message-formats "^5.1.0"
+    lookup-closest-locale "^5.1.0"
+
+format-message-parse@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/format-message-parse/-/format-message-parse-5.1.0.tgz#9ffc78469e8e27a9cf7baf545fc1c40528b0c43a"
+
+format-message@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/format-message/-/format-message-5.1.1.tgz#5acb60e1171da8d41eb1ff933ba8228e6775a7a7"
+  dependencies:
+    format-message-formats "^5.1.0"
+    format-message-interpret "^5.1.0"
+    format-message-parse "^5.1.0"
+    lookup-closest-locale "^5.1.0"
+    object-assign "^4.0.1"
+
+lookup-closest-locale@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/lookup-closest-locale/-/lookup-closest-locale-5.1.0.tgz#da2f820c31663b3f91e099580d689f0aa774d2d4"
+
+object-assign@^4.0.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"

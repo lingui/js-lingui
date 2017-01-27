@@ -9,7 +9,8 @@ describe('Trans component', function() {
   const context = {
     i18n: {
       messages: {
-        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
+        'My name is {name}': 'Jmenuji se {name}'
       }
     }
   }
@@ -39,5 +40,12 @@ describe('Trans component', function() {
     expect(translation).toEqual(
       'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
     )
+  })
+
+  it('should format message with variables', function() {
+    const translation = text(
+      <Trans id="My name is {name}" params={{name: 'Mononoke'}} />
+    )
+    expect(translation).toEqual('Jmenuji se Mononoke')
   })
 })

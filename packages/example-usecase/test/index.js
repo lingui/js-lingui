@@ -13,16 +13,20 @@ describe('example-usecase', function() {
   })
 
   it('should render defaults with warning for untranslated', function() {
-    expect(getText('.untranslated')).toEqual('Hello World')
+    expect(getText('.untranslated')).toEqual("This isn't translated")
   })
 
-  it.skip('should render translated string', function() {
+  it('should support custom message id', function() {
+    expect(getText('.customId')).toEqual('Label')
+  })
+
+  it('should render translated string', function() {
     expect(getText('.translated')).toEqual('Ahoj světe')
   })
 
-  it.skip('should support variable substitution', function() {
-    expect(getText('.translated')).toEqual('Ahoj, jmenuji se Mononoke')
-    expect(getText('.translated', { name: 'Fred' })).toEqual('Ahoj, jmenuji se Fred')
+  it('should support variable substitution', function() {
+    expect(getText('.variable')).toEqual('Jmenuji se Mononoke')
+    expect(getText('.variable', { name: 'Fred' })).toEqual('Jmenuji se Fred')
   })
 
   it.skip('should support plural messages in ICU format', function() {
