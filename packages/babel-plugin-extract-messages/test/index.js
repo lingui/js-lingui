@@ -58,7 +58,7 @@ describe('babel-plugin-extract-messages', function() {
   testCase('should extract all messages', (transform) => {
     expect(transform('all.js')).not.toThrow()
 
-    const messages = JSON.parse(fs.readFileSync(path.join(MESSAGES_DIR, 'en.json')))
+    const messages = JSON.parse(fs.readFileSync(path.join(MESSAGES_DIR, 'all.json')))
     expect(messages).toEqual({
       "msg.hello": [
         "",

@@ -54,6 +54,7 @@ export default function({ types: t }) {
 
     post(file) {
       const baseDir = this.opts.messagesDir
+      const { basename } = file.opts
       const messages = {}
 
       file.get(MESSAGES).forEach((value, key) => {
@@ -63,7 +64,7 @@ export default function({ types: t }) {
       })
 
       fs.writeFileSync(
-        fsPath.join(baseDir, 'en.json'),
+        fsPath.join(baseDir, `${basename}.json`),
         JSON.stringify(messages, null, 2)
       )
     }
