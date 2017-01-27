@@ -1,0 +1,17 @@
+{
+  "name": "babel-plugin-extract-messages",
+  "version": "0.0.0-development",
+  "description": "Extract messages for translation",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin",
+    "i18n", "internationalization",
+    "i10n", "localization",
+    "i9n", "translation"
+  ]
+}
