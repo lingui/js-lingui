@@ -6,7 +6,9 @@ import type { I18nProps } from './I18nProvider'
 type TransProps = {
   id: string,
   id?: defaults,
-  i18n: I18nProps
+  i18n: I18nProps,
+
+  className?: string
 }
 
 class Trans extends React.Component {
@@ -15,10 +17,12 @@ class Trans extends React.Component {
   render() {
     const {
       id, defaults,
-      i18n: { messages }
+      i18n: { messages },
+
+      className
     } = this.props
 
-    return <span>{messages[id] || defaults || id}</span>
+    return <span className={className}>{messages[id] || defaults || id}</span>
   }
 }
 

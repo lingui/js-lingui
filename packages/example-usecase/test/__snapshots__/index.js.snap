@@ -1,0 +1,184 @@
+exports[`example-usecase should render 1`] = `
+<Usecase>
+  <div>
+    <InjectI18n
+      className="untranslated"
+      id="Hello World">
+      <Trans
+        className="untranslated"
+        i18n={
+          Object {
+            "language": "",
+            "messages": Object {},
+          }
+        }
+        id="Hello World">
+        <span
+          className="untranslated">
+          Hello World
+        </span>
+      </Trans>
+    </InjectI18n>
+    <InjectI18n
+      className="translated"
+      id="Hello World">
+      <Trans
+        className="translated"
+        i18n={
+          Object {
+            "language": "",
+            "messages": Object {},
+          }
+        }
+        id="Hello World">
+        <span
+          className="translated">
+          Hello World
+        </span>
+      </Trans>
+    </InjectI18n>
+    <InjectI18n
+      className="variable"
+      id="My name is {name}"
+      params={
+        Object {
+          "name": "Mononoke",
+        }
+      }>
+      <Trans
+        className="variable"
+        i18n={
+          Object {
+            "language": "",
+            "messages": Object {},
+          }
+        }
+        id="My name is {name}"
+        params={
+          Object {
+            "name": "Mononoke",
+          }
+        }>
+        <span
+          className="variable">
+          My name is {name}
+        </span>
+      </Trans>
+    </InjectI18n>
+    <InjectI18n
+      className="components"
+      components={
+        Array [
+          <a
+            href="/mononoke" />,
+        ]
+      }
+      id="Read <0>more</0>.">
+      <Trans
+        className="components"
+        components={
+          Array [
+            <a
+              href="/mononoke" />,
+          ]
+        }
+        i18n={
+          Object {
+            "language": "",
+            "messages": Object {},
+          }
+        }
+        id="Read <0>more</0>.">
+        <span
+          className="components">
+          Read <0>more</0>.
+        </span>
+      </Trans>
+    </InjectI18n>
+    <InjectI18n
+      className="plural"
+      components={
+        Array [
+          <Select
+            female={
+                <Plural
+                    _0="Wilma does not give a party."
+                    _1="Wilma invites Fred to her party."
+                    _2="Wilma invites Fred and one other person to her party."
+                    offset="1"
+                    other="Wilma invites Fred and # other people to her party."
+                    value={1} />
+            }
+            male={
+                <Plural
+                    _0="Wilma does not give a party."
+                    _1="Wilma invites Fred to his party."
+                    _2="Wilma invites Fred and one other person to her party."
+                    offset="1"
+                    other="Wilma invites Fred and # other people to her party."
+                    value={1} />
+            }
+            other={
+                <Plural
+                    _0="Wilma does not give a party."
+                    _1="Wilma invites Fred to their party."
+                    _2="Wilma invites Fred and one other person to her party."
+                    offset="1"
+                    other="Wilma invites Fred and # other people to her party."
+                    value={1} />
+            }
+            value="female" />,
+        ]
+      }
+      id="<0/>">
+      <Trans
+        className="plural"
+        components={
+          Array [
+            <Select
+              female={
+                  <Plural
+                      _0="Wilma does not give a party."
+                      _1="Wilma invites Fred to her party."
+                      _2="Wilma invites Fred and one other person to her party."
+                      offset="1"
+                      other="Wilma invites Fred and # other people to her party."
+                      value={1} />
+              }
+              male={
+                  <Plural
+                      _0="Wilma does not give a party."
+                      _1="Wilma invites Fred to his party."
+                      _2="Wilma invites Fred and one other person to her party."
+                      offset="1"
+                      other="Wilma invites Fred and # other people to her party."
+                      value={1} />
+              }
+              other={
+                  <Plural
+                      _0="Wilma does not give a party."
+                      _1="Wilma invites Fred to their party."
+                      _2="Wilma invites Fred and one other person to her party."
+                      offset="1"
+                      other="Wilma invites Fred and # other people to her party."
+                      value={1} />
+              }
+              value="female" />,
+          ]
+        }
+        i18n={
+          Object {
+            "language": "",
+            "messages": Object {},
+          }
+        }
+        id="<0/>">
+        <span
+          className="plural">
+          <0/>
+        </span>
+      </Trans>
+    </InjectI18n>
+  </div>
+</Usecase>
+`;

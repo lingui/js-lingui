@@ -1,0 +1,20 @@
+{
+  "private": true,
+
+  "name": "example-usecase",
+  "description": "Example usecase of all features",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+
+  "dependencies": {
+    "react-trans": "*",
+    "babel-plugin-transform-react-trans": "*"
+  },
+  "peerDependencies": {
+    "react": "15.x"
+  }
+}
