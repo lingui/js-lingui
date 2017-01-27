@@ -1,5 +1,5 @@
 node_modules/
-build/
+lib/
 
 npm-debug.log
 lerna-debug.log

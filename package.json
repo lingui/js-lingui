@@ -10,11 +10,12 @@
     "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
   },
   "devDependencies": {
+    "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-remove-strict-mode": "^0.0.2",
-    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-latest": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-register": "^6.22.0",
     "condition-circle": "^1.5.0",
@@ -44,7 +45,7 @@
   },
   "babel": {
     "presets": [
-      "es2015",
+      "latest",
       "react"
     ]
   },
