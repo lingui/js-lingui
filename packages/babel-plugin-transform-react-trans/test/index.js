@@ -1,7 +1,7 @@
 import fs from "fs"
 import glob from 'glob'
 import path from "path"
-import plugin from '../index'
+import plugin from '../src/index'
 import { transformFileSync } from 'babel-core'
 
 
