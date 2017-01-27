@@ -1,5 +1,5 @@
 import React from 'react'
-import Trans from './Trans'
+import { Trans}  from '.'
 import { shallow } from 'enzyme'
 
 describe('Trans component', function() {

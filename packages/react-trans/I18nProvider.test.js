@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import I18nProvider from './I18nProvider'
+import { I18nProvider } from '.'
 
 
 describe('I18nProvider', function() {
