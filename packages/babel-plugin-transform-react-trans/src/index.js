@@ -28,7 +28,83 @@ export default function({ types: t }) {
     elementName('SelectOrdinal')(node)
   )
 
-  function extract(node, props) {
+  function processElement(
+    node,
+    props = {
+      text: "",
+      params: {},
+      components: []
+    },
+    root = false
+  ) {
+    const element = node.openingElement
+
+    // Trans
+    if (isTransElement(node)) {
+      for (const child of node.children) {
+        props = processChildren.call(this, child, props)
+      }
+
+    // Plural, Select, SelectOrdinal
+    } else if (isChooseElement(node)) {
+      // TODO: Disallow children
+      // TODO: Complain about missing pluralVariable
+      // TODO: Type-check offset (must be number)
+
+      const choicesType = element.name.name.toLowerCase()
+      const choices = {}
+      let variable, offset = ''
+
+      for (const attr of element.attributes) {
+        const { name: { name } } = attr
+
+        if (name === 'value') {
+          const exp = attr.value.expression
+          variable = exp.name
+          props.params[variable] = t.objectProperty(exp, exp)
+
+        } else if (choicesType !== 'select' && name === 'offset') {
+          offset = ` offset:${attr.value.value}`
+
+        } else {
+          props = processChildren.call(this, attr.value, {
+            text: '', params: props.params, components: props.components
+          })
+          choices[name.replace('_', '=')] = props.text
+        }
+      }
+
+      const categories = Object.keys(choices).reduce((acc, key) => {
+        return acc + ` ${key} {${choices[key]}}`
+      }, '')
+
+      props.text = `{${choicesType}, ${variable},${offset}${categories}}`
+      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.name = t.JSXIdentifier('Trans')
+
+    // Other elements
+    } else {
+      if (root) return
+
+      const index = this.inlineElementCounter++
+      const selfClosing = node.openingElement.selfClosing
+
+      props.text += !selfClosing ? `<${index}>` : `<${index}/>`
+
+      for (const child of node.children) {
+        props = processChildren.call(this, child, props)
+      }
+
+      if (!selfClosing) props.text += `</${index}>`
+
+      cleanChildren(node)
+      props.components.unshift(node)
+    }
+
+    return props
+  }
+
+  function processChildren(node, props) {
     let nextProps = {
       text: "",
       params: {},
@@ -61,38 +137,14 @@ export default function({ types: t }) {
         })
 
       } else if (t.isJSXElement(exp)) {
-        const index = this.inlineElementCounter++
-        const selfClosing = exp.openingElement.selfClosing
-
-        nextProps.text += !selfClosing ? `<${index}>` : `<${index}/>`
-
-        for (const child of exp.children) {
-          nextProps = extract.call(this, child, nextProps)
-        }
-
-        if (!selfClosing) nextProps.text += `</${index}>`
-
-        cleanChildren(exp)
-        nextProps.components.unshift(exp)
+        nextProps = processElement.call(this, exp, nextProps)
 
       } else {
         nextProps.text += exp.value
       }
 
     } else if (t.isJSXElement(node)) {
-      const index = this.inlineElementCounter++
-      const selfClosing = node.openingElement.selfClosing
-
-      nextProps.text += !selfClosing ? `<${index}>` : `<${index}/>`
-
-      for (const child of node.children) {
-        nextProps = extract.call(this, child, nextProps)
-      }
-
-      if (!selfClosing) nextProps.text += `</${index}>`
-
-      cleanChildren(node)
-      nextProps.components.unshift(node)
+      nextProps = processElement.call(this, node, nextProps)
 
     } else if (t.isJSXSpreadChild(node)) {
       // TODO: I don't have a clue what's the usecase
@@ -111,67 +163,17 @@ export default function({ types: t }) {
     visitor: {
       JSXElement({ node }) {
         this.inlineElementCounter = 0
-        let attrs = node.openingElement.attributes
-        const children = node.children
 
         // 1. Collect all parameters and inline elements and generate message ID
 
-        let props = {
-          text: "",
-          params: {},
-          components: []
-        }
-
-        if (isTransElement(node)) {
-          for (const child of children) {
-            props = extract.call(this, child, props)
-          }
-
-        } else if (isChooseElement(node)) {
-          // TODO: Disallow children
-          // TODO: Complain about missing pluralVariable
-          // TODO: Type-check offset (must be number)
-
-          const choicesType = node.openingElement.name.name.toLowerCase()
-          const choices = {}
-          let variable, offset = ''
-
-          for (const attr of attrs) {
-            const { name: { name } } = attr
-
-            if (name === 'value') {
-              const exp = attr.value.expression
-              variable = exp.name
-              props.params[variable] = t.objectProperty(exp, exp)
-
-            } else if (choicesType !== 'select' && name === 'offset') {
-              offset = ` offset:${attr.value.value}`
-
-            } else {
-              props = extract.call(this, attr.value, {
-                text: '', params: props.params, components: props.components
-              })
-              choices[name.replace('_', '=')] = props.text
-            }
-          }
-
-          const categories = Object.keys(choices).reduce((acc, key) => {
-            return acc + ` ${key} {${choices[key]}}`
-          }, '')
-
-          props.text = `{${choicesType}, ${variable},${offset}${categories}}`
-          attrs = attrs.filter(attr => attr.name.name === 'props')
-          node.openingElement.name = t.JSXIdentifier('Trans')
-        } else {
-
-          // not an i18n element, skip it
-          return
-        }
+        const props = processElement.call(this, node, props, /* root= */true)
+        if (!props) return
 
         // 2. Replace children and add collected data
 
         cleanChildren(node)
         props.text = props.text.trim()
+        const attrs = node.openingElement.attributes
 
         // If `id` prop already exists and generated ID is different,
         // add it as a `default` prop
@@ -205,8 +207,6 @@ export default function({ types: t }) {
             )
           )
         }
-
-        node.openingElement.attributes = attrs
       }  // JSXElement
     }  // visitor
   }
