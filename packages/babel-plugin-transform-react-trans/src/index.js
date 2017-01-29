@@ -1,6 +1,3 @@
-const pluralCategory = /(_\d+|zero|one|two|few|many|other)/
-const pluralProps = /(value|offset|_\d+|zero|one|two|few|many|other)/
-
 function cleanChildren(node) {
   node.children = []
   node.openingElement.selfClosing = true
