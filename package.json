@@ -52,13 +52,15 @@
   "jest": {
     "testRegex": "(/test/[^/]*|.*\\.test)\\.jsx?$",
     "collectCoverage": true,
+    "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
       "node_modules",
       "scripts"
     ],
     "coverageReporters": [
       "text",
-      "html"
+      "html",
+      "lcov"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest-env.js",
     "snapshotSerializers": [

@@ -17,6 +17,8 @@ dependencies:
   override:
     - yarn install
     - lerna bootstrap
+  - post:
+    - yarn global add codecov
   cache_directories:
     - ~/.yarn
     - ~/.cache/yarn
@@ -28,4 +30,4 @@ test:
 
   post:
     - yarn run semantic-release || true
-    - bash <(curl -s https://codecov.io/bash)
+    - codecov
