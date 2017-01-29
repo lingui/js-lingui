@@ -1,5 +1,5 @@
 import React from "react"
-import formatMessage from "format-message"
+import MessageFormat from "messageformat"
 
 import InjectI18n from './InjectI18n'
 import type { I18nProps } from './I18nProvider'
@@ -14,24 +14,47 @@ type TransProps = {
   className?: string
 }
 
+type TransState = {
+  msgCache: Function
+}
+
 class Trans extends React.Component {
   props: TransProps
+  state: TransState
+
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      msgCache: this.compileMessage()
+    }
+
+  }
+
+  compileMessage() {
+    const {
+      id, defaults, i18n: { messages, language }
+    } = this.props
+
+    const translation = messages[id] || defaults || id
+
+    return new MessageFormat(language).compile(translation)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.id !== nextProps.id || this.props.defaults !== nextProps.defaults) {
+      this.setState({
+        msgCache: this.compileMsg()
+      })
+    }
+  }
 
   render() {
     const {
-      id, defaults, params,
-      i18n: { messages },
-
-      className
+      params, className
     } = this.props
+    const { msgCache } = this.state
 
-    let translation = messages[id] || defaults || id
-
-    if (params) {
-      translation = formatMessage(translation, params)
-    }
-
-    return <span className={className}>{translation}</span>
+    return <span className={className}>{msgCache(params)}</span>
   }
 }
 
