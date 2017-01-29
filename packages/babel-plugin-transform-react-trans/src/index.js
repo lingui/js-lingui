@@ -18,11 +18,15 @@ export default function({ types: t }) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
 
-  const isElementFactory = name => node =>
+  const elementName = name => node =>
     t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name })
 
-  const isTransElement = isElementFactory('Trans')
-  const isPluralElement = isElementFactory('Plural')
+  const isTransElement = elementName('Trans')
+  const isChooseElement = (node) => (
+    elementName('Plural')(node) ||
+    elementName('Select')(node) ||
+    elementName('SelectOrdinal')(node)
+  )
 
   function extract(node, props) {
     let nextProps = {
@@ -122,39 +126,42 @@ export default function({ types: t }) {
           for (const child of children) {
             props = extract.call(this, child, props)
           }
-        } else if (isPluralElement(node)) {
+
+        } else if (isChooseElement(node)) {
           // TODO: Disallow children
           // TODO: Complain about missing pluralVariable
           // TODO: Type-check offset (must be number)
 
-          node.openingElement.name = t.JSXIdentifier('Trans')
-
-          const plural = {}
-          let pluralVariable, offset
+          const choicesType = node.openingElement.name.name.toLowerCase()
+          const choices = {}
+          let variable, offset = ''
 
           for (const attr of attrs) {
-            if (attr.name.name === 'value') {
-              pluralVariable = attr.value.expression.name
-              props.params[pluralVariable] = attr.value.expression
+            const { name: { name } } = attr
 
-            } else if (attr.name.name === 'offset') {
-              offset = `offset:${attr.value.value}`
+            if (name === 'value') {
+              const exp = attr.value.expression
+              variable = exp.name
+              props.params[variable] = t.objectProperty(exp, exp)
+
+            } else if (choicesType !== 'select' && name === 'offset') {
+              offset = ` offset:${attr.value.value}`
 
             } else {
-              const match = attr.name.name.match(pluralCategory)
               props = extract.call(this, attr.value, {
                 text: '', params: props.params, components: props.components
               })
-              plural[match[0].replace('_', '=')] = props.text
+              choices[name.replace('_', '=')] = props.text
             }
           }
 
-          const categories = Object.keys(plural).reduce((acc, key) => {
-            return acc + ` ${key} {${plural[key]}}`
+          const categories = Object.keys(choices).reduce((acc, key) => {
+            return acc + ` ${key} {${choices[key]}}`
           }, '')
 
-          props.text = `{plural, ${pluralVariable}, ${offset}${categories}}`
-          attrs = attrs.filter(attr => !pluralProps.test(attr.name.name))
+          props.text = `{${choicesType}, ${variable},${offset}${categories}}`
+          attrs = attrs.filter(attr => attr.name.name === 'props')
+          node.openingElement.name = t.JSXIdentifier('Trans')
         } else {
 
           // not an i18n element, skip it
