@@ -3,9 +3,10 @@ export default function({ types: t }) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
 
-  function isTransComponent(node) {
-    return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name: 'Trans' })
-  }
+  const isElementFactory = name => node =>
+    t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name })
+
+  const isTransElement = isElementFactory('Trans')
 
   function cleanChildren(node) {
     node.children = []
@@ -14,7 +15,7 @@ export default function({ types: t }) {
 
   function extract(node) {
     let text = '',
-      params = [],
+      params = {},
       components = []
 
     if (t.isJSXExpressionContainer(node)) {
@@ -22,7 +23,7 @@ export default function({ types: t }) {
 
       if (t.isIdentifier(exp)) {
         text += `{${exp.name}}`
-        params.push(t.objectProperty(exp, exp))
+        params[exp.name] = t.objectProperty(exp, exp)
 
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
@@ -38,7 +39,7 @@ export default function({ types: t }) {
             text += item.value.raw
           } else {
             text += `{${item.name}}`
-            params.push(t.objectProperty(item, item))
+            params[item.name] = t.objectProperty(item, item)
           }
         })
 
@@ -58,7 +59,7 @@ export default function({ types: t }) {
         } = extract.bind(this)(child)
 
         text += newText
-        params = params.concat(newParams)
+        params = Object.assign({}, params, newParams)
         components = components.concat(newComponents)
       }
 
@@ -83,7 +84,7 @@ export default function({ types: t }) {
   return {
     visitor: {
       JSXElement({ node }) {
-        if (!isTransComponent(node)) return
+        if (!isTransElement(node)) return
 
         this.inlineElementCounter = 0
         const attrs = node.openingElement.attributes
@@ -92,7 +93,7 @@ export default function({ types: t }) {
         // 1. Collect all parameters and inline elements and generate message ID
 
         let text = "",
-          params = [],
+          params = {},
           components = []
 
         for (const child of children) {
@@ -101,7 +102,7 @@ export default function({ types: t }) {
           } = extract.bind(this)(child)
 
           text += newText
-          params = params.concat(newParams)
+          params = Object.assign({}, params, newParams)
           components = components.concat(newComponents)
         }
 
@@ -124,11 +125,12 @@ export default function({ types: t }) {
         }
 
         // Parameters for variable substitution
-        if (params.length) {
+        const paramsList = Object.values(params)
+        if (paramsList.length) {
           attrs.push(
             t.JSXAttribute(
               t.JSXIdentifier("params"),
-              t.JSXExpressionContainer(t.objectExpression(params)))
+              t.JSXExpressionContainer(t.objectExpression(paramsList)))
           )
         }
 
