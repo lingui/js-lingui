@@ -16,6 +16,7 @@
     "react": "15.x"
   },
   "dependencies": {
-    "format-message": "^5.1.1"
+    "format-message": "^5.1.1",
+    "messageformat-parser": "^1.0.0"
   }
 }
