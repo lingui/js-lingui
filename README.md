@@ -12,7 +12,7 @@ Tools
 
 ### `babel-plugin-transform-react-trans`
 
-Status: *in progress*
+Status: *done*
 
 Write strings for translation in human-readable format and let `babel` to preprocess it.
 
@@ -24,20 +24,18 @@ Example:
 /* <Trans id="Hello world, my name is <0>{joe}</0>" params={{joe}} /> */
 
 /* ICU format messages */
-<Trans>
-    <Plural 
-      count={count} 
-      zero="There're no bottles left"
-      one="There's 1 bottle hanging"
-      many="There're # bottles hanging"
-    /> on the wall.
-</Trans>
+<Plural 
+  count={count} 
+  zero="There're no bottles left on the wall."
+  one="There's 1 bottle hanging on the wall."
+  many="There're # bottles hanging on the wall."
+/>
 /* <Trans id="{plural, count, zero {...} one {...} many {...}}" params={{count}} /> */
 ```
 
 ### `babel-plugin-extract-messages`
 
-Status: *upcoming*
+Status: *done*
 
 Extract all messages for translation to external file.
 
@@ -48,9 +46,12 @@ Status: *in progress*
 React bindings for message formating.
 
 #### Components
-- `Trans` – component for message formating and translation
 - `I18nProvider` – context provider of all i18n data (messages, current language, etc)
 - `InjectI18n` - HOC for passing i18n data from context to props of wrapped component
+- `Trans` – component for message formating and translation
+- `Select` – select message based on variable
+- `Plural` – select plural based on number
+- `SelectOrdinal` – select ordinal number
 
 ## License
 
