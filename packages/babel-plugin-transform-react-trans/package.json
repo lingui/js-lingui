@@ -28,7 +28,7 @@
       "latest",
       ["env", {
         "targets": {
-          "node": 4
+          "node": "current"
         }
       }]
     ]
