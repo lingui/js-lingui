@@ -28,3 +28,4 @@ test:
 
   post:
     - yarn run semantic-release || true
+    - bash <(curl -s https://codecov.io/bash)
