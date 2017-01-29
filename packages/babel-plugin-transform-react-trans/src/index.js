@@ -1,3 +1,6 @@
+import "babel-polyfill"
+
+
 function cleanChildren(node) {
   node.children = []
   node.openingElement.selfClosing = true
@@ -34,15 +37,7 @@ export default function({ types: t }) {
     elementName('SelectOrdinal')(node)
   )
 
-  function processElement(
-    node,
-    props = {
-      text: "",
-      params: {},
-      components: []
-    },
-    root = false
-  ) {
+  function processElement(node, props, root = false) {
     const element = node.openingElement
 
     // Trans
@@ -170,7 +165,12 @@ export default function({ types: t }) {
 
         // 1. Collect all parameters and inline elements and generate message ID
 
-        const props = processElement(node, props, /* root= */true)
+        const props = processElement(node, {
+          text: "",
+          params: {},
+          components: []
+        }, /* root= */true)
+
         if (!props) return
 
         // 2. Replace children and add collected data
