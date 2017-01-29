@@ -47,10 +47,13 @@ export default function({ types: t }) {
     },
 
     pre(file) {
-       if (!file.has(MESSAGES)) {
-         file.set(MESSAGES, new Map())
-       }
-     },
+      // Ignore else path for now. Collision is possible if other plugin is
+      // using the same Symbol('I18nMessages').
+      // istanbul ignore else
+      if (!file.has(MESSAGES)) {
+        file.set(MESSAGES, new Map())
+      }
+    },
 
     post(file) {
       const baseDir = this.opts.messagesDir
