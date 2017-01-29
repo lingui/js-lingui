@@ -82,7 +82,7 @@ export default function({ types: t }) {
         return acc + ` ${key} {${choices[key]}}`
       }, '')
 
-      props.text = `{${choicesType}, ${variable},${offset}${categories}}`
+      props.text = `{${variable}, ${choicesType},${offset}${categories}}`
       element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
       element.name = t.JSXIdentifier('Trans')
 
