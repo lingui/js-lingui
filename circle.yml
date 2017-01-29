@@ -17,7 +17,7 @@ dependencies:
   override:
     - yarn install
     - lerna bootstrap
-  - post:
+  post:
     - yarn global add codecov
   cache_directories:
     - ~/.yarn
@@ -27,7 +27,6 @@ test:
   override:
     - yarn run test
     - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
-
   post:
     - yarn run semantic-release || true
     - codecov
