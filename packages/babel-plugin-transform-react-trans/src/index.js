@@ -1,3 +1,6 @@
+const pluralCategory = /(_\d+|zero|one|two|few|many|other)/
+const pluralProps = /(value|offset|_\d+|zero|one|two|few|many|other)/
+
 function cleanChildren(node) {
   node.children = []
   node.openingElement.selfClosing = true
@@ -19,6 +22,7 @@ export default function({ types: t }) {
     t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name })
 
   const isTransElement = isElementFactory('Trans')
+  const isPluralElement = isElementFactory('Plural')
 
   function extract(node, props) {
     let nextProps = {
@@ -51,6 +55,21 @@ export default function({ types: t }) {
             nextProps.params[item.name] = t.objectProperty(item, item)
           }
         })
+
+      } else if (t.isJSXElement(exp)) {
+        const index = this.inlineElementCounter++
+        const selfClosing = exp.openingElement.selfClosing
+
+        nextProps.text += !selfClosing ? `<${index}>` : `<${index}/>`
+
+        for (const child of exp.children) {
+          nextProps = extract.call(this, child, nextProps)
+        }
+
+        if (!selfClosing) nextProps.text += `</${index}>`
+
+        cleanChildren(exp)
+        nextProps.components.unshift(exp)
 
       } else {
         nextProps.text += exp.value
@@ -87,10 +106,8 @@ export default function({ types: t }) {
   return {
     visitor: {
       JSXElement({ node }) {
-        if (!isTransElement(node)) return
-
         this.inlineElementCounter = 0
-        const attrs = node.openingElement.attributes
+        let attrs = node.openingElement.attributes
         const children = node.children
 
         // 1. Collect all parameters and inline elements and generate message ID
@@ -101,8 +118,47 @@ export default function({ types: t }) {
           components: []
         }
 
-        for (const child of children) {
-          props = extract.call(this, child, props)
+        if (isTransElement(node)) {
+          for (const child of children) {
+            props = extract.call(this, child, props)
+          }
+        } else if (isPluralElement(node)) {
+          // TODO: Disallow children
+          // TODO: Complain about missing pluralVariable
+          // TODO: Type-check offset (must be number)
+
+          node.openingElement.name = t.JSXIdentifier('Trans')
+
+          const plural = {}
+          let pluralVariable, offset
+
+          for (const attr of attrs) {
+            if (attr.name.name === 'value') {
+              pluralVariable = attr.value.expression.name
+              props.params[pluralVariable] = attr.value.expression
+
+            } else if (attr.name.name === 'offset') {
+              offset = `offset:${attr.value.value}`
+
+            } else {
+              const match = attr.name.name.match(pluralCategory)
+              props = extract.call(this, attr.value, {
+                text: '', params: props.params, components: props.components
+              })
+              plural[match[0].replace('_', '=')] = props.text
+            }
+          }
+
+          const categories = Object.keys(plural).reduce((acc, key) => {
+            return acc + ` ${key} {${plural[key]}}`
+          }, '')
+
+          props.text = `{plural, ${pluralVariable}, ${offset}${categories}}`
+          attrs = attrs.filter(attr => !pluralProps.test(attr.name.name))
+        } else {
+
+          // not an i18n element, skip it
+          return
         }
 
         // 2. Replace children and add collected data
@@ -142,6 +198,8 @@ export default function({ types: t }) {
             )
           )
         }
+
+        node.openingElement.attributes = attrs
       }  // JSXElement
     }  // visitor
   }
