@@ -3,11 +3,11 @@ machine:
     version: 6.1.0
 
 dependencies:
+  pre:
+    - yarn global add lerna codecov
   override:
     - yarn install
     - lerna bootstrap
-  post:
-    - yarn global add codecov
 
 test:
   override:
