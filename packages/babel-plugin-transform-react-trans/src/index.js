@@ -9,11 +9,20 @@ function cleanChildren(node) {
 const mergeProps = (props, nextProps) => ({
   text: props.text + nextProps.text,
   params: Object.assign({}, props.params, nextProps.params),
-  components: props.components.concat(nextProps.components)
+  components: props.components.concat(nextProps.components),
+  elementIndex: nextProps.elementIndex
 })
+
+const elementGeneratorFactory = () => {
+  let index = 0
+  return () => index++
+}
+
 
 // Plugin function
 export default function({ types: t }) {
+  let elementGenerator
+
   function isIdAttribute(node) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
@@ -42,7 +51,7 @@ export default function({ types: t }) {
     // Trans
     if (isTransElement(node)) {
       for (const child of node.children) {
-        props = processChildren.call(this, child, props)
+        props = processChildren(child, props)
       }
 
     // Plural, Select, SelectOrdinal
@@ -67,9 +76,7 @@ export default function({ types: t }) {
           offset = ` offset:${attr.value.value}`
 
         } else {
-          props = processChildren.call(this, attr.value, {
-            text: '', params: props.params, components: props.components
-          })
+          props = processChildren(attr.value, Object.assign({}, props, { text: '' }))
           choices[name.replace('_', '=')] = props.text
         }
       }
@@ -86,13 +93,13 @@ export default function({ types: t }) {
     } else {
       if (root) return
 
-      const index = this.inlineElementCounter++
+      const index = elementGenerator()
       const selfClosing = node.openingElement.selfClosing
 
       props.text += !selfClosing ? `<${index}>` : `<${index}/>`
 
       for (const child of node.children) {
-        props = processChildren.call(this, child, props)
+        props = processChildren(child, props)
       }
 
       if (!selfClosing) props.text += `</${index}>`
@@ -137,14 +144,14 @@ export default function({ types: t }) {
         })
 
       } else if (t.isJSXElement(exp)) {
-        nextProps = processElement.call(this, exp, nextProps)
+        nextProps = processElement(exp, nextProps)
 
       } else {
         nextProps.text += exp.value
       }
 
     } else if (t.isJSXElement(node)) {
-      nextProps = processElement.call(this, node, nextProps)
+      nextProps = processElement(node, nextProps)
 
     } else if (t.isJSXSpreadChild(node)) {
       // TODO: I don't have a clue what's the usecase
@@ -162,11 +169,11 @@ export default function({ types: t }) {
   return {
     visitor: {
       JSXElement({ node }) {
-        this.inlineElementCounter = 0
+        elementGenerator = elementGeneratorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
 
-        const props = processElement.call(this, node, props, /* root= */true)
+        const props = processElement(node, props, /* root= */true)
         if (!props) return
 
         // 2. Replace children and add collected data
