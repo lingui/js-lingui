@@ -1,6 +1,6 @@
 import React from 'react'
 import { Trans}  from '.'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 
 describe('Trans component', function() {
   /*
@@ -10,7 +10,9 @@ describe('Trans component', function() {
     i18n: {
       messages: {
         'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
-        'My name is {name}': 'Jmenuji se {name}'
+        'My name is {name}': 'Jmenuji se {name}',
+        'Original': 'Původní',
+        'Updated': 'Aktualizovaný'
       }
     }
   }
@@ -22,6 +24,25 @@ describe('Trans component', function() {
 
   it("shouldn\'t throw runtime error without i18n context", function() {
     expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
+  })
+
+  it('should recompile msg when id or defaults changes', function() {
+    const node = mount(<Trans id="Original" defaults="Original" />, { context })
+    expect(node.text()).toEqual('Původní')
+
+    node.setProps({ id: 'Updated'})
+    expect(node.text()).toEqual('Aktualizovaný')
+
+    // doesn't affect when different prop is changed
+    node.setProps({ other: 'other' })
+    expect(node.text()).toEqual('Aktualizovaný')
+
+    // either different id or defaults trigger change
+    node.setProps({ id: 'Unknown' })
+    expect(node.text()).toEqual('Original')
+    node.setProps({ defaults: 'Unknown' })
+    expect(node.text()).toEqual('Unknown')
+
   })
 
   it('should render default string', function() {
