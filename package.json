@@ -54,7 +54,7 @@
     "coveragePathIgnorePatterns": [
       "node_modules",
       "scripts",
-      "packages/react-trans/plurals.js"
+      "packages/react-trans/src/plurals.js"
     ],
     "coverageReporters": [
       "text",

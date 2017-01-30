@@ -2,7 +2,7 @@
   "name": "react-trans",
   "version": "0.0.0",
   "description": "React components for translations",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -18,5 +18,16 @@
   "dependencies": {
     "messageformat": "^1.0.2",
     "messageformat-parser": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
+    "prepublish": "npm run clean && npm run build"
   }
 }
