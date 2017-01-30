@@ -53,7 +53,8 @@
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "scripts"
+      "scripts",
+      "packages/react-trans/plurals.js"
     ],
     "coverageReporters": [
       "text",
