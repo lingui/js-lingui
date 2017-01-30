@@ -139,7 +139,12 @@ exports[`example-usecase should render 1`] = `
           id="Read <0>more</0>.">
           <span
             className="components">
-            Read <0>more</0>.
+            Read 
+            <a
+              href="/mononoke">
+              more
+            </a>
+            .
           </span>
         </Trans>
       </InjectI18n>

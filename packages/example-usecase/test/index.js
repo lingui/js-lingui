@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 
 import Usecase from '../index'
 
@@ -8,6 +8,11 @@ describe('example-usecase', function() {
   const getText = (element, props = {}) => {
     return mount(<Usecase {...props} />).find(element).text()
   }
+
+  const getHtml = (element, props = {}) => {
+    return shallow(<Usecase {...props} />).find(element).html()
+  }
+
   it('should render', function() {
     expect(mount(<Usecase />)).toMatchSnapshot()
   })
@@ -29,7 +34,8 @@ describe('example-usecase', function() {
     expect(getText('.variable', { name: 'Fred' })).toEqual('Jmenuji se Fred')
   })
 
-  it.skip('should support plural messages in ICU format', function() {
-
+  it('should support nested elements', function() {
+    expect(getHtml('.components'))
+      .toEqual('<span class=\"components\">Read <a href=\"/mononoke\">more</a>.</span>')
   })
 })

@@ -1,10 +1,6 @@
 import React from 'react'
 import { Trans, I18nProvider } from 'react-trans'
 
-// Not implemented yet
-const Select = () => {}
-const Plural = () => {}
-
 const messages = {
   'msg.label': 'Label',
   'Hello World': 'Ahoj světe',
@@ -15,11 +11,7 @@ const messages = {
 class Usecase extends React.Component {
   render() {
     const {
-      name = 'Mononoke',
-      genderOfHost = 'female',
-      numGuests = 1,
-      host = 'Wilma',
-      guest = 'Fred'
+      name = 'Mononoke'
     } = this.props
 
     return (
