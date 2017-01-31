@@ -148,6 +148,44 @@ exports[`example-usecase should render 1`] = `
           </span>
         </Trans>
       </InjectI18n>
+      <InjectI18n
+        className="plural"
+        id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+        params={
+          Object {
+            "genderOfHost": "female",
+            "guest": "Fred",
+            "host": "Wilma",
+            "numGuests": 4,
+          }
+        }>
+        <Trans
+          className="plural"
+          i18n={
+            Object {
+              "language": undefined,
+              "messages": Object {
+                "Hello World": "Ahoj světe",
+                "My name is {name}": "Jmenuji se {name}",
+                "msg.label": "Label",
+              },
+            }
+          }
+          id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+          params={
+            Object {
+              "genderOfHost": "female",
+              "guest": "Fred",
+              "host": "Wilma",
+              "numGuests": 4,
+            }
+          }>
+          <span
+            className="plural">
+            Wilma invites Fred and 3 other people to her party.
+          </span>
+        </Trans>
+      </InjectI18n>
     </div>
   </I18nProvider>
 </Usecase>

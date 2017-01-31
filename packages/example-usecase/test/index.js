@@ -38,4 +38,9 @@ describe('example-usecase', function() {
     expect(getHtml('.components'))
       .toEqual('<span class=\"components\">Read <a href=\"/mononoke\">more</a>.</span>')
   })
+
+  it('should support pluralization', function() {
+    expect(getText('.plural'))
+      .toEqual('Wilma invites Fred and 3 other people to her party.')
+  })
 })
