@@ -1211,6 +1211,10 @@ conventional-changelog@~1.1.0:
     conventional-changelog-jscs "^0.1.0"
     conventional-changelog-jshint "^0.1.0"
 
+conventional-commit-types@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/conventional-commit-types/-/conventional-commit-types-2.1.0.tgz#45d860386c9a2e6537ee91d8a1b61bd0411b3d04"
+
 conventional-commits-filter@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/conventional-commits-filter/-/conventional-commits-filter-1.0.0.tgz#6fc2a659372bc3f2339cf9ffff7e1b0344b93039"
@@ -1292,17 +1296,22 @@ cycle@1.0.x:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
 
-cz-conventional-changelog@jpnelson/cz-conventional-changelog#a9a5468d:
-  version "0.0.0-semantically-released.0"
-  resolved "https://codeload.github.com/jpnelson/cz-conventional-changelog/tar.gz/a9a5468d"
+cz-conventional-changelog@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/cz-conventional-changelog/-/cz-conventional-changelog-1.2.0.tgz#2bca04964c8919b23f3fd6a89ef5e6008b31b3f8"
   dependencies:
+    conventional-commit-types "^2.0.0"
+    lodash.map "^4.5.1"
+    longest "^1.0.1"
+    pad-right "^0.2.2"
+    right-pad "^1.0.1"
     word-wrap "^1.0.3"
 
-cz-lerna-changelog@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/cz-lerna-changelog/-/cz-lerna-changelog-1.0.0.tgz#c2959c3242954ebb1ebb412b846ee3d6262b5914"
+cz-lerna-changelog@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cz-lerna-changelog/-/cz-lerna-changelog-1.1.0.tgz#be3b3f78f054937727b3a59f360420324c214ebf"
   dependencies:
-    cz-conventional-changelog jpnelson/cz-conventional-changelog#a9a5468d
+    cz-conventional-changelog "^1.2.0"
     shelljs "0.7.0"
 
 dargs@^4.0.1:
@@ -2583,12 +2592,28 @@ lerna-semantic-release-io@^6.0.0:
     simple-git "~1.48.0"
     sinon "~1.17.0"
 
-lerna-semantic-release-perform@^4.0.14:
-  version "4.0.14"
-  resolved "https://registry.yarnpkg.com/lerna-semantic-release-perform/-/lerna-semantic-release-perform-4.0.14.tgz#cb48ead785debd6302796608cf9e7ea5b7317789"
+lerna-semantic-release-io@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/lerna-semantic-release-io/-/lerna-semantic-release-io-7.0.0.tgz#b01db21d1538446df789efa1a45a75d132900a6a"
+  dependencies:
+    "@semantic-release/last-release-npm" "~1.2.1"
+    git-head "1.14.0"
+    lerna-semantic-release-analyze-commits "^4.0.0"
+    lerna-semantic-release-get-last-release "^5.0.0"
+    lerna-semantic-release-utils "^4.0.0"
+    mock-fs "~3.11.0"
+    mockery "~1.7.0"
+    semantic-release "^6.3.6"
+    shelljs "~0.7.0"
+    simple-git "~1.48.0"
+    sinon "~1.17.0"
+
+lerna-semantic-release-perform@^4.0.15:
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/lerna-semantic-release-perform/-/lerna-semantic-release-perform-4.0.15.tgz#61b22cd7e4a7e9adce4e27841cd4a754d62618ec"
   dependencies:
     async "^2.0.1"
-    lerna-semantic-release-io "^6.0.0"
+    lerna-semantic-release-io "^7.0.0"
     lerna-semantic-release-utils "^4.0.0"
 
 lerna-semantic-release-post@^5.0.14:
@@ -2621,12 +2646,12 @@ lerna-semantic-release-utils@^4.0.0:
     shelljs "^0.7.0"
     winston "^2.2.0"
 
-lerna-semantic-release@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/lerna-semantic-release/-/lerna-semantic-release-9.0.1.tgz#ababfccf7b369271db5df31552db872cd06ccb72"
+lerna-semantic-release@^9.0.3:
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/lerna-semantic-release/-/lerna-semantic-release-9.0.3.tgz#1afc85daff633f787c333e6062fcb583217e8838"
   dependencies:
-    lerna-semantic-release-io "^6.0.0"
-    lerna-semantic-release-perform "^4.0.14"
+    lerna-semantic-release-io "^7.0.0"
+    lerna-semantic-release-perform "^4.0.15"
     lerna-semantic-release-post "^5.0.14"
     lerna-semantic-release-pre "^4.1.1"
 
@@ -2804,7 +2829,7 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash.map@^4.4.0:
+lodash.map@^4.4.0, lodash.map@^4.5.1:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
 
@@ -3289,6 +3314,12 @@ osenv@^0.1.0, osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
+pad-right@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/pad-right/-/pad-right-0.2.2.tgz#6fbc924045d244f2a2a244503060d3bfc6009774"
+  dependencies:
+    repeat-string "^1.5.2"
+
 pad@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pad/-/pad-1.0.2.tgz#f6e36ff3ceb468e4ae2ed33ad5ecf25ace920960"
@@ -3700,6 +3731,10 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
+right-pad@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/right-pad/-/right-pad-1.0.1.tgz#8ca08c2cbb5b55e74dafa96bf7fd1a27d568c8d0"
+
 rimraf@^2.4.3, rimraf@^2.4.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
@@ -3751,7 +3786,7 @@ sax@^1.1.4:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
-semantic-release@^6.3.1:
+semantic-release@^6.3.1, semantic-release@^6.3.6:
   version "6.3.6"
   resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-6.3.6.tgz#629d0aec90b38a2957a57a4a9ee1214af51928c7"
   dependencies:
