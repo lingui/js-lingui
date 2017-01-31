@@ -20,7 +20,7 @@ class Usecase extends React.Component {
 
     return (
       <I18nProvider messages={messages}>
-        <Trans className="untranslated">This isn't translated</Trans>
+        <Trans className="untranslated">{"This isn't translated"}</Trans>
         <Trans className="customId" id="msg.label" />
         <Trans className="translated">Hello World</Trans>
         <Trans className="variable">My name is {name}</Trans>
