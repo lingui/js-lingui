@@ -1,6 +1,4 @@
-| master | next |
-| :---: | :---: |
-| [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master) | [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/next.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/next) | 
+[![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
 
 Lingui - javascript tools for internationalization
 ==================================================
@@ -12,7 +10,7 @@ Tools
 
 ### `babel-plugin-transform-react-trans`
 
-Status: *done*
+[![npm](https://img.shields.io/npm/v/babel-plugin-transform-react-trans.svg)](https://www.npmjs.com/package/babel-plugin-transform-react-trans)
 
 Write strings for translation in human-readable format and let `babel` to preprocess it.
 
@@ -35,13 +33,13 @@ Example:
 
 ### `babel-plugin-extract-messages`
 
-Status: *done*
+[![npm](https://img.shields.io/npm/v/babel-plugin-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-extract-messages)
 
 Extract all messages for translation to external file.
 
 ### `react-trans`
 
-Status: *in progress*
+[![npm](https://img.shields.io/npm/v/react-trans.svg)](https://www.npmjs.com/package/react-trans)
 
 React bindings for message formating.
 
