@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-react-trans",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React components for translations",
   "main": "lib/index.js",
   "author": {
