@@ -1,10 +1,36 @@
+import fs from 'fs'
+import path from 'path'
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 
 import Usecase from '../index'
 
+const rmdir = (dir) => {
+  const list = fs.readdirSync(dir)
+
+  for(let i = 0; i < list.length; i++) {
+    const filename = path.join(dir, list[i])
+    const stat = fs.statSync(filename)
+
+    if(filename == "." || filename == "..") {
+      // pass these files
+    } else if(stat.isDirectory()) {
+      // rmdir recursively
+      rmdir(filename);
+    } else {
+      // rm fiilename
+      fs.unlinkSync(filename)
+    }
+  }
+  fs.rmdirSync(dir)
+}
+
 
 describe('example-usecase', function() {
+  afterAll(function() {
+    rmdir('./locale')
+  })
+
   const getText = (element, props = {}) => {
     return mount(<Usecase {...props} />).find(element).text()
   }
