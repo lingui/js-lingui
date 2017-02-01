@@ -14,5 +14,4 @@ test:
     - yarn test
     - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
   post:
-    - yarn run semantic-release || true
     - codecov
