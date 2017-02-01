@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from "path"
 import { transformFileSync } from 'babel-core'
 
-import plugin from '../index'
+import plugin from '../src/index'
 
 
 const MESSAGES_DIR = './build'
@@ -63,22 +63,22 @@ describe('babel-plugin-extract-messages', function() {
       "msg.hello": [
         "",
         {
-          "context": ["test/fixtures/all.js:2"]
+          "context": ["../test/fixtures/all.js:2"]
         }
       ],
       "msg.default": [
         "Hello World",
         {
           "context": [
-            "test/fixtures/all.js:3",
-            "test/fixtures/all.js:4"
+            "../test/fixtures/all.js:3",
+            "../test/fixtures/all.js:4"
           ]
         }
       ],
       "Hi, my name is <0>{name}</0>": [
         "",
         {
-          "context": ["test/fixtures/all.js:5"]
+          "context": ["../test/fixtures/all.js:5"]
         }
       ]
     })

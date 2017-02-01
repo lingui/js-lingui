@@ -66,6 +66,8 @@ export default function({ types: t }) {
         messages[key] = [defaults, value]
       })
 
+      if (!fs.existsSync(baseDir)) fs.mkdirSync(baseDir)
+
       fs.writeFileSync(
         fsPath.join(baseDir, `${basename}.json`),
         JSON.stringify(messages, null, 2)

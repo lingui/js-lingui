@@ -12,9 +12,22 @@
 
   "dependencies": {
     "react-trans": "*",
-    "babel-plugin-transform-react-trans": "*"
+    "babel-plugin-transform-react-trans": "*",
+    "babel-plugin-extract-messages": "*"
   },
   "peerDependencies": {
     "react": "15.x"
+  },
+  "babel": {
+    "presets": [
+      "latest",
+      "react"
+    ],
+    "plugins": [
+      "transform-react-trans",
+      ["extract-messages", {
+        "messagesDir": "./locale"
+      }]
+    ]
   }
 }

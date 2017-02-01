@@ -1,9 +1,0 @@
-{
-  "presets": [
-    "latest",
-    "react"
-  ],
-  "plugins": [
-    "transform-react-trans"
-  ]
-}
