@@ -56,7 +56,8 @@ export default function({ types: t }) {
     },
 
     post(file) {
-      const baseDir = this.opts.messagesDir
+      const baseDir = this.opts.localeDir
+      const buildDir = fsPath.join(baseDir, '_build')
       const { basename } = file.opts
       const messages = {}
 
@@ -65,9 +66,10 @@ export default function({ types: t }) {
       })
 
       if (!fs.existsSync(baseDir)) fs.mkdirSync(baseDir)
+      if (!fs.existsSync(buildDir)) fs.mkdirSync(buildDir)
 
       fs.writeFileSync(
-        fsPath.join(baseDir, `${basename}.json`),
+        fsPath.join(buildDir, `${basename}.json`),
         JSON.stringify(messages, null, 2)
       )
     }

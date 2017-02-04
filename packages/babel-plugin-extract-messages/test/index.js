@@ -5,7 +5,7 @@ import { transformFileSync } from 'babel-core'
 import plugin from '../src/index'
 
 
-const MESSAGES_DIR = './build'
+const LOCALE_DIR = './locale'
 
 const rmdir = (dir) => {
     const list = fs.readdirSync(dir)
@@ -25,7 +25,7 @@ const rmdir = (dir) => {
         }
     }
     fs.rmdirSync(dir)
-};
+}
 
 
 function testCase(testName, assertion) {
@@ -35,7 +35,7 @@ function testCase(testName, assertion) {
       'syntax-jsx',
       'transform-remove-strict-mode',
       [plugin, {
-        messagesDir: MESSAGES_DIR
+        localeDir: LOCALE_DIR
       }]
     ]
   })
@@ -45,20 +45,17 @@ function testCase(testName, assertion) {
 
 
 describe('babel-plugin-extract-messages', function() {
-  beforeAll(() => {
-    if (!fs.existsSync(MESSAGES_DIR)) {
-      fs.mkdirSync(MESSAGES_DIR)
-    }
-  })
-
   afterAll(() => {
-    rmdir(MESSAGES_DIR)
+    rmdir(LOCALE_DIR)
   })
 
   testCase('should extract all messages', (transform) => {
+    // first run should create all required folders
+    expect(transform('all.js')).not.toThrow()
+    // another runs should write messages
     expect(transform('all.js')).not.toThrow()
 
-    const messages = JSON.parse(fs.readFileSync(path.join(MESSAGES_DIR, 'all.json')))
+    const messages = JSON.parse(fs.readFileSync(path.join(LOCALE_DIR, '_build/all.json')))
     expect(messages).toEqual({
       "msg.hello": {
         "context": ["../test/fixtures/all.js:2"]
