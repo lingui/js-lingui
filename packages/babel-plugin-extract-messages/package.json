@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-extract-messages",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Extract messages for translation",
   "main": "lib/index.js",
   "author": {
