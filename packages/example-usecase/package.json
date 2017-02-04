@@ -1,6 +1,5 @@
 {
   "private": true,
-
   "name": "example-usecase",
   "description": "Example usecase of all features",
   "main": "index.js",
@@ -9,14 +8,19 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
-
   "dependencies": {
-    "react-trans": "*",
-    "babel-plugin-transform-react-trans": "*",
-    "babel-plugin-extract-messages": "*"
+    "react-trans": "*"
   },
   "peerDependencies": {
     "react": "15.x"
+  },
+  "devDependencies": {
+    "babel-loader": "^6.2.10",
+    "babel-plugin-extract-messages": "*",
+    "babel-plugin-transform-react-trans": "*",
+    "babel-preset-env": "^1.1.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
   "babel": {
     "presets": [
@@ -25,9 +29,12 @@
     ],
     "plugins": [
       "transform-react-trans",
-      ["extract-messages", {
-        "messagesDir": "./locale"
-      }]
+      [
+        "extract-messages",
+        {
+          "messagesDir": "./locale"
+        }
+      ]
     ]
   }
 }
