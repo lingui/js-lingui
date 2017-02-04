@@ -31,10 +31,10 @@ class Trans extends React.Component {
 
   compileMessage(props) {
     const {
-      id, defaults, i18n: { messages, language }
+      id, defaults, i18n: { translate, language }
     } = props
 
-    const translation = messages[id] || defaults || id
+    const translation = translate(id) || defaults || id
 
     return new MessageFormat(language).compile(translation)
   }
