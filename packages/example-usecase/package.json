@@ -32,7 +32,7 @@
       [
         "extract-messages",
         {
-          "messagesDir": "./locale"
+          "localeDir": "./locale"
         }
       ]
     ]
