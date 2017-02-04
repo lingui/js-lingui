@@ -56,7 +56,7 @@ export default function({ types: t }) {
     },
 
     post(file) {
-      const baseDir = this.opts.localeDir
+      const baseDir = this.opts.localeDir || 'locale'
       const buildDir = fsPath.join(baseDir, '_build')
       const { basename } = file.opts
       const messages = {}
