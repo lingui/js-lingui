@@ -61,9 +61,7 @@ export default function({ types: t }) {
       const messages = {}
 
       file.get(MESSAGES).forEach((value, key) => {
-        const { defaults = "" } = value
-        delete value.defaults
-        messages[key] = [defaults, value]
+        messages[key] = value
       })
 
       if (!fs.existsSync(baseDir)) fs.mkdirSync(baseDir)

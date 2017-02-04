@@ -60,27 +60,19 @@ describe('babel-plugin-extract-messages', function() {
 
     const messages = JSON.parse(fs.readFileSync(path.join(MESSAGES_DIR, 'all.json')))
     expect(messages).toEqual({
-      "msg.hello": [
-        "",
-        {
-          "context": ["../test/fixtures/all.js:2"]
-        }
-      ],
-      "msg.default": [
-        "Hello World",
-        {
-          "context": [
-            "../test/fixtures/all.js:3",
-            "../test/fixtures/all.js:4"
-          ]
-        }
-      ],
-      "Hi, my name is <0>{name}</0>": [
-        "",
-        {
-          "context": ["../test/fixtures/all.js:5"]
-        }
-      ]
+      "msg.hello": {
+        "context": ["../test/fixtures/all.js:2"]
+      },
+      "msg.default": {
+        "defaults": "Hello World",
+        "context": [
+          "../test/fixtures/all.js:3",
+          "../test/fixtures/all.js:4"
+        ]
+      },
+      "Hi, my name is <0>{name}</0>": {
+        "context": ["../test/fixtures/all.js:5"]
+      }
     })
   })
 
