@@ -31,10 +31,10 @@ class Trans extends React.Component {
 
   getTranslation(props) {
     const {
-      id, defaults, i18n: { translate, language }
+      id, defaults, i18n: { messages, language }
     } = props
 
-    const translation = translate(id) || defaults || id
+    const translation = messages[id] || defaults || id
     return { language, translation }
   }
 

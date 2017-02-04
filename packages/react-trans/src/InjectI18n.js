@@ -26,19 +26,11 @@ export default (WrappedComponent) => {
       }
     }
 
-    translate = (message) => {
-      const { messages } = this.getI18n()
-      return messages[message]
-    }
-
     render() {
-      const { language } = this.getI18n()
+      const { language, messages } = this.getI18n()
       return <WrappedComponent
         {...this.props}
-        i18n={{
-        language,
-        translate: this.translate
-      }}
+        i18n={{ language, messages }}
       />
     }
   }

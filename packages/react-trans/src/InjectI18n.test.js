@@ -6,6 +6,9 @@ import { InjectI18n } from '.'
 describe('InjectI18n', function() {
   const context = {
     language: 'en',
+    messages: {
+      msg: 'hello'
+    },
     subscribe: jest.fn(),
     unsubscribe: jest.fn()
   }
@@ -49,7 +52,7 @@ describe('InjectI18n', function() {
     const { i18n } = mountHoc().props
     expect(i18n).toBeDefined()
     expect(i18n.language).toBeDefined()
-    expect(i18n.translate).toBeInstanceOf(Function)
+    expect(i18n.messages).toBeDefined()
   })
 
   it('should subscribe a callback on mount', function() {
