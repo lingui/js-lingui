@@ -36,7 +36,7 @@ And following message ID is extracted:
 ```json
 {
   "{count, plural, one {There's one item matching filter} other {There're # items matching filter}} (see <0>all</0>)": {
-    "context": [
+    "origin": [
       ["App.js", 3] 
     ] 
   }
@@ -49,7 +49,7 @@ Finall, all files under `{localeDir}/_build` needs to be merged into final messa
 
 Each item in generated file is in format `[messageId: string]: metadata`, where metadata contains following information:
 
-- `context` - Array of filenames and line numbers from where the message is extracted
+- `origin` - Array of filenames and line numbers from where the message is extracted
 - `defaults` - Default message if custom messageId is used (`<Trans id="msg">Custom message ID</Trans>` becomes `<Trans id="msg" defaults="Custom message ID" />`)
 
 ## Installation

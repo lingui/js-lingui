@@ -12,7 +12,7 @@ function addMessage(path, messages, attrs) {
     if (message.defaults !== attrs.defaults) {
       throw path.buildCodeFrameError("Different defaults for the same message ID.")
     } else {
-      message.context = message.context.concat(attrs.context)
+      [].push.apply(message.origin, attrs.origin)
     }
   } else {
     messages.set(id, attrs)
@@ -40,7 +40,7 @@ export default function({ types: t }) {
 
         const filename = fsPath.relative(__dirname, file.opts.filename)
         const line = node.openingElement.loc.start.line
-        attrs.context = [`${filename}:${line}`]
+        attrs.origin = [[filename, line]]
 
         addMessage(path, messages, attrs)
       }
