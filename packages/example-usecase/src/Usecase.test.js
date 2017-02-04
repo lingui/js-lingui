@@ -3,7 +3,7 @@ import path from 'path'
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 
-import Usecase from '../index'
+import Usecase from './Usecase'
 
 const rmdir = (dir) => {
   const list = fs.readdirSync(dir)
@@ -27,16 +27,23 @@ const rmdir = (dir) => {
 
 
 describe('example-usecase', function() {
+  const messages = {}
+
+  beforeAll(function() {
+    messages.cs = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/cs/messages.json'))
+    messages.fr = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/fr/messages.json'))
+  })
+
   afterAll(function() {
     rmdir('./locale')
   })
 
   const getText = (element, props = {}) => {
-    return mount(<Usecase {...props} />).find(element).text()
+    return mount(<Usecase {...props} language="cs" messages={messages.cs} />).find(element).text()
   }
 
   const getHtml = (element, props = {}) => {
-    return shallow(<Usecase {...props} />).find(element).html()
+    return shallow(<Usecase {...props} language="cs" messages={messages.cs} />).find(element).html()
   }
 
   it('should render', function() {
@@ -48,7 +55,7 @@ describe('example-usecase', function() {
   })
 
   it('should support custom message id', function() {
-    expect(getText('.customId')).toEqual('Label')
+    expect(getText('.customId')).toEqual('Nápis')
   })
 
   it('should render translated string', function() {
@@ -68,5 +75,13 @@ describe('example-usecase', function() {
   it('should support pluralization', function() {
     expect(getText('.plural'))
       .toEqual('Wilma invites Fred and 3 other people to her party.')
+  })
+
+  it('should update translation when language changes', function() {
+    const node = mount(<Usecase messages={messages.cs} />)
+    expect(node.find('.translated').text()).toEqual('Ahoj světe')
+
+    node.setProps({ messages: messages.fr })
+    expect(node.find('.translated').text()).toEqual('Salut le monde!')
   })
 })

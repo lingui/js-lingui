@@ -29,18 +29,25 @@ class Trans extends React.Component {
     }
   }
 
-  compileMessage(props) {
+  getTranslation(props) {
     const {
       id, defaults, i18n: { messages, language }
     } = props
 
     const translation = messages[id] || defaults || id
+    return { language, translation }
+  }
 
+  compileMessage(props) {
+    const { language, translation } = this.getTranslation(props)
     return new MessageFormat(language).compile(translation)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.id !== nextProps.id || this.props.defaults !== nextProps.defaults) {
+    const prev = this.getTranslation(this.props)
+    const next = this.getTranslation(nextProps)
+
+    if (prev.language !== next.language || prev.translation !== next.translation) {
       this.setState({
         msgCache: this.compileMessage(nextProps)
       })
