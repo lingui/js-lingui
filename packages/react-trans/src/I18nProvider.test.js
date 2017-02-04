@@ -2,6 +2,7 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 
 import { I18nProvider } from '.'
+import { I18n } from './I18nProvider'
 
 
 describe('I18nProvider', function() {
@@ -14,8 +15,8 @@ describe('I18nProvider', function() {
 
   it('should provide context with i18n data', function() {
     const component = shallow(<I18nProvider {...props}><div /></I18nProvider>).instance()
-    const { subscribe, unsubscribe, ...context } = component.getChildContext()['i18n']
-    expect(context).toEqual(props)
+    const { subscribe, unsubscribe, props: i18nProps } = component.getChildContext()['i18n']
+    expect(i18nProps).toEqual(props)
     expect(subscribe).toBeInstanceOf(Function)
     expect(unsubscribe).toBeInstanceOf(Function)
   })
@@ -36,31 +37,70 @@ describe('I18nProvider', function() {
     ).find('div').length).toEqual(1)
   })
 
-  it('should subscribe/unsubscribe listeners for context changes', function() {
-    const instance = shallow(<I18nProvider><div /></I18nProvider>).instance()
-    const listener = jest.fn()
-
-    expect(instance.subscribers).toEqual([])
-
-    instance.subscribe(listener)
-    expect(instance.subscribers).toEqual([listener])
-
-    instance.unsubscribe(listener)
-    expect(instance.subscribers).toEqual([])
-  })
-
   it('should notify all subscribers about context change', function() {
     const node = mount(<I18nProvider language="en"><div /></I18nProvider>)
     const instance = node.instance()
     const listener = jest.fn()
 
-    instance.subscribe(listener)
+    instance.i18n.subscribe(listener)
     expect(listener).not.toBeCalled()
 
     node.setProps({ language: 'en' })
     expect(listener).not.toBeCalled()
 
     node.setProps({ language: 'cs' })
+    expect(listener).toBeCalled()
+  })
+})
+
+
+describe('I18n', function() {
+  it('should provide active language and messages', function() {
+    const i18n = new I18n({ language: 'en', messages: { msg: 'hello'}})
+
+    expect(i18n.language).toEqual('en')
+    expect(i18n.messages).toEqual({ msg: 'hello' })
+
+    i18n.update({ language: 'cs' })
+    expect(i18n.language).toEqual('cs')
+    expect(i18n.messages).toEqual({ msg: 'hello' })
+
+    i18n.update({ messages: { msg: 'world' }})
+    expect(i18n.language).toEqual('cs')
+    expect(i18n.messages).toEqual({ msg: 'world'})
+  })
+
+  it('should subscribe/unsubscribe listeners for context changes', function() {
+    const i18n = new I18n()
+    const listener = jest.fn()
+
+    expect(i18n.subscribers).toEqual([])
+
+    i18n.subscribe(listener)
+    expect(i18n.subscribers).toEqual([listener])
+
+    i18n.unsubscribe(listener)
+    expect(i18n.subscribers).toEqual([])
+  })
+
+  it('should notify listeners only when relevant data changes', function() {
+    const listener = jest.fn()
+    const i18n = new I18n()
+    i18n.subscribe(listener)
+
+    expect(listener).not.toBeCalled()
+
+    i18n.update()
+    expect(listener).not.toBeCalled()
+
+    i18n.update({ completelyDifferentProp: 42 })
+    expect(listener).not.toBeCalled()
+
+    i18n.update({ language: 'en' })
+    expect(listener).toBeCalled()
+    listener.mockReset()
+
+    i18n.update({ messages: { msg: 'hello' }})
     expect(listener).toBeCalled()
   })
 })

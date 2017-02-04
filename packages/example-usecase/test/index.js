@@ -48,7 +48,7 @@ describe('example-usecase', function() {
   })
 
   it('should support custom message id', function() {
-    expect(getText('.customId')).toEqual('Label')
+    expect(getText('.customId')).toEqual('Nápis')
   })
 
   it('should render translated string', function() {
@@ -68,5 +68,13 @@ describe('example-usecase', function() {
   it('should support pluralization', function() {
     expect(getText('.plural'))
       .toEqual('Wilma invites Fred and 3 other people to her party.')
+  })
+
+  it('should update translation when language changes', function() {
+    const node = mount(<Usecase />)
+    expect(node.find('.translated').text()).toEqual('Ahoj světe')
+
+    node.setState({ language: 'fr' })
+    expect(node.find('.translated').text()).toEqual('Salut le monde!')
   })
 })
