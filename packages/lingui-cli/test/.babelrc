@@ -1,0 +1,15 @@
+{
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    "transform-react-trans",
+    [
+      "extract-messages",
+      {
+        "localeDir": "./locale"
+      }
+    ]
+  ]
+}
