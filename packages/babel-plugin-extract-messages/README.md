@@ -1,4 +1,4 @@
-# babel-plugin-extract/messages
+# babel-plugin-extract-messages
 
 > This plugin collects message ids from `Trans` components
 
@@ -83,7 +83,7 @@ babel --plugins extract-messages script.js
 ```js
 require("babel-core").transform("code", {
   plugins: ["extract-messages"]
-});
+})
 ```
 
 ### Options
