@@ -39,9 +39,9 @@ See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or [example-u
 Tools
 -----
 
-### `babel-plugin-transform-react-trans`
+### `babel-plugin-lingui-transform-react`
 
-[![npm](https://img.shields.io/npm/v/babel-plugin-transform-react-trans.svg)](https://www.npmjs.com/package/babel-plugin-transform-react-trans)
+[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-react.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-react)
 
 Write multilingual messages in human-readable format and let `babel` to preprocess it.
 
@@ -62,15 +62,15 @@ Example:
 /* (truncated) <Trans id="{count, plural, zero {...} one {...} many {...}}" params={{count}} /> */
 ```
 
-### [`babel-plugin-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-extract-messages)
+### [`babel-plugin-lingui-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages)
 
-[![npm](https://img.shields.io/npm/v/babel-plugin-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-extract-messages)
+[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-lingui-extract-messages)
 
 Extract all messages for translation to external file.
 
-### `react-trans`
+### `lingui-react`
 
-[![npm](https://img.shields.io/npm/v/react-trans.svg)](https://www.npmjs.com/package/react-trans)
+[![npm](https://img.shields.io/npm/v/lingui-react.svg)](https://www.npmjs.com/package/lingui-react)
 
 React bindings for message formating.
 

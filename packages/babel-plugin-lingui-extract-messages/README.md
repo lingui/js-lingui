@@ -1,10 +1,10 @@
-# babel-plugin-extract-messages
+# babel-plugin-lingui-extract-messages
 
 > This plugin collects message ids from `Trans` components
 
 ## Detail
 
-`babel-plugin-transform-react-trans` converts children of `Trans` component to ICU message format which serves as a message ID. The message IDs are used in message catalogue and translations are assigned to it.
+`babel-plugin-lingui-transform-react` converts children of `Trans` component to ICU message format which serves as a message ID. The message IDs are used in message catalogue and translations are assigned to it.
 
 For example following message:
 
@@ -55,9 +55,9 @@ Each item in generated file is in format `[messageId: string]: metadata`, where 
 ## Installation
 
 ```sh
-npm install --save-dev babel-plugin-extract-messages
+npm install --save-dev babel-plugin-lingui-extract-messages
 # or
-yarn add --dev babel-plugin-extract-messages
+yarn add --dev babel-plugin-lingui-extract-messages
 ```
 
 ## Usage
@@ -68,21 +68,21 @@ yarn add --dev babel-plugin-extract-messages
 
 ```json
 {
-  "plugins": ["extract-messages"]
+  "plugins": ["lingui-extract-messages"]
 }
 ```
 
 ### Via CLI
 
 ```sh
-babel --plugins extract-messages script.js
+babel --plugins lingui-extract-messages script.js
 ```
 
 ### Via Node API
 
 ```js
 require("babel-core").transform("code", {
-  plugins: ["extract-messages"]
+  plugins: ["lingui-extract-messages"]
 })
 ```
 
@@ -98,7 +98,7 @@ file per each processed file.
 ```json
 {
   "plugins": [
-    ["extract-messages", {
+    ["lingui-extract-messages", {
       "localeDir": "./locale"
     }]
   ]

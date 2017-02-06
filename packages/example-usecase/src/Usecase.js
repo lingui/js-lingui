@@ -1,5 +1,5 @@
 import React from 'react'
-import { Trans, I18nProvider } from 'react-trans'
+import { Trans, I18nProvider } from 'lingui-react'
 
 class NeverUpdate extends React.Component {
   shouldComponentUpdate() {

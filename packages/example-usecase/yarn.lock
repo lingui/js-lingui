@@ -273,9 +273,13 @@ babel-plugin-check-es2015-constants@^6.3.13:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-extract-messages@*:
+babel-plugin-lingui-extract-messages@*:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-0.2.0.tgz#f71ef91c846854b8c3fa70e2c3204e9e3d8574a2"
+
+babel-plugin-lingui-transform-react@*:
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-extract-messages/-/babel-plugin-extract-messages-0.1.0.tgz#8464cad2a60c644123a86017917b2acdf052c798"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-0.1.0.tgz#4affe2f8038ddd67e3043279ab5edb7a702d6c22"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
@@ -472,10 +476,6 @@ babel-plugin-transform-exponentiation-operator@^6.8.0:
     babel-helper-builder-binary-assignment-operator-visitor "^6.22.0"
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
-
-babel-plugin-transform-react-trans@*:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-trans/-/babel-plugin-transform-react-trans-0.1.0.tgz#cf3f5584878de2e9c562ee2847c1dcad71b8f483"
 
 babel-plugin-transform-regenerator@^6.6.0:
   version "6.22.0"
@@ -723,8 +723,8 @@ camelcase@^3.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
 caniuse-db@^1.0.30000617:
-  version "1.0.30000619"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000619.tgz#bffaa8150637c3182d3914a9718369b079299529"
+  version "1.0.30000621"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000621.tgz#be8726af1a39315618a0f364998cf9c9a0431177"
 
 caseless@~0.11.0:
   version "0.11.0"
@@ -925,7 +925,13 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
-debug@^2.2.0, debug@~2.2.0:
+debug@^2.2.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.0.tgz#bc596bcabe7617f11d9fa15361eded5608b8499b"
+  dependencies:
+    ms "0.7.2"
+
+debug@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
   dependencies:
@@ -1631,6 +1637,13 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+lingui-react@*:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-0.2.0.tgz#c8c0ce2033696f131631e61570acb8780745647e"
+  dependencies:
+    messageformat "^1.0.2"
+    messageformat-parser "^1.0.0"
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -2022,8 +2035,8 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
 private@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/private/-/private-0.1.6.tgz#55c6a976d0f9bafb9924851350fe47b9b5fbb7c1"
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
@@ -2105,13 +2118,6 @@ rc@~1.1.6:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
-
-react-trans@*:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-trans/-/react-trans-0.1.0.tgz#1c02c81d8c29e5394a75f81bbca6a047ab7aa833"
-  dependencies:
-    messageformat "^1.0.2"
-    messageformat-parser "^1.0.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"

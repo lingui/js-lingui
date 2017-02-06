@@ -9,15 +9,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "react-trans": "*"
+    "lingui-react": "*"
   },
   "peerDependencies": {
     "react": "15.x"
   },
   "devDependencies": {
     "babel-loader": "^6.2.10",
-    "babel-plugin-extract-messages": "*",
-    "babel-plugin-transform-react-trans": "*",
+    "babel-plugin-lingui-extract-messages": "*",
+    "babel-plugin-lingui-transform-react": "*",
     "babel-preset-env": "^1.1.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
@@ -28,9 +28,9 @@
       "react"
     ],
     "plugins": [
-      "transform-react-trans",
+      "lingui-transform-react",
       [
-        "extract-messages",
+        "lingui-extract-messages",
         {
           "localeDir": "./locale"
         }
