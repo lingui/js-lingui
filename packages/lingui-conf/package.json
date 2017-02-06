@@ -1,0 +1,48 @@
+{
+  "name": "lingui-conf",
+  "version": "0.1.0",
+  "description": "Get lingui configuration from package.json",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui/"
+  },
+  "keywords": [
+    "lingui",
+    "config",
+    "package"
+  ],
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          },
+          "useBuiltIns": true
+        }
+      ]
+    ],
+    "comments": false
+  },
+  "dependencies": {
+    "pkg-conf": "^2.0.0"
+  }
+}
