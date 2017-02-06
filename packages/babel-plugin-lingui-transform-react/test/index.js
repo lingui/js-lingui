@@ -10,7 +10,7 @@ function getTestName(testPath) {
 }
 
 
-describe('babel-plugin-transform-react-trans', function() {
+describe('babel-plugin-lingui-transform-react', function() {
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
     const actualPath = path.join(testPath, 'actual.js')

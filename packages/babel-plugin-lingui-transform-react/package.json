@@ -1,0 +1,39 @@
+{
+  "name": "babel-plugin-lingui-transform-react",
+  "version": "0.1.0",
+  "description": "Transform React components to ICU message format",
+  "main": "lib/index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          },
+          "useBuiltIns": true
+        }
+      ]
+    ],
+    "comments": false
+  }
+}

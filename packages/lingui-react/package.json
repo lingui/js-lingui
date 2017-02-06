@@ -1,6 +1,6 @@
 {
-  "name": "babel-plugin-transform-react-trans",
-  "version": "0.1.0",
+  "name": "lingui-react",
+  "version": "0.2.0",
   "description": "React components for translations",
   "main": "lib/index.js",
   "author": {
@@ -9,8 +9,16 @@
   },
   "license": "MIT",
   "keywords": [
-    "babel-plugin"
+    "react",
+    "component"
   ],
+  "peerDependencies": {
+    "react": "15.x"
+  },
+  "dependencies": {
+    "messageformat": "^1.0.2",
+    "messageformat-parser": "^1.0.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-polyfill": "^6.22.0",
@@ -19,21 +27,7 @@
   },
   "scripts": {
     "clean": "rimraf lib/",
-    "build": "babel src/ --out-dir lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
     "prepublish": "npm run clean && npm run build"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          },
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "comments": false
   }
 }

@@ -44,7 +44,7 @@ function testCase(testName, assertion) {
 }
 
 
-describe('babel-plugin-extract-messages', function() {
+describe('babel-plugin-lingui-extract-messages', function() {
   afterAll(() => {
     rmdir(LOCALE_DIR)
   })
