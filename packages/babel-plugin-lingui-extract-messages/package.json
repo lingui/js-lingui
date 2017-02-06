@@ -41,5 +41,8 @@
       ]
     ],
     "comments": false
+  },
+  "dependencies": {
+    "pkg-conf": "^2.0.0"
   }
 }
