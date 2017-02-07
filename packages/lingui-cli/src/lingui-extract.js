@@ -9,7 +9,7 @@ const getConfig = require('lingui-conf').default
 
 const config = getConfig()
 
-function processFiles(files) {
+function extractMessages(files) {
   files.forEach(file => {
     if (!fs.existsSync(file)) return
 
@@ -17,18 +17,18 @@ function processFiles(files) {
       const ignored = config.srcPathIgnorePatterns.filter(pattern => (new RegExp(pattern)).test(file))
       if (ignored.length) return
 
-      processFiles(
+      extractMessages(
         fs.readdirSync(file).map(filename => path.join(file, filename))
       )
     } else {
-      if(!/\.jsx?$/i.test(file)) return
+      if (!/\.jsx?$/i.test(file)) return
       transformFileSync(file)
       console.log(chalk.green(file))
     }
   })
 }
 
-function readMessagesDirectory(dir) {
+function collectMessages(dir) {
   const catalog = {}
 
   fs.readdirSync(dir)
@@ -36,7 +36,7 @@ function readMessagesDirectory(dir) {
     .forEach(filename => {
       let messages = {}
       if (fs.lstatSync(filename).isDirectory()) {
-        messages = readMessagesDirectory(filename)
+        messages = collectMessages(filename)
       } else {
         messages = JSON.parse(fs.readFileSync(filename))
       }
@@ -46,52 +46,53 @@ function readMessagesDirectory(dir) {
   return catalog
 }
 
-function generateMessageCatalog(localeDir) {
+function writeCatalogs(localeDir) {
   const buildDir = path.join(localeDir, '_build')
-  const catalog = readMessagesDirectory(buildDir)
+  const catalog = collectMessages(buildDir)
 
   const languages = fs.readdirSync(localeDir).filter(dirname =>
     /^([a-z-]+)$/i.test(dirname) &&
     fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
   )
 
-  languages.forEach(language =>
-    writeLanguageFile(
-      language,
-      catalog,
-      localeDir
-    )
+  languages.forEach(
+    language => JSONWriter(catalog, path.join(localeDir, language))
   )
 }
 
-function JSONWriter(messages) {
+function JSONWriter(messages, languageDir) {
+  let newFile = true
+
   const catalog = {}
   Object.keys(messages).forEach(key => catalog[key] = '')
 
-  return {
-    catalog: JSON.stringify(catalog, null, 2),
-    filename: 'messages.json'
+  const catalogFilename = path.join(languageDir, 'messages.json')
+
+  if (fs.existsSync(catalogFilename)) {
+    const original = JSON.parse(fs.readFileSync(catalogFilename))
+    Object.assign(catalog, original)
+    newFile = false
   }
-}
 
-function writeLanguageFile(language, messages, localeDir) {
-  const { catalog, filename } = JSONWriter(messages)
+  const content = JSON.stringify(catalog, null, 2)
+  fs.writeFileSync(catalogFilename, content)
 
-  const messageFile = path.join(localeDir, language, filename)
-  fs.writeFileSync(messageFile, catalog)
-
-  console.log(chalk.green(messageFile))
+  if (newFile) {
+    console.log(chalk.green(`Merging ${catalogFilename}`))
+  } else {
+    console.log(chalk.yellow(`Merging ${catalogFilename}`))
+  }
 }
 
 
 program.parse(process.argv)
 
 console.log(emojify(':mag:  Extracting messages from source files:'))
-processFiles(program.args.length ? program.args : config.srcPathDirs)
+extractMessages(program.args.length ? program.args : config.srcPathDirs)
 console.log()
 
-console.log(emojify(':book:  Generating message catalogues:'))
-generateMessageCatalog(config.localeDir)
+console.log(emojify(':book:  Writing message catalogues:'))
+writeCatalogs(config.localeDir)
 console.log()
 
 console.log(emojify(':sparkles:  Done!'))
