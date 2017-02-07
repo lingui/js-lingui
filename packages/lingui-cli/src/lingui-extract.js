@@ -82,7 +82,7 @@ function JSONWriter(messages, languageDir) {
   if (newFile) {
     console.log(chalk.green(`Merging ${catalogFilename}`))
   } else {
-    console.log(chalk.yellow(`Merging ${catalogFilename}`))
+    console.log(chalk.yellow(`Writing ${catalogFilename}`))
   }
 
   return getStats(catalog)
