@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "babel-plugin-lingui-extract-messages": "*",
     "babel-plugin-lingui-transform-react": "*",
@@ -16,8 +16,8 @@
     "babel-preset-env": "^1.1.8",
     "rimraf": "^2.5.4"
   },
-  "bin" : {
-    "lingui" : "./lib/lingui.js"
+  "bin": {
+    "lingui": "./lib/lingui.js"
   },
   "scripts": {
     "clean": "rimraf lib/",
