@@ -7,6 +7,17 @@ lingui-conf
 
 Package finds nearest package.json starting from current directory, reads `lingui` configuration, provides defaults for all options and `<rootDir>` with current working directory.
 
+## Usage
+
+```js
+const getConfig = require('lingui-conf')
+
+const config = getConfig()
+// When package.json is located in '/app/package.json'
+// config.rootDir === '/app'
+// config.localeDir === '/app/locale'
+```
+
 ## Options
 
 ### `localeDir` [string]

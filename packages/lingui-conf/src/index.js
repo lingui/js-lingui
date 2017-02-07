@@ -17,6 +17,7 @@ function replaceRootDir(conf, rootDir) {
       }
     })
 
+  conf.rootDir = rootDir
   return conf
 }
 
