@@ -46,7 +46,13 @@ function testCase(testName, assertion) {
 
 
 describe('babel-plugin-lingui-extract-messages', function () {
-  const buildDir = path.join(LOCALE_DIR, '_build', 'test', 'fixtures')
+  // CWD is root directory of repository, so origin of all messages is going to
+  // relative to root
+  const buildDir = path.join(
+    LOCALE_DIR,
+    '_build', 'packages', 'babel-plugin-lingui-extract-messages',
+    'test', 'fixtures'
+  )
 
   beforeAll(() => {
     rmdir(LOCALE_DIR)
@@ -71,28 +77,28 @@ describe('babel-plugin-lingui-extract-messages', function () {
   })
 
   testCase('should extract all messages', (transform) => {
-    // first run should create all required folders
+    // first run should create all required folders and write messages
     expect(transform('all.js')).not.toThrow()
-    // another runs should write messages
+    // another runs should just write messages
     expect(transform('all.js')).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'all.json')))
     expect(messages).toEqual({
       "msg.hello": {
         "origin": [
-          ["test/fixtures/all.js", 2]
+          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 2]
         ]
       },
       "msg.default": {
         "defaults": "Hello World",
         "origin": [
-          ["test/fixtures/all.js", 3],
-          ["test/fixtures/all.js", 4]
+          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 3],
+          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 4]
         ]
       },
       "Hi, my name is <0>{name}</0>": {
         "origin": [
-          ["test/fixtures/all.js", 5]
+          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 5]
         ]
       }
     })

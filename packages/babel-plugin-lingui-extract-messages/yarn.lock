@@ -1130,6 +1130,12 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.0.2"
 
+lingui-conf@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.2.0.tgz#2aa04409ccd40682439ea6faf87fc8dd13642f3c"
+  dependencies:
+    pkg-conf "^2.0.0"
+
 load-json-file@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-2.0.0.tgz#7947e42149af80d696cbf797bcaabcfe1fe29ca8"

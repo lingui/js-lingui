@@ -17,6 +17,9 @@
     "i9n",
     "translation"
   ],
+  "dependencies": {
+    "lingui-conf": "^0.2.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-polyfill": "^6.22.0",
@@ -41,8 +44,5 @@
       ]
     ],
     "comments": false
-  },
-  "dependencies": {
-    "pkg-conf": "^2.0.0"
   }
 }
