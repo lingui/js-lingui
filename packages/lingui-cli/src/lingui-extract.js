@@ -5,13 +5,17 @@ const chalk = require('chalk')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
+const getConfig = require('lingui-conf').default
+
+const config = getConfig()
 
 function processFiles(files) {
   files.forEach(file => {
     if (!fs.existsSync(file)) return
 
     if (fs.lstatSync(file).isDirectory()) {
-      if(/node_modules/i.test(file)) return
+      const ignored = config.srcPathIgnorePatterns.filter(pattern => (new RegExp(pattern)).test(file))
+      if (ignored.length) return
 
       processFiles(
         fs.readdirSync(file).map(filename => path.join(file, filename))
@@ -24,17 +28,27 @@ function processFiles(files) {
   })
 }
 
-function generateMessageCatalog(localeDir) {
-  const messages = {}
+function readMessagesDirectory(dir) {
+  const catalog = {}
 
-  const buildDir = path.join(localeDir, '_build')
-
-  fs.readdirSync(buildDir)
-    .map(filename => path.join(buildDir, filename))
+  fs.readdirSync(dir)
+    .map(filename => path.join(dir, filename))
     .forEach(filename => {
-      const file = JSON.parse(fs.readFileSync(filename))
-      Object.assign(messages, file)
+      let messages = {}
+      if (fs.lstatSync(filename).isDirectory()) {
+        messages = readMessagesDirectory(filename)
+      } else {
+        messages = JSON.parse(fs.readFileSync(filename))
+      }
+      Object.assign(catalog, messages)
     })
+
+  return catalog
+}
+
+function generateMessageCatalog(localeDir) {
+  const buildDir = path.join(localeDir, '_build')
+  const catalog = readMessagesDirectory(buildDir)
 
   const languages = fs.readdirSync(localeDir).filter(dirname =>
     /^([a-z-]+)$/i.test(dirname) &&
@@ -44,7 +58,7 @@ function generateMessageCatalog(localeDir) {
   languages.forEach(language =>
     writeLanguageFile(
       language,
-      messages,
+      catalog,
       localeDir
     )
   )
@@ -73,11 +87,11 @@ function writeLanguageFile(language, messages, localeDir) {
 program.parse(process.argv)
 
 console.log(emojify(':mag:  Extracting messages from source files:'))
-processFiles(program.args.length ? program.args : ['.'])
+processFiles(program.args.length ? program.args : config.srcPathDirs)
 console.log()
 
 console.log(emojify(':book:  Generating message catalogues:'))
-generateMessageCatalog('locale')
+generateMessageCatalog(config.localeDir)
 console.log()
 
 console.log(emojify(':sparkles:  Done!'))
