@@ -1,0 +1,10 @@
+{
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    "lingui-transform-react",
+    "lingui-extract-messages"
+  ]
+}

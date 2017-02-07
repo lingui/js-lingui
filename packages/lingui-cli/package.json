@@ -1,0 +1,41 @@
+{
+  "name": "lingui-cli",
+  "version": "0.0.0",
+  "dependencies": {
+    "babel-plugin-lingui-extract-messages": "*",
+    "babel-plugin-lingui-transform-react": "*",
+    "chalk": "^1.1.3",
+    "cli-table": "^0.3.1",
+    "commander": "^2.9.0",
+    "lingui-conf": "*",
+    "node-emoji": "^1.5.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "bin" : {
+    "lingui" : "./lib/lingui.js"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          },
+          "useBuiltIn": true
+        }
+      ]
+    ],
+    "comments": false
+  }
+}

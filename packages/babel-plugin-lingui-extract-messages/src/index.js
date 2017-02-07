@@ -1,7 +1,7 @@
 import fs from 'fs'
 import fsPath from 'path'
 import mkdirp from 'mkdirp'
-import pkgConf from 'pkg-conf'
+import getConfig from 'lingui-conf'
 
 const MESSAGES  = Symbol('I18nMessages')
 
@@ -22,14 +22,8 @@ function addMessage(path, messages, attrs) {
 }
 
 export default function({ types: t }) {
-  const opts = pkgConf.sync('lingui', {
-    cwd: __dirname,
-    skipOnFalse: true,
-    defaults: {
-      localeDir: './locale'
-    }
-  })
-  const optsBaseDir = fsPath.dirname(pkgConf.filepath(opts))
+  const opts = getConfig()
+  const optsBaseDir = opts.rootDir
 
   function isTransComponent(node) {
     return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name: 'Trans' })
