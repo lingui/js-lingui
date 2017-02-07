@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
+const Table = require('cli-table')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
@@ -55,9 +56,10 @@ function writeCatalogs(localeDir) {
     fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
   )
 
-  languages.forEach(
+  const stats =  languages.map(
     language => JSONWriter(catalog, path.join(localeDir, language))
   )
+  return { languages, stats}
 }
 
 function JSONWriter(messages, languageDir) {
@@ -82,6 +84,33 @@ function JSONWriter(messages, languageDir) {
   } else {
     console.log(chalk.yellow(`Merging ${catalogFilename}`))
   }
+
+  return getStats(catalog)
+}
+
+function getStats(catalog) {
+  return [
+    Object.keys(catalog).length,
+    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg).length
+  ]
+}
+
+function displayStats(languages, stats) {
+  const table = new Table({
+    head: ['Language', 'Total count', 'Missing'],
+    colAligns: ['left', 'middle', 'middle'],
+    style: {
+      head: ['green'],
+      border: [],
+      compact: true
+    }
+  })
+
+  languages.forEach(
+    (language, index) => table.push({[language]: stats[index]})
+  )
+
+  console.log(table.toString())
 }
 
 
@@ -92,7 +121,11 @@ extractMessages(program.args.length ? program.args : config.srcPathDirs)
 console.log()
 
 console.log(emojify(':book:  Writing message catalogues:'))
-writeCatalogs(config.localeDir)
+const { languages, stats} = writeCatalogs(config.localeDir)
+console.log()
+
+console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
+displayStats(languages, stats)
 console.log()
 
 console.log(emojify(':sparkles:  Done!'))
