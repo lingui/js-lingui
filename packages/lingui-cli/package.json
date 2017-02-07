@@ -9,5 +9,8 @@
     "commander": "^2.9.0",
     "lingui-conf": "*",
     "node-emoji": "^1.5.1"
+  },
+  "bin" : {
+    "lingui" : "./bin/lingui.js"
   }
 }
