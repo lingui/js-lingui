@@ -1,33 +1,57 @@
-describe('t template tag', function () {
-  it('should replace variables with placeholders', function () {
-    const t = require('./t').default
-    const i18n = {
-      translate: jest.fn((msg, params) => ({ msg, params }))
-    }
+import t from './t'
 
-    const name = 'World'
-    const end = 'End'
+describe('.t', function () {
+  describe('as a function', function() {
+    it('should pass message and params to i18n.translate', function() {
+      const i18n = {
+        translate: jest.fn((msg, params) => ({ msg, params }))
+      }
 
-    expect(t(i18n)`Text only`).toEqual({ msg: "Text only", params: {} })
+      expect(t(i18n)('Message')).toEqual({
+        msg: 'Message',
+        params: {}
+      })
 
-    // positional arguments
-    expect(t(i18n)`${name} middle ${end}`).toEqual({
-      msg: "{0} middle {1}",
-      params: { 0: name, 1: end }
+      const name = 'Fred'
+      expect(t(i18n)('Hello {name}', { name })).toEqual({
+        msg: 'Hello {name}',
+        params: {
+          name: 'Fred'
+        }
+      })
+
     })
-    expect(t(i18n)`${name} end`).toEqual({
-      msg: "{0} end",
-      params: { 0: name }
-    })
-    expect(t(i18n)`beginning ${name}`).toEqual({
-      msg: "beginning {0}",
-      params: { 0: name }
-    })
+  })
+  describe('as a template tag', function() {
+    it('should replace variables with placeholders', function () {
+      const i18n = {
+        translate: jest.fn((msg, params) => ({ msg, params }))
+      }
 
-    // named arguments
-    expect(t(i18n)`Hello ${{ name }}!`).toEqual({
-      msg: "Hello {name}!",
-      params: { name }
+      const name = 'World'
+      const end = 'End'
+
+      expect(t(i18n)`Text only`).toEqual({ msg: "Text only", params: {} })
+
+      // positional arguments
+      expect(t(i18n)`${name} middle ${end}`).toEqual({
+        msg: "{0} middle {1}",
+        params: { 0: name, 1: end }
+      })
+      expect(t(i18n)`${name} end`).toEqual({
+        msg: "{0} end",
+        params: { 0: name }
+      })
+      expect(t(i18n)`beginning ${name}`).toEqual({
+        msg: "beginning {0}",
+        params: { 0: name }
+      })
+
+      // named arguments
+      expect(t(i18n)`Hello ${{ name }}!`).toEqual({
+        msg: "Hello {name}!",
+        params: { name }
+      })
     })
   })
 })

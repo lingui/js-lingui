@@ -1,3 +1,6 @@
+/* @flow */
+import type { I18n } from './i18n'
+
 const flatten = arrays => [].concat.apply([], arrays)
 const zip = (a, b) => a.map((item, index) => [item, b[index]])
 
@@ -9,7 +12,15 @@ const variableName = (variable, index) => {
   }
 }
 
-const t = (i18n) => (strings, ...values) => {
+const t = (i18n: I18n) => (strings: string | Array<string>, ...values) => {
+  // used as a function
+  if (typeof strings === 'string') {
+    const message = strings
+    const params = values[0] || {}
+    return i18n.translate(message, params)
+  }
+
+  // used as a template tag
   const params = values.reduce((acc, variable, index) => {
     Object.assign(acc, variableName(variable, index))
     return acc
