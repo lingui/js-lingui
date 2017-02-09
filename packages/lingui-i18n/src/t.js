@@ -5,17 +5,12 @@ import { annotateVariable } from './variables'
 const flatten = arrays => [].concat.apply([], arrays)
 const zip = (a, b) => a.map((item, index) => [item, b[index]])
 
-const t = (i18n: I18n) => (strings: string | Array<string>, ...values) => {
+const t = (strings: string | Array<string>, ...values) => {
   // used as a function
   if (typeof strings === 'string') {
     const message = strings
     const params = values[0] || {}
-    return {
-      message, params,
-      toString() {
-        return i18n.translate(message, params)
-      }
-    }
+    return { message, params, }
   }
 
   // used as a template tag
@@ -26,12 +21,7 @@ const t = (i18n: I18n) => (strings: string | Array<string>, ...values) => {
 
   const keys = Object.keys(params).map((key) => `{${key}}`)
   const message = flatten(zip(strings, keys)).join('')
-  return {
-    message, params,
-    toString() {
-      return i18n.translate(message, params)
-    }
-  }
+  return { message, params }
 }
 
 export default t

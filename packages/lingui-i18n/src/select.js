@@ -23,7 +23,7 @@ const plural = ({
 }: PluralProps) => {
   const variable = variableName(value)
   const params = {
-    [variable]: value
+    [variable]: value[variable]
   }
 
   const forms = Object.keys(pluralForms).map(key => {
@@ -45,14 +45,8 @@ const plural = ({
     forms.unshift(`offset:${offset}`)
   }
 
-  const message = `{${variable}, plural, ${forms.join(" ")}`
-
-  return {
-    message, params,
-    toString() {
-      return message
-    }
-  }
+  const message = `{${variable}, plural, ${forms.join(" ")}}`
+  return { message, params, }
 }
 
 
@@ -63,13 +57,17 @@ type SelectProps = {
 const select = ({
   value,
   ...selectForms
-}: SelectProps) => ({
-  toString() {
-    const forms = Object.keys(selectForms)
-      .map(key => `${key} {${selectForms[key].toString()}}`)
-
-    return `{${variableName(value)}, select, ${forms.join(" ")}`
+}: SelectProps) => {
+  const variable = variableName(value)
+  const params = {
+    [variable]: value[variable]
   }
-})
+
+  const forms = Object.keys(selectForms)
+    .map(key => `${key} {${selectForms[key].toString()}}`)
+
+  const message = `{${variable}, select, ${forms.join(" ")}}`
+  return { message, params }
+}
 
 export { plural, select }

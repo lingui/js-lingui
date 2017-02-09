@@ -1,5 +1,4 @@
-import { I18n,  default as exportedI18n } from './i18n'
-import { select, plural } from './select'
+import { I18n,  default as exportedI18n, t, select, plural } from '.'
 
 describe('I18n', function() {
   it('should export default I18n instance', function() {
@@ -19,12 +18,12 @@ describe('I18n', function() {
       "Hello {name}": "Salut {name}"
     })
 
-    expect(i18n.t`Message`.toString()).toEqual('Message')
-    expect(i18n.t('Message').toString()).toEqual('Message')
+    expect(i18n.t`Message`).toEqual('Message')
+    expect(i18n.t('Message')).toEqual('Message')
 
     const name = 'Fred'
-    expect(i18n.t`Hello ${{name}}`.toString()).toEqual('Salut Fred')
-    expect(i18n.t('Hello {name}', { name }).toString()).toEqual('Salut Fred')
+    expect(i18n.t`Hello ${{name}}`).toEqual('Salut Fred')
+    expect(i18n.t('Hello {name}', { name })).toEqual('Salut Fred')
   })
 
   it('.use should load messages and set active language', function() {
@@ -86,8 +85,11 @@ describe('nesting of messages', function() {
     const personName = 'Fred'
     const msg = plural({
       value: { value: 1 },
-      0: i18n.t`${{personName}} has # book`
+      0: t`${{personName}} has # book`
     })
-    expect(msg.toString()).toEqual("{value, plural, =0 {{personName} has # book}")
+    expect(msg).toEqual({
+      message: "{value, plural, =0 {{personName} has # book}}",
+      params: { personName , value: 1}
+    })
   })
 })
