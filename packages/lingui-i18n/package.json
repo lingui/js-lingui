@@ -1,3 +1,6 @@
 {
-  "name": "lingui-i18n"
+  "name": "lingui-i18n",
+  "dependencies": {
+    "messageformat": "^1.0.2"
+  }
 }
