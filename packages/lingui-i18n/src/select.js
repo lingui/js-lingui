@@ -20,20 +20,40 @@ const plural = ({
   value,
   offset,
   ...pluralForms
-}: PluralProps) => ({
-  toString() {
-    const forms = Object.keys(pluralForms).map(key => {
-        const formKey = /^\d+$/.test(key) ? `=${key}` : key
-        return `${formKey} {${pluralForms[key].toString()}}`
-      })
+}: PluralProps) => {
+  const variable = variableName(value)
+  const params = {
+    [variable]: value
+  }
 
-    if (offset) {
-      forms.unshift(`offset:${offset}`)
+  const forms = Object.keys(pluralForms).map(key => {
+    const formKey = /^\d+$/.test(key) ? `=${key}` : key
+    const form = pluralForms[key]
+
+    let message
+    if (typeof form === 'object') {
+      message = form.message
+      Object.assign(params, form.params)
+    } else {
+      message = form
     }
 
-    return `{${variableName(value)}, plural, ${forms.join(" ")}`
+    return `${formKey} {${message}}`
+  })
+
+  if (offset) {
+    forms.unshift(`offset:${offset}`)
   }
-})
+
+  const message = `{${variable}, plural, ${forms.join(" ")}`
+
+  return {
+    message, params,
+    toString() {
+      return message
+    }
+  }
+}
 
 
 type SelectProps = {
