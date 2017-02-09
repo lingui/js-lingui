@@ -2584,7 +2584,7 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-lerna-semantic-release-analyze-commits@^4.0.0:
+lerna-semantic-release-analyze-commits@^4.0.0, lerna-semantic-release-analyze-commits@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lerna-semantic-release-analyze-commits/-/lerna-semantic-release-analyze-commits-4.2.0.tgz#1605b23ddc5f2e1f0967fe1888e42e27fc60f704"
   dependencies:
@@ -2637,14 +2637,13 @@ lerna-semantic-release-perform@^4.0.15:
     lerna-semantic-release-io "^7.0.0"
     lerna-semantic-release-utils "^4.0.0"
 
-lerna-semantic-release-post@^5.0.15:
-  version "5.0.15"
-  resolved "https://registry.yarnpkg.com/lerna-semantic-release-post/-/lerna-semantic-release-post-5.0.15.tgz#6f27b1af51cbfdeae22b8496dfedd194bef363cc"
+lerna-semantic-release-post@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/lerna-semantic-release-post/-/lerna-semantic-release-post-6.0.0.tgz#aa4743722d9045bbc0501791005630b222c88c3b"
   dependencies:
-    async "~2.0.1"
     conventional-changelog "~1.1.0"
     dateformat "~1.0.0"
-    lerna-semantic-release-analyze-commits "^4.0.0"
+    lerna-semantic-release-analyze-commits "^4.2.0"
     lerna-semantic-release-io "^7.0.2"
     lerna-semantic-release-utils "^4.0.0"
 
@@ -2667,16 +2666,17 @@ lerna-semantic-release-utils@^4.0.0:
     shelljs "^0.7.0"
     winston "^2.2.0"
 
-lerna-semantic-release@^9.0.4:
-  version "9.0.5"
-  resolved "https://registry.yarnpkg.com/lerna-semantic-release/-/lerna-semantic-release-9.0.5.tgz#7fed00ab4354707fe1afaf32533ab77952cea0f5"
+lerna-semantic-release@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/lerna-semantic-release/-/lerna-semantic-release-9.0.6.tgz#e200cd00762c44bc6d7d721ee8a0d5d6ac14da9f"
   dependencies:
     lerna-semantic-release-io "^7.0.0"
     lerna-semantic-release-perform "^4.0.15"
-    lerna-semantic-release-post "^5.0.15"
+    lerna-semantic-release-post "^6.0.0"
     lerna-semantic-release-pre "^4.1.1"
+    lerna-semantic-release-utils "^4.0.0"
 
-lerna@^2.0.0-beta.37:
+lerna@2.0.0-beta.37:
   version "2.0.0-beta.37"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-2.0.0-beta.37.tgz#d8e1d25a75102658b12565e4aa12e0423e969aad"
   dependencies:
