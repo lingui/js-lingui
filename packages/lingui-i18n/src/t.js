@@ -1,16 +1,9 @@
 /* @flow */
 import type { I18n } from './i18n'
+import { annotateVariable } from './variables'
 
 const flatten = arrays => [].concat.apply([], arrays)
 const zip = (a, b) => a.map((item, index) => [item, b[index]])
-
-const variableName = (variable, index) => {
-  if (typeof variable === 'object' && Object.keys(variable).length === 1) {
-    return variable
-  } else {
-    return { [index]: variable.toString() }
-  }
-}
 
 const t = (i18n: I18n) => (strings: string | Array<string>, ...values) => {
   // used as a function
@@ -22,7 +15,7 @@ const t = (i18n: I18n) => (strings: string | Array<string>, ...values) => {
 
   // used as a template tag
   const params = values.reduce((acc, variable, index) => {
-    Object.assign(acc, variableName(variable, index))
+    Object.assign(acc, annotateVariable(variable, index))
     return acc
   }, {})
 
