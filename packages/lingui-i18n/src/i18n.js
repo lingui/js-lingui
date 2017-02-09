@@ -1,9 +1,12 @@
 import MessageFormat from "messageformat"
+import t from './t'
 
 
 function I18n() {
   this.language = ''
   this.messages = {}
+
+  this.t = t(this)
 }
 
 I18n.prototype.use = function (language: string, messages: { [key: string]: string } = {}) {

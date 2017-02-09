@@ -10,6 +10,22 @@ describe('I18n', function() {
     expect(i18n.messages).toEqual({})
   })
 
+  it('should bound t method', function() {
+    const i18n = new I18n()
+    expect(i18n.t).toBeInstanceOf(Function)
+
+    i18n.use('fr', {
+      "Hello {name}": "Salut {name}"
+    })
+
+    expect(i18n.t`Message`).toEqual('Message')
+    expect(i18n.t('Message')).toEqual('Message')
+
+    const name = 'Fred'
+    expect(i18n.t`Hello ${{name}}`).toEqual('Salut Fred')
+    expect(i18n.t('Hello {name}', { name })).toEqual('Salut Fred')
+  })
+
   it('.use should load messages and set active language', function() {
     const i18n = new I18n()
     const messages = {
