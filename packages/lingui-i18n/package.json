@@ -1,0 +1,53 @@
+{
+  "name": "lingui-i18n",
+  "version": "0.0.0",
+  "description": "I18n tools for javascript",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui/"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization"
+  ],
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "messageformat": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.22.0",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          },
+          "useBuiltIns": true
+        }
+      ]
+    ],
+    "plugins": [
+      "transform-flow-strip-types",
+      "transform-object-rest-spread"
+    ],
+    "comments": false
+  }
+}
