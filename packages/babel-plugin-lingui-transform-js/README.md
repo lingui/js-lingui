@@ -1,64 +1,101 @@
-react-plugin-transform-js - Syntactic sugar for translations
-=====================================================================
+# react-plugin-lingui-transform-js
 
-Babel plugin for human-friendly definitions of strings for translation in React.
-Works in combination with `lingui-react` component.
+> This plugin transforms messages written using `lingui-i18n` methods to static ICU message format.
 
-Cookbook
---------
+The transformation speeds up translation at runtime while using helper methods allows to type-check messages.
+
+## Installation
+
+```sh
+npm install --save-dev babel-plugin-lingui-transform-js
+# or
+yarn add --dev babel-plugin-lingui-transform-js
+```
+
+## Usage
+
+### Via `.babelrc` (Recommended)
+
+**.babelrc**
+
+```json
+{
+  "plugins": ["lingui-transform-js"]
+}
+```
+
+### Via CLI
+
+```sh
+babel --plugins lingui-transform-js script.js
+```
+
+### Via Node API
+
+```js
+require("babel-core").transform("code", {
+  plugins: ["lingui-transform-js"]
+})
+```
+
+## Details
+
+Plugin performs following transformations:
 
 ### Static message
 
 ```js
-<Trans>Hello World</Trans>
-```
+i18n.t`Hello World`
 
-becomes:
-
-```js
-<Trans id="Hello World" />
+// becomes
+i18n.t({ id: "Hello World" })
 ```
 
 ### Message with variables
 
 ```js
-<Trans>Hi, my name is {name}</Trans>
+i18n.t`Hi, my name is ${name}`
+
+// becomes 
+i18n.t({ id: "Hi, my name is {name}", params: { name }})
 ```
 
-becomes:
+### Plurals, select, ordinal and other formats
+
+Format is basically a function which receives a `value` and format options. It's transformed to `{variable, format, options}` form. The most common formats are `plural`, `select` and `ordinal`:
 
 ```js
-<Trans id="Hi, my name is {name}" params={{name: name}} />
+i18n.plural({
+  value: count,
+  one: "# Book",
+  others: "# Books"
+})
+
+// becomes
+i18n.t({ 
+  id: "{count, plural, one {# Book} others {# Books}}", 
+  params: { count }
+})
 ```
 
-### ICU message (must be wrapped inside expression)
+### Combination of any above
 
 ```js
-<Trans>{`One {${count}, plural, one {glass}, other {glasses}} of wine`}</Trans>
-```
+i18n.select({
+  value: gender,
+  male: i18n.plural({
+    value: numOfGuests,
+    offset: 1,
+    0: `${host} doesn't invite any guests`,
+    1: `${host} invite ${guest} to his party`,
+    others: `${host} invite ${guest} and # others to his party`
+  }),
+  female: i18n.plural({ ... })
+})
 
-becomes:
-
-```js
-<Trans id="One {count, plural, one {glass}, other {glasses}} of wine" params={{count: count}} />
-```
-
-### Message with inline components
-
-Component name and props aren't included in translation ID.
-
-```js
-<Trans>Hi, my name is <a href="/profile">Dave</a>!</Trans>
-```
-
-becomes:
-
-```js
-<Trans 
-  id="Hi, my name is <0>{name}</0>!" 
-  params={{name: name}} 
-  components={[
-    <a href="/profile" />
-  ]}
-/>
+// becomes
+i18n.t({ 
+  id: "{gender, select, male {{numOfGuests, plural, offset:1 =0 {...}}} female {...}}", 
+  params: { gender, numOfGuests, host, guest }
+})
 ```
