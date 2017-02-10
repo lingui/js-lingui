@@ -10,13 +10,13 @@ describe('plural', function () {
     expect(p({
       value: 1,
       one: '# book',
-      others: '# books'
+      other: '# books'
     })).toEqual('1 book')
 
     expect(p({
       value: 42,
       one: '# book',
-      others: '# books'
+      other: '# books'
     })).toEqual('42 books')
 
     expect(p({
@@ -24,7 +24,7 @@ describe('plural', function () {
       offset: 1,
       '0': 'No books',
       '1': 'One book',
-      others: '# books'
+      other: '# books'
     })).toEqual('No books')
   })
 })
@@ -35,7 +35,7 @@ describe('select', function () {
       value: 'male',
       male: 'He',
       female: 'She',
-      others: 'They'
+      other: 'They'
     })).toEqual('He')
   })
 })

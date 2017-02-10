@@ -3,7 +3,7 @@ i18n.select({
   "male": i18n.plural({
     value: numOfGuests,
     one: "He invites one guest",
-    others: "He invites # guests"
+    other: "He invites # guests"
   }),
   female: `She is ${gender}`
 });

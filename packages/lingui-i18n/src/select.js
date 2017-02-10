@@ -11,34 +11,34 @@ type PluralForms = {
 type PluralProps = {
   value: number,
   offset?: number,
-  others: string
+  other: string
 } & PluralForms
 
 const plural = (i18n: I18n) => ({
   value,
   offset = 0,
-  others,
+  other,
   ...pluralForms
 }: PluralProps): string => {
   const translation = (
     pluralForms[(value - offset).toString()] ||      // exact match
     pluralForms[i18n.pluralForm(value - offset)] ||  // plural form
-    others                                           // fallback
+    other                                           // fallback
   )
   return translation.replace('#', value.toString())
 }
 
 type SelectProps = {
   value: string,
-  others: string
+  other: string
 }
 
 function select ({
   value,
-  others,
+  other,
   ...selectForms
 }: SelectProps): string {
-  return selectForms[value] || others
+  return selectForms[value] || other
 }
 
 export { plural, select }

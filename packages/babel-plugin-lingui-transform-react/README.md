@@ -66,7 +66,7 @@ Plugin performs following transformations:
 <Plural 
   value={count}
   one="# Book"
-  others="# Books"
+  other="# Books"
 />
 
 // becomes

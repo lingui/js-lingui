@@ -24,7 +24,7 @@ i18n.load({
   fr: {
     "Hello World!": "Salut le monde!",
     "My name is {name}": "Je m'appelle {name}",
-    "{count, plural, one {# book} others {# books}}": "{count, plural, one {# livre} others {# livres}}"
+    "{count, plural, one {# book} other {# books}}": "{count, plural, one {# livre} other {# livres}}"
   }
 })
 
@@ -53,7 +53,7 @@ const count = 42
 i18n.plural({
   value: { count },
   one: "# book",
-  others: "# books"
+  other: "# books"
 })
 // becomes "42 livres"
 ```
@@ -78,6 +78,6 @@ i18n.select({
     other: t`${host} invites ${guest} and # other people to her party.`
   }),
   male: plural({...}), 
-  others: plural({...}), 
+  other: plural({...}), 
 })
 ```

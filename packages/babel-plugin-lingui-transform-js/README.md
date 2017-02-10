@@ -68,12 +68,12 @@ Format is basically a function which receives a `value` and format options. It's
 i18n.plural({
   value: count,
   one: "# Book",
-  others: "# Books"
+  other: "# Books"
 })
 
 // becomes
 i18n.t({ 
-  id: "{count, plural, one {# Book} others {# Books}}", 
+  id: "{count, plural, one {# Book} other {# Books}}", 
   params: { count }
 })
 ```
@@ -88,7 +88,7 @@ i18n.select({
     offset: 1,
     0: `${host} doesn't invite any guests`,
     1: `${host} invite ${guest} to his party`,
-    others: `${host} invite ${guest} and # others to his party`
+    other: `${host} invite ${guest} and # other to his party`
   }),
   female: i18n.plural({ ... })
 })

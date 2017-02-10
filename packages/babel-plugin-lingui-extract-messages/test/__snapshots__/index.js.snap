@@ -21,7 +21,7 @@ Object {
       ],
     ],
   },
-  "{count, plural, one {# book} others {# books}}": Object {
+  "{count, plural, one {# book} other {# books}}": Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
@@ -63,7 +63,7 @@ Object {
       ],
     ],
   },
-  "{count, plural, one {# book} others {# books}}": Object {
+  "{count, plural, one {# book} other {# books}}": Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
