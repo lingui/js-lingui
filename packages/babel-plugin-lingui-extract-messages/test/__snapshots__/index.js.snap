@@ -1,0 +1,41 @@
+exports[`babel-plugin-lingui-extract-messages should extract all messages 1`] = `
+Object {
+  "Hi, my name is <0>{name}</0>": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        5,
+      ],
+    ],
+  },
+  "msg.default": Object {
+    "defaults": "Hello World",
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        3,
+      ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        4,
+      ],
+    ],
+  },
+  "msg.hello": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        2,
+      ],
+    ],
+  },
+  "{count, plural, one {# book} others {# books}}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        6,
+      ],
+    ],
+  },
+}
+`;

@@ -83,24 +83,6 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(transform('all.js')).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'all.json')))
-    expect(messages).toEqual({
-      "msg.hello": {
-        "origin": [
-          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 2]
-        ]
-      },
-      "msg.default": {
-        "defaults": "Hello World",
-        "origin": [
-          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 3],
-          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 4]
-        ]
-      },
-      "Hi, my name is <0>{name}</0>": {
-        "origin": [
-          ["packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js", 5]
-        ]
-      }
-    })
+    expect(messages).toMatchSnapshot()
   })
 })

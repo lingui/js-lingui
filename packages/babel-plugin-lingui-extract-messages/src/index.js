@@ -29,25 +29,40 @@ export default function({ types: t }) {
     return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name: 'Trans' })
   }
 
+  const isI18nMethod = node =>
+    t.isMemberExpression(node) &&
+    t.isIdentifier(node.object, { name: 'i18n' }) &&
+    t.isIdentifier(node.property, { name: 't' })
+
+  function collectMessage(path, file, attributes) {
+    const messages = file.get(MESSAGES)
+
+    const attrs = attributes.reduce((acc, item) => {
+      const key = item.key ? item.key.name : item.name.name
+      if (key === 'id' || key === 'defaults') acc[key] = item.value.value
+      return acc
+    }, {})
+
+    const filename = fsPath.relative(optsBaseDir, file.opts.filename)
+    const line = path.node.loc.start.line
+    attrs.origin = [[filename, line]]
+
+    addMessage(path, messages, attrs)
+  }
+
+
   return {
     visitor: {
       JSXElement(path, { file }) {
         const { node } = path
-
         if (!isTransComponent(node)) return
+        collectMessage(path, file, node.openingElement.attributes)
+      },
 
-        const messages = file.get(MESSAGES)
-
-        const attrs = node.openingElement.attributes.reduce((acc, item) => {
-          acc[item.name.name] = item.value.value
-          return acc
-        }, {})
-
-        const filename = fsPath.relative(optsBaseDir, file.opts.filename)
-        const line = node.openingElement.loc.start.line
-        attrs.origin = [[filename, line]]
-
-        addMessage(path, messages, attrs)
+      CallExpression(path, { file }) {
+        const { node } = path
+        if (!isI18nMethod(node.callee)) return
+        collectMessage(path, file, node.arguments[0].properties)
       }
     },
 
