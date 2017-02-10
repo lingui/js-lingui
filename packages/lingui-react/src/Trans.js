@@ -1,5 +1,5 @@
+/* @flow */
 import React from 'react'
-import MessageFormat from 'messageformat'
 
 import WithI18n from './WithI18n'
 import type { I18nProps } from './I18nProvider'
@@ -32,25 +32,32 @@ class Trans extends React.Component {
 
   getTranslation (props) {
     const {
-      id, defaults, i18n: { messages, language }
+      id, defaults, i18n
     } = props
 
-    const translation = messages[id] || defaults || id
-    return { language, translation }
+    const translation = (i18n.messages ? i18n.messages[id] : '') || defaults || id
+    return { i18n, translation }
   }
 
   compileMessage (props) {
-    const { language, translation } = this.getTranslation(props)
-    return new MessageFormat(language).compile(translation)
+    const { translation, i18n } = this.getTranslation(props)
+
+    if (!i18n.compile) return () => translation
+    return i18n.compile(translation)
   }
 
   componentWillReceiveProps (nextProps) {
-    const prev = this.getTranslation(this.props)
+    const { language, translation } = this.state
     const next = this.getTranslation(nextProps)
 
-    if (prev.language !== next.language || prev.translation !== next.translation) {
+    if (
+      translation !== next.translation ||
+      language !== next.i18n.language
+    ) {
       this.setState({
-        msgCache: this.compileMessage(nextProps)
+        msgCache: this.compileMessage(nextProps),
+        language,
+        translation
       })
     }
   }
@@ -65,6 +72,10 @@ class Trans extends React.Component {
 
     return <span className={className}>{translation}</span>
   }
+}
+
+Trans.defaultProps = {
+  i18n: {}
 }
 
 export default WithI18n()(Trans)

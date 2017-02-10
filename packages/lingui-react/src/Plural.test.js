@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 import { Plural } from '.'
 
 describe('Plural', function () {
-  const languageContext = (code) => ({ context: { i18n: { language: code } } })
+  const languageContext = (code) => ({ context: { i18nManager: { i18n: { language: code } } } })
 
   it('should render plural correctly', function () {
     const node = shallow(

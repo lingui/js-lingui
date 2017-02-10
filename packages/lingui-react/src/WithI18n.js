@@ -26,23 +26,20 @@ export default ({
     }
 
     getI18n () {
-      return this.context.i18n || {
-        messages: {},
-        language: ''
-      }
+      return this.context.i18nManager || {}
     }
 
     render () {
-      // const { language, messages } = this.getI18n()
+      const { i18n } = this.getI18n()
       return <WrappedComponent
         {...this.props}
-        i18n={this.getI18n()}
+        i18n={i18n}
       />
     }
   }
 
   WithI18n.contextTypes = {
-    i18n: React.PropTypes.object
+    i18nManager: React.PropTypes.object
   }
 
   return WithI18n

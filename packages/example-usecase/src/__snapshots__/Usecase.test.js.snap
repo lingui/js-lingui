@@ -1,21 +1,66 @@
 exports[`example-usecase should render 1`] = `
-<Usecase>
+<Usecase
+  language="cs"
+  messages={
+    Object {
+      "cs": Object {
+        "Hello World": "Ahoj světe",
+        "My name is {name}": "Jmenuji se {name}",
+        "Read <0>more</0>.": "Číst <0>dále</0>",
+        "msg.label": "Nápis",
+      },
+      "fr": Object {
+        "Hello World": "Salut le monde!",
+        "My name is {name}": "Je m\'appelle {name}",
+        "msg.label": "Label",
+      },
+    }
+  }>
   <I18nProvider
-    language=""
-    messages={Object {}}>
+    language="cs"
+    messages={
+      Object {
+        "cs": Object {
+          "Hello World": "Ahoj světe",
+          "My name is {name}": "Jmenuji se {name}",
+          "Read <0>more</0>.": "Číst <0>dále</0>",
+          "msg.label": "Nápis",
+        },
+        "fr": Object {
+          "Hello World": "Salut le monde!",
+          "My name is {name}": "Je m\'appelle {name}",
+          "msg.label": "Label",
+        },
+      }
+    }>
     <NeverUpdate>
       <div>
         <ul>
           <li>
-            <InjectI18n
+            <WithI18n
               className="untranslated"
               id="This isn\'t translated">
               <Trans
                 className="untranslated"
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="This isn\'t translated">
@@ -24,10 +69,10 @@ exports[`example-usecase should render 1`] = `
                   This isn\'t translated
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
           <li>
-            <InjectI18n
+            <WithI18n
               className="customId"
               defaults=""
               id="msg.label">
@@ -35,41 +80,71 @@ exports[`example-usecase should render 1`] = `
                 className="customId"
                 defaults=""
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="msg.label">
                 <span
                   className="customId">
-                  msg.label
+                  Nápis
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
           <li>
-            <InjectI18n
+            <WithI18n
               className="translated"
               id="Hello World">
               <Trans
                 className="translated"
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="Hello World">
                 <span
                   className="translated">
-                  Hello World
+                  Ahoj světe
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
           <li>
-            <InjectI18n
+            <WithI18n
               className="variable"
               id="My name is {name}"
               params={
@@ -80,9 +155,24 @@ exports[`example-usecase should render 1`] = `
               <Trans
                 className="variable"
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="My name is {name}"
@@ -93,13 +183,13 @@ exports[`example-usecase should render 1`] = `
                 }>
                 <span
                   className="variable">
-                  My name is Mononoke
+                  Jmenuji se Mononoke
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
           <li>
-            <InjectI18n
+            <WithI18n
               className="components"
               components={
                 Array [
@@ -117,26 +207,40 @@ exports[`example-usecase should render 1`] = `
                   ]
                 }
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="Read <0>more</0>.">
                 <span
                   className="components">
-                  Read 
+                  Číst 
                   <a
                     href="/mononoke">
-                    more
+                    dále
                   </a>
-                  .
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
           <li>
-            <InjectI18n
+            <WithI18n
               className="plural"
               id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
               params={
@@ -150,9 +254,24 @@ exports[`example-usecase should render 1`] = `
               <Trans
                 className="plural"
                 i18n={
-                  Object {
-                    "language": undefined,
-                    "messages": Object {},
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>.": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                      "fr": Object {
+                        "Hello World": "Salut le monde!",
+                        "My name is {name}": "Je m\'appelle {name}",
+                        "msg.label": "Label",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "t": [Function],
                   }
                 }
                 id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
@@ -169,7 +288,7 @@ exports[`example-usecase should render 1`] = `
                   Wilma invites Fred and 3 other people to her party.
                 </span>
               </Trans>
-            </InjectI18n>
+            </WithI18n>
           </li>
         </ul>
       </div>

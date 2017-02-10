@@ -1,4 +1,6 @@
+/* @flow */
 import React from 'react'
+import { I18n } from 'lingui-i18n'
 
 type I18nProps = {
   messages: {[key: string]: string},
@@ -12,14 +14,17 @@ type I18nProviderProps = I18nProps & {
 }
 
 /*
- * I18n - Container for i18n data (language, messages)
+ * I18nManager - Connects to lingui-i18n/I18n class
  * Allows listeners to subscribe for changes
  */
-class I18n {
+class I18nManager {
+  i18n: I18n
   subscribers = []
 
-  constructor (props) {
-    this.update(props)
+  constructor (props = {}) {
+    const { language, messages, i18n } = props
+
+    this.i18n = i18n || new I18n(language, messages)
   }
 
   subscribe = (callback) => {
@@ -30,26 +35,12 @@ class I18n {
     this.subscribers = this.subscribers.filter(cb => cb !== callback)
   }
 
-  update = (props) => {
-    if (!props) return
+  update = ({ messages, language } = {}) => {
+    if (!messages && !language) return
 
-    const filteredProps = ['messages', 'language'].reduce((acc, key) => {
-      if (props[key]) acc[key] = props[key]
-      return acc
-    }, {})
-
-    if (!Object.keys(filteredProps).length) return
-
-    this.props = { ...this.props, ...filteredProps }
+    this.i18n.load(messages)
+    this.i18n.activate(language)
     this.subscribers.forEach(f => f())
-  }
-
-  get messages () {
-    return this.props.messages
-  }
-
-  get language () {
-    return this.props.language
   }
 }
 
@@ -58,21 +49,22 @@ class I18nProvider extends React.Component {
 
   constructor (props) {
     super(props)
-    this.i18n = new I18n(props)
+    this.i18nManager = new I18nManager(props)
   }
 
   componentDidUpdate (prevProps) {
+    const { language, messages } = this.props
     if (
-      this.props.language !== prevProps.language ||
-      this.props.messages !== prevProps.messages
+      language !== prevProps.language ||
+      messages !== prevProps.messages
     ) {
-      this.i18n.update(this.props)
+      this.i18nManager.update({ language, messages })
     }
   }
 
   getChildContext () {
     return {
-      i18n: this.i18n
+      i18nManager: this.i18nManager
     }
   }
 
@@ -83,9 +75,9 @@ class I18nProvider extends React.Component {
 }
 
 I18nProvider.childContextTypes = {
-  i18n: React.PropTypes.object
+  i18nManager: React.PropTypes.object.isRequired
 }
 
 export default I18nProvider
-export { I18n }
+export { I18nManager }
 export type { I18nProps }

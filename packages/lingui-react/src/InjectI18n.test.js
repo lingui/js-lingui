@@ -5,12 +5,14 @@ import { InjectI18n } from '.'
 
 describe('InjectI18n [DEPRECATED]', function () {
   const context = {
-    language: 'en',
-    messages: {
-      msg: 'hello'
-    },
     subscribe: jest.fn(),
-    unsubscribe: jest.fn()
+    unsubscribe: jest.fn(),
+    i18n: {
+      language: 'en',
+      messages: {
+        msg: 'hello'
+      }
+    }
   }
 
   // Pass all props to spy on render
@@ -26,7 +28,7 @@ describe('InjectI18n [DEPRECATED]', function () {
   // Mount HOC(sink) and get the props which were passed from HOC
   const mountHoc = (props = {}, customContext = context) => {
     const { Sink, spy } = sinkFactory()
-    const node = mount(<Sink {...props} />, { context: { i18n: customContext } })
+    const node = mount(<Sink {...props} />, { context: { i18nManager: customContext } })
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
     // Original props are passed with along with i18n prop

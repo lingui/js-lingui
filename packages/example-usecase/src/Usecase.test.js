@@ -38,15 +38,15 @@ describe('example-usecase', function () {
   })
 
   const getText = (element, props = {}) => {
-    return mount(<Usecase {...props} language="cs" messages={messages.cs} />).find(element).text()
+    return mount(<Usecase {...props} language="cs" messages={messages} />).find(element).text()
   }
 
   const getHtml = (element, props = {}) => {
-    return shallow(<Usecase {...props} language="cs" messages={messages.cs} />).find(element).html()
+    return shallow(<Usecase {...props} language="cs" messages={messages} />).find(element).html()
   }
 
   it('should render', function () {
-    expect(mount(<Usecase />)).toMatchSnapshot()
+    expect(mount(<Usecase language="cs" messages={messages} />)).toMatchSnapshot()
   })
 
   it('should render defaults with warning for untranslated', function () {
@@ -77,10 +77,10 @@ describe('example-usecase', function () {
   })
 
   it('should update translation when language changes', function () {
-    const node = mount(<Usecase messages={messages.cs} />)
+    const node = mount(<Usecase language='cs' messages={messages} />)
     expect(node.find('.translated').text()).toEqual('Ahoj světe')
 
-    node.setProps({ messages: messages.fr })
+    node.setProps({ language: 'fr' })
     expect(node.find('.translated').text()).toEqual('Salut le monde!')
   })
 })
