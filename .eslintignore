@@ -1,0 +1,6 @@
+**/lib/*
+**/node_modules/*
+**/fixtures/*
+flow-typed/*
+docs/*
+scripts/*

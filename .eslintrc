@@ -1,0 +1,22 @@
+{
+  "env": {
+    "jest": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "standard",
+    "plugin:flowtype/recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "standard",
+    "promise",
+    "flowtype",
+    "react"
+  ]
+}

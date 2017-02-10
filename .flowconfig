@@ -1,0 +1,13 @@
+[ignore]
+.*/lib/.*
+.*/node_modules/.*
+
+[include]
+
+[libs]
+/flow-typed/
+
+[options]
+emoji=true
+unsafe.enable_getters_and_setters=true
+suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore
