@@ -1,5 +1,5 @@
 import React from 'react'
-import InjectI18n from './InjectI18n'
+import WithI18n from './WithI18n'
 import type { I18nProps } from './I18nProvider'
 import rules from './plurals'
 
@@ -34,4 +34,4 @@ Plural.defaultProps = {
   offset: 0
 }
 
-export default InjectI18n(Plural)
+export default WithI18n()(Plural)

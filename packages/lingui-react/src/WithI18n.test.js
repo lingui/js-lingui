@@ -1,9 +1,9 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { InjectI18n } from '.'
+import { WithI18n } from '.'
 
-describe('InjectI18n [DEPRECATED]', function() {
+describe('WithI18n', function() {
   const context = {
     language: 'en',
     messages: {
@@ -14,9 +14,9 @@ describe('InjectI18n [DEPRECATED]', function() {
   }
 
   // Pass all props to spy on render
-  const sinkFactory = () => {
+  const sinkFactory = (options = {}) => {
     const spy = jest.fn()
-    const Sink = InjectI18n((props) => {
+    const Sink = WithI18n(options)((props) => {
       spy(props)
       return null
     })
@@ -24,9 +24,9 @@ describe('InjectI18n [DEPRECATED]', function() {
   }
 
   // Mount HOC(sink) and get the props which were passed from HOC
-  const mountHoc = (props = {}, customContext = context) => {
-    const { Sink, spy } = sinkFactory()
-    const node = mount(<Sink {...props} />, { context: { i18n: customContext }})
+  const mountHoc = (props = {}, hocOptions = {}) => {
+    const { Sink, spy } = sinkFactory(hocOptions)
+    const node = mount(<Sink {...props} />, { context: { i18n: context }})
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
     // Original props are passed with along with i18n prop
@@ -69,5 +69,19 @@ describe('InjectI18n [DEPRECATED]', function() {
     node.unmount()
     expect(context.unsubscribe).toBeCalled()
     expect(context.unsubscribe.mock.calls[0][0]).toBeInstanceOf(Function)
+  })
+
+  it("shouldn't subscribe a callback on mount when update is disabled", function() {
+    expect(context.subscribe).not.toBeCalled()
+    mountHoc({}, { update: false })
+    expect(context.subscribe).not.toBeCalled()
+  })
+
+  it("shouldn't unsubscribe a callback on unmount when update is disabled", function() {
+    const { node } = mountHoc({}, { update: false })
+
+    expect(context.unsubscribe).not.toBeCalled()
+    node.unmount()
+    expect(context.unsubscribe).not.toBeCalled()
   })
 })

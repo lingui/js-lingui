@@ -3,16 +3,22 @@ import React from "react"
 /*
  * Inject i18n data from context to props.
  */
-export default (WrappedComponent) => {
-  class InjectI18n extends React.Component {
+export default ({
+  update = true
+} = {}) => (WrappedComponent) => {
+  class WithI18n extends React.Component {
     componentDidMount() {
-      const { subscribe } = this.getI18n()
-      if (subscribe) subscribe(this.checkUpdate)
+      if (update) {
+        const { subscribe } = this.getI18n()
+        if (subscribe) subscribe(this.checkUpdate)
+      }
     }
 
     componentWillUnmount() {
-      const { unsubscribe } = this.getI18n()
-      if (unsubscribe) unsubscribe(this.checkUpdate)
+      if (update) {
+        const { unsubscribe } = this.getI18n()
+        if (unsubscribe) unsubscribe(this.checkUpdate)
+      }
     }
 
     checkUpdate = () => {
@@ -30,14 +36,14 @@ export default (WrappedComponent) => {
       const { language, messages } = this.getI18n()
       return <WrappedComponent
         {...this.props}
-        i18n={{ language, messages }}
+        i18n={this.getI18n()}
       />
     }
   }
 
-  InjectI18n.contextTypes = {
+  WithI18n.contextTypes = {
     i18n: React.PropTypes.object
   }
 
-  return InjectI18n
+  return WithI18n
 }

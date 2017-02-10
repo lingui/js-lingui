@@ -1,7 +1,7 @@
 import React from "react"
 import MessageFormat from "messageformat"
 
-import InjectI18n from './InjectI18n'
+import WithI18n from './WithI18n'
 import type { I18nProps } from './I18nProvider'
 import { formatElements } from './format'
 
@@ -67,4 +67,4 @@ class Trans extends React.Component {
 }
 
 
-export default InjectI18n(Trans)
+export default WithI18n()(Trans)
