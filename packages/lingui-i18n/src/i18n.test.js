@@ -37,6 +37,28 @@ describe('I18n', function () {
     expect(i18n.messages).toEqual(messages)
   })
 
+  it('.use should return new i18n object with switched language', function () {
+    const i18n = new I18n()
+    const messages = {
+      en: {
+        'Hello': 'Hello'
+      },
+      fr: {
+        'Hello': 'Salut'
+      }
+    }
+
+    i18n.load(messages)
+    i18n.activate('en')
+    expect(i18n.translate({ id: 'Hello' })).toEqual('Hello')
+
+    // change language locally
+    expect(i18n.use('fr').translate({ id: 'Hello' })).toEqual('Salut')
+
+    // global language hasn't changed
+    expect(i18n.translate({ id: 'Hello' })).toEqual('Hello')
+  })
+
   it('.translate should format message from catalog', function () {
     const i18n = new I18n()
     const messages = {

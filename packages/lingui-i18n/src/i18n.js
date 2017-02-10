@@ -37,7 +37,7 @@ class I18n {
     return this._language
   }
 
-  load (messages: { [key: string]: Catalog } = {}) {
+  load (messages: { [key: string]: Catalog }) {
     this._messages = messages
   }
 

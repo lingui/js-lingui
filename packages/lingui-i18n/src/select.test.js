@@ -37,5 +37,12 @@ describe('select', function () {
       female: 'She',
       other: 'They'
     })).toEqual('He')
+
+    expect(select({
+      value: 'unknown',
+      male: 'He',
+      female: 'She',
+      other: 'They'
+    })).toEqual('They')
   })
 })
