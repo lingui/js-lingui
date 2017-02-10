@@ -1,9 +1,43 @@
-exports[`babel-plugin-lingui-extract-messages should extract all messages 1`] = `
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files 1`] = `
+Object {
+  "msg.default": Object {
+    "defaults": "Hello World",
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
+        5,
+      ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
+        6,
+      ],
+    ],
+  },
+  "msg.hello": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
+        4,
+      ],
+    ],
+  },
+  "{count, plural, one {# book} others {# books}}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
+        7,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files 1`] = `
 Object {
   "Hi, my name is <0>{name}</0>": Object {
     "origin": Array [
       Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
         5,
       ],
     ],
@@ -12,11 +46,11 @@ Object {
     "defaults": "Hello World",
     "origin": Array [
       Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
         3,
       ],
       Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
         4,
       ],
     ],
@@ -24,7 +58,7 @@ Object {
   "msg.hello": Object {
     "origin": Array [
       Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
         2,
       ],
     ],
@@ -32,7 +66,7 @@ Object {
   "{count, plural, one {# book} others {# books}}": Object {
     "origin": Array [
       Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/all.js",
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
         6,
       ],
     ],
