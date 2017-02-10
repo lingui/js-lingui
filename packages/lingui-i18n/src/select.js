@@ -1,73 +1,44 @@
 /* @flow */
-import { variableName } from './variables'
-
-type ExactPluralForms = { [key: number]: string }
+import type { I18n } from './i18n'
 
 type PluralForms = {
-  zero: string,
-  one: string,
-  few: string,
-  many: string,
-  others: string
+  zero?: string,
+  one?: string,
+  few?: string,
+  many?: string
 }
 
 type PluralProps = {
   value: number,
-  offset: number
-} & PluralForms & ExactPluralForms
+  offset?: number,
+  others: string
+} & PluralForms
 
-const plural = ({
+const plural = (i18n: I18n) => ({
   value,
-  offset,
+  offset = 0,
+  others,
   ...pluralForms
-}: PluralProps) => {
-  const variable = variableName(value)
-  const params = {
-    [variable]: value[variable]
-  }
-
-  const forms = Object.keys(pluralForms).map(key => {
-    const formKey = /^\d+$/.test(key) ? `=${key}` : key
-    const form = pluralForms[key]
-
-    let message
-    if (typeof form === 'object') {
-      message = form.message
-      Object.assign(params, form.params)
-    } else {
-      message = form
-    }
-
-    return `${formKey} {${message}}`
-  })
-
-  if (offset) {
-    forms.unshift(`offset:${offset}`)
-  }
-
-  const message = `{${variable}, plural, ${forms.join(" ")}}`
-  return { message, params, }
+}: PluralProps): string => {
+  const translation = (
+    pluralForms[(value - offset).toString()] ||      // exact match
+    pluralForms[i18n.pluralForm(value - offset)] ||  // plural form
+    others                                           // fallback
+  )
+  return translation.replace('#', value.toString())
 }
 
-
 type SelectProps = {
-  value: number
-} & {[key: string]: string}
+  value: string,
+  others: string
+}
 
-const select = ({
+function select ({
   value,
+  others,
   ...selectForms
-}: SelectProps) => {
-  const variable = variableName(value)
-  const params = {
-    [variable]: value[variable]
-  }
-
-  const forms = Object.keys(selectForms)
-    .map(key => `${key} {${selectForms[key].toString()}}`)
-
-  const message = `{${variable}, select, ${forms.join(" ")}}`
-  return { message, params }
+}: SelectProps): string {
+  return selectForms[value] || others
 }
 
 export { plural, select }

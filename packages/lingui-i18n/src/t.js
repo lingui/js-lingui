@@ -1,27 +1,18 @@
 /* @flow */
-import type { I18n } from './i18n'
-import { annotateVariable } from './variables'
+import type { I18n, Message } from './i18n'
 
 const flatten = arrays => [].concat.apply([], arrays)
 const zip = (a, b) => a.map((item, index) => [item, b[index]])
 
-const t = (strings: string | Array<string>, ...values) => {
+const t = (i18n: I18n) => (strings: Message | Array<string>, ...values: Array<any>) => {
   // used as a function
-  if (typeof strings === 'string') {
-    const message = strings
-    const params = values[0] || {}
-    return { message, params, }
+  if (!Array.isArray(strings)) {
+    const { id, params } = strings
+    return i18n.translate({ id, params })
   }
 
   // used as a template tag
-  const params = values.reduce((acc, variable, index) => {
-    Object.assign(acc, annotateVariable(variable, index))
-    return acc
-  }, {})
-
-  const keys = Object.keys(params).map((key) => `{${key}}`)
-  const message = flatten(zip(strings, keys)).join('')
-  return { message, params }
+  return flatten(zip(strings, values)).join('')
 }
 
 export default t
