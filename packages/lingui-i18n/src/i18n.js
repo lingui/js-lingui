@@ -37,12 +37,22 @@ class I18n {
     return this._language
   }
 
-  load (messages: { [key: string]: Catalog }) {
-    this._messages = messages
+  load (messages: Catalogs) {
+    if (!messages) return
+
+    // deeply merge Catalogs
+    Object.keys({ ...this._messages, ...messages }).forEach(language => {
+      if (!this._messages[language]) this._messages[language] = {}
+
+      Object.assign(
+        this._messages[language],
+        messages[language] || {}
+      )
+    })
   }
 
   activate (language: string) {
-    this._language = language
+    if (language) this._language = language
   }
 
   use (language: string) {

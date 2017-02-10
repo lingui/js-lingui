@@ -21,6 +21,33 @@ describe('I18n', function () {
     expect(i18n.t`Hello ${name}`).toEqual('Hello Fred')
   })
 
+  it('.load should load catalog and merge with existing', function() {
+    const messages = {
+      en: {
+        'Hello': 'Hello'
+      }
+    }
+
+    const i18n = new I18n()
+    expect(i18n.messages).toEqual({})
+
+    i18n.activate('en')
+    i18n.load({ en: messages.en })
+    expect(i18n.messages).toEqual(messages.en)
+
+    // fr catalog shouldn't affect the english one
+    i18n.load({ fr: { 'Hello': 'Salut' } })
+    expect(i18n.messages).toEqual(messages.en)
+
+    i18n.load({ en: { 'Goodbye': 'Goodbye' } })
+    // $FlowIgnore: testing edge case
+    i18n.load()  // should do nothing
+    expect(i18n.messages).toEqual({
+      'Hello': 'Hello',
+      'Goodbye': 'Goodbye'
+    })
+  })
+
   it('.activate should switch active language', function () {
     const i18n = new I18n()
     const messages = {
@@ -33,6 +60,8 @@ describe('I18n', function () {
     expect(i18n.messages).toEqual({})
 
     i18n.activate('fr')
+    // $FlowIgnore: testing edge case
+    i18n.activate()  // should do nothing
     expect(i18n.language).toEqual('fr')
     expect(i18n.messages).toEqual(messages)
   })
