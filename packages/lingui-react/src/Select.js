@@ -1,13 +1,14 @@
 import React from 'react'
 
 type SelectProps = {
-  value: number
+  value: number,
+  other: React$Element<any>
 }
 
 class Select extends React.Component {
   props: SelectProps
 
-  render() {
+  render () {
     const {
       value, other
     } = this.props

@@ -1,5 +1,5 @@
 class App extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         <h1><Trans>Nested Application Example</Trans></h1>

@@ -17,7 +17,7 @@ type PluralProps = {
 class Plural extends React.Component {
   props: PluralProps
 
-  render() {
+  render () {
     const {
       value, offset,
       i18n: { language }

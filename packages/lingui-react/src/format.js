@@ -3,7 +3,6 @@ import { cloneElement } from 'react'
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
 
-
 /**
  * `formatElements` - parse string and return tree of react elements
  *
@@ -11,7 +10,7 @@ const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
  * placeholders. `elements` is a array of react elements which indexes
  * correspond to element indexes in formatted string
  */
-function formatElements(value, elements) {
+function formatElements (value, elements) {
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist
 
@@ -39,7 +38,6 @@ function formatElements(value, elements) {
   return tree
 }
 
-
 /*
  * `getElements` - return array of element indexes and element childrens
  *
@@ -54,7 +52,7 @@ function formatElements(value, elements) {
  *
  * Returns: Array<[elementIndex, children, after]>
  */
-function getElements(parts) {
+function getElements (parts) {
   if (!parts.length) return []
 
   const [paired, children = '', unpaired, after] = parts.slice(0, 4)

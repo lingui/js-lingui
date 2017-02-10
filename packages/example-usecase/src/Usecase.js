@@ -1,19 +1,32 @@
 import React from 'react'
-import { Trans, I18nProvider } from 'lingui-react'
+import { Trans, I18nProvider, Select, Plural } from 'lingui-react'
 
 class NeverUpdate extends React.Component {
-  shouldComponentUpdate() {
+  props: {
+    children: any
+  }
+
+  shouldComponentUpdate () {
     return false
   }
 
-  render() {
+  render () {
     return <div>{this.props.children}</div>
   }
 }
 
-
 class Usecase extends React.Component {
-  render() {
+  props: {
+    language: string,
+    messages: Object,
+    name?: string,
+    genderOfHost?: 'male' | 'female',
+    numGuests?: number,
+    host?: string,
+    guest?: string
+  }
+
+  render () {
     const {
       language = '', messages = {},
       name = 'Mononoke',

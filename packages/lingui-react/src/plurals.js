@@ -1,27 +1,24 @@
 const formats = [
   function (n) {
-    
     return n === 1 ? 'one'
       : 'other'
   },
   function (n) {
-    
-    return 0 <= n && n <= 1 ? 'one'
+    return n >= 0 && n <= 1 ? 'one'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
-    
+
     return i === 0 || n === 1 ? 'one'
       : 'other'
   },
   function (n) {
-    
     return n === 0 ? 'zero'
       : n === 1 ? 'one'
       : n === 2 ? 'two'
-      : 3 <= n % 100 && n % 100 <= 10 ? 'few'
-      : 11 <= n % 100 && n % 100 <= 99 ? 'many'
+      : n % 100 >= 3 && n % 100 <= 10 ? 'few'
+      : n % 100 >= 11 && n % 100 <= 99 ? 'many'
       : 'other'
   },
   function (n) {
@@ -31,17 +28,15 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n % 10 === 1 && n % 100 !== 11 ? 'one'
-      : (2 <= n % 10 && n % 10 <= 4) && (n % 100 < 12 || 14 < n % 100) ? 'few'
-      : n % 10 === 0 || (5 <= n % 10 && n % 10 <= 9) || (11 <= n % 100 && n % 100 <= 14) ? 'many'
+      : (n % 10 >= 2 && n % 10 <= 4) && (n % 100 < 12 || n % 100 > 14) ? 'few'
+      : n % 10 === 0 || (n % 10 >= 5 && n % 10 <= 9) || (n % 100 >= 11 && n % 100 <= 14) ? 'many'
       : 'other'
   },
   function (n) {
-    
     return n % 10 === 1 && (n % 100 !== 11 && n % 100 !== 71 && n % 100 !== 91) ? 'one'
       : n % 10 === 2 && (n % 100 !== 12 && n % 100 !== 72 && n % 100 !== 92) ? 'two'
-      : ((3 <= n % 10 && n % 10 <= 4) || n % 10 === 9) && ((n % 100 < 10 || 19 < n % 100) && (n % 100 < 70 || 79 < n % 100) && (n % 100 < 90 || 99 < n % 100)) ? 'few'
+      : ((n % 10 >= 3 && n % 10 <= 4) || n % 10 === 9) && ((n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 < 90 || n % 100 > 99)) ? 'few'
       : n !== 0 && n % 1000000 === 0 ? 'many'
       : 'other'
   },
@@ -50,19 +45,18 @@ const formats = [
     const v = (n + '.').split('.')[1].length
     const f = +(n + '.').split('.')[1]
     return v === 0 && i % 10 === 1 && i % 100 !== 11 || f % 10 === 1 && f % 100 !== 11 ? 'one'
-      : v === 0 && (2 <= i % 10 && i % 10 <= 4) && (i % 100 < 12 || 14 < i % 100) || (2 <= f % 10 && f % 10 <= 4) && (f % 100 < 12 || 14 < f % 100) ? 'few'
+      : v === 0 && (i % 10 >= 2 && i % 10 <= 4) && (i % 100 < 12 || i % 100 > 14) || (f % 10 >= 2 && f % 10 <= 4) && (f % 100 < 12 || f % 100 > 14) ? 'few'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
     const v = (n + '.').split('.')[1].length
     return i === 1 && v === 0 ? 'one'
-      : (2 <= i && i <= 4) && v === 0 ? 'few'
+      : (i >= 2 && i <= 4) && v === 0 ? 'few'
       : v !== 0 ? 'many'
       : 'other'
   },
   function (n) {
-    
     return n === 0 ? 'zero'
       : n === 1 ? 'one'
       : n === 2 ? 'two'
@@ -73,7 +67,7 @@ const formats = [
   function (n) {
     const i = Math.floor(Math.abs(n))
     const t = +('' + n).replace(/^[^.]*.?|0+$/g, '')
-    
+
     return n === 1 || t !== 0 && (i === 0 || i === 1) ? 'one'
       : 'other'
   },
@@ -83,7 +77,7 @@ const formats = [
     const f = +(n + '.').split('.')[1]
     return v === 0 && i % 100 === 1 || f % 100 === 1 ? 'one'
       : v === 0 && i % 100 === 2 || f % 100 === 2 ? 'two'
-      : v === 0 && (3 <= i % 100 && i % 100 <= 4) || (3 <= f % 100 && f % 100 <= 4) ? 'few'
+      : v === 0 && (i % 100 >= 3 && i % 100 <= 4) || (f % 100 >= 3 && f % 100 <= 4) ? 'few'
       : 'other'
   },
   function (n) {
@@ -99,18 +93,16 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
       : n === 2 ? 'two'
-      : 3 <= n && n <= 6 ? 'few'
-      : 7 <= n && n <= 10 ? 'many'
+      : n >= 3 && n <= 6 ? 'few'
+      : n >= 7 && n <= 10 ? 'many'
       : 'other'
   },
   function (n) {
-    
     return n === 1 || n === 11 ? 'one'
       : n === 2 || n === 12 ? 'two'
-      : ((3 <= n && n <= 10) || (13 <= n && n <= 19)) ? 'few'
+      : ((n >= 3 && n <= 10) || (n >= 13 && n <= 19)) ? 'few'
       : 'other'
   },
   function (n) {
@@ -125,10 +117,10 @@ const formats = [
   function (n) {
     const i = Math.floor(Math.abs(n))
     const v = (n + '.').split('.')[1].length
-    
+
     return i === 1 && v === 0 ? 'one'
       : i === 2 && v === 0 ? 'two'
-      : v === 0 && (n < 0 || 10 < n) && n % 10 === 0 ? 'many'
+      : v === 0 && (n < 0 || n > 10) && n % 10 === 0 ? 'many'
       : 'other'
   },
   function (n) {
@@ -138,37 +130,35 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
       : n === 2 ? 'two'
       : 'other'
   },
   function (n) {
-    
     return n === 0 ? 'zero'
       : n === 1 ? 'one'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
-    
+
     return n === 0 ? 'zero'
       : (i === 0 || i === 1) && n !== 0 ? 'one'
       : 'other'
   },
   function (n) {
     const f = +(n + '.').split('.')[1]
-    
-    return n % 10 === 1 && (n % 100 < 11 || 19 < n % 100) ? 'one'
-      : (2 <= n % 10 && n % 10 <= 9) && (n % 100 < 11 || 19 < n % 100) ? 'few'
+
+    return n % 10 === 1 && (n % 100 < 11 || n % 100 > 19) ? 'one'
+      : (n % 10 >= 2 && n % 10 <= 9) && (n % 100 < 11 || n % 100 > 19) ? 'few'
       : f !== 0 ? 'many'
       : 'other'
   },
   function (n) {
     const v = (n + '.').split('.')[1].length
     const f = +(n + '.').split('.')[1]
-    
-    return n % 10 === 0 || (11 <= n % 100 && n % 100 <= 19) || v === 2 && (11 <= f % 100 && f % 100 <= 19) ? 'zero'
+
+    return n % 10 === 0 || (n % 100 >= 11 && n % 100 <= 19) || v === 2 && (f % 100 >= 11 && f % 100 <= 19) ? 'zero'
       : n % 10 === 1 && n % 100 !== 11 || v === 2 && f % 10 === 1 && f % 100 !== 11 || v !== 2 && f % 10 === 1 ? 'one'
       : 'other'
   },
@@ -182,34 +172,32 @@ const formats = [
   function (n) {
     const i = Math.floor(Math.abs(n))
     const v = (n + '.').split('.')[1].length
-    
+
     return i === 1 && v === 0 ? 'one'
-      : v !== 0 || n === 0 || n !== 1 && (1 <= n % 100 && n % 100 <= 19) ? 'few'
+      : v !== 0 || n === 0 || n !== 1 && (n % 100 >= 1 && n % 100 <= 19) ? 'few'
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
-      : n === 0 || (2 <= n % 100 && n % 100 <= 10) ? 'few'
-      : 11 <= n % 100 && n % 100 <= 19 ? 'many'
+      : n === 0 || (n % 100 >= 2 && n % 100 <= 10) ? 'few'
+      : n % 100 >= 11 && n % 100 <= 19 ? 'many'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
     const v = (n + '.').split('.')[1].length
     return i === 1 && v === 0 ? 'one'
-      : v === 0 && (2 <= i % 10 && i % 10 <= 4) && (i % 100 < 12 || 14 < i % 100) ? 'few'
-      : v === 0 && i !== 1 && (0 <= i % 10 && i % 10 <= 1) || v === 0 && (5 <= i % 10 && i % 10 <= 9) || v === 0 && (12 <= i % 100 && i % 100 <= 14) ? 'many'
+      : v === 0 && (i % 10 >= 2 && i % 10 <= 4) && (i % 100 < 12 || i % 100 > 14) ? 'few'
+      : v === 0 && i !== 1 && (i % 10 >= 0 && i % 10 <= 1) || v === 0 && (i % 10 >= 5 && i % 10 <= 9) || v === 0 && (i % 100 >= 12 && i % 100 <= 14) ? 'many'
       : 'other'
   },
   function (n) {
-    
-    return (0 <= n && n <= 2) && n !== 2 ? 'one'
+    return (n >= 0 && n <= 2) && n !== 2 ? 'one'
       : 'other'
   },
   function (n) {
     const v = (n + '.').split('.')[1].length
-    
+
     return n === 1 && v === 0 ? 'one'
       : 'other'
   },
@@ -217,21 +205,21 @@ const formats = [
     const i = Math.floor(Math.abs(n))
     const v = (n + '.').split('.')[1].length
     return v === 0 && i % 10 === 1 && i % 100 !== 11 ? 'one'
-      : v === 0 && (2 <= i % 10 && i % 10 <= 4) && (i % 100 < 12 || 14 < i % 100) ? 'few'
-      : v === 0 && i % 10 === 0 || v === 0 && (5 <= i % 10 && i % 10 <= 9) || v === 0 && (11 <= i % 100 && i % 100 <= 14) ? 'many'
+      : v === 0 && (i % 10 >= 2 && i % 10 <= 4) && (i % 100 < 12 || i % 100 > 14) ? 'few'
+      : v === 0 && i % 10 === 0 || v === 0 && (i % 10 >= 5 && i % 10 <= 9) || v === 0 && (i % 100 >= 11 && i % 100 <= 14) ? 'many'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
-    
+
     return i === 0 || n === 1 ? 'one'
-      : 2 <= n && n <= 10 ? 'few'
+      : n >= 2 && n <= 10 ? 'few'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
     const f = +(n + '.').split('.')[1]
-    
+
     return (n === 0 || n === 1) || i === 0 && f === 1 ? 'one'
       : 'other'
   },
@@ -240,16 +228,14 @@ const formats = [
     const v = (n + '.').split('.')[1].length
     return v === 0 && i % 100 === 1 ? 'one'
       : v === 0 && i % 100 === 2 ? 'two'
-      : v === 0 && (3 <= i % 100 && i % 100 <= 4) || v !== 0 ? 'few'
+      : v === 0 && (i % 100 >= 3 && i % 100 <= 4) || v !== 0 ? 'few'
       : 'other'
   },
   function (n) {
-    
-    return (0 <= n && n <= 1) || (11 <= n && n <= 99) ? 'one'
+    return (n >= 0 && n <= 1) || (n >= 11 && n <= 99) ? 'one'
       : 'other'
   },
   function (n) {
-    
     return n === 1 || n === 5 || n === 7 || n === 8 || n === 9 || n === 10 ? 'one'
       : n === 2 || n === 3 ? 'two'
       : n === 4 ? 'few'
@@ -264,19 +250,16 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return (n % 10 === 2 || n % 10 === 3) && (n % 100 !== 12 && n % 100 !== 13) ? 'few'
       : 'other'
   },
   function (n) {
-    
     return n === 1 || n === 3 ? 'one'
       : n === 2 ? 'two'
       : n === 4 ? 'few'
       : 'other'
   },
   function (n) {
-    
     return n === 0 || n === 7 || n === 8 || n === 9 ? 'zero'
       : n === 1 ? 'one'
       : n === 2 ? 'two'
@@ -285,14 +268,12 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n % 10 === 1 && n % 100 !== 11 ? 'one'
       : n % 10 === 2 && n % 100 !== 12 ? 'two'
       : n % 10 === 3 && n % 100 !== 13 ? 'few'
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
       : n === 2 || n === 3 ? 'two'
       : n === 4 ? 'few'
@@ -300,23 +281,20 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n === 1 || n === 5 ? 'one'
       : 'other'
   },
   function (n) {
-    
     return n === 11 || n === 8 || n === 80 || n === 800 ? 'many'
       : 'other'
   },
   function (n) {
     const i = Math.floor(Math.abs(n))
     return i === 1 ? 'one'
-      : i === 0 || ((2 <= i % 100 && i % 100 <= 20) || i % 100 === 40 || i % 100 === 60 || i % 100 === 80) ? 'many'
+      : i === 0 || ((i % 100 >= 2 && i % 100 <= 20) || i % 100 === 40 || i % 100 === 60 || i % 100 === 80) ? 'many'
       : 'other'
   },
   function (n) {
-    
     return n % 10 === 6 || n % 10 === 9 || n % 10 === 0 && n !== 0 ? 'many'
       : 'other'
   },
@@ -328,30 +306,25 @@ const formats = [
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
       : n === 2 || n === 3 ? 'two'
       : n === 4 ? 'few'
       : 'other'
   },
   function (n) {
-    
-    return 1 <= n && n <= 4 ? 'one'
+    return n >= 1 && n <= 4 ? 'one'
       : 'other'
   },
   function (n) {
-    
     return n === 1 ? 'one'
       : n % 10 === 4 && n % 100 !== 14 ? 'many'
       : 'other'
   },
   function (n) {
-    
     return (n % 10 === 1 || n % 10 === 2) && (n % 100 !== 11 && n % 100 !== 12) ? 'one'
       : 'other'
   },
   function (n) {
-    
     return n % 10 === 3 && n % 100 !== 13 ? 'few'
       : 'other'
   }

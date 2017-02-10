@@ -1,9 +1,8 @@
 import fs from 'fs'
-import path from "path"
+import path from 'path'
 import {transformFileSync} from 'babel-core'
 
 import plugin from '../src/index'
-
 
 const LOCALE_DIR = './locale'
 
@@ -15,11 +14,11 @@ const rmdir = (dir) => {
     const filename = path.join(dir, list[i])
     const stat = fs.statSync(filename)
 
-    if (filename == "." || filename == "..") {
+    if (filename === '.' || filename === '..') {
       // pass these files
     } else if (stat.isDirectory()) {
       // rmdir recursively
-      rmdir(filename);
+      rmdir(filename)
     } else {
       // rm fiilename
       fs.unlinkSync(filename)
@@ -28,8 +27,7 @@ const rmdir = (dir) => {
   fs.rmdirSync(dir)
 }
 
-
-function testCase(testName, assertion) {
+function testCase (testName, assertion) {
   const transform = (filename, jsx = true) => () => transformFileSync(path.join(__dirname, 'fixtures', filename), {
     plugins: [
       'external-helpers',
@@ -43,7 +41,6 @@ function testCase(testName, assertion) {
 
   it(testName, () => assertion(transform))
 }
-
 
 describe('babel-plugin-lingui-extract-messages', function () {
   // CWD is root directory of repository, so origin of all messages is going to

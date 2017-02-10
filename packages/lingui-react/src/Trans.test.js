@@ -1,8 +1,8 @@
 import React from 'react'
-import { Trans}  from '.'
+import { Trans } from '.'
 import { shallow, mount } from 'enzyme'
 
-describe('Trans component', function() {
+describe('Trans component', function () {
   /*
    * Setup context, define helpers
    */
@@ -22,15 +22,15 @@ describe('Trans component', function() {
    * Tests
    */
 
-  it("shouldn\'t throw runtime error without i18n context", function() {
+  it("shouldn't throw runtime error without i18n context", function () {
     expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
   })
 
-  it('should recompile msg when id or defaults changes', function() {
+  it('should recompile msg when id or defaults changes', function () {
     const node = mount(<Trans id="Original" defaults="Original" />, { context })
     expect(node.text()).toEqual('Původní')
 
-    node.setProps({ id: 'Updated'})
+    node.setProps({ id: 'Updated' })
     expect(node.text()).toEqual('Aktualizovaný')
 
     // doesn't affect when different prop is changed
@@ -42,10 +42,9 @@ describe('Trans component', function() {
     expect(node.text()).toEqual('Original')
     node.setProps({ defaults: 'Unknown' })
     expect(node.text()).toEqual('Unknown')
-
   })
 
-  it('should render default string', function() {
+  it('should render default string', function () {
     expect(text(<Trans id="unknown" />))
       .toEqual('unknown')
 
@@ -53,7 +52,7 @@ describe('Trans component', function() {
       .toEqual('Not translated yet')
   })
 
-  it('should render translation', function() {
+  it('should render translation', function () {
     const translation = text(
       <Trans id="All human beings are born free and equal in dignity and rights." />
     )
@@ -63,7 +62,7 @@ describe('Trans component', function() {
     )
   })
 
-  it('should format message with variables', function() {
+  it('should format message with variables', function () {
     const translation = text(
       <Trans id="My name is {name}" params={{name: 'Mononoke'}} />
     )

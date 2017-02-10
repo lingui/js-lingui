@@ -1,7 +1,7 @@
-import "babel-polyfill"
+import 'babel-polyfill'
 
 // Plugin function
-export default function({ types: t }) {
+export default function ({ types: t }) {
   const isI18nMethod = node =>
     t.isMemberExpression(node.tag) &&
     t.isIdentifier(node.tag.object, { name: 'i18n' }) &&
@@ -15,7 +15,7 @@ export default function({ types: t }) {
       t.isIdentifier(node.property, { name: 'ordinal' })
     )
 
-  function processMethod(node, file,  props) {
+  function processMethod (node, file, props) {
     // i18n.t
     if (isI18nMethod(node)) {
       processTemplateLiteral(node.quasi, file, props)
@@ -26,7 +26,8 @@ export default function({ types: t }) {
 
       const choices = {}
       const choicesType = node.callee.property.name
-      let variable, offset = ''
+      let variable
+      let offset = ''
 
       const arg = exp.arguments[0]
 
@@ -46,10 +47,8 @@ export default function({ types: t }) {
           const exp = attr.value
           variable = exp.name
           props.params[variable] = t.objectProperty(exp, exp)
-
         } else if (choicesType !== 'select' && name === 'offset') {
           offset = ` offset:${attr.value.value}`
-
         } else {
           let value = ''
 
@@ -76,7 +75,7 @@ export default function({ types: t }) {
     return props
   }
 
-  function processTemplateLiteral(exp, file, props) {
+  function processTemplateLiteral (exp, file, props) {
     let parts = []
 
     exp.quasis.forEach((item, index) => {
@@ -89,7 +88,7 @@ export default function({ types: t }) {
       if (t.isTemplateElement(item)) {
         props.text += item.value.raw
       } else if (t.isCallExpression(item)) {
-        const { text } = processMethod(item, file, {...props, text: '' })
+        const { text } = processMethod(item, file, { ...props, text: '' })
         props.text += `{${text}}`
       } else {
         props.text += `{${item.name}}`
@@ -102,11 +101,11 @@ export default function({ types: t }) {
 
   return {
     visitor: {
-      ExpressionStatement(path, { file }) {
+      ExpressionStatement (path, { file }) {
         // 1. Collect all parameters and generate message ID
 
         const props = processMethod(path.node.expression, file, {
-          text: "",
+          text: '',
           params: {}
         }, /* root= */true)
 
@@ -115,7 +114,7 @@ export default function({ types: t }) {
         // 2. Replace complex expression with single call to i18n.t
 
         const tArgs = [
-          t.objectProperty(t.identifier('id'), t.StringLiteral(props.text)),
+          t.objectProperty(t.identifier('id'), t.StringLiteral(props.text))
         ]
 
         const paramsList = Object.values(props.params)

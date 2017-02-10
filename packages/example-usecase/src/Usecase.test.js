@@ -8,15 +8,15 @@ import Usecase from './Usecase'
 const rmdir = (dir) => {
   const list = fs.readdirSync(dir)
 
-  for(let i = 0; i < list.length; i++) {
+  for (let i = 0; i < list.length; i++) {
     const filename = path.join(dir, list[i])
     const stat = fs.statSync(filename)
 
-    if(filename == "." || filename == "..") {
+    if (filename === '.' || filename === '..') {
       // pass these files
-    } else if(stat.isDirectory()) {
+    } else if (stat.isDirectory()) {
       // rmdir recursively
-      rmdir(filename);
+      rmdir(filename)
     } else {
       // rm fiilename
       fs.unlinkSync(filename)
@@ -25,16 +25,15 @@ const rmdir = (dir) => {
   fs.rmdirSync(dir)
 }
 
-
-describe('example-usecase', function() {
+describe('example-usecase', function () {
   const messages = {}
 
-  beforeAll(function() {
+  beforeAll(function () {
     messages.cs = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/cs/messages.json'))
     messages.fr = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/fr/messages.json'))
   })
 
-  afterAll(function() {
+  afterAll(function () {
     rmdir('./locale')
   })
 
@@ -46,38 +45,38 @@ describe('example-usecase', function() {
     return shallow(<Usecase {...props} language="cs" messages={messages.cs} />).find(element).html()
   }
 
-  it('should render', function() {
+  it('should render', function () {
     expect(mount(<Usecase />)).toMatchSnapshot()
   })
 
-  it('should render defaults with warning for untranslated', function() {
+  it('should render defaults with warning for untranslated', function () {
     expect(getText('.untranslated')).toEqual("This isn't translated")
   })
 
-  it('should support custom message id', function() {
+  it('should support custom message id', function () {
     expect(getText('.customId')).toEqual('Nápis')
   })
 
-  it('should render translated string', function() {
+  it('should render translated string', function () {
     expect(getText('.translated')).toEqual('Ahoj světe')
   })
 
-  it('should support variable substitution', function() {
+  it('should support variable substitution', function () {
     expect(getText('.variable')).toEqual('Jmenuji se Mononoke')
     expect(getText('.variable', { name: 'Fred' })).toEqual('Jmenuji se Fred')
   })
 
-  it('should support nested elements', function() {
+  it('should support nested elements', function () {
     expect(getHtml('.components'))
-      .toEqual('<span class=\"components\">Read <a href=\"/mononoke\">more</a>.</span>')
+      .toEqual('<span class="components">Read <a href="/mononoke">more</a>.</span>')
   })
 
-  it('should support pluralization', function() {
+  it('should support pluralization', function () {
     expect(getText('.plural'))
       .toEqual('Wilma invites Fred and 3 other people to her party.')
   })
 
-  it('should update translation when language changes', function() {
+  it('should update translation when language changes', function () {
     const node = mount(<Usecase messages={messages.cs} />)
     expect(node.find('.translated').text()).toEqual('Ahoj světe')
 

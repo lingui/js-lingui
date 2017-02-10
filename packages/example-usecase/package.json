@@ -18,6 +18,7 @@
     "babel-loader": "^6.2.10",
     "babel-plugin-lingui-extract-messages": "*",
     "babel-plugin-lingui-transform-react": "*",
+    "babel-plugin-lingui-transform-js": "*",
     "babel-preset-env": "^1.1.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"

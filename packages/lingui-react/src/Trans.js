@@ -1,5 +1,5 @@
-import React from "react"
-import MessageFormat from "messageformat"
+import React from 'react'
+import MessageFormat from 'messageformat'
 
 import WithI18n from './WithI18n'
 import type { I18nProps } from './I18nProvider'
@@ -9,6 +9,7 @@ type TransProps = {
   id: string,
   defaults?: string,
   params?: Object,
+  components?: Array<React$Element<any>>,
   i18n: I18nProps,
 
   className?: string
@@ -22,14 +23,14 @@ class Trans extends React.Component {
   props: TransProps
   state: TransState
 
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context)
     this.state = {
       msgCache: this.compileMessage(this.props)
     }
   }
 
-  getTranslation(props) {
+  getTranslation (props) {
     const {
       id, defaults, i18n: { messages, language }
     } = props
@@ -38,12 +39,12 @@ class Trans extends React.Component {
     return { language, translation }
   }
 
-  compileMessage(props) {
+  compileMessage (props) {
     const { language, translation } = this.getTranslation(props)
     return new MessageFormat(language).compile(translation)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const prev = this.getTranslation(this.props)
     const next = this.getTranslation(nextProps)
 
@@ -54,7 +55,7 @@ class Trans extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const {
       params, components, className
     } = this.props
@@ -65,6 +66,5 @@ class Trans extends React.Component {
     return <span className={className}>{translation}</span>
   }
 }
-
 
 export default WithI18n()(Trans)

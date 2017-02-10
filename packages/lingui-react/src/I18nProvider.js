@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 type I18nProps = {
   messages: {[key: string]: string},
@@ -18,7 +18,7 @@ type I18nProviderProps = I18nProps & {
 class I18n {
   subscribers = []
 
-  constructor(props) {
+  constructor (props) {
     this.update(props)
   }
 
@@ -44,11 +44,11 @@ class I18n {
     this.subscribers.forEach(f => f())
   }
 
-  get messages() {
+  get messages () {
     return this.props.messages
   }
 
-  get language() {
+  get language () {
     return this.props.language
   }
 }
@@ -56,12 +56,12 @@ class I18n {
 class I18nProvider extends React.Component {
   props: I18nProviderProps
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.i18n = new I18n(props)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     if (
       this.props.language !== prevProps.language ||
       this.props.messages !== prevProps.messages
@@ -70,13 +70,13 @@ class I18nProvider extends React.Component {
     }
   }
 
-  getChildContext() {
+  getChildContext () {
     return {
       i18n: this.i18n
     }
   }
 
-  render() {
+  render () {
     const { children } = this.props
     return children.length > 1 ? <div>{children}</div> : children
   }

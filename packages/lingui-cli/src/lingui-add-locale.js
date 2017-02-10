@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const Table = require('cli-table')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
 const getConfig = require('lingui-conf').default
@@ -10,7 +9,7 @@ const config = getConfig()
 
 program.parse(process.argv)
 
-function addLocale(locales) {
+function addLocale (locales) {
   locales.forEach(locale => {
     const localeDir = path.join(config.localeDir, locale)
 

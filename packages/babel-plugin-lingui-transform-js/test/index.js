@@ -1,16 +1,14 @@
-import fs from "fs"
+import fs from 'fs'
 import glob from 'glob'
-import path from "path"
+import path from 'path'
 import plugin from '../src/index'
 import { transformFileSync } from 'babel-core'
 
-
-function getTestName(testPath) {
+function getTestName (testPath) {
   return path.basename(testPath)
 }
 
-
-describe('babel-plugin-lingui-transform-js', function() {
+describe('babel-plugin-lingui-transform-js', function () {
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
     const actualPath = path.join(testPath, 'actual.js')
