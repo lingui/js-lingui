@@ -17,17 +17,22 @@ describe('babel-plugin-lingui-transform-js', function() {
     const expectedPath = path.join(testPath, 'expected.js')
 
     it(testName, () => {
-      const expected = fs.readFileSync(expectedPath, 'utf8')
-      const actual = transformFileSync(actualPath, {
+      const expected = fs.existsSync(expectedPath) && fs.readFileSync(expectedPath, 'utf8').trim()
+
+      const actual = () => transformFileSync(actualPath, {
         plugins: [
           'external-helpers',
           'syntax-jsx',
           'transform-remove-strict-mode',
           plugin
         ]
-      }).code
+      }).code.trim()
 
-      expect(actual.trim()).toEqual(expected.trim())
+      if (expected) {
+        expect(actual()).toEqual(expected)
+      } else {
+        expect(actual).toThrowErrorMatchingSnapshot()
+      }
     })
   })
 })

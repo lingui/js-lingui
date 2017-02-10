@@ -1,69 +1,112 @@
 import "babel-polyfill"
 
-
-const mergeProps = (props, nextProps) => ({
-  text: props.text + nextProps.text,
-  params: Object.assign({}, props.params, nextProps.params),
-  elementIndex: nextProps.elementIndex
-})
-
-const elementGeneratorFactory = () => {
-  let index = 0
-  return () => index++
-}
-
-
 // Plugin function
 export default function({ types: t }) {
-  let elementGenerator
-
-  const methodName = name => node =>
+  const isI18nMethod = node =>
     t.isMemberExpression(node.tag) &&
     t.isIdentifier(node.tag.object, { name: 'i18n' }) &&
-    t.isIdentifier(node.tag.property, { name })
+    t.isIdentifier(node.tag.property, { name: 't' })
 
-  const isI18nMethod = methodName('t')
+  const isChoiceMethod = node =>
+    t.isMemberExpression(node) &&
+    t.isIdentifier(node.object, { name: 'i18n' }) && (
+      t.isIdentifier(node.property, { name: 'plural' }) ||
+      t.isIdentifier(node.property, { name: 'select' })
+    )
 
-  function processElement(node, props, root = false) {
+  function processMethod(node, file,  props) {
     // i18n.t
     if (isI18nMethod(node)) {
-      const exp = node.quasi
-      let parts = []
+      processTemplateLiteral(node.quasi, file, props)
 
-      exp.quasis.forEach((item, index) => {
-        parts.push(item)
+    // i18n.plural and i18n.select
+    } else if (isChoiceMethod(node.callee)) {
+      const exp = node
 
-        if (!item.tail) parts.push(exp.expressions[index])
-      })
+      const choices = {}
+      const choicesType = node.callee.property.name
+      let variable, offset = ''
 
-      parts.forEach((item) => {
-        if (t.isTemplateElement(item)) {
-          props.text += item.value.raw
-        } else {
-          props.text += `{${item.name}}`
-          props.params[item.name] = t.objectProperty(item, item)
+      const arg = exp.arguments[0]
+
+      for (const attr of arg.properties) {
+        if (attr.computed) {
+          throw file.buildCodeFrameError(attr, "Computed properties aren't allowed.")
         }
-      })
+
+        const { key } = attr
+        // key is either:
+        // NumericLiteral => convert to `={number}`
+        // StringLiteral => key.value
+        // Literal => key.name
+        const name = t.isNumericLiteral(key) ? `=${key.value}` : key.name || key.value
+
+        if (name === 'value') {
+          const exp = attr.value
+          variable = exp.name
+          props.params[variable] = t.objectProperty(exp, exp)
+
+        } else if (choicesType !== 'select' && name === 'offset') {
+          offset = ` offset:${attr.value.value}`
+
+        } else {
+          let value = ''
+
+          if (t.isTemplateLiteral(attr.value)) {
+            props = processTemplateLiteral(attr.value, file, Object.assign({}, props, { text: '' }))
+            value = props.text
+          } else if (t.isCallExpression(attr.value)) {
+            props = processMethod(attr.value, file, Object.assign({}, props, { text: '' }))
+            value = props.text
+          } else {
+            value = attr.value.value
+          }
+          choices[name] = value
+        }
+      }
+
+      const categories = Object.keys(choices).reduce((acc, key) => {
+        return acc + ` ${key} {${choices[key]}}`
+      }, '')
+
+      props.text = `{${variable}, ${choicesType},${offset}${categories}}`
     }
+
+    return props
+  }
+
+  function processTemplateLiteral(exp, file, props) {
+    let parts = []
+
+    exp.quasis.forEach((item, index) => {
+      parts.push(item)
+
+      if (!item.tail) parts.push(exp.expressions[index])
+    })
+
+    parts.forEach((item) => {
+      if (t.isTemplateElement(item)) {
+        props.text += item.value.raw
+      } else {
+        props.text += `{${item.name}}`
+        props.params[item.name] = t.objectProperty(item, item)
+      }
+    })
 
     return props
   }
 
   return {
     visitor: {
-      TaggedTemplateExpression(path) {
-        elementGenerator = elementGeneratorFactory()
-
+      ExpressionStatement(path, { file }) {
         // 1. Collect all parameters and generate message ID
 
-        const props = processElement(path.node, {
+        const props = processMethod(path.node.expression, file, {
           text: "",
           params: {}
         }, /* root= */true)
 
-        if (!props) return
-
-        console.log(props)
+        if (!props.text) return
 
         // 2. Replace complex expression with single call to i18n.t
 
