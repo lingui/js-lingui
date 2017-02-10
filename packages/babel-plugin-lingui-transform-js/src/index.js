@@ -11,7 +11,8 @@ export default function({ types: t }) {
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) && (
       t.isIdentifier(node.property, { name: 'plural' }) ||
-      t.isIdentifier(node.property, { name: 'select' })
+      t.isIdentifier(node.property, { name: 'select' }) ||
+      t.isIdentifier(node.property, { name: 'ordinal' })
     )
 
   function processMethod(node, file,  props) {
@@ -87,6 +88,9 @@ export default function({ types: t }) {
     parts.forEach((item) => {
       if (t.isTemplateElement(item)) {
         props.text += item.value.raw
+      } else if (t.isCallExpression(item)) {
+        const { text } = processMethod(item, file, {...props, text: '' })
+        props.text += `{${text}}`
       } else {
         props.text += `{${item.name}}`
         props.params[item.name] = t.objectProperty(item, item)
