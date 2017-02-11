@@ -9,6 +9,7 @@ type Catalogs = {[key: string]: Catalog}
 
 type Message = {|
   id: string,
+  defaults?: string,
   params?: Object
 |}
 
@@ -59,13 +60,13 @@ class I18n {
     return new I18n(language, this._messages)
   }
 
-  translate ({ id, params = {} }: Message) {
-    return this.compile(id)(params)
+  translate ({ id, defaults, params = {} }: Message) {
+    const translation = this.messages[id] || defaults || id
+    return this.compile(translation)(params)
   }
 
   compile (message: string) {
-    const translation = this.messages[message] || message
-    return new MessageFormat(this.language).compile(translation)
+    return new MessageFormat(this.language).compile(message)
   }
 
   pluralForm (n: number, cardinal?: 'cardinal' | 'ordinal' = 'cardinal'): string {

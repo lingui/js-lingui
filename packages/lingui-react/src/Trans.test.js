@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react'
 import { Trans } from '.'
+import { I18n } from 'lingui-i18n'
 import { shallow, mount } from 'enzyme'
 
 describe('Trans component', function () {
@@ -9,16 +10,17 @@ describe('Trans component', function () {
    */
   const context = {
     i18nManager: {
-      i18n: {
-        messages: {
+      i18n: new I18n('en', {
+        en: {
           'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
           'My name is {name}': 'Jmenuji se {name}',
           'Original': 'Původní',
           'Updated': 'Aktualizovaný'
         }
-      }
+      })
     }
   }
+  // $FlowIgnore: missing annotation for dive()
   const text = (node) => shallow(node, { context }).dive().text()
 
   /*
@@ -26,6 +28,7 @@ describe('Trans component', function () {
    */
 
   it("shouldn't throw runtime error without i18n context", function () {
+    // $FlowIgnore: missing annotation for dive()
     expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
   })
 

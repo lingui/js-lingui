@@ -1,8 +1,8 @@
-/* @flow */
+// @flow
 import React from 'react'
 
+import type { I18n } from 'lingui-i18n'
 import WithI18n from './WithI18n'
-import type { I18nProps } from './I18nProvider'
 import { formatElements } from './format'
 
 type TransProps = {
@@ -10,54 +10,62 @@ type TransProps = {
   defaults?: string,
   params?: Object,
   components?: Array<React$Element<any>>,
-  i18n: I18nProps,
+  i18n: I18n,
 
   className?: string
 }
 
 type TransState = {
-  msgCache: Function
+  msgCache: Function,
+  language: string,
+  translation: string
 }
 
 class Trans extends React.Component {
   props: TransProps
   state: TransState
 
+  static defaultProps = {
+    i18n: {}
+  }
+
   constructor (props, context) {
     super(props, context)
+
+    const translation = this.getTranslation(props)
     this.state = {
-      msgCache: this.compileMessage(this.props)
+      msgCache: this.compileMessage(translation),
+      language: props.i18n.language,
+      translation
     }
   }
 
-  getTranslation (props) {
-    const {
-      id, defaults, i18n
-    } = props
+  getTranslation (props): string {
+    const { id, defaults, i18n } = props
 
-    const translation = (i18n.messages ? i18n.messages[id] : '') || defaults || id
-    return { i18n, translation }
+    return (i18n.messages ? i18n.messages[id] : '') || defaults || id
   }
 
-  compileMessage (props) {
-    const { translation, i18n } = this.getTranslation(props)
+  compileMessage (translation: string): Function {
+    const { i18n } = this.props
 
     if (!i18n.compile) return () => translation
     return i18n.compile(translation)
   }
 
   componentWillReceiveProps (nextProps) {
+    const { i18n } = this.props
     const { language, translation } = this.state
-    const next = this.getTranslation(nextProps)
+    const nextTranslation = this.getTranslation(nextProps)
 
     if (
-      translation !== next.translation ||
-      language !== next.i18n.language
+      translation !== nextTranslation ||
+      language !== i18n.language
     ) {
       this.setState({
-        msgCache: this.compileMessage(nextProps),
-        language,
-        translation
+        msgCache: this.compileMessage(nextTranslation),
+        language: i18n.language,
+        translation: nextTranslation
       })
     }
   }
@@ -72,10 +80,6 @@ class Trans extends React.Component {
 
     return <span className={className}>{translation}</span>
   }
-}
-
-Trans.defaultProps = {
-  i18n: {}
 }
 
 export default WithI18n()(Trans)

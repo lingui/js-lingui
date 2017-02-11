@@ -123,10 +123,6 @@ describe('I18n', function () {
 
     const msg = i18n.compile('My name is {name}')
     expect(msg).toBeInstanceOf(Function)
-    expect(msg({ name: 'Fred' })).toEqual("Je m'appelle Fred")
-
-    // Untranslated message
-    const untranslated = i18n.compile('Missing message')
-    expect(untranslated()).toEqual('Missing message')
+    expect(msg({ name: 'Fred' })).toEqual("My name is Fred")
   })
 })

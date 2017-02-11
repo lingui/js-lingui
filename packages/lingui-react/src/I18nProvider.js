@@ -1,16 +1,13 @@
 /* @flow */
 import React from 'react'
 import { I18n } from 'lingui-i18n'
+import type { Catalogs } from 'lingui-i18n'
 
-type I18nProps = {
-  messages: {[key: string]: string},
+type I18nProviderProps = {
+  children: any,
   language: string,
-  subscribe: Function,
-  unsubscribe: Function
-}
-
-type I18nProviderProps = I18nProps & {
-  children: any
+  messages: Catalogs,
+  i18n?: I18n
 }
 
 /*
@@ -21,21 +18,19 @@ class I18nManager {
   i18n: I18n
   subscribers = []
 
-  constructor (props = {}) {
-    const { language, messages, i18n } = props
-
+  constructor (language: string, messages?: Catalogs, i18n?: I18n) {
     this.i18n = i18n || new I18n(language, messages)
   }
 
-  subscribe = (callback) => {
+  subscribe = (callback: Function) => {
     this.subscribers.push(callback)
   }
 
-  unsubscribe = (callback) => {
+  unsubscribe = (callback: Function) => {
     this.subscribers = this.subscribers.filter(cb => cb !== callback)
   }
 
-  update = ({ messages, language } = {}) => {
+  update = ({ messages, language }: { messages?: Catalogs, language?: string } = {}) => {
     if (!messages && !language) return
 
     this.i18n.load(messages)
@@ -45,14 +40,16 @@ class I18nManager {
 }
 
 class I18nProvider extends React.Component {
+  i18nManager: I18nManager
   props: I18nProviderProps
 
-  constructor (props) {
+  constructor (props: I18nProviderProps) {
     super(props)
-    this.i18nManager = new I18nManager(props)
+    const { language, messages, i18n } = this.props
+    this.i18nManager = new I18nManager(language, messages, i18n)
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps: I18nProviderProps) {
     const { language, messages } = this.props
     if (
       language !== prevProps.language ||
@@ -80,4 +77,3 @@ I18nProvider.childContextTypes = {
 
 export default I18nProvider
 export { I18nManager }
-export type { I18nProps }
