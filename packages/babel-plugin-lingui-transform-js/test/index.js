@@ -29,7 +29,7 @@ describe('babel-plugin-lingui-transform-js', function () {
       if (expected) {
         expect(actual()).toEqual(expected)
       } else {
-        expect(actual).toThrowErrorMatchingSnapshot()
+        expect(actual).toThrow()
       }
     })
   })
