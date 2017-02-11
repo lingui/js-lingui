@@ -7,6 +7,9 @@
   "scripts": {
     "test": "jest",
     "watch": "jest --watch",
+    "lint:flow": "flow",
+    "lint:eslint": "eslint packages/",
+    "lint": "npm run lint:eslint && npm run lint:flow",
     "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
   },
   "devDependencies": {
