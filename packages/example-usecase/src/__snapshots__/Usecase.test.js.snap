@@ -35,7 +35,7 @@ exports[`example-usecase should render 1`] = `
     }>
     <NeverUpdate>
       <div>
-        <Usecase>
+        <UsecaseView>
           <div>
             <ul>
               <li>
@@ -294,7 +294,7 @@ exports[`example-usecase should render 1`] = `
               </li>
             </ul>
           </div>
-        </Usecase>
+        </UsecaseView>
       </div>
     </NeverUpdate>
   </I18nProvider>
