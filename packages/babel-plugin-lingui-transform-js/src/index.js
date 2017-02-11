@@ -99,38 +99,45 @@ export default function ({ types: t }) {
     return props
   }
 
+  function ExpressionStatement (path, { file }) {
+    // 1. Collect all parameters and generate message ID
+
+    const props = processMethod(path.node.expression, file, {
+      text: '',
+      params: {}
+    }, /* root= */true)
+
+    if (!props.text) return
+
+    // 2. Replace complex expression with single call to i18n.t
+
+    const tArgs = [
+      t.objectProperty(t.identifier('id'), t.StringLiteral(props.text))
+    ]
+
+    const paramsList = Object.values(props.params)
+    if (paramsList.length) {
+      tArgs.push(
+        t.objectProperty(t.identifier('params'), t.objectExpression(paramsList))
+      )
+    }
+
+    const jsx = t.isJSXExpressionContainer(path.node)
+
+    path.replaceWith(
+      (jsx ? t.JSXExpressionContainer : t.expressionStatement)(
+        t.callExpression(
+          t.memberExpression(t.identifier('i18n'), t.identifier('t')),
+          [ t.objectExpression(tArgs) ]
+        )
+      )
+    )
+  }
+
   return {
     visitor: {
-      ExpressionStatement (path, { file }) {
-        // 1. Collect all parameters and generate message ID
-
-        const props = processMethod(path.node.expression, file, {
-          text: '',
-          params: {}
-        }, /* root= */true)
-
-        if (!props.text) return
-
-        // 2. Replace complex expression with single call to i18n.t
-
-        const tArgs = [
-          t.objectProperty(t.identifier('id'), t.StringLiteral(props.text))
-        ]
-
-        const paramsList = Object.values(props.params)
-        if (paramsList.length) {
-          tArgs.push(
-            t.objectProperty(t.identifier('params'), t.objectExpression(paramsList))
-          )
-        }
-
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('i18n'), t.identifier('t')),
-            [ t.objectExpression(tArgs) ]
-          )
-        )
-      }
-    }  // visitor
+      ExpressionStatement,
+      JSXExpressionContainer: ExpressionStatement
+    }
   }
 }

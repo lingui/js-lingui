@@ -21,10 +21,9 @@ describe('babel-plugin-lingui-transform-js', function () {
 
       const actual = () => transformFileSync(actualPath, {
         plugins: [
-          'external-helpers',
+          plugin,
           'syntax-jsx',
-          'transform-remove-strict-mode',
-          plugin
+          'transform-remove-strict-mode'
         ]
       }).code.trim()
 
