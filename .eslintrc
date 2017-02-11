@@ -11,12 +11,19 @@
   "extends": [
     "standard",
     "plugin:flowtype/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
     "plugin:react/recommended"
   ],
   "plugins": [
     "standard",
     "promise",
     "flowtype",
+    "import",
     "react"
-  ]
+  ],
+  "rules": {
+    "no-duplicate-imports": "off",
+    "react/display-name": "off"
+  }
 }
