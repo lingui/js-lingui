@@ -50,8 +50,6 @@ class App extends React.Component {
   render () {
     const { language } = this.state
 
-    const messages = language === 'en' ? {} : locales[language]
-
     return (
       <div>
         <ul>
@@ -60,7 +58,7 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <Usecase messages={messages} language={language} />
+        <Usecase messages={locales} language={language} />
       </div>
     )
   }

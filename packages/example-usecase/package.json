@@ -29,6 +29,7 @@
       "react"
     ],
     "plugins": [
+      "transform-object-rest-spread",
       "lingui-transform-react",
       [
         "lingui-extract-messages",

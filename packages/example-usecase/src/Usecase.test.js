@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 import Usecase from './Usecase'
 
@@ -43,7 +43,7 @@ describe('example-usecase', function () {
   }
 
   const getHtml = (element, props = {}) => {
-    return shallow(<Usecase {...props} language="cs" messages={messages} />).find(element).html()
+    return mount(<Usecase {...props} language="cs" messages={messages} />).find(element).html()
   }
 
   it('should render', function () {
@@ -68,8 +68,7 @@ describe('example-usecase', function () {
   })
 
   it('should support nested elements', function () {
-    expect(getHtml('.components'))
-      .toEqual('<span class="components">Read <a href="/mononoke">more</a>.</span>')
+    expect(getHtml('.components')).toMatchSnapshot()
   })
 
   it('should support pluralization', function () {
