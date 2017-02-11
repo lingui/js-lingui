@@ -1,9 +1,10 @@
+// @flow
 import React from 'react'
 import { Trans, I18nProvider, Select, Plural } from 'lingui-react'
 
 class NeverUpdate extends React.Component {
   props: {
-    children: any
+    children?: any
   }
 
   shouldComponentUpdate () {

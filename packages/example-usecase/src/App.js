@@ -32,7 +32,11 @@ if (module.hot) {
 }
 
 class App extends React.Component {
-  constructor (props) {
+  state: {
+    language: string
+  }
+
+  constructor (props: {}) {
     super(props)
     this.state = {
       language: 'cs'

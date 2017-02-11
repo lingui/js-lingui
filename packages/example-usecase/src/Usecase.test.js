@@ -1,3 +1,4 @@
+// @flow
 import fs from 'fs'
 import path from 'path'
 import React from 'react'
@@ -29,8 +30,8 @@ describe('example-usecase', function () {
   const messages = {}
 
   beforeAll(function () {
-    messages.cs = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/cs/messages.json'))
-    messages.fr = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/fr/messages.json'))
+    messages.cs = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/cs/messages.json').toString())
+    messages.fr = JSON.parse(fs.readFileSync('./packages/example-usecase/locale/fr/messages.json').toString())
   })
 
   afterAll(function () {

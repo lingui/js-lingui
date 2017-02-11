@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { shallow } from 'enzyme'
-import { Plural } from '.'
+import Plural from './Plural'
 
 describe('Plural', function () {
   const languageContext = (code) => ({ context: { i18nManager: { i18n: { language: code } } } })

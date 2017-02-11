@@ -10,9 +10,7 @@ type WithI18nProps = {
   i18n: I18n
 }
 
-export default ({
-  update = true
-}: WithI18nOptions = {}) => (WrappedComponent: ReactClass<*>) => {
+export default ({ update = true }: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
   return class WithI18n extends React.Component {
     static contextTypes = {
       i18nManager: React.PropTypes.object
@@ -42,10 +40,8 @@ export default ({
 
     render () {
       const { i18n } = this.getI18n()
-      return <WrappedComponent
-        {...this.props}
-        i18n={i18n}
-      />
+      // $FlowIgnore: https://github.com/facebook/flow/issues/3241
+      return <WrappedComponent {...this.props} i18n={i18n} />
     }
   }
 }

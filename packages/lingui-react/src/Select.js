@@ -6,7 +6,7 @@ type SelectProps = {
   other: any
 }
 
-class Select extends React.Component {
+class Select extends React.Component<*, SelectProps, *> {
   props: SelectProps
 
   render () {

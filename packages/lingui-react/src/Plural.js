@@ -5,8 +5,8 @@ import type { WithI18nProps } from './WithI18n'
 import rules from './plurals'
 
 type PluralProps = {
-  value: number,
-  offset: number,
+  value: number | string,
+  offset?: number | string,
   zero?: any,
   one?: any,
   two?: any,
@@ -15,7 +15,7 @@ type PluralProps = {
   other: any
 } & WithI18nProps
 
-class Plural extends React.Component {
+class Plural extends React.Component<*, PluralProps, *> {
   props: PluralProps
 
   static defaultProps = {
@@ -28,10 +28,11 @@ class Plural extends React.Component {
       i18n: { language }
     } = this.props
 
-    const form = rules[language].cardinal(value - offset)
+    const n = parseInt(value) - parseInt(offset)
+    const form = rules[language].cardinal(n)
     const translation = this.props[`_${value}`] || this.props[form]
 
-    return <span>{translation.replace('#', value - offset)}</span>
+    return <span>{translation.replace('#', n)}</span>
   }
 }
 
