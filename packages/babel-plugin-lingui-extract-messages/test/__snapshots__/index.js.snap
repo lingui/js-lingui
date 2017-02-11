@@ -1,3 +1,16 @@
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
+Object {
+  "msg.hello": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/integration.js",
+        null,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files 1`] = `
 Object {
   "msg.default": Object {
@@ -26,6 +39,43 @@ Object {
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/all.js",
         7,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
+Object {
+  "Hello World": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        2,
+      ],
+    ],
+  },
+  "Hi, my name is {name}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        3,
+      ],
+    ],
+  },
+  "Title": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        null,
+      ],
+    ],
+  },
+  "{undefined, plural, count {undefined} one {# book} others {# books}}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        null,
       ],
     ],
   },

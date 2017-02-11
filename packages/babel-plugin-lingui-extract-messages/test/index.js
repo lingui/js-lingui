@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import {transformFileSync} from 'babel-core'
+import { transformFileSync } from 'babel-core'
 
 import plugin from '../src/index'
 
@@ -30,12 +30,21 @@ const rmdir = (dir) => {
 function testCase (testName, assertion) {
   const transform = (filename, jsx = true) => () => transformFileSync(path.join(__dirname, 'fixtures', filename), {
     plugins: [
-      'external-helpers',
-      ...(jsx ? ['syntax-jsx'] : []),
-      'transform-remove-strict-mode',
+      ...(filename.endsWith('integration.js')
+          ? jsx
+            ? [
+              'lingui-transform-react',
+              'lingui-transform-js'
+            ]
+            : ['lingui-transform-js']
+          : []
+      ),
       [plugin, {
         localeDir: LOCALE_DIR
-      }]
+      }],
+      'external-helpers',
+      ...(jsx ? ['syntax-jsx'] : []),
+      'transform-remove-strict-mode'
     ]
   })
 
@@ -51,13 +60,13 @@ describe('babel-plugin-lingui-extract-messages', function () {
     'test', 'fixtures'
   )
 
-  beforeAll(() => {
-    rmdir(LOCALE_DIR)
-  })
-
-  afterAll(() => {
-    rmdir(LOCALE_DIR)
-  })
+  // beforeAll(() => {
+  //   rmdir(LOCALE_DIR)
+  // })
+  //
+  // afterAll(() => {
+  //   rmdir(LOCALE_DIR)
+  // })
 
   testCase('should raise exception on duplicate id and different defaults', (transform) => {
     expect(transform('jsx/duplicate-id.js')).toThrow(/Different defaults/)
@@ -83,6 +92,16 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(messages).toMatchSnapshot()
   })
 
+  testCase('should extract all messages from JSX files (integration)', (transform) => {
+    // first run should create all required folders and write messages
+    expect(transform('jsx/integration.js')).not.toThrow()
+    // another runs should just write messages
+    expect(transform('jsx/integration.js')).not.toThrow()
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/integration.json')))
+    expect(messages).toMatchSnapshot()
+  })
+
   testCase('should extract all messages from JS files', (transform) => {
     // first run should create all required folders and write messages
     expect(transform('js/all.js', false)).not.toThrow()
@@ -90,6 +109,16 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(transform('js/all.js', false)).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'js/all.json')))
+    expect(messages).toMatchSnapshot()
+  })
+
+  testCase('should extract all messages from JS files (integration)', (transform) => {
+    // first run should create all required folders and write messages
+    expect(transform('js/integration.js', false)).not.toThrow()
+    // another runs should just write messages
+    expect(transform('js/integration.js', false)).not.toThrow()
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'js/integration.json')))
     expect(messages).toMatchSnapshot()
   })
 })

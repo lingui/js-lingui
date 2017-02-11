@@ -44,7 +44,7 @@ export default function ({ types: t }) {
     }, {})
 
     const filename = fsPath.relative(optsBaseDir, file.opts.filename)
-    const line = path.node.loc.start.line
+    const line = path.node.loc ? path.node.loc.start.line : null
     attrs.origin = [[filename, line]]
 
     addMessage(path, messages, attrs)
