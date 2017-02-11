@@ -2,6 +2,7 @@
 import React from 'react'
 import { Trans, I18nProvider, Select, Plural } from 'lingui-react'
 import NeverUpdate from './NeverUpdate'
+import ElementAttributes from './Usecases/ElementAttributes'
 
 class UsecaseView extends React.Component {
   props: {
@@ -26,6 +27,10 @@ class UsecaseView extends React.Component {
         <ul>
           <li>
             <Trans className="untranslated">{"This isn't translated"}</Trans>
+          </li>
+
+          <li>
+            <ElementAttributes />
           </li>
 
           <li>

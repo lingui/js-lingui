@@ -15,7 +15,9 @@
     "react": "15.x"
   },
   "devDependencies": {
+    "babel-cli": "^6.22.2",
     "babel-loader": "^6.2.10",
+    "babel-polyfill": "^6.22.0",
     "babel-plugin-lingui-extract-messages": "*",
     "babel-plugin-lingui-transform-react": "*",
     "babel-plugin-lingui-transform-js": "*",
@@ -25,18 +27,20 @@
   },
   "babel": {
     "presets": [
-      "latest",
+      "env",
       "react"
     ],
     "plugins": [
-      "transform-object-rest-spread",
+      "lingui-transform-js",
       "lingui-transform-react",
       [
         "lingui-extract-messages",
         {
           "localeDir": "./locale"
         }
-      ]
+      ],
+      "transform-class-properties",
+      "transform-object-rest-spread"
     ]
   }
 }

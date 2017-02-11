@@ -1,0 +1,30 @@
+{
+  "Read <0>more</0>": {
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        15
+      ]
+    ]
+  },
+  "Full content of {articleName}": {
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        null
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        null
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        null
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        null
+      ]
+    ]
+  }
+}
