@@ -78,4 +78,4 @@ class I18n {
 
 export default new I18n()
 export { I18n }
-export type { Message, Catalog }
+export type { Message, Catalog, Catalogs }

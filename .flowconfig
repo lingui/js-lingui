@@ -1,5 +1,4 @@
 [ignore]
-.*/lib/.*
 .*/node_modules/.*
 
 [include]
