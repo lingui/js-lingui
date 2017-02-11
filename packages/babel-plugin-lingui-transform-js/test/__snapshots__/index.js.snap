@@ -1,0 +1,1 @@
+exports[`babel-plugin-lingui-transform-js select-err-computed-property 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/select-err-computed-property/actual.js: Computed properties aren\'t allowed."`;

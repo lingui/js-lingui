@@ -11,7 +11,9 @@ function getTestName (testPath) {
 describe('babel-plugin-lingui-transform-js', function () {
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
-    const actualPath = path.join(testPath, 'actual.js')
+    // We're using relative path here to make snapshot testing work
+    // across different machines.
+    const actualPath = path.relative(process.cwd(), path.join(testPath, 'actual.js'))
     const expectedPath = path.join(testPath, 'expected.js')
 
     it(testName, () => {
@@ -29,7 +31,7 @@ describe('babel-plugin-lingui-transform-js', function () {
       if (expected) {
         expect(actual()).toEqual(expected)
       } else {
-        expect(actual).toThrow()
+        expect(actual).toThrowErrorMatchingSnapshot()
       }
     })
   })
