@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
 
-import type { I18n } from 'lingui-i18n'
 import WithI18n from './WithI18n'
+import type { WithI18nProps } from './WithI18n'
 import { formatElements } from './format'
 
 type TransProps = {
@@ -10,10 +10,9 @@ type TransProps = {
   defaults?: string,
   params?: Object,
   components?: Array<React$Element<any>>,
-  i18n: I18n,
 
   className?: string
-}
+} & WithI18nProps
 
 type TransState = {
   msgCache: Function,

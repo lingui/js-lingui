@@ -21,7 +21,7 @@ describe('I18n', function () {
     expect(i18n.t`Hello ${name}`).toEqual('Hello Fred')
   })
 
-  it('.load should load catalog and merge with existing', function() {
+  it('.load should load catalog and merge with existing', function () {
     const messages = {
       en: {
         'Hello': 'Hello'
@@ -123,6 +123,6 @@ describe('I18n', function () {
 
     const msg = i18n.compile('My name is {name}')
     expect(msg).toBeInstanceOf(Function)
-    expect(msg({ name: 'Fred' })).toEqual("My name is Fred")
+    expect(msg({ name: 'Fred' })).toEqual('My name is Fred')
   })
 })

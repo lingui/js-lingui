@@ -1,3 +1,4 @@
+// @flow
 import { cloneElement } from 'react'
 
 // match <0>paired</0> and <1/> unpaired tags
@@ -10,7 +11,7 @@ const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
  * placeholders. `elements` is a array of react elements which indexes
  * correspond to element indexes in formatted string
  */
-function formatElements (value, elements) {
+function formatElements (value: string, elements: Array<React$Element<any>> = []) {
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist
 
@@ -55,10 +56,10 @@ function formatElements (value, elements) {
 function getElements (parts) {
   if (!parts.length) return []
 
-  const [paired, children = '', unpaired, after] = parts.slice(0, 4)
+  const [paired, children, unpaired, after] = parts.slice(0, 4)
 
   return [
-    [parseInt(paired || unpaired), children, after]
+    [parseInt(paired || unpaired), children || '', after]
   ].concat(getElements(parts.slice(4, parts.length)))
 }
 

@@ -108,7 +108,7 @@ describe('I18nManager', function () {
     expect(listener).toBeCalled()
     listener.mockReset()
 
-    i18nManager.update({ messages: { msg: 'hello' } })
+    i18nManager.update({ messages: { en: { id: 'hello' } } })
     expect(listener).toBeCalled()
   })
 })

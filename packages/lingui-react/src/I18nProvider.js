@@ -4,7 +4,7 @@ import { I18n } from 'lingui-i18n'
 import type { Catalogs } from 'lingui-i18n'
 
 type I18nProviderProps = {
-  children: any,
+  children?: any,
   language: string,
   messages: Catalogs,
   i18n?: I18n
@@ -33,8 +33,8 @@ class I18nManager {
   update = ({ messages, language }: { messages?: Catalogs, language?: string } = {}) => {
     if (!messages && !language) return
 
-    this.i18n.load(messages)
-    this.i18n.activate(language)
+    if (messages) this.i18n.load(messages)
+    if (language) this.i18n.activate(language)
     this.subscribers.forEach(f => f())
   }
 }
@@ -67,7 +67,7 @@ class I18nProvider extends React.Component {
 
   render () {
     const { children } = this.props
-    return children.length > 1 ? <div>{children}</div> : children
+    return children && children.length > 1 ? <div>{children}</div> : children
   }
 }
 
@@ -77,3 +77,4 @@ I18nProvider.childContextTypes = {
 
 export default I18nProvider
 export { I18nManager }
+export type { I18nProviderProps }

@@ -1,12 +1,23 @@
+// @flow
 import React from 'react'
+import type { I18n } from 'lingui-i18n'
 
-/*
- * Inject i18n data from context to props.
- */
+type WithI18nOptions = {
+  update?: boolean
+}
+
+type WithI18nProps = {
+  i18n: I18n
+}
+
 export default ({
   update = true
-} = {}) => (WrappedComponent) => {
-  class WithI18n extends React.Component {
+}: WithI18nOptions = {}) => (WrappedComponent: ReactClass<*>) => {
+  return class WithI18n extends React.Component {
+    static contextTypes = {
+      i18nManager: React.PropTypes.object
+    }
+
     componentDidMount () {
       if (update) {
         const { subscribe } = this.getI18n()
@@ -37,10 +48,6 @@ export default ({
       />
     }
   }
-
-  WithI18n.contextTypes = {
-    i18nManager: React.PropTypes.object
-  }
-
-  return WithI18n
 }
+
+export type { WithI18nProps }

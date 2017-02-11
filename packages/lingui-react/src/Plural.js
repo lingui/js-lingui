@@ -1,21 +1,26 @@
+// @flow
 import React from 'react'
 import WithI18n from './WithI18n'
-import type { I18nProps } from './I18nProvider'
+import type { WithI18nProps } from './WithI18n'
 import rules from './plurals'
 
 type PluralProps = {
   value: number,
-  offset?: number,
+  offset: number,
   zero?: any,
   one?: any,
   two?: any,
   few?: any,
   many?: any,
-  other?: any
-} & I18nProps
+  other: any
+} & WithI18nProps
 
 class Plural extends React.Component {
   props: PluralProps
+
+  static defaultProps = {
+    offset: 0
+  }
 
   render () {
     const {
@@ -28,10 +33,6 @@ class Plural extends React.Component {
 
     return <span>{translation.replace('#', value - offset)}</span>
   }
-}
-
-Plural.defaultProps = {
-  offset: 0
 }
 
 export default WithI18n()(Plural)

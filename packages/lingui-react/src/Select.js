@@ -1,8 +1,9 @@
+// @flow
 import React from 'react'
 
 type SelectProps = {
-  value: number,
-  other: React$Element<any>
+  value: any,
+  other: any
 }
 
 class Select extends React.Component {

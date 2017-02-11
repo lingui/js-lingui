@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { shallow } from 'enzyme'
 import { Plural } from '.'
@@ -11,9 +12,11 @@ describe('Plural', function () {
       languageContext('en')
     )
 
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('1 book')
 
     node.setProps({ value: 2 })
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('2 books')
   })
 
@@ -23,12 +26,15 @@ describe('Plural', function () {
       languageContext('cs')
     )
 
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('1 kniha')
 
     node.setProps({ value: 2 })
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('2 knihy')
 
     node.setProps({ value: 5 })
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('5 knih')
   })
 
@@ -38,12 +44,15 @@ describe('Plural', function () {
       languageContext('en')
     )
 
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('one')
 
     node.setProps({ value: 2 })
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('one and one another')
 
     node.setProps({ value: 3 })
+    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('other')
   })
 })
