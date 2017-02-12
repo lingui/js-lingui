@@ -6,6 +6,10 @@ Object {
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/integration.js",
         1,
       ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/integration.js",
+        2,
+      ],
     ],
   },
 }
@@ -47,23 +51,7 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
 Object {
-  "Hello World": Object {
-    "origin": Array [
-      Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        2,
-      ],
-    ],
-  },
   "Hi, my name is {name}": Object {
-    "origin": Array [
-      Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        3,
-      ],
-    ],
-  },
-  "Title": Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
@@ -71,11 +59,39 @@ Object {
       ],
     ],
   },
+  "Title": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        2,
+      ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        9,
+      ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        10,
+      ],
+    ],
+  },
+  "{count, plural, one {# book} others {# books}}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        12,
+      ],
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        17,
+      ],
+    ],
+  },
   "{undefined, plural, count {undefined} one {# book} others {# books}}": Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        4,
+        3,
       ],
     ],
   },
