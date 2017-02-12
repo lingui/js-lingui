@@ -24,6 +24,8 @@
     "babel-cli": "^6.22.2",
     "babel-polyfill": "^6.22.0",
     "babel-preset-env": "^1.1.8",
+    "babel-plugin-lingui-transform-react": "*",
+    "babel-plugin-lingui-transform-js": "*",
     "rimraf": "^2.5.4"
   },
   "scripts": {
