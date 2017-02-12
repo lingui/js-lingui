@@ -1,8 +1,7 @@
 const path = require('path')
 const pkgConf = require('pkg-conf')
 
-
-function replaceRootDir(conf, rootDir) {
+function replaceRootDir (conf, rootDir) {
   const replace = s => s.replace('<rootDir>', rootDir)
 
   ;['srcPathDirs', 'srcPathIgnorePatterns', 'localeDir']
@@ -10,7 +9,7 @@ function replaceRootDir(conf, rootDir) {
       const value = conf[key]
 
       if (!value) {
-      } else if (typeof value === "string") {
+      } else if (typeof value === 'string') {
         conf[key] = replace(value)
       } else if (value.length) {
         conf[key] = value.map(replace)
@@ -21,15 +20,14 @@ function replaceRootDir(conf, rootDir) {
   return conf
 }
 
-
 const defaults = {
-  localeDir: "locale",
-  srcPathDirs: ["<rootDir>"],
-  srcPathIgnorePatterns: ["/node_modules/"]
+  localeDir: 'locale',
+  srcPathDirs: ['<rootDir>'],
+  srcPathIgnorePatterns: ['/node_modules/']
 }
 
-function getConfig() {
-  const conf = pkgConf.sync("lingui", {
+function getConfig () {
+  const conf = pkgConf.sync('lingui', {
     defaults,
     skipOnFalse: true
   })

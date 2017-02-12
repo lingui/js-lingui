@@ -1,34 +1,37 @@
+// @flow
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 
 import { I18nProvider } from '.'
-import { I18n } from './I18nProvider'
+import { I18nManager } from './I18nProvider'
 
-
-describe('I18nProvider', function() {
+describe('I18nProvider', function () {
   const props = {
     messages: {
-      'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+      'cs-cz': {
+        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+      }
     },
     language: 'cs-cz'
   }
 
-  it('should provide context with i18n data', function() {
+  it('should provide context with i18n data', function () {
     const component = shallow(<I18nProvider {...props}><div /></I18nProvider>).instance()
-    const { subscribe, unsubscribe, props: i18nProps } = component.getChildContext()['i18n']
-    expect(i18nProps).toEqual(props)
+    const { subscribe, unsubscribe, i18n } = component.getChildContext()['i18nManager']
+    expect(i18n.messages).toEqual(props.messages[props.language])
+    expect(i18n.language).toEqual(props.language)
     expect(subscribe).toBeInstanceOf(Function)
     expect(unsubscribe).toBeInstanceOf(Function)
   })
 
-  it('should render children', function() {
+  it('should render children', function () {
     const child = <div className="testcase" />
     expect(shallow(
       <I18nProvider {...props}>{child}</I18nProvider>
     ).contains(child)).toBeTruthy()
   })
 
-  it('should render multiple children wrapped in div', function() {
+  it('should render multiple children wrapped in div', function () {
     expect(shallow(
       <I18nProvider {...props}>
         <span />
@@ -37,12 +40,13 @@ describe('I18nProvider', function() {
     ).find('div').length).toEqual(1)
   })
 
-  it('should notify all subscribers about context change', function() {
-    const node = mount(<I18nProvider language="en"><div /></I18nProvider>)
+  it('should notify all subscribers about context change', function () {
+    const node = mount(<I18nProvider language="en" messages={{}}><div /></I18nProvider>)
     const instance = node.instance()
     const listener = jest.fn()
 
-    instance.i18n.subscribe(listener)
+    // $FlowIgnore - Instance returned from enzyme doesn't have custom attrs
+    instance.i18nManager.subscribe(listener)
     expect(listener).not.toBeCalled()
 
     node.setProps({ language: 'en' })
@@ -53,54 +57,58 @@ describe('I18nProvider', function() {
   })
 })
 
+describe('I18nManager', function () {
+  it('should pass active language and messages to underlying I18n class', function () {
+    const i18nManager = new I18nManager(
+      'en', {
+        en: { msg: 'hello' },
+        fr: { msg: 'salut' }
+      }
+    )
 
-describe('I18n', function() {
-  it('should provide active language and messages', function() {
-    const i18n = new I18n({ language: 'en', messages: { msg: 'hello'}})
+    expect(i18nManager.i18n.language).toEqual('en')
+    expect(i18nManager.i18n.messages).toEqual({ msg: 'hello' })
 
-    expect(i18n.language).toEqual('en')
-    expect(i18n.messages).toEqual({ msg: 'hello' })
+    i18nManager.update({ language: 'fr' })
+    expect(i18nManager.i18n.language).toEqual('fr')
+    expect(i18nManager.i18n.messages).toEqual({ msg: 'salut' })
 
-    i18n.update({ language: 'cs' })
-    expect(i18n.language).toEqual('cs')
-    expect(i18n.messages).toEqual({ msg: 'hello' })
-
-    i18n.update({ messages: { msg: 'world' }})
-    expect(i18n.language).toEqual('cs')
-    expect(i18n.messages).toEqual({ msg: 'world'})
+    i18nManager.update({ messages: { fr: { msg: 'salut!' } } })
+    expect(i18nManager.i18n.language).toEqual('fr')
+    expect(i18nManager.i18n.messages).toEqual({ msg: 'salut!' })
   })
 
-  it('should subscribe/unsubscribe listeners for context changes', function() {
-    const i18n = new I18n()
+  it('should subscribe/unsubscribe listeners for context changes', function () {
+    const i18nManager = new I18nManager('en')
     const listener = jest.fn()
 
-    expect(i18n.subscribers).toEqual([])
+    expect(i18nManager.subscribers).toEqual([])
 
-    i18n.subscribe(listener)
-    expect(i18n.subscribers).toEqual([listener])
+    i18nManager.subscribe(listener)
+    expect(i18nManager.subscribers).toEqual([listener])
 
-    i18n.unsubscribe(listener)
-    expect(i18n.subscribers).toEqual([])
+    i18nManager.unsubscribe(listener)
+    expect(i18nManager.subscribers).toEqual([])
   })
 
-  it('should notify listeners only when relevant data changes', function() {
+  it('should notify listeners only when relevant data changes', function () {
     const listener = jest.fn()
-    const i18n = new I18n()
-    i18n.subscribe(listener)
+    const i18nManager = new I18nManager('en')
+    i18nManager.subscribe(listener)
 
     expect(listener).not.toBeCalled()
 
-    i18n.update()
+    i18nManager.update()
     expect(listener).not.toBeCalled()
 
-    i18n.update({ completelyDifferentProp: 42 })
+    i18nManager.update({ completelyDifferentProp: 42 })
     expect(listener).not.toBeCalled()
 
-    i18n.update({ language: 'en' })
+    i18nManager.update({ language: 'fr' })
     expect(listener).toBeCalled()
     listener.mockReset()
 
-    i18n.update({ messages: { msg: 'hello' }})
+    i18nManager.update({ messages: { en: { id: 'hello' } } })
     expect(listener).toBeCalled()
   })
 })

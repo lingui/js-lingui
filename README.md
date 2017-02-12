@@ -170,7 +170,7 @@ React components for i18n.
 
 #### Components
 - `I18nProvider` – context provider of all i18n data (messages, current language, etc.)
-- `InjectI18n` - HOC for passing i18n data from context to props of wrapped component. Also takes care of updates when context data changes, but some ancestor skip update (`shouldComponentUpdate` returns `false`).
+- `WithI18n` - HOC for passing i18n data from context to props of wrapped component. Also takes care of updates when context data changes, but some ancestor skip update (`shouldComponentUpdate` returns `false`).
 - [`Trans`](https://github.com/lingui/js-lingui/wiki/Trans) – component for message formating and translation
 - `Select` – select message based on variable
 - [`Plural`](https://github.com/lingui/js-lingui/wiki/Plural) – select plural based on number

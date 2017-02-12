@@ -3,17 +3,17 @@ import Usecase from './Usecase'
 
 const reloader = {
   subscribers: [],
-  subscribe(cb) {
+  subscribe (cb) {
     this.subscribers.push(cb)
   },
-  broadcast() {
+  broadcast () {
     this.subscribers.forEach(f => f())
   }
 }
 
 const locales = {}
 
-function reloadLocales(context) {
+function reloadLocales (context) {
   context.keys().forEach((item) => {
     const parts = item.split('/')
     const locale = parts[parts.length - 2]
@@ -21,32 +21,34 @@ function reloadLocales(context) {
   })
 }
 
-const context = require.context("../locale/", true, /([\w-]+)\/.*\.json$/)
+const context = require.context('../locale/', true, /([\w-]+)\/.*\.json$/)
 reloadLocales(context)
 
 if (module.hot) {
-  module.hot.accept(context.id, function() {
-    reloadLocales(require.context("../locale/", true, /([\w-]+)\/.*\.json$/))
+  module.hot.accept(context.id, function () {
+    reloadLocales(require.context('../locale/', true, /([\w-]+)\/.*\.json$/))
     reloader.broadcast()
   })
 }
 
 class App extends React.Component {
-  constructor(props) {
+  state: {
+    language: string
+  }
+
+  constructor (props: {}) {
     super(props)
     this.state = {
       language: 'cs'
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     reloader.subscribe(() => this.forceUpdate())
   }
 
-  render() {
+  render () {
     const { language } = this.state
-
-    const messages = language === 'en' ? {} : locales[language]
 
     return (
       <div>
@@ -56,7 +58,7 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <Usecase messages={messages} language={language} />
+        <Usecase messages={locales} language={language} />
       </div>
     )
   }

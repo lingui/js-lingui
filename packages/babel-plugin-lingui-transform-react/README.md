@@ -1,59 +1,90 @@
-react-plugin-transform-react - Syntactic sugar for translations
-=====================================================================
+# react-plugin-lingui-transform-react
 
-Babel plugin for human-friendly definitions of strings for translation in React.
-Works in combination with `lingui-react` component.
+> This plugin transforms messages written using `lingui-react` components in React to static ICU message format.
 
-Cookbook
---------
+The transformation speeds up translation at runtime while using helper components allows to type-check messages.
+
+## Installation
+
+```sh
+npm install --save-dev babel-plugin-lingui-transform-react
+# or
+yarn add --dev babel-plugin-lingui-transform-react
+```
+
+## Usage
+
+### Via `.babelrc` (Recommended)
+
+**.babelrc**
+
+```json
+{
+  "plugins": ["lingui-transform-react"]
+}
+```
+
+### Via CLI
+
+```sh
+babel --plugins lingui-transform-react script.js
+```
+
+### Via Node API
+
+```js
+require("babel-core").transform("code", {
+  plugins: ["lingui-transform-react"]
+})
+```
+
+# Details
+
+Plugin performs following transformations:
 
 ### Static message
 
-```js
+```jsx
 <Trans>Hello World</Trans>
-```
 
-becomes:
-
-```js
+// becomes
 <Trans id="Hello World" />
 ```
 
 ### Message with variables
 
-```js
+```jsx
 <Trans>Hi, my name is {name}</Trans>
-```
 
-becomes:
-
-```js
+// becomes
 <Trans id="Hi, my name is {name}" params={{name: name}} />
 ```
 
-### ICU message (must be wrapped inside expression)
+### Plural, select, ordinal and other formats
 
-```js
-<Trans>{`One {${count}, plural, one {glass}, other {glasses}} of wine`}</Trans>
+```jsx
+<Plural 
+  value={count}
+  one="# Book"
+  other="# Books"
+/>
+
+// becomes
+<Trans 
+  id="{count, plural, one {# Book}, other {# Books}}" 
+  params={{count: count}} 
+/>
 ```
 
-becomes:
-
-```js
-<Trans id="One {count, plural, one {glass}, other {glasses}} of wine" params={{count: count}} />
-```
 
 ### Message with inline components
 
 Component name and props aren't included in translation ID.
 
-```js
+```jsx
 <Trans>Hi, my name is <a href="/profile">Dave</a>!</Trans>
-```
 
-becomes:
-
-```js
+// becomes
 <Trans 
   id="Hi, my name is <0>{name}</0>!" 
   params={{name: name}} 

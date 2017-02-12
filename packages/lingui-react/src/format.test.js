@@ -1,23 +1,23 @@
+// @flow
 import React from 'react'
 import { shallow } from 'enzyme'
 import { formatElements } from './format'
 
-
-describe('formatElements', function() {
+describe('formatElements', function () {
   const html = (elements) => shallow(<span>{elements}</span>).html()
   const wrap = (html) => `<span>${html}</span>`
 
-  it("should return string when there're no elements", function() {
+  it("should return string when there're no elements", function () {
     expect(formatElements('')).toEqual('')
     expect(formatElements('Text only')).toEqual('Text only')
   })
 
-  it("should format unpaired elements", function() {
+  it('should format unpaired elements', function () {
     expect(html(formatElements('<0/>', [<br />])))
       .toEqual(wrap('<br/>'))
   })
 
-  it("should format paired elements", function() {
+  it('should format paired elements', function () {
     expect(html(formatElements('<0>Inner</0>', [<strong />])))
       .toEqual(wrap('<strong>Inner</strong>'))
 
@@ -25,12 +25,12 @@ describe('formatElements', function() {
       .toEqual(wrap('Before <strong>Inner</strong> After'))
   })
 
-  it("should preserve element props", function() {
+  it('should preserve element props', function () {
     expect(html(formatElements('<0>About</0>', [<a href="/about" />])))
       .toEqual(wrap('<a href="/about">About</a>'))
   })
 
-  it("should format nested elements", function() {
+  it('should format nested elements', function () {
     expect(html(formatElements('<0><1>Deep</1></0>', [<a href="/about" />, <strong />])))
       .toEqual(wrap('<a href="/about"><strong>Deep</strong></a>'))
 

@@ -1,40 +1,48 @@
-import { plural, select } from '.'
+/* @flow */
+import { plural, select } from './select'
+import { I18n } from './i18n'
 
-describe('plural', function() {
-  it('should convert to message format string', function() {
-    expect(plural({
-      value: { value: 42 },
-      one: "# book",
-      others: "# books"
-    }).message).toEqual("{value, plural, one {# book} others {# books}}")
+describe('plural', function () {
+  const i18n = new I18n('en')
 
-    expect(plural({
+  it('should convert to message format string', function () {
+    const p = plural(i18n)
+    expect(p({
+      value: 1,
+      one: '# book',
+      other: '# books'
+    })).toEqual('1 book')
+
+    expect(p({
       value: 42,
-      one: "# book",
-      others: "# books"
-    }).message).toEqual("{0, plural, one {# book} others {# books}}")
+      one: '# book',
+      other: '# books'
+    })).toEqual('42 books')
 
-    expect(plural({
-      value: { value: 42 },
+    expect(p({
+      value: 1,
       offset: 1,
-      0: "No books",
-      1: "One book"
-    }).message).toEqual("{value, plural, offset:1 =0 {No books} =1 {One book}}")
+      '0': 'No books',
+      '1': 'One book',
+      other: '# books'
+    })).toEqual('No books')
   })
 })
 
-describe('select', function() {
-  it('should convert to message format string', function() {
+describe('select', function () {
+  it('should select option based on value', function () {
     expect(select({
-      value: { value: 42 },
-      male: "He",
-      female: "She"
-    }).message).toEqual("{value, select, male {He} female {She}}")
+      value: 'male',
+      male: 'He',
+      female: 'She',
+      other: 'They'
+    })).toEqual('He')
 
     expect(select({
-      value: 42,
-      male: "He",
-      female: "She"
-    }).message).toEqual("{0, select, male {He} female {She}}")
+      value: 'unknown',
+      male: 'He',
+      female: 'She',
+      other: 'They'
+    })).toEqual('They')
   })
 })

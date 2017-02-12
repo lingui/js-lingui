@@ -1,37 +1,81 @@
-import MessageFormat from "messageformat"
+/* @flow */
+import MessageFormat from 'messageformat'
 import t from './t'
 import { select, plural } from './select'
+import plurals from './plurals'
 
+type Catalog = {[key: string]: string}
+type Catalogs = {[key: string]: Catalog}
 
-function I18n() {
-  this.language = ''
-  this.messages = {}
+type Message = {|
+  id: string,
+  defaults?: string,
+  params?: Object
+|}
 
-  this.t = this.bindFormat(t)
-  this.select = this.bindFormat(select)
-  this.plural = this.bindFormat(plural)
-}
+class I18n {
+  _language: string
+  _messages: Catalogs
 
-I18n.prototype.use = function (language: string, messages: { [key: string]: string } = {}) {
-  this.language = language
-  this.messages = messages
-}
+  t: Function
+  plural: Function
+  select: Function
 
-I18n.prototype.translate = function (message: string, params: Object = {}) {
-  return this.compile(message)(params)
-}
+  constructor (language: string = '', messages: Catalogs = {}) {
+    this._language = language
+    this._messages = messages
 
-I18n.prototype.compile = function (message: string) {
-  const translation = this.messages[message] || message
-  return new MessageFormat(this.language).compile(translation)
-}
+    this.t = t(this)
+    this.plural = plural(this)
+    this.select = select
+  }
 
-I18n.prototype.bindFormat = function (format) {
-  return (...args) => {
-    const { message, params } = format(...args)
-    return this.translate(message, params)
+  get messages (): Catalog {
+    return this._messages[this._language] || {}
+  }
+
+  get language (): string {
+    return this._language
+  }
+
+  load (messages: Catalogs) {
+    if (!messages) return
+
+    // deeply merge Catalogs
+    Object.keys({ ...this._messages, ...messages }).forEach(language => {
+      if (!this._messages[language]) this._messages[language] = {}
+
+      Object.assign(
+        this._messages[language],
+        messages[language] || {}
+      )
+    })
+  }
+
+  activate (language: string) {
+    if (language) this._language = language
+  }
+
+  use (language: string) {
+    return new I18n(language, this._messages)
+  }
+
+  translate ({ id, defaults, params = {} }: Message) {
+    const translation = this.messages[id] || defaults || id
+    return this.compile(translation)(params)
+  }
+
+  compile (message: string) {
+    return new MessageFormat(this.language).compile(message)
+  }
+
+  pluralForm (n: number, cardinal?: 'cardinal' | 'ordinal' = 'cardinal'): string {
+    const forms = plurals[this._language]
+    const form = forms[cardinal] || forms['cardinal']
+    return form(n)
   }
 }
 
 export default new I18n()
 export { I18n }
+export type { Message, Catalog, Catalogs }

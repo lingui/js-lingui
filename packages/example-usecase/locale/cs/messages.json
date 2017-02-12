@@ -2,5 +2,6 @@
   "msg.label": "Nápis",
   "Hello World": "Ahoj světe",
   "My name is {name}": "Jmenuji se {name}",
-  "Read <0>more</0>.": "Číst <0>dále</0>"
+  "Read <0>more</0>": "Číst <0>dále</0>",
+  "Full content of {articleName}": "Celé znění článku {articleName}"
 }

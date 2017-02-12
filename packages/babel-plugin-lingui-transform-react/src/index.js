@@ -1,7 +1,6 @@
-import "babel-polyfill"
+import 'babel-polyfill'
 
-
-function cleanChildren(node) {
+function cleanChildren (node) {
   node.children = []
   node.openingElement.selfClosing = true
 }
@@ -18,12 +17,11 @@ const elementGeneratorFactory = () => {
   return () => index++
 }
 
-
 // Plugin function
-export default function({ types: t }) {
+export default function ({ types: t }) {
   let elementGenerator
 
-  function isIdAttribute(node) {
+  function isIdAttribute (node) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
 
@@ -37,7 +35,7 @@ export default function({ types: t }) {
     elementName('SelectOrdinal')(node)
   )
 
-  function processElement(node, props, root = false) {
+  function processElement (node, props, root = false) {
     const element = node.openingElement
 
     // Trans
@@ -54,7 +52,8 @@ export default function({ types: t }) {
 
       const choicesType = element.name.name.toLowerCase()
       const choices = {}
-      let variable, offset = ''
+      let variable
+      let offset = ''
 
       for (const attr of element.attributes) {
         const { name: { name } } = attr
@@ -63,10 +62,8 @@ export default function({ types: t }) {
           const exp = attr.value.expression
           variable = exp.name
           props.params[variable] = t.objectProperty(exp, exp)
-
         } else if (choicesType !== 'select' && name === 'offset') {
           offset = ` offset:${attr.value.value}`
-
         } else {
           props = processChildren(attr.value, Object.assign({}, props, { text: '' }))
           choices[name.replace('_', '=')] = props.text
@@ -103,9 +100,9 @@ export default function({ types: t }) {
     return props
   }
 
-  function processChildren(node, props) {
+  function processChildren (node, props) {
     let nextProps = {
-      text: "",
+      text: '',
       params: {},
       components: []
     }
@@ -116,7 +113,6 @@ export default function({ types: t }) {
       if (t.isIdentifier(exp)) {
         nextProps.text += `{${exp.name}}`
         nextProps.params[exp.name] = t.objectProperty(exp, exp)
-
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
 
@@ -134,17 +130,13 @@ export default function({ types: t }) {
             nextProps.params[item.name] = t.objectProperty(item, item)
           }
         })
-
       } else if (t.isJSXElement(exp)) {
         nextProps = processElement(exp, nextProps)
-
       } else {
         nextProps.text += exp.value
       }
-
     } else if (t.isJSXElement(node)) {
       nextProps = processElement(node, nextProps)
-
     } else if (t.isJSXSpreadChild(node)) {
       // TODO: I don't have a clue what's the usecase
 
@@ -153,20 +145,20 @@ export default function({ types: t }) {
     }
 
     // normalize spaces
-    nextProps.text = nextProps.text.replace(/\n\s+/g, "\n")
+    nextProps.text = nextProps.text.replace(/\n\s+/g, '\n')
 
     return mergeProps(props, nextProps)
   }
 
   return {
     visitor: {
-      JSXElement({ node }) {
+      JSXElement ({ node }) {
         elementGenerator = elementGeneratorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
 
         const props = processElement(node, {
-          text: "",
+          text: '',
           params: {},
           components: []
         }, /* root= */true)
@@ -184,11 +176,11 @@ export default function({ types: t }) {
         const idAttr = attrs.filter(isIdAttribute)[0]
         if (idAttr && idAttr.value.value !== props.text) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier("defaults"), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(props.text))
           )
         } else if (!idAttr) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('id'), t.StringLiteral(props.text))
           )
         }
 
@@ -197,7 +189,7 @@ export default function({ types: t }) {
         if (paramsList.length) {
           attrs.push(
             t.JSXAttribute(
-              t.JSXIdentifier("params"),
+              t.JSXIdentifier('params'),
               t.JSXExpressionContainer(t.objectExpression(paramsList)))
           )
         }
@@ -206,7 +198,7 @@ export default function({ types: t }) {
         if (props.components.length) {
           attrs.push(
             t.JSXAttribute(
-              t.JSXIdentifier("components"),
+              t.JSXIdentifier('components'),
               t.JSXExpressionContainer(t.arrayExpression(props.components))
             )
           )

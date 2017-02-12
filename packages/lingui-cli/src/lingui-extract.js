@@ -9,7 +9,7 @@ const getConfig = require('lingui-conf').default
 
 const config = getConfig()
 
-function extractMessages(files) {
+function extractMessages (files) {
   files.forEach(file => {
     if (!fs.existsSync(file)) return
 
@@ -28,7 +28,7 @@ function extractMessages(files) {
   })
 }
 
-function collectMessages(dir) {
+function collectMessages (dir) {
   const catalog = {}
 
   fs.readdirSync(dir)
@@ -46,7 +46,7 @@ function collectMessages(dir) {
   return catalog
 }
 
-function writeCatalogs(localeDir) {
+function writeCatalogs (localeDir) {
   const buildDir = path.join(localeDir, '_build')
   const catalog = collectMessages(buildDir)
 
@@ -55,17 +55,17 @@ function writeCatalogs(localeDir) {
     fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
   )
 
-  const stats =  languages.map(
+  const stats = languages.map(
     language => JSONWriter(catalog, path.join(localeDir, language))
   )
-  return { languages, stats}
+  return { languages, stats }
 }
 
-function JSONWriter(messages, languageDir) {
+function JSONWriter (messages, languageDir) {
   let newFile = true
 
   const catalog = {}
-  Object.keys(messages).forEach(key => catalog[key] = '')
+  Object.keys(messages).forEach(key => { catalog[key] = '' })
 
   const catalogFilename = path.join(languageDir, 'messages.json')
 
@@ -87,14 +87,14 @@ function JSONWriter(messages, languageDir) {
   return getStats(catalog)
 }
 
-function getStats(catalog) {
+function getStats (catalog) {
   return [
     Object.keys(catalog).length,
     Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg).length
   ]
 }
 
-function displayStats(languages, stats) {
+function displayStats (languages, stats) {
   const table = new Table({
     head: ['Language', 'Total count', 'Missing'],
     colAligns: ['left', 'middle', 'middle'],
@@ -112,7 +112,6 @@ function displayStats(languages, stats) {
   console.log(table.toString())
 }
 
-
 program.parse(process.argv)
 
 console.log(emojify(':mag:  Extracting messages from source files:'))
@@ -120,7 +119,7 @@ extractMessages(program.args.length ? program.args : config.srcPathDirs)
 console.log()
 
 console.log(emojify(':book:  Writing message catalogues:'))
-const { languages, stats} = writeCatalogs(config.localeDir)
+const { languages, stats } = writeCatalogs(config.localeDir)
 console.log()
 
 console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
