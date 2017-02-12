@@ -62,6 +62,7 @@ export default function ({ types: t }) {
           }
           offset = ` offset:${attr.value.value}`
         } else {
+          // validate plural rules
           if (choicesType === 'plural' || choicesType === 'ordinal') {
             if (!pluralRules.includes(name) && !/=\d+/.test(name)) {
               throw file.buildCodeFrameError(
@@ -70,6 +71,7 @@ export default function ({ types: t }) {
               )
             }
           }
+
           let value = ''
 
           if (t.isTemplateLiteral(attr.value)) {
@@ -85,11 +87,14 @@ export default function ({ types: t }) {
         }
       }
 
+      // missing value
       if (!variable) {
         throw file.buildCodeFrameError(node.callee, 'Value argument is missing.')
       }
 
       const choicesKeys = Object.keys(choices)
+
+      // 'other' choice is required
       if (!choicesKeys.length) {
         throw file.buildCodeFrameError(
           node.callee,

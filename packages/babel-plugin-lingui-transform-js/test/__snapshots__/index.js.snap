@@ -2,9 +2,17 @@ exports[`babel-plugin-lingui-transform-js validation offset must be number or st
 
 exports[`babel-plugin-lingui-transform-js validation plural forms are missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument \'other\' is required."`;
 
+exports[`babel-plugin-lingui-transform-js validation plural forms are missing 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument \'other\' is required."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms are missing 3`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument \'other\' is required."`;
+
 exports[`babel-plugin-lingui-transform-js validation plural forms cannot be variables 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Computed properties aren\'t allowed."`;
 
 exports[`babel-plugin-lingui-transform-js validation plural forms missing fallback 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument \'other\'."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms missing fallback 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument \'other\'."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms missing fallback 3`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument \'other\'."`;
 
 exports[`babel-plugin-lingui-transform-js validation plural rules must be valid 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Invalid plural rule \'three\'. Must be zero, one, two, few, many, other or exact number depending on your source language (\'one\' and \'other\' for English)."`;
 

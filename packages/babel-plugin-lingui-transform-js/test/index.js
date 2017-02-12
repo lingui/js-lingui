@@ -70,20 +70,46 @@ describe('babel-plugin-lingui-transform-js', function () {
     })
 
     it('plural forms are missing', function () {
-      const code = `
+      const plural = `
         i18n.plural({
           value: count
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+      const select = `
+        i18n.plural({
+          value: count
+        });`
+      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+      const ordinal = `
+        i18n.plural({
+          value: count
+        });`
+      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
     })
 
     it('plural forms missing fallback', function () {
-      const code = `
+      const plural = `
         i18n.plural({
           value: count,
           one: "Book"
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+      const select = `
+        i18n.select({
+          value: count,
+          male: "He"
+        });`
+      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+      const ordinal = `
+        i18n.ordinal({
+          value: count,
+          one: "st"
+        });`
+      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
     })
 
     it('plural forms cannot be variables', function () {
