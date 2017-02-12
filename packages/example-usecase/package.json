@@ -36,14 +36,12 @@
     "plugins": [
       "lingui-transform-js",
       "lingui-transform-react",
-      [
-        "lingui-extract-messages",
-        {
-          "localeDir": "./locale"
-        }
-      ],
+      "lingui-extract-messages",
       "transform-class-properties",
       "transform-object-rest-spread"
     ]
+  },
+  "lingui": {
+    "localeDir": "./locale"
   }
 }

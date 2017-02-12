@@ -10,9 +10,17 @@ class ElementAttributes extends React.Component {
   render () {
     const { i18n } = this.props
     const articleName = 'Scientific Journal'
+    const closeLabel = i18n.t`Close`
+
     return (
       <div>
-        <Trans>Read <a href="/more" title={i18n.t`Full content of ${articleName}`}>more</a></Trans>
+        <Trans>
+          <a
+            className="expression"
+            href="/article"
+            title={i18n.t`Full content of ${articleName}`}>Article</a>
+        </Trans>
+        <button className="variable" aria-label={closeLabel}>X</button>
       </div>
     )
   }
