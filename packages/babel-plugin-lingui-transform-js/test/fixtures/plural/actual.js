@@ -1,4 +1,4 @@
-i18n.plural({
+const a = i18n.plural({
   value: count,
   "one": `# book`,
   other: "# books"

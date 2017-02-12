@@ -1,2 +1,2 @@
-i18n.t`Hello World`
-i18n.t`My name is ${name}`
+const a = i18n.t`Hello World`;
+i18n.t`My name is ${name}`;

@@ -99,10 +99,10 @@ export default function ({ types: t }) {
     return props
   }
 
-  function ExpressionStatement (path, { file }) {
+  function CallExpression (path, { file }) {
     // 1. Collect all parameters and generate message ID
 
-    const props = processMethod(path.node.expression, file, {
+    const props = processMethod(path.node, file, {
       text: '',
       params: {}
     }, /* root= */true)
@@ -126,14 +126,14 @@ export default function ({ types: t }) {
         t.memberExpression(t.identifier('i18n'), t.identifier('t')),
         [ t.objectExpression(tArgs) ]
       )
-    exp.loc = path.node.expression.loc
-    path.get('expression').replaceWith(exp)
+    exp.loc = path.node.loc
+    path.replaceWith(exp)
   }
 
   return {
     visitor: {
-      ExpressionStatement,
-      JSXExpressionContainer: ExpressionStatement
+      CallExpression,
+      TaggedTemplateExpression: CallExpression
     }
   }
 }
