@@ -1,5 +1,7 @@
 import 'babel-polyfill'
 
+const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
+
 function cleanChildren (node) {
   node.children = []
   node.openingElement.selfClosing = true
@@ -35,20 +37,18 @@ export default function ({ types: t }) {
     elementName('SelectOrdinal')(node)
   )
 
-  function processElement (node, props, root = false) {
+  function processElement (node, file, props, root = false) {
     const element = node.openingElement
 
     // Trans
     if (isTransElement(node)) {
       for (const child of node.children) {
-        props = processChildren(child, props)
+        props = processChildren(child, file, props)
       }
 
     // Plural, Select, SelectOrdinal
     } else if (isChooseElement(node)) {
       // TODO: Disallow children
-      // TODO: Complain about missing pluralVariable
-      // TODO: Type-check offset (must be number)
 
       const choicesType = element.name.name.toLowerCase()
       const choices = {}
@@ -60,21 +60,58 @@ export default function ({ types: t }) {
 
         if (name === 'value') {
           const exp = attr.value.expression
+
+          // value must be a variable
+          if (!t.isIdentifier(exp)) {
+            throw file.buildCodeFrameError(element, 'Value must be a variable.')
+          }
+
           variable = exp.name
           props.params[variable] = t.objectProperty(exp, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
+          // offset is static parameter, so it must be either string or number
+          if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
+            throw file.buildCodeFrameError(element, 'Offset argument cannot be a variable.')
+          }
+
           offset = ` offset:${attr.value.value}`
         } else {
-          props = processChildren(attr.value, Object.assign({}, props, { text: '' }))
+          // validate plural rules
+          if (choicesType === 'plural' || choicesType === 'selectordinal') {
+            if (!pluralRules.includes(name) && !/_\d+/.test(name)) {
+              throw file.buildCodeFrameError(
+                element,
+                `Invalid plural rule '${name}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
+              )
+            }
+          }
+
+          props = processChildren(attr.value, file, Object.assign({}, props, { text: '' }))
           choices[name.replace('_', '=')] = props.text
         }
       }
 
-      const categories = Object.keys(choices).reduce((acc, key) => {
-        return acc + ` ${key} {${choices[key]}}`
-      }, '')
+      // missing value
+      if (!variable) {
+        throw file.buildCodeFrameError(element, 'Value argument is missing.')
+      }
 
-      props.text = `{${variable}, ${choicesType},${offset}${categories}}`
+      const choicesKeys = Object.keys(choices)
+
+      // 'other' choice is required
+      if (!choicesKeys.length) {
+        throw file.buildCodeFrameError(
+          element,
+          `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
+        )
+      } else if (!choicesKeys.includes('other')) {
+        throw file.buildCodeFrameError(
+          element, `Missing fallback argument 'other'.`)
+      }
+
+      const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
+
+      props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
       element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
       element.name = t.JSXIdentifier('Trans')
 
@@ -88,7 +125,7 @@ export default function ({ types: t }) {
       props.text += !selfClosing ? `<${index}>` : `<${index}/>`
 
       for (const child of node.children) {
-        props = processChildren(child, props)
+        props = processChildren(child, file, props)
       }
 
       if (!selfClosing) props.text += `</${index}>`
@@ -100,7 +137,7 @@ export default function ({ types: t }) {
     return props
   }
 
-  function processChildren (node, props) {
+  function processChildren (node, file, props) {
     let nextProps = {
       text: '',
       params: {},
@@ -131,12 +168,12 @@ export default function ({ types: t }) {
           }
         })
       } else if (t.isJSXElement(exp)) {
-        nextProps = processElement(exp, nextProps)
+        nextProps = processElement(exp, file, nextProps)
       } else {
         nextProps.text += exp.value
       }
     } else if (t.isJSXElement(node)) {
-      nextProps = processElement(node, nextProps)
+      nextProps = processElement(node, file, nextProps)
     } else if (t.isJSXSpreadChild(node)) {
       // TODO: I don't have a clue what's the usecase
 
@@ -152,12 +189,12 @@ export default function ({ types: t }) {
 
   return {
     visitor: {
-      JSXElement ({ node }) {
+      JSXElement ({ node }, file) {
         elementGenerator = elementGeneratorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
 
-        const props = processElement(node, {
+        const props = processElement(node, file, {
           text: '',
           params: {},
           components: []
