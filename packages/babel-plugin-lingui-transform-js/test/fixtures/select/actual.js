@@ -5,5 +5,6 @@ i18n.select({
     one: "He invites one guest",
     other: "He invites # guests"
   }),
-  female: `She is ${gender}`
+  female: `She is ${gender}`,
+  other: `They is ${gender}`
 });

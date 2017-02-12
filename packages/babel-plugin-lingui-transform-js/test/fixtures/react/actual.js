@@ -3,5 +3,5 @@ i18n.t`Full content of ${articleName}`;
 <a href="/about" title={i18n.plural({
   value: count,
   one: "# book",
-  others: "# books"
+  other: "# books"
 })}>About</a>;

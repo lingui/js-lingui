@@ -1,5 +1,7 @@
 import 'babel-polyfill'
 
+const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
+
 // Plugin function
 export default function ({ types: t }) {
   const isI18nMethod = node =>
@@ -45,11 +47,29 @@ export default function ({ types: t }) {
 
         if (name === 'value') {
           const exp = attr.value
+
+          // value must be a variable
+          if (!t.isIdentifier(exp)) {
+            throw file.buildCodeFrameError(node.callee, 'Value must be a variable.')
+          }
+
           variable = exp.name
           props.params[variable] = t.objectProperty(exp, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
+          // offset is static parameter, so it must be either string or number
+          if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
+            throw file.buildCodeFrameError(node.callee, 'Offset argument cannot be a variable.')
+          }
           offset = ` offset:${attr.value.value}`
         } else {
+          if (choicesType === 'plural' || choicesType === 'ordinal') {
+            if (!pluralRules.includes(name) && !/=\d+/.test(name)) {
+              throw file.buildCodeFrameError(
+                node.callee,
+                `Invalid plural rule '${name}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
+              )
+            }
+          }
           let value = ''
 
           if (t.isTemplateLiteral(attr.value)) {
@@ -65,11 +85,23 @@ export default function ({ types: t }) {
         }
       }
 
-      const categories = Object.keys(choices).reduce((acc, key) => {
-        return acc + ` ${key} {${choices[key]}}`
-      }, '')
+      if (!variable) {
+        throw file.buildCodeFrameError(node.callee, 'Value argument is missing.')
+      }
 
-      props.text = `{${variable}, ${choicesType},${offset}${categories}}`
+      const choicesKeys = Object.keys(choices)
+      if (!choicesKeys.length) {
+        throw file.buildCodeFrameError(
+          node.callee,
+          `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
+        )
+      } else if (!choicesKeys.includes('other')) {
+        throw file.buildCodeFrameError(
+          node.callee, `Missing fallback argument 'other'.`)
+      }
+
+      const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
+      props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
     }
 
     return props

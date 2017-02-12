@@ -11,7 +11,7 @@ i18n.t({
     }
   })}>more</a></Trans>;
 <a href="/about" title={i18n.t({
-  id: "{count, plural, one {# book} others {# books}}",
+  id: "{count, plural, one {# book} other {# books}}",
   params: {
     count: count
   }

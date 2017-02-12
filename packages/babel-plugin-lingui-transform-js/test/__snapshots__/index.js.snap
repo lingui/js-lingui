@@ -1,1 +1,15 @@
-exports[`babel-plugin-lingui-transform-js select-err-computed-property 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/select-err-computed-property/actual.js: Computed properties aren\'t allowed."`;
+exports[`babel-plugin-lingui-transform-js validation offset must be number or string, not variable 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Offset argument cannot be a variable."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms are missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument \'other\' is required."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms cannot be variables 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Computed properties aren\'t allowed."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural forms missing fallback 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument \'other\'."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural rules must be valid 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Invalid plural rule \'three\'. Must be zero, one, two, few, many, other or exact number depending on your source language (\'one\' and \'other\' for English)."`;
+
+exports[`babel-plugin-lingui-transform-js validation plural rules must be valid 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Invalid plural rule \'three\'. Must be zero, one, two, few, many, other or exact number depending on your source language (\'one\' and \'other\' for English)."`;
+
+exports[`babel-plugin-lingui-transform-js validation value is missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Value argument is missing."`;
+
+exports[`babel-plugin-lingui-transform-js validation value must be a variable 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Value must be a variable."`;

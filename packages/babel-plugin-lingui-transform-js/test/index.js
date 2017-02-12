@@ -1,14 +1,26 @@
 import fs from 'fs'
 import glob from 'glob'
 import path from 'path'
+import { transformFileSync, transform } from 'babel-core'
+
 import plugin from '../src/index'
-import { transformFileSync } from 'babel-core'
 
 function getTestName (testPath) {
   return path.basename(testPath)
 }
 
 describe('babel-plugin-lingui-transform-js', function () {
+  const babelOptions = {
+    plugins: [
+      plugin,
+      'syntax-jsx',
+      'transform-remove-strict-mode'
+    ]
+  }
+
+  // return function, so we can test exceptions
+  const transformCode = (code) => () => transform(code, babelOptions).code.trim()
+
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
     // We're using relative path here to make snapshot testing work
@@ -19,19 +31,88 @@ describe('babel-plugin-lingui-transform-js', function () {
     it(testName, () => {
       const expected = fs.existsSync(expectedPath) && fs.readFileSync(expectedPath, 'utf8').trim()
 
-      const actual = () => transformFileSync(actualPath, {
-        plugins: [
-          plugin,
-          'syntax-jsx',
-          'transform-remove-strict-mode'
-        ]
-      }).code.trim()
+      const actual = transformFileSync(actualPath, babelOptions).code.trim()
+      expect(actual).toEqual(expected)
+    })
+  })
 
-      if (expected) {
-        expect(actual()).toEqual(expected)
-      } else {
-        expect(actual).toThrowErrorMatchingSnapshot()
-      }
+  describe('validation', function () {
+    it('value must be a variable', function () {
+      const code = `
+        i18n.plural({
+          value: 42,
+          0: "No books",
+          1: "1 book",
+          other: "# books"
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('value is missing', function () {
+      const code = `
+        i18n.plural({
+          0: "No books",
+          1: "1 book",
+          other: "# books"
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('offset must be number or string, not variable', function () {
+      const code = `
+        i18n.plural({
+          offset: count,
+          0: "No books",
+          1: "1 book",
+          other: "# books"
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('plural forms are missing', function () {
+      const code = `
+        i18n.plural({
+          value: count
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('plural forms missing fallback', function () {
+      const code = `
+        i18n.plural({
+          value: count,
+          one: "Book"
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('plural forms cannot be variables', function () {
+      const code = `
+        i18n.plural({
+          value: count,
+          [one]: "Book"
+        });`
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it('plural rules must be valid', function () {
+      const plural = `
+        i18n.plural({
+          value: count,
+          one: "Book",
+          three: "Invalid",
+          other: "Books"
+        });`
+      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+      const ordinal = `
+        i18n.ordinal({
+          value: count,
+          one: "st",
+          three: "Invalid",
+          other: "rd"
+        });`
+      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
     })
   })
 })
