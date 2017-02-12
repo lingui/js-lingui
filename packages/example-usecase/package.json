@@ -8,6 +8,9 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --hot"
+  },
   "dependencies": {
     "lingui-react": "*"
   },
