@@ -60,13 +60,13 @@ describe('babel-plugin-lingui-extract-messages', function () {
     'test', 'fixtures'
   )
 
-  // beforeAll(() => {
-  //   rmdir(LOCALE_DIR)
-  // })
-  //
-  // afterAll(() => {
-  //   rmdir(LOCALE_DIR)
-  // })
+  beforeAll(() => {
+    rmdir(LOCALE_DIR)
+  })
+
+  afterAll(() => {
+    rmdir(LOCALE_DIR)
+  })
 
   testCase('should raise exception on duplicate id and different defaults', (transform) => {
     expect(transform('jsx/duplicate-id.js')).toThrow(/Different defaults/)
