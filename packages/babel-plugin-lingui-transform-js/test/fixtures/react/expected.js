@@ -4,7 +4,6 @@ i18n.t({
     articleName: articleName
   }
 });
-
 <Trans>Read <a href="/more" title={i18n.t({
     id: "Full content of {articleName}",
     params: {

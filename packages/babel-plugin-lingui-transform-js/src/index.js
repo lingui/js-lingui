@@ -122,16 +122,12 @@ export default function ({ types: t }) {
       )
     }
 
-    const jsx = t.isJSXExpressionContainer(path.node)
-
-    path.replaceWith(
-      (jsx ? t.JSXExpressionContainer : t.expressionStatement)(
-        t.callExpression(
-          t.memberExpression(t.identifier('i18n'), t.identifier('t')),
-          [ t.objectExpression(tArgs) ]
-        )
+    const exp = t.callExpression(
+        t.memberExpression(t.identifier('i18n'), t.identifier('t')),
+        [ t.objectExpression(tArgs) ]
       )
-    )
+    exp.loc = path.node.expression.loc
+    path.get('expression').replaceWith(exp)
   }
 
   return {

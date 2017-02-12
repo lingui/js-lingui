@@ -4,7 +4,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/js/integration.js",
-        null,
+        1,
       ],
     ],
   },
@@ -67,7 +67,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        null,
+        1,
       ],
     ],
   },
@@ -75,7 +75,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        null,
+        4,
       ],
     ],
   },
