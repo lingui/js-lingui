@@ -1,5 +1,9 @@
 import React from 'react'
-import Usecase from './Usecase'
+
+import { I18nProvider, Trans } from 'lingui-react'
+import NeverUpdate from './Usecases/NeverUpdate'
+import Children from './Usecases/Children'
+import ElementAttributes from './Usecases/ElementAttributes'
 
 const reloader = {
   subscribers: [],
@@ -58,7 +62,20 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <Usecase messages={locales} language={language} />
+        <I18nProvider language={language} messages={locales}>
+          <h2><Trans>Translation of children</Trans></h2>
+          <Children />
+
+          <h2><Trans>Translation of element attributes</Trans></h2>
+          <ElementAttributes />
+
+          <h2><Trans>Translations wrapped in component which never updates</Trans></h2>
+          <NeverUpdate>
+            <Children />
+            <ElementAttributes />
+          </NeverUpdate>
+
+        </I18nProvider>
       </div>
     )
   }

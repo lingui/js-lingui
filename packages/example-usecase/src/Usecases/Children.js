@@ -1,9 +1,8 @@
 // @flow
 import React from 'react'
-import { Trans, I18nProvider, Select, Plural } from 'lingui-react'
-import NeverUpdate from './NeverUpdate'
+import { Trans, Select, Plural } from 'lingui-react'
 
-class UsecaseView extends React.Component {
+class Usecase extends React.Component {
   props: {
     name?: string,
     genderOfHost?: 'male' | 'female',
@@ -89,17 +88,4 @@ class UsecaseView extends React.Component {
   }
 }
 
-type UsecaseContainerProps = {
-  language: string,
-  messages: Object
-}
-
-const UsecaseContainer = (WrappedComponent: Class<any>) => ({ language, messages, ...props }: UsecaseContainerProps) =>
-  <I18nProvider language={language} messages={messages}>
-    <NeverUpdate>
-      <WrappedComponent {...props} />
-    </NeverUpdate>
-  </I18nProvider>
-
-export default UsecaseContainer(UsecaseView)
-export { UsecaseView, UsecaseContainer }
+export default Usecase
