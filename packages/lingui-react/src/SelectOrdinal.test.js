@@ -64,6 +64,16 @@ describe('SelectOrdinal', function () {
     expect(node.dive().text()).toEqual('10 ci')
   })
 
+  it('should use other rule when cardinal ones are missing', function () {
+    const node = shallow(
+      <SelectOrdinal value="1" one="Nope" other="1. křižovatka" />,
+      languageContext('cs')
+    )
+
+    // $FlowIgnore: missing annotation for dive()
+    expect(node.dive().text()).toEqual('1. křižovatka')
+  })
+
   it('should offset value', function () {
     const node = shallow(
       <SelectOrdinal value="1" offset="1" _0="Himself" one="He and his #st" two="He and his #nd" other="He and his #rd" />,

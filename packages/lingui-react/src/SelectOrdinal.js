@@ -20,8 +20,8 @@ class SelectOrdinal extends React.Component<*, SelectOrdinalProps, *> {
     } = this.props
 
     const n = parseInt(value) - parseInt(offset)
-    const ordinalRules = rules[language].ordinal || rules[language].cardinal
-    const form = ordinalRules(n)
+    const ordinalRules = rules[language].ordinal
+    const form = ordinalRules ? ordinalRules(n) : 'other'
     const translation = this.props[`_${n}`] || this.props[form] || other
 
     return <span>{translation.replace('#', n)}</span>
