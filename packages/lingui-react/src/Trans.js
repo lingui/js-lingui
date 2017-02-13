@@ -40,7 +40,7 @@ class Trans extends React.Component<*, TransProps, TransState> {
   }
 
   getTranslation (props): string {
-    const { id = '', defaults, i18n } = props
+    const { id, defaults, i18n } = props
 
     return (i18n.messages ? i18n.messages[id] : '') || defaults || id
   }
