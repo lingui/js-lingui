@@ -1,13 +1,34 @@
 {
   "name": "lingui-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "CLI for extracting i18n messages from sources",
+  "main": "lib/index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cli",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
   "dependencies": {
-    "babel-plugin-lingui-extract-messages": "*",
-    "babel-plugin-lingui-transform-react": "*",
     "chalk": "^1.1.3",
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
-    "lingui-conf": "*",
+    "lingui-conf": "^0.2.0",
     "node-emoji": "^1.5.1"
   },
   "devDependencies": {
@@ -15,6 +36,9 @@
     "babel-polyfill": "^6.22.0",
     "babel-preset-env": "^1.1.8",
     "rimraf": "^2.5.4"
+  },
+  "peerDependencies": {
+    "babel-plugin-lingui-extract-messages": "^0.3.0"
   },
   "bin": {
     "lingui": "./lib/lingui.js"
