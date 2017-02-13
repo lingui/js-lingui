@@ -12,6 +12,7 @@
     "start": "webpack-dev-server --hot"
   },
   "dependencies": {
+    "lingui-cli": "*",
     "lingui-react": "*"
   },
   "peerDependencies": {
