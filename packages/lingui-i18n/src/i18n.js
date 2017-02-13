@@ -1,7 +1,7 @@
 /* @flow */
 import MessageFormat from 'messageformat'
 import t from './t'
-import { select, plural } from './select'
+import { select, plural, selectOrdinal } from './select'
 import plurals from './plurals'
 
 type Catalog = {[key: string]: string}
@@ -20,6 +20,7 @@ class I18n {
   t: Function
   plural: Function
   select: Function
+  selectOrdinal: Function
 
   constructor (language: string = '', messages: Catalogs = {}) {
     this._language = language
@@ -28,6 +29,7 @@ class I18n {
     this.t = t(this)
     this.plural = plural(this)
     this.select = select
+    this.selectOrdinal = selectOrdinal(this)
   }
 
   get messages (): Catalog {
@@ -71,8 +73,8 @@ class I18n {
 
   pluralForm (n: number, cardinal?: 'cardinal' | 'ordinal' = 'cardinal'): string {
     const forms = plurals[this._language]
-    const form = forms[cardinal] || forms['cardinal']
-    return form(n)
+    const form = forms[cardinal]
+    return form ? form(n) : 'other'
   }
 }
 

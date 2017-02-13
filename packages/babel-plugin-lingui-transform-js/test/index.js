@@ -82,11 +82,11 @@ describe('babel-plugin-lingui-transform-js', function () {
         });`
       expect(transformCode(select)).toThrowErrorMatchingSnapshot()
 
-      const ordinal = `
+      const selectOrdinal = `
         i18n.plural({
           value: count
         });`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
     })
 
     it('plural forms missing fallback', function () {
@@ -104,12 +104,12 @@ describe('babel-plugin-lingui-transform-js', function () {
         });`
       expect(transformCode(select)).toThrowErrorMatchingSnapshot()
 
-      const ordinal = `
-        i18n.ordinal({
+      const selectOrdinal = `
+        i18n.selectOrdinal({
           value: count,
           one: "st"
         });`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
     })
 
     it('plural forms cannot be variables', function () {
@@ -131,14 +131,14 @@ describe('babel-plugin-lingui-transform-js', function () {
         });`
       expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 
-      const ordinal = `
-        i18n.ordinal({
+      const selectOrdinal = `
+        i18n.selectOrdinal({
           value: count,
           one: "st",
           three: "Invalid",
           other: "rd"
         });`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
     })
   })
 })

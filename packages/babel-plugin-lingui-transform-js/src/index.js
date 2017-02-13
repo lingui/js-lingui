@@ -14,7 +14,7 @@ export default function ({ types: t }) {
     t.isIdentifier(node.object, { name: 'i18n' }) && (
       t.isIdentifier(node.property, { name: 'plural' }) ||
       t.isIdentifier(node.property, { name: 'select' }) ||
-      t.isIdentifier(node.property, { name: 'ordinal' })
+      t.isIdentifier(node.property, { name: 'selectOrdinal' })
     )
 
   function processMethod (node, file, props) {
@@ -27,7 +27,7 @@ export default function ({ types: t }) {
       const exp = node
 
       const choices = {}
-      const choicesType = node.callee.property.name
+      const choicesType = node.callee.property.name.toLowerCase()
       let variable
       let offset = ''
 
@@ -63,7 +63,7 @@ export default function ({ types: t }) {
           offset = ` offset:${attr.value.value}`
         } else {
           // validate plural rules
-          if (choicesType === 'plural' || choicesType === 'ordinal') {
+          if (choicesType === 'plural' || choicesType === 'selectordinal') {
             if (!pluralRules.includes(name) && !/=\d+/.test(name)) {
               throw file.buildCodeFrameError(
                 node.callee,

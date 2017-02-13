@@ -1,5 +1,5 @@
 /* @flow */
-import { plural, select } from './select'
+import { plural, select, selectOrdinal } from './select'
 import { I18n } from './i18n'
 
 describe('plural', function () {
@@ -26,6 +26,52 @@ describe('plural', function () {
       '1': 'One book',
       other: '# books'
     })).toEqual('No books')
+  })
+})
+
+describe('selectOrdinal', function () {
+  const i18n = new I18n('en')
+
+  it('should convert to message format string', function () {
+    const s = selectOrdinal(i18n)
+    expect(s({
+      value: 1,
+      one: '#st',
+      two: '#nd',
+      other: '##rd'
+    })).toEqual('1st')
+
+    expect(s({
+      value: 2,
+      one: '#st',
+      two: '#nd',
+      other: '##rd'
+    })).toEqual('2nd')
+
+    expect(s({
+      value: 3,
+      one: '#st',
+      two: '#nd',
+      other: '#rd'
+    })).toEqual('3rd')
+
+    expect(s({
+      value: 1,
+      offset: 1,
+      0: 'Zero',
+      one: '#st',
+      two: '#nd',
+      other: '#rd'
+    })).toEqual('Zero')
+  })
+
+  it('should use other rule when ordinal ones are missing', function () {
+    const i18nCS = new I18n('cs')
+    const s = selectOrdinal(i18nCS)
+    expect(s({
+      value: 1,
+      other: '#. křižovatka'
+    })).toEqual('1. křižovatka')
   })
 })
 

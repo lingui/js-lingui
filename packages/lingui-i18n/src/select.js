@@ -4,14 +4,15 @@ import type { I18n } from './i18n'
 type PluralForms = {
   zero?: string,
   one?: string,
+  two?: string,
   few?: string,
-  many?: string
+  many?: string,
+  other: string
 }
 
 type PluralProps = {
   value: number,
-  offset?: number,
-  other: string
+  offset?: number
 } & PluralForms
 
 const plural = (i18n: I18n) => ({
@@ -24,6 +25,20 @@ const plural = (i18n: I18n) => ({
     pluralForms[(value - offset).toString()] ||      // exact match
     pluralForms[i18n.pluralForm(value - offset)] ||  // plural form
     other                                           // fallback
+  )
+  return translation.replace('#', value.toString())
+}
+
+const selectOrdinal = (i18n: I18n) => ({
+  value,
+  offset = 0,
+  other,
+  ...pluralForms
+}: PluralProps): string => {
+  const translation = (
+    pluralForms[(value - offset).toString()] ||                 // exact match
+    pluralForms[i18n.pluralForm(value - offset, 'ordinal')] ||  // plural form
+    other                                                       // fallback
   )
   return translation.replace('#', value.toString())
 }
@@ -41,4 +56,4 @@ function select ({
   return selectForms[value] || other
 }
 
-export { plural, select }
+export { plural, select, selectOrdinal }
