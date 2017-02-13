@@ -75,8 +75,12 @@ Object {
       ],
     ],
   },
-  "{count, plural, one {# book} others {# books}}": Object {
+  "{count, plural, one {# book} other {# books}}": Object {
     "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
+        3,
+      ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
         12,
@@ -84,14 +88,6 @@ Object {
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
         17,
-      ],
-    ],
-  },
-  "{undefined, plural, count {undefined} one {# book} others {# books}}": Object {
-    "origin": Array [
-      Array [
-        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        3,
       ],
     ],
   },

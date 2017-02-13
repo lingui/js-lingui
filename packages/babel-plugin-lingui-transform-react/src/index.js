@@ -76,16 +76,6 @@ export default function ({ types: t }) {
 
           offset = ` offset:${attr.value.value}`
         } else {
-          // validate plural rules
-          if (choicesType === 'plural' || choicesType === 'selectordinal') {
-            if (!pluralRules.includes(name) && !/_\d+/.test(name)) {
-              throw file.buildCodeFrameError(
-                element,
-                `Invalid plural rule '${name}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
-              )
-            }
-          }
-
           props = processChildren(attr.value, file, Object.assign({}, props, { text: '' }))
           choices[name.replace('_', '=')] = props.text
         }
@@ -108,6 +98,19 @@ export default function ({ types: t }) {
         throw file.buildCodeFrameError(
           element, `Missing fallback argument 'other'.`)
       }
+
+      // validate plural rules
+      if (choicesType === 'plural' || choicesType === 'selectordinal') {
+        choicesKeys.forEach(rule => {
+          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
+            throw file.buildCodeFrameError(
+              element,
+              `Invalid plural rule '${rule}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
+            )
+          }
+        })
+      }
+
 
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
 

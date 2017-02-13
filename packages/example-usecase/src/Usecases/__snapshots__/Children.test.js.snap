@@ -37,6 +37,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }
@@ -70,6 +71,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }
@@ -101,6 +103,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }
@@ -137,6 +140,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }
@@ -185,6 +189,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }
@@ -229,6 +234,7 @@ exports[`Children should render 1`] = `
                     },
                     "plural": [Function],
                     "select": [Function],
+                    "selectOrdinal": [Function],
                     "t": [Function],
                   }
                 }

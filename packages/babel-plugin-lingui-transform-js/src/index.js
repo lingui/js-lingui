@@ -62,16 +62,6 @@ export default function ({ types: t }) {
           }
           offset = ` offset:${attr.value.value}`
         } else {
-          // validate plural rules
-          if (choicesType === 'plural' || choicesType === 'selectordinal') {
-            if (!pluralRules.includes(name) && !/=\d+/.test(name)) {
-              throw file.buildCodeFrameError(
-                node.callee,
-                `Invalid plural rule '${name}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
-              )
-            }
-          }
-
           let value = ''
 
           if (t.isTemplateLiteral(attr.value)) {
@@ -103,6 +93,18 @@ export default function ({ types: t }) {
       } else if (!choicesKeys.includes('other')) {
         throw file.buildCodeFrameError(
           node.callee, `Missing fallback argument 'other'.`)
+      }
+
+      // validate plural rules
+      if (choicesType === 'plural' || choicesType === 'selectordinal') {
+        choicesKeys.forEach(rule => {
+          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
+            throw file.buildCodeFrameError(
+              node.callee,
+              `Invalid plural rule '${rule}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
+            )
+          }
+        })
       }
 
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
