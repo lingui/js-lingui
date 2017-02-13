@@ -4,11 +4,13 @@
 
 # Lingui - tools for ~~internationalization~~ i18n in javascript
 
+Type-checked and intuitive way to internationalize applications in Javascript and ReactJS using ICU message format.
+
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
 >
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
-Building applications and products for international audiences involves internationalization (i.e: preparing app for translation) and localization (i.e: adoption of application to meet language and cultural requirements). Lingui provides tools to make i18n of JS applications as easy as possible. 
+Building applications and products for international audiences involves internationalization (i.e: preparing app for translation) and localization (i.e: adoption of application to meet language and cultural requirements). Lingui provides tools to make i18n of JS applications using ICU message format as easy as possible. 
 
 ## Overview
 
@@ -21,6 +23,27 @@ Internationalization consists of three steps:
 ### Specify parts for localization
 
 The first part of i18n process is wrapping all texts with component or function, which replaces source text with translation during runtime. `js-lingui` uses [ICU Message Format](https://github.com/lingui/js-lingui/wiki/ICU-message-format) which allows using of variables and plural forms.
+
+#### Javascript
+
+`lingui-js` provides `i18n.t` template tag for translation, `i18n.plural`, `i18n.select`, `i18n.selectOrdinal` methods for pluralization and custom forms:
+
+```js
+import i18n from 'lingui-i18n'
+
+i18n.t`January`
+
+const name = "Fred"
+i18n.t`Hello, my name is ${name}`
+
+i18n.plural({
+  value: count,
+  one: `# Book`,
+  other: `# Books`
+})
+```
+
+#### React
 
 `lingui-react` provides several component for React applications: `Trans` is the main component for general translation, `Plural` and `Select` for pluralization and custom forms (e.g: polite forms):
 
@@ -64,11 +87,48 @@ const fr = {
 
 The key is also called **message ID**. It must be unique across application. It should also include all parameters so translators can change the order of words and parameters if required.
 
-`js-lingui` provides two babel plugins and CLI for building message catalogs:
+`js-lingui` provides three babel plugins and CLI for building message catalogs:
 
-1. `babel-plugin-lingui-transform-react`
+```sh
+npm install --save-dev lingui-i18n
+# or
+yarn add --dev lingui-i18n
 
-    It takes children of i18n components (e.g: `Trans`) and generate message ID. 
+# add directories for target languages
+lingui add-locale en fr
+
+# extract messages from source to message catalogs
+lingui extract
+```
+
+Target directory for locales is configured in `package.json`:
+
+```json
+{
+  "lingui": {
+    "localeDir": "./locale"
+  }
+}
+```
+
+Under the hood, there're three babel plugins responsible for creating message catalogs:
+
+1. `babel-plugin-lingui-transform-js`
+
+    This plugin transforms methods and template tag from `lingui-i18n` into ICU message format which becomes message ID.
+    
+    ```js
+    i18n.t`Hello, my name is ${name}`
+    /* becomes this entry in source language file:
+     * {
+     *   "Hello, my name is {name}": "" 
+     * } 
+     */
+    ```
+
+2. `babel-plugin-lingui-transform-react`
+
+    This plugin transforms components from `lingui-react` (e.g: `Trans`) into ICU message format which becomes message ID. 
     
     **Note**: It's also possible to use custom message IDs. Simply pass `id` attribute to `Trans` component and children's going to be used as a default message only.
      
@@ -82,15 +142,37 @@ The key is also called **message ID**. It must be unique across application. It 
      */
     ```
 
-2. `babel-plugin-lingui-extract-messages` - It extracts all message IDs into temporary catalogs, one catalog per file.
-
-3. `lingui-cli` - It reads all generated catalogs and merges them into one with existing ones.
+3. `babel-plugin-lingui-extract-messages` - It extracts all message IDs into temporary catalogs, one catalog per file.
 
 The result is one message catalog per language (e.g: `locale/fr/messages.json`).
 
 ### Load translated messages
 
-Translated message catalogs must be loaded back to application. `lingui-react` provides `ProvideI18n` component which receives active language and messages for that language:
+Translated message catalogs must be loaded back to application. The process depends on type of application.
+
+#### Javascript
+
+`lingui-i18n` uses `.load(messages)` method to load message catalog and
+`.use(language)` to select a language:
+
+```js
+import i18n from 'lingui-i18n'
+import messagesEn from './locales/en/messages.json'
+import messagesFr from './locales/fr/messages.json'
+
+// load message catalogs
+i18n.load({
+  en: messagesEn,
+  fr: messagesFr
+})
+
+// activate english language
+i18n.activate('en')
+```
+
+#### React
+
+ `lingui-react` provides `ProvideI18n` component which receives active language and messages for that language:
 
 ```jsx
 import React from 'react'
@@ -131,42 +213,25 @@ const count = 42
 
 See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or [example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecase.js) for detailed example.
 
-## Tools
+## Packages
 
-### `babel-plugin-lingui-transform-react`
+### `lingui-cli` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-cli)
 
-[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-react.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-react)
+[![npm](https://img.shields.io/npm/v/lingui-cli.svg)](https://www.npmjs.com/package/lingui-cli) 
 
-Write multilingual messages in human-readable format and let `babel` generate message IDs.
+Command line interface for working with message catalogs.
 
-Example:
+### `lingui-i18n` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-i18n)
 
-```js
-/* Variable interpolation & inlined components */
-<Trans>Hello world, my name is <strong>{joe}</strong></Trans>
-/* <Trans id="Hello world, my name is <0>{joe}</0>" params={{joe}} /> */
+[![npm](https://img.shields.io/npm/v/lingui-i18n.svg)](https://www.npmjs.com/package/lingui-i18n)
 
-/* Plural format */
-<Plural 
-  count={count} 
-  zero="There're no bottles left on the wall."
-  one="There's 1 bottle hanging on the wall."
-  many="There're # bottles hanging on the wall."
-/>
-/* (truncated) <Trans id="{count, plural, zero {...} one {...} many {...}}" params={{count}} /> */
-```
+Functions for I18n in Javascript.
 
-### [`babel-plugin-lingui-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages)
-
-[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-lingui-extract-messages)
-
-Extract all messages for translation to external files.
-
-### `lingui-react`
+### `lingui-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react)
 
 [![npm](https://img.shields.io/npm/v/lingui-react.svg)](https://www.npmjs.com/package/lingui-react)
 
-React components for i18n.
+Components for I18n in React.
 
 #### Components
 - `I18nProvider` – context provider of all i18n data (messages, current language, etc.)
@@ -175,6 +240,24 @@ React components for i18n.
 - `Select` – select message based on variable
 - [`Plural`](https://github.com/lingui/js-lingui/wiki/Plural) – select plural based on number
 - `SelectOrdinal` – select ordinal number
+
+### `babel-plugin-lingui-transform-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-transform-js)
+
+[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-js.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-js)
+
+Transform function from `lingui-i18n` into ICU message format.
+
+### `babel-plugin-lingui-transform-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-transform-react)
+
+[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-react.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-react)
+
+Transform components from `lingui-react` into ICU message format.
+
+### [`babel-plugin-lingui-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages) [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages)
+
+[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-lingui-extract-messages)
+
+Extract all messages for translation to external files.
 
 ## License
 
