@@ -1,21 +1,24 @@
 {
   "name": "lingui-i18n",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lingui/js-lingui/"
-  },
-  "keywords": [
-    "i18n",
-    "internationalization"
-  ],
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
+  "keywords": [
+    "i18n",
+    "internationalization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
   "dependencies": {
     "messageformat": "^1.0.2"
   },
