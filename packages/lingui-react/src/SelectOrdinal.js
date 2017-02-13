@@ -15,14 +15,14 @@ class SelectOrdinal extends React.Component<*, SelectOrdinalProps, *> {
 
   render () {
     const {
-      value, offset, other,
+      value, offset,
       i18n: { language }
     } = this.props
 
     const n = parseInt(value) - parseInt(offset)
     const ordinalRules = rules[language].ordinal
     const form = ordinalRules ? ordinalRules(n) : 'other'
-    const translation = this.props[`_${n}`] || this.props[form] || other
+    const translation = this.props[`_${n}`] || this.props[form]
 
     return <span>{translation.replace('#', n)}</span>
   }

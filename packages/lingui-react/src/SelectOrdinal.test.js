@@ -8,7 +8,7 @@ describe('SelectOrdinal', function () {
 
   it('should render ordinal correctly', function () {
     const node = shallow(
-      <SelectOrdinal value="1" one="#st" two="#nd" other="#rd" />,
+      <SelectOrdinal value="1" one="#st" two="#nd" few="#rd" other="#th" />,
       languageContext('en')
     )
 
@@ -22,6 +22,10 @@ describe('SelectOrdinal', function () {
     node.setProps({ value: 3 })
     // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('3rd')
+
+    node.setProps({ value: 4 })
+    // $FlowIgnore: missing annotation for dive()
+    expect(node.dive().text()).toEqual('4th')
   })
 
   it('should use plural forms based on language', function () {
@@ -76,23 +80,27 @@ describe('SelectOrdinal', function () {
 
   it('should offset value', function () {
     const node = shallow(
-      <SelectOrdinal value="1" offset="1" _0="Himself" one="He and his #st" two="He and his #nd" other="He and his #rd" />,
+      <SelectOrdinal value="1" offset="1" _0="This one" one="This one and #st" two="This one and #nd" few="This one and #rd" other="This one and #th" />,
       languageContext('en')
     )
 
     // $FlowIgnore: missing annotation for dive()
-    expect(node.dive().text()).toEqual('Himself')
+    expect(node.dive().text()).toEqual('This one')
 
     node.setProps({ value: 2 })
     // $FlowIgnore: missing annotation for dive()
-    expect(node.dive().text()).toEqual('He and his 1st')
+    expect(node.dive().text()).toEqual('This one and 1st')
 
     node.setProps({ value: 3 })
     // $FlowIgnore: missing annotation for dive()
-    expect(node.dive().text()).toEqual('He and his 2nd')
+    expect(node.dive().text()).toEqual('This one and 2nd')
 
     node.setProps({ value: 4 })
     // $FlowIgnore: missing annotation for dive()
-    expect(node.dive().text()).toEqual('He and his 3rd')
+    expect(node.dive().text()).toEqual('This one and 3rd')
+
+    node.setProps({ value: 5 })
+    // $FlowIgnore: missing annotation for dive()
+    expect(node.dive().text()).toEqual('This one and 4th')
   })
 })
