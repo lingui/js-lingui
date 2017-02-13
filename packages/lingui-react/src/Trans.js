@@ -6,7 +6,7 @@ import type { WithI18nProps } from './WithI18n'
 import { formatElements } from './format'
 
 type TransProps = {
-  id?: string,
+  id: string,
   defaults?: string,
   params?: Object,
   components?: Array<React$Element<any>>,
@@ -25,6 +25,7 @@ class Trans extends React.Component<*, TransProps, TransState> {
   state: TransState
 
   static defaultProps = {
+    id: '',
     i18n: {}
   }
 
