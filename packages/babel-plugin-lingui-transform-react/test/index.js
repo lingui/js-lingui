@@ -23,7 +23,7 @@ describe('babel-plugin-lingui-transform-react', function () {
 
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
-    const actualPath = path.join(testPath, 'actual.js')
+    const actualPath = path.relative(process.cwd(), path.join(testPath, 'actual.js'))
     const expectedPath = path.join(testPath, 'expected.js')
 
     it(testName, () => {
