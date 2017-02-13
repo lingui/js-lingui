@@ -58,7 +58,7 @@ describe('selectOrdinal', function () {
     expect(s({
       value: 1,
       offset: 1,
-      0: 'Zero',
+      '0': 'Zero',
       one: '#st',
       two: '#nd',
       other: '#rd'
