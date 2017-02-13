@@ -24,16 +24,17 @@ class Plural extends React.Component<*, PluralProps, *> {
 
   render () {
     const {
-      value, offset,
+      value, offset, other,
       i18n: { language }
     } = this.props
 
     const n = parseInt(value) - parseInt(offset)
     const form = rules[language].cardinal(n)
-    const translation = this.props[`_${value}`] || this.props[form]
+    const translation = this.props[`_${value}`] || this.props[form] || other
 
     return <span>{translation.replace('#', n)}</span>
   }
 }
 
 export default WithI18n()(Plural)
+export type { PluralProps }
