@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-lingui-transform-js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Transform lingui-i18n methods to ICU message format",
   "main": "lib/index.js",
   "author": {
@@ -11,6 +11,13 @@
   "keywords": [
     "babel-plugin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-polyfill": "^6.22.0",
