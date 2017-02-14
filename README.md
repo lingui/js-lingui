@@ -48,26 +48,64 @@ i18n.plural({
 `lingui-react` provides several component for React applications: `Trans` is the main component for general translation, `Plural` and `Select` for pluralization and custom forms (e.g: polite forms):
 
 ```jsx
+import React from 'react'
 import { Trans, Plural } from 'lingui-react'
 
-// Static text
-<Trans>January</Trans>
+class App extends React.Component {
+  render() {
+    const name = "Fred"
+    const count = 42
+    
+    return (
+      <div>
+        // Static text
+        <Trans>January</Trans>
 
-// Variables
-const name = "Fred"
-<Trans>Hello, my name is {name}</Trans>
+        // Variables
+        <Trans>Hello, my name is {name}</Trans>
 
-// Components
-<Trans>See the <a href="/more">description</a> below.</Trans>
+        // Components
+        <Trans>See the <a href="/more">description</a> below.</Trans>
 
-// Plurals
-const count = 42
-<Plural 
-  value={count} 
-  zero={<strong>No books</strong>}
-  one="# book" 
-  other="# books" 
-/>
+        // Plurals
+        <Plural 
+          value={count} 
+          zero={<strong>No books</strong>}
+          one="# book" 
+          other="# books" 
+        />
+      </div>
+    )
+  }
+}
+```
+
+Sometimes it's necessary to translate also a text attributes, which doesn't accept React components. `lingui-react` has `WithReact` decorator, which injects `i18n` object from `lingui-i18n`. 
+
+```jsx
+import React from 'react'
+import { WithI18n } from 'lingui-react'
+
+// Translating text attributes
+class LinkWithTooltip extends React.Component {
+  render() {
+    const { articleName, i18n } = this.props
+    
+    return (
+      <a 
+        href="/more" 
+        title={i18n.t`Link to ${articleName}`}
+      >
+        <Trans>Link</Trans>
+      </a>
+    )
+  }
+}
+
+// Decorate component. WithReact actually expects options as a first
+// argument and return customized decorator:
+// Signature: WithReact = (options) => (WrappedComponent)
+LinkWithTooltip = WithReact()(LinkWithTooltip)
 ```
 
 At this point, application is available only in one language (English). When no translations are available the default texts are used.
