@@ -28,11 +28,11 @@
     "lingui-conf": "^0.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-polyfill": "^6.22.0",
-    "babel-preset-env": "^1.1.8",
-    "babel-plugin-lingui-transform-react": "*",
+    "babel-cli": "^6.23.0",
     "babel-plugin-lingui-transform-js": "*",
+    "babel-plugin-lingui-transform-react": "*",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.1.8",
     "rimraf": "^2.5.4"
   },
   "scripts": {
