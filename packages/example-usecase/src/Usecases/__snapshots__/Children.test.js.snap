@@ -1,6 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Children should render 1`] = `
 <Component
-  language="cs">
+  language="cs"
+>
   <I18nProvider
     language="cs"
     messages={
@@ -13,14 +16,16 @@ exports[`Children should render 1`] = `
           "msg.label": "Nápis",
         },
       }
-    }>
+    }
+  >
     <Usecase>
       <div>
         <ul>
           <li>
             <WithI18n
               className="untranslated"
-              id="This isn\'t translated">
+              id="This isn't translated"
+            >
               <Trans
                 className="untranslated"
                 i18n={
@@ -41,10 +46,12 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
-                id="This isn\'t translated">
+                id="This isn't translated"
+              >
                 <span
-                  className="untranslated">
-                  This isn\'t translated
+                  className="untranslated"
+                >
+                  This isn't translated
                 </span>
               </Trans>
             </WithI18n>
@@ -53,7 +60,8 @@ exports[`Children should render 1`] = `
             <WithI18n
               className="customId"
               defaults=""
-              id="msg.label">
+              id="msg.label"
+            >
               <Trans
                 className="customId"
                 defaults=""
@@ -75,9 +83,11 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
-                id="msg.label">
+                id="msg.label"
+              >
                 <span
-                  className="customId">
+                  className="customId"
+                >
                   Nápis
                 </span>
               </Trans>
@@ -86,7 +96,8 @@ exports[`Children should render 1`] = `
           <li>
             <WithI18n
               className="translated"
-              id="Hello World">
+              id="Hello World"
+            >
               <Trans
                 className="translated"
                 i18n={
@@ -107,9 +118,11 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
-                id="Hello World">
+                id="Hello World"
+              >
                 <span
-                  className="translated">
+                  className="translated"
+                >
                   Ahoj světe
                 </span>
               </Trans>
@@ -123,7 +136,8 @@ exports[`Children should render 1`] = `
                 Object {
                   "name": "Mononoke",
                 }
-              }>
+              }
+            >
               <Trans
                 className="variable"
                 i18n={
@@ -149,9 +163,11 @@ exports[`Children should render 1`] = `
                   Object {
                     "name": "Mononoke",
                   }
-                }>
+                }
+              >
                 <span
-                  className="variable">
+                  className="variable"
+                >
                   Jmenuji se Mononoke
                 </span>
               </Trans>
@@ -163,16 +179,19 @@ exports[`Children should render 1`] = `
               components={
                 Array [
                   <a
-                    href="/mononoke" />,
+                    href="/mononoke"
+                />,
                 ]
               }
-              id="Read <0>more</0>.">
+              id="Read <0>more</0>."
+            >
               <Trans
                 className="components"
                 components={
                   Array [
                     <a
-                      href="/mononoke" />,
+                      href="/mononoke"
+                  />,
                   ]
                 }
                 i18n={
@@ -193,12 +212,15 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
-                id="Read <0>more</0>.">
+                id="Read <0>more</0>."
+              >
                 <span
-                  className="components">
+                  className="components"
+                >
                   Read 
                   <a
-                    href="/mononoke">
+                    href="/mononoke"
+                  >
                     more
                   </a>
                   .
@@ -217,7 +239,8 @@ exports[`Children should render 1`] = `
                   "host": "Wilma",
                   "numGuests": 4,
                 }
-              }>
+              }
+            >
               <Trans
                 className="plural"
                 i18n={
@@ -246,9 +269,11 @@ exports[`Children should render 1`] = `
                     "host": "Wilma",
                     "numGuests": 4,
                   }
-                }>
+                }
+              >
                 <span
-                  className="plural">
+                  className="plural"
+                >
                   Wilma invites Fred and 3 other people to her party.
                 </span>
               </Trans>
@@ -261,4 +286,4 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `"<span class=\"components\"><!-- react-text: 13 -->Read <!-- /react-text --><a href=\"/mononoke\">more</a><!-- react-text: 15 -->.<!-- /react-text --></span>"`;
+exports[`Children should support nested elements 1`] = `"<span class=\\"components\\"><!-- react-text: 13 -->Read <!-- /react-text --><a href=\\"/mononoke\\">more</a><!-- react-text: 15 -->.<!-- /react-text --></span>"`;

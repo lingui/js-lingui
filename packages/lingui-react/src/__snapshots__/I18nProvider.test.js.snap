@@ -1,1 +1,3 @@
-exports[`I18nProvider should throw an error on incorrect language 1`] = `"Unknown locale \"xyz\"."`;
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`I18nProvider should throw an error on incorrect language 1`] = `"Unknown locale \\"xyz\\"."`;

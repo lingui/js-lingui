@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
   "msg.hello": Object {
