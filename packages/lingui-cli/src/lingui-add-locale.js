@@ -4,10 +4,19 @@ const chalk = require('chalk')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
 const getConfig = require('lingui-conf').default
+const plurals = require('make-plural')
 
 const config = getConfig()
 
 program.parse(process.argv)
+
+function validateLocales(locales) {
+  const unknown = locales.filter(locale => !(locale in plurals))
+  if (unknown.length) {
+    console.log(chalk.red(`Unknown locale(s): ${unknown.join(', ')}.`))
+    process.exit(1)
+  }
+}
 
 function addLocale (locales) {
   locales.forEach(locale => {
@@ -21,6 +30,8 @@ function addLocale (locales) {
     }
   })
 }
+
+validateLocales(program.args)
 
 console.log(emojify(':white_check_mark:  Adding locales:'))
 addLocale(program.args)

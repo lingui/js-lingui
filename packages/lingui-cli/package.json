@@ -29,6 +29,7 @@
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
     "lingui-conf": "^0.2.0",
+    "make-plural": "^4.0.1",
     "node-emoji": "^1.5.1"
   },
   "devDependencies": {
