@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI for extracting i18n messages from sources",
   "main": "lib/index.js",
   "author": {
