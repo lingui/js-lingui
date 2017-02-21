@@ -1,0 +1,1 @@
+exports[`I18nProvider should throw an error on incorrect language 1`] = `"Unknown locale \"xyz\"."`;

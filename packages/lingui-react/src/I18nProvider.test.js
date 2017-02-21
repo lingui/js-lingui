@@ -8,11 +8,11 @@ import { I18nManager } from './I18nProvider'
 describe('I18nProvider', function () {
   const props = {
     messages: {
-      'cs-cz': {
+      'cs': {
         'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
       }
     },
-    language: 'cs-cz'
+    language: 'cs'
   }
 
   it('should provide context with i18n data', function () {
@@ -22,6 +22,11 @@ describe('I18nProvider', function () {
     expect(i18n.language).toEqual(props.language)
     expect(subscribe).toBeInstanceOf(Function)
     expect(unsubscribe).toBeInstanceOf(Function)
+  })
+
+  it('should throw an error on incorrect language', function () {
+    const component = () => mount(<I18nProvider language="xyz"><div/></I18nProvider>)
+    expect(component).toThrowErrorMatchingSnapshot()
   })
 
   it('should render children', function () {
