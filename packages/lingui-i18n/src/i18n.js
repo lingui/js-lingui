@@ -55,7 +55,13 @@ class I18n {
   }
 
   activate (language: string) {
-    if (language) this._language = language
+    if (!language) return
+
+    if (!(language in plurals)) {
+      throw new Error(`Unknown locale "${language}".`)
+    }
+
+    this._language = language
   }
 
   use (language: string) {
