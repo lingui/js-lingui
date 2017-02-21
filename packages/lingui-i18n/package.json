@@ -1,6 +1,6 @@
 {
   "name": "lingui-i18n",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
   "author": {
