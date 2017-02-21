@@ -69,6 +69,7 @@ describe('I18n', function () {
   it('.activate should throw an error about incorrect language', function () {
     const i18n = new I18n()
     expect(() => i18n.activate('xyz')).toThrowErrorMatchingSnapshot()
+    expect(() => new I18n('xyz')).toThrowErrorMatchingSnapshot()
   })
 
   it('.use should return new i18n object with switched language', function () {

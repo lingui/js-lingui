@@ -23,8 +23,8 @@ class I18n {
   selectOrdinal: Function
 
   constructor (language: string = '', messages: Catalogs = {}) {
-    this._language = language
     this._messages = messages
+    this.activate(language)
 
     this.t = t(this)
     this.plural = plural(this)

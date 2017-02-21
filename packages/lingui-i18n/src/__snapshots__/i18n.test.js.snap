@@ -1,1 +1,3 @@
 exports[`I18n .activate should throw an error about incorrect language 1`] = `"Unknown locale \"xyz\"."`;
+
+exports[`I18n .activate should throw an error about incorrect language 2`] = `"Unknown locale \"xyz\"."`;
