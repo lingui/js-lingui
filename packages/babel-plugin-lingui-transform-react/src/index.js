@@ -111,7 +111,6 @@ export default function ({ types: t }) {
         })
       }
 
-
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
 
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`

@@ -10,7 +10,7 @@ const config = getConfig()
 
 program.parse(process.argv)
 
-function validateLocales(locales) {
+function validateLocales (locales) {
   const unknown = locales.filter(locale => !(locale in plurals))
   if (unknown.length) {
     console.log(chalk.red(`Unknown locale(s): ${unknown.join(', ')}.`))

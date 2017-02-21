@@ -1,6 +1,7 @@
 **/lib/*
 **/node_modules/*
 **/fixtures/*
+**/locale/*
 flow-typed/*
 docs/*
 scripts/*

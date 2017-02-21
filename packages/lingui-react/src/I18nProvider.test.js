@@ -25,7 +25,7 @@ describe('I18nProvider', function () {
   })
 
   it('should throw an error on incorrect language', function () {
-    const component = () => mount(<I18nProvider language="xyz"><div/></I18nProvider>)
+    const component = () => mount(<I18nProvider language="xyz" messages={{}}><div/></I18nProvider>)
     expect(component).toThrowErrorMatchingSnapshot()
   })
 
