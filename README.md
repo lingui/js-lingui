@@ -249,7 +249,7 @@ const count = 42
 // becomes: 42 livres
 ```
 
-See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or [example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecase.js) for detailed example.
+See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or [example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecases/Children.js) for detailed example.
 
 ## Packages
 
