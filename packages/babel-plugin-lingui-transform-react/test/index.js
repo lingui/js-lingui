@@ -5,7 +5,7 @@ import { transformFileSync, transform } from 'babel-core'
 
 import plugin from '../src/index'
 
-function getTestName (testPath) {
+function getTestName(testPath) {
   return path.basename(testPath)
 }
 
@@ -35,49 +35,58 @@ describe('babel-plugin-lingui-transform-react', function () {
   })
 
   describe('validation', function () {
-    it('value must be a variable', function () {
-      const code = `<Plural value="42" one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    describe('Plural/Select/SelectOrdinal', function () {
+      it('value must be a variable', function () {
+        const code = `<Plural value="42" one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('value is missing', function () {
+        const code = `<Plural one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('offset must be number or string, not variable', function () {
+        const code = `<Plural value={value} offset={offset} one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural forms are missing', function () {
+        const plural = `<Plural value={value} />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const select = `<Select value={value} />`
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural forms missing fallback', function () {
+        const plural = `<Plural value={value} one="Book" />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const select = `<Select value={value} one="Book" />`
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} one="Book" />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural rules must be valid', function () {
+        const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} three="Invalid" one="st" other="rd" />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
     })
 
-    it('value is missing', function () {
-      const code = `<Plural one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('offset must be number or string, not variable', function () {
-      const code = `<Plural value={value} offset={offset} one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('plural forms are missing', function () {
-      const plural = `<Plural value={value} />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const select = `<Select value={value} />`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('plural forms missing fallback', function () {
-      const plural = `<Plural value={value} one="Book" />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const select = `<Select value={value} one="Book" />`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} one="Book" />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('plural rules must be valid', function () {
-      const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} three="Invalid" one="st" other="rd" />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+    describe('Date/Number', function () {
+      it('value must be a variable', function () {
+        expect(transformCode('<Number />')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<Number value="42" />')).toThrowErrorMatchingSnapshot()
+      })
     })
   })
 })

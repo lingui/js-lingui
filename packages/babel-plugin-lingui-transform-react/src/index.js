@@ -36,6 +36,10 @@ export default function ({ types: t }) {
     elementName('Select')(node) ||
     elementName('SelectOrdinal')(node)
   )
+  const isFormatElement = (node) => (
+    elementName('Date')(node) ||
+    elementName('Number')(node)
+  )
 
   function processElement (node, file, props, root = false) {
     const element = node.openingElement
@@ -116,7 +120,44 @@ export default function ({ types: t }) {
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
       element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
       element.name = t.JSXIdentifier('Trans')
+    } else if (isFormatElement(node)) {
+      const type = element.name.name.toLowerCase()
 
+      let variable, format
+
+      for (const attr of element.attributes) {
+        const { name: { name } } = attr
+
+        if (name === 'value') {
+          const exp = attr.value.expression
+
+          // value must be a variable
+          if (!t.isIdentifier(exp)) {
+            throw file.buildCodeFrameError(element, 'Value must be a variable.')
+          }
+
+          variable = exp.name
+          props.params[variable] = t.objectProperty(exp, exp)
+        } else if (name === 'format') {
+          format = attr.value.value
+        }
+      }
+
+      // missing value
+      if (!variable) {
+        throw file.buildCodeFrameError(element, 'Value argument is missing.')
+      }
+
+      const parts = [
+        variable,
+        type
+      ]
+
+      if (format) parts.push(format)
+
+      props.text = `{${parts.join(',')}}`
+      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.name = t.JSXIdentifier('Trans')
     // Other elements
     } else {
       if (root) return
