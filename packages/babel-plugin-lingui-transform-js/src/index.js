@@ -17,6 +17,13 @@ export default function ({ types: t }) {
       t.isIdentifier(node.property, { name: 'selectOrdinal' })
     )
 
+  const isFormatMethod = node =>
+  t.isMemberExpression(node) &&
+  t.isIdentifier(node.object, { name: 'i18n' }) && (
+    t.isIdentifier(node.property, { name: 'date' }) ||
+    t.isIdentifier(node.property, { name: 'number' })
+  )
+
   function processMethod (node, file, props) {
     // i18n.t
     if (isI18nMethod(node)) {
@@ -109,6 +116,26 @@ export default function ({ types: t }) {
 
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
+    } else if (isFormatMethod(node.callee)) {
+      const variable = node.arguments[0]
+
+      // missing value
+      if (!variable || !t.isIdentifier(variable)) {
+        throw file.buildCodeFrameError(node.callee, 'The first argument of format function must be a variable.')
+      }
+
+      const parts = [
+        variable.name,  // variable name
+        node.callee.property.name  // format type
+      ]
+
+      const format = node.arguments[1]
+      if (format) {
+        parts.push(format.value)
+      }
+
+      props.params[variable.name] = t.objectProperty(variable, variable)
+      props.text += `${parts.join(',')}`
     }
 
     return props

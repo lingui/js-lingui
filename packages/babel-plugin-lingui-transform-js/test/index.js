@@ -5,7 +5,7 @@ import { transformFileSync, transform } from 'babel-core'
 
 import plugin from '../src/index'
 
-function getTestName (testPath) {
+function getTestName(testPath) {
   return path.basename(testPath)
 }
 
@@ -37,108 +37,117 @@ describe('babel-plugin-lingui-transform-js', function () {
   })
 
   describe('validation', function () {
-    it('value must be a variable', function () {
-      const code = `
+    describe('plural/select/selectordinal', function () {
+      it('value must be a variable', function () {
+        const code = `
         i18n.plural({
           value: 42,
           0: "No books",
           1: "1 book",
           other: "# books"
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('value is missing', function () {
-      const code = `
+      it('value is missing', function () {
+        const code = `
         i18n.plural({
           0: "No books",
           1: "1 book",
           other: "# books"
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('offset must be number or string, not variable', function () {
-      const code = `
+      it('offset must be number or string, not variable', function () {
+        const code = `
         i18n.plural({
           offset: count,
           0: "No books",
           1: "1 book",
           other: "# books"
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('plural forms are missing', function () {
-      const plural = `
+      it('plural forms are missing', function () {
+        const plural = `
         i18n.plural({
           value: count
         });`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 
-      const select = `
+        const select = `
         i18n.plural({
           value: count
         });`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
 
-      const selectOrdinal = `
+        const selectOrdinal = `
         i18n.plural({
           value: count
         });`
-      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('plural forms missing fallback', function () {
-      const plural = `
+      it('plural forms missing fallback', function () {
+        const plural = `
         i18n.plural({
           value: count,
           one: "Book"
         });`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 
-      const select = `
+        const select = `
         i18n.select({
           value: count,
           male: "He"
         });`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
 
-      const selectOrdinal = `
+        const selectOrdinal = `
         i18n.selectOrdinal({
           value: count,
           one: "st"
         });`
-      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('plural forms cannot be variables', function () {
-      const code = `
+      it('plural forms cannot be variables', function () {
+        const code = `
         i18n.plural({
           value: count,
           [one]: "Book"
         });`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
 
-    it('plural rules must be valid', function () {
-      const plural = `
+      it('plural rules must be valid', function () {
+        const plural = `
         i18n.plural({
           value: count,
           one: "Book",
           three: "Invalid",
           other: "Books"
         });`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 
-      const selectOrdinal = `
+        const selectOrdinal = `
         i18n.selectOrdinal({
           value: count,
           one: "st",
           three: "Invalid",
           other: "rd"
         });`
-      expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
+        expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
+      })
+    })
+  })
+
+  describe('formats', function () {
+    it('value is missing', function () {
+      expect(transformCode('i18n.date();')).toThrowErrorMatchingSnapshot()
+      expect(transformCode('i18n.date(42);')).toThrowErrorMatchingSnapshot()
     })
   })
 })
