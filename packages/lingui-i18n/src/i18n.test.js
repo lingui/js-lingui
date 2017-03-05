@@ -109,9 +109,8 @@ describe('I18n', function () {
       .toEqual("Je m'appelle Fred")
 
     // missing { name }
-    // the output isn't ideal, but at least it doesn't blow up
     expect(i18n.translate({ id: 'My name is {name}' }))
-      .toEqual("Je m'appelle undefined")
+      .toEqual("Je m'appelle")
 
     // Untranslated message
     expect(i18n.translate({ id: 'Missing message' })).toEqual('Missing message')

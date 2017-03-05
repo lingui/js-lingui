@@ -1,8 +1,8 @@
 /* @flow */
-import MessageFormat from 'messageformat'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 import plurals from './plurals'
+import compile from './compile'
 
 type Catalog = {[key: string]: string}
 type Catalogs = {[key: string]: Catalog}
@@ -74,7 +74,7 @@ class I18n {
   }
 
   compile (message: string) {
-    return new MessageFormat(this.language).compile(message)
+    return compile(this.language, message)
   }
 
   pluralForm (n: number, cardinal?: 'cardinal' | 'ordinal' = 'cardinal'): string {
