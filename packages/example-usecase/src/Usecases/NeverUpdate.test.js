@@ -28,7 +28,7 @@ describe('NeverUpdate', function () {
   it('should update translation when language changes', function () {
     const ConvervativeChildren = BeConservative(Children)
 
-    const node = mount(<ConvervativeChildren />)
+    const node = mount(<ConvervativeChildren language="en" />)
     expect(node.find('.untranslated').text()).toEqual("This isn't translated")
     expect(node.find('.customId').text()).toEqual('msg.label')
     expect(node.find('.translated').text()).toEqual('Hello World')
@@ -44,7 +44,7 @@ describe('NeverUpdate', function () {
   it('should update translation when language changes', function () {
     const ConvervativeAttributes = BeConservative(ElementAttributes)
 
-    const node = mount(<ConvervativeAttributes />)
+    const node = mount(<ConvervativeAttributes language="en" />)
     expect(node.find('.expression').prop('title'))
       .toEqual('Full content of Scientific Journal')
     expect(node.find('.variable').prop('aria-label')).toEqual('Close')
