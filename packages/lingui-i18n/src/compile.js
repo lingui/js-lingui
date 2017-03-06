@@ -20,10 +20,10 @@ const defaultFormats = (language) => {
 
   return {
     plural: (value, { offset = 0, rules }) =>
-      rules[value] || rules[pluralRules(value - offset)],
+      rules[value] || rules[pluralRules(value - offset)] || rules.other,
 
     selectordinal: (value, { offset = 0, rules }) =>
-      rules[value] || rules[pluralRules(value - offset, true)],
+      rules[value] || rules[pluralRules(value - offset, true)] || rules.other,
 
     select: (value, { rules }) =>
       rules[value] || rules.other,
