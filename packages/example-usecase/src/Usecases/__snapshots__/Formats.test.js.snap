@@ -2,10 +2,10 @@
 
 exports[`Formats should render 1`] = `
 <Component
-  language="cs"
+  language="en"
 >
   <I18nProvider
-    language="cs"
+    language="en"
     messages={Object {}}
   >
     <Formats>
@@ -25,7 +25,7 @@ exports[`Formats should render 1`] = `
                 className="percent"
                 i18n={
                   I18n {
-                    "_language": "cs",
+                    "_language": "en",
                     "_messages": Object {},
                     "plural": [Function],
                     "select": [Function],
@@ -43,7 +43,7 @@ exports[`Formats should render 1`] = `
                 <span
                   className="percent"
                 >
-                  The answer is 42 %
+                  The answer is 42%
                 </span>
               </Trans>
             </WithI18n>
@@ -54,7 +54,7 @@ exports[`Formats should render 1`] = `
               id="Today is {now,date}"
               params={
                 Object {
-                  "now": 2017-04-04T22:00:00.000Z,
+                  "now": 2017-04-05T11:14:00.000Z,
                 }
               }
             >
@@ -62,7 +62,7 @@ exports[`Formats should render 1`] = `
                 className="date"
                 i18n={
                   I18n {
-                    "_language": "cs",
+                    "_language": "en",
                     "_messages": Object {},
                     "plural": [Function],
                     "select": [Function],
@@ -73,14 +73,14 @@ exports[`Formats should render 1`] = `
                 id="Today is {now,date}"
                 params={
                   Object {
-                    "now": 2017-04-04T22:00:00.000Z,
+                    "now": 2017-04-05T11:14:00.000Z,
                   }
                 }
               >
                 <span
                   className="date"
                 >
-                  Today is 5. 4. 2017
+                  Today is 4/5/2017
                 </span>
               </Trans>
             </WithI18n>

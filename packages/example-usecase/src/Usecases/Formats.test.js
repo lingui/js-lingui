@@ -13,19 +13,19 @@ describe('Formats', function () {
 
   const getText = (element, props = {}) => {
     return mount(
-      <Component {...props} language="cs"/>).find(element).text()
+      <Component {...props} language="en"/>).find(element).text()
   }
 
   it('should render', function () {
     expect(mount(
-      <Component language="cs"/>)).toMatchSnapshot()
+      <Component language="en"/>)).toMatchSnapshot()
   })
 
   it('should render percent', function () {
-    expect(getText('.percent')).toEqual('The answer is 42 %')
+    expect(getText('.percent')).toEqual('The answer is 42%')
   })
 
   it('should render date', function () {
-    expect(getText('.date')).toEqual('Today is 5. 4. 2017')
+    expect(getText('.date')).toEqual('Today is 4/5/2017')
   })
 })
