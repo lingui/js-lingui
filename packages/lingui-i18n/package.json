@@ -20,7 +20,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "lingui-formats": "*",
+    "lingui-formats": "^0.1.0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
   },
