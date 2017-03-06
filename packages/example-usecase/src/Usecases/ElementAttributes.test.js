@@ -16,7 +16,7 @@ describe('ElementAttributes', function () {
     </I18nProvider>
 
   it('should demostrate i18n in html attributes', function () {
-    const node = mount(<Component />)
+    const node = mount(<Component language="en" />)
     expect(node.find('.expression').prop('title'))
       .toEqual('Full content of Scientific Journal')
     expect(node.find('.variable').prop('aria-label')).toEqual('Close')

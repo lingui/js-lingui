@@ -17,6 +17,13 @@ export default function ({ types: t }) {
       t.isIdentifier(node.property, { name: 'selectOrdinal' })
     )
 
+  const isFormatMethod = node =>
+  t.isMemberExpression(node) &&
+  t.isIdentifier(node.object, { name: 'i18n' }) && (
+    t.isIdentifier(node.property, { name: 'date' }) ||
+    t.isIdentifier(node.property, { name: 'number' })
+  )
+
   function processMethod (node, file, props) {
     // i18n.t
     if (isI18nMethod(node)) {
@@ -109,6 +116,45 @@ export default function ({ types: t }) {
 
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
+    } else if (isFormatMethod(node.callee)) {
+      const variable = node.arguments[0]
+
+      // missing value
+      if (!variable || !t.isIdentifier(variable)) {
+        throw file.buildCodeFrameError(node.callee, 'The first argument of format function must be a variable.')
+      }
+
+      const type = node.callee.property.name
+      const parts = [
+        variable.name,  // variable name
+        type  // format type
+      ]
+
+      let format = ''
+      const formatArg = node.arguments[1]
+      if (!formatArg) {
+        // Do not throw validation error when format doesn't exist
+      } else if (t.isStringLiteral(formatArg)) {
+        format = formatArg.value
+      } else if (t.isIdentifier(formatArg) || t.isObjectExpression(formatArg)) {
+        if (t.isIdentifier(formatArg)) {
+          format = formatArg.name
+        } else {
+          const formatName = new RegExp(`^${type}\\d+$`)
+          const existing = Object.keys(props.formats)
+            .filter(name => formatName.test(name))
+          format = `${type}${existing.length || 0}`
+        }
+
+        props.formats[format] = t.objectProperty(t.identifier(format), formatArg)
+      } else {
+        throw file.buildCodeFrameError(formatArg, 'Format can be either string for buil-in formats, variable or object for custom defined formats.')
+      }
+
+      if (format) parts.push(format)
+
+      props.params[variable.name] = t.objectProperty(variable, variable)
+      props.text += `${parts.join(',')}`
     }
 
     return props
@@ -143,7 +189,8 @@ export default function ({ types: t }) {
 
     const props = processMethod(path.node, file, {
       text: '',
-      params: {}
+      params: {},
+      formats: {}
     }, /* root= */true)
 
     if (!props.text) return
@@ -151,13 +198,20 @@ export default function ({ types: t }) {
     // 2. Replace complex expression with single call to i18n.t
 
     const tArgs = [
-      t.objectProperty(t.identifier('id'), t.StringLiteral(props.text))
+      t.objectProperty(t.identifier('id'), t.StringLiteral(props.text.trim()))
     ]
 
     const paramsList = Object.values(props.params)
     if (paramsList.length) {
       tArgs.push(
         t.objectProperty(t.identifier('params'), t.objectExpression(paramsList))
+      )
+    }
+
+    const formatsList = Object.values(props.formats)
+    if (formatsList.length) {
+      tArgs.push(
+        t.objectProperty(t.identifier('formats'), t.objectExpression(formatsList))
       )
     }
 

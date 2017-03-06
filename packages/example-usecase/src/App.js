@@ -4,6 +4,7 @@ import { I18nProvider, Trans } from 'lingui-react'
 import NeverUpdate from './Usecases/NeverUpdate'
 import Children from './Usecases/Children'
 import ElementAttributes from './Usecases/ElementAttributes'
+import Formats from './Usecases/Formats'
 
 const reloader = {
   subscribers: [],
@@ -68,6 +69,9 @@ class App extends React.Component {
 
           <h2><Trans>Translation of element attributes</Trans></h2>
           <ElementAttributes />
+
+          <h2><Trans>Formats</Trans></h2>
+          <Formats />
 
           <h2><Trans>Translations wrapped in component which never updates</Trans></h2>
           <NeverUpdate>

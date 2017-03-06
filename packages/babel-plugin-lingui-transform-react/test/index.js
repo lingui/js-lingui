@@ -5,7 +5,7 @@ import { transformFileSync, transform } from 'babel-core'
 
 import plugin from '../src/index'
 
-function getTestName (testPath) {
+function getTestName(testPath) {
   return path.basename(testPath)
 }
 
@@ -35,49 +35,77 @@ describe('babel-plugin-lingui-transform-react', function () {
   })
 
   describe('validation', function () {
-    it('value must be a variable', function () {
-      const code = `<Plural value="42" one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    describe('Plural/Select/SelectOrdinal', function () {
+      it('children are not allowed', function () {
+        expect(transformCode('<Plural>Not allowed</Plural>')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<Select>Not allowed</Select>')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<SelectOrdinal>Not allowed</SelectOrdinal>')).toThrowErrorMatchingSnapshot()
+      })
+
+      it('value must be a variable', function () {
+        const code = `<Plural value="42" one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('value is missing', function () {
+        const code = `<Plural one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('offset must be number or string, not variable', function () {
+        const code = `<Plural value={value} offset={offset} one="Book" other="Books" />`
+        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural forms are missing', function () {
+        const plural = `<Plural value={value} />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const select = `<Select value={value} />`
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural forms missing fallback', function () {
+        const plural = `<Plural value={value} one="Book" />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const select = `<Select value={value} one="Book" />`
+        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} one="Book" />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
+
+      it('plural rules must be valid', function () {
+        const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
+        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
+
+        const ordinal = `<SelectOrdinal value={value} three="Invalid" one="st" other="rd" />`
+        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      })
     })
 
-    it('value is missing', function () {
-      const code = `<Plural one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+    describe('Date/Number', function () {
+      it('value must be a variable', function () {
+        expect(transformCode('<NumberFormat />')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<NumberFormat value="42" />')).toThrowErrorMatchingSnapshot()
+      })
 
-    it('offset must be number or string, not variable', function () {
-      const code = `<Plural value={value} offset={offset} one="Book" other="Books" />`
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-    })
+      it('format must be string, variable or object with custom format', function () {
+        expect(transformCode('<NumberFormat value={value} format="custom" />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={"custom"} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={custom} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={{ digits: 4 }} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={42} />')).toThrowErrorMatchingSnapshot()
+      })
 
-    it('plural forms are missing', function () {
-      const plural = `<Plural value={value} />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const select = `<Select value={value} />`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('plural forms missing fallback', function () {
-      const plural = `<Plural value={value} one="Book" />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const select = `<Select value={value} one="Book" />`
-      expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} one="Book" />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-    })
-
-    it('plural rules must be valid', function () {
-      const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
-      expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-      const ordinal = `<SelectOrdinal value={value} three="Invalid" one="st" other="rd" />`
-      expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
+      it('value must be a variable', function () {
+        expect(transformCode('<DateFormat />')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<DateFormat value="42" />')).toThrowErrorMatchingSnapshot()
+      })
     })
   })
 })

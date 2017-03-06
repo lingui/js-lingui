@@ -25,6 +25,14 @@ This command extract messages from source and creates message catalog for each l
 2. Merge them with existing catalogues
 3. Write  message catalogues
 
+### `compile`
+
+```sh
+lingui compile
+```
+
+This command compiles message catalogues in `localeDir` and writes minified Javascript files. Each message is replace with function call, which returns parametrized message.
+
 ### `add-locale`
 
 ```sh

@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Formats should render 1`] = `
+<Component
+  language="en"
+>
+  <I18nProvider
+    language="en"
+    messages={Object {}}
+  >
+    <Formats>
+      <div>
+        <ul>
+          <li>
+            <WithI18n
+              className="percent"
+              id="The answer is {answer,number,percent}"
+              params={
+                Object {
+                  "answer": 0.42,
+                }
+              }
+            >
+              <Trans
+                className="percent"
+                i18n={
+                  I18n {
+                    "_language": "en",
+                    "_messages": Object {},
+                    "plural": [Function],
+                    "select": [Function],
+                    "selectOrdinal": [Function],
+                    "t": [Function],
+                  }
+                }
+                id="The answer is {answer,number,percent}"
+                params={
+                  Object {
+                    "answer": 0.42,
+                  }
+                }
+              >
+                <span
+                  className="percent"
+                >
+                  The answer is 42%
+                </span>
+              </Trans>
+            </WithI18n>
+          </li>
+          <li>
+            <WithI18n
+              className="date"
+              id="Today is {now,date}"
+              params={
+                Object {
+                  "now": 2017-04-05T11:14:00.000Z,
+                }
+              }
+            >
+              <Trans
+                className="date"
+                i18n={
+                  I18n {
+                    "_language": "en",
+                    "_messages": Object {},
+                    "plural": [Function],
+                    "select": [Function],
+                    "selectOrdinal": [Function],
+                    "t": [Function],
+                  }
+                }
+                id="Today is {now,date}"
+                params={
+                  Object {
+                    "now": 2017-04-05T11:14:00.000Z,
+                  }
+                }
+              >
+                <span
+                  className="date"
+                >
+                  Today is 4/5/2017
+                </span>
+              </Trans>
+            </WithI18n>
+          </li>
+        </ul>
+      </div>
+    </Formats>
+  </I18nProvider>
+</Component>
+`;

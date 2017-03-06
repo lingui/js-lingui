@@ -78,6 +78,36 @@ i18n.t({
 })
 ```
 
+Number/date formats:
+
+```js
+i18n.t`The answer is ${i18n.number(answer)}`
+
+// becomes
+i18n.t({ 
+  id: "The answer is {answer, number}", 
+  params: { answer }
+})
+```
+
+Custom formats:
+
+```js
+const currency = {
+  style: 'currency',
+  currency: 'EUR'
+}
+
+i18n.t`The price is ${i18n.number(amount, currency)}`
+
+// becomes
+i18n.t({ 
+  id: "The price is {amount, number, currency}", 
+  params: { answer },
+  formats: { currency }
+})
+```
+
 ### Combination of any above
 
 ```js

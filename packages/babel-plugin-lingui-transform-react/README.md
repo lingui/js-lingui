@@ -76,6 +76,40 @@ Plugin performs following transformations:
 />
 ```
 
+Number/Date formats:
+
+```jsx
+<Trans>
+  The answer is <NumberFormat value={value} />
+</Trans>
+
+// becomes
+<Trans 
+  id="The answer is {value, number}" 
+  params={{value: value}} 
+/>
+```
+
+Number/Date formats:
+
+```jsx
+const currency = {
+  style: 'currency',
+  currency: 'EUR'
+}
+
+<Trans>
+  The price is <NumberFormat value={amount} format={currency} />
+</Trans>
+
+// becomes
+<Trans 
+  id="The price is {amount, number, currency}" 
+  params={{ amount }} 
+  formats={{ currency }}
+/>
+```
+
 
 ### Message with inline components
 

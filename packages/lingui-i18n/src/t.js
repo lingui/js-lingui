@@ -7,8 +7,8 @@ const zip = (a, b) => a.map((item, index) => [item, b[index]])
 const t = (i18n: I18n) => (strings: Message | Array<string>, ...values: Array<any>) => {
   // used as a function
   if (!Array.isArray(strings)) {
-    const { id, params } = strings
-    return i18n.translate({ id, params })
+    const { id, params, formats } = strings
+    return i18n.translate({ id, params, formats })
   }
 
   // used as a template tag

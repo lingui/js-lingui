@@ -1,0 +1,33 @@
+{
+  "name": "lingui-formats",
+  "version": "0.1.0",
+  "description": "Built-in formats for numbers and dates",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui/"
+  },
+  "keywords": [
+    "lingui",
+    "formats",
+    "i18n",
+    "internationalization"
+  ],
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
+    "copy-flow": "find src/ -type f -name '*.js' ! -name '*.test.js' -exec sh -c 'cp -f $0 ${0%.js}.js.flow' {} \\; && mv src/*.js.flow lib/",
+    "prepublish": "npm run clean && npm run build && npm run copy-flow"
+  }
+}

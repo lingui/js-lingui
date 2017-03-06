@@ -9,6 +9,7 @@ type TransProps = {
   id?: string,
   defaults?: string,
   params?: Object,
+  formats?: Object,
   components?: Array<React$Element<any>>,
 
   className?: string
@@ -47,10 +48,10 @@ class Trans extends React.Component {
   }
 
   compileMessage (translation: string): Function {
-    const { i18n } = this.props
+    const { i18n, formats } = this.props
 
     if (!i18n.compile) return () => translation
-    return i18n.compile(translation)
+    return i18n.compile(translation, formats)
   }
 
   componentWillReceiveProps (nextProps) {
