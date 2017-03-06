@@ -149,5 +149,12 @@ describe('babel-plugin-lingui-transform-js', function () {
       expect(transformCode('i18n.date();')).toThrowErrorMatchingSnapshot()
       expect(transformCode('i18n.date(42);')).toThrowErrorMatchingSnapshot()
     })
+
+    it('format must be either string, variable or object with custom format', function () {
+      expect(transformCode('i18n.number(value, "currency");')).not.toThrow()
+      expect(transformCode('i18n.number(value, currency);')).not.toThrow()
+      expect(transformCode('i18n.number(value, { digits: 4 });')).not.toThrow()
+      expect(transformCode('i18n.number(value, 42);')).toThrowErrorMatchingSnapshot()
+    })
   })
 })

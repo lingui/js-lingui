@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`babel-plugin-lingui-transform-js formats format must be either string, variable or object with custom format 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Format can be either string for buil-in formats, variable or object for custom defined formats."`;
+
 exports[`babel-plugin-lingui-transform-js formats value is missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: The first argument of format function must be a variable."`;
 
 exports[`babel-plugin-lingui-transform-js formats value is missing 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: The first argument of format function must be a variable."`;
