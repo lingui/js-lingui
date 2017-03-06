@@ -11,7 +11,15 @@ const mergeProps = (props, nextProps) => ({
   text: props.text + nextProps.text,
   params: Object.assign({}, props.params, nextProps.params),
   components: props.components.concat(nextProps.components),
+  formats: props.formats,
   elementIndex: nextProps.elementIndex
+})
+
+const initialProps = ({ formats } = {}) => ({
+  text: '',
+  params: {},
+  components: [],
+  formats: formats || {}
 })
 
 const elementGeneratorFactory = () => {
@@ -139,7 +147,28 @@ export default function ({ types: t }) {
           variable = exp.name
           props.params[variable] = t.objectProperty(exp, exp)
         } else if (name === 'format') {
-          format = attr.value.value
+          if (t.isStringLiteral(attr.value)) {
+            format = attr.value.value
+          } else if (t.isJSXExpressionContainer(attr.value)) {
+            const exp = attr.value.expression
+            if (t.isStringLiteral(exp)) {
+              format = exp.value
+            } else if (t.isObjectExpression(exp) || t.isIdentifier(exp)) {
+              if (t.isIdentifier(exp)) {
+                format = exp.name
+              } else {
+                const formatName = new RegExp(`^${type}\\d+$`)
+                const existing = Object.keys(props.formats)
+                  .filter(name => formatName.test(name))
+                format = `${type}${existing.length || 0}`
+              }
+              props.formats[format] = t.objectProperty(t.identifier(format), exp)
+            }
+          }
+
+          if (!format) {
+            throw file.buildCodeFrameError(element, 'Format can be either string for buil-in formats, variable or object for custom defined formats.')
+          }
         }
       }
 
@@ -181,11 +210,7 @@ export default function ({ types: t }) {
   }
 
   function processChildren (node, file, props) {
-    let nextProps = {
-      text: '',
-      params: {},
-      components: []
-    }
+    let nextProps = initialProps({ formats: props.formats })
 
     if (t.isJSXExpressionContainer(node)) {
       const exp = node.expression
@@ -237,11 +262,7 @@ export default function ({ types: t }) {
 
         // 1. Collect all parameters and inline elements and generate message ID
 
-        const props = processElement(node, file, {
-          text: '',
-          params: {},
-          components: []
-        }, /* root= */true)
+        const props = processElement(node, file, initialProps(), /* root= */true)
 
         if (!props) return
 
@@ -281,6 +302,16 @@ export default function ({ types: t }) {
               t.JSXIdentifier('components'),
               t.JSXExpressionContainer(t.arrayExpression(props.components))
             )
+          )
+        }
+
+        // Custom formats
+        const formatsList = Object.values(props.formats)
+        if (formatsList.length) {
+          attrs.push(
+            t.JSXAttribute(
+              t.JSXIdentifier('formats'),
+              t.JSXExpressionContainer(t.objectExpression(formatsList)))
           )
         }
       }  // JSXElement

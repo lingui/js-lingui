@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`babel-plugin-lingui-transform-react validation Date/Number format must be string, variable or object with custom format 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Format can be either string for buil-in formats, variable or object for custom defined formats."`;
+
 exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value argument is missing."`;
 
 exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 2`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value must be a variable."`;

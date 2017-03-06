@@ -88,6 +88,14 @@ describe('babel-plugin-lingui-transform-react', function () {
         expect(transformCode('<NumberFormat value="42" />')).toThrowErrorMatchingSnapshot()
       })
 
+      it('format must be string, variable or object with custom format', function () {
+        expect(transformCode('<NumberFormat value={value} format="custom" />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={"custom"} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={custom} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={{ digits: 4 }} />')).not.toThrow()
+        expect(transformCode('<NumberFormat value={value} format={42} />')).toThrowErrorMatchingSnapshot()
+      })
+
       it('value must be a variable', function () {
         expect(transformCode('<DateFormat />')).toThrowErrorMatchingSnapshot()
         expect(transformCode('<DateFormat value="42" />')).toThrowErrorMatchingSnapshot()
