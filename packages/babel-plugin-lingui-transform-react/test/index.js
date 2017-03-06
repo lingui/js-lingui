@@ -36,6 +36,12 @@ describe('babel-plugin-lingui-transform-react', function () {
 
   describe('validation', function () {
     describe('Plural/Select/SelectOrdinal', function () {
+      it('children are not allowed', function () {
+        expect(transformCode('<Plural>Not allowed</Plural>')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<Select>Not allowed</Select>')).toThrowErrorMatchingSnapshot()
+        expect(transformCode('<SelectOrdinal>Not allowed</SelectOrdinal>')).toThrowErrorMatchingSnapshot()
+      })
+
       it('value must be a variable', function () {
         const code = `<Plural value="42" one="Book" other="Books" />`
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()

@@ -60,7 +60,9 @@ export default function ({ types: t }) {
 
     // Plural, Select, SelectOrdinal
     } else if (isChooseElement(node)) {
-      // TODO: Disallow children
+      if (node.children.length) {
+        throw file.buildCodeFrameError(element, `Children of ${element.name.name} aren't allowed.`)
+      }
 
       const choicesType = element.name.name.toLowerCase()
       const choices = {}
