@@ -46,5 +46,14 @@ describe('compile', function () {
     const now = new Date('3/4/2017')
     const date = compile('en', '{value, date}')
     expect(date({ value: now })).toEqual('3/4/2017')
+
+    const currency = compile('en', '{value, number, currency}', {
+      currency: {
+        style: 'currency',
+        currency: 'EUR'
+      }
+    })
+    expect(currency({ value: 0.1 })).toEqual('€0.10')
+    expect(currency({ value: 1 })).toEqual('€1.00')
   })
 })

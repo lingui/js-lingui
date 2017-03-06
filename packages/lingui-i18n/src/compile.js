@@ -10,13 +10,13 @@ MakePlural.load(
 
 const isString = s => typeof s === 'string'
 
-const defaultFormats = (language) => {
+const defaultFormats = (language, formatStyles = {}) => {
   const pluralRules = new MakePlural(language, {
     cardinals: true,
     ordinals: true
   })
 
-  const style = format => isString(format) ? { style: format } : format
+  const style = format => isString(format) ? formatStyles[format] || { style: format } : format
 
   return {
     plural: (value, { offset = 0, rules }) =>
@@ -39,14 +39,14 @@ const defaultFormats = (language) => {
 }
 
 // Message -> (Params -> String)
-export default function compile (language: string, message: string) {
+export default function compile (language: string, message: string, formatStyles?: Object) {
   const formattedMessage = processTokens(parse(message))
-  return (params) => formattedMessage(context({ language, params }))
+  return (params) => formattedMessage(context({ language, params, formatStyles }))
 }
 
 // Params -> CTX
-function context ({ language, params }) {
-  const formats = defaultFormats(language)
+function context ({ language, params, formatStyles }) {
+  const formats = defaultFormats(language, formatStyles)
 
   const ctx = (name, type, format) => {
     const value = params[name]

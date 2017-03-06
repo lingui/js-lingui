@@ -68,13 +68,13 @@ class I18n {
     return new I18n(language, this._messages)
   }
 
-  translate ({ id, defaults, params = {} }: Message) {
+  translate ({ id, defaults, params = {}, formats = {} }: Message) {
     const translation = this.messages[id] || defaults || id
-    return this.compile(translation)(params)
+    return this.compile(translation, formats)(params)
   }
 
-  compile (message: string) {
-    return compile(this.language, message)
+  compile (message: string, formats?: Object) {
+    return compile(this.language, message, formats)
   }
 
   pluralForm (n: number, cardinal?: 'cardinal' | 'ordinal' = 'cardinal'): string {
