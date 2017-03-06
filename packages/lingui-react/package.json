@@ -29,6 +29,7 @@
     "react": "15.x"
   },
   "dependencies": {
+    "lingui-formats": "*",
     "lingui-i18n": "^0.2.2"
   },
   "devDependencies": {
