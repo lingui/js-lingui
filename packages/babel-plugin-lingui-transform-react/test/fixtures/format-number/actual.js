@@ -1,3 +1,3 @@
-<Number value={value} />;
-<Number value={value} format="percent" />;
-<Trans>The answer is <Number value={value} /></Trans>;
+<NumberFormat value={value} />;
+<NumberFormat value={value} format="percent" />;
+<Trans>The answer is <NumberFormat value={value} /></Trans>;

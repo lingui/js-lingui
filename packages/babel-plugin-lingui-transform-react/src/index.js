@@ -37,8 +37,8 @@ export default function ({ types: t }) {
     elementName('SelectOrdinal')(node)
   )
   const isFormatElement = (node) => (
-    elementName('Date')(node) ||
-    elementName('Number')(node)
+    elementName('DateFormat')(node) ||
+    elementName('NumberFormat')(node)
   )
 
   function processElement (node, file, props, root = false) {
@@ -121,7 +121,7 @@ export default function ({ types: t }) {
       element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
       element.name = t.JSXIdentifier('Trans')
     } else if (isFormatElement(node)) {
-      const type = element.name.name.toLowerCase()
+      const type = element.name.name.toLowerCase().replace('format', '')
 
       let variable, format
 
