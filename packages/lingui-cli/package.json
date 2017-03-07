@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "CLI for extracting i18n messages from sources",
   "main": "lib/index.js",
   "author": {
@@ -31,8 +31,8 @@
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
     "lingui-conf": "^0.2.0",
-    "messageformat-parser": "^1.0.0",
     "make-plural": "^4.0.1",
+    "messageformat-parser": "^1.0.0",
     "node-emoji": "^1.5.1"
   },
   "devDependencies": {
