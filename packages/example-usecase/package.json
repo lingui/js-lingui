@@ -22,9 +22,7 @@
     "babel-cli": "^6.22.2",
     "babel-loader": "^6.2.10",
     "babel-polyfill": "^6.22.0",
-    "babel-plugin-lingui-extract-messages": "*",
-    "babel-plugin-lingui-transform-react": "*",
-    "babel-plugin-lingui-transform-js": "*",
+    "babel-preset-lingui-react": "*",
     "babel-preset-env": "^1.1.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
@@ -32,12 +30,10 @@
   "babel": {
     "presets": [
       "env",
-      "react"
+      "react",
+      "lingui-react"
     ],
     "plugins": [
-      "lingui-transform-js",
-      "lingui-transform-react",
-      "lingui-extract-messages",
       "transform-class-properties",
       "transform-object-rest-spread"
     ]
