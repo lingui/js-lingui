@@ -13,6 +13,8 @@ const packages = [
   'babel-plugin-lingui-transform-js',
   'babel-plugin-lingui-transform-react',
   'babel-plugin-lingui-extract-messages',
+  'babel-preset-lingui-js',
+  'babel-preset-lingui-react',
   'lingui-formats',
   'lingui-i18n',
   'lingui-react',
