@@ -43,6 +43,7 @@
     "comments": false
   },
   "dependencies": {
+    "jest-validate": "^19.0.2",
     "pkg-conf": "^2.0.0"
   }
 }

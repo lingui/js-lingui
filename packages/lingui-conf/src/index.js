@@ -1,5 +1,6 @@
 const path = require('path')
 const pkgConf = require('pkg-conf')
+const { validate } = require('jest-validate')
 
 function replaceRootDir (conf, rootDir) {
   const replace = s => s.replace('<rootDir>', rootDir)
@@ -23,18 +24,25 @@ function replaceRootDir (conf, rootDir) {
 const defaults = {
   localeDir: 'locale',
   srcPathDirs: ['<rootDir>'],
-  srcPathIgnorePatterns: ['/node_modules/']
+  srcPathIgnorePatterns: ['/node_modules/'],
+  rootDir: '.'
+}
+
+const configValidation = {
+  exampleConfig: defaults,
+  comment: `See https://github.com/lingui/js-lingui/tree/master/packages/lingui-conf for a list of valid options`
 }
 
 function getConfig () {
-  const conf = pkgConf.sync('lingui', {
+  const raw = pkgConf.sync('lingui', {
     defaults,
     skipOnFalse: true
   })
 
-  const rootDir = path.dirname(pkgConf.filepath(conf))
+  validate(raw, configValidation)
 
-  return replaceRootDir(conf, rootDir)
+  const rootDir = path.dirname(pkgConf.filepath(raw))
+  return replaceRootDir(raw, rootDir)
 }
 
 export default getConfig
