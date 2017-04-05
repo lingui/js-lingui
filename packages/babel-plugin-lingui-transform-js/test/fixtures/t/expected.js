@@ -1,4 +1,4 @@
-const a = i18n.t({
+var a = i18n.t({
   id: "Hello World"
 });
 i18n.t({

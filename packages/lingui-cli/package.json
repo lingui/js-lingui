@@ -52,13 +52,16 @@
     "build": "babel src/ --out-dir lib/ --ignore *.test.js",
     "prepublish": "npm run clean && npm run build"
   },
+  "engines" : {
+    "node" : ">=4"
+  },
   "babel": {
     "presets": [
       [
         "env",
         {
           "targets": {
-            "node": "current"
+            "node": 4
           },
           "useBuiltIn": true
         }
