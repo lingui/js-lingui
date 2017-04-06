@@ -30,7 +30,7 @@
     "chalk": "^1.1.3",
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
-    "lingui-conf": "^0.2.0",
+    "lingui-conf": "^0.4.0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0",
     "node-emoji": "^1.5.1"
