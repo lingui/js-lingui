@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "CLI for extracting i18n messages from sources",
   "main": "lib/index.js",
   "author": {
@@ -52,8 +52,8 @@
     "build": "babel src/ --out-dir lib/ --ignore *.test.js",
     "prepublish": "npm run clean && npm run build"
   },
-  "engines" : {
-    "node" : ">=4"
+  "engines": {
+    "node": ">=4"
   },
   "babel": {
     "presets": [

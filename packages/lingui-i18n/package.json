@@ -1,6 +1,6 @@
 {
   "name": "lingui-i18n",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
   "author": {
@@ -38,8 +38,8 @@
     "copy-flow": "find src/ -type f -name '*.js' ! -name '*.test.js' -exec sh -c 'cp -f $0 ${0%.js}.js.flow' {} \\; && mv src/*.js.flow lib/",
     "prepublish": "npm run clean && npm run build && npm run copy-flow"
   },
-  "engines" : {
-    "node" : ">=4"
+  "engines": {
+    "node": ">=4"
   },
   "babel": {
     "presets": [
