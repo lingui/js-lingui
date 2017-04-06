@@ -11,7 +11,9 @@ dependencies:
 
 test:
   override:
-    - ./scripts/circleci-test.sh:
-      parallel: true
+    - nvm use 4 && yarn test
+    - nvm use 5 && yarn test
+    - nvm use 6 && yarn test
+    - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
   post:
     - codecov
