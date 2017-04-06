@@ -16,4 +16,5 @@ test:
     - yarn test
     - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
   post:
+    - nvm alias default 6.1.0
     - codecov
