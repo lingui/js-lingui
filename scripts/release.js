@@ -45,7 +45,7 @@ function runCmdLocal(cwd) {
 function checkUpdates(packageName) {
   let latest = false
   try {
-    latest = runCmd(`git describe --tags --abbrev=0 --match ${packageName}@*`)
+    latest = runCmd(`git tag -l ${packageName}@* | tail -n1`)
   } catch (e) {
   }
 
