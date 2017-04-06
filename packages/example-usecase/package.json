@@ -29,7 +29,15 @@
   },
   "babel": {
     "presets": [
-      "env",
+      [
+        "env",
+        {
+          "targets": {
+            "node": 4
+          },
+          "useBuiltIns": true
+        }
+      ],
       "react",
       "lingui-react"
     ],

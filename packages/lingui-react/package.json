@@ -43,5 +43,27 @@
     "build": "babel src/ --out-dir lib/ --ignore *.test.js",
     "copy-flow": "find src/ -type f -name '*.js' ! -name '*.test.js' -exec sh -c 'cp -f $0 ${0%.js}.js.flow' {} \\; && mv src/*.js.flow lib/",
     "prepublish": "npm run clean && npm run build && npm run copy-flow"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": 4
+          },
+          "useBuiltIns": true
+        }
+      ],
+      "react"
+    ],
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
+    ],
+    "comments": false
   }
 }
