@@ -76,7 +76,8 @@ describe('Trans component', function () {
         params={{ value: 1 }}
         formats={{ currency: {
           style: 'currency',
-          currency: 'EUR'
+          currency: 'EUR',
+          minimumFractionDigits: 2
         }}}
       />)
     expect(translation).toEqual('€1.00')

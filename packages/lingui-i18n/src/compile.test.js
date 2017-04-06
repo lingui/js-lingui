@@ -50,7 +50,8 @@ describe('compile', function () {
     const currency = compile('en', '{value, number, currency}', {
       currency: {
         style: 'currency',
-        currency: 'EUR'
+        currency: 'EUR',
+        minimumFractionDigits: 2
       }
     })
     expect(currency({ value: 0.1 })).toEqual('€0.10')
