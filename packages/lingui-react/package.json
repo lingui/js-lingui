@@ -34,8 +34,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.1.8",
+    "babel-preset-react": "^6.23.0",
     "rimraf": "^2.5.4"
   },
   "scripts": {
