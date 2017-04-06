@@ -1,6 +1,6 @@
 {
   "name": "lingui-conf",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Get lingui configuration from package.json",
   "main": "lib/index.js",
   "repository": {
@@ -28,8 +28,8 @@
     "build": "babel src/ --out-dir lib/ --ignore *.test.js",
     "prepublish": "npm run clean && npm run build"
   },
-  "engines" : {
-    "node" : ">=4"
+  "engines": {
+    "node": ">=4"
   },
   "babel": {
     "presets": [
