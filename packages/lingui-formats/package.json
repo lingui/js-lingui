@@ -18,41 +18,10 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-plugin-transform-class-properties": "^6.23.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-polyfill": "^6.22.0",
-    "babel-preset-env": "^1.1.8",
-    "babel-preset-react": "^6.23.0",
-    "rimraf": "^2.5.4"
+  "engines": {
+    "node": ">=4.0"
   },
   "scripts": {
-    "clean": "rimraf lib/",
-    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
-    "copy-flow": "find src/ -type f -name '*.js' ! -name '*.test.js' -exec sh -c 'cp -f $0 ${0%.js}.js.flow' {} \\; && mv src/*.js.flow lib/",
-    "prepublish": "npm run clean && npm run build && npm run copy-flow"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": 4
-          },
-          "useBuiltIns": true
-        }
-      ],
-      "react"
-    ],
-    "plugins": [
-      "transform-class-properties",
-      "transform-object-rest-spread"
-    ],
-    "comments": false
+    "prepublish": "../../scripts/prepublish.sh"
   }
 }

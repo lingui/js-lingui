@@ -24,37 +24,17 @@
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
+  "engines": {
+    "node": ">=4.0"
+  },
   "dependencies": {
     "lingui-conf": "^0.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.23.0",
     "babel-plugin-lingui-transform-js": "*",
-    "babel-plugin-lingui-transform-react": "*",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.1.8",
-    "rimraf": "^2.5.4"
+    "babel-plugin-lingui-transform-react": "*"
   },
   "scripts": {
-    "clean": "rimraf lib/",
-    "build": "babel src/ --out-dir lib/",
-    "prepublish": "npm run clean && npm run build"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": 4
-          },
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "comments": false
+    "prepublish": "../../scripts/prepublish.sh"
   }
 }

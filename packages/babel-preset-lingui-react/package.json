@@ -20,8 +20,8 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "babel-plugin-lingui-transform-js": "*",
-    "babel-plugin-lingui-transform-react": "*",
-    "babel-plugin-lingui-extract-messages": "*"
+    "babel-plugin-lingui-extract-messages": "^0.4.0",
+    "babel-plugin-lingui-transform-js": "^0.3.0",
+    "babel-plugin-lingui-transform-react": "^0.4.0"
   }
 }

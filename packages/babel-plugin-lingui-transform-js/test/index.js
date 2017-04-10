@@ -11,6 +11,7 @@ function getTestName(testPath) {
 
 describe('babel-plugin-lingui-transform-js', function () {
   const babelOptions = {
+    babelrc: false,
     plugins: [
       plugin,
       'syntax-jsx',

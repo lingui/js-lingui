@@ -1,4 +1,4 @@
-var a = i18n.t({
+const a = i18n.t({
   id: "{count, plural, one {# book} other {# books}}",
   params: {
     count: count
