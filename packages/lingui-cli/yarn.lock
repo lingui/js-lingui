@@ -294,9 +294,9 @@ leven@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-conf@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.4.0.tgz#2c0789590cd87bceccebe9dc243b35471fa35a06"
+lingui-conf@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.6.0.tgz#4c23c9b94436f2ef980f7d89bb5cbceb8f6abdc2"
   dependencies:
     jest-validate "^19.0.2"
     pkg-conf "^2.0.0"
