@@ -29,6 +29,7 @@ const rmdir = (dir) => {
 
 function testCase (testName, assertion) {
   const transform = (filename, jsx = true) => () => transformFileSync(path.join(__dirname, 'fixtures', filename), {
+    babelrc: false,
     plugins: [
       ...(filename.endsWith('integration.js')
           ? jsx

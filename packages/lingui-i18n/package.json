@@ -1,6 +1,6 @@
 {
   "name": "lingui-i18n",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
   "author": {
@@ -19,44 +19,15 @@
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
+  "engines": {
+    "node": ">=4.0"
+  },
   "dependencies": {
-    "lingui-formats": "^0.1.0",
+    "lingui-formats": "^0.2.0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
   },
-  "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.1.8",
-    "rimraf": "^2.5.4"
-  },
   "scripts": {
-    "clean": "rimraf lib/",
-    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
-    "copy-flow": "find src/ -type f -name '*.js' ! -name '*.test.js' -exec sh -c 'cp -f $0 ${0%.js}.js.flow' {} \\; && mv src/*.js.flow lib/",
-    "prepublish": "npm run clean && npm run build && npm run copy-flow"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": 4
-          },
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "plugins": [
-      "transform-flow-strip-types",
-      "transform-object-rest-spread"
-    ],
-    "comments": false
+    "prepublish": "../../scripts/prepublish.sh"
   }
 }

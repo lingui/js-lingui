@@ -1,6 +1,6 @@
 {
   "name": "lingui-conf",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "description": "Get lingui configuration from package.json",
   "main": "lib/index.js",
   "repository": {
@@ -17,36 +17,14 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-polyfill": "^6.22.0",
-    "babel-preset-env": "^1.1.8",
-    "rimraf": "^2.5.4"
-  },
-  "scripts": {
-    "clean": "rimraf lib/",
-    "build": "babel src/ --out-dir lib/ --ignore *.test.js",
-    "prepublish": "npm run clean && npm run build"
-  },
   "engines": {
-    "node": ">=4"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": 4
-          },
-          "useBuiltIns": true
-        }
-      ]
-    ],
-    "comments": false
+    "node": ">=4.0"
   },
   "dependencies": {
     "jest-validate": "^19.0.2",
     "pkg-conf": "^2.0.0"
+  },
+  "scripts": {
+    "prepublish": "../../scripts/prepublish.sh"
   }
 }

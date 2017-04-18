@@ -16,13 +16,15 @@ ansi-styles@^3.0.0:
   dependencies:
     color-convert "^1.0.0"
 
-babel-plugin-lingui-transform-js@*:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.3.0.tgz#6e49b6b8a1b583b5aa2749d9ecf99ab094938f3f"
+babel-plugin-lingui-extract-messages@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-0.7.0.tgz#ea0b2fb3f5b15168bd64947c5753b5bf5d1fe00b"
+  dependencies:
+    lingui-conf "^0.6.0"
 
-babel-plugin-lingui-transform-react@*:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-0.4.0.tgz#300d56c6189d51e9eadcb9f228cb4f4fccb31779"
+babel-plugin-lingui-transform-js@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.5.0.tgz#6094dcd6940dbda543ef496eb1d2425564592a77"
 
 chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
