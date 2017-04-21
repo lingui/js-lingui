@@ -16,6 +16,12 @@ export default ({ update = true }: WithI18nOptions = {}) => function<P, C: React
       i18nManager: React.PropTypes.object
     }
 
+	ctrls={wrappedInstance:null}
+   
+    getWrappedInstance(){
+		return this.ctrls.wrappedInstance
+	}
+
     componentDidMount () {
       if (update) {
         const { subscribe } = this.getI18n()
@@ -41,7 +47,7 @@ export default ({ update = true }: WithI18nOptions = {}) => function<P, C: React
     render () {
       const { i18n } = this.getI18n()
       // $FlowIgnore: https://github.com/facebook/flow/issues/3241
-      return <WrappedComponent {...this.props} i18n={i18n} />
+      return <WrappedComponent ref={(x)=>this.ctrls.wrappedInstance=x} {...this.props} i18n={i18n} />
     }
   }
 }
