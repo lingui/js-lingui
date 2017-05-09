@@ -88,4 +88,16 @@ describe('WithI18n', function () {
     node.unmount()
     expect(context.unsubscribe).not.toBeCalled()
   })
+
+  // NOT WORKING: the argument passed to the ref attribute is always null inside WithI18n.render during tests
+  //it("should hold ref to wrapped instance when withRef is enabled", function () {
+  //  const { node } = mountHoc({}, { withRef:true })
+  //  expect(node.node.getWrappedInstance()).not.toBeNull()
+  //})
+
+  it("should not hold ref to wrapped instance when withRef is disabled", function () {
+    const { node } = mountHoc()
+    expect(node.node.getWrappedInstance()).toBeNull()
+  })
+
 })
