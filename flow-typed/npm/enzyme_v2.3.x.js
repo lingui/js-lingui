@@ -1,5 +1,5 @@
-// flow-typed signature: 2175b210c6cf8efc57b49b48714ec5de
-// flow-typed version: 5bc60ca78c/enzyme_v2.3.x/flow_>=v0.28.x
+// flow-typed signature: 4109fee535b1f5c38bd1a24450044e0f
+// flow-typed version: 2b435bb71a/enzyme_v2.3.x/flow_>=v0.28.x
 
 declare module 'enzyme' {
   declare type PredicateFunction<T: Wrapper> = (wrapper: T) => boolean;
@@ -19,6 +19,7 @@ declare module 'enzyme' {
     containsMatchingElement(node: React$Element<any>): boolean;
     containsAllMatchingElements(nodes: NodeOrNodes): boolean;
     containsAnyMatchingElements(nodes: NodeOrNodes): boolean;
+    dive(option?: { context?: Object }): this;
     exists(): boolean;
     matchesElement(node: React$Element<any>): boolean;
     hasClass(className: string): boolean;
@@ -35,6 +36,8 @@ declare module 'enzyme' {
     text(): string;
     html(): string;
     get(index: number): React$Element<any>;
+    getNode(): React$Element<any>;
+    getNodes(): Array<React$Element<any>>;
     at(index: number): this;
     first(): this;
     last(): this;
