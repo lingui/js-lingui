@@ -11,18 +11,28 @@ type WithI18nProps = {
   i18n: I18n
 }
 
-export default ({ update = true ,withRef = false }: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
+export default ({ update = true, withRef = false }: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
   return class WithI18n extends React.Component {
     static contextTypes = {
       i18nManager: React.PropTypes.object
     }
 
-    wrappedInstance=null
-    
-    setWrappedInstance = withRef?(ref => this.wrappedInstance = ref):null
-   
-    getWrappedInstance = () => this.wrappedInstance
-    
+    wrappedInstance = null
+
+    setWrappedInstance = ref => {
+      if (withRef) this.wrappedInstance = ref
+    }
+
+    getWrappedInstance = () => {
+      if (!withRef) {
+        throw new Error(
+          'To access the wrapped instance, you need to specify { withRef: true }' +
+          ' in the options argument of the withI18n() call.'
+        )
+      }
+
+      return this.wrappedInstance
+    }
 
     componentDidMount () {
       if (update) {

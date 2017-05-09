@@ -19,9 +19,13 @@ describe('WithI18n', function () {
   // Pass all props to spy on render
   const sinkFactory = (options = {}) => {
     const spy = jest.fn()
-    const Sink = WithI18n(options)((props) => {
-      spy(props)
-      return null
+    const Sink = WithI18n(options)(class extends React.Component {
+      customMethod = () => 42
+
+      render () {
+        spy(this.props)
+        return <div />
+      }
     })
     return { Sink, spy }
   }
@@ -89,15 +93,17 @@ describe('WithI18n', function () {
     expect(context.unsubscribe).not.toBeCalled()
   })
 
-  // NOT WORKING: the argument passed to the ref attribute is always null inside WithI18n.render during tests
-  //it("should hold ref to wrapped instance when withRef is enabled", function () {
-  //  const { node } = mountHoc({}, { withRef:true })
-  //  expect(node.node.getWrappedInstance()).not.toBeNull()
-  //})
-
-  it("should not hold ref to wrapped instance when withRef is disabled", function () {
-    const { node } = mountHoc()
-    expect(node.node.getWrappedInstance()).toBeNull()
+  it('should hold ref to wrapped instance when withRef is enabled', function () {
+    const { node } = mountHoc({}, { withRef: true })
+    expect(node.node.getWrappedInstance()).not.toBeNull()
+    expect(node.node.getWrappedInstance().customMethod).not.toBeNull()
+    expect(node.node.getWrappedInstance().customMethod()).toEqual(42)
   })
 
+  it('should not hold ref to wrapped instance when withRef is disabled', function () {
+    const { node } = mountHoc()
+    expect(() => node.node.getWrappedInstance()).toThrow(
+      'To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call.'
+    )
+  })
 })
