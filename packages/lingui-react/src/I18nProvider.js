@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react'
+import PropTypes from 'prop-types'
 import { I18n } from 'lingui-i18n'
 import type { Catalogs } from 'lingui-i18n'
 
@@ -72,7 +73,7 @@ class I18nProvider extends React.Component {
 }
 
 I18nProvider.childContextTypes = {
-  i18nManager: React.PropTypes.object.isRequired
+  i18nManager: PropTypes.object.isRequired
 }
 
 export default I18nProvider

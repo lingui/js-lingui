@@ -33,7 +33,8 @@
   },
   "dependencies": {
     "lingui-formats": "^v0.3.0",
-    "lingui-i18n": "^v0.6.0"
+    "lingui-i18n": "^v0.6.0",
+    "prop-types": "^15.5.10"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

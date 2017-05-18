@@ -16,15 +16,15 @@ ansi-styles@^3.0.0:
   dependencies:
     color-convert "^1.0.0"
 
-babel-plugin-lingui-extract-messages@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-0.7.0.tgz#ea0b2fb3f5b15168bd64947c5753b5bf5d1fe00b"
+babel-plugin-lingui-extract-messages@^v0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-0.8.0.tgz#90196b422d9655fc64c8e7094d68ccda8c6cfc2b"
   dependencies:
-    lingui-conf "^0.6.0"
+    lingui-conf "^v0.7.0"
 
-babel-plugin-lingui-transform-js@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.5.0.tgz#6094dcd6940dbda543ef496eb1d2425564592a77"
+babel-plugin-lingui-transform-js@^v0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.6.0.tgz#cd0a6c6680cb2b89f3e48efa698c3f9252082426"
 
 chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
@@ -96,9 +96,9 @@ leven@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-conf@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.6.0.tgz#4c23c9b94436f2ef980f7d89bb5cbceb8f6abdc2"
+lingui-conf@^v0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.7.0.tgz#2ebb8dcc9f651d2a01477ae8ece734c2c64a338b"
   dependencies:
     jest-validate "^19.0.2"
     pkg-conf "^2.0.0"

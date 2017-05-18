@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import PropTypes from 'prop-types'
 import type { I18n } from 'lingui-i18n'
 
 type WithI18nOptions = {
@@ -14,7 +15,7 @@ type WithI18nProps = {
 export default ({ update = true, withRef = false }: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
   return class WithI18n extends React.Component {
     static contextTypes = {
-      i18nManager: React.PropTypes.object
+      i18nManager: PropTypes.object
     }
 
     wrappedInstance = null

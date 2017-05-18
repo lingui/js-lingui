@@ -1,5 +1,5 @@
 // @flow
-const generate = require('babel-generator').default
+import generate from 'babel-generator'
 import compile from './compile'
 
 describe('compile', function () {
