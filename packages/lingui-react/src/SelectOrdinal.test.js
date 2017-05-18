@@ -12,19 +12,15 @@ describe('SelectOrdinal', function () {
       languageContext('en')
     )
 
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('1st')
 
     node.setProps({ value: 2 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('2nd')
 
     node.setProps({ value: 3 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('3rd')
 
     node.setProps({ value: 4 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('4th')
   })
 
@@ -44,27 +40,21 @@ describe('SelectOrdinal', function () {
       languageContext('cy')
     )
 
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('0 cŵn')
 
     node.setProps({ value: 1 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('1 ci')
 
     node.setProps({ value: 2 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('2 gi')
 
     node.setProps({ value: 3 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('3 chi')
 
     node.setProps({ value: 5 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('5 chi')
 
     node.setProps({ value: 10 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('10 ci')
   })
 
@@ -74,7 +64,6 @@ describe('SelectOrdinal', function () {
       languageContext('cs')
     )
 
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('1. křižovatka')
   })
 
@@ -84,23 +73,18 @@ describe('SelectOrdinal', function () {
       languageContext('en')
     )
 
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('This one')
 
     node.setProps({ value: 2 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('This one and 1st')
 
     node.setProps({ value: 3 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('This one and 2nd')
 
     node.setProps({ value: 4 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('This one and 3rd')
 
     node.setProps({ value: 5 })
-    // $FlowIgnore: missing annotation for dive()
     expect(node.dive().text()).toEqual('This one and 4th')
   })
 })

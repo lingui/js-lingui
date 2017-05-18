@@ -1,10 +1,10 @@
 // @flow
 const t = require('babel-types')
-const parse = require('messageformat-parser').parse
+const { parse } = require('messageformat-parser')
 
 const isString = s => typeof s === 'string'
 
-function compile (message) {
+function compile (message: string) {
   function processTokens (tokens, octothorpe) {
     if (!tokens.filter(token => !isString(token)).length) {
       return tokens.join('')

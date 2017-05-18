@@ -21,7 +21,6 @@ describe('Trans component', function () {
       })
     }
   }
-  // $FlowIgnore: missing annotation for dive()
   const text = (node) => shallow(node, { context }).dive().text()
 
   /*
@@ -29,7 +28,6 @@ describe('Trans component', function () {
    */
 
   it("shouldn't throw runtime error without i18n context", function () {
-    // $FlowIgnore: missing annotation for dive()
     expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
   })
 

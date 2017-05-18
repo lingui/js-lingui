@@ -10,7 +10,8 @@ type Catalogs = {[key: string]: Catalog}
 type Message = {|
   id: string,
   defaults?: string,
-  params?: Object
+  params?: Object,
+  formats?: Object
 |}
 
 class I18n {

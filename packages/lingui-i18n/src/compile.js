@@ -41,7 +41,7 @@ const defaultFormats = (language, formatStyles = {}) => {
 // Message -> (Params -> String)
 export default function compile (language: string, message: string, formatStyles?: Object) {
   const formattedMessage = processTokens(parse(message))
-  return (params) => formattedMessage(context({ language, params, formatStyles }))
+  return (params?: Object = {}) => formattedMessage(context({ language, params, formatStyles }))
 }
 
 // Params -> CTX
@@ -58,7 +58,7 @@ function context ({ language, params, formatStyles }) {
 }
 
 // [Tokens] -> (CTX -> String)
-function processTokens (tokens, octothorpe) {
+function processTokens (tokens, octothorpe = {}) {
   if (!tokens.filter(token => !isString(token)).length) {
     return () => tokens.join('').trim()
   }
