@@ -6,23 +6,14 @@ const tmp = require('tmp')
 const chalk = require('chalk')
 const emojify = require('node-emoji').emojify
 
-const PACKAGE_DIR = './packages'
+const { PACKAGE_DIR, getPackages, getInternalDependencies, sortByDependencies } = require('./discover')
 
-const packages = [
-  'lingui-conf',
-  'babel-plugin-lingui-transform-js',
-  'babel-plugin-lingui-transform-react',
-  'babel-plugin-lingui-extract-messages',
-  'babel-preset-lingui-js',
-  'babel-preset-lingui-react',
-  'lingui-formats',
-  'lingui-i18n',
-  'lingui-react',
-  'lingui-cli'
-]
+// map of package versions: packageName -> version
+// Global variable is ugly, but I'm not in state of mind to write a better code
+const versions = {}
 
-function log(msg = '\n') {
-  process.stdout.write(msg)
+function log(msg, end = '\n') {
+  process.stdout.write(msg + end)
 }
 
 function runCmd(cmd, defaults = {}) {
@@ -42,16 +33,16 @@ function runCmdLocal(cwd) {
   return (cmd) => runCmd(cmd, { cwd })
 }
 
-function checkUpdates(packageName) {
+function checkUpdates(packageInfo) {
   let latest = false
   try {
-    latest = runCmd(`git tag -l ${packageName}@* | tail -n1`)
+    latest = runCmd(`git tag -l ${packageInfo.name}@* | tail -n1`)
   } catch (e) {
   }
 
   if (latest) {
-    process.stdout.write(packageName)
-    const packageDir = path.join(PACKAGE_DIR, packageName)
+    log(packageInfo.name, '')
+    const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
     const history = runCmd(`git log ${latest}.. --format='%s' -- ${packageDir}`)
 
     const changes = (
@@ -61,41 +52,68 @@ function checkUpdates(packageName) {
     )
 
     if (changes.length) {
-      return updatePackage(packageName, changes)
+      return updatePackage(packageInfo, changes)
     } else {
-      process.stdout.write('\r\x1b[K')
+      log('\r\x1b[K', '')
     }
   }
 }
 
-function updatePackage(packageName, changes) {
-  const packageDir = path.join(PACKAGE_DIR, packageName)
+function updatePackage(packageInfo, changes) {
+  const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
   const runLocal = runCmdLocal(packageDir)
 
+  if (packageInfo.private) {
+    log(chalk.yellow(` (skipping private package)`))
+    return
+  }
+
   const change = changes.includes('feat') ? 'minor' : 'patch'
-  log(chalk.yellow(` (${change} release)\n`))
+  log(chalk.yellow(` (${change} release)`))
 
-  log('Upgrading dependencies\n')
-  runLocal('yarn upgrade')
+  log('Releasing ', '')
 
-  log('Releasing ')
-  const oldVersion = runLocal(`npm view ${packageName} version`)
+  updateDependencies(packageInfo)
+
+  const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
+
   const newVersion = runLocal(`npm version ${change}`)
-  log(chalk.yellow(`v${oldVersion} => ${newVersion}\n`))
+  versions[packageInfo.name] = newVersion
 
-  log('Publishing to NPM\n')
-  runLocal('npm publish')
-  log()
+  log(chalk.yellow(`v${oldVersion} => ${newVersion}`))
 
-  return `${packageName}@${newVersion}`
+  return `${packageInfo.name}@${newVersion}`
+}
+
+function updateDependencies(packageInfo) {
+  if (!packageInfo.dependencies.length) return
+
+  const packageFile = path.join(PACKAGE_DIR, packageInfo.name, 'package.json')
+  const config = JSON.parse(fs.readFileSync(packageFile))
+
+  const depTypes = ['dependencies', 'devDependencies', 'peerDependencies']
+  packageInfo.dependencies.forEach(name => {
+    depTypes.forEach(depType => {
+      if (!config[depType]) return
+
+      if (config[depType][name]) {
+        config[depType][name] = `^${versions[name]}`
+      }
+    })
+  })
+
+  fs.writeFileSync(packageFile, JSON.stringify(config))
 }
 
 async function release() {
+  const packages = getPackages()
+  const dependencies = sortByDependencies(getInternalDependencies(packages))
+
   runCmd('git stash')
-  const newVersions = packages.map(checkUpdates).filter(Boolean)
+  const newVersions = dependencies.map(checkUpdates).filter(Boolean)
 
   if (!newVersions.length) {
-    log('Nothing to do!\n')
+    log('Nothing to do!')
     runCmd('git stash pop')
     return
   }
@@ -123,7 +141,7 @@ ${newVersions.join('\n')}
 
 
 (async function () {
-  console.log(emojify(`:mag:  ${chalk.green('Checking for changes in packages…')}`))
+  log(emojify(`:mag:  ${chalk.green('Checking for changes in packages…')}`))
   await release()
-  console.log(emojify(`:sparkles:  ${chalk.green('Done\!')}`))
+  log(emojify(`:sparkles:  ${chalk.green('Done\!')}`))
 })()
