@@ -1,6 +1,6 @@
 {
   "name": "lingui-react",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "React components for translations",
   "main": "lib/index.js",
   "author": {
@@ -32,8 +32,8 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-formats": "^0.2.0",
-    "lingui-i18n": "^0.5.0"
+    "lingui-formats": "^v0.3.0",
+    "lingui-i18n": "^v0.6.0"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
