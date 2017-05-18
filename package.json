@@ -99,7 +99,8 @@
         "env",
         {
           "targets": {
-            "node": 4
+            "node": 4,
+            "browsers": "> 1%, last 2 versions"
           },
           "useBuiltIn": true
         }
