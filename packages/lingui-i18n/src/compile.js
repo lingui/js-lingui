@@ -60,7 +60,7 @@ function context ({ language, params, formatStyles }) {
 }
 
 // [Tokens] -> (CTX -> String)
-function processTokens (tokens, octothorpe = {}) {
+function processTokens (tokens, octothorpe = {}): (Function) => string {
   if (!tokens.filter(token => !isString(token)).length) {
     return () => tokens.join('').trim()
   }
