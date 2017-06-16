@@ -78,7 +78,7 @@ function updatePackage(packageInfo, changes) {
   const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
 
   const newVersion = runLocal(`npm version ${change}`)
-  versions[packageInfo.name] = newVersion
+  versions[packageInfo.name] = newVersion.slice(1)
 
   log(chalk.yellow(`v${oldVersion} => ${newVersion}`))
 
@@ -94,7 +94,7 @@ function updateDependencies(packageInfo) {
   const depTypes = ['dependencies', 'devDependencies', 'peerDependencies']
   packageInfo.dependencies.forEach(name => {
     depTypes.forEach(depType => {
-      if (!config[depType]) return
+      if (!config[depType] || !versions[name]) return
 
       if (config[depType][name]) {
         config[depType][name] = `^${versions[name]}`
