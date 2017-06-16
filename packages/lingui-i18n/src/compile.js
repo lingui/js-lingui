@@ -1,8 +1,9 @@
 // @flow
 import { parse } from 'messageformat-parser'
-import MakePlural from 'make-plural/make-plural'
 import { date, number } from 'lingui-formats'
 
+// TODO: Remove in production
+import MakePlural from 'make-plural/make-plural'
 MakePlural.load(
     require('make-plural/data/plurals.json'),
     require('make-plural/data/ordinals.json')
@@ -11,10 +12,11 @@ MakePlural.load(
 const isString = s => typeof s === 'string'
 
 const defaultFormats = (language, formatStyles = {}) => {
-  const pluralRules = new MakePlural(language, {
+  // When language is undefined, skip plural rules.
+  const pluralRules = language ? new MakePlural(language, {
     cardinals: true,
     ordinals: true
-  })
+  }) : (value, ordinal) => null
 
   const style = format => isString(format) ? formatStyles[format] || { style: format } : format
 
