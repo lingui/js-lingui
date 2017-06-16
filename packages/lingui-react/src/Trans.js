@@ -34,6 +34,18 @@ class Trans extends React.Component {
     super(props)
 
     const translation = this.getTranslation(props)
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (!translation && props.children) {
+        console.warn(
+          'lingui-react preset is probably missing in babel config. ' +
+          'It causes that no content is rendered from any lingui-react ' +
+          'components. See installation guide for more info - ' +
+          'http://bit.ly/lingui-react-quickstart'
+        )
+      }
+    }
+
     this.state = {
       msgCache: this.compileMessage(translation),
       language: props.i18n.language,

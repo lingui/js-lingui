@@ -31,6 +31,19 @@ describe('Trans component', function () {
     expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
   })
 
+  it('should warn about possible missing babel-plugin', function () {
+    const originalConsole = global.console
+    global.console = {
+      warn: jest.fn()
+    }
+
+    shallow(<Trans>Label</Trans>).dive()
+    expect(global.console.warn).toBeCalledWith(
+      expect.stringContaining('lingui-react preset'))
+
+    global.console = originalConsole
+  })
+
   it('should recompile msg when id or defaults changes', function () {
     const node = mount(<Trans id="Original" defaults="Original" />, { context })
     expect(node.text()).toEqual('Původní')
