@@ -12,7 +12,19 @@ type WithI18nProps = {
   i18n: I18n
 }
 
-export default ({ update = true, withRef = false }: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
+export default (options: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
+  if (process.env.NODE_ENV !== 'production') {
+    if (typeof options === 'function' || React.isValidElement(options)) {
+      console.warn(
+        'WithI18n([options]) takes options as a first argument, ' +
+        'but received React component itself. Without options, the Component ' +
+        'should be wrapped as WithI18n()(Component), not WithI18n(Component).'
+      )
+    }
+  }
+
+  const { update = true, withRef = false } = options
+
   return class WithI18n extends React.Component {
     static contextTypes = {
       i18nManager: PropTypes.object

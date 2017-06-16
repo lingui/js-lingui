@@ -45,6 +45,27 @@ describe('WithI18n', function () {
     context.unsubscribe.mockReset()
   })
 
+  it('should warn if called incorrectly', function () {
+    const originalConsole = global.console
+    global.console = {
+      warn: jest.fn(),
+      error: jest.fn()
+    }
+
+    const Component = WithI18n(() => <span />)
+    // Catch the React error. It will blow up user app, but at least they get
+    // the warning about the cause.
+    try {
+      // $FlowIgnore: This is invalid, that's the point.
+      mount(<Component />)
+    } catch (e) {}
+
+    expect(global.console.warn).toBeCalledWith(
+      expect.stringContaining('WithI18n([options]) takes options'))
+
+    global.console = originalConsole
+  })
+
   it('should pass all props to wrapped component', function () {
     const props = {
       foo: 'bar',
