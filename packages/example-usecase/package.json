@@ -13,17 +13,17 @@
   },
   "dependencies": {
     "lingui-cli": "^0.12.0",
-    "lingui-react": "^0.8.0",
-    "react": "15.x"
+    "lingui-react": "^0.9.0",
+    "react": "^15.6.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
+    "babel-preset-env": "^1.5.2",
     "babel-preset-lingui-react": "^0.4.0",
     "babel-preset-react": "^6.24.1",
-    "webpack": "^2.5.1",
+    "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   },
   "babel": {
