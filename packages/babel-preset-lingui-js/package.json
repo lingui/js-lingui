@@ -20,7 +20,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "babel-plugin-lingui-extract-messages": "^v0.8.0",
-    "babel-plugin-lingui-transform-js": "^v0.6.0"
+    "babel-plugin-lingui-extract-messages": "^0.8.0",
+    "babel-plugin-lingui-transform-js": "^0.6.0"
   }
 }

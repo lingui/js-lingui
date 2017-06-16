@@ -28,11 +28,11 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-conf": "^v0.7.0"
+    "lingui-conf": "^0.7.0"
   },
   "devDependencies": {
-    "babel-plugin-lingui-transform-js": "^v0.6.0",
-    "babel-plugin-lingui-transform-react": "^v0.7.0"
+    "babel-plugin-lingui-transform-js": "^0.6.0",
+    "babel-plugin-lingui-transform-react": "^0.7.0"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
