@@ -1,4 +1,5 @@
-[Docs](https://github.com/lingui/js-lingui/wiki) 
+[Wiki](https://github.com/lingui/js-lingui/wiki) | 
+[Docs for React](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react)
 
 [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
 
@@ -45,7 +46,7 @@ i18n.plural({
 
 #### React
 
-`lingui-react` provides several component for React applications: `Trans` is the main component for general translation, `Plural` and `Select` for pluralization and custom forms (e.g: polite forms):
+[lingui-react](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) provides several component for React applications: `Trans` is the main component for general translation, `Plural` and `Select` for pluralization and custom forms (e.g: polite forms):
 
 ```jsx
 import React from 'react'
@@ -109,6 +110,8 @@ LinkWithTooltip = WithReact()(LinkWithTooltip)
 ```
 
 At this point, application is available only in one language (English). When no translations are available the default texts are used.
+
+:bulb: See [tutorial](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) about i18n in React
 
 ### Build message catalog
 
@@ -219,7 +222,7 @@ import App from './App'
 import messages from './locales/fr/messages.json'
 
 render(
-    <ProvideI18n language="fr" messages={messages}>
+    <ProvideI18n language="fr" messages={{ fr: messages }}>
         <App />
     </ProvideI18n>,
     document.getElementById('app')
@@ -271,13 +274,13 @@ Functions for I18n in Javascript.
 
 Components for I18n in React.
 
-#### Components
-- `I18nProvider` – context provider of all i18n data (messages, current language, etc.)
-- `WithI18n` - HOC for passing i18n data from context to props of wrapped component. Also takes care of updates when context data changes, but some ancestor skip update (`shouldComponentUpdate` returns `false`).
-- [`Trans`](https://github.com/lingui/js-lingui/wiki/Trans) – component for message formating and translation
-- `Select` – select message based on variable
-- [`Plural`](https://github.com/lingui/js-lingui/wiki/Plural) – select plural based on number
-- `SelectOrdinal` – select ordinal number
+### `babel-preset-lingui-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-preset-lingui-js)
+
+[![npm](https://img.shields.io/npm/v/babel-preset-lingui-js.svg)](https://www.npmjs.com/package/babel-preset-lingui-js)
+
+### `babel-preset-lingui-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-preset-lingui-react)
+
+[![npm](https://img.shields.io/npm/v/babel-preset-lingui-react.svg)](https://www.npmjs.com/package/babel-preset-lingui-react)
 
 ### `babel-plugin-lingui-transform-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-transform-js)
 
