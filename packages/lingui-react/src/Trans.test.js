@@ -2,7 +2,7 @@
 import React from 'react'
 import { Trans } from '.'
 import { I18n } from 'lingui-i18n'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 
 describe('Trans component', function () {
   /*
@@ -21,14 +21,14 @@ describe('Trans component', function () {
       })
     }
   }
-  const text = (node) => shallow(node, { context }).dive().text()
+  const text = (node) => mount(node, { context }).find('Render').text()
 
   /*
    * Tests
    */
 
   it("shouldn't throw runtime error without i18n context", function () {
-    expect(shallow(<Trans id="unknown" />).dive().text()).toEqual('unknown')
+    expect(mount(<Trans id="unknown" />).find('Render').text()).toEqual('unknown')
   })
 
   it('should warn about possible missing babel-plugin', function () {
@@ -37,7 +37,7 @@ describe('Trans component', function () {
       warn: jest.fn()
     }
 
-    shallow(<Trans>Label</Trans>).dive()
+    mount(<Trans>Label</Trans>)
     expect(global.console.warn).toBeCalledWith(
       expect.stringContaining('lingui-react preset'))
 
@@ -46,20 +46,21 @@ describe('Trans component', function () {
 
   it('should recompile msg when id or defaults changes', function () {
     const node = mount(<Trans id="Original" defaults="Original" />, { context })
-    expect(node.text()).toEqual('Původní')
+    const t = () => node.find('Render').text()
+    expect(t()).toEqual('Původní')
 
     node.setProps({ id: 'Updated' })
-    expect(node.text()).toEqual('Aktualizovaný')
+    expect(t()).toEqual('Aktualizovaný')
 
     // doesn't affect when different prop is changed
     node.setProps({ other: 'other' })
-    expect(node.text()).toEqual('Aktualizovaný')
+    expect(t()).toEqual('Aktualizovaný')
 
     // either different id or defaults trigger change
     node.setProps({ id: 'Unknown' })
-    expect(node.text()).toEqual('Original')
+    expect(t()).toEqual('Original')
     node.setProps({ defaults: 'Unknown' })
-    expect(node.text()).toEqual('Unknown')
+    expect(t()).toEqual('Unknown')
   })
 
   it('should render default string', function () {
@@ -78,6 +79,18 @@ describe('Trans component', function () {
     expect(translation).toEqual(
       'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
     )
+  })
+
+  it('should render translation inside custom component', function () {
+    const html1 = mount(
+      <Trans render={<p className="lead"/>} id="Original" />, { context }
+    ).find('Render').html()
+    const html2 = mount(
+      <Trans render={({ translation }) => <p className="lead">{translation}</p>} id="Original" />, { context }
+    ).find('Render').html()
+
+    expect(html1).toEqual('<p class="lead">Původní</p>')
+    expect(html2).toEqual(html1)
   })
 
   it('should render custom format', function () {

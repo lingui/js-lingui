@@ -4,7 +4,10 @@ import WithI18n from './WithI18n'
 import type { PluralProps } from './Plural'
 import rules from './plurals'
 
-type SelectOrdinalProps = PluralProps
+import type { RenderProps } from './Render'
+import Render from './Render'
+
+type SelectOrdinalProps = PluralProps & RenderProps
 
 class SelectOrdinal extends React.Component<*, SelectOrdinalProps, *> {
   props: SelectOrdinalProps
@@ -22,9 +25,10 @@ class SelectOrdinal extends React.Component<*, SelectOrdinalProps, *> {
     const n = parseInt(value) - parseInt(offset)
     const ordinalRules = rules[language].ordinal
     const form = ordinalRules ? ordinalRules(n) : 'other'
-    const translation = this.props[`_${n}`] || this.props[form]
+    const translation = (this.props[`_${n}`] || this.props[form]).replace('#', n)
 
-    return <span>{translation.replace('#', n)}</span>
+    const { className, render } = this.props
+    return <Render className={className} render={render}>{translation}</Render>
   }
 }
 
