@@ -77,10 +77,10 @@ function updatePackage(packageInfo, changes) {
 
   const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
 
-  const newVersion = runLocal(`npm version ${change}`)
-  versions[packageInfo.name] = newVersion.slice(1)
+  const newVersion = runLocal(`npm version ${change}`).slice(1)
+  versions[packageInfo.name] = newVersion
 
-  log(chalk.yellow(`v${oldVersion} => ${newVersion}`))
+  log(chalk.yellow(`v${oldVersion} => v${newVersion}`))
 
   return `${packageInfo.name}@${newVersion}`
 }
