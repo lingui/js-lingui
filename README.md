@@ -1,5 +1,4 @@
-[Wiki](https://github.com/lingui/js-lingui/wiki) | 
-[Docs for React](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react)
+[Docs](https://github.com/lingui/js-lingui/wiki)
 
 [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
 
