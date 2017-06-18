@@ -36,7 +36,7 @@ function runCmdLocal(cwd) {
 function checkUpdates(packageInfo) {
   let latest = false
   try {
-    latest = runCmd(`git tag -l ${packageInfo.name}@* | tail -n1`)
+    latest = runCmd(`git tag --sort=-committerdate -l ${packageInfo.name}@* | head -n1`)
   } catch (e) {
   }
 
