@@ -279,6 +279,98 @@ exports[`Children should render 1`] = `
               </Trans>
             </WithI18n>
           </li>
+          <li>
+            <WithI18n
+              id="My name is {name}"
+              params={
+                Object {
+                  "name": "Mononoke",
+                }
+              }
+              render={
+                <p
+                  className="variable"
+                />
+              }
+            >
+              <Trans
+                i18n={
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Full content of {articleName}": "Celé znění článku {articleName}",
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "selectOrdinal": [Function],
+                    "t": [Function],
+                  }
+                }
+                id="My name is {name}"
+                params={
+                  Object {
+                    "name": "Mononoke",
+                  }
+                }
+                render={
+                  <p
+                    className="variable"
+                  />
+                }
+              >
+                <span>
+                  Jmenuji se Mononoke
+                </span>
+              </Trans>
+            </WithI18n>
+            <WithI18n
+              id="My name is {name}"
+              params={
+                Object {
+                  "name": "Mononoke",
+                }
+              }
+              render={[Function]}
+            >
+              <Trans
+                i18n={
+                  I18n {
+                    "_language": "cs",
+                    "_messages": Object {
+                      "cs": Object {
+                        "Full content of {articleName}": "Celé znění článku {articleName}",
+                        "Hello World": "Ahoj světe",
+                        "My name is {name}": "Jmenuji se {name}",
+                        "Read <0>more</0>": "Číst <0>dále</0>",
+                        "msg.label": "Nápis",
+                      },
+                    },
+                    "plural": [Function],
+                    "select": [Function],
+                    "selectOrdinal": [Function],
+                    "t": [Function],
+                  }
+                }
+                id="My name is {name}"
+                params={
+                  Object {
+                    "name": "Mononoke",
+                  }
+                }
+                render={[Function]}
+              >
+                <span>
+                  Jmenuji se Mononoke
+                </span>
+              </Trans>
+            </WithI18n>
+          </li>
         </ul>
       </div>
     </Usecase>
