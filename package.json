@@ -77,7 +77,6 @@
       "packages/lingui-i18n/src/plurals.js"
     ],
     "coverageReporters": [
-      "text",
       "html",
       "lcov"
     ],
@@ -91,8 +90,7 @@
     "transformIgnorePatterns": [
       "/node_modules/",
       "/lib/"
-    ],
-    "logTransformErrors": true
+    ]
   },
   "babel": {
     "presets": [

@@ -5,15 +5,16 @@ import WithI18n from './WithI18n'
 import type { WithI18nProps } from './WithI18n'
 import { formatElements } from './format'
 
+import type { RenderProps } from './Render'
+import Render from './Render'
+
 type TransProps = {
   id?: string,
   defaults?: string,
   params?: Object,
   formats?: Object,
-  components?: Array<React$Element<any>>,
-
-  className?: string
-} & WithI18nProps
+  components?: Array<React$Element<*>>,
+} & WithI18nProps & RenderProps
 
 type TransState = {
   msgCache: Function,
@@ -84,14 +85,13 @@ class Trans extends React.Component {
   }
 
   render () {
-    const {
-      params, components, className
-    } = this.props
+    const { params, components } = this.props
     const { msgCache } = this.state
 
     const translation = formatElements(msgCache(params), components)
 
-    return <span className={className}>{translation}</span>
+    const { className, render } = this.props
+    return <Render className={className} render={render}>{translation}</Render>
   }
 }
 

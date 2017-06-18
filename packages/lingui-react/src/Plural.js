@@ -4,6 +4,9 @@ import WithI18n from './WithI18n'
 import type { WithI18nProps } from './WithI18n'
 import rules from './plurals'
 
+import type { RenderProps } from './Render'
+import Render from './Render'
+
 type PluralProps = {
   value: number | string,
   offset?: number | string,
@@ -12,8 +15,8 @@ type PluralProps = {
   two?: any,
   few?: any,
   many?: any,
-  other: any
-} & WithI18nProps
+  other: any,
+} & WithI18nProps & RenderProps
 
 class Plural extends React.Component<*, PluralProps, *> {
   props: PluralProps
@@ -30,9 +33,10 @@ class Plural extends React.Component<*, PluralProps, *> {
 
     const n = parseInt(value) - parseInt(offset)
     const form = rules[language].cardinal(n)
-    const translation = this.props[`_${value}`] || this.props[form]
+    const translation = (this.props[`_${value}`] || this.props[form]).replace('#', n)
 
-    return <span>{translation.replace('#', n)}</span>
+    const { className, render } = this.props
+    return <Render className={className} render={render}>{translation}</Render>
   }
 }
 
