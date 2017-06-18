@@ -2,10 +2,10 @@
 import date from './date'
 import number from './number'
 
-import createFormat from './createFormat'
+import { silentCreateFormat } from './createFormat'
 
-export const DateFormat = createFormat(date)
-export const NumberFormat = createFormat(number)
+export const DateFormat = silentCreateFormat(date)
+export const NumberFormat = silentCreateFormat(number)
 
 export {
   date,
