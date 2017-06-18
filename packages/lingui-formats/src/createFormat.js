@@ -12,6 +12,8 @@ type FormatProps<V, FormatOptions> = {
 function
 createFormat<V, FormatOptions, P: FormatProps<V, FormatOptions>>
 (formatFunction: (language: string, format?: FormatOptions) => (value: V) => string): Class<React$Component<void, P, void>> {
+  console.warn('DEPRECATED (removal in 1.x): createFormat was moved to lingui-react package')
+
   return class extends React.Component {
     props: P
 
