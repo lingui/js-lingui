@@ -12,6 +12,8 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 
 Building applications and products for international audiences involves internationalization (i.e: preparing app for translation) and localization (i.e: adoption of application to meet language and cultural requirements). Lingui provides tools to make i18n of JS applications using ICU message format as easy as possible. 
 
+**TL;DR:** [Compare js-lingui with react-intl and react-i18next](https://github.com/lingui/js-lingui/wiki/Comparison-of-i18n-libraries)
+
 ![Example use case with React](docs/lingui-pitch.png)
 
 ## Overview
