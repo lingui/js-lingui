@@ -39,6 +39,13 @@ function compile (message: string) {
       // complex argument with cases
       const formatProps = []
 
+      if (token.offset) {
+        formatProps.push(t.objectProperty(
+          t.identifier('offset'),
+          t.numericLiteral(parseInt(token.offset))
+        ))
+      }
+
       token.cases.forEach(item => {
         const inlineTokens = processTokens(item.tokens, token.arg)
         formatProps.push(t.objectProperty(

@@ -37,6 +37,9 @@ describe('compile', function () {
 
     expect(getSource('{name, plural, one {Book} other {# Books}}'))
       .toEqual('function(a){return[a("name","plural",{one:"Book",other:[a("name")," Books"]})]}')
+
+    expect(getSource('{name, plural, offset:1 =0 {No Books} one {Book} other {# Books}}'))
+      .toEqual('function(a){return[a("name","plural",{offset:1,0:"No Books",one:"Book",other:[a("name")," Books"]})]}')
   })
 
   it('should compile select', function () {
