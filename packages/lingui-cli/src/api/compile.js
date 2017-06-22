@@ -5,7 +5,7 @@ const { parse } = require('messageformat-parser')
 const isString = s => typeof s === 'string'
 
 function compile (message: string) {
-  function processTokens (tokens, octothorpe) {
+  function processTokens (tokens) {
     if (!tokens.filter(token => !isString(token)).length) {
       return tokens.join('')
     }
@@ -16,7 +16,7 @@ function compile (message: string) {
 
       // # in plural case
       } else if (token.type === 'octothorpe') {
-        return t.callExpression(arg, [t.stringLiteral(octothorpe)])
+        return t.stringLiteral('#')
 
       // simple argument
       } else if (token.type === 'argument') {
@@ -47,7 +47,7 @@ function compile (message: string) {
       }
 
       token.cases.forEach(item => {
-        const inlineTokens = processTokens(item.tokens, token.arg)
+        const inlineTokens = processTokens(item.tokens)
         formatProps.push(t.objectProperty(
           t.identifier(item.key),
           isString(inlineTokens) ? t.stringLiteral(inlineTokens) : inlineTokens

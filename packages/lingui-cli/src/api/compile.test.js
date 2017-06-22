@@ -36,10 +36,10 @@ describe('compile', function () {
       .toEqual('function(a){return[a("name","plural",{one:"Book",other:[a("name")," Books"]})]}')
 
     expect(getSource('{name, plural, one {Book} other {# Books}}'))
-      .toEqual('function(a){return[a("name","plural",{one:"Book",other:[a("name")," Books"]})]}')
+      .toEqual('function(a){return[a("name","plural",{one:"Book",other:["#"," Books"]})]}')
 
     expect(getSource('{name, plural, offset:1 =0 {No Books} one {Book} other {# Books}}'))
-      .toEqual('function(a){return[a("name","plural",{offset:1,0:"No Books",one:"Book",other:[a("name")," Books"]})]}')
+      .toEqual('function(a){return[a("name","plural",{offset:1,0:"No Books",one:"Book",other:["#"," Books"]})]}')
   })
 
   it('should compile select', function () {
@@ -50,6 +50,6 @@ describe('compile', function () {
       .toEqual('function(a){return[a("name","select",{male:"He",female:[a("name")," She"]})]}')
 
     expect(getSource('{name, select, male {He} female {# She}}'))
-      .toEqual('function(a){return[a("name","select",{male:"He",female:[a("name")," She"]})]}')
+      .toEqual('function(a){return[a("name","select",{male:"He",female:["#"," She"]})]}')
   })
 })
