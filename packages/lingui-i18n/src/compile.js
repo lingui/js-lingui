@@ -1,33 +1,34 @@
 // @flow
-import { parse } from 'messageformat-parser'
 import { date, number } from 'lingui-formats'
-
-// TODO: Remove in production
-import MakePlural from 'make-plural/make-plural'
-MakePlural.load(
-    require('make-plural/data/plurals.json'),
-    require('make-plural/data/ordinals.json')
-)
 
 const isString = s => typeof s === 'string'
 
-const defaultFormats = (language, formatStyles = {}) => {
-  // When language is undefined, skip plural rules.
-  const pluralRules = language ? new MakePlural(language, {
-    cardinals: true,
-    ordinals: true
-  }) : (value, ordinal) => null
+const defaultFormats = (language, languageData = {}, formatStyles = {}) => {
+  const plurals = languageData.plurals
+  const style = format => isString(format)
+    ? formatStyles[format] || { style: format }
+    : format
 
-  const style = format => isString(format) ? formatStyles[format] || { style: format } : format
+  const replaceOctothorpe = (value, message) => {
+    return ctx => {
+      const msg = typeof message === 'function' ? message(ctx) : message
+      const norm = Array.isArray(msg) ? msg : [msg]
+      return norm.map(m => isString(m) ? m.replace('#', value) : m)
+    }
+  }
 
   return {
-    plural: (value, { offset = 0, rules }) =>
-      rules[value] || rules[pluralRules(value - offset)] || rules.other,
+    plural: (value, { offset = 0, ...rules }) => {
+      const message = rules[value] || rules[plurals(value - offset)] || rules.other
+      return replaceOctothorpe(value - offset, message)
+    },
 
-    selectordinal: (value, { offset = 0, rules }) =>
-      rules[value] || rules[pluralRules(value - offset, true)] || rules.other,
+    selectordinal: (value, { offset = 0, ...rules }) => {
+      const message = rules[value] || rules[plurals(value - offset, true)] || rules.other
+      return replaceOctothorpe(value - offset, message)
+    },
 
-    select: (value, { rules }) =>
+    select: (value, rules) =>
       rules[value] || rules.other,
 
     number: (value, format) =>
@@ -41,62 +42,44 @@ const defaultFormats = (language, formatStyles = {}) => {
 }
 
 // Message -> (Params -> String)
-export default function compile (language: string, message: string, formatStyles?: Object) {
-  const formattedMessage = processTokens(parse(message))
-  return (params?: Object = {}) => formattedMessage(context({ language, params, formatStyles }))
+export default function compile (
+  language: string,
+  message: string | Function,
+  languageData?: Object,
+  formatStyles?: Object
+): (?Object) => string {
+  let formattedMessage = message
+
+  if (isString(message)) {
+    if (process.env.NODE_ENV !== 'production') {
+      const { compileMessage, loadLanguageData } = require('./compile.dev.js')
+      formattedMessage = compileMessage(message)
+      languageData = loadLanguageData(language)
+    } else {
+      // constant message
+      return (params?: Object) => message
+    }
+  }
+
+  // $FlowIgnore: formattedMessage is always a function
+  return (params?: Object = {}) => {
+    const message = formattedMessage(context({
+      language, params, formatStyles, languageData
+    }))
+    return Array.isArray(message) ? message.join('').trim() : message
+  }
 }
 
 // Params -> CTX
-function context ({ language, params, formatStyles }) {
-  const formats = defaultFormats(language, formatStyles)
+function context ({ language, params, formatStyles, languageData }) {
+  const formats = defaultFormats(language, languageData, formatStyles)
 
   const ctx = (name, type, format) => {
     const value = params[name]
     const formatted = formats[type](value, format)
-    return typeof formatted === 'function' ? formatted(ctx) : formatted
+    const message = typeof formatted === 'function' ? formatted(ctx) : formatted
+    return Array.isArray(message) ? message.join('') : message
   }
 
   return ctx
-}
-
-// [Tokens] -> (CTX -> String)
-function processTokens (tokens, octothorpe = {}): (Function) => string {
-  if (!tokens.filter(token => !isString(token)).length) {
-    return () => tokens.join('').trim()
-  }
-
-  return ctx => tokens.map(token => {
-    if (isString(token)) {
-      return token
-
-      // # in plural case
-    } else if (token.type === 'octothorpe') {
-      const { name, offset = 0 } = octothorpe
-      return ctx(name) - offset
-
-      // simple argument
-    } else if (token.type === 'argument') {
-      return ctx(token.arg)
-
-      // argument with custom format (date, number)
-    } else if (token.type === 'function') {
-      return ctx(token.arg, token.key, token.params[0])
-    }
-
-    const offset = token.offset ? parseInt(token.offset) : undefined
-
-    // complex argument with cases
-    const formatProps = {}
-    token.cases.forEach(item => {
-      formatProps[item.key] = processTokens(item.tokens, {
-        name: token.arg,
-        offset
-      })
-    })
-
-    return ctx(token.arg, token.type, {
-      offset,
-      rules: formatProps
-    })
-  }).join('').trim()
 }
