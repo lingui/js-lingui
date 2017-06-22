@@ -42,7 +42,7 @@ class Trans extends React.Component {
           'lingui-react preset is probably missing in babel config. ' +
           'It causes that no content is rendered from any lingui-react ' +
           'components. See installation guide for more info - ' +
-          'http://bit.ly/lingui-react-quickstart'
+          'https://l.lingui.io/tutorial-i18n-react'
         )
       }
     }
