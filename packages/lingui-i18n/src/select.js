@@ -15,33 +15,22 @@ type PluralProps = {
   offset?: number
 } & PluralForms
 
-const plural = (i18n: I18n) => ({
+const _plural = (type = 'cardinal') => (i18n: I18n) => ({
   value,
   offset = 0,
   other,
   ...pluralForms
 }: PluralProps): string => {
   const translation = (
-    pluralForms[(value - offset).toString()] ||      // exact match
-    pluralForms[i18n.pluralForm(value - offset)] ||  // plural form
-    other                                           // fallback
+    pluralForms[(value - offset).toString()] ||            // exact match
+    pluralForms[i18n.pluralForm(value - offset, type)] ||  // plural form
+    other                                                  // fallback
   )
   return translation.replace('#', value.toString())
 }
 
-const selectOrdinal = (i18n: I18n) => ({
-  value,
-  offset = 0,
-  other,
-  ...pluralForms
-}: PluralProps): string => {
-  const translation = (
-    pluralForms[(value - offset).toString()] ||                 // exact match
-    pluralForms[i18n.pluralForm(value - offset, 'ordinal')] ||  // plural form
-    other                                                       // fallback
-  )
-  return translation.replace('#', value.toString())
-}
+const plural = _plural('cardinal')
+const selectOrdinal = _plural('ordinal')
 
 type SelectProps = {
   value: string,
