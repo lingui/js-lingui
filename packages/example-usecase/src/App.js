@@ -6,54 +6,41 @@ import Children from './Usecases/Children'
 import ElementAttributes from './Usecases/ElementAttributes'
 import Formats from './Usecases/Formats'
 
-const reloader = {
-  subscribers: [],
-  subscribe (cb) {
-    this.subscribers.push(cb)
-  },
-  broadcast () {
-    this.subscribers.forEach(f => f())
-  }
-}
-
-const locales = {}
-
-function reloadLocales (context) {
-  context.keys().forEach((item) => {
-    const parts = item.split('/')
-    const locale = parts[parts.length - 2]
-    locales[locale] = context(item)
-  })
-}
-
-const context = require.context('../locale/', true, /([\w-]+)\/.*\.json$/)
-reloadLocales(context)
-
-if (module.hot) {
-  module.hot.accept(context.id, function () {
-    reloadLocales(require.context('../locale/', true, /([\w-]+)\/.*\.json$/))
-    reloader.broadcast()
-  })
-}
 
 class App extends React.Component {
-  state: {
-    language: string
+  state = {
+    language: 'cs',
+    messages: {}
   }
 
-  constructor (props: {}) {
-    super(props)
-    this.state = {
-      language: 'cs'
-    }
+  loadLanguage = async (language) => {
+    const messages = await import(
+      /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
+      `../locale/${language}/messages.js`)
+
+    this.setState(state => ({
+      messages: {
+        ...state.messages,
+        [language]: messages.m
+      }
+    }))
   }
 
   componentDidMount () {
-    reloader.subscribe(() => this.forceUpdate())
+    this.loadLanguage(this.state.language)
+  }
+
+  shouldComponentUpdate (nextProps, { language, messages }) {
+    if (language !== this.state.language && !messages[language]) {
+      this.loadLanguage(language)
+      return false
+    }
+
+    return true
   }
 
   render () {
-    const { language } = this.state
+    const { language, messages } = this.state
 
     return (
       <div>
@@ -63,7 +50,7 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <I18nProvider language={language} messages={locales}>
+        <I18nProvider language={language} messages={messages}>
           <h2><Trans>Translation of children</Trans></h2>
           <Children />
 
