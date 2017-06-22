@@ -3,6 +3,7 @@
   "version": "0.12.0",
   "description": "React components for translations",
   "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
