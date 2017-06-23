@@ -1,11 +1,30 @@
 // @flow
 import compile from './compile'
 
+const mockEnv = (env, testCase) => {
+  const oldEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = env
+
+  try {
+    testCase()
+  } catch(e) {
+    process.env.NODE_ENV = oldEnv
+    throw e
+  }
+
+  process.env.NODE_ENV = oldEnv
+}
+
 describe('compile', function () {
   describe('parsing and compiling messages in development', function () {
     it('should compile static message', function () {
       const cache = compile('en', 'Static message')
       expect(cache()).toEqual('Static message')
+
+      mockEnv('production', () => {
+        const cache = compile('en', 'Static message')
+        expect(cache()).toEqual('Static message')
+      })
     })
 
     it('should compile message with variable', function () {

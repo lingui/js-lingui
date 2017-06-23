@@ -19,7 +19,7 @@ class SelectOrdinal extends React.Component<*, SelectOrdinalProps, *> {
     const { value, offset, i18n } = this.props
 
     const n = parseInt(value) - parseInt(offset)
-    const form = i18n.pluralForm(n, 'ordinal') || 'other'
+    const form = i18n.pluralForm(n, 'ordinal')
     const translation = (this.props[`_${n}`] || this.props[form]).replace('#', n)
 
     const { className, render } = this.props

@@ -15,7 +15,7 @@ type PluralProps = {
   offset?: number
 } & PluralForms
 
-const _plural = (type = 'cardinal') => (i18n: I18n) => ({
+const _plural = (type) => (i18n: I18n) => ({
   value,
   offset = 0,
   other,

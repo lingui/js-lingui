@@ -48,6 +48,28 @@ describe('I18n', function () {
     })
   })
 
+  it('.loadLanguageData should load language data and merge with existing', function () {
+    const languageData = {
+      en: {
+        plurals: jest.fn(),
+        code: 'en-US'
+      }
+    }
+
+    const i18n = new I18n()
+    i18n.load({en: {}, fr: {}})
+
+    i18n.loadLanguageData(languageData)
+    i18n.activate('en')
+    expect(i18n.languageData).toEqual(languageData.en)
+
+    // fr catalog shouldn't affect the english one
+    i18n.loadLanguageData({ fr: { plurals: jest.fn(), code: 'fr-FR' } })
+    // $FlowIgnore: testing edge case
+    i18n.loadLanguageData() // should do nothing
+    expect(i18n.languageData).toEqual(languageData.en)
+  })
+
   it('.activate should switch active language', function () {
     const i18n = new I18n()
     const messages = {

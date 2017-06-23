@@ -92,6 +92,11 @@ describe('I18nManager', function () {
     i18nManager.update({ messages: { fr: { msg: 'salut!' } } })
     expect(i18nManager.i18n.language).toEqual('fr')
     expect(i18nManager.i18n.messages).toEqual({ msg: 'salut!' })
+
+    i18nManager.update({ languageData: { fr: { plurals: 'Function' } } })
+    expect(i18nManager.i18n.language).toEqual('fr')
+    expect(i18nManager.i18n.messages).toEqual({ msg: 'salut!' })
+    expect(i18nManager.i18n.languageData).toEqual({ plurals: 'Function' })
   })
 
   it('should subscribe/unsubscribe listeners for context changes', function () {

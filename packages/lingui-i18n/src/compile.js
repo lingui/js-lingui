@@ -21,12 +21,12 @@ const defaultFormats = (language, languageData = {}, formatStyles = {}) => {
 
   return {
     plural: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals(value - offset)] || rules.other
+      const message = rules[value] || rules[plurals(value - offset)]
       return replaceOctothorpe(value - offset, message)
     },
 
     selectordinal: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals(value - offset, true)] || rules.other
+      const message = rules[value] || rules[plurals(value - offset, true)]
       return replaceOctothorpe(value - offset, message)
     },
 
