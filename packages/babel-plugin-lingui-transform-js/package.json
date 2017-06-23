@@ -23,5 +23,8 @@
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0"
   }
 }
