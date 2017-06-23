@@ -8,7 +8,7 @@ import Formats from './Usecases/Formats'
 
 class App extends React.Component {
   state = {
-    language: 'cs',
+    language: 'en',
     messages: {}
   }
 

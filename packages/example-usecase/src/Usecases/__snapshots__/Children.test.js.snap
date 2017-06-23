@@ -262,13 +262,13 @@ exports[`Children should render 1`] = `
           <li>
             <WithI18n
               className="plural"
-              id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+              id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
               params={
                 Object {
                   "genderOfHost": "female",
                   "guest": "Fred",
                   "host": "Wilma",
-                  "numGuests": 4,
+                  "numGuests": 2,
                 }
               }
             >
@@ -294,13 +294,13 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
-                id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+                id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
                 params={
                   Object {
                     "genderOfHost": "female",
                     "guest": "Fred",
                     "host": "Wilma",
-                    "numGuests": 4,
+                    "numGuests": 2,
                   }
                 }
               >
@@ -310,7 +310,7 @@ exports[`Children should render 1`] = `
                   <span
                     className="plural"
                   >
-                    Wilma invites Fred and 3 other people to her party.
+                    Wilma invites Fred and one other person to her party.
                   </span>
                 </Render>
               </Trans>

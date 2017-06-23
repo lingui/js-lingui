@@ -59,6 +59,6 @@ describe('Children', function () {
 
   it('should support pluralization', function () {
     expect(getText('.plural'))
-      .toEqual('Wilma invites Fred and 3 other people to her party.')
+      .toEqual('Wilma invites Fred and one other person to her party.')
   })
 })

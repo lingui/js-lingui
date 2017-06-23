@@ -15,7 +15,7 @@ class Usecase extends React.Component {
     const {
       name = 'Mononoke',
       genderOfHost = 'female',
-      numGuests = 4,
+      numGuests = 2,
       host = 'Wilma',
       guest = 'Fred'
     } = this.props
@@ -55,7 +55,7 @@ class Usecase extends React.Component {
                     offset="1"
                     _0={`${host} does not give a party.`}
                     _1={`${host} invites ${guest} to her party.`}
-                    _2={`${host} invites ${guest} and one other person to her party.`}
+                    one={`${host} invites ${guest} and one other person to her party.`}
                     other={`${host} invites ${guest} and # other people to her party.`}
                   />
                 }
@@ -65,7 +65,7 @@ class Usecase extends React.Component {
                     offset="1"
                     _0={`${host} does not give a party.`}
                     _1={`${host} invites ${guest} to his party.`}
-                    _2={`${host} invites ${guest} and one other person to her party.`}
+                    one={`${host} invites ${guest} and one other person to her party.`}
                     other={`${host} invites ${guest} and # other people to her party.`}
                   />
                 }
@@ -75,7 +75,7 @@ class Usecase extends React.Component {
                     offset="1"
                     _0={`${host} does not give a party.`}
                     _1={`${host} invites ${guest} to their party.`}
-                    _2={`${host} invites ${guest} and one other person to her party.`}
+                    one={`${host} invites ${guest} and one other person to her party.`}
                     other={`${host} invites ${guest} and # other people to her party.`}
                   />
                 }
