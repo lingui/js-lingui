@@ -8,7 +8,7 @@ type I18nProviderProps = {
   children?: any,
   language: string,
   messages: Catalogs,
-  languageData: AllLanguageData,
+  languageData?: AllLanguageData,
   i18n?: I18n
 }
 
@@ -37,7 +37,7 @@ class I18nManager {
     this.subscribers = this.subscribers.filter(cb => cb !== callback)
   }
 
-  update = ({ messages, language, languageData }: { messages?: Catalogs, language?: string, languagedata?: AllLanguageData } = {}) => {
+  update = ({ messages, language, languageData }: { messages?: Catalogs, language?: string, languageData?: AllLanguageData } = {}) => {
     if (!messages && !language && !languageData) return
 
     if (messages) this.i18n.load(messages)
