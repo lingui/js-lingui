@@ -83,14 +83,16 @@ class I18n {
   loadLanguageData (languageData: AllLanguageData) {
     if (!languageData) return
 
-    // deeply merge Catalogs
+    // deeply merge LanguageData
     Object.keys({ ...this._languageData, ...languageData }).forEach(language => {
-      if (!this._languageData[language]) this._languageData[language] = {}
-
-      Object.assign(
-        this._languageData[language],
-        languageData[language] || {}
-      )
+      if (!this._languageData[language]) {
+        this._languageData[language] = languageData[language]
+      } else {
+        Object.assign(
+          this._languageData[language],
+          languageData[language]
+        )
+      }
     })
   }
 
@@ -120,6 +122,7 @@ class I18n {
 
   pluralForm (n: number, pluralType?: 'cardinal' | 'ordinal' = 'cardinal'): string {
     const forms = this.languageData.plurals
+    if (!forms) return 'other'
     return forms(n, pluralType === 'ordinal') || 'other'
   }
 }

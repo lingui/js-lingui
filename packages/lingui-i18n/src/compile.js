@@ -49,15 +49,16 @@ export default function compile (
   message: string | Function,
   languageData?: Object,
   formatStyles?: Object
-): (?Object) => string {
+): (params?: Object) => string {
   let formattedMessage = message
 
-  if (isString(message)) {
+  if (typeof message === 'string') {
     if (process.env.NODE_ENV !== 'production') {
       formattedMessage = compileMessage(message)
       languageData = loadLanguageData(language)
     } else {
       // constant message
+      // $FlowIgnore: message is string, we're inside typeof guard
       return (params?: Object) => message
     }
   }
