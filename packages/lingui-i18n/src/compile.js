@@ -1,6 +1,9 @@
 // @flow
 import { date, number } from 'lingui-formats'
 
+import { compileMessage } from './compile.dev'
+import { loadLanguageData } from './languageData.dev'
+
 const isString = s => typeof s === 'string'
 
 const defaultFormats = (language, languageData = {}, formatStyles = {}) => {
@@ -52,7 +55,6 @@ export default function compile (
 
   if (isString(message)) {
     if (process.env.NODE_ENV !== 'production') {
-      const { compileMessage, loadLanguageData } = require('./compile.dev.js')
       formattedMessage = compileMessage(message)
       languageData = loadLanguageData(language)
     } else {

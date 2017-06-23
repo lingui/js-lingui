@@ -3,6 +3,8 @@ import t from './t'
 import { select, plural, selectOrdinal } from './select'
 import compile from './compile'
 
+import { loadLanguageData } from './languageData.dev'
+
 type Catalog = {[key: string]: string}
 type Catalogs = {[key: string]: Catalog}
 
@@ -54,7 +56,6 @@ class I18n {
     const data = this._languageData[this.language]
 
     if (!data && process.env.NODE_ENV !== 'production') {
-      const { loadLanguageData } = require('./languageData.dev')
       return loadLanguageData(this.language)
     }
 
