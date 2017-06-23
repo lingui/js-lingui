@@ -1,7 +1,7 @@
 module.exports = {
   plugins: [
-    require('babel-plugin-lingui-transform-js').default,
-    require('babel-plugin-lingui-transform-react').default,
-    require('babel-plugin-lingui-extract-messages').default
+    require('babel-plugin-lingui-transform-js'),
+    require('babel-plugin-lingui-transform-react'),
+    require('babel-plugin-lingui-extract-messages')
   ]
 }
