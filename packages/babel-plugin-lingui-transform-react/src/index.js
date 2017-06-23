@@ -1,5 +1,3 @@
-import 'babel-polyfill'
-
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 
 function cleanChildren (node) {

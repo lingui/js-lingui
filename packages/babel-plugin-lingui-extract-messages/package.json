@@ -28,6 +28,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
+    "babel-runtime": "^6.23.0",
     "lingui-conf": "^0.7.0"
   },
   "devDependencies": {
