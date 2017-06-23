@@ -7,7 +7,7 @@ dependencies:
     - yarn global add lerna codecov
   override:
     - yarn install
-    - lerna bootstrap
+    - lerna bootstrap --npm-client=yarn
 
 test:
   override:
