@@ -3,7 +3,7 @@ import t from './t'
 import { select, plural, selectOrdinal } from './select'
 import compile from './compile'
 
-import { loadLanguageData } from './languageData.dev'
+import { loadLanguageData } from './utils.dev'
 
 type Catalog = {[key: string]: string}
 type Catalogs = {[key: string]: Catalog}

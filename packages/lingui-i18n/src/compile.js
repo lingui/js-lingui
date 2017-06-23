@@ -1,8 +1,7 @@
 // @flow
 import { date, number } from 'lingui-formats'
 
-import { compileMessage } from './compile.dev'
-import { loadLanguageData } from './languageData.dev'
+import { compileMessage, loadLanguageData  } from './utils.dev'
 
 const isString = s => typeof s === 'string'
 
@@ -63,8 +62,8 @@ export default function compile (
     }
   }
 
-  // $FlowIgnore: formattedMessage is always a function
   return (params?: Object = {}) => {
+    // $FlowIgnore: formattedMessage is always a function
     const message = formattedMessage(context({
       language, params, formatStyles, languageData
     }))
