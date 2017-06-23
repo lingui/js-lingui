@@ -5,6 +5,7 @@ import ElementAttributes from './ElementAttributes'
 
 describe('ElementAttributes', function () {
   const messages = {
+    en: {},
     cs: {
       'Full content of {articleName}': 'Celý článek {articleName}',
       'Close': 'Zavřít'

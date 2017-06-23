@@ -7,6 +7,7 @@ import Children from './Children'
 
 describe('Children', function () {
   const messages = {
+    en: {},
     cs: {
       'msg.label': 'Nápis',
       'Hello World': 'Ahoj světe',

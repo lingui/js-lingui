@@ -8,6 +8,7 @@ import ElementAttributes from './ElementAttributes'
 
 describe('NeverUpdate', function () {
   const messages = {
+    en: {},
     cs: {
       'Full content of {articleName}': 'Celý článek {articleName}',
       'Close': 'Zavřít',

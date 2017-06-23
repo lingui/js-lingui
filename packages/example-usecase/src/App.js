@@ -6,7 +6,6 @@ import Children from './Usecases/Children'
 import ElementAttributes from './Usecases/ElementAttributes'
 import Formats from './Usecases/Formats'
 
-
 class App extends React.Component {
   state = {
     language: 'cs',
@@ -22,6 +21,12 @@ class App extends React.Component {
       messages: {
         ...state.messages,
         [language]: messages.m
+      },
+      languageData: {
+        ...state.languageData,
+        [language]: {
+          plurals: messages.l.p
+        }
       }
     }))
   }
@@ -40,7 +45,9 @@ class App extends React.Component {
   }
 
   render () {
-    const { language, messages } = this.state
+    const { language, messages, languageData } = this.state
+
+    if (!messages[language]) return null
 
     return (
       <div>
@@ -50,7 +57,7 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <I18nProvider language={language} messages={messages}>
+        <I18nProvider language={language} messages={messages} languageData={languageData}>
           <h2><Trans>Translation of children</Trans></h2>
           <Children />
 

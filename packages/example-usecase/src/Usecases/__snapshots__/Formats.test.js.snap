@@ -6,7 +6,11 @@ exports[`Formats should render 1`] = `
 >
   <I18nProvider
     language="en"
-    messages={Object {}}
+    messages={
+      Object {
+        "en": Object {},
+      }
+    }
   >
     <Formats>
       <div>
@@ -26,7 +30,10 @@ exports[`Formats should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "en",
-                    "_messages": Object {},
+                    "_languageData": Object {},
+                    "_messages": Object {
+                      "en": Object {},
+                    },
                     "plural": [Function],
                     "select": [Function],
                     "selectOrdinal": [Function],
@@ -40,11 +47,15 @@ exports[`Formats should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="percent"
                 >
-                  The answer is 42%
-                </span>
+                  <span
+                    className="percent"
+                  >
+                    The answer is 42%
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -63,7 +74,10 @@ exports[`Formats should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "en",
-                    "_messages": Object {},
+                    "_languageData": Object {},
+                    "_messages": Object {
+                      "en": Object {},
+                    },
                     "plural": [Function],
                     "select": [Function],
                     "selectOrdinal": [Function],
@@ -77,11 +91,15 @@ exports[`Formats should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="date"
                 >
-                  Today is 4/5/2017
-                </span>
+                  <span
+                    className="date"
+                  >
+                    Today is 4/5/2017
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>

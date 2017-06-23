@@ -58,7 +58,7 @@ class Usecase extends React.Component {
                     _2={`${host} invites ${guest} and one other person to her party.`}
                     other={`${host} invites ${guest} and # other people to her party.`}
                   />
-                  }
+                }
                 male={
                   <Plural
                     value={numGuests}
@@ -84,8 +84,8 @@ class Usecase extends React.Component {
           </li>
 
           <li>
-            <Trans render={<p className="variable" />}>My name is {name}</Trans>
-            <Trans render={({ translation }) => <p className="variable">{translation}</p>}>
+            <Trans render={<p className="paragraph1" />}>My name is {name}</Trans>
+            <Trans render={({ translation }) => <p className="paragraph2">{translation}</p>}>
               My name is {name}
             </Trans>
           </li>

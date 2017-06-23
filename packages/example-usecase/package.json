@@ -10,7 +10,9 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "prod": "NODE_ENV=production webpack-dev-server --hot"
+    "prod": "NODE_ENV=production webpack-dev-server --hot",
+    "build": "webpack -p",
+    "stats": "webpack -p --json"
   },
   "dependencies": {
     "lingui-cli": "*",
@@ -30,7 +32,9 @@
   },
   "babel": {
     "presets": [
-      "env",
+      ["env", {
+        "modules": false
+      }],
       "react",
       "lingui-react"
     ],
@@ -38,7 +42,14 @@
       "syntax-dynamic-import",
       "transform-class-properties",
       "transform-object-rest-spread"
-    ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "transform-es2015-modules-commonjs"
+        ]
+      }
+    }
   },
   "lingui": {
     "localeDir": "./locale"

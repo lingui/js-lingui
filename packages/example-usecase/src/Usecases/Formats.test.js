@@ -7,7 +7,7 @@ import Formats from './Formats'
 
 describe('Formats', function () {
   const Component = ({ language, ...props }: { language: string }) =>
-    <I18nProvider language={language} messages={{}}>
+    <I18nProvider language={language} messages={{en: {}}}>
       <Formats {...props} />
     </I18nProvider>
 
