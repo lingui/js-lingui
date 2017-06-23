@@ -106,7 +106,7 @@ export default function ({ types: t }) {
           element,
           `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
         )
-      } else if (!choicesKeys.includes('other')) {
+      } else if (!Array.includes(choicesKeys, 'other')) {
         throw file.buildCodeFrameError(
           element, `Missing fallback argument 'other'.`)
       }
@@ -114,7 +114,7 @@ export default function ({ types: t }) {
       // validate plural rules
       if (choicesType === 'plural' || choicesType === 'selectordinal') {
         choicesKeys.forEach(rule => {
-          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
+          if (!Array.includes(pluralRules, rule) && !/=\d+/.test(rule)) {
             throw file.buildCodeFrameError(
               element,
               `Invalid plural rule '${rule}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`

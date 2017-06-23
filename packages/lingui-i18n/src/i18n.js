@@ -97,7 +97,8 @@ class I18n {
   activate (language: string) {
     if (!language) return
 
-    if (!this.availableLanguages.includes(language)) {
+    // $FlowIgnore: Array.includes is polyfilled
+    if (!Array.includes(this.availableLanguages, language)) {
       throw new Error(`Unknown locale "${language}".`)
     }
 
