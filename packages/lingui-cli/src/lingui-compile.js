@@ -3,6 +3,8 @@ const path = require('path')
 const chalk = require('chalk')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
+const plurals = require('make-plural')
+const babylon = require('babylon')
 const getConfig = require('lingui-conf').default
 
 const t = require('babel-types')
@@ -29,13 +31,32 @@ function compileCatalogs (localeDir) {
       ))
     })
 
+    const languageData = [
+    ]
+    const pluralRules = plurals[locale]
+    if (!pluralRules) {
+      throw new Error(`Missing plural rules for locale ${locale}`)
+    }
+    languageData.push(
+      t.objectProperty(
+        t.stringLiteral('p'),
+        babylon.parseExpression(pluralRules.toString())
+      )
+    )
+
     const compiled = t.expressionStatement(t.assignmentExpression(
       '=',
       t.memberExpression(t.identifier('module'), t.identifier('exports')),
-      t.objectExpression([t.objectProperty(
-        t.identifier('m'),
-        t.objectExpression(messages)
-      )])
+      t.objectExpression([
+        t.objectProperty(
+          t.identifier('l'),
+          t.objectExpression(languageData)
+        ),
+        t.objectProperty(
+          t.identifier('m'),
+          t.objectExpression(messages)
+        )
+      ])
     ))
 
     fs.writeFileSync(compiledPath, generate(compiled, {
