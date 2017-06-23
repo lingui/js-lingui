@@ -31,8 +31,8 @@ describe('I18n', function () {
     const i18n = new I18n()
     expect(i18n.messages).toEqual({})
 
-    i18n.activate('en')
     i18n.load({ en: messages.en })
+    i18n.activate('en')
     expect(i18n.messages).toEqual(messages.en)
 
     // fr catalog shouldn't affect the english one
@@ -54,7 +54,7 @@ describe('I18n', function () {
       'Hello': 'Salut'
     }
 
-    i18n.load({ fr: messages })
+    i18n.load({ fr: messages, en: {} })
     i18n.activate('en')
     expect(i18n.language).toEqual('en')
     expect(i18n.messages).toEqual({})

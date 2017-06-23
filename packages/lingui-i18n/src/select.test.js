@@ -3,7 +3,7 @@ import { plural, select, selectOrdinal } from './select'
 import { I18n } from './i18n'
 
 describe('plural', function () {
-  const i18n = new I18n('en')
+  const i18n = new I18n('en', {en: {}})
 
   it('should convert to message format string', function () {
     const p = plural(i18n)
@@ -30,7 +30,7 @@ describe('plural', function () {
 })
 
 describe('selectOrdinal', function () {
-  const i18n = new I18n('en')
+  const i18n = new I18n('en', {en: {}})
 
   it('should convert to message format string', function () {
     const s = selectOrdinal(i18n)
@@ -66,7 +66,7 @@ describe('selectOrdinal', function () {
   })
 
   it('should use other rule when ordinal ones are missing', function () {
-    const i18nCS = new I18n('cs')
+    const i18nCS = new I18n('cs', {cs: {}})
     const s = selectOrdinal(i18nCS)
     expect(s({
       value: 1,

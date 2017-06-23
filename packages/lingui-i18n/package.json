@@ -3,7 +3,7 @@
   "version": "0.6.2",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
-  "jsnext:main": "src/index.js",
+  "module": "src/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"

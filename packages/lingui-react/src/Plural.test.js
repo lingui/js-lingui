@@ -1,10 +1,13 @@
 // @flow
 import React from 'react'
 import { mount } from 'enzyme'
+
+import { I18n } from 'lingui-i18n'
 import Plural from './Plural'
 
 describe('Plural', function () {
-  const languageContext = (code) => ({ context: { i18nManager: { i18n: { language: code } } } })
+  const i18n = code => new I18n(code, {[code]: {}})
+  const languageContext = (code) => ({ context: { i18nManager: { i18n: i18n(code) } } })
 
   it('should render translation inside custom component', function () {
     const html1 = mount(

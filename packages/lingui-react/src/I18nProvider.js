@@ -2,12 +2,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { I18n } from 'lingui-i18n'
-import type { Catalogs } from 'lingui-i18n'
+import type { Catalogs, AllLanguageData } from 'lingui-i18n'
 
 type I18nProviderProps = {
   children?: any,
   language: string,
   messages: Catalogs,
+  languageData: AllLanguageData,
   i18n?: I18n
 }
 
@@ -19,8 +20,13 @@ class I18nManager {
   i18n: I18n
   subscribers = []
 
-  constructor (language: string, messages?: Catalogs, i18n?: I18n) {
-    this.i18n = i18n || new I18n(language, messages)
+  constructor ({ language, messages, languageData, i18n }: {
+    language: string,
+    messages?: Catalogs,
+    languageData?: AllLanguageData,
+    i18n?: I18n
+  }) {
+    this.i18n = i18n || new I18n(language, messages, languageData)
   }
 
   subscribe = (callback: Function) => {
@@ -31,32 +37,35 @@ class I18nManager {
     this.subscribers = this.subscribers.filter(cb => cb !== callback)
   }
 
-  update = ({ messages, language }: { messages?: Catalogs, language?: string } = {}) => {
-    if (!messages && !language) return
+  update = ({ messages, language, languageData }: { messages?: Catalogs, language?: string, languagedata?: AllLanguageData } = {}) => {
+    if (!messages && !language && !languageData) return
 
     if (messages) this.i18n.load(messages)
     if (language) this.i18n.activate(language)
+    if (languageData) this.i18n.loadLanguageData(languageData)
     this.subscribers.forEach(f => f())
   }
 }
 
 class I18nProvider extends React.Component {
-  i18nManager: I18nManager
   props: I18nProviderProps
+
+  i18nManager: I18nManager
 
   constructor (props: I18nProviderProps) {
     super(props)
-    const { language, messages, i18n } = this.props
-    this.i18nManager = new I18nManager(language, messages, i18n)
+    const { language, messages, languageData, i18n } = this.props
+    this.i18nManager = new I18nManager({ language, messages, languageData, i18n })
   }
 
   componentDidUpdate (prevProps: I18nProviderProps) {
-    const { language, messages } = this.props
+    const { language, messages, languageData } = this.props
     if (
       language !== prevProps.language ||
-      messages !== prevProps.messages
+      messages !== prevProps.messages ||
+      languageData !== prevProps.languageData
     ) {
-      this.i18nManager.update({ language, messages })
+      this.i18nManager.update({ language, messages, languageData })
     }
   }
 

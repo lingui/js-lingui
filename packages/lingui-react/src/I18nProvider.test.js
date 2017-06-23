@@ -8,15 +8,18 @@ import { I18nManager } from './I18nProvider'
 describe('I18nProvider', function () {
   const props = {
     messages: {
-      'cs': {
+      cs: {
         'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
-      }
+      },
+      en: {}
     },
     language: 'cs'
   }
 
   it('should provide context with i18n data', function () {
-    const component = shallow(<I18nProvider {...props}><div /></I18nProvider>).instance()
+    const component = shallow(<I18nProvider {...props}>
+      <div />
+    </I18nProvider>).instance()
     const { subscribe, unsubscribe, i18n } = component.getChildContext()['i18nManager']
     expect(i18n.messages).toEqual(props.messages[props.language])
     expect(i18n.language).toEqual(props.language)
@@ -25,12 +28,14 @@ describe('I18nProvider', function () {
   })
 
   it('should throw an error on incorrect language', function () {
-    const component = () => mount(<I18nProvider language="xyz" messages={{}}><div/></I18nProvider>)
+    const component = () => mount(<I18nProvider language="xyz" messages={{}}>
+      <div/>
+    </I18nProvider>)
     expect(component).toThrowErrorMatchingSnapshot()
   })
 
   it('should render children', function () {
-    const child = <div className="testcase" />
+    const child = <div className="testcase"/>
     expect(shallow(
       <I18nProvider {...props}>{child}</I18nProvider>
     ).contains(child)).toBeTruthy()
@@ -46,7 +51,12 @@ describe('I18nProvider', function () {
   })
 
   it('should notify all subscribers about context change', function () {
-    const node = mount(<I18nProvider language="en" messages={{}}><div /></I18nProvider>)
+    const node = mount(<I18nProvider language="en" messages={{
+      en: {},
+      cs: {}
+    }}>
+      <div />
+    </I18nProvider>)
     const instance = node.instance()
     const listener = jest.fn()
 
@@ -64,12 +74,13 @@ describe('I18nProvider', function () {
 
 describe('I18nManager', function () {
   it('should pass active language and messages to underlying I18n class', function () {
-    const i18nManager = new I18nManager(
-      'en', {
+    const i18nManager = new I18nManager({
+      language: 'en',
+      messages: {
         en: { msg: 'hello' },
         fr: { msg: 'salut' }
       }
-    )
+    })
 
     expect(i18nManager.i18n.language).toEqual('en')
     expect(i18nManager.i18n.messages).toEqual({ msg: 'hello' })
@@ -84,7 +95,10 @@ describe('I18nManager', function () {
   })
 
   it('should subscribe/unsubscribe listeners for context changes', function () {
-    const i18nManager = new I18nManager('en')
+    const i18nManager = new I18nManager({
+      language: 'en',
+      messages: { en: {}, fr: {} }
+    })
     const listener = jest.fn()
 
     expect(i18nManager.subscribers).toEqual([])
@@ -98,7 +112,10 @@ describe('I18nManager', function () {
 
   it('should notify listeners only when relevant data changes', function () {
     const listener = jest.fn()
-    const i18nManager = new I18nManager('en')
+    const i18nManager = new I18nManager({
+      language: 'en',
+      messages: { en: {}, fr: {} }
+    })
     i18nManager.subscribe(listener)
 
     expect(listener).not.toBeCalled()
