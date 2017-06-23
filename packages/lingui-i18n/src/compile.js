@@ -1,7 +1,7 @@
 // @flow
 import { date, number } from 'lingui-formats'
 
-import { compileMessage, loadLanguageData  } from './utils.dev'
+import { compileMessage, loadLanguageData } from './utils.dev'
 
 const isString = s => typeof s === 'string'
 
