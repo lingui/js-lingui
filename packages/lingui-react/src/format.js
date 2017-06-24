@@ -3,6 +3,7 @@ import { cloneElement } from 'react'
 
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
+const nlRe = /(?:\r\n|\r|\n)/g
 
 /**
  * `formatElements` - parse string and return tree of react elements
@@ -15,7 +16,7 @@ function formatElements (value: string, elements: Array<React$Element<any>> = []
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist
 
-  const parts = value.split(tagRe)
+  const parts = value.replace(nlRe, '').split(tagRe)
 
   // no inline elements, return
   if (parts.length === 1) return value
