@@ -3,7 +3,7 @@
   "version": "0.13.0-0",
   "description": "React components for translations",
   "main": "lib/index.js",
-  "module": "src/index.js",
+  "module": "lib/index.es.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
