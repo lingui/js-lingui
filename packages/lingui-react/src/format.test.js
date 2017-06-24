@@ -35,7 +35,7 @@ describe('formatElements', function () {
       .toEqual(wrap('<a href="/about"><strong>Deep</strong></a>'))
 
     expect(html(formatElements(
-      'Before <0>Inside <1>Nested</1> Between <2/> After</0>',
+      'Before \n<0>Inside <1>\nNested</1>\n Between <2/> After</0>',
       [<a href="/about" />, <strong />, <br />]
     ))).toEqual(wrap('Before <a href="/about">Inside <strong>Nested</strong> Between <br/> After</a>'))
   })
