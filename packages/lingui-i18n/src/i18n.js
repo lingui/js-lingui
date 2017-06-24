@@ -55,8 +55,9 @@ class I18n {
   get languageData (): LanguageData {
     const data = this._languageData[this.language]
 
-    if (!data && process.env.NODE_ENV !== 'production') {
-      return loadLanguageData(this.language)
+    if (process.env.NODE_ENV !== 'production') {
+      // Allow overriding data in development, useful for testing
+      return data || /*#__PURE__*/loadLanguageData(this.language)
     }
 
     return data

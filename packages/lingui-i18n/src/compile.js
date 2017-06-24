@@ -54,8 +54,8 @@ export default function compile (
 
   if (typeof message === 'string') {
     if (process.env.NODE_ENV !== 'production') {
-      formattedMessage = compileMessage(message)
-      languageData = loadLanguageData(language)
+      formattedMessage = /*#__PURE__*/compileMessage(message)
+      languageData = /*#__PURE__*/loadLanguageData(language)
     } else {
       // constant message
       // $FlowIgnore: message is string, we're inside typeof guard
