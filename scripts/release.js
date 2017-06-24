@@ -8,6 +8,9 @@ const emojify = require('node-emoji').emojify
 
 const { PACKAGE_DIR, getPackages, getInternalDependencies, sortByDependencies } = require('./discover')
 
+const isPrerelease = process.argv.includes('--pre')
+const pre = isPrerelease ? 'pre' : ''
+
 // map of package versions: packageName -> version
 // Global variable is ugly, but I'm not in state of mind to write a better code
 const versions = {}
@@ -68,7 +71,7 @@ function updatePackage(packageInfo, changes) {
     return
   }
 
-  const change = changes.includes('feat') ? 'minor' : 'patch'
+  const change = changes.includes('feat') ? `${pre}minor` : `${pre}patch`
   log(chalk.yellow(` (${change} release)`))
 
   log('Releasing ', '')
@@ -76,8 +79,9 @@ function updatePackage(packageInfo, changes) {
   updateDependencies(packageInfo)
 
   const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
+  const prerelease = oldVersion.includes('-')
 
-  const newVersion = runLocal(`npm version ${change}`).slice(1)
+  const newVersion = runLocal(`npm version ${prerelease ? 'prerelease' : change}`).slice(1)
   versions[packageInfo.name] = newVersion
 
   log(chalk.yellow(`v${oldVersion} => v${newVersion}`))
@@ -109,16 +113,16 @@ async function release() {
   const packages = getPackages()
   const dependencies = sortByDependencies(getInternalDependencies(packages))
 
-  runCmd('git stash')
+  const isStashed = !runCmd('git stash | grep "No local changes"')
   const newVersions = dependencies.map(checkUpdates).filter(Boolean)
 
   if (!newVersions.length) {
     log('Nothing to do!')
-    runCmd('git stash pop')
+    if (isStashed) runCmd('git stash pop')
     return
   }
 
-  const message = `release: 
+  const message = `${pre}release: 
 
 Updated packages:
 ${newVersions.join('\n')}
@@ -133,10 +137,12 @@ ${newVersions.join('\n')}
 
   commitMsg.removeCallback()
 
-  newVersions.forEach(version => {
-    runCmd(`git tag ${version}`)
-  })
-  runCmd('git stash pop')
+  if (!isPrerelease) {
+    newVersions.forEach(version => {
+      runCmd(`git tag ${version}`)
+    })
+  }
+  if (isStashed) runCmd('git stash pop')
 }
 
 
