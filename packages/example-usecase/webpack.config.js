@@ -24,7 +24,8 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new webpack.IgnorePlugin(/(languageData|compile).*\.dev$/)
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.IgnorePlugin(/\.dev$/, /lingui-i18n/)
   ],
 
   devServer: {
