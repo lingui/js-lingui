@@ -30,11 +30,6 @@ exports[`Formats should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "en",
-                    "_languageData": Object {
-                      "en": Object {
-                        "plurals": [Function],
-                      },
-                    },
                     "_messages": Object {
                       "en": Object {},
                     },
@@ -78,11 +73,6 @@ exports[`Formats should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "en",
-                    "_languageData": Object {
-                      "en": Object {
-                        "plurals": [Function],
-                      },
-                    },
                     "_messages": Object {
                       "en": Object {},
                     },

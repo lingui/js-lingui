@@ -58,10 +58,7 @@ class I18n {
     if (process.env.NODE_ENV !== 'production') {
       // Allow overriding data in development, useful for testing
       if (!data) {
-        this.loadLanguageData({
-          [this.language]: loadLanguageData(this.language)
-        })
-        return this._languageData[this.language]
+        return loadLanguageData(this.language)
       }
     }
 
