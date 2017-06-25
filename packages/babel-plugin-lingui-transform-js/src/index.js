@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+const nlRe = /(?:\r\n|\r|\n)+\s+/g
 
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 
@@ -191,12 +191,13 @@ export default function ({ types: t }) {
       formats: {}
     }, /* root= */true)
 
-    if (!props.text) return
+    const text = props.text.replace(nlRe, ' ').trim()
+    if (!text) return
 
     // 2. Replace complex expression with single call to i18n.t
 
     const tArgs = [
-      t.objectProperty(t.identifier('id'), t.StringLiteral(props.text.trim()))
+      t.objectProperty(t.identifier('id'), t.StringLiteral(text))
     ]
 
     const paramsList = Object.values(props.params)

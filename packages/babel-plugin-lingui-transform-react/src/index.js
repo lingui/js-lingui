@@ -1,5 +1,7 @@
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 
+const nlRe = /(?:\r\n|\r|\n)+\s+/g
+
 function cleanChildren (node) {
   node.children = []
   node.openingElement.selfClosing = true
@@ -249,9 +251,6 @@ export default function ({ types: t }) {
       nextProps.text += node.value
     }
 
-    // normalize spaces
-    nextProps.text = nextProps.text.replace(/\n\s+/g, '\n')
-
     return mergeProps(props, nextProps)
   }
 
@@ -269,19 +268,19 @@ export default function ({ types: t }) {
         // 2. Replace children and add collected data
 
         cleanChildren(node)
-        props.text = props.text.trim()
+        const text = props.text.replace(nlRe, '').trim()
         const attrs = node.openingElement.attributes
 
         // If `id` prop already exists and generated ID is different,
         // add it as a `default` prop
         const idAttr = attrs.filter(isIdAttribute)[0]
-        if (idAttr && idAttr.value.value !== props.text) {
+        if (idAttr && idAttr.value.value !== text) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(text))
           )
         } else if (!idAttr) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier('id'), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('id'), t.StringLiteral(text))
           )
         }
 

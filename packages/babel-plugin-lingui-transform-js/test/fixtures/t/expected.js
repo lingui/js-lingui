@@ -7,3 +7,6 @@ i18n.t({
     name: name
   }
 });
+i18n.t({
+  id: "Remove any newlines... and replace them with one space."
+});
