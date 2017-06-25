@@ -76,7 +76,12 @@ function updatePackage(packageInfo, changes) {
     return
   }
 
-  const change = changes.includes('major')
+  const dependencyMajor = packageInfo.dependencies
+    .map(name => versions[name] && versions[name].major)
+    .reduce((any, isMajor) => any || isMajor, false)
+
+  const major = changes.includes('major') || dependencyMajor
+  const change = major
     ? `${pre}major`
     : changes.includes('feat')
       ? `${pre}minor`
@@ -92,7 +97,10 @@ function updatePackage(packageInfo, changes) {
   const prerelease = oldVersion.includes('-')
 
   const newVersion = runLocal(`npm version ${prerelease ? 'prerelease' : change}`).slice(1)
-  versions[packageInfo.name] = newVersion
+  versions[packageInfo.name] = {
+    version: newVersion,
+    major
+  }
 
   log(chalk.yellow(`v${oldVersion} => v${newVersion}`))
 
@@ -111,7 +119,7 @@ function updateDependencies(packageInfo) {
       if (!config[depType] || !versions[name]) return
 
       if (config[depType][name]) {
-        config[depType][name] = `^${versions[name]}`
+        config[depType][name] = `^${versions[name.version]}`
       }
     })
   })
