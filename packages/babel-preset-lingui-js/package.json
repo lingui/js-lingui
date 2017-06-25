@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-lingui-js",
-  "version": "0.5.1",
+  "version": "1.0.0-0",
   "description": "Lingui preset for Javascript apps",
   "main": "index.js",
   "author": {
@@ -20,7 +20,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "babel-plugin-lingui-extract-messages": "^0.9.1-0",
-    "babel-plugin-lingui-transform-js": "^0.6.1-0"
+    "babel-plugin-lingui-extract-messages": "^0.9.1-1",
+    "babel-plugin-lingui-transform-js": "^1.0.0-0"
   }
 }
