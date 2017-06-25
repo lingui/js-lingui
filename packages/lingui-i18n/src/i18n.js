@@ -125,4 +125,4 @@ class I18n {
 
 export default new I18n()
 export { I18n }
-export type { Message, Catalog, Catalogs, AllLanguageData }
+export type { Message, Catalog, Catalogs, AllLanguageData, LanguageData }
