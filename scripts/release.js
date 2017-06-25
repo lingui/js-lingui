@@ -46,12 +46,15 @@ function checkUpdates(packageInfo) {
   if (latest) {
     log(packageInfo.name, '')
     const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
-    const history = runCmd(`git log ${latest}.. --format='%s' -- ${packageDir}`)
+    const history = runCmd(`git log ${latest}.. --pretty=format:'%s%n%b' -- ${packageDir}`)
 
     const changes = (
       history.split('\n')
-        .map(line => line.replace(/^(\w+)(\([^)]*\))?:.*$/, "$1"))
-        .filter(change => ['feat', 'fix'].includes(change))
+        .map(line => {
+          if (line.includes('BREAKING CHANGE')) return 'major'
+          return line.replace(/^(\w+)(\([^)]*\))?:.*$/, "$1")
+        })
+        .filter(change => ['major', 'feat', 'fix'].includes(change))
     )
 
     if (changes.length) {
@@ -64,6 +67,8 @@ function checkUpdates(packageInfo) {
 
 function updatePackage(packageInfo, changes) {
   const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
+  const pkgFilePath = path.relative(
+    __dirname, path.resolve(path.join(packageDir, 'package.json')))
   const runLocal = runCmdLocal(packageDir)
 
   if (packageInfo.private) {
@@ -71,14 +76,19 @@ function updatePackage(packageInfo, changes) {
     return
   }
 
-  const change = changes.includes('feat') ? `${pre}minor` : `${pre}patch`
+  const change = changes.includes('major')
+    ? `${pre}major`
+    : changes.includes('feat')
+      ? `${pre}minor`
+      : `${pre}patch`
+
   log(chalk.yellow(` (${change} release)`))
 
   log('Releasing ', '')
 
   updateDependencies(packageInfo)
 
-  const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
+  const oldVersion = require(pkgFilePath).version
   const prerelease = oldVersion.includes('-')
 
   const newVersion = runLocal(`npm version ${prerelease ? 'prerelease' : change}`).slice(1)
