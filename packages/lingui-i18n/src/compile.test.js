@@ -1,19 +1,6 @@
 // @flow
 import compile from './compile'
-
-const mockEnv = (env, testCase) => {
-  const oldEnv = process.env.NODE_ENV
-  process.env.NODE_ENV = env
-
-  try {
-    testCase()
-  } catch(e) {
-    process.env.NODE_ENV = oldEnv
-    throw e
-  }
-
-  process.env.NODE_ENV = oldEnv
-}
+import { mockEnv } from './mocks'
 
 describe('compile', function () {
   describe('parsing and compiling messages in development', function () {

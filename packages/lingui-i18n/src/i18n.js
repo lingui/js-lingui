@@ -57,7 +57,12 @@ class I18n {
 
     if (process.env.NODE_ENV !== 'production') {
       // Allow overriding data in development, useful for testing
-      return data || /*#__PURE__*/loadLanguageData(this.language)
+      if (!data) {
+        this.loadLanguageData({
+          [this.language]: loadLanguageData(this.language)
+        })
+        return this._languageData[this.language]
+      }
     }
 
     return data
@@ -89,9 +94,11 @@ class I18n {
   activate (language: string) {
     if (!language) return
 
-    // $FlowIgnore: Array.includes is polyfilled
-    if (!Array.includes(this.availableLanguages, language)) {
-      throw new Error(`Unknown locale "${language}".`)
+    if (process.env.NODE_ENV !== 'production') {
+      // $FlowIgnore: Array.includes is polyfilled
+      if (!Array.includes(this.availableLanguages, language)) {
+        console.warn(`Unknown locale "${language}".`)
+      }
     }
 
     this._language = language

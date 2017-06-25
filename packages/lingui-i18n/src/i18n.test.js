@@ -1,5 +1,6 @@
 /* @flow */
 import { I18n, default as exportedI18n } from '.'
+import { mockConsole, mockEnv } from './mocks'
 
 describe('I18n', function () {
   it('should export default I18n instance', function () {
@@ -90,8 +91,18 @@ describe('I18n', function () {
 
   it('.activate should throw an error about incorrect language', function () {
     const i18n = new I18n()
-    expect(() => i18n.activate('xyz')).toThrowErrorMatchingSnapshot()
-    expect(() => new I18n('xyz')).toThrowErrorMatchingSnapshot()
+
+    mockConsole(console => {
+      i18n.activate('xyz')
+      expect(console.warn).toBeCalledWith(expect.stringContaining('Unknown local'))
+    })
+
+    mockConsole(console => {
+      mockEnv('production', () => {
+        i18n.activate('xyz')
+        expect(console.warn).not.toBeCalled()
+      })
+    })
   })
 
   it('.use should return new i18n object with switched language', function () {
