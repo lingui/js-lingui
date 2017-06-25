@@ -1,6 +1,6 @@
 {
   "name": "lingui-react",
-  "version": "0.13.0-1",
+  "version": "0.13.0-2",
   "description": "React components for translations",
   "main": "lib/index.js",
   "module": "lib/index.es.js",
