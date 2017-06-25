@@ -32,7 +32,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -75,7 +79,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -116,7 +124,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -162,7 +174,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -222,7 +238,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -277,7 +297,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -334,7 +358,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",
@@ -391,7 +419,11 @@ exports[`Children should render 1`] = `
                 i18n={
                   I18n {
                     "_language": "cs",
-                    "_languageData": Object {},
+                    "_languageData": Object {
+                      "cs": Object {
+                        "plurals": [Function],
+                      },
+                    },
                     "_messages": Object {
                       "cs": Object {
                         "Full content of {articleName}": "Celé znění článku {articleName}",

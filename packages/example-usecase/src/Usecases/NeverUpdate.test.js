@@ -34,7 +34,7 @@ describe('NeverUpdate', function () {
     expect(node.find('.untranslated').text()).toEqual("This isn't translated")
     expect(node.find('.customId').text()).toEqual('msg.label')
     expect(node.find('.translated').text()).toEqual('Hello World')
-    expect(node.find('.variable', { name: 'Fred' }).text()).toEqual('My name is Mononoke')
+    expect(node.find('.variable').text()).toEqual('My name is Mononoke')
 
     node.setProps({ language: 'cs' })
     expect(node.find('.untranslated').text()).toEqual("This isn't translated")

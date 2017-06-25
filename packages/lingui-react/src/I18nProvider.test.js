@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme'
 
 import { I18nProvider } from '.'
 import { I18nManager } from './I18nProvider'
+import { mockConsole } from './mocks'
 
 describe('I18nProvider', function () {
   const props = {
@@ -28,10 +29,10 @@ describe('I18nProvider', function () {
   })
 
   it('should throw an error on incorrect language', function () {
-    const component = () => mount(<I18nProvider language="xyz" messages={{}}>
-      <div/>
-    </I18nProvider>)
-    expect(component).toThrowErrorMatchingSnapshot()
+    mockConsole(console => {
+      mount(<I18nProvider language="xyz" messages={{}}><div/></I18nProvider>)
+      expect(console.warn).toBeCalledWith(expect.stringContaining('Unknown local'))
+    })
   })
 
   it('should render children', function () {
@@ -93,10 +94,10 @@ describe('I18nManager', function () {
     expect(i18nManager.i18n.language).toEqual('fr')
     expect(i18nManager.i18n.messages).toEqual({ msg: 'salut!' })
 
-    i18nManager.update({ languageData: { fr: { plurals: 'Function' } } })
+    i18nManager.update({ languageData: { fr: { plurals: () => 'Function' } } })
     expect(i18nManager.i18n.language).toEqual('fr')
     expect(i18nManager.i18n.messages).toEqual({ msg: 'salut!' })
-    expect(i18nManager.i18n.languageData).toEqual({ plurals: 'Function' })
+    expect(i18nManager.i18n.languageData.plurals()).toEqual('Function')
   })
 
   it('should subscribe/unsubscribe listeners for context changes', function () {
