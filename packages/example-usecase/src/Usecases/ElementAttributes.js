@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { WithI18n, Trans } from 'lingui-react'
 import type { WithI18nProps } from 'lingui-react'

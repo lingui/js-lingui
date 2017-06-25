@@ -20,11 +20,11 @@ const _plural = (type) => (i18n: I18n) => ({
   offset = 0,
   other,
   ...pluralForms
-}: PluralProps): string => {
+  }: PluralProps): string => {
   const translation = (
-    pluralForms[(value - offset).toString()] ||            // exact match
-    pluralForms[i18n.pluralForm(value - offset, type)] ||  // plural form
-    other                                                  // fallback
+    pluralForms[(value - offset).toString()] || // exact match
+    pluralForms[i18n.pluralForm(value - offset, type)] || // plural form
+    other // fallback
   )
   return translation.replace('#', value.toString())
 }
@@ -41,7 +41,7 @@ function select ({
   value,
   other,
   ...selectForms
-}: SelectProps): string {
+  }: SelectProps): string {
   return selectForms[value] || other
 }
 

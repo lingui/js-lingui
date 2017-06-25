@@ -314,7 +314,7 @@ export default function ({ types: t }) {
               t.JSXExpressionContainer(t.objectExpression(formatsList)))
           )
         }
-      }  // JSXElement
-    }  // visitor
+      } // JSXElement
+    } // visitor
   }
 }

@@ -12,17 +12,15 @@ export default function ({ types: t }) {
   const isChoiceMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) && (
-      t.isIdentifier(node.property, { name: 'plural' }) ||
-      t.isIdentifier(node.property, { name: 'select' }) ||
-      t.isIdentifier(node.property, { name: 'selectOrdinal' })
-    )
+        t.isIdentifier(node.property, { name: 'plural' }) ||
+        t.isIdentifier(node.property, { name: 'select' }) ||
+        t.isIdentifier(node.property, { name: 'selectOrdinal' }))
 
   const isFormatMethod = node =>
-  t.isMemberExpression(node) &&
-  t.isIdentifier(node.object, { name: 'i18n' }) && (
-    t.isIdentifier(node.property, { name: 'date' }) ||
-    t.isIdentifier(node.property, { name: 'number' })
-  )
+    t.isMemberExpression(node) &&
+    t.isIdentifier(node.object, { name: 'i18n' }) && (
+        t.isIdentifier(node.property, { name: 'date' }) ||
+        t.isIdentifier(node.property, { name: 'number' }))
 
   function processMethod (node, file, props) {
     // i18n.t
@@ -126,8 +124,8 @@ export default function ({ types: t }) {
 
       const type = node.callee.property.name
       const parts = [
-        variable.name,  // variable name
-        type  // format type
+        variable.name, // variable name
+        type // format type
       ]
 
       let format = ''
@@ -216,9 +214,9 @@ export default function ({ types: t }) {
     }
 
     const exp = t.callExpression(
-        t.memberExpression(t.identifier('i18n'), t.identifier('t')),
-        [ t.objectExpression(tArgs) ]
-      )
+      t.memberExpression(t.identifier('i18n'), t.identifier('t')),
+      [ t.objectExpression(tArgs) ]
+    )
     exp.loc = path.node.loc
     path.replaceWith(exp)
   }

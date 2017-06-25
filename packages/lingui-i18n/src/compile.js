@@ -66,7 +66,9 @@ export default function compile (
 
   if (isString(message)) {
     if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line spaced-comment
       formattedMessage = /*#__PURE__*/compileMessage(message)
+      // eslint-disable-next-line spaced-comment
       languageData = /*#__PURE__*/loadLanguageData(language)
     } else {
       // constant message

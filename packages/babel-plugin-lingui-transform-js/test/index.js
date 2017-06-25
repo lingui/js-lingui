@@ -5,7 +5,7 @@ import { transformFileSync, transform } from 'babel-core'
 
 import plugin from '../src/index'
 
-function getTestName(testPath) {
+function getTestName (testPath) {
   return path.basename(testPath)
 }
 

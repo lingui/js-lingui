@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable react/jsx-key */
 import React from 'react'
 import { shallow } from 'enzyme'
 import { formatElements } from './format'

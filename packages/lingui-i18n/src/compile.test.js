@@ -162,5 +162,4 @@ describe('compile', function () {
       expect(currency({ value: 1 })).toEqual('€1.00')
     })
   })
-
 })

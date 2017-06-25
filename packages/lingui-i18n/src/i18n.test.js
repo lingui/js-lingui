@@ -42,7 +42,7 @@ describe('I18n', function () {
 
     i18n.load({ en: { 'Goodbye': 'Goodbye' } })
     // $FlowIgnore: testing edge case
-    i18n.load()  // should do nothing
+    i18n.load() // should do nothing
     expect(i18n.messages).toEqual({
       'Hello': 'Hello',
       'Goodbye': 'Goodbye'
@@ -84,7 +84,7 @@ describe('I18n', function () {
 
     i18n.activate('fr')
     // $FlowIgnore: testing edge case
-    i18n.activate()  // should do nothing
+    i18n.activate() // should do nothing
     expect(i18n.language).toEqual('fr')
     expect(i18n.messages).toEqual(messages)
   })
