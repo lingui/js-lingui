@@ -119,7 +119,7 @@ function updateDependencies(packageInfo) {
       if (!config[depType] || !versions[name]) return
 
       if (config[depType][name]) {
-        config[depType][name] = `^${versions[name.version]}`
+        config[depType][name] = `^${versions[name].version}`
       }
     })
   })
