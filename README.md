@@ -26,11 +26,21 @@ Internationalization consists of three steps:
 
 ### Specify parts for localization
 
-The first part of i18n process is wrapping all texts with component or function, which replaces source text with translation during runtime. `js-lingui` uses [ICU Message Format](https://github.com/lingui/js-lingui/wiki/ICU-message-format) which allows using of variables and plural forms.
+The first part of i18n process is wrapping all texts with component or function, which replaces source text with translation during runtime. `js-lingui` uses [ICU Message Format](https://github.com/lingui/js-lingui/wiki/ICU-message-format) which allows using of variables, plural forms and date/number formats.
 
-#### Javascript
+#### Javascript (wihout React)
 
-`lingui-js` provides `i18n.t` template tag for translation, `i18n.plural`, `i18n.select`, `i18n.selectOrdinal` methods for pluralization and custom forms:
+First install babel preset for using `js-lingui` in Vanilla JS apps and add it 
+to your babel config:
+
+```sh
+yarn add --dev babel-preset-lingui-js
+# or
+npm install --save-dev babel-preset-lingui-js
+```
+
+`lingui-js` provides `i18n.t` template tag for translation, `i18n.plural`, 
+`i18n.select`, `i18n.selectOrdinal` methods for pluralization and custom forms:
 
 ```js
 import i18n from 'lingui-i18n'
@@ -49,76 +59,75 @@ i18n.plural({
 
 #### React
 
-[lingui-react](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) provides several component for React applications: `Trans` is the main component for general translation, `Plural` and `Select` for pluralization and custom forms (e.g: polite forms):
+First install babel preset for using `js-lingui` in React apps and add it to your
+babel config:
+
+```sh
+yarn add --dev babel-preset-lingui-react
+# or
+npm install --save-dev babel-preset-lingui-react
+```
+
+[lingui-react](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) 
+provides several component for React applications: `Trans` is the main component 
+for general translation, `Plural` and `Select` for pluralization and custom 
+forms (e.g: polite forms):
 
 ```jsx
 import React from 'react'
 import { Trans, Plural } from 'lingui-react'
 
-class App extends React.Component {
-  render() {
-    const name = "Fred"
-    const count = 42
-    
-    return (
-      <div>
-        // Static text
-        <Trans>January</Trans>
+const App = ({ name, count }) => (
+  <div>
+    // Static text
+    <Trans>January</Trans>
 
-        // Variables
-        <Trans>Hello, my name is {name}</Trans>
+    // Variables
+    <Trans>Hello, my name is {name}</Trans>
 
-        // Components
-        <Trans>See the <a href="/more">description</a> below.</Trans>
+    // Components
+    <Trans>See the <a href="/more">description</a> below.</Trans>
 
-        // Plurals
-        <Plural 
-          value={count} 
-          zero={<strong>No books</strong>}
-          one="# book" 
-          other="# books" 
-        />
-      </div>
-    )
-  }
-}
+    // Plurals
+    <Plural 
+      value={count} 
+      zero={<strong>No books</strong>}
+      one="# book" 
+      other="# books" 
+    />
+  </div>
+)
 ```
 
-Sometimes it's necessary to translate also a text attributes, which doesn't accept React components. `lingui-react` has `WithReact` decorator, which injects `i18n` object from `lingui-i18n`. 
+Sometimes it's necessary to translate also a text attributes, which don't accept
+React components. `lingui-react` has `WithReact` decorator, which injects `i18n`
+object from `lingui-i18n`. 
 
 ```jsx
 import React from 'react'
 import { WithI18n } from 'lingui-react'
 
 // Translating text attributes
-class LinkWithTooltip extends React.Component {
-  render() {
-    const { articleName, i18n } = this.props
-    
-    return (
-      <a 
-        href="/more" 
-        title={i18n.t`Link to ${articleName}`}
-      >
-        <Trans>Link</Trans>
-      </a>
-    )
-  }
-}
-
-// Decorate component. WithReact actually expects options as a first
-// argument and return customized decorator:
-// Signature: WithReact = (options) => (WrappedComponent)
-LinkWithTooltip = WithReact()(LinkWithTooltip)
+const LinkWithTooltip = WithReact()(({ articleName, i18n }) => (
+  <a 
+    href="/more" 
+    title={i18n.t`Link to ${articleName}`}
+  >
+    <Trans>Link</Trans>
+  </a>
+))
 ```
 
-At this point, application is available only in one language (English). When no translations are available the default texts are used.
+At this point, application is available only in one language (English). When no 
+translations are available the default texts are used.
 
 :bulb: See [tutorial](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) about i18n in React
 
 ### Build message catalog
 
-Translators are working with message catalogs which are mapping of messages from source to target language. The simplest form is a dictionary, where key is source message and value is translated one:
+Translators are working with message catalogs which are mapping of messages from
+source to target language. The simplest form is a dictionary, where key is source
+message and value is translated one:
 
 ```js
 const fr = {
@@ -129,14 +138,16 @@ const fr = {
 }
 ```
 
-The key is also called **message ID**. It must be unique across application. It should also include all parameters so translators can change the order of words and parameters if required.
+The key is also called **message ID**. It must be unique across application. It 
+should also include all parameters so translators can change the order of words 
+and parameters if required.
 
-`js-lingui` provides three babel plugins and CLI for building message catalogs:
+`js-lingui` provides a CLI for building and compiling message catalogs:
 
 ```sh
-npm install --save-dev lingui-i18n
+npm install --save-dev lingui-cli
 # or
-yarn add --dev lingui-i18n
+yarn add --dev lingui-cli
 
 # add directories for target languages
 lingui add-locale en fr
@@ -192,7 +203,8 @@ The result is one message catalog per language (e.g: `locale/fr/messages.json`).
 
 ### Load translated messages
 
-Translated message catalogs must be loaded back to application. The process depends on type of application.
+Translated message catalogs must be loaded back to application. The process 
+depends on type of application.
 
 #### Javascript
 
@@ -216,7 +228,8 @@ i18n.activate('en')
 
 #### React
 
- `lingui-react` provides `ProvideI18n` component which receives active language and messages for that language:
+ `lingui-react` provides `ProvideI18n` component which receives active language
+ and messages for that language:
 
 ```jsx
 import React from 'react'
@@ -255,15 +268,11 @@ const count = 42
 // becomes: 42 livres
 ```
 
-See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or [example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecases/Children.js) for detailed example.
+See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or 
+[example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecases/Children.js) 
+for detailed example.
 
 ## Packages
-
-### `lingui-cli` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-cli)
-
-[![npm](https://img.shields.io/npm/v/lingui-cli.svg)](https://www.npmjs.com/package/lingui-cli) 
-
-Command line interface for working with message catalogs.
 
 ### `lingui-i18n` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-i18n)
 
@@ -276,6 +285,12 @@ Functions for I18n in Javascript.
 [![npm](https://img.shields.io/npm/v/lingui-react.svg)](https://www.npmjs.com/package/lingui-react)
 
 Components for I18n in React.
+
+### `lingui-cli` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-cli)
+
+[![npm](https://img.shields.io/npm/v/lingui-cli.svg)](https://www.npmjs.com/package/lingui-cli) 
+
+Command line interface for working with message catalogs.
 
 ### `babel-preset-lingui-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-preset-lingui-js)
 
