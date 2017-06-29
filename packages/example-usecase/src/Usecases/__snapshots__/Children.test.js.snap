@@ -320,7 +320,7 @@ exports[`Children should render 1`] = `
               }
               render={
                 <p
-                  className="paragraph1"
+                  className="render-element"
                 />
               }
             >
@@ -352,19 +352,19 @@ exports[`Children should render 1`] = `
                 }
                 render={
                   <p
-                    className="paragraph1"
+                    className="render-element"
                   />
                 }
               >
                 <Render
                   render={
                     <p
-                      className="paragraph1"
+                      className="render-element"
                     />
                   }
                 >
                   <p
-                    className="paragraph1"
+                    className="render-element"
                   >
                     Jmenuji se Mononoke
                   </p>
@@ -415,7 +415,7 @@ exports[`Children should render 1`] = `
                     translation="Jmenuji se Mononoke"
                   >
                     <p
-                      className="paragraph2"
+                      className="render-component"
                     >
                       Jmenuji se Mononoke
                     </p>
