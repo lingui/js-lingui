@@ -12,7 +12,7 @@ type WithI18nProps = {
   i18n: I18n
 }
 
-export default (options: WithI18nOptions = {}) => function<P, C: React$Component<*, P, *>> (WrappedComponent: Class<C>): Class<React.Component<void, $Diff<P, WithI18nProps>, void>> {
+export default (options: WithI18nOptions = {}) => function<P, C: React$Component<any, P, any>> (WrappedComponent: Class<C>): Class<React.Component<any, $Diff<P, WithI18nProps>, any>> {
   if (process.env.NODE_ENV !== 'production') {
     if (typeof options === 'function' || React.isValidElement(options)) {
       console.warn(
@@ -25,7 +25,7 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
   const { update = true, withRef = false } = options
 
-  return class WithI18n extends React.Component {
+  class WithI18n extends React.Component<*, *, *> {
     static contextTypes = {
       i18nManager: PropTypes.object
     }
@@ -71,10 +71,11 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
     render () {
       const { i18n } = this.getI18n()
-      // $FlowIgnore: https://github.com/facebook/flow/issues/3241
       return <WrappedComponent ref={this.setWrappedInstance} {...this.props} i18n={i18n} />
     }
   }
+
+  return WithI18n
 }
 
 export type { WithI18nProps }
