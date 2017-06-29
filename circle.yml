@@ -11,9 +11,9 @@ dependencies:
 
 test:
   override:
-    - nvm use 4 && yarn test
-    - nvm use 5 && yarn test
-    - nvm use 6 && yarn test
-    - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
+    - case $CIRCLE_NODE_INDEX in 0) nvm use 6 && yarn test ;; 1) nvm use 5 && yarn test ;; 2) nvm use 4 && yarn test ;; 3) yarn run lint:flow ;; esac:
+        parallel: true
+
   post:
+    - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
     - codecov
