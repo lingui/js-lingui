@@ -32,7 +32,7 @@ export default function ({ types: t }) {
   const isI18nMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) &&
-    t.isIdentifier(node.property, { name: 't' })
+    t.isIdentifier(node.property, { name: '_' })
 
   function collectMessage (path, file, attributes) {
     const messages = file.get(MESSAGES)
