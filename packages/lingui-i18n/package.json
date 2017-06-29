@@ -1,6 +1,6 @@
 {
   "name": "lingui-i18n",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "I18n tools for javascript",
   "main": "lib/index.js",
   "author": {
@@ -23,7 +23,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-formats": "^0.3.0",
+    "lingui-formats": "^0.4.2",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
   },

@@ -1,8 +1,10 @@
 import React from 'react'
 import { WithI18n, Trans } from 'lingui-react'
-import type { WithI18nProps } from 'lingui-react'
 
-type ElementAttributesProps = WithI18nProps
+type ElementAttributesProps = {
+  children: any,
+  i18n: Object
+}
 
 class ElementAttributes extends React.Component {
   props: ElementAttributesProps
