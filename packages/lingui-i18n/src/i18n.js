@@ -23,9 +23,9 @@ class I18n {
   select: Function
   selectOrdinal: Function
 
-  constructor (language: string, messages: Catalogs = {}) {
+  constructor (language?: string, messages?: Catalogs = {}) {
     this._messages = messages
-    this.activate(language)
+    if (language) this.activate(language)
 
     this.t = t(this)
     this.plural = plural(this)

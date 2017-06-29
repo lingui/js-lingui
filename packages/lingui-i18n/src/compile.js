@@ -5,8 +5,8 @@ import { date, number } from 'lingui-formats'
 // TODO: Remove in production
 import MakePlural from 'make-plural/make-plural'
 MakePlural.load(
-    require('make-plural/data/plurals.json'),
-    require('make-plural/data/ordinals.json')
+  require('make-plural/data/plurals.json'),
+  require('make-plural/data/ordinals.json')
 )
 
 const isString = s => typeof s === 'string'
@@ -47,7 +47,7 @@ export default function compile (language: string, message: string, formatStyles
 }
 
 // Params -> CTX
-function context ({ language, params, formatStyles }) {
+function context ({ language, params, formatStyles }: Object) {
   const formats = defaultFormats(language, formatStyles)
 
   const ctx = (name, type, format) => {

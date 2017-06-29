@@ -1,5 +1,7 @@
 [ignore]
-.*/node_modules/.*
+.*/node_modules/config-chain/.*
+.*/node_modules/conventional-changelog-core/.*
+.*/node_modules/npmconf/.*
 
 [include]
 

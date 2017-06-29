@@ -23,7 +23,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-formats": "^0.3.0",
+    "lingui-formats": "^0.4.1",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
   },
