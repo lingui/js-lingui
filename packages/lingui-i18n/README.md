@@ -19,6 +19,9 @@ Import `i18n` object and load message catalog:
 ```js
 import { i18n } from 'lingui-i18n'
 
+// Required for development only
+i18n.development(require('lingui-i18n/dev'))
+
 // load messages
 i18n.load({
   fr: {

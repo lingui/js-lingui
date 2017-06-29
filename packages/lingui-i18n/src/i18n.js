@@ -1,11 +1,8 @@
 /* @flow */
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
-import compile from './compile'
 
-import { loadLanguageData } from './utils.dev'
-
-type Catalog = {[key: string]: string}
+type Catalog = {[key: string]: string | Function}
 type Catalogs = {[key: string]: Catalog}
 
 type Message = {|
@@ -25,6 +22,8 @@ class I18n {
   _messages: Catalogs
   _languageData: AllLanguageData
 
+  _dev: Object
+
   t: Function
   plural: Function
   select: Function
@@ -38,10 +37,12 @@ class I18n {
       this.activate(language)
     }
 
-    this.t = t(this)
-    this.plural = plural(this)
-    this.select = select
-    this.selectOrdinal = selectOrdinal(this)
+    if (process.env.NODE_ENV !== 'production') {
+      this.t = t
+      this.select = select
+      this.plural = plural(this)
+      this.selectOrdinal = selectOrdinal(this)
+    }
   }
 
   get availableLanguages (): Array<string> {
@@ -58,7 +59,7 @@ class I18n {
     if (process.env.NODE_ENV !== 'production') {
       // Allow overriding data in development, useful for testing
       if (!data) {
-        return loadLanguageData(this.language)
+        return this._dev.loadLanguageData(this.language)
       }
     }
 
@@ -76,9 +77,18 @@ class I18n {
     Object.keys({ ...this._messages, ...messages }).forEach(language => {
       if (!this._messages[language]) this._messages[language] = {}
 
+      let compiledMessages = messages[language] || {}
+
+      if (process.env.NODE_ENV !== 'production') {
+        compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
+          dict[id] = this._dev.compile(language, compiledMessages[id])
+          return dict
+        }, {})
+      }
+
       Object.assign(
         this._messages[language],
-        messages[language] || {}
+        compiledMessages
       )
     })
   }
@@ -92,8 +102,7 @@ class I18n {
     if (!language) return
 
     if (process.env.NODE_ENV !== 'production') {
-      // $FlowIgnore: Array.includes is polyfilled
-      if (!Array.includes(this.availableLanguages, language)) {
+      if (this.availableLanguages.indexOf(language) === -1) {
         console.warn(`Unknown locale "${language}".`)
       }
     }
@@ -105,18 +114,19 @@ class I18n {
     return new I18n(language, this._messages)
   }
 
-  translate ({ id, defaults, params = {}, formats = {} }: Message) {
+  // default translate method
+  _ ({ id, defaults, params = {} }: Message) {
     const translation = this.messages[id] || defaults || id
-    return this.compile(translation, formats)(params)
-  }
-
-  compile (message: string, formats?: Object) {
-    return compile(this.language, message, this.languageData, formats)
+    return typeof translation === 'function' ? translation(params) : translation
   }
 
   pluralForm (n: number, pluralType?: 'cardinal' | 'ordinal' = 'cardinal'): string {
     const forms = this.languageData.plurals
     return forms(n, pluralType === 'ordinal')
+  }
+
+  development(config: Object) {
+    this._dev = config
   }
 }
 

@@ -1,4 +1,3 @@
-// @flow
 import compile from './compile'
 import { mockEnv } from './mocks'
 
@@ -6,11 +5,11 @@ describe('compile', function () {
   describe('parsing and compiling messages in development', function () {
     it('should compile static message', function () {
       const cache = compile('en', 'Static message')
-      expect(cache()).toEqual('Static message')
+      expect(cache).toEqual('Static message')
 
       mockEnv('production', () => {
         const cache = compile('en', 'Static message')
-        expect(cache()).toEqual('Static message')
+        expect(cache).toEqual('Static message')
       })
     })
 
@@ -79,7 +78,7 @@ describe('compile', function () {
 
     it('should compile static message', function () {
       const cache = compile('en', 'Static message')
-      expect(cache()).toEqual('Static message')
+      expect(cache).toEqual('Static message')
     })
 
     it('should compile message with variable', function () {

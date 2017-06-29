@@ -1,5 +1,4 @@
 /* @flow */
-import type { I18n } from './i18n'
 
 type PluralForms = {
   zero?: string,
@@ -15,7 +14,7 @@ type PluralProps = {
   offset?: number
 } & PluralForms
 
-const _plural = (type) => (i18n: I18n) => ({
+const _plural = (type) => (i18n: any) => ({
   value,
   offset = 0,
   other,
