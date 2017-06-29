@@ -215,7 +215,7 @@ export default function ({ types: t }) {
     }
 
     const exp = t.callExpression(
-      t.memberExpression(t.identifier('i18n'), t.identifier('t')),
+      t.memberExpression(t.identifier('i18n'), t.identifier('_')),
       [ t.objectExpression(tArgs) ]
     )
     exp.loc = path.node.loc

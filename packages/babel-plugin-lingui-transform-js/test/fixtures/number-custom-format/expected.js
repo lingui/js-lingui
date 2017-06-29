@@ -1,4 +1,4 @@
-i18n.t({
+i18n._({
   id: "Format in variable {name,number,currency}",
   params: {
     name: name
@@ -7,7 +7,7 @@ i18n.t({
     currency: currency
   }
 });
-i18n.t({
+i18n._({
   id: "One-off format {name,number,number0}, test format name collision {name,number,number1}",
   params: {
     name: name
