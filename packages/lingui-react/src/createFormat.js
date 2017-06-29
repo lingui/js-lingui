@@ -12,7 +12,7 @@ type FormatProps<V, FormatOptions> = {
   }
 } & RenderProps
 
-function createFormat<V, FormatOptions, P: FormatProps<V, FormatOptions>> (formatFunction: (language: string, format?: FormatOptions) => (value: V) => string): Class<React$Component<void, P, void>> {
+function createFormat<V, FormatOptions, P: FormatProps<V, FormatOptions>> (formatFunction: (language: string, format?: FormatOptions) => (value: V) => string): ReactClass<*> {
   return function ({ value, format, i18n, className, render }: FormatProps<V, FormatOptions>) {
     const formatter = formatFunction(i18n.language, format)
     return <Render className={className} render={render}>{formatter(value)}</Render>

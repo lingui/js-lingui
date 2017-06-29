@@ -11,18 +11,22 @@ ansi-styles@^2.2.1:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
 ansi-styles@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.0.0.tgz#5404e93a544c4fec7f048262977bebfe3155e0c1"
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.1.0.tgz#09c202d5c917ec23188caa5c9cb9179cd9547750"
   dependencies:
     color-convert "^1.0.0"
 
-babel-plugin-lingui-transform-js@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.6.0.tgz#cd0a6c6680cb2b89f3e48efa698c3f9252082426"
+babel-plugin-lingui-transform-js@^1.0.0-2:
+  version "1.0.0-2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.0-2.tgz#f7bdd3af88d638c8db4547ef316d3f1c88c41da9"
+  dependencies:
+    babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-0.7.0.tgz#84ab0a32dd085d328a7449cae93125abb2df3fb4"
+babel-plugin-lingui-transform-react@^1.0.0-2:
+  version "1.0.0-2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.0-2.tgz#dc765a9775f7c88578de2da3559ec2e8082151b8"
+  dependencies:
+    babel-runtime "^6.23.0"
 
 babel-runtime@^6.23.0:
   version "6.23.0"

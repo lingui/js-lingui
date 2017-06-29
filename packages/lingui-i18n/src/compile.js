@@ -96,7 +96,7 @@ export default function compile (
  * @param formatStyles - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context ({ language, params, formatStyles, languageData }) {
+function context ({ language, params, formatStyles, languageData }: Object) {
   const formats = defaultFormats(language, languageData, formatStyles)
 
   const ctx = (name, type, format) => {
