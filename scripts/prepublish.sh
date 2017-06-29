@@ -20,8 +20,6 @@ mkdir -p $DIST_DIR
 
 CUSTOM_BUILD=$DIR/scripts/prepublish-$PACKAGE_NAME.sh
 
-echo $CUSTOM_BUILD
-
 if [ -x $CUSTOM_BUILD ]; then
     $CUSTOM_BUILD $SRC_DIR $DIST_DIR
 else
