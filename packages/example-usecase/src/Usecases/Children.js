@@ -84,8 +84,8 @@ class Usecase extends React.Component {
           </li>
 
           <li>
-            <Trans render={<p className="variable" />}>My name is {name}</Trans>
-            <Trans render={({ translation }) => <p className="variable">{translation}</p>}>
+            <Trans render={<p className="render-element" />}>My name is {name}</Trans>
+            <Trans render={({ translation }) => <p className="render-component">{translation}</p>}>
               My name is {name}
             </Trans>
           </li>

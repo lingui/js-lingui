@@ -40,11 +40,15 @@ exports[`Formats should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="percent"
                 >
-                  The answer is 42%
-                </span>
+                  <span
+                    className="percent"
+                  >
+                    The answer is 42%
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -77,11 +81,15 @@ exports[`Formats should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="date"
                 >
-                  Today is 4/5/2017
-                </span>
+                  <span
+                    className="date"
+                  >
+                    Today is 4/5/2017
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>

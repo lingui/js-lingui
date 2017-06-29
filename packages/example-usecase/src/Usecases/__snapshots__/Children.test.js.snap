@@ -48,11 +48,15 @@ exports[`Children should render 1`] = `
                 }
                 id="This isn't translated"
               >
-                <span
+                <Render
                   className="untranslated"
                 >
-                  This isn't translated
-                </span>
+                  <span
+                    className="untranslated"
+                  >
+                    This isn't translated
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -85,11 +89,15 @@ exports[`Children should render 1`] = `
                 }
                 id="msg.label"
               >
-                <span
+                <Render
                   className="customId"
                 >
-                  Nápis
-                </span>
+                  <span
+                    className="customId"
+                  >
+                    Nápis
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -120,11 +128,15 @@ exports[`Children should render 1`] = `
                 }
                 id="Hello World"
               >
-                <span
+                <Render
                   className="translated"
                 >
-                  Ahoj světe
-                </span>
+                  <span
+                    className="translated"
+                  >
+                    Ahoj světe
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -165,11 +177,15 @@ exports[`Children should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="variable"
                 >
-                  Jmenuji se Mononoke
-                </span>
+                  <span
+                    className="variable"
+                  >
+                    Jmenuji se Mononoke
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -214,17 +230,21 @@ exports[`Children should render 1`] = `
                 }
                 id="Read <0>more</0>."
               >
-                <span
+                <Render
                   className="components"
                 >
-                  Read 
-                  <a
-                    href="/mononoke"
+                  <span
+                    className="components"
                   >
-                    more
-                  </a>
-                  .
-                </span>
+                    Read 
+                    <a
+                      href="/mononoke"
+                    >
+                      more
+                    </a>
+                    .
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -271,11 +291,15 @@ exports[`Children should render 1`] = `
                   }
                 }
               >
-                <span
+                <Render
                   className="plural"
                 >
-                  Wilma invites Fred and 3 other people to her party.
-                </span>
+                  <span
+                    className="plural"
+                  >
+                    Wilma invites Fred and 3 other people to her party.
+                  </span>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
@@ -289,7 +313,7 @@ exports[`Children should render 1`] = `
               }
               render={
                 <p
-                  className="variable"
+                  className="render-element"
                 />
               }
             >
@@ -320,13 +344,23 @@ exports[`Children should render 1`] = `
                 }
                 render={
                   <p
-                    className="variable"
+                    className="render-element"
                   />
                 }
               >
-                <span>
-                  Jmenuji se Mononoke
-                </span>
+                <Render
+                  render={
+                    <p
+                      className="render-element"
+                    />
+                  }
+                >
+                  <p
+                    className="render-element"
+                  >
+                    Jmenuji se Mononoke
+                  </p>
+                </Render>
               </Trans>
             </WithI18n>
             <WithI18n
@@ -365,9 +399,19 @@ exports[`Children should render 1`] = `
                 }
                 render={[Function]}
               >
-                <span>
-                  Jmenuji se Mononoke
-                </span>
+                <Render
+                  render={[Function]}
+                >
+                  <render
+                    translation="Jmenuji se Mononoke"
+                  >
+                    <p
+                      className="render-component"
+                    >
+                      Jmenuji se Mononoke
+                    </p>
+                  </render>
+                </Render>
               </Trans>
             </WithI18n>
           </li>
