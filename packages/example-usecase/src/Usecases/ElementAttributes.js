@@ -3,7 +3,6 @@ import React from 'react'
 import { WithI18n, Trans } from 'lingui-react'
 
 type ElementAttributesProps = {
-  children: any,
   i18n: Object
 }
 

@@ -5,7 +5,7 @@ import { compileMessage, loadLanguageData } from './utils.dev'
 
 const isString = s => typeof s === 'string'
 
-const isFunction: isFunctionType = f => typeof f === 'function'
+const isFunction = f => typeof f === 'function'
 
 const defaultFormats = (language, languageData = {}, formatStyles = {}) => {
   const { plurals } = languageData
@@ -67,11 +67,13 @@ export default function compile (
   if (isString(message)) {
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line spaced-comment
+      // $FlowIgnore: Yes, message is string, we're inside guard
       formattedMessage = /*#__PURE__*/compileMessage(message)
       // eslint-disable-next-line spaced-comment
       languageData = /*#__PURE__*/loadLanguageData(language)
     } else {
       // constant message
+      // $FlowIgnore: Yes, message is string, we're inside guard
       return (params?: Object) => message
     }
   }
