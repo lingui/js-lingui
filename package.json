@@ -6,6 +6,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build:plurals": "make-plural > packages/lingui-i18n/src/dev/plurals.js",
     "test": "jest --no-cache --runInBand",
     "watch": "jest --watch",
     "lint:flow": "flow",
@@ -47,6 +48,7 @@
     "jest": "^20.0.4",
     "lerna": "^2.0.0-rc.5",
     "lerna-semantic-release": "^9.1.0",
+    "make-plural": "^4.0.1",
     "node-emoji": "^1.5.1",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
