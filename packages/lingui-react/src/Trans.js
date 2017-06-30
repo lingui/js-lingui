@@ -14,6 +14,7 @@ type TransProps = {
   params?: Object,
   formats?: Object,
   components?: Array<React$Element<*>>,
+  i18n: Object
 } & WithI18nProps & RenderProps
 
 type TransState = {

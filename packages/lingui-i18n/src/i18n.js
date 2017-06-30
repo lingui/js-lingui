@@ -1,6 +1,6 @@
 /* @flow */
 import { interpolate } from './context'
-import { isFunction } from './essentials'
+import { isString } from './essentials'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 
@@ -83,7 +83,8 @@ class I18n {
 
       if (process.env.NODE_ENV !== 'production') {
         compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
-          dict[id] = this._dev.compile(compiledMessages[id])
+          const msg = compiledMessages[id]
+          dict[id] = isString(msg) ? this._dev.compile(msg) : msg
           return dict
         }, {})
       }

@@ -45,12 +45,7 @@ function processTokens (tokens, octothorpe = {}): (Function) => string {
 }
 
 // Message -> (Params -> String)
-export default function compile (message: string | Function): (Function | string) {
-  if (isString(message)) {
-    // $FlowIgnore: Yes, message is string, we're inside guard
-    return processTokens(parse(message))
-  }
-
-  return message
+export default function compile (message: string): (Function | string) {
+  return processTokens(parse(message))
 }
 
