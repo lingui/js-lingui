@@ -1,6 +1,6 @@
 /* @flow */
 import { I18n, default as exportedI18n } from '.'
-import { mockConsole, mockEnv } from './dev/mocks'
+import { mockConsole, mockEnv } from './mocks'
 import linguiDev from './dev'
 
 describe('I18n', function () {

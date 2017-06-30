@@ -1,5 +1,5 @@
 import compile from './compile'
-import { mockEnv } from './mocks'
+import { mockEnv } from '../mocks'
 import { interpolate } from '../context'
 
 describe('compile', function () {
