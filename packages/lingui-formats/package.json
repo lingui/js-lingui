@@ -11,7 +11,14 @@
     "lingui",
     "formats",
     "i18n",
-    "internationalization"
+    "internationalization",
+    "l10n",
+    "localization",
+    "t9n",
+    "translation",
+    "icu",
+    "messageformat",
+    "intl"
   ],
   "author": {
     "name": "Tomáš Ehrlich",
