@@ -1,26 +1,29 @@
 /* @flow */
 import React from 'react'
-import { Trans } from '.'
-import { I18n } from 'lingui-i18n'
 import { mount } from 'enzyme'
+import { I18n } from 'lingui-i18n'
+
+import { Trans } from '.'
+import linguiDev from './dev'
 
 describe('Trans component', function () {
   /*
    * Setup context, define helpers
    */
-  const context = {
-    i18nManager: {
-      i18n: new I18n('en', {
-        en: {
-          'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
-          'My name is {name}': 'Jmenuji se {name}',
-          'Original': 'Původní',
-          'Updated': 'Aktualizovaný',
-          'msg.currency': '{value, number, currency}'
-        }
-      })
+  const i18n = new I18n()
+  i18n.development(linguiDev)
+  i18n.load({
+    en: {
+      'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
+      'My name is {name}': 'Jmenuji se {name}',
+      'Original': 'Původní',
+      'Updated': 'Aktualizovaný',
+      'msg.currency': '{value, number, currency}'
     }
-  }
+  })
+  i18n.activate('en')
+
+  const context = { i18nManager: { i18n } }
   const text = (node) => mount(node, { context }).find('Render').text()
 
   /*
@@ -28,7 +31,8 @@ describe('Trans component', function () {
    */
 
   it("shouldn't throw runtime error without i18n context", function () {
-    expect(mount(<Trans id="unknown" />).find('Render').text()).toEqual('unknown')
+    expect(mount(
+      <Trans id="unknown"/>).find('Render').text()).toEqual('unknown')
   })
 
   it('should warn about possible missing babel-plugin', function () {
@@ -45,7 +49,7 @@ describe('Trans component', function () {
   })
 
   it('should recompile msg when id or defaults changes', function () {
-    const node = mount(<Trans id="Original" defaults="Original" />, { context })
+    const node = mount(<Trans id="Original" defaults="Original"/>, { context })
     const t = () => node.find('Render').text()
     expect(t()).toEqual('Původní')
 
@@ -64,16 +68,16 @@ describe('Trans component', function () {
   })
 
   it('should render default string', function () {
-    expect(text(<Trans id="unknown" />))
+    expect(text(<Trans id="unknown"/>))
       .toEqual('unknown')
 
-    expect(text(<Trans id="unknown" defaults="Not translated yet" />))
+    expect(text(<Trans id="unknown" defaults="Not translated yet"/>))
       .toEqual('Not translated yet')
   })
 
   it('should render translation', function () {
     const translation = text(
-      <Trans id="All human beings are born free and equal in dignity and rights." />
+      <Trans id="All human beings are born free and equal in dignity and rights."/>
     )
 
     expect(translation).toEqual(
@@ -83,10 +87,11 @@ describe('Trans component', function () {
 
   it('should render translation inside custom component', function () {
     const html1 = mount(
-      <Trans render={<p className="lead"/>} id="Original" />, { context }
+      <Trans render={<p className="lead"/>} id="Original"/>, { context }
     ).find('Render').html()
     const html2 = mount(
-      <Trans render={({ translation }) => <p className="lead">{translation}</p>} id="Original" />, { context }
+      <Trans render={({ translation }) =>
+        <p className="lead">{translation}</p>} id="Original"/>, { context }
     ).find('Render').html()
 
     expect(html1).toEqual('<p class="lead">Původní</p>')
@@ -98,11 +103,13 @@ describe('Trans component', function () {
       <Trans
         id="msg.currency"
         params={{ value: 1 }}
-        formats={{ currency: {
-          style: 'currency',
-          currency: 'EUR',
-          minimumFractionDigits: 2
-        }}}
+        formats={{
+          currency: {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2
+          }
+        }}
       />)
     expect(translation).toEqual('€1.00')
   })

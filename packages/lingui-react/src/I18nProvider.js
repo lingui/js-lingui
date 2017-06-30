@@ -9,6 +9,7 @@ type I18nProviderProps = {
   language: string,
   messages: Catalogs,
   languageData?: AllLanguageData,
+  development?: Object,
   i18n?: I18n
 }
 
@@ -20,13 +21,16 @@ class I18nManager {
   i18n: I18n
   subscribers = []
 
-  constructor ({ language, messages, languageData, i18n }: {
+  constructor ({ language, messages, languageData, development, i18n }: {
     language: string,
     messages?: Catalogs,
     languageData?: AllLanguageData,
+    development?: Object,
     i18n?: I18n
   }) {
     this.i18n = i18n || new I18n(language, messages, languageData)
+
+    if (development) this.i18n.development(development)
   }
 
   subscribe = (callback: Function) => {
@@ -54,8 +58,8 @@ class I18nProvider extends React.Component {
 
   constructor (props: I18nProviderProps) {
     super(props)
-    const { language, messages, languageData, i18n } = this.props
-    this.i18nManager = new I18nManager({ language, messages, languageData, i18n })
+    const { language, messages, languageData, development, i18n } = this.props
+    this.i18nManager = new I18nManager({ language, messages, languageData, i18n, development })
   }
 
   componentDidUpdate (prevProps: I18nProviderProps) {

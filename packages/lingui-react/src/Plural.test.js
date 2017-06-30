@@ -4,9 +4,14 @@ import { mount } from 'enzyme'
 
 import { I18n } from 'lingui-i18n'
 import Plural from './Plural'
+import linguiDev from './dev'
 
 describe('Plural', function () {
-  const i18n = code => new I18n(code, {[code]: {}})
+  const i18n = code => {
+    const _ = new I18n(code, {[code]: {}})
+    _.development(linguiDev)
+    return _
+  }
   const languageContext = (code) => ({ context: { i18nManager: { i18n: i18n(code) } } })
 
   it('should render translation inside custom component', function () {

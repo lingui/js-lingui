@@ -1,4 +1,6 @@
 /* @flow */
+import { interpolate } from './context'
+import { isFunction } from './essentials'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 
@@ -81,7 +83,7 @@ class I18n {
 
       if (process.env.NODE_ENV !== 'production') {
         compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
-          dict[id] = this._dev.compile(language, compiledMessages[id])
+          dict[id] = this._dev.compile(compiledMessages[id])
           return dict
         }, {})
       }
@@ -115,14 +117,15 @@ class I18n {
   }
 
   // default translate method
-  _ ({ id, defaults, params = {} }: Message) {
+  _ ({ id, defaults, params = {}, formats = {} }: Message) {
     const translation = this.messages[id] || defaults || id
-    return typeof translation === 'function' ? translation(params) : translation
+
+    if (typeof translation !== 'function') return translation
+    return interpolate(translation, this.language, this.languageData)(params, formats)
   }
 
   pluralForm (n: number, pluralType?: 'cardinal' | 'ordinal' = 'cardinal'): string {
-    const forms = this.languageData.plurals
-    return forms(n, pluralType === 'ordinal')
+    return this.languageData.plurals(n, pluralType === 'ordinal')
   }
 
   development(config: Object) {

@@ -17,7 +17,6 @@ type TransProps = {
 } & WithI18nProps & RenderProps
 
 type TransState = {
-  msgCache: Function,
   language: string,
   translation: string
 }
@@ -34,7 +33,7 @@ class Trans extends React.Component {
   constructor (props) {
     super(props)
 
-    const translation = this.getTranslation(props)
+    const translation = this.getTranslation()
 
     if (process.env.NODE_ENV !== 'production') {
       if (!translation && props.children) {
@@ -48,47 +47,19 @@ class Trans extends React.Component {
     }
 
     this.state = {
-      msgCache: this.compileMessage(translation),
       language: props.i18n.language,
       translation
     }
   }
 
-  getTranslation (props): string {
-    const { id = '', defaults, i18n } = props
-
-    return (i18n.messages && id ? i18n.messages[id] : '') || defaults || id
-  }
-
-  compileMessage (translation: string): Function {
-    const { i18n, formats } = this.props
-
-    if (!i18n.compile) return () => translation
-    return i18n.compile(translation, formats)
-  }
-
-  componentWillReceiveProps (nextProps) {
-    const { i18n } = this.props
-    const { language, translation } = this.state
-    const nextTranslation = this.getTranslation(nextProps)
-
-    if (
-      translation !== nextTranslation ||
-      language !== i18n.language
-    ) {
-      this.setState({
-        msgCache: this.compileMessage(nextTranslation),
-        language: i18n.language,
-        translation: nextTranslation
-      })
-    }
+  getTranslation (): string {
+    const { id = '', defaults, i18n, params, formats } = this.props
+    return typeof i18n._ === 'function' ? i18n._({ id, defaults, params, formats }) : id
   }
 
   render () {
-    const { params, components } = this.props
-    const { msgCache } = this.state
-
-    const translation = formatElements(msgCache(params), components)
+    const { components } = this.props
+    const translation = formatElements(this.getTranslation(), components)
 
     const { className, render } = this.props
     return <Render className={className} render={render}>{translation}</Render>

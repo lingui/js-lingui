@@ -5,6 +5,7 @@ import { shallow, mount } from 'enzyme'
 import { I18nProvider } from '.'
 import { I18nManager } from './I18nProvider'
 import { mockConsole } from './mocks'
+import linguiDev from './dev'
 
 describe('I18nProvider', function () {
   const props = {
@@ -80,7 +81,8 @@ describe('I18nManager', function () {
       messages: {
         en: { msg: 'hello' },
         fr: { msg: 'salut' }
-      }
+      },
+      development: linguiDev
     })
 
     expect(i18nManager.i18n.language).toEqual('en')
@@ -120,7 +122,8 @@ describe('I18nManager', function () {
     const listener = jest.fn()
     const i18nManager = new I18nManager({
       language: 'en',
-      messages: { en: {}, fr: {} }
+      messages: { en: {}, fr: {} },
+      development: linguiDev
     })
     i18nManager.subscribe(listener)
 
