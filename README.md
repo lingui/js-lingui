@@ -100,7 +100,7 @@ const App = ({ name, count }) => (
 ```
 
 Sometimes it's necessary to translate also a text attributes, which don't accept
-React components. `lingui-react` has `WithReact` decorator, which injects `i18n`
+React components. `lingui-react` has `WithI18n` decorator, which injects `i18n`
 object from `lingui-i18n`. 
 
 ```jsx
@@ -108,7 +108,7 @@ import React from 'react'
 import { WithI18n } from 'lingui-react'
 
 // Translating text attributes
-const LinkWithTooltip = WithReact()(({ articleName, i18n }) => (
+const LinkWithTooltip = WithI18n()(({ articleName, i18n }) => (
   <a 
     href="/more" 
     title={i18n.t`Link to ${articleName}`}
