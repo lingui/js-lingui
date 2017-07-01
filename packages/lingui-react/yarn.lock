@@ -58,16 +58,16 @@ js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-lingui-formats@^0.4.0-3:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-0.4.2.tgz#3669336ad0df3b518959067b78abcc081532683d"
+lingui-formats@^1.0.0-1:
+  version "1.0.0-1"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.0-1.tgz#3863faf8a53f7786340978627a430b13467bd61a"
 
-lingui-i18n@^0.7.0-3:
-  version "0.7.0-3"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-0.7.0-3.tgz#f3ffe757dbbd24563bc815664f3345795c7f5bfc"
+lingui-i18n@^1.0.0-1:
+  version "1.0.0-1"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.0.0-1.tgz#c3edc1d6d3ead378f1ce813b24d0ccfa0d1a6de5"
   dependencies:
     babel-runtime "^6.23.0"
-    lingui-formats "^0.4.0-3"
+    lingui-formats "^1.0.0-1"
     make-plural "^4.0.1"
     messageformat-parser "^1.0.0"
 
