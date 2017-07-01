@@ -5,6 +5,7 @@ import { setupI18n } from 'lingui-i18n'
 
 import { Trans } from '.'
 import linguiDev from './dev'
+import { mockConsole } from './mocks'
 
 describe('Trans component', function () {
   /*
@@ -37,16 +38,11 @@ describe('Trans component', function () {
   })
 
   it('should warn about possible missing babel-plugin', function () {
-    const originalConsole = global.console
-    global.console = {
-      warn: jest.fn()
-    }
-
-    mount(<Trans>Label</Trans>)
-    expect(global.console.warn).toBeCalledWith(
-      expect.stringContaining('lingui-react preset'))
-
-    global.console = originalConsole
+    mockConsole(console => {
+      mount(<Trans>Label</Trans>)
+      expect(console.warn).toBeCalledWith(
+        expect.stringContaining('lingui-react preset'))
+    })
   })
 
   it('should recompile msg when id or defaults changes', function () {
