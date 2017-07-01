@@ -1,6 +1,6 @@
 /* @flow */
 import { interpolate } from './context'
-import { isString } from './essentials'
+import { isString, isFunction } from './essentials'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 
@@ -32,12 +32,13 @@ class I18n {
   selectOrdinal: Function
 
   constructor (language?: string, messages?: Catalogs = {}, languageData?: AllLanguageData = {}) {
-    this._messages = messages
     this._languageData = languageData
 
-    if (language) {
-      this.activate(language)
-    }
+    // Messages are merged on load with existing catalog,
+    // so we must initialize it manually
+    this._messages = {}
+    if (messages) this.load(messages)
+    if (language) this.activate(language)
 
     if (process.env.NODE_ENV !== 'production') {
       this.t = t
@@ -73,7 +74,7 @@ class I18n {
   }
 
   load (messages: Catalogs) {
-    if (!messages) return
+    if (typeof messages !== 'object') return
 
     // deeply merge Catalogs
     Object.keys({ ...this._messages, ...messages }).forEach(language => {
@@ -82,11 +83,13 @@ class I18n {
       let compiledMessages = messages[language] || {}
 
       if (process.env.NODE_ENV !== 'production') {
-        compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
-          const msg = compiledMessages[id]
-          dict[id] = isString(msg) ? this._dev.compile(msg) : msg
-          return dict
-        }, {})
+        if (this._dev && isFunction(this._dev.compile)) {
+          compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
+            const msg = compiledMessages[id]
+            dict[id] = isString(msg) ? this._dev.compile(msg) : msg
+            return dict
+          }, {})
+        }
       }
 
       Object.assign(
@@ -119,7 +122,13 @@ class I18n {
 
   // default translate method
   _ ({ id, defaults, params = {}, formats = {} }: Message) {
-    const translation = this.messages[id] || defaults || id
+    let translation = this.messages[id] || defaults || id
+
+    if (process.env.NODE_ENV !== 'development') {
+      if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
+        translation = this._dev.compile(translation)
+      }
+    }
 
     if (typeof translation !== 'function') return translation
     return interpolate(translation, this.language, this.languageData)(params, formats)
