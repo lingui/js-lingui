@@ -7,8 +7,8 @@ export function mockConsole (testCase, mock = {}) {
   }
 
   global.console = {
-    ...mock,
-    ...defaults
+    ...defaults,
+    ...mock
   }
 
   try {
