@@ -31,8 +31,3 @@ else
     rsync -rv --include '*/' --include '*.js.flow' --exclude '*' --prune-empty-dirs $SRC_DIR $DIST_DIR
     find $SRC_DIR -type f -name '*.js.flow' -delete
 fi
-
-for FILE in package.json README.md
-do
-    cp $PACKAGE/$FILE $DIST_DIR 2>/dev/null || true
-done

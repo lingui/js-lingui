@@ -2,7 +2,7 @@
   "name": "babel-plugin-lingui-transform-react",
   "version": "1.0.0-3",
   "description": "Transform React components to ICU message format",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"

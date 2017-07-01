@@ -15,8 +15,8 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "lingui-cli": "*",
-    "lingui-react": "*",
+    "lingui-cli": "^0.15.0-4",
+    "lingui-react": "^1.0.0-1",
     "react": "^15.6.1"
   },
   "devDependencies": {
@@ -25,7 +25,7 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.5.2",
-    "babel-preset-lingui-react": "*",
+    "babel-preset-lingui-react": "^1.0.0-3",
     "babel-preset-react": "^6.24.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"

@@ -2,7 +2,7 @@
   "name": "babel-plugin-lingui-extract-messages",
   "version": "1.0.0-1",
   "description": "Extract messages for translation",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
