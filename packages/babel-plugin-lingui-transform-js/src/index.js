@@ -59,7 +59,7 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -151,7 +151,7 @@ export default function ({ types: t }) {
 
       if (format) parts.push(format)
 
-      props.params[variable.name] = t.objectProperty(variable, variable)
+      props.values[variable.name] = t.objectProperty(variable, variable)
       props.text += `${parts.join(',')}`
     }
 
@@ -175,7 +175,7 @@ export default function ({ types: t }) {
         props.text += `{${text}}`
       } else {
         props.text += `{${item.name}}`
-        props.params[item.name] = t.objectProperty(item, item)
+        props.values[item.name] = t.objectProperty(item, item)
       }
     })
 
@@ -187,7 +187,7 @@ export default function ({ types: t }) {
 
     const props = processMethod(path.node, file, {
       text: '',
-      params: {},
+      values: {},
       formats: {}
     }, /* root= */true)
 
@@ -200,10 +200,10 @@ export default function ({ types: t }) {
       t.objectProperty(t.identifier('id'), t.StringLiteral(text))
     ]
 
-    const paramsList = Object.values(props.params)
-    if (paramsList.length) {
+    const valuesList = Object.values(props.values)
+    if (valuesList.length) {
       tArgs.push(
-        t.objectProperty(t.identifier('params'), t.objectExpression(paramsList))
+        t.objectProperty(t.identifier('values'), t.objectExpression(valuesList))
       )
     }
 

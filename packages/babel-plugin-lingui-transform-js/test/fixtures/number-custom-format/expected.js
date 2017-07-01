@@ -1,6 +1,6 @@
 i18n._({
   id: "Format in variable {name,number,currency}",
-  params: {
+  values: {
     name: name
   },
   formats: {
@@ -9,7 +9,7 @@ i18n._({
 });
 i18n._({
   id: "One-off format {name,number,number0}, test format name collision {name,number,number1}",
-  params: {
+  values: {
     name: name
   },
   formats: {

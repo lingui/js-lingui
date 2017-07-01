@@ -47,16 +47,16 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
  * argument type.
  *
  * @param language     - Language of message
- * @param params       - Parameters for variable interpolation
+ * @param values       - Parameters for variable interpolation
  * @param languageData - Language data (e.g: plurals)
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context ({ language, params, formats, languageData }: Object) {
+function context ({ language, values, formats, languageData }: Object) {
   const formatters = defaultFormats(language, languageData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
-    const value = params[name]
+    const value = values[name]
     const formatted = formatters[type](value, format)
     const message = isFunction(formatted) ? formatted(ctx) : formatted
     return Array.isArray(message) ? message.join('') : message
@@ -66,9 +66,9 @@ function context ({ language, params, formats, languageData }: Object) {
 }
 
 export function interpolate (translation: Function, language: string, languageData: Object) {
-  return (params: Object, formats?: Object = {}) => {
+  return (values: Object, formats?: Object = {}) => {
     const message = translation(context({
-      language, languageData, formats, params
+      language, languageData, formats, values
     }))
 
     return Array.isArray(message) ? message.join('').trim() : message

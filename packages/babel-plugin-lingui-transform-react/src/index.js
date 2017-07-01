@@ -9,7 +9,7 @@ function cleanChildren (node) {
 
 const mergeProps = (props, nextProps) => ({
   text: props.text + nextProps.text,
-  params: Object.assign({}, props.params, nextProps.params),
+  values: Object.assign({}, props.values, nextProps.values),
   components: props.components.concat(nextProps.components),
   formats: props.formats,
   elementIndex: nextProps.elementIndex
@@ -17,7 +17,7 @@ const mergeProps = (props, nextProps) => ({
 
 const initialProps = ({ formats } = {}) => ({
   text: '',
-  params: {},
+  values: {},
   components: [],
   formats: formats || {}
 })
@@ -81,7 +81,7 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -147,7 +147,7 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
         } else if (name === 'format') {
           if (t.isStringLiteral(attr.value)) {
             format = attr.value.value
@@ -219,7 +219,7 @@ export default function ({ types: t }) {
 
       if (t.isIdentifier(exp)) {
         nextProps.text += `{${exp.name}}`
-        nextProps.params[exp.name] = t.objectProperty(exp, exp)
+        nextProps.values[exp.name] = t.objectProperty(exp, exp)
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
 
@@ -234,7 +234,7 @@ export default function ({ types: t }) {
             nextProps.text += item.value.raw
           } else {
             nextProps.text += `{${item.name}}`
-            nextProps.params[item.name] = t.objectProperty(item, item)
+            nextProps.values[item.name] = t.objectProperty(item, item)
           }
         })
       } else if (t.isJSXElement(exp)) {
@@ -285,12 +285,12 @@ export default function ({ types: t }) {
         }
 
         // Parameters for variable substitution
-        const paramsList = Object.values(props.params)
-        if (paramsList.length) {
+        const valuesList = Object.values(props.values)
+        if (valuesList.length) {
           attrs.push(
             t.JSXAttribute(
-              t.JSXIdentifier('params'),
-              t.JSXExpressionContainer(t.objectExpression(paramsList)))
+              t.JSXIdentifier('values'),
+              t.JSXExpressionContainer(t.objectExpression(valuesList)))
           )
         }
 

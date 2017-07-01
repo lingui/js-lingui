@@ -173,7 +173,7 @@ exports[`Children should render 1`] = `
             <WithI18n
               className="variable"
               id="My name is {name}"
-              params={
+              values={
                 Object {
                   "name": "Mononoke",
                 }
@@ -207,7 +207,7 @@ exports[`Children should render 1`] = `
                   }
                 }
                 id="My name is {name}"
-                params={
+                values={
                   Object {
                     "name": "Mononoke",
                   }
@@ -295,7 +295,7 @@ exports[`Children should render 1`] = `
             <WithI18n
               className="plural"
               id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
-              params={
+              values={
                 Object {
                   "genderOfHost": "female",
                   "guest": "Fred",
@@ -332,7 +332,7 @@ exports[`Children should render 1`] = `
                   }
                 }
                 id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
-                params={
+                values={
                   Object {
                     "genderOfHost": "female",
                     "guest": "Fred",
@@ -356,15 +356,15 @@ exports[`Children should render 1`] = `
           <li>
             <WithI18n
               id="My name is {name}"
-              params={
-                Object {
-                  "name": "Mononoke",
-                }
-              }
               render={
                 <p
                   className="render-element"
                 />
+              }
+              values={
+                Object {
+                  "name": "Mononoke",
+                }
               }
             >
               <Trans
@@ -394,15 +394,15 @@ exports[`Children should render 1`] = `
                   }
                 }
                 id="My name is {name}"
-                params={
-                  Object {
-                    "name": "Mononoke",
-                  }
-                }
                 render={
                   <p
                     className="render-element"
                   />
+                }
+                values={
+                  Object {
+                    "name": "Mononoke",
+                  }
                 }
               >
                 <Render
@@ -422,12 +422,12 @@ exports[`Children should render 1`] = `
             </WithI18n>
             <WithI18n
               id="My name is {name}"
-              params={
+              render={[Function]}
+              values={
                 Object {
                   "name": "Mononoke",
                 }
               }
-              render={[Function]}
             >
               <Trans
                 i18n={
@@ -456,12 +456,12 @@ exports[`Children should render 1`] = `
                   }
                 }
                 id="My name is {name}"
-                params={
+                render={[Function]}
+                values={
                   Object {
                     "name": "Mononoke",
                   }
                 }
-                render={[Function]}
               >
                 <Render
                   render={[Function]}

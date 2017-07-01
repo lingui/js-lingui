@@ -10,7 +10,7 @@ type Catalogs = { [key: string]: Catalog }
 type Message = {|
   id: string,
   defaults?: string,
-  params?: Object,
+  values?: Object,
   formats?: Object
 |}
 
@@ -144,7 +144,7 @@ class I18n {
   }
 
   // default translate method
-  _ ({ id, defaults, params = {}, formats = {} }: Message) {
+  _ ({ id, defaults, values = {}, formats = {} }: Message) {
     let translation = this.messages[id] || defaults || id
 
     if (process.env.NODE_ENV !== 'development') {
@@ -154,7 +154,7 @@ class I18n {
     }
 
     if (typeof translation !== 'function') return translation
-    return interpolate(translation, this.language, this.languageData)(params, formats)
+    return interpolate(translation, this.language, this.languageData)(values, formats)
   }
 
   pluralForm (n: number, pluralType?: 'cardinal' | 'ordinal' = 'cardinal'): string {

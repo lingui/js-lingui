@@ -3,7 +3,7 @@ const a = i18n._({
 });
 i18n._({
   id: "My name is {name}",
-  params: {
+  values: {
     name: name
   }
 });

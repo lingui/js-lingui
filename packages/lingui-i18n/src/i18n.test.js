@@ -150,7 +150,7 @@ describe('I18n', function () {
     })
 
     expect(i18n._({ id: 'Hello' })).toEqual('Salut')
-    expect(i18n._({ id: 'My name is {name}', params: { name: 'Fred' } }))
+    expect(i18n._({ id: 'My name is {name}', values: { name: 'Fred' } }))
       .toEqual("Je m'appelle Fred")
 
     // missing { name }

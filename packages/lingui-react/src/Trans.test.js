@@ -99,7 +99,7 @@ describe('Trans component', function () {
     const translation = text(
       <Trans
         id="msg.currency"
-        params={{ value: 1 }}
+        values={{ value: 1 }}
         formats={{
           currency: {
             style: 'currency',
