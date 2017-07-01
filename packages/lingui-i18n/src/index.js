@@ -1,7 +1,7 @@
 /* @flow */
-import i18n, { I18n } from './i18n'
-import type { Catalog, Catalogs, Message, LanguageData, AllLanguageData } from './i18n'
+import i18n, { setupI18n } from './i18n'
+import type { Catalog, Catalogs, Message, LanguageData, AllLanguageData, I18n } from './i18n'
 
 export default i18n
-export { I18n }
-export type { Catalog, Catalogs, Message, LanguageData, AllLanguageData }
+export { setupI18n }
+export type { Catalog, Catalogs, Message, LanguageData, AllLanguageData, I18n }

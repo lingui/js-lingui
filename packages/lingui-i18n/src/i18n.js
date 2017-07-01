@@ -4,8 +4,8 @@ import { isString, isFunction } from './essentials'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 
-type Catalog = {[key: string]: string | Function}
-type Catalogs = {[key: string]: Catalog}
+type Catalog = { [key: string]: string | Function }
+type Catalogs = { [key: string]: Catalog }
 
 type Message = {|
   id: string,
@@ -17,7 +17,28 @@ type Message = {|
 type LanguageData = {
   plurals: Function
 }
-type AllLanguageData = {[key: string]: LanguageData}
+type AllLanguageData = { [key: string]: LanguageData }
+
+type setupI18nProps = {
+  language?: string,
+  messages?: Catalogs,
+  languageData?: AllLanguageData,
+  development?: Object
+}
+
+function setupI18n (params?: setupI18nProps = {}): I18n {
+  const i18n = new I18n()
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (params.development) i18n.development(params.development)
+  }
+
+  if (params.messages) i18n.load(params.messages)
+  if (params.language) i18n.activate(params.language)
+  if (params.languageData) i18n.loadLanguageData(params.languageData)
+
+  return i18n
+}
 
 class I18n {
   _language: string
@@ -31,14 +52,11 @@ class I18n {
   select: Function
   selectOrdinal: Function
 
-  constructor (language?: string, messages?: Catalogs = {}, languageData?: AllLanguageData = {}) {
-    this._languageData = languageData
-
-    // Messages are merged on load with existing catalog,
+  constructor () {
+    // Messages and languageData are merged on load,
     // so we must initialize it manually
     this._messages = {}
-    if (messages) this.load(messages)
-    if (language) this.activate(language)
+    this._languageData = {}
 
     if (process.env.NODE_ENV !== 'production') {
       this.t = t
@@ -117,7 +135,12 @@ class I18n {
   }
 
   use (language: string) {
-    return new I18n(language, this._messages)
+    return setupI18n({
+      language,
+      messages: this._messages,
+      languageData: this._languageData,
+      development: this._dev
+    })
   }
 
   // default translate method
@@ -138,11 +161,11 @@ class I18n {
     return this.languageData.plurals(n, pluralType === 'ordinal')
   }
 
-  development(config: Object) {
+  development (config: Object) {
     this._dev = config
   }
 }
 
-export default new I18n()
-export { I18n }
-export type { Message, Catalog, Catalogs, AllLanguageData, LanguageData }
+export default setupI18n()
+export { setupI18n }
+export type { Message, Catalog, Catalogs, AllLanguageData, LanguageData, I18n }

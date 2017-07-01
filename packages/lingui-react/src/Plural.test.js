@@ -2,25 +2,27 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { I18n } from 'lingui-i18n'
+import { setupI18n } from 'lingui-i18n'
 import Plural from './Plural'
 import linguiDev from './dev'
 
 describe('Plural', function () {
-  const i18n = code => {
-    const _ = new I18n(code, {[code]: {}})
-    _.development(linguiDev)
-    return _
-  }
+  const i18n = code => setupI18n({
+    language: code,
+    messages: { [code]: {} },
+    development: linguiDev
+  })
   const languageContext = (code) => ({ context: { i18nManager: { i18n: i18n(code) } } })
 
   it('should render translation inside custom component', function () {
     const html1 = mount(
-      <Plural render={<p className="lead"/>} value="1" one="# book" other="# books" />,
+      <Plural render={
+        <p className="lead"/>} value="1" one="# book" other="# books"/>,
       languageContext('en')
     ).find('Render').html()
     const html2 = mount(
-      <Plural render={({ translation }) => <p className="lead">{translation}</p>} value="1" one="# book" other="# books" />,
+      <Plural render={({ translation }) =>
+        <p className="lead">{translation}</p>} value="1" one="# book" other="# books"/>,
       languageContext('en')
     ).find('Render').html()
 
@@ -30,7 +32,7 @@ describe('Plural', function () {
 
   it('should render plural correctly', function () {
     const node = mount(
-      <Plural value="1" one="# book" other="# books" />,
+      <Plural value="1" one="# book" other="# books"/>,
       languageContext('en')
     )
 
@@ -44,7 +46,7 @@ describe('Plural', function () {
 
   it('should use plural forms based on language', function () {
     const node = mount(
-      <Plural value="1" one="# kniha" few="# knihy" other="# knih" />,
+      <Plural value="1" one="# kniha" few="# knihy" other="# knih"/>,
       languageContext('cs')
     )
 
@@ -61,7 +63,7 @@ describe('Plural', function () {
 
   it('should offset value', function () {
     const node = mount(
-      <Plural value="1" offset="1" _1="one" one="one and one another" other="other" />,
+      <Plural value="1" offset="1" _1="one" one="one and one another" other="other"/>,
       languageContext('en')
     )
 

@@ -1,7 +1,8 @@
 /* @flow */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { I18n } from 'lingui-i18n'
+import { setupI18n } from 'lingui-i18n'
+import type { I18n } from 'lingui-i18n'
 import type { Catalogs, AllLanguageData } from 'lingui-i18n'
 
 type I18nProviderProps = {
@@ -28,13 +29,12 @@ class I18nManager {
     development?: Object,
     i18n?: I18n
   }) {
-    this.i18n = i18n || new I18n()
-
-    if (development) this.i18n.development(development)
-
-    if (messages) this.i18n.load(messages)
-    if (languageData) this.i18n.loadLanguageData(languageData)
-    this.i18n.activate(language)
+    this.i18n = i18n || setupI18n({
+        language,
+        messages,
+        languageData,
+        development
+      })
   }
 
   subscribe = (callback: Function) => {
