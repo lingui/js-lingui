@@ -2,7 +2,7 @@
   "name": "lingui-conf",
   "version": "0.7.1-0",
   "description": "Get lingui configuration from package.json",
-  "main": "lib/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui/"

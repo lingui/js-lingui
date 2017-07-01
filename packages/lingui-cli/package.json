@@ -2,7 +2,7 @@
   "name": "lingui-cli",
   "version": "0.15.0-4",
   "description": "CLI for extracting i18n messages from sources",
-  "main": "lib/index.js",
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -41,7 +41,7 @@
     "node-emoji": "^1.5.1"
   },
   "bin": {
-    "lingui": "./lib/index.js"
+    "lingui": "./index.js"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

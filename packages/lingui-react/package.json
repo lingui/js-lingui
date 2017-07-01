@@ -2,8 +2,8 @@
   "name": "lingui-react",
   "version": "1.0.0-1",
   "description": "React components for translations",
-  "main": "lib/index.js",
-  "module": "lib/index.es.js",
+  "main": "index.js",
+  "module": "index.es.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -35,8 +35,7 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "lingui-formats": "^1.0.0-1",
-    "lingui-i18n": "^1.0.0-1",
-    "prop-types": "^15.5.10"
+    "lingui-i18n": "^1.0.0-1"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

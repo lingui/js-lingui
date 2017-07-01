@@ -64,9 +64,8 @@
     "coveragePathIgnorePatterns": [
       "node_modules",
       "scripts",
-      "lib",
-      "packages/lingui-react/src/plurals.js",
-      "packages/lingui-i18n/src/plurals.js"
+      "dist",
+      "locale"
     ],
     "coverageReporters": [
       "html",
@@ -81,7 +80,7 @@
     ],
     "transformIgnorePatterns": [
       "/node_modules/",
-      "/lib/"
+      "/dist/"
     ]
   },
   "babel": {

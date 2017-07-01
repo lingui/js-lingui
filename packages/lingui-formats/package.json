@@ -2,7 +2,7 @@
   "name": "lingui-formats",
   "version": "1.0.0-1",
   "description": "Built-in formats for numbers and dates",
-  "main": "lib/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui/"
