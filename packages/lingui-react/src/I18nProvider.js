@@ -28,9 +28,13 @@ class I18nManager {
     development?: Object,
     i18n?: I18n
   }) {
-    this.i18n = i18n || new I18n(language, messages, languageData)
+    this.i18n = i18n || new I18n()
 
     if (development) this.i18n.development(development)
+
+    if (messages) this.i18n.load(messages)
+    if (languageData) this.i18n.loadLanguageData(languageData)
+    this.i18n.activate(language)
   }
 
   subscribe = (callback: Function) => {
