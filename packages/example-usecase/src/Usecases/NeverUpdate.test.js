@@ -6,6 +6,7 @@ import { I18nProvider } from 'lingui-react'
 import NeverUpdate from './NeverUpdate'
 import Children from './Children'
 import ElementAttributes from './ElementAttributes'
+import linguiDev from 'lingui-react/dev'
 
 describe('NeverUpdate', function () {
   const messages = {
@@ -21,7 +22,7 @@ describe('NeverUpdate', function () {
   }
 
   const BeConservative = (WrappedComponent) => ({ language }: { language: string}) =>
-    <I18nProvider language={language} messages={messages}>
+    <I18nProvider language={language} messages={messages} development={linguiDev}>
       <NeverUpdate>
         <WrappedComponent />
       </NeverUpdate>

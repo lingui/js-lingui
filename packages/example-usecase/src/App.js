@@ -9,7 +9,8 @@ import Formats from './Usecases/Formats'
 class App extends React.Component {
   state = {
     language: 'en',
-    messages: {}
+    messages: {},
+    languageData: {}
   }
 
   loadLanguage = async (language) => {

@@ -2,12 +2,13 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { I18nProvider } from 'lingui-react'
+import linguiDev from 'lingui-react/dev'
 
 import Formats from './Formats'
 
 describe('Formats', function () {
   const Component = ({ language, ...props }: { language: string }) =>
-    <I18nProvider language={language} messages={{en: {}}}>
+    <I18nProvider language={language} messages={{en: {}}} development={linguiDev}>
       <Formats {...props} />
     </I18nProvider>
 

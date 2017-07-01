@@ -32,9 +32,12 @@
   },
   "babel": {
     "presets": [
-      ["env", {
-        "modules": false
-      }],
+      [
+        "env",
+        {
+          "modules": false
+        }
+      ],
       "react",
       "lingui-react"
     ],

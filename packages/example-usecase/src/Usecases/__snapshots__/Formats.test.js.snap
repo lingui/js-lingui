@@ -5,6 +5,12 @@ exports[`Formats should render 1`] = `
   language="en"
 >
   <I18nProvider
+    development={
+      Object {
+        "compile": [Function],
+        "loadLanguageData": [Function],
+      }
+    }
     language="en"
     messages={
       Object {
@@ -29,7 +35,12 @@ exports[`Formats should render 1`] = `
                 className="percent"
                 i18n={
                   I18n {
+                    "_dev": Object {
+                      "compile": [Function],
+                      "loadLanguageData": [Function],
+                    },
                     "_language": "en",
+                    "_languageData": Object {},
                     "_messages": Object {
                       "en": Object {},
                     },
@@ -72,7 +83,12 @@ exports[`Formats should render 1`] = `
                 className="date"
                 i18n={
                   I18n {
+                    "_dev": Object {
+                      "compile": [Function],
+                      "loadLanguageData": [Function],
+                    },
                     "_language": "en",
+                    "_languageData": Object {},
                     "_messages": Object {
                       "en": Object {},
                     },
