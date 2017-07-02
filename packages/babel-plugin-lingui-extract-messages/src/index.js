@@ -51,7 +51,7 @@ export default function ({ types: t }) {
         if (!isTransComponent(node)) return
 
         const attrs = node.openingElement.attributes.reduce((acc, item) => {
-          const key = item.key ? item.key.name : item.name.name
+          const key = item.name.name
           if (key === 'id' || key === 'defaults') acc[key] = item.value.value
           return acc
         }, {})
@@ -68,7 +68,7 @@ export default function ({ types: t }) {
           : []
 
         const attrs = optional.reduce((acc, item) => {
-          const key = item.key ? item.key.name : item.name.name
+          const key = item.key.name
           if (key === 'defaults') acc[key] = item.value.value
           return acc
         }, {
