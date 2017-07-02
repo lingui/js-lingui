@@ -41,7 +41,13 @@ function setupI18n (params?: setupI18nProps = {}): I18n {
 
 class I18n {
   _language: string
+
+  // Messages in all loaded language.
   _messages: Catalogs
+  // Messages in active language. This is optimization, so we don't perform
+  // object lookup _messages[language] for each translation.
+  _activeMessages: Catalog
+
   _languageData: AllLanguageData
 
   _dev: Object
@@ -54,6 +60,7 @@ class I18n {
   constructor () {
     // Messages and languageData are merged on load,
     // so we must initialize it manually
+    this._activeMessages = {}
     this._messages = {}
     this._languageData = {}
 
@@ -70,7 +77,7 @@ class I18n {
   }
 
   get messages (): Catalog {
-    return this._messages[this.language] || {}
+    return this._activeMessages
   }
 
   get languageData (): LanguageData {
@@ -131,6 +138,7 @@ class I18n {
     }
 
     this._language = language
+    this._activeMessages = this._messages[this.language] || {}
   }
 
   use (language: string) {
