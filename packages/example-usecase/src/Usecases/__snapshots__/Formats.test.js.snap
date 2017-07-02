@@ -35,6 +35,7 @@ exports[`Formats should render 1`] = `
                 className="percent"
                 i18n={
                   I18n {
+                    "_activeMessages": Object {},
                     "_dev": Object {
                       "compile": [Function],
                       "loadLanguageData": [Function],
@@ -83,6 +84,7 @@ exports[`Formats should render 1`] = `
                 className="date"
                 i18n={
                   I18n {
+                    "_activeMessages": Object {},
                     "_dev": Object {
                       "compile": [Function],
                       "loadLanguageData": [Function],
