@@ -13,10 +13,5 @@ export { default as Trans } from './Trans'
 export { default as Plural } from './Plural'
 export { default as Select } from './Select'
 
-export const InjectI18n = (WrappedComponent: any) => {
-  console.warn('DEPRECATED (removal in 1.x): InjectI18n was replaced with WithI18n([ options ])')
-  return WithI18n()(WrappedComponent)
-}
-
 export const DateFormat = WithI18n()(createFormat(date))
 export const NumberFormat = WithI18n()(createFormat(number))
