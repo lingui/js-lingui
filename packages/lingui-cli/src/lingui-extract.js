@@ -1,3 +1,8 @@
+import linguiTransformJs from 'babel-plugin-lingui-transform-js'
+import linguiTransformReact from 'babel-plugin-lingui-transform-react'
+import linguiExtractMessages from 'babel-plugin-lingui-extract-messages'
+import getConfig from 'lingui-conf'
+
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
@@ -5,7 +10,6 @@ const Table = require('cli-table')
 const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
-const getConfig = require('lingui-conf').default
 
 const config = getConfig()
 
@@ -28,9 +32,9 @@ function extractMessages (files) {
           // here until we have a better way to run extract-messages plugin
           // *after* all plugins/presets.
           // Transform plugins are idempotent, so they can run twice.
-          require('babel-plugin-lingui-transform-js').default,
-          require('babel-plugin-lingui-transform-react').default,
-          require('babel-plugin-lingui-extract-messages').default
+          linguiTransformJs,
+          linguiTransformReact,
+          linguiExtractMessages
         ]
       })
       console.log(chalk.green(file))
