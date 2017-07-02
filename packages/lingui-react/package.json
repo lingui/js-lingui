@@ -1,6 +1,6 @@
 {
   "name": "lingui-react",
-  "version": "1.0.0-2",
+  "version": "1.0.0-3",
   "description": "React components for translations",
   "main": "index.js",
   "module": "index.es.js",
@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "lingui-formats": "^1.0.0-2",
-    "lingui-i18n": "^1.0.0-2"
+    "lingui-formats": "^1.0.0-3",
+    "lingui-i18n": "^1.0.0-3"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
