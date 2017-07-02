@@ -22,7 +22,17 @@ function extractMessages (files) {
       )
     } else {
       if (!/\.jsx?$/i.test(file)) return
-      transformFileSync(file)
+      transformFileSync(file, {
+        plugins: [
+          // Plugins run before presets, so we need to import trasnform-plugins
+          // here until we have a better way to run extract-messages plugin
+          // *after* all plugins/presets.
+          // Transform plugins are idempotent, so they can run twice.
+          require('babel-plugin-lingui-transform-js').default,
+          require('babel-plugin-lingui-transform-react').default,
+          require('babel-plugin-lingui-extract-messages').default
+        ]
+      })
       console.log(chalk.green(file))
     }
   })
