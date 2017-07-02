@@ -27,7 +27,7 @@ function runCmdLocal(cwd) {
 }
 
 function publish (packageInfo) {
-  const packageDir = path.join(PACKAGE_DIR, packageInfo.name, 'lib')
+  const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
   const pkgFilePath = path.relative(
     __dirname, path.resolve(path.join(packageDir, 'package.json')))
   const runLocal = runCmdLocal(packageDir)
