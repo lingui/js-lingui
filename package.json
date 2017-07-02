@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --no-cache --runInBand",
-    "watch": "jest --watch --no-cache",
+    "watch": "jest --watch",
     "lint:flow": "flow",
     "lint:eslint": "eslint packages/",
     "lint": "npm run lint:eslint && npm run lint:flow"
