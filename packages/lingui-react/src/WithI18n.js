@@ -48,17 +48,13 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
     }
 
     componentDidMount () {
-      if (update) {
-        const { subscribe } = this.getI18n()
-        if (subscribe) subscribe(this.checkUpdate)
-      }
+      const { subscribe } = this.getI18n()
+      if (update && subscribe) subscribe(this.checkUpdate)
     }
 
     componentWillUnmount () {
-      if (update) {
-        const { unsubscribe } = this.getI18n()
-        if (unsubscribe) unsubscribe(this.checkUpdate)
-      }
+      const { unsubscribe } = this.getI18n()
+      if (update && unsubscribe) unsubscribe(this.checkUpdate)
     }
 
     checkUpdate = () => {
