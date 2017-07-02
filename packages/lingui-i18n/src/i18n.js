@@ -8,7 +8,6 @@ type Catalog = { [key: string]: string | Function }
 type Catalogs = { [key: string]: Catalog }
 
 type Message = {|
-  id: string,
   defaults?: string,
   values?: Object,
   formats?: Object
@@ -144,7 +143,7 @@ class I18n {
   }
 
   // default translate method
-  _ ({ id, defaults, values = {}, formats = {} }: Message) {
+  _ (id: string, { defaults, values = {}, formats = {} }: Message = {}) {
     let translation = this.messages[id] || defaults || id
 
     if (process.env.NODE_ENV !== 'development') {

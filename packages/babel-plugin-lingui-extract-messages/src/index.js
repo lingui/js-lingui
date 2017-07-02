@@ -34,14 +34,8 @@ export default function ({ types: t }) {
     t.isIdentifier(node.object, { name: 'i18n' }) &&
     t.isIdentifier(node.property, { name: '_' })
 
-  function collectMessage (path, file, attributes) {
+  function collectMessage (path, file, attrs) {
     const messages = file.get(MESSAGES)
-
-    const attrs = attributes.reduce((acc, item) => {
-      const key = item.key ? item.key.name : item.name.name
-      if (key === 'id' || key === 'defaults') acc[key] = item.value.value
-      return acc
-    }, {})
 
     const filename = fsPath.relative(optsBaseDir, file.opts.filename)
     const line = path.node.loc ? path.node.loc.start.line : null
@@ -55,13 +49,33 @@ export default function ({ types: t }) {
       JSXElement (path, { file }) {
         const { node } = path
         if (!isTransComponent(node)) return
-        collectMessage(path, file, node.openingElement.attributes)
+
+        const attrs = node.openingElement.attributes.reduce((acc, item) => {
+          const key = item.key ? item.key.name : item.name.name
+          if (key === 'id' || key === 'defaults') acc[key] = item.value.value
+          return acc
+        }, {})
+
+        collectMessage(path, file, attrs)
       },
 
       CallExpression (path, { file }) {
         const { node } = path
         if (!isI18nMethod(node.callee)) return
-        collectMessage(path, file, node.arguments[0].properties)
+
+        const optional = node.arguments[1] && node.arguments[1].properties
+          ? node.arguments[1].properties
+          : []
+
+        const attrs = optional.reduce((acc, item) => {
+          const key = item.key ? item.key.name : item.name.name
+          if (key === 'defaults') acc[key] = item.value.value
+          return acc
+        }, {
+          id: node.arguments[0].value
+        })
+
+        collectMessage(path, file, attrs)
       }
     },
 

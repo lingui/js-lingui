@@ -196,9 +196,7 @@ export default function ({ types: t }) {
 
     // 2. Replace complex expression with single call to i18n.t
 
-    const tArgs = [
-      t.objectProperty(t.identifier('id'), t.StringLiteral(text))
-    ]
+    const tArgs = []
 
     const valuesList = Object.values(props.values)
     if (valuesList.length) {
@@ -214,9 +212,12 @@ export default function ({ types: t }) {
       )
     }
 
+    const i18nArgs = [ t.StringLiteral(text) ] // id
+    if (tArgs.length) i18nArgs.push(t.objectExpression(tArgs))
+
     const exp = t.callExpression(
       t.memberExpression(t.identifier('i18n'), t.identifier('_')),
-      [ t.objectExpression(tArgs) ]
+      i18nArgs
     )
     exp.loc = path.node.loc
     path.replaceWith(exp)

@@ -128,13 +128,13 @@ describe('I18n', function () {
       development: linguiDev
     })
 
-    expect(i18n._({ id: 'Hello' })).toEqual('Hello')
+    expect(i18n._('Hello')).toEqual('Hello')
 
     // change language locally
-    expect(i18n.use('fr')._({ id: 'Hello' })).toEqual('Salut')
+    expect(i18n.use('fr')._('Hello')).toEqual('Salut')
 
     // global language hasn't changed
-    expect(i18n._({ id: 'Hello' })).toEqual('Hello')
+    expect(i18n._('Hello')).toEqual('Hello')
   })
 
   it('._ should format message from catalog', function () {
@@ -149,15 +149,15 @@ describe('I18n', function () {
       development: linguiDev
     })
 
-    expect(i18n._({ id: 'Hello' })).toEqual('Salut')
-    expect(i18n._({ id: 'My name is {name}', values: { name: 'Fred' } }))
+    expect(i18n._('Hello')).toEqual('Salut')
+    expect(i18n._('My name is {name}', { values: { name: 'Fred' } }))
       .toEqual("Je m'appelle Fred")
 
     // missing { name }
-    expect(i18n._({ id: 'My name is {name}' }))
+    expect(i18n._('My name is {name}'))
       .toEqual("Je m'appelle")
 
     // Untranslated message
-    expect(i18n._({ id: 'Missing message' })).toEqual('Missing message')
+    expect(i18n._('Missing message')).toEqual('Missing message')
   })
 })

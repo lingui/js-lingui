@@ -78,12 +78,10 @@ exports[`Children should render 1`] = `
           <li>
             <WithI18n
               className="customId"
-              defaults=""
               id="msg.label"
             >
               <Trans
                 className="customId"
-                defaults=""
                 i18n={
                   I18n {
                     "_dev": Object {
