@@ -8,10 +8,10 @@ const module = process.argv
 export default {
   entry: `src/${module}/index.js`,
   targets: [{
-    dest: `lib/${module}/index.js`,
+    dest: `dist/${module}/index.js`,
     format: 'cjs'
   }, {
-    dest: `lib/${module}/index.es.js`,
+    dest: `dist/${module}/index.es.js`,
     format: 'es'
   }],
   plugins: [

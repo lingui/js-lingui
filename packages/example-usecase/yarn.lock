@@ -1352,8 +1352,8 @@ encoding@^0.1.11:
     iconv-lite "~0.4.13"
 
 enhanced-resolve@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.1.0.tgz#9f4b626f577245edcf4b2ad83d86e17f4f421dec"
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.3.0.tgz#950964ecc7f0332a42321b673b38dc8ff15535b3"
   dependencies:
     graceful-fs "^4.1.2"
     memory-fs "^0.4.0"
@@ -1792,8 +1792,8 @@ hash-base@^2.0.0:
     inherits "^2.0.1"
 
 hash.js@^1.0.0, hash.js@^1.0.3:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.2.tgz#bf5c887825cfe40b9efde7bf11bd2db26e6bf01b"
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.3.tgz#340dedbe6290187151c1ea1d777a3448935df846"
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.0"
@@ -2207,24 +2207,24 @@ lingui-conf@^0.7.0:
     jest-validate "^19.0.2"
     pkg-conf "^2.0.0"
 
-lingui-formats@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-0.4.2.tgz#3669336ad0df3b518959067b78abcc081532683d"
+lingui-formats@^0.4.5:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-0.4.6.tgz#6180f647507390c55c1addff07a5ce13066f2a56"
 
-lingui-i18n@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-0.6.3.tgz#3d2d13fd2ae592493bc821fa8a7be44d32d69720"
+lingui-i18n@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-0.6.6.tgz#11910c6f817c2226d31ea32f7c1e020d7b52a35b"
   dependencies:
-    lingui-formats "^0.4.2"
+    lingui-formats "^0.4.5"
     make-plural "^4.0.1"
     messageformat-parser "^1.0.0"
 
 lingui-react@*:
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-0.12.2.tgz#e02d0fe6c013783a95abb186bbffa03fe97c48d8"
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-0.12.5.tgz#8258a0d1a51aaf126bfdf13a9efcb8d93091d636"
   dependencies:
-    lingui-formats "^0.4.2"
-    lingui-i18n "^0.6.3"
+    lingui-formats "^0.4.5"
+    lingui-i18n "^0.6.6"
     prop-types "^15.5.10"
 
 load-json-file@^1.0.0:
@@ -2887,15 +2887,15 @@ read-pkg@^1.0.0:
     path-type "^1.0.0"
 
 readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.6, readable-stream@^2.2.9:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.2.tgz#5a04df05e4f57fe3f0dc68fdd11dc5c97c7e6f4d"
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.3"
     isarray "~1.0.0"
     process-nextick-args "~1.0.6"
-    safe-buffer "~5.1.0"
-    string_decoder "~1.0.0"
+    safe-buffer "~5.1.1"
+    string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
 
 readdirp@^2.0.0:
@@ -3031,7 +3031,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@~5.1.0:
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
@@ -3244,7 +3244,7 @@ string_decoder@^0.10.25:
   version "0.10.31"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
 
-string_decoder@~1.0.0:
+string_decoder@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
   dependencies:

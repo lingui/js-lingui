@@ -2,7 +2,7 @@
 import React from 'react'
 
 export type RenderProps = {
-  render?: Function | React$Element<*> | ReactClass<*>,
+  render?: any,
   className?: string
 }
 
@@ -12,10 +12,15 @@ type RenderComponentProps = {
 
 const Render = ({ render, className, children }: RenderComponentProps) => {
   if (render) {
+    // Built-in element: h1, p
+    if (typeof render === 'string') {
+      return React.createElement(render, {}, children)
+    }
+
     return React.isValidElement(render)
-      // $FlowIgnore: Don't know how to handle this type union
+      // Custom element: <p className="lear' />
       ? React.cloneElement(render, {}, children)
-      // $FlowIgnore: Don't know how to handle this type union
+      // Custom component: ({ translation }) => <a title={translation}>x</a>
       : React.createElement(render, { translation: children })
   }
 

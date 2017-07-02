@@ -26,6 +26,13 @@ Default: "<rootDir>/locale"
 
 Directory with locales
 
+### `fallbackLanguage` [string | Object]
+
+Default: ""
+
+Fallback language when translation is given language doesn't exist.
+Message ID is used when there's no fallback language.
+
 ### `srcPathDirs` [array\<string>]
 
 Default: ["<rootDir>"]

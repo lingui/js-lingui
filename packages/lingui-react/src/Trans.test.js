@@ -1,29 +1,31 @@
 /* @flow */
 import React from 'react'
 import { mount } from 'enzyme'
-import { I18n } from 'lingui-i18n'
+import { setupI18n } from 'lingui-i18n'
 
 import { Trans } from '.'
 import linguiDev from './dev'
+import { mockConsole } from './mocks'
 
 describe('Trans component', function () {
   /*
    * Setup context, define helpers
    */
-  const i18n = new I18n()
-  i18n.development(linguiDev)
-  i18n.load({
-    en: {
-      'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
-      'My name is {name}': 'Jmenuji se {name}',
-      'Original': 'Původní',
-      'Updated': 'Aktualizovaný',
-      'msg.currency': '{value, number, currency}'
-    }
+  const i18n = setupI18n({
+    language: 'en',
+    messages: {
+      en: {
+        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
+        'My name is {name}': 'Jmenuji se {name}',
+        'Original': 'Původní',
+        'Updated': 'Aktualizovaný',
+        'msg.currency': '{value, number, currency}'
+      }
+    },
+    development: linguiDev,
   })
-  i18n.activate('en')
 
-  const context = { i18nManager: { i18n } }
+  const context = { linguiPublisher: { i18n } }
   const text = (node) => mount(node, { context }).find('Render').text()
 
   /*
@@ -36,16 +38,11 @@ describe('Trans component', function () {
   })
 
   it('should warn about possible missing babel-plugin', function () {
-    const originalConsole = global.console
-    global.console = {
-      warn: jest.fn()
-    }
-
-    mount(<Trans>Label</Trans>)
-    expect(global.console.warn).toBeCalledWith(
-      expect.stringContaining('lingui-react preset'))
-
-    global.console = originalConsole
+    mockConsole(console => {
+      mount(<Trans>Label</Trans>)
+      expect(console.warn).toBeCalledWith(
+        expect.stringContaining('lingui-react preset'))
+    })
   })
 
   it('should recompile msg when id or defaults changes', function () {
@@ -102,7 +99,7 @@ describe('Trans component', function () {
     const translation = text(
       <Trans
         id="msg.currency"
-        params={{ value: 1 }}
+        values={{ value: 1 }}
         formats={{
           currency: {
             style: 'currency',

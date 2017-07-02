@@ -10,7 +10,7 @@ IGNORE=(babel-preset-lingui-react babel-preset-lingui-js)
 PACKAGE=`pwd`
 PACKAGE_NAME=$(basename $PACKAGE)
 SRC_DIR=$PACKAGE/src/
-DIST_DIR=$PACKAGE/lib/
+DIST_DIR=$PACKAGE/dist/
 
 [[ " ${IGNORE[*]} " == *" $PACKAGE_NAME "* ]] && exit 0
 
@@ -31,4 +31,3 @@ else
     rsync -rv --include '*/' --include '*.js.flow' --exclude '*' --prune-empty-dirs $SRC_DIR $DIST_DIR
     find $SRC_DIR -type f -name '*.js.flow' -delete
 fi
-

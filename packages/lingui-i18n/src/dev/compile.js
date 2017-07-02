@@ -48,4 +48,3 @@ function processTokens (tokens, octothorpe = {}): (Function) => string {
 export default function compile (message: string): (Function | string) {
   return processTokens(parse(message))
 }
-

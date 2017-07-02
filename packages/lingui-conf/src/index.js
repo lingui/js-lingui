@@ -22,7 +22,8 @@ function replaceRootDir (conf, rootDir) {
 }
 
 const defaults = {
-  localeDir: 'locale',
+  localeDir: './locale',
+  fallbackLanguage: '',
   srcPathDirs: ['<rootDir>'],
   srcPathIgnorePatterns: ['/node_modules/'],
   rootDir: '.'
@@ -30,7 +31,7 @@ const defaults = {
 
 const configValidation = {
   exampleConfig: defaults,
-  comment: `See https://github.com/lingui/js-lingui/tree/master/packages/lingui-conf for a list of valid options`
+  comment: `See https://l.lingui.io/ref-lingui-conf for a list of valid options`
 }
 
 function getConfig () {

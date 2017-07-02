@@ -28,10 +28,18 @@ describe('babel-plugin-lingui-transform-react', function () {
     const expectedPath = path.join(testPath, 'expected.js')
 
     it(testName, () => {
+      let originalEnv
+      if (testName.startsWith('env-production-')) {
+        originalEnv = process.env.NODE_ENV
+        process.env.NODE_ENV = 'production'
+      }
+
       const expected = fs.readFileSync(expectedPath, 'utf8')
       const actual = transformFileSync(actualPath, babelOptions).code.trim()
 
       expect(actual).toEqual(expected.trim())
+
+      if (originalEnv) process.env.NODE_ENV = originalEnv
     })
   })
 

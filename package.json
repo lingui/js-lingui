@@ -10,8 +10,7 @@
     "watch": "jest --watch",
     "lint:flow": "flow",
     "lint:eslint": "eslint packages/",
-    "lint": "npm run lint:eslint && npm run lint:flow",
-    "semantic-release": "lerna-semantic-release pre && lerna-semantic-release perform"
+    "lint": "npm run lint:eslint && npm run lint:flow"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -28,8 +27,6 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "chalk": "^2.0.1",
-    "condition-circle": "^1.5.0",
-    "cz-lerna-changelog": "^1.2.1",
     "enzyme": "^2.8.2",
     "enzyme-to-json": "^1.5.1",
     "eslint": "^4.0.0",
@@ -46,7 +43,6 @@
     "jasmine-reporters": "^2.2.1",
     "jest": "^20.0.4",
     "lerna": "^2.0.0-rc.5",
-    "lerna-semantic-release": "^9.1.0",
     "node-emoji": "^1.5.1",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
@@ -61,14 +57,6 @@
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
   },
-  "release": {
-    "verifyConditions": "condition-circle"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-lerna-changelog"
-    }
-  },
   "jest": {
     "testRegex": "(/test/[^/]*|.*\\.test)\\.jsx?$",
     "collectCoverage": true,
@@ -76,9 +64,8 @@
     "coveragePathIgnorePatterns": [
       "node_modules",
       "scripts",
-      "lib",
-      "packages/lingui-react/src/plurals.js",
-      "packages/lingui-i18n/src/plurals.js"
+      "dist",
+      "locale"
     ],
     "coverageReporters": [
       "html",
@@ -93,7 +80,7 @@
     ],
     "transformIgnorePatterns": [
       "/node_modules/",
-      "/lib/"
+      "/dist/"
     ]
   },
   "babel": {

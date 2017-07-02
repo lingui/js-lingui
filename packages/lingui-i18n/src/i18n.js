@@ -1,27 +1,39 @@
 /* @flow */
 import { interpolate } from './context'
-import { isString } from './essentials'
+import { isString, isFunction } from './essentials'
 import t from './t'
 import { select, plural, selectOrdinal } from './select'
 
-type Catalog = {[key: string]: string | Function}
-type Catalogs = {[key: string]: Catalog}
+type Catalog = { [key: string]: string | Function }
+type Catalogs = { [key: string]: Catalog }
 
 type Message = {|
-  id: string,
   defaults?: string,
-  params?: Object,
+  values?: Object,
   formats?: Object
 |}
 
 type LanguageData = {
   plurals: Function
 }
-type AllLanguageData = {[key: string]: LanguageData}
+type AllLanguageData = { [key: string]: LanguageData }
+
+type setupI18nProps = {
+  language?: string,
+  messages?: Catalogs,
+  languageData?: AllLanguageData,
+  development?: Object
+}
 
 class I18n {
   _language: string
+
+  // Messages in all loaded language.
   _messages: Catalogs
+  // Messages in active language. This is optimization, so we don't perform
+  // object lookup _messages[language] for each translation.
+  _activeMessages: Catalog
+
   _languageData: AllLanguageData
 
   _dev: Object
@@ -31,13 +43,12 @@ class I18n {
   select: Function
   selectOrdinal: Function
 
-  constructor (language?: string, messages?: Catalogs = {}, languageData?: AllLanguageData = {}) {
-    this._messages = messages
-    this._languageData = languageData
-
-    if (language) {
-      this.activate(language)
-    }
+  constructor () {
+    // Messages and languageData are merged on load,
+    // so we must initialize it manually
+    this._activeMessages = {}
+    this._messages = {}
+    this._languageData = {}
 
     if (process.env.NODE_ENV !== 'production') {
       this.t = t
@@ -52,7 +63,7 @@ class I18n {
   }
 
   get messages (): Catalog {
-    return this._messages[this.language] || {}
+    return this._activeMessages
   }
 
   get languageData (): LanguageData {
@@ -73,7 +84,7 @@ class I18n {
   }
 
   load (messages: Catalogs) {
-    if (!messages) return
+    if (typeof messages !== 'object') return
 
     // deeply merge Catalogs
     Object.keys({ ...this._messages, ...messages }).forEach(language => {
@@ -82,11 +93,13 @@ class I18n {
       let compiledMessages = messages[language] || {}
 
       if (process.env.NODE_ENV !== 'production') {
-        compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
-          const msg = compiledMessages[id]
-          dict[id] = isString(msg) ? this._dev.compile(msg) : msg
-          return dict
-        }, {})
+        if (this._dev && isFunction(this._dev.compile)) {
+          compiledMessages = Object.keys(compiledMessages).reduce((dict, id) => {
+            const msg = compiledMessages[id]
+            dict[id] = isString(msg) ? this._dev.compile(msg) : msg
+            return dict
+          }, {})
+        }
       }
 
       Object.assign(
@@ -111,29 +124,55 @@ class I18n {
     }
 
     this._language = language
+    this._activeMessages = this._messages[this.language] || {}
   }
 
   use (language: string) {
-    return new I18n(language, this._messages)
+    return setupI18n({
+      language,
+      messages: this._messages,
+      languageData: this._languageData,
+      development: this._dev
+    })
   }
 
   // default translate method
-  _ ({ id, defaults, params = {}, formats = {} }: Message) {
-    const translation = this.messages[id] || defaults || id
+  _ (id: string, { defaults, values = {}, formats = {} }: Message = {}) {
+    let translation = this.messages[id] || defaults || id
+
+    if (process.env.NODE_ENV !== 'development') {
+      if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
+        translation = this._dev.compile(translation)
+      }
+    }
 
     if (typeof translation !== 'function') return translation
-    return interpolate(translation, this.language, this.languageData)(params, formats)
+    return interpolate(translation, this.language, this.languageData)(values, formats)
   }
 
   pluralForm (n: number, pluralType?: 'cardinal' | 'ordinal' = 'cardinal'): string {
     return this.languageData.plurals(n, pluralType === 'ordinal')
   }
 
-  development(config: Object) {
+  development (config: Object) {
     this._dev = config
   }
 }
 
-export default new I18n()
-export { I18n }
-export type { Message, Catalog, Catalogs, AllLanguageData, LanguageData }
+function setupI18n (params?: setupI18nProps = {}): I18n {
+  const i18n = new I18n()
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (params.development) i18n.development(params.development)
+  }
+
+  if (params.messages) i18n.load(params.messages)
+  if (params.language) i18n.activate(params.language)
+  if (params.languageData) i18n.loadLanguageData(params.languageData)
+
+  return i18n
+}
+
+export default setupI18n()
+export { setupI18n }
+export type { Message, Catalog, Catalogs, AllLanguageData, LanguageData, I18n }
