@@ -35,6 +35,10 @@ export default function ({ types: t }) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
   }
 
+  function isDefaultsAttribute (node) {
+    return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'defaults'})
+  }
+
   const elementName = name => node =>
     t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name })
 
@@ -269,12 +273,12 @@ export default function ({ types: t }) {
 
         cleanChildren(node)
         const text = props.text.replace(nlRe, '').trim()
-        const attrs = node.openingElement.attributes
+        let attrs = node.openingElement.attributes
 
         // If `id` prop already exists and generated ID is different,
         // add it as a `default` prop
         const idAttr = attrs.filter(isIdAttribute)[0]
-        if (idAttr && idAttr.value.value !== text) {
+        if (idAttr && text && idAttr.value.value !== text) {
           attrs.push(
             t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(text))
           )
@@ -312,6 +316,10 @@ export default function ({ types: t }) {
               t.JSXIdentifier('formats'),
               t.JSXExpressionContainer(t.objectExpression(formatsList)))
           )
+        }
+
+        if (process.env.NODE_ENV === 'production') {
+          node.openingElement.attributes = attrs.filter(node => !isDefaultsAttribute(node))
         }
       } // JSXElement
     } // visitor

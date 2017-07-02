@@ -1,0 +1,1 @@
+<Trans id="msg.hello" />;
