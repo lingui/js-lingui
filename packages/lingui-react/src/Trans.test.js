@@ -25,7 +25,7 @@ describe('Trans component', function () {
     development: linguiDev,
   })
 
-  const context = { i18nManager: { i18n } }
+  const context = { linguiPublisher: { i18n } }
   const text = (node) => mount(node, { context }).find('Render').text()
 
   /*

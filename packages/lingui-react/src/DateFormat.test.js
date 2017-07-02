@@ -5,7 +5,7 @@ import { mount } from 'enzyme'
 import { DateFormat } from '.'
 
 describe('DateFormat', function () {
-  const languageContext = (code) => ({ context: { i18nManager: { i18n: { language: code } } } })
+  const languageContext = (code) => ({ context: { linguiPublisher: { i18n: { language: code } } } })
 
   it('should render', function () {
     const now = new Date('2017-06-17:14:00.000Z')

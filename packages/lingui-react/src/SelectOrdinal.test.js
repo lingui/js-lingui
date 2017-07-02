@@ -12,7 +12,7 @@ describe('SelectOrdinal', function () {
     messages: {[code]: {}},
     development: linguiDev
   })
-  const languageContext = (code) => ({ context: { i18nManager: { i18n: i18n(code) } } })
+  const languageContext = (code) => ({ context: { linguiPublisher: { i18n: i18n(code) } } })
 
   it('should render ordinal correctly', function () {
     const node = mount(

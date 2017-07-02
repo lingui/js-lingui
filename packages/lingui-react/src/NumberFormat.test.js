@@ -5,7 +5,7 @@ import { mount } from 'enzyme'
 import { NumberFormat } from '.'
 
 describe('NumberFormat', function () {
-  const languageContext = (code) => ({ context: { i18nManager: { i18n: { language: code } } } })
+  const languageContext = (code) => ({ context: { linguiPublisher: { i18n: { language: code } } } })
 
   it('should render', function () {
     const node = mount(

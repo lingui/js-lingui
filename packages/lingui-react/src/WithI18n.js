@@ -27,7 +27,7 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
   class WithI18n extends React.Component<*, *, *> {
     static contextTypes = {
-      i18nManager: PropTypes.object
+      linguiPublisher: PropTypes.object
     }
 
     wrappedInstance = null
@@ -66,7 +66,7 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
     }
 
     getI18n () {
-      return this.context.i18nManager || {}
+      return this.context.linguiPublisher || {}
     }
 
     render () {

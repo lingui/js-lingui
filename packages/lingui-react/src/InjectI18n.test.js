@@ -31,7 +31,7 @@ describe('InjectI18n [DEPRECATED]', function () {
   const mountHoc = (props = {}, customContext = context) => {
     const { Sink, spy } = sinkFactory()
     const node = mount(
-      <Sink {...props} />, { context: { i18nManager: customContext } })
+      <Sink {...props} />, { context: { linguiPublisher: customContext } })
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
     // Original props are passed with along with i18n prop
