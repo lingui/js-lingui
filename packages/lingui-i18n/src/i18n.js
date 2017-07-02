@@ -25,20 +25,6 @@ type setupI18nProps = {
   development?: Object
 }
 
-function setupI18n (params?: setupI18nProps = {}): I18n {
-  const i18n = new I18n()
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (params.development) i18n.development(params.development)
-  }
-
-  if (params.messages) i18n.load(params.messages)
-  if (params.language) i18n.activate(params.language)
-  if (params.languageData) i18n.loadLanguageData(params.languageData)
-
-  return i18n
-}
-
 class I18n {
   _language: string
 
@@ -171,6 +157,20 @@ class I18n {
   development (config: Object) {
     this._dev = config
   }
+}
+
+function setupI18n (params?: setupI18nProps = {}): I18n {
+  const i18n = new I18n()
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (params.development) i18n.development(params.development)
+  }
+
+  if (params.messages) i18n.load(params.messages)
+  if (params.language) i18n.activate(params.language)
+  if (params.languageData) i18n.loadLanguageData(params.languageData)
+
+  return i18n
 }
 
 export default setupI18n()

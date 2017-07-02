@@ -2,7 +2,7 @@
 import React from 'react'
 
 export type RenderProps = {
-  render?: Function | React$Element<*> | ReactClass<*>,
+  render?: any,
   className?: string
 }
 
@@ -13,9 +13,7 @@ type RenderComponentProps = {
 const Render = ({ render, className, children }: RenderComponentProps) => {
   if (render) {
     return React.isValidElement(render)
-      // $FlowIgnore: Don't know how to handle this type union
       ? React.cloneElement(render, {}, children)
-      // $FlowIgnore: Don't know how to handle this type union
       : React.createElement(render, { translation: children })
   }
 

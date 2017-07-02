@@ -1,9 +1,13 @@
 // @flow
 type DateFormat = string | {}
 
+type IntlType = {|
+  DateTimeFormat: Function
+|};
+const globalIntl: IntlType = window.Intl
+
 function date (language: string, format?: DateFormat = {}): (value: string) => string {
-  // $FlowIgnore: DateTimeFormat is member of Intl
-  const formatter = new Intl.DateTimeFormat(language, format)
+  const formatter = new globalIntl.DateTimeFormat(language, format)
   return value => formatter.format(value)
 }
 
