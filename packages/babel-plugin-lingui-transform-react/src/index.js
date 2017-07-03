@@ -1,4 +1,5 @@
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
+const commonProps = ['id', 'className', 'render']
 
 const nlRe = /(?:\r\n|\r|\n)+\s+/g
 
@@ -86,6 +87,8 @@ export default function ({ types: t }) {
 
           variable = exp.name
           props.values[variable] = t.objectProperty(exp, exp)
+        } else if (Array.includes(commonProps, name)) {
+          // just do nothing
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -132,7 +135,7 @@ export default function ({ types: t }) {
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
 
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
-      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
       element.name = t.JSXIdentifier('Trans')
     } else if (isFormatElement(node)) {
       const type = element.name.name.toLowerCase().replace('format', '')
@@ -191,7 +194,7 @@ export default function ({ types: t }) {
       if (format) parts.push(format)
 
       props.text = `{${parts.join(',')}}`
-      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
       element.name = t.JSXIdentifier('Trans')
     // Other elements
     } else {
