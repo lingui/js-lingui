@@ -79,13 +79,19 @@ function JSONWriter (messages, languageDir) {
   let newFile = true
 
   const catalog = {}
-  Object.keys(messages).forEach(key => { catalog[key] = '' })
+  Object.keys(messages).forEach(key => {
+    catalog[key] = messages[key].defaults || ''
+  })
 
   const catalogFilename = path.join(languageDir, 'messages.json')
 
   if (fs.existsSync(catalogFilename)) {
     const original = JSON.parse(fs.readFileSync(catalogFilename))
-    Object.assign(catalog, original)
+
+    Object.keys(original).forEach(key => {
+      if (original[key]) catalog[key] = original[key]
+    })
+
     newFile = false
   }
 
