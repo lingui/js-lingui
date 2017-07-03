@@ -1,19 +1,9 @@
-[Docs](https://github.com/lingui/js-lingui/wiki)
-
 [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
 
 # Lingui - tools for ~~internationalization~~ i18n in javascript
 
 Type-checked and intuitive way to internationalize applications in Javascript 
 and ReactJS.
-
-> Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
->
-> --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
-
-Building applications and products for international audiences involves internationalization (i.e: preparing app for translation) and localization (i.e: adoption of application to meet language and cultural requirements). Lingui provides tools to make i18n process easy and automated.
-
-![Example use case with React](docs/lingui-pitch.png)
 
 ## Key features
 

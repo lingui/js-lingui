@@ -1,53 +1,71 @@
-Component  | Example MessageFormat
----        | ---
-[Trans](#trans) | `My name is {name}` 
-**Categories** |
-[Plural](#plural)     | `{count, plural, one {# book} other {# books}}`
-[Select](#select) | `{gender, select, male {His} female {Her} other {Their}}`
-[SelectOrdinal](#selectordinal) | `{count, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}`
-**Formats** |
-[DateFormat](#dateformat) | `{value, date, short}`
-[NumberFormat](#numberformat) | `{value, number, percent}`
+# Reference: React Components
 
-- Providers and HOCs
+- Providers
   - [I18nProvider](#i18nprovider)
   - [WithI18n](#withi18n)
-  
-### General concepts
-  
-#### Rendering in components
 
-All i18n components support two optional props:
+|| Example MessageFormat
+---        | --
+[Trans](#trans) | `My name is {name}` 
+**Categories** ||
+[Plural](#plural) | `{count, plural, one {# book} other {# books}}`
+[SelectOrdinal](#selectordinal) | `{count, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}`
+[Select](#select) | `{gender, select, male {His} female {Her} other {Their}}`
+**Formats** ||
+[DateFormat](#dateformat) | `{value, date, short}`
+[NumberFormat](#numberformat) | `{value, number, percent}`
+  
+## General concepts
+  
+### Rendering in components
 
-Prop name | Type | Description
---- | --- | ---
+All i18n components render translation inside `<span>` tag. This tag can be customized using two props:
+
+Prop name | Type | Description 
+--- | --- | --- |
 `className` | string | Class name to be added to `<span>` element
-`render` | React.Element | React.Class | Custom wrapper element to render translation
+`render` | React.Element, React.Class string | Custom wrapper element to render translation
 
-Setting `className` is enough in most cases. If we need to replace `<span>`
-with a custom element, we can pass it to `render` prop.
+`className` is ignored, `render` is set.
 
-When `render` is React.Element, it is cloned with `translation` as children:
+When `render` is **React.Element** or **string** (built-in tags), it is cloned with `translation` as children:
 
 ```jsx
-<Trans render={<h1 />}>Heading</Trans>
+// built-in tags
+<Trans render="h1">Heading</Trans>
+
+// custom elements
+<Trans render={<Link to="/docs" />}>Link to docs</Trans>
 ```
 
-Using React.Component (or stateless component) in `render` prop is useful to
-get more control over the rendering of translation. Component passed to `render`
-receive translation/value in `translation` prop.
+Using React.Component (or stateless component) in `render` prop is useful to get more control over the rendering of translation. Component passed to `render` receive translation/value in `translation` prop.
 
 ```jsx
-<Trans render={({ translation }) => <Icon label={translation} />}>
+// custom component
+<Trans render={
+  ({ translation }) => <Icon label={translation} />
+}>
     Sign in
 </Trans>
+
+// renders as
+// <Icon label="Sign in" />
 ```
 
-#### Variables inside components
+### Variables inside components
 
-**:warning: Only simple variables are supported inside [Trans](#trans) component
-and as a `value` prop in other i18n components.**
-It's not possible to use constants, function calls or object properties.
+**:warning: Only simple variables are supported inside [Trans](#trans) component and as a `value` prop in other i18n components.**
+
+```js
+// This is valid example
+const name = "Arthur"
+
+// This is valid
+<Trans>Hello {name}</Trans>
+```
+
+It's not possible to use constants, function calls or object properties. 
+
 Any of following examples won't work:
 
 ```js
@@ -56,23 +74,24 @@ const messages = [
   "World"
 ]
 
+// These are invalid
 <Trans>{messages.length}</Trans>
 <Trans>{isEmpty(messages)}</Trans>
 <Trans>The answer is {42}</Trans>
 <DateFormat value={new Date()}
 ```
 
+## Components
+
 ### Trans
 
-This is the main component for translation. It supports variables and components
-inside messages. It's also possible to override generated message ID using `id`
-prop.
+This is the main component for translation. It supports variables and components inside messages.
+
+Message ID is either automatically generated in babel plugin or it's possible to manually override it in `id` prop.
 
 Prop name | Type | Description
 --- | --- | ---
 `id` | string | Override auto-generated message ID
-
-#### Examples:
 
 ```jsx
 // basic use case
@@ -95,6 +114,56 @@ const name = "Fred"
 <Trans>See the <Link to="/more">description</Link> below.</Trans>
 ```
 
+### Trans (without babel plugin)
+
+It's also possible to use `Trans` component without babel plugin. In fact, it's the only i18n component you'll need if you decide to go without babel plugin.
+
+**Note:** If you're using `babel-preset-lingui`, you don't need to use any of these props. It will be set automatically. 
+
+Prop name | Type | Description
+--- | --- | ---
+`id` | string | Message ID
+`defaults` | string | Default translation
+`values` | Object | Variables for interpolation
+`components` | Array | Components used in message
+`formats` | Object | Custom formats used in message
+
+#### Examples
+
+```jsx
+<Trans id="Hello World" />
+```
+
+```jsx
+<Trans 
+  id="Hello {name}" 
+  values={{ name: 'Arthur' }}
+/>
+```
+
+```jsx
+// number of tag corresponds to index in `components` prop
+<Trans 
+  id="Read <0>Description</0> below." 
+  components={[<Link to="/docs" />]} 
+/>
+```
+
+```jsx
+<Trans 
+  id="Today is {today, date, short_date}"
+  values={{ today: new Date() }}
+  formats={{ 
+    short_date: {
+      year: "numberic",
+      month: "long",
+      day: "numeric"
+    }
+  }} 
+/>
+```
+
+
 ### Plural
 
 MessageFormat: `{arg, plural, ...forms}`
@@ -111,12 +180,9 @@ Prop name | Type | Description
 `other` | string | (required) general *plural* form
 `_0`, `_1`, ... | string | Exact match form, correspond to `=N` rule
 
-See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) 
-overview.
+See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) overview.
 
-Based on language, the `value` is mapped to specific plural form. If such plural
-form isn't defined, the `other` form is used. `#` character inside message is used
-as a placeholder for `value`:
+Based on language, the `value` is mapped to specific plural form. If such plural form isn't defined, the `other` form is used. `#` character inside message is used as a placeholder for `value`:
 
 ```jsx
 const count = 42
@@ -128,8 +194,7 @@ const count = 42
 />
 ```
 
-It's also possible to use exact matches. This is common used in combination with
-`offset` prop. `offset` doesn't affect `value` for exact matches, only plural forms:
+It's also possible to use exact matches. This is common used in combination with `offset` prop. `offset` doesn't affect `value` for exact matches, only plural forms:
 
 ```jsx
 const count = 42
@@ -160,13 +225,11 @@ Prop name | Type | Description
 `value` | number | Override auto-generated message ID
 `other` | number | (required) Default, catch-all form
 
-This component selects appropriate form based on content of `value`. It
-behaves like an `switch` statement. `other` prop is used when no prop matches
-`value`:
+This component selects appropriate form based on content of `value`. It behaves like an `switch` statement. `other` prop is used when no prop matches `value`:
 
 ```jsx
-// gender = "female" -> `Her book`
-// gender = "male" -> `His book`
+// gender = "female"      -> `Her book`
+// gender = "male"        -> `His book`
 // gender = "unspecified" -> `Their book`
 <Select 
     value={gender}
@@ -192,11 +255,9 @@ Prop name | Type | Description
 `other` | string | (required) general *plural* form
 `_0`, `_1`, ... | string | Exact match form, correspond to `=N` rule
 
-See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) 
-overview.
+See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) overview.
 
-This component is equivalent to [Plural](#plural). The only difference is that it
-uses **ordinal** plural forms, instead of **cardinal** ones.
+This component is equivalent to [Plural](#plural). The only difference is that it uses **ordinal** plural forms, instead of **cardinal** ones.
 
 ```jsx
 <SelectOrdinal
@@ -276,10 +337,7 @@ Prop name | Type | Description
 `language` | string | Active language
 `messages` | object | Message catalog
 
-`messages` must be in format: `{ [language]: messageCatalog }`. This component
-should live above all i18n components. The good place is top-level application
-component. However, if the `language` is stored in the `redux` store, this 
-component should be inserted below `react-redux/Provider`.
+`messages` must be in format: `{ [language]: messageCatalog }`. This component should live above all i18n components. The good place is top-level application component. However, if the `language` is stored in the `redux` store, this component should be inserted below `react-redux/Provider`.
 
 ```jsx
 import React from 'react'
@@ -306,8 +364,7 @@ Options | Description
 --- | ---
 `withRef` | Returns reference to wrapped instance in `getWrappedInstance`
 
-This HOC injects `i18n` prop to wrapped component. It's useful when wrapped
-component needs to access `lingui-i18n` API for plain text translations.
+This HOC injects `i18n` prop to wrapped component. It's useful when wrapped component needs to access `lingui-i18n` API for plain text translations.
 
 ```jsx
 import React from 'react'

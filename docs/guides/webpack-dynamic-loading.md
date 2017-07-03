@@ -1,0 +1,205 @@
+Jump to [Final Component](#final-component)
+
+---
+
+`I18nProvider` doesn't assume anything about your app and it's your responsibility to load messages based on active language. Here's an example of `I18nLoader` component which is connected to Redux store and loads message catalogs using [dynamic import in Webpack](https://webpack.js.org/guides/code-splitting-async/).
+
+## Requirements
+
+- babel
+- webpack 2.x
+- redux
+- lingui-react
+
+## Setup
+
+Dynamic import is [syntax proposal](https://github.com/tc39/proposal-dynamic-import) to ECMAScript. We need to install `babel-plugin-syntax-dynamic-import` and `babel-plugin-dynamic-import-node` to make it work:
+
+```shell
+yarn add --dev babel-plugin-syntax-dynamic-import babel-plugin-dynamic-import-node
+```
+
+:warning: **The second plugin is required for running tests in Jest**
+
+```js
+// .babelrc
+{
+  "plugins": [
+    "syntax-dynamic-import"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "dynamic-import-node"
+      ]
+    }
+  }
+```
+
+## Component
+
+Let's start with the component. We're going to wrap `I18nProvider` from `lingui-react`.
+Active language is loaded from redux store, while messages are dynamically loaded and
+stored in local state.
+
+The render method looks like this:
+
+```js
+render () {
+  const { children, language } = this.props
+
+  return (
+    <I18nProvider language={language} messages={this.state.messages}>
+      {children}
+    </I18nProvider>
+  )
+}
+```
+
+Next, we want to load message catalog when language changes and we haven't loaded
+it yet. Dynamic import returns promise and we don't want to re-render our component
+until the message catalog is loaded. Let's add a `shouldComponentUpdate` method:
+
+```js
+shouldComponentUpdate({ language }, nextState) {
+  if (language !== this.props.language && !nextState.messages[language]) {
+    // Start loading message catalog and skip update
+    this.loadLanguage(language)
+    return false
+  }
+
+  return true
+}
+```
+
+`shouldComponentUpdate` isn't called during the first render, so we need to load
+messages manually in `componentDidMount`:
+
+```js
+componentDidMount() {
+  this.loadLanguage(this.props.language)
+}
+```
+
+## Loading of messages
+
+The most important piece in this story is `loadLanguage` method. Here we use
+the dynamic import syntax to load message catalog:
+
+```js
+loadLanguage = async (language) => {
+  const messages = await import(
+    /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
+    `locale/data/${language}/messages.json`)
+
+  this.setState(state => ({
+    messages: {
+      ...state.messages,
+      [language]: messages
+    }
+  }))
+}
+```
+
+Dynamic import returns a promise, so we can either use async/await keywords or good old promises:
+
+```js
+loadLanguage = (language) => {
+  import(
+    /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
+    `locale/data/${language}/messages.json`)
+  .then(messages =>
+    this.setState(state => ({
+      messages: {
+        ...state.messages,
+        [language]: messages
+      }
+    }))
+  )
+}
+```
+
+The comment before message catalog path is webpack's *magic comment*. 
+`webpackMode: lazy` means, that chunks are loaded as requested. 
+`webpackChunkName: "i18n-[index]"` overrides default chunk name for this import.
+
+## Final component
+
+Here's the full source of `I18nLoader` component:
+
+```js
+import React from 'react'
+import { connect } from 'react-redux'
+import { I18nProvider } from 'lingui-react'
+
+export class I18nLoader extends React.Component {
+  props: I18nLoaderProps
+
+  state = {
+    messages: {},
+  }
+
+  loadLanguage = async (language) => {
+    const messages = await import(
+      /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
+      `locale/data/${language}/messages.json`)
+
+    this.setState(state => ({
+      messages: {
+        ...state.messages,
+        [language]: messages
+      }
+    }))
+  }
+
+  componentDidMount() {
+    this.loadLanguage(this.props.language)
+  }
+
+  shouldComponentUpdate({ language }, nextState) {
+    if (language !== this.props.language && !nextState.messages[language]) {
+      this.loadLanguage(language)
+      return false
+    }
+
+    return true
+  }
+
+  render () {
+    const { children, language } = this.props
+
+    return (
+      <I18nProvider language={language} messages={this.state.messages}>
+        {children}
+      </I18nProvider>
+    )
+  }
+}
+
+// Example: depends on implementation of reducer
+const getLanguage = state => state.locale.language
+
+export default connect(state => ({
+  language: getLanguage(state)
+}))(I18nLoader)
+```
+
+## Conclusion
+
+Looking at the content of build dir, we see one chunk per language:
+
+```
+i18n-0.c433b3bd.chunk.js
+i18n-1.f0cf2e3d.chunk.js
+main.ab4626ef.js
+```
+
+When page is loaded initially, only main bundle and bundle for the first language are loaded:
+
+![Requests during the first render](../assets/howto-dynamic-loading-1.0.png)
+
+after changing language in UI, the second language bundle is loaded:
+
+![Requests during the second render](../assets/howto-dynamic-loading-2.0.png)
+
+And that's it! 🎉 
