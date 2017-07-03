@@ -22,7 +22,7 @@ describe('Trans component', function () {
         'msg.currency': '{value, number, currency}'
       }
     },
-    development: linguiDev,
+    development: linguiDev
   })
 
   const context = { linguiPublisher: { i18n } }
@@ -70,6 +70,9 @@ describe('Trans component', function () {
 
     expect(text(<Trans id="unknown" defaults="Not translated yet"/>))
       .toEqual('Not translated yet')
+
+    expect(text(<Trans id="unknown" defaults="Not translated yet, {name}" values={{ name: 'Dave' }}/>))
+      .toEqual('Not translated yet, Dave')
   })
 
   it('should render translation', function () {

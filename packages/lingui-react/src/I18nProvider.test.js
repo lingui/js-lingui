@@ -34,7 +34,7 @@ describe('I18nProvider', function () {
   it('should throw an error on incorrect language', function () {
     mockConsole(console => {
       mount(<I18nProvider language="xyz" messages={{}}><div/></I18nProvider>)
-      expect(console.warn).toBeCalledWith(expect.stringContaining('Unknown local'))
+      expect(console.warn).toBeCalledWith('Message catalog for locale "xyz" not loaded.')
     })
   })
 

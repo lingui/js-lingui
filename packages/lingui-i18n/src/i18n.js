@@ -119,7 +119,7 @@ class I18n {
 
     if (process.env.NODE_ENV !== 'production') {
       if (this.availableLanguages.indexOf(language) === -1) {
-        console.warn(`Unknown locale "${language}".`)
+        console.warn(`Message catalog for locale "${language}" not loaded.`)
       }
     }
 
@@ -140,7 +140,7 @@ class I18n {
   _ (id: string, { defaults, values = {}, formats = {} }: Message = {}) {
     let translation = this.messages[id] || defaults || id
 
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
         translation = this._dev.compile(translation)
       }

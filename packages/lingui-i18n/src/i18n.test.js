@@ -101,7 +101,7 @@ describe('I18n', function () {
 
     mockConsole(console => {
       i18n.activate('xyz')
-      expect(console.warn).toBeCalledWith(expect.stringContaining('Unknown local'))
+      expect(console.warn).toBeCalledWith('Message catalog for locale "xyz" not loaded.')
     })
 
     mockConsole(console => {
@@ -159,5 +159,27 @@ describe('I18n', function () {
 
     // Untranslated message
     expect(i18n._('Missing message')).toEqual('Missing message')
+    expect(i18n._('Missing {name}', { values: { name: 'Fred' } })).toEqual('Missing Fred')
+    expect(i18n._('Missing with default', {
+      defaults: 'Missing {name}',
+      values: { name: 'Fred' }
+    })).toEqual('Missing Fred')
+  })
+
+  it('._ shouldn\'t compile messages in production', function () {
+    const messages = {
+      'Hello': 'Salut',
+      'My name is {name}': 'Je m\'appelle {name}'
+    }
+
+    mockEnv('production', () => {
+      const i18n = setupI18n({
+        language: 'fr',
+        messages: { fr: messages }
+      })
+
+      expect(i18n._('My name is {name}', { values: { name: 'Fred' } }))
+        .toEqual("Je m'appelle {name}")
+    })
   })
 })
