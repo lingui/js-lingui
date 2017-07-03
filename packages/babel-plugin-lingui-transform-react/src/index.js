@@ -138,6 +138,13 @@ export default function ({ types: t }) {
       element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
       element.name = t.JSXIdentifier('Trans')
     } else if (isFormatElement(node)) {
+      if (root) {
+        // Don't convert standalone Format elements to ICU MessageFormat.
+        // It doesn't make sense to have `{name, number}` message, because we
+        // can call number() formatter directly in component.
+        return
+      }
+
       const type = element.name.name.toLowerCase().replace('format', '')
 
       let variable, format
@@ -263,7 +270,8 @@ export default function ({ types: t }) {
 
   return {
     visitor: {
-      JSXElement ({ node }, file) {
+      JSXElement (path, file) {
+        const { node } = path
         elementGenerator = elementGeneratorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
