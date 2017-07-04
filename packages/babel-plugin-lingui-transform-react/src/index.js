@@ -1,7 +1,10 @@
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 const commonProps = ['id', 'className', 'render']
 
-const nlRe = /(?:\r\n|\r|\n)+\s+/g
+// replace whitespace before/after newline with single space
+const nlRe = /\s*(?:\r\n|\r|\n)+\s*/g
+// remove whitespace before/after tag
+const nlTagRe = /(?:(>)(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=<))/g
 
 function cleanChildren (node) {
   node.children = []
@@ -284,7 +287,10 @@ export default function ({ types: t }) {
         // 2. Replace children and add collected data
 
         cleanChildren(node)
-        const text = props.text.replace(nlRe, '').trim()
+        const text = props.text
+          .replace(nlTagRe, '$1')
+          .replace(nlRe, ' ')
+          .trim()
         let attrs = node.openingElement.attributes
 
         // If `id` prop already exists and generated ID is different,
