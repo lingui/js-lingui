@@ -23,14 +23,12 @@ const initialProps = ({ formats } = {}) => ({
   formats: formats || {}
 })
 
-const elementGeneratorFactory = () => {
-  let index = 0
-  return () => index++
-}
+const generatorFactory = (index = 0) => () => index++
 
 // Plugin function
 export default function ({ types: t }) {
   let elementGenerator
+  let argumentGenerator
 
   function isIdAttribute (node) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
@@ -231,9 +229,8 @@ export default function ({ types: t }) {
     if (t.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
-      if (t.isIdentifier(exp)) {
-        nextProps.text += `{${exp.name}}`
-        nextProps.values[exp.name] = t.objectProperty(exp, exp)
+      if (t.isStringLiteral(exp)) {
+        nextProps.text += exp.value
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
 
@@ -254,7 +251,10 @@ export default function ({ types: t }) {
       } else if (t.isJSXElement(exp)) {
         nextProps = processElement(exp, file, nextProps)
       } else {
-        nextProps.text += exp.value
+        const name = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+        const key = t.isIdentifier(exp) ? exp : t.numericLiteral(name)
+        nextProps.text += `{${name}}`
+        nextProps.values[name] = t.objectProperty(key, exp)
       }
     } else if (t.isJSXElement(node)) {
       nextProps = processElement(node, file, nextProps)
@@ -272,7 +272,8 @@ export default function ({ types: t }) {
     visitor: {
       JSXElement (path, file) {
         const { node } = path
-        elementGenerator = elementGeneratorFactory()
+        elementGenerator = generatorFactory()
+        argumentGenerator = generatorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
 
