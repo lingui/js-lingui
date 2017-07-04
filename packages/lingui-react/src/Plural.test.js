@@ -9,7 +9,7 @@ import linguiDev from './dev'
 describe('Plural', function () {
   const i18n = code => setupI18n({
     language: code,
-    messages: { [code]: {} },
+    catalogs: { [code]: {} },
     development: linguiDev
   })
   const languageContext = (code) => ({ context: { linguiPublisher: { i18n: i18n(code) } } })

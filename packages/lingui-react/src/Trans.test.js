@@ -13,13 +13,15 @@ describe('Trans component', function () {
    */
   const i18n = setupI18n({
     language: 'en',
-    messages: {
+    catalogs: {
       en: {
-        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
-        'My name is {name}': 'Jmenuji se {name}',
-        'Original': 'Původní',
-        'Updated': 'Aktualizovaný',
-        'msg.currency': '{value, number, currency}'
+        messages: {
+          'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
+          'My name is {name}': 'Jmenuji se {name}',
+          'Original': 'Původní',
+          'Updated': 'Aktualizovaný',
+          'msg.currency': '{value, number, currency}'
+        }
       }
     },
     development: linguiDev

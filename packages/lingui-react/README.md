@@ -45,7 +45,7 @@ import messages from './locales/en.json'
 import App from './App'
 
 render(
-    <I18nProvider language="en" messages={{ en: messages }}>
+    <I18nProvider language="en" catalogs={{ en: { messages } }}>
        <App />
     </I18nProvider>,
     document.getElementById("app")

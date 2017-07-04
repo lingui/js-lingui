@@ -10,11 +10,15 @@ import { setupI18n } from 'lingui-i18n'
 
 describe('I18nProvider', function () {
   const props = {
-    messages: {
+    catalogs: {
       cs: {
-        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+        messages: {
+          'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+        }
       },
-      en: {}
+      en: {
+        messages: {}
+      }
     },
     language: 'cs'
   }
@@ -24,7 +28,7 @@ describe('I18nProvider', function () {
       <div />
     </I18nProvider>).instance()
     const linguiPublisher = component.getChildContext()['linguiPublisher']
-    expect(linguiPublisher.i18n.messages).toEqual(props.messages[props.language])
+    expect(linguiPublisher.i18n.messages).toEqual(props.catalogs[props.language].messages)
     expect(linguiPublisher.i18n.language).toEqual(props.language)
     expect(linguiPublisher.subscribe).toBeInstanceOf(Function)
     expect(linguiPublisher.unsubscribe).toBeInstanceOf(Function)
@@ -33,7 +37,7 @@ describe('I18nProvider', function () {
 
   it('should throw an error on incorrect language', function () {
     mockConsole(console => {
-      mount(<I18nProvider language="xyz" messages={{}}><div/></I18nProvider>)
+      mount(<I18nProvider language="xyz"><div/></I18nProvider>)
       expect(console.warn).toBeCalledWith('Message catalog for locale "xyz" not loaded.')
     })
   })
@@ -55,7 +59,7 @@ describe('I18nProvider', function () {
   })
 
   it('should notify all subscribers about context change', function () {
-    const node = mount(<I18nProvider language="en" messages={{
+    const node = mount(<I18nProvider language="en" catalogs={{
       en: {},
       cs: {}
     }}>
@@ -80,9 +84,13 @@ describe('I18nPublisher', function () {
   it('should pass active language and messages to underlying I18n class', function () {
     const linguiPublisher = new LinguiPublisher(setupI18n({
       language: 'en',
-      messages: {
-        en: { msg: 'hello' },
-        fr: { msg: 'salut' }
+      catalogs: {
+        en: {
+          messages: { msg: 'hello' }
+        },
+        fr: {
+          messages: { msg: 'salut' }
+        }
       },
       development: linguiDev
     }))
@@ -94,11 +102,14 @@ describe('I18nPublisher', function () {
     expect(linguiPublisher.i18n.language).toEqual('fr')
     expect(linguiPublisher.i18n.messages).toEqual({ msg: 'salut' })
 
-    linguiPublisher.update({ messages: { fr: { msg: 'salut!' } } })
-    expect(linguiPublisher.i18n.language).toEqual('fr')
-    expect(linguiPublisher.i18n.messages).toEqual({ msg: 'salut!' })
-
-    linguiPublisher.update({ languageData: { fr: { plurals: () => 'Function' } } })
+    linguiPublisher.update({ catalogs: {
+      fr: {
+        messages: { msg: 'salut!' },
+        languageData: {
+          plurals: () => 'Function'
+        }
+      }
+    }})
     expect(linguiPublisher.i18n.language).toEqual('fr')
     expect(linguiPublisher.i18n.messages).toEqual({ msg: 'salut!' })
     expect(linguiPublisher.i18n.languageData.plurals()).toEqual('Function')
@@ -107,7 +118,7 @@ describe('I18nPublisher', function () {
   it('should subscribe/unsubscribe listeners for context changes', function () {
     const linguiPublisher = new LinguiPublisher(setupI18n({
       language: 'en',
-      messages: { en: {}, fr: {} }
+      catalogs: { en: {} }
     }))
     const listener = jest.fn()
 
@@ -124,7 +135,7 @@ describe('I18nPublisher', function () {
     const listener = jest.fn()
     const linguiPublisher = new LinguiPublisher(setupI18n({
       language: 'en',
-      messages: { en: {}, fr: {} },
+      catalogs: { en: {}, fr: {} },
       development: linguiDev
     }))
     linguiPublisher.subscribe(listener)
@@ -141,7 +152,7 @@ describe('I18nPublisher', function () {
     expect(listener).toBeCalled()
     listener.mockReset()
 
-    linguiPublisher.update({ messages: { en: { id: 'hello' } } })
+    linguiPublisher.update({ catalogs: { en: { messages: { id: 'hello' } } } })
     expect(listener).toBeCalled()
   })
 })

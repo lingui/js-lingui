@@ -273,8 +273,8 @@ import messagesFr from './locales/fr/messages.json'
 
 // load message catalogs
 i18n.load({
-  en: messagesEn,
-  fr: messagesFr
+  en: { messages: messagesEn },
+  fr: { messages: messagesFr }
 })
 
 // activate english language
@@ -293,10 +293,10 @@ import App from './App'
 import messages from './locales/fr/messages.json'
 
 // required in development only
-import linguiDev from 'lingui-i18n/dev'
+import dev from 'lingui-i18n/dev'
 
 render(
-    <ProvideI18n language="fr" messages={{ fr: messages }} development={linguiDev}>
+    <ProvideI18n language="fr" catalogs={{ fr: { messages } }} development={dev}>
         <App />
     </ProvideI18n>,
     document.getElementById('app')

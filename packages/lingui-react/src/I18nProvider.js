@@ -3,13 +3,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { setupI18n } from 'lingui-i18n'
 import type { I18n } from 'lingui-i18n'
-import type { Catalogs, AllLanguageData } from 'lingui-i18n'
+import type { Catalogs } from 'lingui-i18n'
 
 export type I18nProviderProps = {
   children?: any,
   language: string,
-  messages: Catalogs,
-  languageData?: AllLanguageData,
+  catalogs?: Catalogs,
   development?: Object,
   i18n?: I18n
 }
@@ -36,16 +35,14 @@ export function LinguiPublisher (i18n: I18n) {
       subscribers = subscribers.filter(cb => cb !== callback)
     },
 
-    update ({ messages, language, languageData }: {
-      messages?: Catalogs,
-      language?: string,
-      languageData?: AllLanguageData
+    update ({ catalogs, language }: {
+      catalogs?: Catalogs,
+      language?: string
     } = {}) {
-      if (!messages && !language && !languageData) return
+      if (!catalogs && !language) return
 
-      if (messages) i18n.load(messages)
+      if (catalogs) i18n.load(catalogs)
       if (language) i18n.activate(language)
-      if (languageData) i18n.loadLanguageData(languageData)
 
       subscribers.forEach(f => f())
     }
@@ -63,24 +60,22 @@ export default class I18nProvider extends React.Component {
 
   constructor (props: I18nProviderProps) {
     super(props)
-    const { language, messages, languageData, development } = this.props
+    const { language, catalogs, development } = this.props
     const i18n = this.props.i18n || setupI18n({
       language,
-      messages,
-      languageData,
+      catalogs,
       development
     })
     this.linguiPublisher = new LinguiPublisher(i18n)
   }
 
   componentDidUpdate (prevProps: I18nProviderProps) {
-    const { language, messages, languageData } = this.props
+    const { language, catalogs } = this.props
     if (
       language !== prevProps.language ||
-      messages !== prevProps.messages ||
-      languageData !== prevProps.languageData
+      catalogs !== prevProps.catalogs
     ) {
-      this.linguiPublisher.update({ language, messages, languageData })
+      this.linguiPublisher.update({ language, catalogs })
     }
   }
 

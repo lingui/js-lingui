@@ -1,13 +1,17 @@
 /* @flow */
 import { plural, select, selectOrdinal } from './select'
 import { setupI18n } from './i18n'
-import linguiDev from './dev'
+import dev from './dev'
 
 describe('plural', function () {
   const i18n = setupI18n({
     language: 'en',
-    messages: {en: {}},
-    development: linguiDev
+    catalogs: {
+      en: {
+        messages: {}
+      }
+    },
+    development: dev
   })
 
   it('should convert to message format string', function () {
@@ -37,8 +41,12 @@ describe('plural', function () {
 describe('selectOrdinal', function () {
   const i18n = setupI18n({
     language: 'en',
-    messages: {en: {}},
-    development: linguiDev
+    catalogs: {
+      en: {
+        messages: {}
+      }
+    },
+    development: dev
   })
 
   it('should convert to message format string', function () {
@@ -77,8 +85,12 @@ describe('selectOrdinal', function () {
   it('should use other rule when ordinal ones are missing', function () {
     const i18nCS = setupI18n({
       language: 'cs',
-      messages: { cs: {} },
-      development: linguiDev
+      catalogs: {
+        cs: {
+          messages: {}
+        }
+      },
+      development: dev
     })
 
     const s = selectOrdinal(i18nCS)

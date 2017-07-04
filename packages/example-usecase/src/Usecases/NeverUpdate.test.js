@@ -9,20 +9,22 @@ import ElementAttributes from './ElementAttributes'
 import linguiDev from 'lingui-react/dev'
 
 describe('NeverUpdate', function () {
-  const messages = {
+  const catalogs = {
     en: {},
     cs: {
-      'Full content of {articleName}': 'Celý článek {articleName}',
-      'Close': 'Zavřít',
-      'msg.label': 'Nápis',
-      'Hello World': 'Ahoj světe',
-      'My name is {name}': 'Jmenuji se {name}',
-      'Read <0>more</0>': 'Číst <0>dále</0>'
+      messages: {
+        'Full content of {articleName}': 'Celý článek {articleName}',
+        'Close': 'Zavřít',
+        'msg.label': 'Nápis',
+        'Hello World': 'Ahoj světe',
+        'My name is {name}': 'Jmenuji se {name}',
+        'Read <0>more</0>': 'Číst <0>dále</0>'
+      }
     }
   }
 
   const BeConservative = (WrappedComponent) => ({ language }: { language: string}) =>
-    <I18nProvider language={language} messages={messages} development={linguiDev}>
+    <I18nProvider language={language} catalogs={catalogs} development={linguiDev}>
       <NeverUpdate>
         <WrappedComponent />
       </NeverUpdate>
