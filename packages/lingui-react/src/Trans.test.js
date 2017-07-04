@@ -5,7 +5,7 @@ import { setupI18n } from 'lingui-i18n'
 
 import { Trans } from '.'
 import linguiDev from './dev'
-import { mockConsole } from './mocks'
+import { mockEnv, mockConsole } from './mocks'
 
 describe('Trans component', function () {
   /*
@@ -39,11 +39,20 @@ describe('Trans component', function () {
       <Trans id="unknown"/>).find('Render').text()).toEqual('unknown')
   })
 
-  it('should warn about possible missing babel-plugin', function () {
-    mockConsole(console => {
-      mount(<Trans>Label</Trans>)
-      expect(console.warn).toBeCalledWith(
-        expect.stringContaining('lingui-react preset'))
+  it('should warn about possible missing babel-plugin in development', function () {
+    mockEnv('production', () => {
+      mockConsole(console => {
+        mount(<Trans>Label</Trans>)
+        expect(console.warn).not.toBeCalled()
+      })
+    })
+
+    mockEnv('development', () => {
+      mockConsole(console => {
+        mount(<Trans>Label</Trans>)
+        expect(console.warn).toBeCalledWith(
+          expect.stringContaining('lingui-react preset'))
+      })
     })
   })
 
