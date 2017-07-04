@@ -1,6 +1,6 @@
 {
   "name": "lingui-conf",
-  "version": "0.7.1-4",
+  "version": "0.7.1-5",
   "description": "Get lingui configuration from package.json",
   "main": "dist/index.js",
   "repository": {
