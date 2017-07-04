@@ -12,7 +12,7 @@ type CompiledCatalog = {
   }
 }
 
-export function readCatalog (compiled: CompiledCatalog): Catalog {
+export function unpackCatalog (compiled: CompiledCatalog): Catalog {
   return {
     messages: compiled.m,
     languageData: {
