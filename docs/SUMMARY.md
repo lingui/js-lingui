@@ -10,7 +10,7 @@
 
 * [Webpack - Dynamic loading of languages](guides/webpack-dynamic-loading.md)
 
-## Discussions
+* [Migration from 0.x to 1.x](guides/migration-1.md)
 
 ## References
 
