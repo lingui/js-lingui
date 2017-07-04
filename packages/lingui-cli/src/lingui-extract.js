@@ -76,7 +76,10 @@ function JSONWriter (messages, languageDir) {
 
   const catalog = {}
   Object.keys(messages).forEach(key => {
-    catalog[key] = messages[key].defaults || ''
+    catalog[key] = {
+      translation: '',
+      ...messages[key]
+    }
   })
 
   const catalogFilename = path.join(languageDir, 'messages.json')
@@ -85,7 +88,14 @@ function JSONWriter (messages, languageDir) {
     const original = JSON.parse(fs.readFileSync(catalogFilename))
 
     Object.keys(original).forEach(key => {
-      if (original[key]) catalog[key] = original[key]
+      const originalMsg = original[key]
+      if (!originalMsg) return
+
+      catalog[key].translation = typeof originalMsg === 'string'
+        // backward compatability, Deprecated-2
+        ? originalMsg
+        // new catalogs have objects as values
+        : originalMsg.translation
     })
 
     newFile = false

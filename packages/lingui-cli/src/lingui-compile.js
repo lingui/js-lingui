@@ -12,11 +12,15 @@ const generate = require('babel-generator').default
 const { getLanguages } = require('./api/languages')
 const compile = require('./api/compile').default
 
+function getOrDefault (message) {
+  return message.translation || message.defaults
+}
+
 function getTranslation (catalog, locale, key) {
   const fallbackLanguage = config.fallbackLanguage
 
-  const fallback = fallbackLanguage === '' ? key : catalog[fallbackLanguage][key]
-  return catalog[locale][key] || fallback
+  const fallback = fallbackLanguage === '' ? key : getOrDefault(catalog[fallbackLanguage][key])
+  return getOrDefault(catalog[locale][key]) || fallback
 }
 
 function compileCatalogs (localeDir) {
@@ -58,10 +62,12 @@ function compileCatalogs (localeDir) {
       '=',
       t.memberExpression(t.identifier('module'), t.identifier('exports')),
       t.objectExpression([
+        // language data
         t.objectProperty(
           t.identifier('l'),
           t.objectExpression(languageData)
         ),
+        // messages
         t.objectProperty(
           t.identifier('m'),
           t.objectExpression(messages)
