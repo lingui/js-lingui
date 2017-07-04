@@ -36,5 +36,5 @@ validateLocales(program.args)
 console.log(emojify(':white_check_mark:  Adding locales:'))
 addLocale(program.args)
 console.log()
-
+console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages)`)
 console.log(emojify(':sparkles:  Done!'))

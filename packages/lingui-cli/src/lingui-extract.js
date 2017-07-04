@@ -11,6 +11,8 @@ const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
 
+const { getLanguages } = require('./api/languages')
+
 const config = getConfig()
 
 function extractMessages (files) {
@@ -60,19 +62,13 @@ function collectMessages (dir) {
   return catalog
 }
 
-function writeCatalogs (localeDir) {
+function writeCatalogs (localeDir, languages) {
   const buildDir = path.join(localeDir, '_build')
   const catalog = collectMessages(buildDir)
 
-  const languages = fs.readdirSync(localeDir).filter(dirname =>
-    /^([a-z-]+)$/i.test(dirname) &&
-    fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
-  )
-
-  const stats = languages.map(
+  return languages.map(
     language => JSONWriter(catalog, path.join(localeDir, language))
   )
-  return { languages, stats }
 }
 
 function JSONWriter (messages, languageDir) {
@@ -134,16 +130,28 @@ function displayStats (languages, stats) {
 
 program.parse(process.argv)
 
-console.log(emojify(':mag:  Extracting messages from source files:'))
-extractMessages(program.args.length ? program.args : config.srcPathDirs)
-console.log()
+const languages = getLanguages(config.localeDir)
 
-console.log(emojify(':book:  Writing message catalogues:'))
-const { languages, stats } = writeCatalogs(config.localeDir)
-console.log()
+if (!languages.length) {
+  console.log('No languages defined.')
+  console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
+  process.exit(1)
+} else {
+  console.log(emojify(':mag:  Extracting messages from source files:'))
+  extractMessages(program.args.length ? program.args : config.srcPathDirs)
+  console.log()
 
-console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
-displayStats(languages, stats)
-console.log()
+  console.log(emojify(':book:  Writing message catalogues:'))
+  const stats = writeCatalogs(config.localeDir, languages)
+  console.log()
 
-console.log(emojify(':sparkles:  Done!'))
+  console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
+  displayStats(languages, stats)
+  console.log()
+
+  console.log('Messages extracted!\n')
+  console.log(`(use "${chalk.yellow('lingui extract')}" to update catalogs with new messages)`)
+  console.log(`(use "${chalk.yellow('lingui compile')}" to compile catalogs for production)`)
+
+  console.log(emojify(':sparkles:  Done!'))
+}

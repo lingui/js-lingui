@@ -9,6 +9,7 @@ const getConfig = require('lingui-conf').default
 
 const t = require('babel-types')
 const generate = require('babel-generator').default
+const { getLanguages } = require('./api/languages')
 const compile = require('./api/compile').default
 
 function getTranslation (catalog, locale, key) {
@@ -19,10 +20,7 @@ function getTranslation (catalog, locale, key) {
 }
 
 function compileCatalogs (localeDir) {
-  const languages = fs.readdirSync(localeDir).filter(dirname =>
-    /^([a-z-]+)$/i.test(dirname) &&
-    fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
-  )
+  const languages = getLanguages(localeDir)
 
   const catalog = languages.reduce((dict, locale) => {
     const sourcePath = path.join(localeDir, locale, 'messages.json')
@@ -44,8 +42,7 @@ function compileCatalogs (localeDir) {
       ))
     })
 
-    const languageData = [
-    ]
+    const languageData = []
     const pluralRules = plurals[locale]
     if (!pluralRules) {
       throw new Error(`Missing plural rules for locale ${locale}`)
