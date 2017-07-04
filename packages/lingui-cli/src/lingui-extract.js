@@ -116,7 +116,7 @@ function JSONWriter (messages, languageDir) {
 function getStats (catalog) {
   return [
     Object.keys(catalog).length,
-    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg).length
+    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg.translation).length
   ]
 }
 
