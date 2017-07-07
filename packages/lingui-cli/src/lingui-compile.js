@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const emojify = require('node-emoji').emojify
 const program = require('commander')
 const plurals = require('make-plural')
 const babylon = require('babylon')
@@ -85,8 +84,6 @@ const config = getConfig()
 
 program.parse(process.argv)
 
-console.log(emojify(':compression:  Compiling message catalogs:'))
+console.log('Compiling message catalogs:')
 compileCatalogs(config.localeDir)
 console.log()
-
-console.log(emojify(':sparkles:  Done!'))

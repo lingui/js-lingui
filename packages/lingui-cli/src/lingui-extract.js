@@ -7,7 +7,6 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const Table = require('cli-table')
-const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
 
@@ -148,21 +147,19 @@ if (!languages.length) {
   console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
   process.exit(1)
 } else {
-  console.log(emojify(':mag:  Extracting messages from source files:'))
+  console.log('Extracting messages from source files:')
   extractMessages(program.args.length ? program.args : config.srcPathDirs)
   console.log()
 
-  console.log(emojify(':book:  Writing message catalogues:'))
+  console.log('Writing message catalogues:')
   const stats = writeCatalogs(config.localeDir, languages)
   console.log()
 
-  console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
+  console.log('Catalog statistics:')
   displayStats(languages, stats)
   console.log()
 
   console.log('Messages extracted!\n')
   console.log(`(use "${chalk.yellow('lingui extract')}" to update catalogs with new messages)`)
   console.log(`(use "${chalk.yellow('lingui compile')}" to compile catalogs for production)`)
-
-  console.log(emojify(':sparkles:  Done!'))
 }

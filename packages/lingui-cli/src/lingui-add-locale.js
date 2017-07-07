@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const emojify = require('node-emoji').emojify
 const program = require('commander')
 const getConfig = require('lingui-conf').default
 const plurals = require('make-plural')
@@ -37,8 +36,6 @@ function addLocale (locales) {
 
 validateLocales(program.args)
 
-console.log(emojify(':white_check_mark:  Adding locales:'))
 addLocale(program.args)
 console.log()
 console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages)`)
-console.log(emojify(':sparkles:  Done!'))
