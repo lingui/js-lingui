@@ -94,7 +94,7 @@ function updatePackage(packageInfo, changes) {
   updateDependencies(packageInfo)
 
   const oldVersion = require(pkgFilePath).version
-  const prerelease = oldVersion.includes('-')
+  const prerelease = isPrerelease && oldVersion.includes('-')
 
   const newVersion = runLocal(`npm version ${prerelease ? 'prerelease' : change}`).slice(1)
   versions[packageInfo.name] = {
