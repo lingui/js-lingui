@@ -1,41 +1,77 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const emojify = require('node-emoji').emojify
 const program = require('commander')
+const plurals = require('make-plural')
+const babylon = require('babylon')
 const getConfig = require('lingui-conf').default
 
 const t = require('babel-types')
 const generate = require('babel-generator').default
+const { getLanguages } = require('./api/languages')
 const compile = require('./api/compile').default
 
+function getOrDefault (message) {
+  return message.translation || message.defaults
+}
+
+function getTranslation (catalog, locale, key) {
+  const fallbackLanguage = config.fallbackLanguage
+
+  const fallback = fallbackLanguage === '' ? key : getOrDefault(catalog[fallbackLanguage][key])
+  return getOrDefault(catalog[locale][key]) || fallback
+}
+
 function compileCatalogs (localeDir) {
-  const languages = fs.readdirSync(localeDir).filter(dirname =>
-    /^([a-z-]+)$/i.test(dirname) &&
-    fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
-  )
+  const languages = getLanguages(localeDir)
+
+  const catalog = languages.reduce((dict, locale) => {
+    const sourcePath = path.join(localeDir, locale, 'messages.json')
+    dict[locale] = JSON.parse(fs.readFileSync(sourcePath))
+    return dict
+  }, {})
 
   languages.forEach(locale => {
-    const sourcePath = path.join(localeDir, locale, 'messages.json')
     const compiledPath = path.join(localeDir, locale, 'messages.js')
+    const sourcePath = path.join(localeDir, locale, 'messages.json')
     console.log(chalk.green(sourcePath))
 
     const messages = []
-    const source = JSON.parse(fs.readFileSync(sourcePath))
+    const source = catalog[locale]
     Object.keys(source).forEach(key => {
       messages.push(t.objectProperty(
         t.stringLiteral(key),
-        compile(source[key])
+        compile(getTranslation(catalog, locale, key))
       ))
     })
+
+    const languageData = []
+    const pluralRules = plurals[locale]
+    if (!pluralRules) {
+      throw new Error(`Missing plural rules for locale ${locale}`)
+    }
+    languageData.push(
+      t.objectProperty(
+        t.stringLiteral('p'),
+        babylon.parseExpression(pluralRules.toString())
+      )
+    )
 
     const compiled = t.expressionStatement(t.assignmentExpression(
       '=',
       t.memberExpression(t.identifier('module'), t.identifier('exports')),
-      t.objectExpression([t.objectProperty(
-        t.identifier('m'),
-        t.objectExpression(messages)
-      )])
+      t.objectExpression([
+        // language data
+        t.objectProperty(
+          t.identifier('l'),
+          t.objectExpression(languageData)
+        ),
+        // messages
+        t.objectProperty(
+          t.identifier('m'),
+          t.objectExpression(messages)
+        )
+      ])
     ))
 
     fs.writeFileSync(compiledPath, generate(compiled, {
@@ -48,8 +84,6 @@ const config = getConfig()
 
 program.parse(process.argv)
 
-console.log(emojify(':compression:  Compiling message catalogs:'))
+console.log('Compiling message catalogs:')
 compileCatalogs(config.localeDir)
 console.log()
-
-console.log(emojify(':sparkles:  Done!'))

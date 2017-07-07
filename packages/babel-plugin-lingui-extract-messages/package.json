@@ -1,8 +1,8 @@
 {
   "name": "babel-plugin-lingui-extract-messages",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Extract messages for translation",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -28,11 +28,12 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-conf": "^0.7.0"
+    "babel-runtime": "^6.23.0",
+    "lingui-conf": "^0.8.0"
   },
   "devDependencies": {
-    "babel-plugin-lingui-transform-js": "^0.6.0",
-    "babel-plugin-lingui-transform-react": "^0.7.0"
+    "babel-plugin-lingui-transform-js": "^1.0.0",
+    "babel-plugin-lingui-transform-react": "^1.0.0"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

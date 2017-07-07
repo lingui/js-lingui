@@ -5,8 +5,18 @@ exports[`Formats should render 1`] = `
   language="en"
 >
   <I18nProvider
+    catalogs={
+      Object {
+        "en": Object {},
+      }
+    }
+    development={
+      Object {
+        "compile": [Function],
+        "loadLanguageData": [Function],
+      }
+    }
     language="en"
-    messages={Object {}}
   >
     <Formats>
       <div>
@@ -15,7 +25,7 @@ exports[`Formats should render 1`] = `
             <WithI18n
               className="percent"
               id="The answer is {answer,number,percent}"
-              params={
+              values={
                 Object {
                   "answer": 0.42,
                 }
@@ -25,8 +35,21 @@ exports[`Formats should render 1`] = `
                 className="percent"
                 i18n={
                   I18n {
+                    "_activeLanguageData": Object {
+                      "plurals": [Function],
+                    },
+                    "_activeMessages": Object {},
+                    "_catalogs": Object {
+                      "en": Object {
+                        "languageData": Object {},
+                        "messages": Object {},
+                      },
+                    },
+                    "_dev": Object {
+                      "compile": [Function],
+                      "loadLanguageData": [Function],
+                    },
                     "_language": "en",
-                    "_messages": Object {},
                     "plural": [Function],
                     "select": [Function],
                     "selectOrdinal": [Function],
@@ -34,7 +57,7 @@ exports[`Formats should render 1`] = `
                   }
                 }
                 id="The answer is {answer,number,percent}"
-                params={
+                values={
                   Object {
                     "answer": 0.42,
                   }
@@ -56,7 +79,7 @@ exports[`Formats should render 1`] = `
             <WithI18n
               className="date"
               id="Today is {now,date}"
-              params={
+              values={
                 Object {
                   "now": 2017-04-05T11:14:00.000Z,
                 }
@@ -66,8 +89,21 @@ exports[`Formats should render 1`] = `
                 className="date"
                 i18n={
                   I18n {
+                    "_activeLanguageData": Object {
+                      "plurals": [Function],
+                    },
+                    "_activeMessages": Object {},
+                    "_catalogs": Object {
+                      "en": Object {
+                        "languageData": Object {},
+                        "messages": Object {},
+                      },
+                    },
+                    "_dev": Object {
+                      "compile": [Function],
+                      "loadLanguageData": [Function],
+                    },
                     "_language": "en",
-                    "_messages": Object {},
                     "plural": [Function],
                     "select": [Function],
                     "selectOrdinal": [Function],
@@ -75,7 +111,7 @@ exports[`Formats should render 1`] = `
                   }
                 }
                 id="Today is {now,date}"
-                params={
+                values={
                   Object {
                     "now": 2017-04-05T11:14:00.000Z,
                   }

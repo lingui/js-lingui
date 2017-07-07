@@ -1,5 +1,5 @@
-// flow-typed signature: 4109fee535b1f5c38bd1a24450044e0f
-// flow-typed version: 2b435bb71a/enzyme_v2.3.x/flow_>=v0.28.x
+// flow-typed signature: 2347f05faac22d91369b6abccedcac7e
+// flow-typed version: 64d5f46151/enzyme_v2.3.x/flow_>=v0.28.x
 
 declare module 'enzyme' {
   declare type PredicateFunction<T: Wrapper> = (wrapper: T) => boolean;
@@ -47,10 +47,10 @@ declare module 'enzyme' {
     prop(key: string): any;
     key(): string;
     simulate(event: string, ...args: Array<any>): this;
-    setState(state: Object): this;
+    setState(state: Object, callback?: Function): this,
     setProps(props: Object): this;
     setContext(context: Object): this;
-    instance(): React$Component<any, any, any>;
+    instance(): React$Component<*, *, *>;
     update(): this;
     debug(): string;
     type(): string | Function | null;
@@ -67,6 +67,7 @@ declare module 'enzyme' {
   }
 
   declare export class ReactWrapper extends Wrapper {
+    constructor(nodes: NodeOrNodes, root: any, options?: ?Object): ReactWrapper;
     mount(): this;
     ref(refName: string): this;
     detach(): void;

@@ -1,12 +1,6 @@
-<Trans id="{value,number}" params={{
+<Trans id="The answer is {value,number}" values={{
   value: value
 }} />;
-<Trans id="{value,number,percent}" params={{
-  value: value
-}} />;
-<Trans id="{value,number,percent}" params={{
-  value: value
-}} />;
-<Trans id="The answer is {value,number}" params={{
-  value: value
-}} />;
+<DateFormat value={value} />;
+<NumberFormat value={value} />;
+<NumberFormat value={value} format="percent" />;

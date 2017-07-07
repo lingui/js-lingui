@@ -1,8 +1,8 @@
 {
   "name": "lingui-formats",
-  "version": "0.4.6",
+  "version": "1.0.0",
   "description": "Built-in formats for numbers and dates",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui/"
@@ -11,7 +11,14 @@
     "lingui",
     "formats",
     "i18n",
-    "internationalization"
+    "internationalization",
+    "l10n",
+    "localization",
+    "t9n",
+    "translation",
+    "icu",
+    "messageformat",
+    "intl"
   ],
   "author": {
     "name": "Tomáš Ehrlich",

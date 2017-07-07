@@ -1,18 +1,20 @@
 /* @flow */
-import { I18n, default as exportedI18n } from '.'
+import i18n, { setupI18n } from '.'
+import { mockConsole, mockEnv } from './mocks'
+import linguiDev from './dev'
 
 describe('I18n', function () {
   it('should export default I18n instance', function () {
-    expect(exportedI18n).toBeInstanceOf(I18n)
+    expect(i18n).toBeDefined()
   })
 
   it('should be initialized with empty catalog', function () {
-    const i18n = new I18n()
+    const i18n = setupI18n()
     expect(i18n.messages).toEqual({})
   })
 
   it('should bound t method', function () {
-    const i18n = new I18n()
+    const i18n = setupI18n()
     expect(i18n.t).toBeInstanceOf(Function)
 
     expect(i18n.t`Message`).toEqual('Message')
@@ -23,111 +25,180 @@ describe('I18n', function () {
 
   it('.load should load catalog and merge with existing', function () {
     const messages = {
-      en: {
-        'Hello': 'Hello'
-      }
+      'Hello': 'Hello'
     }
 
-    const i18n = new I18n()
+    const i18n = setupI18n({
+      development: linguiDev
+    })
     expect(i18n.messages).toEqual({})
 
+    i18n.load({ en: { messages } })
     i18n.activate('en')
-    i18n.load({ en: messages.en })
-    expect(i18n.messages).toEqual(messages.en)
+    expect(i18n.messages).toEqual(messages)
 
     // fr catalog shouldn't affect the english one
-    i18n.load({ fr: { 'Hello': 'Salut' } })
-    expect(i18n.messages).toEqual(messages.en)
+    i18n.load({ fr: { messages: { 'Hello': 'Salut' } } })
+    expect(i18n.messages).toEqual(messages)
 
-    i18n.load({ en: { 'Goodbye': 'Goodbye' } })
+    i18n.load({ en: { messages: { 'Goodbye': 'Goodbye' } } })
     // $FlowIgnore: testing edge case
-    i18n.load()  // should do nothing
+    i18n.load() // should do nothing
     expect(i18n.messages).toEqual({
       'Hello': 'Hello',
       'Goodbye': 'Goodbye'
     })
   })
 
+  it('.loadLanguageData should load language data and merge with existing', function () {
+    const languageData = {
+      plurals: jest.fn(),
+      code: 'en-US'
+    }
+
+    const i18n = setupI18n({
+      language: 'en',
+      catalogs: {
+        en: {
+          messages: {},
+          languageData
+        },
+        fr: {
+          messages: {}
+        }
+      }
+    })
+
+    expect(i18n.languageData).toEqual(languageData)
+
+    // fr catalog shouldn't affect the english one
+    i18n.load({
+      fr: {
+        messages: {},
+        languageData: {
+          plurals: jest.fn(),
+          code: 'fr-FR'
+        }
+      }
+    })
+    expect(i18n.languageData).toEqual(languageData)
+    // $FlowIgnore: testing edge case
+    i18n.load() // should do nothing
+    expect(i18n.languageData).toEqual(languageData)
+  })
+
   it('.activate should switch active language', function () {
-    const i18n = new I18n()
     const messages = {
       'Hello': 'Salut'
     }
 
-    i18n.load({ fr: messages })
-    i18n.activate('en')
+    const i18n = setupI18n({
+      language: 'en',
+      catalogs: {
+        fr: { messages },
+        en: { messages: {} }
+      },
+      development: linguiDev
+    })
+
     expect(i18n.language).toEqual('en')
     expect(i18n.messages).toEqual({})
 
     i18n.activate('fr')
     // $FlowIgnore: testing edge case
-    i18n.activate()  // should do nothing
+    i18n.activate() // should do nothing
     expect(i18n.language).toEqual('fr')
     expect(i18n.messages).toEqual(messages)
   })
 
   it('.activate should throw an error about incorrect language', function () {
-    const i18n = new I18n()
-    expect(() => i18n.activate('xyz')).toThrowErrorMatchingSnapshot()
-    expect(() => new I18n('xyz')).toThrowErrorMatchingSnapshot()
+    const i18n = setupI18n()
+
+    mockConsole(console => {
+      i18n.activate('xyz')
+      expect(console.warn).toBeCalledWith('Message catalog for locale "xyz" not loaded.')
+    })
+
+    mockConsole(console => {
+      mockEnv('production', () => {
+        i18n.activate('xyz')
+        expect(console.warn).not.toBeCalled()
+      })
+    })
   })
 
   it('.use should return new i18n object with switched language', function () {
-    const i18n = new I18n()
-    const messages = {
+    const catalogs = {
       en: {
-        'Hello': 'Hello'
+        messages: {
+          'Hello': 'Hello'
+        }
       },
       fr: {
-        'Hello': 'Salut'
+        messages: {
+          'Hello': 'Salut'
+        }
       }
     }
 
-    i18n.load(messages)
-    i18n.activate('en')
-    expect(i18n.translate({ id: 'Hello' })).toEqual('Hello')
+    const i18n = setupI18n({
+      language: 'en',
+      catalogs,
+      development: linguiDev
+    })
+
+    expect(i18n._('Hello')).toEqual('Hello')
 
     // change language locally
-    expect(i18n.use('fr').translate({ id: 'Hello' })).toEqual('Salut')
+    expect(i18n.use('fr')._('Hello')).toEqual('Salut')
 
     // global language hasn't changed
-    expect(i18n.translate({ id: 'Hello' })).toEqual('Hello')
+    expect(i18n._('Hello')).toEqual('Hello')
   })
 
-  it('.translate should format message from catalog', function () {
-    const i18n = new I18n()
+  it('._ should format message from catalog', function () {
     const messages = {
       'Hello': 'Salut',
       'My name is {name}': 'Je m\'appelle {name}'
     }
 
-    i18n.load({ fr: messages })
-    i18n.activate('fr')
+    const i18n = setupI18n({
+      language: 'fr',
+      catalogs: { fr: { messages } },
+      development: linguiDev
+    })
 
-    expect(i18n.translate({ id: 'Hello' })).toEqual('Salut')
-    expect(i18n.translate({ id: 'My name is {name}', params: { name: 'Fred' } }))
+    expect(i18n._('Hello')).toEqual('Salut')
+    expect(i18n._('My name is {name}', { values: { name: 'Fred' } }))
       .toEqual("Je m'appelle Fred")
 
     // missing { name }
-    expect(i18n.translate({ id: 'My name is {name}' }))
+    expect(i18n._('My name is {name}'))
       .toEqual("Je m'appelle")
 
     // Untranslated message
-    expect(i18n.translate({ id: 'Missing message' })).toEqual('Missing message')
+    expect(i18n._('Missing message')).toEqual('Missing message')
+    expect(i18n._('Missing {name}', { values: { name: 'Fred' } })).toEqual('Missing Fred')
+    expect(i18n._('Missing with default', {
+      defaults: 'Missing {name}',
+      values: { name: 'Fred' }
+    })).toEqual('Missing Fred')
   })
 
-  it('.compile should return compiled message', function () {
-    const i18n = new I18n()
+  it('._ shouldn\'t compile messages in production', function () {
     const messages = {
       'Hello': 'Salut',
-      'My name is {name}': "Je m'appelle {name}"
+      'My name is {name}': 'Je m\'appelle {name}'
     }
 
-    i18n.load({ fr: messages })
-    i18n.activate('fr')
+    mockEnv('production', () => {
+      const i18n = setupI18n({
+        language: 'fr',
+        catalogs: { fr: { messages } }
+      })
 
-    const msg = i18n.compile('My name is {name}')
-    expect(msg).toBeInstanceOf(Function)
-    expect(msg({ name: 'Fred' })).toEqual('My name is Fred')
+      expect(i18n._('My name is {name}', { values: { name: 'Fred' } }))
+        .toEqual("Je m'appelle {name}")
+    })
   })
 })

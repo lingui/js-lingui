@@ -1,5 +1,4 @@
 /* @flow */
-import type { I18n } from './i18n'
 
 type PluralForms = {
   zero?: string,
@@ -15,33 +14,23 @@ type PluralProps = {
   offset?: number
 } & PluralForms
 
-const plural = (i18n: I18n) => ({
+const _plural = (type) => (i18n: any) => ({
   value,
   offset = 0,
   other,
   ...pluralForms
-}: PluralProps): string => {
+  }: PluralProps): string => {
+  const diff = value - offset
   const translation = (
-    pluralForms[(value - offset).toString()] ||      // exact match
-    pluralForms[i18n.pluralForm(value - offset)] ||  // plural form
-    other                                           // fallback
+    pluralForms[value.toString()] || // exact match
+    pluralForms[i18n.pluralForm(diff, type)] || // plural form
+    other // fallback
   )
-  return translation.replace('#', value.toString())
+  return translation.replace('#', diff.toString())
 }
 
-const selectOrdinal = (i18n: I18n) => ({
-  value,
-  offset = 0,
-  other,
-  ...pluralForms
-}: PluralProps): string => {
-  const translation = (
-    pluralForms[(value - offset).toString()] ||                 // exact match
-    pluralForms[i18n.pluralForm(value - offset, 'ordinal')] ||  // plural form
-    other                                                       // fallback
-  )
-  return translation.replace('#', value.toString())
-}
+const plural = _plural('cardinal')
+const selectOrdinal = _plural('ordinal')
 
 type SelectProps = {
   value: string,
@@ -52,7 +41,7 @@ function select ({
   value,
   other,
   ...selectForms
-}: SelectProps): string {
+  }: SelectProps): string {
   return selectForms[value] || other
 }
 

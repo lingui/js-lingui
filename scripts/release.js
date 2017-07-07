@@ -8,6 +8,9 @@ const emojify = require('node-emoji').emojify
 
 const { PACKAGE_DIR, getPackages, getInternalDependencies, sortByDependencies } = require('./discover')
 
+const isPrerelease = process.argv.includes('--pre')
+const pre = isPrerelease ? 'pre' : ''
+
 // map of package versions: packageName -> version
 // Global variable is ugly, but I'm not in state of mind to write a better code
 const versions = {}
@@ -43,12 +46,15 @@ function checkUpdates(packageInfo) {
   if (latest) {
     log(packageInfo.name, '')
     const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
-    const history = runCmd(`git log ${latest}.. --format='%s' -- ${packageDir}`)
+    const history = runCmd(`git log ${latest}.. --pretty=format:'%s%n%b' -- ${packageDir}`)
 
     const changes = (
       history.split('\n')
-        .map(line => line.replace(/^(\w+)(\([^)]*\))?:.*$/, "$1"))
-        .filter(change => ['feat', 'fix'].includes(change))
+        .map(line => {
+          if (line.includes('BREAKING CHANGE')) return 'major'
+          return line.replace(/^(\w+)(\([^)]*\))?:.*$/, "$1")
+        })
+        .filter(change => ['major', 'feat', 'fix'].includes(change))
     )
 
     if (changes.length) {
@@ -61,6 +67,8 @@ function checkUpdates(packageInfo) {
 
 function updatePackage(packageInfo, changes) {
   const packageDir = path.join(PACKAGE_DIR, packageInfo.name)
+  const pkgFilePath = path.relative(
+    __dirname, path.resolve(path.join(packageDir, 'package.json')))
   const runLocal = runCmdLocal(packageDir)
 
   if (packageInfo.private) {
@@ -68,17 +76,31 @@ function updatePackage(packageInfo, changes) {
     return
   }
 
-  const change = changes.includes('feat') ? 'minor' : 'patch'
+  const dependencyMajor = packageInfo.dependencies
+    .map(name => versions[name] && versions[name].major)
+    .reduce((any, isMajor) => any || isMajor, false)
+
+  const major = changes.includes('major') || dependencyMajor
+  const change = major
+    ? `${pre}major`
+    : changes.includes('feat')
+      ? `${pre}minor`
+      : `${pre}patch`
+
   log(chalk.yellow(` (${change} release)`))
 
   log('Releasing ', '')
 
   updateDependencies(packageInfo)
 
-  const oldVersion = runLocal(`npm view ${packageInfo.name} version`)
+  const oldVersion = require(pkgFilePath).version
+  const prerelease = isPrerelease && oldVersion.includes('-')
 
-  const newVersion = runLocal(`npm version ${change}`).slice(1)
-  versions[packageInfo.name] = newVersion
+  const newVersion = runLocal(`npm version ${prerelease ? 'prerelease' : change}`).slice(1)
+  versions[packageInfo.name] = {
+    version: newVersion,
+    major
+  }
 
   log(chalk.yellow(`v${oldVersion} => v${newVersion}`))
 
@@ -97,7 +119,7 @@ function updateDependencies(packageInfo) {
       if (!config[depType] || !versions[name]) return
 
       if (config[depType][name]) {
-        config[depType][name] = `^${versions[name]}`
+        config[depType][name] = `^${versions[name].version}`
       }
     })
   })
@@ -109,16 +131,16 @@ async function release() {
   const packages = getPackages()
   const dependencies = sortByDependencies(getInternalDependencies(packages))
 
-  runCmd('git stash')
+  const isStashed = !runCmd('git stash | grep "No local changes"')
   const newVersions = dependencies.map(checkUpdates).filter(Boolean)
 
   if (!newVersions.length) {
     log('Nothing to do!')
-    runCmd('git stash pop')
+    if (isStashed) runCmd('git stash pop')
     return
   }
 
-  const message = `release: 
+  const message = `${pre}release: 
 
 Updated packages:
 ${newVersions.join('\n')}
@@ -133,10 +155,12 @@ ${newVersions.join('\n')}
 
   commitMsg.removeCallback()
 
-  newVersions.forEach(version => {
-    runCmd(`git tag ${version}`)
-  })
-  runCmd('git stash pop')
+  if (!isPrerelease) {
+    newVersions.forEach(version => {
+      runCmd(`git tag ${version}`)
+    })
+  }
+  if (isStashed) runCmd('git stash pop')
 }
 
 

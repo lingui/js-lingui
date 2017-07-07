@@ -1,11 +1,16 @@
+import linguiTransformJs from 'babel-plugin-lingui-transform-js'
+import linguiTransformReact from 'babel-plugin-lingui-transform-react'
+import linguiExtractMessages from 'babel-plugin-lingui-extract-messages'
+import getConfig from 'lingui-conf'
+
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const Table = require('cli-table')
-const emojify = require('node-emoji').emojify
 const program = require('commander')
 const transformFileSync = require('babel-core').transformFileSync
-const getConfig = require('lingui-conf').default
+
+const { getLanguages } = require('./api/languages')
 
 const config = getConfig()
 
@@ -22,7 +27,17 @@ function extractMessages (files) {
       )
     } else {
       if (!/\.jsx?$/i.test(file)) return
-      transformFileSync(file)
+      transformFileSync(file, {
+        plugins: [
+          // Plugins run before presets, so we need to import trasnform-plugins
+          // here until we have a better way to run extract-messages plugin
+          // *after* all plugins/presets.
+          // Transform plugins are idempotent, so they can run twice.
+          linguiTransformJs,
+          linguiTransformReact,
+          linguiExtractMessages
+        ]
+      })
       console.log(chalk.green(file))
     }
   })
@@ -46,32 +61,43 @@ function collectMessages (dir) {
   return catalog
 }
 
-function writeCatalogs (localeDir) {
+function writeCatalogs (localeDir, languages) {
   const buildDir = path.join(localeDir, '_build')
   const catalog = collectMessages(buildDir)
 
-  const languages = fs.readdirSync(localeDir).filter(dirname =>
-    /^([a-z-]+)$/i.test(dirname) &&
-    fs.lstatSync(path.join(localeDir, dirname)).isDirectory()
-  )
-
-  const stats = languages.map(
+  return languages.map(
     language => JSONWriter(catalog, path.join(localeDir, language))
   )
-  return { languages, stats }
 }
 
 function JSONWriter (messages, languageDir) {
   let newFile = true
 
   const catalog = {}
-  Object.keys(messages).forEach(key => { catalog[key] = '' })
+  Object.keys(messages).forEach(key => {
+    catalog[key] = {
+      translation: '',
+      ...messages[key]
+    }
+  })
 
   const catalogFilename = path.join(languageDir, 'messages.json')
 
   if (fs.existsSync(catalogFilename)) {
     const original = JSON.parse(fs.readFileSync(catalogFilename))
-    Object.assign(catalog, original)
+
+    Object.keys(original).forEach(key => {
+      const originalMsg = original[key]
+      if (!originalMsg) return
+      if (!catalog[key]) catalog[key] = {}
+
+      catalog[key].translation = typeof originalMsg === 'string'
+        // backward compatability, Deprecated-2
+        ? originalMsg
+        // new catalogs have objects as values
+        : originalMsg.translation
+    })
+
     newFile = false
   }
 
@@ -90,7 +116,7 @@ function JSONWriter (messages, languageDir) {
 function getStats (catalog) {
   return [
     Object.keys(catalog).length,
-    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg).length
+    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg.translation).length
   ]
 }
 
@@ -114,16 +140,26 @@ function displayStats (languages, stats) {
 
 program.parse(process.argv)
 
-console.log(emojify(':mag:  Extracting messages from source files:'))
-extractMessages(program.args.length ? program.args : config.srcPathDirs)
-console.log()
+const languages = getLanguages(config.localeDir)
 
-console.log(emojify(':book:  Writing message catalogues:'))
-const { languages, stats } = writeCatalogs(config.localeDir)
-console.log()
+if (!languages.length) {
+  console.log('No languages defined.')
+  console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
+  process.exit(1)
+} else {
+  console.log('Extracting messages from source files:')
+  extractMessages(program.args.length ? program.args : config.srcPathDirs)
+  console.log()
 
-console.log(emojify(':chart_with_upwards_trend:  Catalog statistics:'))
-displayStats(languages, stats)
-console.log()
+  console.log('Writing message catalogues:')
+  const stats = writeCatalogs(config.localeDir, languages)
+  console.log()
 
-console.log(emojify(':sparkles:  Done!'))
+  console.log('Catalog statistics:')
+  displayStats(languages, stats)
+  console.log()
+
+  console.log('Messages extracted!\n')
+  console.log(`(use "${chalk.yellow('lingui extract')}" to update catalogs with new messages)`)
+  console.log(`(use "${chalk.yellow('lingui compile')}" to compile catalogs for production)`)
+}

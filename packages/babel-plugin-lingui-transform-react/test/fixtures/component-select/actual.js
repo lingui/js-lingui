@@ -4,3 +4,11 @@
   female={`She`}
   other={<strong>Other</strong>}
 />;
+<Select
+  id="msg.select"
+  render="strong"
+  value={count}
+  male="He"
+  female={`She`}
+  other={<strong>Other</strong>}
+/>;

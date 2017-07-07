@@ -1,8 +1,8 @@
 {
   "name": "babel-plugin-lingui-transform-js",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Transform lingui-i18n methods to ICU message format",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -23,5 +23,8 @@
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0"
   }
 }

@@ -1,8 +1,9 @@
 {
   "name": "lingui-i18n",
-  "version": "0.6.6",
+  "version": "1.0.0",
   "description": "I18n tools for javascript",
-  "main": "lib/index.js",
+  "main": "index.js",
+  "module": "index.es.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -23,7 +24,8 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-formats": "^0.4.5",
+    "babel-runtime": "^6.23.0",
+    "lingui-formats": "^1.0.0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
   },

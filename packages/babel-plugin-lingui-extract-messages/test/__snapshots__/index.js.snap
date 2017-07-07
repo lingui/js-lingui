@@ -102,7 +102,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        5,
+        7,
       ],
     ],
   },
@@ -111,11 +111,11 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        3,
+        5,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        4,
+        6,
       ],
     ],
   },
@@ -123,7 +123,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        2,
+        4,
       ],
     ],
   },
@@ -131,7 +131,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        6,
+        8,
       ],
     ],
   },

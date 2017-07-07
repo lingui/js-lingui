@@ -1,323 +1,200 @@
-[Docs](https://github.com/lingui/js-lingui/wiki)
+| Branch | master | next |
+| ---: | :---: | :---: |
+| Build Status | [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master) | [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/next.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/next) |
 
-[![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
+**📖 [Documentation][Documentation]**
 
 # Lingui - tools for ~~internationalization~~ i18n in javascript
 
-Type-checked and intuitive way to internationalize applications in Javascript and ReactJS using ICU message format.
+Type-checked and intuitive way to internationalize applications in Javascript 
+and ReactJS.
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
 >
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
-Building applications and products for international audiences involves internationalization (i.e: preparing app for translation) and localization (i.e: adoption of application to meet language and cultural requirements). Lingui provides tools to make i18n of JS applications using ICU message format as easy as possible. 
+## Key features
 
-**TL;DR:** [Compare js-lingui with react-intl and react-i18next](https://github.com/lingui/js-lingui/wiki/Comparison-of-i18n-libraries)
+- Small and fast - about 6kb gzipped (no hacks with `webpack.IgnorePlugin` required, no message parsing in production)
+- Babel plugin for convenient, type-checked way of writing ICU MessageSyntax (recommended, but not required)
+- CLI for working with message catalogs (extracting, merging, compiling)
+- Built on standard ICU MessageFormat (might replace [react-intl][ReactIntl] completely)
+  - Variable interpolation
+  - Components inside translations (e.g: `Read <Link to="...">documentation</Link>.`)
+  - Plurals, Ordinals and Categories (i.e. Select)
+  - Number and Date formats (from Intl)
+- Works with manual and generated message IDs
+- Works with in any JS environment, while integration packages brings better performance in target environments (e.g: `lingui-react` for React)
+- High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
 
-![Example use case with React](docs/lingui-pitch.png)
+See the [tutorial for React]()
 
-## Overview
+![Example use case with React](https://lingui.gitbooks.io/js/assets/lingui-pitch.png)
 
-Internationalization consists of three steps:
+### Intuitive way of writing messages
 
-1. [Specify parts for localization](#specify-parts-for-localization) - This is required even for monolingual apps, because it allows to use pluralization, polite forms, date/time formatting, etc.
-2. [Build a message catalog](#build-message-catalog) - Message catalogs are passed to translators
-3. [Load translated messages](#load-translated-messages) and switch application language
+No matter what i18n library you use, there is always an underlying message
+format that handles variable interpolation, plurals and custom format. 
+`js-lingui` isn't reinventing the wheel, but rather uses standardized 
+ICU MessageFormat which is supported in many platforms (the same format
+that [react-intl][ReactIntl] uses).
 
-### Specify parts for localization
-
-The first part of i18n process is wrapping all texts with component or function, which replaces source text with translation during runtime. `js-lingui` uses [ICU Message Format](https://github.com/lingui/js-lingui/wiki/ICU-message-format) which allows using of variables, plural forms and date/number formats.
-
-#### Javascript (wihout React)
-
-First install babel preset for using `js-lingui` in Vanilla JS apps and add it 
-to your babel config:
-
-```sh
-yarn add --dev babel-preset-lingui-js
-# or
-npm install --save-dev babel-preset-lingui-js
-```
-
-`lingui-js` provides `i18n.t` template tag for translation, `i18n.plural`, 
-`i18n.select`, `i18n.selectOrdinal` methods for pluralization and custom forms:
+`js-lingui` goes one step further and allows you to write messages in a way
+so intuitive that you'll forget there's an underlying i18n library.
 
 ```js
-import i18n from 'lingui-i18n'
+const name = 'Arthur'
 
-i18n.t`January`
-
-const name = "Fred"
+// Variable interpolation
 i18n.t`Hello, my name is ${name}`
 
+// Plurals
+const numBooks = 1
 i18n.plural({
-  value: count,
-  one: `# Book`,
-  other: `# Books`
+  value: numBooks,
+  one: `${name} has # book`,
+  other: `${name} has # books`
 })
 ```
 
-#### React
+This process is even more intuitive in `react`, if you're using JSX. Just wrap
+text in `<Trans>` tag and everything is handled for you - even inline
+components just works™:
 
-First install babel preset for using `js-lingui` in React apps and add it to your
-babel config:
-
-```sh
-yarn add --dev babel-preset-lingui-react
-# or
-npm install --save-dev babel-preset-lingui-react
-```
-
-[lingui-react](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) 
-provides several component for React applications: `Trans` is the main component 
-for general translation, `Plural` and `Select` for pluralization and custom 
-forms (e.g: polite forms):
-
-```jsx
-import React from 'react'
-import { Trans, Plural } from 'lingui-react'
-
-const App = ({ name, count }) => (
+```js
+const Pitch = () => (
   <div>
-    // Static text
-    <Trans>January</Trans>
-
-    // Variables
-    <Trans>Hello, my name is {name}</Trans>
-
-    // Components
-    <Trans>See the <a href="/more">description</a> below.</Trans>
-
+    // Variable Interpolation
+    <Trans id="msg.simple">Hello {name}</Trans>
+    
+    // Seamless translations with components
+    <Trans id="msg.link">
+      Read the <Link to="/docs">documentation</Link>.
+    </Trans>
+    
     // Plurals
     <Plural 
-      value={count} 
-      zero={<strong>No books</strong>}
-      one="# book" 
-      other="# books" 
+      id="msg.plural"
+      value={numBooks}
+      one={<Trans>{name} has # book</Trans>}
+      other={<Trans>{name} has # books</Trans>}
     />
   </div>
 )
 ```
 
-Sometimes it's necessary to translate also a text attributes, which don't accept
-React components. `lingui-react` has `WithI18n` decorator, which injects `i18n`
-object from `lingui-i18n`. 
-
-```jsx
-import React from 'react'
-import { WithI18n } from 'lingui-react'
-
-// Translating text attributes
-const LinkWithTooltip = WithI18n()(({ articleName, i18n }) => (
-  <a 
-    href="/more" 
-    title={i18n.t`Link to ${articleName}`}
-  >
-    <Trans>Link</Trans>
-  </a>
-))
-```
-
-At this point, application is available only in one language (English). When no 
-translations are available the default texts are used.
-
-:bulb: See [tutorial](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react) about i18n in React
-
-### Build message catalog
-
-Translators are working with message catalogs which are mapping of messages from
-source to target language. The simplest form is a dictionary, where key is source
-message and value is translated one:
+Message IDs are [optional](#works-with-manual-and-generated-message-ids). 
+Without them it's even easier, default messages become message ids:
 
 ```js
-const fr = {
-  "January": "Janvier",
-  "Hello, my name is {name}": "Salut, je m'appelle {name}",
-  "See the <0>description</0> below.": "...",
-  "{count, plural, zero {<0>No books</0>} one {# book} other {# books}": "..."
-}
-```
-
-The key is also called **message ID**. It must be unique across application. It 
-should also include all parameters so translators can change the order of words 
-and parameters if required.
-
-`js-lingui` provides a CLI for building and compiling message catalogs:
-
-```sh
-npm install --save-dev lingui-cli
-# or
-yarn add --dev lingui-cli
-
-# add directories for target languages
-lingui add-locale en fr
-
-# extract messages from source to message catalogs
-lingui extract
-```
-
-Target directory for locales is configured in `package.json`:
-
-```json
-{
-  "lingui": {
-    "localeDir": "./locale"
-  }
-}
-```
-
-Under the hood, there're three babel plugins responsible for creating message catalogs:
-
-1. `babel-plugin-lingui-transform-js`
-
-    This plugin transforms methods and template tag from `lingui-i18n` into ICU message format which becomes message ID.
+const Pitch = () => (
+  <div>
+    // Variable Interpolation
+    <Trans>Hello {name}</Trans>
     
-    ```js
-    i18n.t`Hello, my name is ${name}`
-    /* becomes this entry in source language file:
-     * {
-     *   "Hello, my name is {name}": "" 
-     * } 
-     */
-    ```
-
-2. `babel-plugin-lingui-transform-react`
-
-    This plugin transforms components from `lingui-react` (e.g: `Trans`) into ICU message format which becomes message ID. 
+    // Seamless translations with components
+    <Trans>
+      Read the <Link to="/docs">documentation</Link>.
+    </Trans>
     
-    **Note**: It's also possible to use custom message IDs. Simply pass `id` attribute to `Trans` component and children's going to be used as a default message only.
-     
-    ```jsx
-    <Trans id="month.january">January</Trans>
-    /* becomes this entry in source language file:
-     * {
-     *    "month.january": "January",
-     *    ...
-     * }
-     */
-    ```
-
-3. `babel-plugin-lingui-extract-messages` - It extracts all message IDs into temporary catalogs, one catalog per file.
-
-The result is one message catalog per language (e.g: `locale/fr/messages.json`).
-
-### Load translated messages
-
-Translated message catalogs must be loaded back to application. The process 
-depends on type of application.
-
-#### Javascript
-
-`lingui-i18n` uses `.load(messages)` method to load message catalog and
-`.use(language)` to select a language:
-
-```js
-import i18n from 'lingui-i18n'
-import messagesEn from './locales/en/messages.json'
-import messagesFr from './locales/fr/messages.json'
-
-// load message catalogs
-i18n.load({
-  en: messagesEn,
-  fr: messagesFr
-})
-
-// activate english language
-i18n.activate('en')
-```
-
-#### React
-
- `lingui-react` provides `ProvideI18n` component which receives active language
- and messages for that language:
-
-```jsx
-import React from 'react'
-import { ProvideI18n } from 'lingui-react'
-import App from './App'
-import messages from './locales/fr/messages.json'
-
-render(
-    <ProvideI18n language="fr" messages={{ fr: messages }}>
-        <App />
-    </ProvideI18n>,
-    document.getElementById('app')
+    // Plurals
+    <Plural 
+      value={numBooks}
+      one={<Trans>{name} has # book</Trans>}
+      other={<Trans>{name} has # books</Trans>}
+    />
+  </div>
 )
 ```
 
-When we render messages from the first part, we get them translated in French:
+### Batteries included - CLI for working with message catalogs
 
-```jsx
-<Trans>January</Trans>
-// becomes: Janvier
+`js-lingui` ships with easy CLI for extracting, merging and compiling of
+message catalogs.
 
-const name = "Fred"
-<Trans>Hello, my name is {name}</Trans>
-// becomes: Salut, je m'appelle Fred
+All messages from the source files can be extracted with one command:
 
-<Trans>See the <a href="/more">description</a> below.</Trans>
-// becomes: Voir <a href="/more">la description</a> ci-dessous
-
-const count = 42
-<Plural 
-  value={count} 
-  zero={<strong>No books</strong>}
-  one="# book" 
-  other="# books" 
-/>
-// becomes: 42 livres
+```bash
+$ lingui extract
 ```
 
-See [wiki](https://github.com/lingui/js-lingui/wiki) for more info or 
-[example-usecase](https://github.com/lingui/js-lingui/blob/master/packages/example-usecase/src/Usecases/Children.js) 
-for detailed example.
+```
+📖  Writing message catalogues:
+Writing locales/cs/messages.json
+Writing locales/en/messages.json
 
-## Packages
+📈  Catalog statistics:
+┌──────────┬─────────────┬─────────┐
+│ Language │ Total count │ Missing │
+├──────────┼─────────────┼─────────┤
+│ cs       │     43      │   11    │
+│ en       │     43      │    9    │
+└──────────┴─────────────┴─────────┘
 
-### `lingui-i18n` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-i18n)
+Messages extracted!
 
-[![npm](https://img.shields.io/npm/v/lingui-i18n.svg)](https://www.npmjs.com/package/lingui-i18n)
+(use "lingui extract" to update catalogs with new messages)
+(use "lingui compile" to compile catalogs for production)
+✨  Done!
+```
 
-Functions for I18n in Javascript.
+If you run this command second time, it'll merge translations from existing
+catalog with new messages.
 
-### `lingui-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-react)
+### Works also without babel plugin
 
-[![npm](https://img.shields.io/npm/v/lingui-react.svg)](https://www.npmjs.com/package/lingui-react)
+If you can't use babel plugin, you'll miss the nice feature of generated messages.
+However, if you still want to use this lib because of other reasons (performace),
+it's still possible:
 
-Components for I18n in React.
+```js
+// Instead of
+i18n.t`Hello, my name is ${name}`
 
-### `lingui-cli` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/lingui-cli)
+// use i18n._ directly:
+i18n._({
+  id: 'Hello, my name is {name}',
+  values: { name }
+})
+```
 
-[![npm](https://img.shields.io/npm/v/lingui-cli.svg)](https://www.npmjs.com/package/lingui-cli) 
+With React:
 
-Command line interface for working with message catalogs.
+```js
+// Instead of
+<Trans>Hello {name}</Trans>;
+// Write MessageFormat manually:
+<Trans id="Hello {name}" />;
+```
 
-### `babel-preset-lingui-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-preset-lingui-js)
+This is exactly what babel plugin does. It also validates MessageFormat and
+gives you convenient warnings about missing parameters, but if you can't use
+babel plugin, you can still use this library and get i18n with superb performace.
 
-[![npm](https://img.shields.io/npm/v/babel-preset-lingui-js.svg)](https://www.npmjs.com/package/babel-preset-lingui-js)
+### Works with manual and generated message IDs
 
-### `babel-preset-lingui-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-preset-lingui-react)
+`js-lingui` doesn't force you to use generated message IDs either. If you prefer
+setting your IDs manually, just pass `id` prop. Generated message will be used
+as a default one:
 
-[![npm](https://img.shields.io/npm/v/babel-preset-lingui-react.svg)](https://www.npmjs.com/package/babel-preset-lingui-react)
+```jsx harmony
+<Plural 
+  id="msg.plural"
+  value={numBooks}
+  one={<Trans>{name} has # book</Trans>}
+  other={<Trans>{name} has # books</Trans>}
+/>
+```
 
-### `babel-plugin-lingui-transform-js` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-transform-js)
+### Works anywhere
 
-[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-js.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-js)
-
-Transform function from `lingui-i18n` into ICU message format.
-
-### `babel-plugin-lingui-transform-react` [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-transform-react)
-
-[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-transform-react.svg)](https://www.npmjs.com/package/babel-plugin-lingui-transform-react)
-
-Transform components from `lingui-react` into ICU message format.
-
-### [`babel-plugin-lingui-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages) [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages)
-
-[![npm](https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-lingui-extract-messages)
-
-Extract all messages for translation to external files.
+Core library `lingui-i18n` works in any JS environment. Intergration libraries
+like `lingui-react` only brings better performace for target environments.
 
 ## License
 
 [MIT](./LICENSE.md)
+
+[ReactIntl]: https://github.com/yahoo/react-intl
+[Documentation]: https://lingui.gitbooks.io/js/
+[TutorialReact]: https://lingui.gitbooks.io/js/tutorials/react.html

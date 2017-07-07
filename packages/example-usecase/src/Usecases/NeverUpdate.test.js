@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { mount } from 'enzyme'
 import { I18nProvider } from 'lingui-react'
@@ -5,21 +6,25 @@ import { I18nProvider } from 'lingui-react'
 import NeverUpdate from './NeverUpdate'
 import Children from './Children'
 import ElementAttributes from './ElementAttributes'
+import linguiDev from 'lingui-react/dev'
 
 describe('NeverUpdate', function () {
-  const messages = {
+  const catalogs = {
+    en: {},
     cs: {
-      'Full content of {articleName}': 'Celý článek {articleName}',
-      'Close': 'Zavřít',
-      'msg.label': 'Nápis',
-      'Hello World': 'Ahoj světe',
-      'My name is {name}': 'Jmenuji se {name}',
-      'Read <0>more</0>': 'Číst <0>dále</0>'
+      messages: {
+        'Full content of {articleName}': 'Celý článek {articleName}',
+        'Close': 'Zavřít',
+        'msg.label': 'Nápis',
+        'Hello World': 'Ahoj světe',
+        'My name is {name}': 'Jmenuji se {name}',
+        'Read <0>more</0>': 'Číst <0>dále</0>'
+      }
     }
   }
 
   const BeConservative = (WrappedComponent) => ({ language }: { language: string}) =>
-    <I18nProvider language={language} messages={messages}>
+    <I18nProvider language={language} catalogs={catalogs} development={linguiDev}>
       <NeverUpdate>
         <WrappedComponent />
       </NeverUpdate>
@@ -32,7 +37,7 @@ describe('NeverUpdate', function () {
     expect(node.find('.untranslated').text()).toEqual("This isn't translated")
     expect(node.find('.customId').text()).toEqual('msg.label')
     expect(node.find('.translated').text()).toEqual('Hello World')
-    expect(node.find('.variable', { name: 'Fred' }).text()).toEqual('My name is Mononoke')
+    expect(node.find('.variable').text()).toEqual('My name is Mononoke')
 
     node.setProps({ language: 'cs' })
     expect(node.find('.untranslated').text()).toEqual("This isn't translated")

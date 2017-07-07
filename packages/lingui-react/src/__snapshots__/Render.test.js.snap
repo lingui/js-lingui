@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render should render children wrapped in span 1`] = `
+<span>
+  Just a text
+</span>
+`;
+
+exports[`Render should render children wrapped in span 2`] = `
+<span
+  className="info"
+>
+  Just a text
+</span>
+`;
+
+exports[`Render should render custom component 1`] = `
+<a
+  title="Title"
+>
+  X
+</a>
+`;
+
+exports[`Render should render custom element 1`] = `
+<h1>
+  Headline
+</h1>
+`;
+
+exports[`Render should render custom element 2`] = `
+<h1>
+  Headline
+</h1>
+`;

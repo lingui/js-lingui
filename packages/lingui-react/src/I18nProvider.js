@@ -1,68 +1,87 @@
 /* @flow */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { I18n } from 'lingui-i18n'
+import { setupI18n } from 'lingui-i18n'
+import type { I18n } from 'lingui-i18n'
 import type { Catalogs } from 'lingui-i18n'
 
-type I18nProviderProps = {
+export type I18nProviderProps = {
   children?: any,
   language: string,
-  messages: Catalogs,
+  catalogs?: Catalogs,
+  development?: Object,
   i18n?: I18n
 }
 
 /*
- * I18nManager - Connects to lingui-i18n/I18n class
+ * I18nPublisher - Connects to lingui-i18n/I18n class
  * Allows listeners to subscribe for changes
  */
-class I18nManager {
-  i18n: I18n
-  subscribers = []
+export function LinguiPublisher (i18n: I18n) {
+  let subscribers = []
 
-  constructor (language: string, messages?: Catalogs, i18n?: I18n) {
-    this.i18n = i18n || new I18n(language, messages)
-  }
+  return {
+    i18n,
 
-  subscribe = (callback: Function) => {
-    this.subscribers.push(callback)
-  }
+    getSubscribers () {
+      return subscribers
+    },
 
-  unsubscribe = (callback: Function) => {
-    this.subscribers = this.subscribers.filter(cb => cb !== callback)
-  }
+    subscribe (callback: Function) {
+      subscribers.push(callback)
+    },
 
-  update = ({ messages, language }: { messages?: Catalogs, language?: string } = {}) => {
-    if (!messages && !language) return
+    unsubscribe (callback: Function) {
+      subscribers = subscribers.filter(cb => cb !== callback)
+    },
 
-    if (messages) this.i18n.load(messages)
-    if (language) this.i18n.activate(language)
-    this.subscribers.forEach(f => f())
+    update ({ catalogs, language }: {
+      catalogs?: Catalogs,
+      language?: string
+    } = {}) {
+      if (!catalogs && !language) return
+
+      if (catalogs) i18n.load(catalogs)
+      if (language) i18n.activate(language)
+
+      subscribers.forEach(f => f())
+    }
   }
 }
 
-class I18nProvider extends React.Component {
-  i18nManager: I18nManager
+export default class I18nProvider extends React.Component {
   props: I18nProviderProps
+
+  linguiPublisher: LinguiPublisher
+
+  static childContextTypes = {
+    linguiPublisher: PropTypes.object.isRequired
+  }
 
   constructor (props: I18nProviderProps) {
     super(props)
-    const { language, messages, i18n } = this.props
-    this.i18nManager = new I18nManager(language, messages, i18n)
+    const { language, catalogs, development } = this.props
+    const i18n = this.props.i18n || setupI18n({
+      language,
+      catalogs,
+      development
+    })
+    this.linguiPublisher = new LinguiPublisher(i18n)
   }
 
   componentDidUpdate (prevProps: I18nProviderProps) {
-    const { language, messages } = this.props
+    const { language, catalogs } = this.props
     if (
       language !== prevProps.language ||
-      messages !== prevProps.messages
+      catalogs !== prevProps.catalogs
     ) {
-      this.i18nManager.update({ language, messages })
+      this.linguiPublisher.update({ language, catalogs })
     }
   }
 
   getChildContext () {
     return {
-      i18nManager: this.i18nManager
+      linguiPublisher: this.linguiPublisher
     }
   }
 
@@ -71,11 +90,3 @@ class I18nProvider extends React.Component {
     return children && children.length > 1 ? <div>{children}</div> : children
   }
 }
-
-I18nProvider.childContextTypes = {
-  i18nManager: PropTypes.object.isRequired
-}
-
-export default I18nProvider
-export { I18nManager }
-export type { I18nProviderProps }

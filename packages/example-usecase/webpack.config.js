@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   entry: './src/index.js',
@@ -16,6 +17,16 @@ module.exports = {
       }
     ]
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.IgnorePlugin(/\.dev$/, /lingui-i18n/)
+  ],
 
   devServer: {
     hot: true,

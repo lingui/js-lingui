@@ -1,6 +1,10 @@
-import 'babel-polyfill'
-
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
+const commonProps = ['id', 'className', 'render']
+
+// replace whitespace before/after newline with single space
+const nlRe = /\s*(?:\r\n|\r|\n)+\s*/g
+// remove whitespace before/after tag
+const nlTagRe = /(?:(>)(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=<))/g
 
 function cleanChildren (node) {
   node.children = []
@@ -9,7 +13,7 @@ function cleanChildren (node) {
 
 const mergeProps = (props, nextProps) => ({
   text: props.text + nextProps.text,
-  params: Object.assign({}, props.params, nextProps.params),
+  values: Object.assign({}, props.values, nextProps.values),
   components: props.components.concat(nextProps.components),
   formats: props.formats,
   elementIndex: nextProps.elementIndex
@@ -17,22 +21,24 @@ const mergeProps = (props, nextProps) => ({
 
 const initialProps = ({ formats } = {}) => ({
   text: '',
-  params: {},
+  values: {},
   components: [],
   formats: formats || {}
 })
 
-const elementGeneratorFactory = () => {
-  let index = 0
-  return () => index++
-}
+const generatorFactory = (index = 0) => () => index++
 
 // Plugin function
 export default function ({ types: t }) {
   let elementGenerator
+  let argumentGenerator
 
   function isIdAttribute (node) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
+  }
+
+  function isDefaultsAttribute (node) {
+    return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'defaults'})
   }
 
   const elementName = name => node =>
@@ -81,7 +87,9 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
+        } else if (Array.includes(commonProps, name)) {
+          // just do nothing
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -108,7 +116,7 @@ export default function ({ types: t }) {
           element,
           `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
         )
-      } else if (!choicesKeys.includes('other')) {
+      } else if (!Array.includes(choicesKeys, 'other')) {
         throw file.buildCodeFrameError(
           element, `Missing fallback argument 'other'.`)
       }
@@ -116,7 +124,7 @@ export default function ({ types: t }) {
       // validate plural rules
       if (choicesType === 'plural' || choicesType === 'selectordinal') {
         choicesKeys.forEach(rule => {
-          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
+          if (!Array.includes(pluralRules, rule) && !/=\d+/.test(rule)) {
             throw file.buildCodeFrameError(
               element,
               `Invalid plural rule '${rule}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
@@ -128,9 +136,16 @@ export default function ({ types: t }) {
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
 
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
-      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
       element.name = t.JSXIdentifier('Trans')
     } else if (isFormatElement(node)) {
+      if (root) {
+        // Don't convert standalone Format elements to ICU MessageFormat.
+        // It doesn't make sense to have `{name, number}` message, because we
+        // can call number() formatter directly in component.
+        return
+      }
+
       const type = element.name.name.toLowerCase().replace('format', '')
 
       let variable, format
@@ -147,7 +162,7 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
         } else if (name === 'format') {
           if (t.isStringLiteral(attr.value)) {
             format = attr.value.value
@@ -187,7 +202,7 @@ export default function ({ types: t }) {
       if (format) parts.push(format)
 
       props.text = `{${parts.join(',')}}`
-      element.attributes = element.attributes.filter(attr => attr.name.name === 'props')
+      element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
       element.name = t.JSXIdentifier('Trans')
     // Other elements
     } else {
@@ -217,9 +232,8 @@ export default function ({ types: t }) {
     if (t.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
-      if (t.isIdentifier(exp)) {
-        nextProps.text += `{${exp.name}}`
-        nextProps.params[exp.name] = t.objectProperty(exp, exp)
+      if (t.isStringLiteral(exp)) {
+        nextProps.text += exp.value
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
 
@@ -234,13 +248,16 @@ export default function ({ types: t }) {
             nextProps.text += item.value.raw
           } else {
             nextProps.text += `{${item.name}}`
-            nextProps.params[item.name] = t.objectProperty(item, item)
+            nextProps.values[item.name] = t.objectProperty(item, item)
           }
         })
       } else if (t.isJSXElement(exp)) {
         nextProps = processElement(exp, file, nextProps)
       } else {
-        nextProps.text += exp.value
+        const name = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+        const key = t.isIdentifier(exp) ? exp : t.numericLiteral(name)
+        nextProps.text += `{${name}}`
+        nextProps.values[name] = t.objectProperty(key, exp)
       }
     } else if (t.isJSXElement(node)) {
       nextProps = processElement(node, file, nextProps)
@@ -251,16 +268,15 @@ export default function ({ types: t }) {
       nextProps.text += node.value
     }
 
-    // normalize spaces
-    nextProps.text = nextProps.text.replace(/\n\s+/g, '\n')
-
     return mergeProps(props, nextProps)
   }
 
   return {
     visitor: {
-      JSXElement ({ node }, file) {
-        elementGenerator = elementGeneratorFactory()
+      JSXElement (path, file) {
+        const { node } = path
+        elementGenerator = generatorFactory()
+        argumentGenerator = generatorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
 
@@ -271,29 +287,32 @@ export default function ({ types: t }) {
         // 2. Replace children and add collected data
 
         cleanChildren(node)
-        props.text = props.text.trim()
-        const attrs = node.openingElement.attributes
+        const text = props.text
+          .replace(nlTagRe, '$1')
+          .replace(nlRe, ' ')
+          .trim()
+        let attrs = node.openingElement.attributes
 
         // If `id` prop already exists and generated ID is different,
         // add it as a `default` prop
         const idAttr = attrs.filter(isIdAttribute)[0]
-        if (idAttr && idAttr.value.value !== props.text) {
+        if (idAttr && text && idAttr.value.value !== text) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('defaults'), t.StringLiteral(text))
           )
         } else if (!idAttr) {
           attrs.push(
-            t.JSXAttribute(t.JSXIdentifier('id'), t.StringLiteral(props.text))
+            t.JSXAttribute(t.JSXIdentifier('id'), t.StringLiteral(text))
           )
         }
 
         // Parameters for variable substitution
-        const paramsList = Object.values(props.params)
-        if (paramsList.length) {
+        const valuesList = Object.values(props.values)
+        if (valuesList.length) {
           attrs.push(
             t.JSXAttribute(
-              t.JSXIdentifier('params'),
-              t.JSXExpressionContainer(t.objectExpression(paramsList)))
+              t.JSXIdentifier('values'),
+              t.JSXExpressionContainer(t.objectExpression(valuesList)))
           )
         }
 
@@ -316,7 +335,11 @@ export default function ({ types: t }) {
               t.JSXExpressionContainer(t.objectExpression(formatsList)))
           )
         }
-      }  // JSXElement
-    }  // visitor
+
+        if (process.env.NODE_ENV === 'production') {
+          node.openingElement.attributes = attrs.filter(node => !isDefaultsAttribute(node))
+        }
+      } // JSXElement
+    } // visitor
   }
 }

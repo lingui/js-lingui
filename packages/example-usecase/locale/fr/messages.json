@@ -1,14 +1,17 @@
 {
   "Translation of children": "",
   "Translation of element attributes": "",
+  "Formats": "",
   "Translations wrapped in component which never updates": "",
   "This isn't translated": "",
   "msg.label": "Label",
   "Hello World": "Salut le monde!",
   "My name is {name}": "Je m'appelle {name}",
   "Read <0>more</0>.": "",
-  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": "",
+  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": "",
   "Close": "",
   "<0>Article</0>": "",
-  "Full content of {articleName}": ""
+  "Full content of {articleName}": "",
+  "The answer is {answer,number,percent}": "",
+  "Today is {now,date}": ""
 }

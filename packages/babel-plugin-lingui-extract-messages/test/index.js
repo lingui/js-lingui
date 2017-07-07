@@ -32,13 +32,13 @@ function testCase (testName, assertion) {
     babelrc: false,
     plugins: [
       ...(filename.endsWith('integration.js')
-          ? jsx
-            ? [
-              'lingui-transform-react',
-              'lingui-transform-js'
-            ]
-            : ['lingui-transform-js']
-          : []
+        ? jsx
+          ? [
+            'lingui-transform-react',
+            'lingui-transform-js'
+          ]
+          : ['lingui-transform-js']
+        : []
       ),
       [plugin, {
         localeDir: LOCALE_DIR

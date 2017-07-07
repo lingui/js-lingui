@@ -3,6 +3,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import { WithI18n } from '.'
+import { mockEnv, mockConsole } from './mocks'
 
 describe('WithI18n', function () {
   const context = {
@@ -33,7 +34,7 @@ describe('WithI18n', function () {
   // Mount HOC(sink) and get the props which were passed from HOC
   const mountHoc = (props = {}, hocOptions = {}) => {
     const { Sink, spy } = sinkFactory(hocOptions)
-    const node = mount(<Sink {...props} />, { context: { i18nManager: context } })
+    const node = mount(<Sink {...props} />, { context: { linguiPublisher: context } })
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
     // Original props are passed with along with i18n prop
@@ -46,24 +47,30 @@ describe('WithI18n', function () {
   })
 
   it('should warn if called incorrectly', function () {
-    const originalConsole = global.console
-    global.console = {
-      warn: jest.fn(),
-      error: jest.fn()
+    const wrongMount = () => {
+      const Component = WithI18n(() => <span />)
+      // Catch the React error. It will blow up user app, but at least they get
+      // the warning about the cause.
+      try {
+        // $FlowIgnore: This is invalid, that's the point.
+        mount(<Component />)
+      } catch (e) {}
     }
 
-    const Component = WithI18n(() => <span />)
-    // Catch the React error. It will blow up user app, but at least they get
-    // the warning about the cause.
-    try {
-      // $FlowIgnore: This is invalid, that's the point.
-      mount(<Component />)
-    } catch (e) {}
+    mockEnv('production', () => {
+      mockConsole(console => {
+        wrongMount()
+        expect(console.warn).not.toBeCalled()
+      })
+    })
 
-    expect(global.console.warn).toBeCalledWith(
-      expect.stringContaining('WithI18n([options]) takes options'))
-
-    global.console = originalConsole
+    mockEnv('development', () => {
+      mockConsole(console => {
+        wrongMount()
+        expect(console.warn).toBeCalledWith(
+          expect.stringContaining('WithI18n([options]) takes options'))
+      })
+    })
   })
 
   it('should pass all props to wrapped component', function () {

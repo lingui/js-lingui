@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+const nlRe = /(?:\r\n|\r|\n)+\s+/g
 
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 
@@ -12,17 +12,15 @@ export default function ({ types: t }) {
   const isChoiceMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) && (
-      t.isIdentifier(node.property, { name: 'plural' }) ||
-      t.isIdentifier(node.property, { name: 'select' }) ||
-      t.isIdentifier(node.property, { name: 'selectOrdinal' })
-    )
+        t.isIdentifier(node.property, { name: 'plural' }) ||
+        t.isIdentifier(node.property, { name: 'select' }) ||
+        t.isIdentifier(node.property, { name: 'selectOrdinal' }))
 
   const isFormatMethod = node =>
-  t.isMemberExpression(node) &&
-  t.isIdentifier(node.object, { name: 'i18n' }) && (
-    t.isIdentifier(node.property, { name: 'date' }) ||
-    t.isIdentifier(node.property, { name: 'number' })
-  )
+    t.isMemberExpression(node) &&
+    t.isIdentifier(node.object, { name: 'i18n' }) && (
+        t.isIdentifier(node.property, { name: 'date' }) ||
+        t.isIdentifier(node.property, { name: 'number' }))
 
   function processMethod (node, file, props) {
     // i18n.t
@@ -61,7 +59,7 @@ export default function ({ types: t }) {
           }
 
           variable = exp.name
-          props.params[variable] = t.objectProperty(exp, exp)
+          props.values[variable] = t.objectProperty(exp, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -97,7 +95,7 @@ export default function ({ types: t }) {
           node.callee,
           `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
         )
-      } else if (!choicesKeys.includes('other')) {
+      } else if (!Array.includes(choicesKeys, 'other')) {
         throw file.buildCodeFrameError(
           node.callee, `Missing fallback argument 'other'.`)
       }
@@ -105,7 +103,7 @@ export default function ({ types: t }) {
       // validate plural rules
       if (choicesType === 'plural' || choicesType === 'selectordinal') {
         choicesKeys.forEach(rule => {
-          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
+          if (!Array.includes(pluralRules, rule) && !/=\d+/.test(rule)) {
             throw file.buildCodeFrameError(
               node.callee,
               `Invalid plural rule '${rule}'. Must be ${pluralRules.join(', ')} or exact number depending on your source language ('one' and 'other' for English).`
@@ -126,8 +124,8 @@ export default function ({ types: t }) {
 
       const type = node.callee.property.name
       const parts = [
-        variable.name,  // variable name
-        type  // format type
+        variable.name, // variable name
+        type // format type
       ]
 
       let format = ''
@@ -153,7 +151,7 @@ export default function ({ types: t }) {
 
       if (format) parts.push(format)
 
-      props.params[variable.name] = t.objectProperty(variable, variable)
+      props.values[variable.name] = t.objectProperty(variable, variable)
       props.text += `${parts.join(',')}`
     }
 
@@ -177,7 +175,7 @@ export default function ({ types: t }) {
         props.text += `{${text}}`
       } else {
         props.text += `{${item.name}}`
-        props.params[item.name] = t.objectProperty(item, item)
+        props.values[item.name] = t.objectProperty(item, item)
       }
     })
 
@@ -189,22 +187,21 @@ export default function ({ types: t }) {
 
     const props = processMethod(path.node, file, {
       text: '',
-      params: {},
+      values: {},
       formats: {}
     }, /* root= */true)
 
-    if (!props.text) return
+    const text = props.text.replace(nlRe, ' ').trim()
+    if (!text) return
 
     // 2. Replace complex expression with single call to i18n.t
 
-    const tArgs = [
-      t.objectProperty(t.identifier('id'), t.StringLiteral(props.text.trim()))
-    ]
+    const tArgs = []
 
-    const paramsList = Object.values(props.params)
-    if (paramsList.length) {
+    const valuesList = Object.values(props.values)
+    if (valuesList.length) {
       tArgs.push(
-        t.objectProperty(t.identifier('params'), t.objectExpression(paramsList))
+        t.objectProperty(t.identifier('values'), t.objectExpression(valuesList))
       )
     }
 
@@ -215,10 +212,13 @@ export default function ({ types: t }) {
       )
     }
 
+    const i18nArgs = [ t.StringLiteral(text) ] // id
+    if (tArgs.length) i18nArgs.push(t.objectExpression(tArgs))
+
     const exp = t.callExpression(
-        t.memberExpression(t.identifier('i18n'), t.identifier('t')),
-        [ t.objectExpression(tArgs) ]
-      )
+      t.memberExpression(t.identifier('i18n'), t.identifier('_')),
+      i18nArgs
+    )
     exp.loc = path.node.loc
     path.replaceWith(exp)
   }

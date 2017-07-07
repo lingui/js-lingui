@@ -27,7 +27,7 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
   class WithI18n extends React.Component<*, *, *> {
     static contextTypes = {
-      i18nManager: PropTypes.object
+      linguiPublisher: PropTypes.object
     }
 
     wrappedInstance = null
@@ -48,25 +48,22 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
     }
 
     componentDidMount () {
-      if (update) {
-        const { subscribe } = this.getI18n()
-        if (subscribe) subscribe(this.checkUpdate)
-      }
+      const { subscribe } = this.getI18n()
+      if (update && subscribe) subscribe(this.checkUpdate)
     }
 
     componentWillUnmount () {
-      if (update) {
-        const { unsubscribe } = this.getI18n()
-        if (unsubscribe) unsubscribe(this.checkUpdate)
-      }
+      const { unsubscribe } = this.getI18n()
+      if (update && unsubscribe) unsubscribe(this.checkUpdate)
     }
 
-    checkUpdate = () => {
+    // Test checks that subscribe/unsubscribe is called with function.
+    checkUpdate = /* istanbul ignore next */() => {
       this.forceUpdate()
     }
 
     getI18n () {
-      return this.context.i18nManager || {}
+      return this.context.linguiPublisher || {}
     }
 
     render () {
@@ -75,6 +72,8 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
     }
   }
 
+  // return needs to be here, otherwise flow complains about {...this.props}
+  // in WrappedComponent
   return WithI18n
 }
 
