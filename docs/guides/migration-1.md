@@ -1,8 +1,8 @@
 Migrationg guide from 0.x to 1.x
 ================================
 
-Even though only few projects use `js-lingui` at the moment, this guide is
-trying to setup high quality migration path in project.
+Even though only few projects use `js-lingui` at the moment, the purpose of 
+this guide is to setup high quality migration path in `js-lingui` project.
 
 ## Babel plugins
 
@@ -33,16 +33,16 @@ removed and no space is added:
 ```jsx
 <Trans>
   This message is wrapped
-  on multiple
+  on <em>multiple</em>
   <strong>lines</strong>
 </Trans>
 
 
 // babel-plugin-lingui-transform-react 0.x
-"This message is wrapped\n  on multiple\n  <0>lines</0>"
+"This message is wrapped\n  on <em>multiple<em>\n  <0>lines</0>"
 
 // babel-plugin-lingui-transform-react 1.x
-"This message is wrapped on multiple<0>lines</0>"
+"This message is wrapped on <0>multiple<0><1>lines</1>"
 ```
 
 As weird as it is, this is consistent how JSX works. If you need to force
@@ -50,12 +50,13 @@ a space at the end of line, add `{" "}`:
 
 ```jsx
 <Trans>
-  Follow the <a>link</a>{" "}
-  or go <a>back</a>.
+  This message is wrapped
+  on <em>multiple</em>{" "}
+  <strong>lines</strong>
 </Trans>
 
 // will result in:
-"Follow the <0>link</0> or go <1>back</1>."
+"This message is wrapped on <0>multiple<0> <1>lines</1>"
 ```
 
 This change won't break the code, but it's necessary to update message catalogs.
@@ -87,7 +88,7 @@ const i18n = setupI18n({
 })
 ```
 
-`messages` were also replaced with `catalog`, more info [below](#messages-replaced-with-catalogs).
+`messages` were also replaced with `catalogs`, more info [below](#messages-replaced-with-catalogs).
 
 `lingui-i18n` still exports the default instance of `I18n` class, this
 remains unchanged:
