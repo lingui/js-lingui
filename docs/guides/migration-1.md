@@ -163,7 +163,7 @@ type Messages = {
 
 type Catalog = {
   messages: Messages,
-  meta: {
+  languageData: {
     // required in production
     plurals: Function
   }
@@ -194,7 +194,7 @@ i18n.load({
 })
 ```
 
-More aboat [loading message catalogs]().
+More about [loading message catalogs]().
 
 ## React API
 

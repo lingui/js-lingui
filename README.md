@@ -29,7 +29,7 @@ and ReactJS.
 
 See the [tutorial for React]()
 
-![Example use case with React](assets/lingui-pitch.png)
+![Example use case with React](https://lingui.gitbooks.io/js/assets/lingui-pitch.png)
 
 ### Intuitive way of writing messages
 

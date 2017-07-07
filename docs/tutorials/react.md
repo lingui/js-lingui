@@ -5,6 +5,8 @@ in multiple languages.
 
 Sample code is available in [tutorial-lingui-react][TutorialLinguiReact] repository.
 
+## Starting poing
+
 We are going to translate following app:
 
 ```jsx
@@ -35,7 +37,13 @@ const Inbox = ({ messages, markAsRead, user }) => {
           <a onClick={markAsRead}>mark them</a> as read.
         </p>
         
-        <p>There're {messagesCount} messages in your inbox.</p>
+        <p>
+          {
+            messagesCount === 1
+              ? There's {messagesCount} message in your inbox.
+              : There're {messagesCount} messages in your inbox.
+          }
+        </p>
         
         <footer>
           Last login on {lastLogin}.
@@ -62,7 +70,7 @@ Three major packages we're going to use are:
   `lingui-react` to ICU MessageFormat and validates them
 - `lingui-cli` - CLI for working with message catalogs
 
-1. `babel-preset-lingui-react` as development dependency, `lingui-react` is a runtime dependency and `lingui-cli` globally:
+1. Install `babel-preset-lingui-react` as development dependency, `lingui-react` as a runtime dependency and `lingui-cli` globally:
 
     ```bash
 yarn global add lingui-react
@@ -130,7 +138,7 @@ render(<App />, document.getElementById('app'))
 I know, the development import looks ugly! But we're doing this for a greater
 good, saving a lot of bandwidth data.
 
-:bulb:  You might be wondering: how are we going to change active language? :thinking_face:
+💡  You might be wondering: how are we going to change active language?  🤔
 Yes, that's a great question, but we need to focus! We're not going to change
 a language unless we have translated message catalog. And we won't have
 translated catalog before we extract all messages from source.
@@ -389,7 +397,7 @@ they prefer.
 
 ### Without babel preset
 
-If you can't add presets to babel configuration (hello Create React App users :wave:),
+If you can't add presets to babel configuration (hello Create React App users 👋),
 you can still use this library! You just need to do the work by yourself:
 
 ```jsx

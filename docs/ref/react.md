@@ -26,16 +26,18 @@ Prop name | Type | Description
 `className` | string | Class name to be added to `<span>` element
 `render` | React.Element, React.Class string | Custom wrapper element to render translation
 
-`className` is ignored, `render` is set.
+`className` is ignored, when `render` is set.
 
 When `render` is **React.Element** or **string** (built-in tags), it is cloned with `translation` as children:
 
 ```jsx
 // built-in tags
 <Trans render="h1">Heading</Trans>
+// renders as <h1>Heading</h1>
 
 // custom elements
 <Trans render={<Link to="/docs" />}>Link to docs</Trans>
+// renders as <Link to="/docs">Link to docs</Link>
 ```
 
 Using React.Component (or stateless component) in `render` prop is useful to get more control over the rendering of translation. Component passed to `render` receive translation/value in `translation` prop.
@@ -48,37 +50,7 @@ Using React.Component (or stateless component) in `render` prop is useful to get
     Sign in
 </Trans>
 
-// renders as
-// <Icon label="Sign in" />
-```
-
-### Variables inside components
-
-**:warning: Only simple variables are supported inside [Trans](#trans) component and as a `value` prop in other i18n components.**
-
-```js
-// This is valid example
-const name = "Arthur"
-
-// This is valid
-<Trans>Hello {name}</Trans>
-```
-
-It's not possible to use constants, function calls or object properties. 
-
-Any of following examples won't work:
-
-```js
-const messages = [
-  "Hello",
-  "World"
-]
-
-// These are invalid
-<Trans>{messages.length}</Trans>
-<Trans>{isEmpty(messages)}</Trans>
-<Trans>The answer is {42}</Trans>
-<DateFormat value={new Date()}
+// renders as <Icon label="Sign in" />
 ```
 
 ## Components
@@ -335,9 +307,31 @@ and shadows all implementation details:
 Prop name | Type | Description
 --- | --- | ---
 `language` | string | Active language
-`messages` | object | Message catalog
+`catalogs` | object | Message catalogs
 
-`messages` must be in format: `{ [language]: messageCatalog }`. This component should live above all i18n components. The good place is top-level application component. However, if the `language` is stored in the `redux` store, this component should be inserted below `react-redux/Provider`.
+`catalogs` is a type of `Catalogs`:
+
+```js
+// One catalog per language
+type Catalogs = {
+  [language: string]: Catalog
+}
+
+// Catalog contains messages and language data (i.e: plurals)
+type Catalog = {
+  messages: Messages,
+  languageData?: {
+    plurals: Function
+  }
+}
+
+// Message is either function (compiled message) or string
+type Messages = {
+  [messageId: string]: string | Function
+}
+```
+
+This component should live above all i18n components. The good place is top-level application component. However, if the `language` is stored in the `redux` store, this component should be inserted below `react-redux/Provider`.
 
 ```jsx
 import React from 'react'
@@ -346,9 +340,9 @@ import { I18nProvider } from 'lingui-react'
 
 const App = connect(state => ({ language: state.language }))(
     ({ language} ) => {
-        const messages = require(`locales/${language}.json`)
+        const catalogs = require(`locales/${language}.js`)
         return (
-            <I18nProvider language={language} messages={{ [language]: messages }}>
+            <I18nProvider language={language} catalogs={{ [language]: catalogs }}>
                // the rest of app
             </I18nProvider>,
         )

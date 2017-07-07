@@ -47,9 +47,11 @@ The render method looks like this:
 ```js
 render () {
   const { children, language } = this.props
+  const { catalogs } = this.state
+  if (!catalogs[language]) return
 
   return (
-    <I18nProvider language={language} messages={this.state.messages}>
+    <I18nProvider language={language} catalogs={catalogs}>
       {children}
     </I18nProvider>
   )
@@ -61,8 +63,8 @@ it yet. Dynamic import returns promise and we don't want to re-render our compon
 until the message catalog is loaded. Let's add a `shouldComponentUpdate` method:
 
 ```js
-shouldComponentUpdate({ language }, nextState) {
-  if (language !== this.props.language && !nextState.messages[language]) {
+shouldComponentUpdate({ language }, { catalogs }) {
+  if (language !== this.props.language && !catalogs[language]) {
     // Start loading message catalog and skip update
     this.loadLanguage(language)
     return false
@@ -88,14 +90,14 @@ the dynamic import syntax to load message catalog:
 
 ```js
 loadLanguage = async (language) => {
-  const messages = await import(
+  const catalog = await import(
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    `locale/data/${language}/messages.json`)
+    `locale/data/${language}/messages.js`)
 
   this.setState(state => ({
-    messages: {
-      ...state.messages,
-      [language]: messages
+    catalogs: {
+      ...state.catalogs,
+      [language]: catalog
     }
   }))
 }
@@ -107,12 +109,12 @@ Dynamic import returns a promise, so we can either use async/await keywords or g
 loadLanguage = (language) => {
   import(
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    `locale/data/${language}/messages.json`)
-  .then(messages =>
+    `locale/data/${language}/messages.js`)
+  .then(catalog =>
     this.setState(state => ({
-      messages: {
-        ...state.messages,
-        [language]: messages
+      catalogs: {
+        ...state.catalogs,
+        [language]: catalog
       }
     }))
   )
@@ -136,18 +138,18 @@ export class I18nLoader extends React.Component {
   props: I18nLoaderProps
 
   state = {
-    messages: {},
+    catalogs: {},
   }
 
   loadLanguage = async (language) => {
-    const messages = await import(
+    const catalog = await import(
       /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-      `locale/data/${language}/messages.json`)
+      `locale/data/${language}/messages.js`)
 
     this.setState(state => ({
-      messages: {
-        ...state.messages,
-        [language]: messages
+      catalogs: {
+        ...state.catalogs,
+        [language]: catalog
       }
     }))
   }
@@ -156,8 +158,8 @@ export class I18nLoader extends React.Component {
     this.loadLanguage(this.props.language)
   }
 
-  shouldComponentUpdate({ language }, nextState) {
-    if (language !== this.props.language && !nextState.messages[language]) {
+  shouldComponentUpdate({ language }, { catalogs }) {
+    if (language !== this.props.language && !catalogs[language]) {
       this.loadLanguage(language)
       return false
     }
@@ -167,9 +169,11 @@ export class I18nLoader extends React.Component {
 
   render () {
     const { children, language } = this.props
+    const { catalogs } = this.state
+    if (!catalogs[language]) return
 
     return (
-      <I18nProvider language={language} messages={this.state.messages}>
+      <I18nProvider language={language} catalogs={catalogs}>
         {children}
       </I18nProvider>
     )
