@@ -5,7 +5,7 @@ in multiple languages.
 
 Sample code is available in [tutorial-lingui-react][TutorialLinguiReact] repository.
 
-## Starting poing
+## Starting point
 
 We are going to translate following app:
 
