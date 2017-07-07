@@ -1,25 +1,3 @@
-[![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master)
-
-# Lingui - tools for ~~internationalization~~ i18n in javascript
-
-Type-checked and intuitive way to internationalize applications in Javascript 
-and ReactJS.
-
-## Key features
-
-- Small and fast - about 6kb gzipped (no hacks with `webpack.IgnorePlugin` required, no message parsing in production)
-- Built on standard ICU MessageFormat (might replace react-intl completely)
-  - Variable interpolation
-  - Components inside translations (e.g: `Read <Link to="...">documentation</Link>.`)
-  - Plurals, Ordinals and Categories (i.e. Select)
-  - Number and Date formats (from Intl)
-- Works with manual and generated message IDs
-- Works in React and Vanilla JS (e.g: in redux-saga, CLI interface, etc.)
-- CLI for extracting and compiling message catalogs
-- Babel plugin for convenient, type-checked way of writing ICU MessageSyntax (recommended, but not required)
-
-**TL;DR:** [Compare js-lingui with react-intl and react-i18next](https://github.com/lingui/js-lingui/wiki/Comparison-of-i18n-libraries)
-
 ## Overview
 
 Internationalization consists of three steps:
@@ -363,9 +341,5 @@ Transform components from `lingui-react` into ICU message format.
 ### [`babel-plugin-lingui-extract-messages`](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages) [Docs](https://github.com/lingui/js-lingui/tree/master/packages/babel-plugin-lingui-extract-messages)
 
 [![npm](https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg)](https://www.npmjs.com/package/babel-plugin-lingui-extract-messages)
-
-Extract all messages for translation to external files.
-
-## License
 
 [MIT](./LICENSE.md)
