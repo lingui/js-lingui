@@ -90,6 +90,7 @@ function JSONWriter (messages, languageDir) {
     Object.keys(original).forEach(key => {
       const originalMsg = original[key]
       if (!originalMsg) return
+      if (!catalog[key]) catalog[key] = {}
 
       catalog[key].translation = typeof originalMsg === 'string'
         // backward compatability, Deprecated-2
