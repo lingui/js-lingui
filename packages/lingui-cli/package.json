@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "0.15.0-6",
+  "version": "1.0.0-2",
   "description": "CLI for extracting i18n messages from sources",
   "main": "dist/index.js",
   "author": {
@@ -30,15 +30,15 @@
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-generator": "^6.25.0",
-    "babel-plugin-lingui-extract-messages": "^1.0.0-3",
-    "babel-plugin-lingui-transform-js": "^1.0.0-5",
-    "babel-plugin-lingui-transform-react": "^1.0.0-5",
+    "babel-plugin-lingui-extract-messages": "^1.0.0-6",
+    "babel-plugin-lingui-transform-js": "^1.0.0-8",
+    "babel-plugin-lingui-transform-react": "^1.0.0-8",
     "babel-types": "^6.25.0",
     "babylon": "^6.17.4",
     "chalk": "^2.0.1",
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
-    "lingui-conf": "^0.7.1-2",
+    "lingui-conf": "^0.7.1-5",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0",
     "node-emoji": "^1.5.1"

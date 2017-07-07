@@ -1,6 +1,7 @@
 import fs from 'fs'
 import fsPath from 'path'
 import mkdirp from 'mkdirp'
+import generate from 'babel-generator'
 import getConfig from 'lingui-conf'
 
 const MESSAGES = Symbol('I18nMessages')
@@ -34,14 +35,14 @@ export default function ({ types: t }) {
     t.isIdentifier(node.object, { name: 'i18n' }) &&
     t.isIdentifier(node.property, { name: '_' })
 
-  function collectMessage (path, file, attrs) {
+  function collectMessage (path, file, props) {
     const messages = file.get(MESSAGES)
 
     const filename = fsPath.relative(optsBaseDir, file.opts.filename)
     const line = path.node.loc ? path.node.loc.start.line : null
-    attrs.origin = [[filename, line]]
+    props.origin = [[filename, line]]
 
-    addMessage(path, messages, attrs)
+    addMessage(path, messages, props)
   }
 
   return {
@@ -50,32 +51,46 @@ export default function ({ types: t }) {
         const { node } = path
         if (!isTransComponent(node)) return
 
-        const attrs = node.openingElement.attributes.reduce((acc, item) => {
+        const attrs = node.openingElement.attributes || []
+
+        const props = attrs.reduce((acc, item) => {
           const key = item.name.name
           if (key === 'id' || key === 'defaults') acc[key] = item.value.value
           return acc
         }, {})
 
-        collectMessage(path, file, attrs)
+        if (!props.id) {
+          console.warn('Missing message ID, skipping.')
+          console.warn(generate(node).code)
+          return
+        }
+
+        collectMessage(path, file, props)
       },
 
       CallExpression (path, { file }) {
         const { node } = path
         if (!isI18nMethod(node.callee)) return
 
-        const optional = node.arguments[1] && node.arguments[1].properties
+        const attrs = node.arguments[1] && node.arguments[1].properties
           ? node.arguments[1].properties
           : []
 
-        const attrs = optional.reduce((acc, item) => {
+        const id = node.arguments[0] && node.arguments[0].value
+        if (!id) {
+          console.warn('Missing message ID, skipping.')
+          console.warn(generate(node).code)
+          return
+        }
+
+        const props = attrs.reduce((acc, item) => {
           const key = item.key.name
           if (key === 'defaults') acc[key] = item.value.value
           return acc
-        }, {
-          id: node.arguments[0].value
-        })
+        }, { id })
 
-        collectMessage(path, file, attrs)
+
+        collectMessage(path, file, props)
       }
     },
 

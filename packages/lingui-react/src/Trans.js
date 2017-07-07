@@ -25,9 +25,10 @@ class Trans extends React.Component {
     if (process.env.NODE_ENV !== 'production') {
       if (!this.getTranslation() && this.props.children) {
         console.warn(
-          'lingui-react preset is probably missing in babel config. ' +
-          'It causes that no content is rendered from any lingui-react ' +
-          'components. See installation guide for more info - ' +
+          'lingui-react preset is probably missing in babel config, ' +
+          'but you are using <Trans> component in a way which requires it. ' +
+          'Either don\' use children in <Trans> component or configure babel ' +
+          'to load lingui-react preset. See tutorial for more info: ' +
           'https://l.lingui.io/tutorial-i18n-react'
         )
       }

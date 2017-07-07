@@ -57,7 +57,8 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
       if (update && unsubscribe) unsubscribe(this.checkUpdate)
     }
 
-    checkUpdate = () => {
+    // Test checks that subscribe/unsubscribe is called with function.
+    checkUpdate = /* istanbul ignore next */() => {
       this.forceUpdate()
     }
 

@@ -25,9 +25,11 @@ i18n.development(require('lingui-i18n/dev'))
 // load messages
 i18n.load({
   fr: {
-    "Hello World!": "Salut le monde!",
-    "My name is {name}": "Je m'appelle {name}",
-    "{count, plural, one {# book} other {# books}}": "{count, plural, one {# livre} other {# livres}}"
+    messages: {
+      "Hello World!": "Salut le monde!",
+      "My name is {name}": "Je m'appelle {name}",
+      "{count, plural, one {# book} other {# books}}": "{count, plural, one {# livre} other {# livres}}"
+    }
   }
 })
 

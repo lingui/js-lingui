@@ -1,13 +1,17 @@
 /* @flow */
 import { plural, select, selectOrdinal } from './select'
 import { setupI18n } from './i18n'
-import linguiDev from './dev'
+import dev from './dev'
 
 describe('plural', function () {
   const i18n = setupI18n({
     language: 'en',
-    messages: {en: {}},
-    development: linguiDev
+    catalogs: {
+      en: {
+        messages: {}
+      }
+    },
+    development: dev
   })
 
   it('should convert to message format string', function () {
@@ -27,18 +31,30 @@ describe('plural', function () {
     expect(p({
       value: 1,
       offset: 1,
-      '0': 'No books',
-      '1': 'One book',
-      other: '# books'
-    })).toEqual('No books')
+      '1': 'Their book',
+      one: 'Their and one another book',
+      other: 'Their and # books'
+    })).toEqual('Their book')
+
+    expect(p({
+      value: 5,
+      offset: 1,
+      '1': 'Their book',
+      one: 'Their and one another book',
+      other: 'Their and # books'
+    })).toEqual('Their and 4 books')
   })
 })
 
 describe('selectOrdinal', function () {
   const i18n = setupI18n({
     language: 'en',
-    messages: {en: {}},
-    development: linguiDev
+    catalogs: {
+      en: {
+        messages: {}
+      }
+    },
+    development: dev
   })
 
   it('should convert to message format string', function () {
@@ -67,18 +83,22 @@ describe('selectOrdinal', function () {
     expect(s({
       value: 1,
       offset: 1,
-      '0': 'Zero',
+      '1': 'One',
       one: '#st',
       two: '#nd',
       other: '#rd'
-    })).toEqual('Zero')
+    })).toEqual('One')
   })
 
   it('should use other rule when ordinal ones are missing', function () {
     const i18nCS = setupI18n({
       language: 'cs',
-      messages: { cs: {} },
-      development: linguiDev
+      catalogs: {
+        cs: {
+          messages: {}
+        }
+      },
+      development: dev
     })
 
     const s = selectOrdinal(i18nCS)

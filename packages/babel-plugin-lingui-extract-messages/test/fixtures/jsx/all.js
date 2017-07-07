@@ -1,4 +1,6 @@
 <span id="ignore" />;
+<Trans />;  // this should be ignored
+<Trans defaults="Missing ID"/>;  // this should be ignored
 <Trans id="msg.hello" />;
 <Trans id="msg.default" defaults="Hello World" />;
 <Trans id="msg.default" defaults="Hello World" />;

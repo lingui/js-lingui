@@ -25,9 +25,7 @@ describe('I18n', function () {
 
   it('.load should load catalog and merge with existing', function () {
     const messages = {
-      en: {
-        'Hello': 'Hello'
-      }
+      'Hello': 'Hello'
     }
 
     const i18n = setupI18n({
@@ -35,15 +33,15 @@ describe('I18n', function () {
     })
     expect(i18n.messages).toEqual({})
 
-    i18n.load({ en: messages.en })
+    i18n.load({ en: { messages } })
     i18n.activate('en')
-    expect(i18n.messages).toEqual(messages.en)
+    expect(i18n.messages).toEqual(messages)
 
     // fr catalog shouldn't affect the english one
-    i18n.load({ fr: { 'Hello': 'Salut' } })
-    expect(i18n.messages).toEqual(messages.en)
+    i18n.load({ fr: { messages: { 'Hello': 'Salut' } } })
+    expect(i18n.messages).toEqual(messages)
 
-    i18n.load({ en: { 'Goodbye': 'Goodbye' } })
+    i18n.load({ en: { messages: { 'Goodbye': 'Goodbye' } } })
     // $FlowIgnore: testing edge case
     i18n.load() // should do nothing
     expect(i18n.messages).toEqual({
@@ -54,25 +52,39 @@ describe('I18n', function () {
 
   it('.loadLanguageData should load language data and merge with existing', function () {
     const languageData = {
-      en: {
-        plurals: jest.fn(),
-        code: 'en-US'
-      }
+      plurals: jest.fn(),
+      code: 'en-US'
     }
 
     const i18n = setupI18n({
       language: 'en',
-      languageData,
-      messages: {en: {}, fr: {}},
+      catalogs: {
+        en: {
+          messages: {},
+          languageData
+        },
+        fr: {
+          messages: {}
+        }
+      }
     })
 
-    expect(i18n.languageData).toEqual(languageData.en)
+    expect(i18n.languageData).toEqual(languageData)
 
     // fr catalog shouldn't affect the english one
-    i18n.loadLanguageData({ fr: { plurals: jest.fn(), code: 'fr-FR' } })
+    i18n.load({
+      fr: {
+        messages: {},
+        languageData: {
+          plurals: jest.fn(),
+          code: 'fr-FR'
+        }
+      }
+    })
+    expect(i18n.languageData).toEqual(languageData)
     // $FlowIgnore: testing edge case
-    i18n.loadLanguageData() // should do nothing
-    expect(i18n.languageData).toEqual(languageData.en)
+    i18n.load() // should do nothing
+    expect(i18n.languageData).toEqual(languageData)
   })
 
   it('.activate should switch active language', function () {
@@ -82,7 +94,10 @@ describe('I18n', function () {
 
     const i18n = setupI18n({
       language: 'en',
-      messages: { fr: messages, en: {} },
+      catalogs: {
+        fr: { messages },
+        en: { messages: {} }
+      },
       development: linguiDev
     })
 
@@ -101,7 +116,7 @@ describe('I18n', function () {
 
     mockConsole(console => {
       i18n.activate('xyz')
-      expect(console.warn).toBeCalledWith(expect.stringContaining('Unknown local'))
+      expect(console.warn).toBeCalledWith('Message catalog for locale "xyz" not loaded.')
     })
 
     mockConsole(console => {
@@ -113,18 +128,22 @@ describe('I18n', function () {
   })
 
   it('.use should return new i18n object with switched language', function () {
-    const messages = {
+    const catalogs = {
       en: {
-        'Hello': 'Hello'
+        messages: {
+          'Hello': 'Hello'
+        }
       },
       fr: {
-        'Hello': 'Salut'
+        messages: {
+          'Hello': 'Salut'
+        }
       }
     }
 
     const i18n = setupI18n({
       language: 'en',
-      messages: messages,
+      catalogs,
       development: linguiDev
     })
 
@@ -145,7 +164,7 @@ describe('I18n', function () {
 
     const i18n = setupI18n({
       language: 'fr',
-      messages: { fr: messages },
+      catalogs: { fr: { messages } },
       development: linguiDev
     })
 
@@ -159,5 +178,27 @@ describe('I18n', function () {
 
     // Untranslated message
     expect(i18n._('Missing message')).toEqual('Missing message')
+    expect(i18n._('Missing {name}', { values: { name: 'Fred' } })).toEqual('Missing Fred')
+    expect(i18n._('Missing with default', {
+      defaults: 'Missing {name}',
+      values: { name: 'Fred' }
+    })).toEqual('Missing Fred')
+  })
+
+  it('._ shouldn\'t compile messages in production', function () {
+    const messages = {
+      'Hello': 'Salut',
+      'My name is {name}': 'Je m\'appelle {name}'
+    }
+
+    mockEnv('production', () => {
+      const i18n = setupI18n({
+        language: 'fr',
+        catalogs: { fr: { messages } }
+      })
+
+      expect(i18n._('My name is {name}', { values: { name: 'Fred' } }))
+        .toEqual("Je m'appelle {name}")
+    })
   })
 })

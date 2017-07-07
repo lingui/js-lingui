@@ -28,7 +28,7 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
     },
 
     select: (value, rules) =>
-    rules[value] || rules.other,
+      rules[value] || rules.other,
 
     number: (value, format) =>
       number(language, style(format))(value),

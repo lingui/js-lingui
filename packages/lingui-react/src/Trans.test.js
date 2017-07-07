@@ -5,7 +5,7 @@ import { setupI18n } from 'lingui-i18n'
 
 import { Trans } from '.'
 import linguiDev from './dev'
-import { mockConsole } from './mocks'
+import { mockEnv, mockConsole } from './mocks'
 
 describe('Trans component', function () {
   /*
@@ -13,16 +13,18 @@ describe('Trans component', function () {
    */
   const i18n = setupI18n({
     language: 'en',
-    messages: {
+    catalogs: {
       en: {
-        'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
-        'My name is {name}': 'Jmenuji se {name}',
-        'Original': 'Původní',
-        'Updated': 'Aktualizovaný',
-        'msg.currency': '{value, number, currency}'
+        messages: {
+          'All human beings are born free and equal in dignity and rights.': 'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.',
+          'My name is {name}': 'Jmenuji se {name}',
+          'Original': 'Původní',
+          'Updated': 'Aktualizovaný',
+          'msg.currency': '{value, number, currency}'
+        }
       }
     },
-    development: linguiDev,
+    development: linguiDev
   })
 
   const context = { linguiPublisher: { i18n } }
@@ -37,11 +39,20 @@ describe('Trans component', function () {
       <Trans id="unknown"/>).find('Render').text()).toEqual('unknown')
   })
 
-  it('should warn about possible missing babel-plugin', function () {
-    mockConsole(console => {
-      mount(<Trans>Label</Trans>)
-      expect(console.warn).toBeCalledWith(
-        expect.stringContaining('lingui-react preset'))
+  it('should warn about possible missing babel-plugin in development', function () {
+    mockEnv('production', () => {
+      mockConsole(console => {
+        mount(<Trans>Label</Trans>)
+        expect(console.warn).not.toBeCalled()
+      })
+    })
+
+    mockEnv('development', () => {
+      mockConsole(console => {
+        mount(<Trans>Label</Trans>)
+        expect(console.warn).toBeCalledWith(
+          expect.stringContaining('lingui-react preset'))
+      })
     })
   })
 
@@ -70,6 +81,9 @@ describe('Trans component', function () {
 
     expect(text(<Trans id="unknown" defaults="Not translated yet"/>))
       .toEqual('Not translated yet')
+
+    expect(text(<Trans id="unknown" defaults="Not translated yet, {name}" values={{ name: 'Dave' }}/>))
+      .toEqual('Not translated yet, Dave')
   })
 
   it('should render translation', function () {
