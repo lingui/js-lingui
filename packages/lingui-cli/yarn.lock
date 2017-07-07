@@ -74,19 +74,24 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-lingui-extract-messages@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-0.9.0.tgz#bec5afa7af7edef5a6b9fe55de00af3fa28cf1f9"
+babel-plugin-lingui-extract-messages@^1.0.0-6:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.0.0.tgz#96bf9600447ca7fff5db9d29296f8b20a0b63862"
   dependencies:
-    lingui-conf "^0.7.0"
+    babel-runtime "^6.23.0"
+    lingui-conf "^0.8.0"
 
-babel-plugin-lingui-transform-js@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-0.6.0.tgz#cd0a6c6680cb2b89f3e48efa698c3f9252082426"
+babel-plugin-lingui-transform-js@^1.0.0-8:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.0.tgz#db7947c969f046d01b41c136005cadbd21c84f16"
+  dependencies:
+    babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-0.7.0.tgz#84ab0a32dd085d328a7449cae93125abb2df3fb4"
+babel-plugin-lingui-transform-react@^1.0.0-8:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.0.tgz#5f53e91f0e2fd0a9e44ec9ef695232b5d66bd0d2"
+  dependencies:
+    babel-runtime "^6.23.0"
 
 babel-register@^6.24.1:
   version "6.24.1"
@@ -100,7 +105,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.22.0:
+babel-runtime@^6.22.0, babel-runtime@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -155,7 +160,7 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
+chalk@^1.1.0, chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
   dependencies:
@@ -193,11 +198,9 @@ colors@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
 
-commander@^2.9.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.10.0.tgz#e1f5d3245de246d1a5ca04702fa1ad1bd7e405fe"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+commander@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -251,10 +254,6 @@ graceful-fs@^4.1.2:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-"graceful-readlink@>= 1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
-
 has-ansi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
@@ -288,28 +287,12 @@ is-finite@^1.0.0:
   dependencies:
     number-is-nan "^1.0.0"
 
-jest-matcher-utils@^19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-19.0.0.tgz#5ecd9b63565d2b001f61fbf7ec4c7f537964564d"
-  dependencies:
-    chalk "^1.1.3"
-    pretty-format "^19.0.0"
-
 jest-matcher-utils@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-20.0.3.tgz#b3a6b8e37ca577803b0832a98b164f44b7815612"
   dependencies:
     chalk "^1.1.3"
     pretty-format "^20.0.3"
-
-jest-validate@^19.0.2:
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-19.0.2.tgz#dc534df5f1278d5b63df32b14241d4dbf7244c0c"
-  dependencies:
-    chalk "^1.1.1"
-    jest-matcher-utils "^19.0.0"
-    leven "^2.0.0"
-    pretty-format "^19.0.0"
 
 jest-validate@^20.0.3:
   version "20.0.3"
@@ -332,20 +315,13 @@ json5@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
-leven@^2.0.0, leven@^2.1.0:
+leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-conf@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.7.0.tgz#2ebb8dcc9f651d2a01477ae8ece734c2c64a338b"
-  dependencies:
-    jest-validate "^19.0.2"
-    pkg-conf "^2.0.0"
-
-lingui-conf@^0.7.1-0:
-  version "0.7.1-0"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.7.1-0.tgz#1dbcf419ef02304ade5ec773779e865a2c1975c4"
+lingui-conf@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.8.0.tgz#b8ee30380d7d3c0a5afd6f5c3662913803aac4e4"
   dependencies:
     jest-validate "^20.0.3"
     pkg-conf "^2.0.0"
@@ -410,9 +386,9 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-node-emoji@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.5.1.tgz#fd918e412769bf8c448051238233840b2aff16a1"
+node-emoji@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.6.1.tgz#7d2f0a8fd11237cba0ddcef3bdc015dc50b011f9"
   dependencies:
     string.prototype.codepointat "^0.2.0"
 
@@ -462,12 +438,6 @@ pkg-conf@^2.0.0:
   dependencies:
     find-up "^2.0.0"
     load-json-file "^2.0.0"
-
-pretty-format@^19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-19.0.0.tgz#56530d32acb98a3fa4851c4e2b9d37b420684c84"
-  dependencies:
-    ansi-styles "^3.0.0"
 
 pretty-format@^20.0.3:
   version "20.0.3"
