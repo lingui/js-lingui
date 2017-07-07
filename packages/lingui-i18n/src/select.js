@@ -20,12 +20,13 @@ const _plural = (type) => (i18n: any) => ({
   other,
   ...pluralForms
   }: PluralProps): string => {
+  const diff = value - offset
   const translation = (
-    pluralForms[(value - offset).toString()] || // exact match
-    pluralForms[i18n.pluralForm(value - offset, type)] || // plural form
+    pluralForms[value.toString()] || // exact match
+    pluralForms[i18n.pluralForm(diff, type)] || // plural form
     other // fallback
   )
-  return translation.replace('#', value.toString())
+  return translation.replace('#', diff.toString())
 }
 
 const plural = _plural('cardinal')
