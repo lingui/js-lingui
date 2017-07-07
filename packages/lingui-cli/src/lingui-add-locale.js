@@ -19,6 +19,10 @@ function validateLocales (locales) {
 }
 
 function addLocale (locales) {
+  if (fs.existsSync(config.localeDir)) {
+    fs.mkdirSync(config.localeDir)
+  }
+
   locales.forEach(locale => {
     const localeDir = path.join(config.localeDir, locale)
 
