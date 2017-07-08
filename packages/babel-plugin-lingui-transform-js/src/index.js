@@ -12,14 +12,14 @@ export default function ({ types: t }) {
   const isChoiceMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) && (
-        t.isIdentifier(node.property, { name: 'plural' }) ||
+      t.isIdentifier(node.property, { name: 'plural' }) ||
         t.isIdentifier(node.property, { name: 'select' }) ||
         t.isIdentifier(node.property, { name: 'selectOrdinal' }))
 
   const isFormatMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) && (
-        t.isIdentifier(node.property, { name: 'date' }) ||
+      t.isIdentifier(node.property, { name: 'date' }) ||
         t.isIdentifier(node.property, { name: 'number' }))
 
   function processMethod (node, file, props) {

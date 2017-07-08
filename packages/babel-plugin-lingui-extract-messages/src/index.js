@@ -89,7 +89,6 @@ export default function ({ types: t }) {
           return acc
         }, { id })
 
-
         collectMessage(path, file, props)
       }
     },
