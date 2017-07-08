@@ -51,5 +51,19 @@ yarn run lint:flow
 
 Package `example-usecase` contains integration tests.
 
+## Add yourself to contributors!
+
+This project uses [all-contributors](https://github.com/kentcdodds/all-contributors) to recognize all contributors who improve `js-lingui` in any way.
+
+```bash
+yarn run add -- <yourGitHubName> <type>
+
+# Examples:
+# yarn run add -- tricoder42 code
+# yarn run add -- tricoder42 code,docs  # type may be also comma separated value
+```
+
+See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contributors) for all types of contribution.
+
 If you need any help, just raise an issue. I'm happy to help with finalizing PR!
 
