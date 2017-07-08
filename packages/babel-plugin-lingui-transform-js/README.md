@@ -1,15 +1,18 @@
-# react-plugin-lingui-transform-js
+[![License][Badge-License]][License]
+[![Version][Badge-Version]][Package]
+[![Downloads][Badge-Downloads]][Package]
 
-> This plugin transforms messages written using `lingui-i18n` methods to static ICU message format.
+# babel-plugin-lingui-transform-js
 
-The transformation speeds up translation at runtime while using helper methods allows to type-check messages.
+> Babel plugin which transforms messages written using `lingui-i18n` functions to static ICU MessageFormat.
+
+`babel-plugin-lingui-transform-js` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
-```sh
-npm install --save-dev babel-plugin-lingui-transform-js
-# or
+```bash
 yarn add --dev babel-plugin-lingui-transform-js
+# npm install --save-dev babel-plugin-lingui-transform-js
 ```
 
 ## Usage
@@ -38,94 +41,14 @@ require("babel-core").transform("code", {
 })
 ```
 
-## Details
+## License
 
-Plugin performs following transformations:
+[MIT][License]
 
-### Static message
-
-```js
-i18n.t`Hello World`
-
-// becomes
-i18n.t({ id: "Hello World" })
-```
-
-### Message with variables
-
-```js
-i18n.t`Hi, my name is ${name}`
-
-// becomes 
-i18n.t({ id: "Hi, my name is {name}", params: { name }})
-```
-
-### Plurals, select, ordinal and other formats
-
-Format is basically a function which receives a `value` and format options. It's transformed to `{variable, format, options}` form. The most common formats are `plural`, `select` and `ordinal`:
-
-```js
-i18n.plural({
-  value: count,
-  one: "# Book",
-  other: "# Books"
-})
-
-// becomes
-i18n.t({ 
-  id: "{count, plural, one {# Book} other {# Books}}", 
-  params: { count }
-})
-```
-
-Number/date formats:
-
-```js
-i18n.t`The answer is ${i18n.number(answer)}`
-
-// becomes
-i18n.t({ 
-  id: "The answer is {answer, number}", 
-  params: { answer }
-})
-```
-
-Custom formats:
-
-```js
-const currency = {
-  style: 'currency',
-  currency: 'EUR'
-}
-
-i18n.t`The price is ${i18n.number(amount, currency)}`
-
-// becomes
-i18n.t({ 
-  id: "The price is {amount, number, currency}", 
-  params: { answer },
-  formats: { currency }
-})
-```
-
-### Combination of any above
-
-```js
-i18n.select({
-  value: gender,
-  male: i18n.plural({
-    value: numOfGuests,
-    offset: 1,
-    0: `${host} doesn't invite any guests`,
-    1: `${host} invite ${guest} to his party`,
-    other: `${host} invite ${guest} and # other to his party`
-  }),
-  female: i18n.plural({ ... })
-})
-
-// becomes
-i18n.t({ 
-  id: "{gender, select, male {{numOfGuests, plural, offset:1 =0 {...}}} female {...}}", 
-  params: { gender, numOfGuests, host, guest }
-})
-```
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[jsLingui]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.gitbooks.io/js/
+[Package]: https://www.npmjs.com/package/babel-plugin-lingui-transform-js
+[Badge-Downloads]: https://img.shields.io/npm/dw/babel-plugin-lingui-transform-js.svg
+[Badge-Version]: https://img.shields.io/npm/v/babel-plugin-lingui-transform-js.svg 
+[Badge-License]: https://img.shields.io/npm/l/babel-plugin-lingui-transform-js.svg

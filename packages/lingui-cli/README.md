@@ -1,12 +1,16 @@
+[![License][Badge-License]][License]
+[![Version][Badge-Version]][Package]
+[![Downloads][Badge-Downloads]][Package]
+
 # lingui-cli
 
 > lingui command line tools for manipulating message catalogues
 
 `lingui-cli` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
-## Install
+## Installation
 
-```sh
+```bash
 yarn global add lingui-cli
 # npm install --global lingui-cli
 ```
@@ -46,3 +50,7 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 [Documentation]: https://lingui.gitbooks.io/js/
 [Tutorial]: https://lingui.gitbooks.io/js/tutorials/cli.html
 [Reference]: https://lingui.gitbooks.io/js/ref/cli.html
+[Package]: https://www.npmjs.com/package/lingui-cli
+[Badge-Downloads]: https://img.shields.io/npm/dw/lingui-cli.svg
+[Badge-Version]: https://img.shields.io/npm/v/lingui-cli.svg 
+[Badge-License]: https://img.shields.io/npm/l/lingui-cli.svg
