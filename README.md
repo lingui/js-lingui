@@ -205,10 +205,15 @@ like `lingui-react` only brings better performace for target environments.
 
 ## Contributors
 
+Thanks goes to these people ([emoji key][emojis]):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 | [<img src="https://avatars1.githubusercontent.com/u/827862?v=3" width="100px;"/><br /><sub>Tomáš Ehrlich</sub>](http://www.tomasehrlich.cz)<br />[💻](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Code") [📖](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Documentation") [💡](#example-tricoder42 "Examples") [✅](#tutorial-tricoder42 "Tutorials") | [<img src="https://avatars1.githubusercontent.com/u/3697116?v=3" width="100px;"/><br /><sub>Josef Hornych</sub>](https://github.com/Peping)<br />[📖](https://github.com/lingui/js-lingui/commits?author=Peping "Documentation") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3APeping "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/307006?v=3" width="100px;"/><br /><sub>Christian Kaps</sub>](https://www.silhouette.rocks)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3Aakkie "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/2085291?v=3" width="100px;"/><br /><sub>brunesto</sub>](https://github.com/brunesto)<br />[💻](https://github.com/lingui/js-lingui/commits?author=brunesto "Code") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3Abrunesto "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/614768?v=3" width="100px;"/><br /><sub>David Furlong</sub>](https://davidfurlong.github.io/)<br />[💬](#question-davidfurlong "Answering Questions") |
 | :---: | :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors][all-contributors] specification.
+Contributions of any kind welcome!
 
 ## License
 
@@ -217,6 +222,9 @@ like `lingui-react` only brings better performace for target environments.
 [ReactIntl]: https://github.com/yahoo/react-intl
 [Documentation]: https://lingui.gitbooks.io/js/
 [TutorialReact]: https://lingui.gitbooks.io/js/tutorials/react.html
+
+[emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
+[all-contributors]: https://github.com/kentcdodds/all-contributors
 
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
