@@ -8,8 +8,8 @@ Seamless internationalization in Javascript and React
 
 [![CircleCI][Badge-CI]][CI] 
 [![Code Coverage][Badge-Coverage]][Coverage]
-[![All Contributors][Badge-Contributors]][Contributors]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-blue.svg?style=flat-square)](#contributors)
 [![MIT License][Badge-License]][LICENSE]
 
 [![Watch on GitHub][Badge-Watch]][Watch]
@@ -27,9 +27,9 @@ and React.
 
 ## Key features
 
-- Small and fast - about **6kb gzipped** (no hacks with `webpack.IgnorePlugin` required, no message parsing in production)
+- Small and fast - about **6kb gzipped**
 - Babel plugin for convenient, **type-checked** way of writing ICU MessageFormat (recommended, but not required)
-- **CLI** for working with message catalogs (extracting, merging, compiling)
+- **CLI** for extracting and compiling message catalogs
 - Built on standard **ICU MessageFormat** (might replace [react-intl][ReactIntl] completely)
   - Variable interpolation
   - Components inside translations (e.g: `Read <Link to="...">documentation</Link>.`)
@@ -39,14 +39,14 @@ and React.
 - Works with in any JS environment, while integration packages brings better performance in target environments (e.g: `lingui-react` for React)
 - High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
 
-See the [tutorial for React]()
+See the [tutorial for React][TutorialReact]
 
 ![Example use case with React](https://lingui.gitbooks.io/js/assets/lingui-pitch.png)
 
 ### Intuitive way of writing messages
 
 No matter what i18n library you use, there is always an underlying message
-format that handles variable interpolation, plurals and custom format. 
+format that handles variable interpolation, plurals and date/number formatting. 
 `js-lingui` isn't reinventing the wheel, but rather uses standardized 
 ICU MessageFormat which is supported in many platforms (the same format
 that [react-intl][ReactIntl] uses).
@@ -127,15 +127,15 @@ message catalogs.
 All messages from the source files can be extracted with one command:
 
 ```bash
-$ lingui extract
+lingui extract
 ```
 
 ```
-📖  Writing message catalogues:
+Writing message catalogues:
 Writing locales/cs/messages.json
 Writing locales/en/messages.json
 
-📈  Catalog statistics:
+Catalog statistics:
 ┌──────────┬─────────────┬─────────┐
 │ Language │ Total count │ Missing │
 ├──────────┼─────────────┼─────────┤
@@ -147,7 +147,6 @@ Messages extracted!
 
 (use "lingui extract" to update catalogs with new messages)
 (use "lingui compile" to compile catalogs for production)
-✨  Done!
 ```
 
 If you run this command second time, it'll merge translations from existing
@@ -189,7 +188,7 @@ babel plugin, you can still use this library and get i18n with superb performace
 setting your IDs manually, just pass `id` prop. Generated message will be used
 as a default one:
 
-```jsx harmony
+```jsx
 <Plural 
   id="msg.plural"
   value={numBooks}
@@ -229,7 +228,6 @@ Contributions of any kind welcome!
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
 [Badge-License]: https://img.shields.io/github/license/lingui/js-lingui.svg
-[Badge-Contributors]: https://img.shields.io/badge/all_contributors-5-orange.svg
 [Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
 [Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
@@ -238,7 +236,6 @@ Contributions of any kind welcome!
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
-[Contributors]: ./#contributors
 [Watch]: https://github.com/lingui/js-lingui/watchers
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
