@@ -1,0 +1,61 @@
+{
+  "projectName": "js-lingui",
+  "projectOwner": "lingui",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "tricoder42",
+      "name": "Tomáš Ehrlich",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/827862?v=3",
+      "profile": "http://www.tomasehrlich.cz",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "Peping",
+      "name": "Josef Hornych",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3697116?v=3",
+      "profile": "https://github.com/Peping",
+      "contributions": [
+        "doc",
+        "bug"
+      ]
+    },
+    {
+      "login": "akkie",
+      "name": "Christian Kaps",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/307006?v=3",
+      "profile": "https://www.silhouette.rocks",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "brunesto",
+      "name": "brunesto",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2085291?v=3",
+      "profile": "https://github.com/brunesto",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "davidfurlong",
+      "name": "David Furlong",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/614768?v=3",
+      "profile": "https://davidfurlong.github.io/",
+      "contributions": [
+        "question"
+      ]
+    }
+  ]
+}

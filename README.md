@@ -1,13 +1,25 @@
-| Branch | master | next |
-| ---: | :---: | :---: |
-| Build Status | [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/master.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/master) | [![CircleCI](https://circleci.com/gh/lingui/js-lingui/tree/next.svg?style=svg)](https://circleci.com/gh/lingui/js-lingui/tree/next) |
+<div align="center">
+<h1><sub>js</sub>Lingui</h1>
+
+Seamless internationalization in Javascript and React
+</div>
+
+<hr />
+
+[![CircleCI][Badge-CI]][CI] 
+[![Code Coverage][Badge-Coverage]][Coverage]
+[![All Contributors][Badge-Contributors]][Contributors]
+[![PRs Welcome][Badge-PRWelcome]][PRWelcome]
+[![MIT License][Badge-License]][LICENSE]
+
+[![Watch on GitHub][Badge-Watch]][Watch]
+[![Star on GitHub][Badge-Stars]][Star]
+[![Tweet][Badge-Twitter]][Twitter]
 
 **📖 [Documentation][Documentation]**
 
-# Lingui - tools for ~~internationalization~~ i18n in javascript
-
 Type-checked and intuitive way to internationalize applications in Javascript 
-and ReactJS.
+and React.
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
 >
@@ -15,10 +27,10 @@ and ReactJS.
 
 ## Key features
 
-- Small and fast - about 6kb gzipped (no hacks with `webpack.IgnorePlugin` required, no message parsing in production)
-- Babel plugin for convenient, type-checked way of writing ICU MessageSyntax (recommended, but not required)
-- CLI for working with message catalogs (extracting, merging, compiling)
-- Built on standard ICU MessageFormat (might replace [react-intl][ReactIntl] completely)
+- Small and fast - about **6kb gzipped** (no hacks with `webpack.IgnorePlugin` required, no message parsing in production)
+- Babel plugin for convenient, **type-checked** way of writing ICU MessageFormat (recommended, but not required)
+- **CLI** for working with message catalogs (extracting, merging, compiling)
+- Built on standard **ICU MessageFormat** (might replace [react-intl][ReactIntl] completely)
   - Variable interpolation
   - Components inside translations (e.g: `Read <Link to="...">documentation</Link>.`)
   - Plurals, Ordinals and Categories (i.e. Select)
@@ -191,10 +203,35 @@ as a default one:
 Core library `lingui-i18n` works in any JS environment. Intergration libraries
 like `lingui-react` only brings better performace for target environments.
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars1.githubusercontent.com/u/827862?v=3" width="100px;"/><br /><sub>Tomáš Ehrlich</sub>](http://www.tomasehrlich.cz)<br />[💻](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Code") [📖](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Documentation") [💡](#example-tricoder42 "Examples") [✅](#tutorial-tricoder42 "Tutorials") | [<img src="https://avatars1.githubusercontent.com/u/3697116?v=3" width="100px;"/><br /><sub>Josef Hornych</sub>](https://github.com/Peping)<br />[📖](https://github.com/lingui/js-lingui/commits?author=Peping "Documentation") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3APeping "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/307006?v=3" width="100px;"/><br /><sub>Christian Kaps</sub>](https://www.silhouette.rocks)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3Aakkie "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/2085291?v=3" width="100px;"/><br /><sub>brunesto</sub>](https://github.com/brunesto)<br />[💻](https://github.com/lingui/js-lingui/commits?author=brunesto "Code") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3Abrunesto "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/614768?v=3" width="100px;"/><br /><sub>David Furlong</sub>](https://davidfurlong.github.io/)<br />[💬](#question-davidfurlong "Answering Questions") |
+| :---: | :---: | :---: | :---: | :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## License
 
-[MIT](./LICENSE.md)
+[MIT][License]
 
 [ReactIntl]: https://github.com/yahoo/react-intl
 [Documentation]: https://lingui.gitbooks.io/js/
 [TutorialReact]: https://lingui.gitbooks.io/js/tutorials/react.html
+
+[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
+[Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
+[Badge-License]: https://img.shields.io/github/license/lingui/js-lingui.svg
+[Badge-Contributors]: https://img.shields.io/badge/all_contributors-5-orange.svg
+[Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
+[Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
+[Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
+[Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+
+[CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
+[Coverage]: https://codecov.io/gh/lingui/js-lingui
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[Contributors]: ./#contributors
+[Watch]: https://github.com/lingui/js-lingui/watchers
+[Star]: https://github.com/lingui/js-lingui/stargazers
+[Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
+[PRWelcome]: http://makeapullrequest.com
