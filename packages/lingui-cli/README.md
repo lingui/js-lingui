@@ -2,42 +2,47 @@
 
 > lingui command line tools for manipulating message catalogues
 
+`lingui-cli` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+
 ## Install
 
 ```sh
-npm install --save-dev lingui-cli
-# or
-yarn add --dev lingui-cli
+yarn global add lingui-cli
+# npm install --global lingui-cli
+```
+
+**Note:** If you don't wist to install package globally, it works locally
+as well. However, you need either run it from `node_modules/.bin/lingui` or
+add it to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "add-locale": "lingui add-locale",
+    "extract": "lingui extract",
+    "compile": "lingui compile"
+  }
+}
+```
+
+Then you can use:
+
+```bash
+npm run add-locale -- en cs
+npm run extract
+npm run compile
 ```
 
 ## Usage
 
-### `extract`
+See the [tutorial][Tutorial] or [reference][Reference] documenation.
 
-```sh
-lingui extract [path...]
-# e.g: lingui extract src/
-```
+## License
 
-This command extract messages from source and creates message catalog for each language in following steps:
+[MIT][License]
 
-1. Extract messages from all `*.jsx?` files inside `path`
-2. Merge them with existing catalogues
-3. Write  message catalogues
-
-### `compile`
-
-```sh
-lingui compile
-```
-
-This command compiles message catalogues in `localeDir` and writes minified Javascript files. Each message is replace with function call, which returns parametrized message.
-
-### `add-locale`
-
-```sh
-lingui add-locale [locales...]
-# e.g: lingui add-locale en fr es
-```
-
-This command creates a new directory for each locale.
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[jsLingui]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.gitbooks.io/js/
+[Tutorial]: https://lingui.gitbooks.io/js/tutorials/cli.html
+[Reference]: https://lingui.gitbooks.io/js/ref/cli.html

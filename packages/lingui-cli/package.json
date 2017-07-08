@@ -1,7 +1,7 @@
 {
   "name": "lingui-cli",
   "version": "1.0.0",
-  "description": "CLI for extracting i18n messages from sources",
+  "description": "CLI for working wit message catalogs",
   "main": "dist/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -30,9 +30,9 @@
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-generator": "^6.25.0",
-    "babel-plugin-lingui-extract-messages": "^1.0.0-6",
-    "babel-plugin-lingui-transform-js": "^1.0.0-8",
-    "babel-plugin-lingui-transform-react": "^1.0.0-8",
+    "babel-plugin-lingui-extract-messages": "^1.0.0",
+    "babel-plugin-lingui-transform-js": "^1.0.0",
+    "babel-plugin-lingui-transform-react": "^1.0.0",
     "babel-types": "^6.25.0",
     "babylon": "^6.17.4",
     "chalk": "^2.0.1",
@@ -40,8 +40,7 @@
     "commander": "^2.11.0",
     "lingui-conf": "^0.8.0",
     "make-plural": "^4.0.1",
-    "messageformat-parser": "^1.0.0",
-    "node-emoji": "^1.6.1"
+    "messageformat-parser": "^1.0.0"
   },
   "bin": {
     "lingui": "./dist/index.js"
