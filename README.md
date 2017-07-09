@@ -48,52 +48,114 @@ See the [tutorial for React][TutorialReact]
 No matter what i18n library you use, there is always an underlying message
 format that handles variable interpolation, plurals and date/number formatting. 
 `js-lingui` isn't reinventing the wheel, but rather uses standardized 
-ICU MessageFormat which is supported in many platforms (the same format
+**ICU MessageFormat** which is supported in many platforms (the same format
 that [react-intl][ReactIntl] uses).
 
 `js-lingui` goes one step further and allows you to write messages in a way
-so intuitive that you'll forget there's an underlying i18n library.
+so intuitive that you'll forget there's an underlying i18n library. 
+
+Compare following examples of low-level API and convenient functions/components: 
+
+Instead of:
 
 ```js
-const name = 'Arthur'
+i18n._(
+  'Hello, my name is {name}', 
+  { values: { name } }
+)
+```
 
-// Variable interpolation
+… you simply write:
+
+```js
 i18n.t`Hello, my name is ${name}`
+```
 
-// Plurals
-const numBooks = 1
-i18n.plural({
-  value: numBooks,
-  one: `${name} has # book`,
-  other: `${name} has # books`
+---
+
+Complex plural rules:
+
+```js
+i18n._(
+  `{numBooks, plural, 
+    one {{name} has # book} 
+    other {{name} has # books}}`, 
+  { values: { name, numBooks } }
+)
+```
+
+… becomes readable and type-checked:
+
+```js
+i18n.plural({ 
+  value: numBooks, 
+  one: `${name} # book`, 
+  other: `${name} # books`
 })
 ```
 
-This process is even more intuitive in `react`, if you're using JSX. Just wrap
-text in `<Trans>` tag and everything is handled for you - even inline
-components just works™:
+---
 
-```js
-const Pitch = () => (
-  <div>
-    // Variable Interpolation
-    <Trans id="msg.simple">Hello {name}</Trans>
-    
-    // Seamless translations with components
-    <Trans id="msg.link">
-      Read the <Link to="/docs">documentation</Link>.
-    </Trans>
-    
-    // Plurals
-    <Plural 
-      id="msg.plural"
-      value={numBooks}
-      one={<Trans>{name} has # book</Trans>}
-      other={<Trans>{name} has # books</Trans>}
-    />
-  </div>
-)
+The same message in React:
+
+```jsx
+<Trans id="msg.simple" defaults="Hello {name}" values={{ name }} />
 ```
+
+… becomes:
+
+```jsx
+<Trans id="msg.simple">Hello {name}</Trans>
+````
+
+---
+
+Components inside translations:
+
+```jsx 
+<Trans 
+    id="msg.link" 
+    defaults="Read the <0>documentation</0>."
+    components={[<Link to="/docs" />]}
+/>
+```
+
+… works seamlessly:
+
+```jsx
+<Trans id="msg.link">
+  Read the <Link to="/docs">documentation</Link>.
+</Trans>
+```
+
+---
+
+Messages with plurals:
+
+```jsx
+<Trans 
+    id="msg.plural" 
+    defaults="{numBooks, plural, one{{name} has # book} other{{name} has # books}}"
+    values={{ numBooks }}
+/>
+```
+
+… are type-checked and errorproof:
+
+```jsx
+<Plural 
+  id="msg.plural"
+  value={numBooks}
+  one={<Trans>{name} has # book</Trans>}
+  other={<Trans>{name} has # books</Trans>}
+/>
+```
+
+---
+
+**Note**: In examples above, the first example is low-level API which you can use
+when babel plugin isn't available (e.g. in Create React Apps). However, you'll
+miss another layer of validation and type-checking for messages.
 
 Message IDs are [optional](#works-with-manual-and-generated-message-ids). 
 Without them it's even easier, default messages become message ids:
@@ -151,36 +213,6 @@ Messages extracted!
 
 If you run this command second time, it'll merge translations from existing
 catalog with new messages.
-
-### Works also without babel plugin
-
-If you can't use babel plugin, you'll miss the nice feature of generated messages.
-However, if you still want to use this lib because of other reasons (performace),
-it's still possible:
-
-```js
-// Instead of
-i18n.t`Hello, my name is ${name}`
-
-// use i18n._ directly:
-i18n._({
-  id: 'Hello, my name is {name}',
-  values: { name }
-})
-```
-
-With React:
-
-```js
-// Instead of
-<Trans>Hello {name}</Trans>;
-// Write MessageFormat manually:
-<Trans id="Hello {name}" />;
-```
-
-This is exactly what babel plugin does. It also validates MessageFormat and
-gives you convenient warnings about missing parameters, but if you can't use
-babel plugin, you can still use this library and get i18n with superb performace.
 
 ### Works with manual and generated message IDs
 
