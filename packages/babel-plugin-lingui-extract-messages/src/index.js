@@ -4,12 +4,15 @@ import mkdirp from 'mkdirp'
 import generate from 'babel-generator'
 import getConfig from 'lingui-conf'
 
+// Map of messages
 const MESSAGES = Symbol('I18nMessages')
 
-function addMessage (path, messages, attrs) {
-  const { id } = attrs
-  delete attrs.id
+// We need to remember all processed nodes. When JSX expressions are
+// replaced with CallExpressions, all children are traversed for each CallExpression.
+// Then, i18n._ methods are visited multiple times for each parent CallExpression.
+const VISITED = Symbol('I18nVisited')
 
+function addMessage (path, messages, { id, ...attrs }) {
   if (messages.has(id)) {
     const message = messages.get(id)
     if (message.defaults !== attrs.defaults) {
@@ -70,7 +73,10 @@ export default function ({ types: t }) {
 
       CallExpression (path, { file }) {
         const { node } = path
-        if (!isI18nMethod(node.callee)) return
+        const visited = file.get(VISITED)
+
+        if (!isI18nMethod(node.callee) || visited.has(node.callee)) return
+        visited.add(node.callee)
 
         const attrs = node.arguments[1] && node.arguments[1].properties
           ? node.arguments[1].properties
@@ -100,6 +106,8 @@ export default function ({ types: t }) {
       if (!file.has(MESSAGES)) {
         file.set(MESSAGES, new Map())
       }
+
+      file.set(VISITED, new WeakSet())
     },
 
     post (file) {

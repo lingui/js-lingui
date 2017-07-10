@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`babel-plugin-lingui-extract-messages should extract JS translations only once inside React components 1`] = `
+Object {
+  "Test": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/with-react.js",
+        4,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
   "msg.hello": Object {
