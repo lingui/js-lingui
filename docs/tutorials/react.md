@@ -317,7 +317,7 @@ const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') :
 import messages from 'locale/cs/messages.json'
 
 const App = () => (
-  <I18nProvider language="cs" messages={{ cs: messages }} development={dev}>
+  <I18nProvider language="cs" catalogs={{ cs: { messages } }} development={dev}>
     <Inbox />
   </I18nProvider>
 )
