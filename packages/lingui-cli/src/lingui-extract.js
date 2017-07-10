@@ -15,12 +15,15 @@ const { getLanguages } = require('./api/languages')
 const config = getConfig()
 
 function extractMessages (files) {
+  const ignorePatterns = config.srcPathIgnorePatterns.map(pattern => new RegExp(pattern, 'i'))
+
   files.forEach(file => {
     if (!fs.existsSync(file)) return
 
+    const ignored = ignorePatterns.filter(regexp => regexp.test(file))
+    if (ignored.length) return
+
     if (fs.lstatSync(file).isDirectory()) {
-      const ignored = config.srcPathIgnorePatterns.filter(pattern => (new RegExp(pattern)).test(file))
-      if (ignored.length) return
 
       extractMessages(
         fs.readdirSync(file).map(filename => path.join(file, filename))
