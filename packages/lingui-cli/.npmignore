@@ -1,6 +1,6 @@
 src
 test
-node_modules
 locale
+.babelrc
 .gitignore
 yarn.lock

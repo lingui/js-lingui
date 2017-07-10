@@ -2,8 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { setupI18n } from 'lingui-i18n'
-import type { I18n } from 'lingui-i18n'
-import type { Catalogs } from 'lingui-i18n'
+import type { I18n, Catalogs } from 'lingui-i18n'
 
 export type I18nProviderProps = {
   children?: any,

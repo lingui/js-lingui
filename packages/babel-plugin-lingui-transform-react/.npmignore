@@ -1,6 +1,3 @@
 src
 test
-node_modules
-locale
-.gitignore
 yarn.lock

@@ -1,15 +1,18 @@
-# react-plugin-lingui-transform-react
+[![License][Badge-License]][License]
+[![Version][Badge-Version]][Package]
+[![Downloads][Badge-Downloads]][Package]
 
-> This plugin transforms messages written using `lingui-react` components in React to static ICU message format.
+# babel-plugin-lingui-transform-react
 
-The transformation speeds up translation at runtime while using helper components allows to type-check messages.
+> Babel plugin which transforms content of components from [lingui-react](https://www.npmjs.com/package/lingui-react) to ICU MessageFormat.
+
+`babel-plugin-lingui-transform-react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
-```sh
-npm install --save-dev babel-plugin-lingui-transform-react
-# or
+```bash
 yarn add --dev babel-plugin-lingui-transform-react
+# npm install --save-dev babel-plugin-lingui-transform-react
 ```
 
 ## Usage
@@ -26,7 +29,7 @@ yarn add --dev babel-plugin-lingui-transform-react
 
 ### Via CLI
 
-```sh
+```bash
 babel --plugins lingui-transform-react script.js
 ```
 
@@ -38,92 +41,14 @@ require("babel-core").transform("code", {
 })
 ```
 
-# Details
+## License
 
-Plugin performs following transformations:
+[MIT][License]
 
-### Static message
-
-```jsx
-<Trans>Hello World</Trans>
-
-// becomes
-<Trans id="Hello World" />
-```
-
-### Message with variables
-
-```jsx
-<Trans>Hi, my name is {name}</Trans>
-
-// becomes
-<Trans id="Hi, my name is {name}" params={{name: name}} />
-```
-
-### Plural, select, ordinal and other formats
-
-```jsx
-<Plural 
-  value={count}
-  one="# Book"
-  other="# Books"
-/>
-
-// becomes
-<Trans 
-  id="{count, plural, one {# Book}, other {# Books}}" 
-  params={{count: count}} 
-/>
-```
-
-Number/Date formats:
-
-```jsx
-<Trans>
-  The answer is <NumberFormat value={value} />
-</Trans>
-
-// becomes
-<Trans 
-  id="The answer is {value, number}" 
-  params={{value: value}} 
-/>
-```
-
-Number/Date formats:
-
-```jsx
-const currency = {
-  style: 'currency',
-  currency: 'EUR'
-}
-
-<Trans>
-  The price is <NumberFormat value={amount} format={currency} />
-</Trans>
-
-// becomes
-<Trans 
-  id="The price is {amount, number, currency}" 
-  params={{ amount }} 
-  formats={{ currency }}
-/>
-```
-
-
-### Message with inline components
-
-Component name and props aren't included in translation ID.
-
-```jsx
-<Trans>Hi, my name is <a href="/profile">Dave</a>!</Trans>
-
-// becomes
-<Trans 
-  id="Hi, my name is <0>{name}</0>!" 
-  params={{name: name}} 
-  components={[
-    <a href="/profile" />
-  ]}
-/>
-```
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[jsLingui]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.gitbooks.io/js/
+[Package]: https://www.npmjs.com/package/babel-plugin-lingui-transform-react
+[Badge-Downloads]: https://img.shields.io/npm/dw/babel-plugin-lingui-transform-react.svg
+[Badge-Version]: https://img.shields.io/npm/v/babel-plugin-lingui-transform-react.svg 
+[Badge-License]: https://img.shields.io/npm/l/babel-plugin-lingui-transform-react.svg

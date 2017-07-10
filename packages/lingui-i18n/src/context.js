@@ -40,7 +40,6 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
   }
 }
 
-
 // Params -> CTX
 /**
  * Creates a context object, which formats ICU MessageFormat arguments based on

@@ -1,6 +1,6 @@
 {
   "name": "lingui-formats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Built-in formats for numbers and dates",
   "main": "dist/index.js",
   "repository": {

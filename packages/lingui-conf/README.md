@@ -1,9 +1,15 @@
+[![License][Badge-License]][License]
+[![Version][Badge-Version]][Package]
+[![Downloads][Badge-Downloads]][Package]
+
 lingui-conf
 ===========
 
 > Get lingui configuration from package.json
 
-**Internal package: You probably don't need this package. It's used by packages in [`js-lingui`](https://github.com/lingui/js-lingui/)**
+**⚠️ Internal package: You probably don't need this.**
+
+`lingui-conf` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 Package finds nearest package.json starting from current directory, reads `lingui` configuration, provides defaults for all options and `<rootDir>` with current working directory.
 
@@ -18,29 +24,17 @@ const config = getConfig()
 // config.localeDir === '/app/locale'
 ```
 
-## Options
+See the [reference][Reference] documenation of `lingui-cli` for all options.
 
-### `localeDir` [string]
+## License
 
-Default: "<rootDir>/locale"
+[MIT][License]
 
-Directory with locales
-
-### `fallbackLanguage` [string | Object]
-
-Default: ""
-
-Fallback language when translation is given language doesn't exist.
-Message ID is used when there's no fallback language.
-
-### `srcPathDirs` [array\<string>]
-
-Default: ["<rootDir>"]
-
-A list of path to directories where application source files are located. Plugins and CLI looks for translations in these directories.
-
-### `srcPathIgnorePatterns` [array\<string>]
-
-Default: ["/node_modules/"]
-
-An array of regexp pattern strings that are matched against all src paths. Plugins and CLI will ignore these paths.
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[jsLingui]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.gitbooks.io/js/
+[Reference]: https://lingui.gitbooks.io/js/ref/cli.html
+[Package]: https://www.npmjs.com/package/lingui-conf
+[Badge-Downloads]: https://img.shields.io/npm/dw/lingui-conf.svg
+[Badge-Version]: https://img.shields.io/npm/v/lingui-conf.svg 
+[Badge-License]: https://img.shields.io/npm/l/lingui-conf.svg

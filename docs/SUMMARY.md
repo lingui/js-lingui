@@ -14,5 +14,5 @@
 
 ## References
 
-* [lingui-react](ref/react.md)
-* [lingui-cli](ref/cli.md)
+* [React](ref/react.md)
+* [CLI and Configuration](ref/cli.md)
