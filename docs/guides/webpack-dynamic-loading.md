@@ -97,11 +97,13 @@ loadLanguage = async (language) => {
   this.setState(state => ({
     catalogs: {
       ...state.catalogs,
-      [language]: catalog
+      [language]: unpackCatalog(catalog)
     }
   }))
 }
 ```
+
+Message catalog is minified, so we must use `unpackCatalog` from `lingui-i18n`.
 
 Dynamic import returns a promise, so we can either use async/await keywords or good old promises:
 
@@ -114,7 +116,7 @@ loadLanguage = (language) => {
     this.setState(state => ({
       catalogs: {
         ...state.catalogs,
-        [language]: catalog
+        [language]: unpackCatalog(catalog)
       }
     }))
   )
@@ -133,6 +135,7 @@ Here's the full source of `I18nLoader` component:
 import React from 'react'
 import { connect } from 'react-redux'
 import { I18nProvider } from 'lingui-react'
+import { unpackCatalog } from 'lingui-i18n'
 
 export class I18nLoader extends React.Component {
   props: I18nLoaderProps
@@ -149,7 +152,7 @@ export class I18nLoader extends React.Component {
     this.setState(state => ({
       catalogs: {
         ...state.catalogs,
-        [language]: catalog
+        [language]: unpackCatalog(catalog)
       }
     }))
   }
