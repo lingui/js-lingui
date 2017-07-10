@@ -302,7 +302,14 @@ Alright, translator just sent us finished translations:
 You probably don't understand half of it, but it doesn't matter. Just copy-paste
 it instead the original `locale/cs/messages.json`.
 
-Finally, we import this JSON into our app and pass it to [I18nProvider][I18nProvider].
+Now we need to compile it:
+
+```bash
+$ lingui compile
+```
+
+
+Finally, we import compiled JS catalog into our app and pass it to [I18nProvider][I18nProvider].
 
 ```jsx
 // index.js
@@ -314,10 +321,10 @@ import { I18nProvider } from 'lingui-react'
 // required in development only (huge dependency)
 const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
 
-import messages from 'locale/cs/messages.json'
+import catalog from 'locale/cs/messages.js'
 
 const App = () => (
-  <I18nProvider language="cs" messages={{ cs: messages }} development={dev}>
+  <I18nProvider language="cs" catalogs={{ cs: catalog }} development={dev}>
     <Inbox />
   </I18nProvider>
 )
@@ -325,9 +332,26 @@ const App = () => (
 render(<App />, document.getElementById('app'))
 ```
 
-`messages` prop actually expects a dictionary or *all* message catalogs,
+`catalogs` prop actually expects a dictionary or *all* message catalogs,
 but we can load them on demand. Again, this depends on environment. There's
 an example [how to do it with webpack][GuideWebpackDynamicLoading].
+
+**Note**: It's also possible to load JSON catalogs in development. However, 
+this approach is discouraged as development environment should match production
+one as close as possible:
+
+
+```jsx
+// in example above, import messages.json instead of messages.js:
+import messages from 'locale/cs/messages.json'
+
+// it's important to wrap messages into dictionary:
+const App = () => (
+  <I18nProvider language="cs" catalogs={{ cs: { messages } }} development={dev}>
+    <Inbox />
+  </I18nProvider>
+)
+```
 
 ## Variations
 
