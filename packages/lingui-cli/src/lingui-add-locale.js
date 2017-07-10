@@ -7,8 +7,6 @@ const plurals = require('make-plural')
 
 const config = getConfig()
 
-program.parse(process.argv)
-
 function validateLocales (locales) {
   const unknown = locales.filter(locale => !(locale in plurals))
   if (unknown.length) {
@@ -34,8 +32,24 @@ function addLocale (locales) {
   })
 }
 
+program
+  .description('Add target locales. Remove locale by removing <locale> directory from your localeDir (e.g. ./locale)')
+  .arguments('<locale...>')
+  .on('--help', function () {
+    console.log('\n  Examples:\n')
+    console.log('    # Add single locale')
+    console.log('    $ lingui add-locale en')
+    console.log('')
+    console.log('    # Add multiple locales')
+    console.log('    $ lingui add-locale en es fr ru')
+  })
+  .parse(process.argv)
+
+if (!program.args.length) program.help()
+
 validateLocales(program.args)
 
 addLocale(program.args)
+
 console.log()
 console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages)`)
