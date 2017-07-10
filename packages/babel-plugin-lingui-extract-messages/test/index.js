@@ -122,4 +122,24 @@ describe('babel-plugin-lingui-extract-messages', function () {
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'js/integration.json')))
     expect(messages).toMatchSnapshot()
   })
+
+  it('should extract JS translations only once inside React components', function () {
+    expect(() => transformFileSync(path.join(__dirname, 'fixtures', 'jsx/with-react.js'), {
+        babelrc: false,
+        plugins: [
+          'lingui-transform-js',
+          'lingui-transform-react',
+          [plugin, {
+            localeDir: LOCALE_DIR
+          }]
+        ],
+        presets: [
+          'react'
+        ]
+      })
+    ).not.toThrow()
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/with-react.json')))
+    expect(messages).toMatchSnapshot()
+  })
 })
