@@ -1,8 +1,11 @@
 {
   "name": "lingui-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI for working wit message catalogs",
-  "main": "dist/index.js",
+  "main": "dist/lingui.js",
+  "bin": {
+    "lingui": "./dist/lingui.js"
+  },
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -41,9 +44,6 @@
     "lingui-conf": "^0.8.1",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.0.0"
-  },
-  "bin": {
-    "lingui": "./dist/index.js"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
