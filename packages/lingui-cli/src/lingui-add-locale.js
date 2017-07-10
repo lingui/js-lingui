@@ -18,7 +18,7 @@ function validateLocales (locales) {
 }
 
 function addLocale (locales) {
-  if (fs.existsSync(config.localeDir)) {
+  if (!fs.existsSync(config.localeDir)) {
     fs.mkdirSync(config.localeDir)
   }
 
