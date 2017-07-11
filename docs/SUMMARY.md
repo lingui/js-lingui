@@ -9,6 +9,7 @@
 
 ## Guides
 
+* [Plurals](guides/plurals.md)
 * [Webpack - Dynamic loading of languages](guides/webpack-dynamic-loading.md)
 * [Migrating from 0.x to 1.x](guides/migration-1.md)
 
