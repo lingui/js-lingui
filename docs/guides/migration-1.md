@@ -90,11 +90,15 @@ const i18n = setupI18n({
 
 `messages` were also replaced with `catalogs`, more info [below](#messages-replaced-with-catalogs).
 
-`lingui-i18n` still exports the default instance of `I18n` class, this
-remains unchanged:
+`lingui-i18n` still exports the default instance of `I18n` class, but as a named export:
 
 ```js
+// lingui-i18n 0.x
+// also works in lingui-i18n 1.x, but deprecated
 import i18n from 'lingui-i18n'
+
+// lingui-i18n 1.1
+import { i18n } from 'lingui-i18n'
 ```
 
 ### Explicit development mode
