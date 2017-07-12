@@ -191,6 +191,10 @@ function setupI18n (params?: setupI18nProps = {}): I18n {
   return i18n
 }
 
-export default setupI18n()
-export { setupI18n }
+const i18n = setupI18n()
+
+// Deprecated in 2.0
+export default i18n
+
+export { setupI18n, i18n }
 export type { Message, Catalog, Catalogs, LanguageData, I18n }

@@ -1,10 +1,14 @@
 /* @flow */
-import i18n, { setupI18n } from '.'
+import defaultI18n, { i18n, setupI18n } from '.'
 import { mockConsole, mockEnv } from './mocks'
 import linguiDev from './dev'
 
 describe('I18n', function () {
   it('should export default I18n instance', function () {
+    expect(defaultI18n).toBeDefined()
+  })
+
+  it('should export named I18n instance', function () {
     expect(i18n).toBeDefined()
   })
 

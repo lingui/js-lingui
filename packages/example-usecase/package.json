@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "1.0.0",
   "name": "example-usecase",
   "description": "Example usecase of all features",
   "main": "index.js",
@@ -16,7 +17,7 @@
   },
   "dependencies": {
     "lingui-cli": "^0.15.0-6",
-    "lingui-react": "^1.0.1",
+    "lingui-react": "^1.0.2",
     "react": "^15.6.1"
   },
   "devDependencies": {
