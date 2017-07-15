@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { unpackCatalog } from 'lingui-i18n'
 import { I18nProvider, Trans } from 'lingui-react'
 import NeverUpdate from './Usecases/NeverUpdate'
 import Children from './Usecases/Children'
@@ -9,25 +10,18 @@ import Formats from './Usecases/Formats'
 class App extends React.Component {
   state = {
     language: 'en',
-    messages: {},
-    languageData: {}
+    catalogs: {}
   }
 
   loadLanguage = async (language) => {
-    const messages = await import(
+    const catalogs = await import(
       /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-      `../locale/${language}/messages.js`)
+      `../locale/${language}/messages.js`).then(unpackCatalog)
 
     this.setState(state => ({
-      messages: {
-        ...state.messages,
-        [language]: messages.m
-      },
-      languageData: {
-        ...state.languageData,
-        [language]: {
-          plurals: messages.l.p
-        }
+      catalogs: {
+        ...state.catalogs,
+        [language]: catalogs
       }
     }))
   }
@@ -36,8 +30,8 @@ class App extends React.Component {
     this.loadLanguage(this.state.language)
   }
 
-  shouldComponentUpdate (nextProps, { language, messages }) {
-    if (language !== this.state.language && !messages[language]) {
+  shouldComponentUpdate (nextProps, { language, catalogs }) {
+    if (language !== this.state.language && !catalogs[language]) {
       this.loadLanguage(language)
       return false
     }
@@ -46,9 +40,9 @@ class App extends React.Component {
   }
 
   render () {
-    const { language, messages, languageData } = this.state
+    const { language, catalogs, languageData } = this.state
 
-    if (!messages[language]) return null
+    if (!catalogs[language]) return null
 
     return (
       <div>
@@ -58,7 +52,7 @@ class App extends React.Component {
           <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
         </ul>
 
-        <I18nProvider language={language} messages={messages} languageData={languageData}>
+        <I18nProvider language={language} catalogs={catalogs} languageData={languageData}>
           <h2><Trans>Translation of children</Trans></h2>
           <Children />
 

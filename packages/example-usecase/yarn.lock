@@ -395,9 +395,21 @@ babel-plugin-lingui-transform-js@^1.0.0-7:
   dependencies:
     babel-runtime "^6.23.0"
 
+babel-plugin-lingui-transform-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.1.tgz#8e7deeff77ecd7b6ba2548e5c4f5f5cb6ea01462"
+  dependencies:
+    babel-runtime "^6.23.0"
+
 babel-plugin-lingui-transform-react@^1.0.0-7:
   version "1.0.0-8"
   resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.0-8.tgz#59f4d7e90f2840f66a4b2e50beae8ae7611a9afd"
+  dependencies:
+    babel-runtime "^6.23.0"
+
+babel-plugin-lingui-transform-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.1.tgz#58f3a67c222d9b12600fdac647971104e2fc4ec2"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -705,6 +717,13 @@ babel-preset-flow@^6.23.0:
   resolved "https://registry.yarnpkg.com/babel-preset-flow/-/babel-preset-flow-6.23.0.tgz#e71218887085ae9a24b5be4169affb599816c49d"
   dependencies:
     babel-plugin-transform-flow-strip-types "^6.22.0"
+
+babel-preset-lingui-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/babel-preset-lingui-react/-/babel-preset-lingui-react-1.0.1.tgz#8b692dfd97f6eb9a1efbea755c1f00dcf9b5833b"
+  dependencies:
+    babel-plugin-lingui-transform-js "^1.0.1"
+    babel-plugin-lingui-transform-react "^1.0.1"
 
 babel-preset-react@^6.24.1:
   version "6.24.1"
@@ -2219,6 +2238,28 @@ lingui-conf@^0.7.1-4, lingui-conf@^0.7.1-5:
   dependencies:
     jest-validate "^20.0.3"
     pkg-conf "^2.0.0"
+
+lingui-formats@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.1.tgz#7afa3dc83d18609ac563ee1b626c9f39d3f2877c"
+
+lingui-i18n@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.1.0.tgz#6af0cffcde272c86fd5677d2cca49edfc5613e58"
+  dependencies:
+    babel-runtime "^6.23.0"
+    lingui-formats "^1.0.1"
+    make-plural "^4.0.1"
+    messageformat-parser "^1.0.0"
+
+lingui-react@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-1.0.2.tgz#ccb0b657e39ccfa4f64dc8cfebea5732196a8b1d"
+  dependencies:
+    babel-runtime "^6.23.0"
+    lingui-formats "^1.0.1"
+    lingui-i18n "^1.1.0"
+    prop-types "^15.5.10"
 
 load-json-file@^1.0.0:
   version "1.1.0"

@@ -1,17 +1,157 @@
 {
-  "Translation of children": "",
-  "Translation of element attributes": "Překlady atributů",
-  "Formats": "Formáty",
-  "Translations wrapped in component which never updates": "Překlady uvnitř komponent, které se nikdy neaktualizují",
-  "This isn't translated": "Toto není přeloženo",
-  "msg.label": "Nápis",
-  "Hello World": "Ahoj světe",
-  "My name is {name}": "Jmenuji se {name}",
-  "Read <0>more</0>.": "Číst <0>dále</0>",
-  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}}",
-  "Close": "Zavřít",
-  "<0>Article</0>": "<0>Článek</0>",
-  "Full content of {articleName}": "Celé znění článku {articleName}",
-  "The answer is {answer,number,percent}": "Odpověď je {answer,number,percent}",
-  "Today is {now,date}": "Dnes je {now,date}"
+  "Translation of children": {
+    "translation": "",
+    "origin": [
+      [
+        "src/App.js",
+        62
+      ]
+    ]
+  },
+  "Translation of element attributes": {
+    "translation": "Překlady atributů",
+    "origin": [
+      [
+        "src/App.js",
+        65
+      ]
+    ]
+  },
+  "Formats": {
+    "translation": "Formáty",
+    "origin": [
+      [
+        "src/App.js",
+        68
+      ]
+    ]
+  },
+  "Translations wrapped in component which never updates": {
+    "translation": "Překlady uvnitř komponent, které se nikdy neaktualizují",
+    "origin": [
+      [
+        "src/App.js",
+        71
+      ]
+    ]
+  },
+  "This isn't translated": {
+    "translation": "Toto není přeloženo",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        27
+      ]
+    ]
+  },
+  "msg.label": {
+    "translation": "Nápis",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        31
+      ]
+    ]
+  },
+  "Hello World": {
+    "translation": "Ahoj světe",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        35
+      ]
+    ]
+  },
+  "My name is {name}": {
+    "translation": "Jmenuji se {name}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        39
+      ],
+      [
+        "src/Usecases/Children.js",
+        87
+      ],
+      [
+        "src/Usecases/Children.js",
+        88
+      ]
+    ]
+  },
+  "Read <0>more</0>.": {
+    "translation": "Číst <0>dále</0>",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        43
+      ]
+    ]
+  },
+  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": {
+    "translation": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        49
+      ]
+    ]
+  },
+  "Close": {
+    "translation": "Zavřít",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        15
+      ]
+    ]
+  },
+  "<0>Article</0>": {
+    "translation": "<0>Článek</0>",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        19
+      ]
+    ]
+  },
+  "Full content of {articleName}": {
+    "translation": "Celé znění článku {articleName}",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ]
+    ]
+  },
+  "The answer is {answer,number,percent}": {
+    "translation": "Odpověď je {answer,number,percent}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        13
+      ]
+    ]
+  },
+  "Today is {now,date}": {
+    "translation": "Dnes je {now,date}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        19
+      ]
+    ]
+  }
 }

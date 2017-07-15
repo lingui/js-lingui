@@ -1,17 +1,157 @@
 {
-  "Translation of children": "Translation of children",
-  "Translation of element attributes": "",
-  "Formats": "",
-  "Translations wrapped in component which never updates": "",
-  "This isn't translated": "",
-  "msg.label": "Label",
-  "Hello World": "",
-  "My name is {name}": "My name is {name}",
-  "Read <0>more</0>.": "Read <0>more</0>.",
-  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}",
-  "Close": "",
-  "<0>Article</0>": "<0>Article</0>",
-  "Full content of {articleName}": "Full content of {articleName}",
-  "The answer is {answer,number,percent}": "The answer is {answer,number,percent}",
-  "Today is {now,date}": "Today is {now,date}"
+  "Translation of children": {
+    "translation": "Translation of children",
+    "origin": [
+      [
+        "src/App.js",
+        62
+      ]
+    ]
+  },
+  "Translation of element attributes": {
+    "translation": "",
+    "origin": [
+      [
+        "src/App.js",
+        65
+      ]
+    ]
+  },
+  "Formats": {
+    "translation": "",
+    "origin": [
+      [
+        "src/App.js",
+        68
+      ]
+    ]
+  },
+  "Translations wrapped in component which never updates": {
+    "translation": "",
+    "origin": [
+      [
+        "src/App.js",
+        71
+      ]
+    ]
+  },
+  "This isn't translated": {
+    "translation": "",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        27
+      ]
+    ]
+  },
+  "msg.label": {
+    "translation": "Label",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        31
+      ]
+    ]
+  },
+  "Hello World": {
+    "translation": "",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        35
+      ]
+    ]
+  },
+  "My name is {name}": {
+    "translation": "My name is {name}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        39
+      ],
+      [
+        "src/Usecases/Children.js",
+        87
+      ],
+      [
+        "src/Usecases/Children.js",
+        88
+      ]
+    ]
+  },
+  "Read <0>more</0>.": {
+    "translation": "Read <0>more</0>.",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        43
+      ]
+    ]
+  },
+  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": {
+    "translation": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} =2 {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        49
+      ]
+    ]
+  },
+  "Close": {
+    "translation": "",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        15
+      ]
+    ]
+  },
+  "<0>Article</0>": {
+    "translation": "<0>Article</0>",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        19
+      ]
+    ]
+  },
+  "Full content of {articleName}": {
+    "translation": "Full content of {articleName}",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ],
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ]
+    ]
+  },
+  "The answer is {answer,number,percent}": {
+    "translation": "The answer is {answer,number,percent}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        13
+      ]
+    ]
+  },
+  "Today is {now,date}": {
+    "translation": "Today is {now,date}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        19
+      ]
+    ]
+  }
 }
