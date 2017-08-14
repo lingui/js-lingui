@@ -1,3 +1,5 @@
+import { Trans, NumberFormat } from 'lingui-react';
+
 <Trans>The answer is <NumberFormat value={value} format={currency} /></Trans>;
 <Trans>The answer is <NumberFormat value={value} format={{
   minimumFractionDigits: 2

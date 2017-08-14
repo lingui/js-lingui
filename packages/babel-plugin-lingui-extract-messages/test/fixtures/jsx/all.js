@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react';
+
 <span id="ignore" />;
 <Trans />;  // this should be ignored
 <Trans defaults="Missing ID"/>;  // this should be ignored

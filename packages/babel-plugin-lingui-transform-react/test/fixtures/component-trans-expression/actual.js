@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react';
+
 <Trans>Hi, my name is {name}</Trans>;
 <Trans>{duplicate} variable {duplicate}</Trans>;
 <Trans>

@@ -20,7 +20,15 @@ describe('babel-plugin-lingui-transform-react', function () {
     ]
   }
 
-  const transformCode = (code) => () => transform(code, babelOptions)
+  const transformCode = (code) => () => transform(
+    // implicitly import all lingui-react components, otherwise components
+    // are ignored and not validated
+    `import { 
+      Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat 
+    } from 'lingui-react';
+    ${code}`,
+    babelOptions
+  )
 
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)

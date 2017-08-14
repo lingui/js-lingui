@@ -64,13 +64,26 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration with alises) 1`] = `
+Object {
+  "Hi, my name is {name}": Object {
+    "origin": Array [
+      Array [
+        "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration-with-aliases.js",
+        3,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
 Object {
   "Hi, my name is {name}": Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        1,
+        3,
       ],
     ],
   },
@@ -78,15 +91,15 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        2,
+        4,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        9,
+        11,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        10,
+        12,
       ],
     ],
   },
@@ -94,15 +107,15 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        3,
+        5,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        12,
+        14,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/integration.js",
-        17,
+        19,
       ],
     ],
   },
@@ -115,7 +128,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        7,
+        9,
       ],
     ],
   },
@@ -124,11 +137,11 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        5,
+        7,
       ],
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        6,
+        8,
       ],
     ],
   },
@@ -136,7 +149,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        4,
+        6,
       ],
     ],
   },
@@ -144,7 +157,7 @@ Object {
     "origin": Array [
       Array [
         "packages/babel-plugin-lingui-extract-messages/test/fixtures/jsx/all.js",
-        8,
+        10,
       ],
     ],
   },

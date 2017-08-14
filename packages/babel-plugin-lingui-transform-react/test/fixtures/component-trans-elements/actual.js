@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react';
+
 <Trans>
   Hello <strong>World!</strong><br />
   <p>
