@@ -1,3 +1,5 @@
+import { Trans, SelectOrdinal } from 'lingui-react';
+
 <Trans>
   This is my <SelectOrdinal
     value={count}

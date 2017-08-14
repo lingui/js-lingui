@@ -1,3 +1,5 @@
+import { Select } from 'lingui-react';
+
 <Select
   value={count}
   male="He"
