@@ -31,7 +31,7 @@ function testCase (testName, assertion) {
   const transform = (filename, jsx = true) => () => transformFileSync(path.join(__dirname, 'fixtures', filename), {
     babelrc: false,
     plugins: [
-      ...(filename.endsWith('integration.js')
+      ...(/integration.*\.js$/.test(filename)
         ? jsx
           ? [
             'lingui-transform-react',
@@ -103,6 +103,16 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(messages).toMatchSnapshot()
   })
 
+  testCase('should extract all messages from JSX files (integration with alises)', (transform) => {
+    // first run should create all required folders and write messages
+    expect(transform('jsx/integration-with-aliases.js')).not.toThrow()
+    // another runs should just write messages
+    expect(transform('jsx/integration-with-aliases.js')).not.toThrow()
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/integration-with-aliases.json')))
+    expect(messages).toMatchSnapshot()
+  })
+
   testCase('should extract all messages from JS files', (transform) => {
     // first run should create all required folders and write messages
     expect(transform('js/all.js', false)).not.toThrow()
@@ -125,19 +135,18 @@ describe('babel-plugin-lingui-extract-messages', function () {
 
   it('should extract JS translations only once inside React components', function () {
     expect(() => transformFileSync(path.join(__dirname, 'fixtures', 'jsx/with-react.js'), {
-        babelrc: false,
-        plugins: [
-          'lingui-transform-js',
-          'lingui-transform-react',
-          [plugin, {
-            localeDir: LOCALE_DIR
-          }]
-        ],
-        presets: [
-          'react'
-        ]
-      })
-    ).not.toThrow()
+      babelrc: false,
+      plugins: [
+        'lingui-transform-js',
+        'lingui-transform-react',
+        [plugin, {
+          localeDir: LOCALE_DIR
+        }]
+      ],
+      presets: [
+        'react'
+      ]
+    })).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/with-react.json')))
     expect(messages).toMatchSnapshot()

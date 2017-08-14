@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react';
+
 <Trans>Hi, my name is {name}</Trans>;
 <span title={i18n.t`Title`} />;
 <span title={i18n.plural({
