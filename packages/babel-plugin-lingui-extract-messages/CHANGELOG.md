@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.0.2...babel-plugin-lingui-extract-messages@1.0.3) (2017-08-16)
+
+
+### Bug Fixes
+
+* Limit message extraction to lingui-react components ([a4fbfb7](https://github.com/lingui/js-lingui/commit/a4fbfb7))
+
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.0.1...babel-plugin-lingui-extract-messages@1.0.2) (2017-07-10)
 

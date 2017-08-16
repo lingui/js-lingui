@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/lingui/js-lingui/compare/lingui-cli@1.0.4...lingui-cli@1.0.5) (2017-08-16)
+
+
+### Bug Fixes
+
+* Return empty string when fallbackLaguage is empty ([ea645ce](https://github.com/lingui/js-lingui/commit/ea645ce)), closes [#51](https://github.com/lingui/js-lingui/issues/51)
+
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/lingui/js-lingui/compare/lingui-cli@1.0.3...lingui-cli@1.0.4) (2017-07-10)
 

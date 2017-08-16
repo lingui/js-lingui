@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "CLI for working wit message catalogs",
   "main": "dist/lingui.js",
   "bin": {
@@ -33,9 +33,9 @@
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-generator": "^6.25.0",
-    "babel-plugin-lingui-extract-messages": "^1.0.2",
+    "babel-plugin-lingui-extract-messages": "^1.0.3",
     "babel-plugin-lingui-transform-js": "^1.0.1",
-    "babel-plugin-lingui-transform-react": "^1.0.1",
+    "babel-plugin-lingui-transform-react": "^1.0.2",
     "babel-types": "^6.25.0",
     "babylon": "^6.17.4",
     "chalk": "^2.0.1",

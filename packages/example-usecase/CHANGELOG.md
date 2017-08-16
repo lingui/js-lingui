@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-      <a name="1.0.0"></a>
+  <a name="1.0.1"></a>
+## [1.0.1](https://github.com/lingui/js-lingui/compare/example-usecase@1.0.0...example-usecase@1.0.1) (2017-08-16)
+
+
+### Bug Fixes
+
+* Update message loading in usecase ([623fb18](https://github.com/lingui/js-lingui/commit/623fb18))
+
+
+
+
+  <a name="1.0.0"></a>
 # 1.0.0 (2017-07-12)
 
 
@@ -45,7 +56,7 @@ messages/languageData
 
 
 
-      <a name=""></a>
+<a name=""></a>
 #  (2017-07-10)
 
 
