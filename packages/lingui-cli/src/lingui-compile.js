@@ -12,7 +12,7 @@ const { getLanguages } = require('./api/languages')
 const compile = require('./api/compile').default
 
 function getOrDefault (message) {
-  return message.translation || message.defaults
+  return message.translation || message.defaults || ''
 }
 
 function getTranslation (catalog, locale, key) {
