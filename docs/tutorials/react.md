@@ -73,7 +73,7 @@ Three major packages we're going to use are:
 1. Install `babel-preset-lingui-react` as development dependency, `lingui-react` as a runtime dependency and `lingui-cli` globally:
 
     ```bash
-yarn global add lingui-react
+yarn global add lingui-cli
 yarn add lingui-react
 yarn add --dev babel-preset-lingui-react
 # npm install --save-dev babel-preset-lingui-react
@@ -82,7 +82,7 @@ yarn add --dev babel-preset-lingui-react
     or using `npm`:
     
     ```bash
-npm install -g lingui-react
+npm install -g lingui-cli
 npm install --save lingui-react
 npm install --save-dev babel-preset-lingui-react
     ```  
