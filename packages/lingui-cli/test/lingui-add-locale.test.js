@@ -39,6 +39,17 @@ describe('lingui add-locale', function () {
     )
   })
 
+  it('should support country-specific locales', function () {
+    return runCmd(base =>
+      base
+        .run('en_US')
+        .code(0)
+        .stdout(/Added locale en_US./)
+    ).then(() => {
+      expect(locales()).toEqual(['en_US'])
+    })
+  })
+
   it('should add single locale', function () {
     return runCmd(base =>
       base
