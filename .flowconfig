@@ -2,6 +2,7 @@
 .*/node_modules/config-chain/.*
 .*/node_modules/conventional-changelog-core/.*
 .*/node_modules/npmconf/.*
+.*/node_modules/nixt/.*.json
 
 [include]
 
