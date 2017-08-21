@@ -63,7 +63,7 @@
     "url": "https://github.com/lingui/js-lingui.git"
   },
   "jest": {
-    "testRegex": "(/test/[^/]*|.*\\.test)\\.jsx?$",
+    "testRegex": "(/test/[^/]*index|.*\\.test)\\.jsx?$",
     "collectCoverage": true,
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
