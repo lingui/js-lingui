@@ -11,8 +11,9 @@ describe('lingui add-locale', function () {
   const locales = () => fs.readdirSync(baseLocaleDir)
 
   const runCmd = commandTestCase => new Promise((resolve, reject) => {
+    // requires dist file, otherwise the test fails on Node.js < 6
     const base = nixt()
-      .base(path.resolve(__dirname, '../src/lingui.js add-locale '))
+      .base(path.resolve(__dirname, '../dist/lingui.js add-locale '))
       .cwd(baseDir)
 
     commandTestCase(base).end(err => !err ? resolve() : reject(err))
