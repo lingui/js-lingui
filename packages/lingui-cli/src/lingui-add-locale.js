@@ -8,7 +8,11 @@ const plurals = require('make-plural')
 const config = getConfig()
 
 function validateLocales (locales) {
-  const unknown = locales.filter(locale => !(locale in plurals))
+  const unknown = locales.filter(locale => {
+    const [ language ] = locale.split('_')
+    return !(language in plurals)
+  })
+
   if (unknown.length) {
     console.log(chalk.red(`Unknown locale(s): ${unknown.join(', ')}.`))
     process.exit(1)
