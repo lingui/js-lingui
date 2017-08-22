@@ -78,9 +78,14 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(fs.existsSync(path.join(buildDir, 'empty.json'))).toBeFalsy()
   })
 
-  testCase("shouldn't path to file inside locale dir", (transform) => {
+  testCase('should preserve path to file inside locale dir', (transform) => {
     expect(transform('jsx/deep/all.js')).not.toThrow()
     expect(fs.existsSync(path.join(buildDir, 'jsx/deep/all.json'))).toBeTruthy()
+  })
+
+  testCase('should ignore files without lingui import', (transform) => {
+    expect(transform('jsx/without-lingui.js')).not.toThrow()
+    expect(fs.existsSync(path.join(buildDir, 'jsx/without-lingui.json'))).toBeFalsy()
   })
 
   testCase('should extract all messages from JSX files', (transform) => {

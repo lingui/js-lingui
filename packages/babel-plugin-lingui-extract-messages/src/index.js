@@ -67,7 +67,7 @@ export default function ({ types: t }) {
           importDeclarations[specifier.imported.name] = specifier.local.name
         })
 
-        localTransComponentName = importDeclarations['Trans'] || 'Trans'
+        localTransComponentName = importDeclarations['Trans']
       },
 
       // Extract translation from <Trans /> component.
@@ -122,6 +122,8 @@ export default function ({ types: t }) {
     },
 
     pre (file) {
+      localTransComponentName = null
+
       // Ignore else path for now. Collision is possible if other plugin is
       // using the same Symbol('I18nMessages').
       // istanbul ignore else
