@@ -291,13 +291,17 @@ export default function ({ types: t }) {
   }
 
   return {
+    pre () {
+      // Reset import declaration for each file.
+      // Regression introduced in https://github.com/lingui/js-lingui/issues/62
+      importDeclarations = {}
+    },
     visitor: {
       ImportDeclaration (path) {
         const { node } = path
 
         if (node.source.value !== 'lingui-react') return
 
-        importDeclarations = {}
         node.specifiers.forEach(specifier => {
           importDeclarations[specifier.imported.name] = specifier.local.name
         })
@@ -328,7 +332,9 @@ export default function ({ types: t }) {
       },
 
       JSXElement (path, file) {
-        if (!Object.keys(importDeclarations).length) return
+        if (!importDeclarations || !Object.keys(importDeclarations).length) {
+          return
+        }
 
         const { node } = path
         elementGenerator = generatorFactory()

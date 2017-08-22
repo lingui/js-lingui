@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react';
+
 <span id="ignore" />;
 <Trans id="msg.hello" />;
 <Trans id="msg.default" defaults="Hello World" />;
