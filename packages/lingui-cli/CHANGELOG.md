@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/lingui/js-lingui/compare/lingui-cli@1.0.5...lingui-cli@1.1.0) (2017-08-22)
+
+
+### Bug Fixes
+
+* ignore files without lingui imports [#62](https://github.com/lingui/js-lingui/issues/62) ([2eaf901](https://github.com/lingui/js-lingui/commit/2eaf901))
+
+
+### Features
+
+* Allow country-specific locales ([587b7bd](https://github.com/lingui/js-lingui/commit/587b7bd))
+
+
+
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/lingui/js-lingui/compare/lingui-cli@1.0.4...lingui-cli@1.0.5) (2017-08-16)
 
