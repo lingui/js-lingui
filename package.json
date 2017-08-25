@@ -41,7 +41,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
-    "flow-bin": "^0.49.1",
+    "flow-bin": "^0.53.1",
     "flow-typed": "^2.1.2",
     "glob": "^7.1.2",
     "jasmine-reporters": "^2.2.1",
@@ -54,16 +54,23 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "rimraf": "^2.6.1",
-    "rollup": "^0.43.0",
-    "rollup-plugin-babel": "^2.7.1",
-    "tmp": "^0.0.31"
+    "rollup": "^0.48.2",
+    "rollup-plugin-babel": "^3.0.2",
+    "tmp": "^0.0.33"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
   },
   "jest": {
-    "testRegex": "(/test/[^/]*index|.*\\.test)\\.jsx?$",
+    "testMatch": [
+      "**/?(*.)test.js",
+      "**/test/index.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/locale/"
+    ],
     "collectCoverage": true,
     "coverageDirectory": "./coverage/",
     "coveragePathIgnorePatterns": [
