@@ -15,7 +15,7 @@ describe('lingui extract', function () {
     mockConsole(console => {
       command(config, format)
       expect(console.log)
-        .toBeCalledWith(expect.stringContaining('No locales defined.'))
+        .toBeCalledWith(expect.stringContaining('No locales defined'))
       expect(console.log)
         .toBeCalledWith(expect.stringContaining('lingui add-locale'))
     })

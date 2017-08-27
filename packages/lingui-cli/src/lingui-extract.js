@@ -22,7 +22,7 @@ export default function command (
   const locales = format.getLocales()
 
   if (!locales.length) {
-    console.log('No locales defined.')
+    console.log('No locales defined!\n')
     console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
     return false
   }

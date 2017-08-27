@@ -14,11 +14,25 @@ import { compile } from './api/compile'
 
 function command (config, format, options) {
   const locales = format.getLocales()
-  console.log('Compiling message catalogs…')
+
+  if (!locales.length) {
+    console.log('No locales defined!\n')
+    console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
+    return false
+  }
 
   const catalogs = R.mergeAll(
     locales.map((locale) => ({ [locale]: format.read(locale) }))
   )
+
+  const noMessages = R.compose(R.all(R.equals(true)), R.values, R.map(R.isEmpty))
+  if (noMessages(catalogs)) {
+    console.log('Nothing to compile, message catalogs are empty!\n')
+    console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages from source files)`)
+    return false
+  }
+
+  console.log('Compiling message catalogs…')
 
   return locales.map(locale => {
     const [language] = locale.split('_')
@@ -125,8 +139,7 @@ if (require.main === module) {
     allowEmpty: program.strict !== true
   })
 
-  if (results.some(res => !res)) {
-    console.log('Compilation failed due to error above!')
+  if (!results || results.some(res => !res)) {
     process.exit(1)
   }
 
