@@ -26,4 +26,14 @@ describe('Render', function () {
     } />)
     expect(component.dive()).toMatchSnapshot()
   })
+
+  it('should take default render element from context', function () {
+    const h1 = <h1 />
+    const context = {
+      linguiDefaultRender: h1
+    }
+
+    const span = shallow(<Render value="Just a text" />, { context })
+    expect(span).toMatchSnapshot()
+  })
 })

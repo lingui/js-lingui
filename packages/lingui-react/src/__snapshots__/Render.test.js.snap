@@ -33,3 +33,9 @@ exports[`Render should render custom element 2`] = `
   Headline
 </h1>
 `;
+
+exports[`Render should take default render element from context 1`] = `
+<h1>
+  Just a text
+</h1>
+`;
