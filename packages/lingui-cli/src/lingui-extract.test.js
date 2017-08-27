@@ -1,7 +1,7 @@
 import { mockConsole } from './mocks'
 import command from './lingui-extract'
 
-describe.skip('lingui extract', function () {
+describe('lingui extract', function () {
   beforeEach(() => {
     jest.resetModules()
   })

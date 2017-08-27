@@ -111,7 +111,7 @@ describe('collect', function () {
     mockFs.restore()
   })
 
-  it.only('should traverse directory and call extractors', function () {
+  it('should traverse directory and call extractors', function () {
     const { collect } = require('./extract')
     const catalog = collect('src')
     expect(catalog).toMatchSnapshot()

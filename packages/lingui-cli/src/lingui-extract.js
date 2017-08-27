@@ -1,3 +1,4 @@
+// @flow
 import path from 'path'
 import chalk from 'chalk'
 import program from 'commander'
