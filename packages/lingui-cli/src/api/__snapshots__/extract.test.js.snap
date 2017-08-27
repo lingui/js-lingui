@@ -1,3 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`collect should traverse directory and call extractors 1`] = `Object {}`;
+exports[`collect should traverse directory and call extractors 1`] = `
+Object {
+  "Babel Documentation": Object {
+    "defaults": "Babel Documentation",
+    "origin": Array [
+      Array [
+        "src/components/Babel.js",
+        5,
+      ],
+    ],
+  },
+  "Label": Object {
+    "defaults": "Label",
+    "origin": Array [
+      Array [
+        "src/components/Babel.js",
+        7,
+      ],
+      Array [
+        "src/components/Typescript.ts",
+        7,
+      ],
+    ],
+  },
+  "Typescript Documentation": Object {
+    "defaults": "Typescript Documentation",
+    "origin": Array [
+      Array [
+        "src/components/Typescript.ts",
+        5,
+      ],
+    ],
+  },
+}
+`;

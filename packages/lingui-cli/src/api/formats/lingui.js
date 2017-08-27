@@ -65,7 +65,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
         const mergedMessages = mergeKeys.map(key => ({
           [key]: {
             ...R.omit(['obsolete'], nextCatalog[key]),
-            translation: prevCatalog[key]
+            translation: prevCatalog[key].translation
           }
         }))
 
@@ -79,8 +79,8 @@ export default (config: LinguiConfig): CatalogFormat => ({
 
         const newCatalog = R.mergeAll([
           newMessages,
-          mergedMessages,
-          obsoleteMessages
+          ...mergedMessages,
+          ...obsoleteMessages
         ])
         return { [locale]: newCatalog }
       })

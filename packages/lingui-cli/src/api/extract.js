@@ -39,7 +39,6 @@ export function extract (src, options = {}) {
 
 export function collect (buildDir) {
   return fs.readdirSync(buildDir)
-    .filter(filename => filename.endsWith('.json'))
     .map(filename => {
       const filepath = path.join(buildDir, filename)
 
@@ -47,11 +46,20 @@ export function collect (buildDir) {
         return collect(filepath)
       }
 
+      if (!filename.endsWith('.json')) return
+
       try {
         return JSON.parse(fs.readFileSync(filepath))
       } catch (e) {
         return {}
       }
     })
-    .reduce(R.mergeDeepWith(R.concat), {})
+    .filter(Boolean)
+    .reduce((catalog, messages) => {
+      const mergeMessage = (msgId, prev, next) => ({
+        ...next,
+        origin: R.concat(prev.origin, next.origin)
+      })
+      return R.mergeWithKey(mergeMessage, catalog, messages)
+    }, {})
 }
