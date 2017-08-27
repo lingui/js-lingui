@@ -1,4 +1,3 @@
-// @flow
 import generate from 'babel-generator'
 import compile from './compile'
 

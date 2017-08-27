@@ -1,7 +1,9 @@
 // @flow
 
 export type LinguiConfig = {|
-  localeDir: string
+  localeDir: string,
+  srcPathDirs: Array<string>,
+  srcPathIgnorePatterns: Array<string>
 |}
 
 export type IdempotentResult<T> = [ boolean, ?T ] // [ created, result ]

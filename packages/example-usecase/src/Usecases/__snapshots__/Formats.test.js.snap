@@ -65,6 +65,7 @@ exports[`Formats should render 1`] = `
               >
                 <Render
                   className="percent"
+                  value="The answer is 42%"
                 >
                   <span
                     className="percent"
@@ -119,6 +120,7 @@ exports[`Formats should render 1`] = `
               >
                 <Render
                   className="date"
+                  value="Today is 4/5/2017"
                 >
                   <span
                     className="date"

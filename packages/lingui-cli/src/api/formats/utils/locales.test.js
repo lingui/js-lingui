@@ -1,4 +1,3 @@
-// @flow
 import * as locales from './locales'
 
 describe('Catalog formats utilities - locales', function () {

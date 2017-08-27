@@ -12,7 +12,7 @@ type WithI18nProps = {
   i18n: I18n
 }
 
-export default (options: WithI18nOptions = {}) => function<P, C: React$Component<any, P, any>> (WrappedComponent: Class<C>): Class<React.Component<any, $Diff<P, WithI18nProps>, any>> {
+export default (options: WithI18nOptions = {}) => function<P, C: React$Component<any, P>> (WrappedComponent: Class<C>): Class<React.Component<any, $Diff<P, WithI18nProps>>> {
   if (process.env.NODE_ENV !== 'production') {
     if (typeof options === 'function' || React.isValidElement(options)) {
       console.warn(
@@ -25,7 +25,7 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
   const { update = true, withRef = false } = options
 
-  class WithI18n extends React.Component<*, *, *> {
+  class WithI18n extends React.Component<*, *> {
     static contextTypes = {
       linguiPublisher: PropTypes.object
     }

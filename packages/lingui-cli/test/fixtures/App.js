@@ -1,3 +1,5 @@
+import { Trans } from 'lingui-react'
+
 class App extends React.Component {
   render () {
     return (

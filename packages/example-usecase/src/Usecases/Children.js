@@ -2,14 +2,16 @@
 import React from 'react'
 import { Trans, Select, Plural } from 'lingui-react'
 
-class Usecase extends React.Component {
-  props: {
+type ChildrenPropTypes = {
     name?: string,
     genderOfHost?: 'male' | 'female',
     numGuests?: number,
     host?: string,
     guest?: string
   }
+
+class Children extends React.Component<ChildrenPropTypes> {
+  props: ChildrenPropTypes
 
   render () {
     const {
@@ -95,4 +97,4 @@ class Usecase extends React.Component {
   }
 }
 
-export default Usecase
+export default Children

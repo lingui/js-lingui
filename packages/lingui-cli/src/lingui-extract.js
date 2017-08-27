@@ -5,10 +5,19 @@ import program from 'commander'
 
 import getConfig from 'lingui-conf'
 
+import type { LinguiConfig, CatalogFormat } from './api/formats/types'
 import { extract, collect } from './api/extract'
 import { printStats } from './api/stats'
 
-export default function command (config, format, options): boolean {
+type ExtractOptions = {|
+  verbose: boolean,
+|}
+
+export default function command (
+  config: LinguiConfig,
+  format: CatalogFormat,
+  options: ExtractOptions
+): boolean {
   const locales = format.getLocales()
 
   if (!locales.length) {
@@ -38,7 +47,7 @@ export default function command (config, format, options): boolean {
   locales
     .map(locale => format.write(locale, catalogs[locale]))
     .forEach(([created, filename]) => {
-      if (!options.verbose) return
+      if (!filename || !options.verbose) return
 
       if (created) {
         console.log(chalk.green(`Created ${filename}`))

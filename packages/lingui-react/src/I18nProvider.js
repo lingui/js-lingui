@@ -48,7 +48,7 @@ export function LinguiPublisher (i18n: I18n) {
   }
 }
 
-export default class I18nProvider extends React.Component {
+export default class I18nProvider extends React.Component<I18nProviderProps> {
   props: I18nProviderProps
 
   linguiPublisher: LinguiPublisher

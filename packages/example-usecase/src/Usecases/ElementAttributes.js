@@ -6,7 +6,7 @@ type ElementAttributesProps = {
   i18n: Object
 }
 
-class ElementAttributes extends React.Component {
+class ElementAttributes extends React.Component<ElementAttributesProps> {
   props: ElementAttributesProps
 
   render () {
