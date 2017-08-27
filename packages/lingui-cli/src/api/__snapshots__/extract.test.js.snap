@@ -1,6 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`collect should traverse directory and call extractors 1`] = `
+exports[`cleanObsolete should remove obsolete messages from catalogs 1`] = `
+Object {
+  "en": Object {
+    "Label": Object {
+      "translation": "Label",
+    },
+  },
+  "fr": Object {
+    "Label": Object {
+      "translation": "Label",
+    },
+  },
+}
+`;
+
+exports[`collect should traverse directory and collect messages 1`] = `
 Object {
   "Babel Documentation": Object {
     "defaults": "Babel Documentation",

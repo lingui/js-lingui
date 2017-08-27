@@ -6,11 +6,12 @@ import program from 'commander'
 import getConfig from 'lingui-conf'
 
 import type { LinguiConfig, CatalogFormat } from './api/formats/types'
-import { extract, collect } from './api/extract'
+import { extract, collect, cleanObsolete } from './api/extract'
 import { printStats } from './api/stats'
 
 type ExtractOptions = {|
   verbose: boolean,
+  clean: boolean
 |}
 
 export default function command (
@@ -38,9 +39,10 @@ export default function command (
   options.verbose && console.log()
 
   console.log('Collecting all messages…')
+  const clean = options.clean ? cleanObsolete : id => id
   const buildDir = path.join(config.localeDir, '_build')
   const catalog = collect(buildDir)
-  const catalogs = format.merge(catalog)
+  const catalogs = clean(format.merge(catalog))
   options.verbose && console.log()
 
   console.log('Writing message catalogues…')
@@ -74,10 +76,12 @@ if (require.main === module) {
 
   program
     .option('--verbose', 'Verbose output')
+    .option('--clean', 'Remove obsolete translations')
     .parse(process.argv)
 
   const result = command(config, format, {
-    verbose: program.verbose || false
+    verbose: program.verbose || false,
+    clean: program.clean || false
   })
 
   if (!result) process.exit(1)

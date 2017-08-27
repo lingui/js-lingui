@@ -1,3 +1,8 @@
+/**
+ * Fellow contributor!
+ * *Never* import `extract` module outsite `it` or `beforeAll`. It would
+ * break mocking of extractors in `extract` test suit.
+ */
 import mockFs from 'mock-fs'
 
 describe('extract', function () {
@@ -111,9 +116,37 @@ describe('collect', function () {
     mockFs.restore()
   })
 
-  it('should traverse directory and call extractors', function () {
+  it('should traverse directory and collect messages', function () {
     const { collect } = require('./extract')
     const catalog = collect('src')
     expect(catalog).toMatchSnapshot()
+  })
+})
+
+describe('cleanObsolete', function () {
+  it('should remove obsolete messages from catalogs', function () {
+    const { cleanObsolete } = require('./extract')
+
+    const catalogs = {
+      en: {
+        Label: {
+          translation: 'Label'
+        },
+        PreviousLabel: {
+          obsolete: true
+        }
+      },
+      fr: {
+        Label: {
+          translation: 'Label'
+        },
+        Obsolete: {
+          translation: 'Obsolete',
+          obsolete: true
+        }
+      }
+    }
+
+    expect(cleanObsolete(catalogs)).toMatchSnapshot()
   })
 })

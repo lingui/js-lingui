@@ -1,11 +1,13 @@
+// @flow
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import R from 'ramda'
 
 import * as extractors from './extractors'
+import type { AllCatalogsType } from './formats/types'
 
-export function extract (src, options = {}) {
+export function extract (srcPaths: Array<string>, options = {}) {
   const {
     localeDir,
     ignore = [],
@@ -13,7 +15,7 @@ export function extract (src, options = {}) {
   } = options
   const ignorePatterns = ignore.map(pattern => new RegExp(pattern, 'i'))
 
-  src.forEach(srcFilename => {
+  srcPaths.forEach(srcFilename => {
     if (
       !fs.existsSync(srcFilename) ||
       ignorePatterns.some(regexp => regexp.test(srcFilename))
@@ -37,7 +39,7 @@ export function extract (src, options = {}) {
   })
 }
 
-export function collect (buildDir) {
+export function collect (buildDir: string) {
   return fs.readdirSync(buildDir)
     .map(filename => {
       const filepath = path.join(buildDir, filename)
@@ -49,7 +51,7 @@ export function collect (buildDir) {
       if (!filename.endsWith('.json')) return
 
       try {
-        return JSON.parse(fs.readFileSync(filepath))
+        return JSON.parse(fs.readFileSync(filepath).toString())
       } catch (e) {
         return {}
       }
@@ -62,4 +64,8 @@ export function collect (buildDir) {
       })
       return R.mergeWithKey(mergeMessage, catalog, messages)
     }, {})
+}
+
+export function cleanObsolete (catalogs: AllCatalogsType) {
+  return R.map(R.filter(message => !message.obsolete), catalogs)
 }

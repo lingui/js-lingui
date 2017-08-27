@@ -11,7 +11,7 @@ export default {
     return babelRe.test(filename)
   },
 
-  extract (filename) {
+  extract (filename, localeDir) {
     return transformFileSync(filename, {
       plugins: [
         // Plugins run before presets, so we need to import trasnform-plugins
@@ -20,7 +20,7 @@ export default {
         // Transform plugins are idempotent, so they can run twice.
         linguiTransformJs,
         linguiTransformReact,
-        linguiExtractMessages
+        [linguiExtractMessages, { localeDir }]
       ]
     })
   }
