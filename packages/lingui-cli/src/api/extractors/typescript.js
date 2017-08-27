@@ -1,10 +1,11 @@
 // @flow
-// Typescript extractor stub, TBD
 import type { ExtractorType } from './types'
+
+const typescriptRe = /\.jsx?$/i
 
 const extractor: ExtractorType = {
   match (filename) {
-    return false
+    return typescriptRe.test(filename)
   },
 
   extract (filename, targetDir) {}
