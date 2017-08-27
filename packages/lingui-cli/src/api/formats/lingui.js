@@ -59,13 +59,16 @@ export default (config: LinguiConfig): CatalogFormat => ({
         const obsoleteKeys = R.difference(prevKeys, nextKeys)
 
         // Initialize new catalog with new keys
-        const newMessages = R.pick(newKeys, nextCatalog)
+        const newMessages = R.map(message => ({
+          translation: '',
+          ...message
+        }), R.pick(newKeys, nextCatalog))
 
         // Merge translations from previous catalog
         const mergedMessages = mergeKeys.map(key => ({
           [key]: {
-            ...R.omit(['obsolete'], nextCatalog[key]),
-            translation: prevCatalog[key].translation
+            translation: prevCatalog[key].translation,
+            ...R.omit(['obsolete, translation'], nextCatalog[key])
           }
         }))
 
