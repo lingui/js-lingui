@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "1.1.0",
+  "version": "1.2.0-0",
   "description": "CLI for working wit message catalogs",
   "main": "dist/lingui.js",
   "bin": {
@@ -42,7 +42,7 @@
     "cli-table": "^0.3.1",
     "commander": "^2.11.0",
     "glob": "^7.1.2",
-    "lingui-conf": "^0.8.1",
+    "lingui-conf": "^0.9.0-0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.1.0",
     "ramda": "^0.24.1"
