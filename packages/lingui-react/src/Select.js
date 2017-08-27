@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
-import WithI18n from './WithI18n'
-import type { WithI18nProps } from './WithI18n'
+import withI18n from './withI18n'
+import type { withI18nProps } from './withI18n'
 
 import type { RenderProps } from './Render'
 import Render from './Render'
@@ -15,14 +15,14 @@ type PluralProps = {
   few?: any,
   many?: any,
   other: any,
-} & WithI18nProps & RenderProps
+} & withI18nProps & RenderProps
 
 type SelectProps = {
   value: any,
   other: any,
-} & WithI18nProps & RenderProps
+} & withI18nProps & RenderProps
 
-const Select = WithI18n()(class Select extends React.Component<*, SelectProps> {
+const Select = withI18n()(class Select extends React.Component<*, SelectProps> {
   props: SelectProps
 
   render () {
@@ -73,8 +73,8 @@ const PluralFactory = (ordinal = false) => {
   }
 }
 
-const Plural = WithI18n()(PluralFactory(false))
-const SelectOrdinal = WithI18n()(PluralFactory(true))
+const Plural = withI18n()(PluralFactory(false))
+const SelectOrdinal = withI18n()(PluralFactory(true))
 
 export { Plural, SelectOrdinal, Select }
 export type { PluralProps }

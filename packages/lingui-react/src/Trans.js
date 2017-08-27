@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
 
-import WithI18n from './WithI18n'
-import type { WithI18nProps } from './WithI18n'
+import withI18n from './withI18n'
+import type { withI18nProps } from './withI18n'
 import { formatElements } from './format'
 
 import type { RenderProps } from './Render'
@@ -16,7 +16,7 @@ type TransProps = {
   components?: Array<React$Element<*>>,
   i18n: Object,
   children?: any
-} & WithI18nProps & RenderProps
+} & withI18nProps & RenderProps
 
 class Trans extends React.Component<TransProps> {
   props: TransProps
@@ -55,4 +55,4 @@ class Trans extends React.Component<TransProps> {
   }
 }
 
-export default WithI18n()(Trans)
+export default withI18n()(Trans)

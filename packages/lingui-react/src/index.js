@@ -3,14 +3,14 @@ import { date, number } from 'lingui-formats'
 
 import createFormat from './createFormat'
 
-import WithI18n from './WithI18n'
-import type { WithI18nProps } from './WithI18n'
-export { WithI18n }
-export type { WithI18nProps }
+import withI18n, { WithI18n } from './withI18n'
+import type { withI18nProps } from './withI18n'
+export { withI18n, WithI18n }
+export type { withI18nProps }
 
 export { default as I18nProvider } from './I18nProvider'
 export { default as Trans } from './Trans'
 export { Plural, Select, SelectOrdinal } from './Select'
 
-export const DateFormat = WithI18n()(createFormat(date))
-export const NumberFormat = WithI18n()(createFormat(number))
+export const DateFormat = withI18n()(createFormat(date))
+export const NumberFormat = withI18n()(createFormat(number))
