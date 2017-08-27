@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`collect should traverse directory and call extractors 1`] = `Object {}`;

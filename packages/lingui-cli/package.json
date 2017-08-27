@@ -41,9 +41,11 @@
     "chalk": "^2.1.0",
     "cli-table": "^0.3.1",
     "commander": "^2.11.0",
+    "glob": "^7.1.2",
     "lingui-conf": "^0.8.1",
     "make-plural": "^4.0.1",
-    "messageformat-parser": "^1.1.0"
+    "messageformat-parser": "^1.1.0",
+    "ramda": "^0.24.1"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

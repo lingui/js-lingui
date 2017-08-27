@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import program from 'commander'
 import getConfig from 'lingui-conf'
 
-import type { CatalogFormat } from './formats/interface'
+import type { CatalogFormat } from './api/formats/types'
 
 export default function command (format: CatalogFormat, locales: Array<string>) {
   const results = locales.map(locale => {
@@ -30,7 +30,7 @@ export default function command (format: CatalogFormat, locales: Array<string>) 
 
 if (require.main === module) {
   const config = getConfig()
-  const format = require(`./formats/${config.format}`).default(config)
+  const format = require(`./api/formats/${config.format}`).default(config)
 
   program
     .description(
