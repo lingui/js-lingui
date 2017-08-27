@@ -26,7 +26,7 @@ export type getTranslationOptions = {|
   fallbackLanguage: string
 |}
 
-export type CatalogFormat = {|
+export type CatalogFormat = {
   getLocales(): Array<string>,
   addLocale(locale: string): IdempotentResult<string>,
 
@@ -43,4 +43,4 @@ export type CatalogFormat = {|
   ): ?string,
 
   formatFilename (pattern: string, locale: string): string,
-|}
+}

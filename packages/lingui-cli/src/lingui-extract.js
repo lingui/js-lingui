@@ -71,13 +71,15 @@ export default function command (
 }
 
 if (require.main === module) {
-  const config = getConfig()
-  const format = require(`./api/formats/${config.format}`).default(config)
-
   program
     .option('--verbose', 'Verbose output')
     .option('--clean', 'Remove obsolete translations')
+    .option('--format <format>', 'Format of message catalog')
     .parse(process.argv)
+
+  const config = getConfig()
+  const formatName = program.format || config.format
+  const format = require(`./api/formats/${formatName}`).default(config)
 
   const result = command(config, format, {
     verbose: program.verbose || false,
