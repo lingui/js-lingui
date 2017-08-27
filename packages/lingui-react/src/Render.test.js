@@ -5,25 +5,25 @@ import Render from './Render'
 
 describe('Render', function () {
   it('should render children wrapped in span', function () {
-    const span = shallow(<Render>Just a text</Render>)
+    const span = shallow(<Render value="Just a text" />)
     expect(span).toMatchSnapshot()
 
-    const withClass = shallow(<Render className="info">Just a text</Render>)
+    const withClass = shallow(<Render className="info" value="Just a text" />)
     expect(withClass).toMatchSnapshot()
   })
 
   it('should render custom element', function () {
-    const builtin = shallow(<Render render="h1">Headline</Render>)
+    const builtin = shallow(<Render render="h1" value="Headline" />)
     expect(builtin).toMatchSnapshot()
 
-    const element = shallow(<Render render={<h1 />}>Headline</Render>)
+    const element = shallow(<Render render={<h1 />} value="Headline" />)
     expect(element).toMatchSnapshot()
   })
 
   it('should render custom component', function () {
-    const component = shallow(<Render render={
+    const component = shallow(<Render value="Title" render={
       ({ translation }) => <a title={translation}>X</a>
-    }>Title</Render>)
+    } />)
     expect(component.dive()).toMatchSnapshot()
   })
 })

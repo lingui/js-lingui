@@ -68,7 +68,6 @@ describe('I18nProvider', function () {
     const instance = node.instance()
     const listener = jest.fn()
 
-    // $FlowIgnore - Instance returned from enzyme doesn't have custom attrs
     instance.linguiPublisher.subscribe(listener)
     expect(listener).not.toBeCalled()
 

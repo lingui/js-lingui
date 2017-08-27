@@ -1,59 +1,53 @@
-const fs = require('fs')
-const path = require('path')
-const chalk = require('chalk')
-const program = require('commander')
-const getConfig = require('lingui-conf').default
-const plurals = require('make-plural')
+// @flow
+import chalk from 'chalk'
+import program from 'commander'
+import getConfig from 'lingui-conf'
 
-const config = getConfig()
+import type { CatalogFormat } from './api/formats/types'
 
-function validateLocales (locales) {
-  const unknown = locales.filter(locale => {
-    const [ language ] = locale.split('_')
-    return !(language in plurals)
-  })
+export default function command (format: CatalogFormat, locales: Array<string>) {
+  const results = locales.map(locale => {
+    const [created, filename] = format.addLocale(locale)
 
-  if (unknown.length) {
-    console.log(chalk.red(`Unknown locale(s): ${unknown.join(', ')}.`))
-    process.exit(1)
-  }
-}
-
-function addLocale (locales) {
-  if (!fs.existsSync(config.localeDir)) {
-    fs.mkdirSync(config.localeDir)
-  }
-
-  locales.forEach(locale => {
-    const localeDir = path.join(config.localeDir, locale)
-
-    if (fs.existsSync(localeDir)) {
-      console.log(chalk.yellow(`Locale ${chalk.underline(locale)} already exists.`))
+    if (!filename) {
+      console.log(chalk.red(`Unknown locale: ${chalk.bold(locale)}.`))
+      return false
+    } else if (created) {
+      console.log(chalk.green(`Added locale ${chalk.bold(locale)}.`))
     } else {
-      fs.mkdirSync(localeDir)
-      console.log(chalk.green(`Added locale ${chalk.underline(locale)}.`))
+      console.log(chalk.yellow(`Locale ${chalk.bold(locale)} already exists.`))
     }
+
+    return true
   })
+
+  // At least one language was added successfully
+  if (results.filter(Boolean).length) {
+    console.log()
+    console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages)`)
+  }
 }
 
-program
-  .description('Add target locales. Remove locale by removing <locale> directory from your localeDir (e.g. ./locale)')
-  .arguments('<locale...>')
-  .on('--help', function () {
-    console.log('\n  Examples:\n')
-    console.log('    # Add single locale')
-    console.log('    $ lingui add-locale en')
-    console.log('')
-    console.log('    # Add multiple locales')
-    console.log('    $ lingui add-locale en es fr ru')
-  })
-  .parse(process.argv)
+if (require.main === module) {
+  const config = getConfig()
+  const format = require(`./api/formats/${config.format}`).default(config)
 
-if (!program.args.length) program.help()
+  program
+    .description(
+      'Add target locales. Remove locale by removing <locale> ' +
+      'directory from your localeDir (e.g. ./locale/en)')
+    .arguments('<locale...>')
+    .on('--help', function () {
+      console.log('\n  Examples:\n')
+      console.log('    # Add single locale')
+      console.log('    $ lingui add-locale en')
+      console.log('')
+      console.log('    # Add multiple locales')
+      console.log('    $ lingui add-locale en es fr ru')
+    })
+    .parse(process.argv)
 
-validateLocales(program.args)
+  if (!program.args.length) program.help()
 
-addLocale(program.args)
-
-console.log()
-console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages)`)
+  command(format, program.args)
+}

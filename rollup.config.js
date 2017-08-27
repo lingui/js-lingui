@@ -6,12 +6,12 @@ const module = process.argv
 
 // rollup.config.js
 export default {
-  entry: `src/${module}/index.js`,
-  targets: [{
-    dest: `dist/${module}/index.js`,
+  input: `src/${module}/index.js`,
+  output: [{
+    file: `dist/${module}/index.js`,
     format: 'cjs'
   }, {
-    dest: `dist/${module}/index.es.js`,
+    file: `dist/${module}/index.es.js`,
     format: 'es'
   }],
   plugins: [

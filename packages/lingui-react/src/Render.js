@@ -7,24 +7,20 @@ export type RenderProps = {
 }
 
 type RenderComponentProps = {
-  children: string
+  value: string | Array<any>
 } & RenderProps
 
-const Render = ({ render, className, children }: RenderComponentProps) => {
-  if (render) {
-    // Built-in element: h1, p
-    if (typeof render === 'string') {
-      return React.createElement(render, {}, children)
-    }
-
-    return React.isValidElement(render)
-      // Custom element: <p className="lear' />
-      ? React.cloneElement(render, {}, children)
-      // Custom component: ({ translation }) => <a title={translation}>x</a>
-      : React.createElement(render, { translation: children })
+const Render = ({ render = 'span', className, value }: RenderComponentProps) => {
+  // Built-in element: h1, p
+  if (typeof render === 'string') {
+    return React.createElement(render, { className }, value)
   }
 
-  return <span className={className}>{children}</span>
+  return React.isValidElement(render)
+    // Custom element: <p className="lear' />
+    ? React.cloneElement(render, {}, value)
+    // Custom component: ({ translation }) => <a title={translation}>x</a>
+    : React.createElement(render, { translation: value })
 }
 
 export default Render

@@ -165,7 +165,7 @@ export default function ({ types: t }) {
 
       const type = (
         getOriginalImportName(element.name.name)
-        .toLowerCase().replace('format', ''))
+          .toLowerCase().replace('format', ''))
 
       let variable, format
 

@@ -18,7 +18,7 @@ type TransProps = {
   children?: any
 } & WithI18nProps & RenderProps
 
-class Trans extends React.Component {
+class Trans extends React.Component<TransProps> {
   props: TransProps
 
   componentDidMount () {
@@ -45,7 +45,13 @@ class Trans extends React.Component {
 
   render () {
     const translation = formatElements(this.getTranslation(), this.props.components)
-    return <Render className={this.props.className} render={this.props.render}>{translation}</Render>
+    return (
+      <Render
+        render={this.props.render}
+        className={this.props.className}
+        value={translation}
+      />
+    )
   }
 }
 

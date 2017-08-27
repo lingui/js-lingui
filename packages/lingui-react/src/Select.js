@@ -22,12 +22,16 @@ type SelectProps = {
   other: any,
 } & WithI18nProps & RenderProps
 
-const Select = WithI18n()(class Select extends React.Component<*, SelectProps, *> {
+const Select = WithI18n()(class Select extends React.Component<*, SelectProps> {
   props: SelectProps
 
   render () {
     const { className, render, i18n, ...selectProps } = this.props
-    return <Render className={className} render={render}>{i18n.select(selectProps)}</Render>
+    return <Render
+      className={className}
+      render={render}
+      value={i18n.select(selectProps)}
+    />
   }
 })
 
@@ -35,7 +39,7 @@ const PluralFactory = (ordinal = false) => {
   const displayName = !ordinal ? 'Plural' : 'SelectOrdinal'
   const pluralType = !ordinal ? 'plural' : 'selectOrdinal'
 
-  return class extends React.Component<*, PluralProps, *> {
+  return class extends React.Component<*, PluralProps> {
     displayName = displayName
 
     props: PluralProps
@@ -59,9 +63,11 @@ const PluralFactory = (ordinal = false) => {
       })
 
       return (
-        <Render className={className} render={render}>
-          {i18n[pluralType](pluralProps)}
-        </Render>
+        <Render
+          className={className}
+          render={render}
+          value={i18n[pluralType](pluralProps)}
+        />
       )
     }
   }
