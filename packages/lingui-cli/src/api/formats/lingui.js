@@ -9,7 +9,7 @@ import type { LinguiConfig, CatalogFormat } from './types'
 import * as locales from './utils/locales'
 
 const sourceFilename = '{locale}/messages.json'
-// const compiledFilename = '{locale}/messages.js'
+const compiledFilename = '{locale}/messages.js'
 
 export default (config: LinguiConfig): CatalogFormat => ({
   formatFilename (pattern, locale) {
@@ -85,6 +85,28 @@ export default (config: LinguiConfig): CatalogFormat => ({
         return { [locale]: newCatalog }
       })
     )
+  },
+
+  getTranslation (catalogs, locale, key, options) {
+    const getOrDefault = ({ translation, defaults }) => translation || defaults
+    const translation = getOrDefault(catalogs[locale][key])
+
+    const fallbackLanguage = options.fallbackLanguage
+    if (!translation && fallbackLanguage) {
+      return getOrDefault(catalogs[fallbackLanguage][key]) || key
+    }
+
+    return translation || key
+  },
+
+  writeCompiled (locale, content) {
+    const filename = path.join(
+      config.localeDir,
+      this.formatFilename(compiledFilename, locale)
+    )
+
+    fs.writeFileSync(filename, content)
+    return filename
   },
 
   getLocales () {

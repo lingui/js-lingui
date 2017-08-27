@@ -15,20 +15,33 @@ export type MessageType = {
 }
 
 export type CatalogType = {
-  [key: string]: MessageType
+  [msgId: string]: MessageType
 }
 
 export type AllCatalogsType = {
-  [key: string]: CatalogType
+  [locale: string]: CatalogType
 }
+
+export type getTranslationOptions = {|
+  allowEmpty: boolean,
+  fallbackLanguage: string
+|}
 
 export type CatalogFormat = {|
   getLocales(): Array<string>,
   addLocale(locale: string): IdempotentResult<string>,
 
   read(locale: string): ?CatalogType,
-  write(locale: string, catalog: CatalogType): IdempotentResult<string>,
   merge(catalog: CatalogType): AllCatalogsType,
+  write(locale: string, catalog: CatalogType): IdempotentResult<string>,
+  writeCompiled(locale: string, content: string): ?string,
+
+  getTranslation(
+    catalogs: AllCatalogsType,
+    locale: string,
+    msgId: string,
+    options: getTranslationOptions
+  ): ?string,
 
   formatFilename (pattern: string, locale: string): string,
 |}

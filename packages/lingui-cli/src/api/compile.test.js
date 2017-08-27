@@ -1,5 +1,5 @@
 import generate from 'babel-generator'
-import compile from './compile'
+import { compile } from './compile'
 
 describe('compile', function () {
   const getSource = (message) => generate(compile(message), {
