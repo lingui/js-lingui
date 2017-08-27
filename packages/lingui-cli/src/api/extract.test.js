@@ -48,8 +48,7 @@ describe('extract', function () {
   })
 
   it('should traverse directory and call extractors', function () {
-    extract(['src'], {
-      localeDir: 'locale',
+    extract(['src'], 'locale', {
       ignore: ['forbidden']
     })
 

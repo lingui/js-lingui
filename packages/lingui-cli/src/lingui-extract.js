@@ -30,8 +30,8 @@ export default function command (
   console.log('Extracting messages from source files…')
   extract(
     config.srcPathDirs,
+    config.localeDir,
     {
-      localeDir: config.localeDir,
       ignore: config.srcPathIgnorePatterns,
       verbose: options.verbose
     }

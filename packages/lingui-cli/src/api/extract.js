@@ -5,11 +5,20 @@ import chalk from 'chalk'
 import R from 'ramda'
 
 import * as extractors from './extractors'
+import type { ExtractorType } from './extractors'
 import type { AllCatalogsType } from './formats/types'
 
-export function extract (srcPaths: Array<string>, options = {}) {
+type ExtractOptions = {
+  ignore?: Array<string>,
+  verbose?: boolean
+}
+
+export function extract (
+  srcPaths: Array<string>,
+  targetPath: string,
+  options: ExtractOptions = {}
+) {
   const {
-    localeDir,
     ignore = [],
     verbose = false
   } = options
@@ -25,13 +34,13 @@ export function extract (srcPaths: Array<string>, options = {}) {
       const subdirs = fs.readdirSync(srcFilename)
         .map(filename => path.join(srcFilename, filename))
 
-      extract(subdirs, options)
+      extract(subdirs, targetPath, options)
       return
     }
 
-    const extracted = Object.values(extractors).some(extractor => {
-      if (!extractor.match(srcFilename)) return false
-      extractor.extract(srcFilename, localeDir)
+    const extracted = R.values(extractors).some((ext: ExtractorType) => {
+      if (!ext.match(srcFilename)) return false
+      ext.extract(srcFilename, targetPath)
       return true
     })
 

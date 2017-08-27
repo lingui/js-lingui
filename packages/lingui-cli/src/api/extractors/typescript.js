@@ -1,9 +1,13 @@
+// @flow
 // Typescript extractor stub, TBD
+import type { ExtractorType } from './types'
 
-export default {
+const extractor: ExtractorType = {
   match (filename) {
     return false
   },
 
-  extract (filename) {}
+  extract (filename, targetDir) {}
 }
+
+export default extractor
