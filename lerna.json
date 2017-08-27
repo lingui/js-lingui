@@ -9,6 +9,11 @@
       "ignore": [
         "typescript-lingui-extract-messages"
       ]
+    },
+    "bootstrap": {
+      "ignore": [
+        "typescript-lingui-extract-messages"
+      ]
     }
   }
 }
