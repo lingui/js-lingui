@@ -23,7 +23,6 @@ export type AllCatalogsType = {
 }
 
 export type getTranslationOptions = {|
-  allowEmpty: boolean,
   fallbackLanguage: string
 |}
 

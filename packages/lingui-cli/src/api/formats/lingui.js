@@ -93,10 +93,10 @@ export default (config: LinguiConfig): CatalogFormat => ({
 
     const fallbackLanguage = options.fallbackLanguage
     if (!translation && fallbackLanguage) {
-      return getOrDefault(catalogs[fallbackLanguage][key]) || key
+      return getOrDefault(catalogs[fallbackLanguage][key])
     }
 
-    return translation || key
+    return translation
   },
 
   writeCompiled (locale, content) {

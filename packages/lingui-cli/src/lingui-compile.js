@@ -12,7 +12,7 @@ import getConfig from 'lingui-conf'
 
 import { compile } from './api/compile'
 
-function command (config, format, { allowEmpty }) {
+function command (config, format, options) {
   const locales = format.getLocales()
   console.log('Compiling message catalogs…')
 
@@ -32,21 +32,25 @@ function command (config, format, { allowEmpty }) {
     const messages = R.mergeAll(
       Object.keys(catalogs[locale]).map(key => ({
         [key]: format.getTranslation(catalogs, locale, key, {
-          fallbackLanguage: config.fallbackLanguage,
-          allowEmpty
+          fallbackLanguage: config.fallbackLanguage
         })
       }))
     )
 
-    if (!allowEmpty) {
+    if (!options.allowEmpty) {
       const missing = R.keys(messages).filter(
         key => messages[key] === undefined
       )
 
       if (missing.length) {
         console.log(chalk.red(`Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`))
-        console.log(chalk.red('Missing translations:'))
-        missing.forEach(({ key }) => console.log(key))
+
+        if (options.verbose) {
+          console.log(chalk.red('Missing translations:'))
+          missing.forEach(msgId => console.log(msgId))
+        } else {
+          console.log(chalk.red(`Missing ${missing.length} translation(s)`))
+        }
         console.log()
         return false
       }
@@ -91,7 +95,7 @@ function command (config, format, { allowEmpty }) {
       }).code
     )
 
-    console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
+    options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     return compiledPath
   })
 }
@@ -103,6 +107,7 @@ if (require.main === module) {
   program
     .description('Add compile message catalogs and add language data (plurals) to compiled bundle.')
     .option('--strict', 'Disable defaults for missing translations')
+    .option('--verbose', 'Verbose output')
     .on('--help', function () {
       console.log('\n  Examples:\n')
       console.log('    # Compile translations and use defaults or message IDs for missing translations')
@@ -116,10 +121,12 @@ if (require.main === module) {
     .parse(process.argv)
 
   const results = command(config, format, {
+    verbose: program.verbose || false,
     allowEmpty: program.strict !== true
   })
 
   if (results.some(res => !res)) {
+    console.log('Compilation failed due to error above!')
     process.exit(1)
   }
 
