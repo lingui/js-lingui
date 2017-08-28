@@ -19,7 +19,7 @@ const _plural = (type) => (i18n: any) => ({
   offset = 0,
   other,
   ...pluralForms
-  }: PluralProps): string => {
+}: PluralProps): string => {
   const diff = value - offset
   const translation = (
     pluralForms[value.toString()] || // exact match
@@ -41,7 +41,7 @@ function select ({
   value,
   other,
   ...selectForms
-  }: SelectProps): string {
+}: SelectProps): string {
   return selectForms[value] || other
 }
 

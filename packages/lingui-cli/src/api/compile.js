@@ -1,10 +1,10 @@
 // @flow
-const t = require('babel-types')
-const { parse } = require('messageformat-parser')
+import * as t from 'babel-types'
+import { parse } from 'messageformat-parser'
 
 const isString = s => typeof s === 'string'
 
-function compile (message: string) {
+export function compile (message: string) {
   function processTokens (tokens) {
     if (!tokens.filter(token => !isString(token)).length) {
       return tokens.join('')
@@ -79,5 +79,3 @@ function compile (message: string) {
     )
   )
 }
-
-export default compile

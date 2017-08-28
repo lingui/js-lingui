@@ -1,61 +1,89 @@
-const fs = require('fs')
-const path = require('path')
-const chalk = require('chalk')
-const program = require('commander')
-const plurals = require('make-plural')
-const babylon = require('babylon')
-const getConfig = require('lingui-conf').default
+// @flow
+import chalk from 'chalk'
+import R from 'ramda'
+import program from 'commander'
+import plurals from 'make-plural'
 
-const t = require('babel-types')
-const generate = require('babel-generator').default
-const { getLanguages } = require('./api/languages')
-const compile = require('./api/compile').default
+import * as t from 'babel-types'
+import { parseExpression } from 'babylon'
+import generate from 'babel-generator'
 
-function getOrDefault (message) {
-  return message.translation || message.defaults || ''
-}
+import getConfig from 'lingui-conf'
 
-function getTranslation (catalog, locale, key) {
-  const fallbackLanguage = config.fallbackLanguage
+import { compile } from './api/compile'
 
-  const fallback = fallbackLanguage === '' ? key : getOrDefault(catalog[fallbackLanguage][key])
-  return getOrDefault(catalog[locale][key]) || fallback
-}
+function command (config, format, options) {
+  const locales = format.getLocales()
 
-function compileCatalogs (localeDir) {
-  const languages = getLanguages(localeDir)
+  if (!locales.length) {
+    console.log('No locales defined!\n')
+    console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
+    return false
+  }
 
-  const catalog = languages.reduce((dict, locale) => {
-    const sourcePath = path.join(localeDir, locale, 'messages.json')
-    dict[locale] = JSON.parse(fs.readFileSync(sourcePath))
-    return dict
-  }, {})
+  const catalogs = R.mergeAll(
+    locales.map((locale) => ({ [locale]: format.read(locale) }))
+  )
 
-  languages.forEach(locale => {
-    const compiledPath = path.join(localeDir, locale, 'messages.js')
-    const sourcePath = path.join(localeDir, locale, 'messages.json')
-    console.log(chalk.green(sourcePath))
+  const noMessages = R.compose(R.all(R.equals(true)), R.values, R.map(R.isEmpty))
+  if (noMessages(catalogs)) {
+    console.log('Nothing to compile, message catalogs are empty!\n')
+    console.log(`(use "${chalk.yellow('lingui extract')}" to extract messages from source files)`)
+    return false
+  }
 
-    const messages = []
-    const source = catalog[locale]
-    Object.keys(source).forEach(key => {
-      messages.push(t.objectProperty(
+  console.log('Compiling message catalogs…')
+
+  return locales.map(locale => {
+    const [language] = locale.split('_')
+    const pluralRules = plurals[language]
+    if (!pluralRules) {
+      console.log(chalk.red(`Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`))
+      console.log()
+      return false
+    }
+
+    const messages = R.mergeAll(
+      Object.keys(catalogs[locale]).map(key => ({
+        [key]: format.getTranslation(catalogs, locale, key, {
+          fallbackLanguage: config.fallbackLanguage
+        })
+      }))
+    )
+
+    if (!options.allowEmpty) {
+      const missing = R.keys(messages).filter(
+        key => messages[key] === undefined
+      )
+
+      if (missing.length) {
+        console.log(chalk.red(`Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`))
+
+        if (options.verbose) {
+          console.log(chalk.red('Missing translations:'))
+          missing.forEach(msgId => console.log(msgId))
+        } else {
+          console.log(chalk.red(`Missing ${missing.length} translation(s)`))
+        }
+        console.log()
+        return false
+      }
+    }
+
+    const compiledMessages = R.keys(messages).map(key => {
+      const translation = messages[key]
+      return t.objectProperty(
         t.stringLiteral(key),
-        compile(getTranslation(catalog, locale, key))
-      ))
+        translation ? compile(translation) : t.stringLiteral('')
+      )
     })
 
-    const languageData = []
-    const pluralRules = plurals[locale]
-    if (!pluralRules) {
-      throw new Error(`Missing plural rules for locale ${locale}`)
-    }
-    languageData.push(
+    const languageData = [
       t.objectProperty(
         t.stringLiteral('p'),
-        babylon.parseExpression(pluralRules.toString())
+        parseExpression(pluralRules.toString())
       )
-    )
+    ]
 
     const compiled = t.expressionStatement(t.assignmentExpression(
       '=',
@@ -69,21 +97,51 @@ function compileCatalogs (localeDir) {
         // messages
         t.objectProperty(
           t.identifier('m'),
-          t.objectExpression(messages)
+          t.objectExpression(compiledMessages)
         )
       ])
     ))
 
-    fs.writeFileSync(compiledPath, generate(compiled, {
-      minified: true
-    }).code)
+    const compiledPath = format.writeCompiled(
+      locale,
+      generate(compiled, {
+        minified: true
+      }).code
+    )
+
+    options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
+    return compiledPath
   })
 }
 
-const config = getConfig()
+if (require.main === module) {
+  const config = getConfig()
+  const format = require(`./api/formats/${config.format}`).default(config)
 
-program.parse(process.argv)
+  program
+    .description('Add compile message catalogs and add language data (plurals) to compiled bundle.')
+    .option('--strict', 'Disable defaults for missing translations')
+    .option('--verbose', 'Verbose output')
+    .on('--help', function () {
+      console.log('\n  Examples:\n')
+      console.log('    # Compile translations and use defaults or message IDs for missing translations')
+      console.log('    $ lingui compile')
+      console.log('')
+      console.log('    # Compile translations but fail when there\'re missing')
+      console.log('    # translations (don\'t replace missing translations with')
+      console.log('    # default messages or message IDs)')
+      console.log('    $ lingui compile --strict')
+    })
+    .parse(process.argv)
 
-console.log('Compiling message catalogs:')
-compileCatalogs(config.localeDir)
-console.log()
+  const results = command(config, format, {
+    verbose: program.verbose || false,
+    allowEmpty: program.strict !== true
+  })
+
+  if (!results || results.some(res => !res)) {
+    process.exit(1)
+  }
+
+  console.log('Done!')
+}

@@ -2,10 +2,10 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { WithI18n } from '.'
+import { withI18n } from '.'
 import { mockEnv, mockConsole } from './mocks'
 
-describe('WithI18n', function () {
+describe('withI18n', function () {
   const context = {
     subscribe: jest.fn(),
     unsubscribe: jest.fn(),
@@ -20,7 +20,7 @@ describe('WithI18n', function () {
   // Pass all props to spy on render
   const sinkFactory = (options = {}) => {
     const spy = jest.fn()
-    const Sink = WithI18n(options)(class extends React.Component {
+    const Sink = withI18n(options)(class extends React.Component<*> {
       customMethod = () => 42
 
       render () {
@@ -48,7 +48,7 @@ describe('WithI18n', function () {
 
   it('should warn if called incorrectly', function () {
     const wrongMount = () => {
-      const Component = WithI18n(() => <span />)
+      const Component = withI18n(() => <span />)
       // Catch the React error. It will blow up user app, but at least they get
       // the warning about the cause.
       try {
@@ -68,7 +68,7 @@ describe('WithI18n', function () {
       mockConsole(console => {
         wrongMount()
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining('WithI18n([options]) takes options'))
+          expect.stringContaining('withI18n([options]) takes options'))
       })
     })
   })
@@ -124,17 +124,13 @@ describe('WithI18n', function () {
   it('should hold ref to wrapped instance when withRef is enabled', function () {
     const { node } = mountHoc({}, { withRef: true })
     const hoc = node.getNode()
-    // $FlowIgnore: getWrappedInstance() is custom method of WithI18n
     expect(hoc.getWrappedInstance()).not.toBeNull()
-    // $FlowIgnore: getWrappedInstance() is custom method of WithI18n
     expect(hoc.getWrappedInstance().customMethod).not.toBeNull()
-    // $FlowIgnore: getWrappedInstance() is custom method of WithI18n
     expect(hoc.getWrappedInstance().customMethod()).toEqual(42)
   })
 
   it('should not hold ref to wrapped instance when withRef is disabled', function () {
     const { node } = mountHoc()
-    // $FlowIgnore: getWrappedInstance() is custom method of WithI18n
     expect(() => node.getNode().getWrappedInstance()).toThrow(
       'To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call.'
     )

@@ -106,7 +106,7 @@ describe('babel-plugin-lingui-transform-react', function () {
     })
 
     describe('Date/Number', function () {
-      it('value must be a variable', function () {
+      it('value of number must be a variable', function () {
         expect(transformCode('<Trans><NumberFormat /></Trans>')).toThrowErrorMatchingSnapshot()
         expect(transformCode('<Trans><NumberFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })
@@ -119,7 +119,7 @@ describe('babel-plugin-lingui-transform-react', function () {
         expect(transformCode('<Trans><NumberFormat value={value} format={42} /></Trans>')).toThrowErrorMatchingSnapshot()
       })
 
-      it('value must be a variable', function () {
+      it('value of date must be a variable', function () {
         expect(transformCode('<Trans><DateFormat /></Trans>')).toThrowErrorMatchingSnapshot()
         expect(transformCode('<Trans><DateFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })

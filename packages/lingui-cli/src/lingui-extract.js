@@ -1,168 +1,91 @@
-import linguiTransformJs from 'babel-plugin-lingui-transform-js'
-import linguiTransformReact from 'babel-plugin-lingui-transform-react'
-import linguiExtractMessages from 'babel-plugin-lingui-extract-messages'
+// @flow
+import path from 'path'
+import chalk from 'chalk'
+import program from 'commander'
+
 import getConfig from 'lingui-conf'
 
-const fs = require('fs')
-const path = require('path')
-const chalk = require('chalk')
-const Table = require('cli-table')
-const program = require('commander')
-const transformFileSync = require('babel-core').transformFileSync
+import type { LinguiConfig, CatalogFormat } from './api/formats/types'
+import { extract, collect, cleanObsolete } from './api/extract'
+import { printStats } from './api/stats'
 
-const { getLanguages } = require('./api/languages')
+type ExtractOptions = {|
+  verbose: boolean,
+  clean: boolean
+|}
 
-const config = getConfig()
+export default function command (
+  config: LinguiConfig,
+  format: CatalogFormat,
+  options: ExtractOptions
+): boolean {
+  const locales = format.getLocales()
 
-function extractMessages (files) {
-  const ignorePatterns = config.srcPathIgnorePatterns.map(pattern => new RegExp(pattern, 'i'))
+  if (!locales.length) {
+    console.log('No locales defined!\n')
+    console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
+    return false
+  }
 
-  files.forEach(file => {
-    if (!fs.existsSync(file)) return
-
-    const ignored = ignorePatterns.filter(regexp => regexp.test(file))
-    if (ignored.length) return
-
-    if (fs.lstatSync(file).isDirectory()) {
-
-      extractMessages(
-        fs.readdirSync(file).map(filename => path.join(file, filename))
-      )
-    } else {
-      if (!/\.jsx?$/i.test(file)) return
-      transformFileSync(file, {
-        plugins: [
-          // Plugins run before presets, so we need to import trasnform-plugins
-          // here until we have a better way to run extract-messages plugin
-          // *after* all plugins/presets.
-          // Transform plugins are idempotent, so they can run twice.
-          linguiTransformJs,
-          linguiTransformReact,
-          linguiExtractMessages
-        ]
-      })
-      console.log(chalk.green(file))
+  console.log('Extracting messages from source files…')
+  extract(
+    config.srcPathDirs,
+    config.localeDir,
+    {
+      ignore: config.srcPathIgnorePatterns,
+      verbose: options.verbose
     }
-  })
-}
+  )
+  options.verbose && console.log()
 
-function collectMessages (dir) {
-  const catalog = {}
+  console.log('Collecting all messages…')
+  const clean = options.clean ? cleanObsolete : id => id
+  const buildDir = path.join(config.localeDir, '_build')
+  const catalog = collect(buildDir)
+  const catalogs = clean(format.merge(catalog))
+  options.verbose && console.log()
 
-  fs.readdirSync(dir)
-    .map(filename => path.join(dir, filename))
-    .forEach(filename => {
-      let messages = {}
-      if (fs.lstatSync(filename).isDirectory()) {
-        messages = collectMessages(filename)
+  console.log('Writing message catalogues…')
+  locales
+    .map(locale => format.write(locale, catalogs[locale]))
+    .forEach(([created, filename]) => {
+      if (!filename || !options.verbose) return
+
+      if (created) {
+        console.log(chalk.green(`Created ${filename}`))
       } else {
-        messages = JSON.parse(fs.readFileSync(filename))
+        console.log(chalk.green(`Updated ${filename}`))
       }
-      Object.assign(catalog, messages)
     })
-
-  return catalog
-}
-
-function writeCatalogs (localeDir, languages) {
-  const buildDir = path.join(localeDir, '_build')
-  const catalog = collectMessages(buildDir)
-
-  return languages.map(
-    language => JSONWriter(catalog, path.join(localeDir, language))
-  )
-}
-
-function JSONWriter (messages, languageDir) {
-  let newFile = true
-
-  const catalog = {}
-  Object.keys(messages).forEach(key => {
-    catalog[key] = {
-      translation: '',
-      ...messages[key]
-    }
-  })
-
-  const catalogFilename = path.join(languageDir, 'messages.json')
-
-  if (fs.existsSync(catalogFilename)) {
-    const original = JSON.parse(fs.readFileSync(catalogFilename))
-
-    Object.keys(original).forEach(key => {
-      const originalMsg = original[key]
-      if (!originalMsg) return
-      if (!catalog[key]) catalog[key] = {}
-
-      catalog[key].translation = typeof originalMsg === 'string'
-        // backward compatability, Deprecated-2
-        ? originalMsg
-        // new catalogs have objects as values
-        : originalMsg.translation
-    })
-
-    newFile = false
-  }
-
-  const content = JSON.stringify(catalog, null, 2)
-  fs.writeFileSync(catalogFilename, content)
-
-  if (newFile) {
-    console.log(chalk.green(`Merging ${catalogFilename}`))
-  } else {
-    console.log(chalk.yellow(`Writing ${catalogFilename}`))
-  }
-
-  return getStats(catalog)
-}
-
-function getStats (catalog) {
-  return [
-    Object.keys(catalog).length,
-    Object.keys(catalog).map(key => catalog[key]).filter(msg => !msg.translation).length
-  ]
-}
-
-function displayStats (languages, stats) {
-  const table = new Table({
-    head: ['Language', 'Total count', 'Missing'],
-    colAligns: ['left', 'middle', 'middle'],
-    style: {
-      head: ['green'],
-      border: [],
-      compact: true
-    }
-  })
-
-  languages.forEach(
-    (language, index) => table.push({[language]: stats[index]})
-  )
-
-  console.log(table.toString())
-}
-
-program.parse(process.argv)
-
-const languages = getLanguages(config.localeDir)
-
-if (!languages.length) {
-  console.log('No languages defined.')
-  console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add one)`)
-  process.exit(1)
-} else {
-  console.log('Extracting messages from source files:')
-  extractMessages(program.args.length ? program.args : config.srcPathDirs)
-  console.log()
-
-  console.log('Writing message catalogues:')
-  const stats = writeCatalogs(config.localeDir, languages)
-  console.log()
-
-  console.log('Catalog statistics:')
-  displayStats(languages, stats)
-  console.log()
+  options.verbose && console.log()
 
   console.log('Messages extracted!\n')
+
+  console.log('Catalog statistics:')
+  printStats(catalogs)
+  console.log()
+
+  console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add more locales)`)
   console.log(`(use "${chalk.yellow('lingui extract')}" to update catalogs with new messages)`)
   console.log(`(use "${chalk.yellow('lingui compile')}" to compile catalogs for production)`)
+  return true
+}
+
+if (require.main === module) {
+  program
+    .option('--verbose', 'Verbose output')
+    .option('--clean', 'Remove obsolete translations')
+    .option('--format <format>', 'Format of message catalog')
+    .parse(process.argv)
+
+  const config = getConfig()
+  const formatName = program.format || config.format
+  const format = require(`./api/formats/${formatName}`).default(config)
+
+  const result = command(config, format, {
+    verbose: program.verbose || false,
+    clean: program.clean || false
+  })
+
+  if (!result) process.exit(1)
 }

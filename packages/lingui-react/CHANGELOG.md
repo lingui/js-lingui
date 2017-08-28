@@ -1,7 +1,15 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/lingui/js-lingui/compare/lingui-react@1.1.0-1...lingui-react@1.1.0) (2017-08-28)
+
+
+
+
+**Note:** Version bump only for package lingui-react
 
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/lingui/js-lingui/compare/lingui-react@1.0.3...lingui-react@1.0.4) (2017-08-22)

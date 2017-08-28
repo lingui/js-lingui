@@ -26,6 +26,7 @@ const defaults = {
   fallbackLanguage: '',
   srcPathDirs: ['<rootDir>'],
   srcPathIgnorePatterns: ['/node_modules/'],
+  format: 'lingui',
   rootDir: '.'
 }
 

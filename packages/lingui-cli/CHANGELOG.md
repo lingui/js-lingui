@@ -1,7 +1,18 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/lingui/js-lingui/compare/lingui-cli@1.2.0-3...lingui-cli@1.2.0) (2017-08-28)
+
+
+### Features
+
+* Add another hint to extract command ([38e9132](https://github.com/lingui/js-lingui/commit/38e9132))
+
+
+
 
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/lingui/js-lingui/compare/lingui-cli@1.0.5...lingui-cli@1.1.0) (2017-08-22)

@@ -30,7 +30,7 @@ describe('NeverUpdate', function () {
       </NeverUpdate>
     </I18nProvider>
 
-  it('should update translation when language changes', function () {
+  it('should update translation of children when language changes', function () {
     const ConvervativeChildren = BeConservative(Children)
 
     const node = mount(<ConvervativeChildren language="en" />)
@@ -46,7 +46,7 @@ describe('NeverUpdate', function () {
     expect(node.find('.variable').text()).toEqual('Jmenuji se Mononoke')
   })
 
-  it('should update translation when language changes', function () {
+  it('should update translation of attributes when language changes', function () {
     const ConvervativeAttributes = BeConservative(ElementAttributes)
 
     const node = mount(<ConvervativeAttributes language="en" />)

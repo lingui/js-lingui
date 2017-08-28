@@ -1,15 +1,18 @@
 /* @flow */
 import React from 'react'
+import type { Node } from 'react'
 import PropTypes from 'prop-types'
 import { setupI18n } from 'lingui-i18n'
 import type { I18n, Catalogs } from 'lingui-i18n'
 
 export type I18nProviderProps = {
-  children?: any,
+  children?: Node,
   language: string,
   catalogs?: Catalogs,
   development?: Object,
-  i18n?: I18n
+  i18n?: I18n,
+
+  defaultRender: Node
 }
 
 /*
@@ -48,13 +51,18 @@ export function LinguiPublisher (i18n: I18n) {
   }
 }
 
-export default class I18nProvider extends React.Component {
+export default class I18nProvider extends React.Component<I18nProviderProps> {
   props: I18nProviderProps
 
   linguiPublisher: LinguiPublisher
 
+  static defaultProps = {
+    defaultRender: 'span'
+  }
+
   static childContextTypes = {
-    linguiPublisher: PropTypes.object.isRequired
+    linguiPublisher: PropTypes.object.isRequired,
+    linguiDefaultRender: PropTypes.any.isRequired
   }
 
   constructor (props: I18nProviderProps) {
@@ -80,12 +88,15 @@ export default class I18nProvider extends React.Component {
 
   getChildContext () {
     return {
-      linguiPublisher: this.linguiPublisher
+      linguiPublisher: this.linguiPublisher,
+      linguiDefaultRender: this.props.defaultRender
     }
   }
 
   render () {
     const { children } = this.props
-    return children && children.length > 1 ? <div>{children}</div> : children
+    return children && React.Children.count(children) > 1
+      ? <div>{children}</div>
+      : children
   }
 }
