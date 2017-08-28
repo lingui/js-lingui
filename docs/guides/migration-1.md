@@ -204,7 +204,7 @@ More about [loading message catalogs]().
 
 Changes in React API reflects changes in underlying core `lingui-i18n`.
 
-`InjectI18n` was removed and replaced with `WithI18n` decorator. Loading
+`InjectI18n` was removed and replaced with `withI18n` decorator. Loading
 `InjectI18n` in recent versions of `lingui-react@<1.0.0` raised deprecation
 warning in console.
 

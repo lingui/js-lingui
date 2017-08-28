@@ -485,7 +485,7 @@ Follow up links:
 [cldrPlurals]: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 
 [I18nProvider]: ../ref/react.html#i18nprovider
-[WithI18n]: ../ref/react.html#withi18n
+[withI18n]: ../ref/react.html#withi18n
 [Trans]: ../ref/react.html#trans
 [Plural]: ../ref/react.html#plural
 [NumberFormat]: ../ref/react.html#numberformat
