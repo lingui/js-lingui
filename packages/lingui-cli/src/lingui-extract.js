@@ -65,6 +65,7 @@ export default function command (
   printStats(catalogs)
   console.log()
 
+  console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add more locales)`)
   console.log(`(use "${chalk.yellow('lingui extract')}" to update catalogs with new messages)`)
   console.log(`(use "${chalk.yellow('lingui compile')}" to compile catalogs for production)`)
   return true
