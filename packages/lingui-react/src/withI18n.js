@@ -77,11 +77,17 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
   return withI18n
 }
 
+// Deprecated, remove in 2.x
+let deprecationWithI18nOnce = false
+
 const WithI18n = (options: withI18nOptions = {}) => {
   if (process.env.NODE_ENV !== 'production') {
-    console.warn(
-      'WithI18n is deprecated and will be removed in lingui-react@2.x, ' +
-      'use withI18n instead (lower-cased first letter).')
+    if (!deprecationWithI18nOnce) {
+      deprecationWithI18nOnce = true
+      console.warn(
+        'WithI18n is deprecated and will be removed in lingui-react@2.x, ' +
+        'use withI18n instead (lower-cased first letter).')
+    }
   }
 
   return withI18n(options)
