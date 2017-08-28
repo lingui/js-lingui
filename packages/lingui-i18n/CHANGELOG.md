@@ -1,7 +1,15 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/lingui/js-lingui/compare/lingui-i18n@1.2.2-0...lingui-i18n@1.2.2) (2017-08-28)
+
+
+
+
+**Note:** Version bump only for package lingui-i18n
 
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/lingui/js-lingui/compare/lingui-i18n@1.2.0...lingui-i18n@1.2.1) (2017-08-22)
