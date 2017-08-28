@@ -22,12 +22,12 @@ export function extract (
     ignore = [],
     verbose = false
   } = options
-  const ignorePatterns = ignore.map(pattern => new RegExp(pattern, 'i'))
+  const ignorePattern = ignore.length ? new RegExp(ignore.join('|'), 'i') : null
 
   srcPaths.forEach(srcFilename => {
     if (
       !fs.existsSync(srcFilename) ||
-      ignorePatterns.some(regexp => regexp.test(srcFilename))
+      (ignorePattern && ignorePattern.test(srcFilename))
     ) return
 
     if (fs.lstatSync(srcFilename).isDirectory()) {

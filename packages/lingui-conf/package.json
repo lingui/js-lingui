@@ -21,6 +21,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
+    "jest-regex-util": "^20.0.3",
     "jest-validate": "^20.0.3",
     "pkg-conf": "^2.0.0"
   },
