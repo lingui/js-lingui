@@ -1,3 +1,15 @@
+# Planned features
+
+- lingui-cli
+  - `info` command which prints statistics about catalogs
+  - keep catalog with collected messages
+    - default format could be reverted to `minimal`, because all information are in default catalog (origin, default, etc)
+    
+- lingui-react
+  - with `defaultRender` option, there's possibility to create debugging component, which reports all texts on the page, highlights missing ones and maybe also allow inline editing (with local server support).
+  
+# More interesting topics
+
 ## webpack loader (🌱 easy)
   
 - Compile message catalogs (`import("lingui-loader?messages.i18n.json")`
