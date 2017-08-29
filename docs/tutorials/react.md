@@ -59,11 +59,11 @@ It's pretty basic app which doesn't do anything special.
 
 ## Install dependencies and configure Babel
 
-`js-lingui` isn't solo library. It's actually set of tools which helps you
+`jsLingui` isn't solo library. It's actually set of tools which helps you
 with internationalization. You can pick which one you want to use in your project.
-We're going to use all of them to show off the full power of js-lingui.
+We're going to use all of them to show off the full power of jsLingui.
 
-Three major packages we're going to use are:
+We're going to use the three major packages:
 
 - `lingui-react` - React components for translating and formatting messages
 - `babel-preset-lingui-react` - Transform messages wrapped in components from 
@@ -76,7 +76,6 @@ Three major packages we're going to use are:
 yarn global add lingui-cli
 yarn add lingui-react
 yarn add --dev babel-preset-lingui-react
-# npm install --save-dev babel-preset-lingui-react
     ```  
     
     or using `npm`:
@@ -123,6 +122,7 @@ import { render } from 'react-dom'
 import Inbox from './Inbox.js'
 
 import { I18nProvider } from 'lingui-react'
+
 // required in development only (huge dependency)
 const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
 
@@ -197,7 +197,7 @@ export default Inbox
 ```
 
 Wait a second, somebody skipped three pages at once! Let's break the example above
-into phrases and go through the separately:
+into phrases and go through them separately:
 
 ### Simple translations
 
@@ -215,11 +215,7 @@ inside [Trans][Trans] component again.
 
 ### Plural
 
-[Plural][Plural] is first weird looking component. We had one message and now
-two?! Except the original `Input` would display this when there's only 1 message:
-
-`There're 1 messages in your inbox`
-
+[Plural][Plural] is first weird looking component.
 This phrase has different *singular* and *plural* form. [Plural][Plural] component
 selects the right plural form based on active language and `value`. It may sound
 strange, but some languages have more that one plural form, e.g: in czech we have
@@ -250,7 +246,7 @@ the source one (English in our case):
 $ lingui add-locale en cs 
 ```
 
-Languages are specified ad ISO country codes.
+Languages are specified as ISO country codes.
 
 Now we're ready to extract messages:
 
@@ -263,13 +259,29 @@ English file and take a look at message format:
 
 ```js
 {
-  "Message Inbox": "",
-  "See all <0>unread messages</0> or <1>mark them</1> as read.": "",
-  "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": "",
-  "Last login on {lastLogin, date}": ""
+  "Message Inbox": {
+    "translation": "",
+    "origin": [...]
+  },
+  "See all <0>unread messages</0> or <1>mark them</1> as read.": {
+    "translation": "",
+    "origin": [...]
+  },
+  "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": {
+    "translation": "",
+    "origin": [...]
+  },
+  "Last login on {lastLogin, date}": {
+    "translation": "",
+    "origin": [...]
+  }
 }
 ```
 
+The content or `origin` attributes is truncated in example above. It tells
+us from where the message was extracted.
+
+Now, take a look at format of messages.
 This is ICU Message Format. It's very powerful and extensible. It's bit difficult
 to write by hand (especially for complex cases like plurals), but that's the
 reason why we use babel preset - we use React components as we're used to
@@ -289,20 +301,32 @@ message catalog to our translator. They'll do their job and send us translations
 
 Alright, translator just sent us finished translations:
 
-```js
+```json
 {
-  "Message Inbox": "Příchozí zprávy",
-  "See all <0>unread messages</0> or <1>mark them</1> as read.": "Přejít na <0>nepřečtené zprávy</0> nebo je <1>označit</1> jako přečtené",
-  "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": 
-  "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy.} other {V příchozí poště je {messagesCount} zpráv.}}",
-  "Last login on {lastLogin, date}": "Poslední přihlášení {lastLogin, date}"
+  "Message Inbox": {
+    "translation": "Příchozí zprávy",
+    "origin": [...]
+  },
+  "See all <0>unread messages</0> or <1>mark them</1> as read.": {
+    "translation": "Přejít na <0>nepřečtené zprávy</0> nebo je <1>označit</1> jako přečtené",
+    "origin": [...]
+  },
+  "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": {
+    "translation": "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy.} other {V příchozí poště je {messagesCount} zpráv.}}",
+    "origin": [...]
+  },
+  "Last login on {lastLogin, date}": {
+    "translation": "Poslední přihlášení {lastLogin, date}",
+    "origin": [...]
+  }
 }
 ```
 
 You probably don't understand half of it, but it doesn't matter. Just copy-paste
 it instead the original `locale/cs/messages.json`.
 
-Now we need to compile it:
+Now we need to compile it. This step is necessary in production, otherwise
+message formatting won't work:
 
 ```bash
 $ lingui compile
@@ -350,8 +374,7 @@ are two most common variations that you might choose.
 
 Some people prefer using custom message IDs instead of auto-generated ones,
 like `msg.hello` or `Inbox.heading`. It's possible to do it with `lingui-react` 
-too! Just pass `id` prop to [Trans][Trans] components. Other i18n components
-must be wrapped inside [Trans][Trans] component too:
+too! Just pass `id` prop to [Trans][Trans] components:
 
 ```jsx
 // Inbox.js
@@ -396,15 +419,27 @@ When we extract messages now, the catalog is going to look like this:
 
 ```js
 {
-  "Inbox.heading": "Message Inbox",
-  "Inbox.unreadMessages": "See all <0>unread messages</0> or <1>mark them</1> as read.",
-  "Inbox.totalMessages": "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}",
-  "Inbox.lastLogin": "Last login on {lastLogin, date}"
+  "Inbox.heading": {
+    "translation": "",
+    "defaults": "Message Inbox",
+  }
+  "Inbox.unreadMessages": {
+    "translation": "",
+    "defaults": "See all <0>unread messages</0> or <1>mark them</1> as read.",
+  }
+  "Inbox.totalMessages": {
+    "translation": "",
+    "defaults": "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}"
+  },
+  "Inbox.lastLogin": {
+    "translation": "",
+    "defaults": "Last login on {lastLogin, date}"
+  }
 }
 ```
 
 This approach has it's pros and cons and opinios differs. Important is 
-that `js-lingui` supports both ways and it's up to developers to choose what 
+that `jsLingui` supports both ways and it's up to developers to choose what 
 they prefer.
 
 ### Without babel preset
@@ -459,8 +494,12 @@ As you can see, in simple cases it's about the same. However, in complex cases
 like plurals, it's less readable and error-prone. Babel preset also validates
 MessageFormat so it's almost impossible to make any error.
 
-Good think is, that `lingui extract` doesn't require you to change babel config,
-so you can still use it for extracting of messages.
+You still might encouter some problem when using `lingui extract`. These
+problems are described in guide about [intergrations][Integrations].
+TL;DR: Most boilerplates hard-code babel config to webpack. It's impossible
+to read & extend these config from external tools. All you need to do is
+copy-paste config to `.babelrc`, which is the stardard location recommended
+by Babel itself.
 
 You may ask if we can't do it without plugin during runtime. Unfortunatelly, no.
 First, the performance would be really terrible. Second, but more important reason,
@@ -468,7 +507,15 @@ we would have to include MessageFormat parser into our production bundle, which
 is really big dependency.
 
 **Note**: In the example above, if you don't want to use custom IDs, simply replace
- `id` with `defaults`, like this: `<Trans id="Message Inbox" />`.
+ `id` with `defaults`, like this:
+ 
+ ```js
+ // Instead of
+ <Trans id="Inbox.header" defaults="Message Inbox" />
+ 
+ // … it's possible to use source language as message ID
+ <Trans id="Message Inbox" />
+```
 
 ## Going down the rabbit hole
 
@@ -492,4 +539,5 @@ Follow up links:
 [DateFormat]: ../ref/react.html#dateformat
 [ReferenceReact]: ../ref/react.html
 [GuideWebpackDynamicLoading]: ../guides/webpack-dynamic-loading.html "Dynamic loading of languages in Webpack"
+[Integrations]: ../guides/integrations.html
 [TutorialLinguiReact]: https://github.com/lingui/tutorial-lingui-react

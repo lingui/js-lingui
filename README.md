@@ -193,20 +193,21 @@ lingui extract
 ```
 
 ```
-Writing message catalogues:
-Writing locales/cs/messages.json
-Writing locales/en/messages.json
+Extracting messages from source files…
+Collecting all messages…
+Writing message catalogues…
+Messages extracted!
 
 Catalog statistics:
 ┌──────────┬─────────────┬─────────┐
 │ Language │ Total count │ Missing │
 ├──────────┼─────────────┼─────────┤
-│ cs       │     43      │   11    │
-│ en       │     43      │    9    │
+│ cs       │     42      │   34    │
+│ en       │     42      │   42    │
+│ fr       │     42      │   42    │
 └──────────┴─────────────┴─────────┘
 
-Messages extracted!
-
+(use "lingui add-locale <language>" to add more locales)
 (use "lingui extract" to update catalogs with new messages)
 (use "lingui compile" to compile catalogs for production)
 ```
