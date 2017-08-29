@@ -51,16 +51,18 @@ npm run compile
 ### add-locale
 
 ```bash
-lingui add-locale [locales...]
+lingui add-locale [locales...] [--format <format>]
 # e.g: lingui add-locale en fr es
 ```
 
 This command creates a new directory for each locale in [localeDir][localeDir]
 
+`--format` - Format of message catalogs (see [format][format] option)
+
 ### extract
 
 ```bash
-lingui extract [--clean]
+lingui extract [--clean] [--format <format>] [--verbose]
 ```
 
 This command extract messages from source files and creates message catalog for each language in following steps:
@@ -71,11 +73,13 @@ This command extract messages from source files and creates message catalog for 
 
 `--clean` - Remove obsolete messages from catalogs. Message becomes obsolete
 when it's no longer in source code.
+`--format` - Format of message catalogs (see [format][format] option)
+`--verbose` - Prints additional information
 
 ### compile
 
 ```bash
-lingui compile [--strict]
+lingui compile [--strict] [--format <format>] [--verbose]
 ```
 
 This command compiles message catalogs in [localeDir][localeDir] and writes 
@@ -85,6 +89,8 @@ which returns translated message.
 Also language data (plurals) are written to message catalog as well.
 
 `--strict` - Fail when some catalog has missing translations.
+`--format` - Format of message catalogs (see [format][format] option)
+`--verbose` - Prints additional information
 
 ## Configuration
 
@@ -170,3 +176,4 @@ Simple source - translation mapping:
 [localeDir]: #localedir-string
 [srcPathDirs]: #srcpathdirs-array
 [srcPathIgnorePatters]: #srcpathignorepatterns-array
+[format]: #format-string
