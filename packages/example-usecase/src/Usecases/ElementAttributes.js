@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { WithI18n, Trans } from 'lingui-react'
+import { withI18n, Trans } from 'lingui-react'
 
 type ElementAttributesProps = {
   i18n: Object
@@ -28,4 +28,4 @@ class ElementAttributes extends React.Component<ElementAttributesProps> {
   }
 }
 
-export default WithI18n()(ElementAttributes)
+export default withI18n()(ElementAttributes)
