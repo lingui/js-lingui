@@ -115,13 +115,11 @@ function command (config, format, options) {
 }
 
 if (require.main === module) {
-  const config = getConfig()
-  const format = require(`./api/formats/${config.format}`).default(config)
-
   program
     .description('Add compile message catalogs and add language data (plurals) to compiled bundle.')
     .option('--strict', 'Disable defaults for missing translations')
     .option('--verbose', 'Verbose output')
+    .option('--format <format>', 'Format of message catalog')
     .on('--help', function () {
       console.log('\n  Examples:\n')
       console.log('    # Compile translations and use defaults or message IDs for missing translations')
@@ -133,6 +131,10 @@ if (require.main === module) {
       console.log('    $ lingui compile --strict')
     })
     .parse(process.argv)
+
+  const config = getConfig()
+  const formatName = program.format || config.format
+  const format = require(`./api/formats/${formatName}`).default(config)
 
   const results = command(config, format, {
     verbose: program.verbose || false,

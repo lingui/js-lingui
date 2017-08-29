@@ -29,14 +29,12 @@ export default function command (format: CatalogFormat, locales: Array<string>) 
 }
 
 if (require.main === module) {
-  const config = getConfig()
-  const format = require(`./api/formats/${config.format}`).default(config)
-
   program
     .description(
       'Add target locales. Remove locale by removing <locale> ' +
       'directory from your localeDir (e.g. ./locale/en)')
     .arguments('<locale...>')
+    .option('--format <format>', 'Format of message catalog')
     .on('--help', function () {
       console.log('\n  Examples:\n')
       console.log('    # Add single locale')
@@ -48,6 +46,10 @@ if (require.main === module) {
     .parse(process.argv)
 
   if (!program.args.length) program.help()
+
+  const config = getConfig()
+  const formatName = program.format || config.format
+  const format = require(`./api/formats/${formatName}`).default(config)
 
   command(format, program.args)
 }

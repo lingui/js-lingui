@@ -73,8 +73,8 @@ export default function command (
 
 if (require.main === module) {
   program
-    .option('--verbose', 'Verbose output')
     .option('--clean', 'Remove obsolete translations')
+    .option('--verbose', 'Verbose output')
     .option('--format <format>', 'Format of message catalog')
     .parse(process.argv)
 
