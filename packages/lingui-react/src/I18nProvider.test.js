@@ -58,6 +58,27 @@ describe('I18nProvider', function () {
     ).find('div').length).toEqual(1)
   })
 
+  it('should pass default render component in context', function () {
+    const component = shallow(
+      <I18nProvider {...props}>
+        <div />
+      </I18nProvider>
+    ).instance()
+    const defaultRender = component.getChildContext()['linguiDefaultRender']
+    expect(defaultRender).toEqual('span')
+  })
+
+  it('should pass custom render component in context', function () {
+    const h1 = <h1 />
+    const component = shallow(
+      <I18nProvider {...props} defaultRender={h1}>
+        <div />
+      </I18nProvider>
+    ).instance()
+    const defaultRender = component.getChildContext()['linguiDefaultRender']
+    expect(defaultRender).toEqual(h1)
+  })
+
   it('should notify all subscribers about context change', function () {
     const node = mount(<I18nProvider language="en" catalogs={{
       en: {},
@@ -68,7 +89,6 @@ describe('I18nProvider', function () {
     const instance = node.instance()
     const listener = jest.fn()
 
-    // $FlowIgnore - Instance returned from enzyme doesn't have custom attrs
     instance.linguiPublisher.subscribe(listener)
     expect(listener).not.toBeCalled()
 

@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-lingui-extract-messages",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "Extract messages for translation",
   "main": "dist/index.js",
   "author": {
@@ -28,12 +28,12 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
     "lingui-conf": "^0.8.1"
   },
   "devDependencies": {
-    "babel-plugin-lingui-transform-js": "^1.0.1",
-    "babel-plugin-lingui-transform-react": "^1.0.1"
+    "babel-plugin-lingui-transform-js": "^1.0.2",
+    "babel-plugin-lingui-transform-react": "^1.0.5"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

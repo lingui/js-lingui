@@ -2,8 +2,8 @@
 
 - Providers
   - [I18nProvider](#i18nprovider)
-  - [WithI18n](#withi18n)
-
+  - [withI18n](#withi18n)
+  
 || Example MessageFormat
 ---        | --
 [Trans](#trans) | `My name is {name}` 
@@ -17,9 +17,23 @@
   
 ## General concepts
   
-### Rendering in components
+### Rendering of translations
 
-All i18n components render translation inside `<span>` tag. This tag can be customized using two props:
+All i18n components render translation inside `<span>` tag. This tag can be
+customized using in two ways: globally using `defaultRender` prop on [I18nProvider](#i18nprovider)
+component or locally using `render` prop on i18n components. Each component
+also support `className` as a shortcut for the most basic usecases.
+
+#### Global configuration
+
+Default rendering component can be set using `defaultRender` prop in [I18nProvider](#i18nprovider)
+The main usecase is rendering translations in `Text` component in React Native.
+
+It's possible to pass either string for built-in elements (`span`, `h1`),
+React elements or React classes. This props has the type as `render` prop on
+i18n components described below.
+
+#### Local configuration
 
 Prop name | Type | Description 
 --- | --- | --- |
@@ -299,7 +313,7 @@ const amount = 3.14
 
 Message catalogs and active language are passed to the context in 
 [I18nProvider](#i18nprovider). However, context should never be accessed 
-directly. [WithI18n](#withi18n) hoc passes i18n prop to wrapped component
+directly. [withI18n](#withi18n) hoc passes i18n prop to wrapped component
 and shadows all implementation details:
 
 ### I18nProvider
@@ -308,6 +322,10 @@ Prop name | Type | Description
 --- | --- | ---
 `language` | string | Active language
 `catalogs` | object | Message catalogs
+`defaultRender` | React.Element, React.Class string | Default element to render translation
+
+`defaultRender` has the same meaning as `render` in other i18n props.
+[Rendering](#localconfiguration) is explained at the beginning of this document.
 
 `catalogs` is a type of `Catalogs`:
 
@@ -350,9 +368,9 @@ const App = connect(state => ({ language: state.language }))(
 )
 ```
 
-### WithI18n
+### withI18n
 
-`WithI18n([ options ])`
+`withI18n([ options ])`
 
 Options | Description
 --- | ---
@@ -362,10 +380,15 @@ This HOC injects `i18n` prop to wrapped component. It's useful when wrapped comp
 
 ```jsx
 import React from 'react'
-import { Trans, WithI18n } from 'lingui-react'
+import { Trans, withI18n } from 'lingui-react'
 
-// WithI18n injects `i18n` prop 
-const LogoutIcon = WithI18n()(
+// withI18n injects `i18n` prop 
+const LogoutIcon = withI18n()(
     ({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`}/>
 )
 ```
+
+*Changed in lingui-react@1.1.0:*
+
+Previous version of this component, named `WithI18n` (upper-cased first letter),
+is deprecated and will be removed in lingui-react@2.x

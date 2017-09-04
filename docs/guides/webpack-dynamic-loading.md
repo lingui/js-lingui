@@ -85,8 +85,10 @@ componentDidMount() {
 
 ## Loading of messages
 
-The most important piece in this story is `loadLanguage` method. Here we use
-the dynamic import syntax to load message catalog:
+The most important piece in this story is `loadLanguage` method. It's necessary
+to load compiled message catalogs in production (`messages.js` instead of 
+`messages.json`) and unpack them using `unpackCatalog` function. Here we use the
+dynamic import syntax to load message catalog:
 
 ```js
 loadLanguage = async (language) => {
@@ -103,15 +105,13 @@ loadLanguage = async (language) => {
 }
 ```
 
-Message catalog is minified, so we must use `unpackCatalog` from `lingui-i18n`.
-
 Dynamic import returns a promise, so we can either use async/await keywords or good old promises:
 
 ```js
 loadLanguage = (language) => {
   import(
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    `locale/data/${language}/messages.js`)
+    `locale/${language}/messages.js`)
   .then(catalog =>
     this.setState(state => ({
       catalogs: {
@@ -138,8 +138,6 @@ import { I18nProvider } from 'lingui-react'
 import { unpackCatalog } from 'lingui-i18n'
 
 export class I18nLoader extends React.Component {
-  props: I18nLoaderProps
-
   state = {
     catalogs: {},
   }
@@ -147,7 +145,7 @@ export class I18nLoader extends React.Component {
   loadLanguage = async (language) => {
     const catalog = await import(
       /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-      `locale/data/${language}/messages.js`)
+      `locale/${language}/messages.js`)
 
     this.setState(state => ({
       catalogs: {

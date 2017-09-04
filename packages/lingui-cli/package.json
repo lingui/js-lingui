@@ -1,6 +1,6 @@
 {
   "name": "lingui-cli",
-  "version": "1.0.4",
+  "version": "1.2.1",
   "description": "CLI for working wit message catalogs",
   "main": "dist/lingui.js",
   "bin": {
@@ -31,19 +31,21 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "babel-core": "^6.25.0",
-    "babel-generator": "^6.25.0",
-    "babel-plugin-lingui-extract-messages": "^1.0.2",
-    "babel-plugin-lingui-transform-js": "^1.0.1",
-    "babel-plugin-lingui-transform-react": "^1.0.1",
-    "babel-types": "^6.25.0",
-    "babylon": "^6.17.4",
-    "chalk": "^2.0.1",
+    "babel-core": "^6.26.0",
+    "babel-generator": "^6.26.0",
+    "babel-plugin-lingui-extract-messages": "^1.0.6",
+    "babel-plugin-lingui-transform-js": "^1.0.2",
+    "babel-plugin-lingui-transform-react": "^1.0.5",
+    "babel-types": "^6.26.0",
+    "babylon": "^6.18.0",
+    "chalk": "^2.1.0",
     "cli-table": "^0.3.1",
     "commander": "^2.11.0",
-    "lingui-conf": "^0.8.1",
+    "glob": "^7.1.2",
+    "lingui-conf": "^0.9.1",
     "make-plural": "^4.0.1",
-    "messageformat-parser": "^1.0.0"
+    "messageformat-parser": "^1.1.0",
+    "ramda": "^0.24.1"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

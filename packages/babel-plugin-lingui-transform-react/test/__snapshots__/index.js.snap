@@ -2,13 +2,13 @@
 
 exports[`babel-plugin-lingui-transform-react validation Date/Number format must be string, variable or object with custom format 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Format can be either string for buil-in formats, variable or object for custom defined formats."`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of date must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value argument is missing."`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 2`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value must be a variable."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of date must be a variable 2`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value must be a variable."`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 3`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of number must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value argument is missing."`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value must be a variable 4`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value must be a variable."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of number must be a variable 2`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Value must be a variable."`;
 
 exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 1`] = `"packages/babel-plugin-lingui-transform-react/test/fixtures/nested-components/actual.js: Children of Plural aren't allowed."`;
 

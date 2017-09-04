@@ -1,3 +1,5 @@
+import { Trans, Plural } from 'lingui-react';
+
 <Plural
   value={count}
   offset="1"

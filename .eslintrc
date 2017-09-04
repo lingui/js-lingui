@@ -1,6 +1,6 @@
 {
   "env": {
-    "jest": true
+    "jest/globals": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -13,14 +13,16 @@
     "plugin:flowtype/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:jest/recommended"
   ],
   "plugins": [
     "standard",
     "promise",
     "flowtype",
     "import",
-    "react"
+    "react",
+    "jest"
   ],
   "rules": {
     "no-duplicate-imports": "off",

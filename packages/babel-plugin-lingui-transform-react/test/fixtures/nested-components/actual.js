@@ -1,3 +1,5 @@
+import { Select, Plural } from 'lingui-react';
+
 <Select
   value={genderOfHost}
   female={

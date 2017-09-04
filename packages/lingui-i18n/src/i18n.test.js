@@ -57,7 +57,7 @@ describe('I18n', function () {
   it('.loadLanguageData should load language data and merge with existing', function () {
     const languageData = {
       plurals: jest.fn(),
-      code: 'en-US'
+      code: 'en_US'
     }
 
     const i18n = setupI18n({
@@ -81,7 +81,7 @@ describe('I18n', function () {
         messages: {},
         languageData: {
           plurals: jest.fn(),
-          code: 'fr-FR'
+          code: 'fr_FR'
         }
       }
     })

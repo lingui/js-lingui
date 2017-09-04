@@ -1,0 +1,39 @@
+{
+  "name": "typescript-lingui-extract-messages",
+  "version": "0.0.0",
+  "description": "Extract messages for translation from Typescript files",
+  "main": "dist/index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "lingui-conf": "^0.8.1"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  },
+  "scripts": {
+    "prepublish": "tsc --module system --outFile dist/index.js src/index.ts"
+  }
+}

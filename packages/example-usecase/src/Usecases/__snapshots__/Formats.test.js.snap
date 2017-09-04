@@ -10,6 +10,7 @@ exports[`Formats should render 1`] = `
         "en": Object {},
       }
     }
+    defaultRender="span"
     development={
       Object {
         "compile": [Function],
@@ -22,7 +23,7 @@ exports[`Formats should render 1`] = `
       <div>
         <ul>
           <li>
-            <WithI18n
+            <withI18n
               className="percent"
               id="The answer is {answer,number,percent}"
               values={
@@ -65,6 +66,7 @@ exports[`Formats should render 1`] = `
               >
                 <Render
                   className="percent"
+                  value="The answer is 42%"
                 >
                   <span
                     className="percent"
@@ -73,10 +75,10 @@ exports[`Formats should render 1`] = `
                   </span>
                 </Render>
               </Trans>
-            </WithI18n>
+            </withI18n>
           </li>
           <li>
-            <WithI18n
+            <withI18n
               className="date"
               id="Today is {now,date}"
               values={
@@ -119,6 +121,7 @@ exports[`Formats should render 1`] = `
               >
                 <Render
                   className="date"
+                  value="Today is 4/5/2017"
                 >
                   <span
                     className="date"
@@ -127,7 +130,7 @@ exports[`Formats should render 1`] = `
                   </span>
                 </Render>
               </Trans>
-            </WithI18n>
+            </withI18n>
           </li>
         </ul>
       </div>

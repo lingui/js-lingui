@@ -31,7 +31,7 @@ function testCase (testName, assertion) {
   const transform = (filename, jsx = true) => () => transformFileSync(path.join(__dirname, 'fixtures', filename), {
     babelrc: false,
     plugins: [
-      ...(filename.endsWith('integration.js')
+      ...(/integration.*\.js$/.test(filename)
         ? jsx
           ? [
             'lingui-transform-react',
@@ -78,9 +78,14 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(fs.existsSync(path.join(buildDir, 'empty.json'))).toBeFalsy()
   })
 
-  testCase("shouldn't path to file inside locale dir", (transform) => {
+  testCase('should preserve path to file inside locale dir', (transform) => {
     expect(transform('jsx/deep/all.js')).not.toThrow()
     expect(fs.existsSync(path.join(buildDir, 'jsx/deep/all.json'))).toBeTruthy()
+  })
+
+  testCase('should ignore files without lingui import', (transform) => {
+    expect(transform('jsx/without-lingui.js')).not.toThrow()
+    expect(fs.existsSync(path.join(buildDir, 'jsx/without-lingui.json'))).toBeFalsy()
   })
 
   testCase('should extract all messages from JSX files', (transform) => {
@@ -100,6 +105,16 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(transform('jsx/integration.js')).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/integration.json')))
+    expect(messages).toMatchSnapshot()
+  })
+
+  testCase('should extract all messages from JSX files (integration with alises)', (transform) => {
+    // first run should create all required folders and write messages
+    expect(transform('jsx/integration-with-aliases.js')).not.toThrow()
+    // another runs should just write messages
+    expect(transform('jsx/integration-with-aliases.js')).not.toThrow()
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/integration-with-aliases.json')))
     expect(messages).toMatchSnapshot()
   })
 
@@ -125,19 +140,18 @@ describe('babel-plugin-lingui-extract-messages', function () {
 
   it('should extract JS translations only once inside React components', function () {
     expect(() => transformFileSync(path.join(__dirname, 'fixtures', 'jsx/with-react.js'), {
-        babelrc: false,
-        plugins: [
-          'lingui-transform-js',
-          'lingui-transform-react',
-          [plugin, {
-            localeDir: LOCALE_DIR
-          }]
-        ],
-        presets: [
-          'react'
-        ]
-      })
-    ).not.toThrow()
+      babelrc: false,
+      plugins: [
+        'lingui-transform-js',
+        'lingui-transform-react',
+        [plugin, {
+          localeDir: LOCALE_DIR
+        }]
+      ],
+      presets: [
+        'react'
+      ]
+    })).not.toThrow()
 
     const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'jsx/with-react.json')))
     expect(messages).toMatchSnapshot()

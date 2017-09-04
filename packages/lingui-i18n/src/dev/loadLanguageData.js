@@ -1,6 +1,11 @@
 // @flow
 import plurals from 'make-plural/umd/plurals'
 
-export default (language: string) => {
+export default (locale: string) => {
+  if (!locale) {
+    return
+  }
+
+  const [language] = locale.split('_')
   return { plurals: plurals[language] }
 }

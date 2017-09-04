@@ -51,16 +51,18 @@ npm run compile
 ### add-locale
 
 ```bash
-lingui add-locale [locales...]
+lingui add-locale [locales...] [--format <format>]
 # e.g: lingui add-locale en fr es
 ```
 
 This command creates a new directory for each locale in [localeDir][localeDir]
 
+`--format` - Format of message catalogs (see [format][format] option)
+
 ### extract
 
 ```bash
-lingui extract
+lingui extract [--clean] [--format <format>] [--verbose]
 ```
 
 This command extract messages from source files and creates message catalog for each language in following steps:
@@ -69,10 +71,15 @@ This command extract messages from source files and creates message catalog for 
 2. Merge them with existing catalogs in [localeDir][localeDir] (if any)
 3. Write updated message catalogs to [localeDir][localeDir]
 
+`--clean` - Remove obsolete messages from catalogs. Message becomes obsolete
+when it's no longer in source code.
+`--format` - Format of message catalogs (see [format][format] option)
+`--verbose` - Prints additional information
+
 ### compile
 
 ```bash
-lingui compile
+lingui compile [--strict] [--format <format>] [--verbose]
 ```
 
 This command compiles message catalogs in [localeDir][localeDir] and writes 
@@ -80,6 +87,10 @@ minified Javascript files. Each message is replace with function call,
 which returns translated message.
 
 Also language data (plurals) are written to message catalog as well.
+
+`--strict` - Fail when some catalog has missing translations.
+`--format` - Format of message catalogs (see [format][format] option)
+`--verbose` - Prints additional information
 
 ## Configuration
 
@@ -97,7 +108,8 @@ Default config:
     ],
     "srcPathIgnorePatterns": [
         "/node_modules/"
-    ]
+    ],
+    "format": "lingui"
   }
 }
 ```
@@ -128,6 +140,40 @@ Default: `["/node_modules/"]`
 
 Ignored directories when looking for source files to extract messages.
 
+### format [string]
+
+Default: `lingui`
+
+Format of message catalogs. Possible values are:
+
+#### `lingui`
+
+Each message is object in following format. Origin is filename and line number
+from where the message was extracted:
+
+```json
+{
+  "MessageID": {
+    "translation": "Translated Message",
+    "defaults": "Default string (from source code)",
+    "origin": [
+      ["path/to/src.js", 42]
+    ]
+  }
+}
+```
+
+#### `minimal`
+
+Simple source - translation mapping:
+
+```json
+{
+   "MessageId": "Translated Message"
+}
+```
+
 [localeDir]: #localedir-string
 [srcPathDirs]: #srcpathdirs-array
 [srcPathIgnorePatters]: #srcpathignorepatterns-array
+[format]: #format-string

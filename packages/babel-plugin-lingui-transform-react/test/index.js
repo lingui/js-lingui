@@ -20,7 +20,15 @@ describe('babel-plugin-lingui-transform-react', function () {
     ]
   }
 
-  const transformCode = (code) => () => transform(code, babelOptions)
+  const transformCode = (code) => () => transform(
+    // implicitly import all lingui-react components, otherwise components
+    // are ignored and not validated
+    `import { 
+      Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat 
+    } from 'lingui-react';
+    ${code}`,
+    babelOptions
+  )
 
   glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
     const testName = getTestName(testPath)
@@ -98,7 +106,7 @@ describe('babel-plugin-lingui-transform-react', function () {
     })
 
     describe('Date/Number', function () {
-      it('value must be a variable', function () {
+      it('value of number must be a variable', function () {
         expect(transformCode('<Trans><NumberFormat /></Trans>')).toThrowErrorMatchingSnapshot()
         expect(transformCode('<Trans><NumberFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })
@@ -111,7 +119,7 @@ describe('babel-plugin-lingui-transform-react', function () {
         expect(transformCode('<Trans><NumberFormat value={value} format={42} /></Trans>')).toThrowErrorMatchingSnapshot()
       })
 
-      it('value must be a variable', function () {
+      it('value of date must be a variable', function () {
         expect(transformCode('<Trans><DateFormat /></Trans>')).toThrowErrorMatchingSnapshot()
         expect(transformCode('<Trans><DateFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })

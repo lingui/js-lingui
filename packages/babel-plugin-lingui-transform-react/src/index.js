@@ -30,8 +30,21 @@ const generatorFactory = (index = 0) => () => index++
 
 // Plugin function
 export default function ({ types: t }) {
+  let importDeclarations
   let elementGenerator
   let argumentGenerator
+
+  function getOriginalImportName (local) {
+    // Either find original import name or use local one
+    const original = Object.keys(importDeclarations)
+      .filter(name => importDeclarations[name] === local)[0]
+
+    return original || local
+  }
+
+  function getLocalImportName (name, strict = false) {
+    return importDeclarations[name] || (!strict && name)
+  }
 
   function isIdAttribute (node) {
     return t.isJSXAttribute(node) && t.isJSXIdentifier(node.name, {name: 'id'})
@@ -42,7 +55,9 @@ export default function ({ types: t }) {
   }
 
   const elementName = name => node =>
-    t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name })
+    t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, {
+      name: getLocalImportName(name, true)
+    })
 
   const isTransElement = elementName('Trans')
   const isChooseElement = (node) => (
@@ -66,11 +81,13 @@ export default function ({ types: t }) {
 
     // Plural, Select, SelectOrdinal
     } else if (isChooseElement(node)) {
+      const componentName = getOriginalImportName(element.name.name)
+
       if (node.children.length) {
-        throw file.buildCodeFrameError(element, `Children of ${element.name.name} aren't allowed.`)
+        throw file.buildCodeFrameError(element, `Children of ${componentName} aren't allowed.`)
       }
 
-      const choicesType = element.name.name.toLowerCase()
+      const choicesType = componentName.toLowerCase()
       const choices = {}
       let variable
       let offset = ''
@@ -137,7 +154,7 @@ export default function ({ types: t }) {
 
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
       element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
-      element.name = t.JSXIdentifier('Trans')
+      element.name = t.JSXIdentifier(getLocalImportName('Trans'))
     } else if (isFormatElement(node)) {
       if (root) {
         // Don't convert standalone Format elements to ICU MessageFormat.
@@ -146,7 +163,9 @@ export default function ({ types: t }) {
         return
       }
 
-      const type = element.name.name.toLowerCase().replace('format', '')
+      const type = (
+        getOriginalImportName(element.name.name)
+          .toLowerCase().replace('format', ''))
 
       let variable, format
 
@@ -203,7 +222,7 @@ export default function ({ types: t }) {
 
       props.text = `{${parts.join(',')}}`
       element.attributes = element.attributes.filter(attr => Array.includes(commonProps, attr.name.name))
-      element.name = t.JSXIdentifier('Trans')
+      element.name = t.JSXIdentifier(getLocalImportName('Trans'))
     // Other elements
     } else {
       if (root) return
@@ -272,8 +291,51 @@ export default function ({ types: t }) {
   }
 
   return {
+    pre () {
+      // Reset import declaration for each file.
+      // Regression introduced in https://github.com/lingui/js-lingui/issues/62
+      importDeclarations = {}
+    },
     visitor: {
+      ImportDeclaration (path) {
+        const { node } = path
+
+        if (node.source.value !== 'lingui-react') return
+
+        node.specifiers.forEach(specifier => {
+          importDeclarations[specifier.imported.name] = specifier.local.name
+        })
+
+        // Choices components are converted to Trans,
+        // so imports can be safely removed
+        const choicesComponents = ['Plural', 'Select', 'SelectOrdinal']
+        const isChoiceComponent = (specifier) =>
+          Array.includes(choicesComponents, specifier.imported.name)
+
+        const hasChoices = node.specifiers.filter(isChoiceComponent).length
+
+        if (hasChoices) {
+          node.specifiers = [
+            // Import for `Trans` component should be there always
+            t.importSpecifier(
+              t.identifier(getLocalImportName('Trans')),
+              t.identifier('Trans')),
+
+            // Copy all original imports except choices components
+            // and duplicate Trans components
+            ...node.specifiers.filter(specifier =>
+              !isChoiceComponent(specifier) &&
+              specifier.imported.name !== 'Trans'
+            )
+          ]
+        }
+      },
+
       JSXElement (path, file) {
+        if (!importDeclarations || !Object.keys(importDeclarations).length) {
+          return
+        }
+
         const { node } = path
         elementGenerator = generatorFactory()
         argumentGenerator = generatorFactory()

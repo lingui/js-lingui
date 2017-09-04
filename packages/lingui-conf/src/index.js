@@ -1,6 +1,9 @@
 const path = require('path')
 const pkgConf = require('pkg-conf')
 const { validate } = require('jest-validate')
+const { replacePathSepForRegex } = require('jest-regex-util')
+
+const NODE_MODULES = replacePathSepForRegex(path.sep + 'node_modules' + path.sep)
 
 function replaceRootDir (conf, rootDir) {
   const replace = s => s.replace('<rootDir>', rootDir)
@@ -25,7 +28,8 @@ const defaults = {
   localeDir: './locale',
   fallbackLanguage: '',
   srcPathDirs: ['<rootDir>'],
-  srcPathIgnorePatterns: ['/node_modules/'],
+  srcPathIgnorePatterns: [NODE_MODULES],
+  format: 'lingui',
   rootDir: '.'
 }
 

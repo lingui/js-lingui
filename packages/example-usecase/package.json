@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.5",
   "name": "example-usecase",
   "description": "Example usecase of all features",
   "main": "index.js",
@@ -16,20 +16,20 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "lingui-cli": "^0.15.0-6",
-    "lingui-react": "^1.0.2",
+    "lingui-cli": "^1.2.1",
+    "lingui-react": "^1.1.0",
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-loader": "^7.1.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.5.2",
-    "babel-preset-lingui-react": "^1.0.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-lingui-react": "^1.0.4",
     "babel-preset-react": "^6.24.1",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.5.0"
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
   },
   "babel": {
     "presets": [

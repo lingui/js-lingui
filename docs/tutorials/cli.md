@@ -10,7 +10,9 @@ yarn global add lingui-cli
 
 ## Add a new locale
 
-First we need to add all locales we want to translate our application. It creates a new directory in `locale` directory and also checks, that locale exists and has defined plural rules:
+First we need to add all locales we want to translate our application.
+`lingui add-locale` command creates a new directory in `locale` directory and 
+also checks that locale exists:
 
 ```bash
 lingui add-locale en cs
@@ -19,7 +21,6 @@ lingui add-locale en cs
 Example output:
 
 ```
-✅  Adding locales:
 Added locale en.
 Added locale cs.
 
@@ -28,7 +29,8 @@ Added locale cs.
 
 ## Extracting messages
 
-We're going to use an app we built in previous tutorial. `extract` command looks for messages in source files and extracts them:
+We're going to use an app we built in previous tutorial. `lingui extract` command 
+looks for messages in source files and extracts them:
 
 ```bash
 lingui extract
@@ -36,15 +38,12 @@ lingui extract
 
 
 ```
-🔍  Extracting messages from source files:
+Extracting messages from source files…
+Collecting all messages…
+Writing message catalogs…
+Messages extracted!
 
-...
-
-📖  Writing message catalogs:
-Merging locales/cs/messages.json
-Merging locales/en/messages.json
-
-📈  Catalog statistics:
+Catalog statistics:
 ┌──────────┬─────────────┬─────────┐
 │ Language │ Total count │ Missing │
 ├──────────┼─────────────┼─────────┤
@@ -52,8 +51,7 @@ Merging locales/en/messages.json
 │ en       │     40      │   40    │
 └──────────┴─────────────┴─────────┘
 
-Messages extracted!
-
+(use "lingui add-locale <locale>" to add more locales)
 (use "lingui extract" to update catalogs with new messages)
 (use "lingui compile" to compile catalogs for production)
 ```
@@ -163,12 +161,15 @@ Messages extracted!
 (use "lingui compile" to compile catalogs for production)
 ```
 
-`lingui extract` merges all translations with new messages, so you can run this command any time without worrying to lose translations.
+`lingui extract` merges all translations with new messages, so you can run this 
+command any time without worrying to lose any translation.
 
 ## Preparing catalogs for production
 
-Once we have all catalogs ready and translated,
-we can compile JSON into minified JS file with `compile` command. This command parses messages in MessageFormat and compiles them into simple functions. It also add plural rules to production ready catalog:
+Once we have all catalogs ready and translated, we can compile JSON into
+minified JS file with `lingui compile` command. This command parses messages in
+MessageFormat and compiles them into simple functions. It also add plural rules 
+to production ready catalog:
 
 ```bash
 lingui compile
@@ -177,13 +178,41 @@ lingui compile
 Example output:
 
 ```
-🗜  Compiling message catalogs:
-locale/cs/messages.json
-locale/en/messages.json
+Compiling message catalogs…
+Done!
 ```
 
 Locale dir now contains both source catalogs (`messages.json`) and compiled ones (`messages.js`).
 
+## Cleaning up obsolete messages
+
+By default, `lingui extract` command merges messages extracted from source files
+with existing message catalogs. This is safe as we don't accidentaly loose
+translated messages.
+
+However, soon or later some messages will be removed from source. We can use
+`--clean` option to clean up our message catalogs:
+
+```bash
+lingui extract --clean
+```
+
+## Validation of message catalogs
+
+It might be necessary to check that all messages are translated (e.g: in
+continous integration runner). `lingui compile` command has `--strict` option, 
+which does exactly that.
+
+Example output might look like this:
+
+```bash 
+$ lingui compile --strict
+Compiling message catalogs…
+Error: Failed to compile catalog for locale en!
+Missing 42 translation(s)
+```
+
 ## Further read
 
-That's it! Checkout [reference](../ref/cli.md) documentation for more info about `lingui` commands and configuration.
+That's it! Checkout [reference](../ref/cli.md) documentation for more info about
+`lingui` commands and configuration.

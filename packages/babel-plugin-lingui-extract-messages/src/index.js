@@ -26,11 +26,15 @@ function addMessage (path, messages, { id, ...attrs }) {
 }
 
 export default function ({ types: t }) {
+  let localTransComponentName
+
   const opts = getConfig()
   const optsBaseDir = opts.rootDir
 
   function isTransComponent (node) {
-    return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, { name: 'Trans' })
+    return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, {
+      name: localTransComponentName
+    })
   }
 
   const isI18nMethod = node =>
@@ -50,9 +54,26 @@ export default function ({ types: t }) {
 
   return {
     visitor: {
+      // Get the local name of Trans component. Usually it's just `Trans`, but
+      // it might be different when the import is aliased:
+      // import { Trans as T } from 'lingui-react';
+      ImportDeclaration (path) {
+        const { node } = path
+
+        if (node.source.value !== 'lingui-react') return
+
+        const importDeclarations = {}
+        node.specifiers.forEach(specifier => {
+          importDeclarations[specifier.imported.name] = specifier.local.name
+        })
+
+        localTransComponentName = importDeclarations['Trans']
+      },
+
+      // Extract translation from <Trans /> component.
       JSXElement (path, { file }) {
         const { node } = path
-        if (!isTransComponent(node)) return
+        if (!localTransComponentName || !isTransComponent(node)) return
 
         const attrs = node.openingElement.attributes || []
 
@@ -71,6 +92,7 @@ export default function ({ types: t }) {
         collectMessage(path, file, props)
       },
 
+      // Extract translation from i18n._ call
       CallExpression (path, { file }) {
         const { node } = path
         const visited = file.get(VISITED)
@@ -100,6 +122,8 @@ export default function ({ types: t }) {
     },
 
     pre (file) {
+      localTransComponentName = null
+
       // Ignore else path for now. Collision is possible if other plugin is
       // using the same Symbol('I18nMessages').
       // istanbul ignore else

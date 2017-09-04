@@ -3,29 +3,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import type { I18n } from 'lingui-i18n'
 
-type WithI18nOptions = {
+type withI18nOptions = {
   update?: boolean,
   withRef?: boolean
 }
 
-type WithI18nProps = {
+type withI18nProps = {
   i18n: I18n
 }
 
-export default (options: WithI18nOptions = {}) => function<P, C: React$Component<any, P, any>> (WrappedComponent: Class<C>): Class<React.Component<any, $Diff<P, WithI18nProps>, any>> {
+const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Component<any, P>> (WrappedComponent: Class<C>): Class<React.Component<any, $Diff<P, withI18nProps>>> {
   if (process.env.NODE_ENV !== 'production') {
     if (typeof options === 'function' || React.isValidElement(options)) {
       console.warn(
-        'WithI18n([options]) takes options as a first argument, ' +
+        'withI18n([options]) takes options as a first argument, ' +
         'but received React component itself. Without options, the Component ' +
-        'should be wrapped as WithI18n()(Component), not WithI18n(Component).'
+        'should be wrapped as withI18n()(Component), not withI18n(Component).'
       )
     }
   }
 
   const { update = true, withRef = false } = options
 
-  class WithI18n extends React.Component<*, *, *> {
+  class withI18n extends React.Component<*, *> {
     static contextTypes = {
       linguiPublisher: PropTypes.object
     }
@@ -74,7 +74,26 @@ export default (options: WithI18nOptions = {}) => function<P, C: React$Component
 
   // return needs to be here, otherwise flow complains about {...this.props}
   // in WrappedComponent
-  return WithI18n
+  return withI18n
 }
 
-export type { WithI18nProps }
+// Deprecated, remove in 2.x
+let deprecationWithI18nOnce = false
+
+const WithI18n = (options: withI18nOptions = {}) => {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!deprecationWithI18nOnce) {
+      deprecationWithI18nOnce = true
+      console.warn(
+        'WithI18n is deprecated and will be removed in lingui-react@2.x, ' +
+        'use withI18n instead (lower-cased first letter).')
+    }
+  }
+
+  return withI18n(options)
+}
+
+export default withI18n
+export { WithI18n }
+
+export type { withI18nProps }

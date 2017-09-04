@@ -13,6 +13,13 @@ babel-runtime@^6.23.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
+babel-runtime@^6.26.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.11.0"
+
 core-js@^1.0.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
@@ -58,16 +65,16 @@ js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-lingui-formats@^1.0.0-3:
-  version "1.0.0-3"
-  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.0-3.tgz#8fae2430fe74ebd11053962a6d8fd86d914dba08"
+lingui-formats@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.1.tgz#7afa3dc83d18609ac563ee1b626c9f39d3f2877c"
 
-lingui-i18n@^1.0.0-3:
-  version "1.0.0-3"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.0.0-3.tgz#10039819285fedb0e656b22eb92e8b9692914bde"
+lingui-i18n@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.2.1.tgz#f821baff18703f273ebbe582a9ad3d0c97a5da9a"
   dependencies:
     babel-runtime "^6.23.0"
-    lingui-formats "^1.0.0-3"
+    lingui-formats "^1.0.1"
     make-plural "^4.0.1"
     messageformat-parser "^1.0.0"
 
@@ -118,6 +125,10 @@ prop-types@^15.5.10:
 regenerator-runtime@^0.10.0:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
+
+regenerator-runtime@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.0.tgz#7e54fe5b5ccd5d6624ea6255c3473be090b802e1"
 
 setimmediate@^1.0.5:
   version "1.0.5"
