@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/lingui/js-lingui/compare/lingui-cli@1.2.1...lingui-cli@1.2.2) (2017-09-04)
+
+
+### Bug Fixes
+
+* Add format option to all cli commands ([0391aac](https://github.com/lingui/js-lingui/commit/0391aac))
+
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/lingui/js-lingui/compare/lingui-cli@1.2.0...lingui-cli@1.2.1) (2017-08-28)
 

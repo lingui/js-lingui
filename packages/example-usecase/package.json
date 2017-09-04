@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.0.5",
+  "version": "1.0.6",
   "name": "example-usecase",
   "description": "Example usecase of all features",
   "main": "index.js",
@@ -16,8 +16,8 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "lingui-cli": "^1.2.1",
-    "lingui-react": "^1.1.0",
+    "lingui-cli": "^1.2.2",
+    "lingui-react": "^1.1.1",
     "react": "^15.6.1"
   },
   "devDependencies": {
