@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-  <a name="1.0.7"></a>
+      <a name="1.1.0"></a>
+# [1.1.0](https://github.com/lingui/js-lingui/compare/example-usecase@1.0.8...example-usecase@1.1.0) (2017-09-05)
+
+
+### Features
+
+* Add i18nMark to example usecase ([c853234](https://github.com/lingui/js-lingui/commit/c853234))
+
+
+
+
+      <a name="1.0.7"></a>
 ## [1.0.7](https://github.com/lingui/js-lingui/compare/example-usecase@1.0.6...example-usecase@1.0.7) (2017-09-05)
 
 
@@ -11,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package example-usecase
 
-  <a name="1.0.6"></a>
+<a name="1.0.6"></a>
 ## [1.0.6](https://github.com/lingui/js-lingui/compare/example-usecase@1.0.5...example-usecase@1.0.6) (2017-09-04)
 
 
