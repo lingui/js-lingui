@@ -5,3 +5,4 @@ i18n.t`
   
   and replace them with one space.
 `;
+i18n._(message);

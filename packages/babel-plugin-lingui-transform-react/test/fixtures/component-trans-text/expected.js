@@ -4,3 +4,4 @@ import { Trans } from 'lingui-react';
 <Trans id="Hello World" />;
 <Trans id="Hello World" />;
 <Trans id="msg.hello" defaults="Hello World" />;
+<Trans id={msg} />;
