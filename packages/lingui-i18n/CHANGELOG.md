@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/lingui/js-lingui/compare/lingui-i18n@1.2.4...lingui-i18n@1.3.0) (2017-09-05)
+
+
+### Features
+
+* Add i18nMark identity to mark messages for extraction ([3be2178](https://github.com/lingui/js-lingui/commit/3be2178))
+
+
+
+
 <a name="1.2.4"></a>
 ## [1.2.4](https://github.com/lingui/js-lingui/compare/lingui-i18n@1.2.3...lingui-i18n@1.2.4) (2017-09-05)
 

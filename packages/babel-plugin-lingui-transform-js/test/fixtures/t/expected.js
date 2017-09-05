@@ -5,3 +5,4 @@ i18n._("My name is {name}", {
   }
 });
 i18n._("Remove any newlines... and replace them with one space.");
+i18n._(message);

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.0.6...babel-plugin-lingui-extract-messages@1.1.0) (2017-09-05)
+
+
+### Bug Fixes
+
+* Don't raise warnings about translations from variables ([05596ff](https://github.com/lingui/js-lingui/commit/05596ff))
+* Use Array.includes instead of polyfill ([0aa585c](https://github.com/lingui/js-lingui/commit/0aa585c))
+
+
+### Features
+
+* Extract message from i18n_mark identity ([93af236](https://github.com/lingui/js-lingui/commit/93af236))
+
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.0.6-0...babel-plugin-lingui-extract-messages@1.0.6) (2017-08-28)
 

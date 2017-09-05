@@ -1,10 +1,37 @@
 {
+  "English": {
+    "translation": "Anglicky",
+    "origin": [
+      [
+        "src/App.js",
+        11
+      ]
+    ]
+  },
+  "Czech": {
+    "translation": "Česky",
+    "origin": [
+      [
+        "src/App.js",
+        12
+      ]
+    ]
+  },
+  "French": {
+    "translation": "Francouzsky",
+    "origin": [
+      [
+        "src/App.js",
+        13
+      ]
+    ]
+  },
   "Translation of children": {
     "translation": "",
     "origin": [
       [
         "src/App.js",
-        62
+        64
       ]
     ]
   },
@@ -13,7 +40,7 @@
     "origin": [
       [
         "src/App.js",
-        65
+        67
       ]
     ]
   },
@@ -22,7 +49,7 @@
     "origin": [
       [
         "src/App.js",
-        68
+        70
       ]
     ]
   },
@@ -31,7 +58,7 @@
     "origin": [
       [
         "src/App.js",
-        71
+        73
       ]
     ]
   },
@@ -40,7 +67,7 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        27
+        29
       ]
     ]
   },
@@ -49,7 +76,7 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        31
+        33
       ]
     ]
   },
@@ -58,7 +85,7 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        35
+        37
       ]
     ]
   },
@@ -67,15 +94,15 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        39
+        41
       ],
       [
         "src/Usecases/Children.js",
-        87
+        89
       ],
       [
         "src/Usecases/Children.js",
-        88
+        90
       ]
     ]
   },
@@ -84,7 +111,7 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        43
+        45
       ]
     ]
   },
@@ -93,7 +120,7 @@
     "origin": [
       [
         "src/Usecases/Children.js",
-        49
+        51
       ]
     ]
   },
@@ -118,18 +145,6 @@
   "Full content of {articleName}": {
     "translation": "Celé znění článku {articleName}",
     "origin": [
-      [
-        "src/Usecases/ElementAttributes.js",
-        23
-      ],
-      [
-        "src/Usecases/ElementAttributes.js",
-        23
-      ],
-      [
-        "src/Usecases/ElementAttributes.js",
-        23
-      ],
       [
         "src/Usecases/ElementAttributes.js",
         23

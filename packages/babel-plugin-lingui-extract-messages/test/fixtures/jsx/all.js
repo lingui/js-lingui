@@ -11,4 +11,5 @@ i18n._("{count, plural, one {# book} other {# books}}", {
   values: {
     count: count
   }
-})
+});
+<Trans id={message} />;

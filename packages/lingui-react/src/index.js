@@ -14,3 +14,5 @@ export { Plural, Select, SelectOrdinal } from './Select'
 
 export const DateFormat = withI18n()(createFormat(date))
 export const NumberFormat = withI18n()(createFormat(number))
+
+export const i18nMark = (id: string) => id

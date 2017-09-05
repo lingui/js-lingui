@@ -96,6 +96,14 @@ describe('Trans component', function () {
     )
   })
 
+  it('should render translation from variable', function () {
+    const msg = 'All human beings are born free and equal in dignity and rights.'
+    const translation = text(<Trans id={msg} />)
+    expect(translation).toEqual(
+      'Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.'
+    )
+  })
+
   it('should render translation inside custom component', function () {
     const html1 = mount(
       <Trans render={<p className="lead"/>} id="Original"/>, { context }

@@ -9,3 +9,4 @@ i18n._("{count, plural, one {# book} other {# books}}", {
     count: count
   }
 })
+i18n._(message)

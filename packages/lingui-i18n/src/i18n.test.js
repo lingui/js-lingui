@@ -189,6 +189,20 @@ describe('I18n', function () {
     })).toEqual('Missing Fred')
   })
 
+  it('._ should translate message from variable', function () {
+    const messages = {
+      'Hello': 'Salut'
+    }
+
+    const i18n = setupI18n({
+      language: 'fr',
+      catalogs: { fr: { messages } },
+      development: linguiDev
+    })
+    const hello = 'Hello'
+    expect(i18n._(hello)).toEqual('Salut')
+  })
+
   it('._ shouldn\'t compile messages in production', function () {
     const messages = {
       'Hello': 'Salut',

@@ -3,6 +3,8 @@
 - Providers
   - [I18nProvider](#i18nprovider)
   - [withI18n](#withi18n)
+- Helpers
+  - [i18nMark](#i18nMark)
   
 || Example MessageFormat
 ---        | --
@@ -392,3 +394,30 @@ const LogoutIcon = withI18n()(
 
 Previous version of this component, named `WithI18n` (upper-cased first letter),
 is deprecated and will be removed in lingui-react@2.x
+
+### i18nMark
+
+`i18nMark(source: string)`
+
+Mark text for translation, but don't translate it immediatelly. In development, the `i18nMark` function is identity, returning the source string. Such string is extracted to message catalog, so it can be referred in `<Trans>` dynamically:
+
+```jsx
+const message = i18nMark('Source string')
+
+<Trans id={message} />
+// is the same as
+<Trans id="Source string" />
+```
+
+This is useful for defining translations outside components:
+
+```jsx
+const languages = {
+  en: i18nMark('English'),
+  fr: i18nMark('French')
+}
+
+Object.keys(languages).map(language =>
+  <Trans key={language} id={languages[language]} />
+)
+```
