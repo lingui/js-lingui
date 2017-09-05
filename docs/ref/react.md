@@ -4,7 +4,7 @@
   - [I18nProvider](#i18nprovider)
   - [withI18n](#withi18n)
 - Helpers
-  - [i18nMark](#i18nMark)
+  - [i18nMark](#i18nmark)
   
 || Example MessageFormat
 ---        | --
