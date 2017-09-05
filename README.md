@@ -27,6 +27,8 @@ and React.
 
 ## Key features
 
+[![Join the chat at https://gitter.im/lingui/js-lingui](https://badges.gitter.im/lingui/js-lingui.svg)](https://gitter.im/lingui/js-lingui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 - Small and fast - about **6kb gzipped**
 - Babel plugin for convenient, **type-checked** way of writing ICU MessageFormat (recommended, but not required)
 - **CLI** for extracting and compiling message catalogs
