@@ -1,11 +1,12 @@
 import getConfig, { replaceRootDir } from './index'
 
 describe('lingui-conf', function () {
-  it('should return default confing', function () {
+  it('should return default config', function () {
     const config = getConfig()
     expect(config).toBeInstanceOf(Object)
     expect(config.localeDir).toBeDefined()
-    expect(config.fallbackLanguage).toBeDefined()
+    expect(config.sourceLocale).toBeDefined()
+    expect(config.fallbackLocale).toBeDefined()
     expect(config.srcPathDirs).toBeDefined()
     expect(config.srcPathIgnorePatterns).toBeDefined()
   })
