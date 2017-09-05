@@ -1,11 +1,17 @@
 import React from 'react'
 
 import { unpackCatalog } from 'lingui-i18n'
-import { I18nProvider, Trans } from 'lingui-react'
+import { I18nProvider, Trans, i18nMark } from 'lingui-react'
 import NeverUpdate from './Usecases/NeverUpdate'
 import Children from './Usecases/Children'
 import ElementAttributes from './Usecases/ElementAttributes'
 import Formats from './Usecases/Formats'
+
+const languages = {
+  en: i18nMark('English'),
+  cs: i18nMark('Czech'),
+  fr: i18nMark('French')
+}
 
 class App extends React.Component {
   state = {
@@ -46,13 +52,15 @@ class App extends React.Component {
 
     return (
       <div>
-        <ul>
-          <li><a onClick={() => this.setState({language: 'en'})}>English</a></li>
-          <li><a onClick={() => this.setState({language: 'fr'})}>French</a></li>
-          <li><a onClick={() => this.setState({language: 'cs'})}>Czech</a></li>
-        </ul>
-
         <I18nProvider language={language} catalogs={catalogs} languageData={languageData}>
+          <ul>
+            {Object.keys(languages).map(language =>
+              <li key={language}>
+                <a onClick={() => this.setState({language})}><Trans id={languages[language]} /></a>
+              </li>
+            )}
+          </ul>
+
           <h2><Trans>Translation of children</Trans></h2>
           <Children />
 
