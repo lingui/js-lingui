@@ -101,7 +101,8 @@ Default config:
 ```json
 {
   "lingui": {
-    "fallbackLanguage": "",
+    "fallbackLocale": "",
+    "sourceLocale": "",
     "localeDir": "<rootDir>/locale",
     "srcPathDirs": [
         "<rootDir>"
@@ -114,12 +115,23 @@ Default config:
 }
 ```
 
-### fallbackLanguage [string]
+### fallbackLocale [string]
 
-`fallbackLangauge` is used when translation for given language is missing.
+`fallbackLocale` is used when translation for given locale is missing.
 
-If `fallbackLanguage` isn't defined or translation in `fallbackLanguage` is 
-missing too, message ID is used instead.
+If `fallbackLocale` isn't defined or translation in `fallbackLocale` is 
+missing too, either message defaults or message ID is used instead.
+
+### sourceLocale [string]
+
+Locale of message IDs, which is used in source files.
+Catalog for `sourceLocale` don't require translated messages, because message 
+IDs are used by default. However, it's still possible to override message ID by 
+providing custom translation.
+
+The difference between `fallbackLocale` and `sourceLocale` is, that for
+`fallbackLocale` is used translation, while for `sourceLocale` is used message
+ID.
 
 ### localeDir [string]
 
@@ -169,7 +181,7 @@ Simple source - translation mapping:
 
 ```json
 {
-   "MessageId": "Translated Message"
+   "MessageID": "Translated Message"
 }
 ```
 
