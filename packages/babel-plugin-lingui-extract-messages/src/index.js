@@ -96,8 +96,12 @@ export default function ({ types: t }) {
         }, {})
 
         if (!props.id) {
-          console.warn('Missing message ID, skipping.')
-          console.warn(generate(node).code)
+          // <Trans id={message} /> is valid, don't raise warning
+          const idProp = attrs.filter(item => item.name.name === 'id')[0]
+          if (idProp === undefined || t.isLiteral(props.id)) {
+            console.warn('Missing message ID, skipping.')
+            console.warn(generate(node).code)
+          }
           return
         }
 
@@ -129,10 +133,15 @@ export default function ({ types: t }) {
           ? node.arguments[1].properties
           : []
 
-        const id = node.arguments[0] && node.arguments[0].value
+        const idArg = node.arguments[0]
+        const id = idArg && idArg.value
         if (!id) {
-          console.warn('Missing message ID, skipping.')
-          console.warn(generate(node).code)
+          // i18n._(message) is valid, don't raise warning
+          if (idArg === undefined || t.isLiteral(idArg)) {
+            console.warn('Missing message ID, skipping.')
+            console.warn(generate(node).code)
+          }
+
           return
         }
 
