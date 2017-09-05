@@ -6,6 +6,7 @@ Seamless internationalization in Javascript and React
 
 <hr />
 
+[![Join the chat at https://gitter.im/lingui/js-lingui](https://badges.gitter.im/lingui/js-lingui.svg)](https://gitter.im/lingui/js-lingui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![CircleCI][Badge-CI]][CI] 
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
