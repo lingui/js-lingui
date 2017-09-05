@@ -61,7 +61,7 @@ export default function ({ types: t }) {
       ImportDeclaration (path) {
         const { node } = path
 
-        if (!['lingui-react', 'lingui-i18n'].includes(node.source.value)) return
+        if (!Array.includes(['lingui-react', 'lingui-i18n'], node.source.value)) return
 
         const importDeclarations = {}
         if (node.source.value === 'lingui-react') {
