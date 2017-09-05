@@ -88,6 +88,16 @@ describe('babel-plugin-lingui-extract-messages', function () {
     expect(fs.existsSync(path.join(buildDir, 'jsx/without-lingui.json'))).toBeFalsy()
   })
 
+  testCase('should extract noop strings', (transform) => {
+    const result = transform('noop/actual.js')()
+
+    const expected = fs.readFileSync(path.join(__dirname, 'fixtures/noop/expected.js'))
+    expect(result.code.trim()).toEqual(expected.toString().trim())
+
+    const messages = JSON.parse(fs.readFileSync(path.join(buildDir, 'noop/actual.json')))
+    expect(messages).toMatchSnapshot()
+  })
+
   testCase('should extract all messages from JSX files', (transform) => {
     // first run should create all required folders and write messages
     expect(transform('jsx/all.js')).not.toThrow()

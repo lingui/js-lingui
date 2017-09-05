@@ -37,6 +37,7 @@ export default function ({ types: t }) {
     })
   }
 
+  const isNoopMethod = node => t.isIdentifier(node, { name: 'i18nMark' })
   const isI18nMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: 'i18n' }) &&
@@ -60,14 +61,25 @@ export default function ({ types: t }) {
       ImportDeclaration (path) {
         const { node } = path
 
-        if (node.source.value !== 'lingui-react') return
+        if (!['lingui-react', 'lingui-i18n'].includes(node.source.value)) return
 
         const importDeclarations = {}
-        node.specifiers.forEach(specifier => {
-          importDeclarations[specifier.imported.name] = specifier.local.name
-        })
+        if (node.source.value === 'lingui-react') {
+          node.specifiers.forEach(specifier => {
+            importDeclarations[specifier.imported.name] = specifier.local.name
+          })
 
-        localTransComponentName = importDeclarations['Trans']
+          localTransComponentName = importDeclarations['Trans']
+        }
+
+        // Remove imports of i18nMark identity
+        node.specifiers = node.specifiers.filter(specifier =>
+          specifier.imported.name !== 'i18nMark'
+        )
+
+        if (!node.specifiers.length) {
+          path.remove()
+        }
       },
 
       // Extract translation from <Trans /> component.
@@ -97,8 +109,21 @@ export default function ({ types: t }) {
         const { node } = path
         const visited = file.get(VISITED)
 
-        if (!isI18nMethod(node.callee) || visited.has(node.callee)) return
+        if (
+          // we already visited this node
+          visited.has(node.callee) ||
+          // nothing to extract
+          (!isI18nMethod(node.callee) && !isNoopMethod(node.callee))
+        ) {
+          return
+        }
+
         visited.add(node.callee)
+
+        if (isNoopMethod(node.callee) && !t.isStringLiteral(node.arguments[0])) {
+          console.warn('Only string literals are allowed in i18nMark.')
+          return
+        }
 
         const attrs = node.arguments[1] && node.arguments[1].properties
           ? node.arguments[1].properties
@@ -118,6 +143,11 @@ export default function ({ types: t }) {
         }, { id })
 
         collectMessage(path, file, props)
+
+        if (isNoopMethod(node.callee)) {
+          const translation = node.arguments[0]
+          path.replaceWith(t.stringLiteral(translation.value))
+        }
       }
     },
 
