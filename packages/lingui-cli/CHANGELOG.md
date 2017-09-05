@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/lingui/js-lingui/compare/lingui-cli@1.2.2...lingui-cli@1.3.0) (2017-09-05)
+
+
+### Features
+
+* Use sourceLocale for extracting/compiling ([aab85d0](https://github.com/lingui/js-lingui/commit/aab85d0))
+
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/lingui/js-lingui/compare/lingui-cli@1.2.1...lingui-cli@1.2.2) (2017-09-04)
 
