@@ -5,10 +5,10 @@ type IntlType = {|
   NumberFormat: Function
 |};
 
-const globalIntl: IntlType = typeof window === 'object' ? window.Intl : Intl
+declare var Intl: IntlType
 
 function number (language: string, format?: NumberFormat = {}): (value: number) => string {
-  const formatter = new globalIntl.NumberFormat(language, format)
+  const formatter = new Intl.NumberFormat(language, format)
   return value => formatter.format(value)
 }
 

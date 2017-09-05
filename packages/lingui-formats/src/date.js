@@ -4,10 +4,11 @@ type DateFormat = string | {}
 type IntlType = {|
   DateTimeFormat: Function
 |};
-const globalIntl: IntlType = typeof window === 'object' ? window.Intl : Intl
+
+declare var Intl: IntlType
 
 function date (language: string, format?: DateFormat = {}): (value: string) => string {
-  const formatter = new globalIntl.DateTimeFormat(language, format)
+  const formatter = new Intl.DateTimeFormat(language, format)
   return value => formatter.format(value)
 }
 
