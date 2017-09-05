@@ -46,12 +46,13 @@ function command (config, format, options) {
     const messages = R.mergeAll(
       Object.keys(catalogs[locale]).map(key => ({
         [key]: format.getTranslation(catalogs, locale, key, {
-          fallbackLanguage: config.fallbackLanguage
+          fallbackLocale: config.fallbackLocale,
+          sourceLocale: config.sourceLocale
         })
       }))
     )
 
-    if (!options.allowEmpty) {
+    if (!options.allowEmpty && config.sourceLocale !== locale) {
       const missing = R.keys(messages).filter(
         key => messages[key] === undefined
       )
@@ -74,7 +75,7 @@ function command (config, format, options) {
       const translation = messages[key]
       return t.objectProperty(
         t.stringLiteral(key),
-        translation ? compile(translation) : t.stringLiteral('')
+        compile(translation || key)
       )
     })
 
@@ -138,7 +139,7 @@ if (require.main === module) {
 
   const results = command(config, format, {
     verbose: program.verbose || false,
-    allowEmpty: program.strict !== true
+    allowEmpty: !program.strict
   })
 
   if (!results || results.some(res => !res)) {

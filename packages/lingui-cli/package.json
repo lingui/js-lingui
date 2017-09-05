@@ -49,5 +49,9 @@
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
-  }
+  },
+  "lingui": {
+    "fallbackLocale": "cs",
+    "sourceLocale": "en"
+  }  
 }

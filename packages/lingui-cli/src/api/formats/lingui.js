@@ -90,16 +90,26 @@ export default (config: LinguiConfig): CatalogFormat => ({
     )
   },
 
-  getTranslation (catalogs, locale, key, options) {
-    const getOrDefault = ({ translation, defaults }) => translation || defaults
-    const translation = getOrDefault(catalogs[locale][key])
+  getTranslation (catalogs, locale, key, { fallbackLocale, sourceLocale }) {
+    const getTranslation = locale => catalogs[locale][key].translation
 
-    const fallbackLanguage = options.fallbackLanguage
-    if (!translation && fallbackLanguage) {
-      return getOrDefault(catalogs[fallbackLanguage][key])
-    }
+    return (
+      // Get translation in target locale
+      getTranslation(locale) ||
 
-    return translation
+      // Get translation in fallbackLocale (if any)
+      (fallbackLocale && getTranslation(fallbackLocale)) ||
+
+      // Get message default
+      catalogs[locale][key].defaults ||
+
+      // If sourceLocale is either target locale of fallback one, use key
+      (sourceLocale && sourceLocale === locale && key) ||
+      (sourceLocale && fallbackLocale && sourceLocale === fallbackLocale && key) ||
+
+      // Otherwise no translation is available
+      undefined
+    )
   },
 
   writeCompiled (locale, content) {

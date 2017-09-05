@@ -82,22 +82,22 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-lingui-extract-messages@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.0.5.tgz#5b4e03e837c2cf0f7c852a06756fd9ab328a2214"
+babel-plugin-lingui-extract-messages@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.0.6.tgz#87862562ec02a549eb821d0399b5dde95b12f894"
   dependencies:
-    babel-runtime "^6.23.0"
+    babel-runtime "^6.26.0"
     lingui-conf "^0.8.1"
 
-babel-plugin-lingui-transform-js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.1.tgz#8e7deeff77ecd7b6ba2548e5c4f5f5cb6ea01462"
+babel-plugin-lingui-transform-js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.2.tgz#bb46f53bb30e1bdd482db58c7c010e21e3cb459a"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.4.tgz#dd27275abf56ecb00b022c2a513c4950c2fa15ea"
+babel-plugin-lingui-transform-react@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.0.5.tgz#1f4867d376c3e507a69db739c29a5810c8ce0029"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -376,6 +376,10 @@ jest-matcher-utils@^20.0.3:
     chalk "^1.1.3"
     pretty-format "^20.0.3"
 
+jest-regex-util@^20.0.3:
+  version "20.0.3"
+  resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-20.0.3.tgz#85bbab5d133e44625b19faf8c6aa5122d085d762"
+
 jest-validate@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-20.0.3.tgz#d0cfd1de4f579f298484925c280f8f1d94ec3cab"
@@ -405,6 +409,14 @@ lingui-conf@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.8.1.tgz#c13d99f48af642347869e08951a29aebc210a850"
   dependencies:
+    jest-validate "^20.0.3"
+    pkg-conf "^2.0.0"
+
+lingui-conf@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.9.1.tgz#55b09636585330516a5625e63dd7c98e5c3d0096"
+  dependencies:
+    jest-regex-util "^20.0.3"
     jest-validate "^20.0.3"
     pkg-conf "^2.0.0"
 

@@ -2,6 +2,8 @@
 
 export type LinguiConfig = {|
   localeDir: string,
+  sourceLocale: string,
+  fallbackLocale: string,
   srcPathDirs: Array<string>,
   srcPathIgnorePatterns: Array<string>
 |}
@@ -23,7 +25,8 @@ export type AllCatalogsType = {
 }
 
 export type getTranslationOptions = {|
-  fallbackLanguage: string
+  fallbackLocale: string,
+  sourceLocale: string
 |}
 
 export type CatalogFormat = {

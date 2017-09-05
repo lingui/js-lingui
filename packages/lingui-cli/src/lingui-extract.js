@@ -62,7 +62,7 @@ export default function command (
   console.log('Messages extracted!\n')
 
   console.log('Catalog statistics:')
-  printStats(catalogs)
+  printStats(config, catalogs)
   console.log()
 
   console.log(`(use "${chalk.yellow('lingui add-locale <language>')}" to add more locales)`)
