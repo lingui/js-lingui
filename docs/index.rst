@@ -38,6 +38,12 @@ Key features
    CLI <ref/lingui-cli>
    Configuration <ref/lingui-conf>
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Releases
+
+   Migration from 0.x to 1.x <releases/migration-1>
+
 
 Indices
 -------
