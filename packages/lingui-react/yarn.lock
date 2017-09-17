@@ -6,13 +6,6 @@ asap@~2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.5.tgz#522765b50c3510490e52d7dcfe085ef9ba96958f"
 
-babel-runtime@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
-  dependencies:
-    core-js "^2.4.0"
-    regenerator-runtime "^0.10.0"
-
 babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
@@ -65,18 +58,18 @@ js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-lingui-formats@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.1.tgz#7afa3dc83d18609ac563ee1b626c9f39d3f2877c"
+lingui-formats@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.3.tgz#a81f69d7cef73ee86938c2dfa4979512dcded6cd"
 
-lingui-i18n@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.2.1.tgz#f821baff18703f273ebbe582a9ad3d0c97a5da9a"
+lingui-i18n@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.3.0.tgz#1b4102058d3ab86e58d74d0dddec76f8e36c0076"
   dependencies:
-    babel-runtime "^6.23.0"
-    lingui-formats "^1.0.1"
+    babel-runtime "^6.26.0"
+    lingui-formats "^1.0.3"
     make-plural "^4.0.1"
-    messageformat-parser "^1.0.0"
+    messageformat-parser "^1.1.0"
 
 loose-envify@^1.0.0, loose-envify@^1.3.1:
   version "1.3.1"
@@ -90,9 +83,9 @@ make-plural@^4.0.1:
   optionalDependencies:
     minimist "^1.2.0"
 
-messageformat-parser@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/messageformat-parser/-/messageformat-parser-1.0.0.tgz#3dea21419f141c50026a29d4b2239203ad613d3f"
+messageformat-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/messageformat-parser/-/messageformat-parser-1.1.0.tgz#13ba2250a76bbde8e0fca0dbb3475f95c594a90a"
 
 minimist@^1.2.0:
   version "1.2.0"
@@ -121,10 +114,6 @@ prop-types@^15.5.10:
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
-
-regenerator-runtime@^0.10.0:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
 regenerator-runtime@^0.11.0:
   version "0.11.0"
