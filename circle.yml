@@ -6,9 +6,6 @@ workflows:
     jobs:
       - test-linter
 
-      - test-node4:
-          requires:
-            - test-linter
       - test-node6:
           requires:
             - test-linter
@@ -18,14 +15,13 @@ workflows:
 
       - build-docs:
           requires:
-            - test-node4
             - test-node6
             - test-node8
 
 jobs:
-  test-node4: &test-template
+  test-node8: &test-template
     docker:
-      - image: circleci/node:4
+      - image: circleci/node:8
 
     steps:
       - checkout
@@ -35,7 +31,7 @@ jobs:
           command: sudo yarn global add codecov
 
       - restore_cache:
-          keys: node-modules-{{ checksum "yarn.lock" }}
+          key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
@@ -67,12 +63,6 @@ jobs:
     docker:
       - image: circleci/node:6
 
-  test-node8:
-    <<: *test-template
-
-    docker:
-      - image: circleci/node:8
-
   test-linter:
     docker:
       - image: circleci/node:latest
@@ -101,8 +91,6 @@ jobs:
       - run: yarn run lint
 
   build-docs:
-    working_directory: ./docs-ng
-
     docker:
       - image: circleci/python:latest
 
@@ -111,17 +99,17 @@ jobs:
 
       - restore_cache:
           keys:
-            - pipenv-{{ checksum "Pipfile" }}
+            - pipenv-{{ checksum "Pipfile.lock" }}
             - pipenv
 
       - run: pipenv install
 
       - save_cache:
-          key: pipenv-{{ checksum "Pipfile" }}
+          key: pipenv-{{ checksum "Pipfile.lock" }}
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: make html
+      - run: cd docs-ng && make html
 
       - deploy:
           command: |
