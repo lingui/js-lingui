@@ -116,5 +116,5 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo "Deploying docs"
+              ./scripts/deploy-docs.sh
             fi
