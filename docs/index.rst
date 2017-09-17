@@ -29,6 +29,7 @@ Key features
    :caption: Guides
 
    How plurals work <guides/plurals>
+   Dynamic loading of translations <guides/dynamic-loading-catalogs.rst>
 
 .. toctree::
    :maxdepth: 1
