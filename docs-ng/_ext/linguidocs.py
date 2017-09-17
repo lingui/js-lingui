@@ -1,7 +1,6 @@
 from docutils import nodes
 from sphinx.locale import l_
 from sphinx.util.docfields import TypedField
-from pygmentslexerbabylon import BabylonLexer
 
 
 class react_component(nodes.Inline, nodes.TextElement):
@@ -17,7 +16,6 @@ def depart_react_component_html(self, node):
 
 
 def setup(app):
-    app.add_lexer("jsx", BabylonLexer())
     app.add_object_type(
         directivename='component',
         rolename='component',

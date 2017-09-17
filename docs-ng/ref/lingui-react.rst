@@ -35,7 +35,7 @@ Prop name | Type | Description
 
 When `render` is **React.Element** or **string** (built-in tags), it is cloned with `translation` as children:
 
-.. code-block:: jsx
+.. code-block:: js
 
    // built-in tags
    <Trans render="h1">Heading</Trans>;
@@ -47,7 +47,7 @@ When `render` is **React.Element** or **string** (built-in tags), it is cloned w
 
 Using React.Component (or stateless component) in `render` prop is useful to get more control over the rendering of translation. Component passed to `render` receive translation/value in `translation` prop.
 
-.. code-block:: jsx
+.. code-block:: js
 
    // custom component
    <Trans render={
@@ -74,7 +74,7 @@ Each message is identified by **message ID**.
 contents of :component:`Trans` component, but it's possible to provide custom
 message ID by setting `id` prop.
 
-.. code-block:: jsx
+.. code-block:: js
 
    <Trans>Hello World</Trans>;
 
@@ -91,7 +91,7 @@ message ID by setting `id` prop.
 It's also possible to use :component:`Trans` component without babel plugin. In
 fact, it's the only i18n component you'll need if you decide to go without babel plugin.
 
-.. code-block:: jsx
+.. code-block:: js
 
    <Trans id="Hello World" />;
 
@@ -137,7 +137,7 @@ See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplement
 If such plural form isn't defined, the ``other`` form is used. ``#`` character
 inside message is used as a placeholder for ``value``:
 
-.. code-block:: jsx
+.. code-block:: js
 
    const count = 42;
    // renders as '42 books'
@@ -149,7 +149,7 @@ inside message is used as a placeholder for ``value``:
 
 It's also possible to use exact matches. This is common used in combination with `offset` prop. `offset` doesn't affect `value` for exact matches, only plural forms:
 
-.. code-block:: jsx
+.. code-block:: js
 
    const count = 42;
    <Plural
@@ -178,7 +178,7 @@ It's also possible to use exact matches. This is common used in combination with
 This component selects appropriate form based on content of `value`. It
 behaves like an `switch` statement. `other` prop is used when no prop matches `value`:
 
-.. code-block:: jsx
+.. code-block:: js
 
    // gender = "female"      -> `Her book`
    // gender = "male"        -> `His book`
@@ -211,7 +211,7 @@ See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplement
 
 This component is equivalent to [Plural](#plural). The only difference is that it uses **ordinal** plural forms, instead of **cardinal** ones.
 
-.. code-block:: jsx
+.. code-block:: js
 
    <SelectOrdinal
        value={count}
@@ -230,7 +230,7 @@ This component is equivalent to [Plural](#plural). The only difference is that i
 
 This component is a wrapper around [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
 
-.. code-block:: jsx
+.. code-block:: js
 
    const now = new Date();
    // default language format
@@ -253,7 +253,7 @@ This component is a wrapper around [Intl.DateTimeFormat](https://developer.mozil
 
 This component is a wrapper around [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat).
 
-.. code-block:: jsx
+.. code-block:: js
 
    const num = 0.42;
    // default language format
@@ -286,7 +286,7 @@ and shadows all implementation details:
 
 `catalogs` is a type of `Catalogs`:
 
-.. code-block:: jsx
+.. code-block:: js
 
    // One catalog per language
    type Catalogs = {
@@ -332,7 +332,7 @@ This component should live above all i18n components. The good place is top-leve
 wrapped component. ``i18n`` object is needed when you have to access plain JS
 API for translation of JSX props:
 
-.. code-block:: jsx
+.. code-block:: js
 
    import React from 'react';
    import { Trans, withI18n } from 'lingui-react';
@@ -355,7 +355,7 @@ Mark string as translated text, but don't translate it immediatelly.
 This string is extracted to message catalog and can be used in
 :component:`Trans` component:
 
-.. code-block:: jsx
+.. code-block:: js
 
    const message = i18nMark('Source text');
    <Trans id={message} />;

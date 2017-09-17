@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "181b879fb30a9d34723a4da56b80052a7c9c4158f4e108e469fcf583e545552d"
+            "sha256": "20389f193354c240c7d7983abf4173d56920ec2ae2e446561c6df631653b7463"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -97,12 +97,6 @@
                 "sha256:dbae1046def0efb574852fab9e90209b23f556367b5a320c0bcb871c77c3e8cc"
             ],
             "version": "==2.2.0"
-        },
-        "pygments-lexer-babylon": {
-            "hashes": [
-                "sha256:f967745af9ce8f14ef50bfdb5060f9a5c32e327105a9161e7dbb50e1bc396eaa"
-            ],
-            "version": "==0.12.0"
         },
         "pytz": {
             "hashes": [
