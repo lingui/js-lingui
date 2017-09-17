@@ -93,14 +93,16 @@ jobs:
   build-docs:
     docker:
       - image: circleci/python:latest
+        environment:
+          PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
     steps:
+      - checkout
+
       - run: sudo pip install pipenv
 
       - restore_cache:
-          keys:
-            - pipenv-{{ checksum "Pipfile.lock" }}
-            - pipenv
+          key: pipenv-{{ checksum "Pipfile.lock" }}
 
       - run: pipenv install
 
@@ -109,7 +111,7 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: cd docs-ng && make html
+      - run: pipenv shell "cd docs-ng && make html"
 
       - deploy:
           command: |
