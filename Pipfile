@@ -6,8 +6,9 @@ verify_ssl = true
 
 [packages]
 
-Sphinx = "*"
-sphinx_rtd_theme = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+jsx-lexer = "*"
 
 
 [requires]

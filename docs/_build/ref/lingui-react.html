@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference - React (lingui-react) &mdash; jsLingui  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="jsLingui  documentation" href="../index.html"/>
+        <link rel="next" title="API Reference - CLI (lingui-cli)" href="lingui-cli.html"/>
+        <link rel="prev" title="jsLingui - Seamless i18n in Javascript and React" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> jsLingui
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">React</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-concepts">General concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#translation-s-rendering">Translation’s rendering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#global-configuration">Global configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#local-configuration">Local configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#providers">Providers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lingui-cli.html">CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lingui-conf.html">Configuration</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">jsLingui</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>API Reference - React (lingui-react)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ref/lingui-react.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference-react-lingui-react">
+<h1>API Reference - React (lingui-react)<a class="headerlink" href="#api-reference-react-lingui-react" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-concepts">
+<h2>General concepts<a class="headerlink" href="#general-concepts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="translation-s-rendering">
+<h3>Translation’s rendering<a class="headerlink" href="#translation-s-rendering" title="Permalink to this headline">¶</a></h3>
+<p>All i18n components render translation inside <cite>&lt;span&gt;</cite> tag. This tag can be
+customized using in two ways: globally using <cite>defaultRender</cite> prop on [I18nProvider](#i18nprovider)
+component or locally using <cite>render</cite> prop on i18n components. Each component
+also support <cite>className</cite> as a shortcut for the most basic usecases.</p>
+<div class="section" id="global-configuration">
+<h4>Global configuration<a class="headerlink" href="#global-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Default rendering component can be set using <cite>defaultRender</cite> prop in [I18nProvider](#i18nprovider)
+The main usecase is rendering translations in <cite>Text</cite> component in React Native.</p>
+<p>It’s possible to pass either string for built-in elements (<cite>span</cite>, <cite>h1</cite>),
+React elements or React classes. This props has the type as <cite>render</cite> prop on
+i18n components described below.</p>
+</div>
+<div class="section" id="local-configuration">
+<h4>Local configuration<a class="headerlink" href="#local-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Prop name | Type | Description
+— | — | — |
+<cite>className</cite> | string | Class name to be added to <cite>&lt;span&gt;</cite> element
+<cite>render</cite> | React.Element, React.Class string | Custom wrapper element to render translation</p>
+<p><cite>className</cite> is ignored, when <cite>render</cite> is set.</p>
+<p>When <cite>render</cite> is <strong>React.Element</strong> or <strong>string</strong> (built-in tags), it is cloned with <cite>translation</cite> as children:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="c1">// built-in tags</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">render</span><span class="o">=</span><span class="s">&quot;h1&quot;</span><span class="p">&gt;</span>Heading<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+<span class="c1">// renders as &lt;h1&gt;Heading&lt;/h1&gt;</span>
+
+<span class="c1">// custom elements</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">render</span><span class="o">=</span><span class="p">{&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&quot;/docs&quot;</span> <span class="p">/&gt;}&gt;</span>Link to docs<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+<span class="c1">// renders as &lt;Link to=&quot;/docs&quot;&gt;Link to docs&lt;/Link&gt;</span>
+</pre></div>
+</div>
+<p>Using React.Component (or stateless component) in <cite>render</cite> prop is useful to get more control over the rendering of translation. Component passed to <cite>render</cite> receive translation/value in <cite>translation</cite> prop.</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="c1">// custom component</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">render</span><span class="o">=</span><span class="p">{</span>
+  <span class="p">({</span> <span class="nx">translation</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">Icon</span> <span class="na">label</span><span class="o">=</span><span class="p">{</span><span class="nx">translation</span><span class="p">}</span> <span class="p">/&gt;</span>
+<span class="p">}&gt;</span>
+    Sign in
+<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+
+<span class="c1">// renders as &lt;Icon label=&quot;Sign in&quot; /&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<dl class="component">
+<dt id="component-Trans">
+<code class="descname">Trans</code><a class="headerlink" href="#component-Trans" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Props:</th><td class="field-body"><ul class="first last simple">
+<li><strong>string?</strong> (<em>id</em>) – Message ID (optional)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>This is the main and most used component for translation. It supports
+variables and components inside messages. Usage of this components depends on
+whether you’re using jsLingui babel plugins or not.</p>
+<p>Each message is identified by <strong>message ID</strong>.
+<code class="docutils literal"><span class="pre">babel-plugin-lingui-transform-react</span></code> automatically generates message ID from
+contents of <a class="reference internal" href="#component-Trans">&lt;Trans&gt;</a> component, but it’s possible to provide custom
+message ID by setting <cite>id</cite> prop.</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">Trans</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+
+<span class="c1">// custom message ID</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;msg.hello&quot;</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+
+<span class="c1">// variable interpolation</span>
+<span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;Fred&quot;</span><span class="p">;</span>
+<span class="p">&lt;</span><span class="nt">Trans</span><span class="p">&gt;</span>My name is <span class="p">{</span><span class="nx">name</span><span class="p">}&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+
+ <span class="c1">// inline components</span>
+ <span class="p">&lt;</span><span class="nt">Trans</span><span class="p">&gt;</span>See the <span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&quot;/more&quot;</span><span class="p">&gt;</span>description<span class="p">&lt;/</span><span class="nt">Link</span><span class="p">&gt;</span> below.<span class="p">&lt;/</span><span class="nt">Trans</span><span class="p">&gt;;</span>
+</pre></div>
+</div>
+<p>It’s also possible to use <a class="reference internal" href="#component-Trans">&lt;Trans&gt;</a> component without babel plugin. In
+fact, it’s the only i18n component you’ll need if you decide to go without babel plugin.</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;Hello World&quot;</span> <span class="p">/&gt;;</span>
+
+<span class="p">&lt;</span><span class="nt">Trans</span>
+  <span class="na">id</span><span class="o">=</span><span class="s">&quot;Hello {name}&quot;</span>
+  <span class="na">values</span><span class="o">=</span><span class="p">{{</span> <span class="nx">name</span><span class="p">:</span> <span class="s">&#39;Arthur&#39;</span> <span class="p">}}</span>
+<span class="p">/&gt;;</span>
+
+<span class="c1">// number of tag corresponds to index in `components` prop</span>
+<span class="p">&lt;</span><span class="nt">Trans</span>
+  <span class="na">id</span><span class="o">=</span><span class="s">&quot;Read &lt;0&gt;Description&lt;/0&gt; below.&quot;</span>
+  <span class="na">components</span><span class="o">=</span><span class="p">{[&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&quot;/docs&quot;</span> <span class="p">/&gt;]}</span>
+<span class="p">/&gt;;</span>
+
+<span class="p">&lt;</span><span class="nt">Trans</span>
+  <span class="na">id</span><span class="o">=</span><span class="s">&quot;Today is {today, date, short_date}&quot;</span>
+  <span class="na">values</span><span class="o">=</span><span class="p">{{</span> <span class="nx">today</span><span class="p">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span> <span class="p">}}</span>
+  <span class="na">formats</span><span class="o">=</span><span class="p">{{</span>
+    <span class="nx">short_date</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nx">year</span><span class="p">:</span> <span class="s">&quot;numberic&quot;</span><span class="p">,</span>
+      <span class="nx">month</span><span class="p">:</span> <span class="s">&quot;long&quot;</span><span class="p">,</span>
+      <span class="nx">day</span><span class="p">:</span> <span class="s">&quot;numeric&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}}</span>
+<span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<dl class="component">
+<dt id="component-Plural">
+<code class="descname">Plural</code><a class="headerlink" href="#component-Plural" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><p class="first">{value, plural, one {Book} many {Books}}</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Props:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>string</em>) – Override auto-generated message ID</li>
+<li><strong>offset</strong> (<em>number</em>) – Offsets plural forms but doesn’t affect exact matches</li>
+<li><strong>zero</strong> (<em>string</em>) – Form for empty <cite>value</cite></li>
+<li><strong>one</strong> (<em>string</em>) – <em>Singular</em> form</li>
+<li><strong>two</strong> (<em>string</em>) – <em>Dual</em> form</li>
+<li><strong>few</strong> (<em>string</em>) – <em>Paucal</em> form</li>
+<li><strong>many</strong> (<em>string</em>) – <em>Plural</em> form</li>
+<li><strong>other</strong> (<em>string</em>) – (required) general <em>plural</em> form</li>
+<li><strong>_&lt;number&gt;</strong> (<em>string</em>) – Exact match form, correspond to <code class="docutils literal"><span class="pre">=N</span></code> rule</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>See [Language Plural Rules](<a class="reference external" href="http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html">http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html</a>) overview.</p>
+<p><cite>value</cite> prop is mapped to specific plural form based on active language.
+If such plural form isn’t defined, the <code class="docutils literal"><span class="pre">other</span></code> form is used. <code class="docutils literal"><span class="pre">#</span></code> character
+inside message is used as a placeholder for <code class="docutils literal"><span class="pre">value</span></code>:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="m">42</span><span class="p">;</span>
+<span class="c1">// renders as &#39;42 books&#39;</span>
+<span class="p">&lt;</span><span class="nt">Plural</span>
+    <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">count</span><span class="p">}</span>
+    <span class="na">one</span><span class="o">=</span><span class="s">&quot;# book&quot;</span>
+    <span class="na">other</span><span class="o">=</span><span class="s">&quot;# books&quot;</span>
+<span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<p>It’s also possible to use exact matches. This is common used in combination with <cite>offset</cite> prop. <cite>offset</cite> doesn’t affect <cite>value</cite> for exact matches, only plural forms:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="m">42</span><span class="p">;</span>
+<span class="p">&lt;</span><span class="nt">Plural</span>
+    <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">count</span><span class="p">}</span>
+    <span class="na">offset</span><span class="o">=</span><span class="p">{</span><span class="m">1</span><span class="p">}</span>
+    <span class="c1">// when value = 0</span>
+    <span class="na">_0</span><span class="o">=</span><span class="s">&quot;Nobody arrived&quot;</span>
+
+    <span class="c1">// when value = 1</span>
+    <span class="na">_1</span><span class="o">=</span><span class="s">&quot;Only you arrived&quot;</span>
+
+    <span class="c1">// when value = 2</span>
+    <span class="c1">// value - offset = 1 -&gt; `one` plural form</span>
+    <span class="na">one</span><span class="o">=</span><span class="s">&quot;You and # other guest&quot;</span>
+
+    <span class="c1">// when value &gt;= 3</span>
+    <span class="na">other</span><span class="o">=</span><span class="s">&quot;You and # other guests&quot;</span>
+<span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<p>This component selects appropriate form based on content of <cite>value</cite>. It
+behaves like an <cite>switch</cite> statement. <cite>other</cite> prop is used when no prop matches <cite>value</cite>:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="c1">// gender = &quot;female&quot;      -&gt; `Her book`</span>
+<span class="c1">// gender = &quot;male&quot;        -&gt; `His book`</span>
+<span class="c1">// gender = &quot;unspecified&quot; -&gt; `Their book`</span>
+<span class="p">&lt;</span><span class="nt">Select</span>
+    <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">gender</span><span class="p">}</span>
+    <span class="na">male</span><span class="o">=</span><span class="s">&quot;His book&quot;</span>
+    <span class="na">female</span><span class="o">=</span><span class="s">&quot;Her book&quot;</span>
+    <span class="na">other</span><span class="o">=</span><span class="s">&quot;Their books&quot;</span>
+<span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<dl class="component">
+<dt id="component-SelectOrdinal">
+<code class="descname">SelectOrdinal</code><a class="headerlink" href="#component-SelectOrdinal" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><p class="first">{value, plural, one {Book} many {Books}}</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Props:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<em>number</em>) – Override auto-generated message ID</li>
+<li><strong>offset</strong> (<em>number</em>) – Offsets plural forms but doesn’t affect exact matches</li>
+<li><strong>zero</strong> (<em>string</em>) – Form for empty <cite>value</cite></li>
+<li><strong>one</strong> (<em>string</em>) – <em>Singular</em> form</li>
+<li><strong>two</strong> (<em>string</em>) – <em>Dual</em> form</li>
+<li><strong>few</strong> (<em>string</em>) – <em>Paucal</em> form</li>
+<li><strong>many</strong> (<em>string</em>) – <em>Plural</em> form</li>
+<li><strong>other</strong> (<em>string</em>) – (required) general <em>plural</em> form</li>
+<li><strong>_&lt;number&gt;</strong> (<em>string</em>) – Exact match form, correspond to <code class="docutils literal"><span class="pre">=N</span></code> rule. (e.g: <code class="docutils literal"><span class="pre">_0</span></code>, <code class="docutils literal"><span class="pre">_1</span></code>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>MessageFormat: <code class="docutils literal"><span class="pre">{arg,</span> <span class="pre">selectordinal,</span> <span class="pre">...forms}</span></code></p>
+</dd></dl>
+
+<p>See [Language Plural Rules](<a class="reference external" href="http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html">http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html</a>) overview.</p>
+<p>This component is equivalent to [Plural](#plural). The only difference is that it uses <strong>ordinal</strong> plural forms, instead of <strong>cardinal</strong> ones.</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">SelectOrdinal</span>
+    <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">count</span><span class="p">}</span>
+    <span class="na">one</span><span class="o">=</span><span class="s">&quot;#st&quot;</span>
+    <span class="na">two</span><span class="o">=</span><span class="s">&quot;#nd&quot;</span>
+    <span class="na">few</span><span class="o">=</span><span class="s">&quot;#rd&quot;</span>
+    <span class="na">other</span><span class="o">=</span><span class="s">&quot;#th&quot;</span>
+<span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<dl class="component">
+<dt id="component-DateFormat">
+<code class="descname">DateFormat</code><a class="headerlink" href="#component-DateFormat" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Props value number:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first">Date to be formatted</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Props:</th><td class="field-body"><ul class="first last simple">
+<li><strong>string|Object</strong> (<em>format</em>) – Date format passed as options to [Intl.DateTimeFormat](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat</a>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>MessageFormat: <cite>{arg, date, format}</cite></p>
+</dd></dl>
+
+<p>This component is a wrapper around [Intl.DateTimeFormat](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat</a>).</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="c1">// default language format</span>
+<span class="p">&lt;</span><span class="nt">DateFormat</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">now</span><span class="p">}</span> <span class="p">/&gt;;</span>
+
+<span class="kd">const</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="c1">// custom format</span>
+<span class="p">&lt;</span><span class="nt">DateFormat</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">now</span><span class="p">}</span> <span class="na">format</span><span class="o">=</span><span class="p">{{</span>
+    <span class="nx">year</span><span class="p">:</span> <span class="s">&quot;numberic&quot;</span><span class="p">,</span>
+    <span class="nx">month</span><span class="p">:</span> <span class="s">&quot;long&quot;</span><span class="p">,</span>
+    <span class="nx">day</span><span class="p">:</span> <span class="s">&quot;numeric&quot;</span>
+<span class="p">}}</span> <span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<dl class="component">
+<dt id="component-NumberFormat">
+<code class="descname">NumberFormat</code><a class="headerlink" href="#component-NumberFormat" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">props value number:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">Date to be formatted</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">prop format string|Object:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">Date format passed as options to [Intl.NumberFormat](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat</a>)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>MessageFormat: <cite>{arg, number, format}</cite></p>
+</dd></dl>
+
+<p>This component is a wrapper around [Intl.NumberFormat](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat</a>).</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="m">0.42</span><span class="p">;</span>
+<span class="c1">// default language format</span>
+<span class="p">&lt;</span><span class="nt">NumberFormat</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">num</span><span class="p">}</span> <span class="p">/&gt;;</span>
+
+<span class="kd">const</span> <span class="nx">amount</span> <span class="o">=</span> <span class="m">3.14</span><span class="p">;</span>
+<span class="c1">// custom format</span>
+<span class="p">&lt;</span><span class="nt">NumberFormat</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">amount</span><span class="p">}</span> <span class="na">format</span><span class="o">=</span><span class="p">{{</span>
+    <span class="nx">style</span><span class="p">:</span> <span class="s">&quot;currency&quot;</span><span class="p">,</span>
+    <span class="nx">currency</span><span class="p">:</span> <span class="s">&#39;EUR&#39;</span><span class="p">,</span>
+    <span class="nx">minimumFractionDigits</span><span class="p">:</span> <span class="m">2</span>
+<span class="p">}}</span> <span class="p">/&gt;;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="providers">
+<h2>Providers<a class="headerlink" href="#providers" title="Permalink to this headline">¶</a></h2>
+<p>Message catalogs and active language are passed to the context in
+[I18nProvider](#i18nprovider). However, context should never be accessed
+directly. [withI18n](#withi18n) hoc passes i18n prop to wrapped component
+and shadows all implementation details:</p>
+<dl class="component">
+<dt id="component-I18nProvider">
+<code class="descname">I18nProvider</code><a class="headerlink" href="#component-I18nProvider" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Props:</th><td class="field-body"><ul class="first last simple">
+<li><strong>string</strong> (<em>language</em>) – Active language</li>
+<li><strong>object</strong> (<em>catalogs</em>) – Message catalogs</li>
+<li><strong>React.Element|React.Class|string</strong> (<em>defaultRender</em>) – Default element to render translation</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p><cite>defaultRender</cite> has the same meaning as <cite>render</cite> in other i18n props.
+[Rendering](#localconfiguration) is explained at the beginning of this document.</p>
+<p><cite>catalogs</cite> is a type of <cite>Catalogs</cite>:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="c1">// One catalog per language</span>
+<span class="nx">type</span> <span class="nx">Catalogs</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">language</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">Catalog</span>
+<span class="p">}</span>
+
+<span class="c1">// Catalog contains messages and language data (i.e: plurals)</span>
+<span class="nx">type</span> <span class="nx">Catalog</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">messages</span><span class="p">:</span> <span class="nx">Messages</span><span class="p">,</span>
+  <span class="nx">languageData</span><span class="p">?:</span> <span class="p">{</span>
+    <span class="nx">plurals</span><span class="p">:</span> <span class="nb">Function</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Message is either function (compiled message) or string</span>
+<span class="nx">type</span> <span class="nx">Messages</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">messageId</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">string</span> <span class="o">|</span> <span class="nb">Function</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This component should live above all i18n components. The good place is top-level application component. However, if the <cite>language</cite> is stored in the <cite>redux</cite> store, this component should be inserted below <cite>react-redux/Provider</cite>.</p>
+<dl class="function">
+<dt id="withI18n">
+<code class="descname">withI18n</code><span class="sig-paren">(</span><em>options?</em><span class="sig-paren">)</span><a class="headerlink" href="#withI18n" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Object</strong> (<em>options</em>) – Configuration for high-order component</li>
+<li><strong>bool</strong> (<em>withRef</em>) – Returns reference to wrapped instance in <cite>getWrappedInstance</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p><a class="reference internal" href="#withI18n" title="withI18n"><code class="xref js js-func docutils literal"><span class="pre">withI18n()</span></code></a> is high-order component which injects <code class="docutils literal"><span class="pre">i18n</span></code> object to
+wrapped component. <code class="docutils literal"><span class="pre">i18n</span></code> object is needed when you have to access plain JS
+API for translation of JSX props:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s">&#39;react&#39;</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Trans</span><span class="p">,</span> <span class="nx">withI18n</span> <span class="p">}</span> <span class="nx">from</span> <span class="s">&#39;lingui-react&#39;</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">LogoutIcon</span> <span class="o">=</span> <span class="nx">withI18n</span><span class="p">()(</span>
+    <span class="p">({</span> <span class="nx">i18n</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">Icon</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;turn-off&quot;</span> <span class="na">aria-label</span><span class="o">=</span><span class="p">{</span><span class="nx">i18n</span><span class="p">.</span><span class="nx">t</span><span class="sb">`</span><span class="s">Log out</span><span class="sb">`</span><span class="p">}/&gt;</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><em>Changed in lingui-react&#64;1.1.0:</em></p>
+<p class="last">Previous version of this component, named <cite>WithI18n</cite> (upper-cased first letter),
+is deprecated and will be removed in <code class="docutils literal"><span class="pre">lingui-react&#64;2.0</span></code></p>
+</div>
+<dl class="function">
+<dt id="i18nMark">
+<code class="descname">i18nMark</code><span class="sig-paren">(</span><em>msgId: string</em><span class="sig-paren">)</span><a class="headerlink" href="#i18nMark" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Mark string as translated text, but don’t translate it immediatelly.
+This string is extracted to message catalog and can be used in
+<a class="reference internal" href="#component-Trans">&lt;Trans&gt;</a> component:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">i18nMark</span><span class="p">(</span><span class="s">&#39;Source text&#39;</span><span class="p">);</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">id</span><span class="o">=</span><span class="p">{</span><span class="nx">message</span><span class="p">}</span> <span class="p">/&gt;;</span>
+
+<span class="c1">// This is the same as:</span>
+<span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;Source text&quot;</span> <span class="p">/&gt;;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#i18nMark" title="i18nMark"><code class="xref js js-func docutils literal"><span class="pre">i18nMark()</span></code></a> is useful for definition of translations outside
+components:</p>
+<div class="highlight-jsx"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">languages</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">en</span><span class="p">:</span> <span class="nx">i18nMark</span><span class="p">(</span><span class="s">&#39;English&#39;</span><span class="p">),</span>
+  <span class="nx">fr</span><span class="p">:</span> <span class="nx">i18nMark</span><span class="p">(</span><span class="s">&#39;French&#39;</span><span class="p">)</span>
+<span class="p">};</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">languages</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">language</span> <span class="o">=&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Trans</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">language</span><span class="p">}</span> <span class="na">id</span><span class="o">=</span><span class="p">{</span><span class="nx">languages</span><span class="p">[</span><span class="nx">language</span><span class="p">]}</span> <span class="p">/&gt;</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In development, <a class="reference internal" href="#i18nMark" title="i18nMark"><code class="xref js js-func docutils literal"><span class="pre">i18nMark()</span></code></a> is identity function, returning <code class="docutils literal"><span class="pre">msgId</span></code>.</p>
+<p class="last">In production, <a class="reference internal" href="#i18nMark" title="i18nMark"><code class="xref js js-func docutils literal"><span class="pre">i18nMark()</span></code></a> call is replaced with <code class="docutils literal"><span class="pre">msgId</span></code> string.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lingui-cli.html" class="btn btn-neutral float-right" title="API Reference - CLI (lingui-cli)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="jsLingui - Seamless i18n in Javascript and React" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Tomáš Ehrlich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

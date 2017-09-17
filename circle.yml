@@ -111,7 +111,7 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: pipenv shell "cd docs-ng; make html; exit"
+      - run: pipenv shell "cd docs; make html; exit"
 
       - deploy:
           command: |

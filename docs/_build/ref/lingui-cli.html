@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference - CLI (lingui-cli) &mdash; jsLingui  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="jsLingui  documentation" href="../index.html"/>
+        <link rel="next" title="Lingui Configuration" href="lingui-conf.html"/>
+        <link rel="prev" title="API Reference - React (lingui-react)" href="lingui-react.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> jsLingui
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API References</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="lingui-react.html">React</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id5">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">}</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lingui-conf.html">Configuration</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">jsLingui</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>API Reference - CLI (lingui-cli)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ref/lingui-cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference-cli-lingui-cli">
+<h1>API Reference - CLI (lingui-cli)<a class="headerlink" href="#api-reference-cli-lingui-cli" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">lingui-cli</span></code> manages locales, extracts messages from source files into
+message catalogs and compiles message catalogs for production use.</p>
+<p>## Install</p>
+<p><cite>lingui-cli</cite> can be installed both globally and locally:</p>
+<p><code class="docutils literal"><span class="pre">`sh</span>
+<span class="pre">yarn</span> <span class="pre">global</span> <span class="pre">add</span> <span class="pre">lingui-cli</span>
+<span class="pre">#</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--global</span> <span class="pre">lingui-cli</span>
+<span class="pre">`</span></code></p>
+<p>or locally:</p>
+<p><code class="docutils literal"><span class="pre">`sh</span>
+<span class="pre">yarn</span> <span class="pre">add</span> <span class="pre">--dev</span> <span class="pre">lingui-cli</span>
+<span class="pre">#</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">--save-dev</span> <span class="pre">lingui-cli</span>
+<span class="pre">`</span></code></p>
+<p><strong>Note:</strong> When installed locally, you need either run it from
+<cite>node_modules/.bin/lingui</cite> or add it to your <cite>package.json</cite>:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>json
+{</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>“scripts”: {</dt>
+<dd>“add-locale”: “lingui add-locale”,
+“extract”: “lingui extract”,
+“compile”: “lingui compile”</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<div class="section" id="id5">
+<h2>}<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>Then you can use:</p>
+<p><code class="docutils literal"><span class="pre">`bash</span>
+<span class="pre">npm</span> <span class="pre">run</span> <span class="pre">add-locale</span> <span class="pre">--</span> <span class="pre">en</span> <span class="pre">cs</span>
+<span class="pre">npm</span> <span class="pre">run</span> <span class="pre">extract</span>
+<span class="pre">npm</span> <span class="pre">run</span> <span class="pre">compile</span>
+<span class="pre">`</span></code></p>
+<p>## Commands</p>
+<dl class="option">
+<dt id="cmdoption-lingui-add-locale-arg-locale">
+<code class="descname">locale</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-lingui-add-locale-arg-locale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-lingui-add-locale-format">
+<code class="descname">--format</code><code class="descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-lingui-add-locale-format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Format of message catalog (see [format][format] option)</p>
+<p><code class="docutils literal"><span class="pre">`bash</span>
+<span class="pre">lingui</span> <span class="pre">add-locale</span> <span class="pre">[locales...]</span> <span class="pre">[--format</span> <span class="pre">&lt;format&gt;]</span>
+<span class="pre">#</span> <span class="pre">e.g:</span> <span class="pre">lingui</span> <span class="pre">add-locale</span> <span class="pre">en</span> <span class="pre">fr</span> <span class="pre">es</span>
+<span class="pre">`</span></code></p>
+<p>This command creates a new directory for each locale in [localeDir][localeDir]</p>
+<p>### extract</p>
+<p><code class="docutils literal"><span class="pre">`bash</span>
+<span class="pre">lingui</span> <span class="pre">extract</span> <span class="pre">[--clean]</span> <span class="pre">[--format</span> <span class="pre">&lt;format&gt;]</span> <span class="pre">[--verbose]</span>
+<span class="pre">`</span></code></p>
+<p>This command extract messages from source files and creates message catalog for each language in following steps:</p>
+<ol class="arabic simple">
+<li>Extract messages from all <cite>*.jsx?</cite> files inside [srcPathDirs][srcPathDirs]</li>
+<li>Merge them with existing catalogs in [localeDir][localeDir] (if any)</li>
+<li>Write updated message catalogs to [localeDir][localeDir]</li>
+</ol>
+<p><cite>–clean</cite> - Remove obsolete messages from catalogs. Message becomes obsolete
+when it’s no longer in source code.
+<cite>–format</cite> - Format of message catalogs (see [format][format] option)
+<cite>–verbose</cite> - Prints additional information</p>
+<p>### compile</p>
+<p><code class="docutils literal"><span class="pre">`bash</span>
+<span class="pre">lingui</span> <span class="pre">compile</span> <span class="pre">[--strict]</span> <span class="pre">[--format</span> <span class="pre">&lt;format&gt;]</span> <span class="pre">[--verbose]</span>
+<span class="pre">`</span></code></p>
+<p>This command compiles message catalogs in [localeDir][localeDir] and writes
+minified Javascript files. Each message is replace with function call,
+which returns translated message.</p>
+<p>Also language data (plurals) are written to message catalog as well.</p>
+<p><cite>–strict</cite> - Fail when some catalog has missing translations.
+<cite>–format</cite> - Format of message catalogs (see [format][format] option)
+<cite>–verbose</cite> - Prints additional information</p>
+<p>## Configuration</p>
+<p>Configuration is read from <cite>lingui</cite> section in <cite>package.json</cite>.</p>
+<p>Default config:</p>
+<p><a href="#id6"><span class="problematic" id="id7">``</span></a><a href="#id8"><span class="problematic" id="id9">`</span></a>json
+{</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>“lingui”: {</dt>
+<dd><p class="first">“fallbackLocale”: “”,
+“sourceLocale”: “”,
+“localeDir”: “&lt;rootDir&gt;/locale”,
+“srcPathDirs”: [</p>
+<blockquote>
+<div>“&lt;rootDir&gt;”</div></blockquote>
+<p>],
+“srcPathIgnorePatterns”: [</p>
+<blockquote>
+<div>“/node_modules/”</div></blockquote>
+<p class="last">],
+“format”: “lingui”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</div>
+<div class="section" id="id10">
+<h2>}<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<p>### fallbackLocale [string]</p>
+<p><cite>fallbackLocale</cite> is used when translation for given locale is missing.</p>
+<p>If <cite>fallbackLocale</cite> isn’t defined or translation in <cite>fallbackLocale</cite> is
+missing too, either message defaults or message ID is used instead.</p>
+<p>### sourceLocale [string]</p>
+<p>Locale of message IDs, which is used in source files.
+Catalog for <cite>sourceLocale</cite> don’t require translated messages, because message
+IDs are used by default. However, it’s still possible to override message ID by
+providing custom translation.</p>
+<p>The difference between <cite>fallbackLocale</cite> and <cite>sourceLocale</cite> is, that for
+<cite>fallbackLocale</cite> is used translation, while for <cite>sourceLocale</cite> is used message
+ID.</p>
+<p>### localeDir [string]</p>
+<p>Default: <cite>&lt;rootDir&gt;/locale</cite></p>
+<p>Directory where message catalogs are stored.</p>
+<p>### srcPathDirs [Array]</p>
+<p>Default: <cite>[&lt;rootDir&gt;]</cite></p>
+<p>List of directories with source files from which messages are extracted. Ignored
+directories are defined in [srcPathIgnorePatters][srcPathIgnorePatters].</p>
+<p>### srcPathIgnorePatterns [Array]</p>
+<p>Default: <cite>[“/node_modules/”]</cite></p>
+<p>Ignored directories when looking for source files to extract messages.</p>
+<p>### format [string]</p>
+<p>Default: <cite>lingui</cite></p>
+<p>Format of message catalogs. Possible values are:</p>
+<p>#### <cite>lingui</cite></p>
+<p>Each message is object in following format. Origin is filename and line number
+from where the message was extracted:</p>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a>json
+{</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>“MessageID”: {</dt>
+<dd><p class="first">“translation”: “Translated Message”,
+“defaults”: “Default string (from source code)”,
+“origin”: [</p>
+<blockquote>
+<div>[“path/to/src.js”, 42]</div></blockquote>
+<p class="last">]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</div>
+<div class="section" id="id15">
+<h2>}<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<p>#### <cite>minimal</cite></p>
+<p>Simple source - translation mapping:</p>
+<p><a href="#id16"><span class="problematic" id="id17">``</span></a><a href="#id18"><span class="problematic" id="id19">`</span></a>json
+{</p>
+<blockquote>
+<div>“MessageID”: “Translated Message”</div></blockquote>
+</div>
+<div class="section" id="id20">
+<h2>}<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
+<p>[localeDir]: #localedir-string
+[srcPathDirs]: #srcpathdirs-array
+[srcPathIgnorePatters]: #srcpathignorepatterns-array
+[format]: #format-string</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lingui-conf.html" class="btn btn-neutral float-right" title="Lingui Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lingui-react.html" class="btn btn-neutral" title="API Reference - React (lingui-react)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Tomáš Ehrlich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
