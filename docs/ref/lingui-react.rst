@@ -2,25 +2,34 @@
 API Reference - React (lingui-react)
 ************************************
 
+Components from ``lingui-react`` wrap vanilla JS API from ``lingui-i18n``.
+React components handles changes of active language or interpolated variables
+better than low-level API and also take care of re-rendering when wrapped inside
+pure components.
+
 General concepts
 ================
 
-Translation's rendering
------------------------
+.. _rendering-translations:
 
-All i18n components render translation inside `<span>` tag. This tag can be
-customized using in two ways: globally using `defaultRender` prop on [I18nProvider](#i18nprovider)
-component or locally using `render` prop on i18n components. Each component
-also support `className` as a shortcut for the most basic usecases.
+Rendering of translations
+-------------------------
+
+All i18n components render translation inside ``<span>`` tag. This tag can be
+customized using in two ways: globally using ``defaultRender`` prop on
+:component:`I18nProvider` component or locally using ``render`` prop on i18n
+components. Each component also support ``className`` as a shortcut for the most
+basic usecases.
 
 Global configuration
 ^^^^^^^^^^^^^^^^^^^^
 
-Default rendering component can be set using `defaultRender` prop in [I18nProvider](#i18nprovider)
-The main usecase is rendering translations in `Text` component in React Native.
+Default rendering component can be set using ``defaultRender`` prop in
+:component:`I18nProvider`. The main usecase is rendering translations in
+``<Text>`` component in React Native.
 
 It's possible to pass either string for built-in elements (`span`, `h1`),
-React elements or React classes. This props has the type as `render` prop on
+React elements or React classes. This props has the same type as ``render`` prop on
 i18n components described below.
 
 Local configuration
@@ -33,7 +42,8 @@ Prop name | Type | Description
 
 `className` is ignored, when `render` is set.
 
-When `render` is **React.Element** or **string** (built-in tags), it is cloned with `translation` as children:
+When ``render`` is **React.Element** or **string** (built-in tags), it is
+cloned with ``translation`` as a children:
 
 .. code-block:: jsx
 
@@ -45,17 +55,16 @@ When `render` is **React.Element** or **string** (built-in tags), it is cloned w
    <Trans render={<Link to="/docs" />}>Link to docs</Trans>;
    // renders as <Link to="/docs">Link to docs</Link>
 
-Using React.Component (or stateless component) in `render` prop is useful to get more control over the rendering of translation. Component passed to `render` receive translation/value in `translation` prop.
+Using **React.Component** (or stateless component) in ``render`` prop is useful
+to get more control over the rendering of translation. Component passed to
+``render`` receive translation/value in ``translation`` prop:
 
 .. code-block:: jsx
 
    // custom component
-   <Trans render={
-     ({ translation }) => <Icon label={translation} />
-   }>
-       Sign in
+   <Trans render={({ translation }) => <Icon label={translation} />}>
+      Sign in
    </Trans>;
-
    // renders as <Icon label="Sign in" />
 
 Components
@@ -120,10 +129,9 @@ fact, it's the only i18n component you'll need if you decide to go without babel
 
 .. component:: Plural
 
-   :example: {value, plural, one {Book} many {Books}}
    :prop string id: Override auto-generated message ID
-   :prop number offset: Offsets plural forms but doesn't affect exact matches
-   :prop string zero: Form for empty `value`
+   :prop number offset: Offset of value for plural forms
+   :prop string zero: Form for empty ``value``
    :prop string one: *Singular* form
    :prop string two: *Dual* form
    :prop string few: *Paucal* form
@@ -131,11 +139,25 @@ fact, it's the only i18n component you'll need if you decide to go without babel
    :prop string other: (required) general *plural* form
    :prop string _<number>: Exact match form, correspond to ``=N`` rule
 
-See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) overview.
+:component:`Plural` component handles pluralization of words or phrases.
+Selected plural form depends on active language and ``value`` props.
 
-`value` prop is mapped to specific plural form based on active language.
-If such plural form isn't defined, the ``other`` form is used. ``#`` character
-inside message is used as a placeholder for ``value``:
+This component represents ``plural`` formatter in Message Format:
+
+.. code-block:: default
+
+   {count, plural, one {# book} other {# books}}
+
+Plural forms for all languages can be found at `CLDR Plural Rules <cldrPluralRules>`_
+page.
+
+.. warning::
+
+   Not all languages use ``zero`` plural form! English, for example, uses
+   ``other`` form when ``value == 0`` (e.g: 1 book, but 0 books).
+
+As a developer, you only need to know plural rules for the language
+used in source code. For example for English it's only ``one`` and ``other``:
 
 .. code-block:: jsx
 
@@ -147,7 +169,12 @@ inside message is used as a placeholder for ``value``:
        other="# books"
    />;
 
-It's also possible to use exact matches. This is common used in combination with `offset` prop. `offset` doesn't affect `value` for exact matches, only plural forms:
+``#`` character inside message is used as a placeholder for ``value``.
+
+``other`` plural form is also used, when specific plural form isn't defined.
+
+It's also possible to use exact matches. This is common used in combination with
+``offset`` prop. ``offset`` doesn't affect exact matches, only plural forms:
 
 .. code-block:: jsx
 
@@ -155,48 +182,45 @@ It's also possible to use exact matches. This is common used in combination with
    <Plural
        value={count}
        offset={1}
-       // when value = 0
+       // when value == 0
        _0="Nobody arrived"
 
-       // when value = 1
+       // when value == 1
        _1="Only you arrived"
 
-       // when value = 2
+       // when value == 2
        // value - offset = 1 -> `one` plural form
-       one="You and # other guest"
+       one="You and # other guest arrived"
 
        // when value >= 3
-       other="You and # other guests"
+       other="You and # other guests arrived"
    />;
 
-.. component: Select
+.. component:: Select
 
-   :example: {value, select, male {He} female {She} other {They}}
    :prop number value: Override auto-generated message ID
    :prop number other: (required) Default, catch-all form
 
-This component selects appropriate form based on content of `value`. It
-behaves like an `switch` statement. `other` prop is used when no prop matches `value`:
+This component selects form based on content of ``value`` prop. It
+works like an ``switch`` statement. ``other`` prop is used when no prop
+matches ``value``:
 
 .. code-block:: jsx
 
-   // gender = "female"      -> `Her book`
-   // gender = "male"        -> `His book`
-   // gender = "unspecified" -> `Their book`
+   // gender == "female"      -> Her book
+   // gender == "male"        -> His book
+   // gender == "unspecified" -> Their book
    <Select
        value={gender}
        male="His book"
        female="Her book"
-       other="Their books"
+       other="Their book"
    />;
-
 
 .. component:: SelectOrdinal
 
-   :example: {value, plural, one {Book} many {Books}}
-
    :prop number value: Override auto-generated message ID
-   :prop number offset: Offsets plural forms but doesn't affect exact matches
+   :prop number offset: Offset of value for plural forms
    :prop string zero: Form for empty `value`
    :prop string one: *Singular* form
    :prop string two: *Dual* form
@@ -207,12 +231,15 @@ behaves like an `switch` statement. `other` prop is used when no prop matches `v
 
    MessageFormat: ``{arg, selectordinal, ...forms}``
 
-See [Language Plural Rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) overview.
-
-This component is equivalent to [Plural](#plural). The only difference is that it uses **ordinal** plural forms, instead of **cardinal** ones.
+This component is equivalent to :component:`Plural`. The only difference is that
+it uses **ordinal** plural forms, instead of **cardinal** ones.
 
 .. code-block:: jsx
 
+   // count == 1 -> 1st
+   // count == 2 -> 2nd
+   // count == 3 -> 3rd
+   // count == 4 -> 4th
    <SelectOrdinal
        value={count}
        one="#st"
@@ -223,12 +250,12 @@ This component is equivalent to [Plural](#plural). The only difference is that i
 
 .. component:: DateFormat
 
-   :props value number: Date to be formatted
-   :prop format string|Object: Date format passed as options to [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat)
+   :prop number value: Date to be formatted
+   :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat <IntlDateTimeFormat>`_.
 
-   MessageFormat: `{arg, date, format}`
-
-This component is a wrapper around [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+:component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat <IntlDateTimeFormat>`_. It takes a date as a ``value`` prop and formats it
+using ``format`` options. ``format`` prop supports the same options as
+`Intl.DateTimeFormat <IntlDateTimeFormat>`_:
 
 .. code-block:: jsx
 
@@ -246,12 +273,13 @@ This component is a wrapper around [Intl.DateTimeFormat](https://developer.mozil
 
 .. component:: NumberFormat
 
-      :props value number: Date to be formatted
-      :prop format string|Object: Date format passed as options to [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
+   :prop number value: Date to be formatted
+   :prop string|Object format: Date format passed as options to `Intl.NumberFormat <IntlNumberFormat>`_
 
-   MessageFormat: `{arg, number, format}`
-
-This component is a wrapper around [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat).
+:component:`NumberFormat` component is a wrapper around
+`Intl.NumberFormat <IntlNumberFormat>`_. It takes a number as a ``value`` prop
+and formats it using ``format`` options. ``format`` prop supports the same
+options as `Intl.NumberFormat <IntlNumberFormat>`_:
 
 .. code-block:: jsx
 
@@ -262,7 +290,7 @@ This component is a wrapper around [Intl.NumberFormat](https://developer.mozilla
    const amount = 3.14;
    // custom format
    <NumberFormat value={amount} format={{
-       style: "currency",
+       style: 'currency',
        currency: 'EUR',
        minimumFractionDigits: 2
    }} />;
@@ -271,20 +299,21 @@ Providers
 =========
 
 Message catalogs and active language are passed to the context in
-[I18nProvider](#i18nprovider). However, context should never be accessed
-directly. [withI18n](#withi18n) hoc passes i18n prop to wrapped component
-and shadows all implementation details:
+:component:`I18nProvider`. However, context should never be accessed
+directly. :js:func:`withI18n` high-order component passes ``i18n`` prop
+down to wrapped component and shadows all implementation details.
 
 .. component:: I18nProvider
 
-   :prop language string: Active language
-   :prop catalogs object: Message catalogs
-   :prop defaultRender React.Element|React.Class|string: Default element to render translation
+   :prop string language: Active language
+   :prop object catalogs: Message catalogs
+   :prop React.Element|React.Class|string defaultRender: Default element to render translation
 
-`defaultRender` has the same meaning as `render` in other i18n props.
-[Rendering](#localconfiguration) is explained at the beginning of this document.
+``defaultRender`` has the same meaning as ``render`` in other i18n
+components. `Rendering of translations <rendering-translations>`_ is explained
+at the beginning of this document.
 
-`catalogs` is a type of `Catalogs`:
+``catalogs`` is a type of ``Catalogs``:
 
 .. code-block:: jsx
 
@@ -306,20 +335,22 @@ and shadows all implementation details:
      [messageId: string]: string | Function
    }
 
-This component should live above all i18n components. The good place is top-level application component. However, if the `language` is stored in the `redux` store, this component should be inserted below `react-redux/Provider`.
+This component should live above all i18n components. The good place is
+top-level application component. However, if the ``language`` is stored in the
+``redux`` store, this component should be inserted below ``react-redux/Provider``:
 
-.. code-block::
+.. code-block:: jsx
 
    import React from 'react';
    import { I18nProvider } from 'lingui-react';
 
    const App = ({ language} ) => {
-        const catalog = await import(`locales/${language}.js`);
+        const catalog = require(`locales/${language}.js`);
 
         return (
             <I18nProvider language={language} catalogs={{ [language]: catalog }}>
                // the rest of app
-            </I18nProvider>,
+            </I18nProvider>
         );
    }
 
@@ -382,3 +413,7 @@ components:
    In development, :js:func:`i18nMark` is identity function, returning ``msgId``.
 
    In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
+
+.. _IntlDateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+
+.. _IntlNumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
