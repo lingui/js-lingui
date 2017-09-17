@@ -1,4 +1,13 @@
+"""
+Lingui docs extensions
+
+Inspired by Django Docs
+https://github.com/django/django/blob/master/docs/_ext/djangodocs.py
+"""
+
 from docutils import nodes
+from sphinx import addnodes
+from sphinx.domains.std import Cmdoption
 from sphinx.locale import l_
 from sphinx.util.docfields import TypedField
 
@@ -13,6 +22,14 @@ def visit_react_component_html(self, node):
 
 def depart_react_component_html(self, node):
     self.body.append('&gt;')
+
+
+def parse_lingui_cli_node(env, sig, signode):
+    command = sig.split(' ')[0]
+    env.ref_context['std:program'] = command
+    title = "lingui-cli %s" % sig
+    signode += addnodes.desc_name(title, title)
+    return command
 
 
 def setup(app):
@@ -32,3 +49,11 @@ def setup(app):
     app.add_node(react_component,
                  html=(visit_react_component_html, depart_react_component_html))
     app.add_crossref_type('config', 'conf')
+
+    app.add_description_unit(
+        directivename="lingui-cli",
+        rolename="cli",
+        indextemplate="pair: %s; lingui-cli command",
+        parse_node=parse_lingui_cli_node,
+    )
+    app.add_directive('lingui-cli-option', Cmdoption)

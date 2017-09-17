@@ -6,188 +6,108 @@ API Reference - CLI (lingui-cli)
 message catalogs and compiles message catalogs for production use.
 
 
-## Install
+Install
+=======
 
-`lingui-cli` can be installed both globally and locally:
+``lingui-cli`` can be installed both globally and locally:
 
-```sh
-yarn global add lingui-cli
-# npm install --global lingui-cli
-```
+.. code-block:: shell
+
+   yarn global add lingui-cli
+   # npm install --global lingui-cli
 
 or locally:
 
-```sh
-yarn add --dev lingui-cli
-# npm install --save-dev lingui-cli
-```
+.. code-block:: shell
 
-**Note:** When installed locally, you need either run it from
-`node_modules/.bin/lingui` or add it to your `package.json`:
+   yarn add --dev lingui-cli
+   # npm install --save-dev lingui-cli
 
-```json
-{
-  "scripts": {
-    "add-locale": "lingui add-locale",
-    "extract": "lingui extract",
-    "compile": "lingui compile"
-  }
-}
-```
+.. note::
 
-Then you can use:
+   When installed locally, you need either run it from
+   ``node_modules/.bin/lingui`` or add it to your ``package.json``:
 
-```bash
-npm run add-locale -- en cs
-npm run extract
-npm run compile
-```
+   .. code-block:: json
 
-## Commands
+      {
+        "scripts": {
+          "add-locale": "lingui add-locale",
+          "extract": "lingui extract",
+          "compile": "lingui compile"
+        }
+      }
 
-.. program:: lingui add-locale
+   Then you can use:
 
-.. option:: locale
+   .. code-block:: shell
 
-.. option:: --format <format>
+      npm run add-locale -- en cs
+      npm run extract
+      npm run compile
 
-Format of message catalog (see [format][format] option)
+Commands
+========
 
-```bash
-lingui add-locale [locales...] [--format <format>]
-# e.g: lingui add-locale en fr es
-```
+``add-locale``
+--------------
 
-This command creates a new directory for each locale in [localeDir][localeDir]
+.. lingui-cli:: add-locale [locales...] [--format <format>]
 
+This command creates a new directory for each locale in :conf:`localeDir`.
 
-### extract
+.. code-block:: shell
 
-```bash
-lingui extract [--clean] [--format <format>] [--verbose]
-```
+   # Add English, French and Spanish locale
+   lingui add-locale en fr es
+
+.. lingui-cli-option:: --format <format>
+
+Format of message catalog (see :conf:`format` option)
+
+``extract``
+-----------
+
+.. lingui-cli:: extract [--clean] [--format <format>] [--verbose]
 
 This command extract messages from source files and creates message catalog for each language in following steps:
 
-1. Extract messages from all `*.jsx?` files inside [srcPathDirs][srcPathDirs]
-2. Merge them with existing catalogs in [localeDir][localeDir] (if any)
-3. Write updated message catalogs to [localeDir][localeDir]
+1. Extract messages from all ``*.jsx?`` files inside :conf:`srcPathDirs`
+2. Merge them with existing catalogs in :conf:`localeDir` (if any)
+3. Write updated message catalogs to :conf:`localeDir`
 
-`--clean` - Remove obsolete messages from catalogs. Message becomes obsolete
+.. lingui-cli-option:: --clean
+
+Remove obsolete messages from catalogs. Message becomes obsolete
 when it's no longer in source code.
-`--format` - Format of message catalogs (see [format][format] option)
-`--verbose` - Prints additional information
 
-### compile
+.. lingui-cli-option:: --format <format>
 
-```bash
-lingui compile [--strict] [--format <format>] [--verbose]
-```
+Format of message catalogs (see :conf:`format` option)
 
-This command compiles message catalogs in [localeDir][localeDir] and writes
+.. lingui-cli-option:: --verbose
+
+Prints additional information.
+
+``compile``
+-----------
+
+.. lingui-cli:: compile [--strict] [--format <format>] [--verbose]
+
+This command compiles message catalogs in :conf:`localeDir` and writes
 minified Javascript files. Each message is replace with function call,
 which returns translated message.
 
 Also language data (plurals) are written to message catalog as well.
 
-`--strict` - Fail when some catalog has missing translations.
-`--format` - Format of message catalogs (see [format][format] option)
-`--verbose` - Prints additional information
+.. lingui-cli-option:: --strict
 
-## Configuration
+Fail when some catalog has missing translations.
 
-Configuration is read from `lingui` section in `package.json`.
+.. lingui-cli-option:: --format <format>
 
-Default config:
+Format of message catalogs (see :conf:`format` option)
 
-```json
-{
-  "lingui": {
-    "fallbackLocale": "",
-    "sourceLocale": "",
-    "localeDir": "<rootDir>/locale",
-    "srcPathDirs": [
-        "<rootDir>"
-    ],
-    "srcPathIgnorePatterns": [
-        "/node_modules/"
-    ],
-    "format": "lingui"
-  }
-}
-```
+.. lingui-cli-option:: --verbose
 
-### fallbackLocale [string]
-
-`fallbackLocale` is used when translation for given locale is missing.
-
-If `fallbackLocale` isn't defined or translation in `fallbackLocale` is
-missing too, either message defaults or message ID is used instead.
-
-### sourceLocale [string]
-
-Locale of message IDs, which is used in source files.
-Catalog for `sourceLocale` don't require translated messages, because message
-IDs are used by default. However, it's still possible to override message ID by
-providing custom translation.
-
-The difference between `fallbackLocale` and `sourceLocale` is, that for
-`fallbackLocale` is used translation, while for `sourceLocale` is used message
-ID.
-
-### localeDir [string]
-
-Default: `<rootDir>/locale`
-
-Directory where message catalogs are stored.
-
-### srcPathDirs [Array]
-
-Default: `[<rootDir>]`
-
-List of directories with source files from which messages are extracted. Ignored
-directories are defined in [srcPathIgnorePatters][srcPathIgnorePatters].
-
-### srcPathIgnorePatterns [Array]
-
-Default: `["/node_modules/"]`
-
-Ignored directories when looking for source files to extract messages.
-
-### format [string]
-
-Default: `lingui`
-
-Format of message catalogs. Possible values are:
-
-#### `lingui`
-
-Each message is object in following format. Origin is filename and line number
-from where the message was extracted:
-
-```json
-{
-  "MessageID": {
-    "translation": "Translated Message",
-    "defaults": "Default string (from source code)",
-    "origin": [
-      ["path/to/src.js", 42]
-    ]
-  }
-}
-```
-
-#### `minimal`
-
-Simple source - translation mapping:
-
-```json
-{
-   "MessageID": "Translated Message"
-}
-```
-
-[localeDir]: #localedir-string
-[srcPathDirs]: #srcpathdirs-array
-[srcPathIgnorePatters]: #srcpathignorepatterns-array
-[format]: #format-string
+Prints additional information

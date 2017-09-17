@@ -26,6 +26,12 @@ Key features
 
 .. toctree::
    :maxdepth: 1
+   :caption: Guides
+
+   How plurals work <guides/plurals>
+
+.. toctree::
+   :maxdepth: 1
    :caption: API References
 
    React <ref/lingui-react>
