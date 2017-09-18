@@ -96,24 +96,21 @@ export default function ({ types: t }) {
         const { name: { name } } = attr
 
         if (name === 'value') {
-          const exp = attr.value.expression
-
-          // value must be a variable
-          if (!t.isIdentifier(exp)) {
-            throw file.buildCodeFrameError(element, 'Value must be a variable.')
-          }
-
-          variable = exp.name
-          props.values[variable] = t.objectProperty(exp, exp)
+          const exp = t.isLiteral(attr.value) ? attr.value : attr.value.expression
+          variable = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+          const key = t.isIdentifier(exp) ? exp : t.numericLiteral(variable)
+          props.values[variable] = t.objectProperty(key, exp)
         } else if (Array.includes(commonProps, name)) {
           // just do nothing
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
-          if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
+          const offsetExp = t.isStringLiteral(attr.value) ? attr.value : attr.value.expression
+
+          if (offsetExp.value === undefined) {
             throw file.buildCodeFrameError(element, 'Offset argument cannot be a variable.')
           }
 
-          offset = ` offset:${attr.value.value}`
+          offset = ` offset:${offsetExp.value}`
         } else {
           props = processChildren(attr.value, file, Object.assign({}, props, { text: '' }))
           choices[name.replace('_', '=')] = props.text
@@ -121,7 +118,7 @@ export default function ({ types: t }) {
       }
 
       // missing value
-      if (!variable) {
+      if (variable === undefined) {
         throw file.buildCodeFrameError(element, 'Value argument is missing.')
       }
 
@@ -173,15 +170,10 @@ export default function ({ types: t }) {
         const { name: { name } } = attr
 
         if (name === 'value') {
-          const exp = attr.value.expression
-
-          // value must be a variable
-          if (!t.isIdentifier(exp)) {
-            throw file.buildCodeFrameError(element, 'Value must be a variable.')
-          }
-
-          variable = exp.name
-          props.values[variable] = t.objectProperty(exp, exp)
+          const exp = t.isLiteral(attr.value) ? attr.value : attr.value.expression
+          variable = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+          const key = t.isIdentifier(exp) ? exp : t.numericLiteral(variable)
+          props.values[variable] = t.objectProperty(key, exp)
         } else if (name === 'format') {
           if (t.isStringLiteral(attr.value)) {
             format = attr.value.value
@@ -209,7 +201,7 @@ export default function ({ types: t }) {
       }
 
       // missing value
-      if (!variable) {
+      if (variable === undefined) {
         throw file.buildCodeFrameError(element, 'Value argument is missing.')
       }
 
@@ -266,8 +258,10 @@ export default function ({ types: t }) {
           if (t.isTemplateElement(item)) {
             nextProps.text += item.value.raw
           } else {
-            nextProps.text += `{${item.name}}`
-            nextProps.values[item.name] = t.objectProperty(item, item)
+            const name = t.isIdentifier(item) ? item.name : argumentGenerator()
+            const key = t.isIdentifier(item) ? item : t.numericLiteral(name)
+            nextProps.text += `{${name}}`
+            nextProps.values[name] = t.objectProperty(key, item)
           }
         })
       } else if (t.isJSXElement(exp)) {
