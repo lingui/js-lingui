@@ -21,10 +21,10 @@ import { Trans, Plural } from 'lingui-react';
   <Plural
     id="msg.plural"
     render="strong"
-    value={count}
-    offset="1"
+    value={items.length}
+    offset={1}
     _0="zero items"
-    few={`${count} items`}
+    few={`${items.length} items ${42}`}
     other={<a href="/more">a lot of them</a>}
   />
 </Trans>

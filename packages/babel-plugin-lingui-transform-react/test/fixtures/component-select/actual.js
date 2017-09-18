@@ -9,7 +9,7 @@ import { Select } from 'lingui-react';
 <Select
   id="msg.select"
   render="strong"
-  value={count}
+  value={user.gender}
   male="He"
   female={`She`}
   other={<strong>Other</strong>}
