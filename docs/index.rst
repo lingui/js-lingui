@@ -3,8 +3,8 @@ jsLingui - Seamless i18n in Javascript and React
 
 Type-checked and intuitive way to internationalize applications in Javascript and React.
 
-   Internationalization is the design and development of a product, application
-   or document content that enables easy localization for target audiences that
+   **Internationalization** is the design and development of a product, application
+   or document content that enables easy **localization** for target audiences that
    vary in culture, region, or language.
 
    --- `W3C Web Internationalization FAQ <https://www.w3.org/International/questions/qa-i18n>`_
@@ -23,6 +23,13 @@ Key features
 * Works with manual and generated message IDs
 * Works with in any JS environment, while integration packages brings better performance in target environments (e.g: lingui-react for React)
 * High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorials
+
+   React <tutorials/react>
+   CLI <tutorials/cli>
 
 .. toctree::
    :maxdepth: 1

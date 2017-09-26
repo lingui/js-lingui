@@ -1,3 +1,5 @@
+.. _dynamic-loading-catalogs:
+
 Jump to `final component <i18nLoaderComponent>`_.
 
 ***********************************

@@ -5,148 +5,6 @@ in multiple languages.
 
 Sample code is available in [tutorial-lingui-react][TutorialLinguiReact] repository.
 
-## Starting point
-
-We are going to translate following app:
-
-```jsx
-// index.js
-import React from 'react'
-import { render } from 'react-dom'
-import Inbox from './Inbox.js'
-
-const App = () => <Inbox />
-
-render(<App />, document.getElementById('app'))
-```
-
-```jsx
-// Inbox.js
-import React from 'react'
-
-const Inbox = ({ messages, markAsRead, user }) => {
-  const messagesCount = messages.length
-  const { name, lastLogin } = user
-  
-  return (
-      <div>
-        <h1>Message Inbox</h1>
-        
-        <p>
-          See all <Link to="/unread">unread messages</Link>{" or "}
-          <a onClick={markAsRead}>mark them</a> as read.
-        </p>
-        
-        <p>
-          {
-            messagesCount === 1
-              ? There's {messagesCount} message in your inbox.
-              : There're {messagesCount} messages in your inbox.
-          }
-        </p>
-        
-        <footer>
-          Last login on {lastLogin}.
-        </footer>
-      </div>
-    )
-}
-
-export default Inbox
-```
-
-It's pretty basic app which doesn't do anything special.
-
-## Install dependencies and configure Babel
-
-`jsLingui` isn't solo library. It's actually set of tools which helps you
-with internationalization. You can pick which one you want to use in your project.
-We're going to use all of them to show off the full power of jsLingui.
-
-We're going to use the three major packages:
-
-- `lingui-react` - React components for translating and formatting messages
-- `babel-preset-lingui-react` - Transform messages wrapped in components from 
-  `lingui-react` to ICU MessageFormat and validates them
-- `lingui-cli` - CLI for working with message catalogs
-
-1. Install `babel-preset-lingui-react` as development dependency, `lingui-react` as a runtime dependency and `lingui-cli` globally:
-
-    ```bash
-yarn global add lingui-cli
-yarn add lingui-react
-yarn add --dev babel-preset-lingui-react
-    ```  
-    
-    or using `npm`:
-    
-    ```bash
-npm install -g lingui-cli
-npm install --save lingui-react
-npm install --save-dev babel-preset-lingui-react
-    ```  
-    
-    **Note**: If you can't use babel preset, see the example at the end of this tutorial.
-
-2. Add `lingui-react` preset to Babel config:
-
-    ```js
-// .babelrc
-{
-  "presets": [
-    "env",
-    "react",
-    "lingui-react"
-  ]
-}
-    ```
-  
-We have the environment up and running and we can start internationalize our app!
-
-## Setup application
-
-I would like to jump directly to translation of `Inbox` component, but we need
-to do one more step to setup our application.
-
-Since we're going to translate our application, components needs to be aware
-of active language. The top-most component which takes care of this is
-[I18nProvider][I18nProvider]. In development we're also going to need
-some more *stuff*. Don't worry about it now. It will be explained later.
-
-Add all required imports and wrap our app inside [I18nProvider][I18nProvider].
-
-```jsx
-// index.js
-import React from 'react'
-import { render } from 'react-dom'
-import Inbox from './Inbox.js'
-
-import { I18nProvider } from 'lingui-react'
-
-// required in development only (huge dependency)
-const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
-
-const App = () => (
-  <I18nProvider language="en" development={dev}>
-    <Inbox />
-  </I18nProvider>
-)
-
-render(<App />, document.getElementById('app'))
-```
-
-I know, the development import looks ugly! But we're doing this for a greater
-good, saving a lot of bandwidth data.
-
-💡  You might be wondering: how are we going to change active language?  🤔
-Yes, that's a great question, but we need to focus! We're not going to change
-a language unless we have translated message catalog. And we won't have
-translated catalog before we extract all messages from source.
-
-Moreover, it depends how our application is implemented. If you want to take a
-short detour, take a look at example with webpack and redux:
-[Guide - Dynamic loading of languages in Webpack][GuideWebpackDynamicLoading]
-
 ## Introducing the internationalization
 
 Now we're finally going to *translate* our app. Actually, we're not going
@@ -198,20 +56,6 @@ export default Inbox
 
 Wait a second, somebody skipped three pages at once! Let's break the example above
 into phrases and go through them separately:
-
-### Simple translations
-
-Heading is very simple, just a text. I guess that's the only part where no
-explanation is needed. We just wrap it in [Trans][Trans] component and it
-takes care of everything else.
-
-### Components and HTML inside translations
-
-Next message is a bit tricky. We're writing hyper-text which very often includes formatting,
-so soon or later we'll need to translate message with components inside.
-
-As tricky as it could be in other i18n libraries, all we need here is wrap everything
-inside [Trans][Trans] component again.
 
 ### Plural
 
@@ -281,19 +125,6 @@ English file and take a look at message format:
 The content or `origin` attributes is truncated in example above. It tells
 us from where the message was extracted.
 
-Now, take a look at format of messages.
-This is ICU Message Format. It's very powerful and extensible. It's bit difficult
-to write by hand (especially for complex cases like plurals), but that's the
-reason why we use babel preset - we use React components as we're used to
-and babel preset generates Message Format for us.
-
-Also, you may notice that components and html tags are replaced with indexed
-tags (`<0>`, `<1>`). This is a little extension to ICU MessageFormat which
-allows rich-text formatting inside translations. Components and their props 
-remains in the source code and doesn't scare our translators. Also, in case we 
-change just a className, we don't need to update
-our message catalogs. How cool is that?
-
 As I said, we're going to have a short break now, because we'll send Czech
 message catalog to our translator. They'll do their job and send us translations.
 
@@ -332,38 +163,6 @@ message formatting won't work:
 $ lingui compile
 ```
 
-If you look into `locale` directory now, you'see two files for each language:
-
-- `messages.json` - readable JSON with all languages and metadata (for translators)
-- `messages.js` - minified JS file with compiled messages (for library)
-
-Finally, we import compiled JS catalog into our app and pass it to [I18nProvider][I18nProvider].
-
-```jsx
-// index.js
-import React from 'react'
-import { render } from 'react-dom'
-import Inbox from './Inbox.js'
-
-import { I18nProvider } from 'lingui-react'
-// required in development only (huge dependency)
-const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
-
-import { unpackCatalog } from 'lingui-i18n'
-import catalog from 'locale/cs/messages.js'
-
-const App = () => (
-  <I18nProvider language="cs" catalogs={{ cs: unpackCatalog(catalog) }} development={dev}>
-    <Inbox />
-  </I18nProvider>
-)
-
-render(<App />, document.getElementById('app'))
-```
-
-`catalogs` prop expects a dictionary of message catalogs in *all* languages,
-but we can load them on demand. Again, this depends on environment. There's
-an example [how to do it with webpack][GuideWebpackDynamicLoading].
 
 ## Variations
 

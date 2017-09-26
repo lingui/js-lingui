@@ -18,7 +18,6 @@ sys.path.append(abspath(join(dirname(__file__), "_ext")))
 # needs_sphinx = '1.0'
 
 primary_domain = 'js'
-highlight_language = 'js'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
