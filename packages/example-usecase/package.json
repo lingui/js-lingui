@@ -18,7 +18,9 @@
   "dependencies": {
     "lingui-i18n": "^1.3.0",
     "lingui-react": "^1.2.1",
-    "react": "^15.6.1"
+    "react": "15",
+    "react-dom": "15",
+    "webpack-dev-server": "2.7.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -28,8 +30,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-lingui-react": "^1.0.6",
     "babel-preset-react": "^6.24.1",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "webpack": "^3.6.0"
   },
   "babel": {
     "presets": [

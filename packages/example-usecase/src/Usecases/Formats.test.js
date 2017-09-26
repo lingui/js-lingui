@@ -14,7 +14,7 @@ describe('Formats', function () {
 
   const getText = (element, props = {}) => {
     return mount(
-      <Component {...props} language="en"/>).find(element).text()
+      <Component {...props} language="en"/>).find(element).first().text()
   }
 
   it('should render', function () {
