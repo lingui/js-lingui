@@ -642,4 +642,4 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `"<span class=\\"components\\"><!-- react-text: 13 -->Read <!-- /react-text --><a href=\\"/mononoke\\">more</a><!-- react-text: 15 -->.<!-- /react-text --></span>"`;
+exports[`Children should support nested elements 1`] = `"<span class=\\"components\\">Read <a href=\\"/mononoke\\">more</a>.</span>"`;

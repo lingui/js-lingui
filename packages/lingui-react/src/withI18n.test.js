@@ -20,7 +20,7 @@ describe('withI18n', function () {
   // Pass all props to spy on render
   const sinkFactory = (options = {}) => {
     const spy = jest.fn()
-    const Sink = withI18n(options)(class extends React.Component<*> {
+    const Sink = withI18n(options)(class Sink extends React.Component<*> {
       customMethod = () => 42
 
       render () {

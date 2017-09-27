@@ -18,8 +18,8 @@
   "dependencies": {
     "lingui-i18n": "^1.3.0",
     "lingui-react": "^1.2.1",
-    "react": "15",
-    "react-dom": "15",
+    "react": "16.0.0",
+    "react-dom": "16.0.0",
     "webpack-dev-server": "2.7.1"
   },
   "devDependencies": {
