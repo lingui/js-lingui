@@ -24,6 +24,10 @@ Key features
 * Works with in any JS environment, while integration packages brings better performance in target environments (e.g: lingui-react for React)
 * High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
 
+.. figure:: _static/lingui-pitch.png
+
+   Example usecase with React
+
 .. toctree::
    :maxdepth: 1
    :caption: Tutorials
