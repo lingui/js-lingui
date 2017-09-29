@@ -24,7 +24,7 @@ and Arabic.
 Using plural forms
 ==================
 
-Good thing is that **as a developers, we have to know only plural forms for
+Good thing is that **as developers, we have to know only plural forms for
 the source language**.
 
 If we use English in the source code, then we'll use only *one* and *other*:
@@ -43,14 +43,13 @@ it will be *2 books*.
    Funny fact for non-english speakers: In English, 0 uses plural form too,
    *0 books*.
 
-Under the hood, `i18n.plural` is replaced with low-level `i18n._` call. Examle
-above will become in production:
+Under the hood, ``i18n.plural`` is replaced with low-level ``i18n._``. For production, the above example will become:
 
 .. code-block:: js
 
    i18n._('{numBooks, plural, one {# book} other {# books}}', { values: { numBooks }})
 
-When we extract messages from source code using [lingui-cli][linguiCliTutorial], we get:
+When we extract messages from source code using (lingui-cli)[linguiCliTutorial], we get:
 
 .. code-block:: default
 
@@ -62,7 +61,7 @@ Now, we give it to our Czech translator and they'll translate it as:
 
    {numBooks, plural, one {# kniha} few {# knihy} other {# knih}}
 
-The importing thing is that *we don't need to change our code to support
+The important thing is that *we don't need to change our code to support
 languages with different plural rules*. Here's a step-by-step description of
 the process:
 
