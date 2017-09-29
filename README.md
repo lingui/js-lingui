@@ -42,7 +42,7 @@ and React.
 
 See the [tutorial for React][TutorialReact]
 
-![Example use case with React](https://lingui.gitbooks.io/js/assets/lingui-pitch.png)
+![Example use case with React](https://lingui.github.io/js-lingui/_static/lingui-pitch.png)
 
 ### Intuitive way of writing messages
 
@@ -253,8 +253,8 @@ Contributions of any kind welcome!
 [MIT][License]
 
 [ReactIntl]: https://github.com/yahoo/react-intl
-[Documentation]: https://lingui.gitbooks.io/js/
-[TutorialReact]: https://lingui.gitbooks.io/js/tutorials/react.html
+[Documentation]: https://lingui.github.io/js-lingui/
+[TutorialReact]: https://lingui.github.io/js-lingui/tutorials/react.html
 
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors

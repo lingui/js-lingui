@@ -15,6 +15,9 @@
     "add": "all-contributors add",
     "generate": "all-contributors generate"
   },
+  "engines": {
+    "node" : ">=5.0"
+  },
   "devDependencies": {
     "all-contributors-cli": "^4.3.0",
     "babel-cli": "^6.24.1",

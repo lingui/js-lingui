@@ -1,19 +1,120 @@
-machine:
-  node:
-    version: 6.1.0
+version: 2
 
-dependencies:
-  pre:
-    - yarn global add lerna codecov
-  override:
-    - yarn install
-    - lerna bootstrap --npm-client=yarn
+workflows:
+  version: 2
+  test_n_deploy:
+    jobs:
+      - test-linter
 
-test:
-  override:
-    - case $CIRCLE_NODE_INDEX in 0) nvm use 6 && yarn test ;; 1) nvm use 5 && yarn test ;; 2) nvm use 4 && yarn test ;; 3) yarn run lint:flow ;; esac:
-        parallel: true
+      - test-node6:
+          requires:
+            - test-linter
+      - test-node8:
+          requires:
+            - test-linter
 
-  post:
-    - if [[ -e junitresults.xml ]]; then cp junitresults.xml $CIRCLE_TEST_REPORTS/test-results.xml; fi
-    - codecov
+      - build-docs:
+          requires:
+            - test-node6
+            - test-node8
+
+jobs:
+  test-node8: &test-template
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install build tools
+          command: sudo yarn global add codecov
+
+      - restore_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install dependencies
+          command: |
+              yarn install
+              yarn run bootstrap
+
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+              - node_modules
+
+      - run: yarn test
+
+      - run:
+          name: Send coverage report
+          command: |
+              if [ "${NODEJS}" == "4" ]; then
+                codecov
+              fi
+
+      - store_test_results:
+          path: junitresults.xml
+          when: on_fail
+
+  test-node6:
+    <<: *test-template
+
+    docker:
+      - image: circleci/node:6
+
+  test-linter:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install build tools
+          command: sudo yarn global add codecov
+
+      - restore_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install dependencies
+          command: |
+              yarn install
+              yarn run bootstrap
+
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+          paths:
+              - node_modules
+
+      - run: yarn run lint
+
+  build-docs:
+    docker:
+      - image: circleci/python:latest
+        environment:
+          PYGMENTS_NODE_COMMAND: /usr/local/bin/node
+
+    steps:
+      - checkout
+
+      - run: sudo pip install pipenv
+
+      - restore_cache:
+          key: pipenv-{{ checksum "Pipfile.lock" }}
+
+      - run: pipenv install
+
+      - save_cache:
+          key: pipenv-{{ checksum "Pipfile.lock" }}
+          paths:
+              - "{{ pipenv --venv }}"
+
+      - run: source $(pipenv --venv)/bin/activate && cd docs && make html
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./scripts/deploy-docs.sh
+            fi
