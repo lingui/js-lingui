@@ -59,19 +59,14 @@ describe('babel-plugin-lingui-transform-react', function () {
         expect(transformCode('<SelectOrdinal>Not allowed</SelectOrdinal>')).toThrowErrorMatchingSnapshot()
       })
 
-      it('value must be a variable', function () {
-        const code = `<Plural value="42" one="Book" other="Books" />`
-        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-      })
-
       it('value is missing', function () {
         const code = `<Plural one="Book" other="Books" />`
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
       it('offset must be number or string, not variable', function () {
-        const code = `<Plural value={value} offset={offset} one="Book" other="Books" />`
-        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+        const variable = `<Plural value={value} offset={offset} one="Book" other="Books" />`
+        expect(transformCode(variable)).toThrowErrorMatchingSnapshot()
       })
 
       it('plural forms are missing', function () {
@@ -108,7 +103,6 @@ describe('babel-plugin-lingui-transform-react', function () {
     describe('Date/Number', function () {
       it('value of number must be a variable', function () {
         expect(transformCode('<Trans><NumberFormat /></Trans>')).toThrowErrorMatchingSnapshot()
-        expect(transformCode('<Trans><NumberFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })
 
       it('format must be string, variable or object with custom format', function () {
@@ -121,7 +115,6 @@ describe('babel-plugin-lingui-transform-react', function () {
 
       it('value of date must be a variable', function () {
         expect(transformCode('<Trans><DateFormat /></Trans>')).toThrowErrorMatchingSnapshot()
-        expect(transformCode('<Trans><DateFormat value="42" /></Trans>')).toThrowErrorMatchingSnapshot()
       })
     })
   })
