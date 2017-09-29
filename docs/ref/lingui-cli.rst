@@ -9,7 +9,7 @@ message catalogs and compiles message catalogs for production use.
 Install
 =======
 
-``lingui-cli`` can be installed both globally and locally:
+``lingui-cli`` can be installed both globally:
 
 .. code-block:: shell
 
@@ -25,7 +25,7 @@ or locally:
 
 .. note::
 
-   When installed locally, you need either run it from
+   When installed locally, you need to either run it from
    ``node_modules/.bin/lingui`` or add it to your ``package.json``:
 
    .. code-block:: json
@@ -58,19 +58,20 @@ This command creates a new directory for each locale in :conf:`localeDir`.
 
 .. code-block:: shell
 
-   # Add English, French and Spanish locale
+   # Add English, French and Spanish locales
    lingui add-locale en fr es
 
 .. lingui-cli-option:: --format <format>
 
-Format of message catalog (see :conf:`format` option)
+Format of message catalog (see :conf:`format` option).
 
 ``extract``
 -----------
 
 .. lingui-cli:: extract [--clean] [--format <format>] [--verbose]
 
-This command extract messages from source files and creates message catalog for each language in following steps:
+This command extracts messages from source files and creates a message catalog for
+each language using the following steps:
 
 1. Extract messages from all ``*.jsx?`` files inside :conf:`srcPathDirs`
 2. Merge them with existing catalogs in :conf:`localeDir` (if any)
@@ -79,11 +80,11 @@ This command extract messages from source files and creates message catalog for 
 .. lingui-cli-option:: --clean
 
 Remove obsolete messages from catalogs. Message becomes obsolete
-when it's no longer in source code.
+when it's no longer in the source code.
 
 .. lingui-cli-option:: --format <format>
 
-Format of message catalogs (see :conf:`format` option)
+Format of message catalogs (see :conf:`format` option).
 
 .. lingui-cli-option:: --verbose
 
@@ -94,20 +95,20 @@ Prints additional information.
 
 .. lingui-cli:: compile [--strict] [--format <format>] [--verbose]
 
-This command compiles message catalogs in :conf:`localeDir` and writes
-minified Javascript files. Each message is replace with function call,
-which returns translated message.
+This command compiles message catalogs in :conf:`localeDir` and outputs
+minified Javascript files. Each message is replaced with a function
+that returns the translated message when called.
 
-Also language data (plurals) are written to message catalog as well.
+Also, language data (pluralizations) are written to the message catalog as well.
 
 .. lingui-cli-option:: --strict
 
-Fail when some catalog has missing translations.
+Fail if a catalog has missing translations.
 
 .. lingui-cli-option:: --format <format>
 
-Format of message catalogs (see :conf:`format` option)
+Format of message catalogs (see :conf:`format` option).
 
 .. lingui-cli-option:: --verbose
 
-Prints additional information
+Prints additional information.
