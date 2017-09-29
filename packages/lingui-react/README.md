@@ -25,9 +25,9 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
 [jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.gitbooks.io/js/
-[Tutorial]: https://lingui.gitbooks.io/js/tutorials/react.html
-[Reference]: https://lingui.gitbooks.io/js/ref/react.html
+[Documentation]: https://lingui.github.io/js-lingui/
+[Tutorial]: https://lingui.github.io/js-lingui/tutorials/react.html
+[Reference]: https://lingui.github.io/js-lingui/ref/react.html
 [Package]: https://www.npmjs.com/package/lingui-react
 [Badge-Downloads]: https://img.shields.io/npm/dw/lingui-react.svg
 [Badge-Version]: https://img.shields.io/npm/v/lingui-react.svg 

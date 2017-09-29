@@ -47,7 +47,7 @@ require("babel-core").transform("code", {
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
 [jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.gitbooks.io/js/
+[Documentation]: https://lingui.github.io/js-lingui/
 [Package]: https://www.npmjs.com/package/babel-preset-lingui-react
 [Badge-Downloads]: https://img.shields.io/npm/dw/babel-preset-lingui-react.svg
 [Badge-Version]: https://img.shields.io/npm/v/babel-preset-lingui-react.svg 

@@ -32,8 +32,8 @@ See the [reference][Reference] documenation of `lingui-cli` for all options.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
 [jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.gitbooks.io/js/
-[Reference]: https://lingui.gitbooks.io/js/ref/cli.html
+[Documentation]: https://lingui.github.io/js-lingui/
+[Reference]: https://lingui.github.io/js-lingui/ref/cli.html
 [Package]: https://www.npmjs.com/package/lingui-conf
 [Badge-Downloads]: https://img.shields.io/npm/dw/lingui-conf.svg
 [Badge-Version]: https://img.shields.io/npm/v/lingui-conf.svg 
