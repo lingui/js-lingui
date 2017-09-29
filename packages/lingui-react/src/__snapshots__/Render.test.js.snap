@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render should render children wrapped in span 1`] = `
-<span>
-  Just a text
-</span>
-`;
-
-exports[`Render should render children wrapped in span 2`] = `
-<span
-  className="info"
->
-  Just a text
-</span>
-`;
-
 exports[`Render should render custom component 1`] = `
 <a
   title="Title"
@@ -33,6 +19,10 @@ exports[`Render should render custom element 2`] = `
   Headline
 </h1>
 `;
+
+exports[`Render should render just a text without wrapping element 1`] = `"Just a text"`;
+
+exports[`Render should render just a text without wrapping element 2`] = `"Just a text"`;
 
 exports[`Render should take default render element from context 1`] = `
 <h1>

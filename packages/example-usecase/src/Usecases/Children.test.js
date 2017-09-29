@@ -28,12 +28,12 @@ describe('Children', function () {
 
   const getText = (element, props = {}) => {
     return mount(
-      <Component {...props} language="cs"/>).find(element).text()
+      <Component {...props} language="cs"/>).find(element).first().text()
   }
 
   const getHtml = (element, props = {}) => {
     return mount(
-      <Component {...props} language="cs"/>).find(element).html()
+      <Component {...props} language="cs"/>).find(element).first().html()
   }
 
   it('should render', function () {

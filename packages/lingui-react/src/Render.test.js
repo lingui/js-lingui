@@ -4,7 +4,7 @@ import { shallow } from 'enzyme'
 import Render from './Render'
 
 describe('Render', function () {
-  it('should render children wrapped in span', function () {
+  it('should render just a text without wrapping element', function () {
     const span = shallow(<Render value="Just a text" />)
     expect(span).toMatchSnapshot()
 

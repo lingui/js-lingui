@@ -84,6 +84,7 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="untranslated"
+                  render={undefined}
                   value="This isn't translated"
                 >
                   <span
@@ -147,6 +148,7 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="customId"
+                  render={undefined}
                   value="Nápis"
                 >
                   <span
@@ -210,6 +212,7 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="translated"
+                  render={undefined}
                   value="Ahoj světe"
                 >
                   <span
@@ -283,6 +286,7 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="variable"
+                  render={undefined}
                   value="Jmenuji se Mononoke"
                 >
                   <span
@@ -301,7 +305,7 @@ exports[`Children should render 1`] = `
                 Array [
                   <a
                     href="/mononoke"
-                />,
+                  />,
                 ]
               }
               id="Read <0>more</0>."
@@ -312,7 +316,7 @@ exports[`Children should render 1`] = `
                   Array [
                     <a
                       href="/mononoke"
-                  />,
+                    />,
                   ]
                 }
                 i18n={
@@ -360,14 +364,15 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="components"
+                  render={undefined}
                   value={
                     Array [
                       "Read ",
                       <a
                         href="/mononoke"
-                    >
+                      >
                         more
-                    </a>,
+                      </a>,
                       ".",
                     ]
                   }
@@ -378,6 +383,7 @@ exports[`Children should render 1`] = `
                     Read 
                     <a
                       href="/mononoke"
+                      key="0"
                     >
                       more
                     </a>
@@ -455,6 +461,7 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="plural"
+                  render={undefined}
                   value="Wilma pozvala Fred a dalšího hosta na její oslavu."
                 >
                   <span
@@ -535,6 +542,7 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
+                  className={undefined}
                   render={
                     <p
                       className="render-element"
@@ -610,6 +618,7 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
+                  className={undefined}
                   render={[Function]}
                   value="Jmenuji se Mononoke"
                 >
@@ -633,4 +642,4 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `"<span class=\\"components\\"><!-- react-text: 13 -->Read <!-- /react-text --><a href=\\"/mononoke\\">more</a><!-- react-text: 15 -->.<!-- /react-text --></span>"`;
+exports[`Children should support nested elements 1`] = `"<span class=\\"components\\">Read <a href=\\"/mononoke\\">more</a>.</span>"`;

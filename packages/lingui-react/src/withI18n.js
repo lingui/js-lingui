@@ -68,7 +68,11 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
 
     render () {
       const { i18n } = this.getI18n()
-      return <WrappedComponent ref={this.setWrappedInstance} {...this.props} i18n={i18n} />
+      const props = {
+        ...this.props,
+        ...(withRef ? { ref: this.setWrappedInstance } : {})
+      }
+      return <WrappedComponent {...props} i18n={i18n} />
     }
   }
 
