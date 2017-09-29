@@ -22,7 +22,7 @@ Requirements
 Setup
 =====
 
-We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`
+We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
 to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and 
 ``babel-plugin-dynamic-import-node`` to make it work:
 
