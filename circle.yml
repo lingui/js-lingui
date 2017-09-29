@@ -111,7 +111,7 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: pipenv shell "cd docs; make html; exit"
+      - run: source $(pipenv --venv)/bin/activate && cd docs && make html
 
       - deploy:
           command: |
