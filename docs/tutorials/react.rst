@@ -2,13 +2,13 @@
 Tutorial - Internationalization of React apps
 *********************************************
 
-Throughout this tutorial, we'll learn how to add internationalization
-to existing application in React JS.
+Through this tutorial, we'll learn how to add internationalization
+to an existing application in React JS.
 
-Starting point
+Let's Start
 ==============
 
-We're going to translate following app:
+We're going to translate the following app:
 
 .. code-block:: jsx
 
@@ -56,12 +56,12 @@ We're going to translate following app:
 
 As you can see, it's a simple mailbox application with only one page.
 
-Installation of jsLingui
+Installing jsLingui
 ========================
 
-jsLingui_ isn't just a one package. It's actually a set of tools which helps you
-with internationalization. You can pick which one you want to use in your project.
-We're going to use most of them to show off the full power of jsLingui.
+jsLingui_ isn't just a package. It's a set of tools which helps you to
+internationalize. You can pick whichever tool you want to use in your project.
+We're trying to use most of them to show the full power of jsLingui.
 
 Let's start with the three major packages:
 
@@ -69,13 +69,13 @@ Let's start with the three major packages:
    React components for translation and formatting
 
 ``babel-preset-lingui-react``
-   Transform messages wrapped in components from ``lingui-react`` to ICU
+   Transforms messages wrapped in components from ``lingui-react`` to ICU
    MessageFormat and validates them
 
 ``lingui-cli``
    CLI for working with message catalogs
 
-1. Install ``babel-preset-lingui-react`` as development dependency,
+1. Install ``babel-preset-lingui-react`` as a development dependency,
    ``lingui-react`` as a runtime dependency and ``lingui-cli`` globally:
 
    .. code-block:: shell
@@ -98,15 +98,15 @@ Let's start with the three major packages:
 
 Now we have the environment up and running and we can start internationalizing our app!
 
-Setup application
-=================
+Setup
+=====
 
-We would like to directly start translating ``Inbox`` component, but we need
-to do one more step to setup our application.
+We will directly start translating the ``Inbox`` component, but we need
+to complete one more step to setup our application.
 
-Components needs to be aware of active language. All jsLingui_ components
-read translations and language settings from context. In order to get this
-information into React context, we need to wrap our application in
+Components needs to be aware of their active language. All jsLingui_ components
+read translations and language settings from the context. In order to get this
+information into the React context, we need to wrap our application in
 :component:`I18nProvider` component. In development we're also going to need
 some more *stuff*, but don't worry about it now. It'll be explained later.
 
@@ -132,34 +132,34 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
 
    render(<App />, document.getElementById('app'))
 
-I know, the development import looks ugly! But we're doing this for a greater
+I know, the development import looks ugly! But we're doing this for greater
 good, saving a lot of bandwidth data.
 
 .. hint::
 
-   You might be wondering: how are we going to change active language?
+   You might be wondering: how are we going to change the active language?
    Yes, that's a great question, but we need to focus! We're not going to change
-   the language unless we have translated message catalog. And we won't have
-   translated catalog before we extract all messages from source.
+   the language unless we have translated the message catalog. And we won't have
+   translated the catalog before we extract all messages from source.
 
    Let's deal with language switching later… but if you're still curious,
    take a look at `example <dynamic-loadng-catalogs>`_ with Redux and Webpack.
 
-Introducing the internationalization
-====================================
+Introducing internationalization
+================================
 
 Now we're finally going to *translate* our app. Actually, we aren't going
-to *translate* from one language to another right yet. Instead, we're going to
-*prepare* our app for being translated. This process is called
-*internationalization* and you should practice saying this word alound until
-you're able to say it three times very quickly.
+to *translate* from one language to another right now. Instead, we're going to
+*prepare* our app for translation. This process is called
+*internationalization* and you should practice saying this word aloud until
+you're able to say it three times very quickly. /funny/
 
 .. note::
 
-   From now on, *internationalization* will be shortened to common acronym *i18n*.
+   From now on, *internationalization* will be shortened to a common acronym *i18n*.
 
-Let's start with basics - static messages. Such messages doesn't have any variables
-inside, any HTML or component, nothing. Just a text:
+Let's start with the basics - static messages. These messages dosn't hae any variables, HTML or components inside. 
+Just some text:
 
 .. code-block:: jsx
 
@@ -173,7 +173,7 @@ component:
    <h1><Trans>Message Inbox</Trans></h1>
 
 Yes, that's it. Let's move on to another paragraph. This paragraph has some
-variables and also some html and components inside:
+variables, some HTML and components inside:
 
 .. code-block:: jsx
 
@@ -182,7 +182,7 @@ variables and also some html and components inside:
       <a onClick={markAsRead}>mark them</a> as read.
    </p>
 
-Nothing special here. Again, we just need to wrap content in :component:`Trans`
+Nothing special here. Again, we just need to wrap the content in :component:`Trans`
 component:
 
 .. code-block:: jsx
@@ -194,10 +194,10 @@ component:
       </Trans>
    </p>
 
-Spooky, right? Let's pause here for a while to settle things down.
+Spooky, right? Let's pause for a while.
 
-Children of :component:`Trans` component are transformed into ICU MessageFormat
-syntax, which is standard format for i18n.
+All children of :component:`Trans` component are transformed into ICU MessageFormat
+syntax, which is the standard format for i18n.
 
 This component:
 
@@ -211,7 +211,7 @@ This component:
 
    <h1><Trans id="Message Inbox" /></h1>
 
-It's more interesting with variables and other components. Our paragraph:
+It's more interesting with variables and components. Our paragraph:
 
 .. code-block:: jsx
 
@@ -236,11 +236,11 @@ It's more interesting with variables and other components. Our paragraph:
       />
    </p>
 
-All these transformations happens under the hood and we'll never need to
+All these transformations happen under the hood and we don't need to
 do them manually. However, it's good to know what's going on, because content
 of ``id`` prop is *what our translators get*!
 
-Let's make it crystal clear -- when we have following code:
+Let's make it clear -- when we have the following code:
 
 .. code-block:: jsx
 
@@ -255,24 +255,24 @@ Let's make it crystal clear -- when we have following code:
       </Trans>
    </p>
 
-… it's transformed and these messages will be extracted for translators::
+… it will be transformed and these messages will be extracted for translators::
 
    Message Inbox
    See all <0>unread messages</0> or <1>mark them</1> as read.
 
 You may notice that components and html tags are replaced with indexed
-tags (`<0>`, `<1>`). This is a little extension to ICU MessageFormat which
+tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which
 allows rich-text formatting inside translations. Components and their props
-remains in the source code and doesn't scare our translators. Also, in case we
-change just a ``className``, we don't need to update our message catalogs. How
+remains in the source code and don't scare our translators. Also, in case we
+change a ``className``, we don't need to update our message catalogs. How
 cool is that?
 
-Playing with :component:`Trans` component
-=========================================
+:component:`Trans` component
+============================
 
-It may look a bit *hackish* at the first sight, but these transformation are
-actually very easy, intuitive and feels very *Reactish*. We don't have to think
-about MessageFormat, because it's created by library itself. We just write our
+It may look a bit *hackish* at first sight, but these transformations are
+actually very easy, intuitive and feel very *Reactish*. We don't have to think
+about the MessageFormat, because it's created by the library. We write our
 components in the same way as we're used to and simply wrap text in
 :component:`Trans` component.
 
@@ -285,7 +285,7 @@ Let's see some examples with MessageFormat equivalents:
    // Hello {name}
 
 Any expression is allowed, not just simple variables. The only difference is,
-that variable name won't be included in extracted message:
+the variable name won't be included in the extracted message:
 
 Simple variable -> named argument
    .. code-block:: jsx
@@ -305,7 +305,7 @@ Object, arrays, function calls -> positional argument
       <p><Trans>The random number is {Math.rand()}</Trans></p>
       // The random number is {0}
 
-Components might get tricky, but as we saw it's really easy:
+Components might get tricky, but like we saw, it's really easy:
 
 .. code-block:: jsx
 
@@ -330,16 +330,16 @@ and won't throw any error, it doesn't make any sense to write:
       {isOpen && <Modal />}
    </Trans>
 
-Everytime in doubt, first imagine how the final message should look like.
+Everytime you're in doubt, imagine how the final message should look like.
 
 Message ID
 ==========
 
-At this point it's good to explain what's message ID and how to set it manually.
+At this point we're going to explain what message ID is and how to set it manually.
 
-Translators work with so called *message catalogs*. No matter which format
-we use (gettext, xliff, json), it's essentially just a mapping of
-message ID to translation.
+Translators work with the *message catalogs*. No matter what format
+we use (gettext, xliff, json), it's just mapping of
+message ID to the translation.
 
 Here's an example of simple message catalog in **Czech** language:
 
@@ -362,20 +362,20 @@ Wednesday       Mercredi
 =============== ===========
 
 The message ID is *what all catalogs have in common* -- Lundi, Pondělí and Monday
-represents the same message in different languages. It's also the same as ``id``
+represent the same message in different languages. It's also the same as the ``id``
 prop in :component:`Trans` component.
 
-There're two common approaches to message IDs:
+There are two common approaches to message IDs:
 
 1. Use source language (e.g. English as in example above)
-2. Use custom key (e.g. ``weekday.monday``)
+2. Use a custom key (e.g. ``weekday.monday``)
 
-Both approaches have its pros and cons and it's not in the scope of this tutorial
+Both approaches have their pros and cons and it's not in the scope of this tutorial
 to compare them.
 
-By default, jsLingui_ generates message ID from content of :component:`Trans`
+By default, jsLingui_ generates message ID from the content of :component:`Trans`
 component, which means it uses source language. However, we can easily override
-it by settings ``id`` prop manually:
+it by setting ``id`` prop manually:
 
 .. code-block:: jsx
 
@@ -391,7 +391,7 @@ In our message catalog, we'll see ``inbox.title`` as message ID, but we also
 get ``Message Inbox`` as default translation for English language.
 
 For the rest of this tutorial, we'll use auto-generated message IDs to keep
-things simpler.
+it simple.
 
 Plurals
 =======
@@ -408,26 +408,26 @@ Let's move on and add i18n to another text in our component:
       }
    </p>
 
-This message is a bit special, because it depends on value of ``messagesCount``
-variable. Most languages use different form of a word when describing quantity
-- this effect is called `pluralization <https://en.wikipedia.org/wiki/Plural>`_.
+This message is a bit special, because it depends on the value of the ``messagesCount``
+variable. Most languages use different forms of words when describing quantities
+- this is called `pluralization <https://en.wikipedia.org/wiki/Plural>`_.
 
-What's tricky that different langauges use different number of plural forms.
+What's tricky is that different langauges use different number of plural forms.
 For example, English has only two forms - singular and plural - as we can see
 in the example above. However, Czech language has three plural forms. Some
 languages have up to 6 plural forms and some don't have plurals at all!
 
 .. hint::
 
-   Plural forms for all languages can be found in
+   Plural forms for all languages can be found in the
    `CLDR repository <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_.
 
 English plural rules
 --------------------
 
-How do we know which plural form we should use? It's actually very simple:
-we, as a developers, only need to know plural forms of the language we use in
-source. Our component is written in English, so looking at
+How do we know which plural form we should use? It's very simple:
+we, as developers, only need to know plural forms of the language we use in
+our source. Our component is written in English, so looking at
 `English plural rules <englishRules>`_ we'll
 need just two forms:
 
@@ -438,7 +438,7 @@ need just two forms:
    Plural form
 
 We don't need to select these forms manually. We'll use :component:`Plural`
-component, which takes ``value`` prop and based on active language it select
+component, which takes a ``value`` prop and based on the active language, selects
 the right plural form:
 
 .. code-block:: jsx
@@ -453,7 +453,7 @@ the right plural form:
 
 This component will render ``There's 1 message in your inbox`` when
 ``messageCount = 1`` and ``There're # messages in your inbox`` for any other
-value of ``messageCount``. ``#`` is a placeholder which is replaced with ``value``.
+values of ``messageCount``. ``#`` is a placeholder, which is replaced with ``value``.
 
 Cool! Curious how this component is transformed under the hood and how the
 message looks in MessageFormat syntax?
@@ -468,7 +468,7 @@ message looks in MessageFormat syntax?
    </p>
 
 The :component:`Plural` is gone and replaced with :component:`Trans` again!
-Purpose of :component:`Plural` is to generate proper syntax in message.
+The purpose of :component:`Plural` is to generate proper syntax in message.
 
 Our translator will work with this message::
 
@@ -480,12 +480,12 @@ Our translator will work with this message::
 Things are getting a bit more complicated, but i18n is a complex process. At
 least we don't have to write this message manually!
 
-Beware of zero!
+Beware of zeroes!
 ---------------
 
 Just a short detour, because it's a common misunderstanding.
 
-You may wonder, why following code doesn't work as expected:
+You may wonder, why the following code doesn't work as expected:
 
 .. code-block:: jsx
 
@@ -514,12 +514,12 @@ However, decimal numbers (even ``1.0``) use ``other`` form every time::
 
    There're 0.0 messages in your inbox.
 
-Aren't languages beautiful?
+Aren't languages beautiful? 
 
 Exact forms
 -----------
 
-Alright, back to example. What if we really want to render ``There're no message``
+Alright, back to our example. What if we really want to render ``There're no messages``
 for ``messagesCount = 0``? Exact forms to the rescue!
 
 .. code-block:: jsx
@@ -535,7 +535,7 @@ What's that ``_0``? MessageFormat allows exact forms, like ``=0``. However,
 React props can't start with ``=`` and can't be numbers either, so we need to
 write ``_N`` instead of ``=0``.
 
-It works with any number, so we could go wild and customize it in this way:
+It works with any number, so we can go wild and customize it this way:
 
 .. code-block:: jsx
 
@@ -547,7 +547,7 @@ It works with any number, so we could go wild and customize it in this way:
       other="There're # messages in your inbox"
    />
 
-… and so on. Exact match takes always precedence before plural forms.
+… and so on. Exact matches always take precedence before plural forms.
 
 Variables and components
 ------------------------
@@ -587,8 +587,8 @@ This gives us enough flexibility for all usecases.
 Custom message ID
 -----------------
 
-Let's finish this chapter with a short example of plural with custom ID. We can
-pass ``id`` prop to :component:`Plural` as we would do to :component:`Trans`:
+Let's finish this with a short example of plurals with custom ID. We can
+pass an ``id`` prop to :component:`Plural` as we would to :component:`Trans`:
 
 .. code-block:: jsx
 
@@ -613,8 +613,8 @@ The last message in our component is again a bit specific:
    </footer>
 
 ``lastLogin`` is a date object and we need to format it properly. Dates are
-formatted differently in different languages, but fortunatelly we don't have
-to do it manually either. Heavylifting is done in `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_,
+formatted differently in different languages, but we don't have
+to do manually. The heavylifting is done in `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_,
 we'll just use :component:`DateTimeFormat` component:
 
 .. code-block:: jsx
@@ -625,7 +625,7 @@ we'll just use :component:`DateTimeFormat` component:
       </Trans>
    </footer>
 
-This will format date using conventional format for active language.
+This will format the date using the conventional format for the active language.
 
 Review
 ======
@@ -672,7 +672,7 @@ Extracting messages
 ===================
 
 Our work here is done and we can start working with message catalogs. First,
-we need to extract all messages from source code. jsLingui_ has handy CLI
+we need to extract all messages from the source code. jsLingui_ has a handy CLI
 for this task, so let's pause here and go to `CLI tutorial <./cli>`_ to
 add locales, extract messages and compile translated message catalogs.
 
@@ -687,7 +687,7 @@ locale:
 ``messages.js``
    Minified JS file with compiled messages (for application)
 
-We'll just import compiled message catalog, unpack it and pass it to
+We'll just import a compiled message catalog, unpack it and pass it to
 :component:`I18nProvider`:
 
 .. code-block:: jsx
@@ -712,7 +712,7 @@ We'll just import compiled message catalog, unpack it and pass it to
 
    render(<App />, document.getElementById('app'))
 
-``catalogs`` prop expects a dictionary of message catalogs in *all* languages,
+The ``catalogs`` prop expects a dictionary of message catalogs in *all* languages,
 but we can load them on demand. It depends on your setup and there's
 an example `how to do it with webpack <dynamic-loading-catalogs>`_.
 
