@@ -4,7 +4,7 @@
 Working with jsLingui CLI
 *************************
 
-``lingui-cli`` provides ``lingui`` command for extracting, merging and compiling
+``lingui-cli`` provides the ``lingui`` command for extracting, merging and compiling
 message catalogs::
 
    npm install --global lingui-cli
@@ -12,9 +12,9 @@ message catalogs::
 Add a new locale
 ================
 
-First we need to add all locales we want to translate our application.
-::`add-locale` command creates a new directory in ``locale`` directory
-and also checks that locale exists::
+First, we need to add all the locales we want to translate our application into.
+::`add-locale` command creates a new directory in the ``locale`` directory
+and also checks if 'locale' exists::
 
    lingui add-locale en cs
 
@@ -28,8 +28,8 @@ Example output::
 Extracting messages
 ===================
 
-We're going to use an app we built in previous tutorial. ::`extract`
-command looks for messages in source files and extracts them::
+We're going to use an app we built in a previous tutorial. The ::`extract`
+command looks for messages in the source files and extracts them::
 
    lingui extract
 
@@ -52,7 +52,7 @@ command looks for messages in source files and extracts them::
    (use "lingui extract" to update catalogs with new messages)
    (use "lingui compile" to compile catalogs for production)
 
-Message catalog will look like this:
+The message catalog will look like this:
 
 .. code-block:: json
 
@@ -95,11 +95,10 @@ Message catalog will look like this:
      }
    }
 
-It's a JSON dictionary, where key is message ID and value is object with
-relevant information about message: translation, defaults and origin from where
-the message was extracted.
+It's in a JSON dictionary, where 'key' is message ID and value is an object with some
+relevant information: translation, defaults and origin for the message.
 
-This catalog is ready for translation. Let's translate it in Czech by filling
+This catalog is ready for translation. Let's translate it into Czech by filling the
 `translation` fields:
 
 .. code-block:: json
@@ -143,7 +142,7 @@ This catalog is ready for translation. Let's translate it in Czech by filling
      }
    }
 
-If we run ::`extract` command again, we see in statistics that all
+If we run the ::`extract` command again, we can see in the stats that all
 messages are translated::
 
    Catalog statistics:
@@ -160,15 +159,15 @@ messages are translated::
    (use "lingui compile" to compile catalogs for production)
 
 ::`extract` merges all translations with new messages, so you can run
-this command any time without worrying to lose any translation.
+this command any time without worrying about losing any translations.
 
 Preparing catalogs for production
 =================================
 
-Once we have all catalogs ready and translated, we can compile JSON into
-minified JS file with ::`compile` command. This command parses
-messages in MessageFormat and compiles them into simple functions. It also add
-plural rules to production ready catalog::
+Once we have all catalogs ready and translated, we can compile the JSON into a
+minified JS file with the ::`compile` command. This command parses the
+messages in MessageFormat and compiles them into simple functions. It also adds
+plural rules to a production ready catalog::
 
    lingui compile
 
@@ -177,17 +176,17 @@ plural rules to production ready catalog::
    Compiling message catalogs…
    Done!
 
-Locale dir now contains source catalogs (``messages.json``) and compiled
+The 'Locale' dir now contains the source catalogs (``messages.json``) and the compiled
 ones (``messages.js``).
 
 Cleaning up obsolete messages
 =============================
 
-By default, ::`extract` command merges messages extracted from source
-files with existing message catalogs. This is safe as we don't accidentaly loose
+By default, the ::`extract` command merges messages extracted from source
+files with the existing message catalogs. This is safe as we won't accidentally lose
 translated messages.
 
-However, soon or later some messages will be removed from source. We can use
+However, sooner or later some messages will be removed from the source. We can use the
 ``--clean`` option to clean up our message catalogs::
 
    lingui extract --clean
@@ -195,11 +194,11 @@ However, soon or later some messages will be removed from source. We can use
 Validation of message catalogs
 ==============================
 
-It might be necessary to check that all messages are translated (e.g: in
-continous integration runner). ::`compile` command has ``--strict``
+It might be useful to check if all messages were translated (e.g: in a
+continous integration runner). The ::`compile` command has a ``--strict``
 option, which does exactly that.
 
-Example output might look like this::
+The example output might look like this::
 
    lingui compile --strict
 
@@ -209,8 +208,8 @@ Example output might look like this::
    Error: Failed to compile catalog for locale en!
    Missing 42 translation(s)
 
-Further read
-============
+Further reading
+===============
 
 That's it! Checkout `CLI reference <../refs/lingui-cli>`_ documentation for more
 info about ``lingui`` commands or `configuration reference <../refs/lingui-conf>`_
