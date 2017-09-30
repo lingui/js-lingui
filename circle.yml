@@ -54,8 +54,8 @@ jobs:
               fi
 
       - store_test_results:
-          path: junitresults.xml
-          when: on_fail
+          path: ./results/
+          when: always
 
   test-node6:
     <<: *test-template
@@ -111,7 +111,7 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: source $(pipenv --venv)/bin/activate && cd docs && make html
+      - run: cd docs && pipenv run make html
 
       - deploy:
           command: |
