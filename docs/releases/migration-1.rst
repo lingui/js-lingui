@@ -1,15 +1,15 @@
 ********************************
-Migrationg guide from 0.x to 1.x
+Migration guide from 0.x to 1.x
 ********************************
 
-Even though only few projects use jsLingui_ at the moment, the purpose of
-this guide is to setup high quality migration path for future major versions.
+Even though only a few projects use jsLingui_ at the moment, the purpose of
+this guide is to setup a high-quality migration path for future major versions.
 
-Newlines normalization in babel plugins
+Newline normalization in Babel plugins
 =======================================
 
 Formatting of the source code shouldn't affect generated messages.
-Both babel plugins from now normalize newlines inside translations.
+Both Babel plugins will normalize newlines inside translations.
 
 In Javascript, multiple spaces before and after newline are replaced with
 single space, while newlines are removed completely:
@@ -20,7 +20,7 @@ single space, while newlines are removed completely:
      This message is wrapped
      on multiple
      lines
-   `
+  `
 
    // babel-plugin-lingui-transform-js 0.x
    "This message is wrapped\n  on multiple\n  lines"
@@ -28,9 +28,9 @@ single space, while newlines are removed completely:
    // babel-plugin-lingui-transform-js 1.x
    "This message is wrapped on multiple lines"
 
-Newlines normalization in React follows JSX conventions: newlines between text
-are replaced with single space, but newlines between components or text and
-component are removed and no space is added:
+Newline normalization in React follows JSX conventions: newlines between text
+are replaced with single space, but newlines between components or between text
+and a component are removed and no space is added:
 
 .. code-block:: jsx
 
@@ -46,8 +46,8 @@ component are removed and no space is added:
    // babel-plugin-lingui-transform-react 1.x
    "This message is wrapped on <0>multiple<0><1>lines</1>"
 
-As weird as it is, this is consistent how JSX works. If you need to force
-a space at the end of line, add ``{" "}``:
+As weird as it is, this is consistent with how JSX works. If you need to force
+a space at the end of a line, add ``{" "}``:
 
 .. code-block:: jsx
 
@@ -68,7 +68,7 @@ Javascript API (``lingui-i18n``)
 I18n constructor replaced with factory function
 -----------------------------------------------
 
-``I18n`` constructor is replaced with ``setupI18n`` factory function:
+``I18n`` constructor has been replaced with the ``setupI18n`` factory function:
 
 .. code-block:: js
 
@@ -109,10 +109,10 @@ a named export:
 Explicit development mode
 -------------------------
 
-The biggest change in first major release is support for compiled message
+The biggest change in this first major release is support for compiled message
 catalogs. Most i18n libraries parse and compile messages on the fly,
-which makes them heavy and slow. However, compiler is still useful in
-development, only now it has to be enabled manually:
+which makes them heavy and slow. The compiler is still useful in
+development, but now it has to be enabled manually:
 
 .. code-block:: js
 
@@ -128,7 +128,7 @@ development, only now it has to be enabled manually:
      development: dev
    })
 
-Development data include compiler and plural rules for all languages. Both
+Development data includes compiler and plural rules for all languages. Both
 are very large and unnecessary in production, because ``lingui-i18n``
 supports loading of compiled message catalogs.
 
@@ -138,7 +138,7 @@ Messages replaced with catalogs
 -------------------------------
 
 Plural rules are removed from library completely, because compiled message
-catalogs contain language specific data including plural rules. ``messages``
+catalogs contain language-specific data, including plural rules. ``messages``
 were replaced with ``catalogs`` to simplify loading all required data:
 
 In previous version, loading of messages looked like this (``lingui-i18n 1.x``):
@@ -216,13 +216,13 @@ More about [loading message catalogs]().
 React API (``lingui-react``)
 ============================
 
-Changes in React API reflects changes in underlying core ``lingui-i18n``.
+Changes in React API reflect changes in underlying core ``lingui-i18n``.
 
 ``InjectI18n`` was removed and replaced with ``withI18n`` decorator. Loading
-``InjectI18n`` in recent versions of ``lingui-react@<1.0.0`` raised deprecation
-warning in console.
+``InjectI18n`` in recent versions of ``lingui-react@<1.0.0`` would raise a
+deprecation warning in console.
 
-Development data must be loaded explicitely. It works in the same way as in
+Development data must be loaded explicitly. It works in the same way as in
 ``lingui-i18n``:
 
 .. code-block:: jsx
@@ -266,10 +266,10 @@ Also, messages were replaced with catalogs:
 CLI (lingui-cli)
 ================
 
-``lingui export`` command now create more complex message catalog, which contain
-not only translation, but also default message (if any) and locations from where
-the string were extracted.
+``lingui export`` command now creates a more complex message catalog, which contains
+not only translations, but also default messages (if any) and locations from where
+the strings were extracted.
 
-Running ``lingui export`` will generate new style catalog while merging translations
+Running ``lingui export`` will generate the new-style catalog while merging translations
 from the old one. This process is completely seamless. However, any external
-tool must be update to accept new style catalogs.
+tool must be updates to accept the new-style catalogs.
