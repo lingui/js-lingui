@@ -6,17 +6,21 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "jest --no-cache --runInBand",
-    "watch": "jest --watch",
+    "test:unit": "JEST_JUNIT_OUTPUT=results/unit.xml jest --no-cache packages/",
+    "test:integration": "JEST_JUNIT_OUTPUT=results/integration.xml jest --no-cache examples/",
+    "test": "npm run test:unit; npm run test:integration",
+    "watch:unit": "jest --watch packages/",
+    "watch:integration": "jest --watch examples/",
+    "watch": "jest --watch packages/ examples/",
     "bootstrap": "lerna bootstrap --npm-client=yarn",
     "lint:flow": "flow",
     "lint:eslint": "eslint packages/",
-    "lint": "npm run lint:eslint && npm run lint:flow",
+    "lint": "npm run lint:eslint; npm run lint:flow",
     "add": "all-contributors add",
     "generate": "all-contributors generate"
   },
   "engines": {
-    "node" : ">=5.0"
+    "node": ">=5.0"
   },
   "devDependencies": {
     "all-contributors-cli": "^4.3.0",
@@ -49,8 +53,8 @@
     "flow-bin": "^0.55.0",
     "flow-typed": "^2.1.2",
     "glob": "^7.1.2",
-    "jasmine-reporters": "^2.2.1",
     "jest": "^21.2.0",
+    "jest-junit": "^3.1.0",
     "lerna": "^2.0.0",
     "mock-fs": "^4.4.1",
     "nixt": "^0.5.0",
@@ -88,13 +92,14 @@
       "html",
       "lcov"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jest-env.js",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
     "roots": [
-      "packages/"
+      "packages/",
+      "examples/"
     ],
+    "testResultsProcessor": "jest-junit",
     "transformIgnorePatterns": [
       "/node_modules/",
       "/dist/"

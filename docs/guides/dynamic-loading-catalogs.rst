@@ -22,7 +22,7 @@ Requirements
 Setup
 =====
 
-Dynamic import is `syntax proposal <https://github.com/tc39/proposal-dynamic-import>`_
+We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
 to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and 
 ``babel-plugin-dynamic-import-node`` to make it work:
 
@@ -56,7 +56,7 @@ Let's start with the component. We're going to wrap :component:`I18nProvider`
 from ``lingui-react``. Active language is loaded from redux store, while
 messages are dynamically loaded and stored in local state.
 
-The render method looks like this:
+The ``render()`` method looks like this:
 
 .. code-block:: jsx
 
@@ -74,10 +74,9 @@ The render method looks like this:
       )
    }
 
-Next, we want to load message catalog when language changes and we haven't
-loaded it yet. Dynamic import returns promise and we don't want to re-render
+Next, we need to load message catalog when language changes which isn't done yet. Dynamic import returns a promise and we don't want to re-render
 our component until the message catalog is loaded. Let's add a
-``shouldComponentUpdate`` method:
+``shouldComponentUpdate()`` method:
 
 .. code-block:: js
 
@@ -106,10 +105,10 @@ trigger loading of catalog manually in ``componentDidMount``:
 Loading of message catalogs
 ===========================
 
-The most important piece in this story is ``loadCatalog`` method. It's
+The most important piece in this story is ``loadCatalog()`` method. It's
 necessary to load compiled message catalogs in production (``messages.js`` 
-instead of ``messages.json``) and unpack them using ``unpackCatalog`` function.
-Here we use the dynamic import syntax to load message catalog:
+instead of ``messages.json``) and unpack them using ``unpackCatalog()`` function.
+Here we use the dynamic import syntax to load the message catalog:
 
 .. code-block:: js
 
@@ -236,7 +235,7 @@ language are loaded:
 .. image:: ./dynamic-loading-catalogs-1.png
    :alt: Requests during the first render
 
-after changing language in UI, the second language bundle is loaded:
+After changing language in UI, the second language bundle is loaded:
 
 .. image:: ./dynamic-loading-catalogs-2.png
    :alt: Requests during the second render
