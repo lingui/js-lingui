@@ -23,8 +23,8 @@ primary_domain = 'js'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.githubpages',
-    'linguidocs'
+    'linguidocs',
+    'edit_on_github'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -162,6 +162,3 @@ texinfo_documents = [
      author, 'jsLingui', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

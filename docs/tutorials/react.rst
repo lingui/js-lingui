@@ -481,7 +481,7 @@ Things are getting a bit more complicated, but i18n is a complex process. At
 least we don't have to write this message manually!
 
 Beware of zeroes!
----------------
+-----------------
 
 Just a short detour, because it's a common misunderstanding.
 
