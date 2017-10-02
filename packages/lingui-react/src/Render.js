@@ -20,7 +20,7 @@ export default class Render extends React.Component<RenderComponentProps> {
 
   render () {
     const { className, value } = this.props
-    let render = this.props.render || this.context.linguiDefaultRender
+    let render = this.props.render !== undefined ? this.props.render : this.context.linguiDefaultRender
 
     if (render === undefined) {
       render = 'span'

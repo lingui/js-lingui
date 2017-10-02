@@ -92,6 +92,7 @@
       "html",
       "lcov"
     ],
+    "setupTestFrameworkScriptFile": "./scripts/jest-env.js",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],

@@ -8,11 +8,13 @@ describe('Render', function () {
     const context = {
       linguiDefaultRender: null
     }
+    const ctx = shallow(<Render value="Just a text" />, { context })
+    expect(ctx).toMatchSnapshot()
 
-    const span = shallow(<Render render={null} value="Just a text" />, { context })
+    const span = shallow(<Render render={null} value="Just a text" />)
     expect(span).toMatchSnapshot()
 
-    const withClass = shallow(<Render render={null} className="info" value="Just a text" />, { context })
+    const withClass = shallow(<Render render={null} className="info" value="Just a text" />)
     expect(withClass).toMatchSnapshot()
   })
 
