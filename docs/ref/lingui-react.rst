@@ -32,15 +32,20 @@ It's possible to pass in either a string for built-in elements (`span`, `h1`),
 React elements or React classes. This prop has the same type as ``render`` prop on
 i18n components described below.
 
+Changed in **lingui-react@1.3.0**: ``defaultRender`` accepts ``null`` value to
+render string without wrapping component in React 16.
+
 Local Configuration
 ^^^^^^^^^^^^^^^^^^^
 
-Prop name | Type | Description
---- | --- | --- |
-`className` | string | Class name to be added to `<span>` element
-`render` | React.Element, React.Class string | Custom wrapper element to render translation
+============= ==================================== ============================
+Prop name     Type                                 Description
+============= ==================================== ============================
+``className`` string                               Class name to be added to ``<span>`` element
+``render``    Element, Component, string, ``null`` Custom wrapper element to render translation
+============= ==================================== ============================
 
-`className` is ignored when `render` is set.
+``className`` is used only for built-in components (when `render` is string).
 
 When ``render`` is **React.Element** or **string** (built-in tags), it is
 cloned with the ``translation`` passed in as its child:
@@ -67,12 +72,21 @@ to get more control over the rendering of translation. Component passed to
    </Trans>;
    // renders as <Icon label="Sign in" />
 
+Changed in **lingui-react@1.3.0**: ``render`` accepts ``null`` value to render
+string without wrapping component in React 16.
+
+.. code-block:: jsx
+
+   // Render string in React 16
+   <Trans render={null}>Heading</Trans>;
+   // renders as "Heading"
+
 Components
 ==========
 
 .. component:: Trans
 
-   :prop id string?: Message ID (optional)
+   :prop id string?: Override auto-generated message ID
 
 This is the main and most-used component for translation. It supports
 variables and components inside messages. Usage of this component depends on

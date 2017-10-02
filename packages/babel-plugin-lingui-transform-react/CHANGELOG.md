@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-transform-react@1.1.0...babel-plugin-lingui-transform-react@1.1.1) (2017-10-02)
+
+
+
+
+**Note:** Version bump only for package babel-plugin-lingui-transform-react
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-transform-react@1.0.6...babel-plugin-lingui-transform-react@1.1.0) (2017-09-18)
 

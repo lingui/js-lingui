@@ -20,10 +20,16 @@ export default class Render extends React.Component<RenderComponentProps> {
 
   render () {
     const { className, value } = this.props
-    const render = this.props.render || this.context.linguiDefaultRender || 'span'
+    let render = this.props.render !== undefined ? this.props.render : this.context.linguiDefaultRender
 
-    // Built-in element: h1, p
-    if (typeof render === 'string') {
+    if (render === undefined) {
+      render = 'span'
+    }
+
+    if (render === null) {
+      return value
+    } else if (typeof render === 'string') {
+      // Built-in element: h1, p
       return React.createElement(render, { className }, value)
     }
 
