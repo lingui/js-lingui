@@ -2,37 +2,37 @@
 API Reference - React (lingui-react)
 ************************************
 
-Components from ``lingui-react`` wrap vanilla JS API from ``lingui-i18n``.
-React components handles changes of active language or interpolated variables
+Components from ``lingui-react`` wrap the vanilla JS API from ``lingui-i18n``.
+React components handle changes of active language or interpolated variables
 better than low-level API and also take care of re-rendering when wrapped inside
 pure components.
 
-General concepts
+General Concepts
 ================
 
 .. _rendering-translations:
 
-Rendering of translations
+Rendering of Translations
 -------------------------
 
 All i18n components render translation inside ``<span>`` tag. This tag can be
-customized using in two ways: globally using ``defaultRender`` prop on
-:component:`I18nProvider` component or locally using ``render`` prop on i18n
-components. Each component also support ``className`` as a shortcut for the most
-basic usecases.
+customized in two different ways: globally: using ``defaultRender`` prop on
+:component:`I18nProvider` component; or locally: using ``render`` prop on i18n
+components. Each component also supports ``className`` as a shortcut for the most
+basic use cases.
 
-Global configuration
+Global Configuration
 ^^^^^^^^^^^^^^^^^^^^
 
 Default rendering component can be set using ``defaultRender`` prop in
-:component:`I18nProvider`. The main usecase is rendering translations in
-``<Text>`` component in React Native.
+:component:`I18nProvider`. The main use case for this is rendering translations
+in ``<Text>`` component in React Native.
 
-It's possible to pass either string for built-in elements (`span`, `h1`),
-React elements or React classes. This props has the same type as ``render`` prop on
+It's possible to pass in either a string for built-in elements (`span`, `h1`),
+React elements or React classes. This prop has the same type as ``render`` prop on
 i18n components described below.
 
-Local configuration
+Local Configuration
 ^^^^^^^^^^^^^^^^^^^
 
 Prop name | Type | Description
@@ -40,10 +40,10 @@ Prop name | Type | Description
 `className` | string | Class name to be added to `<span>` element
 `render` | React.Element, React.Class string | Custom wrapper element to render translation
 
-`className` is ignored, when `render` is set.
+`className` is ignored when `render` is set.
 
 When ``render`` is **React.Element** or **string** (built-in tags), it is
-cloned with ``translation`` as a children:
+cloned with the ``translation`` passed in as its child:
 
 .. code-block:: jsx
 
@@ -57,7 +57,7 @@ cloned with ``translation`` as a children:
 
 Using **React.Component** (or stateless component) in ``render`` prop is useful
 to get more control over the rendering of translation. Component passed to
-``render`` receive translation/value in ``translation`` prop:
+``render`` will receive the translation value as a ``translation`` prop:
 
 .. code-block:: jsx
 
@@ -74,14 +74,14 @@ Components
 
    :prop id string?: Message ID (optional)
 
-This is the main and most used component for translation. It supports
-variables and components inside messages. Usage of this components depends on
-whether you're using jsLingui babel plugins or not.
+This is the main and most-used component for translation. It supports
+variables and components inside messages. Usage of this component depends on
+whether or not you're using jsLingui Babel plugins.
 
 Each message is identified by **message ID**.
 ``babel-plugin-lingui-transform-react`` automatically generates message ID from
 contents of :component:`Trans` component, but it's possible to provide custom
-message ID by setting `id` prop.
+message ID by setting the `id` prop.
 
 .. code-block:: jsx
 
@@ -98,7 +98,7 @@ message ID by setting `id` prop.
     <Trans>See the <Link to="/more">description</Link> below.</Trans>;
 
 It's also possible to use :component:`Trans` component without babel plugin. In
-fact, it's the only i18n component you'll need if you decide to go without babel plugin.
+fact, it's the only i18n component you'll need if you decide to go without the babel plugin.
 
 .. code-block:: jsx
 
@@ -171,9 +171,9 @@ used in source code. For example for English it's only ``one`` and ``other``:
 
 ``#`` character inside message is used as a placeholder for ``value``.
 
-``other`` plural form is also used, when specific plural form isn't defined.
+``other`` plural form is used when a specific plural form isn't defined.
 
-It's also possible to use exact matches. This is common used in combination with
+It's also possible to use exact matches. This is commonly used in combination with
 ``offset`` prop. ``offset`` doesn't affect exact matches, only plural forms:
 
 .. code-block:: jsx
@@ -201,8 +201,8 @@ It's also possible to use exact matches. This is common used in combination with
    :prop number value: Override auto-generated message ID
    :prop number other: (required) Default, catch-all form
 
-This component selects form based on content of ``value`` prop. It
-works like an ``switch`` statement. ``other`` prop is used when no prop
+This component selects the form based on content of ``value`` prop. It
+works like a ``switch`` statement. ``other`` prop is used when no prop
 matches ``value``:
 
 .. code-block:: jsx
@@ -298,9 +298,9 @@ options as `Intl.NumberFormat <IntlNumberFormat>`_:
 Providers
 =========
 
-Message catalogs and active language are passed to the context in
+Message catalogs and the active language are passed to the context in
 :component:`I18nProvider`. However, context should never be accessed
-directly. :js:func:`withI18n` high-order component passes ``i18n`` prop
+directly. The :js:func:`withI18n` high-order component passes ``i18n`` prop
 down to wrapped component and shadows all implementation details.
 
 .. component:: I18nProvider
@@ -335,8 +335,8 @@ at the beginning of this document.
      [messageId: string]: string | Function
    }
 
-This component should live above all i18n components. The good place is
-top-level application component. However, if the ``language`` is stored in the
+This component should live above all i18n components. A good place is as a
+top-level application component. However, if the ``language`` is stored in a
 ``redux`` store, this component should be inserted below ``react-redux/Provider``:
 
 .. code-block:: jsx
@@ -349,7 +349,7 @@ top-level application component. However, if the ``language`` is stored in the
 
         return (
             <I18nProvider language={language} catalogs={{ [language]: catalog }}>
-               // the rest of app
+               // rest of the app
             </I18nProvider>
         );
    }
@@ -359,7 +359,7 @@ top-level application component. However, if the ``language`` is stored in the
    :param options Object: Configuration for high-order component
    :param withRef bool: Returns reference to wrapped instance in `getWrappedInstance`
 
-:js:func:`withI18n` is high-order component which injects ``i18n`` object to
+:js:func:`withI18n` is a higher-order component which injects ``i18n`` object to
 wrapped component. ``i18n`` object is needed when you have to access plain JS
 API for translation of JSX props:
 
@@ -410,7 +410,7 @@ components:
 
 .. note::
 
-   In development, :js:func:`i18nMark` is identity function, returning ``msgId``.
+   In development, :js:func:`i18nMark` is an identity function, returning ``msgId``.
 
    In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
 
