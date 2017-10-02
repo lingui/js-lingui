@@ -5,6 +5,18 @@ import Render from './Render'
 
 describe('Render', function () {
   it('should render just a text without wrapping element', function () {
+    const context = {
+      linguiDefaultRender: null
+    }
+
+    const span = shallow(<Render render={null} value="Just a text" />, { context })
+    expect(span).toMatchSnapshot()
+
+    const withClass = shallow(<Render render={null} className="info" value="Just a text" />, { context })
+    expect(withClass).toMatchSnapshot()
+  })
+
+  it('should render with fallback span wrapping element', function () {
     const span = shallow(<Render value="Just a text" />)
     expect(span).toMatchSnapshot()
 
