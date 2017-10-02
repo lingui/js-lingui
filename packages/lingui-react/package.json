@@ -1,6 +1,6 @@
 {
   "name": "lingui-react",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "React components for translations",
   "main": "index.js",
   "module": "index.es.js",
@@ -35,7 +35,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "lingui-formats": "^1.0.3",
-    "lingui-i18n": "^1.3.0",
+    "lingui-i18n": "^1.3.1",
     "prop-types": "^15.6.0"
   },
   "scripts": {
