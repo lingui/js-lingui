@@ -6,4 +6,6 @@ npm-debug.log
 lerna-debug.log
 
 coverage/
-junitresults.xml
+results/
+
+__pycache__/
