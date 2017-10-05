@@ -27,7 +27,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "peerDependencies": {
-    "react": "^15.0.0"
+    "react": "^15.0.0 || ^16.0.0"
   },
   "engines": {
     "node": ">=4.0"
