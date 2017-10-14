@@ -111,6 +111,13 @@ array-flatten@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.1.tgz#426bb9da84090c1838d812c8150af20a8331e296"
 
+array-includes@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/array-includes/-/array-includes-3.0.3.tgz#184b48f62d92d7452bb31b323165c7f8bd02266d"
+  dependencies:
+    define-properties "^1.1.2"
+    es-abstract "^1.7.0"
+
 array-union@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/array-union/-/array-union-1.0.2.tgz#9a34410e4f4e3da23dea375be5be70f24778ec39"
@@ -376,15 +383,15 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-lingui-transform-js@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.3.tgz#95ea579fc2fefc87f4842b37041f005f8c139e53"
+babel-plugin-lingui-transform-js@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.0.tgz#81cc2e480ceadd9cf74bec80376d399302454b31"
+babel-plugin-lingui-transform-react@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.1.tgz#3c9d9b2c8aaea7927997e7693271f5b18b7c7e59"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -693,12 +700,12 @@ babel-preset-flow@^6.23.0:
   dependencies:
     babel-plugin-transform-flow-strip-types "^6.22.0"
 
-babel-preset-lingui-react@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/babel-preset-lingui-react/-/babel-preset-lingui-react-1.0.6.tgz#a3ee4b2a32e6bf46e1ca6979f0b3cf5a3577750e"
+babel-preset-lingui-react@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/babel-preset-lingui-react/-/babel-preset-lingui-react-1.0.7.tgz#d2acab730d1398e94084b5e2816fcb7b59048558"
   dependencies:
-    babel-plugin-lingui-transform-js "^1.0.3"
-    babel-plugin-lingui-transform-react "^1.1.0"
+    babel-plugin-lingui-transform-js "^1.0.4"
+    babel-plugin-lingui-transform-react "^1.1.1"
 
 babel-preset-react@^6.24.1:
   version "6.24.1"
@@ -1384,6 +1391,16 @@ es-abstract@^1.5.0:
     is-callable "^1.1.3"
     is-regex "^1.0.4"
 
+es-abstract@^1.7.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.9.0.tgz#690829a07cae36b222e7fd9b75c0d0573eb25227"
+  dependencies:
+    es-to-primitive "^1.1.1"
+    function-bind "^1.1.1"
+    has "^1.0.1"
+    is-callable "^1.1.3"
+    is-regex "^1.0.4"
+
 es-to-primitive@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/es-to-primitive/-/es-to-primitive-1.1.1.tgz#45355248a88979034b6792e19bb81f2b7975dd0d"
@@ -1824,10 +1841,6 @@ has-ansi@^2.0.0:
   dependencies:
     ansi-regex "^2.0.0"
 
-has-flag@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-1.0.0.tgz#9d9e793165ce017a00f00418c43f942a7b1d11fa"
-
 has-flag@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-2.0.0.tgz#e8207af1cc7b30d446cc70b734b5e8be18f88d51"
@@ -2157,6 +2170,10 @@ is-utf8@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
 
+is-wsl@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
+
 isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
@@ -2267,23 +2284,23 @@ lingui-formats@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.3.tgz#a81f69d7cef73ee86938c2dfa4979512dcded6cd"
 
-lingui-i18n@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.3.0.tgz#1b4102058d3ab86e58d74d0dddec76f8e36c0076"
+lingui-i18n@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.3.1.tgz#dab72e183420bd060c515df625c6cef326120b61"
   dependencies:
     babel-runtime "^6.26.0"
     lingui-formats "^1.0.3"
     make-plural "^4.0.1"
     messageformat-parser "^1.1.0"
 
-lingui-react@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-1.2.1.tgz#bb5cf2005cc22f54226970701d284ac4538f41fb"
+lingui-react@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/lingui-react/-/lingui-react-1.3.1.tgz#db2bc8907a10945dcea1b867a93226e2677a756a"
   dependencies:
     babel-runtime "^6.26.0"
     lingui-formats "^1.0.3"
-    lingui-i18n "^1.3.0"
-    prop-types "^15.5.10"
+    lingui-i18n "^1.3.1"
+    prop-types "^15.6.0"
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -2668,12 +2685,11 @@ once@^1.3.0, once@^1.3.3:
   dependencies:
     wrappy "1"
 
-opn@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/opn/-/opn-4.0.2.tgz#7abc22e644dff63b0a96d5ab7f2790c0f01abc95"
+opn@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/opn/-/opn-5.1.0.tgz#72ce2306a17dbea58ff1041853352b4a8fc77519"
   dependencies:
-    object-assign "^4.0.1"
-    pinkie-promise "^2.0.0"
+    is-wsl "^1.1.0"
 
 original@>=0.0.5:
   version "1.0.0"
@@ -2889,7 +2905,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0:
+prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -3478,12 +3494,6 @@ supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
 
-supports-color@^3.1.1:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.2.3.tgz#65ac0504b3954171d8a64946b2ae3cbb8a5f54f6"
-  dependencies:
-    has-flag "^1.0.0"
-
 supports-color@^4.2.1:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-4.4.0.tgz#883f7ddabc165142b2a61427f3352ded195d1a3e"
@@ -3765,9 +3775,9 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.6.0.tgz#a89a929fbee205d35a4fa2cc487be9cbec8898bc"
+webpack@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.7.1.tgz#6046b5c415ff7df7a0dc54c5b6b86098e8b952da"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
@@ -3870,7 +3880,7 @@ yargs-parser@^7.0.0:
   dependencies:
     camelcase "^4.1.0"
 
-yargs@^6.0.0:
+yargs@^6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-6.6.0.tgz#782ec21ef403345f830a808ca3d513af56065208"
   dependencies:

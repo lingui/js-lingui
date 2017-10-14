@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-babel-plugin-lingui-transform-js@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.3.tgz#95ea579fc2fefc87f4842b37041f005f8c139e53"
+babel-plugin-lingui-transform-js@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.0.tgz#81cc2e480ceadd9cf74bec80376d399302454b31"
+babel-plugin-lingui-transform-react@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.1.tgz#3c9d9b2c8aaea7927997e7693271f5b18b7c7e59"
   dependencies:
     babel-runtime "^6.23.0"
 

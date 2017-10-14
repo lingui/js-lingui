@@ -62,9 +62,9 @@ lingui-formats@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.3.tgz#a81f69d7cef73ee86938c2dfa4979512dcded6cd"
 
-lingui-i18n@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.3.0.tgz#1b4102058d3ab86e58d74d0dddec76f8e36c0076"
+lingui-i18n@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/lingui-i18n/-/lingui-i18n-1.3.1.tgz#dab72e183420bd060c515df625c6cef326120b61"
   dependencies:
     babel-runtime "^6.26.0"
     lingui-formats "^1.0.3"

@@ -34,9 +34,7 @@ describe('NeverUpdate', function () {
     return node.find(element).first().text()
   }
 
-  // https://github.com/airbnb/enzyme/issues/1163
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should update translation of children when language changes', function () {
+  it('should update translation of children when language changes', function () {
     const ConvervativeChildren = BeConservative(Children)
 
     const node = mount(<ConvervativeChildren language="en" />)
@@ -52,9 +50,7 @@ describe('NeverUpdate', function () {
     expect(getText(node, '.variable')).toEqual('Jmenuji se Mononoke')
   })
 
-  // https://github.com/airbnb/enzyme/issues/1163
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should update translation of attributes when language changes', function () {
+  it('should update translation of attributes when language changes', function () {
     const ConvervativeAttributes = BeConservative(ElementAttributes)
 
     const node = mount(<ConvervativeAttributes language="en" />)
@@ -63,6 +59,7 @@ describe('NeverUpdate', function () {
     expect(node.find('.variable').prop('aria-label')).toEqual('Close')
 
     node.setProps({ language: 'cs' })
+    node.update()
     expect(node.find('.expression').prop('title'))
       .toEqual('Celý článek Scientific Journal')
     expect(node.find('.variable').prop('aria-label')).toEqual('Zavřít')

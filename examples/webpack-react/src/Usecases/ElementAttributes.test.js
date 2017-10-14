@@ -22,15 +22,14 @@ describe('ElementAttributes', function () {
       <ElementAttributes />
     </I18nProvider>
 
-  // https://github.com/airbnb/enzyme/issues/1163
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should demostrate i18n in html attributes', function () {
+  it('should demostrate i18n in html attributes', function () {
     const node = mount(<Component language="en"/>)
     expect(node.find('.expression').prop('title'))
       .toEqual('Full content of Scientific Journal')
     expect(node.find('.variable').prop('aria-label')).toEqual('Close')
 
     node.setProps({ language: 'cs' })
+    node.update()
     expect(node.find('.expression').prop('title'))
       .toEqual('Celý článek Scientific Journal')
     expect(node.find('.variable').prop('aria-label')).toEqual('Zavřít')

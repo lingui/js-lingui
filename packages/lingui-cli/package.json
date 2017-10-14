@@ -45,7 +45,7 @@
     "lingui-conf": "^0.11.0",
     "make-plural": "^4.0.1",
     "messageformat-parser": "^1.1.0",
-    "ramda": "^0.24.1"
+    "ramda": "^0.25.0"
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"

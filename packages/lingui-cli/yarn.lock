@@ -78,22 +78,22 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-lingui-extract-messages@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.1.2.tgz#68fd733c902c719688107cfc6ed02b175eeab1ca"
+babel-plugin-lingui-extract-messages@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.1.3.tgz#46bf3a8b6c3dcb18dae54ee38a784c9d5ec75bfa"
   dependencies:
     babel-runtime "^6.26.0"
-    lingui-conf "^0.10.2"
+    lingui-conf "^0.11.0"
 
-babel-plugin-lingui-transform-js@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.3.tgz#95ea579fc2fefc87f4842b37041f005f8c139e53"
+babel-plugin-lingui-transform-js@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.0.tgz#81cc2e480ceadd9cf74bec80376d399302454b31"
+babel-plugin-lingui-transform-react@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.1.tgz#3c9d9b2c8aaea7927997e7693271f5b18b7c7e59"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -321,18 +321,18 @@ jest-get-type@^21.2.0:
   version "21.2.0"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-21.2.0.tgz#f6376ab9db4b60d81e39f30749c6c466f40d4a23"
 
-jest-regex-util@^21.0.0:
+jest-regex-util@^21.2.0:
   version "21.2.0"
   resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-21.2.0.tgz#1b1e33e63143babc3e0f2e6c9b5ba1eb34b2d530"
 
-jest-validate@^21.0.0:
-  version "21.2.0"
-  resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-21.2.0.tgz#b383fc9c2905c15fac081bd42ffa954457ea705b"
+jest-validate@^21.2.1:
+  version "21.2.1"
+  resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-21.2.1.tgz#cc0cbca653cd54937ba4f2a111796774530dd3c7"
   dependencies:
     chalk "^2.0.1"
     jest-get-type "^21.2.0"
     leven "^2.1.0"
-    pretty-format "^21.2.0"
+    pretty-format "^21.2.1"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -350,13 +350,13 @@ leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-conf@^0.10.2:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.10.2.tgz#dd9c19dfcf2079e24e033a7a570e62928417ff45"
+lingui-conf@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.11.0.tgz#5843ad4527d948378a8d9a9b04c268674d670aba"
   dependencies:
     chalk "^2.1.0"
-    jest-regex-util "^21.0.0"
-    jest-validate "^21.0.0"
+    jest-regex-util "^21.2.0"
+    jest-validate "^21.2.1"
     pkg-conf "^2.0.0"
 
 load-json-file@^2.0.0:
@@ -472,9 +472,9 @@ pkg-conf@^2.0.0:
     find-up "^2.0.0"
     load-json-file "^2.0.0"
 
-pretty-format@^21.2.0:
-  version "21.2.0"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-21.2.0.tgz#8ca29556ad13eed5db48a3096b98bab9c321c6fa"
+pretty-format@^21.2.1:
+  version "21.2.1"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-21.2.1.tgz#ae5407f3cf21066cd011aa1ba5fce7b6a2eddb36"
   dependencies:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
@@ -483,9 +483,9 @@ private@^0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
 
-ramda@^0.24.1:
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
+ramda@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
 
 regenerator-runtime@^0.11.0:
   version "0.11.0"
