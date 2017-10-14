@@ -1,5 +1,5 @@
-// flow-typed signature: 9d7ebf432fe5436b8912d014b367d934
-// flow-typed version: b059774d08/chalk_v1.x.x/flow_>=v0.21.x
+// flow-typed signature: 0e6c18548011f75418a9e8abe577da92
+// flow-typed version: 8627421170/chalk_v2.x.x/flow_>=v0.19.x
 
 type $npm$chalk$StyleElement = {
   open: string;
@@ -41,45 +41,9 @@ type $npm$chalk$Style = {
   bgWhite: $npm$chalk$Chain;
 };
 
-type $npm$chalk$StyleMap = {
-  // General
-  reset: $npm$chalk$StyleElement;
-  bold: $npm$chalk$StyleElement;
-  dim: $npm$chalk$StyleElement;
-  italic: $npm$chalk$StyleElement;
-  underline: $npm$chalk$StyleElement;
-  inverse: $npm$chalk$StyleElement;
-  strikethrough: $npm$chalk$StyleElement;
-
-  // Text colors
-  black: $npm$chalk$StyleElement;
-  red: $npm$chalk$StyleElement;
-  green: $npm$chalk$StyleElement;
-  yellow: $npm$chalk$StyleElement;
-  blue: $npm$chalk$StyleElement;
-  magenta: $npm$chalk$StyleElement;
-  cyan: $npm$chalk$StyleElement;
-  white: $npm$chalk$StyleElement;
-  gray: $npm$chalk$StyleElement;
-
-  // Background colors
-  bgBlack: $npm$chalk$StyleElement;
-  bgRed: $npm$chalk$StyleElement;
-  bgGreen: $npm$chalk$StyleElement;
-  bgYellow: $npm$chalk$StyleElement;
-  bgBlue: $npm$chalk$StyleElement;
-  bgMagenta: $npm$chalk$StyleElement;
-  bgCyan: $npm$chalk$StyleElement;
-  bgWhite: $npm$chalk$StyleElement;
-};
-
 declare module "chalk" {
   declare var enabled: boolean;
   declare var supportsColor: boolean;
-  declare var styles: $npm$chalk$StyleMap;
-
-  declare function stripColor(value: string): any;
-  declare function hasColor(str: string): boolean;
 
   // General
   declare var reset: $npm$chalk$Chain;
