@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-transform-react@1.1.1...babel-plugin-lingui-transform-react@1.1.2) (2017-10-23)
+
+
+### Bug Fixes
+
+* Fix import filtering with babel-plugin-resolver ([f04e6d4](https://github.com/lingui/js-lingui/commit/f04e6d4))
+
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-transform-react@1.1.0...babel-plugin-lingui-transform-react@1.1.1) (2017-10-02)
 
