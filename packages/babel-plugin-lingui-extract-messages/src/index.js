@@ -61,10 +61,11 @@ export default function ({ types: t }) {
       ImportDeclaration (path) {
         const { node } = path
 
-        if (!Array.includes(['lingui-react', 'lingui-i18n'], node.source.value)) return
+        const moduleName = node.source.value.split('/').slice(-1)[0]
+        if (!Array.includes(['lingui-react', 'lingui-i18n'], moduleName)) return
 
         const importDeclarations = {}
-        if (node.source.value === 'lingui-react') {
+        if (moduleName === 'lingui-react') {
           node.specifiers.forEach(specifier => {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })

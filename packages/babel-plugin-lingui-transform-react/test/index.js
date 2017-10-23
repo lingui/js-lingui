@@ -51,6 +51,34 @@ describe('babel-plugin-lingui-transform-react', function () {
     })
   })
 
+  // can't reproduce the same behavior as outside tests
+  // eslint-disable-next-line jest/no-disabled-tests
+  describe.skip('integrations', function () {
+    describe('babel-plugin-resolver', function () {
+      it('should resolve imports correctly', function () {
+        const resolveDirs = path.relative(process.cwd(), __dirname)
+        const options = {
+          ...babelOptions,
+          plugins: [
+            ...babelOptions.plugins,
+            ['resolver', { resolveDirs: [resolveDirs] }]
+          ]
+        }
+        const testPath = path.relative(
+          process.cwd(),
+          path.join(__dirname, 'integrations', 'babel-plugin-resolver')
+        )
+        const actualPath = path.join(testPath, 'actual.js')
+        const expectedPath = path.join(testPath, 'expected.js')
+
+        const expected = fs.readFileSync(expectedPath, 'utf8')
+        const actual = transformFileSync(actualPath, options).code.trim()
+
+        expect(actual).toEqual(expected.trim())
+      })
+    })
+  })
+
   describe('validation', function () {
     beforeAll(function () {
       // Transform empty file to set the right filename for all stack frames
