@@ -1,5 +1,7 @@
 // @flow
+import fs from 'fs'
 import path from 'path'
+import mkdirp from 'mkdirp'
 import chalk from 'chalk'
 import program from 'commander'
 
@@ -27,6 +29,11 @@ export default function command (
     return false
   }
 
+  const buildDir = path.join(config.localeDir, '_build')
+  if (!fs.existsSync(buildDir)) {
+    mkdirp(buildDir)
+  }
+
   console.log('Extracting messages from source files…')
   extract(
     config.srcPathDirs,
@@ -40,7 +47,6 @@ export default function command (
 
   console.log('Collecting all messages…')
   const clean = options.clean ? cleanObsolete : id => id
-  const buildDir = path.join(config.localeDir, '_build')
   const catalog = collect(buildDir)
   const catalogs = clean(format.merge(catalog))
   options.verbose && console.log()
