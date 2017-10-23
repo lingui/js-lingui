@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.7"></a>
+## [1.3.7](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.6...lingui-cli@1.3.7) (2017-10-23)
+
+
+### Bug Fixes
+
+* Create _build dir when no messages are extracted ([5bbdd89](https://github.com/lingui/js-lingui/commit/5bbdd89))
+
+
+
+
 <a name="1.3.6"></a>
 ## [1.3.6](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.5...lingui-cli@1.3.6) (2017-10-14)
 
