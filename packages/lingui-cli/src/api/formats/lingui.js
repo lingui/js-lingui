@@ -13,7 +13,8 @@ const compiledFilename = '{locale}/messages.js'
 
 export default (config: LinguiConfig): CatalogFormat => ({
   formatFilename (pattern, locale) {
-    return pattern.replace('{locale}', locale)
+    // split to path breadcrumbs and join in platform-compatible way
+    return path.join.apply(this, pattern.replace('{locale}', locale).split('/'))
   },
 
   write (locale, messages) {
