@@ -62,7 +62,7 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
 
   static childContextTypes = {
     linguiPublisher: PropTypes.object.isRequired,
-    linguiDefaultRender: PropTypes.any.isRequired
+    linguiDefaultRender: PropTypes.any
   }
 
   constructor (props: I18nProviderProps) {
