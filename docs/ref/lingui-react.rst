@@ -162,7 +162,7 @@ This component represents ``plural`` formatter in Message Format:
 
    {count, plural, one {# book} other {# books}}
 
-Plural forms for all languages can be found at `CLDR Plural Rules <cldrPluralRules>`_
+Plural forms for all languages can be found at `CLDR Plural Rules`_
 page.
 
 .. warning::
@@ -265,11 +265,12 @@ it uses **ordinal** plural forms, instead of **cardinal** ones.
 .. component:: DateFormat
 
    :prop number value: Date to be formatted
-   :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat <IntlDateTimeFormat>`_.
+   :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat`_.
 
-:component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat <IntlDateTimeFormat>`_. It takes a date as a ``value`` prop and formats it
+:component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat`_.
+It takes a date as a ``value`` prop and formats it
 using ``format`` options. ``format`` prop supports the same options as
-`Intl.DateTimeFormat <IntlDateTimeFormat>`_:
+`Intl.DateTimeFormat`_:
 
 .. code-block:: jsx
 
@@ -288,12 +289,12 @@ using ``format`` options. ``format`` prop supports the same options as
 .. component:: NumberFormat
 
    :prop number value: Date to be formatted
-   :prop string|Object format: Date format passed as options to `Intl.NumberFormat <IntlNumberFormat>`_
+   :prop string|Object format: Date format passed as options to `Intl.NumberFormat`_
 
 :component:`NumberFormat` component is a wrapper around
-`Intl.NumberFormat <IntlNumberFormat>`_. It takes a number as a ``value`` prop
+`Intl.NumberFormat_. It takes a number as a ``value`` prop
 and formats it using ``format`` options. ``format`` prop supports the same
-options as `Intl.NumberFormat <IntlNumberFormat>`_:
+options as `Intl.NumberFormat`_:
 
 .. code-block:: jsx
 
@@ -324,7 +325,7 @@ down to wrapped component and shadows all implementation details.
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
-components. `Rendering of translations <rendering-translations>`_ is explained
+components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
 
 ``catalogs`` is a type of ``Catalogs``:
@@ -428,6 +429,5 @@ components:
 
    In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
 
-.. _IntlDateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-
-.. _IntlNumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+.. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+.. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
