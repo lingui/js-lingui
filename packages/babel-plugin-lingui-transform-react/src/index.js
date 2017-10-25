@@ -294,7 +294,8 @@ export default function ({ types: t }) {
       ImportDeclaration (path) {
         const { node } = path
 
-        if (node.source.value !== 'lingui-react') return
+        const moduleName = node.source.value.split('/').slice(-1)[0]
+        if (moduleName !== 'lingui-react') return
 
         node.specifiers.forEach(specifier => {
           importDeclarations[specifier.imported.name] = specifier.local.name

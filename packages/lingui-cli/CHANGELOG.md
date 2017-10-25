@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.8"></a>
+## [1.3.8](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.7...lingui-cli@1.3.8) (2017-10-23)
+
+
+
+
+**Note:** Version bump only for package lingui-cli
+
 <a name="1.3.7"></a>
 ## [1.3.7](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.6...lingui-cli@1.3.7) (2017-10-23)
 
