@@ -3,8 +3,8 @@ Pluralization
 *************
 
 Plurals are essential when dealing with internationalization. jsLingui_
-uses cldrPluralRules_. In general, there're 6 plural forms (taken
-from cldrPlurals_ page):
+uses `CLDR Plural Rules`_. In general, there're 6 plural forms (taken
+from `CLDR Plurals`_ page):
 
 - zero
 - one (singular)

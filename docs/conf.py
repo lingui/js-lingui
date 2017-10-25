@@ -103,8 +103,8 @@ html_sidebars = {
 
 rst_epilog = """
 .. _jsLingui: https://github.com/lingui/js-lingui
-.. _cldrPlurals: http://cldr.unicode.org/index/cldr-spec/plural-rules
-.. _cldrPluralRules: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+.. _CLDR Plurals: http://cldr.unicode.org/index/cldr-spec/plural-rules
+.. _CLDR Plural Rules: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 """
 
 # -- Options for HTMLHelp output ------------------------------------------
