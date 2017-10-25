@@ -143,7 +143,7 @@ good, saving a lot of bandwidth data.
    translated the catalog before we extract all messages from source.
 
    Let's deal with language switching later… but if you're still curious,
-   take a look at `example <dynamic-loadng-catalogs>`_ with Redux and Webpack.
+   take a look at :ref:`example <dynamic-loading-catalogs>` with Redux and Webpack.
 
 Introducing internationalization
 ================================
@@ -428,7 +428,7 @@ English plural rules
 How do we know which plural form we should use? It's very simple:
 we, as developers, only need to know plural forms of the language we use in
 our source. Our component is written in English, so looking at
-`English plural rules <englishRules>`_ we'll
+`English plural rules <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en>`_ we'll
 need just two forms:
 
 ``one``
@@ -498,9 +498,9 @@ You may wonder, why the following code doesn't work as expected:
 
 This component will render ``There're 0 messages in your inbox`` for
 ``messagesCount = 0``. Why so? Because English doesn't have ``zero``
-`plural form <englishRules>`_.
+`plural form <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en>`_.
 
-Looking at `English plural rules <englishRules>`_, it's:
+Looking at `English plural rules <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en>`_, it's:
 
 = =====================
 N Form
@@ -673,7 +673,7 @@ Extracting messages
 
 Our work here is done and we can start working with message catalogs. First,
 we need to extract all messages from the source code. jsLingui_ has a handy CLI
-for this task, so let's pause here and go to `CLI tutorial <./cli>`_ to
+for this task, so let's pause here and go to :ref:`CLI tutorial <tutorial-cli>` to
 add locales, extract messages and compile translated message catalogs.
 
 Loading translations
@@ -714,13 +714,11 @@ We'll just import a compiled message catalog, unpack it and pass it to
 
 The ``catalogs`` prop expects a dictionary of message catalogs in *all* languages,
 but we can load them on demand. It depends on your setup and there's
-an example `how to do it with webpack <dynamic-loading-catalogs>`_.
+an example :ref:`how to do it with webpack <dynamic-loading-catalogs>`.
 
 Further reading
 ===============
 
-- `lingui-react reference documentation <../ref/lingui-react>`_
-- `lingui-cli reference documentation <../ref/lingui-cli>`_
-- `Pluralization Guide <../guide/plurals>`_
-
-.. _englishRules: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en
+- `lingui-react reference documentation <../ref/lingui-react.html>`_
+- `lingui-cli reference documentation <../ref/lingui-cli.html>`_
+- `Pluralization Guide <../guides/plurals.html>`_
