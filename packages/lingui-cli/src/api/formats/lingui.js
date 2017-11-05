@@ -8,13 +8,12 @@ import R from 'ramda'
 import type { LinguiConfig, CatalogFormat } from './types'
 import * as locales from './utils/locales'
 
-const sourceFilename = '{locale}/messages.json'
-const compiledFilename = '{locale}/messages.js'
+const sourceFilename = path.join('{locale}', 'messages.json')
+const compiledFilename = path.join('{locale}', 'messages.js')
 
 export default (config: LinguiConfig): CatalogFormat => ({
   formatFilename (pattern, locale) {
-    // split to path breadcrumbs and join in platform-compatible way
-    return path.join.apply(this, pattern.replace('{locale}', locale).split('/'))
+    return pattern.replace('{locale}', locale)
   },
 
   write (locale, messages) {
@@ -152,7 +151,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
     )
 
     if (!fs.existsSync(filename)) {
-      const dirname = filename.substring(0, filename.lastIndexOf('/'))
+      const dirname = path.dirname(filename)
 
       mkdirp.sync(dirname)
       this.write(locale, {})
