@@ -158,7 +158,7 @@ you're able to say it three times very quickly. /funny/
 
    From now on, *internationalization* will be shortened to a common acronym *i18n*.
 
-Let's start with the basics - static messages. These messages dosn't have any variables, HTML or components inside. 
+Let's start with the basics - static messages. These messages don't have any variables, HTML or components inside. 
 Just some text:
 
 .. code-block:: jsx

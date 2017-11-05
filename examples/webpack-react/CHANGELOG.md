@@ -3,7 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="1.1.8"></a>
+  <a name="1.1.9"></a>
+## [1.1.9](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.8...example-usecase@1.1.9) (2017-10-25)
+
+
+
+
+**Note:** Version bump only for package example-usecase
+
+  <a name="1.1.8"></a>
 ## [1.1.8](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.7...example-usecase@1.1.8) (2017-10-23)
 
 
@@ -11,7 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package example-usecase
 
-      <a name="1.1.7"></a>
+<a name="1.1.7"></a>
 ## [1.1.7](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.6...example-usecase@1.1.7) (2017-10-23)
 
 
