@@ -26,11 +26,14 @@ const Select = withI18n()(class Select extends React.Component<*, SelectProps> {
   props: SelectProps
 
   render () {
-    const { className, render, i18n, ...selectProps } = this.props
+    // lingui-transform-js transforms also this file in react-native env.
+    // i18n must be aliased to _i18n to hide i18n.select call from plugin,
+    // otherwise it throws "undefined is not iterable" obscure error.
+    const { className, render, i18n: _i18n, ...selectProps } = this.props
     return <Render
       className={className}
       render={render}
-      value={i18n.select(selectProps)}
+      value={_i18n.select(selectProps)}
     />
   }
 })

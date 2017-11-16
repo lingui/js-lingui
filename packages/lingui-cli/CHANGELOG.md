@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.10"></a>
+## [1.3.10](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.9...lingui-cli@1.3.10) (2017-11-05)
+
+
+### Bug Fixes
+
+* Fix path separators for windows ([3e130ca](https://github.com/lingui/js-lingui/commit/3e130ca))
+
+
+
+
+<a name="1.3.9"></a>
+## [1.3.9](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.8...lingui-cli@1.3.9) (2017-10-25)
+
+
+### Bug Fixes
+
+* Fix catalogs paths on Windows ([8fea578](https://github.com/lingui/js-lingui/commit/8fea578))
+
+
+
+
 <a name="1.3.8"></a>
 ## [1.3.8](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.7...lingui-cli@1.3.8) (2017-10-23)
 

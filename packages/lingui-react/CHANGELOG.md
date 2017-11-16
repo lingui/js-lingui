@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.5"></a>
+## [1.3.5](https://github.com/lingui/js-lingui/compare/lingui-react@1.3.4...lingui-react@1.3.5) (2017-11-16)
+
+
+### Bug Fixes
+
+* Fix react package for react-native ([5ca1752](https://github.com/lingui/js-lingui/commit/5ca1752))
+
+
+
+
 <a name="1.3.4"></a>
 ## [1.3.4](https://github.com/lingui/js-lingui/compare/lingui-react@1.3.3...lingui-react@1.3.4) (2017-10-25)
 
