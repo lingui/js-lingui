@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-lingui-react",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Lingui preset for React apps",
   "main": "index.js",
   "author": {

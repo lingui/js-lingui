@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.6"></a>
+## [1.1.6](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.5...babel-plugin-lingui-extract-messages@1.1.6) (2017-11-19)
+
+
+
+
+**Note:** Version bump only for package babel-plugin-lingui-extract-messages
+
 <a name="1.1.5"></a>
 ## [1.1.5](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.4...babel-plugin-lingui-extract-messages@1.1.5) (2017-10-23)
 

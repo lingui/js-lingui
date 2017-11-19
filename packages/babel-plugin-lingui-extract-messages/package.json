@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-lingui-extract-messages",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Extract messages for translation",
   "main": "dist/index.js",
   "author": {
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "lingui-conf": "^0.11.0"
+    "lingui-conf": "^0.12.0"
   },
   "devDependencies": {
     "babel-plugin-lingui-transform-js": "^1.0.4",

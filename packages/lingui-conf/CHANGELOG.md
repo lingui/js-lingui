@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/lingui/js-lingui/compare/lingui-conf@0.9.1...lingui-conf@0.12.0) (2017-11-19)
+
+
+### Bug Fixes
+
+* Fix lingui-conf release ([6537f2e](https://github.com/lingui/js-lingui/commit/6537f2e))
+
+
+### Features
+
+* Add sourceLocale, deprecate fallbackLanguage ([841e411](https://github.com/lingui/js-lingui/commit/841e411))
+
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/lingui/js-lingui/compare/lingui-conf@0.9.1...lingui-conf@0.11.0) (2017-10-02)
 
