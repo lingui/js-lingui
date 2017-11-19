@@ -84,7 +84,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="untranslated"
-                  render={undefined}
                   value="This isn't translated"
                 >
                   <span
@@ -148,7 +147,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="customId"
-                  render={undefined}
                   value="Nápis"
                 >
                   <span
@@ -212,7 +210,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="translated"
-                  render={undefined}
                   value="Ahoj světe"
                 >
                   <span
@@ -286,7 +283,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="variable"
-                  render={undefined}
                   value="Jmenuji se Mononoke"
                 >
                   <span
@@ -364,7 +360,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="components"
-                  render={undefined}
                   value={
                     Array [
                       "Read ",
@@ -461,7 +456,6 @@ exports[`Children should render 1`] = `
               >
                 <Render
                   className="plural"
-                  render={undefined}
                   value="Wilma pozvala Fred a dalšího hosta na její oslavu."
                 >
                   <span
@@ -542,7 +536,6 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
-                  className={undefined}
                   render={
                     <p
                       className="render-element"
@@ -618,7 +611,6 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
-                  className={undefined}
                   render={[Function]}
                   value="Jmenuji se Mononoke"
                 >

@@ -38,13 +38,13 @@
     "babel-plugin-lingui-transform-react": "^1.1.2",
     "babel-types": "^6.26.0",
     "babylon": "^6.18.0",
-    "chalk": "^2.1.0",
+    "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
     "commander": "^2.11.0",
     "glob": "^7.1.2",
     "lingui-conf": "^0.11.0",
-    "make-plural": "^4.0.1",
-    "messageformat-parser": "^1.1.0",
+    "make-plural": "^4.1.1",
+    "messageformat-parser": "^2.0.0",
     "ramda": "^0.25.0"
   },
   "scripts": {

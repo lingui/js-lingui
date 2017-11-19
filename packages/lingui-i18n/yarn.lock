@@ -13,15 +13,19 @@ core-js@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
 
-make-plural@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/make-plural/-/make-plural-4.0.1.tgz#be9cb73f54341a0289699b6abf643973d3bedd53"
+lingui-formats@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/lingui-formats/-/lingui-formats-1.0.3.tgz#a81f69d7cef73ee86938c2dfa4979512dcded6cd"
+
+make-plural@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/make-plural/-/make-plural-4.1.1.tgz#5658ce9d337487077daed221854c8cef9dd75749"
   optionalDependencies:
     minimist "^1.2.0"
 
-messageformat-parser@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/messageformat-parser/-/messageformat-parser-1.1.0.tgz#13ba2250a76bbde8e0fca0dbb3475f95c594a90a"
+messageformat-parser@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/messageformat-parser/-/messageformat-parser-2.0.0.tgz#e37efa0cb07b6784e5f3adc089cbf266208c01c7"
 
 minimist@^1.2.0:
   version "1.2.0"

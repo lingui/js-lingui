@@ -8,9 +8,9 @@ babel-plugin-lingui-transform-js@^1.0.4:
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.1.tgz#3c9d9b2c8aaea7927997e7693271f5b18b7c7e59"
+babel-plugin-lingui-transform-react@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.2.tgz#9a22d016f43e75a506409bf63bd7aa43f35ffbc1"
   dependencies:
     babel-runtime "^6.23.0"
 

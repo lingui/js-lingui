@@ -49,6 +49,6 @@ describe('compile', function () {
       .toEqual('function(a){return[a("name","select",{male:"He",female:[a("name")," She"]})]}')
 
     expect(getSource('{name, select, male {He} female {# She}}'))
-      .toEqual('function(a){return[a("name","select",{male:"He",female:["#"," She"]})]}')
+      .toEqual('function(a){return[a("name","select",{male:"He",female:"# She"})]}')
   })
 })
