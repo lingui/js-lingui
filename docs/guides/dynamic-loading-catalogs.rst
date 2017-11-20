@@ -80,7 +80,7 @@ our component until the message catalog is loaded. Let's add a
 
 .. code-block:: js
 
-   shouldComponentUpdate(newProps, nextState) {
+   shouldComponentUpdate(nextProps, nextState) {
       const { language } = nextProps
       const { catalogs } = nextState
 
@@ -115,7 +115,7 @@ Here we use the dynamic import syntax to load the message catalog:
    loadCatalog = async (language) => {
      const catalog = await import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `locale/data/${language}/messages.js`)
+       `locale/${language}/messages.js`)
 
      this.setState(state => ({
        catalogs: {
