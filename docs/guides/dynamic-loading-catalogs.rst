@@ -45,8 +45,7 @@ to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
      "env": {
        "test": {
          "plugins": [
-           "dynamic-import-node",
-           "transform-class-properties"
+           "dynamic-import-node"
          ]
        }
      }
