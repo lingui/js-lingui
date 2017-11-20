@@ -8,8 +8,8 @@ import R from 'ramda'
 import type { LinguiConfig, CatalogFormat } from './types'
 import * as locales from './utils/locales'
 
-const sourceFilename = path.join('{locale}', 'messages.json')
-const compiledFilename = path.join('{locale}', 'messages.js')
+const sourceFilename = '{locale}/messages.json'
+const compiledFilename = '{locale}/messages.js'
 
 export default (config: LinguiConfig): CatalogFormat => ({
   formatFilename (pattern, locale) {
