@@ -36,6 +36,7 @@
     "babel-plugin-lingui-extract-messages": "^1.1.6",
     "babel-plugin-lingui-transform-js": "^1.0.4",
     "babel-plugin-lingui-transform-react": "^1.1.2",
+    "babel-runtime": "^6.26.0",
     "babel-types": "^6.26.0",
     "babylon": "^6.18.0",
     "chalk": "^2.3.0",
@@ -45,6 +46,7 @@
     "lingui-conf": "^0.12.0",
     "make-plural": "^4.1.1",
     "messageformat-parser": "^2.0.0",
+    "mkdirp": "^0.5.1",
     "ramda": "^0.25.0"
   },
   "scripts": {
