@@ -24,11 +24,11 @@ Setup
 
 We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
 to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and 
-``babel-plugin-dynamic-import-node`` to make it work:
+``babel-plugin-dynamic-import-node`` to make it work. Also, the code examples given here make use of ``babel-plugin-transform-class-properties``
 
 .. code-block:: shell
 
-   yarn add --dev babel-plugin-syntax-dynamic-import babel-plugin-dynamic-import-node
+   yarn add --dev babel-plugin-syntax-dynamic-import babel-plugin-dynamic-import-node babel-plugin-transform-class-properties
 
 .. warning::
 
@@ -39,7 +39,8 @@ to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
    // .babelrc
    {
      "plugins": [
-       "syntax-dynamic-import"
+       "syntax-dynamic-import",
+       "transform-class-properties"
      ],
      "env": {
        "test": {
@@ -80,7 +81,7 @@ our component until the message catalog is loaded. Let's add a
 
 .. code-block:: js
 
-   shouldComponentUpdate(newProps, nextState) {
+   shouldComponentUpdate(nextProps, nextState) {
       const { language } = nextProps
       const { catalogs } = nextState
 
@@ -115,7 +116,7 @@ Here we use the dynamic import syntax to load the message catalog:
    loadCatalog = async (language) => {
      const catalog = await import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `locale/data/${language}/messages.js`)
+       `locale/${language}/messages.js`)
 
      this.setState(state => ({
        catalogs: {
