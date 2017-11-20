@@ -56,6 +56,16 @@
       "contributions": [
         "question"
       ]
+    },
+    {
+      "login": "thibautRe",
+      "name": "Thibaut",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1416801?v=4",
+      "profile": "http://thibaut.re",
+      "contributions": [
+        "bug",
+        "doc"
+      ]
     }
   ]
 }
