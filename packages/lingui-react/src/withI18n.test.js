@@ -134,4 +134,9 @@ describe('withI18n', function () {
       'To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call.'
     )
   })
+
+  it('should have date of latest update when forPure is set', function () {
+    expect(mountHoc().props.i18nLastUpdate).not.toBeDefined()
+    expect(mountHoc({}, { forPure: true }).props.i18nLastUpdate).toBeDefined()
+  })
 })

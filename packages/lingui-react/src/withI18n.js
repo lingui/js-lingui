@@ -5,7 +5,8 @@ import type { I18n } from 'lingui-i18n'
 
 type withI18nOptions = {
   update?: boolean,
-  withRef?: boolean
+  withRef?: boolean,
+  forPure?: boolean,
 }
 
 type withI18nProps = {
@@ -23,7 +24,7 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
     }
   }
 
-  const { update = true, withRef = false } = options
+  const { update = true, withRef = false, forPure = false } = options
 
   class withI18n extends React.Component<*, *> {
     static contextTypes = {
@@ -70,7 +71,11 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
       const { i18n } = this.getI18n()
       const props = {
         ...this.props,
-        ...(withRef ? { ref: this.setWrappedInstance } : {})
+        ...(withRef ? { ref: this.setWrappedInstance } : {}),
+
+        // Add date of latest update, so underlying PureComponent is forced
+        // to rerender.
+        ...(forPure ? { i18nLastUpdate: new Date() } : {})
       }
       return <WrappedComponent {...props} i18n={i18n} />
     }
