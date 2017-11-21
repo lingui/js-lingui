@@ -57,6 +57,7 @@ exports[`Formats should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="The answer is {answer,number,percent}"
                 values={
                   Object {
@@ -112,6 +113,7 @@ exports[`Formats should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="Today is {now,date}"
                 values={
                   Object {

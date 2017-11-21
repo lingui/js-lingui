@@ -9,6 +9,7 @@ describe('withI18n', function () {
   const getContext = () => ({
     subscribe: jest.fn(),
     unsubscribe: jest.fn(),
+    i18nHash: 3145,
     i18n: {
       language: 'en',
       messages: {
@@ -75,7 +76,7 @@ describe('withI18n', function () {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const { i18n, ...calledProps } = mountHoc(props).props
+    const { i18n, i18nHash, ...calledProps } = mountHoc(props).props
     expect(calledProps).toEqual(props)
   })
 
@@ -133,5 +134,10 @@ describe('withI18n', function () {
     expect(() => node.instance().getWrappedInstance()).toThrow(
       'To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call.'
     )
+  })
+
+  it('should have i18nHash, unless it\'s disabled', function () {
+    expect(mountHoc().props.i18nHash).toBeDefined()
+    expect(mountHoc({}, { withHash: false }).props.i18nHash).not.toBeDefined()
   })
 })
