@@ -76,7 +76,7 @@ describe('withI18n', function () {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const { i18n, ...calledProps } = mountHoc(props).props
+    const { i18n, i18nHash, ...calledProps } = mountHoc(props).props
     expect(calledProps).toEqual(props)
   })
 
@@ -136,8 +136,8 @@ describe('withI18n', function () {
     )
   })
 
-  it('should have date of latest update when forPure is set', function () {
-    expect(mountHoc().props.i18nHash).not.toBeDefined()
-    expect(mountHoc({}, { forPure: true }).props.i18nHash).toBeDefined()
+  it('should have i18nHash, unless it\'s disabled', function () {
+    expect(mountHoc().props.i18nHash).toBeDefined()
+    expect(mountHoc({}, { withHash: false }).props.i18nHash).not.toBeDefined()
   })
 })

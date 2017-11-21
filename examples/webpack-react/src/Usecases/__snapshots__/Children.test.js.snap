@@ -80,6 +80,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="This isn't translated"
               >
                 <Render
@@ -143,6 +144,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="msg.label"
               >
                 <Render
@@ -206,6 +208,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="Hello World"
               >
                 <Render
@@ -274,6 +277,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="My name is {name}"
                 values={
                   Object {
@@ -356,6 +360,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="Read <0>more</0>."
               >
                 <Render
@@ -444,6 +449,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
                 values={
                   Object {
@@ -523,6 +529,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="My name is {name}"
                 render={
                   <p
@@ -602,6 +609,7 @@ exports[`Children should render 1`] = `
                     "t": [Function],
                   }
                 }
+                i18nHash={null}
                 id="My name is {name}"
                 render={[Function]}
                 values={

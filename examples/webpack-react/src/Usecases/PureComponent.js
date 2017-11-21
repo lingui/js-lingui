@@ -20,13 +20,13 @@ class PureComponentTest extends React.PureComponent<PureComponentTestProps> {
     const { value } = this.props
 
     return <div>
-      <ValidComponent value={value} />
-      <InvalidComponent value={value} />
+      <CorrectUpdate value={value} />
+      <SkippedUpdate value={value} />
     </div>
   }
 }
 
-const ValidComponent = withI18n({ forPure: true })(class extends React.PureComponent<PureComponentProps> {
+const CorrectUpdate = withI18n()(class extends React.PureComponent<PureComponentProps> {
   props: PureComponentProps
 
   render () {
@@ -35,7 +35,7 @@ const ValidComponent = withI18n({ forPure: true })(class extends React.PureCompo
   }
 })
 
-const InvalidComponent = withI18n()(class extends React.PureComponent<PureComponentProps> {
+const SkippedUpdate = withI18n({ withHash: false })(class extends React.PureComponent<PureComponentProps> {
   props: PureComponentProps
 
   render () {
