@@ -6,7 +6,7 @@ import type { I18n } from 'lingui-i18n'
 type withI18nOptions = {
   update?: boolean,
   withRef?: boolean,
-  forPure?: boolean,
+  withHash?: boolean,
 }
 
 type withI18nProps = {
@@ -24,7 +24,7 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
     }
   }
 
-  const { update = true, withRef = false, forPure = false } = options
+  const { update = true, withHash = true, withRef = false } = options
 
   class withI18n extends React.Component<*, *> {
     static contextTypes = {
@@ -75,7 +75,7 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
 
         // Add hash of active language and active catalog, so underlying
         // PureComponent is forced to rerender.
-        ...(forPure ? { i18nHash } : {})
+        ...(withHash ? { i18nHash } : {})
       }
       return <WrappedComponent {...props} i18n={i18n} />
     }
