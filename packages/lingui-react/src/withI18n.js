@@ -68,14 +68,14 @@ const withI18n = (options: withI18nOptions = {}) => function<P, C: React$Compone
     }
 
     render () {
-      const { i18n } = this.getI18n()
+      const { i18n, i18nHash } = this.getI18n()
       const props = {
         ...this.props,
         ...(withRef ? { ref: this.setWrappedInstance } : {}),
 
-        // Add date of latest update, so underlying PureComponent is forced
-        // to rerender.
-        ...(forPure ? { i18nLastUpdate: new Date() } : {})
+        // Add hash of active language and active catalog, so underlying
+        // PureComponent is forced to rerender.
+        ...(forPure ? { i18nHash } : {})
       }
       return <WrappedComponent {...props} i18n={i18n} />
     }

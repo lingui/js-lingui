@@ -2,6 +2,8 @@
 import React from 'react'
 import type { Node } from 'react'
 import PropTypes from 'prop-types'
+import hashSum from 'hash-sum'
+
 import { setupI18n } from 'lingui-i18n'
 import type { I18n, Catalogs } from 'lingui-i18n'
 
@@ -24,6 +26,7 @@ export function LinguiPublisher (i18n: I18n) {
 
   return {
     i18n,
+    i18nHash: null,
 
     getSubscribers () {
       return subscribers
@@ -45,6 +48,8 @@ export function LinguiPublisher (i18n: I18n) {
 
       if (catalogs) i18n.load(catalogs)
       if (language) i18n.activate(language)
+
+      this.i18nHash = hashSum([i18n.language, i18n.messages])
 
       subscribers.forEach(f => f())
     }

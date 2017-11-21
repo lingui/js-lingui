@@ -9,6 +9,7 @@ describe('withI18n', function () {
   const getContext = () => ({
     subscribe: jest.fn(),
     unsubscribe: jest.fn(),
+    i18nHash: 3145,
     i18n: {
       language: 'en',
       messages: {
@@ -136,7 +137,7 @@ describe('withI18n', function () {
   })
 
   it('should have date of latest update when forPure is set', function () {
-    expect(mountHoc().props.i18nLastUpdate).not.toBeDefined()
-    expect(mountHoc({}, { forPure: true }).props.i18nLastUpdate).toBeDefined()
+    expect(mountHoc().props.i18nHash).not.toBeDefined()
+    expect(mountHoc({}, { forPure: true }).props.i18nHash).toBeDefined()
   })
 })
