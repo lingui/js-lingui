@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/lingui/js-lingui/compare/lingui-react@1.3.6...lingui-react@1.4.0) (2017-11-21)
+
+
+### Features
+
+* Add forPure option for withI18n ([a47a22e](https://github.com/lingui/js-lingui/commit/a47a22e))
+* Calculate quick hash of active language and messages ([24aef30](https://github.com/lingui/js-lingui/commit/24aef30))
+* Enable i18n hash by default ([4a5a371](https://github.com/lingui/js-lingui/commit/4a5a371))
+
+
+
+
 <a name="1.3.6"></a>
 ## [1.3.6](https://github.com/lingui/js-lingui/compare/lingui-react@1.3.5...lingui-react@1.3.6) (2017-11-19)
 

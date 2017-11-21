@@ -3,7 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-  <a name="1.1.11"></a>
+      <a name="1.2.0"></a>
+# [1.2.0](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.9...example-usecase@1.2.0) (2017-11-21)
+
+
+### Features
+
+* Add forPure option for withI18n ([a47a22e](https://github.com/lingui/js-lingui/commit/a47a22e))
+
+
+
+
+      <a name="1.1.11"></a>
 ## [1.1.11](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.9...example-usecase@1.1.11) (2017-11-19)
 
 
@@ -11,7 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package example-usecase
 
-  <a name="1.1.10"></a>
+<a name="1.1.10"></a>
 ## [1.1.10](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.9...example-usecase@1.1.10) (2017-11-16)
 
 
