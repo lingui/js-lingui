@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.7"></a>
+## [1.1.7](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.6...babel-plugin-lingui-extract-messages@1.1.7) (2017-11-22)
+
+
+### Bug Fixes
+
+* Raise duplicate default exception only for non-empty defaults ([8ffa7d3](https://github.com/lingui/js-lingui/commit/8ffa7d3)), closes [#122](https://github.com/lingui/js-lingui/issues/122)
+
+
+
+
 <a name="1.1.6"></a>
 ## [1.1.6](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.5...babel-plugin-lingui-extract-messages@1.1.6) (2017-11-19)
 
