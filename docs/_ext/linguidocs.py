@@ -27,7 +27,7 @@ def depart_react_component_html(self, node):
 def parse_lingui_cli_node(env, sig, signode):
     command = sig.split(' ')[0]
     env.ref_context['std:program'] = command
-    title = "lingui-cli %s" % sig
+    title = "lingui %s" % sig
     signode += addnodes.desc_name(title, title)
     return command
 

@@ -14,7 +14,7 @@ Add a new locale
 ================
 
 First, we need to add all the locales we want to translate our application into.
-::`add-locale` command creates a new directory in the ``locale`` directory
+:cli:`add-locale` command creates a new directory in the ``locale`` directory
 and also checks if 'locale' exists::
 
    lingui add-locale en cs
@@ -29,7 +29,7 @@ Example output::
 Extracting messages
 ===================
 
-We're going to use an app we built in a previous tutorial. The ::`extract`
+We're going to use an app we built in a previous tutorial. The :cli:`extract`
 command looks for messages in the source files and extracts them::
 
    lingui extract
@@ -100,7 +100,7 @@ It's in a JSON dictionary, where 'key' is message ID and value is an object with
 relevant information: translation, defaults and origin for the message.
 
 This catalog is ready for translation. Let's translate it into Czech by filling the
-`translation` fields:
+``translation`` fields:
 
 .. code-block:: json
 
@@ -143,7 +143,7 @@ This catalog is ready for translation. Let's translate it into Czech by filling 
      }
    }
 
-If we run the ::`extract` command again, we can see in the stats that all
+If we run the :cli:`extract` command again, we can see in the stats that all
 messages are translated::
 
    Catalog statistics:
@@ -159,14 +159,14 @@ messages are translated::
    (use "lingui extract" to update catalogs with new messages)
    (use "lingui compile" to compile catalogs for production)
 
-::`extract` merges all translations with new messages, so you can run
+:cli:`extract` merges all translations with new messages, so you can run
 this command any time without worrying about losing any translations.
 
 Preparing catalogs for production
 =================================
 
 Once we have all catalogs ready and translated, we can compile the JSON into a
-minified JS file with the ::`compile` command. This command parses the
+minified JS file with the :cli:`compile` command. This command parses the
 messages in MessageFormat and compiles them into simple functions. It also adds
 plural rules to a production ready catalog::
 
@@ -177,18 +177,18 @@ plural rules to a production ready catalog::
    Compiling message catalogs…
    Done!
 
-The 'Locale' dir now contains the source catalogs (``messages.json``) and the compiled
-ones (``messages.js``).
+The ``locale`` dir now contains the source catalogs (``messages.json``) and
+the compiled ones (``messages.js``).
 
 Cleaning up obsolete messages
 =============================
 
-By default, the ::`extract` command merges messages extracted from source
+By default, the :cli:`extract` command merges messages extracted from source
 files with the existing message catalogs. This is safe as we won't accidentally lose
 translated messages.
 
-However, sooner or later some messages will be removed from the source. We can use the
-``--clean`` option to clean up our message catalogs::
+However, sooner or later some messages will be removed from the source. We can
+use the ``--clean`` option to clean up our message catalogs::
 
    lingui extract --clean
 
@@ -196,7 +196,7 @@ Validation of message catalogs
 ==============================
 
 It might be useful to check if all messages were translated (e.g: in a
-continous integration runner). The ::`compile` command has a ``--strict``
+continous integration runner). The :cli:`compile` command has a ``--strict``
 option, which does exactly that.
 
 The example output might look like this::
@@ -208,6 +208,44 @@ The example output might look like this::
    Compiling message catalogs…
    Error: Failed to compile catalog for locale en!
    Missing 42 translation(s)
+
+Configuring source locale
+=========================
+
+We see that checking for missing translations has one drawback –
+English message catalog doesn't require any translations because we're using
+English in our source code!
+
+Let's fix it by setting :conf:`sourceLocale` in ``package.json``::
+
+   {
+      "lingui": {
+         "sourceLocale": "en"
+      }
+   }
+
+Running ``lingui extract`` again shows the correct statistics::
+
+   Catalog statistics:
+   ┌─────────────┬─────────────┬─────────┐
+   │ Language    │ Total count │ Missing │
+   ├─────────────┼─────────────┼─────────┤
+   │ cs          │      4      │    0    │
+   │ en (source) │      4      │    -    │
+   └─────────────┴─────────────┴─────────┘
+
+And compilation in strict mode no longer throws an error::
+
+   lingui compile --strict
+
+.. code-block:: shell
+
+   Compiling message catalogs…
+   Done!
+
+If you use natural language for message IDs (that's the default),
+set :conf:`sourceLocale`. You shouldn't use this config if you're using custom
+IDs (e.g: ``Component.title``).
 
 Further reading
 ===============

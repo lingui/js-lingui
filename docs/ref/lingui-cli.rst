@@ -80,7 +80,7 @@ each language using the following steps:
 .. lingui-cli-option:: --clean
 
 Remove obsolete messages from catalogs. Message becomes obsolete
-when it's no longer in the source code.
+when it's missing in the source code.
 
 .. lingui-cli-option:: --format <format>
 
