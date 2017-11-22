@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.3.14"></a>
+## [1.3.14](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.9...lingui-cli@1.3.14) (2017-11-22)
+
+
+### Bug Fixes
+
+* Add missing dependecies ([6202195](https://github.com/lingui/js-lingui/commit/6202195))
+* Fix lingui extract command on Windows ([330b8c0](https://github.com/lingui/js-lingui/commit/330b8c0))
+* Fix path separators for windows ([3e130ca](https://github.com/lingui/js-lingui/commit/3e130ca))
+
+
+
+
 <a name="1.3.13"></a>
 ## [1.3.13](https://github.com/lingui/js-lingui/compare/lingui-cli@1.3.9...lingui-cli@1.3.13) (2017-11-20)
 

@@ -12,16 +12,22 @@ const MESSAGES = Symbol('I18nMessages')
 // Then, i18n._ methods are visited multiple times for each parent CallExpression.
 const VISITED = Symbol('I18nVisited')
 
-function addMessage (path, messages, { id, ...attrs }) {
+function addMessage (path, messages, { id, defaults, origin }) {
   if (messages.has(id)) {
     const message = messages.get(id)
-    if (message.defaults !== attrs.defaults) {
+
+    // only set/check default language when it's defined.
+    if (message.defaults && defaults && message.defaults !== defaults) {
       throw path.buildCodeFrameError('Different defaults for the same message ID.')
     } else {
-      [].push.apply(message.origin, attrs.origin)
+      if (defaults) {
+        message.defaults = defaults
+      }
+
+      [].push.apply(message.origin, origin)
     }
   } else {
-    messages.set(id, attrs)
+    messages.set(id, { defaults, origin })
   }
 }
 
