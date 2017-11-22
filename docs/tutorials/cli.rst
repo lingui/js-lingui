@@ -212,6 +212,6 @@ The example output might look like this::
 Further reading
 ===============
 
-That's it! Checkout `CLI reference <../refs/lingui-cli>`_ documentation for more
-info about ``lingui`` commands or `configuration reference <../refs/lingui-conf>`_
+That's it! Checkout `CLI reference <../ref/lingui-cli>`_ documentation for more
+info about ``lingui`` commands or `configuration reference <../ref/lingui-conf>`_
 for info about configuration parameters.
