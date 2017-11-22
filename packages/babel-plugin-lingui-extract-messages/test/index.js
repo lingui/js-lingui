@@ -70,6 +70,7 @@ describe('babel-plugin-lingui-extract-messages', function () {
   })
 
   testCase('should raise exception on duplicate id and different defaults', (transform) => {
+    expect(transform('jsx/duplicate-id-valid.js')).not.toThrow()
     expect(transform('jsx/duplicate-id.js')).toThrow(/Different defaults/)
   })
 
