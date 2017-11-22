@@ -371,10 +371,10 @@ top-level application component. However, if the ``language`` is stored in a
 
 .. js:function:: withI18n(options?)
 
-   :param options Object: Configuration for high-order component
-   :param update bool: Subscribe to catalog and activate language updates
-   :param withHash bool: Pass unique ``i18nHash`` prop to force underlying PureComponent re-render on catalog and active language update
-   :param withRef bool: Returns reference to wrapped instance in ``getWrappedInstance``
+   :param Object options: Configuration for high-order component
+   :param bool update: Subscribe to catalog and activate language updates
+   :param bool withHash: Pass unique ``i18nHash`` prop to force underlying PureComponent re-render on catalog and active language update
+   :param bool withRef: Returns reference to wrapped instance in ``getWrappedInstance``
 
 :js:func:`withI18n` is a higher-order component which injects ``i18n`` object to
 wrapped component. ``i18n`` object is needed when you have to access plain JS
