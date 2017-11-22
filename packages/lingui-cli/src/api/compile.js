@@ -6,6 +6,8 @@ import generate from 'babel-generator'
 import plurals from 'make-plural'
 import R from 'ramda'
 
+import type { CatalogType } from './formats/types'
+
 const isString = s => typeof s === 'string'
 
 export function compile (message: string) {
@@ -84,7 +86,7 @@ export function compile (message: string) {
   )
 }
 
-export function createCompiledCatalog(locale, messages) {
+export function createCompiledCatalog (locale: string, messages: CatalogType) {
   const [language] = locale.split('_')
   const pluralRules = plurals[language]
 
