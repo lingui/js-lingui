@@ -1,8 +1,8 @@
 {
   "private": true,
   "version": "1.2.0",
-  "name": "example-usecase",
-  "description": "Example usecase of all features",
+  "name": "lingui-example-webpack-react",
+  "description": "Example usecase of all features using Webpack and React",
   "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -30,7 +30,8 @@
     "babel-preset-lingui-react": "^1.0.10",
     "babel-preset-react": "^6.24.1",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.4",
+    "lingui-loader": "*"
   },
   "babel": {
     "presets": [
