@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-      <a name="1.2.0"></a>
+  <a name="1.3.0"></a>
+# 1.3.0 (2017-11-22)
+
+
+### Features
+
+* Add forPure option for withI18n ([a47a22e](https://github.com/lingui/js-lingui/commit/a47a22e))
+* Add lingui-loader to webpack example ([7847469](https://github.com/lingui/js-lingui/commit/7847469))
+
+
+
+
+  <a name="1.2.0"></a>
 # [1.2.0](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.9...example-usecase@1.2.0) (2017-11-21)
 
 
@@ -14,7 +26,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-      <a name="1.1.11"></a>
+<a name="1.1.11"></a>
 ## [1.1.11](https://github.com/lingui/js-lingui/compare/example-usecase@1.1.9...example-usecase@1.1.11) (2017-11-19)
 
 
