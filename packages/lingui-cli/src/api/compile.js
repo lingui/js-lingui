@@ -1,6 +1,10 @@
 // @flow
 import * as t from 'babel-types'
 import { parse } from 'messageformat-parser'
+import { parseExpression } from 'babylon'
+import generate from 'babel-generator'
+import plurals from 'make-plural'
+import R from 'ramda'
 
 const isString = s => typeof s === 'string'
 
@@ -78,4 +82,45 @@ export function compile (message: string) {
       [t.returnStatement(ast)]
     )
   )
+}
+
+export function createCompiledCatalog(locale, messages) {
+  const [language] = locale.split('_')
+  const pluralRules = plurals[language]
+
+  const compiledMessages = R.keys(messages).map(key => {
+    const translation = messages[key]
+    return t.objectProperty(
+      t.stringLiteral(key),
+      compile(translation || key)
+    )
+  })
+
+  const languageData = [
+    t.objectProperty(
+      t.stringLiteral('p'),
+      parseExpression(pluralRules.toString())
+    )
+  ]
+
+  const ast = t.expressionStatement(t.assignmentExpression(
+    '=',
+    t.memberExpression(t.identifier('module'), t.identifier('exports')),
+    t.objectExpression([
+      // language data
+      t.objectProperty(
+        t.identifier('l'),
+        t.objectExpression(languageData)
+      ),
+      // messages
+      t.objectProperty(
+        t.identifier('m'),
+        t.objectExpression(compiledMessages)
+      )
+    ])
+  ))
+
+  return generate(ast, {
+    minified: true
+  }).code
 }

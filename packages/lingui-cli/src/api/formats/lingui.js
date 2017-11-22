@@ -122,21 +122,22 @@ export default (config: LinguiConfig): CatalogFormat => ({
     return filename
   },
 
+  getLocale (filename) {
+    const filenameRe = new RegExp(this.formatFilename(sourceFilename, locales.localeRe.source))
+    const match = filenameRe.exec(filename)
+    if (!match) return null
+
+    return match[1]
+  },
+
   getLocales () {
     const pattern = path.join(
       config.localeDir,
       this.formatFilename(sourceFilename, '*')
     )
-    const sources = glob.sync(pattern)
-    const filenameRe = new RegExp(this.formatFilename(sourceFilename, locales.localeRe.source))
 
-    return sources
-      .map(filename => {
-        const match = filenameRe.exec(filename)
-        if (!match) return null
-
-        return match[1]
-      })
+    return glob.sync(pattern)
+      .map(filename => this.getLocale(filename))
       .filter(Boolean)
   },
 

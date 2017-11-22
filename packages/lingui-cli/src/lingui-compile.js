@@ -4,13 +4,9 @@ import R from 'ramda'
 import program from 'commander'
 import plurals from 'make-plural'
 
-import * as t from 'babel-types'
-import { parseExpression } from 'babylon'
-import generate from 'babel-generator'
-
 import getConfig from 'lingui-conf'
 
-import { compile } from './api/compile'
+import { createCompiledCatalog } from './api/compile'
 
 function command (config, format, options) {
   const locales = format.getLocales()
@@ -36,8 +32,7 @@ function command (config, format, options) {
 
   return locales.map(locale => {
     const [language] = locale.split('_')
-    const pluralRules = plurals[language]
-    if (!pluralRules) {
+    if (!plurals[language]) {
       console.log(chalk.red(`Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`))
       console.log()
       return false
@@ -71,44 +66,8 @@ function command (config, format, options) {
       }
     }
 
-    const compiledMessages = R.keys(messages).map(key => {
-      const translation = messages[key]
-      return t.objectProperty(
-        t.stringLiteral(key),
-        compile(translation || key)
-      )
-    })
-
-    const languageData = [
-      t.objectProperty(
-        t.stringLiteral('p'),
-        parseExpression(pluralRules.toString())
-      )
-    ]
-
-    const compiled = t.expressionStatement(t.assignmentExpression(
-      '=',
-      t.memberExpression(t.identifier('module'), t.identifier('exports')),
-      t.objectExpression([
-        // language data
-        t.objectProperty(
-          t.identifier('l'),
-          t.objectExpression(languageData)
-        ),
-        // messages
-        t.objectProperty(
-          t.identifier('m'),
-          t.objectExpression(compiledMessages)
-        )
-      ])
-    ))
-
-    const compiledPath = format.writeCompiled(
-      locale,
-      generate(compiled, {
-        minified: true
-      }).code
-    )
+    const compiledCatalog = createCompiledCatalog(locale, messages)
+    const compiledPath = format.writeCompiled(locale, compiledCatalog)
 
     options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     return compiledPath
