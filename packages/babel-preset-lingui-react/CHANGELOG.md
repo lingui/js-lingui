@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.11"></a>
+## [1.0.11](https://github.com/lingui/js-lingui/compare/babel-preset-lingui-react@1.0.9...babel-preset-lingui-react@1.0.11) (2017-11-22)
+
+
+
+
+**Note:** Version bump only for package babel-preset-lingui-react
+
 <a name="1.0.10"></a>
 ## [1.0.10](https://github.com/lingui/js-lingui/compare/babel-preset-lingui-react@1.0.9...babel-preset-lingui-react@1.0.10) (2017-11-19)
 

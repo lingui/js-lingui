@@ -55,7 +55,7 @@ describe('I18nProvider', function () {
         <span />
         <span />
       </I18nProvider>
-    ).find('div').length).toEqual(1)
+    ).find('div')).toHaveLength(1)
   })
 
   it('should pass default render component in context', function () {

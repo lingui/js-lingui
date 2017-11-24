@@ -1,8 +1,8 @@
 {
   "private": true,
-  "version": "1.2.0",
-  "name": "example-usecase",
-  "description": "Example usecase of all features",
+  "version": "1.3.0",
+  "name": "lingui-example-webpack-react",
+  "description": "Example usecase of all features using Webpack and React",
   "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "lingui-i18n": "^1.3.3",
-    "lingui-react": "^1.4.0",
+    "lingui-react": "^1.4.1",
     "react": "16.1.1",
     "react-dom": "16.1.1"
   },
@@ -27,8 +27,9 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-lingui-react": "^1.0.10",
+    "babel-preset-lingui-react": "^1.0.11",
     "babel-preset-react": "^6.24.1",
+    "lingui-loader": "^0.1.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },
