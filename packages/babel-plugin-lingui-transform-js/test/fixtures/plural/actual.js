@@ -4,14 +4,14 @@ const a = i18n.plural({
   other: "# books"
 });
 i18n.plural({
-  value: count,
+  value: users.length,
   offset: 1,
   0: "No books",
   1: "1 book",
   other: "# books"
 });
 i18n.plural({
-  value: count,
+  value: 42,
   one: `# book`,
   other: `${count} books`
 });
