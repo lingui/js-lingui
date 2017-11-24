@@ -8,7 +8,7 @@ export type LinguiConfig = {|
   srcPathIgnorePatterns: Array<string>
 |}
 
-export type IdempotentResult<T> = [ boolean, ?T ] // [ created, result ]
+export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
 
 export type MessageType = {
   translation: string,
@@ -45,5 +45,5 @@ export type CatalogFormat = {
     options: getTranslationOptions
   ): ?string,
 
-  formatFilename (pattern: string, locale: string): string,
+  formatFilename(pattern: string, locale: string): string
 }

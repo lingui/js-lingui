@@ -1,6 +1,6 @@
-import path from 'path'
-import webpack from 'webpack'
-import MemoryFS from 'memory-fs'
+import path from "path"
+import webpack from "webpack"
+import MemoryFS from "memory-fs"
 
 export default (fixture, options = {}) => {
   const compiler = webpack({
@@ -8,15 +8,17 @@ export default (fixture, options = {}) => {
     entry: `./${fixture}`,
     output: {
       path: path.resolve(__dirname),
-      filename: 'bundle.js'
+      filename: "bundle.js"
     },
     module: {
-      rules: [{
-        test: /\.json$/,
-        use: {
-          loader: path.resolve(__dirname, '../src/index.js')
+      rules: [
+        {
+          test: /\.json$/,
+          use: {
+            loader: path.resolve(__dirname, "../src/index.js")
+          }
         }
-      }]
+      ]
     }
   })
 

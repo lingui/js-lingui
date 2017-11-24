@@ -1,45 +1,46 @@
-import fs from 'fs'
-import glob from 'glob'
-import path from 'path'
-import { transformFileSync, transform } from 'babel-core'
+import fs from "fs"
+import glob from "glob"
+import path from "path"
+import { transformFileSync, transform } from "babel-core"
 
-import plugin from '../src/index'
+import plugin from "../src/index"
 
-function getTestName (testPath) {
+function getTestName(testPath) {
   return path.basename(testPath)
 }
 
-describe('babel-plugin-lingui-transform-js', function () {
+describe("babel-plugin-lingui-transform-js", function() {
   const babelOptions = {
     babelrc: false,
-    plugins: [
-      plugin,
-      'syntax-jsx',
-      'transform-remove-strict-mode'
-    ]
+    plugins: [plugin, "syntax-jsx", "transform-remove-strict-mode"]
   }
 
   // return function, so we can test exceptions
-  const transformCode = (code) => () => transform(code, babelOptions).code.trim()
+  const transformCode = code => () => transform(code, babelOptions).code.trim()
 
-  glob.sync(path.join(__dirname, 'fixtures/*/')).forEach(testPath => {
+  glob.sync(path.join(__dirname, "fixtures/*/")).forEach(testPath => {
     const testName = getTestName(testPath)
     // We're using relative path here to make snapshot testing work
     // across different machines.
-    const actualPath = path.relative(process.cwd(), path.join(testPath, 'actual.js'))
-    const expectedPath = path.join(testPath, 'expected.js')
+    const actualPath = path.relative(
+      process.cwd(),
+      path.join(testPath, "actual.js")
+    )
+    const expectedPath = path.join(testPath, "expected.js")
 
     it(testName, () => {
-      const expected = fs.existsSync(expectedPath) && fs.readFileSync(expectedPath, 'utf8').trim()
+      const expected =
+        fs.existsSync(expectedPath) &&
+        fs.readFileSync(expectedPath, "utf8").trim()
 
       const actual = transformFileSync(actualPath, babelOptions).code.trim()
       expect(actual).toEqual(expected)
     })
   })
 
-  describe('validation', function () {
-    describe('plural/select/selectordinal', function () {
-      it('value is missing', function () {
+  describe("validation", function() {
+    describe("plural/select/selectordinal", function() {
+      it("value is missing", function() {
         const code = `
         i18n.plural({
           0: "No books",
@@ -49,7 +50,7 @@ describe('babel-plugin-lingui-transform-js', function () {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it('offset must be number or string, not variable', function () {
+      it("offset must be number or string, not variable", function() {
         const code = `
         i18n.plural({
           offset: count,
@@ -60,7 +61,7 @@ describe('babel-plugin-lingui-transform-js', function () {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it('plural forms are missing', function () {
+      it("plural forms are missing", function() {
         const plural = `
         i18n.plural({
           value: count
@@ -80,7 +81,7 @@ describe('babel-plugin-lingui-transform-js', function () {
         expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it('plural forms missing fallback', function () {
+      it("plural forms missing fallback", function() {
         const plural = `
         i18n.plural({
           value: count,
@@ -103,7 +104,7 @@ describe('babel-plugin-lingui-transform-js', function () {
         expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it('plural forms cannot be variables', function () {
+      it("plural forms cannot be variables", function() {
         const code = `
         i18n.plural({
           value: count,
@@ -112,7 +113,7 @@ describe('babel-plugin-lingui-transform-js', function () {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it('plural rules must be valid', function () {
+      it("plural rules must be valid", function() {
         const plural = `
         i18n.plural({
           value: count,
@@ -134,16 +135,18 @@ describe('babel-plugin-lingui-transform-js', function () {
     })
   })
 
-  describe('formats', function () {
-    it('value is missing', function () {
-      expect(transformCode('i18n.date();')).toThrowErrorMatchingSnapshot()
+  describe("formats", function() {
+    it("value is missing", function() {
+      expect(transformCode("i18n.date();")).toThrowErrorMatchingSnapshot()
     })
 
-    it('format must be either string, variable or object with custom format', function () {
+    it("format must be either string, variable or object with custom format", function() {
       expect(transformCode('i18n.number(value, "currency");')).not.toThrow()
-      expect(transformCode('i18n.number(value, currency);')).not.toThrow()
-      expect(transformCode('i18n.number(value, { digits: 4 });')).not.toThrow()
-      expect(transformCode('i18n.number(value, 42);')).toThrowErrorMatchingSnapshot()
+      expect(transformCode("i18n.number(value, currency);")).not.toThrow()
+      expect(transformCode("i18n.number(value, { digits: 4 });")).not.toThrow()
+      expect(
+        transformCode("i18n.number(value, 42);")
+      ).toThrowErrorMatchingSnapshot()
     })
   })
 })

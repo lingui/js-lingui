@@ -1,9 +1,9 @@
 // @flow
-import type { Catalog } from './i18n'
+import type { Catalog } from "./i18n"
 
 type CompiledCatalog = {
   // compiled messages
-  m: {[key: string]: string | Function},
+  m: { [key: string]: string | Function },
 
   // language data
   l: {
@@ -12,7 +12,7 @@ type CompiledCatalog = {
   }
 }
 
-export function unpackCatalog (compiled: CompiledCatalog): Catalog {
+export function unpackCatalog(compiled: CompiledCatalog): Catalog {
   return {
     messages: compiled.m,
     languageData: {

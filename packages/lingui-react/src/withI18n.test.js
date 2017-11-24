@@ -1,19 +1,19 @@
 // @flow
-import React from 'react'
-import { mount } from 'enzyme'
+import React from "react"
+import { mount } from "enzyme"
 
-import { withI18n } from '.'
-import { mockEnv, mockConsole } from './mocks'
+import { withI18n } from "."
+import { mockEnv, mockConsole } from "./mocks"
 
-describe('withI18n', function () {
+describe("withI18n", function() {
   const getContext = () => ({
     subscribe: jest.fn(),
     unsubscribe: jest.fn(),
     i18nHash: 3145,
     i18n: {
-      language: 'en',
+      language: "en",
       messages: {
-        msg: 'hello'
+        msg: "hello"
       }
     }
   })
@@ -21,28 +21,32 @@ describe('withI18n', function () {
   // Pass all props to spy on render
   const sinkFactory = (options = {}) => {
     const spy = jest.fn()
-    const Sink = withI18n(options)(class Sink extends React.Component<*> {
-      customMethod = () => 42
+    const Sink = withI18n(options)(
+      class Sink extends React.Component<*> {
+        customMethod = () => 42
 
-      render () {
-        spy(this.props)
-        return <div />
+        render() {
+          spy(this.props)
+          return <div />
+        }
       }
-    })
+    )
     return { Sink, spy }
   }
 
   // Mount HOC(sink) and get the props which were passed from HOC
   const mountHoc = (props = {}, hocOptions = {}, context = getContext()) => {
     const { Sink, spy } = sinkFactory(hocOptions)
-    const node = mount(<Sink {...props} />, { context: { linguiPublisher: context } })
+    const node = mount(<Sink {...props} />, {
+      context: { linguiPublisher: context }
+    })
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
     // Original props are passed with along with i18n prop
     return { node, props: receivedProps, context }
   }
 
-  it('should warn if called incorrectly', function () {
+  it("should warn if called incorrectly", function() {
     const wrongMount = () => {
       const Component = withI18n(() => <span />)
       // Catch the React error. It will blow up user app, but at least they get
@@ -53,25 +57,26 @@ describe('withI18n', function () {
       } catch (e) {}
     }
 
-    mockEnv('production', () => {
+    mockEnv("production", () => {
       mockConsole(console => {
         wrongMount()
         expect(console.warn).not.toBeCalled()
       })
     })
 
-    mockEnv('development', () => {
+    mockEnv("development", () => {
       mockConsole(console => {
         wrongMount()
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining('withI18n([options]) takes options'))
+          expect.stringContaining("withI18n([options]) takes options")
+        )
       })
     })
   })
 
-  it('should pass all props to wrapped component', function () {
+  it("should pass all props to wrapped component", function() {
     const props = {
-      foo: 'bar',
+      foo: "bar",
       value: 1
     }
 
@@ -80,14 +85,14 @@ describe('withI18n', function () {
     expect(calledProps).toEqual(props)
   })
 
-  it('should provide data from i18n context', function () {
+  it("should provide data from i18n context", function() {
     const { i18n } = mountHoc().props
     expect(i18n).toBeDefined()
     expect(i18n.language).toBeDefined()
     expect(i18n.messages).toBeDefined()
   })
 
-  it('should subscribe a callback on mount', function () {
+  it("should subscribe a callback on mount", function() {
     const context = getContext()
     expect(context.subscribe).not.toBeCalled()
     mountHoc({}, {}, context)
@@ -95,7 +100,7 @@ describe('withI18n', function () {
     expect(context.subscribe.mock.calls[0][0]).toBeInstanceOf(Function)
   })
 
-  it('should unsubscribe a callback on unmount', function () {
+  it("should unsubscribe a callback on unmount", function() {
     const context = getContext()
     const { node } = mountHoc({}, {}, context)
 
@@ -105,14 +110,14 @@ describe('withI18n', function () {
     expect(context.unsubscribe.mock.calls[0][0]).toBeInstanceOf(Function)
   })
 
-  it("shouldn't subscribe a callback on mount when update is disabled", function () {
+  it("shouldn't subscribe a callback on mount when update is disabled", function() {
     const context = getContext()
     expect(context.subscribe).not.toBeCalled()
     mountHoc({}, { update: false }, context)
     expect(context.subscribe).not.toBeCalled()
   })
 
-  it("shouldn't unsubscribe a callback on unmount when update is disabled", function () {
+  it("shouldn't unsubscribe a callback on unmount when update is disabled", function() {
     const context = getContext()
     const { node } = mountHoc({}, { update: false }, context)
 
@@ -121,7 +126,7 @@ describe('withI18n', function () {
     expect(context.unsubscribe).not.toBeCalled()
   })
 
-  it('should hold ref to wrapped instance when withRef is enabled', function () {
+  it("should hold ref to wrapped instance when withRef is enabled", function() {
     const { node } = mountHoc({}, { withRef: true })
     const hoc = node.instance()
     expect(hoc.getWrappedInstance()).not.toBeNull()
@@ -129,14 +134,14 @@ describe('withI18n', function () {
     expect(hoc.getWrappedInstance().customMethod()).toEqual(42)
   })
 
-  it('should not hold ref to wrapped instance when withRef is disabled', function () {
+  it("should not hold ref to wrapped instance when withRef is disabled", function() {
     const { node } = mountHoc()
     expect(() => node.instance().getWrappedInstance()).toThrow(
-      'To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call.'
+      "To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call."
     )
   })
 
-  it('should have i18nHash, unless it\'s disabled', function () {
+  it("should have i18nHash, unless it's disabled", function() {
     expect(mountHoc().props.i18nHash).toBeDefined()
     expect(mountHoc({}, { withHash: false }).props.i18nHash).not.toBeDefined()
   })

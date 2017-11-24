@@ -9,23 +9,21 @@
     }
   },
   "extends": [
-    "standard",
     "plugin:flowtype/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:react/recommended",
-    "plugin:jest/recommended"
   ],
   "plugins": [
-    "standard",
     "promise",
     "flowtype",
     "import",
     "react",
-    "jest"
+    "jest",
+    "prettier"
   ],
   "rules": {
     "no-duplicate-imports": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "prettier/prettier": "error"
   }
 }

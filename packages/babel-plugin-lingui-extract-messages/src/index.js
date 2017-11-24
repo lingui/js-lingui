@@ -1,55 +1,60 @@
-import fs from 'fs'
-import fsPath from 'path'
-import mkdirp from 'mkdirp'
-import generate from 'babel-generator'
-import getConfig from 'lingui-conf'
+import fs from "fs"
+import fsPath from "path"
+import mkdirp from "mkdirp"
+import generate from "babel-generator"
+import getConfig from "lingui-conf"
 
 // Map of messages
-const MESSAGES = Symbol('I18nMessages')
+const MESSAGES = Symbol("I18nMessages")
 
 // We need to remember all processed nodes. When JSX expressions are
 // replaced with CallExpressions, all children are traversed for each CallExpression.
 // Then, i18n._ methods are visited multiple times for each parent CallExpression.
-const VISITED = Symbol('I18nVisited')
+const VISITED = Symbol("I18nVisited")
 
-function addMessage (path, messages, { id, defaults, origin }) {
+function addMessage(path, messages, { id, defaults, origin }) {
   if (messages.has(id)) {
     const message = messages.get(id)
 
     // only set/check default language when it's defined.
     if (message.defaults && defaults && message.defaults !== defaults) {
-      throw path.buildCodeFrameError('Different defaults for the same message ID.')
+      throw path.buildCodeFrameError(
+        "Different defaults for the same message ID."
+      )
     } else {
       if (defaults) {
         message.defaults = defaults
       }
 
-      [].push.apply(message.origin, origin)
+      ;[].push.apply(message.origin, origin)
     }
   } else {
     messages.set(id, { defaults, origin })
   }
 }
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   let localTransComponentName
 
   const opts = getConfig()
   const optsBaseDir = opts.rootDir
 
-  function isTransComponent (node) {
-    return t.isJSXElement(node) && t.isJSXIdentifier(node.openingElement.name, {
-      name: localTransComponentName
-    })
+  function isTransComponent(node) {
+    return (
+      t.isJSXElement(node) &&
+      t.isJSXIdentifier(node.openingElement.name, {
+        name: localTransComponentName
+      })
+    )
   }
 
-  const isNoopMethod = node => t.isIdentifier(node, { name: 'i18nMark' })
+  const isNoopMethod = node => t.isIdentifier(node, { name: "i18nMark" })
   const isI18nMethod = node =>
     t.isMemberExpression(node) &&
-    t.isIdentifier(node.object, { name: 'i18n' }) &&
-    t.isIdentifier(node.property, { name: '_' })
+    t.isIdentifier(node.object, { name: "i18n" }) &&
+    t.isIdentifier(node.property, { name: "_" })
 
-  function collectMessage (path, file, props) {
+  function collectMessage(path, file, props) {
     const messages = file.get(MESSAGES)
 
     const filename = fsPath.relative(optsBaseDir, file.opts.filename)
@@ -64,24 +69,24 @@ export default function ({ types: t }) {
       // Get the local name of Trans component. Usually it's just `Trans`, but
       // it might be different when the import is aliased:
       // import { Trans as T } from 'lingui-react';
-      ImportDeclaration (path) {
+      ImportDeclaration(path) {
         const { node } = path
 
-        const moduleName = node.source.value.split('/').slice(-1)[0]
-        if (!Array.includes(['lingui-react', 'lingui-i18n'], moduleName)) return
+        const moduleName = node.source.value.split("/").slice(-1)[0]
+        if (!Array.includes(["lingui-react", "lingui-i18n"], moduleName)) return
 
         const importDeclarations = {}
-        if (moduleName === 'lingui-react') {
+        if (moduleName === "lingui-react") {
           node.specifiers.forEach(specifier => {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })
 
-          localTransComponentName = importDeclarations['Trans']
+          localTransComponentName = importDeclarations["Trans"]
         }
 
         // Remove imports of i18nMark identity
-        node.specifiers = node.specifiers.filter(specifier =>
-          specifier.imported.name !== 'i18nMark'
+        node.specifiers = node.specifiers.filter(
+          specifier => specifier.imported.name !== "i18nMark"
         )
 
         if (!node.specifiers.length) {
@@ -90,7 +95,7 @@ export default function ({ types: t }) {
       },
 
       // Extract translation from <Trans /> component.
-      JSXElement (path, { file }) {
+      JSXElement(path, { file }) {
         const { node } = path
         if (!localTransComponentName || !isTransComponent(node)) return
 
@@ -98,15 +103,15 @@ export default function ({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === 'id' || key === 'defaults') acc[key] = item.value.value
+          if (key === "id" || key === "defaults") acc[key] = item.value.value
           return acc
         }, {})
 
         if (!props.id) {
           // <Trans id={message} /> is valid, don't raise warning
-          const idProp = attrs.filter(item => item.name.name === 'id')[0]
+          const idProp = attrs.filter(item => item.name.name === "id")[0]
           if (idProp === undefined || t.isLiteral(props.id)) {
-            console.warn('Missing message ID, skipping.')
+            console.warn("Missing message ID, skipping.")
             console.warn(generate(node).code)
           }
           return
@@ -116,7 +121,7 @@ export default function ({ types: t }) {
       },
 
       // Extract translation from i18n._ call
-      CallExpression (path, { file }) {
+      CallExpression(path, { file }) {
         const { node } = path
         const visited = file.get(VISITED)
 
@@ -131,32 +136,39 @@ export default function ({ types: t }) {
 
         visited.add(node.callee)
 
-        if (isNoopMethod(node.callee) && !t.isStringLiteral(node.arguments[0])) {
-          console.warn('Only string literals are allowed in i18nMark.')
+        if (
+          isNoopMethod(node.callee) &&
+          !t.isStringLiteral(node.arguments[0])
+        ) {
+          console.warn("Only string literals are allowed in i18nMark.")
           return
         }
 
-        const attrs = node.arguments[1] && node.arguments[1].properties
-          ? node.arguments[1].properties
-          : []
+        const attrs =
+          node.arguments[1] && node.arguments[1].properties
+            ? node.arguments[1].properties
+            : []
 
         const idArg = node.arguments[0]
         const id = idArg && idArg.value
         if (!id) {
           // i18n._(message) is valid, don't raise warning
           if (idArg === undefined || t.isLiteral(idArg)) {
-            console.warn('Missing message ID, skipping.')
+            console.warn("Missing message ID, skipping.")
             console.warn(generate(node).code)
           }
 
           return
         }
 
-        const props = attrs.reduce((acc, item) => {
-          const key = item.key.name
-          if (key === 'defaults') acc[key] = item.value.value
-          return acc
-        }, { id })
+        const props = attrs.reduce(
+          (acc, item) => {
+            const key = item.key.name
+            if (key === "defaults") acc[key] = item.value.value
+            return acc
+          },
+          { id }
+        )
 
         collectMessage(path, file, props)
 
@@ -167,7 +179,7 @@ export default function ({ types: t }) {
       }
     },
 
-    pre (file) {
+    pre(file) {
       localTransComponentName = null
 
       // Ignore else path for now. Collision is possible if other plugin is
@@ -180,7 +192,7 @@ export default function ({ types: t }) {
       file.set(VISITED, new WeakSet())
     },
 
-    post (file) {
+    post(file) {
       /* Write catalog to directory `localeDir`/_build/`path.to.file`/`filename`.json
        * e.g: if file is src/components/App.js (relative to package.json), then
        * catalog will be in locale/_build/src/components/App.json
@@ -188,7 +200,7 @@ export default function ({ types: t }) {
       const localeDir = this.opts.localeDir || opts.localeDir
       const { filename, basename } = file.opts
       const baseDir = fsPath.dirname(fsPath.relative(optsBaseDir, filename))
-      const targetDir = fsPath.join(localeDir, '_build', baseDir)
+      const targetDir = fsPath.join(localeDir, "_build", baseDir)
 
       const messages = file.get(MESSAGES)
       const catalog = {}
@@ -196,7 +208,9 @@ export default function ({ types: t }) {
       // no messages, skip file
       if (!messages.size) return
 
-      messages.forEach((value, key) => { catalog[key] = value })
+      messages.forEach((value, key) => {
+        catalog[key] = value
+      })
 
       mkdirp.sync(targetDir)
       fs.writeFileSync(

@@ -1,18 +1,17 @@
 // @flow
-import { date, number } from 'lingui-formats'
-import { isString, isFunction } from './essentials'
+import { date, number } from "lingui-formats"
+import { isString, isFunction } from "./essentials"
 
 const defaultFormats = (language, languageData = {}, formats = {}) => {
   const { plurals } = languageData
-  const style = format => isString(format)
-    ? formats[format] || { style: format }
-    : format
+  const style = format =>
+    isString(format) ? formats[format] || { style: format } : format
 
   const replaceOctothorpe = (value, message) => {
     return ctx => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
-      return norm.map(m => isString(m) ? m.replace('#', value) : m)
+      return norm.map(m => (isString(m) ? m.replace("#", value) : m))
     }
   }
 
@@ -27,14 +26,11 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
       return replaceOctothorpe(value - offset, message)
     },
 
-    select: (value, rules) =>
-      rules[value] || rules.other,
+    select: (value, rules) => rules[value] || rules.other,
 
-    number: (value, format) =>
-      number(language, style(format))(value),
+    number: (value, format) => number(language, style(format))(value),
 
-    date: (value, format) =>
-      date(language, style(format))(value),
+    date: (value, format) => date(language, style(format))(value),
 
     undefined: value => value
   }
@@ -51,25 +47,34 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context ({ language, values, formats, languageData }: Object) {
+function context({ language, values, formats, languageData }: Object) {
   const formatters = defaultFormats(language, languageData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
     const value = values[name]
     const formatted = formatters[type](value, format)
     const message = isFunction(formatted) ? formatted(ctx) : formatted
-    return Array.isArray(message) ? message.join('') : message
+    return Array.isArray(message) ? message.join("") : message
   }
 
   return ctx
 }
 
-export function interpolate (translation: Function, language: string, languageData: Object) {
+export function interpolate(
+  translation: Function,
+  language: string,
+  languageData: Object
+) {
   return (values: Object, formats?: Object = {}) => {
-    const message = translation(context({
-      language, languageData, formats, values
-    }))
+    const message = translation(
+      context({
+        language,
+        languageData,
+        formats,
+        values
+      })
+    )
 
-    return Array.isArray(message) ? message.join('').trim() : message
+    return Array.isArray(message) ? message.join("").trim() : message
   }
 }

@@ -1,5 +1,5 @@
 // @flow
-import { cloneElement } from 'react'
+import { cloneElement } from "react"
 
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
@@ -12,11 +12,14 @@ const nlRe = /(?:\r\n|\r|\n)/g
  * placeholders. `elements` is a array of react elements which indexes
  * correspond to element indexes in formatted string
  */
-function formatElements (value: string, elements: Array<React$Element<any>> = []) {
+function formatElements(
+  value: string,
+  elements: Array<React$Element<any>> = []
+) {
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist
 
-  const parts = value.replace(nlRe, '').split(tagRe)
+  const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return
   if (parts.length === 1) return value
@@ -27,12 +30,14 @@ function formatElements (value: string, elements: Array<React$Element<any>> = []
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
-    tree.push(cloneElement(
-      elements[index],
-      { key: index },
-      // unpaired tag shouldn't receive children (return null instead)
-      children ? formatElements(children, elements) : null
-    ))
+    tree.push(
+      cloneElement(
+        elements[index],
+        { key: index },
+        // unpaired tag shouldn't receive children (return null instead)
+        children ? formatElements(children, elements) : null
+      )
+    )
 
     if (after) tree.push(after)
   }
@@ -54,14 +59,14 @@ function formatElements (value: string, elements: Array<React$Element<any>> = []
  *
  * Returns: Array<[elementIndex, children, after]>
  */
-function getElements (parts) {
+function getElements(parts) {
   if (!parts.length) return []
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [
-    [parseInt(paired || unpaired), children || '', after]
-  ].concat(getElements(parts.slice(4, parts.length)))
+  return [[parseInt(paired || unpaired), children || "", after]].concat(
+    getElements(parts.slice(4, parts.length))
+  )
 }
 
 export { formatElements }
