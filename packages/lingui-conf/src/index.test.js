@@ -1,7 +1,7 @@
-import getConfig, { replaceRootDir } from './index'
+import getConfig, { replaceRootDir } from "./index"
 
-describe('lingui-conf', function () {
-  it('should return default config', function () {
+describe("lingui-conf", function() {
+  it("should return default config", function() {
     const config = getConfig()
     expect(config).toBeInstanceOf(Object)
     expect(config.localeDir).toBeDefined()
@@ -11,15 +11,18 @@ describe('lingui-conf', function () {
     expect(config.srcPathIgnorePatterns).toBeDefined()
   })
 
-  it('should replace <rootDir>', function () {
-    const config = replaceRootDir({
-      boolean: false,
-      localeDir: '<rootDir>',
-      srcPathDirs: ['<rootDir>', 'rootDir']
-    }, '/Root')
+  it("should replace <rootDir>", function() {
+    const config = replaceRootDir(
+      {
+        boolean: false,
+        localeDir: "<rootDir>",
+        srcPathDirs: ["<rootDir>", "rootDir"]
+      },
+      "/Root"
+    )
 
     expect(config.boolean).toEqual(false)
-    expect(config.localeDir).toEqual('/Root')
-    expect(config.srcPathDirs).toEqual(['/Root', 'rootDir'])
+    expect(config.localeDir).toEqual("/Root")
+    expect(config.srcPathDirs).toEqual(["/Root", "rootDir"])
   })
 })

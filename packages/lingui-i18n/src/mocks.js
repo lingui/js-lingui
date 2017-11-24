@@ -1,4 +1,4 @@
-export function mockConsole (testCase, mock = {}) {
+export function mockConsole(testCase, mock = {}) {
   const originalConsole = global.console
 
   const defaults = {
@@ -21,7 +21,7 @@ export function mockConsole (testCase, mock = {}) {
   global.console = originalConsole
 }
 
-export function mockEnv (env, testCase) {
+export function mockEnv(env, testCase) {
   const oldEnv = process.env.NODE_ENV
   process.env.NODE_ENV = env
 

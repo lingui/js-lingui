@@ -1,5 +1,5 @@
 // @flow
-import plurals from 'make-plural'
+import plurals from "make-plural"
 
 export type LocaleObject = {
   language: string,
@@ -15,15 +15,16 @@ export type LocaleObject = {
  */
 export const localeRe = new RegExp(/(([a-z]+)(_([a-zA-Z]+))?)/)
 
-export function isValid (locale: string): boolean {
+export function isValid(locale: string): boolean {
   const match = localeRe.exec(locale)
   return (
-    match && match[0] === locale && // locale has valid format
+    match &&
+    match[0] === locale && // locale has valid format
     match[2] in plurals // language is valid (we have plurals for it)
   )
 }
 
-export function parse (locale: string): ?LocaleObject {
+export function parse(locale: string): ?LocaleObject {
   const match = localeRe.exec(locale)
   if (!match || match[0] !== locale) return null
 

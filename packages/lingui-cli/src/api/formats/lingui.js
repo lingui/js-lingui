@@ -1,22 +1,22 @@
 // @flow
-import fs from 'fs'
-import path from 'path'
-import mkdirp from 'mkdirp'
-import glob from 'glob'
-import R from 'ramda'
+import fs from "fs"
+import path from "path"
+import mkdirp from "mkdirp"
+import glob from "glob"
+import R from "ramda"
 
-import type { LinguiConfig, CatalogFormat } from './types'
-import * as locales from './utils/locales'
+import type { LinguiConfig, CatalogFormat } from "./types"
+import * as locales from "./utils/locales"
 
-const sourceFilename = '{locale}/messages.json'
-const compiledFilename = '{locale}/messages.js'
+const sourceFilename = "{locale}/messages.json"
+const compiledFilename = "{locale}/messages.js"
 
 export default (config: LinguiConfig): CatalogFormat => ({
-  formatFilename (pattern, locale) {
-    return pattern.replace('{locale}', locale)
+  formatFilename(pattern, locale) {
+    return pattern.replace("{locale}", locale)
   },
 
-  write (locale, messages) {
+  write(locale, messages) {
     const filename = path.join(
       config.localeDir,
       this.formatFilename(sourceFilename, locale)
@@ -27,7 +27,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
     return [created, filename]
   },
 
-  read (locale) {
+  read(locale) {
     const filename = path.join(
       config.localeDir,
       this.formatFilename(sourceFilename, locale)
@@ -44,7 +44,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
     }
   },
 
-  merge (nextCatalog) {
+  merge(nextCatalog) {
     const nextKeys = R.keys(nextCatalog)
 
     return R.mergeAll(
@@ -59,16 +59,19 @@ export default (config: LinguiConfig): CatalogFormat => ({
         const obsoleteKeys = R.difference(prevKeys, nextKeys)
 
         // Initialize new catalog with new keys
-        const newMessages = R.map(message => ({
-          translation: '',
-          ...message
-        }), R.pick(newKeys, nextCatalog))
+        const newMessages = R.map(
+          message => ({
+            translation: "",
+            ...message
+          }),
+          R.pick(newKeys, nextCatalog)
+        )
 
         // Merge translations from previous catalog
         const mergedMessages = mergeKeys.map(key => ({
           [key]: {
             translation: prevCatalog[key].translation,
-            ...R.omit(['obsolete, translation'], nextCatalog[key])
+            ...R.omit(["obsolete, translation"], nextCatalog[key])
           }
         }))
 
@@ -90,29 +93,28 @@ export default (config: LinguiConfig): CatalogFormat => ({
     )
   },
 
-  getTranslation (catalogs, locale, key, { fallbackLocale, sourceLocale }) {
+  getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
     const getTranslation = locale => catalogs[locale][key].translation
 
     return (
       // Get translation in target locale
       getTranslation(locale) ||
-
       // Get translation in fallbackLocale (if any)
       (fallbackLocale && getTranslation(fallbackLocale)) ||
-
       // Get message default
       catalogs[locale][key].defaults ||
-
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
-      (sourceLocale && fallbackLocale && sourceLocale === fallbackLocale && key) ||
-
+      (sourceLocale &&
+        fallbackLocale &&
+        sourceLocale === fallbackLocale &&
+        key) ||
       // Otherwise no translation is available
       undefined
     )
   },
 
-  writeCompiled (locale, content) {
+  writeCompiled(locale, content) {
     const filename = path.join(
       config.localeDir,
       this.formatFilename(compiledFilename, locale)
@@ -122,26 +124,29 @@ export default (config: LinguiConfig): CatalogFormat => ({
     return filename
   },
 
-  getLocale (filename) {
-    const filenameRe = new RegExp(this.formatFilename(sourceFilename, locales.localeRe.source))
+  getLocale(filename) {
+    const filenameRe = new RegExp(
+      this.formatFilename(sourceFilename, locales.localeRe.source)
+    )
     const match = filenameRe.exec(filename)
     if (!match) return null
 
     return match[1]
   },
 
-  getLocales () {
+  getLocales() {
     const pattern = path.join(
       config.localeDir,
-      this.formatFilename(sourceFilename, '*')
+      this.formatFilename(sourceFilename, "*")
     )
 
-    return glob.sync(pattern)
+    return glob
+      .sync(pattern)
       .map(filename => this.getLocale(filename))
       .filter(Boolean)
   },
 
-  addLocale (locale) {
+  addLocale(locale) {
     if (!locales.isValid(locale)) {
       return [false, null]
     }

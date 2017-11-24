@@ -1,10 +1,10 @@
 // @flow
-import React from 'react'
-import withI18n from './withI18n'
-import type { withI18nProps } from './withI18n'
+import React from "react"
+import withI18n from "./withI18n"
+import type { withI18nProps } from "./withI18n"
 
-import type { RenderProps } from './Render'
-import Render from './Render'
+import type { RenderProps } from "./Render"
+import Render from "./Render"
 
 type PluralProps = {
   value: number | string,
@@ -14,33 +14,39 @@ type PluralProps = {
   two?: any,
   few?: any,
   many?: any,
-  other: any,
-} & withI18nProps & RenderProps
+  other: any
+} & withI18nProps &
+  RenderProps
 
 type SelectProps = {
   value: any,
-  other: any,
-} & withI18nProps & RenderProps
+  other: any
+} & withI18nProps &
+  RenderProps
 
-const Select = withI18n()(class Select extends React.Component<*, SelectProps> {
-  props: SelectProps
+const Select = withI18n()(
+  class Select extends React.Component<*, SelectProps> {
+    props: SelectProps
 
-  render () {
-    // lingui-transform-js transforms also this file in react-native env.
-    // i18n must be aliased to _i18n to hide i18n.select call from plugin,
-    // otherwise it throws "undefined is not iterable" obscure error.
-    const { className, render, i18n: _i18n, ...selectProps } = this.props
-    return <Render
-      className={className}
-      render={render}
-      value={_i18n.select(selectProps)}
-    />
+    render() {
+      // lingui-transform-js transforms also this file in react-native env.
+      // i18n must be aliased to _i18n to hide i18n.select call from plugin,
+      // otherwise it throws "undefined is not iterable" obscure error.
+      const { className, render, i18n: _i18n, ...selectProps } = this.props
+      return (
+        <Render
+          className={className}
+          render={render}
+          value={_i18n.select(selectProps)}
+        />
+      )
+    }
   }
-})
+)
 
 const PluralFactory = (ordinal = false) => {
-  const displayName = !ordinal ? 'Plural' : 'SelectOrdinal'
-  const pluralType = !ordinal ? 'plural' : 'selectOrdinal'
+  const displayName = !ordinal ? "Plural" : "SelectOrdinal"
+  const pluralType = !ordinal ? "plural" : "selectOrdinal"
 
   return class extends React.Component<*, PluralProps> {
     displayName = displayName
@@ -51,19 +57,22 @@ const PluralFactory = (ordinal = false) => {
       offset: 0
     }
 
-    render () {
+    render() {
       const { className, render, i18n, value, offset, ...props } = this.props
 
       // i18n.selectOrdinal/plural uses numbers for exact matches (1, 2),
       // while SelectOrdinal/Plural has to use strings (_1, _2).
-      const pluralProps = Object.keys(props).reduce((acc, prop) => {
-        const key = prop.replace('_', '')
-        acc[key] = props[prop]
-        return acc
-      }, {
-        value: parseInt(value),
-        offset: parseInt(offset)
-      })
+      const pluralProps = Object.keys(props).reduce(
+        (acc, prop) => {
+          const key = prop.replace("_", "")
+          acc[key] = props[prop]
+          return acc
+        },
+        {
+          value: parseInt(value),
+          offset: parseInt(offset)
+        }
+      )
 
       return (
         <Render

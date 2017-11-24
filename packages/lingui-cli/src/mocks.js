@@ -1,4 +1,4 @@
-export function mockConsole (testCase, mock = {}) {
+export function mockConsole(testCase, mock = {}) {
   const originalConsole = global.console
 
   const defaults = {

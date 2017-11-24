@@ -1,37 +1,36 @@
 // @flow
-import fs from 'fs'
-import path from 'path'
-import chalk from 'chalk'
-import R from 'ramda'
+import fs from "fs"
+import path from "path"
+import chalk from "chalk"
+import R from "ramda"
 
-import * as extractors from './extractors'
-import type { ExtractorType } from './extractors'
-import type { AllCatalogsType } from './formats/types'
+import * as extractors from "./extractors"
+import type { ExtractorType } from "./extractors"
+import type { AllCatalogsType } from "./formats/types"
 
 type ExtractOptions = {
   ignore?: Array<string>,
   verbose?: boolean
 }
 
-export function extract (
+export function extract(
   srcPaths: Array<string>,
   targetPath: string,
   options: ExtractOptions = {}
 ) {
-  const {
-    ignore = [],
-    verbose = false
-  } = options
-  const ignorePattern = ignore.length ? new RegExp(ignore.join('|'), 'i') : null
+  const { ignore = [], verbose = false } = options
+  const ignorePattern = ignore.length ? new RegExp(ignore.join("|"), "i") : null
 
   srcPaths.forEach(srcFilename => {
     if (
       !fs.existsSync(srcFilename) ||
       (ignorePattern && ignorePattern.test(srcFilename))
-    ) return
+    )
+      return
 
     if (fs.lstatSync(srcFilename).isDirectory()) {
-      const subdirs = fs.readdirSync(srcFilename)
+      const subdirs = fs
+        .readdirSync(srcFilename)
         .map(filename => path.join(srcFilename, filename))
 
       extract(subdirs, targetPath, options)
@@ -48,8 +47,9 @@ export function extract (
   })
 }
 
-export function collect (buildDir: string) {
-  return fs.readdirSync(buildDir)
+export function collect(buildDir: string) {
+  return fs
+    .readdirSync(buildDir)
     .map(filename => {
       const filepath = path.join(buildDir, filename)
 
@@ -57,7 +57,7 @@ export function collect (buildDir: string) {
         return collect(filepath)
       }
 
-      if (!filename.endsWith('.json')) return
+      if (!filename.endsWith(".json")) return
 
       try {
         return JSON.parse(fs.readFileSync(filepath).toString())
@@ -75,6 +75,6 @@ export function collect (buildDir: string) {
     }, {})
 }
 
-export function cleanObsolete (catalogs: AllCatalogsType) {
+export function cleanObsolete(catalogs: AllCatalogsType) {
   return R.map(R.filter(message => !message.obsolete), catalogs)
 }

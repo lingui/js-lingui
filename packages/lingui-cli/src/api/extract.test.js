@@ -3,41 +3,41 @@
  * *Never* import `extract` module outsite `it` or `beforeAll`. It would
  * break mocking of extractors in `extract` test suit.
  */
-import mockFs from 'mock-fs'
+import mockFs from "mock-fs"
 
-describe('extract', function () {
+describe("extract", function() {
   let extract, babel, typescript
 
   beforeAll(() => {
-    jest.doMock('./extractors/babel', () => ({
-      match: jest.fn(filename => filename.endsWith('.js')),
+    jest.doMock("./extractors/babel", () => ({
+      match: jest.fn(filename => filename.endsWith(".js")),
       extract: jest.fn()
     }))
 
-    jest.doMock('./extractors/typescript', () => ({
-      match: jest.fn(filename => filename.endsWith('.ts')),
+    jest.doMock("./extractors/typescript", () => ({
+      match: jest.fn(filename => filename.endsWith(".ts")),
       extract: jest.fn()
     }))
 
     // load before mocking FS
-    extract = require('./extract').extract
-    babel = require('./extractors/babel')
-    typescript = require('./extractors/typescript')
+    extract = require("./extract").extract
+    babel = require("./extractors/babel")
+    typescript = require("./extractors/typescript")
 
     mockFs({
       src: {
-        'index.html': '',
+        "index.html": "",
 
         components: {
-          'Babel.js': '',
-          'Typescript.ts': '',
+          "Babel.js": "",
+          "Typescript.ts": "",
           forbidden: {
-            'apple.js': ''
+            "apple.js": ""
           }
         },
 
         forbidden: {
-          'file.js': ''
+          "file.js": ""
         }
       }
     })
@@ -47,63 +47,65 @@ describe('extract', function () {
     mockFs.restore()
   })
 
-  it('should traverse directory and call extractors', function () {
-    extract(['src'], 'locale', {
-      ignore: ['forbidden']
+  it("should traverse directory and call extractors", function() {
+    extract(["src"], "locale", {
+      ignore: ["forbidden"]
     })
 
-    expect(typescript.match).toHaveBeenCalledWith('src/components/Typescript.ts')
-    expect(babel.match).toHaveBeenCalledWith('src/components/Babel.js')
-    expect(babel.match).toHaveBeenCalledWith('src/index.html')
+    expect(typescript.match).toHaveBeenCalledWith(
+      "src/components/Typescript.ts"
+    )
+    expect(babel.match).toHaveBeenCalledWith("src/components/Babel.js")
+    expect(babel.match).toHaveBeenCalledWith("src/index.html")
 
     // This file is ignored
-    expect(babel.extract).not.toHaveBeenCalledWith('src/index.html')
+    expect(babel.extract).not.toHaveBeenCalledWith("src/index.html")
 
-    expect(babel.extract)
-      .toHaveBeenCalledWith('src/components/Babel.js', 'locale')
-    expect(babel.extract)
-      .not.toHaveBeenCalledWith('src/components/Typescript.ts', 'locale')
+    expect(babel.extract).toHaveBeenCalledWith(
+      "src/components/Babel.js",
+      "locale"
+    )
+    expect(babel.extract).not.toHaveBeenCalledWith(
+      "src/components/Typescript.ts",
+      "locale"
+    )
 
-    expect(typescript.extract)
-      .not.toHaveBeenCalledWith('src/components/Babel.js', 'locale')
-    expect(typescript.extract)
-      .toHaveBeenCalledWith('src/components/Typescript.ts', 'locale')
+    expect(typescript.extract).not.toHaveBeenCalledWith(
+      "src/components/Babel.js",
+      "locale"
+    )
+    expect(typescript.extract).toHaveBeenCalledWith(
+      "src/components/Typescript.ts",
+      "locale"
+    )
   })
 })
 
-describe('collect', function () {
+describe("collect", function() {
   beforeAll(() => {
     mockFs({
       src: {
         components: {
-          'Ignore.js': 'Messages are collected only from JS files.',
-          'Broken.json': 'Invalid JSONs are ignored too.',
-          'Babel.json': JSON.stringify({
-            'Babel Documentation': {
-              defaults: 'Babel Documentation',
-              origin: [
-                ['src/components/Babel.js', 5]
-              ]
+          "Ignore.js": "Messages are collected only from JS files.",
+          "Broken.json": "Invalid JSONs are ignored too.",
+          "Babel.json": JSON.stringify({
+            "Babel Documentation": {
+              defaults: "Babel Documentation",
+              origin: [["src/components/Babel.js", 5]]
             },
-            'Label': {
-              defaults: 'Label',
-              origin: [
-                ['src/components/Babel.js', 7]
-              ]
+            Label: {
+              defaults: "Label",
+              origin: [["src/components/Babel.js", 7]]
             }
           }),
-          'Typescript.json': JSON.stringify({
-            'Typescript Documentation': {
-              defaults: 'Typescript Documentation',
-              origin: [
-                ['src/components/Typescript.ts', 5]
-              ]
+          "Typescript.json": JSON.stringify({
+            "Typescript Documentation": {
+              defaults: "Typescript Documentation",
+              origin: [["src/components/Typescript.ts", 5]]
             },
-            'Label': {
-              defaults: 'Label',
-              origin: [
-                ['src/components/Typescript.ts', 7]
-              ]
+            Label: {
+              defaults: "Label",
+              origin: [["src/components/Typescript.ts", 7]]
             }
           })
         }
@@ -115,21 +117,21 @@ describe('collect', function () {
     mockFs.restore()
   })
 
-  it('should traverse directory and collect messages', function () {
-    const { collect } = require('./extract')
-    const catalog = collect('src')
+  it("should traverse directory and collect messages", function() {
+    const { collect } = require("./extract")
+    const catalog = collect("src")
     expect(catalog).toMatchSnapshot()
   })
 })
 
-describe('cleanObsolete', function () {
-  it('should remove obsolete messages from catalogs', function () {
-    const { cleanObsolete } = require('./extract')
+describe("cleanObsolete", function() {
+  it("should remove obsolete messages from catalogs", function() {
+    const { cleanObsolete } = require("./extract")
 
     const catalogs = {
       en: {
         Label: {
-          translation: 'Label'
+          translation: "Label"
         },
         PreviousLabel: {
           obsolete: true
@@ -137,10 +139,10 @@ describe('cleanObsolete', function () {
       },
       fr: {
         Label: {
-          translation: 'Label'
+          translation: "Label"
         },
         Obsolete: {
-          translation: 'Obsolete',
+          translation: "Obsolete",
           obsolete: true
         }
       }
