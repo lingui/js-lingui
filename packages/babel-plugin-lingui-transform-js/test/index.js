@@ -39,17 +39,6 @@ describe('babel-plugin-lingui-transform-js', function () {
 
   describe('validation', function () {
     describe('plural/select/selectordinal', function () {
-      it('value must be a variable', function () {
-        const code = `
-        i18n.plural({
-          value: 42,
-          0: "No books",
-          1: "1 book",
-          other: "# books"
-        });`
-        expect(transformCode(code)).toThrowErrorMatchingSnapshot()
-      })
-
       it('value is missing', function () {
         const code = `
         i18n.plural({
@@ -148,7 +137,6 @@ describe('babel-plugin-lingui-transform-js', function () {
   describe('formats', function () {
     it('value is missing', function () {
       expect(transformCode('i18n.date();')).toThrowErrorMatchingSnapshot()
-      expect(transformCode('i18n.date(42);')).toThrowErrorMatchingSnapshot()
     })
 
     it('format must be either string, variable or object with custom format', function () {

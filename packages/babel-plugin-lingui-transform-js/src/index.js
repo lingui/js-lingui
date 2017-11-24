@@ -2,8 +2,12 @@ const nlRe = /(?:\r\n|\r|\n)+\s+/g
 
 const pluralRules = ['zero', 'one', 'two', 'few', 'many', 'other']
 
+const generatorFactory = (index = 0) => () => index++
+
 // Plugin function
 export default function ({ types: t }) {
+  let argumentGenerator
+
   const isI18nMethod = node =>
     t.isMemberExpression(node.tag) &&
     t.isIdentifier(node.tag.object, { name: 'i18n' }) &&
@@ -52,14 +56,9 @@ export default function ({ types: t }) {
 
         if (name === 'value') {
           const exp = attr.value
-
-          // value must be a variable
-          if (!t.isIdentifier(exp)) {
-            throw file.buildCodeFrameError(node.callee, 'Value must be a variable.')
-          }
-
-          variable = exp.name
-          props.values[variable] = t.objectProperty(exp, exp)
+          variable = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+          const key = t.isIdentifier(exp) ? exp : t.numericLiteral(variable)
+          props.values[variable] = t.objectProperty(key, exp)
         } else if (choicesType !== 'select' && name === 'offset') {
           // offset is static parameter, so it must be either string or number
           if (!t.isNumericLiteral(attr.value) && !t.isStringLiteral(attr.value)) {
@@ -83,7 +82,7 @@ export default function ({ types: t }) {
       }
 
       // missing value
-      if (!variable) {
+      if (variable === undefined) {
         throw file.buildCodeFrameError(node.callee, 'Value argument is missing.')
       }
 
@@ -115,16 +114,19 @@ export default function ({ types: t }) {
       const argument = choicesKeys.map(form => `${form} {${choices[form]}}`).join(' ')
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
     } else if (isFormatMethod(node.callee)) {
-      const variable = node.arguments[0]
+      const exp = node.arguments[0]
 
       // missing value
-      if (!variable || !t.isIdentifier(variable)) {
+      if (exp === undefined) {
         throw file.buildCodeFrameError(node.callee, 'The first argument of format function must be a variable.')
       }
 
+      const variable = t.isIdentifier(exp) ? exp.name : argumentGenerator()
+      const key = t.isIdentifier(exp) ? exp : t.numericLiteral(variable)
+
       const type = node.callee.property.name
       const parts = [
-        variable.name, // variable name
+        variable, // variable name
         type // format type
       ]
 
@@ -151,7 +153,7 @@ export default function ({ types: t }) {
 
       if (format) parts.push(format)
 
-      props.values[variable.name] = t.objectProperty(variable, variable)
+      props.values[variable] = t.objectProperty(key, exp)
       props.text += `${parts.join(',')}`
     }
 
@@ -170,12 +172,19 @@ export default function ({ types: t }) {
     parts.forEach((item) => {
       if (t.isTemplateElement(item)) {
         props.text += item.value.raw
-      } else if (t.isCallExpression(item)) {
+      } else if (
+        t.isCallExpression(item) && (
+          isI18nMethod(item.callee) ||
+          isChoiceMethod(item.callee) ||
+          isFormatMethod(item.callee))
+      ) {
         const { text } = processMethod(item, file, { ...props, text: '' })
         props.text += `{${text}}`
       } else {
-        props.text += `{${item.name}}`
-        props.values[item.name] = t.objectProperty(item, item)
+        const name = t.isIdentifier(item) ? item.name : argumentGenerator()
+        const key = t.isIdentifier(item) ? item : t.numericLiteral(name)
+        props.text += `{${name}}`
+        props.values[name] = t.objectProperty(key, item)
       }
     })
 
@@ -183,6 +192,8 @@ export default function ({ types: t }) {
   }
 
   function CallExpression (path, { file }) {
+    argumentGenerator = generatorFactory()
+
     // 1. Collect all parameters and generate message ID
 
     const props = processMethod(path.node, file, {
@@ -212,7 +223,7 @@ export default function ({ types: t }) {
       )
     }
 
-    const i18nArgs = [ t.StringLiteral(text) ] // id
+    const i18nArgs = [t.StringLiteral(text)] // id
     if (tArgs.length) i18nArgs.push(t.objectExpression(tArgs))
 
     const exp = t.callExpression(
