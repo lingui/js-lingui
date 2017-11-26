@@ -12,15 +12,15 @@ ansi-styles@^3.1.0, ansi-styles@^3.2.0:
   dependencies:
     color-convert "^1.9.0"
 
-babel-plugin-lingui-transform-js@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
+babel-plugin-lingui-transform-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.6.tgz#b3a71d831a111a1cbe61c724cb44b31b6fcd447f"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.2.tgz#9a22d016f43e75a506409bf63bd7aa43f35ffbc1"
+babel-plugin-lingui-transform-react@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.3.tgz#060cea6e0f7e42c31bfaebc00601e9deac98d987"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -31,7 +31,7 @@ babel-runtime@^6.23.0, babel-runtime@^6.26.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
-chalk@^2.0.1, chalk@^2.1.0:
+chalk@^2.0.1, chalk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.3.0.tgz#b5ea48efc9c1793dccc9b4767c93914d3f2d52ba"
   dependencies:
@@ -102,11 +102,11 @@ leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-conf@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.11.0.tgz#5843ad4527d948378a8d9a9b04c268674d670aba"
+lingui-conf@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/lingui-conf/-/lingui-conf-0.12.0.tgz#f9c43de3606002207ce55b5367e685a59dfb1f95"
   dependencies:
-    chalk "^2.1.0"
+    chalk "^2.3.0"
     jest-regex-util "^21.2.0"
     jest-validate "^21.2.1"
     pkg-conf "^2.0.0"

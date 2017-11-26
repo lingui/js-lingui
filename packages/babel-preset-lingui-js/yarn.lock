@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-babel-plugin-lingui-transform-js@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
+babel-plugin-lingui-transform-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.6.tgz#b3a71d831a111a1cbe61c724cb44b31b6fcd447f"
   dependencies:
     babel-runtime "^6.23.0"
 

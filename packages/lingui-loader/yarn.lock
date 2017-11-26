@@ -78,22 +78,22 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-lingui-extract-messages@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.1.7.tgz#aba45b417b756d2bcfc27e17bc249698e74192d3"
+babel-plugin-lingui-extract-messages@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-extract-messages/-/babel-plugin-lingui-extract-messages-1.1.10.tgz#a6cb5dae7bc2335595f23f70b7b80eee03ada3bc"
   dependencies:
     babel-runtime "^6.26.0"
     lingui-conf "^0.12.0"
 
-babel-plugin-lingui-transform-js@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.4.tgz#fe3c8a1e30a2853359966741ab728f299436eb73"
+babel-plugin-lingui-transform-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-js/-/babel-plugin-lingui-transform-js-1.0.6.tgz#b3a71d831a111a1cbe61c724cb44b31b6fcd447f"
   dependencies:
     babel-runtime "^6.23.0"
 
-babel-plugin-lingui-transform-react@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.2.tgz#9a22d016f43e75a506409bf63bd7aa43f35ffbc1"
+babel-plugin-lingui-transform-react@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/babel-plugin-lingui-transform-react/-/babel-plugin-lingui-transform-react-1.1.3.tgz#060cea6e0f7e42c31bfaebc00601e9deac98d987"
   dependencies:
     babel-runtime "^6.23.0"
 
@@ -350,15 +350,15 @@ leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
-lingui-cli@^1.3.14:
-  version "1.3.14"
-  resolved "https://registry.yarnpkg.com/lingui-cli/-/lingui-cli-1.3.14.tgz#7a725cf323a3571c3154a6ee4078cc05295ec47a"
+lingui-cli@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/lingui-cli/-/lingui-cli-1.4.2.tgz#ddec5ce6e0d8bfcb968af3dbc57d3fc407c37f4c"
   dependencies:
     babel-core "^6.26.0"
     babel-generator "^6.26.0"
-    babel-plugin-lingui-extract-messages "^1.1.7"
-    babel-plugin-lingui-transform-js "^1.0.4"
-    babel-plugin-lingui-transform-react "^1.1.2"
+    babel-plugin-lingui-extract-messages "^1.1.10"
+    babel-plugin-lingui-transform-js "^1.0.6"
+    babel-plugin-lingui-transform-react "^1.1.3"
     babel-runtime "^6.26.0"
     babel-types "^6.26.0"
     babylon "^6.18.0"
