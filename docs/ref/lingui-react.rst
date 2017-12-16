@@ -134,7 +134,7 @@ fact, it's the only i18n component you'll need if you decide to go without the b
      values={{ today: new Date() }}
      formats={{
        short_date: {
-         year: "numberic",
+         year: "numeric",
          month: "long",
          day: "numeric"
        }
@@ -281,7 +281,7 @@ using ``format`` options. ``format`` prop supports the same options as
    const now = new Date();
    // custom format
    <DateFormat value={now} format={{
-       year: "numberic",
+       year: "numeric",
        month: "long",
        day: "numeric"
    }} />;
