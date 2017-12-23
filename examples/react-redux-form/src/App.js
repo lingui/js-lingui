@@ -1,7 +1,6 @@
 import * as React from "react"
 import { connect } from "react-redux"
 
-import { unpackCatalog } from "lingui-i18n"
 import { I18nProvider, Trans } from "lingui-react"
 import linguiDev from "lingui-react/dev"
 
@@ -17,8 +16,8 @@ function App({ language, setLanguage }) {
       language={language}
       development={linguiDev}
       catalogs={{
-        cs: unpackCatalog(messagesCs),
-        en: unpackCatalog(messagesEn)
+        cs: messagesCs,
+        en: messagesEn
       }}
     >
       <Trans render="h1">Form example</Trans>

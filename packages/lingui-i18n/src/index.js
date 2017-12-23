@@ -1,6 +1,5 @@
 // @flow
 export { i18n, setupI18n } from "./i18n"
-export { unpackCatalog } from "./loader"
 export { date, number } from "./formats"
 
 export type { Catalog, Catalogs, Message, LanguageData, I18n } from "./i18n"

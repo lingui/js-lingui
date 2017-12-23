@@ -36,12 +36,12 @@ jsLingui used comprehensive ``lingui`` format which contains additional info lik
 
 - If you used ``minimal`` format before, simply remove ``"format": "minimal"`` from lingui configuration.
 
-``unpackCatalog`` is deprecated, I18nProvider accepts only compiled message catalogs
-------------------------------------------------------------------------------------
+``unpackCatalog`` is deprecated
+-------------------------------
 
-Production and development version of an app should be very similar if not the same. ``I18nProvider`` will accept only compiled message catalogs - the same that are used in production.
-
-This change simplifies API and makes ``unpackCatalog`` **deprecated**.
+``unpackCatalog`` was a useless optimization, which probably saved less bytes
+that was size of ``unpackCatalog`` function. ``lingui compile`` now produce
+*unpacked* file, which can be used directly in :component:`I18nProvider`:
 
 .. code-block:: jsx
 
@@ -67,16 +67,16 @@ Default wrapping components removed
 -----------------------------------
 
 In React < 16.2, components had to return single children which had to be either
-React Element or null. For this reason, :component:I18nProvider wrapped multiple
-components in ``div`` and :component:Trans wrapped translations in ``span``.
+React Element or null. For this reason, :component:`I18nProvider` wrapped multiple
+components in ``div`` and :component:`Trans` wrapped translations in ``span``.
 
 React 16.2 allows multiple children and text children, so default wrapping
 components are removed.
 
 If you're using React < 16.2 or you want to keep the previous behavior:
 
-1. Set ``defaultRender`` prop of :component:I18nProvider to ``span``.
-2. Wrap children of :component:I18nProvider into ``div`` explicitly.
+1. Set ``defaultRender`` prop of :component:`I18nProvider` to ``span``.
+2. Wrap children of :component:`I18nProvider` into ``div`` explicitly.
 
 .. code-block:: jsx
 
@@ -94,7 +94,7 @@ If you're using React < 16.2 or you want to keep the previous behavior:
    }
 
 Package ``lingui-formats`` merged to ``lingui-i18n``
-====================================================
+----------------------------------------------------
 
 ``lingui-formats`` package was used for date/number formatting and was a wrapper
 around Intl module. It only exported two functions: ``date`` and ``number``, so

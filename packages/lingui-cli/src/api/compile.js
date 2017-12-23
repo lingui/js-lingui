@@ -103,7 +103,7 @@ export function createCompiledCatalog(locale: string, messages: CatalogType) {
 
   const languageData = [
     t.objectProperty(
-      t.stringLiteral("p"),
+      t.stringLiteral("plurals"),
       parseExpression(pluralRules.toString())
     )
   ]
@@ -114,10 +114,13 @@ export function createCompiledCatalog(locale: string, messages: CatalogType) {
       t.memberExpression(t.identifier("module"), t.identifier("exports")),
       t.objectExpression([
         // language data
-        t.objectProperty(t.identifier("l"), t.objectExpression(languageData)),
+        t.objectProperty(
+          t.identifier("languageData"),
+          t.objectExpression(languageData)
+        ),
         // messages
         t.objectProperty(
-          t.identifier("m"),
+          t.identifier("messages"),
           t.objectExpression(compiledMessages)
         )
       ])
