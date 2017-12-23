@@ -1,5 +1,5 @@
 /* @flow */
-import React from "react"
+import * as React from "react"
 import type { Node } from "react"
 import PropTypes from "prop-types"
 import hashSum from "hash-sum"
