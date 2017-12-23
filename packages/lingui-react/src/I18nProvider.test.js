@@ -60,7 +60,7 @@ describe("I18nProvider", function() {
     ).toBeTruthy()
   })
 
-  it("should render multiple children wrapped in div", function() {
+  it("shouldn't render multiple children wrapped in div", function() {
     expect(
       shallow(
         <I18nProvider {...props}>
@@ -68,17 +68,17 @@ describe("I18nProvider", function() {
           <span />
         </I18nProvider>
       ).find("div")
-    ).toHaveLength(1)
+    ).toHaveLength(0)
   })
 
-  it("should pass default render component in context", function() {
+  it("shouldn't have default render component (i.e. render translation without wrapping span)", function() {
     const component = shallow(
       <I18nProvider {...props}>
         <div />
       </I18nProvider>
     ).instance()
     const defaultRender = component.getChildContext()["linguiDefaultRender"]
-    expect(defaultRender).toEqual("span")
+    expect(defaultRender).toEqual(null)
   })
 
   it("should pass custom render component in context", function() {

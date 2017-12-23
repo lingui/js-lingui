@@ -63,6 +63,36 @@ jsLingui doesn't include message parser in production bundle, because messages a
 
 Message parser is included in development package along with plural rules for all languages. This package is now included automatically in development build and the content is scoped under ``if (process.env.NODE_ENV === 'production')`` so it's removed using dead code elimination techniques. To remove it, simply build your app with ``NODE_ENV=production``. This change is inspired by [React](https://reactjs.org/blog/2017/12/15/improving-the-repository-infrastructure.html#protecting-against-late-envification).
 
+Default wrapping components removed
+-----------------------------------
+
+In React < 16.2, components had to return single children which had to be either
+React Element or null. For this reason, :component:I18nProvider wrapped multiple
+components in ``div`` and :component:Trans wrapped translations in ``span``.
+
+React 16.2 allows multiple children and text children, so default wrapping
+components are removed.
+
+If you're using React < 16.2 or you want to keep the previous behavior:
+
+1. Set ``defaultRender`` prop of :component:I18nProvider to ``span``.
+2. Wrap children of :component:I18nProvider into ``div`` explicitly.
+
+.. code-block:: jsx
+
+   import * as React from 'react'
+   import { I18nProvider } from 'lingui-react'
+
+   function App() {
+      return (
+         <I18nProvider defaultRender="span">
+            <div>
+               // original children of I18nProvider
+            </div>
+         </I18nProvider>
+      )
+   }
+
 New features
 ============
 

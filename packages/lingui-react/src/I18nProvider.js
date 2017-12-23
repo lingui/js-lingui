@@ -40,15 +40,10 @@ export function LinguiPublisher(i18n: I18n) {
       subscribers = subscribers.filter(cb => cb !== callback)
     },
 
-    update(
-      {
-        catalogs,
-        language
-      }: {
-        catalogs?: Catalogs,
-        language?: string
-      } = {}
-    ) {
+    update({
+      catalogs,
+      language
+    }: { catalogs?: Catalogs, language?: string } = {}) {
       if (!catalogs && !language) return
 
       if (catalogs) i18n.load(catalogs)
@@ -67,7 +62,7 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
   linguiPublisher: LinguiPublisher
 
   static defaultProps = {
-    defaultRender: "span"
+    defaultRender: null
   }
 
   static childContextTypes = {
@@ -103,11 +98,6 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
   }
 
   render() {
-    const { children } = this.props
-    return children && React.Children.count(children) > 1 ? (
-      <div>{children}</div>
-    ) : (
-      children
-    )
+    return <React.Fragment>{this.props.children}</React.Fragment>
   }
 }

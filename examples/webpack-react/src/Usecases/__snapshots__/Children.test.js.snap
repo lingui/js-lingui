@@ -20,7 +20,7 @@ exports[`Children should render 1`] = `
         "en": Object {},
       }
     }
-    defaultRender="span"
+    defaultRender={null}
     development={
       Object {
         "compile": [Function],
@@ -32,13 +32,13 @@ exports[`Children should render 1`] = `
     <Children>
       <div>
         <ul>
-          <li>
+          <li
+            className="untranslated"
+          >
             <withI18n
-              className="untranslated"
               id="This isn't translated"
             >
               <Trans
-                className="untranslated"
                 i18n={
                   I18n {
                     "_activeLanguageData": Object {
@@ -84,25 +84,20 @@ exports[`Children should render 1`] = `
                 id="This isn't translated"
               >
                 <Render
-                  className="untranslated"
                   value="This isn't translated"
                 >
-                  <span
-                    className="untranslated"
-                  >
-                    This isn't translated
-                  </span>
+                  This isn't translated
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className="customId"
+          >
             <withI18n
-              className="customId"
               id="msg.label"
             >
               <Trans
-                className="customId"
                 i18n={
                   I18n {
                     "_activeLanguageData": Object {
@@ -148,25 +143,20 @@ exports[`Children should render 1`] = `
                 id="msg.label"
               >
                 <Render
-                  className="customId"
                   value="Nápis"
                 >
-                  <span
-                    className="customId"
-                  >
-                    Nápis
-                  </span>
+                  Nápis
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className="translated"
+          >
             <withI18n
-              className="translated"
               id="Hello World"
             >
               <Trans
-                className="translated"
                 i18n={
                   I18n {
                     "_activeLanguageData": Object {
@@ -212,21 +202,17 @@ exports[`Children should render 1`] = `
                 id="Hello World"
               >
                 <Render
-                  className="translated"
                   value="Ahoj světe"
                 >
-                  <span
-                    className="translated"
-                  >
-                    Ahoj světe
-                  </span>
+                  Ahoj světe
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className="variable"
+          >
             <withI18n
-              className="variable"
               id="My name is {name}"
               values={
                 Object {
@@ -235,7 +221,6 @@ exports[`Children should render 1`] = `
               }
             >
               <Trans
-                className="variable"
                 i18n={
                   I18n {
                     "_activeLanguageData": Object {
@@ -286,21 +271,17 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
-                  className="variable"
                   value="Jmenuji se Mononoke"
                 >
-                  <span
-                    className="variable"
-                  >
-                    Jmenuji se Mononoke
-                  </span>
+                  Jmenuji se Mononoke
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className="components"
+          >
             <withI18n
-              className="components"
               components={
                 Array [
                   <a
@@ -311,7 +292,6 @@ exports[`Children should render 1`] = `
               id="Read <0>more</0>."
             >
               <Trans
-                className="components"
                 components={
                   Array [
                     <a
@@ -364,7 +344,6 @@ exports[`Children should render 1`] = `
                 id="Read <0>more</0>."
               >
                 <Render
-                  className="components"
                   value={
                     Array [
                       "Read ",
@@ -377,25 +356,22 @@ exports[`Children should render 1`] = `
                     ]
                   }
                 >
-                  <span
-                    className="components"
+                  Read 
+                  <a
+                    href="/mononoke"
+                    key="0"
                   >
-                    Read 
-                    <a
-                      href="/mononoke"
-                      key="0"
-                    >
-                      more
-                    </a>
-                    .
-                  </span>
+                    more
+                  </a>
+                  .
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className="plural"
+          >
             <withI18n
-              className="plural"
               id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
               values={
                 Object {
@@ -407,7 +383,6 @@ exports[`Children should render 1`] = `
               }
             >
               <Trans
-                className="plural"
                 i18n={
                   I18n {
                     "_activeLanguageData": Object {
@@ -461,14 +436,9 @@ exports[`Children should render 1`] = `
                 }
               >
                 <Render
-                  className="plural"
                   value="Wilma pozvala Fred a dalšího hosta na její oslavu."
                 >
-                  <span
-                    className="plural"
-                  >
-                    Wilma pozvala Fred a dalšího hosta na její oslavu.
-                  </span>
+                  Wilma pozvala Fred a dalšího hosta na její oslavu.
                 </Render>
               </Trans>
             </withI18n>
@@ -642,4 +612,4 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `"<span class=\\"components\\">Read <a href=\\"/mononoke\\">more</a>.</span>"`;
+exports[`Children should support nested elements 1`] = `"<li class=\\"components\\">Read <a href=\\"/mononoke\\">more</a>.</li>"`;

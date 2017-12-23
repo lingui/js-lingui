@@ -1,54 +1,54 @@
 // @flow
-import React from 'react'
-import { Trans, Select, Plural } from 'lingui-react'
+import React from "react"
+import { Trans, Select, Plural } from "lingui-react"
 
 type ChildrenPropTypes = {
-    name?: string,
-    genderOfHost?: 'male' | 'female',
-    numGuests?: number,
-    host?: string,
-    guest?: string
-  }
+  name?: string,
+  genderOfHost?: "male" | "female",
+  numGuests?: number,
+  host?: string,
+  guest?: string
+}
 
 class Children extends React.Component<ChildrenPropTypes> {
   props: ChildrenPropTypes
 
-  render () {
+  render() {
     const {
-      name = 'Mononoke',
-      genderOfHost = 'female',
+      name = "Mononoke",
+      genderOfHost = "female",
       numGuests = 2,
-      host = 'Wilma',
-      guest = 'Fred'
+      host = "Wilma",
+      guest = "Fred"
     } = this.props
 
     return (
       <div>
         <ul>
-          <li>
-            <Trans className="untranslated">{"This isn't translated"}</Trans>
+          <li className="untranslated">
+            <Trans>{"This isn't translated"}</Trans>
           </li>
 
-          <li>
-            <Trans className="customId" id="msg.label"/>
+          <li className="customId">
+            <Trans id="msg.label" />
           </li>
 
-          <li>
-            <Trans className="translated">Hello World</Trans>
+          <li className="translated">
+            <Trans>Hello World</Trans>
           </li>
 
-          <li>
-            <Trans className="variable">My name is {name}</Trans>
+          <li className="variable">
+            <Trans>My name is {name}</Trans>
           </li>
 
-          <li>
-            <Trans className="components">
+          <li className="components">
+            <Trans>
               Read <a href="/mononoke">more</a>.
             </Trans>
           </li>
 
-          <li>
-            <Trans className="plural">
+          <li className="plural">
+            <Trans>
               <Select
                 value={genderOfHost}
                 female={
@@ -86,8 +86,14 @@ class Children extends React.Component<ChildrenPropTypes> {
           </li>
 
           <li>
-            <Trans render={<p className="render-element" />}>My name is {name}</Trans>
-            <Trans render={({ translation }) => <p className="render-component">{translation}</p>}>
+            <Trans render={<p className="render-element" />}>
+              My name is {name}
+            </Trans>
+            <Trans
+              render={({ translation }) => (
+                <p className="render-component">{translation}</p>
+              )}
+            >
               My name is {name}
             </Trans>
           </li>
