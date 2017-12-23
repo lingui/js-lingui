@@ -48,6 +48,11 @@ export default function command(
   const catalog = collect(buildDir)
   const catalogs = clean(format.merge(catalog))
   options.verbose && console.log()
+  //
+  // if (config.sourceLocale) {
+  //   const sourceCatalog = catalogs[config.sourceLocale]
+  //   Object.keys(sourceCatalog).forEach
+  // }
 
   console.log("Writing message catalogues…")
   locales

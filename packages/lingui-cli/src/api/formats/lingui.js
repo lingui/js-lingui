@@ -59,9 +59,9 @@ export default (config: LinguiConfig): CatalogFormat => ({
         const obsoleteKeys = R.difference(prevKeys, nextKeys)
 
         // Initialize new catalog with new keys
-        const newMessages = R.map(
-          message => ({
-            translation: "",
+        const newMessages = R.mapObjIndexed(
+          (message, key) => ({
+            translation: config.sourceLocale === locale ? key : "",
             ...message
           }),
           R.pick(newKeys, nextCatalog)

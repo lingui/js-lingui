@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Trans } from "lingui-react"
 
 class App extends React.Component {
