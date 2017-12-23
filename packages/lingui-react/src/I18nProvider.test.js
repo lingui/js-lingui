@@ -1,5 +1,5 @@
 // @flow
-import React from "react"
+import * as React from "react"
 import { shallow, mount } from "enzyme"
 
 import { I18nProvider } from "."

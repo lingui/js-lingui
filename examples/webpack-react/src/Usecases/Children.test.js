@@ -1,5 +1,5 @@
 // @flow
-import React from "react"
+import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
 import linguiDev from "lingui-react/dev"

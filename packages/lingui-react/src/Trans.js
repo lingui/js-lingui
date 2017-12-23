@@ -1,5 +1,5 @@
 // @flow
-import React from "react"
+import * as React from "react"
 
 import withI18n from "./withI18n"
 import type { withI18nProps } from "./withI18n"

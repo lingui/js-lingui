@@ -1,5 +1,5 @@
 /* @flow */
-import React from "react"
+import * as React from "react"
 import { mount } from "enzyme"
 import { setupI18n } from "lingui-i18n"
 

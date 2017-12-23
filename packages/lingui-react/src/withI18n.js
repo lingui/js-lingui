@@ -1,5 +1,5 @@
 // @flow
-import React from "react"
+import * as React from "react"
 import PropTypes from "prop-types"
 import type { I18n } from "lingui-i18n"
 
@@ -88,24 +88,6 @@ const withI18n = (options: withI18nOptions = {}) =>
     return withI18n
   }
 
-// Deprecated, remove in 2.x
-let deprecationWithI18nOnce = false
-
-const WithI18n = (options: withI18nOptions = {}) => {
-  if (process.env.NODE_ENV !== "production") {
-    if (!deprecationWithI18nOnce) {
-      deprecationWithI18nOnce = true
-      console.warn(
-        "WithI18n is deprecated and will be removed in lingui-react@2.x, " +
-          "use withI18n instead (lower-cased first letter)."
-      )
-    }
-  }
-
-  return withI18n(options)
-}
-
 export default withI18n
-export { WithI18n }
 
 export type { withI18nProps }

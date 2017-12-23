@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import * as React from 'react'
 import { withI18n, Trans } from 'lingui-react'
 
 type ElementAttributesProps = {

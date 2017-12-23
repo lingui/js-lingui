@@ -3,9 +3,9 @@ import { date, number } from "lingui-formats"
 
 import createFormat from "./createFormat"
 
-import withI18n, { WithI18n } from "./withI18n"
+import withI18n from "./withI18n"
 import type { withI18nProps } from "./withI18n"
-export { withI18n, WithI18n }
+export { withI18n }
 export type { withI18nProps }
 
 export { default as I18nProvider } from "./I18nProvider"

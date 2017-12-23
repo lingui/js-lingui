@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import { unpackCatalog } from 'lingui-i18n'
 import { I18nProvider, Trans, i18nMark } from 'lingui-react'

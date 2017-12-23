@@ -26,13 +26,13 @@ exports[`Render should render just a text without wrapping element 2`] = `"Just 
 
 exports[`Render should render just a text without wrapping element 3`] = `"Just a text"`;
 
-exports[`Render should render with fallback span wrapping element 1`] = `
+exports[`Render should render with span wrapping element 1`] = `
 <span>
   Just a text
 </span>
 `;
 
-exports[`Render should render with fallback span wrapping element 2`] = `
+exports[`Render should render with span wrapping element 2`] = `
 <span
   className="info"
 >
