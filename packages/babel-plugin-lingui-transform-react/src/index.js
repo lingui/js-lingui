@@ -146,9 +146,7 @@ export default function({ types: t }) {
       if (!choicesKeys.length) {
         throw file.buildCodeFrameError(
           element,
-          `Missing ${
-            choicesType
-          } choices. At least fallback argument 'other' is required.`
+          `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
         )
       } else if (!Array.includes(choicesKeys, "other")) {
         throw file.buildCodeFrameError(
