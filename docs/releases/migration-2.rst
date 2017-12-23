@@ -93,6 +93,23 @@ If you're using React < 16.2 or you want to keep the previous behavior:
       )
    }
 
+Package ``lingui-formats`` merged to ``lingui-i18n``
+====================================================
+
+``lingui-formats`` package was used for date/number formatting and was a wrapper
+around Intl module. It only exported two functions: ``date`` and ``number``, so
+it was merged to ``lingui-i18n``. It's unlikely that you imported from it
+directly, but if you did simply import ``date`` and ``number`` functions from
+``lingui-i18n``:
+
+.. code-block:: jsx
+
+   // Before
+   import { date, number } from 'lingui-formats'
+
+   // After
+   import { date, number } from 'lingui-i18n'
+
 New features
 ============
 

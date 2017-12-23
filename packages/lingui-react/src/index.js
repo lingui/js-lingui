@@ -1,5 +1,5 @@
 // @flow
-import { date, number } from "lingui-formats"
+import { date, number } from "lingui-i18n"
 
 import createFormat from "./createFormat"
 

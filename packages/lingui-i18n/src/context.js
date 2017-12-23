@@ -1,5 +1,5 @@
 // @flow
-import { date, number } from "lingui-formats"
+import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
 const defaultFormats = (language, languageData = {}, formats = {}) => {
