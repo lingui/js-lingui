@@ -1,6 +1,6 @@
 // @flow
-import * as React from 'react'
-import { withI18n } from 'lingui-react'
+import * as React from "react"
+import { withI18n } from "lingui-react"
 
 type PureComponentTestProps = {
   children?: any,
@@ -16,32 +16,38 @@ type PureComponentProps = {
 class PureComponentTest extends React.PureComponent<PureComponentTestProps> {
   props: PureComponentTestProps
 
-  render () {
+  render() {
     const { value } = this.props
 
-    return <div>
-      <CorrectUpdate value={value} />
-      <SkippedUpdate value={value} />
-    </div>
+    return (
+      <div>
+        <CorrectUpdate value={value} />
+        <SkippedUpdate value={value} />
+      </div>
+    )
   }
 }
 
-const CorrectUpdate = withI18n()(class extends React.PureComponent<PureComponentProps> {
-  props: PureComponentProps
+const CorrectUpdate = withI18n()(
+  class extends React.PureComponent<PureComponentProps> {
+    props: PureComponentProps
 
-  render () {
-    const { i18n, value } = this.props
-    return <span className="valid">{i18n.t`The value is: ${value}`}</span>
+    render() {
+      const { i18n, value } = this.props
+      return <span className="valid">{i18n.t`The value is: ${value}`}</span>
+    }
   }
-})
+)
 
-const SkippedUpdate = withI18n({ withHash: false })(class extends React.PureComponent<PureComponentProps> {
-  props: PureComponentProps
+const SkippedUpdate = withI18n({ withHash: false })(
+  class extends React.PureComponent<PureComponentProps> {
+    props: PureComponentProps
 
-  render () {
-    const { i18n, value } = this.props
-    return <span className="invalid">{i18n.t`The value is: ${value}`}</span>
+    render() {
+      const { i18n, value } = this.props
+      return <span className="invalid">{i18n.t`The value is: ${value}`}</span>
+    }
   }
-})
+)
 
 export default PureComponentTest

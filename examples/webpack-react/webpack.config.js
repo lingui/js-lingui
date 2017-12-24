@@ -1,10 +1,10 @@
-const path = require('path')
+const path = require("path")
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    filename: './bundle.js',
-    path: path.resolve('public')
+    filename: "./bundle.js",
+    path: path.resolve("public")
   },
 
   module: {
@@ -12,7 +12,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: "babel-loader"
       }
     ]
   },
@@ -20,6 +20,6 @@ module.exports = {
   devServer: {
     hot: true,
     inline: true,
-    contentBase: path.resolve('public')
+    contentBase: path.resolve("public")
   }
 }

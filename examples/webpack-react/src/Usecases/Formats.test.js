@@ -1,32 +1,38 @@
 // @flow
-import * as React from 'react'
-import { mount } from 'enzyme'
-import { I18nProvider } from 'lingui-react'
-import linguiDev from 'lingui-react/dev'
+import * as React from "react"
+import { mount } from "enzyme"
+import { I18nProvider } from "lingui-react"
+import linguiDev from "lingui-react/dev"
 
-import Formats from './Formats'
+import Formats from "./Formats"
 
-describe('Formats', function () {
-  const Component = ({ language, ...props }: { language: string }) =>
-    <I18nProvider language={language} catalogs={{en: {}}} development={linguiDev}>
+describe("Formats", function() {
+  const Component = ({ language, ...props }: { language: string }) => (
+    <I18nProvider
+      language={language}
+      catalogs={{ en: {} }}
+      development={linguiDev}
+    >
       <Formats {...props} />
     </I18nProvider>
+  )
 
   const getText = (element, props = {}) => {
-    return mount(
-      <Component {...props} language="en"/>).find(element).first().text()
+    return mount(<Component {...props} language="en" />)
+      .find(element)
+      .first()
+      .text()
   }
 
-  it('should render', function () {
-    expect(mount(
-      <Component language="en"/>)).toMatchSnapshot()
+  it("should render", function() {
+    expect(mount(<Component language="en" />)).toMatchSnapshot()
   })
 
-  it('should render percent', function () {
-    expect(getText('.percent')).toEqual('The answer is 42%')
+  it("should render percent", function() {
+    expect(getText(".percent")).toEqual("The answer is 42%")
   })
 
-  it('should render date', function () {
-    expect(getText('.date')).toEqual('Today is 4/5/2017')
+  it("should render date", function() {
+    expect(getText(".date")).toEqual("Today is 4/5/2017")
   })
 })
