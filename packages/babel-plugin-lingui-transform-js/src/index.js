@@ -26,7 +26,7 @@ export default function({ types: t }) {
     (t.isIdentifier(node.property, { name: "date" }) ||
       t.isIdentifier(node.property, { name: "number" }))
 
-  function processMethod(node, file, props) {
+  function processMethod(node, file, props, root = false) {
     // i18n.t
     if (isI18nMethod(node)) {
       processTemplateLiteral(node.quasi, file, props)
@@ -140,7 +140,8 @@ export default function({ types: t }) {
       const argument = choicesKeys
         .map(form => `${form} {${choices[form]}}`)
         .join(" ")
-      props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
+      const format = `${variable}, ${choicesType},${offset} ${argument}`
+      props.text = root ? `{${format}}` : format
     } else if (isFormatMethod(node.callee)) {
       const exp = node.arguments[0]
 
