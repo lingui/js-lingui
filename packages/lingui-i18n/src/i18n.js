@@ -4,9 +4,8 @@ import { isString, isFunction, isEmpty } from "./essentials"
 import t from "./t"
 import { select, plural, selectOrdinal } from "./select"
 
-type Message = {|
+type MessageOptions = {|
   defaults?: string,
-  values?: Object,
   formats?: Object
 |}
 
@@ -162,7 +161,11 @@ class I18n {
   }
 
   // default translate method
-  _(id: string, { defaults, values = {}, formats = {} }: Message = {}) {
+  _(
+    id: string,
+    values: Object = {},
+    { defaults, formats = {} }: MessageOptions = {}
+  ) {
     let translation = this.messages[id] || defaults || id
 
     if (process.env.NODE_ENV !== "production") {
@@ -207,4 +210,4 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
 const i18n = setupI18n()
 
 export { setupI18n, i18n }
-export type { Message, Catalog, Catalogs, LanguageData, I18n }
+export type { MessageOptions, Catalog, Catalogs, LanguageData, I18n }

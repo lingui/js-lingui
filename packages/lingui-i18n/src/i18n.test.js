@@ -171,7 +171,7 @@ describe("I18n", function() {
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
-    expect(i18n._("My name is {name}", { values: { name: "Fred" } })).toEqual(
+    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
       "Je m'appelle Fred"
     )
 
@@ -180,14 +180,15 @@ describe("I18n", function() {
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
-    expect(i18n._("Missing {name}", { values: { name: "Fred" } })).toEqual(
-      "Missing Fred"
-    )
+    expect(i18n._("Missing {name}", { name: "Fred" })).toEqual("Missing Fred")
     expect(
-      i18n._("Missing with default", {
-        defaults: "Missing {name}",
-        values: { name: "Fred" }
-      })
+      i18n._(
+        "Missing with default",
+        { name: "Fred" },
+        {
+          defaults: "Missing {name}"
+        }
+      )
     ).toEqual("Missing Fred")
   })
 
@@ -217,7 +218,7 @@ describe("I18n", function() {
         catalogs: { fr: { messages } }
       })
 
-      expect(i18n._("My name is {name}", { values: { name: "Fred" } })).toEqual(
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
         "Je m'appelle {name}"
       )
     })

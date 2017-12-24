@@ -249,20 +249,13 @@ export default function({ types: t }) {
     const text = props.text.replace(nlRe, " ").trim()
     if (!text) return
 
-    // 2. Replace complex expression with single call to i18n.t
+    // 2. Replace complex expression with single call to i18n._
 
-    const tArgs = []
-
-    const valuesList = Object.values(props.values)
-    if (valuesList.length) {
-      tArgs.push(
-        t.objectProperty(t.identifier("values"), t.objectExpression(valuesList))
-      )
-    }
+    const tOptions = []
 
     const formatsList = Object.values(props.formats)
     if (formatsList.length) {
-      tArgs.push(
+      tOptions.push(
         t.objectProperty(
           t.identifier("formats"),
           t.objectExpression(formatsList)
@@ -270,12 +263,23 @@ export default function({ types: t }) {
       )
     }
 
-    const i18nArgs = [t.StringLiteral(text)] // id
-    if (tArgs.length) i18nArgs.push(t.objectExpression(tArgs))
+    // arguments of i18n._(messageId: string, values: Object, options: Object)
+    const tArgs = [t.StringLiteral(text)] // messageId
 
+    const valuesList = Object.values(props.values)
+    // omit second argument when there're no values and no options,
+    // i.e: simplify i18n._(id, {}) to i18n._(id)
+    if (valuesList.length || tOptions.length) {
+      tArgs.push(t.objectExpression(valuesList.length ? valuesList : []))
+    }
+
+    // add options argument
+    if (tOptions.length) tArgs.push(t.objectExpression(tOptions))
+
+    // replace i18n.t`...` with i18n._(...), but remember original location
     const exp = t.callExpression(
       t.memberExpression(t.identifier("i18n"), t.identifier("_")),
-      i18nArgs
+      tArgs
     )
     exp.loc = path.node.loc
     path.replaceWith(exp)

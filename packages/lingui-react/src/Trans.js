@@ -39,7 +39,7 @@ class Trans extends React.Component<TransProps> {
   getTranslation(): string {
     const { id = "", defaults, i18n, values, formats } = this.props
     return i18n && typeof i18n._ === "function"
-      ? i18n._(id, { defaults, values, formats })
+      ? i18n._(id, values, { defaults, formats })
       : // i18n provider isn't loaded at all
         id
   }
