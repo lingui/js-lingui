@@ -36,5 +36,9 @@
   },
   "scripts": {
     "prepublish": "../../scripts/prepublish.sh"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.1.1",
+    "eslint": "^4.14.0"
   }
 }

@@ -28,7 +28,7 @@
   "devDependencies": {
     "all-contributors-cli": "^4.8.1",
     "babel-cli": "^6.24.1",
-    "babel-eslint": "^8.0.2",
+    "babel-eslint": "^8.1.1",
     "babel-generator": "^6.25.0",
     "babel-jest": "^22.0.4",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -45,7 +45,7 @@
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.2.2",
-    "eslint": "^4.11.0",
+    "eslint": "^4.14.0",
     "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.3.2",
@@ -73,6 +73,10 @@
     "tmp": "^0.0.33",
     "webpack": "^3.8.1"
   },
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"

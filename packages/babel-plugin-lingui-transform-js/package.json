@@ -26,5 +26,9 @@
   },
   "dependencies": {
     "babel-runtime": "^6.23.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.1.1",
+    "eslint": "^4.14.0"
   }
 }
