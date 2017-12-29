@@ -1,4 +1,4 @@
-import { getConfig, replaceRootDir } from "./index"
+import { getConfig, replaceRootDir } from "lingui-conf"
 
 describe("lingui-conf", function() {
   it("should return default config", function() {

@@ -72,9 +72,9 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, catalogs, development } = this.props
+    const { language, catalogs, development } = props
     const i18n =
-      this.props.i18n ||
+      props.i18n ||
       setupI18n({
         language,
         catalogs,

@@ -1,7 +1,7 @@
 import fs from "fs"
 import fsPath from "path"
 import mkdirp from "mkdirp"
-import generate from "babel-generator"
+import generate from "@babel/generator"
 import { getConfig } from "lingui-conf"
 
 // Map of messages
@@ -198,7 +198,7 @@ export default function({ types: t }) {
        * catalog will be in locale/_build/src/components/App.json
        */
       const localeDir = this.opts.localeDir || opts.localeDir
-      const { filename, basename } = file.opts
+      const { filename } = file.opts
       const baseDir = fsPath.dirname(fsPath.relative(optsBaseDir, filename))
       const targetDir = fsPath.join(localeDir, "_build", baseDir)
 
@@ -213,6 +213,8 @@ export default function({ types: t }) {
       })
 
       mkdirp.sync(targetDir)
+      const [basename] = fsPath.basename(filename).split(".", 2)
+
       fs.writeFileSync(
         fsPath.join(targetDir, `${basename}.json`),
         JSON.stringify(catalog, null, 2)

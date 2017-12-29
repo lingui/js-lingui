@@ -2,8 +2,8 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { setupI18n } from "lingui-i18n"
-import linguiDev from "lingui-i18n/dev"
-import { Select, Plural, SelectOrdinal } from "."
+import * as linguiDev from "lingui-i18n/dev"
+import { Select, Plural, SelectOrdinal } from "lingui-react"
 
 describe("Categories", function() {
   const i18n = code =>

@@ -1,6 +1,7 @@
 "use strict"
 
 const { existsSync, readdirSync, unlinkSync } = require("fs")
+const path = require("path")
 const Bundles = require("./bundles")
 const {
   asyncCopyTo,
@@ -9,11 +10,7 @@ const {
   asyncRimRaf
 } = require("./utils")
 
-const {
-  UNIVERSAL,
-  NODE,
-  NOOP
-} = Bundles.bundleTypes
+const { UNIVERSAL, NODE, NOOP } = Bundles.bundleTypes
 
 function getPackageName(name) {
   return name.split("/")[0]

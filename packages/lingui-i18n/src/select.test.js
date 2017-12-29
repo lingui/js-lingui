@@ -1,7 +1,7 @@
 /* @flow */
 import { plural, select, selectOrdinal } from "./select"
-import { setupI18n } from "./i18n"
-import dev from "./dev"
+import { setupI18n } from "lingui-i18n"
+import * as dev from "lingui-i18n/dev"
 
 describe("plural", function() {
   const i18n = setupI18n({

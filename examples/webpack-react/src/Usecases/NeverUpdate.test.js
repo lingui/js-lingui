@@ -2,11 +2,11 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
+import * as linguiDev from "lingui-i18n/dev"
 
 import NeverUpdate from "./NeverUpdate"
 import Children from "./Children"
 import ElementAttributes from "./ElementAttributes"
-import linguiDev from "lingui-i18n/dev"
 
 describe("NeverUpdate", function() {
   const catalogs = {

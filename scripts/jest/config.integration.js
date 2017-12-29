@@ -33,5 +33,8 @@ module.exports = Object.assign({}, sourceConfig, {
   moduleNameMapper,
 
   // Exclude the build output from transforms
-  transformIgnorePatterns: ["/node_modules/", "<rootDir>/build/"]
+  transformIgnorePatterns: ["/node_modules/", "<rootDir>/build/"],
+  modulePathIgnorePatterns: [".yalc/"],
+
+  collectCoverage: false
 })

@@ -83,8 +83,7 @@
     "webpack": "^3.8.1"
   },
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "repository": {
     "type": "git",

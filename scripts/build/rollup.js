@@ -18,6 +18,7 @@ const Stats = require("./stats")
 const sizes = require("./plugins/sizes")
 // const codeFrame = require("babel-code-frame")
 // const Wrappers = require("./wrappers")
+const babelConfig = require("./babel.config")
 
 const Modules = require("./modules")
 const Bundles = require("./bundles")
@@ -55,10 +56,10 @@ const closureOptions = {
 }
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
-  return {
+  return Object.assign({}, babelConfig({ modules: false }), {
     exclude: "node_modules/**",
     runtimeHelpers: true
-  }
+  })
 }
 
 function getRollupOutputOptions(outputPath, format, globals, globalName) {

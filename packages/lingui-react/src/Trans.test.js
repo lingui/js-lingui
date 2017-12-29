@@ -1,10 +1,10 @@
 /* @flow */
 import * as React from "react"
 import { mount } from "enzyme"
-import { setupI18n } from "lingui-i18n"
 
-import { Trans } from "."
-import linguiDev from "./dev"
+import { Trans } from "lingui-react"
+import { setupI18n } from "lingui-i18n"
+import * as linguiDev from "lingui-i18n/dev"
 import { mockEnv, mockConsole } from "./mocks"
 
 describe("Trans component", function() {
@@ -48,6 +48,9 @@ describe("Trans component", function() {
 
   it("should warn about possible missing babel-plugin in development", function() {
     mockEnv("production", () => {
+      jest.resetModules()
+      const { Trans } = require("lingui-react")
+
       mockConsole(console => {
         mount(<Trans>Label</Trans>)
         expect(console.warn).not.toBeCalled()
@@ -55,6 +58,9 @@ describe("Trans component", function() {
     })
 
     mockEnv("development", () => {
+      jest.resetModules()
+      const { Trans } = require("lingui-react")
+
       mockConsole(console => {
         mount(<Trans>Label</Trans>)
         expect(console.warn).toBeCalledWith(

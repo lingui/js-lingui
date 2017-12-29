@@ -2,11 +2,11 @@
 import * as React from "react"
 import { shallow, mount } from "enzyme"
 
-import { I18nProvider } from "."
+import { setupI18n } from "lingui-i18n"
+import * as linguiDev from "lingui-i18n/dev"
+import { I18nProvider } from "lingui-react"
 import { LinguiPublisher } from "./I18nProvider"
 import { mockConsole } from "./mocks"
-import linguiDev from "./dev"
-import { setupI18n } from "lingui-i18n"
 
 describe("I18nProvider", function() {
   const props = {

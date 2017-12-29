@@ -1,7 +1,7 @@
 /* @flow */
 import { i18n, setupI18n } from "lingui-i18n"
-import { mockConsole, mockEnv } from "./mocks"
 import * as linguiDev from "lingui-i18n/dev"
+import { mockConsole, mockEnv } from "./mocks"
 
 describe("I18n", function() {
   it("should export named I18n instance", function() {
@@ -121,8 +121,11 @@ describe("I18n", function() {
       )
     })
 
-    mockConsole(console => {
-      mockEnv("production", () => {
+    mockEnv("production", () => {
+      jest.resetModules()
+      mockConsole(console => {
+        const { setupI18n } = require("lingui-i18n")
+        const i18n = setupI18n()
         i18n.activate("xyz")
         expect(console.warn).not.toBeCalled()
       })

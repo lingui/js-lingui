@@ -2,7 +2,7 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
-import { DateFormat, NumberFormat } from "."
+import { DateFormat, NumberFormat } from "lingui-react"
 
 describe("DateFormat", function() {
   const languageContext = code => ({

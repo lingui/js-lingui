@@ -4,6 +4,7 @@ const chalk = require("chalk")
 const babel = require("@babel/core")
 const ora = require("ora")
 
+const babelConfig = require("./babel.config")
 const Packaging = require("./packaging")
 const { asyncMkDirP } = require("./utils")
 
@@ -51,7 +52,10 @@ module.exports = async function(bundle) {
       const outputDir = path.dirname(mainOutputPath)
       await asyncMkDirP(outputDir)
 
-      const { code } = babel.transformFileSync(path.join(srcDir, filename))
+      const { code } = babel.transformFileSync(
+        path.join(srcDir, filename),
+        babelConfig({ modules: true })
+      )
       fs.writeFileSync(mainOutputPath, code)
     }
   } catch (error) {

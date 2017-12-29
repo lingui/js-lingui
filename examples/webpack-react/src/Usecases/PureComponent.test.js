@@ -2,9 +2,9 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
+import * as linguiDev from "lingui-i18n/dev"
 
 import PureComponent from "./PureComponent"
-import linguiDev from "lingui-i18n/dev"
 
 describe("PureComponent", function() {
   const catalogs = {

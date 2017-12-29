@@ -2,8 +2,15 @@
 
 const program = require("commander")
 
+let version
+try {
+  version = require("./package.json").version
+} catch (e) {
+  version = "dev"
+}
+
 program
-  .version(require("../package.json").version)
+  .version(version)
   .command(
     "add-locale [locales...]",
     "Add new locale (generate empty message catalogues for this locale)"
