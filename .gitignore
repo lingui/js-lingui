@@ -1,5 +1,5 @@
 node_modules/
-dist/
+build/
 docs/_build/
 
 npm-debug.log

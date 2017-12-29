@@ -1,7 +1,7 @@
 /* @flow */
-import { i18n, setupI18n } from "."
+import { i18n, setupI18n } from "lingui-i18n"
 import { mockConsole, mockEnv } from "./mocks"
-import linguiDev from "./dev"
+import * as linguiDev from "lingui-i18n/dev"
 
 describe("I18n", function() {
   it("should export named I18n instance", function() {

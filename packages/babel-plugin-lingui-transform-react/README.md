@@ -45,7 +45,7 @@ require("babel-core").transform("code", {
 
 [MIT][License]
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
 [Package]: https://www.npmjs.com/package/babel-plugin-lingui-transform-react

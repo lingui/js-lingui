@@ -1,27 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`babel-plugin-lingui-transform-js formats format must be either string, variable or object with custom format 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Format can be either string for buil-in formats, variable or object for custom defined formats."`;
+exports[`babel-plugin-lingui-transform-js formats format must be either string, variable or object with custom format 1`] = `
+"undefined: Format can be either string for buil-in formats, variable or object for custom defined formats.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js formats value is missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: The first argument of format function must be a variable."`;
+exports[`babel-plugin-lingui-transform-js formats value is missing 1`] = `
+"undefined: The first argument of format function must be a variable.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal offset must be number or string, not variable 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Offset argument cannot be a variable."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal offset must be number or string, not variable 1`] = `
+"undefined: Offset argument cannot be a variable.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 1`] = `
+"undefined: Missing plural choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 2`] = `
+"undefined: Missing plural choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 3`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing plural choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 3`] = `
+"undefined: Missing plural choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms cannot be variables 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Computed properties aren't allowed."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms cannot be variables 1`] = `
+"undefined: Computed properties aren't allowed.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 1`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 2`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 3`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 3`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English)."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 1`] = `
+"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 2`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English)."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 2`] = `
+"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+"
+`;
 
-exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal value is missing 1`] = `"packages/babel-plugin-lingui-transform-js/test/fixtures/t/actual.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal value is missing 1`] = `
+"undefined: Value argument is missing.
+"
+`;

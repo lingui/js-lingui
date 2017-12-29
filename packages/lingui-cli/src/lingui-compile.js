@@ -4,7 +4,7 @@ import R from "ramda"
 import program from "commander"
 import plurals from "make-plural"
 
-import getConfig from "lingui-conf"
+import { getConfig } from "lingui-conf"
 
 import { createCompiledCatalog } from "./api/compile"
 

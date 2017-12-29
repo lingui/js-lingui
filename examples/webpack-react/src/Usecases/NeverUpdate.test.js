@@ -6,7 +6,7 @@ import { I18nProvider } from "lingui-react"
 import NeverUpdate from "./NeverUpdate"
 import Children from "./Children"
 import ElementAttributes from "./ElementAttributes"
-import linguiDev from "lingui-react/dev"
+import linguiDev from "lingui-i18n/dev"
 
 describe("NeverUpdate", function() {
   const catalogs = {

@@ -1,1 +1,1 @@
-module.exports = require("./dist/dev")
+export * from "./src/dev"

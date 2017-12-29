@@ -2,7 +2,7 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
-import linguiDev from "lingui-react/dev"
+import linguiDev from "lingui-i18n/dev"
 
 import Children from "./Children"
 

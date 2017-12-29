@@ -4,7 +4,7 @@ import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
 
 import PureComponent from "./PureComponent"
-import linguiDev from "lingui-react/dev"
+import linguiDev from "lingui-i18n/dev"
 
 describe("PureComponent", function() {
   const catalogs = {

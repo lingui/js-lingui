@@ -5,7 +5,7 @@ import mkdirp from "mkdirp"
 import chalk from "chalk"
 import program from "commander"
 
-import getConfig from "lingui-conf"
+import { getConfig } from "lingui-conf"
 
 import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
 import { extract, collect, cleanObsolete } from "./api/extract"

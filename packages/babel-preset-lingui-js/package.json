@@ -21,9 +21,5 @@
   },
   "dependencies": {
     "babel-plugin-lingui-transform-js": "^1.0.6"
-  },
-  "devDependencies": {
-    "babel-eslint": "^8.1.1",
-    "eslint": "^4.14.0"
   }
 }

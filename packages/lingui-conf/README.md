@@ -30,7 +30,7 @@ See the [reference][Reference] documenation of `lingui-cli` for all options.
 
 [MIT][License]
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
 [Reference]: https://lingui.github.io/js-lingui/ref/cli.html

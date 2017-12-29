@@ -271,7 +271,7 @@ Contributions of any kind welcome!
 
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [Watch]: https://github.com/lingui/js-lingui/watchers
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D

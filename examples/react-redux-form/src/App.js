@@ -2,7 +2,7 @@ import * as React from "react"
 import { connect } from "react-redux"
 
 import { I18nProvider, Trans } from "lingui-react"
-import linguiDev from "lingui-react/dev"
+import linguiDev from "lingui-i18n/dev"
 
 import messagesCs from "lingui-loader!../locale/cs/messages.json"
 import messagesEn from "lingui-loader!../locale/en/messages.json"

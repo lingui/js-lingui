@@ -1,5 +1,4 @@
 import { Trans, NumberFormat } from 'lingui-react';
-
 <Trans id="The answer is {value,number,currency}" values={{
   value: value
 }} formats={{

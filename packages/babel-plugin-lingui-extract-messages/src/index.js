@@ -2,7 +2,7 @@ import fs from "fs"
 import fsPath from "path"
 import mkdirp from "mkdirp"
 import generate from "babel-generator"
-import getConfig from "lingui-conf"
+import { getConfig } from "lingui-conf"
 
 // Map of messages
 const MESSAGES = Symbol("I18nMessages")

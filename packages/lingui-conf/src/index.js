@@ -72,5 +72,4 @@ function getConfig() {
   return replaceRootDir(raw, rootDir)
 }
 
-export default getConfig
-export { replaceRootDir }
+export { getConfig, replaceRootDir }

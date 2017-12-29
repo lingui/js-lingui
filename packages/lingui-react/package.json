@@ -33,16 +33,9 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
+    "@babel/runtime": "^7.0.0-beta.36",
     "hash-sum": "^1.0.2",
     "lingui-i18n": "^1.3.3",
     "prop-types": "^15.6.0"
-  },
-  "scripts": {
-    "prepublish": "../../scripts/prepublish.sh"
-  },
-  "devDependencies": {
-    "babel-eslint": "^8.1.1",
-    "eslint": "^4.14.0"
   }
 }
