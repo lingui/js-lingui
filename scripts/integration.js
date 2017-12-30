@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require("path")
+const ora = require("ora")
 const { execSync } = require("child_process")
 
 const BUILD_DIR = path.resolve("build/packages")
@@ -11,21 +12,13 @@ function listDirs(dir) {
     .filter(dirname => fs.lstatSync(path.join(dir, dirname)).isDirectory())
 }
 
-function linkDependencies(example, packages) {
-  const packageJson = require(path.join(EXAMPLES_DIR, example, "package.json"))
-  const dependencies = [].concat(
-    Object.keys(packageJson.dependencies),
-    Object.keys(packageJson.devDependencies)
-  )
-
-  // dependencies
-  //   .filter(dependency => packages.indexOf(dependency) !== -1)
-  packages.forEach(dependency => {
-    execSync("yalc link " + dependency, {
-      cwd: path.join(EXAMPLES_DIR, example)
-    })
-    console.log("Linked " + dependency)
+function linkDependencies(example) {
+  const spinner = ora('Linking ' + example)
+  const dependencies = packages.join(" ")
+  execSync("yalc link " + dependencies, {
+    cwd: path.join(EXAMPLES_DIR, example)
   })
+  spinner.succeed()
 }
 
 function linkPackage(packageName) {
@@ -36,4 +29,4 @@ const packages = listDirs(BUILD_DIR)
 const examples = listDirs(EXAMPLES_DIR)
 
 packages.forEach(linkPackage)
-examples.forEach(example => linkDependencies(example, packages))
+examples.forEach(linkDependencies)
