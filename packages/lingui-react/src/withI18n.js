@@ -15,7 +15,7 @@ type withI18nProps = {
 
 const withI18n = (options: withI18nOptions = {}) =>
   function<P, C: React$Component<any, P>>(
-    WrappedComponent: Class<C>
+    WrappedComponent: Class<C> | Function
   ): Class<React.Component<any, $Diff<P, withI18nProps>>> {
     if (process.env.NODE_ENV !== "production") {
       if (typeof options === "function" || React.isValidElement(options)) {
