@@ -40,4 +40,5 @@ logHeading("Link packages with examples")
 execSync("node scripts/integration", { stdio: "inherit" })
 
 logHeading("Run tests")
-execSync("yarn test", { stdio: "inherit" })
+execSync("yarn test:unit", { stdio: "inherit" })
+execSync("yarn test:integration", { stdio: "inherit" })
