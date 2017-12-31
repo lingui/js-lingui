@@ -1,7 +1,6 @@
 /* @flow */
-import { i18n, setupI18n } from "."
+import { i18n, setupI18n } from "lingui-i18n"
 import { mockConsole, mockEnv } from "./mocks"
-import linguiDev from "./dev"
 
 describe("I18n", function() {
   it("should export named I18n instance", function() {
@@ -28,9 +27,7 @@ describe("I18n", function() {
       Hello: "Hello"
     }
 
-    const i18n = setupI18n({
-      development: linguiDev
-    })
+    const i18n = setupI18n()
     expect(i18n.messages).toEqual({})
 
     i18n.load({ en: { messages } })
@@ -97,8 +94,7 @@ describe("I18n", function() {
       catalogs: {
         fr: { messages },
         en: { messages: {} }
-      },
-      development: linguiDev
+      }
     })
 
     expect(i18n.language).toEqual("en")
@@ -121,8 +117,11 @@ describe("I18n", function() {
       )
     })
 
-    mockConsole(console => {
-      mockEnv("production", () => {
+    mockEnv("production", () => {
+      jest.resetModules()
+      mockConsole(console => {
+        const { setupI18n } = require("lingui-i18n")
+        const i18n = setupI18n()
         i18n.activate("xyz")
         expect(console.warn).not.toBeCalled()
       })
@@ -145,8 +144,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "en",
-      catalogs,
-      development: linguiDev
+      catalogs
     })
 
     expect(i18n._("Hello")).toEqual("Hello")
@@ -166,8 +164,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "fr",
-      catalogs: { fr: { messages } },
-      development: linguiDev
+      catalogs: { fr: { messages } }
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
@@ -199,8 +196,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "fr",
-      catalogs: { fr: { messages } },
-      development: linguiDev
+      catalogs: { fr: { messages } }
     })
     const hello = "Hello"
     expect(i18n._(hello)).toEqual("Salut")
@@ -213,6 +209,7 @@ describe("I18n", function() {
     }
 
     mockEnv("production", () => {
+      const { setupI18n } = require("lingui-i18n")
       const i18n = setupI18n({
         language: "fr",
         catalogs: { fr: { messages } }

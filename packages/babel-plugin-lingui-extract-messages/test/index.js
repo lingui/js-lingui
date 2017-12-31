@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { transformFileSync } from "babel-core"
 
-import plugin from "../src/index"
+import plugin from "babel-plugin-lingui-extract-messages"
 
 const LOCALE_DIR = "./locale"
 
@@ -43,9 +43,7 @@ function testCase(testName, assertion) {
             localeDir: LOCALE_DIR
           }
         ],
-        "external-helpers",
-        ...(jsx ? ["syntax-jsx"] : []),
-        "transform-remove-strict-mode"
+        ...(jsx ? ["@babel/syntax-jsx"] : [])
       ]
     })
 
@@ -199,7 +197,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
             }
           ]
         ],
-        presets: ["react"]
+        presets: ["@babel/preset-react"]
       })
     ).not.toThrow()
 

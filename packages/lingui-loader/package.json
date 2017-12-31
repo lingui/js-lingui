@@ -29,12 +29,8 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
     "lingui-cli": "^1.4.2",
     "lingui-conf": "^0.12.0",
     "ramda": "^0.25.0"
-  },
-  "scripts": {
-    "prepublish": "../../scripts/prepublish.sh"
   }
 }

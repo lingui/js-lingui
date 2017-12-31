@@ -1,33 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number format must be string, variable or object with custom format 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Format can be either string for buil-in formats, variable or object for custom defined formats."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number format must be string, variable or object with custom format 1`] = `
+"undefined: Format can be either string for buil-in formats, variable or object for custom defined formats.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value of date must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of date must be a variable 1`] = `
+"undefined: Value argument is missing.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Date/Number value of number must be a variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-react validation Date/Number value of number must be a variable 1`] = `
+"undefined: Value argument is missing.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Children of Plural aren't allowed."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 1`] = `
+"undefined: Children of Plural aren't allowed.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 2`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Children of Select aren't allowed."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 2`] = `
+"undefined: Children of Select aren't allowed.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 3`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Children of SelectOrdinal aren't allowed."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal children are not allowed 3`] = `
+"undefined: Children of SelectOrdinal aren't allowed.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal offset must be number or string, not variable 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Offset argument cannot be a variable."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal offset must be number or string, not variable 1`] = `
+"undefined: Offset argument cannot be a variable.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing plural choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `
+"undefined: Missing plural choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing select choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `
+"undefined: Missing select choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing selectordinal choices. At least fallback argument 'other' is required."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `
+"undefined: Missing selectordinal choices. At least fallback argument 'other' is required.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Missing fallback argument 'other'."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `
+"undefined: Missing fallback argument 'other'.
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural rules must be valid 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English)."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural rules must be valid 1`] = `
+"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural rules must be valid 2`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English)."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal plural rules must be valid 2`] = `
+"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+"
+`;
 
-exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal value is missing 1`] = `"packages/babel-plugin-lingui-transform-react/test/validation.js: Value argument is missing."`;
+exports[`babel-plugin-lingui-transform-react validation Plural/Select/SelectOrdinal value is missing 1`] = `
+"undefined: Value argument is missing.
+"
+`;

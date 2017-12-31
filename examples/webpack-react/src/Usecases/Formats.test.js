@@ -2,17 +2,12 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
-import linguiDev from "lingui-react/dev"
 
 import Formats from "./Formats"
 
 describe("Formats", function() {
   const Component = ({ language, ...props }: { language: string }) => (
-    <I18nProvider
-      language={language}
-      catalogs={{ en: {} }}
-      development={linguiDev}
-    >
+    <I18nProvider language={language} catalogs={{ en: {} }}>
       <Formats {...props} />
     </I18nProvider>
   )

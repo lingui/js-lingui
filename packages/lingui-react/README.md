@@ -23,7 +23,7 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 
 [MIT][License]
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE.md
+[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
 [Tutorial]: https://lingui.github.io/js-lingui/tutorials/react.html

@@ -1,5 +1,5 @@
 **/dist/*
-**/test/fixtures/*
+**/test/fixtures/**
 **/test/**/actual.js
 **/test/**/expected.js
 **/locale/*

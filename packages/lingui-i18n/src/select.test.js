@@ -1,7 +1,6 @@
 /* @flow */
 import { plural, select, selectOrdinal } from "./select"
-import { setupI18n } from "./i18n"
-import dev from "./dev"
+import { setupI18n } from "lingui-i18n"
 
 describe("plural", function() {
   const i18n = setupI18n({
@@ -10,8 +9,7 @@ describe("plural", function() {
       en: {
         messages: {}
       }
-    },
-    development: dev
+    }
   })
 
   it("should convert to message format string", function() {
@@ -61,8 +59,7 @@ describe("selectOrdinal", function() {
       en: {
         messages: {}
       }
-    },
-    development: dev
+    }
   })
 
   it("should convert to message format string", function() {
@@ -113,8 +110,7 @@ describe("selectOrdinal", function() {
         cs: {
           messages: {}
         }
-      },
-      development: dev
+      }
     })
 
     const s = selectOrdinal(i18nCS)

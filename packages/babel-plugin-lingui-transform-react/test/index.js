@@ -12,12 +12,7 @@ function getTestName(testPath) {
 describe("babel-plugin-lingui-transform-react", function() {
   const babelOptions = {
     babelrc: false,
-    plugins: [
-      "external-helpers",
-      "syntax-jsx",
-      "transform-remove-strict-mode",
-      plugin
-    ]
+    plugins: ["@babel/syntax-jsx", plugin]
   }
 
   const transformCode = code => () =>
@@ -84,16 +79,6 @@ describe("babel-plugin-lingui-transform-react", function() {
   })
 
   describe("validation", function() {
-    beforeAll(function() {
-      // Transform empty file to set the right filename for all stack frames
-      // in exceptions
-      const testPath = path.relative(
-        process.cwd(),
-        path.join(__dirname, "validation.js")
-      )
-      transformFileSync(testPath, babelOptions)
-    })
-
     describe("Plural/Select/SelectOrdinal", function() {
       it("children are not allowed", function() {
         expect(

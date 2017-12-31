@@ -12,7 +12,7 @@ function getTestName(testPath) {
 describe("babel-plugin-lingui-transform-js", function() {
   const babelOptions = {
     babelrc: false,
-    plugins: [plugin, "syntax-jsx", "transform-remove-strict-mode"]
+    plugins: [plugin, "@babel/plugin-syntax-jsx"]
   }
 
   // return function, so we can test exceptions

@@ -1,7 +1,7 @@
 // @flow
 import chalk from "chalk"
 import program from "commander"
-import getConfig from "lingui-conf"
+import { getConfig } from "lingui-conf"
 
 import type { CatalogFormat } from "./api/formats/types"
 

@@ -8,7 +8,7 @@ const NODE_MODULES = replacePathSepForRegex(
   path.sep + "node_modules" + path.sep
 )
 
-function replaceRootDir(conf, rootDir) {
+export function replaceRootDir(conf, rootDir) {
   const replace = s => s.replace("<rootDir>", rootDir)
   ;["srcPathDirs", "srcPathIgnorePatterns", "localeDir"].forEach(key => {
     const value = conf[key]
@@ -58,7 +58,7 @@ const configValidation = {
   comment: `See https://l.lingui.io/ref-lingui-conf for a list of valid options`
 }
 
-function getConfig() {
+export function getConfig() {
   const raw = pkgConf.sync("lingui", {
     defaults,
     skipOnFalse: true
@@ -71,6 +71,3 @@ function getConfig() {
   const rootDir = path.dirname(pkgConf.filepath(raw))
   return replaceRootDir(raw, rootDir)
 }
-
-export default getConfig
-export { replaceRootDir }

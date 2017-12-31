@@ -4,7 +4,6 @@ import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
 
 import PureComponent from "./PureComponent"
-import linguiDev from "lingui-react/dev"
 
 describe("PureComponent", function() {
   const catalogs = {
@@ -23,11 +22,7 @@ describe("PureComponent", function() {
     language: string,
     value: number
   }) => (
-    <I18nProvider
-      language={language}
-      catalogs={catalogs}
-      development={linguiDev}
-    >
+    <I18nProvider language={language} catalogs={catalogs}>
       <PureComponent value={value} />
     </I18nProvider>
   )

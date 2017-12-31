@@ -6,7 +6,6 @@ import { I18nProvider } from "lingui-react"
 import NeverUpdate from "./NeverUpdate"
 import Children from "./Children"
 import ElementAttributes from "./ElementAttributes"
-import linguiDev from "lingui-react/dev"
 
 describe("NeverUpdate", function() {
   const catalogs = {
@@ -28,11 +27,7 @@ describe("NeverUpdate", function() {
   }: {
     language: string
   }) => (
-    <I18nProvider
-      language={language}
-      catalogs={catalogs}
-      development={linguiDev}
-    >
+    <I18nProvider language={language} catalogs={catalogs}>
       <NeverUpdate>
         <WrappedComponent />
       </NeverUpdate>

@@ -2,7 +2,6 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
-import linguiDev from "lingui-react/dev"
 
 import Children from "./Children"
 
@@ -23,11 +22,7 @@ describe("Children", function() {
   }
 
   const Component = ({ language, ...props }: { language: string }) => (
-    <I18nProvider
-      language={language}
-      catalogs={catalogs}
-      development={linguiDev}
-    >
+    <I18nProvider language={language} catalogs={catalogs}>
       <Children {...props} />
     </I18nProvider>
   )

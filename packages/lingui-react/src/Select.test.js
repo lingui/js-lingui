@@ -2,15 +2,13 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { setupI18n } from "lingui-i18n"
-import linguiDev from "lingui-i18n/dev"
-import { Select, Plural, SelectOrdinal } from "."
+import { Select, Plural, SelectOrdinal } from "lingui-react"
 
 describe("Categories", function() {
   const i18n = code =>
     setupI18n({
       language: code,
-      catalogs: { [code]: {} },
-      development: linguiDev
+      catalogs: { [code]: {} }
     })
   const languageContext = code => ({
     context: { linguiPublisher: { i18n: i18n(code) } }
