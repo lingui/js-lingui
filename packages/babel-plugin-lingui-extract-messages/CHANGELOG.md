@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.12"></a>
+## [1.1.12](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.9...babel-plugin-lingui-extract-messages@1.1.12) (2017-12-31)
+
+
+### Bug Fixes
+
+* Make plugin compatible with babel 7 ([2f48f50](https://github.com/lingui/js-lingui/commit/2f48f50))
+* Make plugin compatible with babel 7 ([c769be8](https://github.com/lingui/js-lingui/commit/c769be8))
+
+
+
+
 <a name="1.1.11"></a>
 ## [1.1.11](https://github.com/lingui/js-lingui/compare/babel-plugin-lingui-extract-messages@1.1.9...babel-plugin-lingui-extract-messages@1.1.11) (2017-12-31)
 

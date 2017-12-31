@@ -1,6 +1,6 @@
 {
   "name": "react-redux-form",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Example of using jsLingui with redux-form",
   "main": "index.js",
   "author": {
@@ -32,7 +32,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-lingui-react": "^1.0.13",
     "babel-preset-react": "^6.24.1",
-    "lingui-loader": "^0.1.3",
+    "lingui-loader": "^0.1.4",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },
