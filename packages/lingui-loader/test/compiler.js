@@ -3,13 +3,9 @@ import webpack from "webpack"
 import MemoryFS from "memory-fs"
 
 export default (fixture, options = {}) => {
-  const cwd = process.cwd()
-  process.chdir(__dirname)
-
-  const catalogPath = path.relative("", fixture)
   const compiler = webpack({
     context: __dirname,
-    entry: fixture,
+    entry: "." + path.sep + fixture,
     output: {
       path: __dirname,
       filename: "bundle.js"
@@ -30,7 +26,6 @@ export default (fixture, options = {}) => {
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
-      process.chdir(cwd)
       if (err) reject(err)
 
       resolve(stats)

@@ -1,9 +1,10 @@
+import path from "path"
 import R from "ramda"
 import { getConfig } from "lingui-conf"
 import { createCompiledCatalog, formats } from "lingui-cli/api"
 
 export default function(source) {
-  const config = getConfig()
+  const config = getConfig({ cwd: path.dirname(this.resourcePath) })
   const format = formats[config.format](config)
 
   const locales = format.getLocales()

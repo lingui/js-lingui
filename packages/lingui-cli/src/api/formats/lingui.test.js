@@ -1,3 +1,4 @@
+import path from "path"
 import tmp from "tmp"
 import plugin from "./lingui"
 
@@ -12,13 +13,13 @@ describe("Catalog formats - lingui", function() {
     // First run, create a directory with an empty message catalog
     expect(plugin(config).addLocale("en")).toEqual([
       true,
-      expect.stringMatching("en/messages.json$")
+      expect.stringMatching(path.join("en", "messages.json$"))
     ])
 
     // Second run, don't do anything
     expect(plugin(config).addLocale("en")).toEqual([
       false,
-      expect.stringMatching("en/messages.json$")
+      expect.stringMatching(path.join("en", "messages.json$"))
     ])
   })
 

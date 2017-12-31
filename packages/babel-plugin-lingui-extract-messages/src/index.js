@@ -59,7 +59,7 @@ export default function({ types: t }) {
 
     const filename = fsPath
       .relative(optsBaseDir, file.opts.filename)
-      .replace("\\", "/")
+      .replace(/\\/g, "/")
     const line = path.node.loc ? path.node.loc.start.line : null
     props.origin = [[filename, line]]
 
