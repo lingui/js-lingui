@@ -58,10 +58,11 @@ const configValidation = {
   comment: `See https://l.lingui.io/ref-lingui-conf for a list of valid options`
 }
 
-export function getConfig() {
+export function getConfig({ cwd } = {}) {
   const raw = pkgConf.sync("lingui", {
     defaults,
-    skipOnFalse: true
+    skipOnFalse: true,
+    cwd: cwd || process.cwd()
   })
 
   validate(raw, configValidation)
