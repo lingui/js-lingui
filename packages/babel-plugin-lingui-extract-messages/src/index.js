@@ -57,7 +57,9 @@ export default function({ types: t }) {
   function collectMessage(path, file, props) {
     const messages = file.get(MESSAGES)
 
-    const filename = fsPath.relative(optsBaseDir, file.opts.filename)
+    const filename = fsPath
+      .relative(optsBaseDir, file.opts.filename)
+      .replace("\\", "/")
     const line = path.node.loc ? path.node.loc.start.line : null
     props.origin = [[filename, line]]
 

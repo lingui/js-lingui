@@ -1,3 +1,4 @@
+import path from "path"
 /**
  * Fellow contributor!
  * *Never* import `extract` module outsite `it` or `beforeAll`. It would
@@ -53,29 +54,33 @@ describe("extract", function() {
     })
 
     expect(typescript.match).toHaveBeenCalledWith(
-      "src/components/Typescript.ts"
+      path.join("src", "components", "Typescript.ts")
     )
-    expect(babel.match).toHaveBeenCalledWith("src/components/Babel.js")
-    expect(babel.match).toHaveBeenCalledWith("src/index.html")
+    expect(babel.match).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.js")
+    )
+    expect(babel.match).toHaveBeenCalledWith(path.join("src", "index.html"))
 
     // This file is ignored
-    expect(babel.extract).not.toHaveBeenCalledWith("src/index.html")
+    expect(babel.extract).not.toHaveBeenCalledWith(
+      path.join("src", "index.html")
+    )
 
     expect(babel.extract).toHaveBeenCalledWith(
-      "src/components/Babel.js",
+      path.join("src", "components", "Babel.js"),
       "locale"
     )
     expect(babel.extract).not.toHaveBeenCalledWith(
-      "src/components/Typescript.ts",
+      path.join("src", "components", "Typescript.ts"),
       "locale"
     )
 
     expect(typescript.extract).not.toHaveBeenCalledWith(
-      "src/components/Babel.js",
+      path.join("src", "components", "Babel.js"),
       "locale"
     )
     expect(typescript.extract).toHaveBeenCalledWith(
-      "src/components/Typescript.ts",
+      path.join("src", "components", "Typescript.ts"),
       "locale"
     )
   })
