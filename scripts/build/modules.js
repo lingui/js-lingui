@@ -10,6 +10,9 @@ const HAS_NO_SIDE_EFFECTS_ON_IMPORT = false
 // const HAS_SIDE_EFFECTS_ON_IMPORT = true;
 const importSideEffects = Object.freeze({
   "@babel/runtime/core-js/object/get-own-property-names": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
+  "@babel/runtime/helpers/slicedToArray": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
+  "messageformat-parser": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
+  "make-plural/umd/plurals": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   deepFreezeAndThrowOnMutationInDev: HAS_NO_SIDE_EFFECTS_ON_IMPORT
 })
 

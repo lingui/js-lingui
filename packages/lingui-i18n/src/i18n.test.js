@@ -1,6 +1,5 @@
 /* @flow */
 import { i18n, setupI18n } from "lingui-i18n"
-import * as linguiDev from "lingui-i18n/dev"
 import { mockConsole, mockEnv } from "./mocks"
 
 describe("I18n", function() {
@@ -28,9 +27,7 @@ describe("I18n", function() {
       Hello: "Hello"
     }
 
-    const i18n = setupI18n({
-      development: linguiDev
-    })
+    const i18n = setupI18n()
     expect(i18n.messages).toEqual({})
 
     i18n.load({ en: { messages } })
@@ -97,8 +94,7 @@ describe("I18n", function() {
       catalogs: {
         fr: { messages },
         en: { messages: {} }
-      },
-      development: linguiDev
+      }
     })
 
     expect(i18n.language).toEqual("en")
@@ -148,8 +144,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "en",
-      catalogs,
-      development: linguiDev
+      catalogs
     })
 
     expect(i18n._("Hello")).toEqual("Hello")
@@ -169,8 +164,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "fr",
-      catalogs: { fr: { messages } },
-      development: linguiDev
+      catalogs: { fr: { messages } }
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
@@ -202,8 +196,7 @@ describe("I18n", function() {
 
     const i18n = setupI18n({
       language: "fr",
-      catalogs: { fr: { messages } },
-      development: linguiDev
+      catalogs: { fr: { messages } }
     })
     const hello = "Hello"
     expect(i18n._(hello)).toEqual("Salut")
@@ -216,6 +209,7 @@ describe("I18n", function() {
     }
 
     mockEnv("production", () => {
+      const { setupI18n } = require("lingui-i18n")
       const i18n = setupI18n({
         language: "fr",
         catalogs: { fr: { messages } }

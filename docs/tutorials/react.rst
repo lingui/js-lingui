@@ -107,8 +107,7 @@ to complete one more step to setup our application.
 Components needs to be aware of their active language. All jsLingui_ components
 read translations and language settings from the context. In order to get this
 information into the React context, we need to wrap our application in
-:component:`I18nProvider` component. In development we're also going to need
-some more *stuff*, but don't worry about it now. It'll be explained later.
+:component:`I18nProvider` component.
 
 Let's add all required imports and wrap our app inside :component:`I18nProvider`:
 
@@ -121,19 +120,13 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
 
    import { I18nProvider } from 'lingui-react'
 
-   // required in development only (huge dependency)
-   const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
-
    const App = () => (
-     <I18nProvider language="en" development={dev}>
+     <I18nProvider language="en">
        <Inbox />
      </I18nProvider>
    )
 
    render(<App />, document.getElementById('app'))
-
-I know, the development import looks ugly! But we're doing this for greater
-good, saving a lot of bandwidth data.
 
 .. hint::
 
@@ -687,7 +680,7 @@ locale:
 ``messages.js``
    Minified JS file with compiled messages (for application)
 
-We'll just import a compiled message catalog, unpack it and pass it to
+We'll just import a compiled message catalog and pass it to
 :component:`I18nProvider`:
 
 .. code-block:: jsx
@@ -698,14 +691,11 @@ We'll just import a compiled message catalog, unpack it and pass it to
    import Inbox from './Inbox.js'
 
    import { I18nProvider } from 'lingui-react'
-   // required in development only (huge dependency)
-   const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
 
-   import { unpackCatalog } from 'lingui-i18n'
    import catalog from 'locale/cs/messages.js'
 
    const App = () => (
-     <I18nProvider language="cs" catalogs={{ cs: unpackCatalog(catalog) }} development={dev}>
+     <I18nProvider language="cs" catalogs={{ cs: catalog }}>
        <Inbox />
      </I18nProvider>
    )

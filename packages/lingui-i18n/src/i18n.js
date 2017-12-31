@@ -3,6 +3,7 @@ import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import t from "./t"
 import { select, plural, selectOrdinal } from "./select"
+import * as dev from "./dev"
 
 type MessageOptions = {|
   defaults?: string,
@@ -188,17 +189,13 @@ class I18n {
     if (!this.languageData.plurals) return "other"
     return this.languageData.plurals(n, pluralType === "ordinal")
   }
-
-  development(config: Object) {
-    this._dev = config
-  }
 }
 
 function setupI18n(params?: setupI18nProps = {}): I18n {
   const i18n = new I18n()
 
   if (process.env.NODE_ENV !== "production") {
-    if (params.development) i18n.development(params.development)
+    i18n._dev = dev
   }
 
   if (params.catalogs) i18n.load(params.catalogs)

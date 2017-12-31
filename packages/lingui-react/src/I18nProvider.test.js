@@ -3,7 +3,6 @@ import * as React from "react"
 import { shallow, mount } from "enzyme"
 
 import { setupI18n } from "lingui-i18n"
-import * as linguiDev from "lingui-i18n/dev"
 import { I18nProvider } from "lingui-react"
 import { LinguiPublisher } from "./I18nProvider"
 import { mockConsole } from "./mocks"
@@ -130,8 +129,7 @@ describe("I18nPublisher", function() {
           fr: {
             messages: { msg: "salut" }
           }
-        },
-        development: linguiDev
+        }
       })
     )
 
@@ -180,8 +178,7 @@ describe("I18nPublisher", function() {
     const linguiPublisher = new LinguiPublisher(
       setupI18n({
         language: "en",
-        catalogs: { en: {}, fr: {} },
-        development: linguiDev
+        catalogs: { en: {}, fr: {} }
       })
     )
     linguiPublisher.subscribe(listener)

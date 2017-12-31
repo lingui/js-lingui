@@ -4,7 +4,6 @@ import { mount } from "enzyme"
 
 import { Trans } from "lingui-react"
 import { setupI18n } from "lingui-i18n"
-import * as linguiDev from "lingui-i18n/dev"
 import { mockEnv, mockConsole } from "./mocks"
 
 describe("Trans component", function() {
@@ -24,8 +23,7 @@ describe("Trans component", function() {
           "msg.currency": "{value, number, currency}"
         }
       }
-    },
-    development: linguiDev
+    }
   })
 
   const context = { linguiPublisher: { i18n } }

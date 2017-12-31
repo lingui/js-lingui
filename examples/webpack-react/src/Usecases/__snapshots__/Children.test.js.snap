@@ -21,12 +21,6 @@ exports[`Children should render 1`] = `
       }
     }
     defaultRender={null}
-    development={
-      Object {
-        "compile": [Function],
-        "loadLanguageData": [Function],
-      }
-    }
     language="cs"
   >
     <Children>

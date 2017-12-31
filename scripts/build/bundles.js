@@ -14,13 +14,6 @@ const bundles = [
   },
 
   {
-    label: 'lingui-i18n-dev',
-    type: bundleTypes.UNIVERSAL,
-    entry: "lingui-i18n/dev",
-    externals: []
-  },
-
-  {
     type: bundleTypes.UNIVERSAL,
     entry: "lingui-react",
     externals: ["lingui-i18n"]

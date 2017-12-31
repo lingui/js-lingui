@@ -107,21 +107,29 @@ Loading of message catalogs
 ===========================
 
 The most important piece in this story is ``loadCatalog()`` method. It's
-necessary to load compiled message catalogs in production (``messages.js`` 
-instead of ``messages.json``) and unpack them using ``unpackCatalog()`` function.
+necessary to load compiled message catalogs. The recommended way is compile
+messages on-the-fly using ``lingui-loader``, but it's also possible to load
+compiled ``messages.js`` directly.
+
 Here we use the dynamic import syntax to load the message catalog:
 
 .. code-block:: js
 
    loadCatalog = async (language) => {
+     // using lingui-loader - load raw messages.json
      const catalog = await import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `locale/${language}/messages.js`)
+       `lingui-loader!locale/${language}/messages.json`)
+
+     // load compiled messages.js
+     // const catalog = await import(
+     //  /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
+     //  `locale/${language}/messages.js`)
 
      this.setState(state => ({
        catalogs: {
          ...state.catalogs,
-         [language]: unpackCatalog(catalog)
+         [language]: catalog
        }
      }))
    }
@@ -134,12 +142,12 @@ good old promises:
    loadCatalog = (language) => {
      import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `locale/${language}/messages.js`)
+       `lingui-loader!locale/${language}/messages.json`)
      .then(catalog =>
        this.setState(state => ({
          catalogs: {
            ...state.catalogs,
-           [language]: unpackCatalog(catalog)
+           [language]: catalog
          }
        }))
      )
@@ -161,7 +169,6 @@ Here's the full source of ``I18nLoader`` component:
    import React from 'react'
    import { connect } from 'react-redux'
    import { I18nProvider } from 'lingui-react'
-   import { unpackCatalog } from 'lingui-i18n'
 
    export class I18nLoader extends React.Component {
      state = {
@@ -171,12 +178,12 @@ Here's the full source of ``I18nLoader`` component:
      loadCatalog = async (language) => {
        const catalog = await import(
          /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-         `locale/${language}/messages.js`)
+         `lingui-loader!locale/${language}/messages.json`)
 
        this.setState(state => ({
          catalogs: {
            ...state.catalogs,
-           [language]: unpackCatalog(catalog)
+           [language]: catalog
          }
        }))
      }

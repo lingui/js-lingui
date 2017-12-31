@@ -2,7 +2,6 @@
 import * as React from "react"
 import { mount } from "enzyme"
 import { I18nProvider } from "lingui-react"
-import * as linguiDev from "lingui-i18n/dev"
 
 import ElementAttributes from "./ElementAttributes"
 
@@ -18,11 +17,7 @@ describe("ElementAttributes", function() {
   }
 
   const Component = ({ language }: { language: string }) => (
-    <I18nProvider
-      language={language}
-      catalogs={catalogs}
-      development={linguiDev}
-    >
+    <I18nProvider language={language} catalogs={catalogs}>
       <ElementAttributes />
     </I18nProvider>
   )

@@ -17,13 +17,13 @@
       "signature": "a22eef9483d58587e181b857d0b7f741"
     },
     "lingui-i18n": {
-      "signature": "56324c92c1e0246d3fe26ce68c74aa4c"
+      "signature": "bf37ad246913938f635f0db9f87a08f9"
     },
     "lingui-loader": {
       "signature": "653492e8e45f3c22137f11863bb81e8d"
     },
     "lingui-react": {
-      "signature": "08a40150852c970c0e192f8f6774218a"
+      "signature": "f7f5b006e4fa4addf52d64051ba36164"
     },
     "babel-preset-lingui-js": {
       "signature": "865402953364a8fd103b45e81a3b21ae"
