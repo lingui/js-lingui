@@ -28,23 +28,21 @@ jobs:
 
       - run:
           name: Install build tools
-          command: sudo yarn global add codecov
+          command: sudo yarn global add codecov yalc
 
       - restore_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
-          command: |
-              yarn install
-              yarn run bootstrap
+          command: yarn install
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: yarn test
+      - run: node scripts/test.js
 
       - run:
           name: Send coverage report
@@ -72,16 +70,14 @@ jobs:
 
       - run:
           name: Install build tools
-          command: sudo yarn global add codecov
+          command: sudo yarn global add codecov yalc
 
       - restore_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
-          command: |
-              yarn install
-              yarn run bootstrap
+          command: yarn install
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
