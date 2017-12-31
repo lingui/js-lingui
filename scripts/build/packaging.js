@@ -35,7 +35,7 @@ function getBundleOutputPaths(bundleType, filename, packageName) {
 }
 
 function getTarOptions(tgzName, packageName) {
-  // Files inside the `npm pack`ed archive start
+  // Files inside the `yarn pack`ed archive start
   // with "package/" in their paths. We'll undo
   // this during extraction.
   const CONTENTS_FOLDER = "package"

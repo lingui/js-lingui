@@ -22,6 +22,13 @@ function installExample(example) {
 
 const logHeading = message => console.log(chalk.bold("\n" + message + "\n"))
 
+try {
+  execSync("yalc")
+} catch (e) {
+  console.error(chalk.red("yalc must be installed globally"))
+  process.exit(1)
+}
+
 logHeading("Build packages")
 execSync("node scripts/build", { stdio: "inherit" })
 

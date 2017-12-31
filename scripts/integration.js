@@ -13,7 +13,7 @@ function listDirs(dir) {
 }
 
 function linkDependencies(example) {
-  const spinner = ora('Linking ' + example)
+  const spinner = ora("Linking " + example)
   const dependencies = packages.join(" ")
   execSync("yalc link " + dependencies, {
     cwd: path.join(EXAMPLES_DIR, example)

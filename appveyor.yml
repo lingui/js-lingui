@@ -7,6 +7,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - yarn install
+  - yarn global add yalc
 
 # Post-install test scripts.
 test_script:
