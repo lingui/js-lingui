@@ -11,7 +11,7 @@
       "signature": "f5e6190c6657c8c834245c7f695c29e2"
     },
     "lingui-cli": {
-      "signature": "729f43221cc7a271e05f327512d72ef0"
+      "signature": "7ecc344c6dc171c0062b998cb707d7ff"
     },
     "lingui-conf": {
       "signature": "a22eef9483d58587e181b857d0b7f741"
@@ -24,6 +24,12 @@
     },
     "lingui-react": {
       "signature": "08a40150852c970c0e192f8f6774218a"
+    },
+    "babel-preset-lingui-js": {
+      "signature": "865402953364a8fd103b45e81a3b21ae"
+    },
+    "babel-preset-lingui-react": {
+      "signature": "279361a261b09fc1dd50ab36472a68c3"
     }
   }
 }
