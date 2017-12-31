@@ -6,9 +6,6 @@ workflows:
     jobs:
       - test-linter
 
-      - test-node6:
-          requires:
-            - test-linter
       - test-node8:
           requires:
             - test-linter
@@ -55,11 +52,11 @@ jobs:
           path: ./results/
           when: always
 
-  test-node6:
-    <<: *test-template
-
-    docker:
-      - image: circleci/node:6
+#  test-node6:
+#    <<: *test-template
+#
+#    docker:
+#      - image: circleci/node:6
 
   test-linter:
     docker:
