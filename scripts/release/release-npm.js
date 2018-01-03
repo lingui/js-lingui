@@ -11,7 +11,7 @@ function releasePackage(packagePath) {
   const spinner = ora(`Publishing @lingui/${name}@${version}`)
 
   try {
-    execSync(`npm publish --access public`, {
+    execSync(`npm publish --access public --tag next`, {
       cwd: packagePath
     })
   } catch (e) {
