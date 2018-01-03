@@ -595,7 +595,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@lingui/babel-plugin-extract-messages@*", "@lingui/babel-plugin-extract-messages@2.0.0-1":
+"@lingui/babel-plugin-extract-messages@2.0.0-1", "@lingui/babel-plugin-extract-messages@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-2.0.0-1.tgz#e4875da143bedd0c45f431595703ba9c2e5d53ae"
   dependencies:
@@ -604,15 +604,15 @@
     "@lingui/babel-plugin-transform-react" "2.0.0-1"
     "@lingui/conf" "2.0.0-1"
 
-"@lingui/babel-plugin-transform-js@*", "@lingui/babel-plugin-transform-js@2.0.0-1":
+"@lingui/babel-plugin-transform-js@2.0.0-1", "@lingui/babel-plugin-transform-js@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.0.0-1.tgz#bb1c14264704b1e544c49b1fd450e301d009295b"
 
-"@lingui/babel-plugin-transform-react@*", "@lingui/babel-plugin-transform-react@2.0.0-1":
+"@lingui/babel-plugin-transform-react@2.0.0-1", "@lingui/babel-plugin-transform-react@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.0.0-1.tgz#f284b87d815de91509b392dab471e8d12f47d5d9"
 
-"@lingui/cli@*":
+"@lingui/cli@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.0.0-1.tgz#b3c7ae328fc7d5001e12ae0df73a0b943a83edcd"
   dependencies:
@@ -634,7 +634,7 @@
     mkdirp "^0.5.1"
     ramda "^0.25.0"
 
-"@lingui/conf@*", "@lingui/conf@2.0.0-1", "@lingui/conf@^2.0.0-0":
+"@lingui/conf@2.0.0-1", "@lingui/conf@^2.0.0-0", "@lingui/conf@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-2.0.0-1.tgz#69ea0604f399a5e18cff590f5a7e18d2697e846c"
   dependencies:
@@ -643,7 +643,7 @@
     jest-validate "^22.0.3"
     pkg-conf "^2.1.0"
 
-"@lingui/core@*":
+"@lingui/core@latest":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.0.0-1.tgz#98e8c8fb25ba5f90d1c0156a77a50906e9060e64"
   dependencies:
@@ -1251,8 +1251,8 @@ browserify-zlib@^0.2.0:
     pako "~1.0.5"
 
 browserslist@^2.4.0:
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.10.1.tgz#f9dc692b79004a78ec9ba0d012c54de44cc6d7e4"
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.10.2.tgz#0838eec4b3db2d860cee13bf6c0691e7e8133822"
   dependencies:
     caniuse-lite "^1.0.30000784"
     electron-to-chromium "^1.3.30"
@@ -3115,8 +3115,8 @@ inquirer@^3.0.6, inquirer@^3.2.2:
     through "^2.3.6"
 
 inquirer@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-4.0.1.tgz#b25cd541789394b4bb56f6440fb213b121149096"
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-4.0.2.tgz#cc678b4cbc0e183a3500cc63395831ec956ab0a3"
   dependencies:
     ansi-escapes "^3.0.0"
     chalk "^2.0.0"
@@ -5208,8 +5208,8 @@ rollup-pluginutils@^2.0.1:
     micromatch "^2.3.11"
 
 rollup@^0.53.2:
-  version "0.53.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.2.tgz#0de2e94d1676ccff58f7bb6c6b7ffa5ff5a1907e"
+  version "0.53.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.3.tgz#e7b6777623df912bd0ca30dc24be791d6ebc8e5a"
 
 rst-selector-parser@^2.2.3:
   version "2.2.3"

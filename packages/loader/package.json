@@ -29,8 +29,8 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "@lingui/cli": "*",
-    "@lingui/conf": "*",
+    "@lingui/cli": "latest",
+    "@lingui/conf": "latest",
     "ramda": "^0.25.0"
   }
 }

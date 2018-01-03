@@ -20,6 +20,6 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "@lingui/babel-plugin-transform-js": "*"
+    "@lingui/babel-plugin-transform-js": "latest"
   }
 }
