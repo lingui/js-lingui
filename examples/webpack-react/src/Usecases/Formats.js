@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Trans, NumberFormat, DateFormat } from "lingui-react"
+import { Trans, NumberFormat, DateFormat } from "@lingui/react"
 
 class Formats extends React.Component {
   render() {

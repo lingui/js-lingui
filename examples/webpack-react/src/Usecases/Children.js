@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react"
-import { Trans, Select, Plural } from "lingui-react"
+import { Trans, Select, Plural } from "@lingui/react"
 
 type ChildrenPropTypes = {
   name?: string,

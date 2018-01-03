@@ -1,0 +1,36 @@
+{
+  "name": "@lingui/babel-plugin-extract-messages",
+  "version": "0.0.0-dev",
+  "description": "Extract messages for translation",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.0.0-beta.36",
+    "@lingui/babel-plugin-transform-js": "*",
+    "@lingui/babel-plugin-transform-react": "*",
+    "@lingui/conf": "*"
+  }
+}

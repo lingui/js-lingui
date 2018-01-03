@@ -1,0 +1,25 @@
+{
+  "name": "@lingui/babel-preset-js",
+  "version": "0.0.0-dev",
+  "description": "Lingui preset for Javascript apps",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel",
+    "preset"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "dependencies": {
+    "@lingui/babel-plugin-transform-js": "*"
+  }
+}

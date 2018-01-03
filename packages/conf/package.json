@@ -1,0 +1,33 @@
+{
+  "name": "@lingui/conf",
+  "version": "0.0.0-dev",
+  "description": "Get lingui configuration from package.json",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui/"
+  },
+  "keywords": [
+    "lingui",
+    "config"
+  ],
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "jest-regex-util": "^22.0.3",
+    "jest-validate": "^22.0.3",
+    "pkg-conf": "^2.1.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js"
+  ]
+}

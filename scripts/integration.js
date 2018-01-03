@@ -14,7 +14,7 @@ function listDirs(dir) {
 
 function linkDependencies(example) {
   const spinner = ora("Linking " + example)
-  const dependencies = packages.join(" ")
+  const dependencies = packages.map(name => `@lingui/${name}`).join(" ")
   execSync("yalc link " + dependencies, {
     cwd: path.join(EXAMPLES_DIR, example)
   })

@@ -28,7 +28,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "lingui-conf": "^0.8.1"
+    "@lingui/conf": "^2.0.0-0"
   },
   "devDependencies": {
     "typescript": "^2.4.2"

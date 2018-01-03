@@ -13,16 +13,19 @@ const {
 const { UNIVERSAL, NODE, NOOP } = Bundles.bundleTypes
 
 function getPackageName(name) {
-  return name.split("/")[0]
+  return name.split("/", 2).reverse()[0]
 }
 
 function getBundleOutputPaths(bundleType, filename, packageName) {
+  const name = getPackageName(packageName)
+  const _filename = filename.replace(/^@lingui\//, "")
+
   switch (bundleType) {
     case NOOP:
     case NODE:
-      return [`build/packages/${packageName}/${filename}`]
+      return [`build/packages/${name}/${_filename}`]
     case UNIVERSAL:
-      return [`build/packages/${packageName}/cjs/${filename}`]
+      return [`build/packages/${name}/cjs/${_filename}`]
     // case UMD_DEV:
     // case UMD_PROD:
     //   return [

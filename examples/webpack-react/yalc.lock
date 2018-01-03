@@ -1,35 +1,35 @@
 {
   "version": "v1",
   "packages": {
-    "babel-plugin-lingui-extract-messages": {
-      "signature": "49891c341924c7f63b8b51eb43137bfd"
+    "@lingui/babel-plugin-extract-messages": {
+      "signature": "9fef92f5282e0140751edf7ceadc16f6"
     },
-    "babel-plugin-lingui-transform-js": {
-      "signature": "fcb4b574bbdab087b2fc484e417b9824"
+    "@lingui/babel-plugin-transform-js": {
+      "signature": "21e6054b74f31de3da3cff010068b5c6"
     },
-    "babel-plugin-lingui-transform-react": {
-      "signature": "f5e6190c6657c8c834245c7f695c29e2"
+    "@lingui/babel-plugin-transform-react": {
+      "signature": "be5f9053289fa6bc5893548b2d502ef6"
     },
-    "lingui-cli": {
-      "signature": "7ecc344c6dc171c0062b998cb707d7ff"
+    "@lingui/babel-preset-js": {
+      "signature": "9506ed368ede4d9ef4dc75f87a509b6d"
     },
-    "lingui-conf": {
-      "signature": "a22eef9483d58587e181b857d0b7f741"
+    "@lingui/babel-preset-react": {
+      "signature": "a0993d1d4c4453d33044b6886227c407"
     },
-    "lingui-i18n": {
-      "signature": "bf37ad246913938f635f0db9f87a08f9"
+    "@lingui/cli": {
+      "signature": "05260b0bedf54ab2fcbe5f0a61100bcf"
     },
-    "lingui-loader": {
-      "signature": "653492e8e45f3c22137f11863bb81e8d"
+    "@lingui/conf": {
+      "signature": "b17722768b0731972502756807c9aa6b"
     },
-    "lingui-react": {
-      "signature": "f7f5b006e4fa4addf52d64051ba36164"
+    "@lingui/core": {
+      "signature": "61bc1ef8bd8d3208d4de891cb0211d01"
     },
-    "babel-preset-lingui-js": {
-      "signature": "865402953364a8fd103b45e81a3b21ae"
+    "@lingui/loader": {
+      "signature": "31d877c935095e5f77e9b3e890ad6e23"
     },
-    "babel-preset-lingui-react": {
-      "signature": "279361a261b09fc1dd50ab36472a68c3"
+    "@lingui/react": {
+      "signature": "6a022ad907f442a83640c6d2dd2a52e6"
     }
   }
 }

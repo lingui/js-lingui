@@ -7,7 +7,7 @@ const { UNIVERSAL } = require("./bundles").bundleTypes
 // specify whether it has side effects during import or not. This lets
 // us know whether we can safely omit them when they are unused.
 const HAS_NO_SIDE_EFFECTS_ON_IMPORT = false
-// const HAS_SIDE_EFFECTS_ON_IMPORT = true;
+
 const importSideEffects = Object.freeze({
   "@babel/runtime/core-js/object/get-own-property-names": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "@babel/runtime/helpers/slicedToArray": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
@@ -35,9 +35,8 @@ function getPeerGlobals(externals = [], bundleType) {
 
 // Determines node_modules packages that are safe to assume will exist.
 function getDependencies(bundleType, entry) {
-  const packageJson = require(path.basename(
-    path.dirname(require.resolve(entry))
-  ) + "/package.json")
+  const packageJson = require(path.dirname(require.resolve(entry)) +
+    "/package.json")
   // Both deps and peerDeps are assumed as accessible.
   return Array.from(
     new Set([

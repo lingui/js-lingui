@@ -22,9 +22,11 @@ const packages = readdirSync(packagesRoot).filter(dir => {
 const moduleNameMapper = {}
 packages.forEach(name => {
   // Root entry point
-  moduleNameMapper[`^${name}$`] = `<rootDir>/build/packages/${name}`
+  moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/build/packages/${name}`
   // Named entry points
-  moduleNameMapper[`^${name}/(.*)$`] = `<rootDir>/build/packages/${name}/$1`
+  moduleNameMapper[
+    `^@lingui/${name}/(.*)$`
+  ] = `<rootDir>/build/packages/${name}/$1`
 })
 
 module.exports = Object.assign({}, sourceConfig, {

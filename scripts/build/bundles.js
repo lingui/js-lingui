@@ -9,54 +9,54 @@ const bundleTypes = {
 const bundles = [
   {
     type: bundleTypes.UNIVERSAL,
-    entry: "lingui-i18n",
+    entry: "@lingui/core",
     externals: []
   },
 
   {
     type: bundleTypes.UNIVERSAL,
-    entry: "lingui-react",
-    externals: ["lingui-i18n"]
+    entry: "@lingui/react",
+    externals: ["@lingui/core"]
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "babel-plugin-lingui-transform-js"
+    entry: "@lingui/babel-plugin-transform-js"
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "babel-plugin-lingui-transform-react"
+    entry: "@lingui/babel-plugin-transform-react"
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "babel-plugin-lingui-extract-messages"
+    entry: "@lingui/babel-plugin-extract-messages"
   },
 
   {
     type: bundleTypes.NOOP,
-    entry: "babel-preset-lingui-js"
+    entry: "@lingui/babel-preset-js"
   },
 
   {
     type: bundleTypes.NOOP,
-    entry: "babel-preset-lingui-react"
+    entry: "@lingui/babel-preset-react"
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "lingui-cli"
+    entry: "@lingui/cli"
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "lingui-conf"
+    entry: "@lingui/conf"
   },
 
   {
     type: bundleTypes.NODE,
-    entry: "lingui-loader"
+    entry: "@lingui/loader"
   }
 ]
 

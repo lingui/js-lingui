@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react"
 import { mount } from "enzyme"
-import { I18nProvider } from "lingui-react"
+import { I18nProvider } from "@lingui/react"
 
 import Children from "./Children"
 

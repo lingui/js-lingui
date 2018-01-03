@@ -1,7 +1,7 @@
 import * as React from "react"
 import { connect } from "react-redux"
 
-import { I18nProvider, Trans } from "lingui-react"
+import { I18nProvider, Trans } from "@lingui/react"
 
 import messagesCs from "lingui-loader!../locale/cs/messages.json"
 import messagesEn from "lingui-loader!../locale/en/messages.json"
@@ -26,10 +26,7 @@ function Language({ activeLanguage, language, setLanguage, children }) {
 
 function App({ language, setLanguage }) {
   return (
-    <I18nProvider
-      language={language}
-      catalogs={catalogs}
-    >
+    <I18nProvider language={language} catalogs={catalogs}>
       <Trans render="h1">Form example</Trans>
       <p>
         <Language

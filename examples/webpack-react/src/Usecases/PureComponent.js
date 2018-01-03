@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react"
-import { withI18n } from "lingui-react"
+import { withI18n } from "@lingui/react"
 
 type PureComponentTestProps = {
   children?: any,

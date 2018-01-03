@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { I18nProvider, Trans, i18nMark } from "lingui-react"
+import { I18nProvider, Trans, i18nMark } from "@lingui/react"
 import NeverUpdate from "./Usecases/NeverUpdate"
 import Children from "./Usecases/Children"
 import ElementAttributes from "./Usecases/ElementAttributes"
