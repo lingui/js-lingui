@@ -1,6 +1,7 @@
 node_modules/
 build/packages/
 .yalc/
+.yalc.lock
 docs/_build/
 
 npm-debug.log
