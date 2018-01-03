@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "1.3.2",
+  "version": "1.3.4",
   "name": "lingui-example-webpack-react",
   "description": "Example usecase of all features using Webpack and React",
   "main": "index.js",
