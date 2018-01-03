@@ -2,9 +2,10 @@ const fs = require("fs-extra")
 const path = require("path")
 const chalk = require("chalk")
 const semver = require("semver")
+const { execSync } = require("child_process")
 
 const VERSION_FILE = "packages/version.txt"
-const PACKAGES_DIR = "build/packages"
+const PACKAGES_DIR = "packages"
 
 const version = fs
   .readFileSync(VERSION_FILE)
@@ -41,11 +42,6 @@ function updatePackageDependencies(dependencies) {
   return updatedDependencies
 }
 
-if (!fs.existsSync(PACKAGES_DIR)) {
-  console.error("First run build before updating package versions.")
-  process.exit(1)
-}
-
 async function main() {
   await Promise.all(
     fs
@@ -54,6 +50,11 @@ async function main() {
       .filter(directory => fs.lstatSync(directory).isDirectory())
       .map(updatePackage)
   )
+
+  execSync(`git add ${VERSION_FILE}`)
+  execSync(`git add ${PACKAGES_DIR}/*/package.json`)
+  execSync(`git commit -m 'chore: Release version ${version}'`)
+  execSync(`git tag v${version}`)
 }
 
 main()

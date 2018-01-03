@@ -1,7 +1,6 @@
 const fs = require("fs")
 const chalk = require("chalk")
 const semver = require("semver")
-const { execSync } = require("child_process")
 
 const VERSION_FILE = "packages/version.txt"
 
@@ -20,9 +19,5 @@ if (!semver.valid(oldVersion)) {
 const newVersion = semver.inc(oldVersion, "prerelease")
 
 fs.writeFileSync(VERSION_FILE, newVersion)
-
-execSync(`git add ${VERSION_FILE}`)
-execSync(`git commit -m 'chore: Release version ${newVersion}'`)
-execSync(`git tag v${newVersion}`)
 
 console.log(chalk.green(`Bumped version to ${newVersion}`))
