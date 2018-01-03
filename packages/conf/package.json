@@ -1,21 +1,19 @@
 {
   "name": "@lingui/conf",
-  "version": "0.0.0-dev",
+  "version": "2.0.0-1",
   "description": "Get lingui configuration from package.json",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lingui/js-lingui/"
-  },
   "keywords": [
     "lingui",
     "config"
   ],
+  "repository": "lingui/js-lingui",
+  "bugs": "https://github.com/lingui/js-lingui/issues",
+  "license": "MIT",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "license": "MIT",
+  "main": "index.js",
   "engines": {
     "node": ">=4.0"
   },

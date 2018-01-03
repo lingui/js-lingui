@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "0.0.0-dev",
+  "version": "2.0.0-1",
   "description": "React components for translations",
   "main": "index.js",
   "module": "index.es.js",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.36",
-    "@lingui/core": "latest",
+    "@lingui/core": "2.0.0-1",
     "hash-sum": "^1.0.2",
     "prop-types": "^15.6.0"
   }

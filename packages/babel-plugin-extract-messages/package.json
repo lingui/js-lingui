@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "0.0.0-dev",
+  "version": "2.0.0-1",
   "description": "Extract messages for translation",
   "main": "index.js",
   "author": {
@@ -29,8 +29,10 @@
   },
   "dependencies": {
     "@babel/generator": "^7.0.0-beta.36",
-    "@lingui/babel-plugin-transform-js": "latest",
-    "@lingui/babel-plugin-transform-react": "latest",
-    "@lingui/conf": "latest"
+    "@lingui/conf": "2.0.0-1"
+  },
+  "devDependencies": {
+    "@lingui/babel-plugin-transform-js": "2.0.0-1",
+    "@lingui/babel-plugin-transform-react": "2.0.0-1"
   }
 }

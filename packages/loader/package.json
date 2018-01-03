@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "0.0.0-dev",
+  "version": "2.0.0-1",
   "description": "webpack loader for lingui message catalogs",
   "main": "dist/index.js",
   "author": {
@@ -29,8 +29,8 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "@lingui/cli": "latest",
-    "@lingui/conf": "latest",
+    "@lingui/cli": "2.0.0-1",
+    "@lingui/conf": "2.0.0-1",
     "ramda": "^0.25.0"
   }
 }

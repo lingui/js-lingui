@@ -595,62 +595,6 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@lingui/babel-plugin-extract-messages@2.0.0-1", "@lingui/babel-plugin-extract-messages@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-2.0.0-1.tgz#e4875da143bedd0c45f431595703ba9c2e5d53ae"
-  dependencies:
-    "@babel/generator" "^7.0.0-beta.36"
-    "@lingui/babel-plugin-transform-js" "2.0.0-1"
-    "@lingui/babel-plugin-transform-react" "2.0.0-1"
-    "@lingui/conf" "2.0.0-1"
-
-"@lingui/babel-plugin-transform-js@2.0.0-1", "@lingui/babel-plugin-transform-js@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.0.0-1.tgz#bb1c14264704b1e544c49b1fd450e301d009295b"
-
-"@lingui/babel-plugin-transform-react@2.0.0-1", "@lingui/babel-plugin-transform-react@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.0.0-1.tgz#f284b87d815de91509b392dab471e8d12f47d5d9"
-
-"@lingui/cli@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.0.0-1.tgz#b3c7ae328fc7d5001e12ae0df73a0b943a83edcd"
-  dependencies:
-    "@babel/core" "^7.0.0-beta.36"
-    "@babel/generator" "^7.0.0-beta.36"
-    "@babel/runtime" "^7.0.0-beta.36"
-    "@babel/types" "^7.0.0-beta.36"
-    "@lingui/babel-plugin-extract-messages" "2.0.0-1"
-    "@lingui/babel-plugin-transform-js" "2.0.0-1"
-    "@lingui/babel-plugin-transform-react" "2.0.0-1"
-    "@lingui/conf" "2.0.0-1"
-    babylon "^6.18.0"
-    chalk "^2.3.0"
-    cli-table "^0.3.1"
-    commander "^2.12.2"
-    glob "^7.1.2"
-    make-plural "^4.1.1"
-    messageformat-parser "^2.0.0"
-    mkdirp "^0.5.1"
-    ramda "^0.25.0"
-
-"@lingui/conf@2.0.0-1", "@lingui/conf@^2.0.0-0", "@lingui/conf@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-2.0.0-1.tgz#69ea0604f399a5e18cff590f5a7e18d2697e846c"
-  dependencies:
-    chalk "^2.3.0"
-    jest-regex-util "^22.0.3"
-    jest-validate "^22.0.3"
-    pkg-conf "^2.1.0"
-
-"@lingui/core@latest":
-  version "2.0.0-1"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.0.0-1.tgz#98e8c8fb25ba5f90d1c0156a77a50906e9060e64"
-  dependencies:
-    "@babel/runtime" "^7.0.0-beta.36"
-    make-plural "^4.1.1"
-    messageformat-parser "^2.0.0"
-
 "@types/node@*":
   version "8.5.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.5.2.tgz#83b8103fa9a2c2e83d78f701a9aa7c9539739aa5"
