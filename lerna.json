@@ -13,7 +13,6 @@
     },
     "bootstrap": {
       "ignore": [
-        "typescript-lingui-extract-messages"
       ]
     }
   }

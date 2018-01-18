@@ -13,6 +13,7 @@
     "watch:integration": "jest --watch examples/",
     "watch": "jest --watch packages/ examples/",
     "bootstrap": "lerna bootstrap --npm-client=yarn",
+    "clean": "lerna clean --npm-client=yarn",
     "publish": "lerna publish --conventional-commits -m 'chore(release): publish [ci skip]' --registry=https://registry.npmjs.org/",
     "lint:flow": "flow",
     "lint:eslint": "eslint packages/",
