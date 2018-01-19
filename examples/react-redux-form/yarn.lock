@@ -523,7 +523,7 @@
     "@lingui/babel-plugin-transform-js" "2.0.0-1"
     "@lingui/babel-plugin-transform-react" "2.0.0-1"
 
-"@lingui/cli@2.0.0-1":
+"@lingui/cli@2.0.0-1", "@lingui/cli@^2.0.0-1":
   version "2.0.0-1"
   resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.0.0-1.tgz#b3c7ae328fc7d5001e12ae0df73a0b943a83edcd"
   dependencies:
