@@ -11,9 +11,10 @@ describe("lingui extract", function() {
     const format = {
       getLocales: () => []
     }
+    const options = {}
 
     mockConsole(console => {
-      command(config, format)
+      command(config, format, options)
       expect(console.log).toBeCalledWith(
         expect.stringContaining("No locales defined")
       )

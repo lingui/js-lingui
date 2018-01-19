@@ -13,7 +13,8 @@ import { printStats } from "./api/stats"
 
 type ExtractOptions = {|
   verbose: boolean,
-  clean: boolean
+  clean: boolean,
+  prevFormat: ?CatalogFormat
 |}
 
 export default function command(
@@ -21,7 +22,8 @@ export default function command(
   format: CatalogFormat,
   options: ExtractOptions
 ): boolean {
-  const locales = format.getLocales()
+  const convertFormat = options.prevFormat || format
+  const locales = convertFormat.getLocales()
 
   if (!locales.length) {
     console.log("No locales defined!\n")
@@ -46,13 +48,8 @@ export default function command(
   console.log("Collecting all messages…")
   const clean = options.clean ? cleanObsolete : id => id
   const catalog = collect(buildDir)
-  const catalogs = clean(format.merge(catalog))
+  const catalogs = clean(convertFormat.merge(catalog))
   options.verbose && console.log()
-  //
-  // if (config.sourceLocale) {
-  //   const sourceCatalog = catalogs[config.sourceLocale]
-  //   Object.keys(sourceCatalog).forEach
-  // }
 
   console.log("Writing message catalogues…")
   locales
@@ -96,16 +93,43 @@ if (require.main === module) {
   program
     .option("--clean", "Remove obsolete translations")
     .option("--verbose", "Verbose output")
-    .option("--format <format>", "Format of message catalog")
+    .option("--format <format>", "Format of message catalogs")
+    .option(
+      "--convert-from <format>",
+      "Convert from previous format of message catalogs"
+    )
     .parse(process.argv)
 
   const config = getConfig()
   const formatName = program.format || config.format
+  const prevFormatName = program.convertFrom
+
+  if (prevFormatName && formatName === prevFormatName) {
+    console.log(
+      chalk.red("Trying to migrate message catalog to the same format")
+    )
+    console.log(
+      `Set ${chalk.bold("new")} format in lingui configuration or using` +
+        ` --format option\nand ${chalk.bold("previous")} format using` +
+        ` --convert-format option.`
+    )
+    console.log()
+    console.log(`Example: Convert from lingui format to minimal`)
+    console.log(
+      chalk.yellow(`lingui extract --format minimal --convert-from lingui`)
+    )
+    process.exit(1)
+  }
+
   const format = require(`./api/formats/${formatName}`).default(config)
+  const prevFormat = prevFormatName
+    ? require(`./api/formats/${prevFormatName}`).default(config)
+    : null
 
   const result = command(config, format, {
     verbose: program.verbose || false,
-    clean: program.clean || false
+    clean: program.clean || false,
+    prevFormat
   })
 
   if (!result) process.exit(1)
