@@ -148,3 +148,29 @@ enough to upgrade your lingui babel plugin. Otherwise simple refactoring is requ
 
    // after
    i18n._('Hello {name}', { name: "Fred" })
+
+New features
+============
+
+Custom IDs for `@lingui/core` methods
+-------------------------------------
+
+Most i18n methods in core library (`i18n.t`, `i18n.select`, `i18n.plural`)
+accept custom message ID as the first argument. Generated message is used
+as a default one:
+
+.. code-block:: jsx
+
+   i18n.t('id')`Default message`
+
+   i18n.plural('id', {
+      one: 'Book',
+      other: 'Books'
+   })
+
+`ID` is valid only for root calls of i18n methods:
+
+.. code-block:: jsx
+
+   // this doesn't work, `id` is set in nested i18n method
+   i18n.t`This is their ${i18n.selectOrdinal(`id`, { count: count, ... })}`
