@@ -17,7 +17,7 @@ Requirements
 - babel
 - webpack 2.x
 - redux
-- lingui-react
+- @lingui/react
 
 Setup
 =====
@@ -54,7 +54,7 @@ Component
 =========
 
 Let's start with the component. We're going to wrap :component:`I18nProvider` 
-from ``lingui-react``. Active language is loaded from redux store, while
+from ``@lingui/react``. Active language is loaded from redux store, while
 messages are dynamically loaded and stored in local state.
 
 The ``render()`` method looks like this:
@@ -168,7 +168,7 @@ Here's the full source of ``I18nLoader`` component:
 
    import React from 'react'
    import { connect } from 'react-redux'
-   import { I18nProvider } from 'lingui-react'
+   import { I18nProvider } from '@lingui/react'
 
    export class I18nLoader extends React.Component {
      state = {
