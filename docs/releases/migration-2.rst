@@ -123,3 +123,28 @@ directly but if you did, simply import ``date`` and ``number`` functions from
 
    // After
    import { date, number } from 'lingui-i18n'
+
+Signature of ``i18n._`` changed
+-------------------------------
+
+``i18n._`` is low-level API for message translation and formatting.
+The function signature has changed from::
+
+i18n._(messageId: string, { values: Object, defaults: string, formats: Object })
+
+to::
+
+i18n._(messageId: string, values: Object, { defaults: string, formats: Object })
+
+This change makes usage easier, because ``values`` are commonly used parameter.
+
+Since this is a low-level API, you probably haven't used it directly and it's
+enough to upgrade your lingui babel plugin. Otherwise simple refactoring is required:
+
+.. code-block:: jsx
+
+   // before
+   i18n._('Hello {name}', { values: { name: "Fred" } })
+
+   // after
+   i18n._('Hello {name}', { name: "Fred" })
