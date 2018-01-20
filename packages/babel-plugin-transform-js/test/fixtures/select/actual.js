@@ -8,7 +8,7 @@ i18n.select({
   female: `She is ${gender}`,
   other: `They is ${gender}`
 });
-i18n.select({
+i18n.select('id', {
   value: "male",
   "male": i18n.plural({
     value: 42,

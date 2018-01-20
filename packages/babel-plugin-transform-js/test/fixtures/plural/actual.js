@@ -10,7 +10,7 @@ i18n.plural({
   1: "1 book",
   other: "# books"
 });
-i18n.plural({
+i18n.plural('id', {
   value: 42,
   one: `# book`,
   other: `${count} books`
