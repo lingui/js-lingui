@@ -1,3 +1,3 @@
 module.exports = {
-  plugins: [require("babel-plugin-lingui-transform-js")]
+  plugins: [require("@lingui/babel-plugin-transform-js")]
 }

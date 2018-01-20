@@ -1,6 +1,6 @@
 module.exports = {
   plugins: [
-    require("babel-plugin-lingui-transform-js"),
-    require("babel-plugin-lingui-transform-react")
+    require("@lingui/babel-plugin-transform-js"),
+    require("@lingui/babel-plugin-transform-react")
   ]
 }
