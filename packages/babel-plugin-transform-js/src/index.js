@@ -4,14 +4,24 @@ const pluralRules = ["zero", "one", "two", "few", "many", "other"]
 
 const generatorFactory = (index = 0) => () => index++
 
+const initialProps = () => ({
+  text: "",
+  values: {},
+  formats: {}
+})
+
 // Plugin function
 export default function({ types: t }) {
   let argumentGenerator
 
   const isI18nMethod = node =>
-    t.isMemberExpression(node.tag) &&
-    t.isIdentifier(node.tag.object, { name: "i18n" }) &&
-    t.isIdentifier(node.tag.property, { name: "t" })
+    (t.isMemberExpression(node.tag) &&
+      t.isIdentifier(node.tag.object, { name: "i18n" }) &&
+      t.isIdentifier(node.tag.property, { name: "t" })) ||
+    (t.isCallExpression(node.tag) &&
+      t.isMemberExpression(node.tag.callee) &&
+      t.isIdentifier(node.tag.callee.object, { name: "i18n" }) &&
+      t.isIdentifier(node.tag.callee.property, { name: "t" }))
 
   const isChoiceMethod = node =>
     t.isMemberExpression(node) &&
@@ -29,7 +39,24 @@ export default function({ types: t }) {
   function processMethod(node, file, props, root = false) {
     // i18n.t
     if (isI18nMethod(node)) {
-      processTemplateLiteral(node.quasi, file, props)
+      if (t.isCallExpression(node.tag)) {
+        const defaults = node.tag.arguments[0]
+        if (!t.isStringLiteral(defaults)) {
+          throw file.buildCodeFrameError(
+            node.tag,
+            "Message ID must be a string"
+          )
+        }
+        processTemplateLiteral(node.quasi, file, props)
+        return {
+          ...props,
+          text: defaults.value,
+          defaults: props.text
+        }
+      } else {
+        processTemplateLiteral(node.quasi, file, props)
+        return props
+      }
 
       // i18n.plural and i18n.select
     } else if (isChoiceMethod(node.callee)) {
@@ -222,6 +249,10 @@ export default function({ types: t }) {
       } else {
         const name = t.isIdentifier(item) ? item.name : argumentGenerator()
         const key = t.isIdentifier(item) ? item : t.numericLiteral(name)
+
+        // const [name, key] = t.isIdentifier(item)
+        //   ? [item.name, item]
+        //   : [argumentGenerator(), t.numericLiteral(name)]
         props.text += `{${name}}`
         props.values[name] = t.objectProperty(key, item)
       }
@@ -235,16 +266,7 @@ export default function({ types: t }) {
 
     // 1. Collect all parameters and generate message ID
 
-    const props = processMethod(
-      path.node,
-      file,
-      {
-        text: "",
-        values: {},
-        formats: {}
-      },
-      /* root= */ true
-    )
+    const props = processMethod(path.node, file, initialProps(), true)
 
     const text = props.text.replace(nlRe, " ").trim()
     if (!text) return
@@ -259,6 +281,15 @@ export default function({ types: t }) {
         t.objectProperty(
           t.identifier("formats"),
           t.objectExpression(formatsList)
+        )
+      )
+    }
+
+    if (props.defaults) {
+      tOptions.push(
+        t.objectProperty(
+          t.identifier("defaults"),
+          t.stringLiteral(props.defaults)
         )
       )
     }

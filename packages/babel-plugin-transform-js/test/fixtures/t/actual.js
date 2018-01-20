@@ -15,3 +15,5 @@ i18n.t`
   object ${new Date()}
   everything ${props.messages[index].value()}
 `
+i18n.t('id')`Hello World`
+i18n.t('id')`Hello ${name}`

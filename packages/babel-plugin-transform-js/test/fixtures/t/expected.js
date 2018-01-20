@@ -20,3 +20,13 @@ i18n._("Property {0}, function {1}, array {2}, constant {3}, object {4} everythi
   4: new Date(),
   5: props.messages[index].value()
 });
+
+i18n._("id", {}, {
+  defaults: "Hello World"
+});
+
+i18n._("id", {
+  name: name
+}, {
+  defaults: "Hello {name}"
+});
