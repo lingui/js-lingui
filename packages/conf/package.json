@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
-    "jest-regex-util": "^22.0.3",
-    "jest-validate": "^22.0.3",
+    "jest-regex-util": "^22.1.0",
+    "jest-validate": "^22.1.2",
     "pkg-conf": "^2.1.0"
   },
   "files": [
