@@ -2,7 +2,7 @@
 
 exports[`Render should render custom component 1`] = `
 <a
-  title="Title"
+  title=Title
 >
   X
 </a>
@@ -20,11 +20,11 @@ exports[`Render should render custom element 2`] = `
 </h1>
 `;
 
-exports[`Render should render just a text without wrapping element 1`] = `"Just a text"`;
+exports[`Render should render just a text without wrapping element 1`] = `Just a text`;
 
-exports[`Render should render just a text without wrapping element 2`] = `"Just a text"`;
+exports[`Render should render just a text without wrapping element 2`] = `Just a text`;
 
-exports[`Render should render just a text without wrapping element 3`] = `"Just a text"`;
+exports[`Render should render just a text without wrapping element 3`] = `Just a text`;
 
 exports[`Render should render with span wrapping element 1`] = `
 <span>
@@ -34,7 +34,7 @@ exports[`Render should render with span wrapping element 1`] = `
 
 exports[`Render should render with span wrapping element 2`] = `
 <span
-  className="info"
+  className=info
 >
   Just a text
 </span>

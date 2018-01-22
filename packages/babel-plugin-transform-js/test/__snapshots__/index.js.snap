@@ -1,119 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`babel-plugin-lingui-transform-js formats format must be either string, variable or object with custom format 1`] = `
-"undefined: Format can be either string for buil-in formats, variable or object for custom defined formats.
-[0m[31m[1m>[22m[39m[90m 1 | [39mi18n[33m.[39mnumber(value[33m,[39m [35m42[39m)[33m;[39m[0m
-[0m [90m   | [39m                   [31m[1m^[22m[39m[0m"
+undefined: Format can be either string for buil-in formats, variable or object for custom defined formats.
+> 1 | i18n.number(value, 42);
+    |                    ^
 `;
 
 exports[`babel-plugin-lingui-transform-js formats value is missing 1`] = `
-"undefined: The first argument of format function must be a variable.
-[0m[31m[1m>[22m[39m[90m 1 | [39mi18n[33m.[39mdate()[33m;[39m[0m
-[0m [90m   | [39m[31m[1m^[22m[39m[0m"
+undefined: The first argument of format function must be a variable.
+> 1 | i18n.date();
+    | ^
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal offset must be number or string, not variable 1`] = `
-"undefined: Offset argument cannot be a variable.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          offset[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          [35m0[39m[33m:[39m [32m\\"No books\\"[39m[33m,[39m[0m
-[0m [90m 5 | [39m          [35m1[39m[33m:[39m [32m\\"1 book\\"[39m[33m,[39m[0m"
+undefined: Offset argument cannot be a variable.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           offset: count,
+  4 |           0: "No books",
+  5 |           1: "1 book",
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 1`] = `
-"undefined: Missing plural choices. At least fallback argument 'other' is required.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[0m
-[0m [90m 4 | [39m        })[33m;[39m[0m"
+undefined: Missing plural choices. At least fallback argument 'other' is required.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           value: count
+  4 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 2`] = `
-"undefined: Missing plural choices. At least fallback argument 'other' is required.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[0m
-[0m [90m 4 | [39m        })[33m;[39m[0m"
+undefined: Missing plural choices. At least fallback argument 'other' is required.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           value: count
+  4 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms are missing 3`] = `
-"undefined: Missing plural choices. At least fallback argument 'other' is required.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[0m
-[0m [90m 4 | [39m        })[33m;[39m[0m"
+undefined: Missing plural choices. At least fallback argument 'other' is required.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           value: count
+  4 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms cannot be variables 1`] = `
-"undefined: Computed properties aren't allowed.
-[0m [90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m[31m[1m>[22m[39m[90m 4 | [39m          [one][33m:[39m [32m\\"Book\\"[39m[0m
-[0m [90m   | [39m          [31m[1m^[22m[39m[0m
-[0m [90m 5 | [39m        })[33m;[39m[0m"
+undefined: Computed properties aren't allowed.
+  2 |         i18n.plural({
+  3 |           value: count,
+> 4 |           [one]: "Book"
+    |           ^
+  5 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 1`] = `
-"undefined: Missing fallback argument 'other'.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          one[33m:[39m [32m\\"Book\\"[39m[0m
-[0m [90m 5 | [39m        })[33m;[39m[0m"
+undefined: Missing fallback argument 'other'.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           value: count,
+  4 |           one: "Book"
+  5 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 2`] = `
-"undefined: Missing fallback argument 'other'.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mselect({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          male[33m:[39m [32m\\"He\\"[39m[0m
-[0m [90m 5 | [39m        })[33m;[39m[0m"
+undefined: Missing fallback argument 'other'.
+  1 | 
+> 2 |         i18n.select({
+    |         ^
+  3 |           value: count,
+  4 |           male: "He"
+  5 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural forms missing fallback 3`] = `
-"undefined: Missing fallback argument 'other'.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mselectOrdinal({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          one[33m:[39m [32m\\"st\\"[39m[0m
-[0m [90m 5 | [39m        })[33m;[39m[0m"
+undefined: Missing fallback argument 'other'.
+  1 | 
+> 2 |         i18n.selectOrdinal({
+    |         ^
+  3 |           value: count,
+  4 |           one: "st"
+  5 |         });
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 1`] = `
-"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          one[33m:[39m [32m\\"Book\\"[39m[33m,[39m[0m
-[0m [90m 5 | [39m          three[33m:[39m [32m\\"Invalid\\"[39m[33m,[39m[0m"
+undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           value: count,
+  4 |           one: "Book",
+  5 |           three: "Invalid",
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal plural rules must be valid 2`] = `
-"undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mselectOrdinal({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          value[33m:[39m count[33m,[39m[0m
-[0m [90m 4 | [39m          one[33m:[39m [32m\\"st\\"[39m[33m,[39m[0m
-[0m [90m 5 | [39m          three[33m:[39m [32m\\"Invalid\\"[39m[33m,[39m[0m"
+undefined: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  1 | 
+> 2 |         i18n.selectOrdinal({
+    |         ^
+  3 |           value: count,
+  4 |           one: "st",
+  5 |           three: "Invalid",
 `;
 
 exports[`babel-plugin-lingui-transform-js validation plural/select/selectordinal value is missing 1`] = `
-"undefined: Value argument is missing.
-[0m [90m 1 | [39m[0m
-[0m[31m[1m>[22m[39m[90m 2 | [39m        i18n[33m.[39mplural({[0m
-[0m [90m   | [39m        [31m[1m^[22m[39m[0m
-[0m [90m 3 | [39m          [35m0[39m[33m:[39m [32m\\"No books\\"[39m[33m,[39m[0m
-[0m [90m 4 | [39m          [35m1[39m[33m:[39m [32m\\"1 book\\"[39m[33m,[39m[0m
-[0m [90m 5 | [39m          other[33m:[39m [32m\\"# books\\"[39m[0m"
+undefined: Value argument is missing.
+  1 | 
+> 2 |         i18n.plural({
+    |         ^
+  3 |           0: "No books",
+  4 |           1: "1 book",
+  5 |           other: "# books"
 `;

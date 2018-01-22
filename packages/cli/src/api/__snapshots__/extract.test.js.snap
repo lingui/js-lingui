@@ -2,14 +2,14 @@
 
 exports[`cleanObsolete should remove obsolete messages from catalogs 1`] = `
 Object {
-  "en": Object {
-    "Label": Object {
-      "translation": "Label",
+  en: Object {
+    Label: Object {
+      translation: Label,
     },
   },
-  "fr": Object {
-    "Label": Object {
-      "translation": "Label",
+  fr: Object {
+    Label: Object {
+      translation: Label,
     },
   },
 }
@@ -17,33 +17,33 @@ Object {
 
 exports[`collect should traverse directory and collect messages 1`] = `
 Object {
-  "Babel Documentation": Object {
-    "defaults": "Babel Documentation",
-    "origin": Array [
+  Babel Documentation: Object {
+    defaults: Babel Documentation,
+    origin: Array [
       Array [
-        "src/components/Babel.js",
+        src/components/Babel.js,
         5,
       ],
     ],
   },
-  "Label": Object {
-    "defaults": "Label",
-    "origin": Array [
+  Label: Object {
+    defaults: Label,
+    origin: Array [
       Array [
-        "src/components/Babel.js",
+        src/components/Babel.js,
         7,
       ],
       Array [
-        "src/components/Typescript.ts",
+        src/components/Typescript.ts,
         7,
       ],
     ],
   },
-  "Typescript Documentation": Object {
-    "defaults": "Typescript Documentation",
-    "origin": Array [
+  Typescript Documentation: Object {
+    defaults: Typescript Documentation,
+    origin: Array [
       Array [
-        "src/components/Typescript.ts",
+        src/components/Typescript.ts,
         5,
       ],
     ],

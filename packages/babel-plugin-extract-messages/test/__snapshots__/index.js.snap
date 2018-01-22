@@ -2,10 +2,10 @@
 
 exports[`babel-plugin-lingui-extract-messages should extract JS translations only once inside React components 1`] = `
 Object {
-  "Test": Object {
-    "origin": Array [
+  Test: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/with-react.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/with-react.js,
         3,
       ],
     ],
@@ -15,14 +15,14 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
-  "msg.hello": Object {
-    "origin": Array [
+  msg.hello: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
         1,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
         2,
       ],
     ],
@@ -32,31 +32,31 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files 1`] = `
 Object {
-  "msg.default": Object {
-    "defaults": "Hello World",
-    "origin": Array [
+  msg.default: Object {
+    defaults: Hello World,
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
         5,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
         6,
       ],
     ],
   },
-  "msg.hello": Object {
-    "origin": Array [
+  msg.hello: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
         4,
       ],
     ],
   },
-  "{count, plural, one {# book} other {# books}}": Object {
-    "origin": Array [
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/js/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
         7,
       ],
     ],
@@ -66,10 +66,10 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration with alises) 1`] = `
 Object {
-  "Hi, my name is {name}": Object {
-    "origin": Array [
+  Hi, my name is {name}: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-aliases.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-aliases.js,
         3,
       ],
     ],
@@ -79,42 +79,42 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
 Object {
-  "Hi, my name is {name}": Object {
-    "origin": Array [
+  Hi, my name is {name}: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         3,
       ],
     ],
   },
-  "Title": Object {
-    "origin": Array [
+  Title: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         4,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         13,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         14,
       ],
     ],
   },
-  "{count, plural, one {# book} other {# books}}": Object {
-    "origin": Array [
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         6,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         16,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         21,
       ],
     ],
@@ -124,39 +124,39 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files 1`] = `
 Object {
-  "Hi, my name is <0>{name}</0>": Object {
-    "origin": Array [
+  Hi, my name is <0>{name}</0>: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         9,
       ],
     ],
   },
-  "msg.default": Object {
-    "defaults": "Hello World",
-    "origin": Array [
+  msg.default: Object {
+    defaults: Hello World,
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         7,
       ],
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         8,
       ],
     ],
   },
-  "msg.hello": Object {
-    "origin": Array [
+  msg.hello: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         6,
       ],
     ],
   },
-  "{count, plural, one {# book} other {# books}}": Object {
-    "origin": Array [
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js",
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         10,
       ],
     ],
@@ -166,18 +166,18 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract noop strings 1`] = `
 Object {
-  "Czech": Object {
-    "origin": Array [
+  Czech: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js",
+        packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js,
         5,
       ],
     ],
   },
-  "English": Object {
-    "origin": Array [
+  English: Object {
+    origin: Array [
       Array [
-        "packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js",
+        packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js,
         4,
       ],
     ],

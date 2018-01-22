@@ -76,6 +76,7 @@
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-prettier": "^0.4.0",
     "rollup-plugin-replace": "^2.0.0",
+    "strip-ansi": "^4.0.0",
     "targz": "^1.0.1",
     "tmp": "^0.0.33",
     "webpack": "^3.8.1"
