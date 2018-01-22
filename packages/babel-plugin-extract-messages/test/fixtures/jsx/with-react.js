@@ -1,5 +1,5 @@
 ;<div>
   <p>
-    <div>{i18n.t`Test`}</div>
+    <div>{i18n._('Test')}</div>
   </p>
 </div>

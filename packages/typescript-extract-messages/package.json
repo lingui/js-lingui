@@ -1,8 +1,9 @@
 {
-  "name": "typescript-lingui-extract-messages",
+  "name": "@lingui/typescript-extract-messages",
+  "private": true,
   "version": "2.0.0-5",
   "description": "Extract messages for translation from Typescript files",
-  "main": "dist/index.js",
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -32,8 +33,5 @@
   },
   "devDependencies": {
     "typescript": "^2.4.2"
-  },
-  "scripts": {
-    "prepublish": "tsc --module system --outFile dist/index.js src/index.ts"
   }
 }
