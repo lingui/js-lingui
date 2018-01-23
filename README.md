@@ -17,9 +17,9 @@ Seamless internationalization in Javascript and React
 [![Star on GitHub][Badge-Stars]][Star]
 [![Tweet][Badge-Twitter]][Twitter]
 
-[![Sponsor][Badge-CodeSponsor]][CodeSponsor]
-
 **📖 [Documentation][Documentation]**
+
+**📦 [Migrating to 2.x](https://lingui.github.io/js-lingui/releases/migration-2.html)**
 
 Type-checked and intuitive way to internationalize applications in Javascript 
 and React.
@@ -64,7 +64,7 @@ Instead of:
 ```js
 i18n._(
   'Hello, my name is {name}', 
-  { values: { name } }
+  { name }
 )
 ```
 
@@ -83,7 +83,7 @@ i18n._(
   `{numBooks, plural, 
     one {{name} has # book} 
     other {{name} has # books}}`, 
-  { values: { name, numBooks } }
+  { name, numBooks }
 )
 ```
 
@@ -177,8 +177,8 @@ const Pitch = () => (
     // Plurals
     <Plural 
       value={numBooks}
-      one={<Trans>{name} has # book</Trans>}
-      other={<Trans>{name} has # books</Trans>}
+      one={{name} has # book}
+      other={{name} has # books}
     />
   </div>
 )
@@ -228,15 +228,15 @@ as a default one:
 <Plural 
   id="msg.plural"
   value={numBooks}
-  one={<Trans>{name} has # book</Trans>}
-  other={<Trans>{name} has # books</Trans>}
+  one={{name} has # book}
+  other={{name} has # books}
 />
 ```
 
 ### Works anywhere
 
-Core library `lingui-i18n` works in any JS environment. Intergration libraries
-like `lingui-react` only brings better performace for target environments.
+Core library `@lingui/core` works in any JS environment. Intergration libraries
+like `@lingui/react` only brings better performace for target environments.
 
 ## Contributors
 
