@@ -11,9 +11,7 @@ New scope of NPM packages
 -------------------------
 
 Packages are now released under ``@lingui`` organization. Package names remains
-the same:
-
-.. code-block:: json
+the same::
 
    // Before
    lingui-react
@@ -34,13 +32,11 @@ like location of message in source and default translation (if any). Since most
 ``minimal``.
 
 - If you want to **keep** ``lingui`` format, add ``"format": "lingui"`` to your
-lingui config in package.json.
-
+  lingui config in package.json.
 - If you want to **migrate** ``lingui`` format to ``minimal``, remove ``format``
-from configuration (if any) and run ``lingui extract --convert-from lingui``.
-
+  from configuration (if any) and run ``lingui extract --convert-from lingui``.
 - If you used ``minimal`` format before, simply remove ``"format": "minimal"``
-from lingui configuration.
+  from lingui configuration.
 
 ``unpackCatalog`` is deprecated
 -------------------------------
@@ -57,7 +53,7 @@ that was a size of ``unpackCatalog`` function. ``lingui compile`` now produce
    function App() {
       return (
          <I18nProvider language="en" catalogs={{ en: catalogEn }}>
-           // ...
+            <App />
          </I18nProvider>
       )
    }
@@ -130,11 +126,11 @@ Signature of ``i18n._`` changed
 ``i18n._`` is low-level API for message translation and formatting.
 The function signature has changed from::
 
-i18n._(messageId: string, { values: Object, defaults: string, formats: Object })
+   i18n._(messageId: string, { values: Object, defaults: string, formats: Object })
 
 to::
 
-i18n._(messageId: string, values: Object, { defaults: string, formats: Object })
+   i18n._(messageId: string, values: Object, { defaults: string, formats: Object })
 
 This change makes usage easier, because ``values`` are commonly used parameter.
 
@@ -155,7 +151,7 @@ New features
 Custom IDs for `@lingui/core` methods
 -------------------------------------
 
-Most i18n methods in core library (`i18n.t`, `i18n.select`, `i18n.plural`)
+Most i18n methods in core library (``i18n.t``, ``i18n.select``, ``i18n.plural``)
 accept custom message ID as the first argument. Generated message is used
 as a default one:
 
@@ -168,7 +164,7 @@ as a default one:
       other: 'Books'
    })
 
-`ID` is valid only for root calls of i18n methods:
+``ID`` is valid only for root calls of i18n methods:
 
 .. code-block:: jsx
 
