@@ -2,7 +2,9 @@
 Migration guide from 1.x to 2.x
 ********************************
 
-.. warning:: This document is a draft of next major release.
+The biggest change in 2.x is a new build & release process which allowed
+simplify public API. Library is also taking advantage of latest React features
+while providing escape hatch to be used also in older React versions.
 
 Backward incompatible changes
 =============================
@@ -10,18 +12,23 @@ Backward incompatible changes
 New scope of NPM packages
 -------------------------
 
-Packages are now released under ``@lingui`` organization. Package names remains
-the same::
+Packages are now released under ``@lingui`` organization. Some package names
+were renamed:
 
-   // Before
-   lingui-react
-   lingui-cli
-   babel-preset-lingui-react
-
-   // After
-   @lingui/lingui-react
-   @lingui/lingui-cli
-   @lingui/babel-preset-lingui-react
+===================================== =====================================
+New package name                      Previous package name
+===================================== =====================================
+@lingui/babel-preset-js               babel-preset-lingui-js
+@lingui/babel-preset-react            babel-preset-lingui-react
+@lingui/babel-plugin-transform-js     babel-plugin-lingui-transform-js
+@lingui/babel-plugin-transform-react  babel-plugin-lingui-transform-react
+@lingui/babel-plugin-extract-messages babel-plugin-lingui-extract-messages
+@lingui/react                         lingui-react
+@lingui/core                          lingui-i18n
+@lingui/cli                           lingui-cli
+@lingui/loader                        lingui-loader
+@lingui/conf                          lingui-conf
+===================================== =====================================
 
 Default message catalog format
 ------------------------------

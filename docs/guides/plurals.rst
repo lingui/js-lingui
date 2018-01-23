@@ -47,7 +47,7 @@ Under the hood, ``i18n.plural`` is replaced with low-level ``i18n._``. For produ
 
 .. code-block:: js
 
-   i18n._('{numBooks, plural, one {# book} other {# books}}', { values: { numBooks }})
+   i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
 
 When we extract messages from source code using (lingui-cli)[linguiCliTutorial], we get:
 
@@ -81,7 +81,7 @@ the process:
 
       i18n._(
          '{numBooks, plural, one {# book} other {# books}}',
-         { values: { numBooks }}
+         { numBooks }
       )
 
 3. Message `{numBooks, plural, one {# book} other {# books}}` is translated to:
