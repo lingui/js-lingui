@@ -1,0 +1,24 @@
+environment:
+  nodejs_version: "9"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - yarn install
+  - yarn global add yalc
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - yarn --version
+  # run tests
+  - node scripts/test.js
+
+# Don't actually build.
+build: off
+
+cache:
+ - "%LOCALAPPDATA%\\Yarn"

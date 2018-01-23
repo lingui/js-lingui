@@ -1,27 +1,27 @@
-********************************
-API Reference - CLI (lingui-cli)
-********************************
+*********************************
+API Reference - CLI (@lingui/cli)
+*********************************
 
-``lingui-cli`` manages locales, extracts messages from source files into
+``@lingui/cli`` manages locales, extracts messages from source files into
 message catalogs and compiles message catalogs for production use.
 
 
 Install
 =======
 
-``lingui-cli`` can be installed both globally:
+``@lingui/cli`` can be installed both globally:
 
 .. code-block:: shell
 
-   yarn global add lingui-cli
-   # npm install --global lingui-cli
+   yarn global add @lingui/cli
+   # npm install --global @lingui/cli
 
 or locally:
 
 .. code-block:: shell
 
-   yarn add --dev lingui-cli
-   # npm install --save-dev lingui-cli
+   yarn add --dev @lingui/cli
+   # npm install --save-dev @lingui/cli
 
 .. note::
 
@@ -68,7 +68,7 @@ Format of message catalog (see :conf:`format` option).
 ``extract``
 -----------
 
-.. lingui-cli:: extract [--clean] [--format <format>] [--verbose]
+.. lingui-cli:: extract [--clean] [--format <format>] [--convert-from <format>] [--verbose]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -85,6 +85,10 @@ when it's missing in the source code.
 .. lingui-cli-option:: --format <format>
 
 Format of message catalogs (see :conf:`format` option).
+
+.. lingui-cli-option:: --convert-from <format>
+
+Convert message catalogs from previous format (see :conf:`format` option).
 
 .. lingui-cli-option:: --verbose
 

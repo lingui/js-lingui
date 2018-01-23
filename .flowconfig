@@ -1,4 +1,5 @@
 [ignore]
+.*/examples/.*
 .*/node_modules/config-chain/.*
 .*/node_modules/conventional-changelog-core/.*
 .*/node_modules/npmconf/.*
@@ -11,5 +12,4 @@
 
 [options]
 emoji=true
-unsafe.enable_getters_and_setters=true
 suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore

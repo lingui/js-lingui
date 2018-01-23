@@ -2,556 +2,520 @@
 
 exports[`Children should render 1`] = `
 <Component
-  language="cs"
+  language=cs
 >
   <I18nProvider
     catalogs={
       Object {
-        "cs": Object {
-          "messages": Object {
-            "Full content of {articleName}": "Celé znění článku {articleName}",
-            "Hello World": "Ahoj světe",
-            "My name is {name}": "Jmenuji se {name}",
-            "Read <0>more</0>": "Číst <0>dále</0>",
-            "msg.label": "Nápis",
-            "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}}",
+        cs: Object {
+          messages: Object {
+            Full content of {articleName}: Celé znění článku {articleName},
+            Hello World: Ahoj světe,
+            My name is {name}: Jmenuji se {name},
+            Read <0>more</0>: Číst <0>dále</0>,
+            msg.label: Nápis,
+            {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}},
           },
         },
-        "en": Object {},
+        en: Object {},
       }
     }
-    defaultRender="span"
-    development={
-      Object {
-        "compile": [Function],
-        "loadLanguageData": [Function],
-      }
-    }
-    language="cs"
+    defaultRender={null}
+    language=cs
   >
     <Children>
       <div>
         <ul>
-          <li>
+          <li
+            className=untranslated
+          >
             <withI18n
-              className="untranslated"
-              id="This isn't translated"
+              id=This isn't translated
             >
               <Trans
-                className="untranslated"
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="This isn't translated"
+                id=This isn't translated
               >
                 <Render
-                  className="untranslated"
-                  value="This isn't translated"
+                  value=This isn't translated
                 >
-                  <span
-                    className="untranslated"
-                  >
-                    This isn't translated
-                  </span>
+                  This isn't translated
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className=customId
+          >
             <withI18n
-              className="customId"
-              id="msg.label"
+              id=msg.label
             >
               <Trans
-                className="customId"
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="msg.label"
+                id=msg.label
               >
                 <Render
-                  className="customId"
-                  value="Nápis"
+                  value=Nápis
                 >
-                  <span
-                    className="customId"
-                  >
-                    Nápis
-                  </span>
+                  Nápis
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className=translated
+          >
             <withI18n
-              className="translated"
-              id="Hello World"
+              id=Hello World
             >
               <Trans
-                className="translated"
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="Hello World"
+                id=Hello World
               >
                 <Render
-                  className="translated"
-                  value="Ahoj světe"
+                  value=Ahoj světe
                 >
-                  <span
-                    className="translated"
-                  >
-                    Ahoj světe
-                  </span>
+                  Ahoj světe
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className=variable
+          >
             <withI18n
-              className="variable"
-              id="My name is {name}"
+              id=My name is {name}
               values={
                 Object {
-                  "name": "Mononoke",
+                  name: Mononoke,
                 }
               }
             >
               <Trans
-                className="variable"
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="My name is {name}"
+                id=My name is {name}
                 values={
                   Object {
-                    "name": "Mononoke",
+                    name: Mononoke,
                   }
                 }
               >
                 <Render
-                  className="variable"
-                  value="Jmenuji se Mononoke"
+                  value=Jmenuji se Mononoke
                 >
-                  <span
-                    className="variable"
-                  >
-                    Jmenuji se Mononoke
-                  </span>
+                  Jmenuji se Mononoke
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className=components
+          >
             <withI18n
-              className="components"
               components={
                 Array [
                   <a
-                    href="/mononoke"
+                    href=/mononoke
                   />,
                 ]
               }
-              id="Read <0>more</0>."
+              id=Read <0>more</0>.
             >
               <Trans
-                className="components"
                 components={
                   Array [
                     <a
-                      href="/mononoke"
+                      href=/mononoke
                     />,
                   ]
                 }
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="Read <0>more</0>."
+                id=Read <0>more</0>.
               >
                 <Render
-                  className="components"
                   value={
                     Array [
-                      "Read ",
+                      Read ,
                       <a
-                        href="/mononoke"
+                        href=/mononoke
                       >
                         more
                       </a>,
-                      ".",
+                      .,
                     ]
                   }
                 >
-                  <span
-                    className="components"
+                  Read 
+                  <a
+                    href=/mononoke
+                    key=0
                   >
-                    Read 
-                    <a
-                      href="/mononoke"
-                      key="0"
-                    >
-                      more
-                    </a>
-                    .
-                  </span>
+                    more
+                  </a>
+                  .
                 </Render>
               </Trans>
             </withI18n>
           </li>
-          <li>
+          <li
+            className=plural
+          >
             <withI18n
-              className="plural"
-              id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+              id={genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}
               values={
                 Object {
-                  "genderOfHost": "female",
-                  "guest": "Fred",
-                  "host": "Wilma",
-                  "numGuests": 2,
+                  genderOfHost: female,
+                  guest: Fred,
+                  host: Wilma,
+                  numGuests: 2,
                 }
               }
             >
               <Trans
-                className="plural"
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+                id={genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}
                 values={
                   Object {
-                    "genderOfHost": "female",
-                    "guest": "Fred",
-                    "host": "Wilma",
-                    "numGuests": 2,
+                    genderOfHost: female,
+                    guest: Fred,
+                    host: Wilma,
+                    numGuests: 2,
                   }
                 }
               >
                 <Render
-                  className="plural"
-                  value="Wilma pozvala Fred a dalšího hosta na její oslavu."
+                  value=Wilma pozvala Fred a dalšího hosta na její oslavu.
                 >
-                  <span
-                    className="plural"
-                  >
-                    Wilma pozvala Fred a dalšího hosta na její oslavu.
-                  </span>
+                  Wilma pozvala Fred a dalšího hosta na její oslavu.
                 </Render>
               </Trans>
             </withI18n>
           </li>
           <li>
             <withI18n
-              id="My name is {name}"
+              id=My name is {name}
               render={
                 <p
-                  className="render-element"
+                  className=render-element
                 />
               }
               values={
                 Object {
-                  "name": "Mononoke",
+                  name: Mononoke,
                 }
               }
             >
               <Trans
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="My name is {name}"
+                id=My name is {name}
                 render={
                   <p
-                    className="render-element"
+                    className=render-element
                   />
                 }
                 values={
                   Object {
-                    "name": "Mononoke",
+                    name: Mononoke,
                   }
                 }
               >
                 <Render
                   render={
                     <p
-                      className="render-element"
+                      className=render-element
                     />
                   }
-                  value="Jmenuji se Mononoke"
+                  value=Jmenuji se Mononoke
                 >
                   <p
-                    className="render-element"
+                    className=render-element
                   >
                     Jmenuji se Mononoke
                   </p>
@@ -559,74 +523,74 @@ exports[`Children should render 1`] = `
               </Trans>
             </withI18n>
             <withI18n
-              id="My name is {name}"
+              id=My name is {name}
               render={[Function]}
               values={
                 Object {
-                  "name": "Mononoke",
+                  name: Mononoke,
                 }
               }
             >
               <Trans
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {
-                      "Full content of {articleName}": [Function],
-                      "Hello World": "Ahoj světe",
-                      "My name is {name}": [Function],
-                      "Read <0>more</0>": "Číst <0>dále</0>",
-                      "msg.label": "Nápis",
-                      "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _activeMessages: Object {
+                      Full content of {articleName}: [Function],
+                      Hello World: Ahoj světe,
+                      My name is {name}: [Function],
+                      Read <0>more</0>: Číst <0>dále</0>,
+                      msg.label: Nápis,
+                      {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                     },
-                    "_catalogs": Object {
-                      "cs": Object {
-                        "languageData": Object {},
-                        "messages": Object {
-                          "Full content of {articleName}": [Function],
-                          "Hello World": "Ahoj světe",
-                          "My name is {name}": [Function],
-                          "Read <0>more</0>": "Číst <0>dále</0>",
-                          "msg.label": "Nápis",
-                          "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": [Function],
+                    _catalogs: Object {
+                      cs: Object {
+                        languageData: Object {},
+                        messages: Object {
+                          Full content of {articleName}: [Function],
+                          Hello World: Ahoj světe,
+                          My name is {name}: [Function],
+                          Read <0>more</0>: Číst <0>dále</0>,
+                          msg.label: Nápis,
+                          {genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}: [Function],
                         },
                       },
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "cs",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: cs,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="My name is {name}"
+                id=My name is {name}
                 render={[Function]}
                 values={
                   Object {
-                    "name": "Mononoke",
+                    name: Mononoke,
                   }
                 }
               >
                 <Render
                   render={[Function]}
-                  value="Jmenuji se Mononoke"
+                  value=Jmenuji se Mononoke
                 >
                   <render
-                    translation="Jmenuji se Mononoke"
+                    translation=Jmenuji se Mononoke
                   >
                     <p
-                      className="render-component"
+                      className=render-component
                     >
                       Jmenuji se Mononoke
                     </p>
@@ -642,4 +606,4 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `"<span class=\\"components\\">Read <a href=\\"/mononoke\\">more</a>.</span>"`;
+exports[`Children should support nested elements 1`] = `<li class="components">Read <a href="/mononoke">more</a>.</li>`;

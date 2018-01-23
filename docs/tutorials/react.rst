@@ -65,26 +65,26 @@ We're trying to use most of them to show the full power of jsLingui.
 
 Let's start with the three major packages:
 
-``lingui-react``
+``@lingui/react``
    React components for translation and formatting
 
-``babel-preset-lingui-react``
-   Transforms messages wrapped in components from ``lingui-react`` to ICU
+``@lingui/babel-preset-react``
+   Transforms messages wrapped in components from ``@lingui/react`` to ICU
    MessageFormat and validates them
 
-``lingui-cli``
+``@lingui/cli``
    CLI for working with message catalogs
 
-1. Install ``babel-preset-lingui-react`` as a development dependency,
-   ``lingui-react`` as a runtime dependency and ``lingui-cli`` globally:
+1. Install ``@lingui/babel-preset-react`` as a development dependency,
+   ``@lingui/react`` as a runtime dependency and ``@lingui/cli`` globally:
 
    .. code-block:: shell
 
-      npm install -g lingui-cli
-      npm install --save lingui-react
-      npm install --save-dev babel-preset-lingui-react
+      npm install -g @lingui/cli
+      npm install --save @lingui/react
+      npm install --save-dev @lingui/babel-preset-react
 
-2. Add ``lingui-react`` preset to Babel config (e.g: ``.babelrc``):
+2. Add ``@lingui/babel-preset-react`` preset to Babel config (e.g: ``.babelrc``):
 
    .. code-block:: json
 
@@ -92,7 +92,7 @@ Let's start with the three major packages:
         "presets": [
           "env",
           "react",
-          "lingui-react"
+          "@lingui/babel-preset-react"
         ]
       }
 
@@ -107,8 +107,7 @@ to complete one more step to setup our application.
 Components needs to be aware of their active language. All jsLingui_ components
 read translations and language settings from the context. In order to get this
 information into the React context, we need to wrap our application in
-:component:`I18nProvider` component. In development we're also going to need
-some more *stuff*, but don't worry about it now. It'll be explained later.
+:component:`I18nProvider` component.
 
 Let's add all required imports and wrap our app inside :component:`I18nProvider`:
 
@@ -119,21 +118,15 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
 
-   import { I18nProvider } from 'lingui-react'
-
-   // required in development only (huge dependency)
-   const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
+   import { I18nProvider } from '@lingui/react'
 
    const App = () => (
-     <I18nProvider language="en" development={dev}>
+     <I18nProvider language="en">
        <Inbox />
      </I18nProvider>
    )
 
    render(<App />, document.getElementById('app'))
-
-I know, the development import looks ugly! But we're doing this for greater
-good, saving a lot of bandwidth data.
 
 .. hint::
 
@@ -152,7 +145,7 @@ Now we're finally going to *translate* our app. Actually, we aren't going
 to *translate* from one language to another right now. Instead, we're going to
 *prepare* our app for translation. This process is called
 *internationalization* and you should practice saying this word aloud until
-you're able to say it three times very quickly. /funny/
+you're able to say it three times very quickly.
 
 .. note::
 
@@ -636,7 +629,7 @@ After all modifications, the final component with i18n looks like this:
 
    // Inbox.js
    import React from 'react'
-   import { Trans, Plural, DateFormat } from 'lingui-react'
+   import { Trans, Plural, DateFormat } from '@lingui/react'
 
    const Inbox = ({ messages, markAsRead, user }) => {
      const messagesCount = messages.length
@@ -687,7 +680,7 @@ locale:
 ``messages.js``
    Minified JS file with compiled messages (for application)
 
-We'll just import a compiled message catalog, unpack it and pass it to
+We'll just import a compiled message catalog and pass it to
 :component:`I18nProvider`:
 
 .. code-block:: jsx
@@ -697,15 +690,12 @@ We'll just import a compiled message catalog, unpack it and pass it to
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
 
-   import { I18nProvider } from 'lingui-react'
-   // required in development only (huge dependency)
-   const dev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined
+   import { I18nProvider } from '@lingui/react'
 
-   import { unpackCatalog } from 'lingui-i18n'
    import catalog from 'locale/cs/messages.js'
 
    const App = () => (
-     <I18nProvider language="cs" catalogs={{ cs: unpackCatalog(catalog) }} development={dev}>
+     <I18nProvider language="cs" catalogs={{ cs: catalog }}>
        <Inbox />
      </I18nProvider>
    )
@@ -719,6 +709,6 @@ an example :ref:`how to do it with webpack <dynamic-loading-catalogs>`.
 Further reading
 ===============
 
-- `lingui-react reference documentation <../ref/lingui-react.html>`_
-- `lingui-cli reference documentation <../ref/lingui-cli.html>`_
+- `@lingui/react reference documentation <../ref/lingui-react.html>`_
+- `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

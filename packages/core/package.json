@@ -1,0 +1,36 @@
+{
+  "name": "@lingui/core",
+  "version": "2.0.0",
+  "description": "I18n tools for javascript",
+  "keywords": [
+    "i18n",
+    "i10n",
+    "i9n",
+    "internationalization",
+    "localization",
+    "translation"
+  ],
+  "repository": "lingui/js-lingui",
+  "bugs": "https://github.com/lingui/js-lingui/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=4.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "dev.js",
+    "cjs/"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
+    "make-plural": "^4.1.1",
+    "messageformat-parser": "^2.0.0"
+  }
+}

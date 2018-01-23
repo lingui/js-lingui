@@ -1,0 +1,136 @@
+// @flow
+import fs from "fs"
+import path from "path"
+import mkdirp from "mkdirp"
+import chalk from "chalk"
+import program from "commander"
+
+import { getConfig } from "@lingui/conf"
+
+import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
+import { extract, collect, cleanObsolete } from "./api/extract"
+import { printStats } from "./api/stats"
+
+type ExtractOptions = {|
+  verbose: boolean,
+  clean: boolean,
+  prevFormat: ?CatalogFormat
+|}
+
+export default function command(
+  config: LinguiConfig,
+  format: CatalogFormat,
+  options: ExtractOptions
+): boolean {
+  const convertFormat = options.prevFormat || format
+  const locales = convertFormat.getLocales()
+
+  if (!locales.length) {
+    console.log("No locales defined!\n")
+    console.log(
+      `(use "${chalk.yellow("lingui add-locale <language>")}" to add one)`
+    )
+    return false
+  }
+
+  const buildDir = path.join(config.localeDir, "_build")
+  if (!fs.existsSync(buildDir)) {
+    mkdirp(buildDir)
+  }
+
+  console.log("Extracting messages from source files…")
+  extract(config.srcPathDirs, config.localeDir, {
+    ignore: config.srcPathIgnorePatterns,
+    verbose: options.verbose
+  })
+  options.verbose && console.log()
+
+  console.log("Collecting all messages…")
+  const clean = options.clean ? cleanObsolete : id => id
+  const catalog = collect(buildDir)
+  const catalogs = clean(convertFormat.merge(catalog))
+  options.verbose && console.log()
+
+  console.log("Writing message catalogues…")
+  locales
+    .map(locale => format.write(locale, catalogs[locale]))
+    .forEach(([created, filename]) => {
+      if (!filename || !options.verbose) return
+
+      if (created) {
+        console.log(chalk.green(`Created ${filename}`))
+      } else {
+        console.log(chalk.green(`Updated ${filename}`))
+      }
+    })
+  options.verbose && console.log()
+
+  console.log("Messages extracted!\n")
+
+  console.log("Catalog statistics:")
+  printStats(config, catalogs)
+  console.log()
+
+  console.log(
+    `(use "${chalk.yellow(
+      "lingui add-locale <language>"
+    )}" to add more locales)`
+  )
+  console.log(
+    `(use "${chalk.yellow(
+      "lingui extract"
+    )}" to update catalogs with new messages)`
+  )
+  console.log(
+    `(use "${chalk.yellow(
+      "lingui compile"
+    )}" to compile catalogs for production)`
+  )
+  return true
+}
+
+if (require.main === module) {
+  program
+    .option("--clean", "Remove obsolete translations")
+    .option("--verbose", "Verbose output")
+    .option("--format <format>", "Format of message catalogs")
+    .option(
+      "--convert-from <format>",
+      "Convert from previous format of message catalogs"
+    )
+    .parse(process.argv)
+
+  const config = getConfig()
+  const formatName = program.format || config.format
+  const prevFormatName = program.convertFrom
+
+  if (prevFormatName && formatName === prevFormatName) {
+    console.log(
+      chalk.red("Trying to migrate message catalog to the same format")
+    )
+    console.log(
+      `Set ${chalk.bold("new")} format in lingui configuration or using` +
+        ` --format option\nand ${chalk.bold("previous")} format using` +
+        ` --convert-format option.`
+    )
+    console.log()
+    console.log(`Example: Convert from lingui format to minimal`)
+    console.log(
+      chalk.yellow(`lingui extract --format minimal --convert-from lingui`)
+    )
+    process.exit(1)
+  }
+
+  const format = require(`./api/formats/${formatName}`).default(config)
+  const prevFormat = prevFormatName
+    ? require(`./api/formats/${prevFormatName}`).default(config)
+    : null
+
+  const result = command(config, format, {
+    verbose: program.verbose || false,
+    clean: program.clean || false,
+    prevFormat
+  })
+
+  if (!result) process.exit(1)
+}

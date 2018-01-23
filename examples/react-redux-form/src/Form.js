@@ -1,7 +1,7 @@
 import * as React from "react"
 import { compose } from "redux"
 import { reduxForm, Field } from "redux-form"
-import { withI18n, Trans } from "lingui-react"
+import { withI18n, Trans } from "@lingui/react"
 
 const validUsernames = [
   "Dasher",

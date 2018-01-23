@@ -1,0 +1,41 @@
+{
+  "name": "@lingui/react",
+  "version": "2.0.0",
+  "description": "React components for translations",
+  "main": "index.js",
+  "module": "index.es.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "component",
+    "i18n",
+    "internationalization",
+    "i9n",
+    "translation",
+    "icu",
+    "messageformat"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "peerDependencies": {
+    "react": "^15.0.0 || ^16.0.0"
+  },
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
+    "@lingui/core": "2.0.0",
+    "hash-sum": "^1.0.2",
+    "prop-types": "^15.6.0"
+  }
+}

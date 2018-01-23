@@ -1,6 +1,6 @@
 // @flow
-import React from 'react'
-import { withI18n, Trans } from 'lingui-react'
+import * as React from "react"
+import { withI18n, Trans } from "@lingui/react"
 
 type ElementAttributesProps = {
   i18n: Object
@@ -9,9 +9,9 @@ type ElementAttributesProps = {
 class ElementAttributes extends React.Component<ElementAttributesProps> {
   props: ElementAttributesProps
 
-  render () {
+  render() {
     const { i18n } = this.props
-    const articleName = 'Scientific Journal'
+    const articleName = "Scientific Journal"
     const closeLabel = i18n.t`Close`
 
     return (
@@ -20,9 +20,14 @@ class ElementAttributes extends React.Component<ElementAttributesProps> {
           <a
             className="expression"
             href="/article"
-            title={i18n.t`Full content of ${articleName}`}>Article</a>
+            title={i18n.t`Full content of ${articleName}`}
+          >
+            Article
+          </a>
         </Trans>
-        <button className="variable" aria-label={closeLabel}>X</button>
+        <button className="variable" aria-label={closeLabel}>
+          X
+        </button>
       </div>
     )
   }

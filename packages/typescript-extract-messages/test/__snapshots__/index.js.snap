@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lingui/typescript-extract-messages should extract all messages from JSX files 1`] = `
+Object {
+  Hi, my name is <0>{name}</0>: Object {
+    origin: Array [
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        8,
+      ],
+    ],
+  },
+  msg.default: Object {
+    defaults: Hello World,
+    origin: Array [
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        6,
+      ],
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        7,
+      ],
+    ],
+  },
+  msg.hello: Object {
+    origin: Array [
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        5,
+      ],
+    ],
+  },
+  undefined: Object {
+    defaults: Missing ID,
+    origin: Array [
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        3,
+      ],
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        4,
+      ],
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        14,
+      ],
+    ],
+  },
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
+      Array [
+        /Users/tricoder/Projects/lingui/js-lingui/packages/typescript-extract-messages/test/fixtures/jsx/all.js,
+        9,
+      ],
+    ],
+  },
+}
+`;

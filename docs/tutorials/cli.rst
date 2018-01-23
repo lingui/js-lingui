@@ -5,10 +5,10 @@
 Working with jsLingui CLI
 *************************
 
-``lingui-cli`` provides the ``lingui`` command for extracting, merging and compiling
-message catalogs::
+``@lingui/cli`` provides the ``lingui`` command for extracting, merging and
+compiling message catalogs::
 
-   npm install --global lingui-cli
+   npm install --global @lingui/cli
 
 Add a new locale
 ================
@@ -58,42 +58,10 @@ The message catalog will look like this:
 .. code-block:: json
 
    {
-     "Message Inbox": {
-       "translation": "",
-       "origin": [
-         [
-           "Inbox.js",
-           10
-         ]
-       ]
-     },
-     "See all <0>unread messages</0> or <1>mark them</1> as read.": {
-       "translation": "",
-       "origin": [
-         [
-           "Inbox.js",
-           13
-         ]
-       ]
-     },
-     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": {
-       "translation": "",
-       "origin": [
-         [
-           "Inbox.js",
-           20
-         ]
-       ]
-     },
-     "Last login on {lastLogin,date}.": {
-       "translation": "",
-       "origin": [
-         [
-           "Inbox.js",
-           28
-         ]
-       ]
-     }
+     "Message Inbox": "",
+     "See all <0>unread messages</0> or <1>mark them</1> as read.": "",
+     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": "",
+     "Last login on {lastLogin,date}.": "",
    }
 
 It's in a JSON dictionary, where 'key' is message ID and value is an object with some
@@ -105,42 +73,10 @@ This catalog is ready for translation. Let's translate it into Czech by filling 
 .. code-block:: json
 
    {
-     "Message Inbox": {
-       "translation": "Přijaté zprávy",
-       "origin": [
-         [
-           "Inbox.js",
-           10
-         ]
-       ]
-     },
-     "See all <0>unread messages</0> or <1>mark them</1> as read.": {
-       "translation": "Zobrazit všechny <0>nepřečtené zprávy</0> nebo je <1>označit</1> jako přečtené.",
-       "origin": [
-         [
-           "Inbox.js",
-           13
-         ]
-       ]
-     },
-     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": {
-       "translation": "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy. } other {V příchozí poště je {messagesCount} zpráv.}}",
-       "origin": [
-         [
-           "Inbox.js",
-           20
-         ]
-       ]
-     },
-     "Last login on {lastLogin,date}.": {
-       "translation": "Poslední přihlášení {lastLogin,date}",
-       "origin": [
-         [
-           "Inbox.js",
-           28
-         ]
-       ]
-     }
+     "Message Inbox": "Přijaté zprávy",
+     "See all <0>unread messages</0> or <1>mark them</1> as read.": "Zobrazit všechny <0>nepřečtené zprávy</0> nebo je <1>označit</1> jako přečtené.",
+     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There're {messagesCount} messages in your inbox.}}": "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy. } other {V příchozí poště je {messagesCount} zpráv.}}",
+     "Last login on {lastLogin,date}.": "Poslední přihlášení {lastLogin,date}",
    }
 
 If we run the :cli:`extract` command again, we can see in the stats that all

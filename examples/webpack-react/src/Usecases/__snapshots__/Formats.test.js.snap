@@ -2,134 +2,120 @@
 
 exports[`Formats should render 1`] = `
 <Component
-  language="en"
+  language=en
 >
   <I18nProvider
     catalogs={
       Object {
-        "en": Object {},
+        en: Object {},
       }
     }
-    defaultRender="span"
-    development={
-      Object {
-        "compile": [Function],
-        "loadLanguageData": [Function],
-      }
-    }
-    language="en"
+    defaultRender={null}
+    language=en
   >
     <Formats>
       <div>
         <ul>
           <li>
             <withI18n
-              className="percent"
-              id="The answer is {answer,number,percent}"
+              className=percent
+              id=The answer is {answer,number,percent}
               values={
                 Object {
-                  "answer": 0.42,
+                  answer: 0.42,
                 }
               }
             >
               <Trans
-                className="percent"
+                className=percent
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {},
-                    "_catalogs": Object {
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                    _activeMessages: Object {},
+                    _catalogs: Object {
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "en",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: en,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="The answer is {answer,number,percent}"
+                id=The answer is {answer,number,percent}
                 values={
                   Object {
-                    "answer": 0.42,
+                    answer: 0.42,
                   }
                 }
               >
                 <Render
-                  className="percent"
-                  value="The answer is 42%"
+                  className=percent
+                  value=The answer is 42%
                 >
-                  <span
-                    className="percent"
-                  >
-                    The answer is 42%
-                  </span>
+                  The answer is 42%
                 </Render>
               </Trans>
             </withI18n>
           </li>
           <li>
             <withI18n
-              className="date"
-              id="Today is {now,date}"
+              className=date
+              id=Today is {now,date}
               values={
                 Object {
-                  "now": 2017-04-05T11:14:00.000Z,
+                  now: 2017-04-05T11:14:00.000Z,
                 }
               }
             >
               <Trans
-                className="date"
+                className=date
                 i18n={
                   I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
+                    _activeLanguageData: Object {
+                      plurals: [Function],
                     },
-                    "_activeMessages": Object {},
-                    "_catalogs": Object {
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
+                    _activeMessages: Object {},
+                    _catalogs: Object {
+                      en: Object {
+                        languageData: Object {},
+                        messages: Object {},
                       },
                     },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
+                    _dev: Object {
+                      compile: [Function],
+                      loadLanguageData: [Function],
                     },
-                    "_language": "en",
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
+                    _language: en,
+                    plural: [Function],
+                    select: [Function],
+                    selectOrdinal: [Function],
+                    t: [Function],
                   }
                 }
                 i18nHash={null}
-                id="Today is {now,date}"
+                id=Today is {now,date}
                 values={
                   Object {
-                    "now": 2017-04-05T11:14:00.000Z,
+                    now: 2017-04-05T11:14:00.000Z,
                   }
                 }
               >
                 <Render
-                  className="date"
-                  value="Today is 4/5/2017"
+                  className=date
+                  value=Today is 4/5/2017
                 >
-                  <span
-                    className="date"
-                  >
-                    Today is 4/5/2017
-                  </span>
+                  Today is 4/5/2017
                 </Render>
               </Trans>
             </withI18n>

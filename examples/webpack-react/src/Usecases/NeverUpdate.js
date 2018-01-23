@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import * as React from "react"
 
 type NeverUpdateProps = {
   children?: any
@@ -8,11 +8,11 @@ type NeverUpdateProps = {
 class NeverUpdate extends React.Component<NeverUpdateProps> {
   props: NeverUpdateProps
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate() {
     return false
   }
 
-  render () {
+  render() {
     return <div>{this.props.children}</div>
   }
 }

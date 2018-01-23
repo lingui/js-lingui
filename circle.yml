@@ -6,9 +6,6 @@ workflows:
     jobs:
       - test-linter
 
-      - test-node6:
-          requires:
-            - test-linter
       - test-node8:
           requires:
             - test-linter
@@ -28,23 +25,21 @@ jobs:
 
       - run:
           name: Install build tools
-          command: sudo yarn global add codecov
+          command: sudo yarn global add codecov yalc
 
       - restore_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
-          command: |
-              yarn install
-              yarn run bootstrap
+          command: yarn install
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: yarn test
+      - run: node scripts/test.js
 
       - run:
           name: Send coverage report
@@ -57,11 +52,11 @@ jobs:
           path: ./results/
           when: always
 
-  test-node6:
-    <<: *test-template
-
-    docker:
-      - image: circleci/node:6
+#  test-node6:
+#    <<: *test-template
+#
+#    docker:
+#      - image: circleci/node:6
 
   test-linter:
     docker:
@@ -72,16 +67,14 @@ jobs:
 
       - run:
           name: Install build tools
-          command: sudo yarn global add codecov
+          command: sudo yarn global add codecov yalc
 
       - restore_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
           name: Install dependencies
-          command: |
-              yarn install
-              yarn run bootstrap
+          command: yarn install
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}

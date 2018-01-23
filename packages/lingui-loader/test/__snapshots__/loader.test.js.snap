@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`lingui-loader should compile catalog 1`] = `"throw new Error(\\"Module build failed: TypeError: Cannot convert undefined or null to object\\\\n    at keys (<anonymous>)\\\\n    at Object.<anonymous>.exports.default (/Users/tricoder/Projects/lingui/js-lingui/packages/lingui-loader/src/index.js:19:48)\\");"`;

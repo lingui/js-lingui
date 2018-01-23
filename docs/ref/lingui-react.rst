@@ -1,8 +1,8 @@
 ************************************
-API Reference - React (lingui-react)
+API Reference - React (@lingui/react)
 ************************************
 
-Components from ``lingui-react`` wrap the vanilla JS API from ``lingui-i18n``.
+Components from ``@lingui/react`` wrap the vanilla JS API from ``lingui-i18n``.
 React components handle changes of active language or interpolated variables
 better than low-level API and also take care of re-rendering when wrapped inside
 pure components.
@@ -15,11 +15,10 @@ General Concepts
 Rendering of Translations
 -------------------------
 
-All i18n components render translation inside ``<span>`` tag. This tag can be
+All i18n components render translation as a text without a wrapping tag. This can be
 customized in two different ways: globally: using ``defaultRender`` prop on
 :component:`I18nProvider` component; or locally: using ``render`` prop on i18n
-components. Each component also supports ``className`` as a shortcut for the most
-basic use cases.
+components.
 
 Global Configuration
 ^^^^^^^^^^^^^^^^^^^^
@@ -31,9 +30,6 @@ in ``<Text>`` component in React Native.
 It's possible to pass in either a string for built-in elements (`span`, `h1`),
 React elements or React classes. This prop has the same type as ``render`` prop on
 i18n components described below.
-
-Changed in **lingui-react@1.3.0**: ``defaultRender`` accepts ``null`` value to
-render string without wrapping component in React 16.
 
 Local Configuration
 ^^^^^^^^^^^^^^^^^^^
@@ -72,12 +68,12 @@ to get more control over the rendering of translation. Component passed to
    </Trans>;
    // renders as <Icon label="Sign in" />
 
-Changed in **lingui-react@1.3.0**: ``render`` accepts ``null`` value to render
-string without wrapping component in React 16.
+``render`` also accepts ``null`` value to render
+string without wrapping component. This can be used to override
+custom ``defaultRender`` config.
 
 .. code-block:: jsx
 
-   // Render string in React 16
    <Trans render={null}>Heading</Trans>;
    // renders as "Heading"
 
@@ -357,7 +353,7 @@ top-level application component. However, if the ``language`` is stored in a
 .. code-block:: jsx
 
    import React from 'react';
-   import { I18nProvider } from 'lingui-react';
+   import { I18nProvider } from '@lingui/react';
 
    const App = ({ language} ) => {
         const catalog = require(`locales/${language}.js`);
@@ -383,19 +379,11 @@ API for translation of JSX props:
 .. code-block:: jsx
 
    import React from 'react';
-   import { Trans, withI18n } from 'lingui-react';
+   import { Trans, withI18n } from '@lingui/react';
 
    const LogoutIcon = withI18n()(
        ({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`}/>
    );
-
-
-.. note::
-
-   *Changed in lingui-react@1.1.0:*
-
-   Previous version of this component, named `WithI18n` (upper-cased first letter),
-   is deprecated and will be removed in ``lingui-react@2.0``
 
 .. js:function:: i18nMark(msgId: string)
 

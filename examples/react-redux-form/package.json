@@ -16,8 +16,8 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "lingui-i18n": "^1.3.3",
-    "lingui-react": "^1.4.1",
+    "@lingui/core": "^2.0.0-0",
+    "@lingui/react": "^2.0.0-0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
@@ -25,40 +25,19 @@
     "redux-form": "^7.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-lingui-react": "^1.0.13",
-    "babel-preset-react": "^6.24.1",
-    "lingui-loader": "^0.1.4",
+    "@babel/core": "^7.0.0-beta.36",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.36",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.36",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.36",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.36",
+    "@babel/preset-env": "^7.0.0-beta.36",
+    "@babel/preset-react": "^7.0.0-beta.36",
+    "@lingui/babel-preset-react": "^2.0.0-0",
+    "@lingui/cli": "^2.0.0-1",
+    "@lingui/loader": "^2.0.0-0",
+    "babel-loader": "8.0.0-beta.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "modules": false
-        }
-      ],
-      "react",
-      "lingui-react"
-    ],
-    "plugins": [
-      "syntax-dynamic-import",
-      "transform-class-properties",
-      "transform-object-rest-spread"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "transform-es2015-modules-commonjs"
-        ]
-      }
-    }
   },
   "lingui": {
     "localeDir": "./locale",

@@ -1,10 +1,10 @@
-import React from 'react'
-import { Trans, NumberFormat, DateFormat } from 'lingui-react'
+import * as React from "react"
+import { Trans, NumberFormat, DateFormat } from "@lingui/react"
 
 class Formats extends React.Component {
-  render () {
+  render() {
     const answer = 0.42
-    const now = new Date('2017-04-05T11:14:00.000Z')
+    const now = new Date("2017-04-05T11:14:00.000Z")
 
     return (
       <div>
