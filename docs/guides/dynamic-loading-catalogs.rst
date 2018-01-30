@@ -8,7 +8,7 @@ Dynamic loading of message catalogs
 
 ``I18nProvider`` doesn't assume anything about your app and it's your
 responsibility to load messages based on active language. Here's an example of
-``I18nLoader`` component which is connected to Redux store and loads message 
+``I18nLoader`` component which is connected to Redux store and loads message
 catalogs using `dynamic import in Webpack <https://webpack.js.org/guides/code-splitting-async/>`_.
 
 Requirements
@@ -18,12 +18,13 @@ Requirements
 - webpack 2.x
 - redux
 - @lingui/react
+- @lingui/loader
 
 Setup
 =====
 
 We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
-to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and 
+to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
 ``babel-plugin-dynamic-import-node`` to make it work. Also, the code examples given here make use of ``babel-plugin-transform-class-properties``
 
 .. code-block:: shell
@@ -53,7 +54,7 @@ to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
 Component
 =========
 
-Let's start with the component. We're going to wrap :component:`I18nProvider` 
+Let's start with the component. We're going to wrap :component:`I18nProvider`
 from ``@lingui/react``. Active language is loaded from redux store, while
 messages are dynamically loaded and stored in local state.
 
@@ -108,18 +109,22 @@ Loading of message catalogs
 
 The most important piece in this story is ``loadCatalog()`` method. It's
 necessary to load compiled message catalogs. The recommended way is compile
-messages on-the-fly using ``lingui-loader``, but it's also possible to load
+messages on-the-fly using ``@lingui/loader``, but it's also possible to load
 compiled ``messages.js`` directly.
+
+.. code-block:: shell
+
+   yarn add --dev @lingui/loader
 
 Here we use the dynamic import syntax to load the message catalog:
 
 .. code-block:: js
 
    loadCatalog = async (language) => {
-     // using lingui-loader - load raw messages.json
+     // using @lingui/loader - load raw messages.json
      const catalog = await import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `lingui-loader!locale/${language}/messages.json`)
+       `@lingui/loader!locale/${language}/messages.json`)
 
      // load compiled messages.js
      // const catalog = await import(
@@ -142,7 +147,7 @@ good old promises:
    loadCatalog = (language) => {
      import(
        /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-       `lingui-loader!locale/${language}/messages.json`)
+       `@lingui/loader!locale/${language}/messages.json`)
      .then(catalog =>
        this.setState(state => ({
          catalogs: {
@@ -153,8 +158,8 @@ good old promises:
      )
    }
 
-The comment before message catalog path is webpack's *magic comment*. 
-``webpackMode: lazy`` means, that chunks are loaded as requested. 
+The comment before message catalog path is webpack's *magic comment*.
+``webpackMode: lazy`` means, that chunks are loaded as requested.
 ``webpackChunkName: "i18n-[index]"`` overrides default chunk name for this import.
 
 .. _i18nLoaderComponent:
@@ -178,7 +183,7 @@ Here's the full source of ``I18nLoader`` component:
      loadCatalog = async (language) => {
        const catalog = await import(
          /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-         `lingui-loader!locale/${language}/messages.json`)
+         `@lingui/loader!locale/${language}/messages.json`)
 
        this.setState(state => ({
          catalogs: {
@@ -248,4 +253,4 @@ After changing language in UI, the second language bundle is loaded:
 .. image:: ./dynamic-loading-catalogs-2.png
    :alt: Requests during the second render
 
-And that's it! 🎉 
+And that's it! 🎉
