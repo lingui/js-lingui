@@ -33,7 +33,7 @@ and React.
 - Small and fast - about **6kb gzipped**
 - Babel plugin for convenient, **type-checked** way of writing ICU MessageFormat (recommended, but not required)
 - **CLI** for extracting and compiling message catalogs
-- Built on standard **ICU MessageFormat** (might replace [react-intl][ReactIntl] completely)
+- Built on standard **ICU MessageFormat** (is able to replace [react-intl][ReactIntl] completely)
   - Variable interpolation
   - Components inside translations (e.g: `Read <Link to="...">documentation</Link>.`)
   - Plurals, Ordinals and Categories (i.e. Select)
