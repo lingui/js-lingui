@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-preset-react",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Lingui preset for React apps",
   "main": "index.js",
   "author": {
@@ -20,7 +20,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "dependencies": {
-    "@lingui/babel-plugin-transform-js": "2.0.3",
-    "@lingui/babel-plugin-transform-react": "2.0.3"
+    "@lingui/babel-plugin-transform-js": "2.0.4",
+    "@lingui/babel-plugin-transform-react": "2.0.4"
   }
 }
