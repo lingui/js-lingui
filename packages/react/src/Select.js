@@ -14,7 +14,8 @@ type PluralProps = {
   two?: any,
   few?: any,
   many?: any,
-  other: any
+  other: any,
+  culture?: string
 } & withI18nProps &
   RenderProps
 

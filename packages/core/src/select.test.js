@@ -49,6 +49,30 @@ describe("plural", function() {
         other: "Their and # books"
       })
     ).toEqual("Their and 4 books")
+
+    expect(
+      p({
+        value: 1,
+        other: "# كتاب",
+        culture: "ar"
+      })
+    ).toEqual("١ " + "كتاب")
+
+    expect(
+      p({
+        value: 1,
+        other: "# كتاب",
+        culture: "en"
+      })
+    ).toEqual("1 " + "كتاب")
+
+    expect(
+      p({
+        value: 1,
+        other: "# كتاب",
+        culture: "ar-AS"
+      })
+    ).toEqual("١ " + "كتاب")
   })
 })
 

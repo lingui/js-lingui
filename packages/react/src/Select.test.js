@@ -74,6 +74,20 @@ describe("Categories", function() {
       expect(t()).toEqual("5 knih")
     })
 
+    it("should use plural forms based on culture", function() {
+      const node = mount(
+        <Plural value="1000" one="#" other="#" culture="de" />,
+        languageContext("de")
+      )
+
+      const t = () => node.find("Render").text()
+
+      expect(t()).toEqual("1.000")
+
+      node.setProps({ value: 2000 })
+      expect(t()).toEqual("2.000")
+    })
+
     it("should offset value", function() {
       const node = mount(
         <Plural
