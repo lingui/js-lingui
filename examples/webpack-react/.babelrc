@@ -7,14 +7,13 @@
       }
     ],
     "@babel/preset-react",
-    "@babel/preset-flow"
+    "@babel/preset-flow",
+    "@lingui/babel-preset-react"
   ],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@lingui/babel-plugin-transform-js",
-    "@lingui/babel-plugin-transform-react"
+    "@babel/plugin-proposal-object-rest-spread"
   ],
   "env": {
     "test": {
