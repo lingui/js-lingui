@@ -32,7 +32,7 @@ If we use English in the source code, then we'll use only *one* and *other*:
 .. code-block:: js
 
    i18n.plural({
-     count: numBooks,
+     value: numBooks,
      one: "# book",
      other: "# books"
    })
@@ -70,7 +70,7 @@ the process:
    .. code-block:: js
 
     i18n.plural({
-       count: numBooks,
+       value: numBooks,
        one: "# book",
        other: "# books"
     })
@@ -101,7 +101,7 @@ languages has and then you can use them. Here's the example in Czech:
 .. code-block:: js
 
    i18n.plural({
-     count: numBooks,
+     value: numBooks,
      one: '# kniha',
      few: '# knihy',
      other: '# knih'
