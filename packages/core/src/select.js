@@ -26,7 +26,6 @@ const _plural = type => (i18n: any) => ({
   other,
   ...pluralForms
 }: PluralProps): string => {
-  console.log(culture)
   const diff = value - offset
   const intl = new Intl.NumberFormat(culture)
   const diffAsString = intl.format(diff)

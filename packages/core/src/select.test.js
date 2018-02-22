@@ -54,17 +54,9 @@ describe("plural", function() {
       p({
         value: 1,
         other: "# كتاب",
-        culture: "ar"
+        culture: "en-UK"
       })
-    ).toEqual("١ " + "كتاب")
-
-    expect(
-      p({
-        value: 1,
-        other: "# كتاب",
-        culture: "en"
-      })
-    ).toEqual("1 " + "كتاب")
+    ).toEqual("1 كتاب")
 
     expect(
       p({
@@ -72,7 +64,7 @@ describe("plural", function() {
         other: "# كتاب",
         culture: "ar-AS"
       })
-    ).toEqual("١ " + "كتاب")
+    ).toEqual("١ كتاب")
   })
 })
 

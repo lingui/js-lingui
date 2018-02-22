@@ -76,7 +76,7 @@ describe("Categories", function() {
 
     it("should use plural forms based on culture", function() {
       const node = mount(
-        <Plural value="1000" one="#" other="#" culture="de" />,
+        <Plural value="1000" one="#" other="#" culture="de-DE" />,
         languageContext("de")
       )
 
