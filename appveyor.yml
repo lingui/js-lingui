@@ -16,7 +16,7 @@ test_script:
   - node --version
   - yarn --version
   # run tests
-  - env NODE_ICU_DATA=./node_modules/full-icu node scripts/test.js
+  - node --icu-data-dir=node_modules/full-icu scripts/test.js
 
 # Don't actually build.
 build: off
