@@ -34,12 +34,16 @@ jobs:
           name: Install dependencies
           command: yarn install
 
+      - run:
+          name: Embed the entire ICU (full-icu)
+          command: yarn add full-icu -W
+
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: node scripts/test.js
+      - run: NODE_ICU_DATA=./node_modules/full-icu node scripts/test.js
 
       - run:
           name: Send coverage report
