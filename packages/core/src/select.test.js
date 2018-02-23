@@ -61,10 +61,10 @@ describe("plural", function() {
     expect(
       p({
         value: 1,
-        other: "# كتاب",
+        other: "لدي # كتاب",
         culture: "ar-AS"
       })
-    ).toEqual("١ كتاب")
+    ).toEqual("لدي ١ كتاب")
   })
 })
 
