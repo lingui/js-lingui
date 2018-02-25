@@ -31,12 +31,16 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Add the entire ICU (full-icu)
-          command: yarn add full-icu -W
+          name: Add the entire ICU (full-icu) 1
+          command: node install full-icu
 
       - run:
           name: Install dependencies
           command: yarn install
+
+      - run:
+          name: Add the entire ICU (full-icu) 2
+          command: node install full-icu
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
