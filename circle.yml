@@ -47,17 +47,25 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Add the entire ICU (full-icu)
-          command: npm install full-icu
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
 
       - run:
           name: Install dependencies
           command: yarn install
 
+      - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
+
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
+
+      - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
 
       - run: env NODE_ICU_DATA=./node_modules/full-icu node scripts/test.js
 
