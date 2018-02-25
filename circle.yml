@@ -10,11 +10,6 @@ workflows:
 #          requires:
 #            - test-linter
 
-#      - build-docs:
-#          requires:
-#            - test-node6
-#            - test-node8
-
 jobs:
   test-node8: &test-template
     docker:
