@@ -2,6 +2,19 @@
 import { plural, select, selectOrdinal } from "./select"
 import { setupI18n } from "@lingui/core"
 
+const hasFullICU = (() => {
+  try {
+    const january = new Date(9e8);
+    const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
+    return spanish.format(january) === 'enero';
+  } catch (err) {
+    console.log(err)
+    return false;
+  }
+})();
+
+console.log("hasFullICU:", hasFullICU)
+
 describe("plural", function() {
   const i18n = setupI18n({
     language: "en",
@@ -49,6 +62,22 @@ describe("plural", function() {
         other: "Their and # books"
       })
     ).toEqual("Their and 4 books")
+
+    expect(
+      p({
+        value: 1,
+        other: "# كتاب",
+        culture: "en-UK"
+      })
+    ).toEqual("1 كتاب")
+
+    expect(
+      p({
+        value: 1,
+        other: "لدي # كتاب",
+        culture: "ar-AS"
+      })
+    ).toEqual("لدي ١ كتاب")
   })
 })
 

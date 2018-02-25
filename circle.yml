@@ -6,9 +6,9 @@ workflows:
     jobs:
       - test-linter
 
-      - test-node8:
-          requires:
-            - test-linter
+      - test-node8
+#          requires:
+#            - test-linter
 
 #      - build-docs:
 #          requires:
@@ -24,6 +24,22 @@ jobs:
       - checkout
 
       - run:
+          name: Print node version
+          command: node -v
+
+      - run:
+          name: Print node version
+          command: npm install full-icu
+
+      - run:
+          name: pwd
+          command: pwd
+
+      - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
+
+      - run:
           name: Install build tools
           command: sudo yarn global add codecov yalc
 
@@ -31,15 +47,27 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
+
+      - run:
           name: Install dependencies
           command: yarn install
+
+      - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: node scripts/test.js
+      - run:
+          name: Testing full-icu
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
+
+      - run: env NODE_ICU_DATA=./node_modules/full-icu node scripts/test.js
 
       - run:
           name: Send coverage report
