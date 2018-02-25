@@ -24,6 +24,26 @@ jobs:
       - checkout
 
       - run:
+          name: Print node version
+          command: node -v
+
+      - run:
+          name: List installed node versions
+          command: nvm ls
+
+      - run:
+          name: (Re)Install node with full-icu
+          command: nvm install -s v8 --with-intl=full-icu --download=all
+
+      - run:
+          name: Print node version again
+          command: node -v
+
+      - run:
+          name: Testing full-icu
+          command: node test-full-icu.js
+
+      - run:
           name: Install build tools
           command: sudo yarn global add codecov yalc
 
@@ -32,15 +52,11 @@ jobs:
 
       - run:
           name: Add the entire ICU (full-icu)
-          command: yarn add full-icu -W
+          command: npm install full-icu
 
       - run:
           name: Install dependencies
           command: yarn install
-
-      - run:
-          name: Add the entire ICU (full-icu)
-          command: yarn add full-icu -W
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
