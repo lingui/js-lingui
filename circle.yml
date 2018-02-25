@@ -28,20 +28,16 @@ jobs:
           command: node -v
 
       - run:
-          name: List installed node versions
-          command: nvm ls
+          name: Print node version
+          command: npm install full-icu
 
       - run:
-          name: (Re)Install node with full-icu
-          command: nvm install -s v8 --with-intl=full-icu --download=all
-
-      - run:
-          name: Print node version again
-          command: node -v
+          name: pwd
+          command: pwd
 
       - run:
           name: Testing full-icu
-          command: node test-full-icu.js
+          command: env NODE_ICU_DATA=./node_modules/full-icu node test-full-icu.js
 
       - run:
           name: Install build tools
@@ -63,7 +59,7 @@ jobs:
           paths:
               - node_modules
 
-      - run: env NODE_ICU_DATA=/node_modules/full-icu node scripts/test.js
+      - run: env NODE_ICU_DATA=./node_modules/full-icu node scripts/test.js
 
       - run:
           name: Send coverage report
