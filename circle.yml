@@ -4,6 +4,8 @@ workflows:
   version: 2
   test_n_deploy:
     jobs:
+      - test-linter
+
       - test-node8
 #          requires:
 #            - test-linter
@@ -12,8 +14,6 @@ workflows:
 #          requires:
 #            - test-node6
 #            - test-node8
-
-      - test-linter
 
 jobs:
   test-node8: &test-template
@@ -31,16 +31,16 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Add the entire ICU (full-icu) 1
-          command: npm install full-icu
+          name: Add the entire ICU (full-icu)
+          command: yarn add full-icu -W
 
       - run:
           name: Install dependencies
           command: yarn install
 
       - run:
-          name: Add the entire ICU (full-icu) 2
-          command: npm install full-icu
+          name: Add the entire ICU (full-icu)
+          command: yarn add full-icu -W
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
