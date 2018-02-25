@@ -4,11 +4,16 @@ workflows:
   version: 2
   test_n_deploy:
     jobs:
-#      - test-linter
-
-      - test-node8:
+      - test-node8
 #          requires:
 #            - test-linter
+
+#      - build-docs:
+#          requires:
+#            - test-node6
+#            - test-node8
+
+      - test-linter
 
 jobs:
   test-node8: &test-template
