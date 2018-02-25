@@ -47,7 +47,7 @@ jobs:
           paths:
               - node_modules
 
-      - run: node --icu-data-dir=node_modules/full-icu scripts/test.js
+      - run: env NODE_ICU_DATA=/node_modules/full-icu node scripts/test.js
 
       - run:
           name: Send coverage report
