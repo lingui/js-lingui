@@ -40,7 +40,7 @@ jobs:
 
       - run:
           name: Add the entire ICU (full-icu) 2
-          command: node install full-icu
+          command: npm install full-icu
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
