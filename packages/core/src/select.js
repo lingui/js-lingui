@@ -1,5 +1,7 @@
 /* @flow */
 
+import { number } from "./formats"
+
 type PluralForms = {
   zero?: string,
   one?: string,
@@ -12,7 +14,8 @@ type PluralForms = {
 type PluralProps = {
   value: number,
   offset?: number,
-  culture?: string
+  locales?: string,
+  options?: {}
 } & PluralForms
 
 declare var Intl: {
@@ -22,13 +25,13 @@ declare var Intl: {
 const _plural = type => (i18n: any) => ({
   value,
   offset = 0,
-  culture = "en-UK",
+  locales = i18n.locales || i18n.language,
+  options,
   other,
   ...pluralForms
 }: PluralProps): string => {
   const diff = value - offset
-  const intl = new Intl.NumberFormat(culture)
-  const diffAsString = intl.format(diff)
+  const diffAsString = number(locales, options)(diff)
   const translation =
     pluralForms[value.toString()] || // exact match
     pluralForms[i18n.pluralForm(diff, type)] || // plural form

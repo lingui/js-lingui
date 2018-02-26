@@ -25,6 +25,7 @@ type Catalogs = { [key: string]: Catalog }
 
 type setupI18nProps = {
   language?: string,
+  locales?: ?string,
   catalogs?: Catalogs,
   development?: Object
 }
@@ -39,6 +40,7 @@ function getMessages(catalog) {
 
 class I18n {
   _language: string
+  _locales: ?string
 
   // Message catalogs
   _catalogs: Catalogs
@@ -56,7 +58,7 @@ class I18n {
   select: Function
   selectOrdinal: Function
 
-  constructor() {
+  constructor(locales: ?string) {
     // Messages and languageData are merged on load,
     // so we must initialize it manually
     this._activeMessages = {}
@@ -68,6 +70,7 @@ class I18n {
       this.plural = plural(this)
       this.selectOrdinal = selectOrdinal(this)
     }
+    this._locales = locales
   }
 
   get availableLanguages(): Array<string> {
@@ -76,6 +79,10 @@ class I18n {
 
   get language(): string {
     return this._language
+  }
+
+  get locales(): ?string {
+    return this._locales
   }
 
   get messages(): Messages {
@@ -156,6 +163,7 @@ class I18n {
   use(language: string) {
     return setupI18n({
       language,
+      locales: this.locales,
       catalogs: this._catalogs,
       development: this._dev
     })
@@ -192,7 +200,7 @@ class I18n {
 }
 
 function setupI18n(params?: setupI18nProps = {}): I18n {
-  const i18n = new I18n()
+  const i18n = new I18n(params.locales)
 
   if (process.env.NODE_ENV !== "production") {
     i18n._dev = dev

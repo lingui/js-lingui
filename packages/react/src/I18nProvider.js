@@ -10,6 +10,7 @@ import type { I18n, Catalogs } from "@lingui/core"
 export type I18nProviderProps = {
   children?: Node,
   language: string,
+  locales?: string,
   catalogs?: Catalogs,
   i18n?: I18n,
 
@@ -71,11 +72,12 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, catalogs } = props
+    const { language, locales, catalogs } = props
     const i18n =
       props.i18n ||
       setupI18n({
         language,
+        locales,
         catalogs
       })
     this.linguiPublisher = new LinguiPublisher(i18n)

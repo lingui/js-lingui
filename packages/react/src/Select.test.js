@@ -5,13 +5,14 @@ import { setupI18n } from "@lingui/core"
 import { Select, Plural, SelectOrdinal } from "@lingui/react"
 
 describe("Categories", function() {
-  const i18n = code =>
+  const i18n = (language, locales) =>
     setupI18n({
-      language: code,
-      catalogs: { [code]: {} }
+      language: language,
+      locales: locales,
+      catalogs: { [language]: {} }
     })
-  const languageContext = code => ({
-    context: { linguiPublisher: { i18n: i18n(code) } }
+  const languageContext = (language, locales) => ({
+    context: { linguiPublisher: { i18n: i18n(language, locales) } }
   })
 
   describe("Plural", function() {
@@ -74,9 +75,37 @@ describe("Categories", function() {
       expect(t()).toEqual("5 knih")
     })
 
-    it("should use plural forms based on culture", function() {
+    it("should use plural forms based on locales", function() {
       const node = mount(
-        <Plural value="1000" one="#" other="#" culture="de-DE" />,
+        <Plural value="1000" one="#" other="#" locales="de-DE" />,
+        languageContext("en")
+      )
+
+      const t = () => node.find("Render").text()
+
+      expect(t()).toEqual("1.000")
+
+      node.setProps({ value: 2500 })
+      expect(t()).toEqual("2.500")
+    })
+
+    it("should use plural forms based on locales set on i18n", function() {
+      const node = mount(
+        <Plural value="1000" one="#" other="#" />,
+        languageContext("de", "de-DE")
+      )
+
+      const t = () => node.find("Render").text()
+
+      expect(t()).toEqual("1.000")
+
+      node.setProps({ value: 2500 })
+      expect(t()).toEqual("2.500")
+    })
+
+    it("should use plural forms based on language set on i18n", function() {
+      const node = mount(
+        <Plural value="1000" one="#" other="#" />,
         languageContext("de")
       )
 
@@ -86,6 +115,25 @@ describe("Categories", function() {
 
       node.setProps({ value: 2500 })
       expect(t()).toEqual("2.500")
+    })
+
+    it("should use plural forms based on options", function() {
+      const node = mount(
+        <Plural
+          value="0.1234"
+          one="#"
+          other="#"
+          options={{ style: "percent" }}
+        />,
+        languageContext("en")
+      )
+
+      const t = () => node.find("Render").text()
+
+      expect(t()).toEqual("12%")
+
+      node.setProps({ value: 0.2345 })
+      expect(t()).toEqual("23%")
     })
 
     it("should offset value", function() {
