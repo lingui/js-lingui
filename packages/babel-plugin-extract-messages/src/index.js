@@ -84,7 +84,9 @@ export default function({ types: t }) {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })
 
-          localTransComponentName = importDeclarations["Trans"]
+          if (importDeclarations["Trans"]) {
+            localTransComponentName = importDeclarations["Trans"]
+          }
         }
 
         // Remove imports of i18nMark identity

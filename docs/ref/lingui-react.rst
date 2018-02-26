@@ -1,6 +1,6 @@
-************************************
+*************************************
 API Reference - React (@lingui/react)
-************************************
+*************************************
 
 Components from ``@lingui/react`` wrap the vanilla JS API from ``lingui-i18n``.
 React components handle changes of active language or interpolated variables

@@ -1,8 +1,8 @@
 // @flow
-import * as t from "babel-types"
+import * as t from "@babel/types"
 import { parse } from "messageformat-parser"
 import { parseExpression } from "babylon"
-import generate from "babel-generator"
+import generate from "@babel/generator"
 import plurals from "make-plural"
 import R from "ramda"
 
