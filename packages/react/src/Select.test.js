@@ -84,8 +84,8 @@ describe("Categories", function() {
 
       expect(t()).toEqual("1.000")
 
-      node.setProps({ value: 2000 })
-      expect(t()).toEqual("2.000")
+      node.setProps({ value: 2500 })
+      expect(t()).toEqual("2.500")
     })
 
     it("should offset value", function() {
