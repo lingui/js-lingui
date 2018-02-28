@@ -8,7 +8,8 @@ type FormatProps<V, FormatOptions> = {
   value: V,
   format?: FormatOptions,
   i18n: {
-    language: string
+    language: string,
+    locales?: string
   }
 } & RenderProps
 
@@ -25,7 +26,7 @@ function createFormat<V, FormatOptions>(
     className,
     render
   }: FormatProps<V, FormatOptions>) {
-    const formatter = formatFunction(i18n.language, format)
+    const formatter = formatFunction(i18n.locales || i18n.language, format)
     return (
       <Render className={className} render={render} value={formatter(value)} />
     )
