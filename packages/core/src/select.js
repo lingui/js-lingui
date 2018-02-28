@@ -26,7 +26,7 @@ const _plural = type => (i18n: any) => ({
   value,
   offset = 0,
   locales = i18n.locales || i18n.language,
-  options,
+  options = {},
   other,
   ...pluralForms
 }: PluralProps): string => {
