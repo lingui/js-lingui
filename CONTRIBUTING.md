@@ -12,44 +12,43 @@ cd js-lingui
 2. Install development packages
 
 ```bash
-yarn install
+yarn
 ```
 
-3. Bootstrap all packages
-
-```bash
-yarn run bootstrap
-```
-
-4. Run tests
+3. Run tests
 
 ```bash
 # Watch mode
-yarn run watch
+yarn watch
 
 # Single run
-yarn run test
+yarn test
 ```
 
 ## Finalize changes 
 
-After you make any changes, run `yarn run bootstrap` again and then:
-
 1. Check that all test pass
 
 ```bash
-yarn run test
+yarn test
 ```
 
-2. Flow doesn't show any errors
+2. Linter doesn't show any errors
 
 ```bash
-yarn run lint:flow
+yarn lint
 ```
 
-**It's important to run `yarn run bootstrap` before runnning final tests.** Changes in one package *might* break another package. `yarn run bootstrap` ensures that all tests run agains latest package versions.
+3. Now you can create PR and let CI service do their work, but if something
+fails, you might want to run full test suit locally:
 
-Package `example-usecase` contains integration tests.
+```bash
+node ./scripts/test.js
+```
+
+This command builds all packages, run unit tests and integration tests, so it
+takes some time.
+
 
 ## Add yourself to contributors!
 
