@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -40,10 +40,10 @@
     "@babel/runtime": "^7.0.0-beta.40",
     "@babel/types": "^7.0.0-beta.40",
     "@babel/plugin-transform-typescript": "7.0.0-beta.40",
-    "@lingui/babel-plugin-extract-messages": "2.0.5",
-    "@lingui/babel-plugin-transform-js": "2.0.5",
-    "@lingui/babel-plugin-transform-react": "2.0.5",
-    "@lingui/conf": "2.0.5",
+    "@lingui/babel-plugin-extract-messages": "2.0.6",
+    "@lingui/babel-plugin-transform-js": "2.0.6",
+    "@lingui/babel-plugin-transform-react": "2.0.6",
+    "@lingui/conf": "2.0.6",
     "babylon": "^6.18.0",
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
