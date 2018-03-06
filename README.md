@@ -235,8 +235,8 @@ as a default one:
 
 ### Works anywhere
 
-Core library `@lingui/core` works in any JS environment. Intergration libraries
-like `@lingui/react` only brings better performace for target environments.
+Core library `@lingui/core` works in any JS environment. Integration libraries
+like `@lingui/react` only brings better performance for target environments.
 
 ## Contributors
 
