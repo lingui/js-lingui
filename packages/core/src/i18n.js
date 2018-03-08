@@ -58,7 +58,7 @@ class I18n {
   select: Function
   selectOrdinal: Function
 
-  constructor(locales: ?string) {
+  constructor() {
     // Messages and languageData are merged on load,
     // so we must initialize it manually
     this._activeMessages = {}
@@ -70,7 +70,6 @@ class I18n {
       this.plural = plural(this)
       this.selectOrdinal = selectOrdinal(this)
     }
-    this._locales = locales
   }
 
   get availableLanguages(): Array<string> {
@@ -147,7 +146,7 @@ class I18n {
     this._cacheActiveLanguage()
   }
 
-  activate(language: string) {
+  activate(language: string, locales?: ?string) {
     if (!language) return
 
     if (process.env.NODE_ENV !== "production") {
@@ -157,13 +156,14 @@ class I18n {
     }
 
     this._language = language
+    this._locales = locales
     this._cacheActiveLanguage()
   }
 
-  use(language: string) {
+  use(language: string, locales: string) {
     return setupI18n({
       language,
-      locales: this.locales,
+      locales: locales,
       catalogs: this._catalogs,
       development: this._dev
     })
@@ -200,14 +200,14 @@ class I18n {
 }
 
 function setupI18n(params?: setupI18nProps = {}): I18n {
-  const i18n = new I18n(params.locales)
+  const i18n = new I18n()
 
   if (process.env.NODE_ENV !== "production") {
     i18n._dev = dev
   }
 
   if (params.catalogs) i18n.load(params.catalogs)
-  if (params.language) i18n.activate(params.language)
+  if (params.language) i18n.activate(params.language, params.locales)
 
   return i18n
 }

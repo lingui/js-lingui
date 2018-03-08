@@ -156,6 +156,41 @@ describe("I18n", function() {
     expect(i18n._("Hello")).toEqual("Hello")
   })
 
+  it(".use should return new i18n object with switched locales", function() {
+    const i18n = setupI18n({
+      language: "en",
+      locales: "en-UK"
+    })
+
+    // change locales locally
+    const ar = i18n.use("ar")
+    expect(
+      ar.plural({
+        value: 2,
+        "=0": "لا كتاب",
+        other: "# الكتب"
+      })
+    ).toEqual("٢ الكتب")
+
+    const uae = i18n.use("ar", "en-UK")
+    expect(
+      uae.plural({
+        value: 2,
+        "=0": "لا كتاب",
+        other: "# الكتب"
+      })
+    ).toEqual("2 الكتب")
+
+    // global locales hasn't changed
+    expect(
+      i18n.plural({
+        value: 2,
+        "=0": "no book",
+        other: "# books"
+      })
+    ).toEqual("2 books")
+  })
+
   it("._ should format message from catalog", function() {
     const messages = {
       Hello: "Salut",
