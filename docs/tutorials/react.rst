@@ -566,7 +566,7 @@ wrap messages in :component:`Trans` component or use template literals
    <p>
       <Plural
          value={messagesCount}
-         one=`There's # message in your inbox, ${name}`
+         one={`There's # message in your inbox, ${name}`}
          other={<Trans>There're <strong>#</strong> messages in your inbox, {name}</Trans>}
       />
    </p>
