@@ -184,10 +184,12 @@ class I18n {
     }
 
     if (typeof translation !== "function") return translation
-    return interpolate(translation, this.language, this.languageData)(
-      values,
-      formats
-    )
+    return interpolate(
+      translation,
+      this.language,
+      this.locales,
+      this.languageData
+    )(values, formats)
   }
 
   pluralForm(

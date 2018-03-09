@@ -13,8 +13,8 @@ describe("compile", function() {
     }
   }
 
-  const prepare = translation =>
-    interpolate(compile(translation), "en", englishPlurals)
+  const prepare = (translation, language, locales) =>
+    interpolate(compile(translation), language || "en", locales, englishPlurals)
 
   it("should compile static message", function() {
     const cache = compile("Static message")
@@ -60,27 +60,59 @@ describe("compile", function() {
     expect(cache({ value: "n/a" })).toEqual("They")
   })
 
-  it("should compile custom format", function() {
-    const number = prepare("{value, number}")
-    expect(number({ value: 0.1 })).toEqual("0.1")
+  const testVector = [
+    ["en", null, "0.1", "10%", "20%", "3/4/2017", "€0.10", "€1.00"],
+    ["fr", null, "0,1", "10 %", "20 %", "04/03/2017", "0,10 €", "1,00 €"],
+    ["fr", "fr-CH", "0,1", "10%", "20%", "04.03.2017", "0.10 €", "1.00 €"]
+  ]
+  testVector.forEach(tc => {
+    let language,
+      locales,
+      expectedNumber,
+      expectedPercent1,
+      expectedPercent2,
+      expectedDate,
+      expectedCurrency1,
+      expectedCurrency2
+    ;[
+      language,
+      locales,
+      expectedNumber,
+      expectedPercent1,
+      expectedPercent2,
+      expectedDate,
+      expectedCurrency1,
+      expectedCurrency2
+    ] = tc
 
-    const percent = prepare("{value, number, percent}")
-    expect(percent({ value: 0.1 })).toEqual("10%")
-    expect(percent({ value: 0.2 })).toEqual("20%")
+    it(
+      "should compile custom format for language=" +
+        language +
+        " and locales=" +
+        locales,
+      function() {
+        const number = prepare("{value, number}", language, locales)
+        expect(number({ value: 0.1 })).toEqual(expectedNumber)
 
-    const now = new Date("3/4/2017")
-    const date = prepare("{value, date}")
-    expect(date({ value: now })).toEqual("3/4/2017")
+        const percent = prepare("{value, number, percent}", language, locales)
+        expect(percent({ value: 0.1 })).toEqual(expectedPercent1)
+        expect(percent({ value: 0.2 })).toEqual(expectedPercent2)
 
-    const formats = {
-      currency: {
-        style: "currency",
-        currency: "EUR",
-        minimumFractionDigits: 2
+        const now = new Date("3/4/2017")
+        const date = prepare("{value, date}", language, locales)
+        expect(date({ value: now })).toEqual(expectedDate)
+
+        const formats = {
+          currency: {
+            style: "currency",
+            currency: "EUR",
+            minimumFractionDigits: 2
+          }
+        }
+        const currency = prepare("{value, number, currency}", language, locales)
+        expect(currency({ value: 0.1 }, formats)).toEqual(expectedCurrency1)
+        expect(currency({ value: 1 }, formats)).toEqual(expectedCurrency2)
       }
-    }
-    const currency = prepare("{value, number, currency}")
-    expect(currency({ value: 0.1 }, formats)).toEqual("€0.10")
-    expect(currency({ value: 1 }, formats)).toEqual("€1.00")
+    )
   })
 })
