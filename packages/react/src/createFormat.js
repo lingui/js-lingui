@@ -9,13 +9,13 @@ type FormatProps<V, FormatOptions> = {
   format?: FormatOptions,
   i18n: {
     language: string,
-    locales?: string
+    locales?: ?string | string[]
   }
 } & RenderProps
 
 function createFormat<V, FormatOptions>(
   formatFunction: (
-    language: string,
+    language: ?string | string[],
     format?: FormatOptions
   ) => (value: V) => string
 ) {

@@ -25,7 +25,7 @@ type Catalogs = { [key: string]: Catalog }
 
 type setupI18nProps = {
   language?: string,
-  locales?: ?string,
+  locales?: ?string | string[],
   catalogs?: Catalogs,
   development?: Object
 }
@@ -40,7 +40,7 @@ function getMessages(catalog) {
 
 class I18n {
   _language: string
-  _locales: ?string
+  _locales: ?string | string[]
 
   // Message catalogs
   _catalogs: Catalogs
@@ -80,7 +80,7 @@ class I18n {
     return this._language
   }
 
-  get locales(): ?string {
+  get locales(): ?string | string[] {
     return this._locales
   }
 
@@ -146,7 +146,7 @@ class I18n {
     this._cacheActiveLanguage()
   }
 
-  activate(language: string, locales?: ?string) {
+  activate(language: string, locales?: ?string | string[]) {
     if (!language) return
 
     if (process.env.NODE_ENV !== "production") {
@@ -160,7 +160,7 @@ class I18n {
     this._cacheActiveLanguage()
   }
 
-  use(language: string, locales: string) {
+  use(language: string, locales: ?string | string[]) {
     return setupI18n({
       language,
       locales: locales,

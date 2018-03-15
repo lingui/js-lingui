@@ -73,7 +73,7 @@ function context({ language, locales, values, formats, languageData }: Object) {
 export function interpolate(
   translation: Function,
   language: string,
-  locales: ?string,
+  locales: ?string | string[],
   languageData: Object
 ) {
   return (values: Object, formats?: Object = {}) => {

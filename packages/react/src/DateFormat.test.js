@@ -33,6 +33,15 @@ describe("DateFormat", function() {
     expect(node.text()).toEqual("17/06/2017")
   })
 
+  it("should render using the first recognized locale", function() {
+    const now = new Date("2017-06-17:14:00.000Z")
+    const node = mount(
+      <DateFormat value={now} />,
+      languageContext("en", ["unknown-locale", "fr-FR"])
+    ).find("Render")
+    expect(node.text()).toEqual("17/06/2017")
+  })
+
   it("should render translation inside custom component", function() {
     const now = new Date("2017-06-17:14:00.000Z")
     const html1 = mount(
@@ -89,6 +98,21 @@ describe("NumberFormat", function() {
         }}
       />,
       languageContext("en", "de-DE")
+    ).find("Render")
+    expect(node.text()).toEqual("42.000,00 €")
+  })
+
+  it("should render using the first recognized locale", function() {
+    const node = mount(
+      <NumberFormat
+        value={42000}
+        format={{
+          style: "currency",
+          currency: "EUR",
+          minimumFractionDigits: 2
+        }}
+      />,
+      languageContext("en", ["unknown-locale", "de-DE"])
     ).find("Render")
     expect(node.text()).toEqual("42.000,00 €")
   })

@@ -14,7 +14,7 @@ type PluralForms = {
 type PluralProps = {
   value: number,
   offset?: number,
-  locales?: string,
+  locales?: any,
   options?: {}
 } & PluralForms
 

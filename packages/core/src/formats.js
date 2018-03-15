@@ -10,7 +10,7 @@ type IntlType = {|
 declare var Intl: IntlType
 
 export function date(
-  locales: string,
+  locales?: ?string | string[],
   format?: DateFormat = {}
 ): (value: string) => string {
   const formatter = new Intl.DateTimeFormat(locales, format)
@@ -18,7 +18,7 @@ export function date(
 }
 
 export function number(
-  locales: string,
+  locales?: ?string | string[],
   format?: NumberFormat = {}
 ): (value: number) => string {
   const formatter = new Intl.NumberFormat(locales, format)

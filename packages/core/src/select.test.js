@@ -100,6 +100,14 @@ describe("plural", function() {
         locales: "en-UK"
       })
     ).toEqual("1,000 Bücher")
+
+    expect(
+      pDe({
+        value: 1000,
+        other: "# Bücher",
+        locales: ["unknown-locale", "en-UK"]
+      })
+    ).toEqual("1,000 Bücher")
   })
 })
 

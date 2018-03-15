@@ -181,6 +181,15 @@ describe("I18n", function() {
       })
     ).toEqual("2 الكتب")
 
+    const uae2 = i18n.use("ar", ["unknown-locale", "en-UK"])
+    expect(
+      uae2.plural({
+        value: 2,
+        "=0": "لا كتاب",
+        other: "# الكتب"
+      })
+    ).toEqual("2 الكتب")
+
     // global locales hasn't changed
     expect(
       i18n.plural({

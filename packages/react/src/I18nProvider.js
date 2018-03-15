@@ -10,7 +10,7 @@ import type { I18n, Catalogs } from "@lingui/core"
 export type I18nProviderProps = {
   children?: Node,
   language: string,
-  locales?: string,
+  locales?: ?string | string[],
   catalogs?: Catalogs,
   i18n?: I18n,
 
