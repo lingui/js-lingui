@@ -150,8 +150,8 @@ export default function({ types: t }) {
         }
 
         const attrs =
-          node.arguments[1] && node.arguments[1].properties
-            ? node.arguments[1].properties
+          node.arguments[2] && node.arguments[2].properties
+            ? node.arguments[2].properties
             : []
 
         const idArg = node.arguments[0]
