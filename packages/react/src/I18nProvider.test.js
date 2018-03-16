@@ -114,6 +114,10 @@ describe("I18nProvider", function() {
 
     node.setProps({ language: "cs" })
     expect(listener).toBeCalled()
+    listener.mockClear()
+
+    node.setProps({ locales: "cs-CZ" })
+    expect(listener).toBeCalled()
   })
 })
 
@@ -193,7 +197,11 @@ describe("I18nPublisher", function() {
 
     linguiPublisher.update({ language: "fr" })
     expect(listener).toBeCalled()
-    listener.mockReset()
+    listener.mockClear()
+
+    linguiPublisher.update({ locales: "fr-BE" })
+    expect(listener).toBeCalled()
+    listener.mockClear()
 
     linguiPublisher.update({ catalogs: { en: { messages: { id: "hello" } } } })
     expect(listener).toBeCalled()

@@ -25,6 +25,7 @@ type Catalogs = { [key: string]: Catalog }
 
 type setupI18nProps = {
   language?: string,
+  locales?: ?string | string[],
   catalogs?: Catalogs,
   development?: Object
 }
@@ -39,6 +40,7 @@ function getMessages(catalog) {
 
 class I18n {
   _language: string
+  _locales: ?string | string[]
 
   // Message catalogs
   _catalogs: Catalogs
@@ -76,6 +78,10 @@ class I18n {
 
   get language(): string {
     return this._language
+  }
+
+  get locales(): ?string | string[] {
+    return this._locales
   }
 
   get messages(): Messages {
@@ -140,7 +146,7 @@ class I18n {
     this._cacheActiveLanguage()
   }
 
-  activate(language: string) {
+  activate(language: string, locales?: ?string | string[]) {
     if (!language) return
 
     if (process.env.NODE_ENV !== "production") {
@@ -150,12 +156,14 @@ class I18n {
     }
 
     this._language = language
+    this._locales = locales
     this._cacheActiveLanguage()
   }
 
-  use(language: string) {
+  use(language: string, locales: ?string | string[]) {
     return setupI18n({
       language,
+      locales: locales,
       catalogs: this._catalogs,
       development: this._dev
     })
@@ -176,10 +184,12 @@ class I18n {
     }
 
     if (typeof translation !== "function") return translation
-    return interpolate(translation, this.language, this.languageData)(
-      values,
-      formats
-    )
+    return interpolate(
+      translation,
+      this.language,
+      this.locales,
+      this.languageData
+    )(values, formats)
   }
 
   pluralForm(
@@ -199,7 +209,7 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
   }
 
   if (params.catalogs) i18n.load(params.catalogs)
-  if (params.language) i18n.activate(params.language)
+  if (params.language) i18n.activate(params.language, params.locales)
 
   return i18n
 }

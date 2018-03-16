@@ -31,6 +31,10 @@ jobs:
           key: node-modules-{{ checksum "yarn.lock" }}
 
       - run:
+          name: Install full-icu
+          command: yarn add full-icu -W
+
+      - run:
           name: Install dependencies
           command: yarn install
 
@@ -39,7 +43,7 @@ jobs:
           paths:
               - node_modules
 
-      - run: node scripts/test.js
+      - run: env NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu node scripts/test.js
 
       - run:
           name: Send coverage report

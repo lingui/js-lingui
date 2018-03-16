@@ -14,7 +14,8 @@ type PluralProps = {
   two?: any,
   few?: any,
   many?: any,
-  other: any
+  other: any,
+  locales?: ?string | string[]
 } & withI18nProps &
   RenderProps
 
@@ -69,8 +70,8 @@ const PluralFactory = (ordinal = false) => {
           return acc
         },
         {
-          value: parseInt(value),
-          offset: parseInt(offset)
+          value: Number(value),
+          offset: Number(offset)
         }
       )
 

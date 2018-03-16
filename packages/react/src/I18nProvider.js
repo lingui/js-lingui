@@ -10,6 +10,7 @@ import type { I18n, Catalogs } from "@lingui/core"
 export type I18nProviderProps = {
   children?: Node,
   language: string,
+  locales?: ?string | string[],
   catalogs?: Catalogs,
   i18n?: I18n,
 
@@ -41,12 +42,13 @@ export function LinguiPublisher(i18n: I18n) {
 
     update({
       catalogs,
-      language
-    }: { catalogs?: Catalogs, language?: string } = {}) {
-      if (!catalogs && !language) return
+      language,
+      locales
+    }: { catalogs?: Catalogs, language?: string, locales?: string } = {}) {
+      if (!catalogs && !language && !locales) return
 
       if (catalogs) i18n.load(catalogs)
-      if (language) i18n.activate(language)
+      if (language) i18n.activate(language, locales)
 
       this.i18nHash = hashSum([i18n.language, i18n.messages])
 
@@ -71,20 +73,25 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, catalogs } = props
+    const { language, locales, catalogs } = props
     const i18n =
       props.i18n ||
       setupI18n({
         language,
+        locales,
         catalogs
       })
     this.linguiPublisher = new LinguiPublisher(i18n)
   }
 
   componentDidUpdate(prevProps: I18nProviderProps) {
-    const { language, catalogs } = this.props
-    if (language !== prevProps.language || catalogs !== prevProps.catalogs) {
-      this.linguiPublisher.update({ language, catalogs })
+    const { language, locales, catalogs } = this.props
+    if (
+      language !== prevProps.language ||
+      locales !== prevProps.locales ||
+      catalogs !== prevProps.catalogs
+    ) {
+      this.linguiPublisher.update({ language, catalogs, locales })
     }
   }
 
