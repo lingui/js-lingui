@@ -16,7 +16,7 @@
     "lint": "yarn lint:eslint; yarn lint:flow",
     "add": "all-contributors add",
     "generate": "all-contributors generate",
-    "prettier": "prettier --write 'packages/**/*.js' > /dev/null",
+    "prettier": "yarn run lint:eslint --fix",
     "precommit": "yarn prettier"
   },
   "engines": {
