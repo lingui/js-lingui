@@ -29,7 +29,7 @@ const initialProps = ({ formats } = {}) => ({
 const generatorFactory = (index = 0) => () => index++
 
 // Plugin function
-export default function({ types: t }) {
+module.exports = function({ types: t }) {
   let importDeclarations
   let elementGenerator
   let argumentGenerator
@@ -109,7 +109,7 @@ export default function({ types: t }) {
           variable = t.isIdentifier(exp) ? exp.name : argumentGenerator()
           const key = t.isIdentifier(exp) ? exp : t.numericLiteral(variable)
           props.values[variable] = t.objectProperty(key, exp)
-        } else if (Array.includes(commonProps, name)) {
+        } else if (commonProps.includes(name)) {
           // just do nothing
         } else if (choicesType !== "select" && name === "offset") {
           // offset is static parameter, so it must be either string or number
@@ -148,7 +148,7 @@ export default function({ types: t }) {
           element,
           `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
         )
-      } else if (!Array.includes(choicesKeys, "other")) {
+      } else if (!choicesKeys.includes("other")) {
         throw file.buildCodeFrameError(
           element,
           `Missing fallback argument 'other'.`
@@ -158,7 +158,7 @@ export default function({ types: t }) {
       // validate plural rules
       if (choicesType === "plural" || choicesType === "selectordinal") {
         choicesKeys.forEach(rule => {
-          if (!Array.includes(pluralRules, rule) && !/=\d+/.test(rule)) {
+          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
             throw file.buildCodeFrameError(
               element,
               `Invalid plural rule '${rule}'. Must be ${pluralRules.join(
@@ -175,7 +175,7 @@ export default function({ types: t }) {
 
       props.text = `{${variable}, ${choicesType},${offset} ${argument}}`
       element.attributes = element.attributes.filter(attr =>
-        Array.includes(commonProps, attr.name.name)
+        commonProps.includes(attr.name.name)
       )
       element.name = t.JSXIdentifier(getLocalImportName("Trans"))
     } else if (isFormatElement(node)) {
@@ -246,7 +246,7 @@ export default function({ types: t }) {
 
       props.text = `{${parts.join(",")}}`
       element.attributes = element.attributes.filter(attr =>
-        Array.includes(commonProps, attr.name.name)
+        commonProps.includes(attr.name.name)
       )
       element.name = t.JSXIdentifier(getLocalImportName("Trans"))
       // Other elements
@@ -323,6 +323,10 @@ export default function({ types: t }) {
       // Regression introduced in https://github.com/lingui/js-lingui/issues/62
       importDeclarations = {}
     },
+    setImportDeclarations(imports) {
+      // Used for the macro to override the imports
+      importDeclarations = imports
+    },
     visitor: {
       ImportDeclaration(path) {
         const { node } = path
@@ -338,7 +342,7 @@ export default function({ types: t }) {
         // so imports can be safely removed
         const choicesComponents = ["Plural", "Select", "SelectOrdinal"]
         const isChoiceComponent = specifier =>
-          Array.includes(choicesComponents, specifier.imported.name)
+          choicesComponents.includes(specifier.imported.name)
 
         const hasChoices = node.specifiers.filter(isChoiceComponent).length
 
@@ -371,7 +375,6 @@ export default function({ types: t }) {
         argumentGenerator = generatorFactory()
 
         // 1. Collect all parameters and inline elements and generate message ID
-
         const props = processElement(
           node,
           file,

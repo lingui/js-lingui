@@ -1,0 +1,18 @@
+import { Trans, SelectOrdinal } from '../../../src/macro';
+
+<Trans>
+  This is my <SelectOrdinal
+    value={count}
+    one="#st"
+    two={`#nd`}
+    other={<strong>#rd</strong>}
+  /> cat.
+</Trans>;
+<Trans>
+  This is my <SelectOrdinal
+  value={user.numCats}
+  one="#st"
+  two={`#nd`}
+  other={<strong>#rd</strong>}
+/> cat.
+</Trans>;
