@@ -13,6 +13,7 @@ cd js-lingui
 
 ```bash
 yarn
+yarn run lerna:bootstrap
 ```
 
 3. Run tests
