@@ -109,7 +109,12 @@ describe("babel-plugin-lingui-extract-messages", function() {
     const expected = fs.readFileSync(
       path.join(__dirname, "fixtures", "noop", "expected.js")
     )
-    expect(result.code.trim()).toEqual(expected.toString().trim())
+    expect(result.code.replace(/\r/g, "").trim()).toEqual(
+      expected
+        .toString()
+        .replace(/\r/g, "")
+        .trim()
+    )
 
     const messages = JSON.parse(
       fs.readFileSync(path.join(buildDir, "noop", "actual.json"))

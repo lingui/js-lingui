@@ -41,8 +41,10 @@ describe("babel-plugin-lingui-transform-react", function() {
         process.env.NODE_ENV = "production"
       }
 
-      const expected = fs.readFileSync(expectedPath, "utf8")
-      const actual = transformFileSync(actualPath, babelOptions).code.trim()
+      const expected = fs.readFileSync(expectedPath, "utf8").replace(/\r/g, "")
+      const actual = transformFileSync(actualPath, babelOptions)
+        .code.replace(/\r/g, "")
+        .trim()
 
       expect(actual).toEqual(expected.trim())
 
