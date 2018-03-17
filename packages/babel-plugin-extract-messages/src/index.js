@@ -108,7 +108,16 @@ export default function({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "defaults") acc[key] = item.value.value
+          if (key === "id" || key === "defaults") {
+            if (item.value.value) {
+              acc[key] = item.value.value
+            } else if (
+              item.value.expression &&
+              t.isStringLiteral(item.value.expression)
+            ) {
+              acc[key] = item.value.expression.value
+            }
+          }
           return acc
         }, {})
 
