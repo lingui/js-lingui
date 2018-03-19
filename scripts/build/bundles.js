@@ -31,6 +31,11 @@ const bundles = [
 
   {
     type: bundleTypes.NODE,
+    entry: "@lingui/react-macro"
+  },
+
+  {
+    type: bundleTypes.NODE,
     entry: "@lingui/babel-plugin-extract-messages"
   },
 
