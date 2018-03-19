@@ -150,6 +150,23 @@ describe("babel-plugin-lingui-extract-messages", function() {
   )
 
   testCase(
+    "should extract all messages from JSX files with macro (integration)",
+    transform => {
+      // first run should create all required folders and write messages
+      expect(transform("jsx/integration-with-macro.js")).not.toThrow()
+      // another runs should just write messages
+      expect(transform("jsx/integration-with-macro.js")).not.toThrow()
+
+      const messages = JSON.parse(
+        fs.readFileSync(
+          path.join(buildDir, "jsx", "integration-with-macro.json")
+        )
+      )
+      expect(messages).toMatchSnapshot()
+    }
+  )
+
+  testCase(
     "should extract all messages from JSX files (integration with alises)",
     transform => {
       // first run should create all required folders and write messages

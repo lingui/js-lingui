@@ -75,7 +75,12 @@ export default function({ types: t }) {
         const { node } = path
 
         const moduleName = node.source.value
-        if (!Array.includes(["@lingui/react", "@lingui/core"], moduleName))
+        if (
+          !Array.includes(
+            ["@lingui/react", "@lingui/react-macro", "@lingui/core"],
+            moduleName
+          )
+        )
           return
 
         const importDeclarations = {}

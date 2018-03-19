@@ -164,6 +164,43 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files with macro (integration) 1`] = `
+Object {
+  Title: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        4,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        13,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        14,
+      ],
+    ],
+  },
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        6,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        16,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-with-macro.js,
+        21,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract noop strings 1`] = `
 Object {
   Czech: Object {

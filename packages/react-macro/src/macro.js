@@ -1,11 +1,11 @@
-const { createMacro } = require("babel-plugin-macros")
-const transformReactPlugin = require("@lingui/babel-plugin-transform-react")
+import { createMacro } from "babel-plugin-macros"
+import { implementationPlugin as transformReactPlugin } from "@lingui/babel-plugin-transform-react"
 
 const importsToCarryOver = ["DateFormat", "NumberFormat", "withI18n"]
 
-const macro = createMacro(({ references, state, babel }) => {
+export default createMacro(({ references, state, babel }) => {
   const { types: t } = babel
-  const plugin = transformReactPlugin(babel)
+  const plugin = new transformReactPlugin(babel)
 
   const toKeepImports = ["Trans"]
 
@@ -25,7 +25,7 @@ const macro = createMacro(({ references, state, babel }) => {
 
       const node = openingTag.context.parentPath.container
 
-      plugin.visitor.JSXElement({ node }, state.file)
+      plugin.JSXElement({ node }, state.file)
     })
   }
 
@@ -60,13 +60,11 @@ const macro = createMacro(({ references, state, babel }) => {
   }
 })
 
-module.exports = macro
-
 // For intellisense as these will be ignored by babel-macro
 // Might want to copy PropTypes here?
-module.exports.Trans = () => {}
-module.exports.Plural = () => {}
-module.exports.Select = () => {}
-module.exports.SelectOrdinal = () => {}
-module.exports.DateFormat = () => {}
-module.exports.NumberFormat = () => {}
+export const Trans = () => {}
+export const Plural = () => {}
+export const Select = () => {}
+export const SelectOrdinal = () => {}
+export const DateFormat = () => {}
+export const NumberFormat = () => {}
