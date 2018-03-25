@@ -10,7 +10,7 @@ Seamless internationalization in Javascript and React
 [![CircleCI][Badge-CI]][CI] 
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 [![MIT License][Badge-License]][LICENSE]
 
 [![Watch on GitHub][Badge-Watch]][Watch]
@@ -235,8 +235,8 @@ as a default one:
 
 ### Works anywhere
 
-Core library `@lingui/core` works in any JS environment. Intergration libraries
-like `@lingui/react` only brings better performace for target environments.
+Core library `@lingui/core` works in any JS environment. Integration libraries
+like `@lingui/react` only brings better performance for target environments.
 
 ## Contributors
 
@@ -246,6 +246,7 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- prettier-ignore -->
 | [<img src="https://avatars1.githubusercontent.com/u/827862?v=3" width="100px;"/><br /><sub><b>Tomáš Ehrlich</b></sub>](http://www.tomasehrlich.cz)<br />[💻](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Code") [📖](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Documentation") [💡](#example-tricoder42 "Examples") [✅](#tutorial-tricoder42 "Tutorials") | [<img src="https://avatars1.githubusercontent.com/u/3697116?v=3" width="100px;"/><br /><sub><b>Josef Hornych</b></sub>](https://github.com/Peping)<br />[📖](https://github.com/lingui/js-lingui/commits?author=Peping "Documentation") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3APeping "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/307006?v=3" width="100px;"/><br /><sub><b>Christian Kaps</b></sub>](https://www.silhouette.rocks)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3Aakkie "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/2085291?v=3" width="100px;"/><br /><sub><b>brunesto</b></sub>](https://github.com/brunesto)<br />[💻](https://github.com/lingui/js-lingui/commits?author=brunesto "Code") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3Abrunesto "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/614768?v=3" width="100px;"/><br /><sub><b>David Furlong</b></sub>](https://davidfurlong.github.io/)<br />[💬](#question-davidfurlong "Answering Questions") | [<img src="https://avatars2.githubusercontent.com/u/1416801?v=4" width="100px;"/><br /><sub><b>Thibaut</b></sub>](http://thibaut.re)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3AthibautRe "Bug reports") [📖](https://github.com/lingui/js-lingui/commits?author=thibautRe "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2965120?v=4" width="100px;"/><br /><sub><b>Sebastian Sobociński</b></sub>](https://github.com/hiddenboox)<br />[💻](https://github.com/lingui/js-lingui/commits?author=hiddenboox "Code") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars2.githubusercontent.com/u/296106?v=4" width="100px;"/><br /><sub><b>Matt Labrum</b></sub>](https://github.com/mlabrum)<br />[📖](https://github.com/lingui/js-lingui/commits?author=mlabrum "Documentation") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.

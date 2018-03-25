@@ -16,8 +16,9 @@
     "lint": "yarn lint:eslint; yarn lint:flow",
     "add": "all-contributors add",
     "generate": "all-contributors generate",
-    "prettier": "prettier --write 'packages/**/*.js' > /dev/null",
-    "precommit": "yarn prettier"
+    "prettier": "yarn run lint:eslint --fix",
+    "precommit": "yarn prettier",
+    "lerna:bootstrap": "lerna bootstrap"
   },
   "engines": {
     "node": ">=5.0"
