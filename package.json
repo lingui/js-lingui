@@ -6,9 +6,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "test:unit": "cross-env JEST_JUNIT_OUTPUT=results/unit.xml jest -c scripts/jest/config.unit.js --no-cache",
+    "test": "cross-env JEST_JUNIT_OUTPUT=results/unit.xml jest -c scripts/jest/config.unit.js --no-cache",
     "test:integration": "cross-env JEST_JUNIT_OUTPUT=results/integration.xml jest -c scripts/jest/config.integration.js --no-cache",
-    "test": "yarn test:unit ; yarn test:integration",
+    "test:all": "yarn test; yarn test:integration",
     "watch": "jest -c scripts/jest/config.unit.js --watch",
     "watch:integration": "jest -c scripts/jest/config.integration.js --watch",
     "lint:flow": "flow",
