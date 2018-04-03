@@ -9,11 +9,10 @@ git clone https://github.com/lingui/js-lingui.git
 cd js-lingui
 ```
 
-2. Install development packages
+2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna, so simply running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
 
 ```bash
 yarn
-yarn run lerna:bootstrap
 ```
 
 3. Run tests
