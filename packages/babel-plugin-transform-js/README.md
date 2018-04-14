@@ -2,17 +2,17 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-# babel-plugin-lingui-transform-js
+# @lingui/babel-plugin-transform-js
 
 > Babel plugin which transforms messages written using `lingui-i18n` functions to static ICU MessageFormat.
 
-`babel-plugin-lingui-transform-js` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-transform-js` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
 ```bash
-yarn add --dev babel-plugin-lingui-transform-js
-# npm install --save-dev babel-plugin-lingui-transform-js
+yarn add --dev @lingui/babel-plugin-transform-js
+# npm install --save-dev @lingui/babel-plugin-transform-js
 ```
 
 ## Usage
@@ -23,21 +23,21 @@ yarn add --dev babel-plugin-lingui-transform-js
 
 ```json
 {
-  "plugins": ["lingui-transform-js"]
+  "plugins": ["@lingui/babel-plugin-transform-js"]
 }
 ```
 
 ### Via CLI
 
 ```sh
-babel --plugins lingui-transform-js script.js
+babel --plugins @lingui/babel-plugin-transform-js script.js
 ```
 
 ### Via Node API
 
 ```js
-require("babel-core").transform("code", {
-  plugins: ["lingui-transform-js"]
+require("@babel/core").transform("code", {
+  plugins: ["@lingui/babel-plugin-transform-js"]
 })
 ```
 

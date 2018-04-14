@@ -2,17 +2,17 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-# babel-plugin-lingui-extract-messages
+# @lingui/babel-plugin-extract-messages
 
 > Babel plugin which extracts messages for translation from source files
 
-`babel-plugin-lingui-extract-messages` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-extract-messages` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
 ```bash
-yarn add --dev babel-plugin-lingui-extract-messages
-# npm install --save-dev babel-plugin-lingui-extract-messages
+yarn add --dev @lingui/babel-plugin-extract-messages
+# npm install --save-dev @lingui/babel-plugin-extract-messages
 ```
 
 ## Usage
@@ -23,21 +23,21 @@ yarn add --dev babel-plugin-lingui-extract-messages
 
 ```json
 {
-  "plugins": ["lingui-extract-messages"]
+  "plugins": ["@lingui/babel-plugin-extract-messages"]
 }
 ```
 
 ### Via CLI
 
 ```bash
-babel --plugins lingui-extract-messages script.js
+babel --plugins @lingui/babel-plugin-extract-messages script.js
 ```
 
 ### Via Node API
 
 ```js
-require("babel-core").transform("code", {
-  plugins: ["lingui-extract-messages"]
+require("@babel/core").transform("code", {
+  plugins: ["@lingui/babel-plugin-extract-messages"]
 })
 ```
 
