@@ -18,7 +18,7 @@ const extractor: ExtractorType = {
   extract(filename, localeDir) {
     transformFileSync(filename, {
       plugins: [
-        // Plugins run before presets, so we need to import trasnform-plugins
+        // Plugins run before presets, so we need to import transform-plugins
         // here until we have a better way to run extract-messages plugin
         // *after* all plugins/presets.
         // Transform plugins are idempotent, so they can run twice.
