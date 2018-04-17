@@ -54,6 +54,7 @@
     "eslint-plugin-react": "^7.5.1",
     "filesize": "^3.5.11",
     "flow-bin": "^0.66.0",
+    "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
     "gzip-size": "^4.1.0",
     "husky": "^0.14.3",
