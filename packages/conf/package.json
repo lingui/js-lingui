@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
+    "cosmiconfig": "^4.0.0",
     "jest-regex-util": "^22.1.0",
-    "jest-validate": "^22.1.2",
-    "pkg-conf": "^2.1.0"
+    "jest-validate": "^22.1.2"
   },
   "files": [
     "LICENSE",

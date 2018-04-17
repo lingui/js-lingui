@@ -2,9 +2,12 @@
 Lingui Configuration
 ********************
 
-Configuration is read from ``lingui`` section in ``package.json``.
+Configuration is read from 3 different sources (the first found wins):
+- from ``lingui`` section in ``package.json``
+- from ``.linguirc``
+- from ``lingui.config.js``
 
-``<rootDir>`` is replaced with base directory of ``package.json``.
+``<rootDir>`` is replaced with base directory of the configuration file.
 
 Default config:
 
