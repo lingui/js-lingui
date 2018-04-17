@@ -100,7 +100,9 @@ export default function({ types: t }) {
       let offset = ""
 
       for (const attr of element.attributes) {
-        const { name: { name } } = attr
+        const {
+          name: { name }
+        } = attr
 
         if (name === "value") {
           const exp = t.isLiteral(attr.value)
@@ -193,7 +195,9 @@ export default function({ types: t }) {
       let variable, format
 
       for (const attr of element.attributes) {
-        const { name: { name } } = attr
+        const {
+          name: { name }
+        } = attr
 
         if (name === "value") {
           const exp = t.isLiteral(attr.value)
