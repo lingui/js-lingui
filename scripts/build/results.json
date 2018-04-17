@@ -1,8 +1,8 @@
 {
   "bundleSizes": {
     "@lingui/core.development.js (NODE_DEV)": {
-      "size": 14105,
-      "gzip": 3475
+      "size": 14098,
+      "gzip": 3474
     },
     "@lingui/core.production.min.js (NODE_PROD)": {
       "size": 6332,
