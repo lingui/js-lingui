@@ -17,8 +17,7 @@
     "add": "all-contributors add",
     "generate": "all-contributors generate",
     "prettier": "yarn run lint:eslint --fix",
-    "precommit": "yarn prettier",
-    "lerna:bootstrap": "lerna bootstrap"
+    "precommit": "yarn prettier"
   },
   "engines": {
     "node": ">=5.0"
