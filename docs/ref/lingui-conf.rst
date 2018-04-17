@@ -56,7 +56,6 @@ Each message is an object composed in the following format:
    {
      "MessageID": {
        "translation": "Translated Message",
-       "defaults": "Default string (from source code)",
        "origin": [
          ["path/to/src.js", 42]
        ]
