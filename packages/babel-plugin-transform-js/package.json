@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-transform-js",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Transform lingui-i18n methods to ICU message format",
   "main": "index.js",
   "author": {
