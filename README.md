@@ -240,7 +240,7 @@ like `@lingui/react` only brings better performance for target environments.
 
 ## Contributors
 
-Thanks goes to these people ([emoji key][emojis]):
+Please read the [contributing guide](CONTRIBUTING.md) to start contributing! Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
