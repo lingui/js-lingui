@@ -39,7 +39,7 @@ and React.
   - Plurals, Ordinals and Categories (i.e. Select)
   - Number and Date formats (from Intl)
 - Works with manual and generated message IDs
-- Works with in any JS environment, while integration packages brings better performance in target environments (e.g: `lingui-react` for React)
+- Works with in any JS environment, while integration packages brings better developer experience in target environments (e.g: `lingui-react` for React)
 - High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
 
 See the [tutorial for React][TutorialReact]
