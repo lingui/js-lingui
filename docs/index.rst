@@ -33,6 +33,7 @@ Key features
    :caption: Tutorials
 
    React <tutorials/react>
+   JavaScript <tutorials/javascript>
    CLI <tutorials/cli>
 
 .. toctree::
