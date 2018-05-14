@@ -1,4 +1,5 @@
-// Babel builder negeneruje commonjs, ale ES moduly. Rollup potrebuje modules: false, babel modules: true
+// Babel builder doesn't generate CommonJS, but ES modules.
+// Rollup, however, needs `modules: false, babel modules: true`
 module.exports = function(options) {
   return {
     presets: [
