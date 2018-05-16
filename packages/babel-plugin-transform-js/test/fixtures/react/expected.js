@@ -1,7 +1,6 @@
 i18n._("Full content of {articleName}", {
   articleName: articleName
 });
-
 <Trans>Read <a href="/more" title={i18n._("Full content of {articleName}", {
     articleName: articleName
   })}>more</a></Trans>;
