@@ -11,12 +11,12 @@
   ],
   "plugins": [
     "syntax-dynamic-import",
-    "proposal-class-properties",
-    "object-rest-spread"
+    "transform-class-properties",
+    "transform-object-rest-spread"
   ],
   "env": {
     "test": {
-      "plugins": ["modules-commonjs"]
+      "plugins": ["transform-es2015-modules-commonjs"]
     }
   }
 }
