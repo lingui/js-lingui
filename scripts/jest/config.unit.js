@@ -13,7 +13,7 @@ module.exports = {
   coveragePathIgnorePatterns: ["node_modules", "scripts", "locale"],
   coverageReporters: ["html", "lcov"],
 
+  reporters: ["default", "jest-junit"],
   setupTestFrameworkScriptFile: require.resolve("./env.js"),
-  snapshotSerializers: ["enzyme-to-json/serializer"],
-  testResultsProcessor: "jest-junit"
+  snapshotSerializers: ["enzyme-to-json/serializer"]
 }
