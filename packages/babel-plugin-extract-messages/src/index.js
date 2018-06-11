@@ -1,7 +1,7 @@
 import fs from "fs"
 import fsPath from "path"
 import mkdirp from "mkdirp"
-import generate from "@babel/generator"
+import generate from "babel-generator"
 import { getConfig } from "@lingui/conf"
 
 // Map of messages

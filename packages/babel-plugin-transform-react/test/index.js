@@ -11,8 +11,8 @@ function getTestName(testPath) {
 
 describe("babel-plugin-lingui-transform-react", function() {
   const babelOptions = {
-    cwd: __dirname,
-    plugins: ["@babel/syntax-jsx", plugin]
+    babelrc: false,
+    plugins: ["babel-plugin-syntax-jsx", plugin]
   }
 
   const transformCode = code => () =>

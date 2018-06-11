@@ -30,7 +30,7 @@ const rmdir = dir => {
 function testCase(testName, assertion) {
   const transform = (filename, jsx = true) => () =>
     transformFileSync(path.join(__dirname, "fixtures", filename), {
-      cwd: __dirname,
+      babelrc: false,
       plugins: [
         ...(/integration.*\.js$/.test(filename)
           ? jsx
@@ -46,7 +46,7 @@ function testCase(testName, assertion) {
             localeDir: LOCALE_DIR
           }
         ],
-        ...(jsx ? ["@babel/syntax-jsx"] : [])
+        ...(jsx ? ["babel-plugin-syntax-jsx"] : [])
       ]
     })
 
@@ -209,7 +209,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
               }
             ]
           ],
-          presets: ["@babel/preset-react"]
+          presets: ["react"]
         }
       )
     ).not.toThrow()
