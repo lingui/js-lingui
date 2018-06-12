@@ -1,5 +1,5 @@
 // @flow
-import "@babel/polyfill"
+import "babel-polyfill"
 import * as React from "react"
 import { render } from "react-dom"
 import App from "./App"

@@ -9,11 +9,10 @@ git clone https://github.com/lingui/js-lingui.git
 cd js-lingui
 ```
 
-2. Install development packages
+2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna, so simply running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
 
 ```bash
 yarn
-yarn run lerna:bootstrap
 ```
 
 3. Run tests
@@ -50,6 +49,15 @@ node ./scripts/test.js
 This command builds all packages, run unit tests and integration tests, so it
 takes some time.
 
+## Contributing to the docs
+
+Documentation uses Sphinx and reStructuredText. It's inside the `docs` directory.
+
+1. To setup python virtualenv, run `pipenv install` inside `docs`. If you encounter `ValueError('unknown locale: %s' % localename)`, run `export LC_ALL=en_US.UTF-8` and `export LANG=en_US.UTF-8` and repeat.
+
+2. Run `pipenv run make html` to build the docs.
+
+3. After every change, re-run the command to rebuild the docs. Incremental builds are much faster than the first one.
 
 ## Add yourself to contributors!
 

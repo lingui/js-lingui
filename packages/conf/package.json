@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "2.0.6",
+  "version": "2.1.1",
   "description": "Get lingui configuration from package.json",
   "keywords": [
     "lingui",
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
-    "jest-regex-util": "^22.1.0",
-    "jest-validate": "^22.1.2",
+    "jest-regex-util": "^23.0.0",
+    "jest-validate": "^23.0.1",
     "pkg-conf": "^2.1.0"
   },
   "files": [

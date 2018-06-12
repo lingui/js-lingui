@@ -5,7 +5,7 @@ import { isString } from "../essentials"
 // [Tokens] -> (CTX -> String)
 function processTokens(tokens, octothorpe = {}): Function => string {
   if (!tokens.filter(token => !isString(token)).length) {
-    return tokens.join("").trim()
+    return tokens.join("")
   }
 
   return ctx =>

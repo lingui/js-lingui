@@ -2,17 +2,17 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-# babel-plugin-lingui-transform-react
+# @lingui/babel-plugin-transform-react
 
 > Babel plugin which transforms content of components from [lingui-react](https://www.npmjs.com/package/lingui-react) to ICU MessageFormat.
 
-`babel-plugin-lingui-transform-react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-transform-react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
 ```bash
-yarn add --dev babel-plugin-lingui-transform-react
-# npm install --save-dev babel-plugin-lingui-transform-react
+yarn add --dev @lingui/babel-plugin-transform-react
+# npm install --save-dev @lingui/babel-plugin-transform-react
 ```
 
 ## Usage
@@ -23,21 +23,21 @@ yarn add --dev babel-plugin-lingui-transform-react
 
 ```json
 {
-  "plugins": ["lingui-transform-react"]
+  "plugins": ["@lingui/babel-plugin-transform-react"]
 }
 ```
 
 ### Via CLI
 
 ```bash
-babel --plugins lingui-transform-react script.js
+babel --plugins @lingui/babel-plugin-transform-react script.js
 ```
 
 ### Via Node API
 
 ```js
-require("babel-core").transform("code", {
-  plugins: ["lingui-transform-react"]
+require("@babel/core").transform("code", {
+  plugins: ["@lingui/babel-plugin-transform-react"]
 })
 ```
 
