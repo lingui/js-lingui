@@ -93,7 +93,7 @@ export function compile(message: string) {
 }
 
 export function createCompiledCatalog(locale: string, messages: CatalogType) {
-  const [language] = locale.split("_")
+  const [language] = locale.split(/[_-]/)
   const pluralRules = plurals[language]
 
   const compiledMessages = R.keys(messages).map(key => {
