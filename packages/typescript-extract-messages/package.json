@@ -1,7 +1,7 @@
 {
   "name": "@lingui/typescript-extract-messages",
   "private": true,
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Extract messages for translation from Typescript files",
   "main": "index.js",
   "author": {
@@ -29,7 +29,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "@lingui/conf": "2.1.0"
+    "@lingui/conf": "2.1.1"
   },
   "devDependencies": {
     "typescript": "^2.9.1"
