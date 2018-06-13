@@ -15,8 +15,10 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  extract(filename, localeDir) {
+  extract(filename, localeDir, options = {}) {
+    const plugins = options.plugins || []
     transformFileSync(filename, {
+      ...options,
       plugins: [
         // Plugins run before presets, so we need to import transform-plugins
         // here until we have a better way to run extract-messages plugin
@@ -25,7 +27,8 @@ const extractor: ExtractorType = {
         transformTs,
         linguiTransformJs,
         linguiTransformReact,
-        [linguiExtractMessages, { localeDir }]
+        [linguiExtractMessages, { localeDir }],
+        ...plugins
       ]
     })
   }

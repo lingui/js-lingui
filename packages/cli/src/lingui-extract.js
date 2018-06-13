@@ -14,7 +14,8 @@ import { printStats } from "./api/stats"
 type ExtractOptions = {|
   verbose: boolean,
   clean: boolean,
-  prevFormat: ?CatalogFormat
+  prevFormat: ?CatalogFormat,
+  babelOptions?: Object
 |}
 
 export default function command(
@@ -41,7 +42,8 @@ export default function command(
   console.log("Extracting messages from source files…")
   extract(config.srcPathDirs, config.localeDir, {
     ignore: config.srcPathIgnorePatterns,
-    verbose: options.verbose
+    verbose: options.verbose,
+    babelOptions: options.babelOptions
   })
   options.verbose && console.log()
 

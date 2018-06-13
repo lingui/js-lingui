@@ -10,7 +10,8 @@ import type { AllCatalogsType } from "./formats/types"
 
 type ExtractOptions = {
   ignore?: Array<string>,
-  verbose?: boolean
+  verbose?: boolean,
+  babelOptions?: Object
 }
 
 export function extract(
@@ -39,7 +40,7 @@ export function extract(
 
     const extracted = R.values(extractors).some((ext: ExtractorType) => {
       if (!ext.match(srcFilename)) return false
-      ext.extract(srcFilename, targetPath)
+      ext.extract(srcFilename, targetPath, options.babelOptions)
       return true
     })
 
