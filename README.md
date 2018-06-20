@@ -266,7 +266,7 @@ Contributions of any kind welcome!
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 
-[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
+[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/stable-2.x.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
 [Badge-License]: https://img.shields.io/github/license/lingui/js-lingui.svg
 [Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
@@ -274,7 +274,7 @@ Contributions of any kind welcome!
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 
-[CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
+[CI]: https://circleci.com/gh/lingui/js-lingui/tree/stable-2.x
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [Watch]: https://github.com/lingui/js-lingui/watchers
