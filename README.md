@@ -281,6 +281,3 @@ Contributions of any kind welcome!
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
 [PRWelcome]: http://makeapullrequest.com
-
-[Badge-CodeSponsor]: https://app.codesponsor.io/embed/84LZA8as5bkg57cgKMJZMe75/lingui/js-lingui.svg
-[CodeSponsor]: https://app.codesponsor.io/link/84LZA8as5bkg57cgKMJZMe75/lingui/js-lingui
