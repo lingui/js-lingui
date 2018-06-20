@@ -9,7 +9,9 @@ workflows:
       - build-docs:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - stable-2.x
 
 jobs:
   test-node8: &test-template
