@@ -2,7 +2,6 @@ i18n._("{gender, select, male {numOfGuests, plural, one {He invites one guest} o
   gender: gender,
   numOfGuests: numOfGuests
 });
-
 i18n._("id", {
   0: "male",
   1: 42,

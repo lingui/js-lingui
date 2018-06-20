@@ -1,4 +1,4 @@
 const languages = {
-  en: "English",
-  cs: "Czech"
+  en: 'English',
+  cs: 'Czech'
 };
