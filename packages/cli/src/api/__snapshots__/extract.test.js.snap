@@ -50,3 +50,53 @@ Object {
   },
 }
 `;
+
+exports[`order should order messages alphabetically 1`] = `
+Object {
+  en: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+  fr: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+}
+`;
+
+exports[`order should order messages alphabetically 2`] = `
+Object {
+  en: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
+  fr: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
+}
+`;

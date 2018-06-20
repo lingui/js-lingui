@@ -156,3 +156,51 @@ describe("cleanObsolete", function() {
     expect(cleanObsolete(catalogs)).toMatchSnapshot()
   })
 })
+
+describe("order", function() {
+  it("should order messages alphabetically", function() {
+    const { order } = require("./extract")
+
+    const catalogs = {
+      en: {
+        LabelB: {
+          translation: "B"
+        },
+        LabelA: {
+          translation: "A"
+        },
+        LabelD: {
+          translation: "D"
+        },
+        LabelC: {
+          translation: "C"
+        }
+      },
+      fr: {
+        LabelB: {
+          translation: "B"
+        },
+        LabelA: {
+          translation: "A"
+        },
+        LabelD: {
+          translation: "D"
+        },
+        LabelC: {
+          translation: "C"
+        }
+      }
+    }
+
+    const orderedCatalogs = order(catalogs)
+
+    // Test that the message content is the same as before
+    expect(orderedCatalogs).toMatchSnapshot()
+
+    // Jest snapshot order the keys automatically, so test that the key order explicitly
+    expect({
+      en: Object.keys(orderedCatalogs.en),
+      fr: Object.keys(orderedCatalogs.fr)
+    }).toMatchSnapshot()
+  })
+})

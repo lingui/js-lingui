@@ -8,7 +8,7 @@ import program from "commander"
 import { getConfig } from "@lingui/conf"
 
 import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
-import { extract, collect, cleanObsolete } from "./api/extract"
+import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
 
 type ExtractOptions = {|
@@ -48,7 +48,7 @@ export default function command(
   console.log("Collecting all messages…")
   const clean = options.clean ? cleanObsolete : id => id
   const catalog = collect(buildDir)
-  const catalogs = clean(convertFormat.merge(catalog))
+  const catalogs = order(clean(convertFormat.merge(catalog)))
   options.verbose && console.log()
 
   console.log("Writing message catalogues…")
