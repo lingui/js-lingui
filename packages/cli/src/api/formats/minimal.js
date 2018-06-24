@@ -16,7 +16,10 @@ function deserialize(catalog) {
 }
 
 function serialize(catalog) {
-  return R.map(message => message.translation || "", catalog)
+  return R.map(
+    message => message.translation || message.defaults || "",
+    catalog
+  )
 }
 
 export default (config: LinguiConfig): CatalogFormat => {
