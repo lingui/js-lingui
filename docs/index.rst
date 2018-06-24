@@ -41,8 +41,9 @@ Key features
    :caption: Guides
 
    How plurals work <guides/plurals>
-   Dynamic loading of translations <guides/dynamic-loading-catalogs.rst>
+   Dynamic loading of translations <guides/dynamic-loading-catalogs>
    Optimized components <guides/optimized-components>
+   Typescript <guides/typescript>
 
 .. toctree::
    :maxdepth: 1

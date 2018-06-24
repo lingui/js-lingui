@@ -33,7 +33,7 @@ else
 fi
 
 # copy over or recompile the new site
-cp -a ../docs/_build/html/ .
+cp -a ../docs/_build/html/. .
 touch .nojekyll
 
 # stage any changes and new files
