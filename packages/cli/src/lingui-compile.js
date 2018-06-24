@@ -41,7 +41,7 @@ function command(config, format, options) {
   console.log("Compiling message catalogs…")
 
   return locales.map(locale => {
-    const [language] = locale.split("_")
+    const [language] = locale.split(/[_-]/)
     if (!plurals[language]) {
       console.log(
         chalk.red(

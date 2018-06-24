@@ -11,8 +11,8 @@ function getTestName(testPath) {
 
 describe("babel-plugin-lingui-transform-js", function() {
   const babelOptions = {
-    cwd: __dirname,
-    plugins: [plugin, "@babel/plugin-syntax-jsx"]
+    babelrc: false,
+    plugins: ["babel-plugin-syntax-jsx", plugin]
   }
 
   // return function, so we can test exceptions

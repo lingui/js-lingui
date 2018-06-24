@@ -21,7 +21,7 @@ export type I18nProviderProps = {
  * Allows listeners to subscribe for changes
  */
 export function LinguiPublisher(i18n: I18n) {
-  let subscribers = []
+  let subscribers: Array<Function> = []
 
   return {
     i18n,
