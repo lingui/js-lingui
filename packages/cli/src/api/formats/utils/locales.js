@@ -13,12 +13,12 @@ export type LocaleObject = {
  * 4. country code
  * @type {RegExp}
  */
-export const localeRe = new RegExp(/(([a-z]+)([_-]([a-zA-Z]+))?)(\\|\/)?/)
+export const localeRe = new RegExp(/(([a-z]+)([_-]([a-zA-Z]+))?)[\\/]?/)
 
 export function isValid(locale: string): boolean {
   const match = localeRe.exec(locale)
   return (
-    match &&
+    match !== null &&
     match[0] === locale && // locale has valid format
     match[2] in plurals // language is valid (we have plurals for it)
   )
