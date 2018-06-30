@@ -44,53 +44,49 @@ export default (config: LinguiConfig): CatalogFormat => ({
     }
   },
 
-  merge(nextCatalog) {
+  readAll() {
+    return R.mergeAll(
+      this.getLocales().map(locale => ({ [locale]: this.read(locale) }))
+    )
+  },
+
+  merge(prevCatalogs, nextCatalog) {
     const nextKeys = R.keys(nextCatalog)
 
-    return R.mergeAll(
-      this.getLocales().map(locale => {
-        const prevCatalog = this.read(locale)
-        if (!prevCatalog) return nextCatalog
+    return R.mapObjIndexed((prevCatalog, locale) => {
+      const prevKeys = R.keys(prevCatalog)
 
-        const prevKeys = R.keys(prevCatalog)
+      const newKeys = R.difference(nextKeys, prevKeys)
+      const mergeKeys = R.intersection(nextKeys, prevKeys)
+      const obsoleteKeys = R.difference(prevKeys, nextKeys)
 
-        const newKeys = R.difference(nextKeys, prevKeys)
-        const mergeKeys = R.intersection(nextKeys, prevKeys)
-        const obsoleteKeys = R.difference(prevKeys, nextKeys)
+      // Initialize new catalog with new keys
+      const newMessages = R.mapObjIndexed(
+        (message, key) => ({
+          translation: config.sourceLocale === locale ? key : "",
+          ...message
+        }),
+        R.pick(newKeys, nextCatalog)
+      )
 
-        // Initialize new catalog with new keys
-        const newMessages = R.mapObjIndexed(
-          (message, key) => ({
-            translation: config.sourceLocale === locale ? key : "",
-            ...message
-          }),
-          R.pick(newKeys, nextCatalog)
-        )
+      // Merge translations from previous catalog
+      const mergedMessages = mergeKeys.map(key => ({
+        [key]: {
+          translation: prevCatalog[key].translation,
+          ...R.omit(["obsolete, translation"], nextCatalog[key])
+        }
+      }))
 
-        // Merge translations from previous catalog
-        const mergedMessages = mergeKeys.map(key => ({
-          [key]: {
-            translation: prevCatalog[key].translation,
-            ...R.omit(["obsolete, translation"], nextCatalog[key])
-          }
-        }))
+      // Mark all remaining translations as obsolete
+      const obsoleteMessages = obsoleteKeys.map(key => ({
+        [key]: {
+          ...prevCatalog[key],
+          obsolete: true
+        }
+      }))
 
-        // Mark all remaining translations as obsolete
-        const obsoleteMessages = obsoleteKeys.map(key => ({
-          [key]: {
-            ...prevCatalog[key],
-            obsolete: true
-          }
-        }))
-
-        const newCatalog = R.mergeAll([
-          newMessages,
-          ...mergedMessages,
-          ...obsoleteMessages
-        ])
-        return { [locale]: newCatalog }
-      })
-    )
+      return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
+    }, prevCatalogs)
   },
 
   getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
