@@ -13,7 +13,9 @@ export type LocaleObject = {
  * 4. country code
  * @type {RegExp}
  */
-export const localeRe = new RegExp(/^(([a-z]+)([_-]([a-zA-Z]+))?)[\\/]?/)
+export const localeRe = new RegExp(
+  /(([a-z]+)([_-]([a-zA-Z]+))?)[\\/]?/
+)
 
 export function isValid(locale: string): boolean {
   const match = localeRe.exec(locale)

@@ -49,7 +49,6 @@ describe("Catalog formats - lingui", function() {
 
     it("should return null for invalid locales", function() {
       const config = createConfig()
-      expect(plugin(config).getLocale("conf.d/messages.json")).toBeNull()
       expect(plugin(config).getLocale("messages.json")).toBeNull()
     })
   })
