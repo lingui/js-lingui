@@ -50,7 +50,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
     )
   },
 
-  merge(prevCatalogs, nextCatalog) {
+  merge(prevCatalogs, nextCatalog, options = {}) {
     const nextKeys = R.keys(nextCatalog)
 
     return R.mapObjIndexed((prevCatalog, locale) => {
@@ -71,16 +71,23 @@ export default (config: LinguiConfig): CatalogFormat => ({
       )
 
       // Merge translations from previous catalog
-      const mergedMessages = mergeKeys.map(key => ({
-        [key]: {
-          translation:
-            config.sourceLocale === locale &&
-            prevCatalog[key].translation === prevCatalog[key].defaults
-              ? nextCatalog[key].defaults
-              : prevCatalog[key].translation,
-          ...R.omit(["obsolete, translation"], nextCatalog[key])
+      const mergedMessages = mergeKeys.map(key => {
+        const updateFromDefaults =
+          config.sourceLocale === locale &&
+          (prevCatalog[key].translation === prevCatalog[key].defaults ||
+            options.overwrite)
+
+        const translation = updateFromDefaults
+          ? nextCatalog[key].defaults
+          : prevCatalog[key].translation
+
+        return {
+          [key]: {
+            translation,
+            ...R.omit(["obsolete, translation"], nextCatalog[key])
+          }
         }
-      }))
+      })
 
       // Mark all remaining translations as obsolete
       const obsoleteMessages = obsoleteKeys.map(key => ({

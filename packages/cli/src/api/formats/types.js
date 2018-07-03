@@ -35,7 +35,11 @@ export type CatalogFormat = {
 
   read(locale: string): ?CatalogType,
   readAll(): AllCatalogsType,
-  merge(prevCatalogs: AllCatalogsType, catalog: CatalogType): AllCatalogsType,
+  merge(
+    prevCatalogs: AllCatalogsType,
+    catalog: CatalogType,
+    options?: { [key: string]: any }
+  ): AllCatalogsType,
   write(locale: string, catalog: CatalogType): IdempotentResult<string>,
   writeCompiled(locale: string, content: string): ?string,
 
