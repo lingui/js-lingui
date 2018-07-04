@@ -14,6 +14,7 @@ import { printStats } from "./api/stats"
 type ExtractOptions = {|
   verbose: boolean,
   clean: boolean,
+  overwrite: boolean,
   prevFormat: ?CatalogFormat
 |}
 
@@ -48,7 +49,14 @@ export default function command(
   console.log("Collecting all messages…")
   const clean = options.clean ? cleanObsolete : id => id
   const catalog = collect(buildDir)
-  const catalogs = order(clean(convertFormat.merge(catalog)))
+  const prevCatalogs = convertFormat.readAll()
+  const catalogs = order(
+    clean(
+      convertFormat.merge(prevCatalogs, catalog, {
+        overwrite: options.overwrite
+      })
+    )
+  )
   options.verbose && console.log()
 
   console.log("Writing message catalogues…")
@@ -91,6 +99,7 @@ export default function command(
 
 if (require.main === module) {
   program
+    .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalogs")
@@ -129,6 +138,7 @@ if (require.main === module) {
   const result = command(config, format, {
     verbose: program.verbose || false,
     clean: program.clean || false,
+    overwrite: program.overwrite || false,
     prevFormat
   })
 
