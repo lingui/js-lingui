@@ -26,7 +26,8 @@ or locally:
 .. note::
 
    When installed locally, you need to either run it from
-   ``node_modules/.bin/lingui`` or add it to your ``package.json``:
+   ``node_modules/.bin/lingui`` or using npx_ (``npx lingui``) add it to your
+   ``package.json``:
 
    .. code-block:: json
 
@@ -68,7 +69,7 @@ Format of message catalog (see :conf:`format` option).
 ``extract``
 -----------
 
-.. lingui-cli:: extract [--clean] [--format <format>] [--convert-from <format>] [--verbose]
+.. lingui-cli:: extract [--clean] [--overwrite] [--format <format>] [--convert-from <format>] [--verbose]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -81,6 +82,10 @@ each language using the following steps:
 
 Remove obsolete messages from catalogs. Message becomes obsolete
 when it's missing in the source code.
+
+.. lingui-cli-option:: --overwrite
+
+Update translations for :conf:`sourceLocale` from source.
 
 .. lingui-cli-option:: --format <format>
 
@@ -116,3 +121,6 @@ Format of message catalogs (see :conf:`format` option).
 .. lingui-cli-option:: --verbose
 
 Prints additional information.
+
+
+.. _npx: https://github.com/zkat/npx
