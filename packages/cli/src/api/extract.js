@@ -79,3 +79,18 @@ export function collect(buildDir: string) {
 export function cleanObsolete(catalogs: AllCatalogsType) {
   return R.map(R.filter(message => !message.obsolete), catalogs)
 }
+
+export function order(catalogs: AllCatalogsType) {
+  return R.map(orderByMessageId, catalogs)
+}
+
+function orderByMessageId(messages) {
+  const orderedMessages = {}
+  Object.keys(messages)
+    .sort()
+    .forEach(function(key) {
+      orderedMessages[key] = messages[key]
+    })
+
+  return orderedMessages
+}

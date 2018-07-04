@@ -56,23 +56,21 @@ const closureOptions = {
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
+    babelrc: false,
     exclude: "node_modules/**",
     runtimeHelpers: true
   })
 }
 
 function getRollupOutputOptions(outputPath, format, globals, globalName) {
-  return Object.assign(
-    {},
-    {
-      file: outputPath,
-      format,
-      globals,
-      interop: true, // might be turned off with Babel 7, please review
-      name: globalName,
-      sourcemap: false
-    }
-  )
+  return {
+    file: outputPath,
+    format,
+    globals,
+    interop: true, // might be turned off with Babel 7, please review
+    name: globalName,
+    sourcemap: false
+  }
 }
 
 function getFormat(bundleType) {
