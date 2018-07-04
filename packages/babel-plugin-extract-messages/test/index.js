@@ -46,7 +46,7 @@ function testCase(testName, assertion) {
             localeDir: LOCALE_DIR
           }
         ],
-        ...(jsx ? ["@babel/syntax-jsx"] : [])
+        ...(jsx ? ["babel-plugin-syntax-jsx"] : [])
       ]
     })
 
@@ -209,7 +209,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
               }
             ]
           ],
-          presets: ["@babel/preset-react"]
+          presets: ["react"]
         }
       )
     ).not.toThrow()

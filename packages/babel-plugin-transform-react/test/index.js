@@ -12,7 +12,7 @@ function getTestName(testPath) {
 describe("babel-plugin-lingui-transform-react", function() {
   const babelOptions = {
     babelrc: false,
-    plugins: ["@babel/syntax-jsx", plugin]
+    plugins: ["babel-plugin-syntax-jsx", plugin]
   }
 
   const transformCode = code => () =>

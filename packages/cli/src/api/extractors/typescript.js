@@ -1,7 +1,7 @@
 // @flow
-import { transformFileSync } from "@babel/core"
+import { transformFileSync } from "babel-core"
 
-import transformTs from "@babel/plugin-transform-typescript"
+import transformTs from "babel-plugin-transform-typescript"
 import linguiTransformJs from "@lingui/babel-plugin-transform-js"
 import linguiTransformReact from "@lingui/babel-plugin-transform-react"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
