@@ -50,6 +50,7 @@ Key features
    Dynamic loading of translations <guides/dynamic-loading-catalogs>
    Optimized components <guides/optimized-components>
    Typescript <guides/typescript>
+   Excluding build files <guides/excluding-build-files>
 
 .. toctree::
    :maxdepth: 1
