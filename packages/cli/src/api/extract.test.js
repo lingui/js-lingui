@@ -50,7 +50,8 @@ describe("extract", function() {
 
   it("should traverse directory and call extractors", function() {
     extract(["src"], "locale", {
-      ignore: ["forbidden"]
+      ignore: ["forbidden"],
+      babelOptions: {}
     })
 
     expect(typescript.match).toHaveBeenCalledWith(
@@ -68,20 +69,24 @@ describe("extract", function() {
 
     expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
-      "locale"
+      "locale",
+      {}
     )
     expect(babel.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
-      "locale"
+      "locale",
+      {}
     )
 
     expect(typescript.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
-      "locale"
+      "locale",
+      {}
     )
     expect(typescript.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
-      "locale"
+      "locale",
+      {}
     )
   })
 })

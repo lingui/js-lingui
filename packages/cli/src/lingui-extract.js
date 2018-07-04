@@ -15,7 +15,8 @@ type ExtractOptions = {|
   verbose: boolean,
   clean: boolean,
   overwrite: boolean,
-  prevFormat: ?CatalogFormat
+  prevFormat: ?CatalogFormat,
+  babelOptions: Object
 |}
 
 export default function command(
@@ -42,7 +43,8 @@ export default function command(
   console.log("Extracting messages from source files…")
   extract(config.srcPathDirs, config.localeDir, {
     ignore: config.srcPathIgnorePatterns,
-    verbose: options.verbose
+    verbose: options.verbose,
+    babelOptions: options.babelOptions
   })
   options.verbose && console.log()
 
@@ -101,6 +103,10 @@ if (require.main === module) {
   program
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
+    .option(
+      "--babelOptions",
+      "Babel options passed to transform/extract plugins"
+    )
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalogs")
     .option(
@@ -139,6 +145,7 @@ if (require.main === module) {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,
+    babelOptions: program.babelOptions || {},
     prevFormat
   })
 
