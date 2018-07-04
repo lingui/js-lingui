@@ -1,3 +1,9 @@
+## Indiegogo campaign
+
+There's ongoing campaign on [Indiegogo][Indiegogo] to raise funds for this project. If you want to support it, please consider donation or share it with your friend.
+
+<hr />
+
 <div align="center">
 <h1><sub>js</sub>Lingui</h1>
 
@@ -5,6 +11,8 @@ Seamless internationalization in Javascript and React
 </div>
 
 <hr />
+
+<a href="https://www.buymeacoffee.com/tricoder" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 [![Join the chat at https://gitter.im/lingui/js-lingui](https://badges.gitter.im/lingui/js-lingui.svg)](https://gitter.im/lingui/js-lingui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![CircleCI][Badge-CI]][CI] 
@@ -281,3 +289,4 @@ Contributions of any kind welcome!
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
 [PRWelcome]: http://makeapullrequest.com
+[Indiegogo]: https://igg.me/at/js-lingui/x/4367619

@@ -9,6 +9,12 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 
    --- `W3C Web Internationalization FAQ <https://www.w3.org/International/questions/qa-i18n>`_
 
+Support the project
+-------------------
+
+There's ongoing campaign on Indiegogo_ to raise funds for this project. If you want
+to support it, please consider donation or share it with your friend.
+
 Key features
 ------------
 
@@ -66,3 +72,5 @@ Indices
 
 * :ref:`genindex`
 * :ref:`search`
+
+.. _Indiegogo: https://igg.me/at/js-lingui/x/4367619
