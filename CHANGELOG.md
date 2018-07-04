@@ -1,7 +1,7 @@
 # Change Log
 
 <a name="2.2.0"></a>
-## [2.2.0](https://github.com/js-lingui/lingui/compare/v2.1.2...v2.2.0) (2018-07-04)
+## [2.2.0](https://github.com/lingui/js-lingui/compare/v2.1.2...v2.2.0) (2018-07-04)
 
 Release dedicated to **command line interface**. 
 
