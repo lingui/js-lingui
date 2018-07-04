@@ -1,6 +1,6 @@
 const path = require("path")
 const chalk = require("chalk")
-const pkgConf = require("pkg-conf")
+const cosmiconfig = require("cosmiconfig")
 const { validate } = require("jest-validate")
 const { replacePathSepForRegex } = require("jest-regex-util")
 
@@ -59,16 +59,17 @@ const configValidation = {
 }
 
 export function getConfig({ cwd } = {}) {
-  const raw = pkgConf.sync("lingui", {
-    defaults,
-    skipOnFalse: true,
-    cwd: cwd || process.cwd()
+  const defaultRootDir = cwd || process.cwd()
+  const configExplorer = cosmiconfig("lingui", {
+    sync: true
   })
+  const result = configExplorer.load(defaultRootDir)
+  const raw = Object.assign({}, defaults, result ? result.config : null)
 
   validate(raw, configValidation)
   // Use deprecated fallbackLanguage, if defined
   raw.fallbackLocale = raw.fallbackLocale || raw.fallbackLanguage || ""
 
-  const rootDir = path.dirname(pkgConf.filepath(raw))
+  const rootDir = result ? path.dirname(result.filepath) : defaultRootDir
   return replaceRootDir(raw, rootDir)
 }

@@ -2,21 +2,21 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-lingui-conf
+@lingui/conf
 ===========
 
 > Get lingui configuration from package.json
 
 **⚠️ Internal package: You probably don't need this.**
 
-`lingui-conf` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/conf` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 Package finds nearest package.json starting from current directory, reads `lingui` configuration, provides defaults for all options and `<rootDir>` with current working directory.
 
 ## Usage
 
 ```js
-const getConfig = require('lingui-conf')
+const getConfig = require('@lingui/conf')
 
 const config = getConfig()
 // When package.json is located in '/app/package.json'
