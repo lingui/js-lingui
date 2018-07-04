@@ -16,7 +16,8 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  extract(filename, localeDir) {
+  extract(filename, localeDir, options = {}) {
+    const plugins = options.plugins || []
     const content = fs.readFileSync(filename, "utf8")
     const isTsx = filename.endsWith(".tsx")
     // pass jsx to babel untouched
@@ -39,7 +40,8 @@ const extractor: ExtractorType = {
       // Transform plugins are idempotent, so they can run twice.
       linguiTransformJs,
       linguiTransformReact,
-      [linguiExtractMessages, { localeDir }]
+      [linguiExtractMessages, { localeDir }],
+      ...plugins
     ]
 
     if (isTsx) {
@@ -47,6 +49,7 @@ const extractor: ExtractorType = {
     }
 
     transform(stripped.outputText, {
+      ...options,
       filename,
       plugins
     })
