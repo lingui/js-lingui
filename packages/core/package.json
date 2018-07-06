@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "2.2.0",
+  "version": "0.0.0-managed-by-release-script",
   "description": "I18n tools for javascript",
   "keywords": [
     "i18n",

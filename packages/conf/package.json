@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "2.2.0",
+  "version": "0.0.0-managed-by-release-script",
   "description": "Get lingui configuration from package.json",
   "keywords": [
     "lingui",

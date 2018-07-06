@@ -9,8 +9,8 @@
       "gzip": 1819
     },
     "@lingui/react.development.js (NODE_DEV)": {
-      "size": 17951,
-      "gzip": 5002
+      "size": 18004,
+      "gzip": 5023
     },
     "@lingui/react.production.min.js (NODE_PROD)": {
       "size": 8464,
