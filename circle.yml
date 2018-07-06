@@ -101,7 +101,7 @@ jobs:
 
   build-docs:
     docker:
-      - image: circleci/python:latest
+      - image: circleci/python:3.6
         environment:
           PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
