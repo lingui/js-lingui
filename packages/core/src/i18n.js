@@ -43,7 +43,7 @@ class I18n {
   // Message catalogs
   _catalogs: Catalogs
 
-  // Messages/langauge data in active language.
+  // Messages/language data in active language.
   // This is optimization, so we don't perform object lookup
   // _catalogs[language] for each translation.
   _activeMessages: Messages

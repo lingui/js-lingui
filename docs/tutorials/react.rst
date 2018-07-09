@@ -405,7 +405,7 @@ This message is a bit special, because it depends on the value of the ``messages
 variable. Most languages use different forms of words when describing quantities
 - this is called `pluralization <https://en.wikipedia.org/wiki/Plural>`_.
 
-What's tricky is that different langauges use different number of plural forms.
+What's tricky is that different languages use different number of plural forms.
 For example, English has only two forms - singular and plural - as we can see
 in the example above. However, Czech language has three plural forms. Some
 languages have up to 6 plural forms and some don't have plurals at all!

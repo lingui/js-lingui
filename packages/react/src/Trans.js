@@ -28,7 +28,7 @@ class Trans extends React.Component<TransProps> {
         console.warn(
           "@lingui/babel-preset-react is probably missing in babel config, " +
             "but you are using <Trans> component in a way which requires it. " +
-            "Either don' use children in <Trans> component or configure babel " +
+            "Either don't use children in <Trans> component or configure babel " +
             "to load @lingui/babel-preset-react preset. See tutorial for more info: " +
             "https://l.lingui.io/tutorial-i18n-react"
         )
