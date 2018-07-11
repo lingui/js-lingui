@@ -1,3 +1,5 @@
+.. _react-tutorial-label:
+
 *********************************************
 Tutorial - Internationalization of React apps
 *********************************************
@@ -40,11 +42,9 @@ We're going to translate the following app:
            </p>
 
            <p>
-             {
-               messagesCount === 1
-                 ? "There's {messagesCount} message in your inbox."
-                 : "There're {messagesCount} messages in your inbox."
-             }
+            {messagesCount === 1
+            ? `There's ${messagesCount} message in your inbox.`
+            : `There're ${messagesCount} messages in your inbox.`}
            </p>
 
            <footer>
@@ -162,6 +162,8 @@ All we need to make this heading translatable is wrap it in :component:`Trans`
 component:
 
 .. code-block:: jsx
+
+   import { Trans } from '@lingui/react';
 
    <h1><Trans>Message Inbox</Trans></h1>
 

@@ -39,6 +39,7 @@ Key features
    :caption: Tutorials
 
    React <tutorials/react>
+   React Native <tutorials/react-native>
    JavaScript <tutorials/javascript>
    CLI <tutorials/cli>
 
