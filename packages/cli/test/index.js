@@ -1,29 +1,9 @@
 import fs from "fs"
 import path from "path"
 import extractor from "../src/api/extractors/typescript"
+import { removeDirectory } from "../src/api/utils"
 
 const LOCALE_DIR = "./locale"
-
-const rmdir = dir => {
-  if (!fs.existsSync(dir)) return
-  const list = fs.readdirSync(dir)
-
-  for (let i = 0; i < list.length; i++) {
-    const filename = path.join(dir, list[i])
-    const stat = fs.statSync(filename)
-
-    if (filename === "." || filename === "..") {
-      // pass these files
-    } else if (stat.isDirectory()) {
-      // rmdir recursively
-      rmdir(filename)
-    } else {
-      // rm fiilename
-      fs.unlinkSync(filename)
-    }
-  }
-  fs.rmdirSync(dir)
-}
 
 describe("typescript-extractor", function() {
   // CWD is root directory of repository, so origin of all messages is going to
@@ -39,11 +19,11 @@ describe("typescript-extractor", function() {
   )
 
   beforeAll(() => {
-    rmdir(LOCALE_DIR)
+    removeDirectory(LOCALE_DIR)
   })
 
   afterAll(() => {
-    rmdir(LOCALE_DIR)
+    removeDirectory(LOCALE_DIR)
   })
 
   it("should extract Typescript file", function() {
@@ -54,7 +34,10 @@ describe("typescript-extractor", function() {
       )
     ).not.toThrow()
 
-    const contents = fs.readFileSync(path.join(buildDir, "core.json"), "utf8")
+    const contents = fs.readFileSync(
+      path.join(buildDir, "core.ts.json"),
+      "utf8"
+    )
     const messages = JSON.parse(contents)
     expect(Object.keys(messages).length).toBe(10)
   })
@@ -67,7 +50,10 @@ describe("typescript-extractor", function() {
       )
     ).not.toThrow()
 
-    const contents = fs.readFileSync(path.join(buildDir, "react.json"), "utf8")
+    const contents = fs.readFileSync(
+      path.join(buildDir, "react.tsx.json"),
+      "utf8"
+    )
     const messages = JSON.parse(contents)
     expect(Object.keys(messages).length).toBe(13)
   })

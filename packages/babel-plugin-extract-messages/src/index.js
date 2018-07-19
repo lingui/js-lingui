@@ -213,13 +213,15 @@ export default function({ types: t }) {
        */
       const localeDir = this.opts.localeDir || opts.localeDir
       const { filename } = file.opts
-      const [basename] = fsPath.basename(filename).split(".", 2)
       const baseDir = fsPath.dirname(fsPath.relative(optsBaseDir, filename))
       const targetDir = fsPath.join(localeDir, "_build", baseDir)
 
       const messages = file.get(MESSAGES)
       const catalog = {}
-      const catalogFilename = fsPath.join(targetDir, `${basename}.json`)
+      const baseName = fsPath.basename(filename)
+      const catalogFilename = fsPath.join(targetDir, `${baseName}.json`)
+
+      mkdirp.sync(targetDir)
 
       // no messages, skip file
       if (!messages.size) {
@@ -235,7 +237,6 @@ export default function({ types: t }) {
         catalog[key] = value
       })
 
-      mkdirp.sync(targetDir)
       fs.writeFileSync(catalogFilename, JSON.stringify(catalog, null, 2))
     }
   }
