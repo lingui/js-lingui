@@ -10,6 +10,7 @@ import { getConfig } from "@lingui/conf"
 import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
 import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
+import { removeDirectory } from "./api/utils"
 
 type ExtractOptions = {|
   verbose: boolean,
@@ -36,7 +37,10 @@ export default function command(
   }
 
   const buildDir = path.join(config.localeDir, "_build")
-  if (!fs.existsSync(buildDir)) {
+  if (fs.existsSync(buildDir)) {
+    // remove only the content of build dir, not the directory itself
+    removeDirectory(buildDir, true)
+  } else {
     mkdirp(buildDir)
   }
 
