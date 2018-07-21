@@ -42,9 +42,11 @@ We're going to translate the following app:
            </p>
 
            <p>
-            {messagesCount === 1
-            ? `There's ${messagesCount} message in your inbox.`
-            : `There're ${messagesCount} messages in your inbox.`}
+             {
+               messagesCount === 1
+                 ? "There's {messagesCount} message in your inbox."
+                 : "There're {messagesCount} messages in your inbox."
+             }
            </p>
 
            <footer>
@@ -164,7 +166,7 @@ component:
 .. code-block:: jsx
 
    import { Trans } from '@lingui/react';
-
+   
    <h1><Trans>Message Inbox</Trans></h1>
 
 Yes, that's it. Let's move on to another paragraph. This paragraph has some
