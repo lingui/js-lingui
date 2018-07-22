@@ -146,13 +146,14 @@ workflows:
           requires:
             - build
 
-      - publish:
-          requires:
-            - test-linter
-            - test-node-latest
-            - test-node-8
-          filters:
-            branches:
-              only:
-                - master
-                - stable-2.x
+# Disable automatic publish, because NPM requires OTP token
+#      - publish:
+#          requires:
+#            - test-linter
+#            - test-node-latest
+#            - test-node-8
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - stable-2.x
