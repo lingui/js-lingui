@@ -54,7 +54,15 @@ export default function command(
 
   console.log("Collecting all messages…")
   const clean = options.clean ? cleanObsolete : id => id
-  const catalog = collect(buildDir)
+
+  let catalog
+  try {
+    catalog = collect(buildDir)
+  } catch (e) {
+    console.error(e)
+    return false
+  }
+
   const prevCatalogs = convertFormat.readAll()
   const catalogs = order(
     clean(

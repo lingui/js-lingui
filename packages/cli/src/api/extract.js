@@ -73,10 +73,30 @@ export function collect(buildDir: string) {
     })
     .filter(Boolean)
     .reduce((catalog, messages) => {
-      const mergeMessage = (msgId, prev, next) => ({
-        ...next,
-        origin: R.concat(prev.origin, next.origin)
-      })
+      const mergeMessage = (msgId, prev, next) => {
+        if (prev.defaults !== next.defaults) {
+          const prettyOrigin = args => {
+            try {
+              return chalk.yellow(args[0].join(":"))
+            } catch (e) {
+              return ""
+            }
+          }
+
+          throw new Error(
+            `Encountered different defaults for message ${chalk.yellow(
+              msgId
+            )}` +
+              `\n${prettyOrigin(prev.origin)} ${prev.defaults}` +
+              `\n${prettyOrigin(next.origin)} ${next.defaults}`
+          )
+        }
+
+        return {
+          ...next,
+          origin: R.concat(prev.origin, next.origin)
+        }
+      }
       return R.mergeWithKey(mergeMessage, catalog, messages)
     }, {})
 }

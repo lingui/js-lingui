@@ -119,6 +119,22 @@ describe("collect", function() {
             }
           })
         }
+      },
+
+      // test case for an error with different defaults
+      diffDefaults: {
+        "First.js.json": JSON.stringify({
+          "msg.id": {
+            defaults: "First default",
+            origin: [["diffDefaults/First.js", 2]]
+          }
+        }),
+        "Second.js.json": JSON.stringify({
+          "msg.id": {
+            defaults: "Second default",
+            origin: [["diffDefaults/Second.js", 5]]
+          }
+        })
       }
     })
   })
@@ -131,6 +147,11 @@ describe("collect", function() {
     const { collect } = require("./extract")
     const catalog = collect("src")
     expect(catalog).toMatchSnapshot()
+  })
+
+  it("should throw an error about different defaults", function() {
+    const { collect } = require("./extract")
+    expect(() => collect("diffDefaults")).toThrowErrorMatchingSnapshot()
   })
 })
 
