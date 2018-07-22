@@ -68,6 +68,13 @@ Key features
    Migration from 1.x to 2.x <releases/migration-2>
    Migration from 0.x to 1.x <releases/migration-1>
 
+.. toctree::
+   :maxdepth: 1
+   :caption: External resources
+
+   Talks about i18n in Javascript <misc/talks-about-i18n>
+
+
 
 Indices
 -------
