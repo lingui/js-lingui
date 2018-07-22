@@ -67,4 +67,10 @@ describe("compile", function() {
       'function(a){return[a("name","select",{male:"He",female:"# She"})]}'
     )
   })
+
+  it("should report failed message on error", function() {
+    expect(() =>
+      getSource("{value, plural, one {Book} other {Books")
+    ).toThrowErrorMatchingSnapshot()
+  })
 })

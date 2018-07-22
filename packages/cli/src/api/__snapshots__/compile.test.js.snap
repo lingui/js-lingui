@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compile should report failed message on error 1`] = `Can't parse message. Please check correct syntax: "{value, plural, one {Book} other {Books"`;
