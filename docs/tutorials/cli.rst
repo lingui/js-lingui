@@ -10,6 +10,16 @@ compiling message catalogs::
 
    npm install --global @lingui/cli
 
+ Install also ``babel-core` package depending on Babel version you use:
+
+   .. code-block:: shell
+
+      # babel 6.x
+      npm install --global babel-core
+
+      # babel 7.x
+      npm install --global babel-core@^7.0.0-0 @babel/core
+
 Add a new locale
 ================
 

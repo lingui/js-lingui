@@ -98,6 +98,17 @@ Let's start with the three major packages:
         ]
       }
 
+3. If you receive a warning about missing peer dependency ``babel-core``, you need
+to install it manually. Target version depends on whether you're using babel 6 or 7:
+
+   .. code-block:: shell
+
+      # babel 6.x
+      npm install -g babel-core
+
+      # babel 7.x
+      npm install -g babel-core@^7.0.0-0 @babel/core
+
 Now we have the environment up and running and we can start internationalizing our app!
 
 Setup
