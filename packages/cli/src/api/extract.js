@@ -2,6 +2,7 @@
 import fs from "fs"
 import path from "path"
 import chalk from "chalk"
+import ora from "ora"
 import R from "ramda"
 
 import * as extractors from "./extractors"
@@ -40,11 +41,15 @@ export function extract(
 
     const extracted = R.values(extractors).some((ext: ExtractorType) => {
       if (!ext.match(srcFilename)) return false
+
+      let spinner
+      if (verbose) spinner = ora().start(srcFilename)
+
       ext.extract(srcFilename, targetPath, options.babelOptions)
+      if (verbose && spinner) spinner.succeed()
+
       return true
     })
-
-    if (extracted && verbose) console.log(chalk.green(srcFilename))
   })
 }
 
