@@ -12,9 +12,12 @@ declare var Intl: IntlType
 export function date(
   language: string,
   format?: DateFormat = {}
-): (value: string) => string {
+): (value: string | Date) => string {
   const formatter = new Intl.DateTimeFormat(language, format)
-  return value => formatter.format(value)
+  return value => {
+    if (typeof value === "string") value = new Date(value)
+    return formatter.format(value)
+  }
 }
 
 export function number(
