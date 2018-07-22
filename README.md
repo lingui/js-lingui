@@ -38,9 +38,6 @@ and React.
 
 ## Key features
 
-**⚠️ Warning:** Latest stable version of jsLingui requires **Babel 6**. **Babel 7** will be
-supported from the next major version (3.x) after it's released.
-
 - Small and fast - about **6kb gzipped**
 - Babel plugin for convenient, **type-checked** way of writing ICU MessageFormat (recommended, but not required)
 - **CLI** for extracting and compiling message catalogs
