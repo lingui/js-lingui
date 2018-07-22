@@ -47,11 +47,12 @@ Key features
    :maxdepth: 1
    :caption: Guides
 
-   How plurals work <guides/plurals>
-   Dynamic loading of translations <guides/dynamic-loading-catalogs>
-   Optimized components <guides/optimized-components>
+   Testing <guides/testing>
    Typescript <guides/typescript>
    Excluding build files <guides/excluding-build-files>
+   Dynamic loading of translations <guides/dynamic-loading-catalogs>
+   Optimized components <guides/optimized-components>
+   How plurals work <guides/plurals>
 
 .. toctree::
    :maxdepth: 1
