@@ -3,6 +3,7 @@ Lingui Configuration
 ********************
 
 Configuration is read from 3 different sources (the first found wins):
+
 - from ``lingui`` section in ``package.json``
 - from ``.linguirc``
 - from ``lingui.config.js``
