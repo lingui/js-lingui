@@ -1,3 +1,5 @@
+.. _react-tutorial-label:
+
 *********************************************
 Tutorial - Internationalization of React apps
 *********************************************
@@ -163,6 +165,8 @@ component:
 
 .. code-block:: jsx
 
+   import { Trans } from '@lingui/react';
+   
    <h1><Trans>Message Inbox</Trans></h1>
 
 Yes, that's it. Let's move on to another paragraph. This paragraph has some

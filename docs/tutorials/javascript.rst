@@ -1,3 +1,5 @@
+.. _js-tutorial-label:
+
 **************************************************
 Tutorial - Internationalization of JavaScript apps
 **************************************************

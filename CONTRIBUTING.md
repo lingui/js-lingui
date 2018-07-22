@@ -68,7 +68,7 @@ yarn run add -- <yourGitHubName> <type>
 
 # Examples:
 # yarn run add -- tricoder42 code
-# yarn run add -- tricoder42 code,docs  # type may be also comma separated value
+# yarn run add -- tricoder42 code,doc  # type may be also comma separated value
 ```
 
 See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contributors) for all types of contribution.

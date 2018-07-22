@@ -120,6 +120,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "vonovak",
+      "name": "Vojtech Novak",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1566403?v=4",
+      "profile": "https://github.com/vonovak",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "repoType": "github"
