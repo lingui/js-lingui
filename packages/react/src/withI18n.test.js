@@ -85,6 +85,31 @@ describe("withI18n", function() {
     expect(calledProps).toEqual(props)
   })
 
+  it("should hoist statics from wrapped component", function() {
+    class Component extends React.Component<any, any> {
+      static myProp = 24
+      static myMethod = () => 42
+    }
+
+    const wrapped = withI18n()(Component)
+    expect(wrapped.myProp).toBeDefined()
+    expect(wrapped.myProp).toEqual(24)
+    expect(wrapped.myMethod).toBeDefined()
+    expect(wrapped.myMethod()).toEqual(42)
+
+    function StatelessComponent() {
+      return <div />
+    }
+    StatelessComponent.myProp = 24
+    StatelessComponent.myMethod = () => 42
+
+    const wrappedStateless = withI18n()(StatelessComponent)
+    expect(wrappedStateless.myProp).toBeDefined()
+    expect(wrappedStateless.myProp).toEqual(24)
+    expect(wrappedStateless.myMethod).toBeDefined()
+    expect(wrappedStateless.myMethod()).toEqual(42)
+  })
+
   it("should provide data from i18n context", function() {
     const { i18n } = mountHoc().props
     expect(i18n).toBeDefined()
