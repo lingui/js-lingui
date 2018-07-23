@@ -1,33 +1,55 @@
 **Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
-## Setup local development
+## Contributing to the docs
+
+Documentation uses Sphinx and reStructuredText. Source inside the
+[docs](https://github.com/lingui/js-lingui/tree/stable-2.x/docs) directory.
+
+1. Go to the `docs` directory
+
+2. Run `pipenv install` to setup Python environemnt (requires Python 3.6).
+   If you encounter `ValueError('unknown locale: %s' % localename)`,
+   run `export LC_ALL=en_US.UTF-8`, `export LANG=en_US.UTF-8` and try again.
+
+3. Run `pipenv run make livehtml` to build the docs, watch for changes and preview
+   documentation locally at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+4. It's also possible to run `pipenv run make html` for single build. Incremental builds
+   are much faster than the first one as only changed files are built.
+
+## Contributing the code
+
+### Setup local environment
 
 1. Clone project
 
-```bash
-git clone https://github.com/lingui/js-lingui.git
-cd js-lingui
-```
+   ```sh
+   git clone https://github.com/lingui/js-lingui.git
+   cd js-lingui
+   ```
 
-2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna, so simply running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
+2. Install development packages. This project uses
+   [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna,
+   so running `yarn` installs all development packages and also dependencies for all
+   workspaces (inside `packages/*`).
 
-```bash
-yarn
-```
+   ```sh
+   yarn
+   ```
 
 3. Run tests
 
-```bash
-# Watch mode
-yarn watch
+   ```sh
+   # Watch mode
+   yarn watch
 
-# Single run
-yarn test
-```
+   # Single run
+   yarn test
+   ```
 
-## Finalize changes 
+### Finalize changes 
 
-1. Check that all test pass
+1. Check that all tests pass
 
 ```bash
 yarn test
@@ -46,22 +68,13 @@ fails, you might want to run full test suit locally:
 node ./scripts/test.js
 ```
 
-This command builds all packages, run unit tests and integration tests, so it
-takes some time.
+This command builds all packages, simulates creating packages for NPM, run unit tests
+and finally runs integration tests using production build.
 
-## Contributing to the docs
+## Add yourself to contributors
 
-Documentation uses Sphinx and reStructuredText. It's inside the `docs` directory.
-
-1. To setup python virtualenv, run `pipenv install` inside `docs`. If you encounter `ValueError('unknown locale: %s' % localename)`, run `export LC_ALL=en_US.UTF-8` and `export LANG=en_US.UTF-8` and repeat.
-
-2. Run `pipenv run make html` to build the docs.
-
-3. After every change, re-run the command to rebuild the docs. Incremental builds are much faster than the first one.
-
-## Add yourself to contributors!
-
-This project uses [all-contributors](https://github.com/kentcdodds/all-contributors) to recognize all contributors who improve `js-lingui` in any way.
+This project uses [all-contributors](https://github.com/kentcdodds/all-contributors) to
+recognize all contributors who improve **jsLingui** in any way.
 
 ```bash
 yarn run add -- <yourGitHubName> <type>
@@ -71,7 +84,7 @@ yarn run add -- <yourGitHubName> <type>
 # yarn run add -- tricoder42 code,doc  # type may be also comma separated value
 ```
 
-See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contributors) for all types of contribution.
+See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contributors)
+for all types of contribution.
 
-If you need any help, just raise an issue. I'm happy to help with finalizing PR!
-
+If you need any help, just raise an issue or submit an working draft of PR.
