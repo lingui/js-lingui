@@ -1,8 +1,10 @@
 // @flow
-type NumberFormat = string | {}
-type DateFormat = string | {}
+import type { Locales } from "./i18n"
 
-type IntlType = {|
+export type NumberFormat = string | {}
+export type DateFormat = string | {}
+
+export type IntlType = {|
   DateTimeFormat: Function,
   NumberFormat: Function
 |}
@@ -10,10 +12,10 @@ type IntlType = {|
 declare var Intl: IntlType
 
 export function date(
-  language: string,
+  locales: Locales,
   format?: DateFormat = {}
 ): (value: string | Date) => string {
-  const formatter = new Intl.DateTimeFormat(language, format)
+  const formatter = new Intl.DateTimeFormat(locales, format)
   return value => {
     if (typeof value === "string") value = new Date(value)
     return formatter.format(value)
@@ -21,9 +23,9 @@ export function date(
 }
 
 export function number(
-  language: string,
+  locales: Locales,
   format?: NumberFormat = {}
 ): (value: number) => string {
-  const formatter = new Intl.NumberFormat(language, format)
+  const formatter = new Intl.NumberFormat(locales, format)
   return value => formatter.format(value)
 }

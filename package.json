@@ -53,6 +53,7 @@
     "filesize": "^3.5.11",
     "flow-bin": "^0.75.0",
     "fs-extra": "^6.0.1",
+    "full-icu": "^1.2.1",
     "glob": "^7.1.2",
     "gzip-size": "^4.1.0",
     "husky": "^0.14.3",

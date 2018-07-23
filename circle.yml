@@ -9,6 +9,13 @@ aliases:
   - &yarn-install
       name: Install dependencies
       command: yarn install --no-progress
+  - &yarn-install-tools
+      name: Install build tools
+      command: sudo yarn global add codecov yalc
+  - &tests
+      command: node scripts/test.js --skip-build
+      environment:
+        NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
 jobs:
   build:
@@ -17,6 +24,7 @@ jobs:
 
     steps:
       - checkout
+
       - restore-cache: *restore-cache
       - run: *yarn-install
 
@@ -25,7 +33,7 @@ jobs:
           paths:
               - node_modules
 
-      - run: node scripts/build/
+      - run: node ./scripts/build/
 
       - persist_to_workspace:
           root: build
@@ -41,17 +49,9 @@ jobs:
       - attach-workspace: *attach-workspace
       - restore-cache: *restore-cache
       - run: *yarn-install
-
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - run: node scripts/test.js --skip-build
-
-      - run:
-          name: Send coverage report
-          command: codecov
-
+      - run: *yarn-install-tools
+      - run: *tests
+      - run: codecov
       - store_test_results:
           path: ./results/
           when: always
@@ -65,12 +65,8 @@ jobs:
       - attach-workspace: *attach-workspace
       - restore-cache: *restore-cache
       - run: *yarn-install
-
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - run: node scripts/test.js --skip-build
+      - run: *yarn-install-tools
+      - run: *tests
 
   publish:
     docker:

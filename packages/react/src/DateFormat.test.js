@@ -5,8 +5,15 @@ import { mount } from "enzyme"
 import { DateFormat, NumberFormat } from "@lingui/react"
 
 describe("DateFormat", function() {
-  const languageContext = code => ({
-    context: { linguiPublisher: { i18n: { language: code } } }
+  const languageContext = (language, locales) => ({
+    context: {
+      linguiPublisher: {
+        i18n: {
+          language: language,
+          locales: locales
+        }
+      }
+    }
   })
 
   it("should render", function() {
@@ -29,6 +36,24 @@ describe("DateFormat", function() {
       languageContext("en")
     ).find("Render")
     expect(dateString.text()).toEqual(expectedDate)
+  })
+
+  it("should render using the given locales", function() {
+    const now = new Date("2017-06-17:14:00.000Z")
+    const node = mount(
+      <DateFormat value={now} />,
+      languageContext("en", "fr-FR")
+    ).find("Render")
+    expect(node.text()).toEqual("17/06/2017")
+  })
+
+  it("should render using the first recognized locale", function() {
+    const now = new Date("2017-06-17:14:00.000Z")
+    const node = mount(
+      <DateFormat value={now} />,
+      languageContext("en", ["unknown-locale", "fr-FR"])
+    ).find("Render")
+    expect(node.text()).toEqual("17/06/2017")
   })
 
   it("should render translation inside custom component", function() {
@@ -61,8 +86,10 @@ describe("DateFormat", function() {
 })
 
 describe("NumberFormat", function() {
-  const languageContext = code => ({
-    context: { linguiPublisher: { i18n: { language: code } } }
+  const languageContext = (language, locales) => ({
+    context: {
+      linguiPublisher: { i18n: { language: language, locales: locales } }
+    }
   })
 
   it("should render", function() {
@@ -78,6 +105,36 @@ describe("NumberFormat", function() {
       languageContext("en")
     ).find("Render")
     expect(node.text()).toEqual("€42.00")
+  })
+
+  it("should render using the given locales", function() {
+    const node = mount(
+      <NumberFormat
+        value={42000}
+        format={{
+          style: "currency",
+          currency: "EUR",
+          minimumFractionDigits: 2
+        }}
+      />,
+      languageContext("en", "de-DE")
+    ).find("Render")
+    expect(node.text()).toEqual("42.000,00 €")
+  })
+
+  it("should render using the first recognized locale", function() {
+    const node = mount(
+      <NumberFormat
+        value={42000}
+        format={{
+          style: "currency",
+          currency: "EUR",
+          minimumFractionDigits: 2
+        }}
+      />,
+      languageContext("en", ["unknown-locale", "de-DE"])
+    ).find("Render")
+    expect(node.text()).toEqual("42.000,00 €")
   })
 
   it("should render translation inside custom component", function() {

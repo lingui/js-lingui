@@ -1,17 +1,27 @@
 // @flow
+import type { Locales } from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
-const defaultFormats = (language, languageData = {}, formats = {}) => {
+type IntlType = {|
+  DateTimeFormat: Function,
+  NumberFormat: Function
+|}
+
+declare var Intl: IntlType
+
+const defaultFormats = (language, locales, languageData = {}, formats = {}) => {
+  locales = locales || language
   const { plurals } = languageData
   const style = format =>
     isString(format) ? formats[format] || { style: format } : format
-
   const replaceOctothorpe = (value, message) => {
     return ctx => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
-      return norm.map(m => (isString(m) ? m.replace("#", value) : m))
+      const formatter = new Intl.NumberFormat(locales)
+      const valueStr = formatter.format(value)
+      return norm.map(m => (isString(m) ? m.replace("#", valueStr) : m))
     }
   }
 
@@ -28,9 +38,9 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
 
     select: (value, rules) => rules[value] || rules.other,
 
-    number: (value, format) => number(language, style(format))(value),
+    number: (value, format) => number(locales, style(format))(value),
 
-    date: (value, format) => date(language, style(format))(value),
+    date: (value, format) => date(locales, style(format))(value),
 
     undefined: value => value
   }
@@ -42,13 +52,14 @@ const defaultFormats = (language, languageData = {}, formats = {}) => {
  * argument type.
  *
  * @param language     - Language of message
+ * @param locales      - Locales to be used when formatting the numbers or dates
  * @param values       - Parameters for variable interpolation
  * @param languageData - Language data (e.g: plurals)
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context({ language, values, formats, languageData }: Object) {
-  const formatters = defaultFormats(language, languageData, formats)
+function context({ language, locales, values, formats, languageData }: Object) {
+  const formatters = defaultFormats(language, locales, languageData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
     const value = values[name]
@@ -63,12 +74,14 @@ function context({ language, values, formats, languageData }: Object) {
 export function interpolate(
   translation: Function,
   language: string,
+  locales: ?Locales,
   languageData: Object
 ) {
   return (values: Object, formats?: Object = {}) => {
     const message = translation(
       context({
         language,
+        locales,
         languageData,
         formats,
         values
