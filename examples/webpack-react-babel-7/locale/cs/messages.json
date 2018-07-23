@@ -1,0 +1,183 @@
+{
+  "<0>Article</0>": {
+    "translation": "<0>Článek</0>",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        19
+      ]
+    ],
+    "obsolete": true
+  },
+  "Close": {
+    "translation": "Zavřít",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        15
+      ]
+    ],
+    "obsolete": true
+  },
+  "Czech": {
+    "translation": "Česky",
+    "origin": [
+      [
+        "src/App.js",
+        11
+      ]
+    ]
+  },
+  "English": {
+    "translation": "Anglicky",
+    "origin": [
+      [
+        "src/App.js",
+        10
+      ]
+    ]
+  },
+  "Formats": {
+    "translation": "Formáty",
+    "origin": [
+      [
+        "src/App.js",
+        79
+      ]
+    ]
+  },
+  "French": {
+    "translation": "Francouzsky",
+    "origin": [
+      [
+        "src/App.js",
+        12
+      ]
+    ]
+  },
+  "Full content of {articleName}": {
+    "translation": "Celé znění článku {articleName}",
+    "origin": [
+      [
+        "src/Usecases/ElementAttributes.js",
+        23
+      ]
+    ],
+    "obsolete": true
+  },
+  "Hello World": {
+    "translation": "Ahoj světe",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        37
+      ]
+    ],
+    "obsolete": true
+  },
+  "My name is {name}": {
+    "translation": "Jmenuji se {name}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        41
+      ],
+      [
+        "src/Usecases/Children.js",
+        89
+      ],
+      [
+        "src/Usecases/Children.js",
+        90
+      ]
+    ],
+    "obsolete": true
+  },
+  "Read <0>more</0>.": {
+    "translation": "Číst <0>dále</0>",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        45
+      ]
+    ],
+    "obsolete": true
+  },
+  "The answer is {answer,number,percent}": {
+    "translation": "Odpověď je {answer,number,percent}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        13
+      ]
+    ],
+    "obsolete": true
+  },
+  "This isn't translated": {
+    "translation": "Toto není přeloženo",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        29
+      ]
+    ],
+    "obsolete": true
+  },
+  "Today is {now,date}": {
+    "translation": "Dnes je {now,date}",
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        19
+      ]
+    ],
+    "obsolete": true
+  },
+  "Translation of children": {
+    "translation": "",
+    "origin": [
+      [
+        "src/App.js",
+        69
+      ]
+    ]
+  },
+  "Translation of element attributes": {
+    "translation": "Překlady atributů",
+    "origin": [
+      [
+        "src/App.js",
+        74
+      ]
+    ]
+  },
+  "Translations wrapped in component which never updates": {
+    "translation": "Překlady uvnitř komponent, které se nikdy neaktualizují",
+    "origin": [
+      [
+        "src/App.js",
+        84
+      ]
+    ]
+  },
+  "msg.label": {
+    "translation": "Nápis",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        33
+      ]
+    ],
+    "obsolete": true
+  },
+  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": {
+    "translation": "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}}",
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        51
+      ]
+    ],
+    "obsolete": true
+  }
+}

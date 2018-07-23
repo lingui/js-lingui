@@ -1,7 +1,7 @@
 import fs from "fs"
 import fsPath from "path"
 import mkdirp from "mkdirp"
-import generate from "@babel/generator"
+import generate from "babel-generator"
 import { getConfig } from "@lingui/conf"
 
 // Map of messages
@@ -108,7 +108,16 @@ export default function({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "defaults") acc[key] = item.value.value
+          if (key === "id" || key === "defaults") {
+            if (item.value.value) {
+              acc[key] = item.value.value
+            } else if (
+              item.value.expression &&
+              t.isStringLiteral(item.value.expression)
+            ) {
+              acc[key] = item.value.expression.value
+            }
+          }
           return acc
         }, {})
 
@@ -150,8 +159,8 @@ export default function({ types: t }) {
         }
 
         const attrs =
-          node.arguments[1] && node.arguments[1].properties
-            ? node.arguments[1].properties
+          node.arguments[2] && node.arguments[2].properties
+            ? node.arguments[2].properties
             : []
 
         const idArg = node.arguments[0]
@@ -209,21 +218,26 @@ export default function({ types: t }) {
 
       const messages = file.get(MESSAGES)
       const catalog = {}
+      const baseName = fsPath.basename(filename)
+      const catalogFilename = fsPath.join(targetDir, `${baseName}.json`)
+
+      mkdirp.sync(targetDir)
 
       // no messages, skip file
-      if (!messages.size) return
+      if (!messages.size) {
+        // clean any existing catalog
+        if (fs.existsSync(catalogFilename)) {
+          fs.writeFileSync(catalogFilename, JSON.stringify({}))
+        }
+
+        return
+      }
 
       messages.forEach((value, key) => {
         catalog[key] = value
       })
 
-      mkdirp.sync(targetDir)
-      const [basename] = fsPath.basename(filename).split(".", 2)
-
-      fs.writeFileSync(
-        fsPath.join(targetDir, `${basename}.json`),
-        JSON.stringify(catalog, null, 2)
-      )
+      fs.writeFileSync(catalogFilename, JSON.stringify(catalog, null, 2))
     }
   }
 }

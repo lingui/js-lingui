@@ -24,7 +24,8 @@ primary_domain = 'js'
 # ones.
 extensions = [
     'linguidocs',
-    'edit_on_github'
+    'edit_on_github',
+    'youtube'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

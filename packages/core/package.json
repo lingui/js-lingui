@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "2.0.4",
+  "version": "0.0.0-managed-by-release-script",
   "description": "I18n tools for javascript",
   "keywords": [
     "i18n",
@@ -29,7 +29,7 @@
     "cjs/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.38",
+    "babel-runtime": "^6.26.0",
     "make-plural": "^4.1.1",
     "messageformat-parser": "^2.0.0"
   }

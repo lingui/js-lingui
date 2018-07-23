@@ -6,6 +6,6 @@ export default (locale: string) => {
     return
   }
 
-  const [language] = locale.split("_")
+  const [language] = locale.split(/[_-]/)
   return { plurals: plurals[language] }
 }

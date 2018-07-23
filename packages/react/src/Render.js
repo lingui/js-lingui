@@ -8,7 +8,7 @@ export type RenderProps = {
 }
 
 type RenderComponentProps = {
-  value: string | Array<any>
+  value: string | ?Array<any>
 } & RenderProps
 
 export default class Render extends React.Component<RenderComponentProps> {

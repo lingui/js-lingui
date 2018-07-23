@@ -9,6 +9,12 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 
    --- `W3C Web Internationalization FAQ <https://www.w3.org/International/questions/qa-i18n>`_
 
+Support the project
+-------------------
+
+There's ongoing campaign on Indiegogo_ to raise funds for this project. If you want
+to support it, please consider donation or share it with your friend.
+
 Key features
 ------------
 
@@ -33,15 +39,20 @@ Key features
    :caption: Tutorials
 
    React <tutorials/react>
+   React Native <tutorials/react-native>
+   JavaScript <tutorials/javascript>
    CLI <tutorials/cli>
 
 .. toctree::
    :maxdepth: 1
    :caption: Guides
 
-   How plurals work <guides/plurals>
-   Dynamic loading of translations <guides/dynamic-loading-catalogs.rst>
+   Testing <guides/testing>
+   Typescript <guides/typescript>
+   Excluding build files <guides/excluding-build-files>
+   Dynamic loading of translations <guides/dynamic-loading-catalogs>
    Optimized components <guides/optimized-components>
+   How plurals work <guides/plurals>
 
 .. toctree::
    :maxdepth: 1
@@ -58,9 +69,18 @@ Key features
    Migration from 1.x to 2.x <releases/migration-2>
    Migration from 0.x to 1.x <releases/migration-1>
 
+.. toctree::
+   :maxdepth: 1
+   :caption: External resources
+
+   Talks about i18n in Javascript <misc/talks-about-i18n>
+
+
 
 Indices
 -------
 
 * :ref:`genindex`
 * :ref:`search`
+
+.. _Indiegogo: https://igg.me/at/js-lingui/x/4367619

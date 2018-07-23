@@ -1,66 +1,94 @@
 version: 2
 
-workflows:
-  version: 2
-  test_n_deploy:
-    jobs:
-      - test-linter
+aliases:
+  - &attach-workspace
+      at: build
 
-      - test-node8:
-          requires:
-            - test-linter
-
-#      - build-docs:
-#          requires:
-#            - test-node6
-#            - test-node8
+  - &restore-cache
+      key: node-modules-{{ checksum "yarn.lock" }}
+  - &yarn-install
+      name: Install dependencies
+      command: yarn install --no-progress
 
 jobs:
-  test-node8: &test-template
+  build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:latest
 
     steps:
       - checkout
 
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - restore_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install full-icu
-          command: yarn add full-icu -W
-
-      - run:
-          name: Install dependencies
-          command: yarn install
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+      - run: yarn add --dev -W full-icu
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: env NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu node scripts/test.js
+      - persist_to_workspace:
+          root: build
+          paths:
+            - packages
+
+  test-node-latest:
+    docker:
+      - image: circleci/node:latest
+        environment:
+          NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
 
       - run:
-          name: Send coverage report
-          command: |
-              if [ "${NODEJS}" == "4" ]; then
-                codecov
-              fi
+          name: Install build tools
+          command: sudo yarn global add codecov yalc
+
+      - run: node scripts/test.js --skip-build
+      - run: codecov
 
       - store_test_results:
           path: ./results/
           when: always
 
-#  test-node6:
-#    <<: *test-template
-#
-#    docker:
-#      - image: circleci/node:6
+  test-node-8:
+    docker:
+      - image: circleci/node:8
+        environment:
+          NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+
+      - run:
+          name: Install build tools
+          command: sudo yarn global add codecov yalc
+
+      - run: node scripts/test.js --skip-build
+
+  publish:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      - run: node scripts/release/update-versions.js --next
+      - run: node scripts/release/release-npm.js --next
 
   test-linter:
     docker:
@@ -68,35 +96,18 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - restore_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install dependencies
-          command: yarn install
-
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-              - node_modules
-
+      - restore-cache: *restore-cache
+      - run: *yarn-install
       - run: yarn run lint
 
   build-docs:
     docker:
-      - image: circleci/python:latest
+      - image: circleci/python:3.6
         environment:
           PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
     steps:
       - checkout
-
-      - run: sudo pip install pipenv
 
       - restore_cache:
           key: pipenv-{{ checksum "Pipfile.lock" }}
@@ -108,10 +119,42 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
-      - run: cd docs && pipenv run make html
+      - run: cd docs; pipenv run make html
 
       - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./scripts/deploy-docs.sh
-            fi
+          command: ./scripts/legacy/deploy-docs.sh
+
+workflows:
+  version: 2
+  test_n_deploy:
+    jobs:
+      - build-docs:
+          filters:
+            branches:
+              only:
+                - master
+                - stable-2.x
+
+      - build
+
+      - test-linter:
+          requires:
+            - build
+      - test-node-latest:
+          requires:
+            - build
+      - test-node-8:
+          requires:
+            - build
+
+# Disable automatic publish, because NPM requires OTP token
+#      - publish:
+#          requires:
+#            - test-linter
+#            - test-node-latest
+#            - test-node-8
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - stable-2.x

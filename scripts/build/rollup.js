@@ -4,19 +4,18 @@ const { rollup } = require("rollup")
 const babel = require("rollup-plugin-babel")
 const closure = require("rollup-plugin-closure-compiler-js")
 const commonjs = require("rollup-plugin-commonjs")
+const resolve = require("rollup-plugin-node-resolve")
 const prettier = require("rollup-plugin-prettier")
 const replace = require("rollup-plugin-replace")
 const ora = require("ora")
 // const stripBanner = require("rollup-plugin-strip-banner")
 const chalk = require("chalk")
 const path = require("path")
-const resolve = require("rollup-plugin-node-resolve")
 const fs = require("fs")
 const argv = require("minimist")(process.argv.slice(2))
 const Stats = require("./stats")
-// const Sync = require("./sync")
 const sizes = require("./plugins/sizes")
-// const codeFrame = require("babel-code-frame")
+const codeFrame = require("babel-code-frame")
 // const Wrappers = require("./wrappers")
 const babelConfig = require("./babel.config")
 
@@ -57,23 +56,21 @@ const closureOptions = {
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
+    babelrc: false,
     exclude: "node_modules/**",
     runtimeHelpers: true
   })
 }
 
 function getRollupOutputOptions(outputPath, format, globals, globalName) {
-  return Object.assign(
-    {},
-    {
-      file: outputPath,
-      format,
-      globals,
-      interop: false,
-      name: globalName,
-      sourcemap: false
-    }
-  )
+  return {
+    file: outputPath,
+    format,
+    globals,
+    interop: true, // might be turned off with Babel 7, please review
+    name: globalName,
+    sourcemap: false
+  }
 }
 
 function getFormat(bundleType) {
@@ -138,7 +135,7 @@ function getPlugins(
     }),
 
     // We still need CommonJS for external deps like object-assign.
-    // commonjs(),
+    commonjs(),
 
     // Apply dead code elimination and/or minification.
     isProduction &&

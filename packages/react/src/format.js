@@ -15,7 +15,7 @@ const nlRe = /(?:\r\n|\r|\n)/g
 function formatElements(
   value: string,
   elements: Array<React$Element<any>> = []
-) {
+): string | Array<any> {
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist
 
@@ -30,12 +30,15 @@ function formatElements(
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
+    const element = elements[index]
     tree.push(
       cloneElement(
-        elements[index],
+        element,
         { key: index },
-        // unpaired tag shouldn't receive children (return null instead)
-        children ? formatElements(children, elements) : null
+
+        // format children for pair tags
+        // unpaired tags might have children if it's a component passed as a variable
+        children ? formatElements(children, elements) : element.props.children
       )
     )
 

@@ -1,23 +1,13 @@
-const fs = require("fs")
-const chalk = require("chalk")
-const semver = require("semver")
+const fs = require("fs-extra")
+const { execSync } = require("child_process")
 
-const VERSION_FILE = "packages/version.txt"
+async function main() {
+  const packageJson = await fs.readJson("package.json")
+  const { version } = packageJson
 
-const oldVersion = fs
-  .readFileSync(VERSION_FILE)
-  .toString()
-  .trim()
-
-if (!semver.valid(oldVersion)) {
-  console.error(
-    `Version ${oldVersion} isn't valid. Please fix ${VERSION_FILE} manually.`
-  )
-  process.exit(1)
+  execSync(`git add package.json`)
+  execSync(`git commit -m 'chore: Release version ${version}'`)
+  execSync(`git tag v${version}`)
 }
 
-const newVersion = semver.inc(oldVersion, "prerelease")
-
-fs.writeFileSync(VERSION_FILE, newVersion)
-
-console.log(chalk.green(`Bumped version to ${newVersion}`))
+main()

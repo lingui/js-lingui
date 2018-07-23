@@ -2,17 +2,17 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-# babel-preset-lingui-js
+# @lingui/babel-preset-js
 
-> Babel preset for all Lingui plugins required in vanilla JS apps (for React apps see [babel-preset-lingui-react](https://www.npmjs.com/package/babel-preset-lingui-js)).
+> Babel preset for all Lingui plugins required in vanilla JS apps (for React apps see [@lingui/babel-preset-react](https://www.npmjs.com/package/@lingui/babel-preset-react)).
 
-`babel-preset-lingui-js` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-preset-js` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
 ```bash
-yarn add --dev babel-preset-lingui-js
-# npm install --save-dev babel-preset-lingui-js
+yarn add --dev @lingui/babel-preset-js
+# npm install --save-dev @lingui/babel-preset-js
 ```
 
 ## Usage
@@ -23,21 +23,21 @@ yarn add --dev babel-preset-lingui-js
 
 ```json
 {
-  "presets": ["lingui-js"]
+  "presets": ["@lingui/babel-preset-js"]
 }
 ```
 
 ### Via CLI
 
 ```bash
-babel script.js --presets lingui-js
+babel script.js --presets @lingui/babel-preset-js
 ```
 
 ### Via Node API
 
 ```js
-require("babel-core").transform("code", {
-  presets: ["lingui-js"]
+require("@babel/core").transform("code", {
+  presets: ["@lingui/babel-preset-js"]
 });
 ```
 

@@ -17,11 +17,25 @@ describe("DateFormat", function() {
   })
 
   it("should render", function() {
-    const now = new Date("2017-06-17:14:00.000Z")
-    const node = mount(<DateFormat value={now} />, languageContext("en")).find(
-      "Render"
-    )
-    expect(node.text()).toEqual("6/17/2017")
+    const nowStr = "2017-06-17:14:00.000Z"
+    const now = new Date(nowStr)
+    const [day, month, year] = [
+      now.getDate(),
+      now.getMonth() + 1,
+      now.getFullYear()
+    ]
+    const expectedDate = `${month}/${day}/${year}`
+    const dateObj = mount(
+      <DateFormat value={now} />,
+      languageContext("en")
+    ).find("Render")
+    expect(dateObj.text()).toEqual(expectedDate)
+
+    const dateString = mount(
+      <DateFormat value={nowStr} />,
+      languageContext("en")
+    ).find("Render")
+    expect(dateString.text()).toEqual(expectedDate)
   })
 
   it("should render using the given locales", function() {
@@ -44,6 +58,12 @@ describe("DateFormat", function() {
 
   it("should render translation inside custom component", function() {
     const now = new Date("2017-06-17:14:00.000Z")
+    const [day, month, year] = [
+      now.getDate(),
+      now.getMonth() + 1,
+      now.getFullYear()
+    ]
+    const expectedDate = `${month}/${day}/${year}`
     const html1 = mount(
       <DateFormat value={now} render={<p className="lead" />} />,
       languageContext("en")
@@ -60,7 +80,7 @@ describe("DateFormat", function() {
       .find("Render")
       .html()
 
-    expect(html1).toEqual('<p class="lead">6/17/2017</p>')
+    expect(html1).toEqual(`<p class="lead">${expectedDate}</p>`)
     expect(html2).toEqual(html1)
   })
 })

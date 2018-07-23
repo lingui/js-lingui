@@ -46,7 +46,7 @@ function testCase(testName, assertion) {
             localeDir: LOCALE_DIR
           }
         ],
-        ...(jsx ? ["@babel/syntax-jsx"] : [])
+        ...(jsx ? ["babel-plugin-syntax-jsx"] : [])
       ]
     })
 
@@ -85,21 +85,21 @@ describe("babel-plugin-lingui-extract-messages", function() {
     "shouldn't write catalog for files without translatable messages",
     transform => {
       expect(transform("empty.js")).not.toThrow()
-      expect(fs.existsSync(path.join(buildDir, "empty.json"))).toBeFalsy()
+      expect(fs.existsSync(path.join(buildDir, "empty.js.json"))).toBeFalsy()
     }
   )
 
   testCase("should preserve path to file inside locale dir", transform => {
     expect(transform("jsx/deep/all.js")).not.toThrow()
     expect(
-      fs.existsSync(path.join(buildDir, "jsx", "deep", "all.json"))
+      fs.existsSync(path.join(buildDir, "jsx", "deep", "all.js.json"))
     ).toBeTruthy()
   })
 
   testCase("should ignore files without lingui import", transform => {
     expect(transform("jsx/without-lingui.js")).not.toThrow()
     expect(
-      fs.existsSync(path.join(buildDir, "jsx", "without-lingui.json"))
+      fs.existsSync(path.join(buildDir, "jsx", "without-lingui.js.json"))
     ).toBeFalsy()
   })
 
@@ -109,10 +109,15 @@ describe("babel-plugin-lingui-extract-messages", function() {
     const expected = fs.readFileSync(
       path.join(__dirname, "fixtures", "noop", "expected.js")
     )
-    expect(result.code.trim()).toEqual(expected.toString().trim())
+    expect(result.code.replace(/\r/g, "").trim()).toEqual(
+      expected
+        .toString()
+        .replace(/\r/g, "")
+        .trim()
+    )
 
     const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "noop", "actual.json"))
+      fs.readFileSync(path.join(buildDir, "noop", "actual.js.json"))
     )
     expect(messages).toMatchSnapshot()
   })
@@ -124,7 +129,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
     expect(transform("jsx/all.js")).not.toThrow()
 
     const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "jsx", "all.json"))
+      fs.readFileSync(path.join(buildDir, "jsx", "all.js.json"))
     )
     expect(messages).toMatchSnapshot()
   })
@@ -138,7 +143,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
       expect(transform("jsx/integration.js")).not.toThrow()
 
       const messages = JSON.parse(
-        fs.readFileSync(path.join(buildDir, "jsx", "integration.json"))
+        fs.readFileSync(path.join(buildDir, "jsx", "integration.js.json"))
       )
       expect(messages).toMatchSnapshot()
     }
@@ -154,7 +159,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
 
       const messages = JSON.parse(
         fs.readFileSync(
-          path.join(buildDir, "jsx", "integration-with-aliases.json")
+          path.join(buildDir, "jsx", "integration-with-aliases.js.json")
         )
       )
       expect(messages).toMatchSnapshot()
@@ -168,7 +173,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
     expect(transform("js/all.js", false)).not.toThrow()
 
     const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "js", "all.json"))
+      fs.readFileSync(path.join(buildDir, "js", "all.js.json"))
     )
     expect(messages).toMatchSnapshot()
   })
@@ -182,7 +187,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
       expect(transform("js/integration.js", false)).not.toThrow()
 
       const messages = JSON.parse(
-        fs.readFileSync(path.join(buildDir, "js", "integration.json"))
+        fs.readFileSync(path.join(buildDir, "js", "integration.js.json"))
       )
       expect(messages).toMatchSnapshot()
     }
@@ -204,13 +209,13 @@ describe("babel-plugin-lingui-extract-messages", function() {
               }
             ]
           ],
-          presets: ["@babel/preset-react"]
+          presets: ["react"]
         }
       )
     ).not.toThrow()
 
     const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "jsx", "with-react.json"))
+      fs.readFileSync(path.join(buildDir, "jsx", "with-react.js.json"))
     )
     expect(messages).toMatchSnapshot()
   })

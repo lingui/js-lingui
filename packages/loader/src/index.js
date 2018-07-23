@@ -7,20 +7,16 @@ export default function(source) {
   const config = getConfig({ cwd: path.dirname(this.resourcePath) })
   const format = formats[config.format](config)
 
-  const locales = format.getLocales()
   const locale = format.getLocale(this.resourcePath)
 
-  const catalogs = R.mergeAll(
-    locales.map(locale => ({ [locale]: format.read(locale) }))
-  )
-
-  const messages = R.mergeAll(
-    Object.keys(catalogs[locale]).map(key => ({
-      [key]: format.getTranslation(catalogs, locale, key, {
+  const catalogs = format.readAll()
+  const messages = R.mapObjIndexed(
+    (_, key) =>
+      format.getTranslation(catalogs, locale, key, {
         fallbackLocale: config.fallbackLocale,
         sourceLocale: config.sourceLocale
-      })
-    }))
+      }),
+    catalogs[locale]
   )
 
   return createCompiledCatalog(locale, messages)

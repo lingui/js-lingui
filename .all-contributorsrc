@@ -75,6 +75,61 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mlabrum",
+      "name": "Matt Labrum",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/296106?v=4",
+      "profile": "https://github.com/mlabrum",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ghostd",
+      "name": "Vincent Ricard",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1098399?v=4",
+      "profile": "https://github.com/ghostd",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "adamgruber",
+      "name": "Adam Gruber",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2378900?v=4",
+      "profile": "https://github.com/adamgruber",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "spencermefford",
+      "name": "Spencer Mefford",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1268629?v=4",
+      "profile": "https://github.com/spencermefford",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "huan086",
+      "name": "Jeow Li Huan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1448788?v=4",
+      "profile": "https://github.com/huan086",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "vonovak",
+      "name": "Vojtech Novak",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1566403?v=4",
+      "profile": "https://github.com/vonovak",
+      "contributions": [
+        "doc"
+      ]
     }
-  ]
+  ],
+  "repoType": "github"
 }

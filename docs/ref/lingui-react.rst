@@ -378,12 +378,14 @@ API for translation of JSX props:
 
 .. code-block:: jsx
 
-   import React from 'react';
-   import { Trans, withI18n } from '@lingui/react';
+   import React from "react"
+   import { withI18n } from "@lingui/react"
 
-   const LogoutIcon = withI18n()(
-       ({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`}/>
-   );
+   const LogoutIcon = withI18n()(({ i18n }) => (
+     <Icon name="turn-off" aria-label={i18n.t`Log out`} />
+   ))
+
+.. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.
 
 .. js:function:: i18nMark(msgId: string)
 
@@ -420,4 +422,4 @@ components:
    In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
 
 .. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-.. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+.. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat

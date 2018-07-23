@@ -12,7 +12,7 @@ function getTestName(testPath) {
 describe("babel-plugin-lingui-transform-js", function() {
   const babelOptions = {
     babelrc: false,
-    plugins: [plugin, "@babel/plugin-syntax-jsx"]
+    plugins: ["babel-plugin-syntax-jsx", plugin]
   }
 
   // return function, so we can test exceptions
@@ -31,9 +31,14 @@ describe("babel-plugin-lingui-transform-js", function() {
     it(testName, () => {
       const expected =
         fs.existsSync(expectedPath) &&
-        fs.readFileSync(expectedPath, "utf8").trim()
+        fs
+          .readFileSync(expectedPath, "utf8")
+          .replace(/\r/g, "")
+          .trim()
 
-      const actual = transformFileSync(actualPath, babelOptions).code.trim()
+      const actual = transformFileSync(actualPath, babelOptions)
+        .code.replace(/\r/g, "")
+        .trim()
       expect(actual).toEqual(expected)
     })
   })

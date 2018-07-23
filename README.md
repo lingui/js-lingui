@@ -1,3 +1,9 @@
+## Indiegogo campaign
+
+There's ongoing campaign on [Indiegogo][Indiegogo] to raise funds for this project. If you want to support it, please consider donation or share it with your friend.
+
+<hr />
+
 <div align="center">
 <h1><sub>js</sub>Lingui</h1>
 
@@ -6,11 +12,13 @@ Seamless internationalization in Javascript and React
 
 <hr />
 
+<a href="https://www.buymeacoffee.com/tricoder" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
 [![Join the chat at https://gitter.im/lingui/js-lingui](https://badges.gitter.im/lingui/js-lingui.svg)](https://gitter.im/lingui/js-lingui?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![CircleCI][Badge-CI]][CI] 
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
 [![MIT License][Badge-License]][LICENSE]
 
 [![Watch on GitHub][Badge-Watch]][Watch]
@@ -39,7 +47,7 @@ and React.
   - Plurals, Ordinals and Categories (i.e. Select)
   - Number and Date formats (from Intl)
 - Works with manual and generated message IDs
-- Works with in any JS environment, while integration packages brings better performance in target environments (e.g: `lingui-react` for React)
+- Works with in any JS environment, while integration packages brings better developer experience in target environments (e.g: `lingui-react` for React)
 - High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
 
 See the [tutorial for React][TutorialReact]
@@ -240,12 +248,13 @@ like `@lingui/react` only brings better performance for target environments.
 
 ## Contributors
 
-Thanks goes to these people ([emoji key][emojis]):
+Please read the [contributing guide](CONTRIBUTING.md) to start contributing! Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
 | [<img src="https://avatars1.githubusercontent.com/u/827862?v=3" width="100px;"/><br /><sub><b>Tomáš Ehrlich</b></sub>](http://www.tomasehrlich.cz)<br />[💻](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Code") [📖](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Documentation") [💡](#example-tricoder42 "Examples") [✅](#tutorial-tricoder42 "Tutorials") | [<img src="https://avatars1.githubusercontent.com/u/3697116?v=3" width="100px;"/><br /><sub><b>Josef Hornych</b></sub>](https://github.com/Peping)<br />[📖](https://github.com/lingui/js-lingui/commits?author=Peping "Documentation") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3APeping "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/307006?v=3" width="100px;"/><br /><sub><b>Christian Kaps</b></sub>](https://www.silhouette.rocks)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3Aakkie "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/2085291?v=3" width="100px;"/><br /><sub><b>brunesto</b></sub>](https://github.com/brunesto)<br />[💻](https://github.com/lingui/js-lingui/commits?author=brunesto "Code") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3Abrunesto "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/614768?v=3" width="100px;"/><br /><sub><b>David Furlong</b></sub>](https://davidfurlong.github.io/)<br />[💬](#question-davidfurlong "Answering Questions") | [<img src="https://avatars2.githubusercontent.com/u/1416801?v=4" width="100px;"/><br /><sub><b>Thibaut</b></sub>](http://thibaut.re)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3AthibautRe "Bug reports") [📖](https://github.com/lingui/js-lingui/commits?author=thibautRe "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2965120?v=4" width="100px;"/><br /><sub><b>Sebastian Sobociński</b></sub>](https://github.com/hiddenboox)<br />[💻](https://github.com/lingui/js-lingui/commits?author=hiddenboox "Code") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars2.githubusercontent.com/u/296106?v=4" width="100px;"/><br /><sub><b>Matt Labrum</b></sub>](https://github.com/mlabrum)<br />[📖](https://github.com/lingui/js-lingui/commits?author=mlabrum "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/1098399?v=4" width="100px;"/><br /><sub><b>Vincent Ricard</b></sub>](https://github.com/ghostd)<br />[📖](https://github.com/lingui/js-lingui/commits?author=ghostd "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/2378900?v=4" width="100px;"/><br /><sub><b>Adam Gruber</b></sub>](https://github.com/adamgruber)<br />[💻](https://github.com/lingui/js-lingui/commits?author=adamgruber "Code") | [<img src="https://avatars1.githubusercontent.com/u/1268629?v=4" width="100px;"/><br /><sub><b>Spencer Mefford</b></sub>](https://github.com/spencermefford)<br />[💻](https://github.com/lingui/js-lingui/commits?author=spencermefford "Code") | [<img src="https://avatars2.githubusercontent.com/u/1448788?v=4" width="100px;"/><br /><sub><b>Jeow Li Huan</b></sub>](https://github.com/huan086)<br />[💻](https://github.com/lingui/js-lingui/commits?author=huan086 "Code") | [<img src="https://avatars1.githubusercontent.com/u/1566403?v=4" width="100px;"/><br /><sub><b>Vojtech Novak</b></sub>](https://github.com/vonovak)<br />[📖](https://github.com/lingui/js-lingui/commits?author=vonovak "Documentation") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
@@ -262,7 +271,7 @@ Contributions of any kind welcome!
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 
-[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
+[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/stable-2.x.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
 [Badge-License]: https://img.shields.io/github/license/lingui/js-lingui.svg
 [Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
@@ -270,13 +279,11 @@ Contributions of any kind welcome!
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 
-[CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
+[CI]: https://circleci.com/gh/lingui/js-lingui/tree/stable-2.x
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [Watch]: https://github.com/lingui/js-lingui/watchers
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
 [PRWelcome]: http://makeapullrequest.com
-
-[Badge-CodeSponsor]: https://app.codesponsor.io/embed/84LZA8as5bkg57cgKMJZMe75/lingui/js-lingui.svg
-[CodeSponsor]: https://app.codesponsor.io/link/84LZA8as5bkg57cgKMJZMe75/lingui/js-lingui
+[Indiegogo]: https://igg.me/at/js-lingui/x/4367619
