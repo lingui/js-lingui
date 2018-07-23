@@ -27,6 +27,8 @@ jobs:
           paths:
               - node_modules
 
+      - run: node ./scripts/build/
+
       - persist_to_workspace:
           root: build
           paths:
