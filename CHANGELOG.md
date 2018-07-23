@@ -7,6 +7,7 @@ Long-awaited backlog grooming.
 
 ### New Features
 
+* Add support for locales (aka cultures) ([#170](https://github.com/lingui/js-lingui/pull/170)). Thanks to [Cristi Ingineru](https://github.com/cristiingineru).
 * Allow React elements to be used as message variables ([#183](https://github.com/lingui/js-lingui/issues/183))
 * Support both Babel 6.x and 7.x ([#171](https://github.com/lingui/js-lingui/issues/171), [#232](https://github.com/lingui/js-lingui/issues/232), [#238](https://github.com/lingui/js-lingui/issues/238))
 * `withI18n` hoists statics of wrapped component ([#166](https://github.com/lingui/js-lingui/issues/166))
