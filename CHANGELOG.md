@@ -1,5 +1,31 @@
 # Change Log
 
+<a name="2.3.0"></a>
+## [2.3.0](https://github.com/lingui/js-lingui/compare/v2.2.0...v2.3.0) (2018-07-23)
+
+Long-awaited backlog grooming.
+
+### New Features
+
+* Allow React elements to be used as message variables ([#183](https://github.com/lingui/js-lingui/issues/183))
+* Support both Babel 6.x and 7.x ([#171](https://github.com/lingui/js-lingui/issues/171), [#232](https://github.com/lingui/js-lingui/issues/232), [#238](https://github.com/lingui/js-lingui/issues/238))
+* `withI18n` hoists statics of wrapped component ([#166](https://github.com/lingui/js-lingui/issues/166))
+* `Date` and `i18n.date` accepts date as a string ([#155](https://github.com/lingui/js-lingui/issues/155))
+* `lingui extract` shows progress ([#180](https://github.com/lingui/js-lingui/issues/180))
+* `lingui extract` throws an error when encountering different defaults for the same message ([#200](https://github.com/lingui/js-lingui/issues/200))
+* `lingui compile` shows useful error when message has syntax errors ([#191](https://github.com/lingui/js-lingui/issues/191))
+
+### Bug Fixes
+
+* Fix internal catalog names to avoid collisions. Internal catalogs are named `<original_filename>.json`, eg: `App.js.json` ([#244](https://github.com/lingui/js-lingui/issues/244))
+
+### Docs
+
+* [React Native Tutorial](https://lingui.github.io/js-lingui/tutorials/react-native.html) ([#243](https://github.com/lingui/js-lingui/pull/243)). Thanks to [Vojtech Novak](https://github.com/vonovak).
+* Add draft of [Testing Guide](https://lingui.github.io/js-lingui/guides/testing.html)
+* Add section with [external resources](https://lingui.github.io/js-lingui/misc/talks-about-i18n.html)
+* Several fixes by [Vincent Ricard](https://github.com/ghostd) ([#242](https://github.com/lingui/js-lingui/pull/242))
+
 <a name="2.2.0"></a>
 ## [2.2.0](https://github.com/lingui/js-lingui/compare/v2.1.2...v2.2.0) (2018-07-04)
 
