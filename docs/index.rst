@@ -73,7 +73,7 @@ Key features
    :maxdepth: 1
    :caption: External resources
 
-   Talks about i18n in Javascript <misc/talks-about-i18n>
+   Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
 
 
 
