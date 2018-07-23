@@ -36,8 +36,6 @@ jobs:
   test-node-latest:
     docker:
       - image: circleci/node:latest
-        environment:
-          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
     steps:
       - checkout
@@ -50,6 +48,9 @@ jobs:
           command: sudo yarn global add codecov yalc
 
       - run: node scripts/test.js --skip-build
+        environment:
+          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
+
       - run: codecov
 
       - store_test_results:
@@ -59,8 +60,6 @@ jobs:
   test-node-8:
     docker:
       - image: circleci/node:8
-        environment:
-          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
     steps:
       - checkout
@@ -73,6 +72,8 @@ jobs:
           command: sudo yarn global add codecov yalc
 
       - run: node scripts/test.js --skip-build
+        environment:
+          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
   publish:
     docker:
