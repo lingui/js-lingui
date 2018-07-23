@@ -20,7 +20,6 @@ jobs:
 
       - restore-cache: *restore-cache
       - run: *yarn-install
-      - run: yarn add --dev -W full-icu
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
