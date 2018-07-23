@@ -154,6 +154,7 @@ Plural
    :prop string many: *Plural* form
    :prop string other: (required) general *plural* form
    :prop string _<number>: Exact match form, correspond to ``=N`` rule
+   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
 
 :component:`Plural` component handles pluralization of words or phrases.
 Selected plural form depends on active language and ``value`` props.
@@ -250,6 +251,7 @@ SelectOrdinal
    :prop string many: *Plural* form
    :prop string other: (required) general *plural* form
    :prop string _<number>: Exact match form, correspond to ``=N`` rule. (e.g: ``_0``, ``_1``)
+   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
 
    MessageFormat: ``{arg, selectordinal, ...forms}``
 
@@ -275,15 +277,17 @@ DateFormat
 
 .. component:: DateFormat
 
-   :prop number value: Date to be formatted
+   :prop string|Date value: Date to be formatted
    :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat`_.
 
 :component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat`_.
-It takes a date as a ``value`` prop and formats it
-using ``format`` options. ``format`` prop supports the same options as
-`Intl.DateTimeFormat`_:
+It takes a date object or a date string as a ``value`` prop and formats it using
+``format`` options. ``format`` prop supports the same options as `Intl.DateTimeFormat`_:
 
 .. code-block:: jsx
+
+   // date as a string
+   <DateFormat value="2018-07-23" />;
 
    const now = new Date();
    // default language format
@@ -302,8 +306,8 @@ NumberFormat
 
 .. component:: NumberFormat
 
-   :prop number value: Date to be formatted
-   :prop string|Object format: Date format passed as options to `Intl.NumberFormat`_
+   :prop number value: Number to be formatted
+   :prop string|Object format: Number format passed as options to `Intl.NumberFormat`_
 
 :component:`NumberFormat` component is a wrapper around
 `Intl.NumberFormat_. It takes a number as a ``value`` prop
@@ -338,12 +342,18 @@ I18nProvider
 .. component:: I18nProvider
 
    :prop string language: Active language
+   :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
    :prop object catalogs: Message catalogs
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
+
+``language`` sets the active language and loads corresponding message catalog.
+``locales`` are used for date/number formatting for countries or regions which use
+different formats for the same language (e.g. arabic numerals have several
+representations).
 
 ``catalogs`` is a type of ``Catalogs``:
 
