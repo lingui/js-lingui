@@ -80,6 +80,9 @@ custom ``defaultRender`` config.
 Components
 ==========
 
+Trans
+-----
+
 .. component:: Trans
 
    :prop id string?: Override auto-generated message ID
@@ -136,6 +139,9 @@ fact, it's the only i18n component you'll need if you decide to go without the b
        }
      }}
    />;
+
+Plural
+------
 
 .. component:: Plural
 
@@ -206,6 +212,9 @@ It's also possible to use exact matches. This is commonly used in combination wi
        other="You and # other guests arrived"
    />;
 
+Select
+------
+
 .. component:: Select
 
    :prop number value: Override auto-generated message ID
@@ -226,6 +235,9 @@ matches ``value``:
        female="Her book"
        other="Their book"
    />;
+
+SelectOrdinal
+-------------
 
 .. component:: SelectOrdinal
 
@@ -258,6 +270,9 @@ it uses **ordinal** plural forms, instead of **cardinal** ones.
        other="#th"
    />;
 
+DateFormat
+----------
+
 .. component:: DateFormat
 
    :prop number value: Date to be formatted
@@ -281,6 +296,9 @@ using ``format`` options. ``format`` prop supports the same options as
        month: "long",
        day: "numeric"
    }} />;
+
+NumberFormat
+------------
 
 .. component:: NumberFormat
 
@@ -313,6 +331,9 @@ Message catalogs and the active language are passed to the context in
 :component:`I18nProvider`. However, context should never be accessed
 directly. The :js:func:`withI18n` high-order component passes ``i18n`` prop
 down to wrapped component and shadows all implementation details.
+
+I18nProvider
+------------
 
 .. component:: I18nProvider
 
@@ -365,6 +386,9 @@ top-level application component. However, if the ``language`` is stored in a
         );
    }
 
+withI18n
+--------
+
 .. js:function:: withI18n(options?)
 
    :param Object options: Configuration for high-order component
@@ -386,6 +410,12 @@ API for translation of JSX props:
    ))
 
 .. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.
+
+Helpers
+=======
+
+i18nMark
+--------
 
 .. js:function:: i18nMark(msgId: string)
 

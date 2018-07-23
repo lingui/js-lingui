@@ -9,12 +9,21 @@ message catalogs and compiles message catalogs for production use.
 Install
 =======
 
-``@lingui/cli`` can be installed both globally:
+``@lingui/cli`` requires you to install ``babel-core`` depending on Babel version you
+use. Both packages can be installed either globally:
 
 .. code-block:: shell
 
    yarn global add @lingui/cli
    # npm install --global @lingui/cli
+
+   # babel 6.x
+   yarn global add babel-core
+   # npm install --global babel-core
+
+   # babel 7.x
+   yarn global add babel-core@^7.0.0-0 @babel/core
+   # npm install --global babel-core@^7.0.0-0 @babel/core
 
 or locally:
 
@@ -23,10 +32,18 @@ or locally:
    yarn add --dev @lingui/cli
    # npm install --save-dev @lingui/cli
 
+   # babel 6.x
+   yarn add --dev babel-core
+   # npm install --save-dev babel-core
+
+   # babel 7.x
+   yarn add --dev babel-core@^7.0.0-0 @babel/core
+   # npm install --save-dev babel-core@^7.0.0-0 @babel/core
+
 .. note::
 
    When installed locally, you need to either run it from
-   ``node_modules/.bin/lingui`` or using npx_ (``npx lingui``) add it to your
+   ``node_modules/.bin/lingui`` or using npx_ (``npx lingui``) or add it to your
    ``package.json``:
 
    .. code-block:: json
