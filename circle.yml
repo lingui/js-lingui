@@ -38,7 +38,7 @@ jobs:
     docker:
       - image: circleci/node:latest
         environment:
-          NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu
+          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
     steps:
       - checkout
@@ -61,7 +61,7 @@ jobs:
     docker:
       - image: circleci/node:8
         environment:
-          NODE_ICU_DATA=/home/circleci/project/node_modules/full-icu
+          NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
     steps:
       - checkout
