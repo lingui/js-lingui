@@ -16,7 +16,7 @@ async function releasePackage(version, packagePath) {
   const spinner = ora(`Publishing @lingui/${name}@${version}`)
 
   const tags = argv.next ? "--tag next" : ""
-  const cmd = `npm publish --access public ${tags}`
+  const cmd = `npm publish --access public --otp=${argv.otp} ${tags}`
 
   if (!argv.dryRun) {
     try {
