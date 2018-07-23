@@ -66,15 +66,7 @@ describe("compile", function() {
     ["fr", "fr-CH", "0,1", "10%", "20%", "04.03.2017", "0.10 €", "1.00 €"]
   ]
   testVector.forEach(tc => {
-    let language,
-      locales,
-      expectedNumber,
-      expectedPercent1,
-      expectedPercent2,
-      expectedDate,
-      expectedCurrency1,
-      expectedCurrency2
-    ;[
+    const [
       language,
       locales,
       expectedNumber,

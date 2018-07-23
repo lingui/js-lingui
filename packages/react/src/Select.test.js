@@ -123,7 +123,7 @@ describe("Categories", function() {
           value="0.1234"
           one="#"
           other="#"
-          options={{ style: "percent" }}
+          format={{ style: "percent" }}
         />,
         languageContext("en")
       )

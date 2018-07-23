@@ -1,16 +1,15 @@
 /* @flow */
 import * as React from "react"
-import type { Node } from "react"
 import PropTypes from "prop-types"
 import hashSum from "hash-sum"
 
 import { setupI18n } from "@lingui/core"
-import type { I18n, Catalogs } from "@lingui/core"
+import type { I18n, Catalogs, Locales } from "@lingui/core"
 
 export type I18nProviderProps = {
-  children?: Node,
+  children?: React.Node,
   language: string,
-  locales?: ?string | string[],
+  locales?: Locales,
   catalogs?: Catalogs,
   i18n?: I18n,
 

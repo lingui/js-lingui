@@ -66,7 +66,7 @@ describe("plural", function() {
       p({
         value: 0.1234,
         other: "# completed",
-        options: { style: "percent" }
+        format: { style: "percent" }
       })
     ).toEqual("12% completed")
 

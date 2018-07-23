@@ -1,4 +1,5 @@
 // @flow
+import type { Locales } from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
@@ -73,7 +74,7 @@ function context({ language, locales, values, formats, languageData }: Object) {
 export function interpolate(
   translation: Function,
   language: string,
-  locales: ?string | string[],
+  locales: ?Locales,
   languageData: Object
 ) {
   return (values: Object, formats?: Object = {}) => {

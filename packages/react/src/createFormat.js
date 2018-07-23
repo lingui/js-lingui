@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react"
 
+import type { Locales } from "@lingui/core"
 import type { RenderProps } from "./Render"
 import Render from "./Render"
 
@@ -9,13 +10,13 @@ type FormatProps<V, FormatOptions> = {
   format?: FormatOptions,
   i18n: {
     language: string,
-    locales?: ?string | string[]
+    locales?: Locales
   }
 } & RenderProps
 
 function createFormat<V, FormatOptions>(
   formatFunction: (
-    language: ?string | string[],
+    language: Locales,
     format?: FormatOptions
   ) => (value: V) => string
 ) {

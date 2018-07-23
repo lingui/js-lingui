@@ -1,5 +1,6 @@
 // @flow
 import * as React from "react"
+import type { Locales } from "@lingui/core"
 import withI18n from "./withI18n"
 import type { withI18nProps } from "./withI18n"
 
@@ -15,7 +16,7 @@ type PluralProps = {
   few?: any,
   many?: any,
   other: any,
-  locales?: ?string | string[]
+  locales?: Locales
 } & withI18nProps &
   RenderProps
 
