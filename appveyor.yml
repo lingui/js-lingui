@@ -1,5 +1,7 @@
 environment:
-  nodejs_version: "9"
+  matrix:
+    nodejs_version: "8"
+    nodejs_version: "10"
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -8,9 +10,6 @@ install:
   # install modules
   - yarn install
   - yarn global add yalc
-  - yarn add full-icu -W
-  - set NODE_ICU_DATA=C:\projects\js-lingui\node_modules\full-icu
-  - setx NODE_ICU_DATA "C:\projects\js-lingui\node_modules\full-icu"
 
 # Post-install test scripts.
 test_script:
