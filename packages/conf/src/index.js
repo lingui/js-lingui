@@ -60,10 +60,8 @@ const configValidation = {
 
 export function getConfig({ cwd } = {}) {
   const defaultRootDir = cwd || process.cwd()
-  const configExplorer = cosmiconfig("lingui", {
-    sync: true
-  })
-  const result = configExplorer.load(defaultRootDir)
+  const configExplorer = cosmiconfig("lingui")
+  const result = configExplorer.searchSync(defaultRootDir)
   const raw = Object.assign({}, defaults, result ? result.config : null)
 
   validate(raw, configValidation)
