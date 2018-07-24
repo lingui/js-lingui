@@ -1,0 +1,28 @@
+{
+  "name": "@lingui/react.macro",
+  "version": "0.0.0-managed-by-release-script",
+  "description": "Transform React components to ICU message format",
+  "main": "index.js",
+  "author": {
+    "name": "Matt Labrum",
+    "email": "matt@labrum.me"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin-macros"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "babel-plugin-macros": "^2.2.0",
+    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script"
+  }
+}

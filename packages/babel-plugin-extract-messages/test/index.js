@@ -159,7 +159,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
 
       const messages = JSON.parse(
         fs.readFileSync(
-          path.join(buildDir, "jsx", "integration-with-macro.json")
+          path.join(buildDir, "jsx", "integration-with-macro.js.json")
         )
       )
       expect(messages).toMatchSnapshot()

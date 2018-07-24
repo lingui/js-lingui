@@ -1,5 +1,7 @@
 import implementationPlugin from "./implementationPlugin"
 
+export { implementationPlugin }
+
 // Plugin function
 export default function(babel) {
   const { types: t } = babel

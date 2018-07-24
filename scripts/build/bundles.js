@@ -31,7 +31,7 @@ const bundles = [
 
   {
     type: bundleTypes.NODE,
-    entry: "@lingui/react-macro"
+    entry: "@lingui/react.macro"
   },
 
   {
