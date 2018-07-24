@@ -1,3 +1,5 @@
+const argv = require("minimist")(process.argv.slice(2))
+
 const fs = require("fs")
 const path = require("path")
 const { execSync } = require("child_process")
@@ -29,8 +31,10 @@ try {
   process.exit(1)
 }
 
-logHeading("Build packages")
-execSync("node scripts/build", { stdio: "inherit" })
+if (!argv["skip-build"]) {
+  logHeading("Build packages")
+  execSync("node scripts/build", { stdio: "inherit" })
+}
 
 logHeading("Install packages in examples")
 const examples = listDirs(EXAMPLES_DIR)
@@ -40,5 +44,5 @@ logHeading("Link packages with examples")
 execSync("node scripts/integration", { stdio: "inherit" })
 
 logHeading("Run tests")
-execSync("yarn test:unit", { stdio: "inherit" })
+execSync("yarn test", { stdio: "inherit" })
 execSync("yarn test:integration", { stdio: "inherit" })

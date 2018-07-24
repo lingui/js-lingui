@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "2.0.4",
+  "version": "0.0.0-managed-by-release-script",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -35,23 +35,27 @@
     "lingui-extract.js"
   ],
   "dependencies": {
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/generator": "^7.0.0-beta.40",
-    "@babel/runtime": "^7.0.0-beta.40",
-    "@babel/types": "^7.0.0-beta.40",
-    "@babel/plugin-transform-typescript": "7.0.0-beta.40",
-    "@lingui/babel-plugin-extract-messages": "2.0.4",
-    "@lingui/babel-plugin-transform-js": "2.0.4",
-    "@lingui/babel-plugin-transform-react": "2.0.4",
-    "@lingui/conf": "2.0.4",
+    "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",
+    "@lingui/babel-plugin-transform-js": "0.0.0-managed-by-release-script",
+    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script",
+    "@lingui/conf": "0.0.0-managed-by-release-script",
+    "babel-generator": "^6.26.1",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-runtime": "^6.26.0",
+    "babel-types": "^6.26.0",
     "babylon": "^6.18.0",
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
-    "commander": "^2.13.0",
+    "commander": "^2.16.0",
     "glob": "^7.1.2",
     "make-plural": "^4.1.1",
     "messageformat-parser": "^2.0.0",
     "mkdirp": "^0.5.1",
-    "ramda": "^0.25.0"
+    "ora": "^3.0.0",
+    "ramda": "^0.25.0",
+    "typescript": "^2.9.2"
+  },
+  "peerDependencies": {
+    "babel-core": "6.x || ^7.0.0-0"
   }
 }

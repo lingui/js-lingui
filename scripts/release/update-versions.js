@@ -3,29 +3,32 @@ const path = require("path")
 const chalk = require("chalk")
 const semver = require("semver")
 const { execSync } = require("child_process")
+const { getVersion } = require("./version")
 
-const VERSION_FILE = "packages/version.txt"
-const PACKAGES_DIR = "packages"
+const argv = require("minimist")(process.argv.slice(2), {
+  alias: { "dry-run": "dryRun" }
+})
 
-const version = fs
-  .readFileSync(VERSION_FILE)
-  .toString()
-  .trim()
+const PACKAGES_DIR = "build/packages"
 
-async function updatePackage(packageName) {
+async function updatePackage(version, packageName) {
   const packageJsonPath = path.join(packageName, "package.json")
   const packageJson = await fs.readJson(packageJsonPath)
 
   packageJson.version = version
-  packageJson.dependencies = updatePackageDependencies(packageJson.dependencies)
+  packageJson.dependencies = updatePackageDependencies(
+    version,
+    packageJson.dependencies
+  )
   packageJson.devDependencies = updatePackageDependencies(
+    version,
     packageJson.devDependencies
   )
 
   await fs.writeJson(packageJsonPath, packageJson, { spaces: 2 })
 }
 
-function updatePackageDependencies(dependencies) {
+function updatePackageDependencies(version, dependencies) {
   if (!dependencies) return
 
   const updatedDependencies = {}
@@ -43,18 +46,15 @@ function updatePackageDependencies(dependencies) {
 }
 
 async function main() {
+  const version = await getVersion(argv.next)
+
   await Promise.all(
     fs
       .readdirSync(PACKAGES_DIR)
       .map(directory => path.join(PACKAGES_DIR, directory))
       .filter(directory => fs.lstatSync(directory).isDirectory())
-      .map(updatePackage)
+      .map(packageName => updatePackage(version, packageName))
   )
-
-  execSync(`git add ${VERSION_FILE}`)
-  execSync(`git add ${PACKAGES_DIR}/*/package.json`)
-  execSync(`git commit -m 'chore: Release version ${version}'`)
-  execSync(`git tag v${version}`)
 }
 
 main()

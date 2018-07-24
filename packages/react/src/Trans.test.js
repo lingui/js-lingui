@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from "react"
-import { mount } from "enzyme"
+import { mount, shallow } from "enzyme"
 
 import { Trans } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
@@ -31,6 +31,8 @@ describe("Trans component", function() {
     mount(node, { context })
       .find("Render")
       .text()
+
+  const html = node => shallow(node, { context }).html()
 
   /*
    * Tests
@@ -122,6 +124,13 @@ describe("Trans component", function() {
     expect(translation).toEqual(
       "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv."
     )
+  })
+
+  it.only("should render component in variables", function() {
+    const translation = html(
+      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
+    )
+    expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
   it("should render translation inside custom component", function() {

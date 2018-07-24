@@ -15,6 +15,12 @@ Object {
 }
 `;
 
+exports[`collect should throw an error about different defaults 1`] = `
+Encountered different defaults for message msg.id
+diffDefaults/First.js:2 First default
+diffDefaults/Second.js:5 Second default
+`;
+
 exports[`collect should traverse directory and collect messages 1`] = `
 Object {
   Babel Documentation: Object {
@@ -48,5 +54,55 @@ Object {
       ],
     ],
   },
+}
+`;
+
+exports[`order should order messages alphabetically 1`] = `
+Object {
+  en: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+  fr: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+}
+`;
+
+exports[`order should order messages alphabetically 2`] = `
+Object {
+  en: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
+  fr: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
 }
 `;

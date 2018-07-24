@@ -1,11 +1,11 @@
-// Babel builder negeneruje commonjs, ale ES moduly. Rollup potrebuje modules: false, babel modules: true
+// Babel builder doesn't generate CommonJS, but ES modules.
+// Rollup, however, needs `modules: false, babel modules: true`
 module.exports = function(options) {
-  return {
+  const config = {
     presets: [
-      "@babel/preset-react",
-      "@babel/preset-flow",
+      "react",
       [
-        "@babel/preset-env",
+        "env",
         {
           targets: {
             node: 4,
@@ -16,15 +16,16 @@ module.exports = function(options) {
       ]
     ],
     plugins: [
-      ["@babel/plugin-proposal-class-properties", { loose: false }],
-      "@babel/plugin-proposal-export-default-from",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/transform-runtime"
-    ],
-    env: {
-      test: {
-        plugins: ["@babel/transform-modules-commonjs"]
-      }
-    }
+      ["transform-class-properties", { loose: false }],
+      "transform-export-default",
+      "transform-object-rest-spread",
+      "transform-runtime"
+    ]
   }
+
+  if (process.env.NODE_ENV === "test") {
+    config.plugins.push("transform-es2015-modules-commonjs")
+  }
+
+  return config
 }

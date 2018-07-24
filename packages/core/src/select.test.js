@@ -12,8 +12,20 @@ describe("plural", function() {
     }
   })
 
-  it("should convert to message format string", function() {
+  const i18nDe = setupI18n({
+    language: "de",
+    locales: "de-DE",
+    catalogs: {
+      en: {
+        messages: {}
+      }
+    }
+  })
+
+  it.only("should convert to message format string", function() {
     const p = plural(i18n)
+    const pDe = plural(i18nDe)
+
     expect(
       p({
         value: 1,
@@ -49,6 +61,53 @@ describe("plural", function() {
         other: "Their and # books"
       })
     ).toEqual("Their and 4 books")
+
+    expect(
+      p({
+        value: 0.1234,
+        other: "# completed",
+        format: { style: "percent" }
+      })
+    ).toEqual("12% completed")
+
+    expect(
+      p({
+        value: 1,
+        other: "# كتاب",
+        locales: "en-UK"
+      })
+    ).toEqual("1 كتاب")
+
+    expect(
+      p({
+        value: 1,
+        other: "لدي # كتاب",
+        locales: "ar-AS"
+      })
+    ).toEqual("لدي ١ كتاب")
+
+    expect(
+      pDe({
+        value: 1000,
+        other: "# Bücher"
+      })
+    ).toEqual("1.000 Bücher")
+
+    expect(
+      pDe({
+        value: 1000,
+        other: "# Bücher",
+        locales: "en-UK"
+      })
+    ).toEqual("1,000 Bücher")
+
+    expect(
+      pDe({
+        value: 1000,
+        other: "# Bücher",
+        locales: ["unknown-locale", "en-UK"]
+      })
+    ).toEqual("1,000 Bücher")
   })
 })
 

@@ -1,5 +1,6 @@
 // @flow
 import chalk from "chalk"
+import fs from "fs"
 import R from "ramda"
 import program from "commander"
 import plurals from "make-plural"
@@ -41,7 +42,7 @@ function command(config, format, options) {
   console.log("Compiling message catalogs…")
 
   return locales.map(locale => {
-    const [language] = locale.split("_")
+    const [language] = locale.split(/[_-]/)
     if (!plurals[language]) {
       console.log(
         chalk.red(
@@ -86,6 +87,16 @@ function command(config, format, options) {
 
     const compiledCatalog = createCompiledCatalog(locale, messages)
     const compiledPath = format.writeCompiled(locale, compiledCatalog)
+    if (options.typescript) {
+      const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
+      fs.writeFileSync(
+        typescriptPath,
+        `import { Catalog } from '@lingui/core';
+declare const catalog: Catalog;
+export = catalog;
+`
+      )
+    }
 
     options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     return compiledPath
@@ -100,6 +111,7 @@ if (require.main === module) {
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalog")
+    .option("--typescript", "Create Typescript definition for compiled bundle")
     .on("--help", function() {
       console.log("\n  Examples:\n")
       console.log(
@@ -120,7 +132,8 @@ if (require.main === module) {
 
   const results = command(config, format, {
     verbose: program.verbose || false,
-    allowEmpty: !program.strict
+    allowEmpty: !program.strict,
+    typescript: program.typescript || false
   })
 
   if (!results || results.some(res => !res)) {

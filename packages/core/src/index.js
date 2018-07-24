@@ -7,7 +7,8 @@ export type {
   Catalogs,
   MessageOptions,
   LanguageData,
-  I18n
+  I18n,
+  Locales
 } from "./i18n"
 
 export const i18nMark = (id: string) => id

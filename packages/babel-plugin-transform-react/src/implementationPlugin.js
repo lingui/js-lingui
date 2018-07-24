@@ -104,7 +104,9 @@ export default class Parser {
       let offset = ""
 
       for (const attr of element.attributes) {
-        const { name: { name } } = attr
+        const {
+          name: { name }
+        } = attr
 
         if (name === "value") {
           const exp = t.isLiteral(attr.value)
@@ -197,7 +199,9 @@ export default class Parser {
       let variable, format
 
       for (const attr of element.attributes) {
-        const { name: { name } } = attr
+        const {
+          name: { name }
+        } = attr
 
         if (name === "value") {
           const exp = t.isLiteral(attr.value)
@@ -334,7 +338,6 @@ export default class Parser {
   }
 
   getImportDeclarations() {
-    return this.importDeclarations
     return this.importDeclarations
   }
 

@@ -1,4 +1,3 @@
-export { default as implementationPlugin } from "./implementationPlugin"
 import implementationPlugin from "./implementationPlugin"
 
 // Plugin function

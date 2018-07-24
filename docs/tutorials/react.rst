@@ -1,3 +1,5 @@
+.. _react-tutorial-label:
+
 *********************************************
 Tutorial - Internationalization of React apps
 *********************************************
@@ -96,6 +98,17 @@ Let's start with the three major packages:
         ]
       }
 
+3. If you receive a warning about missing peer dependency ``babel-core``, you need
+to install it manually. Target version depends on whether you're using babel 6 or 7:
+
+   .. code-block:: shell
+
+      # babel 6.x
+      npm install -g babel-core
+
+      # babel 7.x
+      npm install -g babel-core@^7.0.0-0 @babel/core
+
 Now we have the environment up and running and we can start internationalizing our app!
 
 Setup
@@ -163,6 +176,8 @@ component:
 
 .. code-block:: jsx
 
+   import { Trans } from '@lingui/react';
+   
    <h1><Trans>Message Inbox</Trans></h1>
 
 Yes, that's it. Let's move on to another paragraph. This paragraph has some
@@ -405,7 +420,7 @@ This message is a bit special, because it depends on the value of the ``messages
 variable. Most languages use different forms of words when describing quantities
 - this is called `pluralization <https://en.wikipedia.org/wiki/Plural>`_.
 
-What's tricky is that different langauges use different number of plural forms.
+What's tricky is that different languages use different number of plural forms.
 For example, English has only two forms - singular and plural - as we can see
 in the example above. However, Czech language has three plural forms. Some
 languages have up to 6 plural forms and some don't have plurals at all!

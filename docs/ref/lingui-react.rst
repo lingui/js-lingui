@@ -80,6 +80,9 @@ custom ``defaultRender`` config.
 Components
 ==========
 
+Trans
+-----
+
 .. component:: Trans
 
    :prop id string?: Override auto-generated message ID
@@ -137,6 +140,9 @@ fact, it's the only i18n component you'll need if you decide to go without the b
      }}
    />;
 
+Plural
+------
+
 .. component:: Plural
 
    :prop string id: Override auto-generated message ID
@@ -148,6 +154,7 @@ fact, it's the only i18n component you'll need if you decide to go without the b
    :prop string many: *Plural* form
    :prop string other: (required) general *plural* form
    :prop string _<number>: Exact match form, correspond to ``=N`` rule
+   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
 
 :component:`Plural` component handles pluralization of words or phrases.
 Selected plural form depends on active language and ``value`` props.
@@ -206,6 +213,9 @@ It's also possible to use exact matches. This is commonly used in combination wi
        other="You and # other guests arrived"
    />;
 
+Select
+------
+
 .. component:: Select
 
    :prop number value: Override auto-generated message ID
@@ -227,6 +237,9 @@ matches ``value``:
        other="Their book"
    />;
 
+SelectOrdinal
+-------------
+
 .. component:: SelectOrdinal
 
    :prop number value: Override auto-generated message ID
@@ -238,6 +251,7 @@ matches ``value``:
    :prop string many: *Plural* form
    :prop string other: (required) general *plural* form
    :prop string _<number>: Exact match form, correspond to ``=N`` rule. (e.g: ``_0``, ``_1``)
+   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
 
    MessageFormat: ``{arg, selectordinal, ...forms}``
 
@@ -258,17 +272,22 @@ it uses **ordinal** plural forms, instead of **cardinal** ones.
        other="#th"
    />;
 
+DateFormat
+----------
+
 .. component:: DateFormat
 
-   :prop number value: Date to be formatted
+   :prop string|Date value: Date to be formatted
    :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat`_.
 
 :component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat`_.
-It takes a date as a ``value`` prop and formats it
-using ``format`` options. ``format`` prop supports the same options as
-`Intl.DateTimeFormat`_:
+It takes a date object or a date string as a ``value`` prop and formats it using
+``format`` options. ``format`` prop supports the same options as `Intl.DateTimeFormat`_:
 
 .. code-block:: jsx
+
+   // date as a string
+   <DateFormat value="2018-07-23" />;
 
    const now = new Date();
    // default language format
@@ -282,10 +301,13 @@ using ``format`` options. ``format`` prop supports the same options as
        day: "numeric"
    }} />;
 
+NumberFormat
+------------
+
 .. component:: NumberFormat
 
-   :prop number value: Date to be formatted
-   :prop string|Object format: Date format passed as options to `Intl.NumberFormat`_
+   :prop number value: Number to be formatted
+   :prop string|Object format: Number format passed as options to `Intl.NumberFormat`_
 
 :component:`NumberFormat` component is a wrapper around
 `Intl.NumberFormat_. It takes a number as a ``value`` prop
@@ -314,15 +336,24 @@ Message catalogs and the active language are passed to the context in
 directly. The :js:func:`withI18n` high-order component passes ``i18n`` prop
 down to wrapped component and shadows all implementation details.
 
+I18nProvider
+------------
+
 .. component:: I18nProvider
 
    :prop string language: Active language
+   :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
    :prop object catalogs: Message catalogs
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
+
+``language`` sets the active language and loads corresponding message catalog.
+``locales`` are used for date/number formatting for countries or regions which use
+different formats for the same language (e.g. arabic numerals have several
+representations).
 
 ``catalogs`` is a type of ``Catalogs``:
 
@@ -365,6 +396,9 @@ top-level application component. However, if the ``language`` is stored in a
         );
    }
 
+withI18n
+--------
+
 .. js:function:: withI18n(options?)
 
    :param Object options: Configuration for high-order component
@@ -378,12 +412,20 @@ API for translation of JSX props:
 
 .. code-block:: jsx
 
-   import React from 'react';
-   import { Trans, withI18n } from '@lingui/react';
+   import React from "react"
+   import { withI18n } from "@lingui/react"
 
-   const LogoutIcon = withI18n()(
-       ({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`}/>
-   );
+   const LogoutIcon = withI18n()(({ i18n }) => (
+     <Icon name="turn-off" aria-label={i18n.t`Log out`} />
+   ))
+
+.. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.
+
+Helpers
+=======
+
+i18nMark
+--------
 
 .. js:function:: i18nMark(msgId: string)
 
@@ -420,4 +462,4 @@ components:
    In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
 
 .. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-.. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+.. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
