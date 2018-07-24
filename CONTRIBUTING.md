@@ -67,6 +67,8 @@ on production build. You can do the same in your project:
 2. Packages are inside `build/packages` directory. First, run `yalc publish` in each
    of them and then run `yalc link <package>` for each `@lingui/` dependency in your
    project. Now you project uses your local version of `jsLingui`.
+  
+3. After you make some changes, you need to run `yarn release:build` only.
 
 ### Finalize changes 
 
