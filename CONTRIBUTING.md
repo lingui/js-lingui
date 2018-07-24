@@ -19,6 +19,9 @@ Documentation uses Sphinx and reStructuredText. Source inside the
 
 ## Contributing the code
 
+This project uses [yarn][YarnInstall] package manager. Please follow
+[official][YarnInstall] docs to install it.
+
 ### Setup local environment
 
 1. Clone project
@@ -47,29 +50,38 @@ Documentation uses Sphinx and reStructuredText. Source inside the
    yarn test
    ```
 
+### Using development version in your project
+
+After you successfully fix a bug or add a new feature, you most probably want
+to test it in your project as soon as possible.
+
+`jsLingui` uses [yalc](https://www.npmjs.com/package/yalc) to run integration tests
+on production build. You can do the same in your project:
+
+1. Build all packages:
+
+   ```sh
+   yarn release:build
+   ```
+  
+2. Packages are inside `build/packages` directory. First, run `yalc publish` in each
+   of them and then run `yalc link <package>` for each `@lingui/` dependency in your
+   project. Now you project uses your local version of `jsLingui`.
+
 ### Finalize changes 
 
-1. Check that all tests pass
+Please make sure that all tests pass and linter doesn't report any error before
+submitting a PR (Don't worry though! If you can't figure out the problem, create a PR
+anyway and we'll help you).
 
-```bash
-yarn test
-```
+- `yarn lint` - Linting
+- `yarn test` - Quick test suite (sufficient)
+- `yarn release:test` - Full test suite (recommended)
 
-2. Linter doesn't show any errors
+`yarn release:test` builds all packages, simulates creating packages for NPM, runs unit
+tests and finally runs integration tests using production build.
 
-```bash
-yarn lint
-```
-
-3. Now you can create PR and let CI service do their work, but if something
-fails, you might want to run full test suit locally:
-
-```bash
-node ./scripts/test.js
-```
-
-This command builds all packages, simulates creating packages for NPM, run unit tests
-and finally runs integration tests using production build.
+Now you can create PR and let CI service do their work!
 
 ## Add yourself to contributors
 
@@ -88,3 +100,5 @@ See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contri
 for all types of contribution.
 
 If you need any help, just raise an issue or submit an working draft of PR.
+
+[YarnInstall]: https://yarnpkg.com/en/docs/install#mac-stable

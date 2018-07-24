@@ -18,7 +18,9 @@
     "add": "all-contributors add",
     "generate": "all-contributors generate",
     "prettier": "yarn run lint:eslint --fix",
-    "precommit": "yarn prettier"
+    "precommit": "yarn prettier",
+    "release:build": "node ./scripts/build/",
+    "release:test": "node ./scripts/test.js"
   },
   "engines": {
     "node": ">=5.0"
