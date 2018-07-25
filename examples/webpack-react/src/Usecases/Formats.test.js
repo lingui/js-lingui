@@ -20,7 +20,7 @@ describe("Formats", function() {
   }
 
   it("should render", function() {
-    expect(mount(<Component language="en" />)).toMatchSnapshot()
+    expect(mount(<Component language="en" />).html()).toMatchSnapshot()
   })
 
   it("should render percent", function() {

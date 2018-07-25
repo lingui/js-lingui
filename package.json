@@ -61,6 +61,7 @@
     "husky": "^0.14.3",
     "jest": "^23.4.1",
     "jest-junit": "^5.1.0",
+    "jest-serializer-html": "^5.0.0",
     "memory-fs": "^0.4.1",
     "mock-fs": "^4.4.2",
     "ncp": "^2.0.0",
