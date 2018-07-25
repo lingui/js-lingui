@@ -1,7 +1,7 @@
 import { createMacro } from "babel-plugin-macros"
 import { implementationPlugin as TransformReactPlugin } from "@lingui/babel-plugin-transform-react"
 
-const importsToCarryOver = ["DateFormat", "NumberFormat", "withI18n"]
+const importsToCarryOver = ["DateFormat", "NumberFormat"]
 
 function macro({ references, state, babel }) {
   const { types: t } = babel

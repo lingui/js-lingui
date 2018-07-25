@@ -25,10 +25,7 @@ describe("macro", function() {
         { ...babelOptions, filename: __filename } // Must pass filename otherwise babel-plugin-macros throws an error
       )
     } catch (e) {
-      e.message = e.message.replace(
-        `${__filename}: @lingui/react.macro`,
-        "undefined"
-      ) // Removes filename from the jest snapshot
+      e.message = e.message.replace(/^.*: @lingui\/react\.macro/, "undefined") // Removes filename from the jest snapshot
 
       throw e
     }
