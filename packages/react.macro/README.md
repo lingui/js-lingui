@@ -4,23 +4,29 @@
 
 # react.macro
 
-> [Babel Plugin Macros](https://github.com/kentcdodds/babel-plugin-macros) macro which transforms content of components from [lingui-react](https://www.npmjs.com/package/lingui-react) to ICU MessageFormat.
+> [Babel Plugin Macros](https://github.com/kentcdodds/babel-plugin-macros) macro which 
+transforms content of components from
+[@lingui/react](https://www.npmjs.com/package/@lingui/react) to ICU MessageFormat.
 
-`react.macro` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`react.macro` is part of [js-lingui][jsLingui]. See the [documentation][Documentation]
+for all information, tutorials and examples.
 
 ## Installation
 
-```bash
+```sh
 yarn add --dev @lingui/react.macro
 # npm install --save-dev @lingui/react.macro
 ```
 
 ## Usage
 
-```js
+```jsx
 import { Trans } from '@lingui/react.macro'
 
-<Trans>Test!</Trans>
+<Trans>Hello, my name is {name} and today is <DateFormat value={now} /></Trans>
+
+// becomes
+// <Trans id="Hello, my name is {name} and today is {now,date}", values={{ name, now }} />
 ```
 
 ## License
