@@ -614,4 +614,14 @@ exports[`Children should render 1`] = `
 </Component>
 `;
 
-exports[`Children should support nested elements 1`] = `<li class="components">Read <a href="/mononoke">more</a>.</li>`;
+exports[`Children should support nested elements 1`] = `
+
+<li class="components">
+  Read
+  <a href="/mononoke">
+    more
+  </a>
+  .
+</li>
+
+`;
