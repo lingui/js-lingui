@@ -60,12 +60,12 @@ function index({ references, state, babel }) {
   }
 }
 
+const Trans = () => {}
+const Plural = () => {}
+const Select = () => {}
+const SelectOrdinal = () => {}
+const DateFormat = () => {}
+const NumberFormat = () => {}
+
 export default createMacro(index)
-// For intellisense as these will be ignored by babel-macro
-// Might want to copy PropTypes here?
-export const Trans = () => {}
-export const Plural = () => {}
-export const Select = () => {}
-export const SelectOrdinal = () => {}
-export const DateFormat = () => {}
-export const NumberFormat = () => {}
+export { Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat }

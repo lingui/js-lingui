@@ -23,4 +23,12 @@ function index({ references, state, babel }) {
   }
 }
 
+const t = () => {}
+const plural = () => {}
+const select = () => {}
+const selectOrdinal = () => {}
+const date = () => {}
+const number = () => {}
+
 export default createMacro(index)
+export { t, plural, select, selectOrdinal, date, number }
