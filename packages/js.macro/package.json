@@ -1,0 +1,30 @@
+{
+  "name": "@lingui/js.macro",
+  "version": "0.0.0-managed-by-release-script",
+  "description": "Macro for transforming tagged template strings to ICU message format",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin-macros"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=4.0"
+  },
+  "dependencies": {
+    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script"
+  },
+  "peerDependencies": {
+    "babel-plugin-macros": "^2.2.0"
+  }
+}
