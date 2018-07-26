@@ -5,7 +5,7 @@ import { I18nProvider } from "@lingui/react"
 
 import PureComponent from "./PureComponent"
 
-describe.skip("PureComponent", function() {
+describe("PureComponent", function() {
   const catalogs = {
     en: {},
     cs: {

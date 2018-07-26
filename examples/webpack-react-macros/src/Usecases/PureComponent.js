@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react"
 import { withI18n } from "@lingui/react"
+import { t } from "@lingui/js.macro"
 
 type PureComponentTestProps = {
   children?: any,
@@ -34,7 +35,7 @@ const CorrectUpdate = withI18n()(
 
     render() {
       const { i18n, value } = this.props
-      return <span className="valid">{i18n.t`The value is: ${value}`}</span>
+      return <span className="valid">{t`The value is: ${value}`}</span>
     }
   }
 )
@@ -45,7 +46,7 @@ const SkippedUpdate = withI18n({ withHash: false })(
 
     render() {
       const { i18n, value } = this.props
-      return <span className="invalid">{i18n.t`The value is: ${value}`}</span>
+      return <span className="invalid">{t`The value is: ${value}`}</span>
     }
   }
 )

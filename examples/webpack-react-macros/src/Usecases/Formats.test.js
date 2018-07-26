@@ -19,7 +19,7 @@ describe("Formats", function() {
       .text()
   }
 
-  it.skip("should render", function() {
+  it("should render", function() {
     expect(mount(<Component language="en" />)).toMatchSnapshot()
   })
 

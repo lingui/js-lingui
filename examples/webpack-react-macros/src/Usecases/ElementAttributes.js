@@ -2,6 +2,7 @@
 import * as React from "react"
 import { withI18n } from "@lingui/react"
 import { Trans } from "@lingui/react.macro"
+import { t } from "@lingui/js.macro"
 
 type ElementAttributesProps = {
   i18n: Object
@@ -13,7 +14,7 @@ class ElementAttributes extends React.Component<ElementAttributesProps> {
   render() {
     const { i18n } = this.props
     const articleName = "Scientific Journal"
-    const closeLabel = i18n.t`Close`
+    const closeLabel = t`Close`
 
     return (
       <div>
@@ -21,7 +22,7 @@ class ElementAttributes extends React.Component<ElementAttributesProps> {
           <a
             className="expression"
             href="/article"
-            title={i18n.t`Full content of ${articleName}`}
+            title={t`Full content of ${articleName}`}
           >
             Article
           </a>

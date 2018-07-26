@@ -57,7 +57,7 @@ describe("NeverUpdate", function() {
     expect(getText(node, ".variable")).toEqual("Jmenuji se Mononoke")
   })
 
-  it.skip("should update translation of attributes when language changes", function() {
+  it("should update translation of attributes when language changes", function() {
     const ConvervativeAttributes = BeConservative(ElementAttributes)
 
     const node = mount(<ConvervativeAttributes language="en" />)

@@ -22,7 +22,7 @@ describe("ElementAttributes", function() {
     </I18nProvider>
   )
 
-  it.skip("should demostrate i18n in html attributes", function() {
+  it("should demostrate i18n in html attributes", function() {
     const node = mount(<Component language="en" />)
     expect(node.find(".expression").prop("title")).toEqual(
       "Full content of Scientific Journal"
