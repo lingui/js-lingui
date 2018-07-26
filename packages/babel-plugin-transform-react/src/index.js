@@ -1,23 +1,21 @@
-import implementationPlugin from "./implementationPlugin"
-
-export { implementationPlugin }
+import Transformer from "./transformer"
 
 // Plugin function
 export default function(babel) {
   const { types: t } = babel
 
-  const plugin = new implementationPlugin(babel)
+  const transformer = new Transformer(babel)
 
   return {
     pre() {
       // Reset import declaration for each file.
       // Regression introduced in https://github.com/lingui/js-lingui/issues/62
-      plugin.setImportDeclarations({})
+      transformer.setImportDeclarations({})
     },
     visitor: {
-      ImportDeclaration(path) {
-        const importDeclarations = plugin.getImportDeclarations()
-        const { node } = path
+      JSXElement: transformer.transform,
+      ImportDeclaration({ node }) {
+        const importDeclarations = transformer.getImportDeclarations()
 
         const moduleName = node.source.value
         if (moduleName !== "@lingui/react") return
@@ -38,7 +36,7 @@ export default function(babel) {
           node.specifiers = [
             // Import for `Trans` component should be there always
             t.importSpecifier(
-              t.identifier(plugin.getLocalImportName("Trans")),
+              t.identifier(transformer.getLocalImportName("Trans")),
               t.identifier("Trans")
             ),
 
@@ -52,11 +50,7 @@ export default function(babel) {
           ]
         }
 
-        plugin.setImportDeclarations(importDeclarations)
-      },
-
-      JSXElement(path, file) {
-        plugin.JSXElement(path, file)
+        transformer.setImportDeclarations(importDeclarations)
       }
     } // visitor
   }

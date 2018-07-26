@@ -28,7 +28,7 @@ const initialProps = ({ formats } = {}) => ({
 
 const generatorFactory = (index = 0) => () => index++
 
-export default class Parser {
+export default class Transformer {
   constructor({ types: t }) {
     this.t = t
 
@@ -341,7 +341,7 @@ export default class Parser {
     return this.importDeclarations
   }
 
-  JSXElement(path, file) {
+  transform = (path, file) => {
     if (
       !this.importDeclarations ||
       !Object.keys(this.importDeclarations).length
