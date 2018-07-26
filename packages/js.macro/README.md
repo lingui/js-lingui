@@ -20,12 +20,17 @@ yarn add --dev @lingui/js.macro
 ## Usage
 
 ```jsx
+import { setupI18n } from '@lingui/core'
 import { t } from '@lingui/js.macro'
 
-t`Hello, my name is ${name} and today is ${date(now)}`
+// it's necessary to have `i18n` object in scope
+const i18n = setupI18n()
 
-// becomes
-// i18n._("Hello, my name is {name} and today is {now,date}", { name, now })
+// t is a macro
+const message = t`Hello, my name is ${name} and today is ${date(now)}`
+
+// line above is transformed using babel-plugin-macros to this
+// const message = i18n._("Hello, my name is {name} and today is {now,date}", { name, now })
 ```
 
 ## License

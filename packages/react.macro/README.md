@@ -23,9 +23,10 @@ yarn add --dev @lingui/react.macro
 ```jsx
 import { Trans } from '@lingui/react.macro'
 
+// Trans is a macro
 <Trans>Hello, my name is {name} and today is <DateFormat value={now} /></Trans>
 
-// becomes
+// line above is transformed using babel-plugin-macros to this
 // <Trans id="Hello, my name is {name} and today is {now,date}", values={{ name, now }} />
 ```
 
