@@ -28,8 +28,7 @@ type Catalogs = { [key: string]: Catalog }
 type setupI18nProps = {
   language?: string,
   locales?: Locales,
-  catalogs?: Catalogs,
-  development?: Object
+  catalogs?: Catalogs
 }
 
 function getLanguageData(catalog) {
