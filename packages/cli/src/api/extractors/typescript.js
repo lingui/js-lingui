@@ -17,6 +17,7 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
+    const { babelOptions = {} } = options
     const content = fs.readFileSync(filename, "utf8")
     const isTsx = filename.endsWith(".tsx")
     // pass jsx to babel untouched

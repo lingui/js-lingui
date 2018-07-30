@@ -45,7 +45,7 @@ export function extract(
       let spinner
       if (verbose) spinner = ora().start(srcFilename)
 
-      ext.extract(srcFilename, targetPath, options.babelOptions)
+      ext.extract(srcFilename, targetPath, options)
       if (verbose && spinner) spinner.succeed()
 
       return true

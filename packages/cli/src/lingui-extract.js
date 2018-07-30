@@ -11,6 +11,7 @@ import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
 import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
 import { removeDirectory } from "./api/utils"
+import { detect } from "./api/detect"
 
 type ExtractOptions = {|
   verbose: boolean,
@@ -44,8 +45,11 @@ export default function command(
     mkdirp(buildDir)
   }
 
+  const projectType = detect()
+
   console.log("Extracting messages from source files…")
   extract(config.srcPathDirs, config.localeDir, {
+    projectType,
     ignore: config.srcPathIgnorePatterns,
     verbose: options.verbose,
     babelOptions: options.babelOptions

@@ -70,23 +70,23 @@ describe("extract", function() {
     expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
       "locale",
-      {}
+      { babelOptions: {}, ignore: ["forbidden"] }
     )
     expect(babel.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
       "locale",
-      {}
+      { babelOptions: {}, ignore: ["forbidden"] }
     )
 
     expect(typescript.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
       "locale",
-      {}
+      { babelOptions: {}, ignore: ["forbidden"] }
     )
     expect(typescript.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
       "locale",
-      {}
+      { babelOptions: {}, ignore: ["forbidden"] }
     )
   })
 })
