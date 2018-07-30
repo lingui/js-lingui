@@ -1,58 +1,89 @@
 version: 2
 
-workflows:
-  version: 2
-  test_n_deploy:
-    jobs:
-      - test-linter
-      - test-node8
-      - build-docs:
-          filters:
-            branches:
-              only: master
+aliases:
+  - &attach-workspace
+      at: build
+
+  - &restore-cache
+      key: node-modules-{{ checksum "yarn.lock" }}
+  - &yarn-install
+      name: Install dependencies
+      command: yarn install --no-progress
+  - &yarn-install-tools
+      name: Install build tools
+      command: sudo yarn global add codecov yalc
+  - &tests
+      command: node scripts/test.js --skip-build
+      environment:
+        NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
 jobs:
-  test-node8: &test-template
+  build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:latest
 
     steps:
       - checkout
 
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - restore_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install dependencies
-          command: yarn install
+      - restore-cache: *restore-cache
+      - run: *yarn-install
 
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
 
-      - run: node scripts/test.js
+      - run: node ./scripts/build/
 
-      - run:
-          name: Send coverage report
-          command: |
-              if [ "${NODEJS}" == "4" ]; then
-                codecov
-              fi
+      - persist_to_workspace:
+          root: build
+          paths:
+            - packages
 
+  test-node-latest:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+      - run: *yarn-install-tools
+      - run: *tests
+      - run: codecov
       - store_test_results:
           path: ./results/
           when: always
 
-#  test-node6:
-#    <<: *test-template
-#
-#    docker:
-#      - image: circleci/node:6
+  test-node-8:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+      - run: *yarn-install-tools
+      - run: *tests
+
+  publish:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      - run: node scripts/release/update-versions.js --next
+      - run: node scripts/release/release-npm.js --next
 
   test-linter:
     docker:
@@ -60,28 +91,13 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          name: Install build tools
-          command: sudo yarn global add codecov yalc
-
-      - restore_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install dependencies
-          command: yarn install
-
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-              - node_modules
-
+      - restore-cache: *restore-cache
+      - run: *yarn-install
       - run: yarn run lint
 
   build-docs:
     docker:
-      - image: circleci/python:latest
+      - image: circleci/python:3.6
         environment:
           PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
@@ -102,3 +118,38 @@ jobs:
 
       - deploy:
           command: ./scripts/legacy/deploy-docs.sh
+
+workflows:
+  version: 2
+  test_n_deploy:
+    jobs:
+      - build-docs:
+          filters:
+            branches:
+              only:
+                - master
+                - stable-2.x
+
+      - build
+
+      - test-linter:
+          requires:
+            - build
+      - test-node-latest:
+          requires:
+            - build
+      - test-node-8:
+          requires:
+            - build
+
+# Disable automatic publish, because NPM requires OTP token
+#      - publish:
+#          requires:
+#            - test-linter
+#            - test-node-latest
+#            - test-node-8
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - stable-2.x

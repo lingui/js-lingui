@@ -111,6 +111,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "huan086",
+      "name": "Jeow Li Huan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1448788?v=4",
+      "profile": "https://github.com/huan086",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "vonovak",
+      "name": "Vojtech Novak",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1566403?v=4",
+      "profile": "https://github.com/vonovak",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "repoType": "github"

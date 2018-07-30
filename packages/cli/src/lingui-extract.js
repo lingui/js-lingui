@@ -8,13 +8,17 @@ import program from "commander"
 import { getConfig } from "@lingui/conf"
 
 import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
-import { extract, collect, cleanObsolete } from "./api/extract"
+import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
+import { removeDirectory } from "./api/utils"
+import { detect } from "./api/detect"
 
 type ExtractOptions = {|
   verbose: boolean,
   clean: boolean,
-  prevFormat: ?CatalogFormat
+  overwrite: boolean,
+  prevFormat: ?CatalogFormat,
+  babelOptions: Object
 |}
 
 export default function command(
@@ -34,21 +38,43 @@ export default function command(
   }
 
   const buildDir = path.join(config.localeDir, "_build")
-  if (!fs.existsSync(buildDir)) {
+  if (fs.existsSync(buildDir)) {
+    // remove only the content of build dir, not the directory itself
+    removeDirectory(buildDir, true)
+  } else {
     mkdirp(buildDir)
   }
 
+  const projectType = detect()
+
   console.log("Extracting messages from source files…")
   extract(config.srcPathDirs, config.localeDir, {
+    projectType,
     ignore: config.srcPathIgnorePatterns,
-    verbose: options.verbose
+    verbose: options.verbose,
+    babelOptions: options.babelOptions
   })
   options.verbose && console.log()
 
   console.log("Collecting all messages…")
   const clean = options.clean ? cleanObsolete : id => id
-  const catalog = collect(buildDir)
-  const catalogs = clean(convertFormat.merge(catalog))
+
+  let catalog
+  try {
+    catalog = collect(buildDir)
+  } catch (e) {
+    console.error(e)
+    return false
+  }
+
+  const prevCatalogs = convertFormat.readAll()
+  const catalogs = order(
+    clean(
+      convertFormat.merge(prevCatalogs, catalog, {
+        overwrite: options.overwrite
+      })
+    )
+  )
   options.verbose && console.log()
 
   console.log("Writing message catalogues…")
@@ -91,7 +117,12 @@ export default function command(
 
 if (require.main === module) {
   program
+    .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
+    .option(
+      "--babelOptions",
+      "Babel options passed to transform/extract plugins"
+    )
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalogs")
     .option(
@@ -129,6 +160,8 @@ if (require.main === module) {
   const result = command(config, format, {
     verbose: program.verbose || false,
     clean: program.clean || false,
+    overwrite: program.overwrite || false,
+    babelOptions: program.babelOptions || {},
     prevFormat
   })
 

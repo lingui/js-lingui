@@ -10,6 +10,16 @@ compiling message catalogs::
 
    npm install --global @lingui/cli
 
+ Install also ``babel-core` package depending on Babel version you use:
+
+   .. code-block:: shell
+
+      # babel 6.x
+      npm install --global babel-core
+
+      # babel 7.x
+      npm install --global babel-core@^7.0.0-0 @babel/core
+
 Add a new locale
 ================
 
@@ -189,7 +199,8 @@ Catalogs in VCS and CI
 The ``locale/_build`` folder and ``locale/*/*.js`` (compiled catalogs) are safe to be ignored by your VCS.
 What you do need to keep in VCS are the json files (``locale/*/*.json``) that contain the messages
 for translators. The JavaScript functions that return the actual translations when your app runs in
-production are created from those json files.
+production are created from those json files. See
+`Excluding build files <../guides/excluding-build-files>`_ guide for more info.
 
 If you're using a CI, it is a good idea to add the ``lingui extract`` and ``lingui compile``
 commands to your build process.

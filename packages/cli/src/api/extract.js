@@ -2,6 +2,7 @@
 import fs from "fs"
 import path from "path"
 import chalk from "chalk"
+import ora from "ora"
 import R from "ramda"
 
 import * as extractors from "./extractors"
@@ -10,7 +11,8 @@ import type { AllCatalogsType } from "./formats/types"
 
 type ExtractOptions = {
   ignore?: Array<string>,
-  verbose?: boolean
+  verbose?: boolean,
+  babelOptions?: Object
 }
 
 export function extract(
@@ -39,11 +41,15 @@ export function extract(
 
     const extracted = R.values(extractors).some((ext: ExtractorType) => {
       if (!ext.match(srcFilename)) return false
-      ext.extract(srcFilename, targetPath)
+
+      let spinner
+      if (verbose) spinner = ora().start(srcFilename)
+
+      ext.extract(srcFilename, targetPath, options)
+      if (verbose && spinner) spinner.succeed()
+
       return true
     })
-
-    if (extracted && verbose) console.log(chalk.green(srcFilename))
   })
 }
 
@@ -67,14 +73,49 @@ export function collect(buildDir: string) {
     })
     .filter(Boolean)
     .reduce((catalog, messages) => {
-      const mergeMessage = (msgId, prev, next) => ({
-        ...next,
-        origin: R.concat(prev.origin, next.origin)
-      })
+      const mergeMessage = (msgId, prev, next) => {
+        if (prev.defaults !== next.defaults) {
+          const prettyOrigin = args => {
+            try {
+              return chalk.yellow(args[0].join(":"))
+            } catch (e) {
+              return ""
+            }
+          }
+
+          throw new Error(
+            `Encountered different defaults for message ${chalk.yellow(
+              msgId
+            )}` +
+              `\n${prettyOrigin(prev.origin)} ${prev.defaults}` +
+              `\n${prettyOrigin(next.origin)} ${next.defaults}`
+          )
+        }
+
+        return {
+          ...next,
+          origin: R.concat(prev.origin, next.origin)
+        }
+      }
       return R.mergeWithKey(mergeMessage, catalog, messages)
     }, {})
 }
 
 export function cleanObsolete(catalogs: AllCatalogsType) {
   return R.map(R.filter(message => !message.obsolete), catalogs)
+}
+
+export function order(catalogs: AllCatalogsType) {
+  return R.map(orderByMessageId, catalogs)
+}
+
+function orderByMessageId(messages) {
+  const orderedMessages = {}
+  Object.keys(messages)
+    .sort()
+    .forEach(function(key) {
+      orderedMessages[key] = messages[key]
+    })
+
+  return orderedMessages
 }

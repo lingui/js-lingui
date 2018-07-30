@@ -6,6 +6,7 @@ import linguiTransformReact from "@lingui/babel-plugin-transform-react"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import type { ExtractorType } from "./types"
+import { projectType } from "../detect"
 
 const babelRe = /\.jsx?$/i
 
@@ -14,8 +15,18 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  extract(filename, localeDir) {
+  extract(filename, localeDir, options = {}) {
+    const { babelOptions = {} } = options
+    const plugins = babelOptions.plugins || []
+    const frameworkOptions = {}
+
+    if (options.projectType === projectType.CRA) {
+      frameworkOptions.presets = ["react-app"]
+    }
+
     transformFileSync(filename, {
+      ...babelOptions,
+      ...frameworkOptions,
       plugins: [
         // Plugins run before presets, so we need to import transform-plugins
         // here until we have a better way to run extract-messages plugin
@@ -23,7 +34,8 @@ const extractor: ExtractorType = {
         // Transform plugins are idempotent, so they can run twice.
         linguiTransformJs,
         linguiTransformReact,
-        [linguiExtractMessages, { localeDir }]
+        [linguiExtractMessages, { localeDir }],
+        ...plugins
       ]
     })
   }

@@ -1,128 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Formats should render 1`] = `
-<Component
-  language=en
->
-  <I18nProvider
-    catalogs={
-      Object {
-        en: Object {},
-      }
-    }
-    defaultRender={null}
-    language=en
-  >
-    <Formats>
-      <div>
-        <ul>
-          <li>
-            <withI18n
-              className=percent
-              id=The answer is {answer,number,percent}
-              values={
-                Object {
-                  answer: 0.42,
-                }
-              }
-            >
-              <Trans
-                className=percent
-                i18n={
-                  I18n {
-                    _activeLanguageData: Object {
-                      plurals: [Function],
-                    },
-                    _activeMessages: Object {},
-                    _catalogs: Object {
-                      en: Object {
-                        languageData: Object {},
-                        messages: Object {},
-                      },
-                    },
-                    _dev: Object {
-                      compile: [Function],
-                      loadLanguageData: [Function],
-                    },
-                    _language: en,
-                    plural: [Function],
-                    select: [Function],
-                    selectOrdinal: [Function],
-                    t: [Function],
-                  }
-                }
-                i18nHash={null}
-                id=The answer is {answer,number,percent}
-                values={
-                  Object {
-                    answer: 0.42,
-                  }
-                }
-              >
-                <Render
-                  className=percent
-                  value=The answer is 42%
-                >
-                  The answer is 42%
-                </Render>
-              </Trans>
-            </withI18n>
-          </li>
-          <li>
-            <withI18n
-              className=date
-              id=Today is {now,date}
-              values={
-                Object {
-                  now: 2017-04-05T11:14:00.000Z,
-                }
-              }
-            >
-              <Trans
-                className=date
-                i18n={
-                  I18n {
-                    _activeLanguageData: Object {
-                      plurals: [Function],
-                    },
-                    _activeMessages: Object {},
-                    _catalogs: Object {
-                      en: Object {
-                        languageData: Object {},
-                        messages: Object {},
-                      },
-                    },
-                    _dev: Object {
-                      compile: [Function],
-                      loadLanguageData: [Function],
-                    },
-                    _language: en,
-                    plural: [Function],
-                    select: [Function],
-                    selectOrdinal: [Function],
-                    t: [Function],
-                  }
-                }
-                i18nHash={null}
-                id=Today is {now,date}
-                values={
-                  Object {
-                    now: 2017-04-05T11:14:00.000Z,
-                  }
-                }
-              >
-                <Render
-                  className=date
-                  value=Today is 4/5/2017
-                >
-                  Today is 4/5/2017
-                </Render>
-              </Trans>
-            </withI18n>
-          </li>
-        </ul>
-      </div>
-    </Formats>
-  </I18nProvider>
-</Component>
+
+<div>
+  <ul>
+    <li>
+      The answer is 42%
+    </li>
+    <li>
+      Today is 4/5/2017
+    </li>
+  </ul>
+</div>
+
 `;

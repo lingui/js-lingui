@@ -218,21 +218,26 @@ export default function({ types: t }) {
 
       const messages = file.get(MESSAGES)
       const catalog = {}
+      const baseName = fsPath.basename(filename)
+      const catalogFilename = fsPath.join(targetDir, `${baseName}.json`)
+
+      mkdirp.sync(targetDir)
 
       // no messages, skip file
-      if (!messages.size) return
+      if (!messages.size) {
+        // clean any existing catalog
+        if (fs.existsSync(catalogFilename)) {
+          fs.writeFileSync(catalogFilename, JSON.stringify({}))
+        }
+
+        return
+      }
 
       messages.forEach((value, key) => {
         catalog[key] = value
       })
 
-      mkdirp.sync(targetDir)
-      const [basename] = fsPath.basename(filename).split(".", 2)
-
-      fs.writeFileSync(
-        fsPath.join(targetDir, `${basename}.json`),
-        JSON.stringify(catalog, null, 2)
-      )
+      fs.writeFileSync(catalogFilename, JSON.stringify(catalog, null, 2))
     }
   }
 }

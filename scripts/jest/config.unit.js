@@ -10,10 +10,14 @@ module.exports = {
 
   collectCoverage: true,
   coverageDirectory: "<rootDir>/coverage/",
-  coveragePathIgnorePatterns: ["node_modules", "scripts", "locale"],
+  coveragePathIgnorePatterns: ["node_modules", "scripts", "locale", ".*.json$"],
   coverageReporters: ["html", "lcov"],
 
   reporters: ["default", "jest-junit"],
   setupTestFrameworkScriptFile: require.resolve("./env.js"),
-  snapshotSerializers: ["enzyme-to-json/serializer"]
+  snapshotSerializers: [
+    "enzyme-to-json/serializer",
+    "jest-serializer-html",
+    require.resolve("./stripAnsiSerializer.js")
+  ]
 }

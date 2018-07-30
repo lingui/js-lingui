@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react"
 import PropTypes from "prop-types"
+import hoistStatics from "hoist-non-react-statics"
 import type { I18n } from "@lingui/core"
 
 type withI18nOptions = {
@@ -14,9 +15,9 @@ type withI18nProps = {
 }
 
 const withI18n = (options: withI18nOptions = {}) =>
-  function<P, C: React$Component<any, P>>(
-    WrappedComponent: Class<C> | Function
-  ): Class<React.Component<any, $Diff<P, withI18nProps>>> {
+  function<P, C: React.ComponentType<P>>(
+    WrappedComponent: C
+  ): C & React.ComponentType<$Diff<P, withI18nProps>> {
     if (process.env.NODE_ENV !== "production") {
       if (typeof options === "function" || React.isValidElement(options)) {
         console.warn(
@@ -83,9 +84,7 @@ const withI18n = (options: withI18nOptions = {}) =>
       }
     }
 
-    // return needs to be here, otherwise flow complains about {...this.props}
-    // in WrappedComponent
-    return withI18n
+    return hoistStatics(withI18n, WrappedComponent)
   }
 
 export default withI18n
