@@ -39,7 +39,7 @@ ICU MessageFormat from tagged template literals (plain JavaScript) or React comp
 
 ## Features
 
-- Lightweight - about [5kb gzipped](https://github.com/lingui/js-lingui/blob/stable-2.x/scripts/build/results.json)
+- Lightweight - about [5kb gzipped](https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json)
   (1.9 kB core, 3.1 kB React components)
 - Full support of **ICU MessageFormat** with extension to support HTML
 - Unopinionated - supports manual and auto-generated message IDs out-of-the-box
@@ -73,7 +73,7 @@ documentation to implementing features and fixing bugs.
 
 - Do you use **jsLingui** in production site? Let us know!
 - Have you seen interesting talk or article about **i18n**?
-  [Share it](https://github.com/lingui/js-lingui/edit/stable-2.x/docs/misc/talks-about-i18n.rst)!
+  [Share it](https://github.com/lingui/js-lingui/edit/master/docs/misc/talks-about-i18n.rst)!
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
 - Do you want to improve the docs and write some code?
   Read the [contributors guide][Contributing] and send a PR!
@@ -103,14 +103,14 @@ The project is licensed under the [MIT][License] license.
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 
-[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/stable-2.x.svg
+[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
 [Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
 [Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 
-[CI]: https://circleci.com/gh/lingui/js-lingui/tree/stable-2.x
+[CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [Contributors]: https://github.com/lingui/js-lingui/blob/master/CONTRIBUTING.md

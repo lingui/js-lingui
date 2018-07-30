@@ -128,7 +128,6 @@ workflows:
             branches:
               only:
                 - master
-                - stable-2.x
 
       - build
 
