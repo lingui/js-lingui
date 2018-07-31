@@ -16,27 +16,28 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "@lingui/core": "^2.0.8",
-    "@lingui/react": "^2.0.8",
+    "@lingui/core": "latest",
+    "@lingui/react": "latest",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "react": "16.4.0",
-    "react-dom": "16.4.0"
+    "react": "16.4.1",
+    "react-dom": "16.4.1"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "^2.0.8",
-    "@lingui/cli": "^2.0.8",
-    "@lingui/loader": "^2.0.8",
-    "babel-loader": "8.0.0-beta.0",
+    "@lingui/babel-preset-react": "latest",
+    "@lingui/cli": "latest",
+    "@lingui/loader": "latest",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.0.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.7"
   },
   "lingui": {
-    "localeDir": "./locale"
+    "localeDir": "./src/locale"
   }
 }
