@@ -67,6 +67,9 @@ We're trying to use most of them to show the full power of jsLingui.
 
 Let's start with the three major packages:
 
+``@lingui/cli``
+   CLI for i18n management and working with message catalogs
+
 ``@lingui/react``
    React components for translation and formatting
 
@@ -74,17 +77,31 @@ Let's start with the three major packages:
    Transforms messages wrapped in components from ``@lingui/react`` to ICU
    MessageFormat and validates them
 
-``@lingui/cli``
-   CLI for working with message catalogs
-
-1. Install ``@lingui/babel-preset-react`` as a development dependency,
-   ``@lingui/react`` as a runtime dependency and ``@lingui/cli`` globally:
+1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
+   project type and install all required packages automatically. Feel free to run
+   it with ``lingui init --dry-run`` option to inspect what commands will be run:
 
    .. code-block:: shell
 
       npm install -g @lingui/cli
-      npm install --save @lingui/react
-      npm install --save-dev @lingui/babel-preset-react
+      lingui init
+
+   Yarn is supported as well:
+
+   .. code-block:: shell
+
+      yarn global add @lingui/cli
+      lingui init
+
+   .. note::
+
+      Under the hood it installs ``@lingui/babel-preset-react`` as a development
+      dependency and ``@lingui/react`` as a runtime dependency (in React projects):
+
+      .. code-block:: shell
+
+         npm install --save @lingui/react
+         npm install --save-dev @lingui/babel-preset-react
 
 2. Add ``@lingui/babel-preset-react`` preset to Babel config (e.g: ``.babelrc``):
 

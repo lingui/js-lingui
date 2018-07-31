@@ -67,6 +67,20 @@ or locally:
 Commands
 ========
 
+``init``
+--------
+
+.. lingui-cli:: init [--dry-run]
+
+Installs all required packages based on project type. Recognized projects are:
+
+- `Create React App <https://github.com/facebook/create-react-app>`_
+- General React app
+
+.. lingui-cli-option:: --dry-run
+
+Output commands which would run, but don't execute them.
+
 ``add-locale``
 --------------
 
