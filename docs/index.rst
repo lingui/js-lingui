@@ -71,8 +71,9 @@ Key features
 
 .. toctree::
    :maxdepth: 1
-   :caption: External resources
+   :caption: Discussion
 
+   Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
 
 
