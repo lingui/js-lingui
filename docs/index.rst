@@ -12,7 +12,7 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 Key features
 ------------
 
-- Lightweight - about `5kb gzipped <https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json>`
+- Lightweight - about `5kb gzipped <https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json>`_
   (1.9 kB core, 3.1 kB React components)
 - Full support of **ICU MessageFormat** with extension to support HTML
 - Unopinionated - supports manual and auto-generated message IDs out-of-the-box
