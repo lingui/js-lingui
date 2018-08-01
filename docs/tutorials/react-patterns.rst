@@ -199,9 +199,9 @@ a bit more setup:
 
    .. code-block:: jsx
 
-   import { i18n } from "./App.js"
+      import { i18n } from "./App.js"
 
-   export function alert() {
-      // use i18n as you were inside React component
-      alert(i18n.t`...`)
-   }
+      export function alert() {
+         // use i18n as you were inside React component
+         alert(i18n.t`...`)
+      }
