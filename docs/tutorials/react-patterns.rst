@@ -205,3 +205,43 @@ a bit more setup:
          // use i18n as you were inside React component
          alert(i18n.t`...`)
       }
+
+Dynamic translations
+====================
+
+:component:`Trans` can also translate messages from variables. However, it's necessary
+to wrap translated message in :js:func:`i18Mark` to make it automatically extracted.
+Pass the message to ``id`` prop of :component:`Trans` component:
+
+.. code-block:: jsx
+
+   import { i18Mark } from "@lingui/react"
+
+   const languages = [
+      i18nMark('English')
+      i18nMark('Czech')
+   ]
+
+   function LanguageSwitcher() {
+      return (
+         <ul>
+            {languages.map(lang => <li><Trans id={lang}/></li>}
+         </ul>
+      )
+   }
+
+This pattern work with string-only translations, but this time instead of ``i18n.t``
+you should use core :js:meth:`I18n._` method:
+
+.. code-block:: jsx
+
+   import { i18Mark } from "@lingui/react"
+
+   const languages = [
+      i18nMark('English')
+      i18nMark('Czech')
+   ]
+
+   const translatedLanguages = languages.map(
+      lang => i18n._(lang)
+   )
