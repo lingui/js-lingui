@@ -12,6 +12,8 @@ Installation
 
 Install ``@lingui/loader`` as a development dependency:
 
+.. code-block:: sh
+
    npm install --save-dev @lingui/loader
    # yarn add --dev @lingui/loader
 
