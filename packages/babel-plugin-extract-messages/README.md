@@ -10,9 +10,9 @@
 
 ## Installation
 
-```bash
-yarn add --dev @lingui/babel-plugin-extract-messages
-# npm install --save-dev @lingui/babel-plugin-extract-messages
+```sh
+npm install --save-dev @lingui/babel-plugin-extract-messages
+# yarn add --dev @lingui/babel-plugin-extract-messages
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ require("@babel/core").transform("code", {
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
-[Package]: https://www.npmjs.com/package/babel-plugin-lingui-extract-messages
-[Badge-Downloads]: https://img.shields.io/npm/dw/babel-plugin-lingui-extract-messages.svg
-[Badge-Version]: https://img.shields.io/npm/v/babel-plugin-lingui-extract-messages.svg 
-[Badge-License]: https://img.shields.io/npm/l/babel-plugin-lingui-extract-messages.svg
+[Package]: https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages
+[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-extract-messages.svg
+[Badge-Version]: https://img.shields.io/npm/v/@lingui/babel-plugin-extract-messages.svg 
+[Badge-License]: https://img.shields.io/npm/l/@lingui/babel-plugin-extract-messages.svg

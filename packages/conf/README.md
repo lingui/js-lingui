@@ -28,13 +28,13 @@ See the [reference][Reference] documenation of `lingui-cli` for all options.
 
 ## License
 
-[MIT][License]
+This package is licensed under [MIT][License] license.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
-[Reference]: https://lingui.github.io/js-lingui/ref/cli.html
-[Package]: https://www.npmjs.com/package/lingui-conf
-[Badge-Downloads]: https://img.shields.io/npm/dw/lingui-conf.svg
-[Badge-Version]: https://img.shields.io/npm/v/lingui-conf.svg 
-[Badge-License]: https://img.shields.io/npm/l/lingui-conf.svg
+[Reference]: https://lingui.github.io/js-lingui/ref/conf.html
+[Package]: https://www.npmjs.com/package/@lingui/conf
+[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/conf.svg
+[Badge-Version]: https://img.shields.io/npm/v/@lingui/conf.svg 
+[Badge-License]: https://img.shields.io/npm/l/@lingui/conf.svg

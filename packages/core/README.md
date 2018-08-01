@@ -2,17 +2,17 @@
 [![Version][Badge-Version]][Package]
 [![Downloads][Badge-Downloads]][Package]
 
-# lingui-i18n 
+# @lingui/core 
 
-> Javascript API for internationalization
+> Internationalization API for JavaScript apps
 
-`lingui-i18n` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/core` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
-```bash
-yarn add lingui-i18n
-# npm install --save lingui-i18n
+```sh
+npm install --save @lingui/core
+# yarn add @lingui/core
 ```
 
 ## Usage
@@ -21,14 +21,14 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 
 ## License
 
-[MIT][License]
+This package is licensed under [MIT][License] license.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
 [Tutorial]: https://lingui.github.io/js-lingui/tutorials/js.html
-[Reference]: https://lingui.github.io/js-lingui/ref/js.html
-[Package]: https://www.npmjs.com/package/lingui-i18n
-[Badge-Downloads]: https://img.shields.io/npm/dw/lingui-i18n.svg
-[Badge-Version]: https://img.shields.io/npm/v/lingui-i18n.svg 
-[Badge-License]: https://img.shields.io/npm/l/lingui-i18n.svg
+[Reference]: https://lingui.github.io/js-lingui/ref/core.html
+[Package]: https://www.npmjs.com/package/@lingui/core
+[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/core.svg
+[Badge-Version]: https://img.shields.io/npm/v/@lingui/core.svg 
+[Badge-License]: https://img.shields.io/npm/l/@lingui/core.svg

@@ -10,9 +10,9 @@
 
 ## Installation
 
-```bash
-yarn add --dev @lingui/babel-plugin-transform-js
-# npm install --save-dev @lingui/babel-plugin-transform-js
+```sh
+npm install --save-dev @lingui/babel-plugin-transform-js
+# yarn add --dev @lingui/babel-plugin-transform-js
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ require("@babel/core").transform("code", {
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [jsLingui]: https://github.com/lingui/js-lingui
 [Documentation]: https://lingui.github.io/js-lingui/
-[Package]: https://www.npmjs.com/package/babel-plugin-lingui-transform-js
-[Badge-Downloads]: https://img.shields.io/npm/dw/babel-plugin-lingui-transform-js.svg
-[Badge-Version]: https://img.shields.io/npm/v/babel-plugin-lingui-transform-js.svg 
-[Badge-License]: https://img.shields.io/npm/l/babel-plugin-lingui-transform-js.svg
+[Package]: https://www.npmjs.com/package/@lingui/babel-plugin-transform-js
+[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-transform-js.svg
+[Badge-Version]: https://img.shields.io/npm/v/@lingui/babel-plugin-transform-js.svg 
+[Badge-License]: https://img.shields.io/npm/l/@lingui/babel-plugin-transform-js.svg
