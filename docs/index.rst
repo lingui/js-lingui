@@ -67,6 +67,7 @@ Key features
    :maxdepth: 1
    :caption: Discussion
 
+   Projects using jsLingui <misc/showroom>
    Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
 
