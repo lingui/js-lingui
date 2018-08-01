@@ -193,7 +193,7 @@ variables, some HTML and components inside:
 Nothing special here. Again, we just need to wrap the content in :component:`Trans`
 component:
 
-.. code-block:: jsx
+.. code-block:: html
 
    <p>
       <Trans>
@@ -576,7 +576,7 @@ What if we want to use variables or components inside messages? Easy! Either
 wrap messages in :component:`Trans` component or use template literals
 (suppose we have an variable ``name``):
 
-.. code-block:: jsx
+.. code-block:: html
 
    <p>
       <Plural
@@ -724,6 +724,6 @@ an example :ref:`how to do it with webpack <dynamic-loading-catalogs>`.
 Further reading
 ===============
 
-- `@lingui/react reference documentation <../ref/lingui-react.html>`_
+- `@lingui/react reference documentation <../ref/react.html>`_
 - `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

@@ -84,6 +84,6 @@ It's also possible to nest message formats. Each message format method in i18n h
 Further reading
 ===============
 
-- `@lingui/react reference documentation <../ref/lingui-react.html>`_
+- `@lingui/react reference documentation <../ref/react.html>`_
 - `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

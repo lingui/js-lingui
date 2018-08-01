@@ -208,6 +208,6 @@ The important point here is that the sentence isn't broken into pieces but remai
 Further reading
 ===============
 
-- `@lingui/react reference documentation <../ref/lingui-react.html>`_
+- `@lingui/react reference documentation <../ref/react.html>`_
 - `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

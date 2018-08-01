@@ -60,9 +60,10 @@ Key features
    :caption: API References
 
    Core (JavaScript) <ref/core>
-   React <ref/lingui-react>
-   CLI <ref/lingui-cli>
-   Configuration <ref/lingui-conf>
+   React <ref/react>
+   CLI <ref/cli>
+   Configuration <ref/conf>
+   ICU MessageFormat <ref/message-format>
 
 .. toctree::
    :maxdepth: 1

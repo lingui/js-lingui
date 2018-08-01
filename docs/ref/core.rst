@@ -14,8 +14,8 @@ Installation
 ============
 
 .. note::
-   If you're using :doc:`@lingui/react <lingui-react>`, you don't need to install
-   this package explicitly. Install :doc:`@lingui/react <lingui-react>` instead.
+   If you're using :doc:`@lingui/react <react>`, you don't need to install
+   this package explicitly. Install :doc:`@lingui/react <react>` instead.
 
 .. code-block:: sh
 
@@ -199,7 +199,7 @@ Reference
 
    .. js:method:: activate(language [, locales])
 
-      Activate a language and locales. :js:method:`_` from now on will return messages
+      Activate a language and locales. :js:meth:`_` from now on will return messages
       in given language.
 
       .. code-block:: js

@@ -195,7 +195,8 @@ It's also possible to use exact matches. This is commonly used in combination wi
 
 .. code-block:: jsx
 
-   const count = 42;
+   const count = 42
+
    <Plural
        value={count}
        offset={1}
@@ -211,7 +212,7 @@ It's also possible to use exact matches. This is commonly used in combination wi
 
        // when value >= 3
        other="You and # other guests arrived"
-   />;
+   />
 
 Select
 ------
@@ -235,7 +236,7 @@ matches ``value``:
        male="His book"
        female="Her book"
        other="Their book"
-   />;
+   />
 
 SelectOrdinal
 -------------
@@ -270,7 +271,7 @@ it uses **ordinal** plural forms, instead of **cardinal** ones.
        two="#nd"
        few="#rd"
        other="#th"
-   />;
+   />
 
 DateFormat
 ----------
