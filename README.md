@@ -1,14 +1,7 @@
-## Indiegogo campaign
-
-There's ongoing campaign on [Indiegogo][Indiegogo] to raise funds for this project. If
-you want to support it, please consider donation or share it with your friends.
-
-<hr />
-
 <div align="center">
 <h1><sub>js</sub>Lingui</h1>
 
-Seamless internationalization in JavaScript and React
+Seamless internationalization in JavaScript and React, fresh alternative for react-intl.
 
 <hr />
 
@@ -45,6 +38,7 @@ ICU MessageFormat from tagged template literals (plain JavaScript) or React comp
 - Unopinionated - supports manual and auto-generated message IDs out-of-the-box
 - Batteries included - **CLI** for working with message catalogs
   (extracting, validating, compiling, …)
+- Easy to migrate from react-intl
 
 ## Quickstart
 
@@ -54,6 +48,9 @@ Checkout these tutorials for installation instructions and brief introduction:
 - [React Native][TutorialReactNative]
 - [Plain JavaScript][TutorialJavaScript]
 - [Working with Command Line Tool][TutorialCLI]
+
+If you're a react-intl user, checkout
+[comparison of react-intl and jsLingui](https://lingui.github.io/js-lingui/misc/react-intl.html).
 
 ## Support
 
