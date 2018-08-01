@@ -9,26 +9,16 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 
    --- `W3C Web Internationalization FAQ <https://www.w3.org/International/questions/qa-i18n>`_
 
-Support the project
--------------------
-
-There's ongoing campaign on Indiegogo_ to raise funds for this project. If you want
-to support it, please consider donation or share it with your friend.
-
 Key features
 ------------
 
-* Small and fast - about 6kb gzipped
-* Babel plugin for convenient, type-checked way of writing ICU MessageFormat (recommended, but not required)
-* CLI for extracting and compiling message catalogs
-* Built on standard ICU MessageFormat (might replace react-intl completely)
-* Variable interpolation
-* Components inside translations (e.g: Read <Link to="...">documentation</Link>.)
-* Plurals, Ordinals and Categories (i.e. Select)
-* Number and Date formats (from Intl)
-* Works with manual and generated message IDs
-* Works with in any JS environment, while integration packages brings better performance in target environments (e.g: lingui-react for React)
-* High quality build (high test coverage, follows semver, deprecation warnings for breaking changes and migration guides for major releases)
+- Lightweight - about `5kb gzipped <https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json>`
+  (1.9 kB core, 3.1 kB React components)
+- Full support of **ICU MessageFormat** with extension to support HTML
+- Unopinionated - supports manual and auto-generated message IDs out-of-the-box
+- Batteries included - **CLI** for working with message catalogs
+  (extracting, validating, compiling, …)
+- Easy to migrate from react-intl
 
 .. figure:: _static/lingui-pitch.png
 
@@ -86,5 +76,3 @@ Indices
 
 * :ref:`genindex`
 * :ref:`search`
-
-.. _Indiegogo: https://igg.me/at/js-lingui/x/4367619
