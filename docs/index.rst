@@ -53,6 +53,7 @@ Key features
    React <ref/react>
    CLI <ref/cli>
    Configuration <ref/conf>
+   Webpack Loader <ref/loader>
    ICU MessageFormat <ref/message-format>
 
 .. toctree::
