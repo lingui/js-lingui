@@ -1,4 +1,6 @@
 const argv = require("minimist")(process.argv.slice(2))
+const ora = require("ora")
+const chalk = require("chalk")
 
 const Modules = require("./modules")
 const Bundles = require("./bundles")
@@ -34,11 +36,17 @@ function shouldSkipBundle(bundle, bundleType) {
   return false
 }
 
-async function copyFlowTypes(srcDir, outDir) {
-  console.log('Generating flow types')
-  return asyncExecuteCommand(
-    `flow gen-flow-files --ignore ".*\.test\.js$" --out-dir ${outDir} ${srcDir}`
+async function copyFlowTypes(name) {
+  const srcDir = `packages/${name}/src`
+  const outDir = `build/packages/${name}`
+
+  const msg = chalk.white.bold(`@lingui/${name}`) + chalk.dim(` (flow types)`)
+  const spinner = ora(msg).start()
+
+  await asyncExecuteCommand(
+    `yarn flow gen-flow-files --ignore ".*\.test\.js$" --out-dir ${outDir} ${srcDir}`
   )
+  spinner.succeed()
 }
 
 async function buildEverything() {
@@ -58,7 +66,7 @@ async function buildEverything() {
     await builder(bundle)
     if (bundle.type === UNIVERSAL || bundle.type === NODE) {
       const name = bundle.entry.replace("@lingui/", "")
-      await copyFlowTypes(`packages/${name}/src`, `build/packages/${name}`)
+      await copyFlowTypes(name)
     }
   }
 
