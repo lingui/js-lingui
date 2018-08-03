@@ -14,7 +14,7 @@ const nlRe = /(?:\r\n|\r|\n)/g
  */
 function formatElements(
   value: string,
-  elements: Array<React$Element<any>> = []
+  elements: Array<any> = []
 ): string | Array<any> {
   // TODO: warn if there're any unprocessed elements
   // TODO: warn if element at `index` doesn't exist

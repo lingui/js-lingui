@@ -4,7 +4,7 @@ const Modules = require("./modules")
 const Bundles = require("./bundles")
 const Packaging = require("./packaging")
 const Stats = require("./stats")
-const { asyncCopyTo, asyncRimRaf } = require("./utils")
+const { asyncCopyTo, asyncRimRaf, asyncExecuteCommand } = require("./utils")
 
 const rollup = require("./rollup")
 const babel = require("./babel")
@@ -34,6 +34,13 @@ function shouldSkipBundle(bundle, bundleType) {
   return false
 }
 
+async function copyFlowTypes(srcDir, outDir) {
+  console.log('Generating flow types')
+  return asyncExecuteCommand(
+    `flow gen-flow-files --ignore ".*\.test\.js$" --out-dir ${outDir} ${srcDir}`
+  )
+}
+
 async function buildEverything() {
   await asyncRimRaf("build")
 
@@ -49,6 +56,10 @@ async function buildEverything() {
     }
 
     await builder(bundle)
+    if (bundle.type === UNIVERSAL || bundle.type === NODE) {
+      const name = bundle.entry.replace("@lingui/", "")
+      await copyFlowTypes(`packages/${name}/src`, `build/packages/${name}`)
+    }
   }
 
   console.log(Stats.printResults())

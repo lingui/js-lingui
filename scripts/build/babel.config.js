@@ -2,18 +2,27 @@
 // Rollup, however, needs `modules: false, babel modules: true`
 module.exports = function(options) {
   const config = {
+    // Workaround for transform-runtime bug with export * from "./module"
+    // https://github.com/babel/babel/issues/2877#issuecomment-245402025
+    passPerPreset: true,
     presets: [
-      "react",
-      [
-        "env",
-        {
-          targets: {
-            node: 4,
-            browsers: "> 1%, last 2 versions"
-          },
-          modules: options.modules === false ? false : "commonjs"
-        }
-      ]
+      { plugins: ["transform-runtime"] },
+      {
+        passPerPreset: false,
+        presets: [
+          "react",
+          [
+            "env",
+            {
+              targets: {
+                node: 4,
+                browsers: "> 1%, last 2 versions"
+              },
+              modules: options.modules === false ? false : "commonjs"
+            }
+          ]
+        ]
+      }
     ],
     plugins: [
       ["transform-class-properties", { loose: false }],

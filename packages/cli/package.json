@@ -32,7 +32,8 @@
     "lingui.js",
     "lingui-add-locale.js",
     "lingui-compile.js",
-    "lingui-extract.js"
+    "lingui-extract.js",
+    "*.js.flow"
   ],
   "dependencies": {
     "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",

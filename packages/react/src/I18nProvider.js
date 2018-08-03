@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 import * as React from "react"
 import PropTypes from "prop-types"
 import hashSum from "hash-sum"
@@ -7,13 +7,13 @@ import { setupI18n } from "@lingui/core"
 import type { I18n, Catalogs, Locales } from "@lingui/core"
 
 export type I18nProviderProps = {
-  children?: React.Node,
+  children?: any,
   language: string,
   locales?: Locales,
   catalogs?: Catalogs,
   i18n?: I18n,
 
-  defaultRender: Node
+  defaultRender: ?any
 }
 
 /*
@@ -102,6 +102,6 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
   }
 
   render() {
-    return <React.Fragment>{this.props.children}</React.Fragment>
+    return this.props.children
   }
 }

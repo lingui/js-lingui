@@ -16,7 +16,6 @@ const argv = require("minimist")(process.argv.slice(2))
 const Stats = require("./stats")
 const sizes = require("./plugins/sizes")
 const codeFrame = require("babel-code-frame")
-// const Wrappers = require("./wrappers")
 const babelConfig = require("./babel.config")
 
 const Modules = require("./modules")

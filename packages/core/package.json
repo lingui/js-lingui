@@ -26,6 +26,7 @@
     "README.md",
     "index.js",
     "dev.js",
+    "*.js.flow",
     "cjs/"
   ],
   "dependencies": {

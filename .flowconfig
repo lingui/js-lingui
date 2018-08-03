@@ -1,4 +1,5 @@
 [ignore]
+.*/build/.*
 .*/examples/.*
 .*/node_modules/config-chain/.*
 .*/node_modules/conventional-changelog-core/.*

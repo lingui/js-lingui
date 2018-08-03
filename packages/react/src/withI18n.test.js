@@ -2,6 +2,8 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
+// Don't import from @lingui/react,
+// otherwise we're not able to mockEnv in integration test
 import { withI18n } from "."
 import { mockEnv, mockConsole } from "./mocks"
 
