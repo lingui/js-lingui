@@ -7,6 +7,7 @@ module.exports = {
     "/locale/",
     "packages/typescript-extract-messages"
   ],
+  testURL: "http://localhost",
 
   collectCoverage: true,
   coverageDirectory: "<rootDir>/coverage/",
