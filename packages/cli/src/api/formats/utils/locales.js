@@ -1,35 +1,37 @@
 // @flow
 import plurals from "make-plural"
+import bcp47 from "bcp-47"
 
-export type LocaleObject = {
-  language: string,
-  country?: string
+export type LocaleInfo = {
+  locale: string,
+  language: string
 }
 
 /**
- * Groups:
- * 0. and 1. locale code (1. is useful, when RegExp is part of larger pattern)
- * 2. language code
- * 4. country code
- * @type {RegExp}
+ * Check that locale is valid according to BCP47 and we have plurals for it
+ * @param locale: string - Locale in BCP47 format
+ * @return {boolean}
  */
-export const localeRe = new RegExp(/(([a-z]+)([_-]([a-zA-Z]+))?)[\\/]?/)
-
 export function isValid(locale: string): boolean {
-  const match = localeRe.exec(locale)
+  const localeData = parse(locale)
   return (
-    match !== null &&
-    match[0] === locale && // locale has valid format
-    match[2] in plurals // language is valid (we have plurals for it)
+    localeData !== null &&
+    localeData !== undefined &&
+    localeData.language in plurals
   )
 }
 
-export function parse(locale: string): ?LocaleObject {
-  const match = localeRe.exec(locale)
-  if (!match || match[0] !== locale) return null
+/**
+ * Parse locale in BCP47 format and
+ * @param locale - Locale in BCP47 format
+ * @return {LocaleInfo}
+ */
+export function parse(locale: string): ?LocaleInfo {
+  const schema = bcp47.parse(locale.replace("_", "-"))
+  if (!schema.language) return null
 
   return {
-    language: match[2],
-    country: match[4]
+    locale: bcp47.stringify(schema),
+    language: schema.language
   }
 }

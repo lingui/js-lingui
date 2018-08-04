@@ -134,7 +134,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
 
   getLocale(filename) {
     const filenameRe = new RegExp(
-      this.formatFilename(sourceFilename, locales.localeRe.source)
+      this.formatFilename(sourceFilename, "([^/]+)")
     )
     const match = filenameRe.exec(filename)
     if (!match) return null
