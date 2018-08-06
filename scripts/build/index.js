@@ -37,6 +37,9 @@ function shouldSkipBundle(bundle, bundleType) {
 }
 
 async function copyFlowTypes(name) {
+  // Windows isn't supported in flow gen-flow-files
+  if (process.platform === "win32") return
+
   const srcDir = `packages/${name}/src`
   const outDir = `build/packages/${name}`
 
