@@ -346,6 +346,7 @@ I18nProvider
    :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
    :prop object catalogs: Message catalogs
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
+   :prop string|Function missing: Custom message to be returned when translation is missing
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
@@ -355,6 +356,24 @@ at the beginning of this document.
 ``locales`` are used for date/number formatting for countries or regions which use
 different formats for the same language (e.g. arabic numerals have several
 representations).
+
+``missing`` is used as a default translation when translation is missing. It might
+be also a function, which is called with language and message ID. This is useful
+for debugging:
+
+.. code-block:: jsx
+
+   import React from 'react';
+   import { I18nProvider } from '@lingui/react';
+
+   const App = ({ language} ) => {
+        return (
+            <I18nProvider language={language} missing="🚨">
+               {/* This will render as 🚨*/}
+               <Trans id="missing translation" />
+            </I18nProvider>
+        );
+   }
 
 ``catalogs`` is a type of ``Catalogs``:
 

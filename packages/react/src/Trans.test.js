@@ -126,7 +126,7 @@ describe("Trans component", function() {
     )
   })
 
-  it.only("should render component in variables", function() {
+  it("should render component in variables", function() {
     const translation = html(
       <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
     )

@@ -3,7 +3,7 @@ import * as React from "react"
 import { shallow, mount } from "enzyme"
 
 import { setupI18n } from "@lingui/core"
-import { I18nProvider } from "@lingui/react"
+import { I18nProvider, Trans } from "@lingui/react"
 import { LinguiPublisher } from "./I18nProvider"
 import { mockConsole } from "./mocks"
 
@@ -118,6 +118,15 @@ describe("I18nProvider", function() {
 
     node.setProps({ locales: "cs-CZ" })
     expect(listener).toBeCalled()
+  })
+
+  it("should render custom message for missing translation", function() {
+    const text = node =>
+      mount(<I18nProvider missing="xxx">{node}</I18nProvider>)
+        .find("Render")
+        .text()
+    const translation = text(<Trans id="missing" />)
+    expect(translation).toEqual("xxx")
   })
 })
 

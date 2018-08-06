@@ -1,4 +1,4 @@
-import { i18nMark } from "./index"
+import { i18nMark } from "@lingui/core"
 
 describe("i18nMark", function() {
   it("should be identity function (removed by babel extract plugin)", function() {

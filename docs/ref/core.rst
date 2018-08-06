@@ -134,6 +134,32 @@ Reference
          // const i18n = setupI18n()
          // i18n.load(catalogs)
 
+   .. js:attribute:: options.missing
+
+      Custom message to be returned when translation is missing. This is useful for
+      debugging:
+
+      .. code-block:: jsx
+
+         import { setupI18n } from "@lingui/core"
+
+         const i18n = setupI18n({ missing: "🚨" })
+         i18n._('missing translation') === "🚨"
+
+      This might be also a function which is called with active language and message ID:
+
+      .. code-block:: jsx
+
+         import { setupI18n } from "@lingui/core"
+
+         function missing(language, id) {
+            alert(`Translation in ${language} for ${id} is missing!`)
+            return id
+         }
+
+         const i18n = setupI18n({ missing })
+         i18n._('missing translation') // raises alert
+
 .. js:class:: I18n
 
    Constructor for I18n class isn't exported from the package. Instead, always use

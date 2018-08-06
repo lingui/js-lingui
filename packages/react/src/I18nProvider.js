@@ -12,6 +12,7 @@ export type I18nProviderProps = {
   locales?: Locales,
   catalogs?: Catalogs,
   i18n?: I18n,
+  missing?: string | Function,
 
   defaultRender: ?any
 }
@@ -72,7 +73,7 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, locales, catalogs } = props
+    const { language, locales, catalogs, missing } = props
     const i18n =
       props.i18n ||
       setupI18n({
@@ -81,6 +82,7 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
         catalogs
       })
     this.linguiPublisher = new LinguiPublisher(i18n)
+    this.linguiPublisher.i18n._missing = this.props.missing
   }
 
   componentDidUpdate(prevProps: I18nProviderProps) {
@@ -92,6 +94,8 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
     ) {
       this.linguiPublisher.update({ language, catalogs, locales })
     }
+
+    this.linguiPublisher.i18n._missing = this.props.missing
   }
 
   getChildContext() {
