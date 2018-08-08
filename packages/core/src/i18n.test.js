@@ -264,4 +264,31 @@ describe("I18n", function() {
       )
     })
   })
+
+  describe("params.missing - handling missing translations", function() {
+    it("._ should return custom string for missing translations", function() {
+      const i18n = setupI18n({
+        missing: "xxx",
+        language: "en",
+        catalogs: { en: { messages: { exists: "exists" } } }
+      })
+      expect(i18n._("exists")).toEqual("exists")
+      expect(i18n._("missing")).toEqual("xxx")
+    })
+
+    it("._ should call a function with message ID of missing translation", function() {
+      const missing = jest.fn((language, id) =>
+        id
+          .split("")
+          .reverse()
+          .join("")
+      )
+      const i18n = setupI18n({
+        language: "en",
+        missing
+      })
+      expect(i18n._("missing")).toEqual("gnissim")
+      expect(missing).toHaveBeenCalledWith("en", "missing")
+    })
+  })
 })

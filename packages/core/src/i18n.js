@@ -28,7 +28,8 @@ type Catalogs = { [key: string]: Catalog }
 type setupI18nProps = {
   language?: string,
   locales?: Locales,
-  catalogs?: Catalogs
+  catalogs?: Catalogs,
+  missing?: string | Function
 }
 
 function getLanguageData(catalog) {
@@ -45,6 +46,8 @@ class I18n {
 
   // Message catalogs
   _catalogs: Catalogs
+
+  _missing: ?string | Function
 
   // Messages/language data in active language.
   // This is optimization, so we don't perform object lookup
@@ -178,6 +181,13 @@ class I18n {
   ) {
     let translation = this.messages[id] || defaults || id
 
+    // replace missing messages with custom message for debugging
+    const missing = this._missing
+    if (!this.messages[id] && missing) {
+      translation =
+        typeof missing === "function" ? missing(this.language, id) : missing
+    }
+
     if (process.env.NODE_ENV !== "production") {
       if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
         translation = this._dev.compile(translation)
@@ -211,6 +221,7 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
 
   if (params.catalogs) i18n.load(params.catalogs)
   if (params.language) i18n.activate(params.language, params.locales)
+  if (params.missing) i18n._missing = params.missing
 
   return i18n
 }

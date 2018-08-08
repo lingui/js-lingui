@@ -27,6 +27,8 @@ export function isValid(locale: string): boolean {
  * @return {LocaleInfo}
  */
 export function parse(locale: string): ?LocaleInfo {
+  if (typeof locale !== "string") return null
+
   const schema = bcp47.parse(locale.replace("_", "-"))
   if (!schema.language) return null
 

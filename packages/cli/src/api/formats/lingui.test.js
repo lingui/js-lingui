@@ -43,9 +43,15 @@ describe("Catalog formats - lingui", function() {
   describe("getLocale", function() {
     it("should get locale for given filename", function() {
       const config = createConfig()
-      expect(plugin(config).getLocale("en/messages.json")).toEqual("en")
-      expect(plugin(config).getLocale("en_US/messages.json")).toEqual("en_US")
-      expect(plugin(config).getLocale("en-US/messages.json")).toEqual("en-US")
+      expect(
+        plugin(config).getLocale(path.join("en", "messages.json"))
+      ).toEqual("en")
+      expect(
+        plugin(config).getLocale(path.join("en_US", "messages.json"))
+      ).toEqual("en_US")
+      expect(
+        plugin(config).getLocale(path.join("en-US", "messages.json"))
+      ).toEqual("en-US")
     })
 
     it("should return null for invalid locales", function() {

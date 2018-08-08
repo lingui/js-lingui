@@ -133,13 +133,10 @@ export default (config: LinguiConfig): CatalogFormat => ({
   },
 
   getLocale(filename) {
-    const filenameRe = new RegExp(
-      this.formatFilename(sourceFilename, "([^/]+)")
-    )
-    const match = filenameRe.exec(filename)
-    if (!match) return null
+    const [messages, locale] = filename.split(path.sep).reverse()
 
-    return match[1]
+    if (messages !== "messages.json" || !locales.isValid(locale)) return null
+    return locale
   },
 
   getLocales() {
