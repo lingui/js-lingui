@@ -3,6 +3,8 @@ import path from "path"
 import fs from "fs"
 import program from "commander"
 import { execSync } from "child_process"
+import inquirer from "inquirer"
+import chalk from "chalk"
 
 import { projectType, detect } from "./api/detect"
 
@@ -19,27 +21,47 @@ function makeInstall() {
       : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
 
-type CommandInit = {|
-  dryRun: boolean
-|}
-
-export function command(program: CommandInit) {
+export async function installPackages(dryRun: boolean) {
   const install = makeInstall()
 
   const type = detect()
   const usesReact = type === projectType.CRA || type === projectType.REACT
 
-  const commands = [
+  const packages = [
     ...(usesReact
-      ? [install("@lingui/react"), install("@lingui/babel-preset-react", true)]
-      : [install("@lingui/core"), install("@lingui/babel-preset-js", true)])
+      ? [["@lingui/react"], ["@lingui/babel-preset-react", true]]
+      : [["@lingui/core"], ["@lingui/babel-preset-js", true]])
   ].filter(Boolean)
 
-  if (program.dryRun) {
+  const verbosePackages = packages
+    .map(([packageName]) => chalk.yellow(packageName))
+    .join(", ")
+  const { confirm } = await inquirer.prompt({
+    type: "confirm",
+    name: "confirm",
+    message: `Do you want to install ${verbosePackages}?`
+  })
+
+  if (!confirm) return false
+
+  const commands = packages.map(([packageName, dev]) =>
+    install(packageName, dev)
+  )
+  if (dryRun) {
     commands.forEach(command => console.log(command))
   } else {
     commands.forEach(command => execSync(command))
   }
+
+  return true
+}
+
+type CommandInit = {|
+  dryRun: boolean
+|}
+
+export async function command(program: CommandInit) {
+  await installPackages(program.dryRun)
 
   return true
 }
