@@ -5,13 +5,13 @@ import mkdirp from "mkdirp"
 import glob from "glob"
 import R from "ramda"
 
-import type { LinguiConfig, CatalogFormat } from "./types"
-import * as locales from "./utils/locales"
+import type { LinguiConfig, CatalogApi } from "./types"
+import * as locales from "./locales"
 
 const sourceFilename = path.join("{locale}", "messages.json")
 const compiledFilename = path.join("{locale}", "messages.js")
 
-export default (config: LinguiConfig): CatalogFormat => ({
+export default (config: LinguiConfig): CatalogApi => ({
   formatFilename(pattern, locale) {
     return pattern.replace("{locale}", locale)
   },

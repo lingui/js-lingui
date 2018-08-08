@@ -29,7 +29,12 @@ export type getTranslationOptions = {|
   sourceLocale: string
 |}
 
-export type CatalogFormat = {
+export type TranslationsFormat = {
+  read(filename: string): ?CatalogType,
+  write(filename: string, catalog: CatalogType): void
+}
+
+export type CatalogApi = {
   getLocales(): Array<string>,
   addLocale(locale: string): IdempotentResult<string>,
 
