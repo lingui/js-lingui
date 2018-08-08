@@ -9,7 +9,7 @@ import { prettyOrigin } from "./utils"
 
 import * as extractors from "./extractors"
 import type { ExtractorType } from "./extractors"
-import type { AllCatalogsType } from "./formats/types"
+import type { AllCatalogsType } from "./types"
 
 type ExtractOptions = {
   ignore?: Array<string>,

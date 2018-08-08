@@ -48,7 +48,7 @@ export type CatalogApi = {
     options?: { [key: string]: any }
   ): AllCatalogsType,
   write(locale: string, catalog: CatalogType): IdempotentResult<string>,
-  writeCompiled(locale: string, content: string): ?string,
+  writeCompiled(locale: string, content: string): string,
 
   getTranslation(
     catalogs: AllCatalogsType,
