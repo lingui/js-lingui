@@ -133,13 +133,10 @@ export default (config: LinguiConfig): CatalogFormat => ({
   },
 
   getLocale(filename) {
-    const delimiterRe = `([^\/\\]+)`
-    const filenameRe = new RegExp(
-      this.formatFilename(sourceFilename, delimiterRe)
-    )
+    const localeRe = `([a-zA-Z-_]+)`
+    const filenameRe = new RegExp(this.formatFilename(sourceFilename, localeRe))
     const match = filenameRe.exec(filename)
-    if (!match) return null
-
+    if (!match || !locales.isValid(match[1])) return null
     return match[1]
   },
 
