@@ -1,5 +1,16 @@
 # Change Log
 
+<a name="2.4.0"></a>
+## [2.4.0 (unreleased)](https://github.com/lingui/js-lingui/compare/v2.3.0...v2.4.0) (TBA)
+
+Support for Create React App.
+
+### New Features
+
+* New `lingui init` command which detects project type and install all required packages
+* `lingui extract` detects ``create-react-app` projects and extracts messages using
+  ``rect-app`` babel preset
+
 <a name="2.3.0"></a>
 ## [2.3.0](https://github.com/lingui/js-lingui/compare/v2.2.0...v2.3.0) (2018-07-23)
 

@@ -1,4 +1,8 @@
 export function mockConsole(testCase, mock = {}) {
+  function restoreConsole() {
+    global.console = originalConsole
+  }
+
   const originalConsole = global.console
 
   const defaults = {
@@ -11,12 +15,18 @@ export function mockConsole(testCase, mock = {}) {
     ...mock
   }
 
+  let result
   try {
-    testCase(global.console)
+    result = testCase(global.console)
   } catch (e) {
-    global.console = originalConsole
+    restoreConsole()
     throw e
   }
 
-  global.console = originalConsole
+  if (result && typeof result.then === "function") {
+    return result.then(restoreConsole).catch(restoreConsole)
+  } else {
+    restoreConsole()
+    return result
+  }
 }

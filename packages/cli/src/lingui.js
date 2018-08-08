@@ -11,6 +11,7 @@ try {
 
 program
   .version(version)
+  .command("init", "Install all required packages")
   .command(
     "add-locale [locales...]",
     "Add new locale (generate empty message catalogues for this locale)"
