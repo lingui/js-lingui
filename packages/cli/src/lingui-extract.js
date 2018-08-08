@@ -7,7 +7,9 @@ import program from "commander"
 
 import { getConfig } from "@lingui/conf"
 
-import type { LinguiConfig, CatalogFormat } from "./api/formats/types"
+import configureCatalog from "./api/catalog"
+
+import type { LinguiConfig, CatalogApi } from "./api/types"
 import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
 import { removeDirectory } from "./api/utils"
@@ -17,17 +19,16 @@ type ExtractOptions = {|
   verbose: boolean,
   clean: boolean,
   overwrite: boolean,
-  prevFormat: ?CatalogFormat,
+  prevFormat: ?CatalogApi,
   babelOptions: Object
 |}
 
 export default function command(
   config: LinguiConfig,
-  format: CatalogFormat,
   options: ExtractOptions
 ): boolean {
-  const convertFormat = options.prevFormat || format
-  const locales = convertFormat.getLocales()
+  const catalog = configureCatalog(config)
+  const locales = catalog.getLocales()
 
   if (!locales.length) {
     console.log("No locales defined!\n")
@@ -47,7 +48,7 @@ export default function command(
 
   const projectType = detect()
 
-  console.log("Extracting messages from source files…")
+  options.verbose && console.log("Extracting messages from source files…")
   extract(config.srcPathDirs, config.localeDir, {
     projectType,
     ignore: config.srcPathIgnorePatterns,
@@ -56,30 +57,30 @@ export default function command(
   })
   options.verbose && console.log()
 
-  console.log("Collecting all messages…")
+  options.verbose && console.log("Collecting messages…")
   const clean = options.clean ? cleanObsolete : id => id
 
-  let catalog
+  let nextCatalog
   try {
-    catalog = collect(buildDir)
+    nextCatalog = collect(buildDir)
   } catch (e) {
     console.error(e)
     return false
   }
 
-  const prevCatalogs = convertFormat.readAll()
+  const prevCatalogs = catalog.readAll()
   const catalogs = order(
     clean(
-      convertFormat.merge(prevCatalogs, catalog, {
+      catalog.merge(prevCatalogs, nextCatalog, {
         overwrite: options.overwrite
       })
     )
   )
   options.verbose && console.log()
 
-  console.log("Writing message catalogues…")
+  options.verbose && console.log("Writing message catalogues…")
   locales
-    .map(locale => format.write(locale, catalogs[locale]))
+    .map(locale => catalog.write(locale, catalogs[locale]))
     .forEach(([created, filename]) => {
       if (!filename || !options.verbose) return
 
@@ -90,8 +91,7 @@ export default function command(
       }
     })
   options.verbose && console.log()
-
-  console.log("Messages extracted!\n")
+  options.verbose && console.log("Messages extracted!\n")
 
   console.log("Catalog statistics:")
   printStats(config, catalogs)
@@ -132,17 +132,23 @@ if (require.main === module) {
     .parse(process.argv)
 
   const config = getConfig()
-  const formatName = program.format || config.format
-  const prevFormatName = program.convertFrom
 
-  if (prevFormatName && formatName === prevFormatName) {
+  if (program.format) {
+    const msg =
+      "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
+      " Please set format in configuration https://lingui.github.io/js-lingui/ref/conf.html#format"
+    console.warn(msg)
+    config.format = program.format
+  }
+
+  const prevFormat = program.convertFrom
+  if (prevFormat && config.format === prevFormat) {
     console.log(
       chalk.red("Trying to migrate message catalog to the same format")
     )
     console.log(
-      `Set ${chalk.bold("new")} format in lingui configuration or using` +
-        ` --format option\nand ${chalk.bold("previous")} format using` +
-        ` --convert-format option.`
+      `Set ${chalk.bold("new")} format in lingui configuration\n` +
+        ` and ${chalk.bold("previous")} format using --convert-format option.`
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
@@ -152,12 +158,7 @@ if (require.main === module) {
     process.exit(1)
   }
 
-  const format = require(`./api/formats/${formatName}`).default(config)
-  const prevFormat = prevFormatName
-    ? require(`./api/formats/${prevFormatName}`).default(config)
-    : null
-
-  const result = command(config, format, {
+  const result = command(config, {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,

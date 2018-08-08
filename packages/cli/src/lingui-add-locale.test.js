@@ -1,18 +1,13 @@
 import mockFs from "mock-fs"
 
-import { mockConsole } from "./mocks"
+import { mockConsole, mockConfig } from "./mocks"
 import command from "./lingui-add-locale"
 
 describe("lingui add-locale", function() {
-  const createConfig = config => ({
-    ...config,
-    localeDir: "./locale"
-  })
-
   afterEach(mockFs.restore)
 
   it("should fail on unknown locale", function() {
-    const config = createConfig()
+    const config = mockConfig()
 
     mockConsole(console => {
       command(config, ["xyz"])
@@ -24,7 +19,7 @@ describe("lingui add-locale", function() {
   })
 
   it("should add single locale", function() {
-    const config = createConfig()
+    const config = mockConfig()
 
     mockFs({
       [config.localeDir]: mockFs.directory()
@@ -43,7 +38,7 @@ describe("lingui add-locale", function() {
   })
 
   it("should add multiple locales", function() {
-    const config = createConfig()
+    const config = mockConfig()
 
     mockFs({
       [config.localeDir]: {

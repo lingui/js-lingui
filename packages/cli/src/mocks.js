@@ -1,4 +1,15 @@
-export function mockConsole(testCase, mock = {}) {
+// @flow
+import { defaultConfig } from "@lingui/conf"
+import type { LinguiConfig } from "./api/types"
+
+export function mockConfig(config?: Object = {}): LinguiConfig {
+  return {
+    ...defaultConfig,
+    ...config
+  }
+}
+
+export function mockConsole(testCase: Function, mock: Object = {}) {
   function restoreConsole() {
     global.console = originalConsole
   }

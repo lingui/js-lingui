@@ -1,6 +1,7 @@
 import path from "path"
 import tmp from "tmp"
-import plugin from "./lingui"
+import configureCatalog from "./catalog"
+import { mockConfig } from "../mocks"
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 function escapeRegExp(string) {
@@ -8,18 +9,20 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
-describe("Catalog formats - lingui", function() {
-  const createConfig = config => ({
-    ...config,
-    localeDir: tmp.dirSync({ unsafeCleanup: true }).name
-  })
+describe("Catalog API", function() {
+  const createConfig = config =>
+    mockConfig({
+      ...config,
+      localeDir: tmp.dirSync({ unsafeCleanup: true }).name
+    })
 
   describe("addLocale", function() {
     it("should add locale", function() {
       const config = createConfig()
+      const catalog = configureCatalog(config)
 
       // First run, create a directory with an empty message catalog
-      expect(plugin(config).addLocale("en")).toEqual([
+      expect(catalog.addLocale("en")).toEqual([
         true,
         expect.stringMatching(
           escapeRegExp(path.join("en", "messages.json")) + "$"
@@ -27,7 +30,7 @@ describe("Catalog formats - lingui", function() {
       ])
 
       // Second run, don't do anything
-      expect(plugin(config).addLocale("en")).toEqual([
+      expect(catalog.addLocale("en")).toEqual([
         false,
         expect.stringMatching(
           escapeRegExp(path.join("en", "messages.json")) + "$"
@@ -36,33 +39,35 @@ describe("Catalog formats - lingui", function() {
     })
 
     it("shouldn't add invalid locale", function() {
-      expect(plugin(createConfig()).addLocale("xyz")).toEqual([false, null])
+      const config = createConfig()
+      const catalog = configureCatalog(config)
+      expect(catalog.addLocale("xyz")).toEqual([false, null])
     })
   })
 
   describe("getLocale", function() {
     it("should get locale for given filename", function() {
       const config = createConfig()
-      expect(
-        plugin(config).getLocale(path.join("en", "messages.json"))
-      ).toEqual("en")
-      expect(
-        plugin(config).getLocale(path.join("en_US", "messages.json"))
-      ).toEqual("en_US")
-      expect(
-        plugin(config).getLocale(path.join("en-US", "messages.json"))
-      ).toEqual("en-US")
+      const catalog = configureCatalog(config)
+      expect(catalog.getLocale(path.join("en", "messages.json"))).toEqual("en")
+      expect(catalog.getLocale(path.join("en_US", "messages.json"))).toEqual(
+        "en_US"
+      )
+      expect(catalog.getLocale(path.join("en-US", "messages.json"))).toEqual(
+        "en-US"
+      )
     })
 
     it("should return null for invalid locales", function() {
       const config = createConfig()
-      expect(plugin(config).getLocale("messages.json")).toBeNull()
+      const catalog = configureCatalog(config)
+      expect(catalog.getLocale("messages.json")).toBeNull()
     })
   })
 
   describe("merge", function() {
     /*
-    plugin.merge(prevCatalogs, nextCatalog)
+    catalog.merge(prevCatalogs, nextCatalog)
 
     prevCatalogs - map of message catalogs in all available languages with translations
     nextCatalog - language-agnostic catalog with actual messages extracted from source
@@ -93,7 +98,7 @@ describe("Catalog formats - lingui", function() {
       }
 
       expect(
-        plugin(createConfig({ sourceLocale: "en" })).merge(
+        configureCatalog(createConfig({ sourceLocale: "en" })).merge(
           prevCatalogs,
           nextCatalog
         )
@@ -155,7 +160,7 @@ describe("Catalog formats - lingui", function() {
       }
 
       expect(
-        plugin(createConfig({ sourceLocale: "en" })).merge(
+        configureCatalog(createConfig({ sourceLocale: "en" })).merge(
           prevCatalogs,
           nextCatalog
         )
@@ -220,7 +225,7 @@ describe("Catalog formats - lingui", function() {
       // Without `overwrite`:
       // The translation of `custom.id` message for `sourceLocale` is kept intact
       expect(
-        plugin(createConfig({ sourceLocale: "en" })).merge(
+        configureCatalog(createConfig({ sourceLocale: "en" })).merge(
           prevCatalogs,
           nextCatalog
         )
@@ -242,7 +247,7 @@ describe("Catalog formats - lingui", function() {
       // With `overwrite`
       // The translation of `custom.id` message for `sourceLocale` is changed
       expect(
-        plugin(createConfig({ sourceLocale: "en" })).merge(
+        configureCatalog(createConfig({ sourceLocale: "en" })).merge(
           prevCatalogs,
           nextCatalog,
           { overwrite: true }
@@ -272,7 +277,9 @@ describe("Catalog formats - lingui", function() {
         }
       }
       const nextCatalog = {}
-      expect(plugin(createConfig()).merge(prevCatalogs, nextCatalog)).toEqual({
+      expect(
+        configureCatalog(createConfig()).merge(prevCatalogs, nextCatalog)
+      ).toEqual({
         en: {
           "msg.hello": {
             translation: "Hello World",
@@ -284,7 +291,7 @@ describe("Catalog formats - lingui", function() {
   })
 
   it("readAll - should read existing catalogs for all locales", function() {
-    const mockedPlugin = plugin(createConfig())
+    const mockedPlugin = configureCatalog(createConfig())
     mockedPlugin.getLocales = jest.fn(() => ["en", "cs"])
     mockedPlugin.read = jest.fn(locale => ({
       "msg.header": { translation: `Message in locale ${locale}` }

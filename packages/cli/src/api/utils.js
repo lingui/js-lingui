@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import chalk from "chalk"
 
 export function removeDirectory(dir, keep = false) {
   if (!fs.existsSync(dir)) return
@@ -21,5 +22,13 @@ export function removeDirectory(dir, keep = false) {
 
   if (!keep) {
     fs.rmdirSync(dir)
+  }
+}
+
+export function prettyOrigin(args) {
+  try {
+    return chalk.yellow(args[0].join(":"))
+  } catch (e) {
+    return ""
   }
 }
