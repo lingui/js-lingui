@@ -1,13 +1,14 @@
 <div align="center">
 <h1><sub>js</sub>Lingui</h1>
 
-Seamless internationalization in JavaScript and React, fresh alternative for react-intl.
+I18n libraries for JavaScript focused on high quality developer experience
 
 <hr />
 
 <a href="https://www.buymeacoffee.com/tricoder" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
    
 [![CircleCI][Badge-CI]][CI] 
+[![AppVeyor][Badge-AppVeyor]][AppVeyor]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
@@ -101,6 +102,7 @@ The project is licensed under the [MIT][License] license.
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
+[Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/master?svg=true
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
 [Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
 [Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
@@ -108,9 +110,10 @@ The project is licensed under the [MIT][License] license.
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
+[AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/master
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[Contributors]: https://github.com/lingui/js-lingui/blob/master/CONTRIBUTING.md
+[Contributing]: https://github.com/lingui/js-lingui/blob/master/CONTRIBUTING.md
 [Watch]: https://github.com/lingui/js-lingui/watchers
 [Star]: https://github.com/lingui/js-lingui/stargazers
 [Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
