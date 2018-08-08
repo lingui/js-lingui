@@ -138,7 +138,7 @@ export default (config: LinguiConfig): CatalogFormat => ({
       this.formatFilename(sourceFilename, localeRe.source)
     )
     const match = filenameRe.exec(filename)
-    // if (!match || !locales.isValid(match[1])) return null
+    if (!match) return null
     return match[1]
   },
 
