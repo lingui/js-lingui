@@ -1,11 +1,13 @@
 // @flow
 
 export type LinguiConfig = {|
+  rootDir: string,
   localeDir: string,
   sourceLocale: string,
   fallbackLocale: string,
   srcPathDirs: Array<string>,
-  srcPathIgnorePatterns: Array<string>
+  srcPathIgnorePatterns: Array<string>,
+  format: "lingui" | "minimal" | "po"
 |}
 
 export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
@@ -29,7 +31,13 @@ export type getTranslationOptions = {|
   sourceLocale: string
 |}
 
-export type CatalogFormat = {
+export type TranslationsFormat = {
+  filename: string,
+  read(filename: string): ?CatalogType,
+  write(filename: string, catalog: CatalogType): void
+}
+
+export type CatalogApi = {
   getLocales(): Array<string>,
   addLocale(locale: string): IdempotentResult<string>,
 
@@ -41,7 +49,7 @@ export type CatalogFormat = {
     options?: { [key: string]: any }
   ): AllCatalogsType,
   write(locale: string, catalog: CatalogType): IdempotentResult<string>,
-  writeCompiled(locale: string, content: string): ?string,
+  writeCompiled(locale: string, content: string): string,
 
   getTranslation(
     catalogs: AllCatalogsType,

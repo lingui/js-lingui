@@ -72,13 +72,24 @@ Origin is filename and line number from where the message was extracted.
 minimal
 ^^^^^^^
 
-Simple source -> translation mapping:
+Simple JSON with message ID -> translation mapping:
 
 .. code-block:: json
 
    {
       "MessageID": "Translated Message"
    }
+
+po
+^^
+
+Gettext PO file:
+
+.. code-block:: po
+
+   #: src/App.js:4, src/Component.js:2
+   msgid "MessageID"
+   msgstr "Translated Message"
 
 .. config:: sourceLocale
 

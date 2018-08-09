@@ -3,11 +3,14 @@ import chalk from "chalk"
 import program from "commander"
 import { getConfig } from "@lingui/conf"
 
-import type { CatalogFormat } from "./api/formats/types"
+import configureCatalog from "./api/catalog"
+import type { LinguiConfig } from "./api/types"
 
-export default function command(format: CatalogFormat, locales: Array<string>) {
+export default function command(config: LinguiConfig, locales: Array<string>) {
+  const catalog = configureCatalog(config)
+
   const results = locales.map(locale => {
-    const [created, filename] = format.addLocale(locale)
+    const [created, filename] = catalog.addLocale(locale)
 
     if (!filename) {
       console.log(chalk.red(`Unknown locale: ${chalk.bold(locale)}.`))
@@ -49,8 +52,13 @@ if (require.main === module) {
   if (!program.args.length) program.help()
 
   const config = getConfig()
-  const formatName = program.format || config.format
-  const format = require(`./api/formats/${formatName}`).default(config)
+  if (program.format) {
+    const msg =
+      "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
+      " Please set format in configuration https://lingui.github.io/js-lingui/ref/conf.html#format"
+    console.warn(msg)
+    config.format = program.format
+  }
 
-  command(format, program.args)
+  command(config, program.args)
 }

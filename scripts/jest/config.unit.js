@@ -11,7 +11,13 @@ module.exports = {
 
   collectCoverage: true,
   coverageDirectory: "<rootDir>/coverage/",
-  coveragePathIgnorePatterns: ["node_modules", "scripts", "locale", ".*.json$"],
+  coveragePathIgnorePatterns: [
+    "node_modules",
+    "scripts",
+    "locale",
+    ".*.json$",
+    ".*.js.snap$"
+  ],
   coverageReporters: ["html", "lcov"],
 
   reporters: ["default", "jest-junit"],

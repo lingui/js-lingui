@@ -6,7 +6,7 @@ import generate from "babel-generator"
 import plurals from "make-plural"
 import R from "ramda"
 
-import type { CatalogType } from "./formats/types"
+import type { CatalogType } from "./types"
 
 const isString = s => typeof s === "string"
 

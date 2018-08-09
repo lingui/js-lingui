@@ -1,36 +1,34 @@
 // @flow
-import R from "ramda"
+import fs from "fs"
+import * as R from "ramda"
 
-import type { LinguiConfig, CatalogFormat } from "./types"
-import lingui from "./lingui"
+import type { TranslationsFormat } from "../types"
 
-function deserialize(catalog) {
-  return R.map(
-    translation => ({
-      translation,
-      defaults: "",
-      origin: []
-    }),
-    catalog
-  )
-}
+const serialize = R.map(message => message.translation || "")
 
-function serialize(catalog) {
-  return R.map(message => message.translation || "", catalog)
-}
+const deserialize = R.map(translation => ({
+  translation,
+  defaults: null,
+  origin: []
+}))
 
-export default (config: LinguiConfig): CatalogFormat => {
-  const linguiFormat = lingui(config)
+const format: TranslationsFormat = {
+  filename: "messages.json",
+  write(filename, catalog) {
+    const messages = serialize(catalog)
+    fs.writeFileSync(filename, JSON.stringify(messages, null, 2))
+  },
 
-  return {
-    ...linguiFormat,
+  read(filename) {
+    const raw = fs.readFileSync(filename).toString()
 
-    write(locale, messages) {
-      return linguiFormat.write(locale, serialize(messages))
-    },
-
-    read(locale) {
-      return deserialize(linguiFormat.read(locale))
+    try {
+      return deserialize(JSON.parse(raw))
+    } catch (e) {
+      console.error(`Cannot read ${filename}: ${e.message}`)
+      return null
     }
   }
 }
+
+export default format

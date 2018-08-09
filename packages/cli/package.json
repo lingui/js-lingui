@@ -49,6 +49,7 @@
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
     "commander": "^2.16.0",
+    "gettext-parser": "^2.0.0",
     "glob": "^7.1.2",
     "inquirer": "^6.1.0",
     "make-plural": "^4.1.1",

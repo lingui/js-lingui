@@ -5,14 +5,35 @@ import chalk from "chalk"
 import ora from "ora"
 import R from "ramda"
 
+import { prettyOrigin } from "./utils"
+
 import * as extractors from "./extractors"
 import type { ExtractorType } from "./extractors"
-import type { AllCatalogsType } from "./formats/types"
+import type { AllCatalogsType } from "./types"
 
 type ExtractOptions = {
   ignore?: Array<string>,
   verbose?: boolean,
   babelOptions?: Object
+}
+
+/**
+ * Merge origins for messages found in different places. All other attributes
+ * should be the same (raise an error if defaults are different).
+ */
+function mergeMessage(msgId, prev, next) {
+  if (prev.defaults !== next.defaults) {
+    throw new Error(
+      `Encountered different defaults for message ${chalk.yellow(msgId)}` +
+        `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.defaults}` +
+        `\n${chalk.yellow(prettyOrigin(next.origin))} ${next.defaults}`
+    )
+  }
+
+  return {
+    ...next,
+    origin: R.concat(prev.origin, next.origin)
+  }
 }
 
 export function extract(
@@ -72,33 +93,10 @@ export function collect(buildDir: string) {
       }
     })
     .filter(Boolean)
-    .reduce((catalog, messages) => {
-      const mergeMessage = (msgId, prev, next) => {
-        if (prev.defaults !== next.defaults) {
-          const prettyOrigin = args => {
-            try {
-              return chalk.yellow(args[0].join(":"))
-            } catch (e) {
-              return ""
-            }
-          }
-
-          throw new Error(
-            `Encountered different defaults for message ${chalk.yellow(
-              msgId
-            )}` +
-              `\n${prettyOrigin(prev.origin)} ${prev.defaults}` +
-              `\n${prettyOrigin(next.origin)} ${next.defaults}`
-          )
-        }
-
-        return {
-          ...next,
-          origin: R.concat(prev.origin, next.origin)
-        }
-      }
-      return R.mergeWithKey(mergeMessage, catalog, messages)
-    }, {})
+    .reduce(
+      (catalog, messages) => R.mergeWithKey(mergeMessage, catalog, messages),
+      {}
+    )
 }
 
 export function cleanObsolete(catalogs: AllCatalogsType) {

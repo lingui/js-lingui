@@ -7,10 +7,12 @@ import plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
+import configureCatalog from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 
-function command(config, format, options) {
-  const locales = format.getLocales()
+function command(config, options) {
+  const catalog = configureCatalog(config)
+  const locales = catalog.getLocales()
 
   if (!locales.length) {
     console.log("No locales defined!\n")
@@ -21,7 +23,7 @@ function command(config, format, options) {
   }
 
   const catalogs = R.mergeAll(
-    locales.map(locale => ({ [locale]: format.read(locale) }))
+    locales.map(locale => ({ [locale]: catalog.read(locale) }))
   )
 
   const noMessages = R.compose(
@@ -55,7 +57,7 @@ function command(config, format, options) {
 
     const messages = R.mergeAll(
       Object.keys(catalogs[locale]).map(key => ({
-        [key]: format.getTranslation(catalogs, locale, key, {
+        [key]: catalog.getTranslation(catalogs, locale, key, {
           fallbackLocale: config.fallbackLocale,
           sourceLocale: config.sourceLocale
         })
@@ -86,7 +88,7 @@ function command(config, format, options) {
     }
 
     const compiledCatalog = createCompiledCatalog(locale, messages)
-    const compiledPath = format.writeCompiled(locale, compiledCatalog)
+    const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
     if (options.typescript) {
       const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
       fs.writeFileSync(
@@ -127,10 +129,16 @@ if (require.main === module) {
     .parse(process.argv)
 
   const config = getConfig()
-  const formatName = program.format || config.format
-  const format = require(`./api/formats/${formatName}`).default(config)
 
-  const results = command(config, format, {
+  if (program.format) {
+    const msg =
+      "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
+      " Please set format in configuration https://lingui.github.io/js-lingui/ref/conf.html#format"
+    console.warn(msg)
+    config.format = program.format
+  }
+
+  const results = command(config, {
     verbose: program.verbose || false,
     allowEmpty: !program.strict,
     typescript: program.typescript || false
