@@ -96,13 +96,17 @@ function processTokens(tokens, arg) {
   )
 }
 
-export function createCompiledCatalog(locale: string, messages: CatalogType) {
+export function createCompiledCatalog(
+  locale: string,
+  messages: CatalogType,
+  strict: boolean = false
+) {
   const [language] = locale.split(/[_-]/)
   const pluralRules = plurals[language]
 
   const compiledMessages = R.keys(messages).map(key => {
-    const translation = messages[key]
-    return t.objectProperty(t.stringLiteral(key), compile(translation || key))
+    const translation = messages[key] || (!strict ? key : "")
+    return t.objectProperty(t.stringLiteral(key), compile(translation))
   })
 
   const languageData = [
