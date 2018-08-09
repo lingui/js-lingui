@@ -1,15 +1,24 @@
 # Change Log
 
 <a name="2.4.0"></a>
-## [2.4.0 (unreleased)](https://github.com/lingui/js-lingui/compare/v2.3.0...v2.4.0) (TBA)
+## [2.4.0](https://github.com/lingui/js-lingui/compare/v2.3.0...v2.4.0) (2018-08-09)
 
-Support for Create React App.
+Better support for custom file formats and initial support for Create React App.
 
 ### New Features
 
-* New `lingui init` command which detects project type and install all required packages
-* `lingui extract` detects ``create-react-app` projects and extracts messages using
-  ``rect-app`` babel preset
+* New message catalog format: [Gettext PO file](https://lingui.github.io/js-lingui/ref/conf.html#po)
+  ([#256](https://github.com/lingui/js-lingui/issues/256))
+* New [`lingui init`](https://lingui.github.io/js-lingui/ref/cli.html#init) command
+  which detects project type and install all required packages ([253](https://github.com/lingui/js-lingui/pull/253))
+* Allow customize messages for missing translations ([#255](https://github.com/lingui/js-lingui/issues/255))
+* `lingui extract` detects `create-react-app` projects and extracts messages using
+  `rect-app` babel preset
+
+### Bug Fixes
+
+* `lingui add-locale` accepts any valid BCP-47 locale ([#182](https://github.com/lingui/js-lingui/issues/182))
+* Flow types are correctly exported for all packages ([#250](https://github.com/lingui/js-lingui/issues/250))
 
 <a name="2.3.0"></a>
 ## [2.3.0](https://github.com/lingui/js-lingui/compare/v2.2.0...v2.3.0) (2018-07-23)
