@@ -4,7 +4,80 @@
 Tutorial - Internationalization of JavaScript apps
 **************************************************
 
-In this tutorial, we'll learn how to use jsLingui's internationalization features that do not depend on React. We'll take a minimalist approach and cover the main functions from the ``@lingui/core`` package.
+.. warning:: This is a draft of tutorial. Feel free to send a PR if you want to contribute.
+
+In this tutorial, we'll learn how to use jsLingui's internationalization features that
+do not depend on React. We'll take a minimalist approach and cover the main functions
+from the ``@lingui/core`` package.
+
+Installing jsLingui
+========================
+
+jsLingui_ isn't just a package. It's a set of tools which helps you to
+internationalize. You can pick whichever tool you want to use in your project.
+We're trying to use most of them to show the full power of jsLingui.
+
+Let's start with the three major packages:
+
+``@lingui/cli``
+   CLI for i18n management and working with message catalogs
+
+``@lingui/core``
+   The core library responsible for translation and handling of message catalogs
+
+``@lingui/babel-preset-js``
+   Transforms messages wrapped in tagged template literals from ``@lingui/core`` to ICU
+   MessageFormat and validates them
+
+1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
+   project type and install all required packages automatically. Feel free to run
+   it with ``lingui init --dry-run`` option to inspect what commands will be run:
+
+   .. code-block:: shell
+
+      npm install -g @lingui/cli
+      lingui init
+
+   Yarn is supported as well:
+
+   .. code-block:: shell
+
+      yarn global add @lingui/cli
+      lingui init
+
+   .. note::
+
+      Under the hood it installs ``@lingui/babel-preset-js`` as a development
+      dependency and ``@lingui/core`` as a runtime dependency:
+
+      .. code-block:: shell
+
+         npm install --save @lingui/core
+         npm install --save-dev @lingui/babel-preset-js
+
+2. Add ``@lingui/babel-preset-js`` preset to Babel config (e.g: ``.babelrc``):
+
+   .. code-block:: json
+
+      {
+        "presets": [
+          "env",
+          "@lingui/babel-preset-js"
+        ]
+      }
+
+3. If you receive a warning about missing peer dependency ``babel-core``, you need
+to install it manually. Target version depends on whether you're using babel 6 or 7:
+
+   .. code-block:: shell
+
+      # babel 6.x
+      npm install -g babel-core
+
+      # babel 7.x
+      npm install -g babel-core@^7.0.0-0 @babel/core
+
+Now we have the environment up and running and we can start internationalizing our app!
 
 Setting up i18n
 ===============
@@ -84,6 +157,5 @@ It's also possible to nest message formats. Each message format method in i18n h
 Further reading
 ===============
 
-- `@lingui/react reference documentation <../ref/react.html>`_
 - `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_
