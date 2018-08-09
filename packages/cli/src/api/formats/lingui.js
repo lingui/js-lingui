@@ -4,6 +4,8 @@ import fs from "fs"
 import type { TranslationsFormat } from "../types"
 
 const format: TranslationsFormat = {
+  filename: "messages.json",
+
   write(filename, catalog) {
     fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
   },

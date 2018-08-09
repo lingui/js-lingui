@@ -25,9 +25,9 @@ export function removeDirectory(dir, keep = false) {
   }
 }
 
-export function prettyOrigin(args) {
+export function prettyOrigin(origins) {
   try {
-    return chalk.yellow(args[0].join(":"))
+    return origins.map(origin => origin.join(":")).join(", ")
   } catch (e) {
     return ""
   }

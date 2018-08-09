@@ -25,8 +25,8 @@ function mergeMessage(msgId, prev, next) {
   if (prev.defaults !== next.defaults) {
     throw new Error(
       `Encountered different defaults for message ${chalk.yellow(msgId)}` +
-        `\n${prettyOrigin(prev.origin)} ${prev.defaults}` +
-        `\n${prettyOrigin(next.origin)} ${next.defaults}`
+        `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.defaults}` +
+        `\n${chalk.yellow(prettyOrigin(next.origin))} ${next.defaults}`
     )
   }
 

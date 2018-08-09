@@ -13,6 +13,7 @@ const deserialize = R.map(translation => ({
 }))
 
 const format: TranslationsFormat = {
+  filename: "messages.json",
   write(filename, catalog) {
     const messages = serialize(catalog)
     fs.writeFileSync(filename, JSON.stringify(messages, null, 2))

@@ -9,14 +9,14 @@ import type { LinguiConfig, CatalogApi } from "./types"
 import * as locales from "./locales"
 import { formats } from "."
 
-const sourceFilename = path.join("{locale}", "messages.json")
-const compiledFilename = path.join("{locale}", "messages.js")
-
 export default (config: LinguiConfig): CatalogApi => {
   const format = formats[config.format]
   if (!format) {
     throw new Error(`Unknown format ${config.format}.`)
   }
+
+  const sourceFilename = path.join("{locale}", format.filename)
+  const compiledFilename = path.join("{locale}", "messages.js")
 
   return {
     formatFilename(pattern, locale) {
@@ -30,7 +30,7 @@ export default (config: LinguiConfig): CatalogApi => {
       )
 
       const created = !fs.existsSync(filename)
-      format.write(filename, messages)
+      format.write(filename, messages, { locale })
       return [created, filename]
     },
 
@@ -137,19 +137,19 @@ export default (config: LinguiConfig): CatalogApi => {
     getLocale(filename) {
       const [messages, locale] = filename.split(path.sep).reverse()
 
-      if (messages !== "messages.json" || !locales.isValid(locale)) return null
+      if (messages !== format.filename || !locales.isValid(locale)) return null
       return locale
     },
 
     getLocales() {
-      const pattern = path.join(
-        config.localeDir,
-        this.formatFilename(sourceFilename, "*")
-      )
+      const pattern = path.join(config.localeDir, "*")
 
       return glob
         .sync(pattern)
-        .map(filename => this.getLocale(filename))
+        .map(filename => {
+          const [locale] = filename.split(path.sep).reverse()
+          return locales.isValid(locale) && locale
+        })
         .filter(Boolean)
     },
 

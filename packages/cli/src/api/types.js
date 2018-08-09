@@ -7,7 +7,7 @@ export type LinguiConfig = {|
   fallbackLocale: string,
   srcPathDirs: Array<string>,
   srcPathIgnorePatterns: Array<string>,
-  format: "lingui" | "minimal"
+  format: "lingui" | "minimal" | "po"
 |}
 
 export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
@@ -32,6 +32,7 @@ export type getTranslationOptions = {|
 |}
 
 export type TranslationsFormat = {
+  filename: string,
   read(filename: string): ?CatalogType,
   write(filename: string, catalog: CatalogType): void
 }

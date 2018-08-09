@@ -1,5 +1,6 @@
 {
   "lingui": {
+    "format": "po",
     "localeDir": "./locale",
     "sourceLocale": "en"
   }
