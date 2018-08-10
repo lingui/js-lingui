@@ -1,5 +1,13 @@
 # Change Log
 
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/lingui/js-lingui/compare/v2.4.0...v2.4.1) (2018-08-10)
+
+### Bug Fixes
+
+* `lingui extract` - fix path separator on Windows ([#262](https://github.com/lingui/js-lingui/issues/262))
+* `lingui extract` - fix extracting from typescript files ([#260](https://github.com/lingui/js-lingui/issues/260))
+
 <a name="2.4.0"></a>
 ## [2.4.0](https://github.com/lingui/js-lingui/compare/v2.3.0...v2.4.0) (2018-08-09)
 
@@ -10,7 +18,7 @@ Better support for custom file formats and initial support for Create React App.
 * New message catalog format: [Gettext PO file](https://lingui.github.io/js-lingui/ref/conf.html#po)
   ([#256](https://github.com/lingui/js-lingui/issues/256))
 * New [`lingui init`](https://lingui.github.io/js-lingui/ref/cli.html#init) command
-  which detects project type and install all required packages ([253](https://github.com/lingui/js-lingui/pull/253))
+  which detects project type and install all required packages ([#253](https://github.com/lingui/js-lingui/pull/253))
 * Allow customize messages for missing translations ([#255](https://github.com/lingui/js-lingui/issues/255))
 * `lingui extract` detects `create-react-app` projects and extracts messages using
   `rect-app` babel preset
