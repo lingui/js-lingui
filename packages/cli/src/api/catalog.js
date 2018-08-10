@@ -147,7 +147,8 @@ export default (config: LinguiConfig): CatalogApi => {
       return glob
         .sync(pattern)
         .map(filename => {
-          const [locale] = filename.split(path.sep).reverse()
+          // Don't use path.sep here, because glob.sync normalizes path separators
+          const [locale] = filename.split("/").reverse()
           return locales.isValid(locale) && locale
         })
         .filter(Boolean)
