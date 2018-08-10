@@ -5,6 +5,11 @@ import mockFs from "mock-fs"
 import format from "./po"
 
 describe("pofile format", function() {
+  const dateHeaders = {
+    "pot-creation-date": "2018-08-09",
+    "po-revision-date": "2018-08-09"
+  }
+
   afterEach(() => {
     mockFs.restore()
   })
@@ -45,7 +50,7 @@ describe("pofile format", function() {
       }
     }
 
-    format.write(filename, catalog, { locale: "en" })
+    format.write(filename, catalog, { language: "en", ...dateHeaders })
     const pofile = fs.readFileSync(filename).toString()
     expect(pofile).toMatchSnapshot()
   })

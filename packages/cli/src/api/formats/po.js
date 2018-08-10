@@ -81,7 +81,7 @@ const format: TranslationsFormat = {
       const prevPo = gettextParser.po.parse(raw)
       headers = prevPo.headers
     } else {
-      headers = getHeaders({ language: options.locale })
+      headers = getHeaders(options)
     }
 
     const pofile = [...writeHeaders(headers), ...serialize(catalog)].join("\n")
