@@ -5,7 +5,9 @@ Tutorial - Internationalization of React Native apps
 In this tutorial, we'll learn how to add internationalization
 to an existing application in React Native. The React Native tutorial is largely similar to the one for :ref:`React <react-tutorial-label>`, and we highly recommend you check out that tutorial first because it covers installation, setup and other topics. Here we will cover parts that are relevant for React Native and hopefully answer all questions you may have.
 
-Please note that the latest version of ``@lingui/react`` working for React Native on Android is 2.2. Newer versions depend on the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) object which is not available on the JavaScriptCore that is used on Android by default. See [JSC build scripts for Android repo](https://github.com/react-community/jsc-android-buildscripts) for possible solution. 
+.. note::
+
+  The latest version of ``@lingui/react`` working for React Native on Android is 2.2. Newer versions depend on the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_ which is not available on the JavaScriptCore that is used on Android by default. See the `JSC build scripts for Android <https://github.com/react-community/jsc-android-buildscripts>`_ for possible solution or use the `Intl polyfill <https://github.com/andyearnshaw/Intl.js/>`_. 
 
 If you're looking for a working solution, check out the `demo on Expo <https://exp.host/@vonovak/js-lingui-demo>`_. The source code is `available here <https://github.com/vonovak/js-lingui-demo>`_.
 
