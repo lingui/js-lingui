@@ -30,7 +30,7 @@ extensions = [
 ]
 
 # For sphinx_sitemap
-site_url = 'https://lingui.github.io/js-lingui/'
+site_url = 'https://lingui.js.org/'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

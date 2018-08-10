@@ -34,6 +34,7 @@ fi
 
 # copy over or recompile the new site
 cp -a ../docs/_build/html/. .
+cp ../docs/CNAME .
 touch .nojekyll
 
 # stage any changes and new files
