@@ -25,8 +25,12 @@ primary_domain = 'js'
 extensions = [
     'linguidocs',
     'edit_on_github',
-    'youtube'
+    'youtube',
+    'sphinx_sitemap'
 ]
+
+# For sphinx_sitemap
+site_url = 'https://lingui.github.io/js-lingui/'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

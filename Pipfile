@@ -9,6 +9,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 jsx-lexer = "*"
 sphinx-autobuild = "*"
+sphinx-sitemap = "*"
 
 [requires]
 python_version = "3.6"

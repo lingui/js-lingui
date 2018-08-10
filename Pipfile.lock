@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6238153e91b31220fbe98157c33584ded40e4e0690a769701c75dbe04558b83a"
+            "sha256": "567a62fdfcbede8cf04674acdc12631d7eded9d554eb6c39f04696cfb126453e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -197,10 +197,16 @@
         },
         "sphinx-rtd-theme": {
             "hashes": [
-                "sha256:aa3e190392e963551432de7df24b8a5fbe5b71a2f4fcd9d5b75808b52ad999e5",
-                "sha256:de88d637a60371d4f923e06b79c4ba260490c57d2ab5a8316942ab5d9a6ce1bf"
+                "sha256:3b49758a64f8a1ebd8a33cb6cc9093c3935a908b716edfaa5772fd86aac27ef6",
+                "sha256:80e01ec0eb711abacb1fa507f3eae8b805ae8fa3e8b057abfdf497e3f644c82c"
             ],
-            "version": "==0.4.0"
+            "version": "==0.4.1"
+        },
+        "sphinx-sitemap": {
+            "hashes": [
+                "sha256:b5a8c98b3f2b525846d7c49fa69f7e1a69a542db87e7bc39bcc0626170f3507e"
+            ],
+            "version": "==0.3.1"
         },
         "sphinxcontrib-websupport": {
             "hashes": [
