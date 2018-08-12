@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'jsLingui'
-copyright = '2017, Tomáš Ehrlich'
+copyright = '2018, Tomáš Ehrlich'
 author = 'Tomáš Ehrlich'
 
 # The version info for the project you're documenting, acts as replacement for
