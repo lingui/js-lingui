@@ -1,5 +1,12 @@
 # Change Log
 
+<a name="2.4.2"></a>
+## [2.4.2](https://github.com/lingui/js-lingui/compare/v2.4.1...v2.4.2) (2018-08-19)
+
+### Bug Fixes
+
+* `lingui init` - add missing command ([#270](https://github.com/lingui/js-lingui/issues/270))
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/lingui/js-lingui/compare/v2.4.0...v2.4.1) (2018-08-10)
 
