@@ -30,9 +30,7 @@
     "README.md",
     "api",
     "lingui.js",
-    "lingui-add-locale.js",
-    "lingui-compile.js",
-    "lingui-extract.js",
+    "lingui-*.js",
     "*.js.flow"
   ],
   "dependencies": {
