@@ -50,11 +50,21 @@ Key features
    :caption: API References
 
    Core (JavaScript) <ref/core>
+   JS Macros <ref/js.macro>
    React <ref/react>
+   React Macros <ref/react.macro>
    CLI <ref/cli>
    Configuration <ref/conf>
    Webpack Loader <ref/loader>
    ICU MessageFormat <ref/message-format>
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Discussion
+
+   Projects using jsLingui <misc/showroom>
+   Comparison with react-intl <misc/react-intl>
+   Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
 
 .. toctree::
    :maxdepth: 1
@@ -65,12 +75,9 @@ Key features
 
 .. toctree::
    :maxdepth: 1
-   :caption: Discussion
+   :caption: RFCs
 
-   Projects using jsLingui <misc/showroom>
-   Comparison with react-intl <misc/react-intl>
-   Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
-
+   001 – Message Definitions <rfc/001_message_definitions>
 
 
 Indices
