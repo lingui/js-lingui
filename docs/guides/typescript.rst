@@ -2,7 +2,7 @@
 Typescript
 **********
 
-Typescript support is in progress. Please follow `typescript label <https://github.com/lingui/js-lingui/issues?q=is%3Aopen+is%3Aissue+label%3A%22env%3A+typescript%22>`_
+Typescript support is in progress. Please follow `typescript label <https://github.com/lingui/js-lingui/issues?q=is%3Aissue+label%3A%22%F0%9F%8C%B1+typescript%22+is%3Aopen>`_
 in GitHub to see latest status.
 
 Webpack setup
