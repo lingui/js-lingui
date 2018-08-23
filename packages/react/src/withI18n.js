@@ -60,7 +60,7 @@ const withI18n = (options: withI18nOptions = {}) =>
         }
         return (
           <I18n update={update} withHash={withHash}>
-            {i18nProps => <WrappedComponent {...props} {...i18nProps} />}
+            <WrappedComponent {...props} />
           </I18n>
         )
       }
