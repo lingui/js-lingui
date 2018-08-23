@@ -32,18 +32,17 @@ describe("Trans component", function() {
       .find("Render")
       .text()
 
-  const html = node => shallow(node, { context }).html()
+  const html = node =>
+    mount(node, { context })
+      .find("Render")
+      .html()
 
   /*
    * Tests
    */
 
   it("shouldn't throw runtime error without i18n context", function() {
-    expect(
-      mount(<Trans id="unknown" />)
-        .find("Render")
-        .text()
-    ).toEqual("unknown")
+    expect(text(<Trans id="unknown" />)).toEqual("unknown")
   })
 
   it("should warn about possible missing babel-plugin in development", function() {
@@ -127,28 +126,23 @@ describe("Trans component", function() {
   })
 
   it("should render component in variables", function() {
-    const translation = html(
-      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
+    const translation = mount(
+      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />,
+      { context }
     )
-    expect(translation).toEqual("Hello <strong>John</strong>")
+      .find("Render")
+      .debug()
+    expect(translation).toMatchSnapshot()
   })
 
   it("should render translation inside custom component", function() {
-    const html1 = mount(
-      <Trans render={<p className="lead" />} id="Original" />,
-      { context }
-    )
-      .find("Render")
-      .html()
-    const html2 = mount(
+    const html1 = html(<Trans render={<p className="lead" />} id="Original" />)
+    const html2 = html(
       <Trans
         render={({ translation }) => <p className="lead">{translation}</p>}
         id="Original"
-      />,
-      { context }
+      />
     )
-      .find("Render")
-      .html()
 
     expect(html1).toEqual('<p class="lead">Původní</p>')
     expect(html2).toEqual(html1)

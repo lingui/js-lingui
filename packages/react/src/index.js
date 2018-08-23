@@ -2,6 +2,7 @@
 import { date, number } from "@lingui/core"
 
 import I18nProvider from "./I18nProvider"
+import I18n from "./I18n"
 import Trans from "./Trans"
 import { Plural, Select, SelectOrdinal } from "./Select"
 
@@ -17,6 +18,7 @@ export {
   i18nMark,
   withI18n,
   I18nProvider,
+  I18n,
   Trans,
   Plural,
   Select,
