@@ -6,7 +6,6 @@ export default class I18n extends React.Component<*, *> {
   static defaultProps = {
     update: true,
     withHash: true,
-    withRef: false
   }
 
   static contextTypes = {

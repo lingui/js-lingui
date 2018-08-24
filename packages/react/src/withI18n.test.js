@@ -25,8 +25,6 @@ describe("withI18n", function() {
     const spy = jest.fn()
     const Sink = withI18n(options)(
       class Sink extends React.Component<*> {
-        customMethod = () => 42
-
         render() {
           spy(this.props)
           return <div />
@@ -154,11 +152,18 @@ describe("withI18n", function() {
   })
 
   it("should hold ref to wrapped instance when withRef is enabled", function() {
-    const { node } = mountHoc({}, { withRef: true })
-    const hoc = node.instance()
-    expect(hoc.getWrappedInstance()).not.toBeNull()
-    expect(hoc.getWrappedInstance().customMethod).not.toBeNull()
-    expect(hoc.getWrappedInstance().customMethod()).toEqual(42)
+    class Component extends React.Component<*> {
+      customMethod = () => 42
+      render() {
+        return null
+      }
+    }
+    const WrappedComponent = withI18n({ withRef: true })(Component)
+
+    const node = mount(<WrappedComponent />).instance()
+    expect(node.getWrappedInstance()).not.toBeNull()
+    expect(node.getWrappedInstance().customMethod).toBeDefined()
+    expect(node.getWrappedInstance().customMethod()).toEqual(42)
   })
 
   it("should not hold ref to wrapped instance when withRef is disabled", function() {
