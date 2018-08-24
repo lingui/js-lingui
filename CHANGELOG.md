@@ -1,5 +1,17 @@
 # Change Log
 
+<a name="2.5.0"></a>
+## [2.5.0](https://github.com/lingui/js-lingui/compare/v2.4.2...v2.5.0) (2018-08-24)
+
+### New Features
+
+* Disable eslint for compiled catalogs ([#279](https://github.com/lingui/js-lingui/issues/279])). Thanks to [Benoît Grélard](https://github.com/artisologic).
+* Add [`I18n`](https://lingui.js.org/ref/react.html#i18n) render prop component ([#282](https://github.com/lingui/js-lingui/issues/282]))
+
+### Bug Fixes
+
+* Handle message compile errors in development ([#283](https://github.com/lingui/js-lingui/issues/283]))
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/lingui/js-lingui/compare/v2.4.1...v2.4.2) (2018-08-19)
 
