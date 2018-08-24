@@ -416,6 +416,65 @@ top-level application component. However, if the ``language`` is stored in a
         );
    }
 
+I18n
+----
+
+.. component:: I18n
+
+   :param bool update: Subscribe to catalog and activate language updates
+
+:component:`I18n` injects ``i18n`` object and ``i18nHash`` to child component, which
+may be lambda component, regular component or React element. This pattern is
+known as `render prop component <https://reactjs.org/docs/render-props.html>`_.
+
+If want to use ``i18n`` object in instance or lifecycle methods, consider using
+:js:func:`withI18n` high-order component.
+
+``i18nHash`` is useful when rendering pure components or elements as it contains
+hash of active language and catalogs. Instead of comparing ``i18n`` object it's
+enough to compare ``i18nHash`` to decide if component should update.
+
+Using lambda components:
+
+.. code-block:: jsx
+
+   import React from "react"
+   import { I18n } from "@lingui/react"
+
+   function LogoutIcon = () => (
+      return (
+         <I18n>
+            {({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`} />}
+         </I18n>
+      )
+   )
+
+Using components and elements:
+
+.. code-block:: jsx
+
+   import React from "react"
+   import { I18n } from "@lingui/react"
+
+   function TranslatedComponent({ i18n }) {
+      return <Icon name="turn-off" aria-label={i18n.t`Log out`} />
+   }
+
+   function RenderingElements = () => (
+      return (
+         <I18n>
+            <TranslatedComponent />
+         </I18n>
+      )
+   )
+
+   function RenderingComponents = () => (
+      return (
+         <I18n>{TranslatedComponent}</I18n>
+      )
+   )
+
+
 withI18n
 --------
 
