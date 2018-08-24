@@ -32,18 +32,36 @@ Reference
 
    .. code-block:: js
 
-      type Catalogs = {[language: string]: Messages}
+      type Catalogs = {[language: string]: Catalog}
 
       // Example:
       const catalogs: Catalogs =  {
          en: {
-            "Hello": "Hello",
-            "Good bye": "Good bye"
+            messages: {
+               "Hello": "Hello",
+               "Good bye": "Good bye"
+            }
          },
          cs: {
-            "Hello": "Ahoj",
-            "Good bye": "Nashledanou"
+            messages: {
+               "Hello": "Ahoj",
+               "Good bye": "Nashledanou"
+            }
          }
+      }
+
+.. js:data:: Catalog
+
+   Message catalog contains messages and language data (plurals). This object is
+   usually generated in CLI:
+
+   .. code-block:: js
+
+      type Catalog = {
+         languageData: {
+            plurals: Function
+         },
+         messages: Messages
       }
 
 .. js:data:: Messages
