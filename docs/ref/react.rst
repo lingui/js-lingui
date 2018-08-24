@@ -178,13 +178,14 @@ used in source code. For example for English it's only ``one`` and ``other``:
 
 .. code-block:: jsx
 
-   const count = 42;
+   const count = 42
+
    // renders as '42 books'
    <Plural
        value={count}
        one="# book"
        other="# books"
-   />;
+   />
 
 ``#`` character inside message is used as a placeholder for ``value``.
 
@@ -421,7 +422,7 @@ I18n
 
 .. component:: I18n
 
-   :param bool update: Subscribe to catalog and activate language updates
+   :prop bool update: Subscribe to catalog and activate language updates
 
 :component:`I18n` injects ``i18n`` object and ``i18nHash`` to child component, which
 may be lambda component, regular component or React element. This pattern is
@@ -441,13 +442,13 @@ Using lambda components:
    import React from "react"
    import { I18n } from "@lingui/react"
 
-   function LogoutIcon = () => (
+   function LogoutIcon() {
       return (
          <I18n>
-            {({ i18n }) => <Icon name="turn-off" aria-label={i18n.t`Log out`} />}
+            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />}
          </I18n>
       )
-   )
+   }
 
 Using components and elements:
 
@@ -457,22 +458,20 @@ Using components and elements:
    import { I18n } from "@lingui/react"
 
    function TranslatedComponent({ i18n }) {
-      return <Icon name="turn-off" aria-label={i18n.t`Log out`} />
+      return <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />
    }
 
-   function RenderingElements = () => (
+   function RenderingElements() {
       return (
          <I18n>
             <TranslatedComponent />
          </I18n>
       )
-   )
+   }
 
-   function RenderingComponents = () => (
-      return (
-         <I18n>{TranslatedComponent}</I18n>
-      )
-   )
+   function RenderingComponents() {
+      return <I18n>{TranslatedComponent}</I18n>
+   }
 
 
 withI18n
@@ -495,7 +494,7 @@ API for translation of JSX props:
    import { withI18n } from "@lingui/react"
 
    const LogoutIcon = withI18n()(({ i18n }) => (
-     <Icon name="turn-off" aria-label={i18n.t`Log out`} />
+     <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />
    ))
 
 .. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.
