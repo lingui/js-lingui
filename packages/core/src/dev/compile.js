@@ -47,5 +47,10 @@ function processTokens(tokens, octothorpe = {}): Function => string {
 
 // Message -> (Params -> String)
 export default function compile(message: string): Function | string {
-  return processTokens(parse(message))
+  try {
+    return processTokens(parse(message))
+  } catch (e) {
+    console.error(`Message cannot be parsed due to syntax erorrs: ${message}`)
+    return message
+  }
 }

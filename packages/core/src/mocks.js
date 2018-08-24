@@ -3,7 +3,8 @@ export function mockConsole(testCase, mock = {}) {
 
   const defaults = {
     log: jest.fn(),
-    warn: jest.fn()
+    warn: jest.fn(),
+    error: jest.fn()
   }
 
   global.console = {

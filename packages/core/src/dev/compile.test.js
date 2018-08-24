@@ -1,5 +1,5 @@
 import compile from "./compile"
-import { mockEnv } from "../mocks"
+import { mockEnv, mockConsole } from "../mocks"
 import { interpolate } from "../context"
 
 describe("compile", function() {
@@ -15,6 +15,15 @@ describe("compile", function() {
 
   const prepare = (translation, language, locales) =>
     interpolate(compile(translation), language || "en", locales, englishPlurals)
+
+  it("should handle an error if message has syntax errors", function() {
+    mockConsole(console => {
+      expect(compile("Invalid {{message}}")).toEqual("Invalid {{message}}")
+      expect(console.error).toBeCalledWith(
+        "Message cannot be parsed due to syntax erorrs: Invalid {{message}}"
+      )
+    })
+  })
 
   it("should compile static message", function() {
     const cache = compile("Static message")
