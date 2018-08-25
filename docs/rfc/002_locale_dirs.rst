@@ -2,9 +2,15 @@
 002 - Locale directories
 ************************
 
+Related issue: `#257 <https://github.com/lingui/js-lingui/issues/257>`_
+
 Message catalogs can quickly grow in size and it's convenient to split them
-into several files. This proposal is about splitting source catalogs. Compiled
-message catalogs always contain all messages in project for now.
+into several files.
+
+.. important::
+
+   This proposal is about splitting **source catalogs**. Compiled
+   message catalogs always contain all messages in project for now.
 
 Considered use cases
 ====================
