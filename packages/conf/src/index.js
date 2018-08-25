@@ -41,7 +41,7 @@ const deprecatedConfig = {
       "fallbackLocale"
     )}
     
-    lingui-cli now treats your current configuration as:
+    @lingui/cli now treats your current configuration as:
     {
       ${chalk.bold('"fallbackLocale"')}: ${chalk.bold(
       `"${config.fallbackLanguage}"`
@@ -55,8 +55,7 @@ const deprecatedConfig = {
 const configValidation = {
   exampleConfig: defaultConfig,
   deprecatedConfig,
-  comment:
-    "See https://lingui.github.io/js-lingui/ref/conf.html for a list of valid options"
+  comment: "See https://lingui.js.org/ref/conf.html for a list of valid options"
 }
 
 export function getConfig({ cwd } = {}) {

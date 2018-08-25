@@ -55,7 +55,7 @@ if (require.main === module) {
   if (program.format) {
     const msg =
       "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
-      " Please set format in configuration https://lingui.github.io/js-lingui/ref/conf.html#format"
+      " Please set format in configuration https://lingui.js.org/ref/conf.html#format"
     console.warn(msg)
     config.format = program.format
   }
