@@ -14,6 +14,7 @@ export default (fixture, options = {}) => {
       rules: [
         {
           test: /\.json$/,
+          type: "javascript/auto",
           use: {
             loader: path.resolve(__dirname, "../src/index.js")
           }
