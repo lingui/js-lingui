@@ -70,7 +70,7 @@ Key features
    Projects using jsLingui <misc/showroom>
    Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
-
+   RFCs and design decisions <rfc/toc>
 
 
 Indices
