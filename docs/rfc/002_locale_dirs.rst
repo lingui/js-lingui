@@ -22,6 +22,9 @@ Considered use cases
 Solution
 ========
 
+Default - automatic splitting
+------------------------------------
+
 Create a ``locale`` directory manually in a directory from which all messages should be
 collected::
 
@@ -30,7 +33,7 @@ collected::
    ├── componentA/
    └── componentB/
 
-``locale`` dir contains messages from ``componentA`` and ``componentB``.
+``locale`` directory contains messages from ``componentA`` and ``componentB``.
 
 However, it doesn't not contain messages which are collected to ``locale`` directory
 in a subdirectory::
@@ -71,29 +74,112 @@ Possible challenges
 - The other way around, when ``locale`` in subdirectory isn't needed anymore, there
   should be a way how to merge tranlation back to parent directory.
 
-Other considered options
-========================
+Advanced -- configure splitting manually
+----------------------------------------
 
-Configure splitting in Lingui config
-------------------------------------
+Passing an object to :conf:`localeDir` option allows more explicit configuration of
+locale directories. This configuration is the same as in example above:
 
 .. code-block:: json
 
    {
       "lingui": {
-         "localeDirs": {
-            "./locale": "./src",
-            "./largeComponentC": "./src/largeComponentC",
+         "localeDir": {
+            "./locale": ".",
+            "./largeComponentC/locale": "./largeComponentC",
          }
       }
    }
 
-This is more difficult with monorepos and it's also more verbose. On the other hand,
-it's easier to move ``locale`` dirs to arbitrary location (``locale`` directory doesn't
-have to be placed in the same directory as source files).
+**Key** of ``localeDir`` object is a path to message catalogs. **Value** is a path to
+source files from which messages are collected.
+
+On top of that, more advanced patterns are supported:
+
+``{locale}`` placeholder is replaced with a current locale. This example would create
+``en.json`` inside ``locale`` directory for English locale:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{locale}.json": ".",
+         }
+      }
+   }
+
+``{package}`` placeholder is replaced with a top level directory. This example would
+create ``locale/en/componentA.json`` and ``locale/en/componentB.json`` for English
+locale and following directory structure:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{locale}/{package}.json": ".",
+         }
+      }
+   }
+
+.. code-block:: none
+
+   .
+   ├── componentA/
+   └── componentB/
+
+Path to message catalog can be a directory ending with ``/``. ``locale/`` is the same
+as ``locale/{locale}/{messages}.json``.
+
+If it's a file, then it *must* contain ``{locale}`` placeholder. This example is
+**invalid**:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/messages.json": ".",
+         }
+      }
+   }
+
+Summary
+=======
+
+By default (when :conf:`localeDir` isn't defined), messages are collected to the nearest
+parent ``locale`` directory.
+
+If :conf:`localeDir`` is a string, only single locale directory is used. It can be
+either a directory or a path to message file including ``{locale}`` pattern:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": "./locale"
+      }
+   }
+
+This is the same as:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": "./locale/{locale}/messages.json"
+      }
+   }
+
+Finally, if :conf:`localeDir`` is an object, then keys are locale directories and
+values are path to source directories from which messages are collected.
+
+Other considered options
+------------------------
 
 Create multiple lingui configs
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Create Lingui config in a directory, which should hold separate ``locale`` directory::
 
