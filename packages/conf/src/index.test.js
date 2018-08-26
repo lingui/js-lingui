@@ -9,6 +9,7 @@ describe("lingui-conf", function() {
     expect(config.fallbackLocale).toBeDefined()
     expect(config.srcPathDirs).toBeDefined()
     expect(config.srcPathIgnorePatterns).toBeDefined()
+    expect(config.extractBabelOptions).toBeDefined()
   })
 
   it("should replace <rootDir>", function() {

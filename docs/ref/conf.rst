@@ -25,7 +25,8 @@ Default config:
        "srcPathIgnorePatterns": [
            "/node_modules/"
        ],
-       "format": "lingui"
+       "format": "lingui",
+       "extractBabelOptions": {}
      }
    }
 
@@ -134,3 +135,20 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
+
+.. config:: extractBabelOptions
+
+extractBabelOptions
+-------------------
+
+Default: ``{}``
+
+Specify extra babel options used to parse source files when messages are being extracted. Not required in most cases.
+
+.. code-block:: json
+
+   {
+     "extractBabelOptions": {
+       "plugins": ["@babel/plugin-syntax-dynamic-import"]
+     }
+   }

@@ -48,6 +48,12 @@ In your ``webpack.config.js``, use both ``babel-loader`` and ``ts-loader`` for T
     }
   }
 
+.. note::
+
+   If you are not using `.babelrc` file, keep in mind that by running `lingui extract`, the Webpack config is not used. 
+   To supply babel options for the extraction process use :conf:`extractBabelOptions` configuration option.
+
+
 Type definitions
 ================
 
