@@ -32,7 +32,11 @@ export const defaultConfig = {
   srcPathDirs: ["<rootDir>"],
   srcPathIgnorePatterns: [NODE_MODULES],
   format: "lingui",
-  rootDir: "."
+  rootDir: ".",
+  extractBabelOptions: {
+	  plugins: [],
+	  presets: []
+  }
 }
 
 const deprecatedConfig = {

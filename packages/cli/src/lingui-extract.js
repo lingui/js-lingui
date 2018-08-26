@@ -140,6 +140,13 @@ if (require.main === module) {
     console.warn(msg)
     config.format = program.format
   }
+  
+  if (program.babelOptions) {
+    const msg =
+    "--babelOptions option is deprecated and will be removed in @lingui/cli@3.0.0." +
+    " Please set extractBabelOptions in configuration https://lingui.github.io/js-lingui/ref/conf.html#extractBabelOptions"
+    console.warn(msg)
+  }
 
   const prevFormat = program.convertFrom
   if (prevFormat && config.format === prevFormat) {
@@ -162,7 +169,7 @@ if (require.main === module) {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,
-    babelOptions: program.babelOptions || {},
+    babelOptions: config.extractBabelOptions || program.babelOptions || {},
     prevFormat
   })
 
