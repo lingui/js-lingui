@@ -120,11 +120,11 @@ to install it manually. Target version depends on whether you're using babel 6 o
 
    .. code-block:: shell
 
-      # babel 6.x
-      npm install -g babel-core
+      # Babel 6.x
+      npm install --save-dev babel-core@6
 
-      # babel 7.x
-      npm install -g babel-core@^7.0.0-0 @babel/core
+      # Babel 7.x
+      npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
 
 Now we have the environment up and running and we can start internationalizing our app!
 

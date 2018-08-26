@@ -14,31 +14,28 @@ use. Both packages can be installed either globally:
 
 .. code-block:: shell
 
-   yarn global add @lingui/cli
-   # npm install --global @lingui/cli
-
-   # babel 6.x
-   yarn global add babel-core
-   # npm install --global babel-core
-
-   # babel 7.x
-   yarn global add babel-core@^7.0.0-0 @babel/core
-   # npm install --global babel-core@^7.0.0-0 @babel/core
+   npm install --global @lingui/cli
+   # yarn global add @lingui/cli
 
 or locally:
 
 .. code-block:: shell
 
-   yarn add --dev @lingui/cli
-   # npm install --save-dev @lingui/cli
+   npm install --save-dev @lingui/cli
+   # yarn add --dev @lingui/cli
 
-   # babel 6.x
-   yarn add --dev babel-core
-   # npm install --save-dev babel-core
+It's also necessary to install ``babel-core`` package. It depends on Babel version,
+you're using:
 
-   # babel 7.x
-   yarn add --dev babel-core@^7.0.0-0 @babel/core
-   # npm install --save-dev babel-core@^7.0.0-0 @babel/core
+.. code-block:: shell
+
+   # Babel 6.x
+   npm install --save-dev babel-core@6
+   # yarn add --dev babel-core@6
+
+   # Babel 7.x
+   npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
+   # yarn add --dev babel-core@^7.0.0-bridge.0 @babel/core
 
 .. note::
 

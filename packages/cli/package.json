@@ -58,6 +58,6 @@
     "typescript": "^2.9.2"
   },
   "peerDependencies": {
-    "babel-core": "6.x || ^7.0.0-0"
+    "babel-core": "6.x || ^7.0.0-bridge.0"
   }
 }

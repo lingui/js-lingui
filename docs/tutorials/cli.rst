@@ -14,11 +14,11 @@ compiling message catalogs::
 
    .. code-block:: shell
 
-      # babel 6.x
-      npm install --global babel-core
+      # Babel 6.x
+      npm install --save-dev babel-core@6
 
-      # babel 7.x
-      npm install --global babel-core@^7.0.0-0 @babel/core
+      # Babel 7.x
+      npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
 
 Add a new locale
 ================
