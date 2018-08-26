@@ -135,7 +135,10 @@ export function createCompiledCatalog(
     )
   )
 
-  return '/* eslint-disable */' + generate(ast, {
-    minified: true
-  }).code
+  return (
+    "/* eslint-disable */" +
+    generate(ast, {
+      minified: true
+    }).code
+  )
 }

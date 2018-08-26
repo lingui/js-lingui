@@ -140,11 +140,11 @@ if (require.main === module) {
     console.warn(msg)
     config.format = program.format
   }
-  
+
   if (program.babelOptions) {
     const msg =
-    "--babelOptions option is deprecated and will be removed in @lingui/cli@3.0.0." +
-    " Please set extractBabelOptions in configuration https://lingui.github.io/js-lingui/ref/conf.html#extractBabelOptions"
+      "--babelOptions option is deprecated and will be removed in @lingui/cli@3.0.0." +
+      " Please set extractBabelOptions in configuration https://lingui.js.org/ref/conf.html#extractBabelOptions"
     console.warn(msg)
   }
 
