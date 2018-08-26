@@ -14,9 +14,14 @@ msgstr ""
 msgid "static"
 msgstr "Static message"
 
-#: src/App.js:4, src/Component.js:2
+#: src/App.js:4
 msgid "withOrigin"
 msgstr "Message with origin"
+
+#: src/App.js:4
+#: src/Component.js:2
+msgid "withMultipleOrigins"
+msgstr "Message with multiple origin"
 
 #. Description is comment from developers to translators
 msgid "withDescription"

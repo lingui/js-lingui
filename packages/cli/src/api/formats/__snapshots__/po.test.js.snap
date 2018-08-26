@@ -26,7 +26,7 @@ Object {
     origin: undefined,
     translation: Message with description,
   },
-  withOrigin: Object {
+  withMultipleOrigins: Object {
     description: undefined,
     obsolete: false,
     origin: Array [
@@ -37,6 +37,17 @@ Object {
       Array [
         src/Component.js,
         2,
+      ],
+    ],
+    translation: Message with multiple origin,
+  },
+  withOrigin: Object {
+    description: undefined,
+    obsolete: false,
+    origin: Array [
+      Array [
+        src/App.js,
+        4,
       ],
     ],
     translation: Message with origin,
@@ -61,7 +72,8 @@ msgstr ""
 msgid "static"
 msgstr "Static message"
 
-#: src/App.js:4, src/Component.js:2
+#: src/App.js:4
+#: src/Component.js:2
 msgid "withOrigin"
 msgstr "Message with origin"
 
