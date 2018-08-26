@@ -22,6 +22,143 @@ Considered use cases
 Solution
 ========
 
+Passing an object to :conf:`localeDir` option allows more explicit configuration of
+locale directories. Consider following file structure::
+
+   .
+   ├── locale/
+   ├── componentA/
+   ├── componentB/
+   └── largeComponentC/
+       ├── locale/
+       ├── subcomponentA/
+       └── subcomponentB/
+
+Messages are always collected to the nearest ``locale`` parent dir. This can be achieved
+using this config:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale": ".",
+            "./largeComponentC/locale": "./largeComponentC",
+         }
+      }
+   }
+
+**Key** of ``localeDir`` object is a path to message catalogs. **Value** is a path to
+source files from which messages are collected. It can be a single path or an array
+of paths:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{package}/{locale}": [
+               "src/shared",
+               "src/project"
+            ],
+         }
+      }
+   }
+
+
+On top of that, more advanced patterns are supported:
+
+``{locale}`` placeholder is replaced with a current locale. This example would create
+``en.json`` inside ``locale`` directory for English locale:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{locale}": ".",
+         }
+      }
+   }
+
+``{package}`` placeholder is replaced with a top level directory. This example would
+create ``locale/en/componentA.json`` and ``locale/en/componentB.json`` for English
+locale and following directory structure:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{locale}/{package}": ".",
+         }
+      }
+   }
+
+.. code-block:: none
+
+   .
+   ├── componentA/
+   └── componentB/
+
+Path to message catalog can be a directory ending with ``/``. ``locale/`` is the same
+as ``locale/{locale}/messages``.
+
+If it's a file, then it *must* contain ``{locale}`` placeholder. This example is
+**invalid**:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/messages": ".",
+         }
+      }
+   }
+
+Summary
+=======
+
+By default :conf:`localeDir` is ``./locale``.
+
+If :conf:`localeDir`` is a string, only single locale directory is used. It can be
+either a directory or a path to message file including ``{locale}`` pattern:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": "./locale"
+      }
+   }
+
+This is the same as:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": "./locale/{locale}/messages"
+      }
+   }
+
+Finally, if :conf:`localeDir`` is an object, then keys are locale directories and
+values are path to source directories from which messages are collected.
+
+Possible challenges
+-------------------
+
+- User should be warned if messages are collected, but there's no corresponding
+  ``locale`` directory for them (e.g. the root ``locale`` directory is missing).
+- When a new ``locale`` directory is created in subdirectory, all translations
+  from parent ``locale`` should be moved here.
+- The other way around, when directory is removed, there should be a way how to merge
+  tranlations to parent directory.
+
+Other considered options
+------------------------
+
 Default - automatic splitting
 ------------------------------------
 
@@ -63,120 +200,9 @@ Disadvantages
   but for example in Lerna it's just ``lerna exec -- mkdir locales``.
 - ``locale`` directory is always placed near the source files. It's not possible to
   move it to different location (other than creating symlinks)
-
-Possible challenges
--------------------
-
-- User should be warned if messages are collected, but there's no corresponding
-  ``locale`` directory for them (e.g. the root ``locale`` directory is missing).
-- When a new ``locale`` directory is created in subdirectory, all translations
-  from parent ``locale`` should be moved here.
-- The other way around, when ``locale`` in subdirectory isn't needed anymore, there
-  should be a way how to merge tranlation back to parent directory.
-
-Advanced -- configure splitting manually
-----------------------------------------
-
-Passing an object to :conf:`localeDir` option allows more explicit configuration of
-locale directories. This configuration is the same as in example above:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": {
-            "./locale": ".",
-            "./largeComponentC/locale": "./largeComponentC",
-         }
-      }
-   }
-
-**Key** of ``localeDir`` object is a path to message catalogs. **Value** is a path to
-source files from which messages are collected.
-
-On top of that, more advanced patterns are supported:
-
-``{locale}`` placeholder is replaced with a current locale. This example would create
-``en.json`` inside ``locale`` directory for English locale:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": {
-            "./locale/{locale}.json": ".",
-         }
-      }
-   }
-
-``{package}`` placeholder is replaced with a top level directory. This example would
-create ``locale/en/componentA.json`` and ``locale/en/componentB.json`` for English
-locale and following directory structure:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": {
-            "./locale/{locale}/{package}.json": ".",
-         }
-      }
-   }
-
-.. code-block:: none
-
-   .
-   ├── componentA/
-   └── componentB/
-
-Path to message catalog can be a directory ending with ``/``. ``locale/`` is the same
-as ``locale/{locale}/{messages}.json``.
-
-If it's a file, then it *must* contain ``{locale}`` placeholder. This example is
-**invalid**:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": {
-            "./locale/messages.json": ".",
-         }
-      }
-   }
-
-Summary
-=======
-
-By default (when :conf:`localeDir` isn't defined), messages are collected to the nearest
-parent ``locale`` directory.
-
-If :conf:`localeDir`` is a string, only single locale directory is used. It can be
-either a directory or a path to message file including ``{locale}`` pattern:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": "./locale"
-      }
-   }
-
-This is the same as:
-
-.. code-block:: json
-
-   {
-      "lingui": {
-         "localeDir": "./locale/{locale}/messages.json"
-      }
-   }
-
-Finally, if :conf:`localeDir`` is an object, then keys are locale directories and
-values are path to source directories from which messages are collected.
-
-Other considered options
-------------------------
+- It's not possible to rename catalogs.
+- It's not possible to collect messages from multiple independent sources into single
+  locale directory.
 
 Create multiple lingui configs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
