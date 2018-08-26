@@ -48,7 +48,10 @@ const serialize = R.compose(
     return [
       "",
       message.description && `#. ${message.description}`,
-      message.origin && `#: ${prettyOrigin(message.origin)}`,
+      ...(message.origin
+        ? // print one origin per line (don't join multiple origins with comma)
+          message.origin.map(origin => `#: ${prettyOrigin([origin])}`)
+        : []),
       message.obsolete && `#, obsolete`,
       `msgid "${escape(key)}"`,
       `msgstr "${escape(translation)}"`
@@ -61,7 +64,8 @@ const serialize = R.compose(
 function parseOrigin(origins) {
   if (!origins) return
 
-  return origins.split(", ").map(origin => origin.split(":"))
+  // split by comma or newlines, but don't remember matched delimiter
+  return origins.split(/(?:, |\n)/).map(origin => origin.split(":"))
 }
 
 const deserialize = R.map(message => ({
