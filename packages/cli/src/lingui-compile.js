@@ -87,7 +87,12 @@ function command(config, options) {
       }
     }
 
-    const compiledCatalog = createCompiledCatalog(locale, messages)
+    const compiledCatalog = createCompiledCatalog(
+      locale,
+      messages,
+      false,
+      options.namespace || config.namespace
+    )
     const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
     if (options.typescript) {
       const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
@@ -114,6 +119,10 @@ if (require.main === module) {
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalog")
     .option("--typescript", "Create Typescript definition for compiled bundle")
+    .option(
+      "--namespace <namespace>",
+      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, window.test -> window.test"
+    )
     .on("--help", function() {
       console.log("\n  Examples:\n")
       console.log(
@@ -141,7 +150,8 @@ if (require.main === module) {
   const results = command(config, {
     verbose: program.verbose || false,
     allowEmpty: !program.strict,
-    typescript: program.typescript || false
+    typescript: program.typescript || false,
+    namespace: program.namespace // we want this to be undefined if user does not specify so default can be used
   })
 
   if (!results || results.some(res => !res)) {

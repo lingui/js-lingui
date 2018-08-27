@@ -130,7 +130,7 @@ Prints additional information.
 ``compile``
 -----------
 
-.. lingui-cli:: compile [--strict] [--format <format>] [--verbose]
+.. lingui-cli:: compile [--strict] [--format <format>] [--verbose] [--namespace <namespace>]
 
 This command compiles message catalogs in :conf:`localeDir` and outputs
 minified Javascript files. Each message is replaced with a function
@@ -150,5 +150,8 @@ Format of message catalogs (see :conf:`format` option).
 
 Prints additional information.
 
+.. lingui-cli-option:: --namespace
+
+Specify namespace for compiled message catalogs (see :conf:`namespace` option).
 
 .. _npx: https://github.com/zkat/npx

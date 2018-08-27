@@ -139,6 +139,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "dephiros",
+      "name": "An Nguyen",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2289753?v=4",
+      "profile": "https://github.com/dephiros",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "repoType": "github"

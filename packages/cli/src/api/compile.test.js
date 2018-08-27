@@ -1,5 +1,5 @@
 import generate from "babel-generator"
-import { compile } from "./compile"
+import { compile, createCompiledCatalog } from "./compile"
 
 describe("compile", function() {
   const getSource = message =>
@@ -72,5 +72,33 @@ describe("compile", function() {
     expect(() =>
       getSource("{value, plural, one {Book} other {Books")
     ).toThrowErrorMatchingSnapshot()
+  })
+})
+
+describe("createCompiledCatalog", function() {
+  describe("namespace", function() {
+    const getCompiledCatalog = (...args) =>
+      createCompiledCatalog("fr", {}, ...args)
+    it("should compile with cjs by default", function() {
+      expect(getCompiledCatalog()).toMatchSnapshot()
+    })
+
+    it("should compile with es", function() {
+      expect(getCompiledCatalog(false, "es")).toMatchSnapshot()
+    })
+
+    it("should compile with window", function() {
+      expect(getCompiledCatalog(false, "window.test")).toMatchSnapshot()
+    })
+
+    it("should compile with global", function() {
+      expect(getCompiledCatalog(false, "global.test")).toMatchSnapshot()
+    })
+
+    it("should error with invalid value", function() {
+      expect(() =>
+        getCompiledCatalog(false, "global")
+      ).toThrowErrorMatchingSnapshot()
+    })
   })
 })

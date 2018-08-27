@@ -152,3 +152,31 @@ Specify extra babel options used to parse source files when messages are being e
        "plugins": ["@babel/plugin-syntax-dynamic-import"]
      }
    }
+
+namespace
+---------
+
+Default: ``cjs``
+
+Specify namespace for compiling messages.
+
+cjs
+^^^
+
+.. code-block:: js
+
+   /* eslint-disable */module.exports={languageData:{"..."}, "...": "..."}
+
+es
+^^
+
+.. code-block:: js
+
+   /* eslint-disable */export default{languageData:{"..."}, "...": "..."}
+
+(window|global).(.*)
+^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: js
+
+   /* eslint-disable */window.test={languageData:{"..."}, "...": "..."}

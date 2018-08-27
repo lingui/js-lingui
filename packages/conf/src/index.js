@@ -36,7 +36,8 @@ export const defaultConfig = {
   extractBabelOptions: {
     plugins: ["plugin"],
     presets: ["preset"]
-  }
+  },
+  namespace: "cjs"
 }
 
 const deprecatedConfig = {
