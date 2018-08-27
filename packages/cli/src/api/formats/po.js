@@ -1,104 +1,93 @@
 // @flow
 import fs from "fs"
+import { basename } from "path"
 import * as R from "ramda"
+import { format as formatDate } from "date-fns"
 
-import gettextParser from "gettext-parser"
-import { prettyOrigin } from "../utils"
+import PO from "pofile"
+import { joinOrigin, splitOrigin } from "../utils"
 import type { TranslationsFormat } from "../types"
 
-const pad2 = num => ("00" + num.toString()).slice(-2)
-
-const getHeaders = ({ language = "no", ...headers } = {}) => {
-  const date = new Date()
-  const today = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(
-    date.getDate()
-  )}`
-
-  return {
-    "project-id-version": "Project Name",
-    "pot-creation-date": today,
-    "po-revision-date": today,
-    "last-translator": "",
-    "language-team": "",
-    "mime-version": "1.0",
-    "content-type": "text/plain; charset=utf-8",
-    "content-transfer-encoding": "8bit",
-    language,
-    "x-generator": "@lingui/cli",
-    ...headers
-  }
-}
-
-function writeHeaders(headers) {
-  const res = []
-  res.push(`msgid ""`)
-  res.push(`msgstr ""`)
-
-  Object.keys(headers).forEach(key => res.push(`"${key}: ${headers[key]}\\n"`))
-
-  return res
-}
+const getCreateHeaders = language => ({
+  "Project-Id-Version": basename(process.cwd()),
+  "POT-Creation-Date": formatDate(new Date(), "YYYY-MM-DD HH:mmZZ"),
+  "Mime-Version": "1.0",
+  "Content-Type": "text/plain; charset=utf-8",
+  "Content-Transfer-Encoding": "8bit",
+  "X-Generator": "@lingui/cli",
+  Language: language
+})
 
 const serialize = R.compose(
   R.values,
   R.mapObjIndexed((message, key) => {
-    const translation = message.translation || ""
-    const escape = str => str.toString().replace(/"/g, '\\"')
-
-    return [
-      "",
-      message.description && `#. ${message.description}`,
-      ...(message.origin
-        ? // print one origin per line (don't join multiple origins with comma)
-          message.origin.map(origin => `#: ${prettyOrigin([origin])}`)
-        : []),
-      message.obsolete && `#, obsolete`,
-      `msgid "${escape(key)}"`,
-      `msgstr "${escape(translation)}"`
-    ]
-      .filter(item => typeof item === "string")
-      .join("\n")
+    const item = new PO.Item()
+    item.msgid = key
+    item.msgstr = message.translation
+    item.comments = message.comments || []
+    item.extractedComments = message.description ? [message.description] : []
+    item.references = message.origin ? message.origin.map(joinOrigin) : []
+    item.obsolete = message.obsolete
+    return item
   })
 )
 
-function parseOrigin(origins) {
-  if (!origins) return
+const getMessageKey = R.prop("msgid")
+const getTranslations = R.prop("msgstr")
+const getExtractedComments = R.prop("extractedComments")
+const getTranslatorComments = R.prop("comments")
+const getOrigins = R.prop("references")
+const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-  // split by comma or newlines, but don't remember matched delimiter
-  return origins.split(/(?:, |\n)/).map(origin => origin.split(":"))
-}
-
-const deserialize = R.map(message => ({
-  translation: message.msgstr.toString(),
-  description: R.path(["comments", "extracted"], message),
-  obsolete: R.pathEq(["comments", "flag"], "obsolete", message),
-  origin: parseOrigin(R.path(["comments", "reference"], message))
+const deserialize = R.map(item => ({
+  translation: R.head(getTranslations(item)),
+  description: R.head(getExtractedComments(item)),
+  comments: R.concat(
+    getTranslatorComments(item),
+    R.tail(getExtractedComments(item))
+  ),
+  obsolete: isObsolete(item),
+  origin: R.map(splitOrigin, getOrigins(item))
 }))
+
+const validateItems = R.map(item => {
+  if (R.length(getTranslations(item)) > 1) {
+    console.warn(
+      "Multiple translations for item with key %s is not supported and it will be ignored.",
+      getMessageKey(item)
+    )
+  }
+})
+
+const indexItems = R.indexBy(getMessageKey)
 
 const format: TranslationsFormat = {
   filename: "messages.po",
 
   write(filename, catalog, options = {}) {
-    let headers
+    let po
+    let indexedItems = {}
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
-      const prevPo = gettextParser.po.parse(raw)
-      headers = prevPo.headers
+      po = PO.parse(raw)
     } else {
-      headers = getHeaders(options)
+      po = new PO()
+      po.headers = getCreateHeaders()
+      po.headerOrder = R.keys(po.headers)
     }
-
-    const pofile = [...writeHeaders(headers), ...serialize(catalog)].join("\n")
-    fs.writeFileSync(filename, pofile + "\n")
+    po.items = serialize(catalog)
+    fs.writeFileSync(filename, po.toString())
   },
 
   read(filename) {
     const raw = fs.readFileSync(filename).toString()
+    return this.parse(raw)
+  },
 
-    const pofile = gettextParser.po.parse(raw)
-    const translations = pofile.translations[""]
-    delete translations[""] // remove headers
-    return deserialize(translations)
+  parse(raw) {
+    const po = PO.parse(raw)
+    validateItems(po.items)
+    return deserialize(indexItems(po.items))
   }
 }
 

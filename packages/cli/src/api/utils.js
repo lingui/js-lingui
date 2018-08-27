@@ -32,3 +32,7 @@ export function prettyOrigin(origins) {
     return ""
   }
 }
+
+export const splitOrigin = origin => origin.split(":")
+
+export const joinOrigin = origin => origin.join(":")
