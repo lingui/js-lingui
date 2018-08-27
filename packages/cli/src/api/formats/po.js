@@ -1,6 +1,5 @@
 // @flow
 import fs from "fs"
-import { basename } from "path"
 import * as R from "ramda"
 import { format as formatDate } from "date-fns"
 
@@ -8,8 +7,7 @@ import PO from "pofile"
 import { joinOrigin, splitOrigin } from "../utils"
 import type { TranslationsFormat } from "../types"
 
-const getCreateHeaders = language => ({
-  "Project-Id-Version": basename(process.cwd()),
+const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "YYYY-MM-DD HH:mmZZ"),
   "Mime-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
@@ -72,7 +70,7 @@ const format: TranslationsFormat = {
       po = PO.parse(raw)
     } else {
       po = new PO()
-      po.headers = getCreateHeaders()
+      po.headers = getCreateHeaders(options.language)
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog)
