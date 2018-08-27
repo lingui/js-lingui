@@ -39,3 +39,7 @@ msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himse
 
 #~ msgid "obsolete"
 #~ msgstr "Is marked as obsolete"
+
+#, fuzzy,otherFlag
+msgid "withFlags"
+msgstr "Keeps any flags that are defined"

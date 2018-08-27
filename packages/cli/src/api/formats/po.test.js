@@ -49,6 +49,10 @@ describe("pofile format", function() {
         translation: "Obsolete message",
         obsolete: true
       },
+      withFlags: {
+        flags: ["fuzzy", "otherFlag"],
+        translation: "Keeps any flags that are defined"
+      },
       veryLongString: {
         translation:
           "One morning, when Gregor Samsa woke from troubled dreams, he found himself" +

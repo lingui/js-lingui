@@ -26,6 +26,9 @@ const serialize = R.compose(
     item.extractedComments = message.description ? [message.description] : []
     item.references = message.origin ? message.origin.map(joinOrigin) : []
     item.obsolete = message.obsolete
+    item.flags = message.flags
+      ? R.fromPairs(message.flags.map(flag => [flag, true]))
+      : {}
     return item
   })
 )
@@ -35,18 +38,37 @@ const getTranslations = R.prop("msgstr")
 const getExtractedComments = R.prop("extractedComments")
 const getTranslatorComments = R.prop("comments")
 const getOrigins = R.prop("references")
+const getFlags = R.compose(
+  R.map(R.trim),
+  R.keys,
+  R.dissoc("obsolete"), // backward-compatibility, remove in 3.x
+  R.prop("flags")
+)
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const deserialize = R.map(item => ({
-  translation: R.head(getTranslations(item)),
-  description: R.head(getExtractedComments(item)),
-  comments: R.concat(
-    getTranslatorComments(item),
-    R.tail(getExtractedComments(item))
-  ),
-  obsolete: isObsolete(item),
-  origin: R.map(splitOrigin, getOrigins(item))
-}))
+const deserialize = R.map(
+  R.applySpec({
+    translation: R.compose(
+      R.head,
+      R.defaultTo([]),
+      getTranslations
+    ),
+    description: R.compose(
+      R.head,
+      R.defaultTo([]),
+      getExtractedComments
+    ),
+    comments: item =>
+      R.concat(getTranslatorComments(item), R.tail(getExtractedComments(item))),
+    obsolete: isObsolete,
+    origin: R.compose(
+      R.map(splitOrigin),
+      R.defaultTo([]),
+      getOrigins
+    ),
+    flags: getFlags
+  })
+)
 
 const validateItems = R.map(item => {
   if (R.length(getTranslations(item)) > 1) {
