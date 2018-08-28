@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 import mockDate from "mockdate"
+import { mockConsole } from "../../mocks"
 import PO from "pofile"
 
 import format from "./po"
@@ -139,9 +140,15 @@ describe("pofile format", function() {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
-    mockFs.restore()
-    expect(actual).toMatchSnapshot()
+    mockConsole(console => {
+      const actual = format.read(filename)
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.stringContaining("Multiple translations"),
+        "withMultipleTranslation"
+      )
+      mockFs.restore()
+      expect(actual).toMatchSnapshot()
+    })
   })
 
   it("should write the same catalog as it was read", function() {
