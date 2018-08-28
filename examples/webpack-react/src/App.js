@@ -20,7 +20,7 @@ class App extends React.Component {
 
   loadLanguage = async language => {
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    const catalogs = await import(`@lingui/loader!./locale/${language}/messages.json`)
+    const catalogs = await import(`./locale/${language}/messages.json`)
 
     this.setState(state => ({
       catalogs: {
