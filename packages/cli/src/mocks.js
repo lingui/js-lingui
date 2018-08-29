@@ -1,10 +1,10 @@
 // @flow
-import { exampleConfig } from "@lingui/conf"
+import { defaultConfig } from "@lingui/conf"
 import type { LinguiConfig } from "./api/types"
 
 export function mockConfig(config?: Object = {}): LinguiConfig {
   return {
-    ...exampleConfig,
+    ...defaultConfig,
     ...config
   }
 }
