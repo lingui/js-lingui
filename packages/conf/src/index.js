@@ -75,7 +75,7 @@ export function getConfig({ cwd } = {}) {
   const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
   const result = configExplorer.searchSync(defaultRootDir)
-  const raw = Object.assign({}, defaultConfig, result ? result.config : null)
+  const raw = { ...defaultConfig, ...(result ? result.config : {}) }
 
   validate(raw, configValidation)
   // Use deprecated fallbackLanguage, if defined
