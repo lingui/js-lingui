@@ -96,10 +96,37 @@ function processTokens(tokens, arg) {
   )
 }
 
+function buildExportStatement(expression, namespace: string = "cjs") {
+  namespace = namespace.trim()
+  if (namespace === "es") {
+    return t.ExportDefaultDeclaration(expression)
+  } else {
+    let exportExpression = null
+    const matches = namespace.match(/^(window|global)\.([^.\s]+)$/)
+    if (namespace === "cjs") {
+      exportExpression = t.memberExpression(
+        t.identifier("module"),
+        t.identifier("exports")
+      )
+    } else if (matches) {
+      exportExpression = t.memberExpression(
+        t.identifier(matches[1]),
+        t.identifier(matches[2])
+      )
+    } else {
+      throw new Error(`Invalid namespace param: "${namespace}"`)
+    }
+    return t.expressionStatement(
+      t.assignmentExpression("=", exportExpression, expression)
+    )
+  }
+}
+
 export function createCompiledCatalog(
   locale: string,
   messages: CatalogType,
-  strict: boolean = false
+  strict: boolean = false,
+  namespace: string = "cjs"
 ) {
   const [language] = locale.split(/[_-]/)
   const pluralRules = plurals[language]
@@ -116,23 +143,20 @@ export function createCompiledCatalog(
     )
   ]
 
-  const ast = t.expressionStatement(
-    t.assignmentExpression(
-      "=",
-      t.memberExpression(t.identifier("module"), t.identifier("exports")),
-      t.objectExpression([
-        // language data
-        t.objectProperty(
-          t.identifier("languageData"),
-          t.objectExpression(languageData)
-        ),
-        // messages
-        t.objectProperty(
-          t.identifier("messages"),
-          t.objectExpression(compiledMessages)
-        )
-      ])
-    )
+  const ast = buildExportStatement(
+    t.objectExpression([
+      // language data
+      t.objectProperty(
+        t.identifier("languageData"),
+        t.objectExpression(languageData)
+      ),
+      // messages
+      t.objectProperty(
+        t.identifier("messages"),
+        t.objectExpression(compiledMessages)
+      )
+    ]),
+    namespace
   )
 
   return (
