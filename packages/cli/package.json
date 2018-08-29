@@ -47,7 +47,8 @@
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
     "commander": "^2.17.1",
-    "gettext-parser": "^2.0.0",
+    "date-fns": "^1.29.0",
+    "pofile": "^1.0.11",
     "glob": "^7.1.2",
     "inquirer": "^6.2.0",
     "make-plural": "^4.1.1",
@@ -56,6 +57,9 @@
     "ora": "^3.0.0",
     "ramda": "^0.25.0",
     "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "mockdate": "^2.0.2"
   },
   "peerDependencies": {
     "babel-core": "6.x || ^7.0.0-bridge.0"

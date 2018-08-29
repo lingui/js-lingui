@@ -1813,6 +1813,10 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.0.0"
     whatwg-url "^6.4.0"
 
+date-fns@^1.29.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -2048,7 +2052,7 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
 
-encoding@^0.1.11, encoding@^0.1.12:
+encoding@^0.1.11:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
   dependencies:
@@ -2755,13 +2759,6 @@ getpass@^0.1.1:
   resolved "https://registry.yarnpkg.com/getpass/-/getpass-0.1.7.tgz#5eff8e3e684d569ae4cb2b1282604e8ba62149fa"
   dependencies:
     assert-plus "^1.0.0"
-
-gettext-parser@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/gettext-parser/-/gettext-parser-2.0.0.tgz#c28bb31e61f76f14665dfafbb5c0518cdc1270ed"
-  dependencies:
-    encoding "^0.1.12"
-    safe-buffer "^5.1.2"
 
 glob-base@^0.3.0:
   version "0.3.0"
@@ -4282,6 +4279,10 @@ mock-fs@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.6.0.tgz#d944ef4c3e03ceb4e8332b4b31b8ac254051c8ae"
 
+mockdate@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-2.0.2.tgz#5ae0c0eaf8fe23e009cd01f9889b42c4f634af12"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -4837,6 +4838,10 @@ pluralize@^7.0.0:
 pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
+
+pofile@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/pofile/-/pofile-1.0.11.tgz#35aff58c17491d127a07336d5522ebc9df57c954"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

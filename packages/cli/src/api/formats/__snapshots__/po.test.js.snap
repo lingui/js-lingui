@@ -1,33 +1,92 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pofile format should correct badly used comments 1`] = `
+Object {
+  withDescriptionAndComments: Object {
+    comments: Array [
+      Translator comment,
+      Second description?,
+    ],
+    description: Single description only,
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Second description joins translator comments,
+  },
+  withMultipleDescriptions: Object {
+    comments: Array [
+      Second comment,
+      Third comment,
+    ],
+    description: First description,
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Extra comments are separated from the first description line,
+  },
+}
+`;
+
 exports[`pofile format should read catalog in pofile format 1`] = `
 Object {
   obsolete: Object {
+    comments: Array [],
     description: undefined,
+    flags: Array [],
     obsolete: true,
-    origin: undefined,
-    translation: Obsolete message,
+    origin: Array [],
+    translation: Is marked as obsolete,
   },
   static: Object {
+    comments: Array [],
     description: undefined,
+    flags: Array [],
     obsolete: false,
-    origin: undefined,
+    origin: Array [],
     translation: Static message,
   },
   veryLongString: Object {
+    comments: Array [],
     description: undefined,
+    flags: Array [],
     obsolete: false,
-    origin: undefined,
+    origin: Array [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
-  withDescription: Object {
-    description: Description is comment from developers to translators,
+  withComments: Object {
+    comments: Array [
+      Translator comment,
+      This one might come from developer,
+    ],
+    description: undefined,
+    flags: Array [],
     obsolete: false,
-    origin: undefined,
+    origin: Array [],
+    translation: Support translator comments separately,
+  },
+  withDescription: Object {
+    comments: Array [],
+    description: Description is comment from developers to translators,
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
     translation: Message with description,
   },
-  withMultipleOrigins: Object {
+  withFlags: Object {
+    comments: Array [],
     description: undefined,
+    flags: Array [
+      fuzzy,
+      otherFlag,
+    ],
+    obsolete: false,
+    origin: Array [],
+    translation: Keeps any flags that are defined,
+  },
+  withMultipleOrigins: Object {
+    comments: Array [],
+    description: undefined,
+    flags: Array [],
     obsolete: false,
     origin: Array [
       Array [
@@ -42,7 +101,9 @@ Object {
     translation: Message with multiple origin,
   },
   withOrigin: Object {
+    comments: Array [],
     description: undefined,
+    flags: Array [],
     obsolete: false,
     origin: Array [
       Array [
@@ -55,35 +116,56 @@ Object {
 }
 `;
 
+exports[`pofile format should throw away additional msgstr if present 1`] = `
+Object {
+  withMultipleTranslation: Object {
+    comments: Array [],
+    description: undefined,
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: This is just fine,
+  },
+}
+`;
+
 exports[`pofile format should write catalog in pofile format 1`] = `
 msgid ""
 msgstr ""
-"project-id-version: Project Name\\n"
-"pot-creation-date: 2018-08-09\\n"
-"po-revision-date: 2018-08-09\\n"
-"last-translator: \\n"
-"language-team: \\n"
-"mime-version: 1.0\\n"
-"content-type: text/plain; charset=utf-8\\n"
-"content-transfer-encoding: 8bit\\n"
-"language: en\\n"
-"x-generator: @lingui/cli\\n"
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"Mime-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
 
 msgid "static"
 msgstr "Static message"
 
 #: src/App.js:4
-#: src/Component.js:2
 msgid "withOrigin"
 msgstr "Message with origin"
+
+#: src/App.js:4
+#: src/Component.js:2
+msgid "withMultipleOrigins"
+msgstr "Message with multiple origin"
 
 #. Description is comment from developers to translators
 msgid "withDescription"
 msgstr "Message with description"
 
-#, obsolete
-msgid "obsolete"
-msgstr "Obsolete message"
+# Translator comment
+# This one might come from developer
+msgid "withComments"
+msgstr "Support translator comments separately"
+
+#~ msgid "obsolete"
+#~ msgstr "Obsolete message"
+
+#, fuzzy,otherFlag
+msgid "withFlags"
+msgstr "Keeps any flags that are defined"
 
 msgid "veryLongString"
 msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. \\"What's happened to me?\\" he thought. It wasn't a dream. His room, a proper human"

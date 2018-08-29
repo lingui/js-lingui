@@ -15,7 +15,11 @@ export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
 export type MessageType = {
   translation: string,
   defaults: ?string,
-  origin: Array<[number, string]>
+  origin: Array<[number, string]>,
+  description: ?string,
+  comments: ?Array<string>,
+  obsolete: boolean,
+  flags: ?Array<string>
 }
 
 export type CatalogType = {
