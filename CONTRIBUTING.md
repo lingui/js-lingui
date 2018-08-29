@@ -24,6 +24,19 @@ This project uses [yarn][YarnInstall] package manager. Please follow
 
 ### Setup local environment
 
+1. Install node
+
+You can install node  https://nodejs.org/en/, package managers(brew on macOS), or node version managers(nvm). Make sure the node version includes [internationalization support(full-icu)](https://nodejs.org/dist/latest-v8.x/docs/api/intl.html#intl_internationalization_support).
+
+An example of installing with nvm:
+
+   ```sh
+   # install nvm
+   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+   # This will force nvm to build from source with full icu. By default, nvm provides node with limited icu
+   nvm install -s v8.11.4 --with-intl=full-icu
+   ```
+
 1. Clone project
 
    ```sh
@@ -49,6 +62,8 @@ This project uses [yarn][YarnInstall] package manager. Please follow
    # Single run
    yarn test
    ```
+
+   NOTE: if you are using an IDE to run test. Make sure to point jest to the right config. See package.json
 
 ### Using development version in your project
 
