@@ -25,7 +25,7 @@ export function replaceRootDir(conf, rootDir) {
   return conf
 }
 
-export const defaultConfig = {
+export const exampleConfig = {
   localeDir: "./locale",
   sourceLocale: "",
   fallbackLocale: "",
@@ -36,7 +36,8 @@ export const defaultConfig = {
   extractBabelOptions: {
     plugins: [],
     presets: []
-  }
+  },
+  compileNamespace: "cjs"
 }
 
 const deprecatedConfig = {
@@ -57,7 +58,7 @@ const deprecatedConfig = {
 }
 
 const configValidation = {
-  exampleConfig: defaultConfig,
+  exampleConfig,
   deprecatedConfig,
   comment: "See https://lingui.js.org/ref/conf.html for a list of valid options"
 }
@@ -66,7 +67,7 @@ export function getConfig({ cwd } = {}) {
   const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
   const result = configExplorer.searchSync(defaultRootDir)
-  const raw = Object.assign({}, defaultConfig, result ? result.config : null)
+  const raw = { ...exampleConfig, ...(result ? result.config : {}) }
 
   validate(raw, configValidation)
   // Use deprecated fallbackLanguage, if defined

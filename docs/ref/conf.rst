@@ -16,6 +16,8 @@ Default config:
 
    {
      "lingui": {
+       "compileNamespace": "cjs",
+       "extractBabelOptions": {},
        "fallbackLocale": "",
        "sourceLocale": "",
        "localeDir": "<rootDir>/locale",
@@ -26,7 +28,63 @@ Default config:
            "/node_modules/"
        ],
        "format": "lingui",
-       "extractBabelOptions": {}
+     }
+   }
+
+.. config:: compileNamespace
+
+compileNamespace
+----------------
+
+Default: ``cjs``
+
+Specify namespace for exporting compiled messages. See :cli:`compile` command.
+
+cjs
+^^^
+
+Use CommonJS exports:
+
+.. code-block:: js
+
+   /* eslint-disable */module.exports={languageData: {"..."}, messages: {"..."}}
+
+es
+^^
+
+Use ES6 default export:
+
+.. code-block:: js
+
+   /* eslint-disable */export default{languageData: {"..."}, messages: {"..."}}
+
+(window|global)\.(.*)
+^^^^^^^^^^^^^^^^^^^^^
+
+Assign compiled messages to ``window`` or ``global`` object. Specify an identifier after
+``window`` or ``global`` to which the catalog is assigned, e.g. ``window.i18n``.
+
+For example, setting :conf:`compileNamespace` to ``window.i18n`` creates file
+similar to this:
+
+.. code-block:: js
+
+   /* eslint-disable */window.i18n={languageData: {"..."}, messages: {"..."}}
+
+.. config:: extractBabelOptions
+
+extractBabelOptions
+-------------------
+
+Default: ``{}``
+
+Specify extra babel options used to parse source files when messages are being extracted. Not required in most cases.
+
+.. code-block:: json
+
+   {
+     "extractBabelOptions": {
+       "plugins": ["@babel/plugin-syntax-dynamic-import"]
      }
    }
 
@@ -135,20 +193,3 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
-
-.. config:: extractBabelOptions
-
-extractBabelOptions
--------------------
-
-Default: ``{}``
-
-Specify extra babel options used to parse source files when messages are being extracted. Not required in most cases.
-
-.. code-block:: json
-
-   {
-     "extractBabelOptions": {
-       "plugins": ["@babel/plugin-syntax-dynamic-import"]
-     }
-   }
