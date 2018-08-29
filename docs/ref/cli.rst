@@ -152,6 +152,7 @@ Prints additional information.
 
 .. lingui-cli-option:: --namespace
 
-Specify namespace for compiled message catalogs (see :conf:`namespace` option).
+Specify namespace for compiled message catalogs (also see :conf:`compileNamespace` for
+global configuration).
 
 .. _npx: https://github.com/zkat/npx

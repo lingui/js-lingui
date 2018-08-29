@@ -91,7 +91,7 @@ function command(config, options) {
       locale,
       messages,
       false,
-      options.namespace || config.namespace
+      options.namespace || config.compileNamespace
     )
     const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
     if (options.typescript) {

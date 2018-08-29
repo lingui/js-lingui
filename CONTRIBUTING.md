@@ -1,4 +1,5 @@
-**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
+**Working on your first Pull Request?** You can learn how from this *free* series
+[How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
 ## Contributing to the docs
 
@@ -26,25 +27,28 @@ This project uses [yarn][YarnInstall] package manager. Please follow
 
 1. Install node
 
-You can install node  https://nodejs.org/en/, package managers(brew on macOS), or node version managers(nvm). Make sure the node version includes [internationalization support(full-icu)](https://nodejs.org/dist/latest-v8.x/docs/api/intl.html#intl_internationalization_support).
+   You can download node from [official webite](https://nodejs.org/), install it using
+   package managers (brew on MacOS), or uing node version managers (nvm). Make sure the
+   node version includes [internationalization support (full-icu)](https://nodejs.org/dist/latest-v8.x/docs/api/intl.html#intl_internationalization_support).
 
-An example of installing with nvm:
+   An example of installing with nvm:
 
    ```sh
    # install nvm
    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
    # This will force nvm to build from source with full icu. By default, nvm provides node with limited icu
    nvm install -s v8.11.4 --with-intl=full-icu
    ```
 
-1. Clone project
+2. Clone project
 
    ```sh
    git clone https://github.com/lingui/js-lingui.git
    cd js-lingui
    ```
 
-2. Install development packages. This project uses
+3. Install development packages. This project uses
    [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna,
    so running `yarn` installs all development packages and also dependencies for all
    workspaces (inside `packages/*`).
@@ -53,7 +57,7 @@ An example of installing with nvm:
    yarn
    ```
 
-3. Run tests
+4. Run tests
 
    ```sh
    # Watch mode
@@ -63,7 +67,10 @@ An example of installing with nvm:
    yarn test
    ```
 
-   NOTE: if you are using an IDE to run test. Make sure to point jest to the right config. See package.json
+   NOTE: if you are using an IDE to run test make sure to use the right Jest config.
+   For unit tests use `-c scripts/jest/config.unit.js`. Integration tests use
+   build packages (created using `yarn release:build`) and config `-c scripts/jest/config.integration.js`.
+   See [package.json](./package.json) for more info.
 
 ### Using development version in your project
 
