@@ -27,6 +27,12 @@ export default function command(
   config: LinguiConfig,
   options: ExtractOptions
 ): boolean {
+  // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
+  // set. We're setting it here, because lingui macros are going to use them as well.
+  if (!process.env.BABEL_ENV && !process.env.NODE_ENV) {
+    process.env.BABEL_ENV = "development"
+  }
+
   const catalog = configureCatalog(config)
   const locales = catalog.getLocales()
 

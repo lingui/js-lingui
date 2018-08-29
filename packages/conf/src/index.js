@@ -34,8 +34,8 @@ export const defaultConfig = {
   format: "lingui",
   rootDir: ".",
   extractBabelOptions: {
-    plugins: ["plugin"],
-    presets: ["preset"]
+    plugins: [],
+    presets: []
   }
 }
 
