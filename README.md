@@ -41,18 +41,19 @@ ICU MessageFormat from tagged template literals (plain JavaScript) or React comp
 
 ## How does it look like?
 
+### Example with React
+   
 <div align="center">
-
+   
    ![Example with React](https://lingui.js.org/_static/pitch_messages.png)
    
-   Example with React
-   
 </div>
+
+### Example with React using message IDs
+
 <div align="center">
 
    ![Example with React using message IDs](https://lingui.js.org/_static/pitch_keys.png)
-   
-   Example with React using message IDs
    
 </div>
 
