@@ -3,7 +3,8 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import hoistStatics from "hoist-non-react-statics"
 import type { I18n as I18nType } from "@lingui/core"
-import { I18n } from "@lingui/react"
+
+import I18n from "./I18n"
 
 type withI18nOptions = {
   update?: boolean,
