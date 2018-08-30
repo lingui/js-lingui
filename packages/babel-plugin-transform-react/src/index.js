@@ -322,12 +322,24 @@ export default function({ types: t }) {
   }
 
   return {
-    pre() {
-      // Reset import declaration for each file.
-      // Regression introduced in https://github.com/lingui/js-lingui/issues/62
-      importDeclarations = {}
-    },
     visitor: {
+      Program(path, state) {
+        // Reset import declaration for each file.
+        // Regression introduced in https://github.com/lingui/js-lingui/issues/62
+        importDeclarations = {}
+
+        const importedNames = state.opts.importedNames
+        if (importedNames) {
+          importedNames.forEach(name => {
+            if (typeof name === "string") {
+              name = [name, name]
+            }
+
+            const [imported, local] = name
+            importDeclarations[imported] = local
+          })
+        }
+      },
       ImportDeclaration(path) {
         const { node } = path
 
@@ -365,7 +377,7 @@ export default function({ types: t }) {
         }
       },
 
-      JSXElement(path, file) {
+      JSXElement(path, state) {
         if (!importDeclarations || !Object.keys(importDeclarations).length) {
           return
         }
@@ -378,7 +390,7 @@ export default function({ types: t }) {
 
         const props = processElement(
           node,
-          file,
+          state,
           initialProps(),
           /* root= */ true
         )

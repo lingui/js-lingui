@@ -21,9 +21,23 @@ npm install --save-dev @lingui/babel-plugin-transform-react
 
 **.babelrc**
 
+Without options:
+
 ```json
 {
   "plugins": ["@lingui/babel-plugin-transform-react"]
+}
+```
+
+With options:
+
+```json
+{
+  "plugins": [
+    ["@lingui/babel-plugin-transform-react", {
+      "importedNames": []
+    }]
+  ]
 }
 ```
 
@@ -39,6 +53,62 @@ babel --plugins @lingui/babel-plugin-transform-react script.js
 require("@babel/core").transform("code", {
   plugins: ["@lingui/babel-plugin-transform-react"]
 })
+```
+
+## Options
+
+### `importedNames`
+
+`array`, defaults to `[]`
+
+This option transforms components without explicit imports. For example following options:
+
+```json
+{
+  "plugins": [
+    ["@lingui/babel-plugin-transform-react", {
+      "importedNames": ["Trans"]
+    }]
+  ]
+}
+```
+
+Transforms all `Trans` components without explicit import, which means this file:
+
+```js
+<Trans>Hello World</Trans>;
+<Select value="this node is ignored" onChange={() => {}} />;
+```
+
+Will be transformed into:
+
+```js
+<Trans id="Hello World" />;
+<Select value="this node is ignored" onChange={() => {}} />;
+```
+
+`Select` is left intact even though it's `@lingui/react` component, because it's
+not included in `importedNames`.
+
+Aliases are supported as well:
+
+```json
+{
+  "plugins": [
+    ["@lingui/babel-plugin-transform-react", {
+      "importedNames": [
+        ["Trans", "T"]
+      ]
+    }]
+  ]
+}
+```
+
+Again, `T` component in following file will be tranformed:
+
+```js
+<T>Hello World</T>;
+<Select value="this node is ignored" onChange={() => {}} />;
 ```
 
 ## License
