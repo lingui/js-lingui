@@ -15,7 +15,8 @@ type TransProps = {
   formats?: Object,
   components?: Array<React$Element<*>>,
   children?: any
-} & RenderProps
+} & withI18nProps &
+  RenderProps
 
 class Trans extends React.Component<TransProps> {
   props: TransProps
