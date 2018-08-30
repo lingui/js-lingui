@@ -2,7 +2,7 @@
   "name": "@lingui/loader",
   "version": "0.0.0-managed-by-release-script",
   "description": "webpack loader for lingui message catalogs",
-  "main": "dist/index.js",
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
