@@ -11,7 +11,8 @@ I18n libraries for JavaScript focused on high quality developer experience
 [![AppVeyor][Badge-AppVeyor]][AppVeyor]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
+[![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
+[![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local] [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
 [![Watch on GitHub][Badge-Watch]][Watch]
 [![Star on GitHub][Badge-Stars]][Star]
 [![Tweet][Badge-Twitter]][Twitter]
@@ -104,6 +105,36 @@ Big thanks goes to these people ([emoji key][emojis]):
 
 This project follows the [all-contributors][all-contributors] specification.
 
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/js-lingui/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/js-lingui#backer)]
+
+<a href="https://opencollective.com/js-lingui#backers" target="_blank"><img src="https://opencollective.com/js-lingui/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/js-lingui#sponsor)]
+
+<a href="https://opencollective.com/js-lingui/sponsor/0/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/1/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/2/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/3/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/4/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/5/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/6/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/7/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/8/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/9/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/9/avatar.svg"></a>
+
+
+
 ## License
 
 The project is licensed under the [MIT][License] license.
@@ -125,6 +156,8 @@ The project is licensed under the [MIT][License] license.
 [Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
+[Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
 
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/master
@@ -137,3 +170,5 @@ The project is licensed under the [MIT][License] license.
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
 [Indiegogo]: https://igg.me/at/js-lingui/x/4367619
+[ocbackers-local]: #backers
+[ocsponsors-local]: #sponsors
