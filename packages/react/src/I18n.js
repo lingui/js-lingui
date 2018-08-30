@@ -41,6 +41,18 @@ export default class I18n extends React.Component<*, *> {
       ...(withHash ? { i18nHash } : {})
     }
 
+    if (typeof children === "function") {
+      return children(props)
+    }
+
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "I18n accepts only function as a children. " +
+          "Other usecases are deprecated and will be removed in v3.0"
+      )
+    }
+
+    // Deprecate v3.0
     return React.isValidElement(children)
       ? React.cloneElement(children, props)
       : React.createElement(children, props)
