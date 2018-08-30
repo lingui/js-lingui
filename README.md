@@ -11,7 +11,8 @@ I18n libraries for JavaScript focused on high quality developer experience
 [![AppVeyor][Badge-AppVeyor]][AppVeyor]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
+[![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
+[![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local] [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
 [![Watch on GitHub][Badge-Watch]][Watch]
 [![Star on GitHub][Badge-Stars]][Star]
 [![Tweet][Badge-Twitter]][Twitter]
@@ -91,18 +92,32 @@ documentation to implementing features and fixing bugs.
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
 - Do you want to improve the docs and write some code?
   Read the [contributors guide][Contributing] and send a PR!
-  
-Big thanks goes to these people ([emoji key][emojis]):
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-| [<img src="https://avatars1.githubusercontent.com/u/827862?v=3" width="100px;"/><br /><sub><b>Tomáš Ehrlich</b></sub>](http://www.tomasehrlich.cz)<br />[💻](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Code") [📖](https://github.com/lingui/js-lingui/commits?author=tricoder42 "Documentation") [💡](#example-tricoder42 "Examples") [✅](#tutorial-tricoder42 "Tutorials") | [<img src="https://avatars1.githubusercontent.com/u/3697116?v=3" width="100px;"/><br /><sub><b>Josef Hornych</b></sub>](https://github.com/Peping)<br />[📖](https://github.com/lingui/js-lingui/commits?author=Peping "Documentation") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3APeping "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/307006?v=3" width="100px;"/><br /><sub><b>Christian Kaps</b></sub>](https://www.silhouette.rocks)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3Aakkie "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/2085291?v=3" width="100px;"/><br /><sub><b>brunesto</b></sub>](https://github.com/brunesto)<br />[💻](https://github.com/lingui/js-lingui/commits?author=brunesto "Code") [🐛](https://github.com/lingui/js-lingui/issues?q=author%3Abrunesto "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/614768?v=3" width="100px;"/><br /><sub><b>David Furlong</b></sub>](https://davidfurlong.github.io/)<br />[💬](#question-davidfurlong "Answering Questions") | [<img src="https://avatars2.githubusercontent.com/u/1416801?v=4" width="100px;"/><br /><sub><b>Thibaut</b></sub>](http://thibaut.re)<br />[🐛](https://github.com/lingui/js-lingui/issues?q=author%3AthibautRe "Bug reports") [📖](https://github.com/lingui/js-lingui/commits?author=thibautRe "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2965120?v=4" width="100px;"/><br /><sub><b>Sebastian Sobociński</b></sub>](https://github.com/hiddenboox)<br />[💻](https://github.com/lingui/js-lingui/commits?author=hiddenboox "Code") |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://avatars2.githubusercontent.com/u/296106?v=4" width="100px;"/><br /><sub><b>Matt Labrum</b></sub>](https://github.com/mlabrum)<br />[📖](https://github.com/lingui/js-lingui/commits?author=mlabrum "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/1098399?v=4" width="100px;"/><br /><sub><b>Vincent Ricard</b></sub>](https://github.com/ghostd)<br />[📖](https://github.com/lingui/js-lingui/commits?author=ghostd "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/2378900?v=4" width="100px;"/><br /><sub><b>Adam Gruber</b></sub>](https://github.com/adamgruber)<br />[💻](https://github.com/lingui/js-lingui/commits?author=adamgruber "Code") | [<img src="https://avatars1.githubusercontent.com/u/1268629?v=4" width="100px;"/><br /><sub><b>Spencer Mefford</b></sub>](https://github.com/spencermefford)<br />[💻](https://github.com/lingui/js-lingui/commits?author=spencermefford "Code") | [<img src="https://avatars2.githubusercontent.com/u/1448788?v=4" width="100px;"/><br /><sub><b>Jeow Li Huan</b></sub>](https://github.com/huan086)<br />[💻](https://github.com/lingui/js-lingui/commits?author=huan086 "Code") | [<img src="https://avatars1.githubusercontent.com/u/1566403?v=4" width="100px;"/><br /><sub><b>Vojtech Novak</b></sub>](https://github.com/vonovak)<br />[📖](https://github.com/lingui/js-lingui/commits?author=vonovak "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1096340?v=4" width="100px;"/><br /><sub><b>Daniel K.</b></sub>](https://gitconnected.com/fredyc)<br />[💻](https://github.com/lingui/js-lingui/commits?author=FredyC "Code") [📖](https://github.com/lingui/js-lingui/commits?author=FredyC "Documentation") |
-| [<img src="https://avatars1.githubusercontent.com/u/2289753?v=4" width="100px;"/><br /><sub><b>An Nguyen</b></sub>](https://github.com/dephiros)<br />[💻](https://github.com/lingui/js-lingui/commits?author=dephiros "Code") [📖](https://github.com/lingui/js-lingui/commits?author=dephiros "Documentation") |
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+## Contributors
 
-This project follows the [all-contributors][all-contributors] specification.
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/js-lingui/contributors.svg?width=890&button=false" /></a>
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/js-lingui#backer)]
+
+<a href="https://opencollective.com/js-lingui#backers" target="_blank"><img src="https://opencollective.com/js-lingui/backers.svg?width=890"></a>
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/js-lingui#sponsor)]
+
+<a href="https://opencollective.com/js-lingui/sponsor/0/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/1/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/2/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/3/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/4/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/5/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/6/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/7/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/8/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/js-lingui/sponsor/9/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/9/avatar.svg"></a>
 
 ## License
 
@@ -125,6 +140,8 @@ The project is licensed under the [MIT][License] license.
 [Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
 [Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
+[Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
 
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/master
@@ -137,3 +154,5 @@ The project is licensed under the [MIT][License] license.
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
 [Indiegogo]: https://igg.me/at/js-lingui/x/4367619
+[ocbackers-local]: #backers
+[ocsponsors-local]: #sponsors
