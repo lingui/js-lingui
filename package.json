@@ -15,18 +15,14 @@
     "flow": "flow",
     "lint:eslint": "eslint packages/",
     "lint": "yarn lint:eslint; yarn flow",
-    "add": "all-contributors add",
-    "generate": "all-contributors generate",
     "prettier": "yarn run lint:eslint --fix",
     "release:build": "node ./scripts/build/",
-    "release:test": "node ./scripts/test.js",
-    "postinstall": "opencollective-postinstall"
+    "release:test": "node ./scripts/test.js"
   },
   "engines": {
     "node": ">=5.0"
   },
   "devDependencies": {
-    "all-contributors-cli": "^5.3.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^23.4.0",
@@ -90,9 +86,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
-  },
-  "dependencies": {
-    "opencollective": "^1.0.3"
   },
   "collective": {
     "type": "opencollective",

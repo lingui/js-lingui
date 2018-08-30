@@ -107,22 +107,6 @@ tests and finally runs integration tests using production build.
 
 Now you can create PR and let CI service do their work!
 
-## Add yourself to contributors
-
-This project uses [all-contributors](https://github.com/kentcdodds/all-contributors) to
-recognize all contributors who improve **jsLingui** in any way.
-
-```bash
-yarn run add -- <yourGitHubName> <type>
-
-# Examples:
-# yarn run add -- tricoder42 code
-# yarn run add -- tricoder42 code,doc  # type may be also comma separated value
-```
-
-See the [key](https://github.com/jfmengels/all-contributors-cli#addupdate-contributors)
-for all types of contribution.
-
 If you need any help, just raise an issue or submit an working draft of PR.
 
 [YarnInstall]: https://yarnpkg.com/en/docs/install#mac-stable
