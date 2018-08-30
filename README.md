@@ -29,8 +29,6 @@ code small and fast.
 Optional but recommended are Babel plugins for auto-generating messages in
 ICU MessageFormat from tagged template literals (plain JavaScript) or React components.
 
-![Example use case with React](https://lingui.github.io/js-lingui/_static/lingui-pitch.png)
-
 ## Features
 
 - Lightweight - about [5kb gzipped](https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json)
@@ -40,6 +38,23 @@ ICU MessageFormat from tagged template literals (plain JavaScript) or React comp
 - Batteries included - **CLI** for working with message catalogs
   (extracting, validating, compiling, …)
 - Easy to migrate from react-intl
+
+## How does it look like?
+
+<div align="center">
+
+   ![Example with React](https://lingui.js.org/_static/pitch_messages.png)
+   
+   Example with React
+   
+</div>
+<div align="center">
+
+   ![Example with React using message IDs](https://lingui.js.org/_static/pitch_keys.png)
+   
+   Example with React using message IDs
+   
+</div>
 
 ## Quickstart
 

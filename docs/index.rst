@@ -20,9 +20,13 @@ Key features
   (extracting, validating, compiling, …)
 - Easy to migrate from react-intl
 
-.. figure:: _static/lingui-pitch.png
+.. figure:: _static/pitch_messages.png
 
-   Example usecase with React
+   Example with React
+
+.. figure:: _static/pitch_keys.png
+
+   Example with React using message IDs
 
 .. toctree::
    :maxdepth: 1
