@@ -1,9 +1,31 @@
 import path from "path"
-import R from "ramda"
+import * as R from "ramda"
 import { getConfig } from "@lingui/conf"
 import { createCompiledCatalog, configureCatalog } from "@lingui/cli/api"
 
+// Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
+let JavascriptParser
+let JavascriptGenerator
+try {
+  JavascriptParser = require("webpack/lib/Parser")
+  JavascriptGenerator = require("webpack/lib/JavascriptGenerator")
+} catch (error) {
+  if (error.code !== "MODULE_NOT_FOUND") {
+    throw e
+  }
+}
+
 export default function(source) {
+  // Webpack 4 uses json-loader automatically, which breaks this loader because it
+  // doesn't return JSON, but JS module. This is a temporary workaround before
+  // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)
+  // See https://github.com/webpack/webpack/issues/7057
+  if (JavascriptParser && JavascriptGenerator) {
+    this._module.type = "javascript/auto"
+    this._module.parser = new JavascriptParser()
+    this._module.generator = new JavascriptGenerator()
+  }
+
   const config = getConfig({ cwd: path.dirname(this.resourcePath) })
   const catalog = configureCatalog(config)
 
