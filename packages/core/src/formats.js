@@ -1,4 +1,6 @@
 // @flow
+import { isString } from "./essentials"
+
 import type { Locales } from "./i18n"
 
 export type NumberFormat = string | {}
@@ -17,7 +19,7 @@ export function date(
 ): (value: string | Date) => string {
   const formatter = new Intl.DateTimeFormat(locales, format)
   return value => {
-    if (typeof value === "string") value = new Date(value)
+    if (isString(value)) value = new Date(value)
     return formatter.format(value)
   }
 }

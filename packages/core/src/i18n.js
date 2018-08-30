@@ -184,8 +184,7 @@ class I18n {
     // replace missing messages with custom message for debugging
     const missing = this._missing
     if (!this.messages[id] && missing) {
-      translation =
-        typeof missing === "function" ? missing(this.language, id) : missing
+      translation = isFunction(missing) ? missing(this.language, id) : missing
     }
 
     if (process.env.NODE_ENV !== "production") {
@@ -194,7 +193,7 @@ class I18n {
       }
     }
 
-    if (typeof translation !== "function") return translation
+    if (!isFunction(translation)) return translation
     return interpolate(
       translation,
       this.language,

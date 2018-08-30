@@ -1,8 +1,8 @@
 // @flow
 
-export const isString = (s: any) => typeof s === "string"
-export const isFunction = (f: any) => typeof f === "function"
-export function isEmpty(obj: any) {
+export const isString = (s: any): %checks => typeof s === "string"
+export const isFunction = (f: any): %checks => typeof f === "function"
+export function isEmpty(obj: any): boolean {
   // null and undefined are "empty"
   if (obj === null || obj === undefined) return true
 
