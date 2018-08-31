@@ -94,13 +94,14 @@ documentation to implementing features and fixing bugs.
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/js-lingui/contributors.svg?width=890&button=false" /></a>
+
+[![Contributors][Img-Contributors]][Contributors]
 
 ## Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/js-lingui#backer)]
 
-<a href="https://opencollective.com/js-lingui#backers" target="_blank"><img src="https://opencollective.com/js-lingui/backers.svg?width=890"></a>
+[![Backers][Img-Backers]][Backers]
 
 ## Sponsors
 
@@ -137,6 +138,10 @@ The project is licensed under the [MIT][License] license.
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
 [Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
+[Img-Contributors]: https://opencollective.com/js-lingui/contributors.svg?width=890&button=false
+[Contributors]: https://github.com/lingui/js-lingui/graphs/contributors
+[Img-Backers]: https://opencollective.com/js-lingui/backers.svg?width=890
+[Backers]: https://opencollective.com/js-lingui#backers
 
 [CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
 [AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/master
