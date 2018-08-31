@@ -5,19 +5,13 @@
 Related issue: `#257 <https://github.com/lingui/js-lingui/issues/257>`_
 
 Message catalogs can quickly grow in size and it's convenient to split them
-into several files.
+into several files. Also, not all messages are extracted from source files and it may
+be convenient to fetch message descriptors from API (e.g. GraphQL Enum)
 
 .. important::
 
    This proposal is about splitting **source catalogs**. Compiled
    message catalogs always contain all messages in project for now.
-
-Considered use cases
-====================
-
-- Automatic spitting - one locale directory per package in monorepos (Lerna, Yarn workspaces)
-- Manually splitting, i.e. define from what source path the messages will be collected
-  into what locale directory.
 
 Solution
 ========
@@ -48,23 +42,39 @@ using this config:
       }
    }
 
-**Key** of ``localeDir`` object is a path to message catalogs. **Value** is a path to
-source files from which messages are collected. It can be a single path or an array
-of paths:
+**Key** of ``localeDir`` object is a path to message catalogs. It's either absolute
+path or relative to :conf:`rootDir`.
+
+**Value** specify a source from which messages are extracted. It can be also an array
+of sources. The most common one is a directory, which is traversed recursively and
+messages are collected from source files. Leading ``!`` excludes files:
 
 .. code-block:: json
 
    {
       "lingui": {
          "localeDir": {
-            "./locale/{package}/{locale}": [
+            "./locale/{name}/{locale}": [
                "src/shared",
-               "src/project"
+               "src/project",
+               "!src/project/excluded"
             ],
          }
       }
    }
 
+It can also be a script, which is executed and should return an array of message
+descriptors:
+
+.. code-block:: json
+
+   {
+      "lingui": {
+         "localeDir": {
+            "./locale/{locale}/graphql": "run!scripts/fetch_graphql_enums.js"
+         }
+      }
+   }
 
 On top of that, more advanced patterns are supported:
 
@@ -81,25 +91,28 @@ On top of that, more advanced patterns are supported:
       }
    }
 
-``{package}`` placeholder is replaced with a top level directory. This example would
-create ``locale/en/componentA.json`` and ``locale/en/componentB.json`` for English
-locale and following directory structure:
+``{name}`` placeholder is replaced with a top-most directory in a path. Consider
+following directory::
+
+   src/
+   ├── componentA/
+   └── componentB/
+
+Using this configuration we would get ``locale/en/componentA.json`` and
+``locale/en/componentB.json`` for English locale:
 
 .. code-block:: json
 
    {
       "lingui": {
          "localeDir": {
-            "./locale/{locale}/{package}": ".",
+            "./locale/{locale}/{name}": "./src",
          }
       }
    }
 
-.. code-block:: none
-
-   .
-   ├── componentA/
-   └── componentB/
+Path to message catalog is always without file extension because different serializers
+use different extensions, e.g. ``json`` and ``po``.
 
 Path to message catalog can be a directory ending with ``/``. ``locale/`` is the same
 as ``locale/{locale}/messages``.
@@ -115,6 +128,62 @@ If it's a file, then it *must* contain ``{locale}`` placeholder. This example is
             "./locale/messages": ".",
          }
       }
+   }
+
+Loading messages from scripts
+-----------------------------
+
+Messages can also be loaded dynamically from a script. If the source path starts with
+``run!`` (e.g. ``run!scripts/fetch_graphql_enums.js``), the script is executed and
+returned messages are added to catalog.
+
+The type of returned messages should be following:
+
+.. code-block:: jsx
+
+   type MessageDescriptor = {
+     id: string,
+     defaults?: string,
+     description?: string
+   }
+
+   type Messages = Array<MessageDescriptor> | Promise<Array<MessageDescriptor>>
+
+   type ExtractedDescriptors =
+     | {
+         name: string,
+         messages: Messages
+       }
+     | Messages
+
+   export default {
+     name: "graphql",
+     messages: [
+       {
+         id: "Episode.NEWHOPE",
+         defaults: "New Hope"
+       },
+       {
+         id: "Episode.EMPIRE",
+         defaults: "Empire Strikes Back"
+       },
+       {
+         id: "Episode.JEDI",
+         defaults: "Return of the Jedi"
+       }
+     ]
+   }
+
+If returned value is an object with ``name`` attribute then value of this attribute
+is used in ``{name}`` placeholder.
+
+``Messages`` might also be a promise:
+
+.. code-block:: jsx
+
+   export default {
+      name: 'graphql',
+      messages: fetch_enums('/graphql')
    }
 
 Summary
