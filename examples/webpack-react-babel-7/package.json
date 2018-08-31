@@ -16,28 +16,29 @@
     "stats": "webpack -p --json"
   },
   "dependencies": {
-    "@lingui/core": "^2.0.8",
-    "@lingui/react": "^2.0.8",
-    "react": "16.4.0",
-    "react-dom": "16.4.0"
+    "@lingui/core": "^2.6.0",
+    "@lingui/react": "^2.6.0",
+    "react": "16.4.2",
+    "react-dom": "16.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.54",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.54",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.54",
-    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.54",
-    "@babel/polyfill": "^7.0.0-beta.54",
-    "@babel/preset-env": "^7.0.0-beta.54",
-    "@babel/preset-flow": "^7.0.0-beta.54",
-    "@babel/preset-react": "^7.0.0-beta.54",
-    "@lingui/babel-preset-react": "^2.0.8",
-    "@lingui/cli": "^2.0.8",
-    "@lingui/loader": "^2.0.8",
-    "babel-core": "^7.0.0-0",
-    "babel-loader": "8.0.0-beta.0",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@lingui/babel-preset-react": "^2.6.0",
+    "@lingui/cli": "^2.6.0",
+    "@lingui/loader": "^2.6.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-loader": "8.0.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
   },
   "lingui": {
     "localeDir": "./locale"
