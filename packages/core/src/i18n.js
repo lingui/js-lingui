@@ -187,19 +187,19 @@ class I18n {
       translation = isFunction(missing) ? missing(this.language, id) : missing
     }
 
-    // if (process.env.NODE_ENV !== "production") {
-    //   if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
-    //     translation = this._dev.compile(translation)
-    //   }
-    // }
+    if (process.env.NODE_ENV !== "production") {
+      if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
+        translation = this._dev.compile(translation)
+      }
+    }
 
     if (!isFunction(translation)) return translation
-    // return interpolate(
-    //   translation,
-    //   this.language,
-    //   this.locales,
-    //   this.languageData
-    // )(values, formats)
+    return interpolate(
+      translation,
+      this.language,
+      this.locales,
+      this.languageData
+    )(values, formats)
   }
 
   pluralForm(
