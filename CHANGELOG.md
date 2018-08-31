@@ -1,5 +1,27 @@
 # Change Log
 
+<a name="2.6.0"></a>
+## [2.6.0](https://github.com/lingui/js-lingui/compare/v2.5.0...v2.6.0) (2018-08-31)
+
+### New Features
+
+* Configuration - add [`extractBabelOptions`](https://lingui.js.org/ref/conf.html#extractbabeloptions)
+  ([#287](https://github.com/lingui/js-lingui/issues/287)). Thanks to [Daniel K.](https://github.com/FredyC).
+* `lingui extract` - add [`--namespace`](https://lingui.js.org/ref/cli.html#cmdoption-compile-namespace)
+   option and [`compileNamespace`](https://lingui.js.org/ref/conf.html#compilenamespace)
+   config ([#295](https://github.com/lingui/js-lingui/issues/295)). Thanks to [An Nguyen](https://github.com/dephiros).
+
+### Bug Fixes
+
+* Update peer-dependency on babel-core ([#286](https://github.com/lingui/js-lingui/issues/286)).
+* Output multiple origins on separate line in PO format ([#290](https://github.com/lingui/js-lingui/issues/290)).
+* Keep headers in PO format ([#294](https://github.com/lingui/js-lingui/issues/294)).
+  Thanks to [Daniel K.](https://github.com/FredyC).
+* `lingui extract` - set default BABEL_ENV (required by `react-app` preset) ([#300](https://github.com/lingui/js-lingui/issues/300)).
+* Fix `@lingui/loader` compatibility with Webpack 4 ([#297](https://github.com/lingui/js-lingui/issues/297)).
+* Fix [`I18n`](https://lingui.js.org/ref/react.html#i18n) render prop component to not
+  unmount children component between renders ([#302](https://github.com/lingui/js-lingui/issues/302)).
+
 <a name="2.5.0"></a>
 ## [2.5.0](https://github.com/lingui/js-lingui/compare/v2.4.2...v2.5.0) (2018-08-24)
 
