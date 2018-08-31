@@ -34,17 +34,17 @@ export function prettyOrigin(origins) {
   }
 }
 
-export function fuzzValidateCommand(candidates = [], queries = []) {
-  const candidateNames = candidates.map(candidate => candidate.name())
-  for (let query of queries) {
-    if (!candidateNames.includes(query)) {
-      const commandScores = candidateNames
+export function fuzzValidateCommand(commands = [], userCommands = []) {
+  const commandNames = commands.map(command => command.name())
+  for (let userCommand of userCommands) {
+    if (!commandNames.includes(userCommand)) {
+      const commandScores = commandNames
         .map(name => ({
           name: name,
-          score: score(name, query.slice(0, name.length))
+          score: score(name, userCommand.slice(0, name.length))
         }))
         .filter(nameScore => nameScore.score > 0)
-      return `lingui: ${query} is unknown
+      return `lingui: ${userCommand} is unknown
   ${
     commandScores.length
       ? `Do you mean: ${commandScores

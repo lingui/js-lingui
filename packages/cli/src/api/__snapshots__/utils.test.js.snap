@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fuzzValidateCommand should return command is invalid 1`] = `
+lingui: compilesss is unknown
+  Do you mean: compile ?
+`;
+
+exports[`fuzzValidateCommand should return command is invalid if no commands are configured 1`] = `
+lingui: compile is unknown
+  
+`;
+
+exports[`fuzzValidateCommand should return suggestion for the first command if user passes multiple commands 1`] = `
+lingui: add is unknown
+  Do you mean: add-strings, add-locales ?
+`;
