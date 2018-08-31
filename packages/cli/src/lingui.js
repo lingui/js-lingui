@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { fuzzValidateCommand } from "./api/utils"
+
 const program = require("commander")
 
 let version
@@ -19,3 +21,8 @@ program
   .command("extract [files...]", "Extracts messages from source files")
   .command("compile", "Compile message catalogs")
   .parse(process.argv)
+
+const validateOutput = fuzzValidateCommand(program.commands, program.args)
+if (validateOutput) {
+  console.log(validateOutput)
+}

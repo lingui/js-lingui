@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 import chalk from "chalk"
+import { score } from "fuzzaldrin"
 
 export function removeDirectory(dir, keep = false) {
   if (!fs.existsSync(dir)) return
@@ -31,6 +32,30 @@ export function prettyOrigin(origins) {
   } catch (e) {
     return ""
   }
+}
+
+export function fuzzValidateCommand(candidates = [], queries = []) {
+  const candidateNames = candidates.map(candidate => candidate.name())
+  for (let query of queries) {
+    if (!candidateNames.includes(query)) {
+      const commandScores = candidateNames
+        .map(name => ({
+          name: name,
+          score: score(name, query.slice(0, name.length))
+        }))
+        .filter(nameScore => nameScore.score > 0)
+      return `lingui: ${query} is unknown
+  ${
+    commandScores.length
+      ? `Do you mean: ${commandScores
+          .slice(0, 3)
+          .map(commandScore => chalk.inverse(commandScore.name))
+          .join(", ")} ?`
+      : ""
+  }`
+    }
+  }
+  return ""
 }
 
 export const splitOrigin = origin => origin.split(":")
