@@ -36,8 +36,8 @@ using this config:
    {
       "lingui": {
          "localeDir": {
-            "./locale": ".",
-            "./largeComponentC/locale": "./largeComponentC",
+            "./locale/": ".",
+            "./largeComponentC/locale/": "./largeComponentC",
          }
       }
    }
@@ -189,7 +189,7 @@ is used in ``{name}`` placeholder.
 Summary
 =======
 
-By default :conf:`localeDir` is ``./locale``.
+By default :conf:`localeDir` is ``./locale/``.
 
 If :conf:`localeDir`` is a string, only single locale directory is used. It can be
 either a directory or a path to message file including ``{locale}`` pattern:
@@ -198,7 +198,7 @@ either a directory or a path to message file including ``{locale}`` pattern:
 
    {
       "lingui": {
-         "localeDir": "./locale"
+         "localeDir": "./locale/"
       }
    }
 
