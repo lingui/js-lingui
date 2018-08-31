@@ -1,18 +1,16 @@
 <div align="center">
 <h1><sub>js</sub>Lingui</h1>
 
-I18n libraries for JavaScript focused on high quality developer experience
+🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
 
 <hr />
 
-<a href="https://www.buymeacoffee.com/tricoder" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-   
 [![CircleCI][Badge-CI]][CI] 
 [![AppVeyor][Badge-AppVeyor]][AppVeyor]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
-[![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local] [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
+[![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
 [![Watch on GitHub][Badge-Watch]][Watch]
 [![Star on GitHub][Badge-Stars]][Star]
 [![Tweet][Badge-Twitter]][Twitter]
@@ -129,9 +127,6 @@ The project is licensed under the [MIT][License] license.
 [TutorialReactNative]: https://lingui.github.io/js-lingui/tutorials/react-native.html
 [TutorialJavaScript]: https://lingui.github.io/js-lingui/tutorials/javascript.html
 [TutorialCLI]: https://lingui.github.io/js-lingui/tutorials/cli.html
-
-[emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
-[all-contributors]: https://github.com/kentcdodds/all-contributors
 
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
 [Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/master?svg=true

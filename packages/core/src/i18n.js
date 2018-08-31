@@ -183,23 +183,23 @@ class I18n {
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
-    if (!this.messages[id] && missing) {
+    if (missing && !this.messages[id]) {
       translation = isFunction(missing) ? missing(this.language, id) : missing
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
-        translation = this._dev.compile(translation)
-      }
-    }
+    // if (process.env.NODE_ENV !== "production") {
+    //   if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
+    //     translation = this._dev.compile(translation)
+    //   }
+    // }
 
     if (!isFunction(translation)) return translation
-    return interpolate(
-      translation,
-      this.language,
-      this.locales,
-      this.languageData
-    )(values, formats)
+    // return interpolate(
+    //   translation,
+    //   this.language,
+    //   this.locales,
+    //   this.languageData
+    // )(values, formats)
   }
 
   pluralForm(
