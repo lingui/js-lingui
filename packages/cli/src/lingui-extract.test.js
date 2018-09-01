@@ -34,6 +34,12 @@ describe("lingui extract", function() {
     const config = mockConfig()
     const options = mockExtractOptions()
 
+    configureCatalog.mockImplementation(() => {
+      return {
+        getLocales: jest.fn().mockReturnValue([])
+      }
+    })
+
     mockConsole(console => {
       command(config, options)
       expect(console.log).toBeCalledWith(
@@ -44,19 +50,18 @@ describe("lingui extract", function() {
       )
     })
   })
-  it.only("should add pseudoLocale when defined", () => {
+  it("should add pseudoLocale when defined", () => {
     const config = mockConfig({
       pseudoLocale: "pseudo-LOCALE"
     })
     const options = mockExtractOptions()
 
     const addLocale = jest.fn()
-    const getLocales = jest.fn().mockReturnValue(["pseudo-LOCALE"])
     order.mockImplementation(() => ["pseudo-LOCALE"])
     configureCatalog.mockImplementation(() => {
       return {
         addLocale: addLocale,
-        getLocales: getLocales,
+        getLocales: jest.fn().mockReturnValue(["pseudo-LOCALE"]),
         readAll: jest.fn(),
         merge: jest.fn(),
         write: jest.fn().mockReturnValue([true, "messages.json"])
