@@ -1,5 +1,6 @@
 // @flow
 
+import R from "ramda"
 import pseudoloc from "pseudoloc"
 
 const delimiter = "%&&&%"
@@ -8,46 +9,45 @@ Regex should match HTML tags
 It was taken from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/
 Example: https://regex101.com/r/bDHD9z/3
 */
-const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/
+const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g
 /*
 Regex should match js-lingui plurals
 Example: https://regex101.com/r/zXWiQR/3
 */
-const PluralRegex = /{\w*,\s*plural,\s*\w*\s*{|}\s*\w*\s*({|})/
+const PluralRegex = /{\w*,\s*plural,\s*\w*\s*{|}\s*\w*\s*({|})/g
 /*
 Regex should match js-lingui variables
-Example: https://regex101.com/r/zXWiQR/3
+Example: https://regex101.com/r/kD7K2b/1
 */
-const VariableRegex = /({|})/
+const VariableRegex = /({|})/g
 
 function addDelimitersHTMLTags(message) {
-  return message.replace(new RegExp(HTMLRegex, "g"), matchedString => {
+  return message.replace(HTMLRegex, matchedString => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
 function addDelimitersPlural(message) {
-  return message.replace(new RegExp(PluralRegex, "g"), matchedString => {
+  return message.replace(PluralRegex, matchedString => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
 function addDelimitersVariables(message) {
-  return message.replace(new RegExp(VariableRegex, "g"), matchedString => {
+  return message.replace(VariableRegex, matchedString => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
-function addDelimiters(message) {
-  message = addDelimitersHTMLTags(message)
-  message = addDelimitersPlural(message)
-  message = addDelimitersVariables(message)
-
-  return message
-}
+const addDelimiters = R.compose(
+  addDelimitersVariables,
+  addDelimitersPlural,
+  addDelimitersHTMLTags
+)
 
 function pseudoLocalize(message) {
   pseudoloc.option.delimiter = delimiter
+  // We do not want prepending or appending because of Plurals structure
   pseudoloc.option.prepend = ""
   pseudoloc.option.append = ""
   const pseudoLocalizeMessage = pseudoloc.str(message)
