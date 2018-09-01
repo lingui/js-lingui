@@ -38,8 +38,25 @@ describe("Catalog API", function() {
       ])
     })
 
+    it("should add pseudoLocale", () => {
+      const config = createConfig({
+        pseudoLocale: "pseudo-LOCALE"
+      })
+      const catalog = configureCatalog(config)
+
+      // First run, create a directory with an empty message catalog
+      expect(catalog.addLocale("pseudo-LOCALE")).toEqual([
+        true,
+        expect.stringMatching(
+          escapeRegExp(path.join("pseudo-LOCALE", "messages.json")) + "$"
+        )
+      ])
+    })
+
     it("shouldn't add invalid locale", function() {
-      const config = createConfig()
+      const config = createConfig({
+        pseudoLocale: "pseudo-LOCALE"
+      })
       const catalog = configureCatalog(config)
       expect(catalog.addLocale("xyz")).toEqual([false, null])
     })

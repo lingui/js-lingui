@@ -1613,7 +1613,7 @@ combined-stream@1.0.6, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.17.1:
+commander@*, commander@^2.17.1:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
@@ -4948,6 +4948,12 @@ prop-types@^15.6.0, prop-types@^15.6.2:
 prr@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
+
+"pseudoloc@https://github.com/MartinCerny-awin/pseudoloc":
+  version "1.1.0"
+  resolved "https://github.com/MartinCerny-awin/pseudoloc#8bb3f7b3d6e79da3e132225900dbbf04e3e0e5d5"
+  dependencies:
+    commander "*"
 
 pseudomap@^1.0.2:
   version "1.0.2"

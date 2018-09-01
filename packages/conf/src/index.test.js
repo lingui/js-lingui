@@ -7,6 +7,7 @@ describe("lingui-conf", function() {
     expect(config.localeDir).toBeDefined()
     expect(config.sourceLocale).toBeDefined()
     expect(config.fallbackLocale).toBeDefined()
+    expect(config.pseudoLocale).toBeDefined()
     expect(config.srcPathDirs).toBeDefined()
     expect(config.srcPathIgnorePatterns).toBeDefined()
     expect(config.extractBabelOptions).toBeDefined()

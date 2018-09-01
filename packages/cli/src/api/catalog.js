@@ -155,7 +155,7 @@ export default (config: LinguiConfig): CatalogApi => {
     },
 
     addLocale(locale) {
-      if (!locales.isValid(locale)) {
+      if (!locales.isValid(locale) && locale !== config.pseudoLocale) {
         return [false, null]
       }
 
