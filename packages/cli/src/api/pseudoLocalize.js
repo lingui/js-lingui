@@ -1,7 +1,7 @@
 // @flow
 
 import R from "ramda"
-import pseudoloc from "pseudoloc"
+import pseudolocale from "pseudolocale"
 
 const delimiter = "%&&&%"
 /*
@@ -46,11 +46,11 @@ const addDelimiters = R.compose(
 )
 
 function pseudoLocalize(message) {
-  pseudoloc.option.delimiter = delimiter
+  pseudolocale.option.delimiter = delimiter
   // We do not want prepending or appending because of Plurals structure
-  pseudoloc.option.prepend = ""
-  pseudoloc.option.append = ""
-  const pseudoLocalizeMessage = pseudoloc.str(message)
+  pseudolocale.option.prepend = ""
+  pseudolocale.option.append = ""
+  const pseudoLocalizeMessage = pseudolocale.str(message)
 
   return pseudoLocalizeMessage.replace(new RegExp(delimiter, "g"), "")
 }

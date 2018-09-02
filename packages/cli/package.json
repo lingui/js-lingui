@@ -56,7 +56,7 @@
     "opencollective": "^1.0.3",
     "ora": "^3.0.0",
     "pofile": "^1.0.11",
-    "pseudoloc": "https://github.com/MartinCerny-awin/pseudoloc",
+    "pseudolocale": "^1.1.0",
     "ramda": "^0.25.0",
     "typescript": "^2.9.2"
   },
