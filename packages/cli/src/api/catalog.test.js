@@ -44,7 +44,6 @@ describe("Catalog API", function() {
       })
       const catalog = configureCatalog(config)
 
-      // First run, create a directory with an empty message catalog
       expect(catalog.addLocale("pseudo-LOCALE")).toEqual([
         true,
         expect.stringMatching(

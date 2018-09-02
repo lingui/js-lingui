@@ -21,6 +21,8 @@ Example: https://regex101.com/r/kD7K2b/1
 */
 const VariableRegex = /({|})/g
 
+let isPseudoLocalizeOptionSet = false
+
 function addDelimitersHTMLTags(message) {
   return message.replace(HTMLRegex, matchedString => {
     return `${delimiter}${matchedString}${delimiter}`
@@ -45,18 +47,24 @@ const addDelimiters = R.compose(
   addDelimitersHTMLTags
 )
 
-function pseudoLocalize(message) {
+function removeDelimiters(message) {
+  return message.replace(new RegExp(delimiter, "g"), "")
+}
+
+export function setPseudoLocalizeOption() {
   pseudolocale.option.delimiter = delimiter
-  // We do not want prepending or appending because of Plurals structure
+  // We do not want prepending and appending because of Plurals structure
   pseudolocale.option.prepend = ""
   pseudolocale.option.append = ""
-  const pseudoLocalizeMessage = pseudolocale.str(message)
-
-  return pseudoLocalizeMessage.replace(new RegExp(delimiter, "g"), "")
+  isPseudoLocalizeOptionSet = true
 }
 
 export default function(message: string) {
+  if (!isPseudoLocalizeOptionSet) {
+    setPseudoLocalizeOption()
+  }
   message = addDelimiters(message)
+  message = pseudolocale.str(message)
 
-  return pseudoLocalize(message)
+  return removeDelimiters(message)
 }
