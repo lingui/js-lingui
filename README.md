@@ -1,5 +1,5 @@
 <div align="center">
-<h1><sub>js</sub>Lingui</h1>
+<h1>Lingui<sub>js</sub></h1>
 
 🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
 
@@ -11,32 +11,44 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
-[![Watch on GitHub][Badge-Watch]][Watch]
-[![Star on GitHub][Badge-Stars]][Star]
-[![Tweet][Badge-Twitter]][Twitter]
+
+[**Documentation**][Documentation] · [**Quickstart**](#Quickstart) · [**Support**](#Support) · [**Contribute**](#Contribute) · [**Licence**](#Licence)
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
 >
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
-jsLingui simplifies internationalization in JavaScript. It covers all i18n features 
-while keeping library size small by using compiled message catalogs. Messages are
-automatically extracted from source and compiled at build step which makes production
-code small and fast.
 
-Optional but recommended are Babel plugins for auto-generating messages in
-ICU MessageFormat from tagged template literals (plain JavaScript) or React components.
+Lingui is an easy yet powerfull internationalization framework for global projects.
 
-## Features
+- **Clean and readable** - Keep your code clean and readable, while the library uses
+  battle-tested and powerful **ICU MessageFormat** under the hood.
+  
+- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl
+  functionality which works in any JavaScript project while `@lingui/react` offers
+  components to leverage React rendering.
 
-- Lightweight - about [5kb gzipped](https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json)
-  (1.9 kB core, 3.1 kB React components)
-- Full support of **ICU MessageFormat** with extension to support HTML
-- Unopinionated - supports manual and auto-generated message IDs out-of-the-box
-- Batteries included - **CLI** for working with message catalogs
-  (extracting, validating, compiling, …)
-- Easy to migrate from react-intl
+- **Full rich-text support** - Use React components inside localized messages
+  without any limitation. Writing rich-text messages is as easy as writing JSX.
+  
+- **Powerful tooling** - Manage the whole intl workflow using Lingui [CLI][RefCLI]. It
+  extracts messages from source code, validates messages coming from translators and
+  checks that all messages are translated before shipping to production.
+  
+- **Unopinionated** - Integrate Lingui into your existing workflow. It supports
+  message keys as well as auto generated messages. Translations are stored either in
+  JSON or standard PO file, which is supported in almost all translation tools.
+  
+- **Lightweight and optimized** - Core library is only [1.9 kB gzipped][BundleCore],
+  React components are additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
+  for a full-featured intl library.
+  
+- **Active community** - Join us on [Gitter.im][Gitter] to discuss the latest development.
+  At the moment, Lingui is the most active intl project on GitHub.
+  
+- **Compatible with react-intl** - Low-level React API is very similar to react-intl
+  and the message format is the same. It's easy to migrate existing project.
 
 ## How does it look like?
 
@@ -66,16 +78,16 @@ Checkout these tutorials for installation instructions and brief introduction:
 - [Working with Command Line Tool][TutorialCLI]
 
 If you're a react-intl user, checkout
-[comparison of react-intl and jsLingui](https://lingui.github.io/js-lingui/misc/react-intl.html).
+[comparison of react-intl and Lingui](https://lingui.js.org/misc/react-intl.html).
 
 ## Support
 
 If you are having issues, please let us know.
 
-- Join us at [gitter.im](https://gitter.im/lingui/js-lingui) to get almost instant
+- Join us at [gitter.im][Gitter] to get almost instant
   feedback.
 - Ask question on [StackOverflow](https://stackoverflow.com/questions/ask?tags=jsLingui)
-  and mark it with [jsLingui](https://stackoverflow.com/questions/tagged/jslingui) tag.
+  and mark it with [Lingui](https://stackoverflow.com/questions/tagged/jslingui) tag.
 - If something doesn't work as documented, documentation is missing or if you just want
   to suggest a new feature, [create an issue][Issues].
 
@@ -84,26 +96,26 @@ If you are having issues, please let us know.
 Contribution to open-source project is everything from spreading a word, writing
 documentation to implementing features and fixing bugs.
 
-- Do you use **jsLingui** in production site? Let us know!
+- Do you use **Lingui** in production site? Let us know!
 - Have you seen interesting talk or article about **i18n**?
   [Share it](https://github.com/lingui/js-lingui/edit/master/docs/misc/talks-about-i18n.rst)!
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
 - Do you want to improve the docs and write some code?
   Read the [contributors guide][Contributing] and send a PR!
 
-## Contributors
+### Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
 
 [![Contributors][Img-Contributors]][Contributors]
 
-## Backers
+### Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/js-lingui#backer)]
 
 [![Backers][Img-Backers]][Backers]
 
-## Sponsors
+### Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/js-lingui#sponsor)]
 
@@ -123,18 +135,16 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 The project is licensed under the [MIT][License] license.
 
 [ReactIntl]: https://github.com/yahoo/react-intl
-[Documentation]: https://lingui.github.io/js-lingui/
-[TutorialReact]: https://lingui.github.io/js-lingui/tutorials/react.html
-[TutorialReactNative]: https://lingui.github.io/js-lingui/tutorials/react-native.html
-[TutorialJavaScript]: https://lingui.github.io/js-lingui/tutorials/javascript.html
-[TutorialCLI]: https://lingui.github.io/js-lingui/tutorials/cli.html
+[Documentation]: https://lingui.js.org/
+[TutorialReact]: https://lingui.js.org/tutorials/react.html
+[TutorialReactNative]: https://lingui.js.org/tutorials/react-native.html
+[TutorialJavaScript]: https://lingui.js.org/tutorials/javascript.html
+[TutorialCLI]: https://lingui.js.org/tutorials/cli.html
+[RefCLI]: https://lingui.js.org/ref/cli.html
 
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
 [Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/master?svg=true
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
-[Badge-Watch]: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Watch
-[Badge-Stars]: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
-[Badge-Twitter]: https://img.shields.io/twitter/url/https/github.com/lingui/js-lingui.svg?style=social
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
 [Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
@@ -148,11 +158,11 @@ The project is licensed under the [MIT][License] license.
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
 [Contributing]: https://github.com/lingui/js-lingui/blob/master/CONTRIBUTING.md
-[Watch]: https://github.com/lingui/js-lingui/watchers
-[Star]: https://github.com/lingui/js-lingui/stargazers
-[Twitter]: https://twitter.com/intent/tweet?text=Check%20out%20js-lingui!%20https://github.com/lingui/js-lingui%20%F0%9F%91%8D
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
 [Indiegogo]: https://igg.me/at/js-lingui/x/4367619
 [ocbackers-local]: #backers
 [ocsponsors-local]: #sponsors
+[BundleReact]: https://bundlephobia.com/result?p=@lingui/react
+[BundleCore]: https://bundlephobia.com/result?p=@lingui/core
+[Gitter]: https://gitter.im/lingui/js-lingui
