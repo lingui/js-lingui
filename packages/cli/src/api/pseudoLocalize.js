@@ -4,6 +4,12 @@ import R from "ramda"
 import pseudolocale from "pseudolocale"
 
 const delimiter = "%&&&%"
+
+pseudolocale.option.delimiter = delimiter
+// We do not want prepending and appending because of Plurals structure
+pseudolocale.option.prepend = ""
+pseudolocale.option.append = ""
+
 /*
 Regex should match HTML tags
 It was taken from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/
@@ -20,8 +26,6 @@ Regex should match js-lingui variables
 Example: https://regex101.com/r/kD7K2b/1
 */
 const VariableRegex = /({|})/g
-
-let isPseudoLocalizeOptionSet = false
 
 function addDelimitersHTMLTags(message) {
   return message.replace(HTMLRegex, matchedString => {
@@ -51,18 +55,7 @@ function removeDelimiters(message) {
   return message.replace(new RegExp(delimiter, "g"), "")
 }
 
-export function setPseudoLocalizeOption() {
-  pseudolocale.option.delimiter = delimiter
-  // We do not want prepending and appending because of Plurals structure
-  pseudolocale.option.prepend = ""
-  pseudolocale.option.append = ""
-  isPseudoLocalizeOptionSet = true
-}
-
 export default function(message: string) {
-  if (!isPseudoLocalizeOptionSet) {
-    setPseudoLocalizeOption()
-  }
   message = addDelimiters(message)
   message = pseudolocale.str(message)
 
