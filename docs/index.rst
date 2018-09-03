@@ -9,6 +9,12 @@ LinguiJS - Seamless internationalization in Javascript
 
    --- `W3C Web Internationalization FAQ <https://www.w3.org/International/questions/qa-i18n>`_
 
+.. image:: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
+   :alt: GitHub stars
+
+.. image:: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Follow
+   :alt: GitHub followers
+
 Key features
 ------------
 
