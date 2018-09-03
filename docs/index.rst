@@ -11,9 +11,11 @@ LinguiJS - Seamless internationalization in Javascript
 
 .. image:: https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars
    :alt: GitHub stars
+   :target: https://github.com/lingui/js-lingui/
 
 .. image:: https://img.shields.io/github/watchers/lingui/js-lingui.svg?style=social&label=Follow
    :alt: GitHub followers
+   :target: https://github.com/lingui/js-lingui/
 
 Key features
 ------------
