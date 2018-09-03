@@ -1,7 +1,7 @@
-jsLingui - Seamless i18n in Javascript and React
-================================================
+LinguiJS - Seamless internationalization in Javascript
+======================================================
 
-Type-checked and intuitive way to internationalize applications in Javascript and React.
+🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
 
    **Internationalization** is the design and development of a product, application
    or document content that enables easy **localization** for target audiences that
@@ -12,13 +12,43 @@ Type-checked and intuitive way to internationalize applications in Javascript an
 Key features
 ------------
 
-- Lightweight - about `5kb gzipped <https://github.com/lingui/js-lingui/blob/master/scripts/build/results.json>`_
-  (1.9 kB core, 3.1 kB React components)
-- Full support of **ICU MessageFormat** with extension to support HTML
-- Unopinionated - supports manual and auto-generated message IDs out-of-the-box
-- Batteries included - **CLI** for working with message catalogs
-  (extracting, validating, compiling, …)
-- Easy to migrate from react-intl
+Lingui is an easy yet powerfull internationalization framework for global projects.
+
+Clean and readable
+   Keep your code clean and readable, while the library uses
+   battle-tested and powerful **ICU MessageFormat** under the hood.
+
+Universal
+   Use it everywhere. :ref:`@lingui/core <ref-core>` provides the essential intl
+   functionality which works in any JavaScript project while :ref:`@lingui/react <ref-react>` offers
+   components to leverage React rendering.
+
+Full rich-text support
+   Use React components inside localized messages
+   without any limitation. Writing rich-text messages is as easy as writing JSX.
+
+Powerful tooling
+   Manage the whole intl workflow using Lingui :ref:`CLI <ref-cli>`. It
+   extracts messages from source code, validates messages coming from translators and
+   checks that all messages are translated before shipping to production.
+
+Unopinionated
+   Integrate Lingui into your existing workflow. It supports
+   message keys as well as auto generated messages. Translations are stored either in
+   JSON or standard PO file, which is supported in almost all translation tools.
+
+Lightweight and optimized
+   Core library is only `1.9 kB gzipped <https://bundlephobia.com/result?p=@lingui/react>`_,
+   React components are additional `3.1 kBs gzipped <https://bundlephobia.com/result?p=@lingui/core>`_.
+   That's less than Redux for a full-featured intl library.
+
+Active community
+   Join us on `Gitter`_ to discuss the latest development.
+   At the moment, Lingui is the most active intl project on GitHub.
+
+Compatible with react-intl
+   Low-level React API is very similar to react-intl
+   and the message format is the same. It's easy to migrate existing project.
 
 .. figure:: _static/pitch_messages.png
 
@@ -82,3 +112,5 @@ Indices
 
 * :ref:`genindex`
 * :ref:`search`
+
+.. _Gitter: https://gitter.im/lingui/js-lingui
