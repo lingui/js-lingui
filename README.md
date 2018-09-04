@@ -20,7 +20,7 @@
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
 
-Lingui is an easy yet powerfull internationalization framework for global projects.
+Lingui is an easy yet powerful internationalization framework for global projects.
 
 - **Clean and readable** - Keep your code clean and readable, while the library uses
   battle-tested and powerful **ICU MessageFormat** under the hood.
@@ -48,7 +48,7 @@ Lingui is an easy yet powerfull internationalization framework for global projec
   At the moment, Lingui is the most active intl project on GitHub.
   
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl
-  and the message format is the same. It's easy to migrate existing project.
+  and the message format is the same. It's easy to migrate an existing project.
 
 ## How does it look like?
 
