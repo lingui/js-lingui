@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { helpMisspelledCommand } from "./api/utils"
+
 const program = require("commander")
 
 let version
@@ -19,3 +21,5 @@ program
   .command("extract [files...]", "Extracts messages from source files")
   .command("compile", "Compile message catalogs")
   .parse(process.argv)
+
+helpMisspelledCommand(process.argv[2], program.commands)
