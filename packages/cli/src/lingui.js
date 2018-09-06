@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { fuzzValidateCommand } from "./api/utils"
+import { helpMisspelledCommand } from "./api/utils"
 
 const program = require("commander")
 
@@ -22,7 +22,4 @@ program
   .command("compile", "Compile message catalogs")
   .parse(process.argv)
 
-const validateOutput = fuzzValidateCommand(program.commands, program.args)
-if (validateOutput) {
-  console.log(validateOutput)
-}
+helpMisspelledCommand(process.argv[2], program.commands)

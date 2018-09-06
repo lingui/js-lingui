@@ -1,34 +1,44 @@
-import { fuzzValidateCommand } from "./utils"
+import { helpMisspelledCommand } from "./utils"
+import { mockConsole } from "../mocks"
 
-describe("fuzzValidateCommand", function() {
-  function runFuzzValidateCommand(commandNames, userCommands) {
-    return fuzzValidateCommand(
-      commandNames.map(commandName => ({ name: () => commandName })),
-      userCommands
+function getConsoleMockCalls({ mock }) {
+  if (!mock.calls.length) return
+  return mock.calls.map(call => call[0]).join("\n")
+}
+
+describe("helpMisspelledCommand - show help for misspelled commands", function() {
+  function mockCommands(command, commandNames) {
+    return helpMisspelledCommand(
+      command,
+      commandNames.map(commandName => ({ name: () => commandName }))
     )
   }
 
-  it("should return empty string if user command is valid", function() {
-    expect(runFuzzValidateCommand(["compile"], ["compile"])).toEqual("")
+  it("shouldn't output anything if command is valid", function() {
+    mockConsole(console => {
+      mockCommands("compile", ["compile"])
+      expect(getConsoleMockCalls(console.log)).toBeUndefined()
+    })
   })
 
-  it("should return empty string if user passes no command", function() {
-    expect(runFuzzValidateCommand(["compile"], [])).toEqual("")
+  it("shouldn't output anything if user passes no command", function() {
+    mockConsole(console => {
+      mockCommands("", ["compile"])
+      expect(getConsoleMockCalls(console.log)).toMatchSnapshot()
+    })
   })
 
   it("should return command is invalid if no commands are configured", function() {
-    expect(runFuzzValidateCommand([], ["compile"])).toMatchSnapshot()
+    mockConsole(console => {
+      mockCommands("compile", [])
+      expect(getConsoleMockCalls(console.log)).toMatchSnapshot()
+    })
   })
 
-  it("should return command is invalid", function() {
-    expect(
-      runFuzzValidateCommand(["compile"], ["compilesss"])
-    ).toMatchSnapshot()
-  })
-
-  it("should return suggestion for the first command if user passes multiple commands", function() {
-    expect(
-      runFuzzValidateCommand(["add-strings", "add-locales"], ["add", "com"])
-    ).toMatchSnapshot()
+  it("should return suggestions for mispelled", function() {
+    mockConsole(console => {
+      mockCommands("compilesss", ["compile"])
+      expect(getConsoleMockCalls(console.log)).toMatchSnapshot()
+    })
   })
 })

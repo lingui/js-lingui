@@ -1,16 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fuzzValidateCommand should return command is invalid 1`] = `
-lingui: compilesss is unknown
-  Do you mean: compile ?
+exports[`fuzzValidateCommand should return command is invalid if no commands are configured 1`] = `lingui: command compile is not a lingui command. See 'lingui --help' for the list of available commands.`;
+
+exports[`fuzzValidateCommand should return empty string if user passes no command 1`] = `undefined`;
+
+exports[`fuzzValidateCommand should return suggestions for mispelled 1`] = `
+lingui: command compilesss is not a lingui command. See 'lingui --help' for the list of available commands.
+
+Did you mean: compile?
 `;
 
-exports[`fuzzValidateCommand should return command is invalid if no commands are configured 1`] = `
-lingui: compile is unknown
-  
+exports[`helpMisspelledCommand - show help for misspelled commands should return command is invalid if no commands are configured 1`] = `lingui: command compile is not a lingui command. See 'lingui --help' for the list of available commands.`;
+
+exports[`helpMisspelledCommand - show help for misspelled commands should return suggestions for mispelled 1`] = `
+lingui: command compilesss is not a lingui command. See 'lingui --help' for the list of available commands.
+
+Did you mean: compile?
 `;
 
-exports[`fuzzValidateCommand should return suggestion for the first command if user passes multiple commands 1`] = `
-lingui: add is unknown
-  Do you mean: add-strings, add-locales ?
-`;
+exports[`helpMisspelledCommand - show help for misspelled commands shouldn't output anything if user passes no command 1`] = `undefined`;
