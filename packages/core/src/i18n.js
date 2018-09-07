@@ -3,6 +3,9 @@ import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import t from "./t"
 import { select, plural, selectOrdinal } from "./select"
+import { date, number } from "./formats"
+import type { DateFormat, NumberFormat } from "./formats"
+
 import * as dev from "./dev"
 
 type MessageOptions = {|
@@ -61,6 +64,9 @@ class I18n {
   plural: Function
   select: Function
   selectOrdinal: Function
+
+  date: Function
+  number: Function
 
   constructor() {
     // Messages and languageData are merged on load,
@@ -208,6 +214,14 @@ class I18n {
   ): string {
     if (!this.languageData.plurals) return "other"
     return this.languageData.plurals(n, pluralType === "ordinal")
+  }
+
+  date(value: string | Date, format: DateFormat): string {
+    return date(this.locales || this.language, format)(value)
+  }
+
+  number(value: number, format: NumberFormat): string {
+    return number(this.locales || this.language, format)(value)
   }
 }
 
