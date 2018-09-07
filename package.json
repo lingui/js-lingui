@@ -50,6 +50,7 @@
     "eslint-plugin-react": "^7.11.1",
     "filesize": "^3.5.11",
     "flow-bin": "^0.79.1",
+    "flow-copy-source": "^2.0.2",
     "fs-extra": "^7.0.0",
     "full-icu": "^1.2.1",
     "glob": "^7.1.2",

@@ -47,7 +47,7 @@ async function copyFlowTypes(name) {
   const spinner = ora(msg).start()
 
   await asyncExecuteCommand(
-    `yarn flow gen-flow-files --ignore ".*\.test\.js$" --out-dir ${outDir} ${srcDir}`
+    `yarn flow-copy-source -i *.test.js ${srcDir} ${outDir}`
   )
   spinner.succeed()
 }
