@@ -34,6 +34,11 @@ export default function command(
   }
 
   const catalog = configureCatalog(config)
+  const pseudoLocale = config.pseudoLocale
+  if (pseudoLocale) {
+    catalog.addLocale(pseudoLocale)
+  }
+
   const locales = catalog.getLocales()
 
   if (!locales.length) {

@@ -54,8 +54,10 @@
     "make-plural": "^4.1.1",
     "messageformat-parser": "^2.0.0",
     "mkdirp": "^0.5.1",
+    "opencollective": "^1.0.3",
     "ora": "^3.0.0",
     "pofile": "^1.0.11",
+    "pseudolocale": "^1.1.0",
     "ramda": "^0.25.0",
     "typescript": "^2.9.2"
   },

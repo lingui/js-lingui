@@ -1,7 +1,8 @@
 {
   "lingui": {
-    "format": "po",
+    "format": "lingui",
     "localeDir": "./locale",
-    "sourceLocale": "en"
+    "sourceLocale": "en",
+    "pseudoLocale": "en-PT"
   }
 }

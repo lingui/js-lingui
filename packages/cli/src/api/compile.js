@@ -7,6 +7,7 @@ import plurals from "make-plural"
 import R from "ramda"
 
 import type { CatalogType } from "./types"
+import pseudoLocalize from "./pseudoLocalize"
 
 const isString = s => typeof s === "string"
 
@@ -126,13 +127,17 @@ export function createCompiledCatalog(
   locale: string,
   messages: CatalogType,
   strict: boolean = false,
-  namespace: string = "cjs"
+  namespace: string = "cjs",
+  pseudoLocale: string
 ) {
   const [language] = locale.split(/[_-]/)
   const pluralRules = plurals[language]
 
   const compiledMessages = R.keys(messages).map(key => {
-    const translation = messages[key] || (!strict ? key : "")
+    let translation = messages[key] || (!strict ? key : "")
+    if (locale === pseudoLocale) {
+      translation = pseudoLocalize(translation)
+    }
     return t.objectProperty(t.stringLiteral(key), compile(translation))
   })
 

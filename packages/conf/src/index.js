@@ -29,6 +29,7 @@ export const defaultConfig = {
   localeDir: "./locale",
   sourceLocale: "",
   fallbackLocale: "",
+  pseudoLocale: "",
   srcPathDirs: ["<rootDir>"],
   srcPathIgnorePatterns: [NODE_MODULES],
   format: "lingui",

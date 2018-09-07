@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Trans } from "@lingui/react"
+import { Trans, Plural } from "@lingui/react"
 
 class App extends React.Component {
   render() {
@@ -17,6 +17,15 @@ class App extends React.Component {
         </p>
 
         <Trans>Value of {value}</Trans>
+
+        <p>
+          <Plural
+            value={messagesCount}
+            zero="There're no messages"
+            one="There's # message <span>in</span> your inbox"
+            other="There're # messages in your inbox"
+          />
+        </p>
       </div>
     )
   }
