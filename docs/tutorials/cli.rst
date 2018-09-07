@@ -207,17 +207,17 @@ and improperly concatenated strings easy to spot so that they can be properly lo
 
 To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
 
-{
-   "lingui": {
-      "pseudoLocale": "pseudo-LOCALE"
+   {
+      "lingui": {
+         "pseudoLocale": "pseudo-LOCALE"
+      }
    }
-}
 
 :conf:`pseudoLocale` option can be any string 
 examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
 
 PseudoLocale folder is automatically created based on configuration when running 
- ``lingui extract`` command. Pseudolocalized text is created on  ``lingui compile`` command.
+``lingui extract`` command. Pseudolocalized text is created on  ``lingui compile`` command.
 The pseudolocalization is automatically created from default messages. 
 It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
 
