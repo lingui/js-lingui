@@ -107,12 +107,11 @@ All macros (``t``, ``plural``, ``select``, ``selectOrdinal``) are transformed in
       defaults?: String,
       values?: Object,
       formats?: Object,
-      description?: String
    }
 
-``id`` is message ID and the only required parameter. ``id``, ``defaults``, and
-``description`` are extracted to message catalog. Only ``id``, ``values``, and ``formats``
-are used at runtime, all other attributes ss possible to remove from production code
+``id`` is message ID and the only required parameter. ``id`` and ``defaults``
+are extracted to message catalog. Only ``id``, ``values``, and ``formats``
+are used at runtime, all other attributes are removed from production code
 for size optimization.
 
 Generated *Message Descriptor* must be passed to ``i18n`` object, which is callable,
@@ -163,7 +162,7 @@ Messages are generated using ``t`` macro used as a template tag:
    t`Default message`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n*/{
      id: 'Default message'
    }
 
@@ -177,7 +176,7 @@ With variables:
    t`Default message with ${param}`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n*/{
      id: 'Default message with {param}',
      value: { param }
    }
@@ -197,7 +196,7 @@ forms. Here's the example of ``plural``:
    plural({ value, one: "# book", other: "# books" })
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n*/{
      id: '{value, plural, one {# book} other {# books }}',
      value: { param }
    }
@@ -216,7 +215,7 @@ In this case, ``t`` macro is called with a message ID and then used as a templat
    t("msg.id")`Default message`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n*/{
      id: "msg.id",
      defaults: "Default message"
    }
@@ -237,7 +236,7 @@ Adding a ``id`` atribute override auto-generated one:
    })
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n*/{
      id: "msg.plural",
      defaults: '{value, plural, one {# book} other {# books }}',
      value: { param }
@@ -247,78 +246,58 @@ Description
 -----------
 
 Another addition to API is message description, which is passed to translators and it
-contains additional hints about the message.
+contains additional hints about the message. To add a message description, simply
+prepend the message with a comment starting with ``i18n:``. Everything after is
+considered as description.
 
-To summarize, ``t`` macro can be used in two forms:
-
-- ``t`Default Message``` - to define a message
-- ``t("message.id)`Default Message``` - to define a message with custom ID
-
-Finally, there's the most verbose form which is used to add description to message:
+The comment can be either a line comment:
 
 .. code-block:: jsx
 
    import { t } from '@lingui/macro'
 
-   t({
-     id: `Hello ${name}`,
-     description: "Greetings at homepage"
-   })
+   // i18n: Greetings at homepage
+   t`Greetings at homepage`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n: Greetings at homepage*/{
      id: 'Hello {name}',
-     description: "Greetings at homepage"
      value: { name }
    }
 
-The value of ``id`` atribute is processed as if it were a standalone ``t`` macro.
-
-Definition of message with custom ID is similar:
+Or a block comment:
 
 .. code-block:: jsx
 
    import { t } from '@lingui/macro'
 
-   t({
-     id: 'message.hello',
-     defaults: `Hello ${name}`,
-     description: "Greetings at homepage"
-   })
+   /*i18n: Greetings at homepage */t('message.hello')`Hello ${name}`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n: Greetings at homepage*/{
      id: 'message.hello',
      defaults: 'Hello {name}',
-     description: "Greetings at homepage"
      value: { name }
    }
 
-``plural``, ``select`` and ``selectOrdinal`` supports ``description`` as well:
+Description for plurals and other formatters is the same:
 
 .. code-block:: jsx
 
-   import { plural } from '@lingui/macro'
+   import { plurals } from '@lingui/macro'
 
-   // Macro
-   plural({ 
-     description: "Number of books",
+   // i18n: Number of books
+   plural({
      value,
      one: "# book",
      other: "# books"
    })
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   {
+   /*i18n: Number of books*/{
      id: '{value, plural, one {# book} other {# books }}',
-     description: "Number of books",
      value: { param }
    }
-
-.. note::
-
-   Description is removed completely when macros run under ``BABEL_ENV=production``
-   to reduce production bundle size.
 
 Lazy translations
 -----------------
@@ -433,6 +412,36 @@ in MessageFormat. ``arg`` macro is used exactly for that:
    }))
 
    const translation = books({ count: 42 })
+
+Extracting messages
+===================
+
+Messages are extracted from code already transformed by macros. This makes macros
+completely optional and extraction will work also with message descriptors created
+manually.
+
+Extract script will look for  a ``i18n`` comments:
+
+.. code-block:: js
+
+   /*i18n*/{
+     id: 'Message'
+   }
+
+An object after such comment is considered as message descriptor and extracted.
+
+Description of message can be optionally added in this comment:
+
+.. code-block:: js
+
+   /*i18n: Description*/{
+     id: 'Message'
+   }
+
+.. note::
+
+   Macros generate these comments automatically. It's necessary to write them manually
+   only if we don't use macros at all or in case we want to add a message description.
 
 Summary
 =======
