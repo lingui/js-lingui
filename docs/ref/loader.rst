@@ -27,7 +27,7 @@ import. Here's an example of dynamic import:
 
    class I18nLoader extends React.Component {
       loadMessages = (language) => {
-         return await import(`@lingui/loader:./locale/${language}/messages.js`)
+         return await import(`@lingui/loader!./locale/${language}/messages.json`)
       }
 
       render() {
