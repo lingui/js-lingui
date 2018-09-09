@@ -10,21 +10,27 @@ function getTestName(testPath) {
 }
 
 describe("babel-plugin-lingui-transform-react", function() {
-  const babelOptions = {
+  const babelOptions = (pluginOptions = {}) => ({
     babelrc: false,
-    plugins: ["babel-plugin-syntax-jsx", plugin]
-  }
+    plugins: ["babel-plugin-syntax-jsx", [plugin, pluginOptions]]
+  })
 
-  const transformCode = code => () =>
-    transform(
-      // implicitly import all lingui-react components, otherwise components
-      // are ignored and not validated
-      `import { 
+  const transformCode = code => () => {
+    try {
+      transform(
+        // implicitly import all lingui-react components, otherwise components
+        // are ignored and not validated
+        `import { 
       Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat 
     } from '@lingui/react';
     ${code}`,
-      babelOptions
-    )
+        babelOptions()
+      )
+    } catch (e) {
+      e.message = e.message.replace(/^[^:]+:/, "")
+      throw e
+    }
+  }
 
   glob.sync(path.join(__dirname, "fixtures/*/")).forEach(testPath => {
     const testName = getTestName(testPath)
@@ -33,6 +39,7 @@ describe("babel-plugin-lingui-transform-react", function() {
       path.join(testPath, "actual.js")
     )
     const expectedPath = path.join(testPath, "expected.js")
+    const optionsPath = path.join(testPath, "options.json")
 
     it(testName, () => {
       let originalEnv
@@ -41,8 +48,13 @@ describe("babel-plugin-lingui-transform-react", function() {
         process.env.NODE_ENV = "production"
       }
 
+      let options
+      if (fs.existsSync(optionsPath)) {
+        options = JSON.parse(fs.readFileSync(optionsPath))
+      }
+
       const expected = fs.readFileSync(expectedPath, "utf8").replace(/\r/g, "")
-      const actual = transformFileSync(actualPath, babelOptions)
+      const actual = transformFileSync(actualPath, babelOptions(options))
         .code.replace(/\r/g, "")
         .trim()
 
@@ -59,9 +71,9 @@ describe("babel-plugin-lingui-transform-react", function() {
       it("should resolve imports correctly", function() {
         const resolveDirs = path.relative(process.cwd(), __dirname)
         const options = {
-          ...babelOptions,
+          ...babelOptions(),
           plugins: [
-            ...babelOptions.plugins,
+            ...babelOptions().plugins,
             ["resolver", { resolveDirs: [resolveDirs] }]
           ]
         }

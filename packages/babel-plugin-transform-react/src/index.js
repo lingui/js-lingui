@@ -7,12 +7,29 @@ export default function(babel) {
   const transformer = new Transformer(babel)
 
   return {
-    pre() {
-      // Reset import declaration for each file.
-      // Regression introduced in https://github.com/lingui/js-lingui/issues/62
-      transformer.setImportDeclarations({})
-    },
     visitor: {
+      Program(path, state) {
+        // Reset import declaration for each file.
+        // Regression introduced in https://github.com/lingui/js-lingui/issues/62
+
+        const importedNames = state.opts.importedNames
+        if (importedNames) {
+          const importDeclarations = {}
+
+          importedNames.forEach(name => {
+            if (typeof name === "string") {
+              name = [name, name]
+            }
+
+            const [imported, local] = name
+            importDeclarations[imported] = local
+          })
+
+          transformer.setImportDeclarations(importDeclarations)
+        } else {
+          transformer.setImportDeclarations({})
+        }
+      },
       JSXElement: transformer.transform,
       ImportDeclaration({ node }) {
         const importDeclarations = transformer.getImportDeclarations()
