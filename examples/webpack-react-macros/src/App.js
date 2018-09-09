@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { I18nProvider, i18nMark } from "@lingui/react"
-import { Trans } from "@lingui/react.macro"
+import { I18nProvider } from "@lingui/react"
+import { t, Trans } from "@lingui/macro"
 
 import NeverUpdate from "./Usecases/NeverUpdate"
 import Children from "./Usecases/Children"
@@ -9,9 +9,9 @@ import ElementAttributes from "./Usecases/ElementAttributes"
 import Formats from "./Usecases/Formats"
 
 const languages = {
-  en: i18nMark("English"),
-  cs: i18nMark("Czech"),
-  fr: i18nMark("French")
+  en: t`English`,
+  cs: t`Czech`,
+  fr: t`French`
 }
 
 export default class App extends React.Component {

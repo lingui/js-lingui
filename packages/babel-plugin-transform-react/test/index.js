@@ -10,27 +10,21 @@ function getTestName(testPath) {
 }
 
 describe("babel-plugin-lingui-transform-react", function() {
-  const babelOptions = pluginOptions => ({
+  const babelOptions = {
     babelrc: false,
-    plugins: ["babel-plugin-syntax-jsx", [plugin, { ...pluginOptions }]]
-  })
+    plugins: ["babel-plugin-syntax-jsx", plugin]
+  }
 
-  const transformCode = code => () => {
-    try {
-      transform(
-        // implicitly import all lingui-react components, otherwise components
-        // are ignored and not validated
-        `import { 
+  const transformCode = code => () =>
+    transform(
+      // implicitly import all lingui-react components, otherwise components
+      // are ignored and not validated
+      `import { 
       Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat 
     } from '@lingui/react';
     ${code}`,
-        babelOptions()
-      )
-    } catch (e) {
-      e.message = e.message.replace(/^[^:]+:/, "")
-      throw e
-    }
-  }
+      babelOptions
+    )
 
   glob.sync(path.join(__dirname, "fixtures/*/")).forEach(testPath => {
     const testName = getTestName(testPath)
@@ -39,7 +33,6 @@ describe("babel-plugin-lingui-transform-react", function() {
       path.join(testPath, "actual.js")
     )
     const expectedPath = path.join(testPath, "expected.js")
-    const configPath = path.join(testPath, "options.json")
 
     it(testName, () => {
       let originalEnv
@@ -48,13 +41,8 @@ describe("babel-plugin-lingui-transform-react", function() {
         process.env.NODE_ENV = "production"
       }
 
-      let pluginOptions = {}
-      if (fs.existsSync(configPath)) {
-        pluginOptions = JSON.parse(fs.readFileSync(configPath, "utf8"))
-      }
-
       const expected = fs.readFileSync(expectedPath, "utf8").replace(/\r/g, "")
-      const actual = transformFileSync(actualPath, babelOptions(pluginOptions))
+      const actual = transformFileSync(actualPath, babelOptions)
         .code.replace(/\r/g, "")
         .trim()
 
@@ -71,9 +59,9 @@ describe("babel-plugin-lingui-transform-react", function() {
       it("should resolve imports correctly", function() {
         const resolveDirs = path.relative(process.cwd(), __dirname)
         const options = {
-          ...babelOptions(),
+          ...babelOptions,
           plugins: [
-            ...babelOptions().plugins,
+            ...babelOptions.plugins,
             ["resolver", { resolveDirs: [resolveDirs] }]
           ]
         }

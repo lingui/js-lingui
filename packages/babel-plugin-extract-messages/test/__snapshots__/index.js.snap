@@ -189,6 +189,7 @@ Object {
     ],
   },
   msg.hello: Object {
+    description: Description,
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,

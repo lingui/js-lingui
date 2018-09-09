@@ -2,125 +2,137 @@
 
 exports[`Formats should render 1`] = `
 <Component
-  language="en"
+  language=en
 >
   <I18nProvider
     catalogs={
       Object {
-        "en": Object {},
+        en: Object {},
       }
     }
     defaultRender={null}
-    language="en"
+    language=en
   >
     <Formats>
       <div>
         <ul>
           <li>
-            <withI18n
-              className="percent"
-              id="The answer is {answer,number,percent}"
+            <WithI18n
+              className=percent
+              id=The answer is {answer,number,percent}
               values={
                 Object {
-                  "answer": 0.42,
+                  answer: 0.42,
                 }
               }
             >
-              <Trans
-                className="percent"
-                i18n={
-                  I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
-                    },
-                    "_activeMessages": Object {},
-                    "_catalogs": Object {
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
-                      },
-                    },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
-                    },
-                    "_language": "en",
-                    "_locales": undefined,
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
-                  }
-                }
-                i18nHash={null}
-                id="The answer is {answer,number,percent}"
-                values={
-                  Object {
-                    "answer": 0.42,
-                  }
-                }
+              <I18n
+                update={true}
+                withHash={true}
               >
-                <Render
-                  className="percent"
-                  value="The answer is 42%"
+                <Trans
+                  className=percent
+                  i18n={
+                    I18n {
+                      _activeLanguageData: Object {
+                        plurals: [Function],
+                      },
+                      _activeMessages: Object {},
+                      _catalogs: Object {
+                        en: Object {
+                          languageData: Object {},
+                          messages: Object {},
+                        },
+                      },
+                      _dev: Object {
+                        compile: [Function],
+                        loadLanguageData: [Function],
+                      },
+                      _language: en,
+                      _locales: undefined,
+                      _missing: undefined,
+                      plural: [Function],
+                      select: [Function],
+                      selectOrdinal: [Function],
+                      t: [Function],
+                    }
+                  }
+                  i18nHash={null}
+                  id=The answer is {answer,number,percent}
+                  values={
+                    Object {
+                      answer: 0.42,
+                    }
+                  }
                 >
-                  The answer is 42%
-                </Render>
-              </Trans>
-            </withI18n>
+                  <Render
+                    className=percent
+                    value=The answer is 42%
+                  >
+                    The answer is 42%
+                  </Render>
+                </Trans>
+              </I18n>
+            </WithI18n>
           </li>
           <li>
-            <withI18n
-              className="date"
-              id="Today is {now,date}"
+            <WithI18n
+              className=date
+              id=Today is {now,date}
               values={
                 Object {
-                  "now": 2017-04-05T11:14:00.000Z,
+                  now: 2017-04-05T11:14:00.000Z,
                 }
               }
             >
-              <Trans
-                className="date"
-                i18n={
-                  I18n {
-                    "_activeLanguageData": Object {
-                      "plurals": [Function],
-                    },
-                    "_activeMessages": Object {},
-                    "_catalogs": Object {
-                      "en": Object {
-                        "languageData": Object {},
-                        "messages": Object {},
-                      },
-                    },
-                    "_dev": Object {
-                      "compile": [Function],
-                      "loadLanguageData": [Function],
-                    },
-                    "_language": "en",
-                    "_locales": undefined,
-                    "plural": [Function],
-                    "select": [Function],
-                    "selectOrdinal": [Function],
-                    "t": [Function],
-                  }
-                }
-                i18nHash={null}
-                id="Today is {now,date}"
-                values={
-                  Object {
-                    "now": 2017-04-05T11:14:00.000Z,
-                  }
-                }
+              <I18n
+                update={true}
+                withHash={true}
               >
-                <Render
-                  className="date"
-                  value="Today is 4/5/2017"
+                <Trans
+                  className=date
+                  i18n={
+                    I18n {
+                      _activeLanguageData: Object {
+                        plurals: [Function],
+                      },
+                      _activeMessages: Object {},
+                      _catalogs: Object {
+                        en: Object {
+                          languageData: Object {},
+                          messages: Object {},
+                        },
+                      },
+                      _dev: Object {
+                        compile: [Function],
+                        loadLanguageData: [Function],
+                      },
+                      _language: en,
+                      _locales: undefined,
+                      _missing: undefined,
+                      plural: [Function],
+                      select: [Function],
+                      selectOrdinal: [Function],
+                      t: [Function],
+                    }
+                  }
+                  i18nHash={null}
+                  id=Today is {now,date}
+                  values={
+                    Object {
+                      now: 2017-04-05T11:14:00.000Z,
+                    }
+                  }
                 >
-                  Today is 4/5/2017
-                </Render>
-              </Trans>
-            </withI18n>
+                  <Render
+                    className=date
+                    value=Today is 4/5/2017
+                  >
+                    Today is 4/5/2017
+                  </Render>
+                </Trans>
+              </I18n>
+            </WithI18n>
           </li>
         </ul>
       </div>

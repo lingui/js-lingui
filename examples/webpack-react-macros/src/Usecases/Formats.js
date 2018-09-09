@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Trans, NumberFormat, DateFormat } from "@lingui/react.macro"
+import { Trans, NumberFormat, DateFormat } from "@lingui/macro"
 
 export default class Formats extends React.Component {
   render() {

@@ -1,38 +1,38 @@
 // @flow
 import * as React from "react"
-import { withI18n } from "@lingui/react"
-import { Trans } from "@lingui/react.macro"
-import { t } from "@lingui/js.macro"
+import { I18n } from "@lingui/react"
+import { t, Trans } from "@lingui/macro"
 
 type ElementAttributesProps = {
   i18n: Object
 }
 
-class ElementAttributes extends React.Component<ElementAttributesProps> {
+export default class ElementAttributes extends React.Component<
+  ElementAttributesProps
+> {
   props: ElementAttributesProps
 
   render() {
-    const { i18n } = this.props
     const articleName = "Scientific Journal"
     const closeLabel = t`Close`
 
     return (
-      <div>
-        <Trans>
-          <a
-            className="expression"
-            href="/article"
-            title={t`Full content of ${articleName}`}
-          >
-            Article
-          </a>
-        </Trans>
-        <button className="variable" aria-label={closeLabel}>
-          X
-        </button>
-      </div>
+      <I18n>
+        {({ i18n }) => (
+          <div>
+            <a
+              className="expression"
+              href="/article"
+              title={i18n._(t`Full content of ${articleName}`)}
+            >
+              <Trans>Article</Trans>
+            </a>
+            <button className="variable" aria-label={i18n._(closeLabel)}>
+              X
+            </button>
+          </div>
+        )}
+      </I18n>
     )
   }
 }
-
-export default withI18n()(ElementAttributes)

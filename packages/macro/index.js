@@ -1,4 +1,4 @@
-module.exports = require("./src")
+export { default } from "./src"
 
 function i18nClosure(id) {
   function t(args) {
