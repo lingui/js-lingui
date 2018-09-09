@@ -178,7 +178,7 @@ With variables:
    // ↓ ↓ ↓ ↓ ↓ ↓
    /*i18n*/{
      id: 'Default message with {param}',
-     value: { param }
+     values: { param }
    }
 
 plurals and other formatters
@@ -198,7 +198,7 @@ forms. Here's the example of ``plural``:
    // ↓ ↓ ↓ ↓ ↓ ↓
    /*i18n*/{
      id: '{value, plural, one {# book} other {# books }}',
-     value: { param }
+     values: { param }
    }
 
 Messages with custom IDs
@@ -220,16 +220,15 @@ In this case, ``t`` macro is called with a message ID and then used as a templat
      defaults: "Default message"
    }
 
-``plural`` and other formatters are easier, because they're called with an object.
-Adding a ``id`` atribute override auto-generated one:
+``plural`` and other formatters are called with a custom ID as a first argument, while
+second argument is formatter parameters - value and message variants:
 
 .. code-block:: jsx
 
    import { plural } from '@lingui/macro'
 
    // Macro
-   plural({
-     id: "msg.plural",
+   plural("msg.plural", {
      value,
      one: "# book",
      other: "# books"
@@ -239,7 +238,7 @@ Adding a ``id`` atribute override auto-generated one:
    /*i18n*/{
      id: "msg.plural",
      defaults: '{value, plural, one {# book} other {# books }}',
-     value: { param }
+     values: { param }
    }
 
 Description
@@ -262,7 +261,7 @@ The comment can be either a line comment:
    // ↓ ↓ ↓ ↓ ↓ ↓
    /*i18n: Greetings at homepage*/{
      id: 'Hello {name}',
-     value: { name }
+     values: { name }
    }
 
 Or a block comment:
@@ -277,7 +276,7 @@ Or a block comment:
    /*i18n: Greetings at homepage*/{
      id: 'message.hello',
      defaults: 'Hello {name}',
-     value: { name }
+     values: { name }
    }
 
 Description for plurals and other formatters is the same:
@@ -296,7 +295,7 @@ Description for plurals and other formatters is the same:
    // ↓ ↓ ↓ ↓ ↓ ↓
    /*i18n: Number of books*/{
      id: '{value, plural, one {# book} other {# books }}',
-     value: { param }
+     values: { param }
    }
 
 Lazy translations
@@ -462,11 +461,11 @@ Feature request from #258, implemented using ``i18n.defineMessages``:
 
    import { defineMessages } from `@lingui/macro`
 
-   export default defineMessages({
-      yes: `Yes`,
-      no: `No`,
-      cancel: `Cancel`,
-      confirmDelete: `Do you really want to delete ${arg("filename")}?`
+   export default i18n.defineMessages({
+      yes: t`Yes`,
+      no: t`No`,
+      cancel: t`Cancel`,
+      confirmDelete: t`Do you really want to delete ${arg("filename")}?`
    })
 
 Catalogs are type-checked by default:

@@ -12,7 +12,7 @@ const MESSAGES = Symbol("I18nMessages")
 // Then, i18n._ methods are visited multiple times for each parent CallExpression.
 const VISITED = Symbol("I18nVisited")
 
-function addMessage(path, messages, { id, defaults, origin }) {
+function addMessage(path, messages, { id, defaults, origin, ...props }) {
   if (messages.has(id)) {
     const message = messages.get(id)
 
@@ -29,7 +29,7 @@ function addMessage(path, messages, { id, defaults, origin }) {
       ;[].push.apply(message.origin, origin)
     }
   } else {
-    messages.set(id, { defaults, origin })
+    messages.set(id, { ...props, defaults, origin })
   }
 }
 
@@ -190,6 +190,37 @@ export default function({ types: t }) {
           const translation = node.arguments[0]
           path.replaceWith(t.stringLiteral(translation.value))
         }
+      },
+
+      // Extract message descriptors
+      ObjectExpression(path, { file }) {
+        const visited = file.get(VISITED)
+
+        const comment =
+          path.node.leadingComments &&
+          path.node.leadingComments.filter(node =>
+            node.value.startsWith("i18n")
+          )[0]
+
+        if (!comment || visited.has(path.node)) {
+          return
+        }
+
+        visited.add(path.node)
+
+        const props = {}
+
+        const description = comment.value.replace(/\s*i18n:?\s*/, "").trim()
+        if (description) props.description = description
+
+        const copyProps = ["id", "defaults"]
+        path.node.properties
+          .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
+          .forEach(({ key, value }) => {
+            props[key.name] = value.value
+          })
+
+        collectMessage(path, file, props)
       }
     },
 

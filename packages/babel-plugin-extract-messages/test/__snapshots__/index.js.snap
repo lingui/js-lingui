@@ -30,6 +30,49 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (macros) 1`] = `
+Object {
+  Message: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        1,
+      ],
+    ],
+  },
+  Message With Description: Object {
+    description: description,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        5,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        21,
+      ],
+    ],
+  },
+  Message With {param}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        14,
+      ],
+    ],
+  },
+  msg.id: Object {
+    defaults: Message With Description,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        9,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files 1`] = `
 Object {
   msg.default: Object {

@@ -178,6 +178,18 @@ describe("babel-plugin-lingui-extract-messages", function() {
     expect(messages).toMatchSnapshot()
   })
 
+  testCase("should extract all messages from JS files (macros)", transform => {
+    // first run should create all required folders and write messages
+    expect(transform("js/macro.js", false)).not.toThrow()
+    // another runs should just write messages
+    expect(transform("js/macro.js", false)).not.toThrow()
+
+    const messages = JSON.parse(
+      fs.readFileSync(path.join(buildDir, "js", "macro.js.json"))
+    )
+    expect(messages).toMatchSnapshot()
+  })
+
   testCase(
     "should extract all messages from JS files (integration)",
     transform => {

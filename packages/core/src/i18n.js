@@ -181,10 +181,18 @@ class I18n {
 
   // default translate method
   _(
-    id: string,
+    id: string | Object,
     values: Object = {},
     { defaults, formats = {} }: MessageOptions = {}
   ) {
+    // Expand message descriptor
+    if (id && typeof id === "object") {
+      values = id.values
+      defaults = id.defaults
+      formats = id.formats
+      id = id.id
+    }
+
     let translation = this.messages[id] || defaults || id
 
     // replace missing messages with custom message for debugging
