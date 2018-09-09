@@ -8,7 +8,7 @@ describe("vanilla-js example", function() {
   })
 })
 
-function test({ i18n, getStatic, getVariables, getPlural }) {
+function test({ i18n, getStatic, getVariables, getPlural, getLazy }) {
   it("should translate static message", function() {
     i18n.activate("en")
     expect(getStatic()).toEqual("@lingui/core example")
@@ -31,5 +31,12 @@ function test({ i18n, getStatic, getVariables, getPlural }) {
     expect(getPlural(1)).toEqual("1 láhev visí na stěně")
     expect(getPlural(2)).toEqual("2 láhve visí na stěně")
     expect(getPlural(5)).toEqual("5 láhví visí na stěně")
+  })
+
+  it("should translate messages lazily", function() {
+    i18n.activate("en")
+    expect(getLazy()).toEqual("Do you want to proceed? Yes/No")
+    i18n.activate("cs")
+    expect(getLazy()).toEqual("Chcete pokračovat? Ano/Ne")
   })
 }

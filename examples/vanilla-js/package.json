@@ -8,7 +8,7 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "scripts": {
-    "test": "jest src"
+    "test": "lingui compile --strict; jest src"
   },
   "dependencies": {
     "@lingui/core": "latest",
@@ -25,6 +25,7 @@
     "jest": "^23.4.1"
   },
   "lingui": {
+    "format": "po",
     "localeDir": "./src/locale",
     "srcPathDirs": [
       "./src"

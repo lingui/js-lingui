@@ -8,8 +8,13 @@ i18n.load({
   cs: require("./locale/cs/messages")
 })
 
+export const common = {
+  yes: /*i18n: Agreement */ t("common.yes")`Yes`,
+  no: /*i18n: Disagreement */ t("common.no")`No`
+}
+
 export function getStatic() {
-  return i18n._(t("static")`@lingui/core example`)
+  return i18n._(/*i18n: Title of example*/ t("static")`@lingui/core example`)
 }
 
 export function getVariables(name) {
@@ -26,6 +31,12 @@ export function getPlural(value) {
   )
 }
 
+export function getLazy() {
+  const yes = i18n._(common.yes)
+  const no = i18n._(common.no)
+  return i18n._(t("lazy")`Do you want to proceed? ${yes}/${no}`)
+}
+
 function main(locale) {
   i18n.activate(locale)
   const header = getStatic()
@@ -37,6 +48,10 @@ function main(locale) {
   console.log(getVariables("Joe"))
   console.log(getPlural(1))
   console.log(getPlural(100))
+  console.log()
+
+  console.log(getLazy())
+  console.log()
 }
 
 if (require.main === module) {
