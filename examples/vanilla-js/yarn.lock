@@ -31,7 +31,7 @@
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.6.1.tgz#efc2e0a89624f5dfd91c19b1885b79b9b3cb00e3"
 
-"@lingui/cli@^2.6.1":
+"@lingui/cli@latest":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.6.1.tgz#d6d678b2074d7322c4f35ec242a7681874170a4b"
   dependencies:

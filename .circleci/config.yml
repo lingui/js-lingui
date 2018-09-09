@@ -82,7 +82,6 @@ jobs:
       - restore-cache: *restore-cache
       - run: *yarn-install
       - run: *yarn-install-tools
-      - run: *tests-integration
 
       - restore-cache:
           key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
@@ -91,6 +90,8 @@ jobs:
           key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
           paths:
             - examples/vanilla-js/node_modules
+
+      - run: *tests-integration
       - run: cd examples/vanilla-js; yarn test
 
   publish:
