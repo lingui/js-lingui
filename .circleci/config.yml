@@ -17,7 +17,7 @@ aliases:
       environment:
         NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
   - &tests-integration
-      command: node ./scripts/integrations.js
+      command: node ./scripts/integration.js
       environment:
         NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
