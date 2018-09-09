@@ -92,6 +92,7 @@ jobs:
             - examples/vanilla-js/node_modules
 
       - run: *tests-integration
+      - run: chmod +x examples/vanilla-js/node_modules/.bin/lingui
       - run: cd examples/vanilla-js; yarn test
 
   publish:
