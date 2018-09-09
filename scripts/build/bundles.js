@@ -46,6 +46,11 @@ const bundles = [
 
   {
     type: bundleTypes.NODE,
+    entry: "@lingui/macro"
+  },
+
+  {
+    type: bundleTypes.NODE,
     entry: "@lingui/cli"
   },
 

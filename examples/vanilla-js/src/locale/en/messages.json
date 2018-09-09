@@ -1,0 +1,59 @@
+{
+  "@lingui/core example": {
+    "translation": "",
+    "origin": [
+      [
+        "src/messages.js",
+        12
+      ]
+    ]
+  },
+  "Hello {name}": {
+    "translation": "",
+    "origin": [
+      [
+        "src/messages.js",
+        16
+      ]
+    ]
+  },
+  "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall": {
+    "translation": "",
+    "origin": [
+      [
+        "src/messages.js",
+        21
+      ]
+    ]
+  },
+  "plural": {
+    "translation": "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall",
+    "defaults": "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall",
+    "origin": [
+      [
+        "src/ids.js",
+        21
+      ]
+    ]
+  },
+  "static": {
+    "translation": "@lingui/core example",
+    "defaults": "@lingui/core example",
+    "origin": [
+      [
+        "src/ids.js",
+        12
+      ]
+    ]
+  },
+  "variables": {
+    "translation": "Hello {name}",
+    "defaults": "Hello {name}",
+    "origin": [
+      [
+        "src/ids.js",
+        16
+      ]
+    ]
+  }
+}
