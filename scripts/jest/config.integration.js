@@ -31,7 +31,11 @@ packages.forEach(name => {
 
 module.exports = Object.assign({}, sourceConfig, {
   roots: ["<rootDir>/packages/", "<rootDir>/examples/"],
-  testPathIgnorePatterns: ["/node_modules/", "webpack-react-babel-7"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "webpack-react-babel-7",
+    "vanilla-js"
+  ],
   // Redirect imports to the compiled bundles
   moduleNameMapper,
 
