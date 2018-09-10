@@ -143,11 +143,11 @@ example:
 
 .. note::
 
-  The important thing about both the :component:`Trans` (and the other provided components)
-  and ``withI18n`` HOC is that when you change the active language (through the
-``language`` prop passed to :component:`I18nProvider`), all the components that show
-translated text will re-render, making sure the UI shows the correct translations. The
-two approaches are equivalent in their result.
+   The important thing about both the :component:`Trans` (and the other provided components)
+   and ``withI18n`` HOC is that when you change the active language (through the
+   ``language`` prop passed to :component:`I18nProvider`), all the components that show
+   translated text will re-render, making sure the UI shows the correct translations. The
+   two approaches are equivalent in their result.
 
 Internationalization Outside of React Components
 =================================================
