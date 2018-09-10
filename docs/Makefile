@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = jsLingui
+SPHINXPROJ    = LinguiJS
 SOURCEDIR     = .
 BUILDDIR      = _build
 

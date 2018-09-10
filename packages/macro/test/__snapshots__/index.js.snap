@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`macro validation Date/Number format must be string, variable or object with custom format 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Format can be either string for buil-in formats, variable or object for custom defined formats. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Date/Number value of date must be a variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Date/Number value of number must be a variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of Plural aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of Select aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of SelectOrdinal aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal offset must be number or string, not variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Offset argument cannot be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing select choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing selectordinal choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation Plural/Select/SelectOrdinal value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation formats format must be either string, variable or object with custom format 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Format can be either string for buil-in formats, variable or object for custom defined formats. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation formats value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: The first argument of format function must be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal offset must be number or string, not variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Offset argument cannot be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms are missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms are missing 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms are missing 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms cannot be variables 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Computed properties aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural rules must be valid 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal plural rules must be valid 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+
+exports[`macro validation plural/select/selectordinal value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;

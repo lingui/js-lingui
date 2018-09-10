@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# jsLingui documentation build configuration file, created by
+# LinguiJS documentation build configuration file, created by
 # sphinx-quickstart on Fri Sep 15 16:18:52 2017.
 #
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'jsLingui'
+project = 'LinguiJS'
 copyright = '2018, Tomáš Ehrlich'
 author = 'Tomáš Ehrlich'
 
@@ -107,7 +107,7 @@ html_sidebars = {
 }
 
 rst_epilog = """
-.. _jsLingui: https://github.com/lingui/js-lingui
+.. _LinguiJS: https://github.com/lingui/js-lingui
 .. _CLDR Plurals: http://cldr.unicode.org/index/cldr-spec/plural-rules
 .. _CLDR Plural Rules: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 """
@@ -115,7 +115,7 @@ rst_epilog = """
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'jsLinguidoc'
+htmlhelp_basename = 'LinguiJSDoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -142,7 +142,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'jsLingui.tex', u'jsLingui Documentation',
+    (master_doc, 'LinguiJS.tex', u'LinguiJS Documentation',
      u'Tomáš Ehrlich', 'manual'),
 ]
 
@@ -152,7 +152,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'jslingui', u'jsLingui Documentation',
+    (master_doc, 'LinguiJS', u'LinguiJS Documentation',
      [author], 1)
 ]
 
@@ -163,7 +163,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'jsLingui', u'jsLingui Documentation',
-     author, 'jsLingui', 'One line description of project.',
+    (master_doc, 'LinguiJS', u'LinguiJS Documentation',
+     author, 'LinguiJS', 'One line description of project.',
      'Miscellaneous'),
 ]

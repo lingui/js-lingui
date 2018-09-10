@@ -33,6 +33,11 @@ export default function command(
     process.env.BABEL_ENV = "development"
   }
 
+  // We need macros to keep imports, so extract-messages plugin know what componets
+  // to collect. Users usually use both BABEN_ENV and NODE_ENV, so it's probably
+  // save to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
+  process.env.LINGUI_EXTRACT = "1"
+
   const catalog = configureCatalog(config)
   const pseudoLocale = config.pseudoLocale
   if (pseudoLocale) {

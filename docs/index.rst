@@ -1,5 +1,6 @@
+******************************************************
 LinguiJS - Seamless internationalization in Javascript
-======================================================
+******************************************************
 
 🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
 
@@ -18,7 +19,7 @@ LinguiJS - Seamless internationalization in Javascript
    :target: https://github.com/lingui/js-lingui/
 
 Key features
-------------
+============
 
 Lingui is an easy yet powerfull internationalization framework for global projects.
 
@@ -58,13 +59,14 @@ Compatible with react-intl
    Low-level React API is very similar to react-intl
    and the message format is the same. It's easy to migrate existing project.
 
-.. figure:: _static/pitch_messages.png
+Quick overview
+==============
 
-   Example with React
+.. literalinclude:: _static/pitch_keys.js
+   :language: jsx
 
-.. figure:: _static/pitch_keys.png
-
-   Example with React using message IDs
+Documentation contents
+======================
 
 .. toctree::
    :maxdepth: 1
@@ -93,6 +95,7 @@ Compatible with react-intl
 
    Core (JavaScript) <ref/core>
    React <ref/react>
+   Macros <ref/macro>
    CLI <ref/cli>
    Configuration <ref/conf>
    Webpack Loader <ref/loader>
@@ -109,7 +112,7 @@ Compatible with react-intl
    :maxdepth: 1
    :caption: Discussion
 
-   Projects using jsLingui <misc/showroom>
+   Projects using LinguiJS <misc/showroom>
    Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
    RFCs and design decisions <rfc/toc>

@@ -1,0 +1,18 @@
+{
+  "The answer is {answer,number,percent}": {
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        13
+      ]
+    ]
+  },
+  "Today is {now,date}": {
+    "origin": [
+      [
+        "src/Usecases/Formats.js",
+        19
+      ]
+    ]
+  }
+}

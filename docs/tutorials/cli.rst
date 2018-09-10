@@ -2,7 +2,7 @@
 .. highlight:: shell
 
 *************************
-Working with jsLingui CLI
+Working with LinguiJS CLI
 *************************
 
 ``@lingui/cli`` provides the ``lingui`` command for extracting, merging and
@@ -10,22 +10,22 @@ compiling message catalogs::
 
    npm install --global @lingui/cli
 
- Install also ``babel-core` package depending on Babel version you use:
+Install also ``babel-core`` package depending on Babel version you use:
 
-   .. code-block:: shell
+.. code-block:: shell
 
-      # Babel 6.x
-      npm install --save-dev babel-core@6
+   # Babel 6.x
+   npm install --save-dev babel-core@6
 
-      # Babel 7.x
-      npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
+   # Babel 7.x
+   npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
 
 Add a new locale
 ================
 
 First, we need to add all the locales we want to translate our application into.
-:cli:`add-locale` command creates a new directory in the ``locale`` directory
-and also checks if 'locale' exists::
+:cli:`add-locale` command checks if such locale exists and creates a new directory in
+the ``locale`` directory::
 
    lingui add-locale en cs
 
@@ -39,7 +39,7 @@ Example output::
 Extracting messages
 ===================
 
-We're going to use an app we built in a previous tutorial. The :cli:`extract`
+We're going to use an app we built in a `React tutorial <./react>`_. The :cli:`extract`
 command looks for messages in the source files and extracts them::
 
    lingui extract
@@ -123,7 +123,7 @@ plural rules to a production ready catalog::
    Compiling message catalogs…
    Done!
 
-The ``locale`` dir now contains the source catalogs (``messages.json``) and
+The ``locale`` directory now contains the source catalogs (``messages.json``) and
 the compiled ones (``messages.js``).
 
 Cleaning up obsolete messages
@@ -194,7 +194,7 @@ set :conf:`sourceLocale`. You shouldn't use this config if you're using custom
 IDs (e.g: ``Component.title``).
 
 Pseudolocalization
-=========================
+==================
 
 There is built in support for `pseudolocalization <https://en.wikipedia.org/wiki/Pseudolocalization>`. 
 Pseudolocalization is a method for testing the internationalization aspects 
@@ -222,6 +222,8 @@ The pseudolocalization is automatically created from default messages.
 It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
 
 How to switch your browser into specified pseudoLocale
+------------------------------------------------------
+
 We can use browsers settings or extensions. Extensions allow to use any locale.
 Browsers are usually limited into valid language tags (BCP 47). 
 In that case, the locale for pseudolocalization has to be standard locale,
@@ -250,6 +252,6 @@ commands to your build process.
 Further reading
 ===============
 
-That's it! Checkout `CLI reference <../ref/lingui-cli>`_ documentation for more
-info about ``lingui`` commands or `configuration reference <../ref/lingui-conf>`_
+That's it! Checkout `CLI reference <../ref/cli>`_ documentation for more
+info about ``lingui`` commands or `configuration reference <../ref/conf>`_
 for info about configuration parameters.

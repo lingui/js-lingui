@@ -1,18 +1,19 @@
 import * as React from "react"
 
-import { I18nProvider, Trans, i18nMark } from "@lingui/react"
+import { I18nProvider } from "@lingui/react"
+import { t, Trans } from "@lingui/macro"
+
 import NeverUpdate from "./Usecases/NeverUpdate"
 import Children from "./Usecases/Children"
 import ElementAttributes from "./Usecases/ElementAttributes"
 import Formats from "./Usecases/Formats"
 
 const languages = {
-  en: i18nMark("English"),
-  cs: i18nMark("Czech"),
-  fr: i18nMark("French")
+  en: `English`,
+  cs: `Česky`
 }
 
-class App extends React.Component {
+export default class App extends React.Component {
   state = {
     language: "en",
     catalogs: {}
@@ -20,7 +21,7 @@ class App extends React.Component {
 
   loadLanguage = async language => {
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    const catalogs = await import(`./locale/${language}/messages.json`)
+    const catalogs = await import(`@lingui/loader!./locale/${language}/messages.po`)
 
     this.setState(state => ({
       catalogs: {
@@ -44,29 +45,25 @@ class App extends React.Component {
   }
 
   render() {
-    const { language, catalogs, languageData } = this.state
+    const { language, catalogs } = this.state
 
     if (!catalogs[language]) return null
 
     return (
       <div>
-        <I18nProvider
-          language={language}
-          catalogs={catalogs}
-          languageData={languageData}
-        >
+        <I18nProvider language={language} catalogs={catalogs}>
           <ul>
             {Object.keys(languages).map(language => (
               <li key={language}>
                 <a onClick={() => this.setState({ language })}>
-                  <Trans id={languages[language]} />
+                  {languages[language]}
                 </a>
               </li>
             ))}
           </ul>
 
           <h2>
-            <Trans>Translation of children</Trans>
+            <Trans>Translations with rich-text</Trans>
           </h2>
           <Children />
 
@@ -92,5 +89,3 @@ class App extends React.Component {
     )
   }
 }
-
-export default App

@@ -9,13 +9,13 @@ component*.
 
 .. hint::
 
-   **TL;DR:** Optimized components are handled correctly in jsLingui by default.
+   **TL;DR:** Optimized components are handled correctly in LinguiJS by default.
    Read this document if you want to understand how things work under the hood.
 
 React components can be optimized to skip updates implementing
 ``shouldComponentUpdate``. Based on change of props and state, component
 can decide to continue re-rendering or skip the update completely.
-However, jsLingui reads translations from context and there're two cases
+However, LinguiJS reads translations from context and there're two cases
 which must be handled to make i18n related updates reliable.
 
 The two cases to handle are:
@@ -62,11 +62,11 @@ low-level i18n API. Common usecase is translation of attributes:
 .. code-block:: jsx
 
    import * as React from 'react'
-   import { Trans } from 'lingui-react'
+   import { t, Trans } from '@lingui/macro'
 
    class HeaderLink extends React.PureComponent {
       render () {
-         return <a title={i18n.t`Title`}><Trans>Header</Trans></a>
+         return <a title={i18n._(t`Title`)}><Trans>Header</Trans></a>
       }
    }
 
@@ -109,7 +109,7 @@ you can disable it by passing ``withHash = false`` option to HOC:
 Summary
 =======
 
-jsLingui handles updates in and for Optimized components in most cases. If you
+LinguiJS handles updates in and for Optimized components in most cases. If you
 want to disable this behavior, you can pass either ``update = false``
 or ``withHash = false`` to :js:func:`withI18n` HOC. 
 

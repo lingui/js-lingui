@@ -33,7 +33,7 @@ New package name                      Previous package name
 Default message catalog format
 ------------------------------
 
-jsLingui used comprehensive ``lingui`` format which contains additional info
+LinguiJS used comprehensive ``lingui`` format which contains additional info
 like location of message in source and default translation (if any). Since most
 3rd party tools work with simple JSON only, the default format will be
 ``minimal``.
@@ -68,7 +68,7 @@ that was a size of ``unpackCatalog`` function. ``lingui compile`` now produce
 ``development`` prop of ``I18nProvider`` is deprecated
 ------------------------------------------------------
 
-jsLingui doesn't include message parser in production bundle, because messages
+LinguiJS doesn't include message parser in production bundle, because messages
 are compiled to functions during build. However, in development it's convenient
 to see parsed and formatted messages right away without need to run
 ``lingui extract`` and ``lingui compile`` everytime we add new text to an app.

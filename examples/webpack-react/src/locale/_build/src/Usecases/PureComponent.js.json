@@ -1,0 +1,14 @@
+{
+  "The value is: {value}": {
+    "origin": [
+      [
+        "src/Usecases/PureComponent.js",
+        38
+      ],
+      [
+        "src/Usecases/PureComponent.js",
+        50
+      ]
+    ]
+  }
+}

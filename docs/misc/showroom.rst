@@ -1,4 +1,4 @@
-Projects using jsLingui
+Projects using LinguiJS
 =======================
 
 Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`_ to list your project here.

@@ -233,6 +233,32 @@ describe("I18n", function() {
     ).toEqual("Missing Fred")
   })
 
+  it("._ should accept message descriptor", function() {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}"
+    }
+
+    const i18n = setupI18n({
+      language: "fr",
+      catalogs: { fr: { messages } }
+    })
+
+    expect(i18n._({ id: "Hello" })).toEqual("Salut")
+    expect(
+      i18n._({ id: "My name is {name}", values: { name: "Fred" } })
+    ).toEqual("Je m'appelle Fred")
+
+    // Untranslated message
+    expect(
+      i18n._({
+        id: "Missing with default",
+        values: { name: "Fred" },
+        defaults: "Missing {name}"
+      })
+    ).toEqual("Missing Fred")
+  })
+
   it("._ should translate message from variable", function() {
     const messages = {
       Hello: "Salut"

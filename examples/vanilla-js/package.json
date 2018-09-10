@@ -1,0 +1,38 @@
+{
+  "name": "vanilla-js",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "scripts": {
+    "test": "lingui compile --strict; jest src"
+  },
+  "dependencies": {
+    "@lingui/core": "latest",
+    "@lingui/react": "latest",
+    "babel-polyfill": "^6.26.0"
+  },
+  "devDependencies": {
+    "@lingui/cli": "latest",
+    "babel-jest": "^23.4.0",
+    "babel-plugin-macros": "^2.3.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.4.1"
+  },
+  "lingui": {
+    "format": "po",
+    "localeDir": "./src/locale",
+    "srcPathDirs": [
+      "./src"
+    ],
+    "sourceLocale": "en"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "../../scripts/jest/env.js"
+  }
+}

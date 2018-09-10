@@ -1,25 +1,25 @@
-import { Trans } from "@lingui/react"
+import { t, plural, Trans } from "@lingui/macro"
 
 ;<Trans>Hi, my name is {name}</Trans>
-;<span title={i18n.t`Title`} />
+;<span title={i18n._(t`Title`)} />
 ;<span
-  title={i18n.plural({
+  title={i18n._(plural({
     value: count,
     one: "# book",
     other: "# books"
-  })}
+  }))}
 />
 
-const a = i18n.t`Title`
-i18n.t`Title`
+const a = i18n._(t`Title`)
+i18n._(t`Title`)
 
-const p = i18n.plural({
+const p = i18n._(plural({
   value: count,
   one: "# book",
   other: "# books"
-})
-i18n.plural({
+}))
+i18n._(plural({
   value: count,
   one: "# book",
   other: "# books"
-})
+}))

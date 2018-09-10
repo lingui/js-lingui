@@ -16,6 +16,10 @@ aliases:
       command: node scripts/test.js --skip-build
       environment:
         NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
+  - &tests-integration
+      command: node ./scripts/integration.js
+      environment:
+        NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
 jobs:
   build:
@@ -67,6 +71,52 @@ jobs:
       - run: *yarn-install
       - run: *yarn-install-tools
       - run: *tests
+
+  integration-vanilla-js:
+    docker:
+      - image: circleci/node:latest
+
+    steps:
+      - checkout
+      - attach-workspace: *attach-workspace
+      - restore-cache: *restore-cache
+      - run: *yarn-install
+      - run: *yarn-install-tools
+
+      - restore-cache:
+          key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
+      - run: cd examples/vanilla-js; yarn
+      - save-cache:
+          key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
+          paths:
+            - examples/vanilla-js/node_modules
+
+      - run: *tests-integration
+      - run: chmod +x examples/vanilla-js/node_modules/.bin/lingui
+      - run: cd examples/vanilla-js; yarn test
+
+  integration-webpack-react:
+    docker:
+    - image: circleci/node:latest
+
+    steps:
+    - checkout
+    - attach-workspace: *attach-workspace
+    - restore-cache: *restore-cache
+    - run: *yarn-install
+    - run: *yarn-install-tools
+
+    - restore-cache:
+        key: node-modules-webpack-react-{{ checksum "examples/webpack-react/yarn.lock" }}
+    - run: cd examples/webpack-react; yarn
+    - save-cache:
+        key: node-modules-webpack-react-{{ checksum "examples/webpack-react/yarn.lock" }}
+        paths:
+          - examples/webpack-react/node_modules
+
+    - run: *tests-integration
+    - run: chmod +x examples/webpack-react/node_modules/.bin/lingui
+    - run: cd examples/webpack-react; yarn test
 
   publish:
     docker:
@@ -140,6 +190,12 @@ workflows:
       - test-node-8:
           requires:
             - build
+      - integration-vanilla-js:
+          requires:
+          - build
+      - integration-webpack-react:
+          requires:
+          - build
 
 # Disable automatic publish, because NPM requires OTP token
 #      - publish:

@@ -11,11 +11,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.json$/,
-        loader: "@lingui/loader",
-        type: "javascript/auto"
-      },
-      {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "babel-loader"

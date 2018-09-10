@@ -2,7 +2,7 @@
 Migration guide from 0.x to 1.x
 ********************************
 
-Even though only a few projects use jsLingui_ at the moment, the purpose of
+Even though only a few projects use LinguiJS_ at the moment, the purpose of
 this guide is to setup a high-quality migration path for future major versions.
 
 Newline normalization in Babel plugins

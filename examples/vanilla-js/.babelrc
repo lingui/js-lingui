@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "env"
+  ],
+  "plugins": [
+    "macros",
+    "transform-object-rest-spread"
+  ]
+}

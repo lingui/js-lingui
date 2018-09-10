@@ -6,7 +6,7 @@
 
 > Babel preset for all Lingui plugins required in React apps (for vanilla JS apps see [@lingui/babel-preset-js](https://www.npmjs.com/package/@lingui/babel-preset-js)).
 
-`@lingui/babel-preset-react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-preset-react` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -46,8 +46,8 @@ require("@babel/core").transform("code", {
 [MIT][License]
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.github.io/js-lingui/
+[LinguiJS]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.js.org/
 [Package]: https://www.npmjs.com/package/@lingui/babel-preset-react
 [Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/babel-preset-react.svg
 [Badge-Version]: https://img.shields.io/npm/v/@lingui/babel-preset-react.svg 

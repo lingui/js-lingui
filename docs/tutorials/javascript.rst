@@ -6,16 +6,16 @@ Tutorial - Internationalization of JavaScript apps
 
 .. warning:: This is a draft of tutorial. Feel free to send a PR if you want to contribute.
 
-In this tutorial, we'll learn how to use jsLingui's internationalization features that
+In this tutorial, we'll learn how to use LinguiJS's internationalization features that
 do not depend on React. We'll take a minimalist approach and cover the main functions
 from the ``@lingui/core`` package.
 
-Installing jsLingui
+Installing LinguiJS
 ========================
 
-jsLingui_ isn't just a package. It's a set of tools which helps you to
+LinguiJS_ isn't just a package. It's a set of tools which helps you to
 internationalize. You can pick whichever tool you want to use in your project.
-We're trying to use most of them to show the full power of jsLingui.
+We're trying to use most of them to show the full power of LinguiJS.
 
 Let's start with the three major packages:
 
@@ -25,9 +25,9 @@ Let's start with the three major packages:
 ``@lingui/core``
    The core library responsible for translation and handling of message catalogs
 
-``@lingui/babel-preset-js``
-   Transforms messages wrapped in tagged template literals from ``@lingui/core`` to ICU
-   MessageFormat and validates them
+``@lingui/macro``
+   Transforms messages wrapped in tagged template literals to ICU
+   MessageFormat and validates them.
 
 1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
    project type and install all required packages automatically. Feel free to run
@@ -47,22 +47,25 @@ Let's start with the three major packages:
 
    .. note::
 
-      Under the hood it installs ``@lingui/babel-preset-js`` as a development
-      dependency and ``@lingui/core`` as a runtime dependency:
+      Under the hood it installs ``babel-plugin-macros`` and ``@lingui/macro`` as
+      a development dependency and ``@lingui/core`` as a runtime dependency:
 
       .. code-block:: shell
 
          npm install --save @lingui/core
-         npm install --save-dev @lingui/babel-preset-js
+         npm install --save-dev babel-plugin-macros @lingui/macro
 
-2. Add ``@lingui/babel-preset-js`` preset to Babel config (e.g: ``.babelrc``):
+2. Add ``macro`` plugin to Babel config (e.g: ``.babelrc``):
 
    .. code-block:: json
 
       {
         "presets": [
           "env",
-          "@lingui/babel-preset-js"
+          "react",
+        ],
+        "plugins": [
+          "macro"
         ]
       }
 
@@ -104,58 +107,59 @@ First we need to setup the i18n object, which is pretty simple:
 Localizing your app
 ===================
 
-Once that is done, we can go ahead and use it! Wrap you text in i18n.t template literal tag so it's translated into active language:
+Once that is done, we can go ahead and use it! Wrap you text in :jsmacro:`t` macro
+and pass it to :js:meth:`i18n._` method:
 
 .. code-block:: js
 
-  i18n.t`Hello World!`
-  // becomes "Salut le monde!"
+   import { t } from "@lingui/macro"
 
-  const name = "Fred"
-  i18n.t`My name is ${ name }`
-  // becomes "Je m'appelle Fred"
+   i18n._(t`Hello World!`)
+   // becomes "Salut le monde!"
 
-
+   const name = "Fred"
+   i18n._(t`My name is ${ name }`)
+   // becomes "Je m'appelle Fred"
 
 Plurals and selections are possible using plural and select methods:
 
 .. code-block:: js
 
-  const count = 42
+   import { plural } from "@lingui/macro"
 
-  i18n.plural({
-    value: count,
-    one: "# book",
-    other: "# books"
-  })
-  // becomes "42 livres"
+   const count = 42
 
+   i18n._(plural({
+     value: count,
+     one: "# book",
+     other: "# books"
+   }))
+   // becomes "42 livres"
 
 It's also possible to nest message formats. Each message format method in i18n has a standalone companion, which only returns message without performing the translation:
 
 .. code-block:: js
 
-  // use i18n.select here, to translate message format
-  i18n.select({
-    value: gender,
-    offset: 1,
-    // plural, instead of i18n.plural
-    female: plural({
-      value: numOfGuests,
-      offset: 1,
-      // t, instead of i18n.t
-      0: t`${host} does not give a party.`,
-      1: t`${host} invites ${guest} to her party.`,
-      2: t`${host} invites ${guest} and one other person to her party.`,
-      other: t`${host} invites ${guest} and # other people to her party.`
-    }),
-    male: plural({...}), 
-    other: plural({...}), 
-  })
+   import { t, select, plural } from "@lingui/macro"
+
+   i18n._(select({
+     value: gender,
+     offset: 1,
+     female: plural({
+       value: numOfGuests,
+       offset: 1,
+       0: t`${host} does not give a party.`,
+       1: t`${host} invites ${guest} to her party.`,
+       2: t`${host} invites ${guest} and one other person to her party.`,
+       other: t`${host} invites ${guest} and # other people to her party.`
+     }),
+     male: plural({...}),
+     other: plural({...}),
+   }))
 
 
 Further reading
 ===============
 
-- `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
+- `@lingui/cli reference documentation <../ref/cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

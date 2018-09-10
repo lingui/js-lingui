@@ -12,6 +12,18 @@ from sphinx.locale import l_
 from sphinx.util.docfields import TypedField
 
 
+class jsxmacro(nodes.Inline, nodes.TextElement):
+    pass
+
+
+def visit_react_macro_html(self, node):
+    self.body.append('&lt;')
+
+
+def depart_react_macro_html(self, node):
+    self.body.append('&gt;')
+
+
 class react_component(nodes.Inline, nodes.TextElement):
     pass
 
@@ -23,6 +35,18 @@ def visit_react_component_html(self, node):
 def depart_react_component_html(self, node):
     self.body.append('&gt;')
 
+    
+class jsmacro(nodes.Inline, nodes.TextElement):
+    pass
+
+
+def visit_jsmacro_html(self, node):
+    pass
+
+
+def depart_jsmacro_html(self, node):
+    pass
+
 
 def parse_lingui_cli_node(env, sig, signode):
     command = sig.split(' ')[0]
@@ -33,6 +57,22 @@ def parse_lingui_cli_node(env, sig, signode):
 
 
 def setup(app):
+    app.add_object_type(
+        directivename='jsxmacro',
+        rolename='jsxmacro',
+        indextemplate="pair: %s; jsxmacro",
+        ref_nodeclass=jsxmacro,
+        objname='React macro',
+        doc_field_types=[
+            TypedField('props', label=l_('Props'),
+                       names=('prop',),
+                       typerolename='jsxmacro',
+                       typenames=('proptype', 'type')),
+        ]
+    )
+    app.add_node(jsxmacro,
+                 html=(visit_react_macro_html, depart_react_macro_html))
+
     app.add_object_type(
         directivename='component',
         rolename='component',
@@ -48,6 +88,15 @@ def setup(app):
     )
     app.add_node(react_component,
                  html=(visit_react_component_html, depart_react_component_html))
+    app.add_object_type(
+        directivename='jsmacro',
+        rolename='jsmacro',
+        indextemplate="pair: %s; jsmacro",
+        ref_nodeclass=jsmacro,
+        objname='JS Macro'
+    )
+    app.add_node(jsmacro,
+                 html=(visit_jsmacro_html, depart_jsmacro_html))
     app.add_crossref_type('config', 'conf')
     app.add_crossref_type('icu', 'icu')
 

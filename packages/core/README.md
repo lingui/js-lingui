@@ -6,7 +6,7 @@
 
 > Internationalization API for JavaScript apps
 
-`@lingui/core` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/core` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -24,10 +24,10 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 This package is licensed under [MIT][License] license.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.github.io/js-lingui/
-[Tutorial]: https://lingui.github.io/js-lingui/tutorials/js.html
-[Reference]: https://lingui.github.io/js-lingui/ref/core.html
+[LinguiJS]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.js.org/
+[Tutorial]: https://lingui.js.org/tutorials/js.html
+[Reference]: https://lingui.js.org/ref/core.html
 [Package]: https://www.npmjs.com/package/@lingui/core
 [Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/core.svg
 [Badge-Version]: https://img.shields.io/npm/v/@lingui/core.svg 
