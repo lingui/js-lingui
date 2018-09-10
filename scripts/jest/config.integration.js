@@ -33,7 +33,7 @@ module.exports = Object.assign({}, sourceConfig, {
   roots: ["<rootDir>/packages/", "<rootDir>/examples/"],
   testPathIgnorePatterns: [
     "/node_modules/",
-    "webpack-react-babel-7",
+    "webpack-react",
     "vanilla-js"
   ],
   // Redirect imports to the compiled bundles
