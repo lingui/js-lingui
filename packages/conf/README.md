@@ -9,7 +9,7 @@
 
 **⚠️ Internal package: You probably don't need this.**
 
-`@lingui/conf` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/conf` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 Package finds nearest package.json starting from current directory, reads `lingui` configuration, provides defaults for all options and `<rootDir>` with current working directory.
 
@@ -31,9 +31,9 @@ See the [reference][Reference] documenation of `lingui-cli` for all options.
 This package is licensed under [MIT][License] license.
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.github.io/js-lingui/
-[Reference]: https://lingui.github.io/js-lingui/ref/conf.html
+[LinguiJS]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.js.org/
+[Reference]: https://lingui.js.org/ref/conf.html
 [Package]: https://www.npmjs.com/package/@lingui/conf
 [Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/conf.svg
 [Badge-Version]: https://img.shields.io/npm/v/@lingui/conf.svg 

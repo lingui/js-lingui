@@ -6,7 +6,7 @@
 
 > Babel plugin which transforms content of components from [lingui-react](https://www.npmjs.com/package/lingui-react) to ICU MessageFormat.
 
-`@lingui/babel-plugin-transform-react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-transform-react` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -46,8 +46,8 @@ require("@babel/core").transform("code", {
 [MIT][License]
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.github.io/js-lingui/
+[LinguiJS]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.js.org/
 [Package]: https://www.npmjs.com/package/@lingui/babel-plugin-transform-react
 [Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-transform-react.svg
 [Badge-Version]: https://img.shields.io/npm/v/@lingui/babel-plugin-transform-react.svg 

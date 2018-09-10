@@ -6,7 +6,7 @@
 
 > React components for internationalization
 
-`@lingui/react` is part of [js-lingui][jsLingui]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/react` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -24,10 +24,10 @@ See the [tutorial][Tutorial] or [reference][Reference] documenation.
 [MIT][License]
 
 [License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[jsLingui]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.github.io/js-lingui/
-[Tutorial]: https://lingui.github.io/js-lingui/tutorials/react.html
-[Reference]: https://lingui.github.io/js-lingui/ref/react.html
+[LinguiJS]: https://github.com/lingui/js-lingui
+[Documentation]: https://lingui.js.org/
+[Tutorial]: https://lingui.js.org/tutorials/react.html
+[Reference]: https://lingui.js.org/ref/react.html
 [Package]: https://www.npmjs.com/package/@lingui/react
 [Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/react.svg
 [Badge-Version]: https://img.shields.io/npm/v/@lingui/react.svg 
