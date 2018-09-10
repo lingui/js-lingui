@@ -1,5 +1,33 @@
 # Change Log
 
+<a name="2.7.0"></a>
+## [2.7.0](https://github.com/lingui/js-lingui/compare/v2.6.1...v2.7.0) (2018-09-10)
+
+🔥 Babel Macros 🎣 are finally released! After few weeks of fiddling with API, i18n macros
+are finally out without a breaking release. This is the first part of 
+[RFC-001](https://lingui.js.org/rfc/001_macros_message_descriptors.html), final form
+be delivered in next release.
+
+**Important:** Macros are completely optional and Babel plugins will work until v3.
+It's not mandatory to migrate to macro, but recommended.
+
+### New Features
+
+* New package [`@lingui/macro`] published ([#318](https://github.com/lingui/js-lingui/issues/318)).
+  Big thanks to [Matt Labrum](https://github.com/mlabrum) for initial implementation.
+* [Pseudolocalization](https://lingui.js.org/tutorials/cli.html#pseudolocalization)
+  ([#309](https://github.com/lingui/js-lingui/issues/309)).
+  Thanks to [Martin Cerny](https://github.com/MartinCerny-awin).
+* Extract description of messages ([#197](https://github.com/lingui/js-lingui/issues/197)).
+* Add `i18n.date` and `i18n.number` methods ([#299](https://github.com/lingui/js-lingui/issues/299)).
+
+### Bug Fixes
+
+* CLI: how help for unrecognized commands ([#308](https://github.com/lingui/js-lingui/issues/308)).
+  Thanks to [An Nguyen](https://github.com/dephiros).
+* Fix Flow types ([#306](https://github.com/lingui/js-lingui/issues/306)).
+
+
 <a name="2.6.1"></a>
 ## [2.6.1](https://github.com/lingui/js-lingui/compare/v2.6.0...v2.6.1) (2018-09-03)
 
