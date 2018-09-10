@@ -91,7 +91,7 @@ Trans
 
 This is the main and most-used component for translation. It supports
 variables and components inside messages. Usage of this component depends on
-whether or not you're using jsLingui Babel plugins.
+whether or not you're using LinguiJS Babel plugins.
 
 Each message is identified by **message ID**.
 ``babel-plugin-lingui-transform-react`` automatically generates message ID from
@@ -443,11 +443,12 @@ Using lambda components:
 
    import React from "react"
    import { I18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
 
    function LogoutIcon() {
       return (
          <I18n>
-            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />}
+            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />}
          </I18n>
       )
    }
@@ -458,9 +459,10 @@ Using components and elements:
 
    import React from "react"
    import { I18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
 
    function TranslatedComponent({ i18n }) {
-      return <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />
+      return <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
    }
 
    function RenderingElements() {
@@ -469,10 +471,6 @@ Using components and elements:
             <TranslatedComponent />
          </I18n>
       )
-   }
-
-   function RenderingComponents() {
-      return <I18n>{TranslatedComponent}</I18n>
    }
 
 
@@ -494,9 +492,10 @@ API for translation of JSX props:
 
    import React from "react"
    import { withI18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
 
    const LogoutIcon = withI18n()(({ i18n }) => (
-     <Icon name="turn-off" ariaLabel={i18n.t`Log out`} />
+     <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
    ))
 
 .. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.

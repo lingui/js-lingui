@@ -3,7 +3,7 @@ Comparison with react-intl
 **************************
 
 `react-intl`_ is definitely the most popural and widely-used i18n library for React.
-`jsLingui`_ is in many ways very similar: both libraries use the same syntax for
+`LinguiJS`_ is in many ways very similar: both libraries use the same syntax for
 (messages ICU MessageFormat) and they also have very similar API.
 
 Here's an example from `react-intl`_ docs:
@@ -19,7 +19,7 @@ Here's an example from `react-intl`_ docs:
       values={{name: <b>{name}</b>, unreadCount}}
     />
 
-Looking at the low-level API of `jsLingui`_, there isn't much difference:
+Looking at the low-level API of `LinguiJS`_, there isn't much difference:
 
 .. code-block:: jsx
 
@@ -84,7 +84,7 @@ but even this solution is sub-optimal, because the translator has to translate t
 
 This is very fragile and error prone because phrases usually can't be translated word by word.
 
-`jsLingui`_ extends ICU MessageFormat with tags. The example above would be:
+`LinguiJS`_ extends ICU MessageFormat with tags. The example above would be:
 
 .. code-block:: jsx
 
@@ -100,10 +100,11 @@ and the translator gets the message in one piece: ``Read the <0>documentation</0
 
 However, let's go yet another level deeper.
 
-Plugin for component-based message syntax
+Macros for component-based message syntax
 =========================================
 
-`jsLingui`_ provides ``@lingui/babel-preset-react`` which automatically generates a message syntax.
+`LinguiJS`_ provides macros ``@lingui/macro`` which automatically generates a message
+syntax.
 
 Let's go back to the previous example:
 
@@ -113,8 +114,7 @@ Let's go back to the previous example:
       Read the <a href="/docs>documentation</a>.
    </p>
 
-When using the Babel plugin, all we need to do is to wrap the message in a
-:component:`Trans` component:
+All we need to do is to wrap the message in a :jsxmacro:`Trans` macro:
 
 .. code-block:: html
 
@@ -122,17 +122,11 @@ When using the Babel plugin, all we need to do is to wrap the message in a
       <Trans id="msg.docs">Read the <a href="/docs>documentation</a>.</Trans>
    </p>
 
-The Babel plugin then parses the :component:`Trans` component's children and generates
+The macro then parses the :jsxmacro:`Trans` macro childrens and generates
 ``defaults`` and ``components`` props automaticaly in the form described in the previous section.
 
-.. note::
-
-   The upcoming `jsLingui`_ 3.0 will be even easier to use, as it uses Babel macros
-   instead of plugins, which are much easier to use and work with Create React App
-   without ejecting.
-
 This is extremly useful when adding i18n to an existing project. All we need to do is to wrap
-all messages in :component:`Trans` component.
+all messages in :jsxmacro:`Trans` macro.
 
 Let's compare it with `react-intl`_ solution to see the difference:
 
@@ -155,7 +149,7 @@ Let's compare it with `react-intl`_ solution to see the difference:
 .. note::
 
    It' also worth mentioning that the message IDs are completely optional.
-   `jsLingui`_ is unopinionated in this way and perfectly works with messages as IDs as
+   `LinguiJS`_ is unopinionated in this way and perfectly works with messages as IDs as
    well:
 
    .. code-block:: html
@@ -185,8 +179,8 @@ Let's take a look at the original example from `react-intl`_ docs:
       values={{name: <b>{name}</b>, unreadCount}}
     />
 
-Using `jsLingui`_ plugins, we could combine :component:`Trans`, :component:`Plural` and
-:component:`NumberFormat` components:
+Using `LinguiJS`_ macros, we could combine :jsxmacro:`Trans`, :jsxmacro:`Plural` and
+:jsxmacro:`NumberFormat` components:
 
 .. code-block:: jsx
 
@@ -210,7 +204,7 @@ and the final message would be very similar:
       values={{name, unreadCount}}
     />
 
-The only difference is the `<0>` tag included in the message, as `jsLingui`_ can handle
+The only difference is the `<0>` tag included in the message, as `LinguiJS`_ can handle
 components in both variables and the message itself.
 
 .. note::
@@ -235,34 +229,28 @@ Text attributes
 
 Components can't be used in some contexts, e.g. to translate text attributes.
 Whereas `react-intl`_ provides JS methods (e.g: ``formatMessage``) which return plain
-strings, `jsLingui`_ offers its core library for such translations. And it also provides
-plugins for these usecases!
+strings, `LinguiJS`_ offers its core library for such translations. And it also provides
+macros for these usecases!
 
 Here are a few short examples:
 
 .. code-block:: jsx
 
-   <a title={i18n.t`The title of ${name}`}>{name}</a>
-   <img alt={i18n.plural({ value: count, one: "flag", other: "flags" })} src="..." />
-
-These examples are transformed into low-level API calls:
-
-.. code-block:: jsx
-
-   <a title={i18n._("The title of {name}", { name })>{name}</a>
-   <img alt={i18n._("{count, plural, one {flag} other {flags}}", { count } )} src="..." />
+   <a title={i18n._(t`The title of ${name}`)}>{name}</a>
+   <img alt={i18n._(plural({ value: count, one: "flag", other: "flags" }))} src="..." />
 
 Custom IDs are supported as well:
 
 .. code-block:: jsx
 
-   <a title={i18n.t("link.title")`The title of ${name}`}>{name}</a>
-   <img alt={i18n.plural({ id: "img.alt", value: count, one: "flag", other: "flags" })} src="..." />
+   <a title={i18n._(t("link.title")`The title of ${name}`}>{name}</a>
+   <img alt={i18n._(plural("img.alt", { value: count, one: "flag", other: "flags" }))} src="..." />
 
 .. note::
 
    To inject ``i18n`` object into props, you need to use HOC :js:meth:`withI18n`. It's
-   very similar to ``injectIntl`` from `react-intl`_.
+   very similar to ``injectIntl`` from `react-intl`_. Alternatively, you can also use
+   :component:`I18n` render prop component.
 
 External message catalog
 ========================
@@ -273,31 +261,31 @@ to the translator.
 `react-intl`_ comes with the Babel plugin which extracts messages from individual files,
 but it's up to you to merge them into one file which you can send to translators.
 
-`jsLingui`_ provides handy `CLI <../tutorials/cli>`_ which extracts messages and merges
+`LinguiJS`_ provides handy `CLI <../tutorials/cli>`_ which extracts messages and merges
 them with any existing translations. Again, the story doesn't end here.
 
 Compiling messages
 ==================
 
 The biggest and slowest part of i18n libraries are message parsers and formatters.
-`jsLingui`_ compiles messages from MessageFormat syntax into JS functions which only
+`LinguiJS`_ compiles messages from MessageFormat syntax into JS functions which only
 accept values for interpolation (e.g. components, variables, etc). This makes the
 final bundle smaller and makes the library faster. The compiled catalogs are also bundled with locale
 data like plurals, so it's not necessary to load them manually.
 
-Disadvatages of jsLingui
+Disadvatages of LinguiJS
 ========================
 
 `react-intl`_ has been around for some time and it's definitely more popular, more used
 and a lot of production sites are running it. The community is larger and it's much
 easier to find help on StackOverflow and other sites.
 
-`jsLingui`_ is a very new library and the community is very small at the moment. It's
-not tested on many production sites. On the other hand, `jsLingui`_'s testing suite
+`LinguiJS`_ is a very new library and the community is very small at the moment. It's
+not tested on many production sites. On the other hand, `LinguiJS`_'s testing suite
 is very large and all examples are incorporated into the integration testing suite to make sure
 everything is working fine.
 
-Last but not least, `jsLingui`_ is actively maintained. Bugs are fixed regularly and new
+Last but not least, `LinguiJS`_ is actively maintained. Bugs are fixed regularly and new
 features are constantly coming in. Work is currently progressing on
 webpack code splitting, so that only messages related to the code in the chunk are loaded.
 
@@ -307,10 +295,10 @@ Summary
 - both libraries use the same MessageFormat syntax
 - similar API (easy to port from one to the other)
 
-On top of that, `jsLingui`_:
+On top of that, `LinguiJS`_:
 
 - supports rich-text messages
-- provides plugins to simplify writing messages using MessageFormat syntax
+- provides macros to simplify writing messages using MessageFormat syntax
 - provides a CLI for extracting and compiling messages
 - is very small (<5kb gzipped) and fast
 - works also in vanilla JS (without React)
@@ -330,4 +318,4 @@ Do you have any comments or questions? Please join the discussion at
 `issue <https://github.com/lingui/js-lingui/issues/new>`_. All feedback is welcome!
 
 .. _react-intl: https://github.com/yahoo/react-intl
-.. _jsLingui: https://github.com/lingui/js-lingui
+.. _LinguiJS: https://github.com/lingui/js-lingui

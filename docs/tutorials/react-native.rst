@@ -70,13 +70,16 @@ Introducing internationalization
 
 Not surprisingly, this part isn't too different from the :ref:`React tutorial <react-tutorial-label>`.
 
-Let's use the :component:`Trans` component first. Don't forget that we need to wrap our root component with the :component:`I18nProvider` for :component:`Trans` to work correctly.
+Let's use the :jsxmacro:`Trans` macro first. Don't forget that we need to wrap our root
+component with the :component:`I18nProvider` so we can set the active language
+and load catalogs:
 
 Let's translate the screen heading:
 
 .. code-block:: jsx
 
- import { I18nProvider, Trans } from '@lingui/react';
+ import { I18nProvider } from '@lingui/react'
+ import { Trans } from '@lingui/macro'
 
  <I18nProvider language="en">
    <YourRootComponent someProp="someValue" />
@@ -86,27 +89,39 @@ Let's translate the screen heading:
  <Text style={styles.heading}><Trans>Message Inbox</Trans></Text>
 
 
-This was easy. Now, the next step is to translate the ``title`` prop of the :component:`Button` component. But wait a sec, the button expects to receive a ``string``, so we cannot use the :component:`Trans` component here! Also notice that the ``Alert.alert`` call requires a string as well.
+This was easy. Now, the next step is to translate the ``title`` prop of the
+``<Button>`` component. But wait a sec, the button expects to receive a ``string``, so
+we cannot use the :jsxmacro:`Trans` macro here! Also notice that the ``Alert.alert``
+call requires a string as well.
 
-Luckily, there is a simple solution: the ``withI18n`` HOC which gives us an ``i18n`` prop that we can use like this: ``this.props.i18n.t`this will be translated``` and the result of such a call is a string. Let's see how to do this!
-
+Luckily, there is a simple solution: the :component:`I18n` is a render prop component
+which gives us an ``i18n`` prop that we can use like this: ``i18n._(t`this will be translated`)``
+and the result of such a call is a string. Let's see how to do this!
 
 .. hint::
 
   The ``i18n`` object is covered in greater detail in the :ref:`JavaScript tutorial <js-tutorial-label>`.
 
+Under the hood, :component:`I18nProvider` creates an instance of the ``i18n`` object
+automatically and passes it to :component:`Trans` components through React Context.
+The :component:`Trans` components then use the instance to get the translations from it.
+If we cannot use the :component:`Trans` component, we can use the ``I18n`` render prop
+component to get hold of the ``i18n`` object ourselves and get the translations from it.
 
-Under the hood, :component:`I18nProvider` creates an instance of the ``i18n`` object automatically and passes it to :component:`Trans` components through React Context. The :component:`Trans` components then use the instance to get the translations from it. If we cannot use the :component:`Trans` component, we can use the ``withI18n`` HOC to get hold of the ``i18n`` object ourselves and get the translations from it. So, we need to do two things: first, we need to setup the :component:`I18nProvider` and then we can use the ``withI18n`` HOC, as shown in the following simplified example: 
+So, we need to do two things: first, we need to setup the :component:`I18nProvider` and
+then we can use the ``I18n`` render prop component, as shown in the following simplified
+example:
 
 .. code-block:: jsx
 
-  import { I18nProvider, withI18n } from '@lingui/react';
+  import { I18nProvider } from '@lingui/react'
+  import { t, Trans } from '@lingui/macro'
 
   <I18nProvider language="en">
     <YourRootComponent someProp="someValue" />
   </I18nProvider>
 
-  const Inbox = withI18n()(({ markAsRead, i18n }) => {
+  const Inbox = (({ markAsRead, i18n }) => {
     return (
       <View>
         <View>
@@ -114,7 +129,11 @@ Under the hood, :component:`I18nProvider` creates an instance of the ``i18n`` ob
             <Trans>Message Inbox</Trans>
           </Text>
           <Trans>See all unread messages or</Trans>
-          <Button onPress={markAsRead} title={i18n.t`mark messages as read`} />
+          <I18n>
+            {({ i18n }) => (
+              <Button onPress={markAsRead} title={i18n._(t`mark messages as read`)} />
+            )}
+          </I18n>
       </View>
     );
   });
@@ -124,15 +143,24 @@ Under the hood, :component:`I18nProvider` creates an instance of the ``i18n`` ob
 
 .. note::
 
-  The important thing about both the :component:`Trans` (and the other provided components) and ``withI18n`` HOC is that when you change the active language (through the ``language`` prop passed to :component:`I18nProvider`), all the components that show translated text will re-render, making sure the UI shows the correct translations. The two approaches are equivalent in their result.
+  The important thing about both the :component:`Trans` (and the other provided components)
+  and ``withI18n`` HOC is that when you change the active language (through the
+``language`` prop passed to :component:`I18nProvider`), all the components that show
+translated text will re-render, making sure the UI shows the correct translations. The
+two approaches are equivalent in their result.
 
+Internationalization Outside of React Components
+=================================================
 
-i18n Outside of React Components
-================================
+Until now, we have covered the :jsxmacro:`Trans` macro and the :component:`I18n` render
+prop component. Using them will make sure our components are always in sync with the
+currently active language.
 
-Until now, we have covered the :component:`Trans` component and the ``withI18n`` HOC. Using them will make sure our components are always in sync with the currently active language.
-
-However, often you'll need to show localized strings outside of React, for example when you want to show a toast from some business logic code. In that case you'll also need access to the ``i18n`` object, but you don't want to pass it around from some component's props. At this point, we need to turn our attention to the ``@lingui/core`` package, namely the ``setupI18n`` method which returns an ``i18n`` object.
+However, often you'll need to show localized strings outside of React, for example when
+you want to show a toast from some business logic code. In that case you'll also need
+access to the ``i18n`` object, but you don't want to pass it around from some component's
+props. At this point, we need to turn our attention to the ``@lingui/core`` package,
+namely the :js:func:`setupI18n` method which returns an ``i18n`` object.
 
 .. code-block:: jsx
 
@@ -149,7 +177,11 @@ However, often you'll need to show localized strings outside of React, for examp
    },
   });
 
-As explained before, :component:`I18nProvider` creates an instance of the ``i18n`` object automatically and passes it to :component:`Trans` components through React Context. Since we created the ``i18n`` instance by ourselves, we need to pass it to the :component:`I18nProvider` as a prop. This way we tell it not to create a new instance but use the one we provide, like this:
+As explained before, :component:`I18nProvider` creates an instance of the ``i18n`` object
+automatically and passes it to :component:`Trans` components through React Context.
+Since we created the ``i18n`` instance by ourselves, we need to pass it to the
+:component:`I18nProvider` as a prop. This way we tell it not to create a new instance
+but use the one we provide, like this:
 
 .. code-block:: jsx
 
@@ -158,10 +190,15 @@ As explained before, :component:`I18nProvider` creates an instance of the ``i18n
   </I18nProvider>
 
 
-Now we're ready to show correctly translated strings anywhere in our app! Just import the ``i18n`` object into your non-react code and use it, for example like this: ``i18n.t`this will be translated```.
+Now we're ready to show correctly translated strings anywhere in our app! Just import
+the ``i18n`` object into your non-react code and use it, for example like this:
+``i18n._(t`this will be translated`)``.
 
-The last remaining piece of the puzzle is changing the active language. The ``i18n`` object exposes two methods for that: ``i18n.load(catalogs)`` and ``i18n.activate(language)``. Just call the two methods, pass the changed ``i18n`` object and the new active language to the :component:`I18nProvider` and ``js-lingui`` takes care of the rest. It all becomes clear when you take a look at the `final code <https://github.com/vonovak/js-lingui-demo/blob/master/App.js>`_.
-
+The last remaining piece of the puzzle is changing the active language. The ``i18n``
+object exposes two methods for that: ``i18n.load(catalogs)`` and ``i18n.activate(language)``.
+Just call the two methods, pass the changed ``i18n`` object and the new active language
+to the :component:`I18nProvider` and ``js-lingui`` takes care of the rest. It all becomes
+clear when you take a look at the `final code <https://github.com/vonovak/js-lingui-demo/blob/master/App.js>`_.
 
 Rendering of Translations
 =========================
@@ -185,7 +222,9 @@ Alternatively, you may override the default locally on the i18n components, usin
 Nesting Components
 ==================
 
-It is worth mentioning that the :component:`Trans` and :component:`Text` components may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native `handles nested text <https://facebook.github.io/react-native/docs/text#nested-text>`_.
+It is worth mentioning that the :jsxmacro:`Trans` macro and :component:`Text` component
+may be nested, for example to achieve the effect shown in the picture. This is thanks to
+how React Native `handles nested text <https://facebook.github.io/react-native/docs/text#nested-text>`_.
 
 .. image:: rn-component-nesting.png
 
@@ -213,5 +252,5 @@ Further reading
 ===============
 
 - `@lingui/react reference documentation <../ref/react.html>`_
-- `@lingui/cli reference documentation <../ref/lingui-cli.html>`_
+- `@lingui/cli reference documentation <../ref/cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_

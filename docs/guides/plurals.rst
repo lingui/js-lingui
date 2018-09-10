@@ -2,7 +2,7 @@
 Pluralization
 *************
 
-Plurals are essential when dealing with internationalization. jsLingui_
+Plurals are essential when dealing with internationalization. LinguiJS_
 uses `CLDR Plural Rules`_. In general, there're 6 plural forms (taken
 from `CLDR Plurals`_ page):
 
@@ -107,6 +107,6 @@ languages has and then you can use them. Here's the example in Czech:
      other: '# knih'
    })
 
-This make jsLingui_ useful also for unilingual projects, i.e: if you don't
+This make LinguiJS_ useful also for unilingual projects, i.e: if you don't
 translate your app at all. Plurals, number and date formatting are common in
 every language.

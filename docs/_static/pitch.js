@@ -8,7 +8,7 @@ export default function Lingui({ numUsers, name = "You" }) {
       <img src="./logo.png" alt="Logo of Lingui Project" />
 
       <p className="lead">
-        Hello {name}, jsLIngui is a readable, automated, and optimized (5 kb)
+        Hello {name}, LinguiJS is a readable, automated, and optimized (5 kb)
         internationalization for JavaScript.
       </p>
 
