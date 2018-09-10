@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Children should render 1`] = `
+
+<div>
+  <ul>
+    <li class="untranslated">
+      This isn't translated
+    </li>
+    <li class="customId">
+      Nápis
+    </li>
+    <li class="translated">
+      Ahoj světe
+    </li>
+    <li class="variable">
+      Jmenuji se Mononoke
+    </li>
+    <li class="components">
+      Read
+      <a href="/mononoke">
+        more
+      </a>
+      .
+    </li>
+    <li class="plural">
+      Wilma pozvala Fred a dalšího hosta na její oslavu.
+    </li>
+    <li>
+      <p class="render-element">
+        Jmenuji se Mononoke
+      </p>
+      <p class="render-component">
+        Jmenuji se Mononoke
+      </p>
+    </li>
+  </ul>
+</div>
+
+`;
+
+exports[`Children should support nested elements 1`] = `
+
+<li class="components">
+  Read
+  <a href="/mononoke">
+    more
+  </a>
+  .
+</li>
+
+`;

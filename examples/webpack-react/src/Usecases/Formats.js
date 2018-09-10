@@ -1,7 +1,7 @@
 import * as React from "react"
-import { Trans, NumberFormat, DateFormat } from "@lingui/react"
+import { Trans, NumberFormat, DateFormat } from "@lingui/macro"
 
-class Formats extends React.Component {
+export default class Formats extends React.Component {
   render() {
     const answer = 0.42
     const now = new Date("2017-04-05T11:14:00.000Z")
@@ -25,5 +25,3 @@ class Formats extends React.Component {
     )
   }
 }
-
-export default Formats

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Formats should render 1`] = `
+
+<div>
+  <ul>
+    <li>
+      The answer is 42%
+    </li>
+    <li>
+      Today is 4/5/2017
+    </li>
+  </ul>
+</div>
+
+`;

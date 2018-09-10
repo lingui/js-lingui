@@ -42,7 +42,7 @@ describe("Children", function() {
   }
 
   it("should render", function() {
-    expect(mount(<Component language="cs" />).html()).toMatchSnapshot()
+    expect(mount(<Component language="cs" />)).toMatchSnapshot()
   })
 
   it("should render defaults with warning for untranslated", function() {

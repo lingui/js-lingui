@@ -1,7 +1,6 @@
 {
   "private": true,
-  "version": "1.3.4",
-  "name": "lingui-example-webpack-react",
+  "name": "lingui-example-webpack-react-macros",
   "description": "Example usecase of all features using Webpack and React",
   "main": "index.js",
   "author": {
@@ -13,32 +12,50 @@
     "start": "webpack-dev-server --hot",
     "prod": "NODE_ENV=production webpack-dev-server --hot",
     "build": "webpack -p",
-    "stats": "webpack -p --json"
+    "stats": "webpack -p --json",
+    "test": "jest src"
   },
   "dependencies": {
-    "@lingui/core": "^2.5.0",
-    "@lingui/react": "^2.5.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "react": "16.4.2",
-    "react-dom": "16.4.2"
+    "@babel/polyfill": "^7.0.0",
+    "@lingui/core": "latest",
+    "@lingui/react": "latest",
+    "react": "16.5.0",
+    "react-dom": "16.5.0"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "^2.5.0",
-    "@lingui/cli": "^2.5.0",
-    "@lingui/loader": "^2.5.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "webpack": "^4.17.1",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@lingui/cli": "latest",
+    "@lingui/conf": "latest",
+    "@lingui/loader": "latest",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-macros": "^2.4.0",
+    "enzyme-to-json": "^3.3.4",
+    "jest": "^23.5.0",
+    "jest-serializer-html": "^5.0.0",
+    "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.6"
+    "webpack-dev-server": "^3.1.8"
   },
   "lingui": {
-    "localeDir": "./src/locale"
+    "sourceLocale": "en",
+    "localeDir": "./src/locale",
+    "srcPathDirs": ["./src/"],
+    "format": "po"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "../../scripts/jest/env.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer",
+      "jest-serializer-html"
+    ]
   }
 }

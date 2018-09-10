@@ -1,22 +1,24 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/env",
       {
         "modules": false
       }
     ],
-    "react",
+    "@babel/react",
+    "@babel/flow",
     "@lingui/babel-preset-react"
   ],
   "plugins": [
-    "syntax-dynamic-import",
-    "transform-class-properties",
-    "transform-object-rest-spread"
+    "macros",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
   ],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
     }
   }
 }
