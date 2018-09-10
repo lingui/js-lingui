@@ -75,11 +75,16 @@ export default function({ types: t }) {
         const { node } = path
 
         const moduleName = node.source.value
-        if (!Array.includes(["@lingui/react", "@lingui/core"], moduleName))
+        if (
+          !Array.includes(
+            ["@lingui/react", "@lingui/macro", "@lingui/core"],
+            moduleName
+          )
+        )
           return
 
         const importDeclarations = {}
-        if (moduleName === "@lingui/react") {
+        if (moduleName === "@lingui/react" || moduleName === "@lingui/macro") {
           node.specifiers.forEach(specifier => {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })

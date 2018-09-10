@@ -52,6 +52,12 @@ function macro({ references, state, babel }) {
   })
 
   addLinguiReactImports(babel, state, reactImports)
+
+  if (process.env.LINGUI_EXTRACT === "1") {
+    return {
+      keepImports: true
+    }
+  }
 }
 
 function getMacroType(tagName) {
