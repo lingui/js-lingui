@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-09-10 10:12+0200\n"
+"Mime-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: cs\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/Usecases/ElementAttributes.js:28
+msgid "Article"
+msgstr "Článek"
+
+#: src/Usecases/ElementAttributes.js:17
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/App.js:76
+msgid "Formats"
+msgstr "Formáty"
+
+#: src/Usecases/ElementAttributes.js:26
+msgid "Full content of {articleName}"
+msgstr "Celý obsah článku {articleName}"
+
+#: src/Usecases/Children.js:37
+msgid "Hello World"
+msgstr "Ahoj Brno"
+
+#: src/Usecases/Children.js:41
+#: src/Usecases/Children.js:89
+#: src/Usecases/Children.js:92
+msgid "My name is {name}"
+msgstr "Jmenuji se {name}"
+
+#: src/Usecases/Children.js:45
+msgid "Read <0>more</0>."
+msgstr "Více <0>zde</0>."
+
+#: src/Usecases/Formats.js:13
+msgid "The answer is {answer,number,percent}"
+msgstr "Odpověd je {answer,number,percent}"
+
+#: src/Usecases/PureComponent.js:38
+#: src/Usecases/PureComponent.js:50
+msgid "The value is: {value}"
+msgstr "Hodnota je: {value}"
+
+#: src/Usecases/Children.js:29
+msgid "This isn't translated"
+msgstr "Toto není lokalizováno"
+
+#: src/Usecases/Formats.js:19
+msgid "Today is {now,date}"
+msgstr "Dnes je {now,date}"
+
+#: src/App.js:71
+msgid "Translation of element attributes"
+msgstr "Lokalizace attributů"
+
+#: src/App.js:66
+msgid "Translations with rich-text"
+msgstr "Lokalizace textů s formátováním"
+
+#: src/App.js:81
+msgid "Translations wrapped in component which never updates"
+msgstr "Lokalizace uvnitř komponent, které se nikdy neaktualizují"
+
+#: src/Usecases/Children.js:33
+msgid "msg.label"
+msgstr "Nápis"
+
+#: src/Usecases/Children.js:51
+msgid "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}"
+msgstr "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozvala {guest} na její oslavu.} one {{host} pozvala {guest} a dalšího hosta na její oslavu.} few {{host} pozvala {guest} a # další hosty na její oslavu.} other {{host} pozvala {guest} a # dalších hostů na její oslavu.}}} other {{numGuests, plural, offset:1 =0 {{host} nepořádá oslavu.} =1 {{host} pozval {guest} na jeho oslavu.} one {{host} pozval {guest} a dalšího hosta na jeho oslavu.} few {{host} pozval {guest} a # další hosty na jeho oslavu} other {{host} pozval {guest} a # dalších hostů na jeho poslavu.}}}}"

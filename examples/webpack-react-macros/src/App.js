@@ -9,9 +9,8 @@ import ElementAttributes from "./Usecases/ElementAttributes"
 import Formats from "./Usecases/Formats"
 
 const languages = {
-  en: t`English`,
-  cs: t`Czech`,
-  fr: t`French`
+  en: `English`,
+  cs: `Česky`
 }
 
 export default class App extends React.Component {
@@ -22,7 +21,7 @@ export default class App extends React.Component {
 
   loadLanguage = async language => {
     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-    const catalogs = await import(`@lingui/loader!../locale/${language}/messages.json`)
+    const catalogs = await import(`@lingui/loader!./locale/${language}/messages.po`)
 
     this.setState(state => ({
       catalogs: {
@@ -46,29 +45,25 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { language, catalogs, languageData } = this.state
+    const { language, catalogs } = this.state
 
     if (!catalogs[language]) return null
 
     return (
       <div>
-        <I18nProvider
-          language={language}
-          catalogs={catalogs}
-          languageData={languageData}
-        >
+        <I18nProvider language={language} catalogs={catalogs}>
           <ul>
             {Object.keys(languages).map(language => (
               <li key={language}>
                 <a onClick={() => this.setState({ language })}>
-                  <Trans id={languages[language]} />
+                  {languages[language]}
                 </a>
               </li>
             ))}
           </ul>
 
           <h2>
-            <Trans>Translation of children</Trans>
+            <Trans>Translations with rich-text</Trans>
           </h2>
           <Children />
 

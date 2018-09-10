@@ -1,0 +1,58 @@
+{
+  "This isn't translated": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        29
+      ]
+    ]
+  },
+  "msg.label": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        33
+      ]
+    ]
+  },
+  "Hello World": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        37
+      ]
+    ]
+  },
+  "My name is {name}": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        41
+      ],
+      [
+        "src/Usecases/Children.js",
+        89
+      ],
+      [
+        "src/Usecases/Children.js",
+        92
+      ]
+    ]
+  },
+  "Read <0>more</0>.": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        45
+      ]
+    ]
+  },
+  "{genderOfHost, select, female {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to her party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} male {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to his party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}} other {{numGuests, plural, offset:1 =0 {{host} does not give a party.} =1 {{host} invites {guest} to their party.} one {{host} invites {guest} and one other person to her party.} other {{host} invites {guest} and # other people to her party.}}}}": {
+    "origin": [
+      [
+        "src/Usecases/Children.js",
+        51
+      ]
+    ]
+  }
+}
