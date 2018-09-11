@@ -114,9 +114,40 @@ JS macros
 ---------
 
 These macros can be used in any context (e.g. outside JSX) and are intended to work
-in combination with `i18n._` method. All JS macros are transformed into *message descritor*
+in combination with `i18n._` method. All JS macros are transformed into a *Message Descriptor*
 which is an object with message ID, default message and other parameters. `i18n._`
-accepts message descriptors and performs translation and formatting.
+accepts message descriptors and performs translation and formatting:
+
+.. code-block:: jsx
+
+   type MessageDescriptor = {
+      id: String,
+      defaults?: String,
+      values?: Object,
+      formats?: Object,
+   }
+
+``id`` is message ID and the only required parameter. ``id`` and ``defaults``
+are extracted to message catalog. Only ``id``, ``values``, and ``formats``
+are used at runtime, all other attributes are removed from production code
+for size optimization.
+
+Description
+^^^^^^^^^^^
+
+All JS macros can have a description. Description is added using ``i18n`` comment in
+front of the macro:
+
+.. code-block:: jsx
+
+   /*i18n: Description*/t`Message`
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   /*i18n: Description*/{
+     id: 'Message'
+   }
+
+Desctiption is extracted to message catalog as a help text for translators.
 
 t
 ^
@@ -135,6 +166,10 @@ in ICU MessageFormat. It's allowed to use other i18n macros as variables.
 
    // Static Message
    const static = i18n._(t`Static Message`)
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   // const static = i18n._(/*i18n*/{
+   //   id: 'Static',
+   // })
 
    // My name is {name}
    const vars = i18n._(t`My name is ${name}`)
