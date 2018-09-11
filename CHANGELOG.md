@@ -13,7 +13,7 @@ It's not mandatory to migrate to macro, but recommended.
 
 ### New Features
 
-* New package [`@lingui/macro`] published ([#318](https://github.com/lingui/js-lingui/issues/318)).
+* New package [`@lingui/macro`](https://www.npmjs.com/package/@lingui/macro) published ([#318](https://github.com/lingui/js-lingui/issues/318)).
   Big thanks to [Matt Labrum](https://github.com/mlabrum) for initial implementation.
 * [Pseudolocalization](https://lingui.js.org/tutorials/cli.html#pseudolocalization)
   ([#309](https://github.com/lingui/js-lingui/issues/309)).
