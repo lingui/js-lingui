@@ -52,7 +52,7 @@ In `react-intl`_, this would be translated as:
        id='msg.docs'
        defaultMessage='Read the {link}.'
        values={{
-           name: <a href="/docs">documentation</a>
+           link: <a href="/docs">documentation</a>
        }}
    />
 
@@ -65,7 +65,7 @@ The correct solution would be:
        id='msg.docs'
        defaultMessage='Read the {link}.'
        values={{
-           name: (
+           link: (
             <a href="/docs">
                <FormattedMessage id="msg.docs.link" defaultMessage="documentation" />
             </a>
