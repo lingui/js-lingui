@@ -1,35 +1,6 @@
 // @flow
 import chalk from "chalk"
 import program from "commander"
-import { getConfig } from "@lingui/conf"
-
-import configureCatalog from "./api/catalog"
-import type { LinguiConfig } from "./api/types"
-
-export default function command(config: LinguiConfig, locales: Array<string>) {
-  const catalog = configureCatalog(config)
-
-  const results = locales.map(locale => {
-    const [created, filename] = catalog.addLocale(locale)
-
-    if (!filename) {
-      console.log(chalk.red(`Unknown locale: ${chalk.bold(locale)}.`))
-      return false
-    } else if (created) {
-      console.log(chalk.green(`Added locale ${chalk.bold(locale)}.`))
-    } else {
-      console.log(chalk.yellow(`Locale ${chalk.bold(locale)} already exists.`))
-    }
-
-    return true
-  })
-
-  // At least one language was added successfully
-  if (results.filter(Boolean).length) {
-    console.log()
-    console.log(`(use "${chalk.yellow("lingui extract")}" to extract messages)`)
-  }
-}
 
 if (require.main === module) {
   program
@@ -49,16 +20,9 @@ if (require.main === module) {
     })
     .parse(process.argv)
 
-  if (!program.args.length) program.help()
-
-  const config = getConfig()
-  if (program.format) {
-    const msg =
-      "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
-      " Please set format in configuration https://lingui.js.org/ref/conf.html#format"
-    console.warn(msg)
-    config.format = program.format
-  }
-
-  command(config, program.args)
+  const msg =
+    "lingui add-locale command is deprecated. " +
+    `Please set ${chalk.yellow("'locales'")} in configuration. ` +
+    chalk.underline("https://lingui.js.org/ref/conf.html#locales")
+  console.warn(msg)
 }

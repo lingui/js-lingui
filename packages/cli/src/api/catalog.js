@@ -1,7 +1,6 @@
 // @flow
 import fs from "fs"
 import path from "path"
-import mkdirp from "mkdirp"
 import glob from "glob"
 import R from "ramda"
 
@@ -152,28 +151,6 @@ export default (config: LinguiConfig): CatalogApi => {
           return locales.isValid(locale) && locale
         })
         .filter(Boolean)
-    },
-
-    addLocale(locale) {
-      if (!locales.isValid(locale) && locale !== config.pseudoLocale) {
-        return [false, null]
-      }
-
-      const filename = path.join(
-        config.localeDir,
-        path.join(locale, format.filename)
-      )
-
-      if (!fs.existsSync(filename)) {
-        const dirname = path.dirname(filename)
-
-        mkdirp.sync(dirname)
-        this.write(locale, {})
-
-        return [true, filename]
-      }
-
-      return [false, filename]
     }
   }
 }

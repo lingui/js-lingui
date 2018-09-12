@@ -39,17 +39,21 @@ export default function command(
   process.env.LINGUI_EXTRACT = "1"
 
   const catalog = configureCatalog(config)
-  const pseudoLocale = config.pseudoLocale
-  if (pseudoLocale) {
-    catalog.addLocale(pseudoLocale)
-  }
 
   const locales = catalog.getLocales()
+  const pseudoLocale = config.pseudoLocale
+  if (pseudoLocale) {
+    locales.push(pseudoLocale)
+  }
 
   if (!locales.length) {
     console.log("No locales defined!\n")
     console.log(
-      `(use "${chalk.yellow("lingui add-locale <language>")}" to add one)`
+      `Add ${chalk.yellow(
+        "'locales'"
+      )} to your configuration. See ${chalk.underline(
+        "https://lingui.js.org/ref/conf.html#locales"
+      )}`
     )
     return false
   }
@@ -113,11 +117,6 @@ export default function command(
   printStats(config, catalogs)
   console.log()
 
-  console.log(
-    `(use "${chalk.yellow(
-      "lingui add-locale <language>"
-    )}" to add more locales)`
-  )
   console.log(
     `(use "${chalk.yellow(
       "lingui extract"

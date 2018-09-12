@@ -47,7 +47,6 @@ export type TranslationsFormat = {
 
 export type CatalogApi = {
   getLocales(): Array<string>,
-  addLocale(locale: string): IdempotentResult<string>,
 
   read(locale: string): ?CatalogType,
   readAll(): AllCatalogsType,

@@ -17,7 +17,11 @@ function command(config, options) {
   if (!locales.length) {
     console.log("No locales defined!\n")
     console.log(
-      `(use "${chalk.yellow("lingui add-locale <language>")}" to add one)`
+      `Add ${chalk.yellow(
+        "'locales'"
+      )} to your configuration. See ${chalk.underline(
+        "https://lingui.js.org/ref/conf.html#locales"
+      )}`
     )
     return false
   }
