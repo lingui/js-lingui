@@ -112,7 +112,7 @@ Let's start with a three major packages:
           "react",
         ],
         "plugins": [
-          "macro"
+          "macros"
         ]
       }
 
