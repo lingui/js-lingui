@@ -1,6 +1,6 @@
 // @flow
 import fs from "fs"
-import { transform } from "@babel/core"
+import { transform } from "../compat"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import * as ts from "typescript"

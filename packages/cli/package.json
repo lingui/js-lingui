@@ -34,18 +34,21 @@
     "*.js.flow"
   ],
   "dependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/generator": "^7.0.0",
+    "@babel/parser": "^7.1.0",
+    "@babel/plugin-syntax-jsx": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "@babel/types": "^7.0.0",
     "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
-    "babel-generator": "^6.26.1",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-types": "^6.26.0",
-    "babylon": "^6.18.0",
+    "babel-plugin-macros": "^2.4.1",
     "bcp-47": "^1.0.4",
     "chalk": "^2.3.0",
     "cli-table": "^0.3.1",
     "commander": "^2.17.1",
-    "fuzzaldrin": "^2.1.0",
     "date-fns": "^1.29.0",
+    "fuzzaldrin": "^2.1.0",
     "glob": "^7.1.2",
     "inquirer": "^6.2.0",
     "make-plural": "^4.1.1",
@@ -60,8 +63,5 @@
   },
   "devDependencies": {
     "mockdate": "^2.0.2"
-  },
-  "peerDependencies": {
-    "babel-core": "6.x || ^7.0.0-bridge.0"
   }
 }
