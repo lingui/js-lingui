@@ -26,7 +26,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=4.0"
+    "node": ">=6.0.0"
   },
   "dependencies": {
     "@lingui/cli": "0.0.0-managed-by-release-script",

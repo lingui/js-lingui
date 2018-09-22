@@ -72,6 +72,18 @@ jobs:
       - run: *yarn-install-tools
       - run: *tests
 
+  test-node-6:
+    docker:
+    - image: circleci/node:6
+
+    steps:
+    - checkout
+    - attach-workspace: *attach-workspace
+    - restore-cache: *restore-cache
+    - run: *yarn-install
+    - run: *yarn-install-tools
+    - run: *tests
+
   integration-vanilla-js:
     docker:
       - image: circleci/node:latest
