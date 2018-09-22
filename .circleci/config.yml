@@ -202,6 +202,9 @@ workflows:
       - test-node-8:
           requires:
             - build
+      - test-node-6:
+          requires:
+            - build
       - integration-vanilla-js:
           requires:
           - build
