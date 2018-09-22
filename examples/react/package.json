@@ -1,0 +1,61 @@
+{
+  "private": true,
+  "name": "linguijs-example-react",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --hot",
+    "build": "webpack -p",
+    "test": "jest src"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "@lingui/core": "2.7.0",
+    "@lingui/react": "2.7.0",
+    "antd": "^3.9.2",
+    "react": "16.5.2",
+    "react-dom": "16.5.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@lingui/babel-preset-react": "^2.7.0",
+    "@lingui/cli": "^2.7.0",
+    "@lingui/loader": "2.7.0",
+    "@lingui/macro": "^2.7.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-macros": "^2.4.2",
+    "enzyme-to-json": "^3.3.4",
+    "jest": "^23.6.0",
+    "jest-serializer-html": "^5.0.0",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "lingui": {
+    "sourceLocale": "en",
+    "localeDir": "./src/locales",
+    "srcPathDirs": [
+      "./src/"
+    ],
+    "format": "po"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "../../scripts/jest/env.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer",
+      "jest-serializer-html"
+    ]
+  }
+}
