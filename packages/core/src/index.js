@@ -6,7 +6,7 @@ export type {
   Catalog,
   Catalogs,
   MessageOptions,
-  LanguageData,
+  LocaleData,
   I18n,
   Locales
 } from "./i18n"

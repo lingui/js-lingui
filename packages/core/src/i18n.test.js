@@ -16,15 +16,15 @@ describe("I18n", function() {
     const i18n = setupI18n()
     expect(i18n.messages).toEqual({})
 
-    i18n.load({ en: { messages } })
+    i18n.load("en", { messages })
     i18n.activate("en")
     expect(i18n.messages).toEqual(messages)
 
     // fr catalog shouldn't affect the english one
-    i18n.load({ fr: { messages: { Hello: "Salut" } } })
+    i18n.load("fr", { messages: { Hello: "Salut" } })
     expect(i18n.messages).toEqual(messages)
 
-    i18n.load({ en: { messages: { Goodbye: "Goodbye" } } })
+    i18n.load("en", { messages: { Goodbye: "Goodbye" } })
     // $FlowIgnore: testing edge case
     i18n.load() // should do nothing
     expect(i18n.messages).toEqual({

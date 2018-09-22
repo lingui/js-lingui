@@ -1,6 +1,6 @@
 /* @flow */
 import { interpolate } from "./context"
-import { isString, isFunction, isEmpty } from "./essentials"
+import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import type { DateFormat, NumberFormat } from "./formats"
 
@@ -11,9 +11,10 @@ type MessageOptions = {|
   formats?: Object
 |}
 
-type Locales = string | string[]
+type Locale = string
+type Locales = Locale | Locale[]
 
-type LanguageData = {
+type LocaleData = {
   plurals?: Function
 }
 
@@ -21,7 +22,7 @@ type Messages = { [key: string]: string | Function }
 
 type Catalog = {
   messages: Messages,
-  languageData?: LanguageData
+  languageData: LocaleData
 }
 
 type Catalogs = { [key: string]: Catalog }
@@ -33,14 +34,6 @@ type setupI18nProps = {
   missing?: string | Function
 }
 
-function getLanguageData(catalog) {
-  return (catalog || {}).languageData || {}
-}
-
-function getMessages(catalog) {
-  return (catalog || {}).messages || {}
-}
-
 class I18n {
   _language: string
   _locales: ?Locales
@@ -50,12 +43,6 @@ class I18n {
 
   _missing: ?string | Function
 
-  // Messages/language data in active language.
-  // This is optimization, so we don't perform object lookup
-  // _catalogs[language] for each translation.
-  _activeMessages: Messages
-  _activeLanguageData: LanguageData
-
   _dev: Object
 
   date: Function
@@ -64,7 +51,6 @@ class I18n {
   constructor() {
     // Messages and languageData are merged on load,
     // so we must initialize it manually
-    this._activeMessages = {}
     this._catalogs = {}
   }
 
@@ -81,88 +67,56 @@ class I18n {
   }
 
   get messages(): Messages {
-    return this._activeMessages
+    return (this._catalogs[this._language] || { messages: {} }).messages
   }
 
-  get languageData(): LanguageData {
-    return this._activeLanguageData
-  }
-
-  _cacheActiveLanguage() {
-    const activeCatalog = this._catalogs[this.language]
-
-    let languageData = getLanguageData(activeCatalog)
+  get languageData(): LocaleData {
     if (process.env.NODE_ENV !== "production") {
-      // Allow overriding data in development, useful for testing
       if (
-        isEmpty(languageData) &&
-        this._dev &&
-        isFunction(this._dev.loadLanguageData)
+        !this._catalogs[this._language] ||
+        !this._catalogs[this._language].languageData
       ) {
-        languageData = this._dev.loadLanguageData(this.language)
+        return this._dev.loadLanguageData(this._language)
+      }
+    }
+    return (this._catalogs[this._language] || { languageData: {} }).languageData
+  }
+
+  load(locale: Locale, catalog: Catalog) {
+    if (typeof catalog !== "object") return
+
+    if (!this._catalogs[locale]) {
+      this._catalogs[locale] = {
+        messages: {},
+        languageData: {}
       }
     }
 
-    this._activeMessages = getMessages(activeCatalog)
-    this._activeLanguageData = languageData
+    Object.assign(this._catalogs[locale].messages, catalog.messages)
+    Object.assign(this._catalogs[locale].languageData, catalog.languageData)
   }
 
-  load(catalogs: Catalogs) {
-    if (typeof catalogs !== "object") return
-
-    // deeply merge Catalogs
-    Object.keys({ ...this._catalogs, ...catalogs }).forEach(language => {
-      let compiledMessages = getMessages(catalogs[language])
-
-      if (process.env.NODE_ENV !== "production") {
-        if (this._dev && isFunction(this._dev.compile)) {
-          compiledMessages = Object.keys(compiledMessages).reduce(
-            (dict, id) => {
-              const msg = compiledMessages[id]
-              dict[id] = isString(msg) ? this._dev.compile(msg) : msg
-              return dict
-            },
-            {}
-          )
-        }
-      }
-
-      this._catalogs[language] = {
-        messages: {
-          ...getMessages(this._catalogs[language]),
-          ...compiledMessages
-        },
-        languageData: {
-          ...getLanguageData(this._catalogs[language]),
-          ...getLanguageData(catalogs[language])
-        }
-      }
-    })
-
-    this._cacheActiveLanguage()
-  }
-
-  activate(language: string, locales?: Locales) {
-    if (!language) return
+  activate(locale: Locale, locales?: Locales) {
+    if (!locale) return
 
     if (process.env.NODE_ENV !== "production") {
-      if (this.availableLanguages.indexOf(language) === -1) {
-        console.warn(`Message catalog for locale "${language}" not loaded.`)
+      if (this.availableLanguages.indexOf(locale) === -1) {
+        console.warn(`Message catalog for locale "${locale}" not loaded.`)
       }
     }
 
-    this._language = language
+    this._language = locale
     this._locales = locales
-    this._cacheActiveLanguage()
   }
 
   use(language: string, locales?: Locales) {
-    return setupI18n({
+    const i18n = setupI18n({
       language,
       locales,
-      catalogs: this._catalogs,
       development: this._dev
     })
+    i18n._catalogs = this._catalogs
+    return i18n
   }
 
   // default translate method
@@ -226,7 +180,11 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
     i18n._dev = dev
   }
 
-  if (params.catalogs) i18n.load(params.catalogs)
+  if (params.catalogs) {
+    Object.keys(params.catalogs).forEach(locale =>
+      i18n.load(locale, params.catalogs[locale])
+    )
+  }
   if (params.language) i18n.activate(params.language, params.locales)
   if (params.missing) i18n._missing = params.missing
 
@@ -234,4 +192,4 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
 }
 
 export { setupI18n }
-export type { MessageOptions, Catalog, Catalogs, LanguageData, I18n, Locales }
+export type { MessageOptions, Catalog, Catalogs, LocaleData, I18n, Locales }
