@@ -2,77 +2,31 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
-// Don't import from @lingui/react,
-// otherwise we're not able to mockEnv in integration test
-import { withI18n } from "."
-import { mockEnv, mockConsole } from "./mocks"
+import { setupI18n } from "@lingui/core"
+import { withI18n, I18nProvider } from "@lingui/react"
 
 describe("withI18n", function() {
-  const getContext = () => ({
-    subscribe: jest.fn(),
-    unsubscribe: jest.fn(),
-    i18nHash: 3145,
-    i18n: {
-      language: "en",
-      messages: {
-        msg: "hello"
-      }
-    }
-  })
-
-  // Pass all props to spy on render
-  const sinkFactory = (options = {}) => {
+  const mountHoc = (props = {}) => {
     const spy = jest.fn()
-    const Sink = withI18n(options)(
-      class Sink extends React.Component<*> {
-        render() {
-          spy(this.props)
-          return <div />
-        }
-      }
-    )
-    return { Sink, spy }
-  }
-
-  // Mount HOC(sink) and get the props which were passed from HOC
-  const mountHoc = (props = {}, hocOptions = {}, context = getContext()) => {
-    const { Sink, spy } = sinkFactory(hocOptions)
-    const node = mount(<Sink {...props} />, {
-      context: { linguiPublisher: context }
+    const Sink = withI18n(props => {
+      spy(props)
+      return null
     })
+
+    const i18n = setupI18n({
+      language: "en"
+    })
+
+    const node = mount(
+      <I18nProvider i18n={i18n}>
+        <Sink {...props} />
+      </I18nProvider>
+    ).find("Sink")
     const receivedProps = spy.mock.calls[spy.mock.calls.length - 1][0]
 
-    // Original props are passed with along with i18n prop
-    return { node, props: receivedProps, context }
+    // Original props are passed along with i18n prop
+    return { node, props: receivedProps }
   }
-
-  it("should warn if called incorrectly", function() {
-    const wrongMount = () => {
-      const Component = withI18n(() => <span />)
-      // Catch the React error. It will blow up user app, but at least they get
-      // the warning about the cause.
-      try {
-        // $FlowIgnore: This is invalid, that's the point.
-        mount(<Component />)
-      } catch (e) {}
-    }
-
-    mockEnv("production", () => {
-      mockConsole(console => {
-        wrongMount()
-        expect(console.warn).not.toBeCalled()
-      })
-    })
-
-    mockEnv("development", () => {
-      mockConsole(console => {
-        wrongMount()
-        expect(console.warn).toBeCalledWith(
-          expect.stringContaining("withI18n([options]) takes options")
-        )
-      })
-    })
-  })
 
   it("should pass all props to wrapped component", function() {
     const props = {
@@ -81,8 +35,15 @@ describe("withI18n", function() {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const { i18n, i18nHash, ...calledProps } = mountHoc(props).props
+    const { i18n, ...calledProps } = mountHoc(props).props
     expect(calledProps).toEqual(props)
+  })
+
+  it("should provide data from i18n context", function() {
+    const { i18n, ...props } = mountHoc().props
+    expect(i18n).toBeDefined()
+    expect(i18n.language).toBeDefined()
+    expect(i18n.messages).toBeDefined()
   })
 
   it("should hoist statics from wrapped component", function() {
@@ -91,90 +52,20 @@ describe("withI18n", function() {
       static myMethod = () => 42
     }
 
-    const wrapped = withI18n()(Component)
-    expect(wrapped.myProp).toBeDefined()
+    const wrapped = withI18n(Component)
     expect(wrapped.myProp).toEqual(24)
-    expect(wrapped.myMethod).toBeDefined()
     expect(wrapped.myMethod()).toEqual(42)
+  })
 
-    function StatelessComponent() {
+  it("should hoist statics from wrapped function component", function() {
+    function FunctionComponent() {
       return <div />
     }
-    StatelessComponent.myProp = 24
-    StatelessComponent.myMethod = () => 42
+    FunctionComponent.myProp = 24
+    FunctionComponent.myMethod = () => 42
 
-    const wrappedStateless = withI18n()(StatelessComponent)
-    expect(wrappedStateless.myProp).toBeDefined()
-    expect(wrappedStateless.myProp).toEqual(24)
-    expect(wrappedStateless.myMethod).toBeDefined()
-    expect(wrappedStateless.myMethod()).toEqual(42)
-  })
-
-  it("should provide data from i18n context", function() {
-    const { i18n } = mountHoc().props
-    expect(i18n).toBeDefined()
-    expect(i18n.language).toBeDefined()
-    expect(i18n.messages).toBeDefined()
-  })
-
-  it("should subscribe a callback on mount", function() {
-    const context = getContext()
-    expect(context.subscribe).not.toBeCalled()
-    mountHoc({}, {}, context)
-    expect(context.subscribe).toBeCalled()
-    expect(context.subscribe.mock.calls[0][0]).toBeInstanceOf(Function)
-  })
-
-  it("should unsubscribe a callback on unmount", function() {
-    const context = getContext()
-    const { node } = mountHoc({}, {}, context)
-
-    expect(context.unsubscribe).not.toBeCalled()
-    node.unmount()
-    expect(context.unsubscribe).toBeCalled()
-    expect(context.unsubscribe.mock.calls[0][0]).toBeInstanceOf(Function)
-  })
-
-  it("shouldn't subscribe a callback on mount when update is disabled", function() {
-    const context = getContext()
-    expect(context.subscribe).not.toBeCalled()
-    mountHoc({}, { update: false }, context)
-    expect(context.subscribe).not.toBeCalled()
-  })
-
-  it("shouldn't unsubscribe a callback on unmount when update is disabled", function() {
-    const context = getContext()
-    const { node } = mountHoc({}, { update: false }, context)
-
-    expect(context.unsubscribe).not.toBeCalled()
-    node.unmount()
-    expect(context.unsubscribe).not.toBeCalled()
-  })
-
-  it("should hold ref to wrapped instance when withRef is enabled", function() {
-    class Component extends React.Component<*> {
-      customMethod = () => 42
-      render() {
-        return null
-      }
-    }
-    const WrappedComponent = withI18n({ withRef: true })(Component)
-
-    const node = mount(<WrappedComponent />).instance()
-    expect(node.getWrappedInstance()).not.toBeNull()
-    expect(node.getWrappedInstance().customMethod).toBeDefined()
-    expect(node.getWrappedInstance().customMethod()).toEqual(42)
-  })
-
-  it("should not hold ref to wrapped instance when withRef is disabled", function() {
-    const { node } = mountHoc()
-    expect(() => node.instance().getWrappedInstance()).toThrow(
-      "To access the wrapped instance, you need to specify { withRef: true } in the options argument of the withI18n() call."
-    )
-  })
-
-  it("should have i18nHash, unless it's disabled", function() {
-    expect(mountHoc().props.i18nHash).toBeDefined()
-    expect(mountHoc({}, { withHash: false }).props.i18nHash).not.toBeDefined()
+    const wrappedFnComponent = withI18n(FunctionComponent)
+    expect(wrappedFnComponent.myProp).toEqual(24)
+    expect(wrappedFnComponent.myMethod()).toEqual(42)
   })
 })

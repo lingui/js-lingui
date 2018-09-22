@@ -1,42 +1,22 @@
 // @flow
 import * as React from "react"
 
-import withI18n from "./withI18n"
-import type { withI18nProps } from "./withI18n"
+import type { I18n } from "@lingui/core"
 import { formatElements } from "./format"
+import { I18nDefaultRenderConsumer, I18nCoreConsumer } from "./I18nProvider"
 
-import type { RenderProps } from "./Render"
-import Render from "./Render"
-
-type TransProps = {
-  id?: string,
+export type TransProps = {
+  id: string,
   defaults?: string,
   values?: Object,
   formats?: Object,
-  components?: Array<React$Element<*>>,
-  children?: any
-} & withI18nProps &
-  RenderProps
+  components?: Array<React.Element<*>>,
+  render?: string | Function | React.Element<*>
+}
 
-class Trans extends React.Component<TransProps> {
-  props: TransProps
-
-  componentDidMount() {
-    if (process.env.NODE_ENV !== "production") {
-      if (!this.getTranslation() && this.props.children) {
-        console.warn(
-          "@lingui/babel-preset-react is probably missing in babel config, " +
-            "but you are using <Trans> component in a way which requires it. " +
-            "Either don't use children in <Trans> component or configure babel " +
-            "to load @lingui/babel-preset-react preset. See tutorial for more info: " +
-            "https://l.lingui.io/tutorial-i18n-react"
-        )
-      }
-    }
-  }
-
-  getTranslation(): string | ?Array<any> {
-    const { id = "", defaults, i18n, formats } = this.props
+export default class Trans extends React.Component<TransProps> {
+  getTranslation(i18n: I18n): React.Node {
+    const { id = "", defaults, formats } = this.props
 
     const values = { ...this.props.values }
     const components = this.props.components ? [...this.props.components] : []
@@ -75,13 +55,31 @@ class Trans extends React.Component<TransProps> {
 
   render() {
     return (
-      <Render
-        render={this.props.render}
-        className={this.props.className}
-        value={this.getTranslation()}
-      />
+      <I18nCoreConsumer>
+        {i18n => {
+          const translation = this.getTranslation(i18n)
+          return (
+            <I18nDefaultRenderConsumer>
+              {defaultRender => {
+                const { render = defaultRender, id, defaults } = this.props
+
+                if (render === null || render === undefined) {
+                  return translation
+                } else if (typeof render === "string") {
+                  // Built-in element: h1, p
+                  return React.createElement(render, {}, translation)
+                } else if (typeof render === "function") {
+                  // Function: (props) => <a title={props.translation}>x</a>
+                  return render({ id, translation, defaults })
+                }
+
+                // Element: <p className="lear' />
+                return React.cloneElement(render, {}, translation)
+              }}
+            </I18nDefaultRenderConsumer>
+          )
+        }}
+      </I18nCoreConsumer>
     )
   }
 }
-
-export default withI18n()(Trans)

@@ -40,6 +40,7 @@ class I18n {
 
   // Message catalogs
   _catalogs: Catalogs
+  _onActivate: Array<Function>
 
   _missing: ?string | Function
 
@@ -52,6 +53,7 @@ class I18n {
     // Messages and languageData are merged on load,
     // so we must initialize it manually
     this._catalogs = {}
+    this._onActivate = []
   }
 
   get availableLanguages(): Array<string> {
@@ -107,6 +109,7 @@ class I18n {
 
     this._language = locale
     this._locales = locales
+    this._onActivate.forEach(s => s())
   }
 
   use(language: string, locales?: Locales) {
@@ -117,6 +120,11 @@ class I18n {
     })
     i18n._catalogs = this._catalogs
     return i18n
+  }
+
+  onActivate(callback: Function): Function {
+    this._onActivate.push(callback)
+    return () => this._onActivate.filter(cb => cb !== callback)
   }
 
   // default translate method
@@ -138,7 +146,7 @@ class I18n {
     // replace missing messages with custom message for debugging
     const missing = this._missing
     if (missing && !this.messages[id]) {
-      translation = isFunction(missing) ? missing(this.language, id) : missing
+      return isFunction(missing) ? missing(this.language, id) : missing
     }
 
     if (process.env.NODE_ENV !== "production") {

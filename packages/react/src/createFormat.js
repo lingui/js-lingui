@@ -1,37 +1,29 @@
 // @flow
 import * as React from "react"
 
-import type { Locales } from "@lingui/core"
-import type { RenderProps } from "./Render"
-import Render from "./Render"
+import type { Locales, I18n } from "@lingui/core"
+import withI18n from "./withI18n"
 
 type FormatProps<V, FormatOptions> = {
   value: V,
   format?: FormatOptions,
-  i18n: {
-    language: string,
-    locales?: Locales
-  }
-} & RenderProps
+  i18n: I18n
+}
 
 function createFormat<V, FormatOptions>(
   formatFunction: (
-    language: Locales,
+    locale: Locales,
     format?: FormatOptions
   ) => (value: V) => string
 ) {
-  return function({
+  return withI18n(function({
     value,
     format,
-    i18n,
-    className,
-    render
+    i18n
   }: FormatProps<V, FormatOptions>) {
     const formatter = formatFunction(i18n.locales || i18n.language, format)
-    return (
-      <Render className={className} render={render} value={formatter(value)} />
-    )
-  }
+    return formatter(value)
+  })
 }
 
 export default createFormat

@@ -1,111 +1,62 @@
 // @flow
 import * as React from "react"
-import PropTypes from "prop-types"
-import hashSum from "hash-sum"
+import type { I18n } from "@lingui/core"
 
-import { setupI18n } from "@lingui/core"
-import type { I18n, Catalogs, Locales } from "@lingui/core"
+export const {
+  Provider: I18nCoreProvider,
+  Consumer: I18nCoreConsumer
+} = React.createContext({})
+export const {
+  Provider: I18nDefaultRenderProvider,
+  Consumer: I18nDefaultRenderConsumer
+} = React.createContext(null)
 
 export type I18nProviderProps = {
-  children?: any,
-  language: string,
-  locales?: Locales,
-  catalogs?: Catalogs,
-  i18n?: I18n,
-  missing?: string | Function,
-
-  defaultRender: ?any
+  i18n: I18n,
+  children: any,
+  defaultRender?: any
 }
 
-/*
- * I18nPublisher - Connects to lingui-i18n/I18n class
- * Allows listeners to subscribe for changes
- */
-export function LinguiPublisher(i18n: I18n) {
-  let subscribers: Array<Function> = []
-
-  return {
-    i18n,
-    i18nHash: null,
-
-    getSubscribers() {
-      return subscribers
-    },
-
-    subscribe(callback: Function) {
-      subscribers.push(callback)
-    },
-
-    unsubscribe(callback: Function) {
-      subscribers = subscribers.filter(cb => cb !== callback)
-    },
-
-    update({
-      catalogs,
-      language,
-      locales
-    }: { catalogs?: Catalogs, language?: string, locales?: string } = {}) {
-      if (!catalogs && !language && !locales) return
-
-      if (catalogs) i18n.load(catalogs)
-      if (language) i18n.activate(language, locales)
-
-      this.i18nHash = hashSum([i18n.language, i18n.messages])
-
-      subscribers.forEach(f => f())
-    }
-  }
+export type I18nProviderState = {
+  i18n: I18n
 }
 
-export default class I18nProvider extends React.Component<I18nProviderProps> {
-  props: I18nProviderProps
-
-  linguiPublisher: LinguiPublisher
-
-  static defaultProps = {
-    defaultRender: null
-  }
-
-  static childContextTypes = {
-    linguiPublisher: PropTypes.object.isRequired,
-    linguiDefaultRender: PropTypes.any
-  }
+export default class I18nProvider extends React.Component<
+  I18nProviderProps,
+  I18nProviderState
+> {
+  unsubscribe: Function
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, locales, catalogs, missing } = props
-    const i18n =
-      props.i18n ||
-      setupI18n({
-        language,
-        locales,
-        catalogs
-      })
-    this.linguiPublisher = new LinguiPublisher(i18n)
-    this.linguiPublisher.i18n._missing = this.props.missing
+    this.state = {
+      i18n: this.props.i18n
+    }
   }
 
-  componentDidUpdate(prevProps: I18nProviderProps) {
-    const { language, locales, catalogs } = this.props
-    if (
-      language !== prevProps.language ||
-      locales !== prevProps.locales ||
-      catalogs !== prevProps.catalogs
-    ) {
-      this.linguiPublisher.update({ language, catalogs, locales })
-    }
-
-    this.linguiPublisher.i18n._missing = this.props.missing
+  componentDidMount() {
+    this.unsubscribe = this.props.i18n.onActivate(this.localeChanged)
   }
 
-  getChildContext() {
-    return {
-      linguiPublisher: this.linguiPublisher,
-      linguiDefaultRender: this.props.defaultRender
-    }
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  localeChanged = () => {
+    const i18n = Object.assign(
+      Object.create(Object.getPrototypeOf(this.props.i18n)),
+      this.props.i18n
+    )
+    this.setState({ i18n })
   }
 
   render() {
-    return this.props.children
+    return (
+      <I18nDefaultRenderProvider value={this.props.defaultRender}>
+        <I18nCoreProvider value={this.state.i18n}>
+          {this.props.children}
+        </I18nCoreProvider>
+      </I18nDefaultRenderProvider>
+    )
   }
 }
