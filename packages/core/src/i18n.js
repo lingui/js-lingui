@@ -1,8 +1,6 @@
 /* @flow */
 import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
-import t from "./t"
-import { select, plural, selectOrdinal } from "./select"
 import { date, number } from "./formats"
 import type { DateFormat, NumberFormat } from "./formats"
 
@@ -60,11 +58,6 @@ class I18n {
 
   _dev: Object
 
-  t: Function
-  plural: Function
-  select: Function
-  selectOrdinal: Function
-
   date: Function
   number: Function
 
@@ -73,13 +66,6 @@ class I18n {
     // so we must initialize it manually
     this._activeMessages = {}
     this._catalogs = {}
-
-    if (process.env.NODE_ENV !== "production") {
-      this.t = t
-      this.select = select
-      this.plural = plural(this)
-      this.selectOrdinal = selectOrdinal(this)
-    }
   }
 
   get availableLanguages(): Array<string> {
@@ -247,7 +233,5 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
   return i18n
 }
 
-const i18n = setupI18n()
-
-export { setupI18n, i18n }
+export { setupI18n }
 export type { MessageOptions, Catalog, Catalogs, LanguageData, I18n, Locales }

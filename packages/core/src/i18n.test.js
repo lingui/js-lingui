@@ -1,25 +1,11 @@
 /* @flow */
-import { i18n, setupI18n } from "@lingui/core"
-import { mockConsole, mockEnv } from "./mocks"
+import { setupI18n } from "@lingui/core"
+import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", function() {
-  it("should export named I18n instance", function() {
-    expect(i18n).toBeDefined()
-  })
-
   it("should be initialized with empty catalog", function() {
     const i18n = setupI18n()
     expect(i18n.messages).toEqual({})
-  })
-
-  it("should bound t method", function() {
-    const i18n = setupI18n()
-    expect(i18n.t).toBeInstanceOf(Function)
-
-    expect(i18n.t`Message`).toEqual("Message")
-
-    const name = "Fred"
-    expect(i18n.t`Hello ${name}`).toEqual("Hello Fred")
   })
 
   it(".load should load catalog and merge with existing", function() {
@@ -161,42 +147,21 @@ describe("I18n", function() {
       language: "en",
       locales: "en-UK"
     })
+    const plural = "{value, plural, zero {لا كتاب} two {# الكتب}}"
 
     // change locales locally
     const ar = i18n.use("ar")
-    expect(
-      ar.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("٢ الكتب")
+    expect(ar._(plural, { value: 2 })).toEqual("٢ الكتب")
 
     const uae = i18n.use("ar", "en-UK")
-    expect(
-      uae.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("2 الكتب")
+    expect(uae._(plural, { value: 2 })).toEqual("2 الكتب")
 
     const uae2 = i18n.use("ar", ["unknown-locale", "en-UK"])
-    expect(
-      uae2.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("2 الكتب")
+    expect(uae2._(plural, { value: 2 })).toEqual("2 الكتب")
 
     // global locales hasn't changed
     expect(
-      i18n.plural({
-        value: 2,
-        "=0": "no book",
-        other: "# books"
-      })
+      i18n._("{value, plural, one {# book} other {# books}}", { value: 2 })
     ).toEqual("2 books")
   })
 

@@ -3,7 +3,7 @@ import { parse } from "messageformat-parser"
 import { isString } from "../essentials"
 
 // [Tokens] -> (CTX -> String)
-function processTokens(tokens, octothorpe = {}): Function => string {
+function processTokens(tokens): Function => string {
   if (!tokens.filter(token => !isString(token)).length) {
     return tokens.join("")
   }
@@ -15,8 +15,7 @@ function processTokens(tokens, octothorpe = {}): Function => string {
 
         // # in plural case
       } else if (token.type === "octothorpe") {
-        const { name, offset = 0 } = octothorpe
-        return ctx(name) - offset
+        return "#"
 
         // simple argument
       } else if (token.type === "argument") {
@@ -32,10 +31,7 @@ function processTokens(tokens, octothorpe = {}): Function => string {
       // complex argument with cases
       const formatProps = {}
       token.cases.forEach(item => {
-        formatProps[item.key] = processTokens(item.tokens, {
-          name: token.arg,
-          offset
-        })
+        formatProps[item.key] = processTokens(item.tokens)
       })
 
       return ctx(token.arg, token.type, {

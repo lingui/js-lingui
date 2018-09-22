@@ -1,5 +1,5 @@
 import compile from "./compile"
-import { mockEnv, mockConsole } from "../mocks"
+import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "../context"
 
 describe("compile", function() {
