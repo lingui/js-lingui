@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "chalk": "^2.3.0",

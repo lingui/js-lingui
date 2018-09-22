@@ -19,7 +19,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script",
