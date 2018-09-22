@@ -19,7 +19,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=4.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {}
 }

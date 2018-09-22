@@ -20,7 +20,7 @@
     "release:test": "node ./scripts/test.js"
   },
   "engines": {
-    "node": ">=5.0"
+    "node": ">=8.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -19,7 +19,7 @@ test_script:
   - node --version
   - yarn --version
   # run tests
-  - node ./scripts/test.js
+  - yarn release:build
 
 # Don't actually build.
 build: off
