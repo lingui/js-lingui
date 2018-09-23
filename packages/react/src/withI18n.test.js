@@ -2,8 +2,7 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
-import { setupI18n } from "@lingui/core"
-import { withI18n, I18nProvider } from "@lingui/react"
+import { setupI18n, withI18n, I18nProvider } from "@lingui/react"
 
 describe("withI18n", function() {
   const mountHoc = (props = {}) => {

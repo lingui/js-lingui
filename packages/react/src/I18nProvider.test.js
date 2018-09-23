@@ -2,8 +2,7 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
-import { setupI18n } from "@lingui/core"
-import { I18nProvider, I18n, Trans } from "@lingui/react"
+import { setupI18n, I18nProvider, I18n, Trans } from "@lingui/react"
 
 describe("I18nProvider", function() {
   it("should subscribe for locale changes", function() {

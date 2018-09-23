@@ -2,8 +2,7 @@
 import * as React from "react"
 import { mount } from "enzyme"
 
-import { Trans, I18nProvider } from "@lingui/react"
-import { setupI18n } from "@lingui/core"
+import { setupI18n, Trans, I18nProvider } from "@lingui/react"
 
 describe("Trans component", function() {
   /*
