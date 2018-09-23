@@ -18,14 +18,14 @@ type LocaleData = {
   plurals?: Function
 }
 
-type Messages = { [key: string]: string | Function }
+type Messages = { [msgId: string]: string | Function }
 
 type Catalog = {
   messages: Messages,
   languageData: LocaleData
 }
 
-type Catalogs = { [key: string]: Catalog }
+type Catalogs = { [locale: string]: Catalog }
 
 type setupI18nProps = {
   language?: string,
@@ -84,9 +84,11 @@ class I18n {
     return (this._catalogs[this._language] || { languageData: {} }).languageData
   }
 
-  load(locale: Locale, catalog: Catalog) {
-    if (typeof catalog !== "object") return
+  loadAll(catalogs: Catalogs) {
+    Object.keys(catalogs).forEach(locale => this.load(locale, catalogs[locale]))
+  }
 
+  load(locale: Locale, catalog: Catalog) {
     if (!this._catalogs[locale]) {
       this._catalogs[locale] = {
         messages: {},
@@ -188,11 +190,7 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
     i18n._dev = dev
   }
 
-  if (params.catalogs) {
-    Object.keys(params.catalogs).forEach(locale =>
-      i18n.load(locale, params.catalogs[locale])
-    )
-  }
+  if (params.catalogs) i18n.loadAll(params.catalogs)
   if (params.language) i18n.activate(params.language, params.locales)
   if (params.missing) i18n._missing = params.missing
 
