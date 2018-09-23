@@ -24,7 +24,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
+      - image: webpackcontrib/circleci-jdk9-node8
 
     steps:
       - checkout
