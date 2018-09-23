@@ -35,16 +35,6 @@ const bundles = [
   },
 
   {
-    type: bundleTypes.NOOP,
-    entry: "@lingui/babel-preset-js"
-  },
-
-  {
-    type: bundleTypes.NOOP,
-    entry: "@lingui/babel-preset-react"
-  },
-
-  {
     type: bundleTypes.NODE,
     entry: "@lingui/macro"
   },
