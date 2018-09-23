@@ -8,21 +8,21 @@ import { I18nProvider, I18n, Trans } from "@lingui/react"
 describe("I18nProvider", function() {
   it("should subscribe for locale changes", function() {
     const i18n = setupI18n()
-    i18n.onActivate = jest.fn()
+    i18n.didActivate = jest.fn()
 
-    expect(i18n.onActivate).not.toBeCalled()
+    expect(i18n.didActivate).not.toBeCalled()
     mount(
       <I18nProvider i18n={i18n}>
         <div />
       </I18nProvider>
     )
-    expect(i18n.onActivate).toBeCalled()
+    expect(i18n.didActivate).toBeCalled()
   })
 
   it("should unsubscribe for locale changes on unmount", function() {
     const unsubscribe = jest.fn()
     const i18n = setupI18n()
-    i18n.onActivate = jest.fn(() => unsubscribe)
+    i18n.didActivate = jest.fn(() => unsubscribe)
 
     const node = mount(
       <I18nProvider i18n={i18n}>
@@ -56,26 +56,25 @@ describe("I18nProvider", function() {
 
   it("should render children", function() {
     const i18n = setupI18n()
+    i18n.activate("en")
+
     const child = <div className="testcase" />
     expect(
       mount(<I18nProvider i18n={i18n}>{child}</I18nProvider>).contains(child)
     ).toBeTruthy()
   })
 
-  it("shouldn't render multiple children wrapped in div", function() {
+  it("shouldn't render children if locales aren't loaded", function() {
     const i18n = setupI18n()
+
+    const child = <div className="testcase" />
     expect(
-      mount(
-        <I18nProvider i18n={i18n}>
-          <span />
-          <span />
-        </I18nProvider>
-      ).find("div")
-    ).toHaveLength(0)
+      mount(<I18nProvider i18n={i18n}>{child}</I18nProvider>).contains(child)
+    ).toBeFalsy()
   })
 
   it("should render custom message for missing translation", function() {
-    const i18n = setupI18n({ missing: "xxx" })
+    const i18n = setupI18n({ locale: "en", missing: "xxx" })
     const missing = mount(
       <I18nProvider i18n={i18n}>
         <Trans id="missing" />

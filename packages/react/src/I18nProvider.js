@@ -41,7 +41,7 @@ export class I18nProvider extends React.Component<
    * we need to trigger re-rendering of I18nContextConsumers.
    */
   componentDidMount() {
-    this.unsubscribe = this.props.i18n.onActivate(this.setContext)
+    this.unsubscribe = this.props.i18n.didActivate(this.setContext)
   }
 
   componentWillUnmount() {
@@ -73,9 +73,10 @@ export class I18nProvider extends React.Component<
   }
 
   render() {
+    const { context } = this.state
     return (
-      <I18nContextProvider value={this.state.context}>
-        {this.props.children}
+      <I18nContextProvider value={context}>
+        {context.i18n.locale && this.props.children}
       </I18nContextProvider>
     )
   }
