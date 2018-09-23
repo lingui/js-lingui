@@ -41,6 +41,7 @@ class I18n {
   // Message catalogs
   _catalogs: Catalogs
   _onActivate: Array<Function>
+  _onLoadLocale: Array<Function>
 
   _missing: ?string | Function
 
@@ -54,6 +55,7 @@ class I18n {
     // so we must initialize it manually
     this._catalogs = {}
     this._onActivate = []
+    this._onLoadLocale = []
   }
 
   get availableLanguages(): Array<string> {
@@ -68,20 +70,25 @@ class I18n {
     return this._locales
   }
 
+  get catalog(): Catalog {
+    return this._catalogs[this._language]
+  }
+
   get messages(): Messages {
-    return (this._catalogs[this._language] || { messages: {} }).messages
+    if (!this.catalog) return {}
+    return this.catalog.messages || {}
   }
 
   get languageData(): LocaleData {
     if (process.env.NODE_ENV !== "production") {
-      if (
-        !this._catalogs[this._language] ||
-        !this._catalogs[this._language].languageData
-      ) {
-        return this._dev.loadLanguageData(this._language)
+      const languageData = this._dev.loadLanguageData(this._language)
+      if (!this.catalog) {
+        this._catalogs[this.language] = { messages: {}, languageData }
+      } else if (!this.catalog.languageData) {
+        this.catalog.languageData = languageData
       }
     }
-    return (this._catalogs[this._language] || { languageData: {} }).languageData
+    return this.catalog.languageData
   }
 
   loadAll(catalogs: Catalogs) {
@@ -89,48 +96,58 @@ class I18n {
   }
 
   load(locale: Locale, catalog: Catalog) {
-    if (!locale || typeof catalog !== "object") {
-      throw new Error("Missing locale and/or catalog")
-    }
-
-    if (!this._catalogs[locale]) {
+    if (this._catalogs[locale] === undefined) {
       this._catalogs[locale] = {
         messages: {},
         languageData: {}
       }
     }
 
-    Object.assign(this._catalogs[locale].messages, catalog.messages)
-    Object.assign(this._catalogs[locale].languageData, catalog.languageData)
+    const prev = this._catalogs[locale]
+    Object.assign(prev.messages, catalog.messages)
+    Object.assign(prev.languageData, catalog.languageData)
   }
 
   activate(locale: Locale, locales?: Locales) {
-    if (!locale) {
-      throw new Error("Missing locale")
-    }
-
-    if (process.env.NODE_ENV !== "production") {
-      if (this.availableLanguages.indexOf(locale) === -1) {
-        console.warn(`Message catalog for locale "${locale}" not loaded.`)
+    if (!this._catalogs[locale]) {
+      if (this._onLoadLocale.length) {
+        return Promise.all(
+          this._onLoadLocale.map(load =>
+            load(locale).then(catalog => this.load(locale, catalog))
+          )
+        ).then(() => {
+          this.setLocale(locale, locales)
+        })
+      } else {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(`Message catalog for locale "${locale}" not loaded.`)
+        }
       }
     }
 
+    this.setLocale(locale, locales)
+    return Promise.resolve()
+  }
+
+  setLocale(locale: Locale, locales?: Locales) {
     this._language = locale
     this._locales = locales
     this._onActivate.forEach(s => s())
   }
 
-  use(language: string, locales?: Locales) {
-    const i18n = setupI18n({
-      language,
-      locales,
-      development: this._dev
-    })
+  use(locale: Locale, locales?: Locales) {
+    const i18n = setupI18n()
     i18n._catalogs = this._catalogs
+    i18n.activate(locale, locales)
     return i18n
   }
 
-  onActivate(callback: Function): Function {
+  onLoadLocale(callback: (locale: Locale) => Promise<Catalog>): Function {
+    this._onLoadLocale.push(callback)
+    return () => this._onLoadLocale.filter(cb => cb !== callback)
+  }
+
+  onActivate(callback: () => void): Function {
     this._onActivate.push(callback)
     return () => this._onActivate.filter(cb => cb !== callback)
   }
@@ -158,9 +175,9 @@ class I18n {
     }
 
     if (process.env.NODE_ENV !== "production") {
-      if (isString(translation) && this._dev && isFunction(this._dev.compile)) {
-        translation = this._dev.compile(translation)
-      }
+      translation = isString(translation)
+        ? this._dev.compile(translation)
+        : translation
     }
 
     if (!isFunction(translation)) return translation
@@ -170,14 +187,6 @@ class I18n {
       this.locales,
       this.languageData
     )(values, formats)
-  }
-
-  pluralForm(
-    n: number,
-    pluralType?: "cardinal" | "ordinal" = "cardinal"
-  ): string {
-    if (!this.languageData.plurals) return "other"
-    return this.languageData.plurals(n, pluralType === "ordinal")
   }
 
   date(value: string | Date, format: DateFormat): string {

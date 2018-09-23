@@ -3,11 +3,6 @@ import { setupI18n } from "@lingui/core"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", function() {
-  it("should be initialized with empty catalog", function() {
-    const i18n = setupI18n()
-    expect(i18n.messages).toEqual({})
-  })
-
   it(".load should load catalog and merge with existing", function() {
     const messages = {
       Hello: "Hello"
@@ -19,8 +14,6 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n()
-    expect(i18n.messages).toEqual({})
-
     i18n.load("en", { messages, languageData })
     i18n.activate("en")
     expect(i18n.messages).toEqual(messages)
@@ -29,9 +22,6 @@ describe("I18n", function() {
     // fr catalog shouldn't affect the english one
     i18n.load("fr", { messages: { Hello: "Salut" } })
     expect(i18n.messages).toEqual(messages)
-
-    // $FlowIgnore: testing edge case
-    expect(() => i18n.load()).toThrowError("Missing locale and/or catalog")
   })
 
   it(".activate should switch active language", function() {
@@ -51,8 +41,6 @@ describe("I18n", function() {
     expect(i18n.messages).toEqual({})
 
     i18n.activate("fr")
-    // $FlowIgnore: testing edge case
-    expect(() => i18n.activate()).toThrowError("Missing locale")
     expect(i18n.language).toEqual("fr")
     expect(i18n.messages).toEqual(messages)
   })
