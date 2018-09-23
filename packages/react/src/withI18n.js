@@ -10,16 +10,28 @@ export type withI18nProps = {
   i18n: I18nType
 }
 
-export default function withI18n<P, C: React.ComponentType<P>>(
-  WrappedComponent: C
-): C & React.ComponentType<$Diff<P, withI18nProps>> {
-  const WithI18n = forwardRef(function(props, ref) {
-    return (
-      <I18n>
-        {({ i18n }) => <WrappedComponent {...props} i18n={i18n} ref={ref} />}
-      </I18n>
-    )
-  })
+function makeWithI18n({ withHash = false } = {}) {
+  return function withI18n<P, C: React.ComponentType<P>>(
+    WrappedComponent: C
+  ): C & React.ComponentType<$Diff<P, withI18nProps>> {
+    const WithI18n = forwardRef(function(props, ref) {
+      return (
+        <I18n>
+          {({ i18n }) => (
+            <WrappedComponent
+              {...props}
+              ref={ref}
+              i18n={i18n}
+              i18nHash={withHash ? i18n.locale : undefined}
+            />
+          )}
+        </I18n>
+      )
+    })
 
-  return hoistStatics(WithI18n, WrappedComponent)
+    return hoistStatics(WithI18n, WrappedComponent)
+  }
 }
+
+export const withI18n = makeWithI18n()
+export const withI18nForPure = makeWithI18n({ withHash: true })
