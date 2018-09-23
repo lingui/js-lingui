@@ -13,61 +13,25 @@ describe("I18n", function() {
       Hello: "Hello"
     }
 
-    const i18n = setupI18n()
-    expect(i18n.messages).toEqual({})
-
-    i18n.load("en", { messages })
-    i18n.activate("en")
-    expect(i18n.messages).toEqual(messages)
-
-    // fr catalog shouldn't affect the english one
-    i18n.load("fr", { messages: { Hello: "Salut" } })
-    expect(i18n.messages).toEqual(messages)
-
-    i18n.load("en", { messages: { Goodbye: "Goodbye" } })
-    // $FlowIgnore: testing edge case
-    i18n.load() // should do nothing
-    expect(i18n.messages).toEqual({
-      Hello: "Hello",
-      Goodbye: "Goodbye"
-    })
-  })
-
-  it(".loadLanguageData should load language data and merge with existing", function() {
     const languageData = {
       plurals: jest.fn(),
       code: "en_US"
     }
 
-    const i18n = setupI18n({
-      language: "en",
-      catalogs: {
-        en: {
-          messages: {},
-          languageData
-        },
-        fr: {
-          messages: {}
-        }
-      }
-    })
+    const i18n = setupI18n()
+    expect(i18n.messages).toEqual({})
 
+    i18n.load("en", { messages, languageData })
+    i18n.activate("en")
+    expect(i18n.messages).toEqual(messages)
     expect(i18n.languageData).toEqual(languageData)
 
     // fr catalog shouldn't affect the english one
-    i18n.load({
-      fr: {
-        messages: {},
-        languageData: {
-          plurals: jest.fn(),
-          code: "fr_FR"
-        }
-      }
-    })
-    expect(i18n.languageData).toEqual(languageData)
+    i18n.load("fr", { messages: { Hello: "Salut" } })
+    expect(i18n.messages).toEqual(messages)
+
     // $FlowIgnore: testing edge case
-    i18n.load() // should do nothing
-    expect(i18n.languageData).toEqual(languageData)
+    expect(() => i18n.load()).toThrowError("Missing locale and/or catalog")
   })
 
   it(".activate should switch active language", function() {
@@ -88,7 +52,7 @@ describe("I18n", function() {
 
     i18n.activate("fr")
     // $FlowIgnore: testing edge case
-    i18n.activate() // should do nothing
+    expect(() => i18n.activate()).toThrowError("Missing locale")
     expect(i18n.language).toEqual("fr")
     expect(i18n.messages).toEqual(messages)
   })

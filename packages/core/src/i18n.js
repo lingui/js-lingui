@@ -89,6 +89,10 @@ class I18n {
   }
 
   load(locale: Locale, catalog: Catalog) {
+    if (!locale || typeof catalog !== "object") {
+      throw new Error("Missing locale and/or catalog")
+    }
+
     if (!this._catalogs[locale]) {
       this._catalogs[locale] = {
         messages: {},
@@ -101,7 +105,9 @@ class I18n {
   }
 
   activate(locale: Locale, locales?: Locales) {
-    if (!locale) return
+    if (!locale) {
+      throw new Error("Missing locale")
+    }
 
     if (process.env.NODE_ENV !== "production") {
       if (this.availableLanguages.indexOf(locale) === -1) {
