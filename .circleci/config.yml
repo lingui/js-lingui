@@ -24,7 +24,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: webpackcontrib/circleci-jdk9-node8
+      - image: circleci/openjdk:latest-node-browsers-legacy
 
     steps:
       - checkout
