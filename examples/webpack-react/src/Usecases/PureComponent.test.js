@@ -1,33 +1,36 @@
 // @flow
 import * as React from "react"
 import { mount } from "enzyme"
-import { I18nProvider } from "@lingui/react"
+import { I18nProvider, setupI18n } from "@lingui/react"
 
 import PureComponent from "./PureComponent"
 
 describe("PureComponent", function() {
-  const catalogs = {
-    en: {},
-    cs: {
-      messages: {
-        "The value is: {value}": "Hodnota je: {value}"
+  const mountWithI18n = () => {
+    const Component = ({ value = 1 }: { value: number }) => (
+      <I18nProvider i18n={i18n}>
+        <PureComponent value={value} />
+      </I18nProvider>
+    )
+    const i18n = setupI18n({
+      locale: "en",
+      catalogs: {
+        en: {},
+        cs: {
+          messages: {
+            "The value is: {value}": "Hodnota je: {value}"
+          }
+        }
       }
+    })
+
+    return {
+      i18n,
+      node: mount(<Component value={1} />)
     }
   }
 
-  const Component = ({
-    language,
-    value
-  }: {
-    language: string,
-    value: number
-  }) => (
-    <I18nProvider language={language} catalogs={catalogs}>
-      <PureComponent value={value} />
-    </I18nProvider>
-  )
-
-  const getText = (node, element) => {
+  const text = (node, element) => {
     return node
       .find(element)
       .first()
@@ -35,16 +38,16 @@ describe("PureComponent", function() {
   }
 
   it("should update translation of children when language changes", function() {
-    const node = mount(<Component language="en" value={1} />)
-    expect(getText(node, ".valid")).toEqual("The value is: 1")
-    expect(getText(node, ".invalid")).toEqual("The value is: 1")
+    const { node, i18n } = mountWithI18n()
+    expect(text(node, ".valid")).toEqual("The value is: 1")
+    expect(text(node, ".invalid")).toEqual("The value is: 1")
     node.setProps({ value: 11 })
-    expect(getText(node, ".valid")).toEqual("The value is: 11")
-    expect(getText(node, ".invalid")).toEqual("The value is: 11")
+    expect(text(node, ".valid")).toEqual("The value is: 11")
+    expect(text(node, ".invalid")).toEqual("The value is: 11")
 
-    node.setProps({ language: "cs" })
+    i18n.activate("cs")
     node.update()
-    expect(getText(node, ".valid")).toEqual("Hodnota je: 11")
-    expect(getText(node, ".invalid")).toEqual("The value is: 11")
+    expect(text(node, ".valid")).toEqual("Hodnota je: 11")
+    expect(text(node, ".invalid")).toEqual("The value is: 11")
   })
 })

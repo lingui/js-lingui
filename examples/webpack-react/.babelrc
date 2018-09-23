@@ -7,8 +7,7 @@
       }
     ],
     "@babel/react",
-    "@babel/flow",
-    "@lingui/babel-preset-react"
+    "@babel/flow"
   ],
   "plugins": [
     "macros",
