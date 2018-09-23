@@ -2,14 +2,16 @@
 import * as React from "react"
 import type { I18n } from "@lingui/core"
 
-export const {
+const {
   Provider: I18nCoreProvider,
   Consumer: I18nCoreConsumer
 } = React.createContext({})
-export const {
+const {
   Provider: I18nDefaultRenderProvider,
   Consumer: I18nDefaultRenderConsumer
 } = React.createContext(null)
+
+export { I18nCoreConsumer, I18nDefaultRenderConsumer }
 
 export type I18nProviderProps = {
   i18n: I18n,

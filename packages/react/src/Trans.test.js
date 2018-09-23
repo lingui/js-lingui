@@ -4,7 +4,6 @@ import { mount } from "enzyme"
 
 import { Trans, I18nProvider } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
-import { getConsoleMockCalls, mockEnv, mockConsole } from "@lingui/jest-mocks"
 
 describe("Trans component", function() {
   /*
@@ -117,17 +116,18 @@ describe("Trans component", function() {
   })
 
   describe("rendering", function() {
+    // We must test snapshots of HTML output, because <Trans> component might be renamed
+    // in integration test (e.g. Trans$$1).
+
     it("should render just a text without wrapping element", function() {
-      const txt = mount(<Trans id="Just a text" />)
+      // <Trans> component must be wrapped in <span> if we want to get HTML, otherwise
+      // it's just text and enzyme throws an error.
+      const txt = mount(
+        <span>
+          <Trans id="Just a text" />
+        </span>
+      ).html()
       expect(txt).toMatchSnapshot()
-
-      const span = mount(<Trans render={null} id="Just a text" />)
-      expect(span).toMatchSnapshot()
-
-      const withClass = mount(
-        <Trans render={null} className="info" id="Just a text" />
-      )
-      expect(withClass).toMatchSnapshot()
     })
 
     it("should render with built-in element", function() {
@@ -136,7 +136,7 @@ describe("Trans component", function() {
     })
 
     it("should render custom element", function() {
-      const element = mount(<Trans render={<h1 />} id="Headline" />)
+      const element = mount(<Trans render={<h1 />} id="Headline" />).html()
       expect(element).toMatchSnapshot()
     })
 
@@ -165,9 +165,7 @@ describe("Trans component", function() {
         <I18nProvider i18n={i18n} defaultRender="span">
           <Trans id="Just a text" />
         </I18nProvider>
-      )
-        .find("Trans")
-        .html()
+      ).html()
       expect(span).toMatchSnapshot()
     })
   })

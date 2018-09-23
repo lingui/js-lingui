@@ -1,41 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Trans component rendering should render custom element 1`] = `
-<Trans
-  id=Headline
-  render={<h1 />}
->
-  <h1>
-    Headline
-  </h1>
-</Trans>
+
+<h1>
+  Headline
+</h1>
+
 `;
 
 exports[`Trans component rendering should render just a text without wrapping element 1`] = `
-<Trans
-  id=Just a text
->
-  Just a text
-</Trans>
-`;
 
-exports[`Trans component rendering should render just a text without wrapping element 2`] = `
-<Trans
-  id=Just a text
-  render={null}
->
+<span>
   Just a text
-</Trans>
-`;
+</span>
 
-exports[`Trans component rendering should render just a text without wrapping element 3`] = `
-<Trans
-  className=info
-  id=Just a text
-  render={null}
->
-  Just a text
-</Trans>
 `;
 
 exports[`Trans component rendering should render with built-in element 1`] = `

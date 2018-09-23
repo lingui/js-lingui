@@ -3,8 +3,7 @@ import * as React from "react"
 import { mount } from "enzyme"
 
 import { setupI18n } from "@lingui/core"
-import { DateFormat, NumberFormat } from "@lingui/react"
-import I18nProvider from "./I18nProvider"
+import { I18nProvider, DateFormat, NumberFormat } from "@lingui/react"
 
 const text = (element, language, locales) => {
   const i18n = setupI18n({

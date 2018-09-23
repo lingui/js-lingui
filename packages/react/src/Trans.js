@@ -2,8 +2,11 @@
 import * as React from "react"
 
 import type { I18n } from "@lingui/core"
+import {
+  I18nDefaultRenderConsumer,
+  I18n as I18nCoreConsumer
+} from "@lingui/react"
 import { formatElements } from "./format"
-import { I18nDefaultRenderConsumer, I18nCoreConsumer } from "./I18nProvider"
 
 export type TransProps = {
   id: string,

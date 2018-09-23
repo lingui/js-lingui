@@ -1,13 +1,12 @@
 // @flow
 import * as React from "react"
 
-import type { Locales, I18n } from "@lingui/core"
-import withI18n from "./withI18n"
+import type { Locales } from "@lingui/core"
+import { I18n } from "@lingui/react"
 
 type FormatProps<V, FormatOptions> = {
   value: V,
-  format?: FormatOptions,
-  i18n: I18n
+  format?: FormatOptions
 }
 
 function createFormat<V, FormatOptions>(
@@ -16,14 +15,19 @@ function createFormat<V, FormatOptions>(
     format?: FormatOptions
   ) => (value: V) => string
 ) {
-  return withI18n(function({
-    value,
-    format,
-    i18n
-  }: FormatProps<V, FormatOptions>) {
-    const formatter = formatFunction(i18n.locales || i18n.language, format)
-    return formatter(value)
-  })
+  return function({ value, format }: FormatProps<V, FormatOptions>) {
+    return (
+      <I18n>
+        {i18n => {
+          const formatter = formatFunction(
+            i18n.locales || i18n.language,
+            format
+          )
+          return formatter(value)
+        }}
+      </I18n>
+    )
+  }
 }
 
 export default createFormat
