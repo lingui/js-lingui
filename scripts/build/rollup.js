@@ -2,7 +2,7 @@
 
 const { rollup } = require("rollup")
 const babel = require("rollup-plugin-babel")
-const closure = require("rollup-plugin-closure-compiler-js")
+const closure = require("rollup-plugin-closure-compiler")
 const commonjs = require("rollup-plugin-commonjs")
 const resolve = require("rollup-plugin-node-resolve")
 const prettier = require("rollup-plugin-prettier")
