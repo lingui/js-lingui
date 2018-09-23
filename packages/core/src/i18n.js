@@ -38,8 +38,8 @@ function I18n() {
   // Messages and localeData are merged on load,
   // so we must initialize it manually
   this._catalogs = {}
-  this._onActivate = []
-  this._onLoadLocale = []
+  this._didActivate = []
+  this._willActivate = []
 }
 
 I18n.prototype = {
@@ -80,7 +80,15 @@ I18n.prototype = {
     Object.keys(catalogs).forEach(locale => this.load(locale, catalogs[locale]))
   },
 
-  load(locale: Locale, catalog: Catalog) {
+  load(locale: Locale, catalog?: Catalog) {
+    if (!catalog) {
+      return Promise.all(
+        this._willActivate.map(load =>
+          load(locale).then(catalog => this.load(locale, catalog))
+        )
+      )
+    }
+
     if (this._catalogs[locale] === undefined) {
       this._catalogs[locale] = {
         messages: {},
@@ -91,33 +99,24 @@ I18n.prototype = {
     const prev = this._catalogs[locale]
     Object.assign(prev.messages, catalog.messages)
     Object.assign(prev.localeData, catalog.localeData)
+    return Promise.resolve()
   },
 
   activate(locale: Locale, locales?: Locales) {
     if (!this._catalogs[locale]) {
-      if (this._onLoadLocale.length) {
-        return Promise.all(
-          this._onLoadLocale.map(load =>
-            load(locale).then(catalog => this.load(locale, catalog))
-          )
-        ).then(() => {
-          this.setLocale(locale, locales)
-        })
-      } else {
-        if (process.env.NODE_ENV !== "production") {
-          console.warn(`Message catalog for locale "${locale}" not loaded.`)
-        }
+      if (this._willActivate.length) {
+        return this.load(locale).then(() => this.activate(locale, locales))
+      }
+
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`Message catalog for locale "${locale}" not loaded.`)
       }
     }
 
-    this.setLocale(locale, locales)
-    return Promise.resolve()
-  },
-
-  setLocale(locale: Locale, locales?: Locales) {
     this._locale = locale
     this._locales = locales
-    this._onActivate.forEach(s => s())
+    this._didActivate.forEach(s => s())
+    return Promise.resolve()
   },
 
   use(locale: Locale, locales?: Locales) {
@@ -127,14 +126,14 @@ I18n.prototype = {
     return i18n
   },
 
-  onLoadLocale(callback: (locale: Locale) => Promise<Catalog>): Function {
-    this._onLoadLocale.push(callback)
-    return () => this._onLoadLocale.filter(cb => cb !== callback)
+  willActivate(callback: (locale: Locale) => Promise<Catalog>): Function {
+    this._willActivate.push(callback)
+    return () => this._willActivate.filter(cb => cb !== callback)
   },
 
-  onActivate(callback: () => void): Function {
-    this._onActivate.push(callback)
-    return () => this._onActivate.filter(cb => cb !== callback)
+  didActivate(callback: () => void): Function {
+    this._didActivate.push(callback)
+    return () => this._didActivate.filter(cb => cb !== callback)
   },
 
   // default translate method
@@ -166,12 +165,10 @@ I18n.prototype = {
     }
 
     if (!isFunction(translation)) return translation
-    return interpolate(
-      translation,
-      this.locale,
-      this.locales,
-      this.localeData
-    )(values, formats)
+    return interpolate(translation, this.locale, this.locales, this.localeData)(
+      values,
+      formats
+    )
   },
 
   date(value: string | Date, format: DateFormat): string {
