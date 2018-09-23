@@ -1,11 +1,8 @@
 // @flow
 import * as React from "react"
 
-import type { I18n } from "@lingui/core"
-import {
-  I18nDefaultRenderConsumer,
-  I18n as I18nCoreConsumer
-} from "@lingui/react"
+import type { I18n as I18nType } from "@lingui/core"
+import { I18n } from "@lingui/react"
 import { formatElements } from "./format"
 
 export type TransProps = {
@@ -18,7 +15,7 @@ export type TransProps = {
 }
 
 export default class Trans extends React.Component<TransProps> {
-  getTranslation(i18n: I18n): React.Node {
+  getTranslation(i18n: I18nType): React.Node {
     const { id = "", defaults, formats } = this.props
 
     const values = { ...this.props.values }
@@ -58,31 +55,25 @@ export default class Trans extends React.Component<TransProps> {
 
   render() {
     return (
-      <I18nCoreConsumer>
-        {i18n => {
+      <I18n>
+        {({ i18n, defaultRender }) => {
           const translation = this.getTranslation(i18n)
-          return (
-            <I18nDefaultRenderConsumer>
-              {defaultRender => {
-                const { render = defaultRender, id, defaults } = this.props
+          const { render = defaultRender, id, defaults } = this.props
 
-                if (render === null || render === undefined) {
-                  return translation
-                } else if (typeof render === "string") {
-                  // Built-in element: h1, p
-                  return React.createElement(render, {}, translation)
-                } else if (typeof render === "function") {
-                  // Function: (props) => <a title={props.translation}>x</a>
-                  return render({ id, translation, defaults })
-                }
+          if (render === null || render === undefined) {
+            return translation
+          } else if (typeof render === "string") {
+            // Built-in element: h1, p
+            return React.createElement(render, {}, translation)
+          } else if (typeof render === "function") {
+            // Function: (props) => <a title={props.translation}>x</a>
+            return render({ id, translation, defaults })
+          }
 
-                // Element: <p className="lear' />
-                return React.cloneElement(render, {}, translation)
-              }}
-            </I18nDefaultRenderConsumer>
-          )
+          // Element: <p className="lear' />
+          return React.cloneElement(render, {}, translation)
         }}
-      </I18nCoreConsumer>
+      </I18n>
     )
   }
 }

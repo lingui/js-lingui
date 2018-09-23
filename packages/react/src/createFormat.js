@@ -18,7 +18,7 @@ function createFormat<V, FormatOptions>(
   return function({ value, format }: FormatProps<V, FormatOptions>) {
     return (
       <I18n>
-        {i18n => {
+        {({ i18n }) => {
           const formatter = formatFunction(
             i18n.locales || i18n.language,
             format

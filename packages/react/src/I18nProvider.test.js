@@ -45,7 +45,7 @@ describe("I18nProvider", function() {
 
     const node = mount(
       <I18nProvider i18n={i18n}>
-        <I18n>{i18n => i18n.language}</I18n>
+        <I18n>{({ i18n }) => i18n.language}</I18n>
       </I18nProvider>
     )
     expect(node.text()).toEqual("en")

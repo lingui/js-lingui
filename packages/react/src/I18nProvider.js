@@ -1,29 +1,30 @@
 // @flow
 import * as React from "react"
-import type { I18n } from "@lingui/core"
+import type { I18n as I18nType } from "@lingui/core"
 
-const {
-  Provider: I18nCoreProvider,
-  Consumer: I18nCoreConsumer
-} = React.createContext({})
-const {
-  Provider: I18nDefaultRenderProvider,
-  Consumer: I18nDefaultRenderConsumer
-} = React.createContext(null)
-
-export { I18nCoreConsumer, I18nDefaultRenderConsumer }
-
-export type I18nProviderProps = {
-  i18n: I18n,
+type I18nProviderProps = {
+  i18n: I18nType,
   children: any,
   defaultRender?: any
 }
 
-export type I18nProviderState = {
-  i18n: I18n
+type I18nContext = {
+  i18n: I18nType,
+  defaultRender?: any
 }
 
-export default class I18nProvider extends React.Component<
+type I18nProviderState = {|
+  context: I18nContext
+|}
+
+const { Provider: I18nContextProvider, Consumer: I18n } = React.createContext({
+  i18n: {},
+  defaultRender: null
+})
+
+export { I18n }
+
+export class I18nProvider extends React.Component<
   I18nProviderProps,
   I18nProviderState
 > {
@@ -31,34 +32,51 @@ export default class I18nProvider extends React.Component<
 
   constructor(props: I18nProviderProps) {
     super(props)
-    this.state = {
-      i18n: this.props.i18n
-    }
+    this.state = this.setContext(false)
   }
 
+  /**
+   * I18n object from `@lingui/core` is the single source of truth for all i18n related
+   * data (active locale, catalogs). When new messages are loaded or locale is changed
+   * we need to trigger re-rendering of I18nContextConsumers.
+   */
   componentDidMount() {
-    this.unsubscribe = this.props.i18n.onActivate(this.localeChanged)
+    this.unsubscribe = this.props.i18n.onActivate(this.setContext)
   }
 
   componentWillUnmount() {
     this.unsubscribe()
   }
 
-  localeChanged = () => {
-    const i18n = Object.assign(
-      Object.create(Object.getPrototypeOf(this.props.i18n)),
-      this.props.i18n
-    )
-    this.setState({ i18n })
+  /**
+   * We can't pass `i18n` object directly through context, because even when locale
+   * or messages are changed, i18n object is still the same. Context provider compares
+   * reference identity and suggested workaround is create a wrapper object every time
+   * we need to trigger re-render. See https://reactjs.org/docs/context.html#caveats.
+   *
+   * Due to this effect we also pass `defaultRender` in the same context, instead
+   * of creating a separate Provider/Consumer pair.
+   *
+   * When `set` is false, `setState` isn't called and new state is returned. This is
+   * used in constructor when we can't call `setState`
+   */
+  setContext = (set: boolean = true) => {
+    const state = {
+      context: {
+        i18n: this.props.i18n,
+        defaultRender: this.props.defaultRender
+      }
+    }
+
+    if (set) this.setState(state)
+    return state
   }
 
   render() {
     return (
-      <I18nDefaultRenderProvider value={this.props.defaultRender}>
-        <I18nCoreProvider value={this.state.i18n}>
-          {this.props.children}
-        </I18nCoreProvider>
-      </I18nDefaultRenderProvider>
+      <I18nContextProvider value={this.state.context}>
+        {this.props.children}
+      </I18nContextProvider>
     )
   }
 }
