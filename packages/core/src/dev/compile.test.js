@@ -13,8 +13,8 @@ describe("compile", function() {
     }
   }
 
-  const prepare = (translation, language, locales) =>
-    interpolate(compile(translation), language || "en", locales, englishPlurals)
+  const prepare = (translation, locale, locales) =>
+    interpolate(compile(translation), locale || "en", locales, englishPlurals)
 
   it("should handle an error if message has syntax errors", function() {
     mockConsole(console => {
@@ -76,7 +76,7 @@ describe("compile", function() {
   ]
   testVector.forEach(tc => {
     const [
-      language,
+      locale,
       locales,
       expectedNumber,
       expectedPercent1,
@@ -87,20 +87,20 @@ describe("compile", function() {
     ] = tc
 
     it(
-      "should compile custom format for language=" +
-        language +
+      "should compile custom format for locale=" +
+        locale +
         " and locales=" +
         locales,
       function() {
-        const number = prepare("{value, number}", language, locales)
+        const number = prepare("{value, number}", locale, locales)
         expect(number({ value: 0.1 })).toEqual(expectedNumber)
 
-        const percent = prepare("{value, number, percent}", language, locales)
+        const percent = prepare("{value, number, percent}", locale, locales)
         expect(percent({ value: 0.1 })).toEqual(expectedPercent1)
         expect(percent({ value: 0.2 })).toEqual(expectedPercent2)
 
         const now = new Date("3/4/2017")
-        const date = prepare("{value, date}", language, locales)
+        const date = prepare("{value, date}", locale, locales)
         expect(date({ value: now })).toEqual(expectedDate)
 
         const formats = {
@@ -110,7 +110,7 @@ describe("compile", function() {
             minimumFractionDigits: 2
           }
         }
-        const currency = prepare("{value, number, currency}", language, locales)
+        const currency = prepare("{value, number, currency}", locale, locales)
         expect(currency({ value: 0.1 }, formats)).toEqual(expectedCurrency1)
         expect(currency({ value: 1 }, formats)).toEqual(expectedCurrency2)
       }

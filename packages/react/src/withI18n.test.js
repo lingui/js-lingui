@@ -14,7 +14,7 @@ describe("withI18n", function() {
     })
 
     const i18n = setupI18n({
-      language: "en"
+      locale: "en"
     })
 
     const node = mount(
@@ -42,7 +42,7 @@ describe("withI18n", function() {
   it("should provide data from i18n context", function() {
     const { i18n, ...props } = mountHoc().props
     expect(i18n).toBeDefined()
-    expect(i18n.language).toBeDefined()
+    expect(i18n.locale).toBeDefined()
     expect(i18n.messages).toBeDefined()
   })
 

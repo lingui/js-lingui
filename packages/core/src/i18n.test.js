@@ -8,44 +8,44 @@ describe("I18n", function() {
       Hello: "Hello"
     }
 
-    const languageData = {
+    const localeData = {
       plurals: jest.fn(),
       code: "en_US"
     }
 
     const i18n = setupI18n()
-    i18n.load("en", { messages, languageData })
+    i18n.load("en", { messages, localeData })
     i18n.activate("en")
     expect(i18n.messages).toEqual(messages)
-    expect(i18n.languageData).toEqual(languageData)
+    expect(i18n.localeData).toEqual(localeData)
 
     // fr catalog shouldn't affect the english one
     i18n.load("fr", { messages: { Hello: "Salut" } })
     expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should switch active language", function() {
+  it(".activate should switch active locale", function() {
     const messages = {
       Hello: "Salut"
     }
 
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       catalogs: {
         fr: { messages },
         en: { messages: {} }
       }
     })
 
-    expect(i18n.language).toEqual("en")
+    expect(i18n.locale).toEqual("en")
     expect(i18n.messages).toEqual({})
 
     i18n.activate("fr")
-    expect(i18n.language).toEqual("fr")
+    expect(i18n.locale).toEqual("fr")
     expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should throw an error about incorrect language", function() {
+  it(".activate should throw an error about incorrect locale", function() {
     const i18n = setupI18n()
 
     mockConsole(console => {
@@ -66,7 +66,7 @@ describe("I18n", function() {
     })
   })
 
-  it(".use should return new i18n object with switched language", function() {
+  it(".use should return new i18n object with switched locale", function() {
     const catalogs = {
       en: {
         messages: {
@@ -81,22 +81,22 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       catalogs
     })
 
     expect(i18n._("Hello")).toEqual("Hello")
 
-    // change language locally
+    // change locale locally
     expect(i18n.use("fr")._("Hello")).toEqual("Salut")
 
-    // global language hasn't changed
+    // global locale hasn't changed
     expect(i18n._("Hello")).toEqual("Hello")
   })
 
   it(".use should return new i18n object with switched locales", function() {
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       locales: "en-UK"
     })
     const plural = "{value, plural, zero {لا كتاب} two {# الكتب}}"
@@ -124,7 +124,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
 
@@ -157,7 +157,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
 
@@ -182,7 +182,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
     const hello = "Hello"
@@ -198,7 +198,7 @@ describe("I18n", function() {
     mockEnv("production", () => {
       const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
-        language: "fr",
+        locale: "fr",
         catalogs: { fr: { messages } }
       })
 
@@ -212,7 +212,7 @@ describe("I18n", function() {
     it("._ should return custom string for missing translations", function() {
       const i18n = setupI18n({
         missing: "xxx",
-        language: "en",
+        locale: "en",
         catalogs: { en: { messages: { exists: "exists" } } }
       })
       expect(i18n._("exists")).toEqual("exists")
@@ -220,14 +220,14 @@ describe("I18n", function() {
     })
 
     it("._ should call a function with message ID of missing translation", function() {
-      const missing = jest.fn((language, id) =>
+      const missing = jest.fn((locale, id) =>
         id
           .split("")
           .reverse()
           .join("")
       )
       const i18n = setupI18n({
-        language: "en",
+        locale: "en",
         missing
       })
       expect(i18n._("missing")).toEqual("gnissim")

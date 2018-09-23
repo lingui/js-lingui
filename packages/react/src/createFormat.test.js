@@ -5,9 +5,9 @@ import { mount } from "enzyme"
 import { setupI18n } from "@lingui/core"
 import { I18nProvider, DateFormat, NumberFormat } from "@lingui/react"
 
-const text = (element, language, locales) => {
+const text = (element, locale, locales) => {
   const i18n = setupI18n({
-    language,
+    locale,
     locales
   })
   return mount(<I18nProvider i18n={i18n}>{element}</I18nProvider>).text()

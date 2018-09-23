@@ -1,4 +1,4 @@
 import compile from "./compile"
-import loadLanguageData from "./loadLanguageData"
+import loadLocaleData from "./loadLocaleData"
 
-export { compile, loadLanguageData }
+export { compile, loadLocaleData }

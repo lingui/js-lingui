@@ -36,7 +36,7 @@ describe("I18nProvider", function() {
 
   it("should re-render on locale changes", function() {
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       catalogs: {
         en: {},
         cs: {}
@@ -45,7 +45,7 @@ describe("I18nProvider", function() {
 
     const node = mount(
       <I18nProvider i18n={i18n}>
-        <I18n>{({ i18n }) => i18n.language}</I18n>
+        <I18n>{({ i18n }) => i18n.locale}</I18n>
       </I18nProvider>
     )
     expect(node.text()).toEqual("en")

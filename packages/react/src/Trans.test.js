@@ -10,7 +10,7 @@ describe("Trans component", function() {
    * Setup context, define helpers
    */
   const i18n = setupI18n({
-    language: "cs",
+    locale: "cs",
     catalogs: {
       cs: {
         messages: {

@@ -22,91 +22,76 @@ type Messages = { [msgId: string]: string | Function }
 
 type Catalog = {
   messages: Messages,
-  languageData: LocaleData
+  localeData: LocaleData
 }
 
 type Catalogs = { [locale: string]: Catalog }
 
 type setupI18nProps = {
-  language?: string,
+  locale?: Locale,
   locales?: Locales,
   catalogs?: Catalogs,
   missing?: string | Function
 }
 
-class I18n {
-  _language: string
-  _locales: ?Locales
+function I18n() {
+  // Messages and localeData are merged on load,
+  // so we must initialize it manually
+  this._catalogs = {}
+  this._onActivate = []
+  this._onLoadLocale = []
+}
 
-  // Message catalogs
-  _catalogs: Catalogs
-  _onActivate: Array<Function>
-  _onLoadLocale: Array<Function>
-
-  _missing: ?string | Function
-
-  _dev: Object
-
-  date: Function
-  number: Function
-
-  constructor() {
-    // Messages and languageData are merged on load,
-    // so we must initialize it manually
-    this._catalogs = {}
-    this._onActivate = []
-    this._onLoadLocale = []
-  }
-
-  get availableLanguages(): Array<string> {
+I18n.prototype = {
+  get availableLocales(): Array<string> {
     return Object.keys(this._catalogs)
-  }
+  },
 
-  get language(): string {
-    return this._language
-  }
+  get locale(): string {
+    return this._locale
+  },
 
   get locales(): ?Locales {
     return this._locales
-  }
+  },
 
   get catalog(): Catalog {
-    return this._catalogs[this._language]
-  }
+    return this._catalogs[this._locale]
+  },
 
   get messages(): Messages {
     if (!this.catalog) return {}
     return this.catalog.messages || {}
-  }
+  },
 
-  get languageData(): LocaleData {
+  get localeData(): LocaleData {
     if (process.env.NODE_ENV !== "production") {
-      const languageData = this._dev.loadLanguageData(this._language)
+      const localeData = this._dev.loadLocaleData(this._locale)
       if (!this.catalog) {
-        this._catalogs[this.language] = { messages: {}, languageData }
-      } else if (!this.catalog.languageData) {
-        this.catalog.languageData = languageData
+        this._catalogs[this.locale] = { messages: {}, localeData }
+      } else if (!this.catalog.localeData) {
+        this.catalog.localeData = localeData
       }
     }
-    return this.catalog.languageData
-  }
+    return this.catalog.localeData
+  },
 
   loadAll(catalogs: Catalogs) {
     Object.keys(catalogs).forEach(locale => this.load(locale, catalogs[locale]))
-  }
+  },
 
   load(locale: Locale, catalog: Catalog) {
     if (this._catalogs[locale] === undefined) {
       this._catalogs[locale] = {
         messages: {},
-        languageData: {}
+        localeData: {}
       }
     }
 
     const prev = this._catalogs[locale]
     Object.assign(prev.messages, catalog.messages)
-    Object.assign(prev.languageData, catalog.languageData)
-  }
+    Object.assign(prev.localeData, catalog.localeData)
+  },
 
   activate(locale: Locale, locales?: Locales) {
     if (!this._catalogs[locale]) {
@@ -127,30 +112,30 @@ class I18n {
 
     this.setLocale(locale, locales)
     return Promise.resolve()
-  }
+  },
 
   setLocale(locale: Locale, locales?: Locales) {
-    this._language = locale
+    this._locale = locale
     this._locales = locales
     this._onActivate.forEach(s => s())
-  }
+  },
 
   use(locale: Locale, locales?: Locales) {
     const i18n = setupI18n()
     i18n._catalogs = this._catalogs
     i18n.activate(locale, locales)
     return i18n
-  }
+  },
 
   onLoadLocale(callback: (locale: Locale) => Promise<Catalog>): Function {
     this._onLoadLocale.push(callback)
     return () => this._onLoadLocale.filter(cb => cb !== callback)
-  }
+  },
 
   onActivate(callback: () => void): Function {
     this._onActivate.push(callback)
     return () => this._onActivate.filter(cb => cb !== callback)
-  }
+  },
 
   // default translate method
   _(
@@ -171,7 +156,7 @@ class I18n {
     // replace missing messages with custom message for debugging
     const missing = this._missing
     if (missing && !this.messages[id]) {
-      return isFunction(missing) ? missing(this.language, id) : missing
+      return isFunction(missing) ? missing(this.locale, id) : missing
     }
 
     if (process.env.NODE_ENV !== "production") {
@@ -183,18 +168,18 @@ class I18n {
     if (!isFunction(translation)) return translation
     return interpolate(
       translation,
-      this.language,
+      this.locale,
       this.locales,
-      this.languageData
+      this.localeData
     )(values, formats)
-  }
+  },
 
   date(value: string | Date, format: DateFormat): string {
-    return date(this.locales || this.language, format)(value)
-  }
+    return date(this.locales || this.locale, format)(value)
+  },
 
   number(value: number, format: NumberFormat): string {
-    return number(this.locales || this.language, format)(value)
+    return number(this.locales || this.locale, format)(value)
   }
 }
 
@@ -206,7 +191,7 @@ function setupI18n(params?: setupI18nProps = {}): I18n {
   }
 
   if (params.catalogs) i18n.loadAll(params.catalogs)
-  if (params.language) i18n.activate(params.language, params.locales)
+  if (params.locale) i18n.activate(params.locale, params.locales)
   if (params.missing) i18n._missing = params.missing
 
   return i18n
