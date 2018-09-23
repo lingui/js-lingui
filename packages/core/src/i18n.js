@@ -1,6 +1,6 @@
 /* @flow */
 import { interpolate } from "./context"
-import { isString, isFunction } from "./essentials"
+import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import type { DateFormat, NumberFormat } from "./formats"
 
@@ -56,21 +56,20 @@ I18n.prototype = {
   },
 
   get catalog(): Catalog {
-    return this._catalogs[this._locale]
+    return this._catalogs[this.locale]
   },
 
   get messages(): Messages {
-    if (!this.catalog) return {}
-    return this.catalog.messages || {}
+    return this.catalog && this.catalog.messages ? this.catalog.messages : {}
   },
 
   get localeData(): LocaleData {
     if (process.env.NODE_ENV !== "production") {
-      const localeData = this._dev.loadLocaleData(this._locale)
       if (!this.catalog) {
-        this._catalogs[this.locale] = { messages: {}, localeData }
-      } else if (!this.catalog.localeData) {
-        this.catalog.localeData = localeData
+        this._catalogs[this.locale] = {}
+      }
+      if (isEmpty(this.catalog.localeData)) {
+        this.catalog.localeData = this._dev.loadLocaleData(this._locale)
       }
     }
     return this.catalog.localeData
