@@ -1,28 +1,32 @@
 // @flow
-import { date, number } from "@lingui/core"
-
-import I18nProvider from "./I18nProvider"
-import I18n from "./I18n"
+import { I18nProvider, I18n } from "./I18nProvider"
 import Trans from "./Trans"
-import { Plural, Select, SelectOrdinal } from "./Select"
 
+import { withI18n, withI18nForPure } from "./withI18n"
 import createFormat from "./createFormat"
-import withI18n from "./withI18n"
+import { date, number, setupI18n } from "@lingui/core"
 
-const DateFormat = withI18n()(createFormat(date))
-const NumberFormat = withI18n()(createFormat(number))
+import type {
+  Catalog,
+  Catalogs,
+  MessageOptions,
+  LocaleData,
+  I18n as I18nType,
+  Locales
+} from "@lingui/core"
 
-const i18nMark = (id: string) => id
+const DateFormat = createFormat(date)
+const NumberFormat = createFormat(number)
 
 export {
-  i18nMark,
   withI18n,
+  withI18nForPure,
   I18nProvider,
   I18n,
   Trans,
-  Plural,
-  Select,
-  SelectOrdinal,
   DateFormat,
-  NumberFormat
+  NumberFormat,
+  setupI18n
 }
+
+export type { Catalog, Catalogs, MessageOptions, LocaleData, I18nType, Locales }

@@ -1,91 +1,41 @@
 // @flow
 import * as React from "react"
-import { mount, shallow } from "enzyme"
+import { mount } from "enzyme"
 
-import { Trans } from "@lingui/react"
-import { setupI18n } from "@lingui/core"
-import { mockEnv, mockConsole } from "./mocks"
+import { setupI18n, Trans, I18nProvider } from "@lingui/react"
 
 describe("Trans component", function() {
   /*
    * Setup context, define helpers
    */
   const i18n = setupI18n({
-    language: "en",
+    locale: "cs",
     catalogs: {
-      en: {
+      cs: {
         messages: {
           "All human beings are born free and equal in dignity and rights.":
             "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
           "My name is {name}": "Jmenuji se {name}",
           Original: "Původní",
           Updated: "Aktualizovaný",
-          "msg.currency": "{value, number, currency}"
+          "msg.currency": "{value, number, currency}",
+          ID: "Translation"
         }
       }
     }
   })
 
-  const context = { linguiPublisher: { i18n } }
   const text = node =>
-    mount(node, { context })
-      .find("Render")
-      .text()
-
+    mount(<I18nProvider i18n={i18n}>{node}</I18nProvider>).text()
   const html = node =>
-    mount(node, { context })
-      .find("Render")
-      .html()
+    mount(<I18nProvider i18n={i18n}>{node}</I18nProvider>).html()
 
   /*
    * Tests
    */
 
   it("shouldn't throw runtime error without i18n context", function() {
-    expect(text(<Trans id="unknown" />)).toEqual("unknown")
-  })
-
-  it("should warn about possible missing babel-plugin in development", function() {
-    mockEnv("production", () => {
-      jest.resetModules()
-      const { Trans } = require("@lingui/react")
-
-      mockConsole(console => {
-        mount(<Trans>Label</Trans>)
-        expect(console.warn).not.toBeCalled()
-      })
-    })
-
-    mockEnv("development", () => {
-      jest.resetModules()
-      const { Trans } = require("@lingui/react")
-
-      mockConsole(console => {
-        mount(<Trans>Label</Trans>)
-        expect(console.warn).toBeCalledWith(
-          expect.stringContaining("@lingui/babel-preset-react preset")
-        )
-      })
-    })
-  })
-
-  it("should recompile msg when id or defaults changes", function() {
-    const node = mount(<Trans id="Original" defaults="Original" />, { context })
-    const t = () => node.find("Render").text()
-    expect(t()).toEqual("Původní")
-
-    node.setProps({ id: "Updated" })
-    expect(t()).toEqual("Aktualizovaný")
-
-    // doesn't affect when different prop is changed
-    node.setProps({ other: "other" })
-    expect(t()).toEqual("Aktualizovaný")
-
-    // either different id or defaults trigger change
-    node.setProps({ id: "Unknown" })
-    expect(t()).toEqual("Original")
-    node.setProps({ defaults: "Unknown" })
-    expect(t()).toEqual("Unknown")
+    expect(mount(<Trans id="unknown" />).text()).toEqual("unknown")
   })
 
   it("should render default string", function() {
@@ -126,12 +76,11 @@ describe("Trans component", function() {
   })
 
   it("should render component in variables", function() {
-    const translation = mount(
-      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />,
-      { context }
+    const translation = html(
+      <span>
+        <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
+      </span>
     )
-      .find("Render")
-      .debug()
     expect(translation).toMatchSnapshot()
   })
 
@@ -162,6 +111,61 @@ describe("Trans component", function() {
         }}
       />
     )
-    expect(translation).toEqual("€1.00")
+    expect(translation).toEqual("1,00 €")
+  })
+
+  describe("rendering", function() {
+    // We must test snapshots of HTML output, because <Trans> component might be renamed
+    // in integration test (e.g. Trans$$1).
+
+    it("should render just a text without wrapping element", function() {
+      // <Trans> component must be wrapped in <span> if we want to get HTML, otherwise
+      // it's just text and enzyme throws an error.
+      const txt = mount(
+        <span>
+          <Trans id="Just a text" />
+        </span>
+      ).html()
+      expect(txt).toMatchSnapshot()
+    })
+
+    it("should render with built-in element", function() {
+      const span = mount(<Trans render="span" id="Just a text" />).html()
+      expect(span).toMatchSnapshot()
+    })
+
+    it("should render custom element", function() {
+      const element = mount(<Trans render={<h1 />} id="Headline" />).html()
+      expect(element).toMatchSnapshot()
+    })
+
+    it("should render function", function() {
+      const spy = jest.fn()
+      text(
+        <Trans
+          id="ID"
+          defaults="Default"
+          render={props => {
+            spy(props)
+            return null
+          }}
+        />
+      )
+
+      expect(spy).toHaveBeenCalledWith({
+        id: "ID",
+        defaults: "Default",
+        translation: "Translation"
+      })
+    })
+
+    it("should take default render element", function() {
+      const span = mount(
+        <I18nProvider i18n={i18n} defaultRender="span">
+          <Trans id="Just a text" />
+        </I18nProvider>
+      ).html()
+      expect(span).toMatchSnapshot()
+    })
   })
 })

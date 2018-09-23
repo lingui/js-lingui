@@ -1,4 +1,4 @@
-import { mockEnv, mockConsole } from "./mocks"
+import { mockEnv, mockConsole } from "./index"
 
 describe("mocks - testing utilities", function() {
   describe("mockEnv", function() {

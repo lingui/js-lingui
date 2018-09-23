@@ -1,33 +1,36 @@
 // @flow
 import * as React from "react"
 import { mount } from "enzyme"
-import { I18nProvider } from "@lingui/react"
+import { I18nProvider, setupI18n } from "@lingui/react"
 
 import Formats from "./Formats"
 
 describe("Formats", function() {
-  const Component = ({ language, ...props }: { language: string }) => (
-    <I18nProvider language={language} catalogs={{ en: {} }}>
-      <Formats {...props} />
-    </I18nProvider>
-  )
+  const Component = () => {
+    const i18n = setupI18n({ locale: "en" })
+    return (
+      <I18nProvider i18n={i18n}>
+        <Formats />
+      </I18nProvider>
+    )
+  }
 
-  const getText = (element, props = {}) => {
-    return mount(<Component {...props} language="en" />)
+  const text = (element, props = {}) => {
+    return mount(<Component {...props} />)
       .find(element)
       .first()
       .text()
   }
 
   it("should render", function() {
-    expect(mount(<Component language="en" />)).toMatchSnapshot()
+    expect(mount(<Component />)).toMatchSnapshot()
   })
 
   it("should render percent", function() {
-    expect(getText(".percent")).toEqual("The answer is 42%")
+    expect(text(".percent")).toEqual("The answer is 42%")
   })
 
   it("should render date", function() {
-    expect(getText(".date")).toEqual("Today is 4/5/2017")
+    expect(text(".date")).toEqual("Today is 4/5/2017")
   })
 })

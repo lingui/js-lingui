@@ -2,12 +2,12 @@
 
 exports[`compile should report failed message on error 1`] = `Can't parse message. Please check correct syntax: "{value, plural, one {Book} other {Books"`;
 
-exports[`createCompiledCatalog namespace should compile with cjs by default 1`] = `/* eslint-disable */module.exports={languageData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog namespace should compile with cjs by default 1`] = `/* eslint-disable */module.exports={localeData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
 
-exports[`createCompiledCatalog namespace should compile with es 1`] = `/* eslint-disable */export default{languageData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog namespace should compile with es 1`] = `/* eslint-disable */export default{localeData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
 
-exports[`createCompiledCatalog namespace should compile with global 1`] = `/* eslint-disable */global.test={languageData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog namespace should compile with global 1`] = `/* eslint-disable */global.test={localeData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
 
-exports[`createCompiledCatalog namespace should compile with window 1`] = `/* eslint-disable */window.test={languageData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog namespace should compile with window 1`] = `/* eslint-disable */window.test={localeData:{"plurals":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
 
 exports[`createCompiledCatalog namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;

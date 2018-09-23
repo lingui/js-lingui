@@ -1,111 +1,83 @@
 // @flow
 import * as React from "react"
-import PropTypes from "prop-types"
-import hashSum from "hash-sum"
+import type { I18n as I18nType } from "@lingui/core"
 
-import { setupI18n } from "@lingui/core"
-import type { I18n, Catalogs, Locales } from "@lingui/core"
-
-export type I18nProviderProps = {
-  children?: any,
-  language: string,
-  locales?: Locales,
-  catalogs?: Catalogs,
-  i18n?: I18n,
-  missing?: string | Function,
-
-  defaultRender: ?any
+type I18nProviderProps = {
+  i18n: I18nType,
+  children: any,
+  defaultRender?: any
 }
 
-/*
- * I18nPublisher - Connects to lingui-i18n/I18n class
- * Allows listeners to subscribe for changes
- */
-export function LinguiPublisher(i18n: I18n) {
-  let subscribers: Array<Function> = []
-
-  return {
-    i18n,
-    i18nHash: null,
-
-    getSubscribers() {
-      return subscribers
-    },
-
-    subscribe(callback: Function) {
-      subscribers.push(callback)
-    },
-
-    unsubscribe(callback: Function) {
-      subscribers = subscribers.filter(cb => cb !== callback)
-    },
-
-    update({
-      catalogs,
-      language,
-      locales
-    }: { catalogs?: Catalogs, language?: string, locales?: string } = {}) {
-      if (!catalogs && !language && !locales) return
-
-      if (catalogs) i18n.load(catalogs)
-      if (language) i18n.activate(language, locales)
-
-      this.i18nHash = hashSum([i18n.language, i18n.messages])
-
-      subscribers.forEach(f => f())
-    }
-  }
+type I18nContext = {
+  i18n: I18nType,
+  defaultRender?: any
 }
 
-export default class I18nProvider extends React.Component<I18nProviderProps> {
-  props: I18nProviderProps
+type I18nProviderState = {|
+  context: I18nContext
+|}
 
-  linguiPublisher: LinguiPublisher
+const { Provider: I18nContextProvider, Consumer: I18n } = React.createContext({
+  i18n: {},
+  defaultRender: null
+})
 
-  static defaultProps = {
-    defaultRender: null
-  }
+export { I18n }
 
-  static childContextTypes = {
-    linguiPublisher: PropTypes.object.isRequired,
-    linguiDefaultRender: PropTypes.any
-  }
+export class I18nProvider extends React.Component<
+  I18nProviderProps,
+  I18nProviderState
+> {
+  unsubscribe: Function
 
   constructor(props: I18nProviderProps) {
     super(props)
-    const { language, locales, catalogs, missing } = props
-    const i18n =
-      props.i18n ||
-      setupI18n({
-        language,
-        locales,
-        catalogs
-      })
-    this.linguiPublisher = new LinguiPublisher(i18n)
-    this.linguiPublisher.i18n._missing = this.props.missing
+    this.state = this.setContext(false)
   }
 
-  componentDidUpdate(prevProps: I18nProviderProps) {
-    const { language, locales, catalogs } = this.props
-    if (
-      language !== prevProps.language ||
-      locales !== prevProps.locales ||
-      catalogs !== prevProps.catalogs
-    ) {
-      this.linguiPublisher.update({ language, catalogs, locales })
-    }
-
-    this.linguiPublisher.i18n._missing = this.props.missing
+  /**
+   * I18n object from `@lingui/core` is the single source of truth for all i18n related
+   * data (active locale, catalogs). When new messages are loaded or locale is changed
+   * we need to trigger re-rendering of I18nContextConsumers.
+   */
+  componentDidMount() {
+    this.unsubscribe = this.props.i18n.didActivate(this.setContext)
   }
 
-  getChildContext() {
-    return {
-      linguiPublisher: this.linguiPublisher,
-      linguiDefaultRender: this.props.defaultRender
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  /**
+   * We can't pass `i18n` object directly through context, because even when locale
+   * or messages are changed, i18n object is still the same. Context provider compares
+   * reference identity and suggested workaround is create a wrapper object every time
+   * we need to trigger re-render. See https://reactjs.org/docs/context.html#caveats.
+   *
+   * Due to this effect we also pass `defaultRender` in the same context, instead
+   * of creating a separate Provider/Consumer pair.
+   *
+   * When `set` is false, `setState` isn't called and new state is returned. This is
+   * used in constructor when we can't call `setState`
+   */
+  setContext = (set: boolean = true) => {
+    const state = {
+      context: {
+        i18n: this.props.i18n,
+        defaultRender: this.props.defaultRender
+      }
     }
+
+    if (set) this.setState(state)
+    return state
   }
 
   render() {
-    return this.props.children
+    const { context } = this.state
+    return (
+      <I18nContextProvider value={context}>
+        {context.i18n.locale && this.props.children}
+      </I18nContextProvider>
+    )
   }
 }

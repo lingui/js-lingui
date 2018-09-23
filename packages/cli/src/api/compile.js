@@ -141,7 +141,7 @@ export function createCompiledCatalog(
     return t.objectProperty(t.stringLiteral(key), compile(translation))
   })
 
-  const languageData = [
+  const localeData = [
     t.objectProperty(
       t.stringLiteral("plurals"),
       parseExpression(pluralRules.toString())
@@ -152,8 +152,8 @@ export function createCompiledCatalog(
     t.objectExpression([
       // language data
       t.objectProperty(
-        t.identifier("languageData"),
-        t.objectExpression(languageData)
+        t.identifier("localeData"),
+        t.objectExpression(localeData)
       ),
       // messages
       t.objectProperty(

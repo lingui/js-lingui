@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react"
-import { withI18n } from "@lingui/react"
+import { withI18n, withI18nForPure } from "@lingui/react"
 import { t } from "@lingui/macro"
 
 type PureComponentTestProps = {
@@ -29,7 +29,7 @@ class PureComponentTest extends React.PureComponent<PureComponentTestProps> {
   }
 }
 
-const CorrectUpdate = withI18n()(
+const CorrectUpdate = withI18nForPure(
   class extends React.PureComponent<PureComponentProps> {
     props: PureComponentProps
 
@@ -40,7 +40,7 @@ const CorrectUpdate = withI18n()(
   }
 )
 
-const SkippedUpdate = withI18n({ withHash: false })(
+const SkippedUpdate = withI18n(
   class extends React.PureComponent<PureComponentProps> {
     props: PureComponentProps
 

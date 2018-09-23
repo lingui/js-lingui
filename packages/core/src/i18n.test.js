@@ -1,113 +1,51 @@
 /* @flow */
-import { i18n, setupI18n } from "@lingui/core"
-import { mockConsole, mockEnv } from "./mocks"
+import { setupI18n } from "@lingui/core"
+import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", function() {
-  it("should export named I18n instance", function() {
-    expect(i18n).toBeDefined()
-  })
-
-  it("should be initialized with empty catalog", function() {
-    const i18n = setupI18n()
-    expect(i18n.messages).toEqual({})
-  })
-
-  it("should bound t method", function() {
-    const i18n = setupI18n()
-    expect(i18n.t).toBeInstanceOf(Function)
-
-    expect(i18n.t`Message`).toEqual("Message")
-
-    const name = "Fred"
-    expect(i18n.t`Hello ${name}`).toEqual("Hello Fred")
-  })
-
   it(".load should load catalog and merge with existing", function() {
     const messages = {
       Hello: "Hello"
     }
 
-    const i18n = setupI18n()
-    expect(i18n.messages).toEqual({})
-
-    i18n.load({ en: { messages } })
-    i18n.activate("en")
-    expect(i18n.messages).toEqual(messages)
-
-    // fr catalog shouldn't affect the english one
-    i18n.load({ fr: { messages: { Hello: "Salut" } } })
-    expect(i18n.messages).toEqual(messages)
-
-    i18n.load({ en: { messages: { Goodbye: "Goodbye" } } })
-    // $FlowIgnore: testing edge case
-    i18n.load() // should do nothing
-    expect(i18n.messages).toEqual({
-      Hello: "Hello",
-      Goodbye: "Goodbye"
-    })
-  })
-
-  it(".loadLanguageData should load language data and merge with existing", function() {
-    const languageData = {
+    const localeData = {
       plurals: jest.fn(),
       code: "en_US"
     }
 
-    const i18n = setupI18n({
-      language: "en",
-      catalogs: {
-        en: {
-          messages: {},
-          languageData
-        },
-        fr: {
-          messages: {}
-        }
-      }
-    })
-
-    expect(i18n.languageData).toEqual(languageData)
+    const i18n = setupI18n()
+    i18n.load("en", { messages, localeData })
+    i18n.activate("en")
+    expect(i18n.messages).toEqual(messages)
+    expect(i18n.localeData).toEqual(localeData)
 
     // fr catalog shouldn't affect the english one
-    i18n.load({
-      fr: {
-        messages: {},
-        languageData: {
-          plurals: jest.fn(),
-          code: "fr_FR"
-        }
-      }
-    })
-    expect(i18n.languageData).toEqual(languageData)
-    // $FlowIgnore: testing edge case
-    i18n.load() // should do nothing
-    expect(i18n.languageData).toEqual(languageData)
+    i18n.load("fr", { messages: { Hello: "Salut" } })
+    expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should switch active language", function() {
+  it(".activate should switch active locale", function() {
     const messages = {
       Hello: "Salut"
     }
 
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       catalogs: {
         fr: { messages },
         en: { messages: {} }
       }
     })
 
-    expect(i18n.language).toEqual("en")
+    expect(i18n.locale).toEqual("en")
     expect(i18n.messages).toEqual({})
 
     i18n.activate("fr")
-    // $FlowIgnore: testing edge case
-    i18n.activate() // should do nothing
-    expect(i18n.language).toEqual("fr")
+    expect(i18n.locale).toEqual("fr")
     expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should throw an error about incorrect language", function() {
+  it(".activate should throw an error about incorrect locale", function() {
     const i18n = setupI18n()
 
     mockConsole(console => {
@@ -128,7 +66,7 @@ describe("I18n", function() {
     })
   })
 
-  it(".use should return new i18n object with switched language", function() {
+  it(".use should return new i18n object with switched locale", function() {
     const catalogs = {
       en: {
         messages: {
@@ -143,60 +81,39 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       catalogs
     })
 
     expect(i18n._("Hello")).toEqual("Hello")
 
-    // change language locally
+    // change locale locally
     expect(i18n.use("fr")._("Hello")).toEqual("Salut")
 
-    // global language hasn't changed
+    // global locale hasn't changed
     expect(i18n._("Hello")).toEqual("Hello")
   })
 
   it(".use should return new i18n object with switched locales", function() {
     const i18n = setupI18n({
-      language: "en",
+      locale: "en",
       locales: "en-UK"
     })
+    const plural = "{value, plural, zero {لا كتاب} two {# الكتب}}"
 
     // change locales locally
     const ar = i18n.use("ar")
-    expect(
-      ar.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("٢ الكتب")
+    expect(ar._(plural, { value: 2 })).toEqual("٢ الكتب")
 
     const uae = i18n.use("ar", "en-UK")
-    expect(
-      uae.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("2 الكتب")
+    expect(uae._(plural, { value: 2 })).toEqual("2 الكتب")
 
     const uae2 = i18n.use("ar", ["unknown-locale", "en-UK"])
-    expect(
-      uae2.plural({
-        value: 2,
-        "=0": "لا كتاب",
-        other: "# الكتب"
-      })
-    ).toEqual("2 الكتب")
+    expect(uae2._(plural, { value: 2 })).toEqual("2 الكتب")
 
     // global locales hasn't changed
     expect(
-      i18n.plural({
-        value: 2,
-        "=0": "no book",
-        other: "# books"
-      })
+      i18n._("{value, plural, one {# book} other {# books}}", { value: 2 })
     ).toEqual("2 books")
   })
 
@@ -207,7 +124,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
 
@@ -240,7 +157,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
 
@@ -265,7 +182,7 @@ describe("I18n", function() {
     }
 
     const i18n = setupI18n({
-      language: "fr",
+      locale: "fr",
       catalogs: { fr: { messages } }
     })
     const hello = "Hello"
@@ -281,7 +198,7 @@ describe("I18n", function() {
     mockEnv("production", () => {
       const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
-        language: "fr",
+        locale: "fr",
         catalogs: { fr: { messages } }
       })
 
@@ -295,7 +212,7 @@ describe("I18n", function() {
     it("._ should return custom string for missing translations", function() {
       const i18n = setupI18n({
         missing: "xxx",
-        language: "en",
+        locale: "en",
         catalogs: { en: { messages: { exists: "exists" } } }
       })
       expect(i18n._("exists")).toEqual("exists")
@@ -303,14 +220,14 @@ describe("I18n", function() {
     })
 
     it("._ should call a function with message ID of missing translation", function() {
-      const missing = jest.fn((language, id) =>
+      const missing = jest.fn((locale, id) =>
         id
           .split("")
           .reverse()
           .join("")
       )
       const i18n = setupI18n({
-        language: "en",
+        locale: "en",
         missing
       })
       expect(i18n._("missing")).toEqual("gnissim")

@@ -10,9 +10,9 @@ type IntlType = {|
 
 declare var Intl: IntlType
 
-const defaultFormats = (language, locales, languageData = {}, formats = {}) => {
-  locales = locales || language
-  const { plurals } = languageData
+const defaultFormats = (locale, locales, localeData = {}, formats = {}) => {
+  locales = locales || locale
+  const { plurals } = localeData
   const style = format =>
     isString(format) ? formats[format] || { style: format } : format
   const replaceOctothorpe = (value, message) => {
@@ -51,15 +51,15 @@ const defaultFormats = (language, locales, languageData = {}, formats = {}) => {
  * Creates a context object, which formats ICU MessageFormat arguments based on
  * argument type.
  *
- * @param language     - Language of message
+ * @param locale     - Locale of message
  * @param locales      - Locales to be used when formatting the numbers or dates
  * @param values       - Parameters for variable interpolation
- * @param languageData - Language data (e.g: plurals)
+ * @param localeData - Locale data (e.g: plurals)
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context({ language, locales, values, formats, languageData }: Object) {
-  const formatters = defaultFormats(language, locales, languageData, formats)
+function context({ locale, locales, values, formats, localeData }: Object) {
+  const formatters = defaultFormats(locale, locales, localeData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
     const value = values[name]
@@ -73,16 +73,16 @@ function context({ language, locales, values, formats, languageData }: Object) {
 
 export function interpolate(
   translation: Function,
-  language: string,
+  locale: string,
   locales: ?Locales,
-  languageData: Object
+  localeData: Object
 ) {
   return (values: Object, formats?: Object = {}) => {
     const message = translation(
       context({
-        language,
+        locale,
         locales,
-        languageData,
+        localeData,
         formats,
         values
       })
