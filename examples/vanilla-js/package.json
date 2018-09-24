@@ -12,16 +12,15 @@
   },
   "dependencies": {
     "@lingui/core": "latest",
-    "@lingui/react": "latest",
-    "babel-polyfill": "^6.26.0"
+    "@lingui/react": "latest"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
     "@lingui/cli": "latest",
+    "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.4.0",
     "babel-plugin-macros": "^2.3.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "jest": "^23.4.1"
   },
   "lingui": {
@@ -31,8 +30,5 @@
       "./src"
     ],
     "sourceLocale": "en"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "../../scripts/jest/env.js"
   }
 }
