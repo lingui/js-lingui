@@ -1,59 +1,261 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`macro validation Date/Number format must be string, variable or object with custom format 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Format can be either string for buil-in formats, variable or object for custom defined formats. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Date/Number format must be string, variable or object with custom format 1`] = `
+ Format can be either string for buil-in formats, variable or object for custom defined formats.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Trans><NumberFormat value={value} format={42} /></Trans>
+    |            ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Date/Number value of date must be a variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Date/Number value of date must be a variable 1`] = `
+ Value argument is missing.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Trans><DateFormat /></Trans>
+    |            ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Date/Number value of number must be a variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Date/Number value of number must be a variable 1`] = `
+ Value argument is missing.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Trans><NumberFormat /></Trans>
+    |            ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of Plural aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 1`] = `
+ Children of Plural aren't allowed.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural>Not allowed</Plural>
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of Select aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 2`] = `
+ Children of Select aren't allowed.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Select>Not allowed</Select>
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Children of SelectOrdinal aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal children are not allowed 3`] = `
+ Children of SelectOrdinal aren't allowed.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <SelectOrdinal>Not allowed</SelectOrdinal>
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal offset must be number or string, not variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Offset argument cannot be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal offset must be number or string, not variable 1`] = `
+ Offset argument cannot be a variable.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural value={value} offset={offset} one="Book" other="Books" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `
+ Missing plural choices. At least fallback argument 'other' is required.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural value={value} />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing select choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `
+ Missing select choices. At least fallback argument 'other' is required.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Select value={value} />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing selectordinal choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `
+ Missing selectordinal choices. At least fallback argument 'other' is required.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <SelectOrdinal value={value} />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `
+ Missing fallback argument 'other'.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural value={value} one="Book" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `
+ Missing fallback argument 'other'.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Select value={value} one="Book" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `
+ Missing fallback argument 'other'.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <SelectOrdinal value={value} one="Book" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 1`] = `
+ Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural value={value} three="Invalid" one="Book" other="Books" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal plural rules must be valid 2`] = `
+ Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <SelectOrdinal value={value} three="Invalid" one="st" other="rd" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation Plural/Select/SelectOrdinal value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation Plural/Select/SelectOrdinal value is missing 1`] = `
+ Value argument is missing.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     <Plural one="Book" other="Books" />
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation formats format must be either string, variable or object with custom format 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Format can be either string for buil-in formats, variable or object for custom defined formats. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation formats format must be either string, variable or object with custom format 1`] = `
+ Format can be either string for buil-in formats, variable or object for custom defined formats.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     number(value, 42);
+    |                   ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation formats value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: The first argument of format function must be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation formats value is missing 1`] = `
+ The first argument of format function must be a variable.
+  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
+  4 |       } from '@lingui/macro';
+> 5 |     date();
+    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal offset must be number or string, not variable 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Offset argument cannot be a variable. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal offset must be number or string, not variable 1`] = `
+ Offset argument cannot be a variable.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           offset: count,
+  8 |           0: "No books",
+  9 |           1: "1 book", Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms are missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms are missing 1`] = `
+ Missing plural choices. At least fallback argument 'other' is required.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           value: count
+  8 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms are missing 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms are missing 2`] = `
+ Missing plural choices. At least fallback argument 'other' is required.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           value: count
+  8 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms are missing 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing plural choices. At least fallback argument 'other' is required. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms are missing 3`] = `
+ Missing plural choices. At least fallback argument 'other' is required.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           value: count
+  8 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms cannot be variables 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Computed properties aren't allowed. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms cannot be variables 1`] = `
+ Computed properties aren't allowed.
+  6 |         plural({
+  7 |           value: count,
+> 8 |           [one]: "Book"
+    |           ^
+  9 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms missing fallback 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 1`] = `
+ Missing fallback argument 'other'.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           value: count,
+  8 |           one: "Book"
+  9 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms missing fallback 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 2`] = `
+ Missing fallback argument 'other'.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         select({
+    |         ^
+  7 |           value: count,
+  8 |           male: "He"
+  9 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural forms missing fallback 3`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Missing fallback argument 'other'. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural forms missing fallback 3`] = `
+ Missing fallback argument 'other'.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         selectOrdinal({
+    |         ^
+  7 |           value: count,
+  8 |           one: "st"
+  9 |         }); Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural rules must be valid 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural rules must be valid 1`] = `
+ Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           value: count,
+  8 |           one: "Book",
+  9 |           three: "Invalid", Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal plural rules must be valid 2`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English). Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal plural rules must be valid 2`] = `
+ Invalid plural rule 'three'. Must be zero, one, two, few, many, other or exact number depending on your source language ('one' and 'other' for English).
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         selectOrdinal({
+    |         ^
+  7 |           value: count,
+  8 |           one: "st",
+  9 |           three: "Invalid", Learn more: https://www.npmjs.com/package/@lingui/macro
+`;
 
-exports[`macro validation plural/select/selectordinal value is missing 1`] = `packages/macro/test/fixtures/t/actual.js: @lingui/macro: Value argument is missing. Learn more: https://www.npmjs.com/package/@lingui/macro`;
+exports[`macro validation plural/select/selectordinal value is missing 1`] = `
+ Value argument is missing.
+  4 |       } from '@lingui/macro';
+  5 |     
+> 6 |         plural({
+    |         ^
+  7 |           0: "No books",
+  8 |           1: "1 book",
+  9 |           other: "# books" Learn more: https://www.npmjs.com/package/@lingui/macro
+`;

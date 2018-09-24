@@ -1,7 +1,7 @@
 import fs from "fs"
 import glob from "glob"
 import path from "path"
-import { transformFileSync, transform } from "babel-core"
+import { transformFileSync, transform, loadOptions } from "@babel/core"
 
 import plugin from "../src/index"
 
@@ -9,10 +9,11 @@ function getTestName(testPath) {
   return path.basename(testPath)
 }
 
-describe("babel-plugin-lingui-transform-js", function() {
+describe("@lingui/babel-plugin-transform-js", function() {
   const babelOptions = {
-    babelrc: false,
-    plugins: ["babel-plugin-syntax-jsx", plugin]
+    configFile: false,
+    presets: [],
+    plugins: ["@babel/plugin-syntax-jsx", plugin]
   }
 
   // return function, so we can test exceptions

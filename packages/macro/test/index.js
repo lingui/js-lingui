@@ -1,7 +1,7 @@
 import fs from "fs"
 import glob from "glob"
 import path from "path"
-import { transformFileSync, transform } from "babel-core"
+import { transformFileSync, transform } from "@babel/core"
 
 function getTestName(testPath) {
   return path.basename(testPath)
@@ -9,20 +9,29 @@ function getTestName(testPath) {
 
 describe("macro", function() {
   const babelOptions = {
-    babelrc: false,
+    configFile: false,
     plugins: ["syntax-jsx", "macros"]
   }
 
   // return function, so we can test exceptions
-  const transformCode = code => () =>
-    transform(
-      `import { 
+  const transformCode = code => () => {
+    try {
+      return transform(
+        `import { 
         t, plural, select, selectOrdinal, date, number,
         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
       } from '@lingui/macro';
     ${code}`,
-      babelOptions
-    ).code.trim()
+        {
+          filename: "<filename>",
+          ...babelOptions
+        }
+      ).code.trim()
+    } catch (e) {
+      e.message = e.message.replace(/([^:]*:){2}/, "")
+      throw e
+    }
+  }
 
   glob.sync(path.join(__dirname, "fixtures/*/")).forEach(testPath => {
     const testName = getTestName(testPath)

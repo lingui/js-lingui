@@ -1,7 +1,7 @@
 import fs from "fs"
 import fsPath from "path"
 import mkdirp from "mkdirp"
-import generate from "babel-generator"
+import generate from "@babel/generator"
 import { getConfig } from "@lingui/conf"
 
 // Map of messages
@@ -76,8 +76,7 @@ export default function({ types: t }) {
 
         const moduleName = node.source.value
         if (
-          !Array.includes(
-            ["@lingui/react", "@lingui/macro", "@lingui/core"],
+          !["@lingui/react", "@lingui/macro", "@lingui/core"].includes(
             moduleName
           )
         )

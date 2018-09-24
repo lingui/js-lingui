@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import { transformFileSync } from "babel-core"
+import { transformFileSync } from "@babel/core"
 
 import plugin from "@lingui/babel-plugin-extract-messages"
 
@@ -32,9 +32,9 @@ function testCase(testName, assertion) {
     process.env.LINGUI_EXTRACT = "1"
     try {
       return transformFileSync(path.join(__dirname, "fixtures", filename), {
-        babelrc: false,
+        configFile: false,
         plugins: [
-          "syntax-jsx",
+          "@babel/plugin-syntax-jsx",
           "macros",
           ...(/integration.*\.js$/.test(filename)
             ? jsx
@@ -110,25 +110,6 @@ describe("babel-plugin-lingui-extract-messages", function() {
     ).toBeFalsy()
   })
 
-  testCase("should extract noop strings", transform => {
-    const result = transform("noop/actual.js")()
-
-    const expected = fs.readFileSync(
-      path.join(__dirname, "fixtures", "noop", "expected.js")
-    )
-    expect(result.code.replace(/\r/g, "").trim()).toEqual(
-      expected
-        .toString()
-        .replace(/\r/g, "")
-        .trim()
-    )
-
-    const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "noop", "actual.js.json"))
-    )
-    expect(messages).toMatchSnapshot()
-  })
-
   testCase("should extract all messages from JSX files", transform => {
     // first run should create all required folders and write messages
     expect(transform("jsx/all.js")).not.toThrow()
@@ -200,7 +181,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
       transformFileSync(
         path.join(__dirname, "fixtures", "jsx", "with-react.js"),
         {
-          babelrc: false,
+          configFile: false,
           plugins: [
             "@lingui/babel-plugin-transform-js",
             "@lingui/babel-plugin-transform-react",
@@ -211,7 +192,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
               }
             ]
           ],
-          presets: ["react"]
+          presets: ["@babel/preset-react"]
         }
       )
     ).not.toThrow()
