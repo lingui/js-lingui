@@ -49,7 +49,7 @@ Under the hood, ``i18n.plural`` is replaced with low-level ``i18n._``. For produ
 
    i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
 
-When we extract messages from source code using (lingui-cli)[linguiCliTutorial], we get:
+When we extract messages from source code using [lingui-cli](linguiCliTutorial), we get:
 
 .. code-block:: default
 
