@@ -40,6 +40,7 @@
     "react": "^15.0.0 || ^16.0.0"
   },
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.0.0",
     "@lingui/core": "0.0.0-managed-by-release-script",
     "hoist-non-react-statics": "3.0.1",
     "prop-types": "^15.6.2"

@@ -9,6 +9,7 @@ const { UNIVERSAL } = require("./bundles").bundleTypes
 const HAS_NO_SIDE_EFFECTS_ON_IMPORT = false
 
 const importSideEffects = Object.freeze({
+  "@babel/runtime-corejs2/helpers/typeof": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "babel-runtime/core-js/object/get-own-property-names": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "babel-runtime/helpers/slicedToArray": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "messageformat-parser": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
