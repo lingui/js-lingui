@@ -5,7 +5,6 @@ module.exports = function(options) {
     [
       "@babel/preset-env",
       {
-        useBuiltIns: "entry",
         targets: {
           node: 8,
           browsers: "> 1%, last 2 versions"
@@ -18,14 +17,9 @@ module.exports = function(options) {
   ]
 
   const plugins = [
-    ["@babel/plugin-proposal-class-properties", { loose: false }],
-    "@babel/plugin-proposal-export-default-from",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from"
   ]
-
-  if (process.env.NODE_ENV === "test") {
-    plugins.push("@babel/plugin-transform-modules-commonjs")
-  }
 
   return {
     presets,

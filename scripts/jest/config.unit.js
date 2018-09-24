@@ -2,7 +2,7 @@ module.exports = {
   roots: ["<rootDir>/packages/"],
   rootDir: process.cwd(),
   testMatch: ["**/?(*.)test.js", "**/test/index.js"],
-  testPathIgnorePatterns: ["/node_modules/", "/locale/", "/build/"],
+  testPathIgnorePatterns: ["/node_modules/", "/locale/"],
   testURL: "http://localhost",
 
   collectCoverage: true,
