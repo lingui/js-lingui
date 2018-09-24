@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/react';
-
 <Trans id="Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>" values={{
   name: name
 }} components={[<strong />, <br />, <p />, <a href="/about" />, <em />]} />;

@@ -1,8 +1,10 @@
-/* i18n: leading comment */({
-  id: 'Default message'
+/* i18n: leading comment */
+({
+  id: "Default message"
 });
+/* i18n: leading comment */
 
-/* i18n: leading comment */({
-  id: 'id',
-  defaults: 'Default message'
+({
+  id: "id",
+  defaults: "Default message"
 });

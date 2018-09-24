@@ -1,4 +1,2 @@
-import { Trans } from '@lingui/react';
-
-
+import { Trans } from "@lingui/react";
 <Trans id="" />;

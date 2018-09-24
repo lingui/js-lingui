@@ -1,7 +1,7 @@
 import fs from "fs"
 import glob from "glob"
 import path from "path"
-import { transformFileSync, transform } from "babel-core"
+import { transformFileSync, transform } from "@babel/core"
 
 import plugin from "../src/index"
 
@@ -11,8 +11,8 @@ function getTestName(testPath) {
 
 describe("babel-plugin-lingui-transform-react", function() {
   const babelOptions = (pluginOptions = {}) => ({
-    babelrc: false,
-    plugins: ["babel-plugin-syntax-jsx", [plugin, pluginOptions]]
+    configFile: false,
+    plugins: ["@babel/plugin-syntax-jsx", [plugin, pluginOptions]]
   })
 
   const transformCode = code => () => {

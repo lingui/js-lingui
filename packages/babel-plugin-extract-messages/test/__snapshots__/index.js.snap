@@ -194,24 +194,3 @@ Object {
   },
 }
 `;
-
-exports[`babel-plugin-lingui-extract-messages should extract noop strings 1`] = `
-Object {
-  Czech: Object {
-    origin: Array [
-      Array [
-        packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js,
-        5,
-      ],
-    ],
-  },
-  English: Object {
-    origin: Array [
-      Array [
-        packages/babel-plugin-extract-messages/test/fixtures/noop/actual.js,
-        4,
-      ],
-    ],
-  },
-}
-`;

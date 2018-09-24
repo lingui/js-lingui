@@ -170,7 +170,7 @@ export default class Transformer {
         node.callee,
         `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
       )
-    } else if (!Array.includes(choicesKeys, "other")) {
+    } else if (!choicesKeys.includes("other")) {
       throw file.buildCodeFrameError(
         node.callee,
         `Missing fallback argument 'other'.`
@@ -180,7 +180,7 @@ export default class Transformer {
     // validate plural rules
     if (choicesType === "plural" || choicesType === "selectordinal") {
       choicesKeys.forEach(rule => {
-        if (!Array.includes(pluralRules, rule) && !/=\d+/.test(rule)) {
+        if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
           throw file.buildCodeFrameError(
             node.callee,
             `Invalid plural rule '${rule}'. Must be ${pluralRules.join(

@@ -5,6 +5,7 @@ module.exports = function(options) {
     [
       "@babel/preset-env",
       {
+        useBuiltIns: "entry",
         targets: {
           node: 8,
           browsers: "> 1%, last 2 versions"
