@@ -19,15 +19,7 @@ module.exports = function(options) {
   const plugins = [
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-proposal-export-default-from",
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        corejs: 2,
-        helpers: true,
-        regenerator: true,
-        useESModules: false
-      }
-    ]
+    "@babel/plugin-transform-runtime"
   ]
 
   return {
