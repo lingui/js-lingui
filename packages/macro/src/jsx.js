@@ -4,7 +4,7 @@ const commonProps = ["id", "className", "render"]
 // replace whitespace before/after newline with single space
 const nlRe = /\s*(?:\r\n|\r|\n)+\s*/g
 // remove whitespace before/after tag
-const nlTagRe = /(?:([>])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<]))/g
+const nlTagRe = /(?:([>}])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<{]))/g
 
 function cleanChildren(node) {
   node.children = []
