@@ -1,4 +1,5 @@
-const nlRe = /(?:\r\n|\r|\n)+\s+/g
+const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
+const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
 const pluralRules = ["zero", "one", "two", "few", "many", "other"]
 
