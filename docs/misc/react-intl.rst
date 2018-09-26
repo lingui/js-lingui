@@ -216,6 +216,7 @@ components in both variables and the message itself.
 
       <Plural
          id="welcome"
+         value={number}
          one={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> message.</>}
          other={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> messages.</>}
       />
