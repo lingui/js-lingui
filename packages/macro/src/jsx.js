@@ -2,9 +2,20 @@ const pluralRules = ["zero", "one", "two", "few", "many", "other"]
 const commonProps = ["id", "className", "render"]
 
 // replace whitespace before/after newline with single space
-const nlRe = /\s*(?:\r\n|\r|\n)+\s*/g
-// remove whitespace before/after tag
-const nlTagRe = /(?:([>}])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<{]))/g
+const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
+// remove whitespace before/after tag or expression
+const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<{]))/g
+
+function normalizeWhitespace(text) {
+  return (
+    text
+      .replace(stripAroundTagsRe, "$1")
+      .replace(keepSpaceRe, " ")
+      // keep escaped newlines
+      .replace(/\\n/, "\n")
+      .trim()
+  )
+}
 
 function cleanChildren(node) {
   node.children = []
@@ -294,7 +305,8 @@ export default class Transformer {
       const exp = node.expression
 
       if (t.isStringLiteral(exp)) {
-        nextProps.text += exp.value
+        // Escape forced newlines to keep them in message.
+        nextProps.text += exp.value.replace(/\n/, "\\n")
       } else if (t.isTemplateLiteral(exp)) {
         let parts = []
 
@@ -328,8 +340,14 @@ export default class Transformer {
       nextProps = this.processElement(node, file, nextProps)
     } else if (t.isJSXSpreadChild(node)) {
       // TODO: I don't have a clue what's the usecase
+    } else if (t.isJSXText(node)) {
+      // node.value has HTML entities converted to characters, but we need original
+      // HTML entities.
+      nextProps.text += node.extra.raw
     } else {
-      nextProps.text += node.value
+      // Same as above, but this time node.extra.raw also includes surrounding
+      // quotes. We need to strip them first.
+      nextProps.text += node.extra.raw.replace(/(["'])(.*)\1/, "$2")
     }
 
     return mergeProps(props, nextProps)
@@ -374,10 +392,7 @@ export default class Transformer {
     // 2. Replace children and add collected data
 
     cleanChildren(node)
-    const text = props.text
-      .replace(nlTagRe, "$1")
-      .replace(nlRe, " ")
-      .trim()
+    const text = normalizeWhitespace(props.text)
     let attrs = node.openingElement.attributes
 
     // If `id` prop already exists and generated ID is different,
