@@ -3,23 +3,16 @@ import { Catalog, Catalogs, I18n } from "@lingui/core"
 import {
   withI18n,
   I18nProvider,
-  Trans,
-  Plural,
-  Select,
-  SelectOrdinal,
-  DateFormat,
-  NumberFormat,
-  i18nMark
 } from "@lingui/react"
-
-const catalog: Catalog = {
-  messages: {
-    ageId(a) {
-      return [a("age"), "años de edad"]
-    }
-  }
-}
-const catalogs: Catalogs = { es: catalog }
+import {
+    t,
+    Trans,
+    Plural,
+    Select,
+    SelectOrdinal,
+    DateFormat,
+    NumberFormat,
+} from "@lingui/macro"
 
 interface LocalizeAttributeBaseProps {
   i18n: I18n;
@@ -29,12 +22,11 @@ interface LocalizeAttributeBaseProps {
 const LocalizeAttributeBase = (props: LocalizeAttributeBaseProps) => {
   const { i18n, age } = props
   return (
-    <span title={i18n.t`Age: ${age}`} aria-label={i18n.t("ageId")`${age} years old`}>Attributes</span>
+    <span title={i18n._(t`Age: ${age}`)} aria-label={i18n._(t("ageId")`${age} years old`)}>Attributes</span>
   )
 }
 
-const LocalizeAttribute = withI18n()(LocalizeAttributeBase)
-const LocalizeOptionAttribute = withI18n({ update: true, withRef: true, withHash: true })(LocalizeAttributeBase)
+const LocalizeAttribute = withI18n(LocalizeAttributeBase)
 
 const App = () => {
   const name = "Ken"
@@ -43,9 +35,8 @@ const App = () => {
   const price = 21.35
   const lastLogin = new Date()
   return (
-    <I18nProvider language="es" catalogs={catalogs}>
+    <I18nProvider>
       <LocalizeAttribute age={23} />
-      <LocalizeOptionAttribute age={23} />
       <Trans>Name {name} in <code>Trans</code>.</Trans>
       <Trans id="transId">Name {name} in <code>Trans</code> with <code>id</code>.</Trans>
       <Plural id="msg.plural"
@@ -99,4 +90,4 @@ const App = () => {
   )
 }
 
-const mark: string = i18nMark("mark")
+const mark: string = t`mark`

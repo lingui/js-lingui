@@ -35,8 +35,6 @@
   ],
   "dependencies": {
     "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",
-    "@lingui/babel-plugin-transform-js": "0.0.0-managed-by-release-script",
-    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "babel-generator": "^6.26.1",
     "babel-plugin-syntax-jsx": "^6.18.0",

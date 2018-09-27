@@ -36,14 +36,6 @@ function testCase(testName, assertion) {
         plugins: [
           "@babel/plugin-syntax-jsx",
           "macros",
-          ...(/integration.*\.js$/.test(filename)
-            ? jsx
-              ? [
-                  "@lingui/babel-plugin-transform-js",
-                  "@lingui/babel-plugin-transform-react"
-                ]
-              : ["@lingui/babel-plugin-transform-js"]
-            : []),
           [
             plugin,
             {
@@ -183,8 +175,7 @@ describe("babel-plugin-lingui-extract-messages", function() {
         {
           configFile: false,
           plugins: [
-            "@lingui/babel-plugin-transform-js",
-            "@lingui/babel-plugin-transform-react",
+            "macros",
             [
               plugin,
               {

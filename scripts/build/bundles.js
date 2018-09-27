@@ -21,16 +21,6 @@ const bundles = [
 
   {
     type: bundleTypes.NODE,
-    entry: "@lingui/babel-plugin-transform-js"
-  },
-
-  {
-    type: bundleTypes.NODE,
-    entry: "@lingui/babel-plugin-transform-react"
-  },
-
-  {
-    type: bundleTypes.NODE,
     entry: "@lingui/babel-plugin-extract-messages"
   },
 

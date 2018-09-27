@@ -30,9 +30,5 @@
   "dependencies": {
     "@babel/generator": "^7.0.0",
     "@lingui/conf": "0.0.0-managed-by-release-script"
-  },
-  "devDependencies": {
-    "@lingui/babel-plugin-transform-js": "0.0.0-managed-by-release-script",
-    "@lingui/babel-plugin-transform-react": "0.0.0-managed-by-release-script"
   }
 }
