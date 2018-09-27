@@ -1,6 +1,6 @@
 import { createMacro, MacroError } from "babel-plugin-macros"
 import makeJsTransformer from "./js"
-import JSXTransformer from "@lingui/babel-plugin-transform-react/transformer"
+import JSXTransformer from "./jsx"
 
 function macro({ references, state, babel }) {
   const { types: t } = babel

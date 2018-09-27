@@ -111,29 +111,6 @@ describe("macro", function() {
         expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural forms missing fallback", function() {
-        const plural = `
-        plural({
-          value: count,
-          one: "Book"
-        });`
-        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-        const select = `
-        select({
-          value: count,
-          male: "He"
-        });`
-        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-        const selectOrdinal = `
-        selectOrdinal({
-          value: count,
-          one: "st"
-        });`
-        expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
-      })
-
       it("plural forms cannot be variables", function() {
         const code = `
         plural({
@@ -210,17 +187,6 @@ describe("macro", function() {
         expect(transformCode(select)).toThrowErrorMatchingSnapshot()
 
         const ordinal = `<SelectOrdinal value={value} />`
-        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-      })
-
-      it("plural forms missing fallback", function() {
-        const plural = `<Plural value={value} one="Book" />`
-        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-        const select = `<Select value={value} one="Book" />`
-        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-        const ordinal = `<SelectOrdinal value={value} one="Book" />`
         expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
       })
 

@@ -12,6 +12,6 @@ import { Trans } from '@lingui/macro';
   function {random()},
   array {array[index]},
   constant {42},
-  object {new Date()}
+  object {new Date()},
   everything {props.messages[index].value()}
 </Trans>;

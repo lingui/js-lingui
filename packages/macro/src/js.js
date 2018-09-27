@@ -1,65 +1,183 @@
-const nlRe = /(?:\r\n|\r|\n)+\s+/g
+import { validatePluralRules } from "./validation"
 
-const pluralRules = ["zero", "one", "two", "few", "many", "other"]
+const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
+const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
 const generatorFactory = (index = 0) => () => index++
 
-const initialProps = () => ({
-  text: "",
-  values: {},
-  formats: {},
-  argumentGenerator: generatorFactory()
-})
+function normalizeWhitespace(text) {
+  return text
+    .replace(keepSpaceRe, " ")
+    .replace(keepNewLineRe, "\n")
+    .trim()
+}
 
 export default function({ types: t }) {
-  const isIdentifier = (node, name) => t.isIdentifier(node, { name })
-
-  const isI18nMethod = node =>
-    isIdentifier(node.tag, "t") ||
-    (t.isCallExpression(node.tag) && isIdentifier(node.tag.callee, "t"))
-
-  const isChoiceMethod = node =>
-    isIdentifier(node, "plural") ||
-    isIdentifier(node, "select") ||
-    isIdentifier(node, "selectOrdinal")
-
-  const isFormatMethod = node =>
-    isIdentifier(node, "date") || isIdentifier(node, "number")
-
   /**
-   * Convert identifiers to *named* arguments and everything else
-   * to *positional* arguments.
-   *
-   * Example
-   * `world` is named argument and `new Date()` is positional one
-   *
-   * Input:   `Hello ${world}, today is ${new Date()}`
-   * Output:  `Hello {world}, today is {0}`
+   * `transform` is the macro entry point. It takes matched AST node (`path`) and
+   * reference to `file` being processed.
    */
-  function expressionToArgument(exp, props) {
-    const name = t.isIdentifier(exp) ? exp.name : props.argumentGenerator()
-    const key = t.isIdentifier(exp) ? exp : t.numericLiteral(name)
-
-    return { name, key }
-  }
-
-  function transformI18nMethod(node, file, props) {
-    if (t.isCallExpression(node.tag)) {
-      // Message with custom ID, where message is used as defaults
-      // i18n.t('id')`Hello World`
-      const defaults = node.tag.arguments[0]
-      if (!t.isStringLiteral(defaults)) {
-        throw file.buildCodeFrameError(node.tag, "Message ID must be a string")
-      }
-      const newProps = transformTemplateLiteral(node.quasi, file, props)
-      return {
-        ...newProps,
-        text: defaults.value,
-        defaults: props.text
-      }
+  function transform(path, file) {
+    const initialProps = {
+      text: "",
+      values: {},
+      formats: {},
+      argumentGenerator: generatorFactory()
     }
 
-    return transformTemplateLiteral(node.quasi, file, props)
+    // 1. Transform template string literals and i18n methods to ICU Message Format
+    const props = transformNode(path.node, file, initialProps, true)
+
+    props.text = normalizeWhitespace(props.text)
+    if (!props.text) return
+
+    // 2. Create message descriptor
+    const exp = createMessageDescriptor(props)
+
+    // 3. Copy source line info
+    exp.loc = path.node.loc
+    path.replaceWith(exp)
+
+    // 4. Add leading `i18n` comment (if doesn't exist) for lingui-extract
+    let nodeWithComments =
+      path.parentPath.type === "ExpressionStatement"
+        ? path.parentPath.node
+        : path.node
+    const i18nComment =
+      nodeWithComments.leadingComments &&
+      nodeWithComments.leadingComments.filter(
+        node => node.value.trim().substr(0, 4) === "i18n"
+      )[0]
+
+    if (!i18nComment) {
+      path.addComment("leading", "i18n")
+    }
+  }
+
+  function transformNode(node, file, props, root = false) {
+    if (isI18nMethod(node)) {
+      // t
+      return transformTemplateTag(node, file, props)
+    } else if (isChoiceMethod(node.callee)) {
+      // plural, select and selectOrdinal
+      return transformChoiceMethod(node, file, props, root)
+    } else if (isFormatMethod(node.callee)) {
+      // date, number
+      return transformFormatMethod(node, file, props, root)
+    }
+
+    return props
+  }
+
+  /**
+   * Once we transform macro, we have an object with message props:
+   * - text: this will become msg ID
+   * - defaults: defualt message if custom message ID is used
+   * - values: variables and values
+   * - formats: date/number formats
+   *
+   * This object is transformed to *message descriptor*, an object passed to `i18n._`
+   * method which performs translation and formatting.
+   */
+  function createMessageDescriptor(props) {
+    const descriptor = [
+      t.objectProperty(t.identifier("id"), t.StringLiteral(props.text))
+    ]
+
+    if (props.defaults) {
+      descriptor.push(
+        t.objectProperty(
+          t.identifier("defaults"),
+          t.stringLiteral(props.defaults)
+        )
+      )
+    }
+
+    const formatsList = Object.values(props.formats)
+    if (formatsList.length) {
+      descriptor.push(
+        t.objectProperty(
+          t.identifier("formats"),
+          t.objectExpression(formatsList)
+        )
+      )
+    }
+
+    const valuesList = Object.values(props.values)
+    if (valuesList.length) {
+      descriptor.push(
+        t.objectProperty(
+          t.identifier("values"),
+          t.objectExpression(valuesList.length ? valuesList : [])
+        )
+      )
+    }
+
+    return t.objectExpression(descriptor)
+  }
+
+  function transformTemplateTag(node, file, props) {
+    const { tag, quasi } = node
+
+    if (!t.isCallExpression(tag)) {
+      /**
+       * t`Message`
+       * Simple templatetag - generated message is used as an ID
+       */
+      return transformTemplateLiteral(node.quasi, file, props)
+    }
+
+    /**
+     * t('id')`Message`
+     * Template tag with an argument - generated message is used as a default one
+     */
+    const msgId = tag.arguments[0]
+    if (!t.isStringLiteral(msgId)) {
+      // TODO: Add link to lazy translation in docs.
+      throw file.buildCodeFrameError(tag, "Message ID must be a string.")
+    }
+
+    const newProps = transformTemplateLiteral(quasi, file, props)
+    return {
+      ...newProps,
+      text: msgId.value,
+      // FIXME: Why not newProps.text?
+      defaults: props.text
+    }
+  }
+
+  function transformTemplateLiteral(exp, file, props) {
+    let parts = []
+
+    exp.quasis.forEach((item, index) => {
+      parts.push(item)
+
+      if (!item.tail) parts.push(exp.expressions[index])
+    })
+
+    parts.forEach(item => {
+      if (t.isTemplateElement(item)) {
+        props.text += item.value.raw
+      } else if (
+        t.isCallExpression(item) &&
+        (isI18nMethod(item.callee) ||
+          isChoiceMethod(item.callee) ||
+          isFormatMethod(item.callee))
+      ) {
+        const { text } = transformNode(item, file, {
+          ...props,
+          text: ""
+        })
+        props.text += `{${text}}`
+      } else {
+        const { name, key } = expressionToArgument(item, props)
+
+        props.text += `{${name}}`
+        props.values[name] = t.objectProperty(key, item)
+      }
+    })
+
+    return props
   }
 
   function transformChoiceMethod(node, file, props, root = false) {
@@ -116,7 +234,7 @@ export default function({ types: t }) {
           })
           value = props.text
         } else if (t.isCallExpression(attr.value)) {
-          props = transformMethod(attr.value, file, { ...props, text: "" })
+          props = transformNode(attr.value, file, { ...props, text: "" })
           value = props.text
         } else {
           value = attr.value.value
@@ -131,33 +249,9 @@ export default function({ types: t }) {
     }
 
     const choicesKeys = Object.keys(choices)
-
-    // 'other' choice is required
-    if (!choicesKeys.length) {
-      throw file.buildCodeFrameError(
-        node.callee,
-        `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
-      )
-    } else if (!choicesKeys.includes("other")) {
-      throw file.buildCodeFrameError(
-        node.callee,
-        `Missing fallback argument 'other'.`
-      )
-    }
-
-    // validate plural rules
-    if (choicesType === "plural" || choicesType === "selectordinal") {
-      choicesKeys.forEach(rule => {
-        if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
-          throw file.buildCodeFrameError(
-            node.callee,
-            `Invalid plural rule '${rule}'. Must be ${pluralRules.join(
-              ", "
-            )} or exact number depending on your source language ('one' and 'other' for English).`
-          )
-        }
-      })
-    }
+    validatePluralRules(choicesType, choicesKeys, message => {
+      throw file.buildCodeFrameError(node.callee, message)
+    })
 
     const argument = choicesKeys
       .map(form => `${form} {${choices[form]}}`)
@@ -228,113 +322,39 @@ export default function({ types: t }) {
     return props
   }
 
-  function transformTemplateLiteral(exp, file, props) {
-    let parts = []
+  /**
+   * Custom matchers
+   */
 
-    exp.quasis.forEach((item, index) => {
-      parts.push(item)
+  const isIdentifier = (node, name) => t.isIdentifier(node, { name })
 
-      if (!item.tail) parts.push(exp.expressions[index])
-    })
+  const isI18nMethod = node =>
+    isIdentifier(node.tag, "t") ||
+    (t.isCallExpression(node.tag) && isIdentifier(node.tag.callee, "t"))
 
-    parts.forEach(item => {
-      if (t.isTemplateElement(item)) {
-        props.text += item.value.raw
-      } else if (
-        t.isCallExpression(item) &&
-        (isI18nMethod(item.callee) ||
-          isChoiceMethod(item.callee) ||
-          isFormatMethod(item.callee))
-      ) {
-        const { text } = transformMethod(item, file, {
-          ...props,
-          text: ""
-        })
-        props.text += `{${text}}`
-      } else {
-        const { name, key } = expressionToArgument(item, props)
+  const isChoiceMethod = node =>
+    isIdentifier(node, "plural") ||
+    isIdentifier(node, "select") ||
+    isIdentifier(node, "selectOrdinal")
 
-        props.text += `{${name}}`
-        props.values[name] = t.objectProperty(key, item)
-      }
-    })
+  const isFormatMethod = node =>
+    isIdentifier(node, "date") || isIdentifier(node, "number")
 
-    return props
+  /**
+   * Convert identifiers to *named* arguments and expressions to *positional* arguments.
+   *
+   * Example
+   * `world` is named argument and `new Date()` is positional one:
+   *
+   * Input:   `Hello ${world}, today is ${new Date()}`
+   * Output:  `Hello {world}, today is {0}`
+   */
+  function expressionToArgument(exp, props) {
+    const name = t.isIdentifier(exp) ? exp.name : props.argumentGenerator()
+    const key = t.isIdentifier(exp) ? exp : t.numericLiteral(name)
+
+    return { name, key }
   }
 
-  function transformMethod(node, file, props, root = false) {
-    if (isI18nMethod(node)) {
-      // t
-      return transformI18nMethod(node, file, props)
-    } else if (isChoiceMethod(node.callee)) {
-      // plural, select and selectOrdinal
-      return transformChoiceMethod(node, file, props, root)
-    } else if (isFormatMethod(node.callee)) {
-      // date, number
-      return transformFormatMethod(node, file, props, root)
-    }
-
-    return props
-  }
-
-  return function transform(path, file) {
-    // 1. Collect all parameters and generate message ID
-    const props = transformMethod(path.node, file, initialProps(), true)
-
-    const text = props.text.replace(nlRe, " ").trim()
-    if (!text) return
-
-    // 2. Create message descriptor
-    const descriptorProps = [
-      t.objectProperty(t.identifier("id"), t.StringLiteral(text))
-    ]
-
-    if (props.defaults) {
-      descriptorProps.push(
-        t.objectProperty(
-          t.identifier("defaults"),
-          t.stringLiteral(props.defaults)
-        )
-      )
-    }
-
-    const formatsList = Object.values(props.formats)
-    if (formatsList.length) {
-      descriptorProps.push(
-        t.objectProperty(
-          t.identifier("formats"),
-          t.objectExpression(formatsList)
-        )
-      )
-    }
-
-    const valuesList = Object.values(props.values)
-    if (valuesList.length) {
-      descriptorProps.push(
-        t.objectProperty(
-          t.identifier("values"),
-          t.objectExpression(valuesList.length ? valuesList : [])
-        )
-      )
-    }
-
-    const exp = t.objectExpression(descriptorProps)
-    exp.loc = path.node.loc
-    path.replaceWith(exp)
-
-    // 3. Add leading `i18n` comment (if doesn't exist) for lingui-extract
-    let nodeWithComments =
-      path.parentPath.type === "ExpressionStatement"
-        ? path.parentPath.node
-        : path.node
-    const i18nComment =
-      nodeWithComments.leadingComments &&
-      nodeWithComments.leadingComments.filter(
-        node => node.value.trim().substr(0, 4) === "i18n"
-      )[0]
-
-    if (!i18nComment) {
-      path.addComment("leading", "i18n")
-    }
-  }
+  return transform
 }

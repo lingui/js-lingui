@@ -14,7 +14,7 @@ import { Trans } from "@lingui/react";
   count: count
 }} />;
 <Trans id="hello {count, plural, one {world} other {worlds}}" />;
-<Trans id="Property {0}, function {1}, array {2}, constant {3}, object {4} everything {5}" values={{
+<Trans id="Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}" values={{
   0: props.name,
   1: random(),
   2: array[index],

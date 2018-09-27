@@ -7,10 +7,16 @@ t`Variable ${name}`;
 t`${duplicate} variable ${duplicate}`;
 
 t`
-  Property ${props.name},
-  function ${random()},
-  array ${array[index]},
-  constant ${42},
-  object ${new Date()}
+  Property ${props.name},\
+  function ${random()},\
+  array ${array[index]},\
+  constant ${42},\
+  object ${new Date()}\
   anything ${props.messages[index].value()}
 `
+
+t`Multiline
+  string`
+
+t`Multiline\
+  with continuation`

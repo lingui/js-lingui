@@ -32,3 +32,13 @@ const a =
     5: props.messages[index].value()
   }
 });
+(
+/*i18n*/
+{
+  id: "Multiline\nstring"
+});
+(
+/*i18n*/
+{
+  id: "Multiline with continuation"
+});

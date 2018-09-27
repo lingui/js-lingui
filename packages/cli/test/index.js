@@ -26,6 +26,14 @@ describe("typescript-extractor", function() {
     removeDirectory(LOCALE_DIR)
   })
 
+  beforeEach(() => {
+    process.env.LINGUI_EXTRACT = "1"
+  })
+
+  afterEach(() => {
+    process.env.LINGUI_EXTRACT = null
+  })
+
   it("should extract Typescript file", function() {
     expect(() =>
       extractor.extract(
