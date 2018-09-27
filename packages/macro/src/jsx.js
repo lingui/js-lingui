@@ -1,4 +1,5 @@
-const pluralRules = ["zero", "one", "two", "few", "many", "other"]
+import { validatePluralRules } from "./validation"
+
 const commonProps = ["id", "className", "render"]
 
 // replace whitespace before/after newline with single space
@@ -165,33 +166,9 @@ export default class Transformer {
       }
 
       const choicesKeys = Object.keys(choices)
-
-      // 'other' choice is required
-      if (!choicesKeys.length) {
-        throw file.buildCodeFrameError(
-          element,
-          `Missing ${choicesType} choices. At least fallback argument 'other' is required.`
-        )
-      } else if (!choicesKeys.includes("other")) {
-        throw file.buildCodeFrameError(
-          element,
-          `Missing fallback argument 'other'.`
-        )
-      }
-
-      // validate plural rules
-      if (choicesType === "plural" || choicesType === "selectordinal") {
-        choicesKeys.forEach(rule => {
-          if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
-            throw file.buildCodeFrameError(
-              element,
-              `Invalid plural rule '${rule}'. Must be ${pluralRules.join(
-                ", "
-              )} or exact number depending on your source language ('one' and 'other' for English).`
-            )
-          }
-        })
-      }
+      validatePluralRules(choicesType, choicesKeys, message => {
+        throw file.buildCodeFrameError(element, message)
+      })
 
       const argument = choicesKeys
         .map(form => `${form} {${choices[form]}}`)

@@ -190,17 +190,6 @@ describe("macro", function() {
         expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural forms missing fallback", function() {
-        const plural = `<Plural value={value} one="Book" />`
-        expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
-
-        const select = `<Select value={value} one="Book" />`
-        expect(transformCode(select)).toThrowErrorMatchingSnapshot()
-
-        const ordinal = `<SelectOrdinal value={value} one="Book" />`
-        expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
-      })
-
       it("plural rules must be valid", function() {
         const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
         expect(transformCode(plural)).toThrowErrorMatchingSnapshot()

@@ -57,7 +57,7 @@ exports[`macro validation Plural/Select/SelectOrdinal offset must be number or s
 `;
 
 exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 1`] = `
- Missing plural choices. At least fallback argument 'other' is required.
+ Missing plural choices. At least one plural should be provided.
   3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
   4 |       } from '@lingui/macro';
 > 5 |     <Plural value={value} />
@@ -65,7 +65,7 @@ exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 1
 `;
 
 exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 2`] = `
- Missing select choices. At least fallback argument 'other' is required.
+ Missing select choices. At least one plural should be provided.
   3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
   4 |       } from '@lingui/macro';
 > 5 |     <Select value={value} />
@@ -73,34 +73,10 @@ exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 2
 `;
 
 exports[`macro validation Plural/Select/SelectOrdinal plural forms are missing 3`] = `
- Missing selectordinal choices. At least fallback argument 'other' is required.
+ Missing selectordinal choices. At least one plural should be provided.
   3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
   4 |       } from '@lingui/macro';
 > 5 |     <SelectOrdinal value={value} />
-    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
-`;
-
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 1`] = `
- Missing fallback argument 'other'.
-  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
-  4 |       } from '@lingui/macro';
-> 5 |     <Plural value={value} one="Book" />
-    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
-`;
-
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 2`] = `
- Missing fallback argument 'other'.
-  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
-  4 |       } from '@lingui/macro';
-> 5 |     <Select value={value} one="Book" />
-    |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
-`;
-
-exports[`macro validation Plural/Select/SelectOrdinal plural forms missing fallback 3`] = `
- Missing fallback argument 'other'.
-  3 |         Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
-  4 |       } from '@lingui/macro';
-> 5 |     <SelectOrdinal value={value} one="Book" />
     |     ^ Learn more: https://www.npmjs.com/package/@lingui/macro
 `;
 

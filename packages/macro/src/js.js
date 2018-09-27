@@ -1,7 +1,7 @@
+import { validatePluralRules } from "./validation"
+
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
-
-const pluralRules = ["zero", "one", "two", "few", "many", "other"]
 
 const generatorFactory = (index = 0) => () => index++
 
@@ -249,28 +249,9 @@ export default function({ types: t }) {
     }
 
     const choicesKeys = Object.keys(choices)
-
-    // 'other' choice is required
-    if (!choicesKeys.length) {
-      throw file.buildCodeFrameError(
-        node.callee,
-        `Missing ${choicesType} choices. At least one plural should be provided.`
-      )
-    }
-
-    // validate plural rules
-    if (choicesType === "plural" || choicesType === "selectordinal") {
-      choicesKeys.forEach(rule => {
-        if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
-          throw file.buildCodeFrameError(
-            node.callee,
-            `Invalid plural rule '${rule}'. Must be ${pluralRules.join(
-              ", "
-            )} or exact number depending on your source language ('one' and 'other' for English).`
-          )
-        }
-      })
-    }
+    validatePluralRules(choicesType, choicesKeys, message => {
+      throw file.buildCodeFrameError(node.callee, message)
+    })
 
     const argument = choicesKeys
       .map(form => `${form} {${choices[form]}}`)
