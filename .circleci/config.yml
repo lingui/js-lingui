@@ -186,9 +186,9 @@ workflows:
       - test-node-8:
           requires:
             - build
-      - integration-vanilla-js:
+      - integration-js:
           requires:
           - build
-      - integration-webpack-react:
+      - integration-react:
           requires:
           - build
