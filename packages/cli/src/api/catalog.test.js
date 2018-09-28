@@ -25,7 +25,7 @@ describe("Catalog API", function() {
       expect(catalog.addLocale("en")).toEqual([
         true,
         expect.stringMatching(
-          escapeRegExp(path.join("en", "messages.json")) + "$"
+          escapeRegExp(path.join("en", "messages.po")) + "$"
         )
       ])
 
@@ -33,7 +33,7 @@ describe("Catalog API", function() {
       expect(catalog.addLocale("en")).toEqual([
         false,
         expect.stringMatching(
-          escapeRegExp(path.join("en", "messages.json")) + "$"
+          escapeRegExp(path.join("en", "messages.po")) + "$"
         )
       ])
     })
@@ -47,7 +47,7 @@ describe("Catalog API", function() {
       expect(catalog.addLocale("pseudo-LOCALE")).toEqual([
         true,
         expect.stringMatching(
-          escapeRegExp(path.join("pseudo-LOCALE", "messages.json")) + "$"
+          escapeRegExp(path.join("pseudo-LOCALE", "messages.po")) + "$"
         )
       ])
     })
@@ -65,11 +65,11 @@ describe("Catalog API", function() {
     it("should get locale for given filename", function() {
       const config = createConfig()
       const catalog = configureCatalog(config)
-      expect(catalog.getLocale(path.join("en", "messages.json"))).toEqual("en")
-      expect(catalog.getLocale(path.join("en_US", "messages.json"))).toEqual(
+      expect(catalog.getLocale(path.join("en", "messages.po"))).toEqual("en")
+      expect(catalog.getLocale(path.join("en_US", "messages.po"))).toEqual(
         "en_US"
       )
-      expect(catalog.getLocale(path.join("en-US", "messages.json"))).toEqual(
+      expect(catalog.getLocale(path.join("en-US", "messages.po"))).toEqual(
         "en-US"
       )
     })
@@ -77,7 +77,7 @@ describe("Catalog API", function() {
     it("should return null for invalid locales", function() {
       const config = createConfig()
       const catalog = configureCatalog(config)
-      expect(catalog.getLocale("messages.json")).toBeNull()
+      expect(catalog.getLocale("messages.po")).toBeNull()
     })
   })
 

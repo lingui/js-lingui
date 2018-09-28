@@ -43,7 +43,7 @@ describe("lingui add-locale", function() {
     mockFs({
       [config.localeDir]: {
         fr: {
-          "messages.json": mockFs.file()
+          "messages.po": mockFs.file()
         }
       }
     })

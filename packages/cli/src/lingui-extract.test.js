@@ -64,7 +64,7 @@ describe("lingui extract", function() {
         getLocales: jest.fn().mockReturnValue(["pseudo-LOCALE"]),
         readAll: jest.fn(),
         merge: jest.fn(),
-        write: jest.fn().mockReturnValue([true, "messages.json"])
+        write: jest.fn().mockReturnValue([true, "messages.po"])
       }
     })
 
