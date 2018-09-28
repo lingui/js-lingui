@@ -112,23 +112,6 @@ jobs:
     - run: chmod +x examples/react/node_modules/.bin/lingui
     - run: cd examples/react; yarn test
 
-  publish:
-    docker:
-      - image: circleci/node:latest
-
-    steps:
-      - checkout
-      - attach-workspace: *attach-workspace
-      - restore-cache: *restore-cache
-      - run: *yarn-install
-
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
-      - run: node scripts/release/update-versions.js --next
-      - run: node scripts/release/release-npm.js --next
-
   test-linter:
     docker:
       - image: circleci/node:latest
