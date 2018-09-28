@@ -1,0 +1,24 @@
+{
+  "babelrc": false,
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false
+      }
+    ],
+    "react",
+    "@lingui/babel-preset-react"
+  ],
+  "plugins": [
+    "macros",
+    "syntax-dynamic-import",
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
+}

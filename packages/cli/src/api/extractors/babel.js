@@ -1,5 +1,5 @@
 // @flow
-import { transformFileSync } from "@babel/core"
+import { transformFileSync } from "../compat"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 

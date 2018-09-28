@@ -1,6 +1,6 @@
 // @flow
 import fs from "fs"
-import { transform } from "@babel/core"
+import { transform } from "../compat"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import * as ts from "typescript"
@@ -44,7 +44,7 @@ const extractor: ExtractorType = {
     ]
 
     if (isTsx) {
-      plugins.unshift("syntax-jsx")
+      plugins.unshift("@babel/plugin-syntax-jsx")
     }
 
     transform(stripped.outputText, {

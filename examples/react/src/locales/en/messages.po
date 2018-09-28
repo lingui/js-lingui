@@ -1,0 +1,106 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-09-22 07:25+0200\n"
+"Mime-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/App.js:74
+msgid "<0>HTML</0> and <1>React components</1> works without extra configuration."
+msgstr ""
+
+#: src/App.js:38
+msgid "All messages use ICU MessageFormat, but <0>Trans</0> macro generates this syntax from JSX."
+msgstr ""
+
+#: src/App.js:70
+msgid "Components"
+msgstr ""
+
+#: src/App.js:120
+msgid "Dates"
+msgstr ""
+
+#: src/App.js:58
+msgid "Enter your name"
+msgstr ""
+
+#: src/App.js:101
+msgid "Formatting"
+msgstr ""
+
+#: src/App.js:62
+msgid "Hello {name}"
+msgstr ""
+
+#: src/App.js:134
+msgid "It costs {0,number,number0} which is {1,number,number1} of our income."
+msgstr ""
+
+#: src/App.js:24
+msgid "LinguiJS example"
+msgstr ""
+
+#: src/App.js:34
+msgid "Message formatting"
+msgstr ""
+
+#: src/App.js:49
+msgid "Messages can include variables:"
+msgstr ""
+
+#: src/App.js:130
+msgid "Numbers"
+msgstr ""
+
+#: src/App.js:121
+#~ msgid "Pluralization"
+#~ msgstr "Pluralization"
+
+#: src/App.js:105
+msgid "Plurals"
+msgstr ""
+
+#: src/App.js:81
+msgid "Props and strings"
+msgstr ""
+
+#: src/App.js:85
+msgid "React props and strings can be translated using <0>i18n</0> core:"
+msgstr ""
+
+#: src/App.js:20
+msgid "Select language:"
+msgstr ""
+
+#: src/App.js:94
+msgid "Show motto of the day"
+msgstr ""
+
+#: src/App.js:28
+msgid "This is an example integration of LinguiJS with React apps."
+msgstr ""
+
+#: src/App.js:124
+msgid "Today is {0,date}"
+msgstr ""
+
+#: src/App.js:45
+msgid "Variables"
+msgstr ""
+
+#: src/App.js:92
+msgid "You're looking good!"
+msgstr ""
+
+#: src/App.js:110
+msgid "{count, plural, =0 {There're no books} one {There's one book} other {There're # books}}"
+msgstr ""

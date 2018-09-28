@@ -10,7 +10,7 @@ function getTestName(testPath) {
 describe("macro", function() {
   const babelOptions = {
     configFile: false,
-    plugins: ["syntax-jsx", "macros"]
+    plugins: ["@babel/plugin-syntax-jsx", "macros"]
   }
 
   // return function, so we can test exceptions

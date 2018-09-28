@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const ora = require("ora")
 const { execSync } = require("child_process")
 
 const BUILD_DIR = path.resolve("build/packages")
@@ -13,12 +12,11 @@ function listDirs(dir) {
 }
 
 function linkDependencies(example) {
-  const spinner = ora("Linking " + example)
+  console.log("Linking " + example)
   const dependencies = packages.map(name => `@lingui/${name}`).join(" ")
   execSync("yalc link " + dependencies, {
     cwd: path.join(EXAMPLES_DIR, example)
   })
-  spinner.succeed()
 }
 
 function linkPackage(packageName) {
