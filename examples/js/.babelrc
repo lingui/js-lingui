@@ -1,9 +1,8 @@
 {
   "presets": [
-    "env"
+    "@babel/env"
   ],
   "plugins": [
-    "macros",
-    "transform-object-rest-spread"
+    "macros"
   ]
 }
