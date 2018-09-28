@@ -44,7 +44,7 @@ const extractor: ExtractorType = {
     ]
 
     if (isTsx) {
-      plugins.unshift("syntax-jsx")
+      plugins.unshift("@babel/plugin-syntax-jsx")
     }
 
     transform(stripped.outputText, {
