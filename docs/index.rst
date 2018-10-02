@@ -105,6 +105,7 @@ Documentation contents
    :maxdepth: 1
    :caption: Releases
 
+   Migration from 2.x to 3.x <releases/migration-3>
    Migration from 1.x to 2.x <releases/migration-2>
    Migration from 0.x to 1.x <releases/migration-1>
 
