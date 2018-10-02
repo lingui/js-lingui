@@ -12,28 +12,34 @@ pwd
 remote=$(git config remote.origin.url)
 
 # make a directory to put the gp-pages branch
+rm -rf gh-pages-branch
 mkdir gh-pages-branch
 cd gh-pages-branch
 # now lets setup a new repo so we can update the gh-pages branch
 git config --global user.email "$GH_EMAIL" > /dev/null 2>&1
 git config --global user.name "$GH_NAME" > /dev/null 2>&1
 git init
-git remote add --fetch origin "$remote"
+git remote add origin "$remote"
+git fetch --depth=1 --no-tags origin gh-pages:refs/remotes/origin/gh-pages
 
+[[ $1 == "next" ]] && TARGET="next" || TARGET="."
+echo "Version: $TARGET"
 
 # switch into the the gh-pages branch
 if git rev-parse --verify origin/gh-pages > /dev/null 2>&1
 then
     git checkout gh-pages
     # delete any old site as we are going to replace it
-    # Note: this explodes if there aren't any, so moving it here for now
-    git rm -rf .
+    if [ -d "$TARGET" ]; then
+       # Note: this explodes if there aren't any, so moving it here for now
+       git rm -rf $TARGET
+   fi
 else
     git checkout --orphan gh-pages
 fi
 
 # copy over or recompile the new site
-cp -a ../docs/_build/html/. .
+cp -a ../docs/_build/html/. $TARGET
 cp ../docs/CNAME .
 touch .nojekyll
 
