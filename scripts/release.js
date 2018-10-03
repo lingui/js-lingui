@@ -1,3 +1,5 @@
+const argv = require("minimist")(process.argv.slice(2))
+
 const { exec: _exec } = require("child_process")
 const fs = require("fs-extra")
 const path = require("path")
@@ -13,6 +15,31 @@ const PACKAGES_DIR = "build/packages"
 const npmTagForBranch = {
   master: "latest",
   next: "next"
+}
+
+async function devRelease() {
+  const spinner = ora({
+    text: "Building packages"
+  })
+  spinner.start()
+  await exec("yarn release:build")
+  // Throw away build stats
+  await exec("git checkout -- scripts/build/results.json")
+
+  spinner.text = "Publishing packages"
+  await Promise.all(
+    getPackages().map(packagePath => {
+      return exec(`yalc publish`, { cwd: packagePath })
+    })
+  )
+  spinner.succeed()
+
+  console.log()
+  console.log(
+    `Done! Run ${chalk.yellow(
+      "yalc add @lingui/[package]"
+    )} in target project to install development version of package.`
+  )
 }
 
 async function release() {
@@ -188,16 +215,12 @@ async function getNewVersion(npmTag) {
 
 async function preparePackageVersions(newVersion) {
   return Promise.all(
-    fs
-      .readdirSync(PACKAGES_DIR)
-      .map(directory => path.join(PACKAGES_DIR, directory))
-      .filter(directory => fs.lstatSync(directory).isDirectory())
-      .map(packageName => preparePackage(newVersion, packageName))
+    getPackages().map(packagePath => preparePackage(newVersion, packagePath))
   )
 }
 
-async function preparePackage(version, packageName) {
-  const packageJsonPath = path.join(packageName, "package.json")
+async function preparePackage(version, packagePath) {
+  const packageJsonPath = path.join(packagePath, "package.json")
   const packageJson = await fs.readJson(packageJsonPath)
 
   packageJson.version = version
@@ -232,27 +255,23 @@ function preparePackageDependencies(version, dependencies) {
 
 async function npmPublish(version, options) {
   const results = await Promise.all(
-    fs
-      .readdirSync(PACKAGES_DIR)
-      .map(directory => path.join(PACKAGES_DIR, directory))
-      .filter(directory => fs.lstatSync(directory).isDirectory())
-      .map(async packagePath => {
-        const name = packagePath.split("/").reverse()[0]
-        const spinner = ora({
-          isEnabled: false,
-          text: `Publishing @lingui/${name}@${version}`
-        })
-
-        spinner.start()
-        try {
-          await npmPublishPackage(packagePath, options)
-        } catch (e) {
-          spinner.fail(`Version ${version} already published!`)
-          console.log(e)
-          return false
-        }
-        spinner.succeed()
+    getPackages().map(async packagePath => {
+      const name = packagePath.split("/").reverse()[0]
+      const spinner = ora({
+        isEnabled: !process.env.CI,
+        text: `Publishing @lingui/${name}@${version}`
       })
+
+      spinner.start()
+      try {
+        await npmPublishPackage(packagePath, options)
+      } catch (e) {
+        spinner.fail(`Version ${version} already published!`)
+        console.log(e)
+        return false
+      }
+      spinner.succeed()
+    })
   )
 
   if (results.some(R.equals(false))) process.exit(1)
@@ -271,6 +290,13 @@ async function npmPublishPackage(packagePath, { otp, next, dryRun }) {
   return true
 }
 
+function getPackages() {
+  return fs
+    .readdirSync(PACKAGES_DIR)
+    .map(directory => path.join(PACKAGES_DIR, directory))
+    .filter(directory => fs.lstatSync(directory).isDirectory())
+}
+
 function exec(cmd, options) {
   return new Promise(function(resolve, reject) {
     _exec(cmd, options, function(error, stdout, stderr) {
@@ -286,6 +312,14 @@ function exec(cmd, options) {
   })
 }
 
+function main() {
+  if (argv.dev) {
+    return devRelease()
+  } else {
+    return release()
+  }
+}
+
 if (require.main === module) {
-  release().catch(error => console.error(error))
+  main().catch(error => console.error(error))
 }
