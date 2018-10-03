@@ -230,7 +230,7 @@ function preparePackageDependencies(version, dependencies) {
   return updatedDependencies
 }
 
-async function npmPublish(newVersion, options) {
+async function npmPublish(version, options) {
   const results = await Promise.all(
     fs
       .readdirSync(PACKAGES_DIR)
@@ -240,7 +240,7 @@ async function npmPublish(newVersion, options) {
         const name = packagePath.split("/").reverse()[0]
         const spinner = ora({
           isEnabled: false,
-          text: `Publishing @lingui/${name}@${newVersion}`
+          text: `Publishing @lingui/${name}@${version}`
         })
 
         spinner.start()
