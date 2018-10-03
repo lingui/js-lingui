@@ -37,7 +37,7 @@ async function devRelease() {
   console.log()
   console.log(
     `Done! Run ${chalk.yellow(
-      "yalc add @lingui/[package]"
+      "yalc link @lingui/[package]"
     )} in target project to install development version of package.`
   )
 }

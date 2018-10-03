@@ -80,17 +80,17 @@ to test it in your project as soon as possible.
 `jsLingui` uses [yalc](https://www.npmjs.com/package/yalc) to run integration tests
 on production build. You can do the same in your project:
 
-1. Build all packages:
+1. Run release script with `--dev` flag:
 
    ```sh
-   yarn release:build
+   yarn release --dev
    ```
   
-2. Packages are inside `build/packages` directory. First, run `yalc publish` in each
-   of them and then run `yalc link <package>` for each `@lingui/` dependency in your
-   project. Now your project uses your local version of `jsLingui`.
+2. Inside your project, run `yalc link @lingui/[package]` (e.g. `yalc link @lingui/cli`)
+   to link development version of package.
   
-3. After you make some changes, you need to run `yarn release:build` only.
+3. After you make some changes, you need to run `yarn release --dev` and then
+   `yalc update` inside your project.
 
 ### Finalize changes 
 
@@ -104,6 +104,8 @@ anyway and we'll help you).
 
 `yarn release:test` builds all packages, simulates creating packages for NPM, runs unit
 tests and finally runs integration tests using production build.
+
+**Note**: Don't commit `scripts/build/results.json` created by `yarn release:test`.
 
 Now you can create PR and let CI service do their work!
 
