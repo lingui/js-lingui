@@ -13,9 +13,7 @@ describe("lingui-loader", function() {
   skipOnWindows("should compile catalog", async () => {
     expect.assertions(2)
 
-    const stats = await compiler(
-      path.join(".", "locale", "en", "messages.json")
-    )
+    const stats = await compiler(path.join(".", "locale", "en", "messages.po"))
     const output = stats.toJson()
     expect(output.errors).toEqual([])
     expect(output.modules[0].source).toMatchSnapshot()

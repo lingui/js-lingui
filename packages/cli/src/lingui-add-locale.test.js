@@ -1,6 +1,6 @@
 import mockFs from "mock-fs"
 
-import { mockConsole, mockConfig } from "./mocks"
+import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 import command from "./lingui-add-locale"
 
 describe("lingui add-locale", function() {
@@ -43,7 +43,7 @@ describe("lingui add-locale", function() {
     mockFs({
       [config.localeDir]: {
         fr: {
-          "messages.json": mockFs.file()
+          "messages.po": mockFs.file()
         }
       }
     })

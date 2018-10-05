@@ -1,7 +1,7 @@
 import mockFs from "mock-fs"
-import { installPackages } from "./lingui-init"
-import { mockConsole } from "./mocks"
 import inquirer from "inquirer"
+import { mockConsole } from "@lingui/jest-mocks"
+import { installPackages } from "./lingui-init"
 
 describe("lingui init", function() {
   let inquirerPrompt

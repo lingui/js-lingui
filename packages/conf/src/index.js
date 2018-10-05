@@ -32,7 +32,7 @@ export const defaultConfig = {
   pseudoLocale: "",
   srcPathDirs: ["<rootDir>"],
   srcPathIgnorePatterns: [NODE_MODULES],
-  format: "lingui",
+  format: "po",
   rootDir: ".",
   extractBabelOptions: {
     plugins: [],
@@ -76,12 +76,13 @@ export function getConfig({ cwd } = {}) {
   const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
   const result = configExplorer.searchSync(defaultRootDir)
-  const raw = { ...defaultConfig, ...(result ? result.config : {}) }
+  const userConfig = result ? result.config : {}
+  const config = { ...defaultConfig, ...userConfig }
 
-  validate(raw, configValidation)
+  validate(config, configValidation)
   // Use deprecated fallbackLanguage, if defined
-  raw.fallbackLocale = raw.fallbackLocale || raw.fallbackLanguage || ""
+  config.fallbackLocale = config.fallbackLocale || config.fallbackLanguage || ""
 
   const rootDir = result ? path.dirname(result.filepath) : defaultRootDir
-  return replaceRootDir(raw, rootDir)
+  return replaceRootDir(config, rootDir)
 }

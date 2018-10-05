@@ -13,7 +13,7 @@ export default (fixture, options = {}) => {
     module: {
       rules: [
         {
-          test: /\.json$/,
+          test: /\.po$/,
           use: {
             loader: path.resolve(__dirname, "../src/index.js")
           }

@@ -1,5 +1,7 @@
 // @flow
 
+type Format = "po" | "lingui" | "minimal"
+
 export type LinguiConfig = {|
   rootDir: string,
   localeDir: string,
@@ -8,7 +10,8 @@ export type LinguiConfig = {|
   pseudoLocale: string,
   srcPathDirs: Array<string>,
   srcPathIgnorePatterns: Array<string>,
-  format: "lingui" | "minimal" | "po"
+  format: Format,
+  prevFormat: Format
 |}
 
 export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
@@ -61,7 +64,5 @@ export type CatalogApi = {
     locale: string,
     msgId: string,
     options: getTranslationOptions
-  ): ?string,
-
-  formatFilename(pattern: string, locale: string): string
+  ): ?string
 }
