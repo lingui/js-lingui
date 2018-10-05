@@ -1,0 +1,38 @@
+{
+  "name": "create-react-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "lingui extract; lingui compile; react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@lingui/react": "^3.0.0-3",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@lingui/cli": "^3.0.0-3",
+    "@lingui/loader": "^3.0.0-3",
+    "@lingui/macro": "^3.0.0-3",
+    "babel-core": "^7.0.0-bridge.0"
+  },
+  "lingui": {
+    "localeDir": "src/locales",
+    "format": "po",
+    "sourceLocale": "en"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
