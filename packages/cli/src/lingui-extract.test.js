@@ -47,28 +47,4 @@ describe("lingui extract", function() {
       )
     })
   })
-  it("should add pseudoLocale when defined", () => {
-    const config = mockConfig({
-      pseudoLocale: "pseudo-LOCALE"
-    })
-    const options = mockExtractOptions()
-
-    const addLocale = jest.fn()
-    order.mockImplementation(() => ["pseudo-LOCALE"])
-    configureCatalog.mockImplementation(() => {
-      return {
-        addLocale: addLocale,
-        getLocales: jest.fn().mockReturnValue(["pseudo-LOCALE"]),
-        readAll: jest.fn(),
-        merge: jest.fn(),
-        write: jest.fn().mockReturnValue([true, "messages.po"])
-      }
-    })
-
-    mockConsole(console => {
-      command(config, options)
-    })
-
-    expect(addLocale).toBeCalledWith("pseudo-LOCALE")
-  })
 })

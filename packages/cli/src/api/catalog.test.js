@@ -148,51 +148,6 @@ describe("Catalog API", function() {
     expect(convertedPo).toMatchSnapshot()
   })
 
-  describe("addLocale", function() {
-    it("should add locale", function() {
-      const config = createConfig()
-      const catalog = configureCatalog(config)
-
-      // First run, create a directory with an empty message catalog
-      expect(catalog.addLocale("en")).toEqual([
-        true,
-        expect.stringMatching(
-          escapeRegExp(path.join("en", "messages.po")) + "$"
-        )
-      ])
-
-      // Second run, don't do anything
-      expect(catalog.addLocale("en")).toEqual([
-        false,
-        expect.stringMatching(
-          escapeRegExp(path.join("en", "messages.po")) + "$"
-        )
-      ])
-    })
-
-    it("should add pseudoLocale", () => {
-      const config = createConfig({
-        pseudoLocale: "pseudo-LOCALE"
-      })
-      const catalog = configureCatalog(config)
-
-      expect(catalog.addLocale("pseudo-LOCALE")).toEqual([
-        true,
-        expect.stringMatching(
-          escapeRegExp(path.join("pseudo-LOCALE", "messages.po")) + "$"
-        )
-      ])
-    })
-
-    it("shouldn't add invalid locale", function() {
-      const config = createConfig({
-        pseudoLocale: "pseudo-LOCALE"
-      })
-      const catalog = configureCatalog(config)
-      expect(catalog.addLocale("xyz")).toEqual([false, null])
-    })
-  })
-
   describe("getLocale", function() {
     it("should get locale for given filename", function() {
       const config = createConfig()

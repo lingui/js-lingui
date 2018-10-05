@@ -1,10 +1,10 @@
 // @flow
 import fs from "fs"
 import path from "path"
-import glob from "glob"
 import R from "ramda"
 
-import type { LinguiConfig, CatalogApi } from "./types"
+import type { LinguiConfig } from "@lingui/conf"
+import type { CatalogApi } from "./types"
 import * as locales from "./locales"
 import { formats } from "."
 
@@ -141,16 +141,7 @@ export default (config: LinguiConfig): CatalogApi => {
     },
 
     getLocales() {
-      const pattern = path.join(config.localeDir, "*")
-
-      return glob
-        .sync(pattern)
-        .map(filename => {
-          // Don't use path.sep here, because glob.sync normalizes path separators
-          const [locale] = filename.split("/").reverse()
-          return locales.isValid(locale) && locale
-        })
-        .filter(Boolean)
+      return config.locales
     }
   }
 }

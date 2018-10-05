@@ -1,19 +1,5 @@
 // @flow
 
-type Format = "po" | "lingui" | "minimal"
-
-export type LinguiConfig = {|
-  rootDir: string,
-  localeDir: string,
-  sourceLocale: string,
-  fallbackLocale: string,
-  pseudoLocale: string,
-  srcPathDirs: Array<string>,
-  srcPathIgnorePatterns: Array<string>,
-  format: Format,
-  prevFormat: Format
-|}
-
 export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
 
 export type MessageType = {
