@@ -1,7 +1,9 @@
 import path from "path"
 import tmp from "tmp"
+import mockFs from "mock-fs"
+
+import { mockConfig } from "@lingui/jest-mocks"
 import configureCatalog from "./catalog"
-import { mockConfig } from "../mocks"
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 function escapeRegExp(string) {

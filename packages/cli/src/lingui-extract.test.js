@@ -1,5 +1,5 @@
 import fs from "fs"
-import { mockConsole, mockConfig } from "./mocks"
+import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 import command from "./lingui-extract"
 import configureCatalog from "./api/catalog"
 import { detect } from "./api/detect"
