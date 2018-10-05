@@ -1,81 +1,31 @@
+// @flow
 const path = require("path")
 const chalk = require("chalk")
 const cosmiconfig = require("cosmiconfig")
+// $FlowIgnore: Missing module definition
 const { validate } = require("jest-validate")
-const { replacePathSepForRegex } = require("jest-regex-util")
 
 const NODE_MODULES = "node_modules" + path.sep
 
-const pipe = (...functions) => args =>
-  functions.reduce((arg, fn) => fn(arg), args)
+export type CatalogFormat = "po" | "minimal" | "lingui"
 
-export function replaceRootDir(conf, rootDir, keys) {
-  const replace = s => s.replace("<rootDir>", rootDir)
-  ;(keys || Object.keys(conf)).forEach(originalKey => {
-    const key = replace(originalKey)
-    const value = conf[originalKey]
+type CatalogsConfig = { [destination: string]: string | Array<string> }
 
-    if (!value) {
-    } else if (typeof value === "string") {
-      conf[key] = replace(value)
-    } else if (typeof value === "object") {
-      conf[key] = replaceRootDir(conf[originalKey], rootDir)
-    } else if (value.length) {
-      conf[key] = value.map(replace)
-    }
-
-    if (key !== originalKey) delete conf[originalKey]
-  })
-
-  return conf
+type InputConfig = {
+  catalogs: CatalogsConfig,
+  compileNamespace: string,
+  extractBabelOptions: Object,
+  fallbackLocale: string,
+  format: CatalogFormat,
+  locales: Array<string>,
+  pseudoLocale: string,
+  sourceLocale: string,
+  rootDir?: string
 }
 
-/**
- * Replace fallbackLanguage with fallbackLocale
- *
- * Released in lingui-conf 0.9
- * Remove anytime after 3.x
- */
-export function fallbackLanguageMigration(config) {
-  const { fallbackLocale, fallbackLanguage, ...newConfig } = config
+export type LinguiConfig = InputConfig | { rootDir: string }
 
-  newConfig.fallbackLocale = fallbackLocale || fallbackLanguage || ""
-  return newConfig
-}
-
-/**
- * Replace localeDir, srcPathDirs and srcPathIgnorePatterns with catalogs
- *
- * Released in @lingui/conf 3.0
- * Remove anytime after 4.x
- */
-export function catalogMigration(config) {
-  const {
-    // These values were default configuration.
-    localeDir = "locale",
-    srcPathDirs = ["<rootDir>"],
-    srcPathIgnorePatterns = [NODE_MODULES],
-    ...newConfig
-  } = config
-
-  if (typeof localeDir === "string") {
-    let newLocaleDir = localeDir
-    if (localeDir.slice(-1) !== path.sep) {
-      newLocaleDir += "/"
-    }
-
-    newConfig.catalogs = {
-      [path.join(newLocaleDir, "{locale}", "messages")]: [].concat(
-        srcPathDirs,
-        srcPathIgnorePatterns.map(pattern => `!${pattern}`)
-      )
-    }
-  }
-
-  return newConfig
-}
-
-export const defaultConfig = {
+export const defaultConfig: InputConfig = {
   catalogs: {
     [path.join("<rootDir>", "locale", "{locale}", "messages")]:
       "<rootDir>" + path.sep
@@ -89,6 +39,29 @@ export const defaultConfig = {
   sourceLocale: ""
 }
 
+export function getConfig({ cwd }: { cwd: string } = {}): LinguiConfig {
+  const defaultRootDir = cwd || process.cwd()
+  const configExplorer = cosmiconfig("lingui")
+  const result = configExplorer.searchSync(defaultRootDir)
+  const userConfig = result ? result.config : {}
+  const config = { ...defaultConfig, ...userConfig }
+
+  validate(config, configValidation)
+
+  if (!config.rootDir) {
+    config.rootDir = result ? path.dirname(result.filepath) : defaultRootDir
+  }
+
+  return pipe(
+    // List config migrations from oldest to newest
+    fallbackLanguageMigration,
+    catalogMigration,
+
+    // `replaceRootDir` should always be the last
+    config => replaceRootDir(config, config.rootDir, ["catalogs"])
+  )(config)
+}
+
 const exampleConfig = {
   ...defaultConfig,
   extractBabelOptions: {
@@ -98,7 +71,7 @@ const exampleConfig = {
 }
 
 const deprecatedConfig = {
-  fallbackLanguage: config =>
+  fallbackLanguage: (config: InputConfig & { fallbackLanguage: string }) =>
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
       "fallbackLocale"
     )}
@@ -112,7 +85,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  localeDir: config =>
+  localeDir: (config: InputConfig) =>
     ` Option ${chalk.bold(
       "localeDir"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -131,7 +104,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathDirs: config =>
+  srcPathDirs: (config: InputConfig) =>
     ` Option ${chalk.bold(
       "srcPathDirs"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -150,7 +123,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathIgnorePatterns: config =>
+  srcPathIgnorePatterns: (config: InputConfig) =>
     ` Option ${chalk.bold(
       "srcPathIgnorePatterns"
     )} is deprecated. Configure excluded source paths using ${chalk.bold(
@@ -177,25 +150,84 @@ export const configValidation = {
   comment: "Documentation: https://lingui.js.org/ref/conf.html"
 }
 
-export function getConfig({ cwd } = {}) {
-  const defaultRootDir = cwd || process.cwd()
-  const configExplorer = cosmiconfig("lingui")
-  const result = configExplorer.searchSync(defaultRootDir)
-  const userConfig = result ? result.config : {}
-  const config = { ...defaultConfig, ...userConfig }
+/**
+ *
+ * @param conf
+ * @param rootDir
+ * @param keys
+ * @return {*}
+ */
+export function replaceRootDir(
+  conf: InputConfig,
+  rootDir: string,
+  keys: ?Array<string>
+) {
+  const replace = s => s.replace("<rootDir>", rootDir)
+  ;(keys || Object.keys(conf)).forEach(originalKey => {
+    const key = replace(originalKey)
+    const value = conf[originalKey]
 
-  validate(config, configValidation)
+    if (!value) {
+    } else if (typeof value === "string") {
+      conf[key] = replace(value)
+    } else if (Array.isArray(value)) {
+      conf[key] = value.map(replace)
+    } else if (typeof value === "object") {
+      conf[key] = replaceRootDir(conf[key], rootDir)
+    }
 
-  if (!config.rootDir) {
-    config.rootDir = result ? path.dirname(result.filepath) : defaultRootDir
+    if (key !== originalKey) delete conf[originalKey]
+  })
+
+  return conf
+}
+
+/**
+ * Replace fallbackLanguage with fallbackLocale
+ *
+ * Released in lingui-conf 0.9
+ * Remove anytime after 3.x
+ */
+export function fallbackLanguageMigration(config: Object) {
+  const { fallbackLocale, fallbackLanguage, ...newConfig } = config
+
+  return {
+    ...newConfig,
+    fallbackLocale: fallbackLocale || fallbackLanguage || ""
+  }
+}
+
+/**
+ * Replace localeDir, srcPathDirs and srcPathIgnorePatterns with catalogs
+ *
+ * Released in @lingui/conf 3.0
+ * Remove anytime after 4.x
+ */
+export function catalogMigration(config: Object) {
+  const {
+    // These values were default configuration.
+    localeDir = "locale",
+    srcPathDirs = ["<rootDir>"],
+    srcPathIgnorePatterns = [NODE_MODULES],
+    ...newConfig
+  } = config
+
+  if (typeof localeDir === "string") {
+    let newLocaleDir = localeDir
+    if (localeDir.slice(-1) !== path.sep) {
+      newLocaleDir += "/"
+    }
+
+    newConfig.catalogs = {
+      [path.join(newLocaleDir, "{locale}", "messages")]: [].concat(
+        srcPathDirs,
+        srcPathIgnorePatterns.map(pattern => `!${pattern}`)
+      )
+    }
   }
 
-  return pipe(
-    // List config migrations from oldest to newest
-    fallbackLanguageMigration,
-    catalogMigration,
-
-    // `replaceRootDir` should always be the last
-    config => replaceRootDir(config, config.rootDir, ["catalogs"])
-  )(config)
+  return newConfig
 }
+
+const pipe = (...functions: Array<Function>) => (args: any): any =>
+  functions.reduce((arg, fn) => fn(arg), args)
