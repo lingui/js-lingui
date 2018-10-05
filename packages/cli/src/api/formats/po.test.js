@@ -2,8 +2,8 @@ import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 import mockDate from "mockdate"
-import { mockConsole } from "../../mocks"
 import PO from "pofile"
+import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
 

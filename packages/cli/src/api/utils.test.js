@@ -1,5 +1,5 @@
+import { mockConsole } from "@lingui/jest-mocks"
 import { helpMisspelledCommand } from "./utils"
-import { mockConsole } from "../mocks"
 
 function getConsoleMockCalls({ mock }) {
   if (!mock.calls.length) return
