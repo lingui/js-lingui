@@ -15,18 +15,16 @@ export default (config: LinguiConfig): CatalogApi => {
     throw new Error(`Unknown format ${config.format}.`)
   }
 
-  const sourceFilename = path.join("{locale}", format.filename)
-  const compiledFilename = path.join("{locale}", "messages.js")
+  const prevFormat = formats[config.prevFormat]
+  if (config.prevFormat && !prevFormat) {
+    throw new Error(`Unknown format ${config.format}.`)
+  }
 
   return {
-    formatFilename(pattern, locale) {
-      return pattern.replace("{locale}", locale)
-    },
-
     write(locale, messages) {
       const filename = path.join(
         config.localeDir,
-        this.formatFilename(sourceFilename, locale)
+        path.join(locale, format.filename)
       )
 
       const created = !fs.existsSync(filename)
@@ -35,13 +33,15 @@ export default (config: LinguiConfig): CatalogApi => {
     },
 
     read(locale) {
+      const sourceFormat = prevFormat || format
       const filename = path.join(
         config.localeDir,
-        this.formatFilename(sourceFilename, locale)
+        path.join(locale, sourceFormat.filename)
       )
 
       if (!fs.existsSync(filename)) return null
-      return format.read(filename)
+      // Read files using previous format, if available
+      return sourceFormat.read(filename)
     },
 
     readAll() {
@@ -127,7 +127,7 @@ export default (config: LinguiConfig): CatalogApi => {
     writeCompiled(locale, content) {
       const filename = path.join(
         config.localeDir,
-        this.formatFilename(compiledFilename, locale)
+        path.join(locale, "messages.js")
       )
 
       fs.writeFileSync(filename, content)
@@ -161,7 +161,7 @@ export default (config: LinguiConfig): CatalogApi => {
 
       const filename = path.join(
         config.localeDir,
-        this.formatFilename(sourceFilename, locale)
+        path.join(locale, format.filename)
       )
 
       if (!fs.existsSync(filename)) {
