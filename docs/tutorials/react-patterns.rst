@@ -2,7 +2,7 @@
 Common i18n patterns in React
 *****************************
 
-Following page describes the most common i18n patterns in React. It's a followup
+Following page describes the most common i18n patterns in React. It's a follow-up
 to `tutorial <react>`_ with practical examples. See the
 `API reference <../ref/react>`_ for detailed information about all components.
 
@@ -50,7 +50,7 @@ If you're using custom IDs in your project, add ``id`` prop to i18n components:
 Messages ``msg.header`` and ``msg.hello`` will be extracted with default values
 ``LinguiJS example`` and ``Hello <0>{name}</0>.``.
 
-Element attributes and string only translations
+Element attributes and string-only translations
 ===============================================
 
 Sometimes you can't use :jsxmacro:`Trans` component, for example when translating element
@@ -132,7 +132,7 @@ argument and then use string templates as usual:
 
 Message ``msg.caption`` will be extracted with default value ``Image caption``.
 
-For all other js macros (:jsmacro:`plural`, :jsmacro:`select``, :jsmacro:`selectOrdinal``),
+For all other js macros (:jsmacro:`plural`, :jsmacro:`select`, :jsmacro:`selectOrdinal`),
 pass ID as object key:
 
 .. code-block:: jsx
@@ -158,13 +158,11 @@ Translations outside React components
 =====================================
 
 Another common pattern is when you need to access translations (``i18n`` object)
-outside React components, for example inside ``redux-saga``. In such case, you need
-a bit more setup:
+outside React components, for example inside ``redux-saga``:
 
 1. Create your own instance of ``i18n`` using :js:func:`setupI18n` form ``@lingui/core``
 
-2. Pass this instance as ``i18n`` prop to :component:`I18nProvider`. This will replace
-   default ``i18n`` object initialized inside :component:`I18nProvider`.
+2. Pass this instance as ``i18n`` prop to :component:`I18nProvider`.
 
    .. code-block:: jsx
 
@@ -177,7 +175,7 @@ a bit more setup:
       export default function App() {
          return (
             <I18nProvider i18n={i18n}>
-               {/* Out app */}
+               {/* Our app */}
             </I18nProvider>
          )
       }
@@ -191,7 +189,7 @@ a bit more setup:
       import { t } from "@lingui/macro"
 
       export function alert() {
-         // use i18n as you were inside React component
+         // use i18n as if you were inside a React component
          alert(i18n._(t`...`))
       }
 
