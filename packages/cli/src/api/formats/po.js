@@ -82,6 +82,8 @@ const validateItems = R.map(item => {
 const indexItems = R.indexBy(getMessageKey)
 
 const format: TranslationsFormat = {
+  messageFileExtension: ".pot",
+  catalogExtension: ".po",
   filename: "messages.po",
 
   write(filename, catalog, options = {}) {
