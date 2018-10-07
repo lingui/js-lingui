@@ -1,11 +1,5 @@
 import chalk from "chalk"
-
-let core
-try {
-  core = require("babel-core")
-} catch (e) {
-  core = require("@babel/core")
-}
+import * as core from "babel-core"
 
 function catchBabelVersionMismatch(fn) {
   return function() {

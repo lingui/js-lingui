@@ -11,6 +11,7 @@ module.exports = {
     "node_modules",
     "scripts",
     "locale",
+    "fixtures",
     ".*.json$",
     ".*.js.snap$"
   ],

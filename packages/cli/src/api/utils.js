@@ -3,7 +3,7 @@ import path from "path"
 import chalk from "chalk"
 import { score } from "fuzzaldrin"
 
-export function removeDirectory(dir, keep = false) {
+export function removeDirectory(dir, onlyContent = false) {
   if (!fs.existsSync(dir)) return
   const list = fs.readdirSync(dir)
 
@@ -21,7 +21,7 @@ export function removeDirectory(dir, keep = false) {
     }
   }
 
-  if (!keep) {
+  if (!onlyContent) {
     fs.rmdirSync(dir)
   }
 }

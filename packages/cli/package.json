@@ -34,7 +34,6 @@
     "*.js.flow"
   ],
   "dependencies": {
-    "@babel/core": "^7.1.0",
     "@babel/generator": "^7.0.0",
     "@babel/parser": "^7.1.0",
     "@babel/plugin-syntax-jsx": "^7.0.0",
@@ -63,5 +62,8 @@
   },
   "devDependencies": {
     "mockdate": "^2.0.2"
+  },
+  "peerDependencies": {
+    "babel-core": "^6.0.0 | ^7.0.0-bridge.0"
   }
 }

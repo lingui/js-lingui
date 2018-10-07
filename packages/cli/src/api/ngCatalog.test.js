@@ -1,7 +1,46 @@
+// @flow
+import path from "path"
 import mockFs from "mock-fs"
-import { mockConfig } from "@lingui/jest-mocks"
+import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 
 import { getCatalogs, Catalog } from "./ngCatalog"
+
+describe("Catalog", function() {
+  afterEach(() => {
+    mockFs.restore()
+  })
+
+  describe("collect", function() {
+    it("should extract messages from source files", function() {
+      const catalog = new Catalog({
+        name: "messages",
+        path: "locales/{locale}",
+        include: [path.resolve(__dirname, "./fixtures/collect/")],
+        exclude: []
+      })
+
+      const messages = catalog.collect()
+      expect(messages).toMatchSnapshot()
+    })
+
+    it("should handle errors", function() {
+      const catalog = new Catalog({
+        name: "messages",
+        path: "locales/{locale}",
+        include: [path.resolve(__dirname, "./fixtures/collect-invalid/")],
+        exclude: []
+      })
+
+      mockConsole(console => {
+        const messages = catalog.collect()
+        expect(console.error).toBeCalledWith(
+          expect.stringContaining(`Cannot process file`)
+        )
+        expect(messages).toMatchSnapshot()
+      })
+    })
+  })
+})
 
 describe("getCatalogs", function() {
   afterEach(() => {
@@ -9,43 +48,44 @@ describe("getCatalogs", function() {
   })
 
   it("should get single catalog if catalogPath doesn't include {name} pattern", function() {
-    expect(
-      getCatalogs(
-        mockConfig({
-          catalogs: {
-            "./src/locales/{locale}": "./src/"
-          }
-        })
+    const config = mockConfig({
+      catalogs: {
+        "./src/locales/{locale}": "./src/"
+      }
+    })
+    expect(getCatalogs(config)).toEqual([
+      new Catalog(
+        {
+          name: null,
+          path: "src/locales/{locale}",
+          include: ["src/"],
+          exclude: []
+        },
+        config
       )
-    ).toEqual([
-      new Catalog({
-        name: null,
-        path: "src/locales/{locale}",
-        include: ["src/"],
-        exclude: []
-      })
     ])
+  })
 
-    // with catalog name and excluded directories
-    expect(
-      getCatalogs(
-        mockConfig({
-          catalogs: {
-            "src/locales/{locale}/all": [
-              "src/",
-              "/absolute/path/",
-              "!node_modules/"
-            ]
-          }
-        })
+  it("should have catalog name and ignore patterns", function() {
+    const config = mockConfig({
+      catalogs: {
+        "src/locales/{locale}/all": [
+          "src/",
+          "/absolute/path/",
+          "!node_modules/"
+        ]
+      }
+    })
+    expect(getCatalogs(config)).toEqual([
+      new Catalog(
+        {
+          name: "all",
+          path: "src/locales/{locale}/all",
+          include: ["src/", "/absolute/path/"],
+          exclude: ["node_modules/"]
+        },
+        config
       )
-    ).toEqual([
-      new Catalog({
-        name: "all",
-        path: "src/locales/{locale}/all",
-        include: ["src/", "/absolute/path/"],
-        exclude: ["node_modules/"]
-      })
     ])
   })
 
@@ -59,27 +99,30 @@ describe("getCatalogs", function() {
       }
     })
 
-    expect(
-      getCatalogs(
-        mockConfig({
-          catalogs: {
-            "{name}/locales/{locale}": "./{name}/"
-          }
-        })
+    const config = mockConfig({
+      catalogs: {
+        "{name}/locales/{locale}": "./{name}/"
+      }
+    })
+    expect(getCatalogs(config)).toEqual([
+      new Catalog(
+        {
+          name: "componentA",
+          path: "componentA/locales/{locale}",
+          include: ["componentA/"],
+          exclude: []
+        },
+        config
+      ),
+      new Catalog(
+        {
+          name: "componentB",
+          path: "componentB/locales/{locale}",
+          include: ["componentB/"],
+          exclude: []
+        },
+        config
       )
-    ).toEqual([
-      new Catalog({
-        name: "componentA",
-        path: "componentA/locales/{locale}",
-        include: ["componentA/"],
-        exclude: []
-      }),
-      new Catalog({
-        name: "componentB",
-        path: "componentB/locales/{locale}",
-        include: ["componentB/"],
-        exclude: []
-      })
     ])
   })
 
@@ -93,21 +136,21 @@ describe("getCatalogs", function() {
       }
     })
 
-    expect(
-      getCatalogs(
-        mockConfig({
-          catalogs: {
-            "./{name}/locales/{locale}": ["./{name}/", "!componentB/"]
-          }
-        })
+    const config = mockConfig({
+      catalogs: {
+        "./{name}/locales/{locale}": ["./{name}/", "!componentB/"]
+      }
+    })
+    expect(getCatalogs(config)).toEqual([
+      new Catalog(
+        {
+          name: "componentA",
+          path: "componentA/locales/{locale}",
+          include: ["componentA/"],
+          exclude: ["componentB/"]
+        },
+        config
       )
-    ).toEqual([
-      new Catalog({
-        name: "componentA",
-        path: "componentA/locales/{locale}",
-        include: ["componentA/"],
-        exclude: ["componentB/"]
-      })
     ])
   })
 

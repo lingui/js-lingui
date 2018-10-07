@@ -14,8 +14,8 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
-    const { babelOptions = {} } = options
-    const plugins = babelOptions.plugins || []
+    const { _babelOptions = {} } = options
+    const { plugins = [], ...babelOptions } = _babelOptions
     const frameworkOptions = {}
 
     if (options.projectType === projectType.CRA) {

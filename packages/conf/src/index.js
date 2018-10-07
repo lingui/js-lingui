@@ -27,8 +27,10 @@ export type LinguiConfig = InputConfig | { rootDir: string }
 
 export const defaultConfig: InputConfig = {
   catalogs: {
-    [path.join("<rootDir>", "locale", "{locale}", "messages")]:
-      "<rootDir>" + path.sep
+    [path.join("<rootDir>", "locale", "{locale}", "messages")]: [
+      `<rootDir>`,
+      `!*/node_modules/*`
+    ]
   },
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },

@@ -1,23 +1,28 @@
 // @flow
+import os from "os"
+import fs from "fs"
 import path from "path"
 import * as R from "ramda"
+import chalk from "chalk"
 import glob from "glob"
 
 import getFormat from "./formats"
+import extract from "./extractors"
+import { prettyOrigin, removeDirectory } from "./utils"
 import type { LinguiConfig } from "@lingui/conf"
 
 type CatalogProps = {
   name: ?string,
   path: string,
   include: Array<string>,
-  exclude: Array<string>
+  exclude?: Array<string>
 }
 
 const NAME = "{name}"
 const LOCALE = "{locale}"
 
 export function Catalog(
-  { name, path, include, exclude }: CatalogProps,
+  { name, path, include, exclude = [] }: CatalogProps,
   config: LinguiConfig
 ) {
   this.name = name
@@ -39,13 +44,62 @@ export function Catalog(
 // }
 
 Catalog.prototype = {
-  collect() {
-    const paths = this.sourcePaths
+  /**
+   * Collect messages from source paths. Return a raw message catalog as JSON.
+   */
+  collect({ verbose } = {}) {
+    const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
+
+    if (fs.existsSync(tmpDir)) {
+      removeDirectory(tmpDir, true)
+    } else {
+      fs.mkdirSync(tmpDir)
+    }
+
+    try {
+      this.sourcePaths.forEach(filename =>
+        extract(filename, tmpDir, { verbose })
+      )
+
+      return (function traverse(directory) {
+        return fs
+          .readdirSync(directory)
+          .map(filename => {
+            const filepath = path.join(directory, filename)
+
+            if (fs.lstatSync(filepath).isDirectory()) {
+              return traverse(filepath)
+            }
+
+            if (!filename.endsWith(".json")) return
+
+            try {
+              return JSON.parse(fs.readFileSync(filepath).toString())
+            } catch (e) {
+              return {}
+            }
+          })
+          .filter(Boolean)
+          .reduce(
+            (catalog, messages) =>
+              R.mergeWithKey(mergeOrigins, catalog, messages),
+            {}
+          )
+      })(tmpDir)
+    } catch (e) {
+      throw e
+    } finally {
+      removeDirectory(tmpDir)
+    }
   },
 
-  // 1.
   get sourcePaths() {
-    return []
+    const includeGlob = this.include.map(includePath =>
+      path.join(includePath, "**", "*.*")
+    )
+    const patterns =
+      includeGlob.length > 1 ? `{${includeGlob.join("|")}` : includeGlob[0]
+    return glob.sync(patterns, { ignore: this.exclude })
   },
 
   get localeDir() {
@@ -156,6 +210,25 @@ export function getCatalogs(config: LinguiConfig): Array<Catalog> {
   })
 
   return catalogs
+}
+
+/**
+ * Merge origins for messages found in different places. All other attributes
+ * should be the same (raise an error if defaults are different).
+ */
+function mergeOrigins(msgId, prev, next) {
+  if (prev.defaults !== next.defaults) {
+    throw new Error(
+      `Encountered different defaults for message ${chalk.yellow(msgId)}` +
+        `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.defaults}` +
+        `\n${chalk.yellow(prettyOrigin(next.origin))} ${next.defaults}`
+    )
+  }
+
+  return {
+    ...next,
+    origin: R.concat(prev.origin, next.origin)
+  }
 }
 
 /**

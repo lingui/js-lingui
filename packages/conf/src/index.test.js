@@ -28,7 +28,7 @@ describe("@lingui/conf", function() {
       {
         boolean: false,
         catalogs: {
-          "<rootDir>/locale/{locale}/messages": [
+          "<rootDir>/locales/{locale}/messages": [
             "<rootDir>/src",
             "!<rootDir>/ignored"
           ]
@@ -39,7 +39,7 @@ describe("@lingui/conf", function() {
 
     expect(config.boolean).toEqual(false)
     expect(config.catalogs).toEqual({
-      "/Root/locale/{locale}/messages": ["/Root/src", "!/Root/ignored"]
+      "/Root/locales/{locale}/messages": ["/Root/src", "!/Root/ignored"]
     })
   })
 
@@ -70,25 +70,25 @@ describe("@lingui/conf", function() {
 
     it("should normalize string localeDir", function() {
       const config = {
-        localeDir: "./locale"
+        localeDir: "./locales"
       }
 
       expect(catalogMigration(config)).toEqual({
         catalogs: {
-          "locale/{locale}/messages": ["<rootDir>", "!node_modules/"]
+          "locales/{locale}/messages": ["<rootDir>", "!node_modules/"]
         }
       })
     })
     it("should migrate srcPathDirs and srcPathIgnorePatterns", function() {
       const config = {
-        localeDir: "locale",
+        localeDir: "locales",
         srcPathDirs: ["src"],
         srcPathIgnorePatterns: ["src/node_modules/"]
       }
 
       expect(catalogMigration(config)).toEqual({
         catalogs: {
-          "locale/{locale}/messages": ["src", "!src/node_modules/"]
+          "locales/{locale}/messages": ["src", "!src/node_modules/"]
         }
       })
     })
