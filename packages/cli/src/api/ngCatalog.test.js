@@ -1,4 +1,5 @@
 // @flow
+import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 import { mockConsole, mockConfig } from "@lingui/jest-mocks"
@@ -12,24 +13,30 @@ describe("Catalog", function() {
 
   describe("collect", function() {
     it("should extract messages from source files", function() {
-      const catalog = new Catalog({
-        name: "messages",
-        path: "locales/{locale}",
-        include: [path.resolve(__dirname, "./fixtures/collect/")],
-        exclude: []
-      })
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [path.resolve(__dirname, "./fixtures/collect/")],
+          exclude: []
+        },
+        mockConfig()
+      )
 
       const messages = catalog.collect()
       expect(messages).toMatchSnapshot()
     })
 
     it("should handle errors", function() {
-      const catalog = new Catalog({
-        name: "messages",
-        path: "locales/{locale}",
-        include: [path.resolve(__dirname, "./fixtures/collect-invalid/")],
-        exclude: []
-      })
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [path.resolve(__dirname, "./fixtures/collect-invalid/")],
+          exclude: []
+        },
+        mockConfig()
+      )
 
       mockConsole(console => {
         const messages = catalog.collect()
@@ -39,6 +46,147 @@ describe("Catalog", function() {
         expect(messages).toMatchSnapshot()
       })
     })
+  })
+
+  describe("read", function() {
+    it("should return null if file does not exist", function() {
+      // mock empty filesystem
+      mockFs()
+
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [],
+          exclude: []
+        },
+        mockConfig()
+      )
+
+      const messages = catalog.read("en")
+      expect(messages).toBeNull()
+    })
+
+    it("should read file in given format", function() {
+      mockFs({
+        en: {
+          "messages.po": fs.readFileSync(
+            path.resolve(__dirname, "formats/fixtures/messages.po")
+          )
+        }
+      })
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "{locale}/messages",
+          include: []
+        },
+        mockConfig()
+      )
+
+      const messages = catalog.read("en")
+
+      mockFs.restore()
+      expect(messages).toMatchSnapshot()
+    })
+
+    it("should read file in previous format", function() {
+      mockFs({
+        en: {
+          "messages.json": fs.readFileSync(
+            path.resolve(__dirname, "formats/fixtures/messages.json")
+          )
+        }
+      })
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "{locale}/messages",
+          include: []
+        },
+        mockConfig({ prevFormat: "minimal" })
+      )
+
+      const messages = catalog.read("en")
+
+      mockFs.restore()
+      expect(messages).toMatchSnapshot()
+    })
+  })
+
+  describe("readAll", function() {
+    it("should read existing catalogs for all locales", function() {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.resolve(
+            __dirname,
+            path.join("fixtures", "readAll", "{locale}", "messages")
+          ),
+          include: []
+        },
+        mockConfig({
+          locales: ["en", "cs"]
+        })
+      )
+
+      const messages = catalog.readAll()
+      expect(messages).toMatchSnapshot()
+    })
+  })
+
+  /**
+   * Convert JSON format to PO and then back to JSON.
+   * - Compare that original and converted JSON file are identical
+   * - Check the content of PO file
+   */
+  it("should convert catalog format", function() {
+    mockFs({
+      en: {
+        "messages.json": fs.readFileSync(
+          path.resolve(__dirname, "formats/fixtures/messages.json")
+        ),
+        "messages.po": mockFs.file()
+      }
+    })
+
+    const fileContent = format =>
+      fs
+        .readFileSync("./en/messages." + (format === "po" ? "po" : "json"))
+        .toString()
+        .trim()
+
+    const catalogConfig = {
+      name: "messages",
+      path: "{locale}/messages",
+      include: []
+    }
+
+    const originalJson = fileContent("json")
+    const po2json = new Catalog(
+      catalogConfig,
+      mockConfig({
+        format: "po",
+        prevFormat: "minimal"
+      })
+    )
+    po2json.write("en", po2json.read("en"))
+    const convertedPo = fileContent("po")
+
+    const json2po = new Catalog(
+      catalogConfig,
+      mockConfig({
+        format: "minimal",
+        prevFormat: "po",
+        localeDir: "."
+      })
+    )
+    json2po.write("en", json2po.read("en"))
+    const convertedJson = fileContent("json")
+
+    mockFs.restore()
+    expect(originalJson).toEqual(convertedJson)
+    expect(convertedPo).toMatchSnapshot()
   })
 })
 

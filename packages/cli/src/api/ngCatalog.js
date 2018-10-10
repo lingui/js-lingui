@@ -30,6 +30,7 @@ export function Catalog(
   this.include = include
   this.exclude = [this.localeDir, ...exclude]
   this.config = config
+  this.format = getFormat(config.format)
 }
 
 // export type MessageType = {
@@ -44,6 +45,26 @@ export function Catalog(
 // }
 
 Catalog.prototype = {
+  make(options = {}) {
+    const nextCatalog = this.collect()
+    const prevCatalogs = this.readAll()
+
+    // const clean = options.clean ? cleanObsolete : id => id
+    // const catalogs = order(
+    //   clean(
+    //     catalog.merge(prevCatalogs, nextCatalog, {
+    //       overwrite: options.overwrite
+    //     })
+    //   )
+    // )
+
+    const catalogs = this.merge(prevCatalogs, nextCatalog, {
+      overwrite: options.overwrite
+    })
+
+    this.locales.map(locale => this.write(locale, catalogs[locale]))
+  },
+
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
@@ -93,6 +114,110 @@ Catalog.prototype = {
     }
   },
 
+  merge(prevCatalogs, nextCatalog, options = {}) {
+    const nextKeys = R.keys(nextCatalog)
+
+    return R.mapObjIndexed((prevCatalog, locale) => {
+      const prevKeys = R.keys(prevCatalog)
+
+      const newKeys = R.difference(nextKeys, prevKeys)
+      const mergeKeys = R.intersection(nextKeys, prevKeys)
+      const obsoleteKeys = R.difference(prevKeys, nextKeys)
+
+      // Initialize new catalog with new keys
+      const newMessages = R.mapObjIndexed(
+        (message, key) => ({
+          translation:
+            this.config.sourceLocale === locale ? message.defaults || key : "",
+          ...message
+        }),
+        R.pick(newKeys, nextCatalog)
+      )
+
+      // Merge translations from previous catalog
+      const mergedMessages = mergeKeys.map(key => {
+        const updateFromDefaults =
+          this.config.sourceLocale === locale &&
+          (prevCatalog[key].translation === prevCatalog[key].defaults ||
+            options.overwrite)
+
+        const translation = updateFromDefaults
+          ? nextCatalog[key].defaults
+          : prevCatalog[key].translation
+
+        return {
+          [key]: {
+            translation,
+            ...R.omit(["obsolete, translation"], nextCatalog[key])
+          }
+        }
+      })
+
+      // Mark all remaining translations as obsolete
+      const obsoleteMessages = obsoleteKeys.map(key => ({
+        [key]: {
+          ...prevCatalog[key],
+          obsolete: true
+        }
+      }))
+
+      return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
+    }, prevCatalogs)
+  },
+
+  getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
+    const getTranslation = locale => catalogs[locale][key].translation
+
+    return (
+      // Get translation in target locale
+      getTranslation(locale) ||
+      // Get translation in fallbackLocale (if any)
+      (fallbackLocale && getTranslation(fallbackLocale)) ||
+      // Get message default
+      catalogs[locale][key].defaults ||
+      // If sourceLocale is either target locale of fallback one, use key
+      (sourceLocale && sourceLocale === locale && key) ||
+      (sourceLocale &&
+        fallbackLocale &&
+        sourceLocale === fallbackLocale &&
+        key) ||
+      // Otherwise no translation is available
+      undefined
+    )
+  },
+
+  write(locale, messages) {
+    const filename = path.join(
+      this.localeDir,
+      path.join(locale, this.format.filename)
+    )
+
+    const created = !fs.existsSync(filename)
+    this.format.write(filename, messages, { language: locale })
+    return [created, filename]
+  },
+
+  read(locale) {
+    // Read files using previous format, if available
+    const sourceFormat = this.config.prevFormat
+      ? getFormat(this.config.prevFormat)
+      : this.format
+
+    const filename =
+      this.path.replace(LOCALE, locale) + sourceFormat.catalogExtension
+
+    if (!fs.existsSync(filename)) return null
+    return sourceFormat.read(filename)
+  },
+
+  readAll() {
+    return R.mergeAll(
+      this.locales.map(locale => ({
+        [locale]: this.read(locale)
+      }))
+    )
+  },
+
   get sourcePaths() {
     const includeGlob = this.include.map(includePath =>
       path.join(includePath, "**", "*.*")
@@ -108,6 +233,10 @@ Catalog.prototype = {
       throw Error("Invalid catalog path: {locale} variable is missing")
     }
     return this.path.substr(0, localePatternIndex)
+  },
+
+  get locales() {
+    return this.config.locales
   }
 }
 

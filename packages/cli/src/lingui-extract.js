@@ -1,18 +1,13 @@
 // @flow
-import fs from "fs"
-import path from "path"
-import mkdirp from "mkdirp"
 import chalk from "chalk"
 import program from "commander"
 
 import { getConfig } from "@lingui/conf"
+import type { LinguiConfig } from "@lingui/conf"
 
-import configureCatalog from "./api/catalog"
-
-import type { LinguiConfig, CatalogApi } from "./api/types"
-import { extract, collect, cleanObsolete, order } from "./api/extract"
+import { getCatalogs } from "./api/ngCatalog"
+import type { CatalogApi } from "./api/types"
 import { printStats } from "./api/stats"
-import { removeDirectory } from "./api/utils"
 import { detect } from "./api/detect"
 
 type ExtractOptions = {|
@@ -38,83 +33,30 @@ export default function command(
   // save to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
   process.env.LINGUI_EXTRACT = "1"
 
-  const catalog = configureCatalog(config)
-
-  const locales = catalog.getLocales()
-  const pseudoLocale = config.pseudoLocale
-  if (pseudoLocale) {
-    locales.push(pseudoLocale)
-  }
-
-  if (!locales.length) {
-    console.log("No locales defined!\n")
-    console.log(
-      `Add ${chalk.yellow(
-        "'locales'"
-      )} to your configuration. See ${chalk.underline(
-        "https://lingui.js.org/ref/conf.html#locales"
-      )}`
-    )
-    return false
-  }
-
-  const buildDir = path.join(config.localeDir, "_build")
-  if (fs.existsSync(buildDir)) {
-    // remove only the content of build dir, not the directory itself
-    removeDirectory(buildDir, true)
-  } else {
-    mkdirp(buildDir)
-  }
-
-  const projectType = detect()
+  // TODO: Move validation to conf
+  // if (!locales.length) {
+  //   console.log("No locales defined!\n")
+  //   console.log(
+  //     `Add ${chalk.yellow(
+  //       "'locales'"
+  //     )} to your configuration. See ${chalk.underline(
+  //       "https://lingui.js.org/ref/conf.html#locales"
+  //     )}`
+  //   )
+  //   return false
+  // }
 
   options.verbose && console.log("Extracting messages from source files…")
-  extract(config.srcPathDirs, config.localeDir, {
-    projectType,
-    ignore: config.srcPathIgnorePatterns,
-    verbose: options.verbose,
-    babelOptions: options.babelOptions
-  })
-  options.verbose && console.log()
-
-  options.verbose && console.log("Collecting messages…")
-  const clean = options.clean ? cleanObsolete : id => id
-
-  let nextCatalog
-  try {
-    nextCatalog = collect(buildDir)
-  } catch (e) {
-    console.error(e)
-    return false
-  }
-
-  const prevCatalogs = catalog.readAll()
-  const catalogs = order(
-    clean(
-      catalog.merge(prevCatalogs, nextCatalog, {
-        overwrite: options.overwrite
-      })
-    )
-  )
-  options.verbose && console.log()
-
-  options.verbose && console.log("Writing message catalogues…")
-  locales
-    .map(locale => catalog.write(locale, catalogs[locale]))
-    .forEach(([created, filename]) => {
-      if (!filename || !options.verbose) return
-
-      if (created) {
-        console.log(chalk.green(`Created ${filename}`))
-      } else {
-        console.log(chalk.green(`Updated ${filename}`))
-      }
+  const catalogs = getCatalogs(config)
+  catalogs.forEach(catalog => {
+    catalog.make({
+      ...options,
+      projectType: detect()
     })
-  options.verbose && console.log()
-  options.verbose && console.log("Messages extracted!\n")
+  })
 
-  console.log("Catalog statistics:")
-  printStats(config, catalogs)
+  // console.log("Catalog statistics:")
+  // printStats(config, catalogs)
   console.log()
 
   console.log(
