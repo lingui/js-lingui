@@ -18,7 +18,7 @@ LinguiJS started as a React library. After `@lingui/core` package was introduced
 there were two ways how to switch active locales and manage catalogs in React: either
 using :component:`I18nProvider` declarative API or using `setupI18n` imperative API.
 
-In the same spirit as ``react-apollo` and ``react-redux``, the :component:`I18nProvider`
+In the same spirit as ``react-apollo`` and ``react-redux``, the :component:`I18nProvider`
 is simplified and accepts ``i18n`` manager, which must be created manually:
 
 .. code-block:: diff
