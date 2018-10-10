@@ -150,7 +150,7 @@ object and :jsmacro:`t` macro to wrap message:
       return <img src="..." alt={i18n._(t`Image caption`)} />
    }
 
-   export default withI18n()ImageWithCaption
+   export default withI18n(ImageWithCaption)
 
 .. code-block:: jsx
 
