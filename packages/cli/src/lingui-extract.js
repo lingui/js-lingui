@@ -33,19 +33,6 @@ export default function command(
   // save to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
   process.env.LINGUI_EXTRACT = "1"
 
-  // TODO: Move validation to conf
-  // if (!locales.length) {
-  //   console.log("No locales defined!\n")
-  //   console.log(
-  //     `Add ${chalk.yellow(
-  //       "'locales'"
-  //     )} to your configuration. See ${chalk.underline(
-  //       "https://lingui.js.org/ref/conf.html#locales"
-  //     )}`
-  //   )
-  //   return false
-  // }
-
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = getCatalogs(config)
   catalogs.forEach(catalog => {

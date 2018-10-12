@@ -64,7 +64,7 @@ exports[`@lingui/conf should return default config 1`] = `
 Object {
   catalogs: Object {
     locale/{locale}/messages: Array [
-      /Users/tricoder/Projects/lingui/js-lingui,
+      /Users/tricoder/Projects/lingui/js-lingui/packages/conf/src/fixtures/valid,
       !node_modules/,
     ],
   },
@@ -75,9 +75,12 @@ Object {
   },
   fallbackLocale: ,
   format: po,
-  locales: Array [],
+  locales: Array [
+    en,
+    cs,
+  ],
   pseudoLocale: ,
-  rootDir: /Users/tricoder/Projects/lingui/js-lingui,
+  rootDir: /Users/tricoder/Projects/lingui/js-lingui/packages/conf/src/fixtures/valid,
   sourceLocale: ,
 }
 `;

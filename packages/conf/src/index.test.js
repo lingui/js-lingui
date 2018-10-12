@@ -1,3 +1,4 @@
+import path from "path"
 import { validate } from "jest-validate"
 import {
   getConfig,
@@ -9,7 +10,9 @@ import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
 
 describe("@lingui/conf", function() {
   it("should return default config", function() {
-    const config = getConfig()
+    const config = getConfig({
+      cwd: path.resolve(__dirname, path.join("fixtures", "valid"))
+    })
     expect(config).toBeInstanceOf(Object)
     expect(config.sourceLocale).toBeDefined()
     expect(config.fallbackLocale).toBeDefined()
@@ -21,6 +24,17 @@ describe("@lingui/conf", function() {
     expect(config.localeDir).not.toBeDefined()
     expect(config.srcPathDirs).not.toBeDefined()
     expect(config.srcPathIgnorePatterns).not.toBeDefined()
+  })
+
+  it("should validate `locale`", function() {
+    expect.assertions(1)
+
+    mockConsole(console => {
+      getConfig()
+      expect(console.error).toBeCalledWith(
+        expect.stringContaining("No locales defined")
+      )
+    })
   })
 
   it("should replace <rootDir>", function() {

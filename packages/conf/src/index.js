@@ -60,15 +60,17 @@ export function getConfig({ cwd }: { cwd: string } = {}): LinguiConfig {
     catalogMigration,
 
     // `replaceRootDir` should always be the last
-    config => replaceRootDir(config, config.rootDir, ["catalogs"])
+    config => replaceRootDir(config, config.rootDir, ["catalogs"]),
+
+    validateLocales
   )(config)
 }
 
 const exampleConfig = {
   ...defaultConfig,
   extractBabelOptions: {
-    plugins: ["plugin"],
-    presets: ["preset"]
+    plugins: [],
+    presets: []
   }
 }
 
@@ -150,6 +152,21 @@ export const configValidation = {
   exampleConfig,
   deprecatedConfig,
   comment: "Documentation: https://lingui.js.org/ref/conf.html"
+}
+
+function validateLocales(config) {
+  if (Array.isArray(config.locales) && config.locales.length) {
+    return config
+  }
+
+  console.error("No locales defined!\n")
+  console.error(
+    `Add ${chalk.yellow(
+      "'locales'"
+    )} to your configuration. See ${chalk.underline(
+      "https://lingui.js.org/ref/conf.html#locales"
+    )}`
+  )
 }
 
 /**
