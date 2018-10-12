@@ -147,7 +147,7 @@ front of the macro:
      id: 'Message'
    }
 
-Desctiption is extracted to message catalog as a help text for translators.
+Description is extracted to message catalog as a help text for translators.
 
 t
 ^
