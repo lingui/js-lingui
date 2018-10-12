@@ -1,6 +1,143 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Catalog API read should read file in given format 1`] = `
+exports[`Catalog collect should extract messages from source files 1`] = `
+Object {
+  Hello World: Object {
+    origin: Array [
+      Array [
+        packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+        1,
+      ],
+      Array [
+        packages/cli/src/api/fixtures/collect/componentA/index.js,
+        1,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`Catalog collect should handle errors 1`] = `Object {}`;
+
+exports[`Catalog make should collect and write catalogs 1`] = `
+Object {
+  cs: null,
+  en: null,
+}
+`;
+
+exports[`Catalog make should collect and write catalogs 2`] = `
+Object {
+  cs: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          1,
+        ],
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+  },
+  en: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          1,
+        ],
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+  },
+}
+`;
+
+exports[`Catalog make should merge with existing catalogs 1`] = `
+Object {
+  cs: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [],
+      translation: Ahoj Brno,
+    },
+  },
+  en: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [],
+      translation: Ahoj Brno,
+    },
+  },
+}
+`;
+
+exports[`Catalog make should merge with existing catalogs 2`] = `
+Object {
+  cs: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          1,
+        ],
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          1,
+        ],
+      ],
+      translation: Ahoj Brno,
+    },
+  },
+  en: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          1,
+        ],
+        Array [
+          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          1,
+        ],
+      ],
+      translation: Ahoj Brno,
+    },
+  },
+}
+`;
+
+exports[`Catalog read should read file in given format 1`] = `
 Object {
   obsolete: Object {
     comments: Array [],
@@ -89,7 +226,7 @@ Object {
 }
 `;
 
-exports[`Catalog API read should read file in previous format 1`] = `
+exports[`Catalog read should read file in previous format 1`] = `
 Object {
   static: Object {
     defaults: null,
@@ -104,7 +241,32 @@ Object {
 }
 `;
 
-exports[`Catalog API should convert catalog format 1`] = `
+exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
+Object {
+  cs: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [],
+      translation: Ahoj Brno,
+    },
+  },
+  en: Object {
+    Hello World: Object {
+      comments: Array [],
+      description: undefined,
+      flags: Array [],
+      obsolete: false,
+      origin: Array [],
+      translation: Hello World,
+    },
+  },
+}
+`;
+
+exports[`Catalog should convert catalog format 1`] = `
 msgid ""
 msgstr ""
 "Project-Id-Version: \\n"
@@ -123,4 +285,75 @@ msgstr "Static message"
 
 msgid "veryLongString"
 msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. \\"What's happened to me?\\" he thought. It wasn't a dream. His room, a proper human"
+`;
+
+exports[`cleanObsolete should remove obsolete messages from catalogs 1`] = `
+Object {
+  en: Object {
+    Label: Object {
+      translation: Label,
+    },
+  },
+  fr: Object {
+    Label: Object {
+      translation: Label,
+    },
+  },
+}
+`;
+
+exports[`getCatalogs should warn about missing {name} pattern in catalog path 1`] = `Catalog with path "./locales/{locale}" doesn't have a {name} pattern in it, but one of source directories uses it: "./{name}/". Either add {name} pattern to "./locales/{locale}" or remove it from all source directories.`;
+
+exports[`getCatalogs should warn if catalogPath is a directory 1`] = `Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".`;
+
+exports[`getCatalogs should warn if catalogPath is a directory 2`] = `Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/cs.json".`;
+
+exports[`order should order messages alphabetically 1`] = `
+Object {
+  en: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+  fr: Object {
+    LabelA: Object {
+      translation: A,
+    },
+    LabelB: Object {
+      translation: B,
+    },
+    LabelC: Object {
+      translation: C,
+    },
+    LabelD: Object {
+      translation: D,
+    },
+  },
+}
+`;
+
+exports[`order should order messages alphabetically 2`] = `
+Object {
+  en: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
+  fr: Array [
+    LabelA,
+    LabelB,
+    LabelC,
+    LabelD,
+  ],
+}
 `;

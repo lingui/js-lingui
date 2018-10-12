@@ -4,7 +4,7 @@ import command from "./lingui-extract"
 import configureCatalog from "./api/catalog"
 import { detect } from "./api/detect"
 
-import { extract, collect, cleanObsolete, order } from "./api/extract"
+import { extract, collect, cleanObsolete, order } from "./api/catalog"
 
 jest.mock("fs")
 jest.mock("./api/catalog")
