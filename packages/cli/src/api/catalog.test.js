@@ -4,7 +4,13 @@ import path from "path"
 import mockFs from "mock-fs"
 import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 
-import { getCatalogs, Catalog, order, cleanObsolete } from "./catalog"
+import {
+  getCatalogs,
+  getCatalogForFile,
+  Catalog,
+  order,
+  cleanObsolete
+} from "./catalog"
 import { copyFixture } from "../tests"
 
 const fixture = (...dirs) =>
@@ -626,6 +632,40 @@ describe("getCatalogs", function() {
         })
       )
     ).toThrowErrorMatchingSnapshot()
+  })
+})
+
+describe("getCatalogForFile", function() {
+  it("should return null if catalog cannot be found", function() {
+    const catalogs = [
+      new Catalog(
+        {
+          name: null,
+          path: "./src/locales/{locale}",
+          include: ["./src/"]
+        },
+        mockConfig()
+      )
+    ]
+
+    expect(getCatalogForFile("./xyz/en.po", catalogs)).toBeNull()
+  })
+
+  it("should return matching catalog and locale", function() {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/{locale}",
+        include: ["./src/"]
+      },
+      mockConfig({ format: "po" })
+    )
+    const catalogs = [catalog]
+
+    expect(getCatalogForFile("./src/locales/en.po", catalogs)).toEqual({
+      locale: "en",
+      catalog
+    })
   })
 })
 

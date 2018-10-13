@@ -1,7 +1,11 @@
 import path from "path"
 import * as R from "ramda"
 import { getConfig } from "@lingui/conf"
-import { createCompiledCatalog, configureCatalog } from "@lingui/cli/api"
+import {
+  createCompiledCatalog,
+  getCatalogs,
+  getCatalogForFile
+} from "@lingui/cli/api"
 
 // Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
 let JavascriptParser
@@ -26,11 +30,13 @@ export default function(source) {
     this._module.generator = new JavascriptGenerator()
   }
 
-  const config = getConfig({ cwd: path.dirname(this.resourcePath) })
-  const catalog = configureCatalog(config)
-
-  const locale = catalog.getLocale(this.resourcePath)
-
+  const config = getConfig({
+    cwd: path.dirname(this.resourcePath)
+  })
+  const { locale, catalog } = getCatalogForFile(
+    path.relative(config.rootDir, this.resourcePath),
+    getCatalogs(config)
+  )
   const catalogs = catalog.readAll()
   const messages = R.mapObjIndexed(
     (_, key) =>

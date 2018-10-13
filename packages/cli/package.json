@@ -52,6 +52,7 @@
     "inquirer": "^6.2.0",
     "make-plural": "^4.1.1",
     "messageformat-parser": "^2.0.0",
+    "minimatch": "^3.0.4",
     "mkdirp": "^0.5.1",
     "opencollective": "^1.0.3",
     "ora": "^3.0.0",
