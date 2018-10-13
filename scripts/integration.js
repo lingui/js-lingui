@@ -17,6 +17,9 @@ function linkDependencies(example) {
   execSync("yalc link " + dependencies, {
     cwd: path.join(EXAMPLES_DIR, example)
   })
+  execSync("chmod +x ./node_modules/.bin/lingui", {
+    cwd: path.join(EXAMPLES_DIR, example)
+  })
 }
 
 function linkPackage(packageName) {
