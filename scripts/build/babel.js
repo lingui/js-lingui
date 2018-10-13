@@ -22,8 +22,8 @@ module.exports = async function(bundle) {
     const srcDir = path.join(packageDir, "src")
 
     const files = glob
-      .sync(srcDir + "**/*.js", {
-        ignore: ["*.test.js", "**/fixtures/"]
+      .sync(srcDir + "/**/*.js", {
+        ignore: ["**/*.test.js", "**/fixtures/**"]
       })
       .map(filename => path.relative(srcDir, filename))
 
