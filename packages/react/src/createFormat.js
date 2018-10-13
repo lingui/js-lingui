@@ -19,10 +19,7 @@ function createFormat<V, FormatOptions>(
     return (
       <I18n>
         {({ i18n }) => {
-          const formatter = formatFunction(
-            i18n.locales || i18n.locale,
-            format
-          )
+          const formatter = formatFunction(i18n.locales || i18n.locale, format)
           return formatter(value)
         }}
       </I18n>
