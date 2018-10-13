@@ -17,6 +17,7 @@
     "lint": "yarn lint:eslint; yarn flow",
     "prettier": "yarn run lint:eslint --fix",
     "release": "node ./scripts/release.js",
+    "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
     "release:test": "node ./scripts/test.js"
   },
