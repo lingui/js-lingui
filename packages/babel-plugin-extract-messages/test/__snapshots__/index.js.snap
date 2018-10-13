@@ -5,7 +5,7 @@ Object {
   Test: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/with-react.js,
+        jsx/with-react.js,
         3,
       ],
     ],
@@ -18,11 +18,11 @@ Object {
   msg.hello: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
+        js/integration.js,
         3,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
+        js/integration.js,
         4,
       ],
     ],
@@ -35,7 +35,7 @@ Object {
   Message: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        js/macro.js,
         1,
       ],
     ],
@@ -44,11 +44,11 @@ Object {
     description: description,
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        js/macro.js,
         5,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        js/macro.js,
         21,
       ],
     ],
@@ -56,7 +56,7 @@ Object {
   Message With {param}: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        js/macro.js,
         14,
       ],
     ],
@@ -65,7 +65,7 @@ Object {
     defaults: Message With Description,
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        js/macro.js,
         9,
       ],
     ],
@@ -79,11 +79,11 @@ Object {
     defaults: Hello World,
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
+        js/all.js,
         5,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
+        js/all.js,
         6,
       ],
     ],
@@ -91,7 +91,7 @@ Object {
   msg.hello: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
+        js/all.js,
         4,
       ],
     ],
@@ -99,7 +99,7 @@ Object {
   {count, plural, one {# book} other {# books}}: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
+        js/all.js,
         7,
       ],
     ],
@@ -112,7 +112,7 @@ Object {
   Hi, my name is {name}: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         3,
       ],
     ],
@@ -120,15 +120,15 @@ Object {
   Title: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         4,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         13,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         14,
       ],
     ],
@@ -136,15 +136,15 @@ Object {
   {count, plural, one {# book} other {# books}}: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         6,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         16,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        jsx/integration.js,
         21,
       ],
     ],
@@ -157,7 +157,7 @@ Object {
   Hi, my name is <0>{name}</0>: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        jsx/all.js,
         9,
       ],
     ],
@@ -166,11 +166,11 @@ Object {
     defaults: Hello World,
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        jsx/all.js,
         7,
       ],
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        jsx/all.js,
         8,
       ],
     ],
@@ -179,7 +179,7 @@ Object {
     description: Description,
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        jsx/all.js,
         6,
       ],
     ],
@@ -187,7 +187,7 @@ Object {
   {count, plural, one {# book} other {# books}}: Object {
     origin: Array [
       Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        jsx/all.js,
         10,
       ],
     ],

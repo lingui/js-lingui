@@ -55,14 +55,7 @@ function testCase(testName, assertion) {
 describe("babel-plugin-lingui-extract-messages", function() {
   // CWD is root directory of repository, so origin of all messages is going to
   // relative to root
-  const buildDir = path.join(
-    LOCALE_DIR,
-    "_build",
-    "packages",
-    "babel-plugin-extract-messages",
-    "test",
-    "fixtures"
-  )
+  const buildDir = path.join(LOCALE_DIR, "_build")
 
   beforeAll(() => {
     rmdir(LOCALE_DIR)
