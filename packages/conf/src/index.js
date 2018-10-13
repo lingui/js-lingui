@@ -9,7 +9,11 @@ const NODE_MODULES = "node_modules" + path.sep
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
 
-type CatalogsConfig = { [destination: string]: string | Array<string> }
+type CatalogsConfig = Array<{
+  path: string,
+  include?: Array<string>,
+  exclude?: Array<string>
+}>
 
 type InputConfig = {
   catalogs: CatalogsConfig,
@@ -26,12 +30,13 @@ type InputConfig = {
 export type LinguiConfig = InputConfig | { rootDir: string }
 
 export const defaultConfig: InputConfig = {
-  catalogs: {
-    [path.join("<rootDir>", "locale", "{locale}", "messages")]: [
-      `<rootDir>`,
-      `!*/node_modules/*`
-    ]
-  },
+  catalogs: [
+    {
+      path: path.join("<rootDir>", "locale", "{locale}", "messages"),
+      include: [`<rootDir>`],
+      exclude: [`*/node_modules/*`]
+    }
+  ],
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocale: "",
@@ -59,10 +64,11 @@ export function getConfig({ cwd }: { cwd: string } = {}): LinguiConfig {
     fallbackLanguageMigration,
     catalogMigration,
 
-    // `replaceRootDir` should always be the last
-    config => replaceRootDir(config, config.rootDir, ["catalogs"]),
+    // Custom validation
+    validateLocales,
 
-    validateLocales
+    // `replaceRootDir` should always be the last
+    config => replaceRootDir(config, config.rootDir)
   )(config)
 }
 
@@ -171,34 +177,27 @@ function validateLocales(config) {
 
 /**
  *
- * @param conf
+ * @param value
  * @param rootDir
- * @param keys
  * @return {*}
  */
-export function replaceRootDir(
-  conf: InputConfig,
-  rootDir: string,
-  keys: ?Array<string>
-) {
+export function replaceRootDir(value: any, rootDir: string) {
   const replace = s => s.replace("<rootDir>", rootDir)
-  ;(keys || Object.keys(conf)).forEach(originalKey => {
-    const key = replace(originalKey)
-    const value = conf[originalKey]
 
-    if (!value) {
-    } else if (typeof value === "string") {
-      conf[key] = replace(value)
-    } else if (Array.isArray(value)) {
-      conf[key] = value.map(replace)
-    } else if (typeof value === "object") {
-      conf[key] = replaceRootDir(conf[key], rootDir)
-    }
+  if (!value) {
+  } else if (typeof value === "string") {
+    return replace(value)
+  } else if (Array.isArray(value)) {
+    return value.map(item => replaceRootDir(item, rootDir))
+  } else if (typeof value === "object") {
+    const newConf = {}
+    Object.keys(value).forEach(key => {
+      newConf[key] = replaceRootDir(value[key], rootDir)
+    })
+    return newConf
+  }
 
-    if (key !== originalKey) delete conf[originalKey]
-  })
-
-  return conf
+  return value
 }
 
 /**
@@ -223,26 +222,30 @@ export function fallbackLanguageMigration(config: Object) {
  * Remove anytime after 4.x
  */
 export function catalogMigration(config: Object) {
-  const {
-    // These values were default configuration.
-    localeDir = "locale",
-    srcPathDirs = ["<rootDir>"],
-    srcPathIgnorePatterns = [NODE_MODULES],
-    ...newConfig
-  } = config
+  let { localeDir, srcPathDirs, srcPathIgnorePatterns, ...newConfig } = config
 
-  if (typeof localeDir === "string") {
+  if (localeDir || srcPathDirs || srcPathIgnorePatterns) {
+    // Replace missing values with default ones
+    if (localeDir === undefined)
+      localeDir = path.join("<rootDir>", "locale", "{locale}", "messages")
+    if (srcPathDirs === undefined) srcPathDirs = ["<rootDir>"]
+    if (srcPathIgnorePatterns === undefined)
+      srcPathIgnorePatterns = ["*/node_modules/*"]
+
     let newLocaleDir = localeDir
     if (localeDir.slice(-1) !== path.sep) {
       newLocaleDir += "/"
     }
 
-    newConfig.catalogs = {
-      [path.join(newLocaleDir, "{locale}", "messages")]: [].concat(
-        srcPathDirs,
-        srcPathIgnorePatterns.map(pattern => `!${pattern}`)
-      )
+    if (!Array.isArray(newConfig.catalogs)) {
+      newConfig.catalogs = []
     }
+
+    newConfig.catalogs.push({
+      path: path.join(newLocaleDir, "{locale}", "messages"),
+      include: srcPathDirs,
+      exclude: srcPathIgnorePatterns
+    })
   }
 
   return newConfig

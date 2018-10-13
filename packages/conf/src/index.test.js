@@ -10,27 +10,23 @@ import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
 
 describe("@lingui/conf", function() {
   it("should return default config", function() {
-    const config = getConfig({
-      cwd: path.resolve(__dirname, path.join("fixtures", "valid"))
-    })
-    expect(config).toBeInstanceOf(Object)
-    expect(config.sourceLocale).toBeDefined()
-    expect(config.fallbackLocale).toBeDefined()
-    expect(config.pseudoLocale).toBeDefined()
-    expect(config.extractBabelOptions).toBeDefined()
-    expect(config).toMatchSnapshot()
+    expect.assertions(2)
 
-    // Deprecated and migrated configuration
-    expect(config.localeDir).not.toBeDefined()
-    expect(config.srcPathDirs).not.toBeDefined()
-    expect(config.srcPathIgnorePatterns).not.toBeDefined()
+    mockConsole(console => {
+      const config = getConfig({
+        cwd: path.resolve(__dirname, path.join("fixtures", "valid"))
+      })
+      expect(console.warn).not.toBeCalled()
+      expect(config).toMatchSnapshot()
+    })
   })
 
   it("should validate `locale`", function() {
-    expect.assertions(1)
+    expect.assertions(2)
 
     mockConsole(console => {
       getConfig()
+      expect(console.warn).not.toBeCalled()
       expect(console.error).toBeCalledWith(
         expect.stringContaining("No locales defined")
       )
@@ -41,20 +37,25 @@ describe("@lingui/conf", function() {
     const config = replaceRootDir(
       {
         boolean: false,
-        catalogs: {
-          "<rootDir>/locales/{locale}/messages": [
-            "<rootDir>/src",
-            "!<rootDir>/ignored"
-          ]
-        }
+        catalogs: [
+          {
+            path: "<rootDir>/locales/{locale}/messages",
+            include: ["<rootDir>/src"],
+            exclude: ["<rootDir>/ignored"]
+          }
+        ]
       },
       "/Root"
     )
 
     expect(config.boolean).toEqual(false)
-    expect(config.catalogs).toEqual({
-      "/Root/locales/{locale}/messages": ["/Root/src", "!/Root/ignored"]
-    })
+    expect(config.catalogs).toEqual([
+      {
+        path: "/Root/locales/{locale}/messages",
+        include: ["/Root/src"],
+        exclude: ["/Root/ignored"]
+      }
+    ])
   })
 
   describe("catalogMigration", function() {
@@ -72,14 +73,10 @@ describe("@lingui/conf", function() {
       })
     })
 
-    it("should provide default config", function() {
+    it("shouldn't provide default config if no obsolete config is defined", function() {
       const config = {}
 
-      expect(catalogMigration(config)).toEqual({
-        catalogs: {
-          "locale/{locale}/messages": ["<rootDir>", "!node_modules/"]
-        }
-      })
+      expect(catalogMigration(config)).toEqual({})
     })
 
     it("should normalize string localeDir", function() {
@@ -88,11 +85,16 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: {
-          "locales/{locale}/messages": ["<rootDir>", "!node_modules/"]
-        }
+        catalogs: [
+          {
+            path: "locales/{locale}/messages",
+            include: ["<rootDir>"],
+            exclude: ["*/node_modules/*"]
+          }
+        ]
       })
     })
+
     it("should migrate srcPathDirs and srcPathIgnorePatterns", function() {
       const config = {
         localeDir: "locales",
@@ -101,9 +103,13 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: {
-          "locales/{locale}/messages": ["src", "!src/node_modules/"]
-        }
+        catalogs: [
+          {
+            path: "locales/{locale}/messages",
+            include: ["src"],
+            exclude: ["src/node_modules/"]
+          }
+        ]
       })
     })
   })
