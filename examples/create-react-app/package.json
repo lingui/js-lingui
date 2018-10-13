@@ -22,7 +22,11 @@
     "babel-core": "^7.0.0-bridge.0"
   },
   "lingui": {
-    "localeDir": "src/locales",
+    "catalogs": [{
+      "path": "src/locales/{locale}",
+      "include": ["src"]
+    }],
+    "locales": ["en", "cs"],
     "format": "po",
     "sourceLocale": "en"
   },

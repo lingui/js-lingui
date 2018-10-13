@@ -6,7 +6,7 @@ export const locales = {
 }
 
 function loadCatalog(locale) {
-  return import(`@lingui/loader!./locales/${locale}/messages.po`)
+  return import(`@lingui/loader!./locales/${locale}.po`)
 }
 
 export const i18n = setupI18n()
