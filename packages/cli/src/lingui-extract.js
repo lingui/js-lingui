@@ -11,10 +11,10 @@ import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 
 export type CliExtractOptions = {
-  verbose: boolean,
-  clean: boolean,
-  overwrite: boolean,
-  prevFormat: ?CatalogApi
+  verbose?: boolean,
+  clean?: boolean,
+  overwrite?: boolean,
+  prevFormat?: ?CatalogApi
 }
 
 export default function command(

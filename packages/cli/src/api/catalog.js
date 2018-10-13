@@ -21,7 +21,7 @@ type CatalogProps = {
 }
 
 type MakeOptions = CliExtractOptions & {
-  projectType: string
+  projectType?: string
 }
 
 const NAME = "{name}"
@@ -180,7 +180,12 @@ Catalog.prototype = {
     )
   },
 
-  getTranslation(catalogs: Object, locale: string, key: string, { fallbackLocale, sourceLocale }: Object) {
+  getTranslation(
+    catalogs: Object,
+    locale: string,
+    key: string,
+    { fallbackLocale, sourceLocale }: Object
+  ) {
     const getTranslation = locale => catalogs[locale][key].translation
 
     return (
@@ -275,7 +280,7 @@ Catalog.prototype = {
 /**
  * Parse `config.catalogs` and return a list of configured Catalog instances.
  */
-export function getCatalogs(config: LinguiConfig): Array<Catalog> {
+export function getCatalogs(config: LinguiConfig) {
   const catalogsConfig = config.catalogs
   const catalogs = []
 

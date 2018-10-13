@@ -1,4 +1,3 @@
-// @flow
 import fs from "fs-extra"
 import path from "path"
 import mockFs from "mock-fs"

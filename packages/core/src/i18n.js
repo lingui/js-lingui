@@ -179,7 +179,7 @@ I18n.prototype = {
   }
 }
 
-function setupI18n(params?: setupI18nProps = {}): I18n {
+function setupI18n(params?: setupI18nProps = {}) {
   const i18n = new I18n()
 
   if (process.env.NODE_ENV !== "production") {

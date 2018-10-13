@@ -27,14 +27,15 @@ export async function installPackages(dryRun: boolean) {
   const type = detect()
   const usesReact = type === projectType.CRA || type === projectType.REACT
 
-  const commonPackages = [
+  type Packages = Array<[string, boolean]>
+  const commonPackages: Packages = [
     ["@lingui/macro", true],
     ["babel-plugin-macros", true]
   ]
-  const packages = [
+  const packages: Packages = [
     ...(usesReact
-      ? [["@lingui/react"], ...commonPackages]
-      : [["@lingui/core"], ...commonPackages])
+      ? [["@lingui/react", false], ...commonPackages]
+      : [["@lingui/core", false], ...commonPackages])
   ].filter(Boolean)
 
   const verbosePackages = packages
