@@ -5,8 +5,6 @@ const cosmiconfig = require("cosmiconfig")
 // $FlowIgnore: Missing module definition
 const { validate } = require("jest-validate")
 
-const NODE_MODULES = "node_modules" + path.sep
-
 export type CatalogFormat = "po" | "minimal" | "lingui"
 
 type CatalogsConfig = Array<{
@@ -23,11 +21,10 @@ type InputConfig = {
   format: CatalogFormat,
   locales: Array<string>,
   pseudoLocale: string,
-  sourceLocale: string,
-  rootDir?: string
+  sourceLocale: string
 }
 
-export type LinguiConfig = InputConfig | { rootDir: string }
+export type LinguiConfig = InputConfig & { rootDir: string }
 
 export const defaultConfig: InputConfig = {
   catalogs: [
@@ -43,33 +40,41 @@ export const defaultConfig: InputConfig = {
   format: "po",
   locales: [],
   pseudoLocale: "",
+  rootDir: "",
   sourceLocale: ""
 }
 
-export function getConfig({ cwd }: { cwd: string } = {}): LinguiConfig {
+export function getConfig({
+  cwd,
+  skipValidation = false
+}: { cwd?: string, skipValidation?: boolean } = {}): LinguiConfig {
   const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
   const result = configExplorer.searchSync(defaultRootDir)
   const userConfig = result ? result.config : {}
-  const config = { ...defaultConfig, ...userConfig }
-
-  validate(config, configValidation)
-
-  if (!config.rootDir) {
-    config.rootDir = result ? path.dirname(result.filepath) : defaultRootDir
+  const config: LinguiConfig = {
+    ...defaultConfig,
+    rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
+    ...userConfig
   }
 
-  return pipe(
-    // List config migrations from oldest to newest
-    fallbackLanguageMigration,
-    catalogMigration,
+  if (!skipValidation) {
+    validate(config, configValidation)
 
-    // Custom validation
-    validateLocales,
+    return pipe(
+      // List config migrations from oldest to newest
+      fallbackLanguageMigration,
+      catalogMigration,
 
-    // `replaceRootDir` should always be the last
-    config => replaceRootDir(config, config.rootDir)
-  )(config)
+      // Custom validation
+      validateLocales,
+
+      // `replaceRootDir` should always be the last
+      config => replaceRootDir(config, config.rootDir)
+    )(config)
+  } else {
+    return replaceRootDir(config, config.rootDir)
+  }
 }
 
 const exampleConfig = {
@@ -181,7 +186,10 @@ function validateLocales(config) {
  * @param rootDir
  * @return {*}
  */
-export function replaceRootDir(value: any, rootDir: string) {
+export function replaceRootDir<T: ?string | Array<string | Object> | Object>(
+  value: T,
+  rootDir: string
+): T {
   const replace = s => s.replace("<rootDir>", rootDir)
 
   if (!value) {
@@ -189,7 +197,7 @@ export function replaceRootDir(value: any, rootDir: string) {
     return replace(value)
   } else if (Array.isArray(value)) {
     return value.map(item => replaceRootDir(item, rootDir))
-  } else if (typeof value === "object") {
+  } else {
     const newConf = {}
     Object.keys(value).forEach(key => {
       newConf[key] = replaceRootDir(value[key], rootDir)

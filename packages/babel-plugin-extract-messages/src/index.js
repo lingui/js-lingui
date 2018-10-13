@@ -231,7 +231,12 @@ export default function({ types: t }) {
     pre(file) {
       localTransComponentName = null
 
-      file.set(CONFIG, getConfig({ cwd: file.opts.filename }))
+      // Skip validation because config is loaded for each file.
+      // Config was already validated in CLI.
+      file.set(
+        CONFIG,
+        getConfig({ cwd: file.opts.filename, skipValidation: true })
+      )
 
       // Ignore else path for now. Collision is possible if other plugin is
       // using the same Symbol('I18nMessages').
