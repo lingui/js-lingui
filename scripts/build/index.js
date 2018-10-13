@@ -74,7 +74,7 @@ async function buildEverything() {
   }
 
   console.log(Stats.printResults())
-  Stats.saveResults()
+  if (argv.saveStats) Stats.saveResults()
 
   await Packaging.prepareNpmPackages()
 }
