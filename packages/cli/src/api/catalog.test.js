@@ -1,27 +1,14 @@
 // @flow
-import os from "os"
 import fs from "fs-extra"
 import path from "path"
 import mockFs from "mock-fs"
 import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 
 import { getCatalogs, Catalog, order, cleanObsolete } from "./catalog"
+import { copyFixture } from "../tests"
 
 const fixture = (...dirs) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs))
-
-function copyFixture(...dirs) {
-  const tmpDir = path.join(os.tmpdir(), `lingui-test-${process.pid}`)
-
-  const fixtureDir = fixture(...dirs)
-  if (!fs.existsSync(fixtureDir)) {
-    fs.mkdirpSync(tmpDir)
-  } else {
-    fs.copySync(fixtureDir, tmpDir)
-  }
-  return tmpDir
-}
-
 describe("Catalog", function() {
   afterEach(() => {
     mockFs.restore()
@@ -29,7 +16,7 @@ describe("Catalog", function() {
 
   describe("make", function() {
     it("should collect and write catalogs", function() {
-      const localeDir = copyFixture("locales", "initial")
+      const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
           name: "messages",
@@ -50,7 +37,7 @@ describe("Catalog", function() {
     })
 
     it("should merge with existing catalogs", function() {
-      const localeDir = copyFixture("locales", "existing")
+      const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
           name: "messages",

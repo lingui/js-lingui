@@ -4,6 +4,8 @@ import mkdirp from "mkdirp"
 import generate from "@babel/generator"
 import { getConfig } from "@lingui/conf"
 
+const CONFIG = Symbol("I18nConfig")
+
 // Map of messages
 const MESSAGES = Symbol("I18nMessages")
 
@@ -36,9 +38,6 @@ function addMessage(path, messages, { id, defaults, origin, ...props }) {
 export default function({ types: t }) {
   let localTransComponentName
 
-  const opts = getConfig()
-  const optsBaseDir = opts.rootDir
-
   function isTransComponent(node) {
     return (
       t.isJSXElement(node) &&
@@ -57,8 +56,9 @@ export default function({ types: t }) {
   function collectMessage(path, file, props) {
     const messages = file.get(MESSAGES)
 
+    const rootDir = file.get(CONFIG).rootDir
     const filename = fsPath
-      .relative(optsBaseDir, file.opts.filename)
+      .relative(rootDir, file.opts.filename)
       .replace(/\\/g, "/")
     const line = path.node.loc ? path.node.loc.start.line : null
     props.origin = [[filename, line]]
@@ -231,6 +231,8 @@ export default function({ types: t }) {
     pre(file) {
       localTransComponentName = null
 
+      file.set(CONFIG, getConfig({ cwd: file.opts.filename }))
+
       // Ignore else path for now. Collision is possible if other plugin is
       // using the same Symbol('I18nMessages').
       // istanbul ignore else
@@ -248,7 +250,8 @@ export default function({ types: t }) {
        */
       const localeDir = this.opts.localeDir || opts.localeDir
       const { filename } = file.opts
-      const baseDir = fsPath.dirname(fsPath.relative(optsBaseDir, filename))
+      const rootDir = file.get(CONFIG).rootDir
+      const baseDir = fsPath.dirname(fsPath.relative(rootDir, filename))
       const targetDir = fsPath.join(localeDir, "_build", baseDir)
 
       const messages = file.get(MESSAGES)

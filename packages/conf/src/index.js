@@ -155,18 +155,18 @@ export const configValidation = {
 }
 
 function validateLocales(config) {
-  if (Array.isArray(config.locales) && config.locales.length) {
-    return config
+  if (!Array.isArray(config.locales) || !config.locales.length) {
+    console.error("No locales defined!\n")
+    console.error(
+      `Add ${chalk.yellow(
+        "'locales'"
+      )} to your configuration. See ${chalk.underline(
+        "https://lingui.js.org/ref/conf.html#locales"
+      )}`
+    )
   }
 
-  console.error("No locales defined!\n")
-  console.error(
-    `Add ${chalk.yellow(
-      "'locales'"
-    )} to your configuration. See ${chalk.underline(
-      "https://lingui.js.org/ref/conf.html#locales"
-    )}`
-  )
+  return config
 }
 
 /**

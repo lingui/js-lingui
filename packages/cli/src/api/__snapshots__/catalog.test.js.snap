@@ -5,11 +5,11 @@ Object {
   Hello World: Object {
     origin: Array [
       Array [
-        packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+        collect/componentA/componentA.js,
         1,
       ],
       Array [
-        packages/cli/src/api/fixtures/collect/componentA/index.js,
+        collect/componentA/index.js,
         1,
       ],
     ],
@@ -36,11 +36,11 @@ Object {
       obsolete: false,
       origin: Array [
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          collect/componentA/componentA.js,
           1,
         ],
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          collect/componentA/index.js,
           1,
         ],
       ],
@@ -55,11 +55,11 @@ Object {
       obsolete: false,
       origin: Array [
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          collect/componentA/componentA.js,
           1,
         ],
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          collect/componentA/index.js,
           1,
         ],
       ],
@@ -104,11 +104,11 @@ Object {
       obsolete: false,
       origin: Array [
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          collect/componentA/componentA.js,
           1,
         ],
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          collect/componentA/index.js,
           1,
         ],
       ],
@@ -123,11 +123,11 @@ Object {
       obsolete: false,
       origin: Array [
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/componentA.js,
+          collect/componentA/componentA.js,
           1,
         ],
         Array [
-          packages/cli/src/api/fixtures/collect/componentA/index.js,
+          collect/componentA/index.js,
           1,
         ],
       ],
