@@ -5,7 +5,7 @@ import { format as formatDate } from "date-fns"
 
 import PO from "pofile"
 import { joinOrigin, splitOrigin } from "../utils"
-import type { TranslationsFormat } from "../types"
+import type { MessageCatalogFormat } from "../types"
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "YYYY-MM-DD HH:mmZZ"),
@@ -81,20 +81,17 @@ const validateItems = R.map(item => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-const format: TranslationsFormat = {
-  messageFileExtension: ".pot",
+const format: MessageCatalogFormat = {
   catalogExtension: ".po",
-  filename: "messages.po",
 
   write(filename, catalog, options = {}) {
     let po
-    let indexedItems = {}
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
     } else {
       po = new PO()
-      po.headers = getCreateHeaders(options.language)
+      po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog)

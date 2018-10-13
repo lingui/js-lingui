@@ -1,5 +1,6 @@
 // @flow
 import os from "os"
+// $FlowIgnore: missing default export
 import fs from "fs-extra"
 import path from "path"
 import * as R from "ramda"
@@ -12,6 +13,7 @@ import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import type { CliExtractOptions } from "../lingui-extract"
 import type { LinguiConfig } from "@lingui/conf"
+import type { MessageCatalogFormat } from "./types"
 
 type CatalogProps = {
   name: ?string,
@@ -27,18 +29,6 @@ type MakeOptions = CliExtractOptions & {
 const NAME = "{name}"
 const LOCALE = "{locale}"
 
-export function Catalog(
-  { name, path, include, exclude = [] }: CatalogProps,
-  config: LinguiConfig
-) {
-  this.name = name
-  this.path = path
-  this.include = include
-  this.exclude = [this.localeDir, ...exclude]
-  this.config = config
-  this.format = getFormat(config.format)
-}
-
 // export type MessageType = {
 //   id: string,
 //   translation: string,
@@ -50,7 +40,26 @@ export function Catalog(
 //   flags: ?Array<string>
 // }
 
-Catalog.prototype = {
+export class Catalog {
+  name: ?string
+  path: string
+  include: Array<string>
+  exclude: Array<string>
+  config: LinguiConfig
+  format: MessageCatalogFormat
+
+  constructor(
+    { name, path, include, exclude = [] }: CatalogProps,
+    config: LinguiConfig
+  ) {
+    this.name = name
+    this.path = path
+    this.include = include
+    this.exclude = [this.localeDir, ...exclude]
+    this.config = config
+    this.format = getFormat(config.format)
+  }
+
   make(options: MakeOptions = {}) {
     const nextCatalog = this.collect(options)
     const prevCatalogs = this.readAll()
@@ -68,7 +77,7 @@ Catalog.prototype = {
       overwrite: options.overwrite
     })
     this.writeAll(catalogs)
-  },
+  }
 
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
@@ -119,7 +128,7 @@ Catalog.prototype = {
     } finally {
       removeDirectory(tmpDir)
     }
-  },
+  }
 
   merge(prevCatalogs: Object, nextCatalog: Object, options: Object = {}) {
     const nextKeys = R.keys(nextCatalog)
@@ -170,7 +179,7 @@ Catalog.prototype = {
 
       return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
     }, prevCatalogs)
-  },
+  }
 
   getTranslations(locale: string, options: Object) {
     const catalogs = this.readAll()
@@ -178,7 +187,7 @@ Catalog.prototype = {
       (value, key) => this.getTranslation(catalogs, locale, key, options),
       catalogs[locale]
     )
-  },
+  }
 
   getTranslation(
     catalogs: Object,
@@ -204,7 +213,7 @@ Catalog.prototype = {
       // Otherwise no translation is available
       undefined
     )
-  },
+  }
 
   write(locale: string, messages: Object) {
     const filename =
@@ -215,13 +224,13 @@ Catalog.prototype = {
     if (!fs.existsSync(basedir)) {
       fs.mkdirpSync(basedir)
     }
-    this.format.write(filename, messages, { language: locale })
+    this.format.write(filename, messages, { locale })
     return [created, filename]
-  },
+  }
 
   writeAll(catalogs: Object) {
     this.locales.forEach(locale => this.write(locale, catalogs[locale]))
-  },
+  }
 
   writeCompiled(locale: string, compiledCatalog: string) {
     const filename = this.path.replace(LOCALE, locale) + ".js"
@@ -230,9 +239,9 @@ Catalog.prototype = {
     if (!fs.existsSync(basedir)) {
       fs.mkdirpSync(basedir)
     }
-    this.format.write(filename, compiledCatalog, { language: locale })
+    fs.writeFileSync(filename, compiledCatalog)
     return filename
-  },
+  }
 
   read(locale: string) {
     // Read files using previous format, if available
@@ -245,7 +254,7 @@ Catalog.prototype = {
 
     if (!fs.existsSync(filename)) return null
     return sourceFormat.read(filename)
-  },
+  }
 
   readAll() {
     return R.mergeAll(
@@ -253,7 +262,7 @@ Catalog.prototype = {
         [locale]: this.read(locale)
       }))
     )
-  },
+  }
 
   get sourcePaths() {
     const includeGlob = this.include.map(includePath =>
@@ -262,7 +271,7 @@ Catalog.prototype = {
     const patterns =
       includeGlob.length > 1 ? `{${includeGlob.join("|")}` : includeGlob[0]
     return glob.sync(patterns, { ignore: this.exclude })
-  },
+  }
 
   get localeDir() {
     const localePatternIndex = this.path.indexOf("{locale}")
@@ -270,7 +279,7 @@ Catalog.prototype = {
       throw Error("Invalid catalog path: {locale} variable is missing")
     }
     return this.path.substr(0, localePatternIndex)
-  },
+  }
 
   get locales() {
     return this.config.locales

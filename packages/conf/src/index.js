@@ -13,7 +13,7 @@ type CatalogsConfig = Array<{
   exclude?: Array<string>
 }>
 
-type InputConfig = {
+export type LinguiConfig = {
   catalogs: CatalogsConfig,
   compileNamespace: string,
   extractBabelOptions: Object,
@@ -21,12 +21,11 @@ type InputConfig = {
   format: CatalogFormat,
   locales: Array<string>,
   pseudoLocale: string,
+  rootDir: string,
   sourceLocale: string
 }
 
-export type LinguiConfig = InputConfig & { rootDir: string }
-
-export const defaultConfig: InputConfig = {
+export const defaultConfig: LinguiConfig = {
   catalogs: [
     {
       path: path.join("<rootDir>", "locale", "{locale}", "messages"),
@@ -86,7 +85,7 @@ const exampleConfig = {
 }
 
 const deprecatedConfig = {
-  fallbackLanguage: (config: InputConfig & { fallbackLanguage: string }) =>
+  fallbackLanguage: (config: LinguiConfig & { fallbackLanguage: string }) =>
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
       "fallbackLocale"
     )}
@@ -100,7 +99,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  localeDir: (config: InputConfig) =>
+  localeDir: (config: LinguiConfig) =>
     ` Option ${chalk.bold(
       "localeDir"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -119,7 +118,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathDirs: (config: InputConfig) =>
+  srcPathDirs: (config: LinguiConfig) =>
     ` Option ${chalk.bold(
       "srcPathDirs"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -138,7 +137,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathIgnorePatterns: (config: InputConfig) =>
+  srcPathIgnorePatterns: (config: LinguiConfig) =>
     ` Option ${chalk.bold(
       "srcPathIgnorePatterns"
     )} is deprecated. Configure excluded source paths using ${chalk.bold(
@@ -180,32 +179,28 @@ function validateLocales(config) {
   return config
 }
 
-/**
- *
- * @param value
- * @param rootDir
- * @return {*}
- */
-export function replaceRootDir<T: ?string | Array<string | Object> | Object>(
-  value: T,
+export function replaceRootDir(
+  config: LinguiConfig,
   rootDir: string
-): T {
-  const replace = s => s.replace("<rootDir>", rootDir)
+): LinguiConfig {
+  return (function replaceDeep<T>(value: T): T {
+    const replace = s => s.replace("<rootDir>", rootDir)
 
-  if (!value) {
-  } else if (typeof value === "string") {
-    return replace(value)
-  } else if (Array.isArray(value)) {
-    return value.map(item => replaceRootDir(item, rootDir))
-  } else {
-    const newConf = {}
-    Object.keys(value).forEach(key => {
-      newConf[key] = replaceRootDir(value[key], rootDir)
-    })
-    return newConf
-  }
+    if (value == null) {
+      return value
+    } else if (typeof value === "string") {
+      return replace(value)
+    } else if (Array.isArray(value)) {
+      return value.map(item => replaceDeep(item, rootDir))
+    } else if (typeof value === "object") {
+      Object.keys(value).forEach(key => {
+        // $FlowIgnore: for some reason, value isn't recognized as an object
+        value[key] = replaceDeep(value[key], rootDir)
+      })
+    }
 
-  return value
+    return value
+  })(config)
 }
 
 /**

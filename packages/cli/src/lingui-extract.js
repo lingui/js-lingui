@@ -6,7 +6,6 @@ import { getConfig } from "@lingui/conf"
 import type { LinguiConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
-import type { CatalogApi } from "./api/types"
 import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 
@@ -14,7 +13,7 @@ export type CliExtractOptions = {
   verbose?: boolean,
   clean?: boolean,
   overwrite?: boolean,
-  prevFormat?: ?CatalogApi
+  prevFormat?: string
 }
 
 export default function command(

@@ -1,7 +1,5 @@
 // @flow
 
-export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
-
 export type MessageType = {
   translation: string,
   defaults: ?string,
@@ -20,34 +18,12 @@ export type AllCatalogsType = {
   [locale: string]: CatalogType
 }
 
-export type getTranslationOptions = {|
-  fallbackLocale: string,
-  sourceLocale: string
-|}
-
-export type TranslationsFormat = {
-  filename: string,
-  read(filename: string): ?CatalogType,
-  write(filename: string, catalog: CatalogType): void
+export type FormatWriteOptions = {
+  locale: string
 }
 
-export type CatalogApi = {
-  getLocales(): Array<string>,
-
-  read(locale: string): ?CatalogType,
-  readAll(): AllCatalogsType,
-  merge(
-    prevCatalogs: AllCatalogsType,
-    catalog: CatalogType,
-    options?: { [key: string]: any }
-  ): AllCatalogsType,
-  write(locale: string, catalog: CatalogType): IdempotentResult<string>,
-  writeCompiled(locale: string, content: string): string,
-
-  getTranslation(
-    catalogs: AllCatalogsType,
-    locale: string,
-    msgId: string,
-    options: getTranslationOptions
-  ): ?string
+export type MessageCatalogFormat = {
+  catalogExtension: string,
+  read(filename: string): ?CatalogType,
+  write(filename: string, catalog: CatalogType, options?: FormatWriteOptions): void
 }

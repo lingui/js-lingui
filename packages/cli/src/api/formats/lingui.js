@@ -1,10 +1,10 @@
 // @flow
 import fs from "fs"
 
-import type { TranslationsFormat } from "../types"
+import type { MessageCatalogFormat } from "../types"
 
-const format: TranslationsFormat = {
-  filename: "messages.json",
+const format: MessageCatalogFormat = {
+  catalogExtension: ".json",
 
   write(filename, catalog) {
     fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
