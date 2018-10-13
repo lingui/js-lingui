@@ -10,17 +10,16 @@ import type { CatalogApi } from "./api/types"
 import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 
-type ExtractOptions = {|
+export type CliExtractOptions = {
   verbose: boolean,
   clean: boolean,
   overwrite: boolean,
-  prevFormat: ?CatalogApi,
-  babelOptions: Object
-|}
+  prevFormat: ?CatalogApi
+}
 
 export default function command(
   config: LinguiConfig,
-  options: ExtractOptions
+  options: CliExtractOptions
 ): boolean {
   // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
   // set. We're setting it here, because lingui macros are going to use them as well.
@@ -117,7 +116,6 @@ if (require.main === module) {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,
-    babelOptions: config.extractBabelOptions || program.babelOptions || {},
     prevFormat
   })
 

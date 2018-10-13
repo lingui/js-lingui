@@ -8,7 +8,8 @@ import type { ExtractorType } from "./types"
 const extractors = { babel, typescript }
 
 type ExtractOptions = {
-  verbose?: boolean,
+  verbose: boolean,
+  projectType: string,
   babelOptions?: Object
 }
 

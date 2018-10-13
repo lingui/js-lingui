@@ -10,6 +10,7 @@ import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import type { AllCatalogsType } from "./types"
+import type { CliExtractOptions } from "../lingui-extract"
 import type { LinguiConfig } from "@lingui/conf"
 
 type CatalogProps = {
@@ -17,6 +18,10 @@ type CatalogProps = {
   path: string,
   include: Array<string>,
   exclude?: Array<string>
+}
+
+type MakeOptions = CliExtractOptions & {
+  projectType: string
 }
 
 const NAME = "{name}"
@@ -46,8 +51,8 @@ export function Catalog(
 // }
 
 Catalog.prototype = {
-  make(options = {}) {
-    const nextCatalog = this.collect()
+  make(options: MakeOptions = {}) {
+    const nextCatalog = this.collect(options)
     const prevCatalogs = this.readAll()
 
     // const clean = options.clean ? cleanObsolete : id => id
@@ -68,7 +73,7 @@ Catalog.prototype = {
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  collect({ verbose } = {}) {
+  collect(options = {}) {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -79,7 +84,11 @@ Catalog.prototype = {
 
     try {
       this.sourcePaths.forEach(filename =>
-        extract(filename, tmpDir, { verbose })
+        extract(filename, tmpDir, {
+          verbose: options.verbose,
+          babelOptions: this.config.extractBabelOptions,
+          projectType: options.projectType
+        })
       )
 
       return (function traverse(directory) {
