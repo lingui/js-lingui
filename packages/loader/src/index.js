@@ -53,5 +53,5 @@ export default function(source) {
   // of I18nProvider (React) or setupI18n (core) and therefore we need to get
   // empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
-  return createCompiledCatalog(locale, messages, strict)
+  return createCompiledCatalog(locale, messages, { strict })
 }

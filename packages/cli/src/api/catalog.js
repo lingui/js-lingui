@@ -10,7 +10,6 @@ import minimatch from "minimatch"
 import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
-import type { AllCatalogsType } from "./types"
 import type { CliExtractOptions } from "../lingui-extract"
 import type { LinguiConfig } from "@lingui/conf"
 
@@ -74,7 +73,7 @@ Catalog.prototype = {
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  collect(options = {}) {
+  collect(options: Object = {}) {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -122,7 +121,7 @@ Catalog.prototype = {
     }
   },
 
-  merge(prevCatalogs, nextCatalog, options = {}) {
+  merge(prevCatalogs: Object, nextCatalog: Object, options: Object = {}) {
     const nextKeys = R.keys(nextCatalog)
 
     return R.mapObjIndexed((prevCatalog, locale) => {
@@ -173,7 +172,15 @@ Catalog.prototype = {
     }, prevCatalogs)
   },
 
-  getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
+  getTranslations(locale: string, options: Object) {
+    const catalogs = this.readAll()
+    return R.mapObjIndexed(
+      (value, key) => this.getTranslation(catalogs, locale, key, options),
+      catalogs[locale]
+    )
+  },
+
+  getTranslation(catalogs: Object, locale: string, key: string, { fallbackLocale, sourceLocale }: Object) {
     const getTranslation = locale => catalogs[locale][key].translation
 
     return (
@@ -194,7 +201,7 @@ Catalog.prototype = {
     )
   },
 
-  write(locale, messages) {
+  write(locale: string, messages: Object) {
     const filename =
       this.path.replace(LOCALE, locale) + this.format.catalogExtension
 
@@ -207,11 +214,22 @@ Catalog.prototype = {
     return [created, filename]
   },
 
-  writeAll(catalogs) {
+  writeAll(catalogs: Object) {
     this.locales.forEach(locale => this.write(locale, catalogs[locale]))
   },
 
-  read(locale) {
+  writeCompiled(locale: string, compiledCatalog: string) {
+    const filename = this.path.replace(LOCALE, locale) + ".js"
+
+    const basedir = path.dirname(filename)
+    if (!fs.existsSync(basedir)) {
+      fs.mkdirpSync(basedir)
+    }
+    this.format.write(filename, compiledCatalog, { language: locale })
+    return filename
+  },
+
+  read(locale: string) {
     // Read files using previous format, if available
     const sourceFormat = this.config.prevFormat
       ? getFormat(this.config.prevFormat)

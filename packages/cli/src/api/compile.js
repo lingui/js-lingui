@@ -126,9 +126,7 @@ function buildExportStatement(expression, namespace: string = "cjs") {
 export function createCompiledCatalog(
   locale: string,
   messages: CatalogType,
-  strict: boolean = false,
-  namespace: string = "cjs",
-  pseudoLocale: string
+  { strict = false, namespace = "cjs", pseudoLocale }: Object = {}
 ) {
   const [language] = locale.split(/[_-]/)
   const pluralRules = plurals[language]

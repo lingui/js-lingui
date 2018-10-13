@@ -77,8 +77,16 @@ describe("compile", function() {
 
 describe("createCompiledCatalog", function() {
   describe("namespace", function() {
-    const getCompiledCatalog = (...args) =>
-      createCompiledCatalog("fr", {}, ...args)
+    const getCompiledCatalog = (strict, namespace, pseudoLocale) =>
+      createCompiledCatalog(
+        "fr",
+        {},
+        {
+          strict,
+          namespace,
+          pseudoLocale
+        }
+      )
     it("should compile with cjs by default", function() {
       expect(getCompiledCatalog()).toMatchSnapshot()
     })

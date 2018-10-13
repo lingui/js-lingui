@@ -1,43 +1,21 @@
 // @flow
 import chalk from "chalk"
 import fs from "fs"
-import R from "ramda"
+import * as R from "ramda"
 import program from "commander"
 import plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
-import configureCatalog from "./api/catalog"
+import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 
 function command(config, options) {
-  const catalog = configureCatalog(config)
-  const locales = catalog.getLocales()
+  const catalogs = getCatalogs(config)
 
-  if (!locales.length) {
-    console.log("No locales defined!\n")
-    console.log(
-      `Add ${chalk.yellow(
-        "'locales'"
-      )} to your configuration. See ${chalk.underline(
-        "https://lingui.js.org/ref/conf.html#locales"
-      )}`
-    )
-    return false
-  }
-
-  const catalogs = R.mergeAll(
-    locales.map(locale => ({ [locale]: catalog.read(locale) }))
-  )
-
-  const noMessages = R.compose(
-    R.all(R.equals(true)),
-    R.values,
-    R.map(R.isEmpty)
-  )
   if (noMessages(catalogs)) {
-    console.log("Nothing to compile, message catalogs are empty!\n")
-    console.log(
+    console.error("Nothing to compile, message catalogs are empty!\n")
+    console.error(
       `(use "${chalk.yellow(
         "lingui extract"
       )}" to extract messages from source files)`
@@ -45,73 +23,69 @@ function command(config, options) {
     return false
   }
 
-  console.log("Compiling message catalogs…")
+  console.error("Compiling message catalogs…")
 
-  return locales.map(locale => {
+  config.locales.forEach(locale => {
     const [language] = locale.split(/[_-]/)
     if (!plurals[language]) {
-      console.log(
-        chalk.red(
-          `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
-        )
+      console.error(
+        `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
       )
-      console.log()
-      return false
+      console.error()
+      process.exit(1)
     }
 
-    const messages = R.mergeAll(
-      Object.keys(catalogs[locale]).map(key => ({
-        [key]: catalog.getTranslation(catalogs, locale, key, {
-          fallbackLocale: config.fallbackLocale,
-          sourceLocale: config.sourceLocale
-        })
-      }))
-    )
+    catalogs.forEach(catalog => {
+      const messages = catalog.getTranslations(locale, {
+        fallbackLocale: config.fallbackLocale,
+        sourceLocale: config.sourceLocale
+      })
 
-    if (!options.allowEmpty && config.sourceLocale !== locale) {
-      const missing = R.keys(messages).filter(
-        key => messages[key] === undefined
-      )
+      if (!options.allowEmpty) {
+        const missing = R.values(messages).some(R.isNil)
 
-      if (missing.length) {
-        console.log(
-          chalk.red(
-            `Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`
+        if (missing) {
+          console.error(
+            chalk.red(
+              `Error: Failed to compile catalog for locale ${chalk.bold(
+                locale
+              )}!`
+            )
           )
-        )
 
-        if (options.verbose) {
-          console.log(chalk.red("Missing translations:"))
-          missing.forEach(msgId => console.log(msgId))
-        } else {
-          console.log(chalk.red(`Missing ${missing.length} translation(s)`))
+          if (options.verbose) {
+            console.error(chalk.red("Missing translations:"))
+            missing.forEach(msgId => console.log(msgId))
+          } else {
+            console.error(chalk.red(`Missing ${missing.length} translation(s)`))
+          }
+          console.error()
+          process.exit()
         }
-        console.log()
-        return false
       }
-    }
 
-    const compiledCatalog = createCompiledCatalog(
-      locale,
-      messages,
-      false,
-      options.namespace || config.compileNamespace,
-      config.pseudoLocale
-    )
-    const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
-    if (options.typescript) {
-      const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
-      fs.writeFileSync(
-        typescriptPath,
-        `import { Catalog } from '@lingui/core';
+      const compiledCatalog = createCompiledCatalog(locale, messages, {
+        strict: false,
+        namespace: options.namespace || config.compileNamespace,
+        pseudoLocale: config.pseudoLocale
+      })
+
+      const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
+
+      if (options.typescript) {
+        const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
+        fs.writeFileSync(
+          typescriptPath,
+          `import { Catalog } from '@lingui/core';
 declare const catalog: Catalog;
 export = catalog;
 `
-      )
-    }
+        )
+      }
 
-    options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
-    return compiledPath
+      options.verbose &&
+        console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
+    })
   })
 }
 
@@ -165,3 +139,9 @@ if (require.main === module) {
 
   console.log("Done!")
 }
+
+const noMessages = R.compose(
+  R.all(R.equals(true)),
+  R.values,
+  R.map(R.isEmpty)
+)
