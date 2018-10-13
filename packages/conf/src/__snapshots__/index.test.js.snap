@@ -83,9 +83,9 @@ Object {
         */node_modules/*,
       ],
       include: Array [
-        /Users/tricoder/Projects/lingui/js-lingui/packages/conf/src/fixtures/valid,
+        .,
       ],
-      path: /Users/tricoder/Projects/lingui/js-lingui/packages/conf/src/fixtures/valid/locale/{locale}/messages,
+      path: ./locale/{locale}/messages,
     },
   ],
   compileNamespace: cjs,
@@ -100,7 +100,7 @@ Object {
     cs,
   ],
   pseudoLocale: ,
-  rootDir: /Users/tricoder/Projects/lingui/js-lingui/packages/conf/src/fixtures/valid,
+  rootDir: .,
   sourceLocale: ,
 }
 `;

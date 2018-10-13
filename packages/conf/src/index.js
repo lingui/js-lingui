@@ -40,7 +40,7 @@ export const defaultConfig: InputConfig = {
   format: "po",
   locales: [],
   pseudoLocale: "",
-  rootDir: "",
+  rootDir: ".",
   sourceLocale: ""
 }
 
