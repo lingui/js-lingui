@@ -67,7 +67,7 @@ describe("pofile format", function() {
       }
     }
 
-    format.write(filename, catalog, { language: "en", ...dateHeaders })
+    format.write(filename, catalog, { locale: "en", ...dateHeaders })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     mockDate.reset()
