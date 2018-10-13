@@ -251,11 +251,11 @@ export function getCatalogs(config: LinguiConfig): Array<Catalog> {
   const catalogsConfig = config.catalogs
   const catalogs = []
 
-  Object.keys(catalogsConfig).forEach(catalogPath => {
+  catalogsConfig.forEach(catalog => {
     // Validate that `catalogPath` doesn't end with trailing slash
-    if (catalogPath.endsWith(path.sep)) {
+    if (catalog.path.endsWith(path.sep)) {
       const extension = getFormat(config.format).catalogExtension
-      const correctPath = catalogPath.slice(0, -1)
+      const correctPath = catalog.path.slice(0, -1)
       const examplePath =
         correctPath.replace(
           LOCALE,
@@ -263,44 +263,37 @@ export function getCatalogs(config: LinguiConfig): Array<Catalog> {
           (config.locales || [])[0] || "en"
         ) + extension
       throw new Error(
-        `Remove trailing slash from "${catalogPath}". Catalog path isn't a directory,` +
+        // prettier-ignore
+        `Remove trailing slash from "${catalog.path}". Catalog path isn't a directory,` +
           ` but translation file without extension. For example, catalog path "${correctPath}"` +
           ` results in translation file "${examplePath}".`
       )
     }
 
-    const sourcePaths = ensureArray(catalogsConfig[catalogPath])
-
-    const include = sourcePaths
-      // exclude ignore patterns
-      .filter(path => path[0] !== "!")
-      // first exclamation mark might be escaped
-      .map(path => path.replace(/^\\!/, "!"))
-      .map(path => normalizeRelative(path))
-
-    const exclude = sourcePaths
-      // filter ignore patterns
-      .filter(path => path[0] === "!")
-      // remove exlamation mark at the beginning
-      .map(path => path.slice(1))
-      .map(path => normalizeRelative(path))
+    const include = ensureArray(catalog.include).map(path =>
+      normalizeRelative(path)
+    )
+    const exclude = ensureArray(catalog.exclude).map(path =>
+      normalizeRelative(path)
+    )
 
     // catalogPath without {name} pattern -> always refers to a single catalog
-    if (!catalogPath.includes(NAME)) {
+    if (!catalog.path.includes(NAME)) {
       // Validate that sourcePaths doesn't use {name} pattern either
-      const invalidSource = sourcePaths.filter(path => path.includes(NAME))[0]
+      const invalidSource = include.filter(path => path.includes(NAME))[0]
       if (invalidSource !== undefined) {
         throw new Error(
-          `Catalog with path "${catalogPath}" doesn't have a {name} pattern in it,` +
-            ` but one of source directories uses it: "${invalidSource}".` +
-            ` Either add {name} pattern to "${catalogPath}" or remove it from all source directories.`
+          `Catalog with path "${catalog.path}" doesn't have a {name} pattern` +
+            ` in it, but one of source directories uses it: "${invalidSource}".` +
+            ` Either add {name} pattern to "${catalog.path}" or remove it` +
+            ` from all source directories.`
         )
       }
 
       // catalog name is the last directory of catalogPath.
       // If the last part is {locale}, then catalog doesn't have an explicit name
       const name = (function() {
-        const _name = catalogPath.split(path.sep).slice(-1)[0]
+        const _name = catalog.path.split(path.sep).slice(-1)[0]
         return _name !== LOCALE ? _name : null
       })()
 
@@ -308,7 +301,7 @@ export function getCatalogs(config: LinguiConfig): Array<Catalog> {
         new Catalog(
           {
             name,
-            path: normalizeRelative(catalogPath),
+            path: normalizeRelative(catalog.path),
             include,
             exclude
           },
@@ -332,7 +325,7 @@ export function getCatalogs(config: LinguiConfig): Array<Catalog> {
         new Catalog(
           {
             name,
-            path: normalizeRelative(catalogPath.replace(NAME, name)),
+            path: normalizeRelative(catalog.path.replace(NAME, name)),
             include: include.map(path => path.replace(NAME, name)),
             exclude: exclude.map(path => path.replace(NAME, name))
           },
@@ -367,8 +360,11 @@ function mergeOrigins(msgId, prev, next) {
 /**
  * Ensure that value is always array. If not, turn it into an array of one element.
  */
-const ensureArray = <T>(value: Array<T> | T): Array<T> =>
-  Array.isArray(value) ? value : [value]
+const ensureArray = <T>(value: Array<T> | ?T): Array<T> => {
+  if (value === null || value === undefined) return []
+
+  return Array.isArray(value) ? value : [value]
+}
 
 /**
  * Normalize relative paths

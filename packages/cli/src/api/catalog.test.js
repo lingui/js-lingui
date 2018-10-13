@@ -467,9 +467,12 @@ describe("getCatalogs", function() {
 
   it("should get single catalog if catalogPath doesn't include {name} pattern", function() {
     const config = mockConfig({
-      catalogs: {
-        "./src/locales/{locale}": "./src/"
-      }
+      catalogs: [
+        {
+          path: "./src/locales/{locale}",
+          include: "./src/"
+        }
+      ]
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -486,13 +489,13 @@ describe("getCatalogs", function() {
 
   it("should have catalog name and ignore patterns", function() {
     const config = mockConfig({
-      catalogs: {
-        "src/locales/{locale}/all": [
-          "src/",
-          "/absolute/path/",
-          "!node_modules/"
-        ]
-      }
+      catalogs: [
+        {
+          path: "src/locales/{locale}/all",
+          include: ["src/", "/absolute/path/"],
+          exclude: ["node_modules/"]
+        }
+      ]
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -518,9 +521,12 @@ describe("getCatalogs", function() {
     })
 
     const config = mockConfig({
-      catalogs: {
-        "{name}/locales/{locale}": "./{name}/"
-      }
+      catalogs: [
+        {
+          path: "{name}/locales/{locale}",
+          include: ["./{name}/"]
+        }
+      ]
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -555,9 +561,13 @@ describe("getCatalogs", function() {
     })
 
     const config = mockConfig({
-      catalogs: {
-        "./{name}/locales/{locale}": ["./{name}/", "!componentB/"]
-      }
+      catalogs: [
+        {
+          path: "./{name}/locales/{locale}",
+          include: ["./{name}/"],
+          exclude: ["componentB/"]
+        }
+      ]
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -576,9 +586,12 @@ describe("getCatalogs", function() {
     expect(() =>
       getCatalogs(
         mockConfig({
-          catalogs: {
-            "./locales/{locale}/": "."
-          }
+          catalogs: [
+            {
+              path: "./locales/{locale}/",
+              include: ["."]
+            }
+          ]
         })
       )
     ).toThrowErrorMatchingSnapshot()
@@ -589,9 +602,12 @@ describe("getCatalogs", function() {
         mockConfig({
           locales: ["cs"],
           format: "minimal",
-          catalogs: {
-            "./locales/{locale}/": "."
-          }
+          catalogs: [
+            {
+              path: "./locales/{locale}/",
+              include: ["."]
+            }
+          ]
         })
       )
     ).toThrowErrorMatchingSnapshot()
@@ -601,9 +617,12 @@ describe("getCatalogs", function() {
     expect(() =>
       getCatalogs(
         mockConfig({
-          catalogs: {
-            "./locales/{locale}": "./{name}/"
-          }
+          catalogs: [
+            {
+              path: "./locales/{locale}",
+              include: ["./{name}/"]
+            }
+          ]
         })
       )
     ).toThrowErrorMatchingSnapshot()
