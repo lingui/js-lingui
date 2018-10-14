@@ -287,17 +287,10 @@ msgid "veryLongString"
 msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. \\"What's happened to me?\\" he thought. It wasn't a dream. His room, a proper human"
 `;
 
-exports[`cleanObsolete should remove obsolete messages from catalogs 1`] = `
+exports[`cleanObsolete should remove obsolete messages from catalog 1`] = `
 Object {
-  en: Object {
-    Label: Object {
-      translation: Label,
-    },
-  },
-  fr: Object {
-    Label: Object {
-      translation: Label,
-    },
+  Label: Object {
+    translation: Label,
   },
 }
 `;
@@ -308,52 +301,11 @@ exports[`getCatalogs should warn if catalogPath is a directory 1`] = `Remove tra
 
 exports[`getCatalogs should warn if catalogPath is a directory 2`] = `Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/cs.json".`;
 
-exports[`order should order messages alphabetically 1`] = `
-Object {
-  en: Object {
-    LabelA: Object {
-      translation: A,
-    },
-    LabelB: Object {
-      translation: B,
-    },
-    LabelC: Object {
-      translation: C,
-    },
-    LabelD: Object {
-      translation: D,
-    },
-  },
-  fr: Object {
-    LabelA: Object {
-      translation: A,
-    },
-    LabelB: Object {
-      translation: B,
-    },
-    LabelC: Object {
-      translation: C,
-    },
-    LabelD: Object {
-      translation: D,
-    },
-  },
-}
-`;
-
-exports[`order should order messages alphabetically 2`] = `
-Object {
-  en: Array [
-    LabelA,
-    LabelB,
-    LabelC,
-    LabelD,
-  ],
-  fr: Array [
-    LabelA,
-    LabelB,
-    LabelC,
-    LabelD,
-  ],
-}
+exports[`orderByMessageId should order messages by ID alphabetically 1`] = `
+Array [
+  LabelA,
+  LabelB,
+  LabelC,
+  LabelD,
+]
 `;

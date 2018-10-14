@@ -7,7 +7,7 @@ import {
   getCatalogs,
   getCatalogForFile,
   Catalog,
-  order,
+  orderByMessageId,
   cleanObsolete
 } from "./catalog"
 import { copyFixture } from "../tests"
@@ -669,73 +669,43 @@ describe("getCatalogForFile", function() {
 })
 
 describe("cleanObsolete", function() {
-  it("should remove obsolete messages from catalogs", function() {
-    const catalogs = {
-      en: {
-        Label: {
-          translation: "Label"
-        },
-        PreviousLabel: {
-          obsolete: true
-        }
+  it("should remove obsolete messages from catalog", function() {
+    const catalog = {
+      Label: {
+        translation: "Label"
       },
-      fr: {
-        Label: {
-          translation: "Label"
-        },
-        Obsolete: {
-          translation: "Obsolete",
-          obsolete: true
-        }
+      PreviousLabel: {
+        obsolete: true
       }
     }
 
-    expect(cleanObsolete(catalogs)).toMatchSnapshot()
+    expect(cleanObsolete(catalog)).toMatchSnapshot()
   })
 })
 
-describe("order", function() {
-  it("should order messages alphabetically", function() {
-    const catalogs = {
-      en: {
-        LabelB: {
-          translation: "B"
-        },
-        LabelA: {
-          translation: "A"
-        },
-        LabelD: {
-          translation: "D"
-        },
-        LabelC: {
-          translation: "C"
-        }
+describe("orderByMessageId", function() {
+  it("should order messages by ID alphabetically", function() {
+    const catalog = {
+      LabelB: {
+        translation: "B"
       },
-      fr: {
-        LabelB: {
-          translation: "B"
-        },
-        LabelA: {
-          translation: "A"
-        },
-        LabelD: {
-          translation: "D"
-        },
-        LabelC: {
-          translation: "C"
-        }
+      LabelA: {
+        translation: "A"
+      },
+      LabelD: {
+        translation: "D"
+      },
+      LabelC: {
+        translation: "C"
       }
     }
 
-    const orderedCatalogs = order(catalogs)
+    const orderedCatalogs = orderByMessageId(catalog)
 
     // Test that the message content is the same as before
-    expect(orderedCatalogs).toMatchSnapshot()
+    expect(orderedCatalogs).toEqual(catalog)
 
     // Jest snapshot order the keys automatically, so test that the key order explicitly
-    expect({
-      en: Object.keys(orderedCatalogs.en),
-      fr: Object.keys(orderedCatalogs.fr)
-    }).toMatchSnapshot()
+    expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 })

@@ -64,19 +64,20 @@ export class Catalog {
     const nextCatalog = this.collect(options)
     const prevCatalogs = this.readAll()
 
-    // const clean = options.clean ? cleanObsolete : id => id
-    // const catalogs = order(
-    //   clean(
-    //     catalog.merge(prevCatalogs, nextCatalog, {
-    //       overwrite: options.overwrite
-    //     })
-    //   )
-    // )
-
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
       overwrite: options.overwrite
     })
-    this.writeAll(catalogs)
+
+    // Map over all locales and post-process each catalog
+    const postProcess = R.map(
+      R.pipe(
+        // Clean obsolete messages
+        options.clean ? cleanObsolete : R.identity,
+        // Sort messages
+        orderByMessageId
+      )
+    )
+    this.writeAll(postProcess(catalogs))
   }
 
   /**
@@ -313,10 +314,10 @@ export function getCatalogs(config: LinguiConfig) {
     }
 
     const include = ensureArray(catalog.include).map(path =>
-      normalizeRelative(path)
+      normalizeRelativePath(path)
     )
     const exclude = ensureArray(catalog.exclude).map(path =>
-      normalizeRelative(path)
+      normalizeRelativePath(path)
     )
 
     // catalogPath without {name} pattern -> always refers to a single catalog
@@ -343,7 +344,7 @@ export function getCatalogs(config: LinguiConfig) {
         new Catalog(
           {
             name,
-            path: normalizeRelative(catalog.path),
+            path: normalizeRelativePath(catalog.path),
             include,
             exclude
           },
@@ -367,7 +368,7 @@ export function getCatalogs(config: LinguiConfig) {
         new Catalog(
           {
             name,
-            path: normalizeRelative(catalog.path.replace(NAME, name)),
+            path: normalizeRelativePath(catalog.path.replace(NAME, name)),
             include: include.map(path => path.replace(NAME, name)),
             exclude: exclude.map(path => path.replace(NAME, name))
           },
@@ -428,20 +429,18 @@ function mergeOrigins(msgId, prev, next) {
  * Ensure that value is always array. If not, turn it into an array of one element.
  */
 const ensureArray = <T>(value: Array<T> | ?T): Array<T> => {
-  if (value === null || value === undefined) return []
+  if (value == null) return []
 
   return Array.isArray(value) ? value : [value]
 }
 
 /**
- * Normalize relative paths
- *
  * Remove ./ at the beginning: ./relative  => relative
  *                             relative    => relative
- * Preserve directory paths:   ./relative/ => relative/
+ * Preserve directories:       ./relative/ => relative/
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
-function normalizeRelative(sourcePath: string): string {
+function normalizeRelativePath(sourcePath: string): string {
   // absolute path, do nothing
   if (sourcePath.startsWith("/")) return sourcePath
 
@@ -452,12 +451,10 @@ function normalizeRelative(sourcePath: string): string {
   )
 }
 
-export const cleanObsolete = R.map(R.filter(message => !message.obsolete))
+export const cleanObsolete = R.filter(message => !message.obsolete)
 
-export const orderByMessageId = R.compose(
-  R.fromPairs,
+export const orderByMessageId = R.pipe(
+  R.toPairs,
   R.sortBy(R.prop(0)),
-  R.toPairs
+  R.fromPairs
 )
-
-export const order = R.map(orderByMessageId)
