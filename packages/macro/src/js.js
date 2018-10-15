@@ -117,7 +117,7 @@ export default function({ types: t }) {
           value = props.text
         } else if (t.isCallExpression(attr.value)) {
           props = transformMethod(attr.value, file, { ...props, text: "" })
-          value = props.text
+          value = `{${props.text}}`
         } else {
           value = attr.value.value
         }

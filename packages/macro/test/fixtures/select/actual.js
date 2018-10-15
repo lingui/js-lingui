@@ -32,3 +32,14 @@ select('id', {
   female: `She is ${gender}`,
   other: `They is ${gender}`
 });
+
+select('id', {
+  value: "male",
+  "male": select({
+    value: true,
+    true: "He invites guests",
+    other: "He does not invite guests"
+  }),
+  female: `She is ${gender}`,
+  other: `They is ${gender}`
+});
