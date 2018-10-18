@@ -204,7 +204,7 @@ export default function({ types: t }) {
         const comment =
           path.node.leadingComments &&
           path.node.leadingComments.filter(node =>
-            node.value.startsWith("i18n")
+            node.value.match(/^\s*i18n/)
           )[0]
 
         if (!comment || visited.has(path.node)) {
