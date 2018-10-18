@@ -61,73 +61,8 @@ As you can see, it's a simple mailbox application with only one page.
 Installing LinguiJS
 ===================
 
-LinguiJS_ isn't just one package. It's a set of tools which helps you to
-internationalize your project.
-
-Let's start with a three major packages:
-
-``@lingui/cli``
-   CLI for internationalization workflow and management of message catalogs
-
-``@lingui/react``
-   React components for translation and formatting
-
-``@lingui/macro``
-   Macros for easier writing messages in ICU MessageFormat
-
-1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
-   project type and install all required packages automatically. Feel free to run
-   it with ``lingui init --dry-run`` option to inspect what commands will be run:
-
-   .. code-block:: shell
-
-      npm install -g @lingui/cli
-      lingui init
-
-   Yarn is supported as well:
-
-   .. code-block:: shell
-
-      yarn global add @lingui/cli
-      lingui init
-
-   .. note::
-
-      Under the hood it installs ``babel-plugin-macros`` and ``@lingui/macro`` as
-      a development dependency and ``@lingui/react`` as a runtime dependency
-      (in React projects):
-
-      .. code-block:: shell
-
-         npm install --save @lingui/react
-         npm install --save-dev babel-plugin-macros @lingui/macro
-
-2. Add ``macro`` plugin to Babel config (e.g: ``.babelrc``):
-
-   .. code-block:: json
-
-      {
-        "presets": [
-          "env",
-          "react",
-        ],
-        "plugins": [
-          "macros"
-        ]
-      }
-
-3. If you receive a warning about missing peer dependency ``babel-core``, you need
-to install it manually. Target version depends on whether you're using babel 6 or 7:
-
-   .. code-block:: shell
-
-      # Babel 6.x
-      npm install --save-dev babel-core@6
-
-      # Babel 7.x
-      npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
-
-Now we have the environment up and running and we can start internationalizing our app!
+Follow setup guide either for projects using :doc:`LinguiJS with Create React App </tutorials/setup-cra>`
+or for general :doc:`React projects </tutorials/setup-react>`.
 
 Setup
 =====
