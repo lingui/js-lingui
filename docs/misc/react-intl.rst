@@ -274,7 +274,7 @@ accept values for interpolation (e.g. components, variables, etc). This makes th
 final bundle smaller and makes the library faster. The compiled catalogs are also bundled with locale
 data like plurals, so it's not necessary to load them manually.
 
-Disadvatages of LinguiJS
+Disadvantages of LinguiJS
 ========================
 
 `react-intl`_ has been around for some time and it's definitely more popular, more used
