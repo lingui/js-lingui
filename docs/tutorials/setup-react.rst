@@ -18,12 +18,12 @@ Install
    .. code-block:: shell
 
       npm install --save-dev @lingui/cli @babel/core babel-core@bridge
-      npm install --save-dev @lingui/macro babel-plugin-macro  # required for macros
+      npm install --save-dev @lingui/macro babel-plugin-macros  # required for macros
       npm install --save @lingui/react
 
       # or using Yarn
       yarn add --dev @lingui/cli @babel/core babel-core@bridge
-      yarn add --dev @lingui/macro babel-plugin-macro  # required for macros
+      yarn add --dev @lingui/macro babel-plugin-macros  # required for macros
       yarn add @lingui/react
 
    .. important::
