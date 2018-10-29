@@ -275,7 +275,7 @@ final bundle smaller and makes the library faster. The compiled catalogs are als
 data like plurals, so it's not necessary to load them manually.
 
 Disadvantages of LinguiJS
-========================
+=========================
 
 `react-intl`_ has been around for some time and it's definitely more popular, more used
 and a lot of production sites are running it. The community is larger and it's much
