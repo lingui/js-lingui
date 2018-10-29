@@ -37,25 +37,20 @@ describe("@lingui/conf", function() {
     const config = replaceRootDir(
       {
         boolean: false,
-        catalogs: [
-          {
-            path: "<rootDir>/locales/{locale}/messages",
-            include: ["<rootDir>/src"],
-            exclude: ["<rootDir>/ignored"]
-          }
-        ]
+        catalogs: {
+          ["<rootDir>/locales/{locale}/messages"]: [
+            "<rootDir>/src",
+            "!<rootDir>/ignored"
+          ]
+        }
       },
       "/Root"
     )
 
     expect(config.boolean).toEqual(false)
-    expect(config.catalogs).toEqual([
-      {
-        path: "/Root/locales/{locale}/messages",
-        include: ["/Root/src"],
-        exclude: ["/Root/ignored"]
-      }
-    ])
+    expect(config.catalogs).toEqual({
+      "/Root/locales/{locale}/messages": ["/Root/src", "!/Root/ignored"]
+    })
   })
 
   describe("catalogMigration", function() {
@@ -85,13 +80,9 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: [
-          {
-            path: "locales/{locale}/messages",
-            include: ["<rootDir>"],
-            exclude: ["*/node_modules/*"]
-          }
-        ]
+        catalogs: {
+          "locales/{locale}/messages": ["<rootDir>", "!*/node_modules/*"]
+        }
       })
     })
 
@@ -103,13 +94,9 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: [
-          {
-            path: "locales/{locale}/messages",
-            include: ["src"],
-            exclude: ["src/node_modules/"]
-          }
-        ]
+        catalogs: {
+          "locales/{locale}/messages": ["src", "!src/node_modules/"]
+        }
       })
     })
   })

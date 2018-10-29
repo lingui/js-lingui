@@ -7,11 +7,7 @@ const { validate } = require("jest-validate")
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
 
-type CatalogsConfig = Array<{
-  path: string,
-  include?: Array<string>,
-  exclude?: Array<string>
-}>
+type CatalogsConfig = { [path: string]: Array<string> }
 
 export type LinguiConfig = {
   catalogs: CatalogsConfig,
@@ -26,13 +22,12 @@ export type LinguiConfig = {
 }
 
 export const defaultConfig: LinguiConfig = {
-  catalogs: [
-    {
-      path: path.join("<rootDir>", "locale", "{locale}", "messages"),
-      include: [`<rootDir>`],
-      exclude: [`*/node_modules/*`]
-    }
-  ],
+  catalogs: {
+    [path.join("<rootDir>", "locale", "{locale}", "messages")]: [
+      `<rootDir>`,
+      `!*/node_modules/*`
+    ]
+  },
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocale: "",
@@ -194,8 +189,11 @@ export function replaceRootDir(
       return value.map(item => replaceDeep(item, rootDir))
     } else if (typeof value === "object") {
       Object.keys(value).forEach(key => {
+        const newKey = replaceDeep(key, rootDir)
         // $FlowIgnore: for some reason, value isn't recognized as an object
-        value[key] = replaceDeep(value[key], rootDir)
+        value[newKey] = replaceDeep(value[key], rootDir)
+        // $FlowIgnore: for some reason, value isn't recognized as an object
+        if (key !== newKey) delete value[key]
       })
     }
 
@@ -240,15 +238,14 @@ export function catalogMigration(config: Object) {
       newLocaleDir += "/"
     }
 
-    if (!Array.isArray(newConfig.catalogs)) {
-      newConfig.catalogs = []
+    if (typeof newConfig.catalogs !== "object") {
+      newConfig.catalogs = {}
     }
 
-    newConfig.catalogs.push({
-      path: path.join(newLocaleDir, "{locale}", "messages"),
-      include: srcPathDirs,
-      exclude: srcPathIgnorePatterns
-    })
+    newConfig.catalogs[path.join(newLocaleDir, "{locale}", "messages")] = [
+      ...srcPathDirs,
+      ...srcPathIgnorePatterns.map(pattern => `!${pattern}`)
+    ]
   }
 
   return newConfig
