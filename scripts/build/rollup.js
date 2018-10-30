@@ -50,7 +50,8 @@ const closureOptions = {
   warningLevel: "QUIET",
   applyInputSourceMaps: false,
   useTypesForOptimization: false,
-  processCommonJsModules: false
+  processCommonJsModules: false,
+  rewritePolyfills: false,
 }
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
