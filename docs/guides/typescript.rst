@@ -66,5 +66,6 @@ The type definitions requires Typescript 2.8 or later.
 
    npm install --save-dev @types/lingui__core  # types for @lingui/core
    npm install --save-dev @types/lingui__react  # types for @lingui/react
+   npm install --save-dev @types/lingui__macro  # types for @lingui/macro
 
 Please report any issues in `maintainers repo <https://github.com/huan086/lingui-typings>`_.
