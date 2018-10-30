@@ -54,7 +54,8 @@ In your ``webpack.config.js``, use both ``babel-loader`` and ``ts-loader`` for T
    To supply babel options for the extraction process use :conf:`extractBabelOptions` configuration option.
 
 
-To be able to use the ``import`` keyword for compiled catalog files in Typescript, the ``compileNameSpace`` should be set to ``es`` (ES6 default export) in the ``.linguirc``. Otherwise ``require`` can to be used.
+:conf:`compileNamespace` must be set to ``es`` (ES6 default export) in the Lingui config
+otherwise compiled catalogs can't be imported using ES ``import``, but rather CommonJS ``require``:
 
 .. code:: js
 
