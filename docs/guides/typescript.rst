@@ -54,6 +54,15 @@ In your ``webpack.config.js``, use both ``babel-loader`` and ``ts-loader`` for T
    To supply babel options for the extraction process use :conf:`extractBabelOptions` configuration option.
 
 
+:conf:`compileNamespace` must be set to ``es`` (ES6 default export) in the Lingui config
+otherwise compiled catalogs can't be imported using ES ``import``, but rather CommonJS ``require``:
+
+.. code:: js
+
+  {
+    "compileNamespace": "es"
+  }
+
 Type definitions
 ================
 
