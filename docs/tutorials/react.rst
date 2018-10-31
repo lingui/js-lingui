@@ -271,8 +271,9 @@ Let's load this file into our app and set active language to ``cs``:
 
    import { I18nProvider } from '@lingui/react'
 
+   const catalogs = { cs: catalogCs };
    const App = () => (
-     <I18nProvider language="cs" catalogs={{ cs: catalogCs }}>
+     <I18nProvider language="cs" catalogs={catalogs}>
        <Inbox />
      </I18nProvider>
    )
