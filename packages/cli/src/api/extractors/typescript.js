@@ -1,6 +1,6 @@
 // @flow
 import fs from "fs"
-import { transform } from "babel-core"
+import { transform } from "../compat"
 
 import linguiTransformJs from "@lingui/babel-plugin-transform-js"
 import linguiTransformReact from "@lingui/babel-plugin-transform-react"
