@@ -13,6 +13,19 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract Plural messages from JSX files when there's no Trans tag (integration) 1`] = `
+Object {
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-without-trans.js,
+        3,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
   msg.hello: Object {

@@ -89,9 +89,9 @@ export default function({ types: t }) {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })
 
-          if (importDeclarations["Trans"]) {
-            localTransComponentName = importDeclarations["Trans"]
-          }
+          // Trans import might be missing if there's just Plural or similar macro.
+          // If there's no alias, consider it was imported as Trans.
+          localTransComponentName = importDeclarations["Trans"] || "Trans"
         }
 
         // Remove imports of i18nMark identity
