@@ -14,13 +14,13 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, date } from `@lingui/macro`
 
      const name = "Joe"
      const today = new Date()
 
      // With macro
-     t`Hello ${name}, today is ${t.date(today)}`
+     t`Hello ${name}, today is ${date(today)}`
 
      // Without macro
      i18n('Hello {name}, today is {today, date}', { name, date })
@@ -36,13 +36,13 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, plural } from `@lingui/macro`
 
      const name = "Joe"
      const value = 42
 
      // With macro
-     t`Hello ${name}, you have ${t.plural({
+     t`Hello ${name}, you have ${plural({
        value,
        one: '# unread message',
        other: '# unread messages'
@@ -60,12 +60,12 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, date } from `@lingui/macro`
 
      const name = "Joe"
      const today = new Date()
 
-     t`Hello ${name}, today is ${t.date(today)}`
+     t`Hello ${name}, today is ${date(today)}`
 
      // Lingui configration { messageFormat: 'icu' }
      // ↓ ↓ ↓ ↓ ↓ ↓
@@ -89,7 +89,10 @@ writing format by hand are following:
 Message definitions
 ===================
 
-``t`` macro is a single entry point to define all kinds of messages.
+``t``, ``plural``, ``select`` and ``selectOrdinal`` macros are alternatives
+for ``Trans``, ``Plural``, ``Select`` and ``SelectOrdinal`` macros used in JSX.
+The former can be used anywhere where string output is required, while
+the latter are used in JSX context.
 
 Tagged template literals
 ------------------------
@@ -98,42 +101,42 @@ Tagged template literals
 
 .. code-block:: jsx
 
-   import t from `@lingui/macro`
+   import { t } from `@lingui/macro`
 
    t`Hello ${name}`
 
 Plural, select and selectOrdinal formatters
 -------------------------------------------
 
-``t.plural``, ``t.select``, ``t.selectOrdinal`` macros are used as functions.
+``plural``, ``select``, ``selectOrdinal`` macros are used as functions.
 All of them must be called with an object containing ``value`` key and corresponding
-plural forms (``t.plural``, ``t.selectOrdinal``) or categories (``t.select``):
+plural forms (``plural``, ``selectOrdinal``) or categories (``select``):
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { plural, select } from '@lingui/macro'
 
-   t.plural({
+   plural({
       value,
       one: "# book",
       other: "# books"
    })
 
-   t.select({
+   select({
       value,
       male: "he",
       female: "she",
       other: "they"
    })
 
-It's possible to arbitrary nest formatters. ``t`` macro isn't required
+It's possible to arbitrary nest macros. ``t`` macro isn't required
 for nested template literals:
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { plural } from '@lingui/macro'
 
-   t.plural({
+   plural({
       value,
       one: `${name} has # book`,
       other: `${name} has # books`
@@ -142,18 +145,18 @@ for nested template literals:
 Date and number formatters
 --------------------------
 
-Finally, ``t.date`` and ``t.number`` macros are also used as a functions.
+Finally, ``date`` and ``number`` macros are also used as a functions.
 First argument is value to be formatted, the second is optional format:
 
 .. code-block:: jsx
 
-   import t from `@lingui/macro`
+   import { date, number } from `@lingui/macro`
 
    // default format
-   t`Today is ${t.date(today)}`
+   t`Today is ${date(today)}`
 
    // custom format
-   t`Interest rate is ${t.number(rate, 'percent')}`
+   t`Interest rate is ${number(rate, 'percent')}`
 
 Custom ID and comments for translators
 --------------------------------------
@@ -164,7 +167,7 @@ It's possible to override message ID or add comments for translators by adding
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { t } from '@lingui/macro'
 
    // Message is used as an ID
    t({
@@ -177,14 +180,14 @@ It's possible to override message ID or add comments for translators by adding
       comment: "Comment for translators"
    })`Default message`
 
-``t.plural`` and other formatters are already called with object as a first parameter.
+``plural`` and other formatters are already called with object as a first parameter.
 ``id`` and ``comment`` props can be added there:
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { plural } from '@lingui/macro'
 
-   t.plural({
+   plural({
       id: "msg.plural",
       comment: "Comment for translators",
 
@@ -193,7 +196,7 @@ It's possible to override message ID or add comments for translators by adding
       other: "# books"
    })
 
-``t.date`` and ``t.number`` don't accept ``id`` not ``comment``.
+``date`` and ``number`` don't accept ``id`` nor ``comment``.
 
 Transformation
 ==============
@@ -203,7 +206,7 @@ wrapped into ``i18n._`` function:
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { t } from '@lingui/macro'
 
    t({
       id: "msg.id",
@@ -229,24 +232,25 @@ Instead of importing the default import, import ``lazy`` instead:
 
 .. code-block:: jsx
 
-   // The API of `t` and `lazy` are the same.
-   import { lazy as t } from `@lingui/macro`
+   import { lazy } from `@lingui/macro`
 
    // define the message
-   const msg = t`Default message`
+   const msg = lazy`Default message`
 
    // translate it
-   const msg = i18n._(msg)`
+   const translation = msg()`
 
 Lazy translations are usually defined in different scope than evaluated. Parameters
 are therefore unknown, but we still need to know their names, so we can create placeholders
-in MessageFormat. ``t.arg`` macro is used exactly for that:
+in MessageFormat. ``arg`` macro is used exactly for that:
 
 .. code-block:: jsx
 
+   import { plural, arg } from "@lingui/macro"
+
    // Macro
-   const books = t.plural({
-      value: t.arg('count'),
+   const books = plural({
+      value: arg('count'),
       one: '# book',
       other: '# books'
    })
@@ -283,13 +287,13 @@ Feature request from #258:
 
 .. code-block:: jsx
 
-   import { lazy as t } from `@lingui/macro`
+   import { lazy, arg } from `@lingui/macro`
 
    export default {
-      yes: t`Yes`,
-      no: t`No`,
-      cancel: t`Cancel`,
-      confirmDelete: t`Do you really want to delete ${t.arg("filename")}?`
+      yes: lazy`Yes`,
+      no: lazy`No`,
+      cancel: lazy`Cancel`,
+      confirmDelete: lazy`Do you really want to delete ${arg("filename")}?`
    }
 
 .. _Fluent: https://projectfluent.org/
