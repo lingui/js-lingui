@@ -1,5 +1,21 @@
 # Change Log
 
+<a name="2.7.1"></a>
+## [2.7.1](https://github.com/lingui/js-lingui/compare/v2.7.0...v2.7.1) (2018-11-12)
+
+### Bug Fixes
+
+* CLI: remove "macros" from the list of babel plugins ([#360](https://github.com/lingui/js-lingui/pull/360)).
+  Thanks to [Jérôme Steunou](https://github.com/JSteunou).
+* Macro: fix ICU message for nested selects ([#365](https://github.com/lingui/js-lingui/pull/365)).
+  Thanks to [Maxim Zemskov](https://github.com/Nodge).
+* CLI: allow leading space in i18n description comments ([#366](https://github.com/lingui/js-lingui/pull/366)).
+  Thanks to [Maxim Zemskov](https://github.com/Nodge).
+* Disable Google Clojure Compiler rewritePolyfills behavior ([#374](https://github.com/lingui/js-lingui/pull/374)).
+  Thanks to [Ivan Khilko](https://github.com/ikhilko).
+* Show hint for missing babel-core package ([#381](https://github.com/lingui/js-lingui/pull/381)).
+* Fix message extracting when Trans component is missing ([#389](https://github.com/lingui/js-lingui/pull/389)).
+
 <a name="2.7.0"></a>
 ## [2.7.0](https://github.com/lingui/js-lingui/compare/v2.6.1...v2.7.0) (2018-09-10)
 
