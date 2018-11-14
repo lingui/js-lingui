@@ -1,5 +1,13 @@
 # Change Log
 
+<a name="2.7.2"></a>
+## [2.7.2](https://github.com/lingui/js-lingui/compare/v2.7.1...v2.7.2) (2018-11-14)
+
+### Bug Fixes
+
+* CLI: show more accurate follow-up commands (e.g. show `use (yarn compile) ...` instead of `use (lingui compile) ...` when CLI is invoked using `yarn extract`)
+* CLI: add missing export (regression introduced by [#381](https://github.com/lingui/js-lingui/pull/381))
+
 <a name="2.7.1"></a>
 ## [2.7.1](https://github.com/lingui/js-lingui/compare/v2.7.0...v2.7.1) (2018-11-12)
 
