@@ -106,6 +106,7 @@ Documentation contents
    CLI <ref/cli>
    Configuration <ref/conf>
    Webpack Loader <ref/loader>
+   Catalog Formats <ref/catalog-formats>
    ICU MessageFormat <ref/message-format>
 
 .. toctree::
