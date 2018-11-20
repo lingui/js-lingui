@@ -7,14 +7,14 @@ function catchBabelVersionMismatch(fn) {
       fn.apply(null, arguments)
     } catch (e) {
       let logged = false
-      
+
       if (
         e.message.startsWith(
           "Plugin/Preset files are not allowed to export objects"
         )
       ) {
         logged = true
-        
+
         const { makeInstall } = require("../lingui-init")
         const install = makeInstall()
         console.log(chalk.red("Please install missing Babel 6 core package:"))
@@ -27,7 +27,7 @@ function catchBabelVersionMismatch(fn) {
         )
       ) {
         logged = true
-        
+
         const { makeInstall } = require("../lingui-init")
         const install = makeInstall()
         console.log(chalk.red("Please install missing Babel 7 core packages:"))
@@ -35,7 +35,7 @@ function catchBabelVersionMismatch(fn) {
         console.log(install("babel-core@^7.0.0-bridge.0 @babel/core", true))
         console.log()
       }
-      
+
       if (logged) {
         console.log("Original error:")
         console.log(e)

@@ -28,7 +28,9 @@ export default function command(config: LinguiConfig, locales: Array<string>) {
   // At least one language was added successfully
   if (results.filter(Boolean).length) {
     console.log()
-    console.log(`(use "${chalk.yellow(helpRun("extract"))}" to extract messages)`)
+    console.log(
+      `(use "${chalk.yellow(helpRun("extract"))}" to extract messages)`
+    )
   }
 }
 
