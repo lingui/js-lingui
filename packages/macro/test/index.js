@@ -1,13 +1,21 @@
+jest.mock("@lingui/conf")
+
 import fs from "fs"
 import glob from "glob"
 import path from "path"
 import { transformFileSync, transform } from "babel-core"
+
+import { getConfig } from "@lingui/conf"
 
 function getTestName(testPath) {
   return path.basename(testPath)
 }
 
 describe("macro", function() {
+  beforeEach(() => {
+    getConfig.mockReturnValue({})
+  })
+
   const babelOptions = {
     babelrc: false,
     plugins: ["syntax-jsx", "macros"]
@@ -39,6 +47,11 @@ describe("macro", function() {
       if (testName.endsWith("-production")) {
         originalEnv = process.env.NODE_ENV
         process.env.NODE_ENV = "production"
+      }
+
+      if (testName.indexOf("extract-id") > -1) {
+        const extractId = jest.fn(props => props.text + "|test")
+        getConfig.mockReturnValue({ extractId })
       }
 
       try {

@@ -1,3 +1,5 @@
+jest.mock("@lingui/conf")
+
 import fs from "fs"
 import glob from "glob"
 import path from "path"
@@ -5,11 +7,17 @@ import { transformFileSync, transform } from "babel-core"
 
 import plugin from "../src/index"
 
+import { getConfig } from "@lingui/conf"
+
 function getTestName(testPath) {
   return path.basename(testPath)
 }
 
 describe("babel-plugin-lingui-transform-react", function() {
+  beforeEach(() => {
+    getConfig.mockReturnValue({})
+  })
+
   const babelOptions = (pluginOptions = {}) => ({
     babelrc: false,
     plugins: ["babel-plugin-syntax-jsx", [plugin, pluginOptions]]
@@ -46,6 +54,11 @@ describe("babel-plugin-lingui-transform-react", function() {
       if (testName.startsWith("env-production-")) {
         originalEnv = process.env.NODE_ENV
         process.env.NODE_ENV = "production"
+      }
+
+      if (testName.indexOf("extract-id") > -1) {
+        const extractId = jest.fn(props => props.text + "|test")
+        getConfig.mockReturnValue({ extractId })
       }
 
       let options

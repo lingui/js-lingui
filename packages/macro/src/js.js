@@ -1,3 +1,5 @@
+import { getConfig } from "@lingui/conf"
+
 const nlRe = /(?:\r\n|\r|\n)+\s+/g
 
 const pluralRules = ["zero", "one", "two", "few", "many", "other"]
@@ -277,6 +279,21 @@ export default function({ types: t }) {
     return props
   }
 
+  function getIdProp(props, file, defaultValue) {
+    let id
+    const config = getConfig()
+
+    if (
+      config.extractId &&
+      typeof config.extractId === "function" &&
+      !props.defaults
+    ) {
+      id = config.extractId(props, file)
+    }
+
+    return id || defaultValue
+  }
+
   return function transform(path, file) {
     // 1. Collect all parameters and generate message ID
     const props = transformMethod(path.node, file, initialProps(), true)
@@ -285,9 +302,17 @@ export default function({ types: t }) {
     if (!text) return
 
     // 2. Create message descriptor
+    const newId = getIdProp(props, file, text)
     const descriptorProps = [
-      t.objectProperty(t.identifier("id"), t.StringLiteral(text))
+      t.objectProperty(t.identifier("id"), t.StringLiteral(newId))
     ]
+
+    // props.defaults exists => newId === text
+    if (newId !== text) {
+      descriptorProps.push(
+        t.objectProperty(t.identifier("defaults"), t.stringLiteral(text))
+      )
+    }
 
     if (props.defaults) {
       descriptorProps.push(

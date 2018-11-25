@@ -8,6 +8,12 @@ const NODE_MODULES = replacePathSepForRegex(
   path.sep + "node_modules" + path.sep
 )
 
+const loadModule = path => {
+  try {
+    return require(path)
+  } catch (error) {}
+}
+
 export function replaceRootDir(conf, rootDir) {
   const replace = s => s.replace("<rootDir>", rootDir)
   ;["srcPathDirs", "srcPathIgnorePatterns", "localeDir"].forEach(key => {
@@ -77,6 +83,10 @@ export function getConfig({ cwd } = {}) {
   const configExplorer = cosmiconfig("lingui")
   const result = configExplorer.searchSync(defaultRootDir)
   const raw = { ...defaultConfig, ...(result ? result.config : {}) }
+
+  if (raw.extractId && typeof raw.extractId !== "function") {
+    raw.extractId = loadModule(raw.extractId)
+  }
 
   validate(raw, configValidation)
   // Use deprecated fallbackLanguage, if defined

@@ -1,3 +1,5 @@
+import { getConfig } from "@lingui/conf"
+
 const pluralRules = ["zero", "one", "two", "few", "many", "other"]
 const commonProps = ["id", "className", "render"]
 
@@ -348,6 +350,16 @@ export default class Transformer {
     return this.importDeclarations
   }
 
+  getIdProp(props, file, defaultValue) {
+    let id
+    const config = getConfig()
+    if (config.extractId && typeof config.extractId === "function") {
+      id = config.extractId(props, file)
+    }
+
+    return id || defaultValue
+  }
+
   transform = (path, file) => {
     if (
       !this.importDeclarations ||
@@ -388,7 +400,14 @@ export default class Transformer {
         t.JSXAttribute(t.JSXIdentifier("defaults"), t.StringLiteral(text))
       )
     } else if (!idAttr) {
-      attrs.push(t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(text)))
+      const newId = this.getIdProp(props, file, text)
+      attrs.push(t.JSXAttribute(t.JSXIdentifier("id"), t.StringLiteral(newId)))
+
+      if (newId !== text) {
+        attrs.push(
+          t.JSXAttribute(t.JSXIdentifier("defaults"), t.StringLiteral(text))
+        )
+      }
     }
 
     // Parameters for variable substitution
