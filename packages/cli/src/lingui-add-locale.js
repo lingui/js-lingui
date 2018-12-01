@@ -48,7 +48,7 @@ if (require.main === module) {
       console.log(`    $ ${helpRun("add-locale en")}`)
       console.log("")
       console.log("    # Add multiple locales")
-      console.log(`    $ ${helpRun("lingui add-locale en es fr ru")}`)
+      console.log(`    $ ${helpRun("add-locale en es fr ru")}`)
     })
     .parse(process.argv)
 
