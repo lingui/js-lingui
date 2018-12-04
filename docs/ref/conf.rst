@@ -193,3 +193,34 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
+
+extractId
+---------
+
+Default: none
+
+Specify function for generating ID of message in catalog.
+
+It can be a path to a file with default export:
+
+.. code-block:: js
+
+   // package.json
+   {
+     "lingui": {
+       "extractId": "./settings/extractId"
+     }
+   }
+
+   // ./settings/extractId.js
+   module.exports = function (messageDescriptor, file) { ... }
+
+Or it can be a function in ``lingui.config.js``:
+
+. code-block:: js
+
+   module.exports = {
+      extractId(messageDescriptor, file) { ... }
+   }
+
+``file`` here is a ``state.file``. It's the second argument you receive in a visitor function in a normal babel plugin.
