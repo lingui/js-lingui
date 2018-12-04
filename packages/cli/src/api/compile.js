@@ -131,7 +131,10 @@ export function createCompiledCatalog(
   pseudoLocale: string
 ) {
   const [language] = locale.split(/[_-]/)
-  const pluralRules = plurals[language]
+  let pluralRules = plurals[language]
+  if (locale === pseudoLocale) {
+    pluralRules = plurals["en"]
+  }
 
   const compiledMessages = R.keys(messages).map(key => {
     let translation = messages[key] || (!strict ? key : "")
