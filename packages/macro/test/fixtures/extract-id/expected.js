@@ -26,16 +26,19 @@
 });
 
 ( /*i18n*/{
-  id: "{gender, select, male {He is {gender}} female {She is {gender}} other {They is {gender}}}|test",
-  defaults: "{gender, select, male {He is {gender}} female {She is {gender}} other {They is {gender}}}",
+  id: "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}|test",
+  defaults: "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}",
   values: {
-    gender: gender
+    gender: gender,
+    numOfGuests: numOfGuests
   }
 });
 ( /*i18n*/{
   id: "select.id",
-  defaults: "{gender, select, male {He is {gender}} female {She is {gender}} other {They is {gender}}}",
+  defaults: "{0, select, male {{1, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}",
   values: {
+    0: "male",
+    1: 42,
     gender: gender
   }
 });
