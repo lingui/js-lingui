@@ -1,4 +1,3 @@
-// @flow
 import path from "path"
 import fs from "fs"
 import program from "commander"
@@ -15,13 +14,13 @@ function hasYarn() {
 export function makeInstall() {
   const withYarn = hasYarn()
 
-  return (packageName: string, dev: boolean = false) =>
+  return (packageName, dev = false) =>
     withYarn
       ? `yarn add ${dev ? "--dev " : ""}${packageName}`
       : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
 
-export async function installPackages(dryRun: boolean) {
+export async function installPackages(dryRun) {
   const install = makeInstall()
 
   const type = detect()
@@ -60,11 +59,7 @@ export async function installPackages(dryRun: boolean) {
   return true
 }
 
-type CommandInit = {|
-  dryRun: boolean
-|}
-
-export async function command(program: CommandInit) {
+export async function command(program) {
   await installPackages(program.dryRun)
 
   return true

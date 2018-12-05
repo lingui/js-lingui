@@ -32,7 +32,7 @@ describe("lingui add-locale", function() {
       ])
       expect(console.log.mock.calls[0]).toEqual([expect.stringContaining("en")])
       expect(console.log.mock.calls[2]).toEqual([
-        expect.stringContaining("lingui extract")
+        expect.stringContaining("extract")
       ])
     })
   })
@@ -64,7 +64,7 @@ describe("lingui add-locale", function() {
 
       // show help what to do next
       expect(console.log.mock.calls[3]).toEqual([
-        expect.stringContaining("lingui extract")
+        expect.stringContaining("extract")
       ])
     })
   })
