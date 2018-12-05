@@ -46,7 +46,7 @@ function command(config, options) {
 
   return locales.map(locale => {
     const [language] = locale.split(/[_-]/)
-    if (!plurals[language]) {
+    if (locale !== config.pseudoLocale && !plurals[language]) {
       console.log(
         chalk.red(
           `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
