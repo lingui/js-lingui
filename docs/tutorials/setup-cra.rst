@@ -41,7 +41,8 @@ Install
       {
          "localeDir": "src/locales/",
          "srcPathDirs": ["src/"],
-         "format": "po"
+         "format": "po",
+         "sourceLocale": "en"
       }
 
    This configuration will extract messages from source files inside ``src`` directory
