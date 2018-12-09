@@ -171,14 +171,22 @@ It's possible to override message ID or add comments for translators by adding
 
    // Message is used as an ID
    t({
+      message: `Default message`,
       comment: "Comment for translators"
-   })`Default message`
+   })
 
    // Custom ID
    t({
       id: "msg.id",
+      message: `Default message`,
       comment: "Comment for translators"
-   })`Default message`
+   })
+
+   // Custom ID, without default message
+   t({
+      id: "msg.id",
+      comment: "Comment for translators"
+   })
 
 ``plural`` and other formatters are already called with object as a first parameter.
 ``id`` and ``comment`` props can be added there:
@@ -201,7 +209,7 @@ It's possible to override message ID or add comments for translators by adding
 Transformation
 ==============
 
-Each ``t`` macro variant is transformed into a message descriptor
+Each macro is transformed into a message descriptor
 wrapped into ``i18n._`` function:
 
 .. code-block:: jsx
@@ -210,8 +218,9 @@ wrapped into ``i18n._`` function:
 
    t({
       id: "msg.id",
+      message: `Default message`
       comment: "Comment for translators"
-   })`Default message`
+   })
 
    // ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -227,18 +236,17 @@ Lazy translations
 -----------------
 
 Lazy translations are useful when we need to define a message, but translate it later.
-This was previously achieved using ``i18Mark``. Now we can use the same macros.
-Instead of importing the default import, import ``lazy`` instead:
+This was previously achieved using ``i18Mark``. Now we can use `.lazy` variant of macros:
 
 .. code-block:: jsx
 
-   import { lazy } from `@lingui/macro`
+   import { t } from `@lingui/macro`
 
    // define the message
-   const msg = lazy`Default message`
+   const msg = t.lazy`Default message`
 
    // translate it
-   const translation = msg()`
+   const translation = msg()
 
 Lazy translations are usually defined in different scope than evaluated. Parameters
 are therefore unknown, but we still need to know their names, so we can create placeholders
@@ -248,29 +256,13 @@ in MessageFormat. ``arg`` macro is used exactly for that:
 
    import { plural, arg } from "@lingui/macro"
 
-   // Macro
-   const books = plural({
+   const books = plural.lazy({
       value: arg('count'),
       one: '# book',
       other: '# books'
    })
 
-Extracting messages
-===================
-
-Messages are extracted from code already transformed by macros. This makes macros
-completely optional and extraction will work also with message descriptors created
-manually.
-
-Extract script will look for  a ``i18nMark`` function calls:
-
-.. code-block:: js
-
-   i18nMark({
-     id: 'Message'
-   })
-
-An object after such comment is considered as message descriptor and extracted.
+   const translation = books({ count: 42 })
 
 Summary
 =======
