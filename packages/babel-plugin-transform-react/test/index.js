@@ -56,7 +56,7 @@ describe("babel-plugin-lingui-transform-react", function() {
         process.env.NODE_ENV = "production"
       }
 
-      if (testName.indexOf("extract-id") > -1) {
+      if (testName.startsWith("extract-id")) {
         const extractId = jest.fn(props => props.text + "|test")
         getConfig.mockReturnValue({ extractId })
       }
