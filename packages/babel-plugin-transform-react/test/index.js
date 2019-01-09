@@ -7,7 +7,7 @@ import { transformFileSync, transform } from "babel-core"
 
 import plugin from "../src/index"
 
-import { getConfig } from "@lingui/conf"
+import * as config from "@lingui/conf"
 
 function getTestName(testPath) {
   return path.basename(testPath)
@@ -15,7 +15,9 @@ function getTestName(testPath) {
 
 describe("babel-plugin-lingui-transform-react", function() {
   beforeEach(() => {
-    getConfig.mockReturnValue({})
+    /* eslint-disable import/namespace */
+    config.getConfig = jest.fn(() => ({}))
+    /* eslint-enable import/namespace */
   })
 
   const babelOptions = (pluginOptions = {}) => ({
@@ -58,7 +60,10 @@ describe("babel-plugin-lingui-transform-react", function() {
 
       if (testName.startsWith("extract-id")) {
         const extractId = jest.fn(props => props.text + "|test")
-        getConfig.mockReturnValue({ extractId })
+
+        /* eslint-disable import/namespace */
+        config.getConfig = jest.fn(() => ({ extractId }))
+        /* eslint-enable import/namespace */
       }
 
       let options

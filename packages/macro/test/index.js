@@ -5,7 +5,7 @@ import glob from "glob"
 import path from "path"
 import { transformFileSync, transform } from "babel-core"
 
-import { getConfig } from "@lingui/conf"
+import * as config from "@lingui/conf"
 
 function getTestName(testPath) {
   return path.basename(testPath)
@@ -13,7 +13,9 @@ function getTestName(testPath) {
 
 describe("macro", function() {
   beforeEach(() => {
-    getConfig.mockReturnValue({})
+    /* eslint-disable import/namespace */
+    config.getConfig = jest.fn(() => ({}))
+    /* eslint-enable import/namespace */
   })
 
   const babelOptions = {
@@ -51,7 +53,10 @@ describe("macro", function() {
 
       if (testName.startsWith("extract-id")) {
         const extractId = jest.fn(props => props.text + "|test")
-        getConfig.mockReturnValue({ extractId })
+
+        /* eslint-disable import/namespace */
+        config.getConfig = jest.fn(() => ({ extractId }))
+        /* eslint-enable import/namespace */
       }
 
       try {
