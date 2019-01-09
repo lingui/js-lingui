@@ -38,4 +38,9 @@ describe("PseudoLocalization", () => {
       pseudoLocalize("{count, plural, one {{countString} book} other {{countString} books}}")
     ).toEqual("{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}")
   })
+
+  it("shouldn't pseudolocalize variables", () => {
+    expect(pseudoLocalize("replace {count}")).toEqual("ŕēƥĺàćē {count}")
+    expect(pseudoLocalize("replace { count }")).toEqual("ŕēƥĺàćē { count }")
+  })
 })
