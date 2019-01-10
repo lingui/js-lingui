@@ -236,7 +236,8 @@ describe("I18n", function() {
   it("._ should accept message descriptor", function() {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}"
+      "My name is {name}": "Je m'appelle {name}",
+      Empty: ""
     }
 
     const i18n = setupI18n({
@@ -257,6 +258,13 @@ describe("I18n", function() {
         defaults: "Missing {name}"
       })
     ).toEqual("Missing Fred")
+
+    // Empty translation
+    expect(
+      i18n._({
+        id: "Empty"
+      })
+    ).toEqual("")
   })
 
   it("._ should translate message from variable", function() {

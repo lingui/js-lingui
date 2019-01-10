@@ -193,7 +193,8 @@ class I18n {
       id = id.id
     }
 
-    let translation = this.messages[id] || defaults || id
+    let translation =
+      this.messages[id] === "" ? "" : this.messages[id] || defaults || id
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
