@@ -18,9 +18,9 @@ Example: https://regex101.com/r/bDHD9z/3
 const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g
 /*
 Regex should match js-lingui plurals
-Example: https://regex101.com/r/zXWiQR/3
+Example: https://regex101.com/r/utnbQw/1
 */
-const PluralRegex = /{\w*,\s*plural,\s*\w*\s*{|}\s*\w*\s*({|})/g
+const PluralRegex = /{\w*,\s*plural,\s*\w*\s*{|}\s*(zero|one|two|few|many|other)\s*({|})/g
 /*
 Regex should match js-lingui variables
 Example: https://regex101.com/r/dw1QHb/2
