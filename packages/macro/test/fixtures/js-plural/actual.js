@@ -1,12 +1,12 @@
-import { plural } from '@lingui/macro'
+import { t } from '@lingui/macro'
 
-const a = plural({
+const a = t.plural({
   value: count,
   "one": `# book`,
   other: "# books"
 });
 
-plural({
+t.plural({
   value: users.length,
   offset: 1,
   0: "No books",
@@ -14,7 +14,7 @@ plural({
   other: "# books"
 });
 
-plural({
+t.plural({
   id: 'id',
 
   value: 42,
@@ -22,7 +22,7 @@ plural({
   other: `${count} books`
 });
 
-plural({
+t.plural({
   id: 'id',
   comment: 'Hello World',
   value: 42,

@@ -10,7 +10,7 @@ describe("js macro", function() {
   describe("tokenizeTemplateLiteral", function() {
     it("simple message without arguments", function() {
       const macro = createMacro()
-      const exp = parseExpression("`Message`")
+      const exp = parseExpression("t`Message`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
@@ -22,7 +22,7 @@ describe("js macro", function() {
 
     it("message with named argument", function() {
       const macro = createMacro()
-      const exp = parseExpression("`Message ${name}`")
+      const exp = parseExpression("t`Message ${name}`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
@@ -42,7 +42,7 @@ describe("js macro", function() {
 
     it("message with positional argument", function() {
       const macro = createMacro()
-      const exp = parseExpression("`Message ${obj.name}`")
+      const exp = parseExpression("t`Message ${obj.name}`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
@@ -61,7 +61,7 @@ describe("js macro", function() {
 
     it("message with plural", function() {
       const macro = createMacro()
-      const exp = parseExpression("`Message ${t.plural({ value: count })}`")
+      const exp = parseExpression("t`Message ${t.plural({ value: count })}`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {

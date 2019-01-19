@@ -3,13 +3,18 @@ import MacroJS from "./macroJs"
 
 function macro({ references, state, babel }) {
   Object.keys(references).forEach(tagName => {
-    const tags = references[tagName]
+    const nodes = references[tagName]
     const macroType = getMacroType(tagName)
 
     if (macroType === "js") {
-      tags.forEach(tag => {
+      nodes.forEach(node => {
         const macro = new MacroJS(babel)
-        macro.replaceNode(tag.parentPath)
+
+        let macroNode = node.parentPath
+        if (babel.types.isMemberExpression(macroNode)) {
+          macroNode = macroNode.parentPath
+        }
+        macro.replaceNode(macroNode)
       })
     }
   })

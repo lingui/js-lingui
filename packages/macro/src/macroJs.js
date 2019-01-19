@@ -12,14 +12,41 @@ Macro.prototype.replaceNode = function(path) {
   const tokens = this.tokenizeNode(path.node)
 
   const messageFormat = new ICUMessageFormat()
-  const { message, values, formats } = messageFormat.fromTokens(tokens)
+  const { message, values, id, comment } = messageFormat.fromTokens(tokens)
 
-  const args = [this.types.stringLiteral(message)]
+  const args = []
+  const meta = []
+
+  if (id) {
+    args.push(this.types.stringLiteral(id))
+    meta.push(
+      this.types.objectProperty(
+        this.types.identifier("defaults"),
+        this.types.stringLiteral(message)
+      )
+    )
+  } else {
+    args.push(this.types.stringLiteral(message))
+  }
+
   const valuesObject = Object.keys(values).map(key =>
     this.types.objectProperty(this.types.identifier(key), values[key])
   )
   if (valuesObject.length) {
     args.push(this.types.objectExpression(valuesObject))
+  }
+
+  if (comment) {
+    meta.push(
+      this.types.objectProperty(
+        this.types.identifier("comment"),
+        this.types.stringLiteral(comment)
+      )
+    )
+  }
+
+  if (meta.length) {
+    args.push(this.types.objectExpression(meta))
   }
 
   path.replaceWith(
@@ -77,7 +104,9 @@ Macro.prototype.tokenizeTemplateLiteral = function(node) {
     R.filter(Boolean)
   )
 
-  return tokenize(node)
+  return tokenize(
+    this.types.isTaggedTemplateExpression(node) ? node.quasi : node
+  )
 }
 
 Macro.prototype.tokenizeChoiceMethod = function(node) {

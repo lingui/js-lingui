@@ -1,5 +1,10 @@
+import * as R from "ramda"
+
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
+
+const formatOptionsRe = /(zero|one|few|many|other|offset|=\d+)/
+const js2icuExactMatch = value => value.replace(/=(\d+)/, "_$1")
 
 function normalizeWhitespace(text) {
   return text
@@ -8,13 +13,16 @@ function normalizeWhitespace(text) {
     .trim()
 }
 
+// const debug = value => console.log(value) || value
+
 export default function ICUMessageFormat() {}
 
 ICUMessageFormat.prototype.fromTokens = function(tokens) {
-  const props = tokens
+  const props = (Array.isArray(tokens) ? tokens : [tokens])
     .map(token => this.processToken(token))
     .reduce(
       (props, message) => ({
+        ...message,
         message: props.message + message.message,
         values: { ...props.values, ...message.values }
       }),
@@ -45,9 +53,35 @@ ICUMessageFormat.prototype.processToken = function(token) {
         case "plural":
         case "select":
         case "selectOrdinal":
+          const formatOptions = Object.keys(token.options)
+            .filter(key => formatOptionsRe.test(key))
+            .map(key => {
+              let value = token.options[key]
+
+              if (key === "offset") {
+                return `offset:${value}`
+              }
+
+              if (typeof value !== "string") {
+                const { message, values: innerValues } = this.fromTokens(value)
+
+                Object.assign(values, innerValues)
+                value = message
+              }
+
+              return `${key} {${value}}`
+            })
+            .join(" ")
+
+          const metaKeys = R.pickBy(
+            (value, key) => !formatOptionsRe.test(key),
+            token.options
+          )
+
           return {
-            message: `{${token.name},${token.format}}`,
-            values
+            message: `{${token.name}, ${token.format}, ${formatOptions}}`,
+            values,
+            ...metaKeys
           }
         default:
           return {
