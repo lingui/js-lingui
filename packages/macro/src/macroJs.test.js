@@ -1,6 +1,6 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import Macro from "./newJs"
+import Macro from "./macroJs"
 
 function createMacro() {
   return new Macro({ types })
@@ -51,7 +51,7 @@ describe("js macro", function() {
         },
         {
           type: "arg",
-          name: null,
+          name: 0,
           value: expect.objectContaining({
             type: "MemberExpression"
           })
@@ -202,20 +202,22 @@ describe("js macro", function() {
         }),
         format: "plural",
         options: {
-          one: {
-            type: "arg",
-            name: "gender",
-            value: expect.objectContaining({
+          one: [
+            {
+              type: "arg",
               name: "gender",
-              type: "Identifier"
-            }),
-            format: "select",
-            options: {
-              male: "he",
-              female: "she",
-              other: "they"
+              value: expect.objectContaining({
+                name: "gender",
+                type: "Identifier"
+              }),
+              format: "select",
+              options: {
+                male: "he",
+                female: "she",
+                other: "they"
+              }
             }
-          }
+          ]
         }
       })
     })

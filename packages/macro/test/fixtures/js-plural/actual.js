@@ -14,14 +14,19 @@ plural({
   other: "# books"
 });
 
-plural('id', {
+plural({
+  id: 'id',
+
   value: 42,
   one: `# book`,
   other: `${count} books`
 });
 
-/*i18n: description*/plural('id', {
+plural({
+  id: 'id',
+  comment: 'Hello World',
   value: 42,
+
   one: `# book`,
   other: `${count} books`
 });

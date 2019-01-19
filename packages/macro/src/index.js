@@ -1,4 +1,5 @@
 import { createMacro, MacroError } from "babel-plugin-macros"
+import MacroJS from "./macroJs"
 
 function macro({ references, state, babel }) {
   Object.keys(references).forEach(tagName => {
@@ -7,7 +8,7 @@ function macro({ references, state, babel }) {
 
     if (macroType === "js") {
       tags.forEach(tag => {
-        const macro = new Macro(babel)
+        const macro = new MacroJS(babel)
         macro.replaceNode(tag.parentPath)
       })
     }
