@@ -3,7 +3,7 @@ import * as R from "ramda"
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
-const formatOptionsRe = /(zero|one|few|many|other|offset|=\d+)/
+const metaOptionsRe = /(id|comment)/
 const js2icuExactMatch = value => value.replace(/=(\d+)/, "_$1")
 
 function normalizeWhitespace(text) {
@@ -52,29 +52,36 @@ ICUMessageFormat.prototype.processToken = function(token) {
       switch (token.format) {
         case "plural":
         case "select":
-        case "selectOrdinal":
+        case "selectordinal":
           const formatOptions = Object.keys(token.options)
-            .filter(key => formatOptionsRe.test(key))
+            .filter(key => !metaOptionsRe.test(key))
             .map(key => {
               let value = token.options[key]
 
               if (key === "offset") {
+                // offset has special syntax `offset:number`
                 return `offset:${value}`
               }
 
               if (typeof value !== "string") {
-                const { message, values: innerValues } = this.fromTokens(value)
+                // process tokens from nested formatters
+                const { message, values: childValues } = this.fromTokens(value)
 
-                Object.assign(values, innerValues)
+                Object.assign(values, childValues)
                 value = message
               }
+
+              // strip surrounding curly braces from formatted values:
+              // Wrong: Hello {{count, plural, ...}}
+              // Right: Hello {count, plural, ...}
+              value = value.replace(/^{(.*)}$/, "$1")
 
               return `${key} {${value}}`
             })
             .join(" ")
 
           const metaKeys = R.pickBy(
-            (value, key) => !formatOptionsRe.test(key),
+            (value, key) => metaOptionsRe.test(key),
             token.options
           )
 
