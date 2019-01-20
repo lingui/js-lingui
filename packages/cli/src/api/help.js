@@ -25,5 +25,7 @@ try {
 } catch (e) {
   commands = ["run"]
 }
-const isYarn = process.env.npm_config_user_agent.includes("yarn")
+const isYarn =
+  process.env.npm_config_user_agent &&
+  process.env.npm_config_user_agent.includes("yarn")
 const preCommand = [isYarn ? "yarn" : "npm", ...commands].join(" ")
