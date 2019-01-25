@@ -1,17 +1,22 @@
-import { parseExpression } from "@babel/parser"
+import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import Macro from "./macroJs"
+import Macro from "./macroJsx"
+
+const parseExpression = expression =>
+  _parseExpression(expression, {
+    plugins: ["jsx"]
+  })
 
 function createMacro() {
   return new Macro({ types })
 }
 
-describe("js macro", function() {
-  describe("tokenizeTemplateLiteral", function() {
+describe("jsx macro", function() {
+  describe("tokenizeTrans", function() {
     it("simple message without arguments", function() {
       const macro = createMacro()
-      const exp = parseExpression("t`Message`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const exp = parseExpression("<Trans>Message</Trans>")
+      const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
@@ -22,8 +27,8 @@ describe("js macro", function() {
 
     it("message with named argument", function() {
       const macro = createMacro()
-      const exp = parseExpression("t`Message ${name}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const exp = parseExpression("<Trans>Message {name}</Trans>")
+      const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
@@ -42,8 +47,8 @@ describe("js macro", function() {
 
     it("message with positional argument", function() {
       const macro = createMacro()
-      const exp = parseExpression("t`Message ${obj.name}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const exp = parseExpression("<Trans>Message {obj.name}</Trans>")
+      const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
@@ -61,8 +66,10 @@ describe("js macro", function() {
 
     it("message with plural", function() {
       const macro = createMacro()
-      const exp = parseExpression("t`Message ${t.plural({ value: count })}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const exp = parseExpression(
+        "<Trans>Message <Plural value={count} /></Trans>"
+      )
+      const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
@@ -81,11 +88,11 @@ describe("js macro", function() {
     })
   })
 
-  describe("tokenizeChoiceMethod", function() {
+  describe("tokenizeChoiceComponent", function() {
     it("plural", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        "t.plural({ value: count, one: '# book', other: '# books'})"
+        "<Plural value={count} one='# book' other='# books' />"
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({
@@ -106,13 +113,13 @@ describe("js macro", function() {
     it("plural with offset", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        `t.plural({
-          value: count,
-          offset: 1,
-          0: 'No books',
-          one: '# book',
-          other: '# books'
-         })`
+        `<Plural
+          value={count}
+          offset={1}
+          _0='No books'
+          one='# book'
+          other='# books'
+         />`
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({
@@ -135,7 +142,7 @@ describe("js macro", function() {
     it("plural with template literal", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        "t.plural({ value: count, one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
+        "<Plural value={count} one={`# glass of ${drink}`} other={`# glasses of ${drink}`} />"
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({
@@ -182,15 +189,17 @@ describe("js macro", function() {
     it("plural with select", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        `t.plural({
-          value: count, 
-          one: t.select({
-            value: gender,
-            male: "he",
-            female: "she",
-            other: "they"
-          })
-        })`
+        `<Plural
+          value={count} 
+          one={
+            <Select
+              value={gender}
+              male="he"
+              female="she"
+              other="they"
+            />
+          }
+        />`
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({

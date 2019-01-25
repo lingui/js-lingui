@@ -22,3 +22,9 @@ t.select({
   female: `She is ${gender}`,
   other: `They is ${gender}`
 });
+
+t.select({
+  value: value,
+  _id: 'test escaped id',
+  _comment: 'test escaped comment'
+})

@@ -1,5 +1,6 @@
 import { createMacro, MacroError } from "babel-plugin-macros"
 import MacroJS from "./macroJs"
+import MacroJSX from "./macroJsx"
 
 function macro({ references, state, babel }) {
   Object.keys(references).forEach(tagName => {
@@ -16,6 +17,13 @@ function macro({ references, state, babel }) {
         }
         macro.replaceNode(macroNode)
       })
+    } else {
+      nodes.forEach(node => {
+        const macro = new MacroJSX(babel)
+
+        // identifier.openingElement.jsxElement
+        macro.replaceNode(node.parentPath.parentPath)
+      })
     }
   })
 
@@ -29,18 +37,11 @@ function macro({ references, state, babel }) {
 function getMacroType(tagName) {
   switch (tagName) {
     case "t":
-    case "plural":
-    case "select":
-    case "selectOrdinal":
-    case "number":
-    case "date":
       return "js"
     case "Trans":
     case "Plural":
     case "Select":
     case "SelectOrdinal":
-    case "NumberFormat":
-    case "DateFormat":
       return "jsx"
   }
 }

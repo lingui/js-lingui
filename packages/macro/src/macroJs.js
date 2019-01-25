@@ -66,7 +66,7 @@ Macro.prototype.tokenizeNode = function(node) {
     return this.tokenizeTemplateLiteral(node)
   } else if (this.isChoiceMethod(node.callee)) {
     // plural, select and selectOrdinal
-    return [this.tokenizeChoiceMethod(node)]
+    return [this.tokenizeChoiceComponent(node)]
     // } else if (isFormatMethod(node.callee)) {
     //   // date, number
     //   return transformFormatMethod(node, file, props, root)
@@ -109,7 +109,7 @@ Macro.prototype.tokenizeTemplateLiteral = function(node) {
   )
 }
 
-Macro.prototype.tokenizeChoiceMethod = function(node) {
+Macro.prototype.tokenizeChoiceComponent = function(node) {
   const format = node.callee.property.name.toLowerCase()
   const props = node.arguments[0].properties
 

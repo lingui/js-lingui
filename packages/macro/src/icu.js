@@ -3,8 +3,10 @@ import * as R from "ramda"
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
-const metaOptionsRe = /(id|comment)/
-const js2icuExactMatch = value => value.replace(/=(\d+)/, "_$1")
+const metaOptions = ["id", "comment"]
+
+const metaOptionsRe = new RegExp(`^(${metaOptions.join("|")})$`)
+const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
 
 function normalizeWhitespace(text) {
   return text
@@ -18,6 +20,7 @@ function normalizeWhitespace(text) {
 export default function ICUMessageFormat() {}
 
 ICUMessageFormat.prototype.fromTokens = function(tokens) {
+  console.log(tokens)
   const props = (Array.isArray(tokens) ? tokens : [tokens])
     .map(token => this.processToken(token))
     .reduce(
@@ -28,7 +31,8 @@ ICUMessageFormat.prototype.fromTokens = function(tokens) {
       }),
       {
         message: "",
-        values: {}
+        values: {},
+        jsxElements: {}
       }
     )
 
@@ -57,6 +61,7 @@ ICUMessageFormat.prototype.processToken = function(token) {
             .filter(key => !metaOptionsRe.test(key))
             .map(key => {
               let value = token.options[key]
+              key = key.replace(escapedMetaOptionsRe, "$1")
 
               if (key === "offset") {
                 // offset has special syntax `offset:number`
