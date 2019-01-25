@@ -11,6 +11,7 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
 
 [**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
 </div>
@@ -44,7 +45,7 @@ Lingui is an easy yet powerful internationalization framework for global project
   React components are additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
   
-- **Active community** - Join us on [Gitter.im][Gitter] to discuss the latest development.
+- **Active community** - Join us on [Spectrum][Spectrum] to discuss the latest development.
   At the moment, Lingui is the most active intl project on GitHub.
   
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl
@@ -180,4 +181,4 @@ The project is licensed under the [MIT][License] license.
 [ocsponsors-local]: #sponsors
 [BundleReact]: https://bundlephobia.com/result?p=@lingui/react
 [BundleCore]: https://bundlephobia.com/result?p=@lingui/core
-[Gitter]: https://gitter.im/lingui/js-lingui
+[Spectrum]: https://spectrum.chat/linguijs
