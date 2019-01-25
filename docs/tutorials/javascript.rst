@@ -57,13 +57,13 @@ Let's start with the three major packages:
       yarn add --dev babel-core
 
 
-2. Add ``macro`` plugin to Babel config (e.g: ``.babelrc``):
+2. Add ``macros`` plugin to Babel config (e.g: ``.babelrc``):
 
    .. code-block:: json
 
       {
         "plugins": [
-          "macro"
+          "macros"
         ]
       }
 
