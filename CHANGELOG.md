@@ -1,5 +1,24 @@
 # Change Log
 
+<a name="2.7.3"></a>
+## [2.7.3](https://github.com/lingui/js-lingui/compare/v2.7.2...v2.7.3) (2019-01-28)
+
+- Export `@lingui/core/dev` subpackage.
+
+### Bug Fixes
+
+* CLI: Log original info with Babel compatibility info ([#401](https://github.com/lingui/js-lingui/issues/401)).
+  Thanks to [Sam Gluck](https://github.com/sdgluck).
+* CLI: Allow pseudolocales which don't start with a known language ([#411](https://github.com/lingui/js-lingui/issues/411)).
+  Thanks to [Eric Plumb](https://github.com/professorplumb).
+* CLI: Made pseudolocales to take into account variable names ([#419](https://github.com/lingui/js-lingui/issues/419)).
+  Thanks to [Cornel Stefanache](https://github.com/cstefanache).
+* CLI: Fix edge case bug in plural pseudolocalization ([#428](https://github.com/lingui/js-lingui/issues/428)).
+  Thanks to [Eric Plumb](https://github.com/professorplumb).
+* CLI: Fix yarn detection with nps ([#441](https://github.com/lingui/js-lingui/issues/441)).
+  Thanks to [MU AOHUA](https://github.com/AOHUA).
+  
+
 <a name="2.7.2"></a>
 ## [2.7.2](https://github.com/lingui/js-lingui/compare/v2.7.1...v2.7.2) (2018-11-14)
 
