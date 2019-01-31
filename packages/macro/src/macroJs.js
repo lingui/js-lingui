@@ -1,5 +1,16 @@
 import * as R from "ramda"
 import ICUMessageFormat from "./icu"
+import { zip } from "./utils"
+
+const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
+const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
+
+function normalizeWhitespace(text) {
+  return text
+    .replace(keepSpaceRe, " ")
+    .replace(keepNewLineRe, "\n")
+    .trim()
+}
 
 const generatorFactory = (index = 0) => () => index++
 
@@ -12,7 +23,10 @@ Macro.prototype.replacePath = function(path) {
   const tokens = this.tokenizeNode(path.node)
 
   const messageFormat = new ICUMessageFormat()
-  const { message, values, id, comment } = messageFormat.fromTokens(tokens)
+  const { message: messageRaw, values, id, comment } = messageFormat.fromTokens(
+    tokens
+  )
+  const message = normalizeWhitespace(messageRaw)
 
   const args = []
   const meta = []
@@ -36,13 +50,15 @@ Macro.prototype.replacePath = function(path) {
     args.push(this.types.objectExpression(valuesObject))
   }
 
-  if (comment) {
-    meta.push(
-      this.types.objectProperty(
-        this.types.identifier("comment"),
-        this.types.stringLiteral(comment)
+  if (process.env.NODE_ENV !== "production") {
+    if (comment) {
+      meta.push(
+        this.types.objectProperty(
+          this.types.identifier("comment"),
+          this.types.stringLiteral(comment)
+        )
       )
-    )
+    }
   }
 
   if (meta.length) {
@@ -191,19 +207,4 @@ Macro.prototype.isChoiceMethod = function(node) {
       this.isIdentifier(node.property, "select") ||
       this.isIdentifier(node.property, "selectOrdinal"))
   )
-}
-
-Macro.prototype.isFormatMethod = function(node) {
-  return this.isIdentifier(node, "date") || this.isIdentifier(node, "number")
-}
-
-/**
- * Custom zip method which takes length of the larger array
- * (usually zip functions use the `smaller` length, discarding values in larger array)
- */
-function zip(a = [], b = []) {
-  return R.range(0, Math.max(a.length, b.length)).map(index => [
-    a[index],
-    b[index]
-  ])
 }

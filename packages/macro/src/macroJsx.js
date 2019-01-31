@@ -1,7 +1,8 @@
 import * as R from "ramda"
 import ICUMessageFormat from "./icu"
+import { zip } from "./utils"
 
-const pluralRuleRe = /(_[\d\w]+|zero|one|few|many|other)/
+const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = value =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
@@ -10,7 +11,7 @@ const makeCounter = (index = 0) => () => index++
 // replace whitespace before/after newline with single space
 const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
 // remove whitespace before/after tag or expression
-const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<{]))/g
+const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
 function normalizeWhitespace(text) {
   return (
@@ -19,6 +20,7 @@ function normalizeWhitespace(text) {
       .replace(keepSpaceRe, " ")
       // keep escaped newlines
       .replace(/\\n/, "\n")
+      .replace(/\\s/, " ")
       .trim()
   )
 }
@@ -38,7 +40,7 @@ MacroJSX.prototype.replacePath = function(path) {
   )
   const message = normalizeWhitespace(messageRaw)
 
-  const { attributes, id } = this.stripMacroAttributes(path.node)
+  const { attributes, id, comment } = this.stripMacroAttributes(path.node)
 
   if (!id && !message) {
     return
@@ -51,12 +53,17 @@ MacroJSX.prototype.replacePath = function(path) {
         this.types.StringLiteral(id)
       )
     )
-    attributes.push(
-      this.types.JSXAttribute(
-        this.types.JSXIdentifier("defaults"),
-        this.types.StringLiteral(message)
-      )
-    )
+
+    if (process.env.NODE_ENV !== "production") {
+      if (message) {
+        attributes.push(
+          this.types.JSXAttribute(
+            this.types.JSXIdentifier("defaults"),
+            this.types.StringLiteral(message)
+          )
+        )
+      }
+    }
   } else {
     attributes.push(
       this.types.JSXAttribute(
@@ -64,6 +71,17 @@ MacroJSX.prototype.replacePath = function(path) {
         this.types.StringLiteral(message)
       )
     )
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    if (comment) {
+      attributes.push(
+        this.types.JSXAttribute(
+          this.types.JSXIdentifier("comment"),
+          this.types.StringLiteral(comment)
+        )
+      )
+    }
   }
 
   // Parameters for variable substitution
@@ -124,16 +142,19 @@ MacroJSX.prototype.stripMacroAttributes = function(node) {
   }
   const id = attributes.filter(attrName(["id"]))[0]
   const defaults = attributes.filter(attrName(["defaults"]))[0]
+  const comment = attributes.filter(attrName(["comment"]))[0]
 
-  let reserved = ["id", "defaults"]
+  let reserved = ["id", "defaults", "comment"]
   if (this.isI18nComponent(node)) {
     // no reserved prop names
   } else if (this.isChoiceComponent(node)) {
     reserved = [
       ...reserved,
+      "_\\w+",
       "_\\d+",
       "zero",
       "one",
+      "two",
       "few",
       "many",
       "other",
@@ -145,6 +166,7 @@ MacroJSX.prototype.stripMacroAttributes = function(node) {
   return {
     id: id != null ? id.value.value : null,
     defaults,
+    comment,
     attributes: attributes.filter(attrName(reserved, true))
   }
 }
@@ -164,7 +186,9 @@ MacroJSX.prototype.tokenizeNode = function(node) {
 }
 
 MacroJSX.prototype.tokenizeTrans = function(node) {
-  return node.children.map(child => this.tokenizeChildren(child))
+  return R.flatten(
+    node.children.map(child => this.tokenizeChildren(child)).filter(Boolean)
+  )
 }
 
 MacroJSX.prototype.tokenizeChildren = function(node) {
@@ -175,7 +199,7 @@ MacroJSX.prototype.tokenizeChildren = function(node) {
       // Escape forced newlines to keep them in message.
       return {
         type: "text",
-        value: exp.value.replace(/\n/, "\\n")
+        value: exp.value.replace(/\n/g, "\\n")
       }
     } else if (this.types.isTemplateLiteral(exp)) {
       const tokenize = R.pipe(
@@ -207,6 +231,8 @@ MacroJSX.prototype.tokenizeChildren = function(node) {
     }
   } else if (this.types.isJSXElement(node)) {
     return this.tokenizeNode(node)
+  } else if (this.types.isJSXSpreadChild(node)) {
+    // just do nothing
   } else if (this.types.isJSXText(node)) {
     // node.value has HTML entities converted to characters, but we need original
     // HTML entities.
@@ -260,14 +286,19 @@ MacroJSX.prototype.tokenizeChoiceComponent = function(node) {
 }
 
 MacroJSX.prototype.tokenizeElement = function(node) {
-  const children = node.children.map(child => this.tokenizeChildren(child))
+  // !!! Important: Calculate element index before traversing children.
+  // That way outside elements are numbered before inner elements. (...and it looks pretty).
+  const name = this._elementIndex()
+  const children = node.children
+    .map(child => this.tokenizeChildren(child))
+    .filter(Boolean)
 
   node.children = []
   node.openingElement.selfClosing = true
 
   return {
     type: "element",
-    name: this._elementIndex(),
+    name,
     value: node,
     children
   }
@@ -315,15 +346,4 @@ MacroJSX.prototype.isChoiceComponent = function(node) {
     this.isI18nComponent(node, "Select") ||
     this.isI18nComponent(node, "SelectOrdinal")
   )
-}
-
-/**
- * Custom zip method which takes length of the larger array
- * (usually zip functions use the `smaller` length, discarding values in larger array)
- */
-function zip(a = [], b = []) {
-  return R.range(0, Math.max(a.length, b.length)).map(index => [
-    a[index],
-    b[index]
-  ])
 }

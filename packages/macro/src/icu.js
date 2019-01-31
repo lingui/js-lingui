@@ -1,46 +1,33 @@
 import * as R from "ramda"
 
-const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
-const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
-
 const metaOptions = ["id", "comment", "props"]
 
 const metaOptionsRe = new RegExp(`^(${metaOptions.join("|")})$`)
 const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
-
-function normalizeWhitespace(text) {
-  return text
-    .replace(keepSpaceRe, " ")
-    .replace(keepNewLineRe, "\n")
-    .trim()
-}
 
 // const debug = value => console.log(value) || value
 
 export default function ICUMessageFormat() {}
 
 ICUMessageFormat.prototype.fromTokens = function(tokens) {
-  const props = (Array.isArray(tokens) ? tokens : [tokens])
-    .map(token => this.processToken(token))
-    // .map(debug)
-    .reduce(
-      (props, message) => ({
-        ...message,
-        message: props.message + message.message,
-        values: { ...props.values, ...message.values },
-        jsxElements: { ...props.jsxElements, ...message.jsxElements }
-      }),
-      {
-        message: "",
-        values: {},
-        jsxElements: {}
-      }
-    )
-
-  return {
-    ...props,
-    message: normalizeWhitespace(props.message)
-  }
+  return (
+    (Array.isArray(tokens) ? tokens : [tokens])
+      .map(token => this.processToken(token))
+      // .map(debug)
+      .reduce(
+        (props, message) => ({
+          ...message,
+          message: props.message + message.message,
+          values: { ...props.values, ...message.values },
+          jsxElements: { ...props.jsxElements, ...message.jsxElements }
+        }),
+        {
+          message: "",
+          values: {},
+          jsxElements: {}
+        }
+      )
+  )
 }
 
 ICUMessageFormat.prototype.processToken = function(token) {
@@ -121,9 +108,9 @@ ICUMessageFormat.prototype.processToken = function(token) {
         Object.assign(jsxElements, childJsxElements)
       })
       return {
-        message: token.children
+        message: token.children.length
           ? `<${token.name}>${message}</${token.name}>`
-          : `</${token.name}>`,
+          : `<${token.name}/>`,
         values: elementValues,
         jsxElements
       }

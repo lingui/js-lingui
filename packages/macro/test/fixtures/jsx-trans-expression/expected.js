@@ -1,4 +1,3 @@
-import { Trans } from "@lingui/react";
 <Trans id="Hi, my name is {name}" values={{
   name: name
 }} />;

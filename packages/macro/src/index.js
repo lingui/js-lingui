@@ -67,18 +67,6 @@ function alreadyVisited(path) {
   }
 }
 
-const prettyPrintNode = path => {
-  if (path.length) {
-    path.forEach(prettyPrintNode)
-  } else {
-    const { node } = path
-    console.error(
-      `${node.type} ${node.openingElement ? node.openingElement.name.name : ""}`
-    )
-    console.log(path.toString())
-  }
-}
-
 function getMacroType(tagName) {
   switch (tagName) {
     case "t":

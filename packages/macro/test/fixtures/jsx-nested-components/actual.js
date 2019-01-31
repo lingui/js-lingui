@@ -2,7 +2,7 @@ import { Select, Plural } from '@lingui/macro';
 
 <Select
   value={genderOfHost}
-  female={
+  _female={
     <Plural
       value={numGuests}
       offset="1"
@@ -12,7 +12,7 @@ import { Select, Plural } from '@lingui/macro';
       other={`${host} invites ${guest} and # other people to her party.`}
     />
   }
-  male={
+  _male={
     <Plural
       value={numGuests}
       offset="1"
