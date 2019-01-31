@@ -3,34 +3,79 @@ import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
 
 function macro({ references, state, babel }) {
+  const jsxNodes = []
+  const jsNodes = []
+
   Object.keys(references).forEach(tagName => {
     const nodes = references[tagName]
     const macroType = getMacroType(tagName)
 
     if (macroType === "js") {
       nodes.forEach(node => {
-        const macro = new MacroJS(babel)
-
         let macroNode = node.parentPath
         if (babel.types.isMemberExpression(macroNode)) {
           macroNode = macroNode.parentPath
         }
-        macro.replaceNode(macroNode)
+        jsNodes.push(macroNode)
       })
     } else {
       nodes.forEach(node => {
-        const macro = new MacroJSX(babel)
-
         // identifier.openingElement.jsxElement
-        macro.replaceNode(node.parentPath.parentPath)
+        jsxNodes.push(node.parentPath.parentPath)
       })
     }
+  })
+
+  jsNodes.filter(isRootPath(jsNodes)).forEach(path => {
+    if (alreadyVisited(path)) return
+    const macro = new MacroJS(babel)
+    macro.replacePath(path)
+  })
+
+  jsxNodes.filter(isRootPath(jsxNodes)).forEach(path => {
+    if (alreadyVisited(path)) return
+    const macro = new MacroJSX(babel)
+    macro.replacePath(path)
   })
 
   if (process.env.LINGUI_EXTRACT === "1") {
     return {
       keepImports: true
     }
+  }
+}
+
+function isRootPath(allPath) {
+  return node =>
+    (function traverse(path) {
+      if (!path.parentPath) {
+        return true
+      } else {
+        return !allPath.includes(path.parentPath) && traverse(path.parentPath)
+      }
+    })(node)
+}
+
+const alreadyVisitedCache = []
+
+function alreadyVisited(path) {
+  if (alreadyVisitedCache.includes(path)) {
+    return true
+  } else {
+    alreadyVisitedCache.push(path)
+    return false
+  }
+}
+
+const prettyPrintNode = path => {
+  if (path.length) {
+    path.forEach(prettyPrintNode)
+  } else {
+    const { node } = path
+    console.error(
+      `${node.type} ${node.openingElement ? node.openingElement.name.name : ""}`
+    )
+    console.log(path.toString())
   }
 }
 

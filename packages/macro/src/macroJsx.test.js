@@ -1,6 +1,6 @@
 import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import Macro from "./macroJsx"
+import MacroJSX from "./macroJsx"
 
 const parseExpression = expression =>
   _parseExpression(expression, {
@@ -8,7 +8,7 @@ const parseExpression = expression =>
   })
 
 function createMacro() {
-  return new Macro({ types })
+  return new MacroJSX({ types })
 }
 
 describe("jsx macro", function() {
@@ -194,8 +194,8 @@ describe("jsx macro", function() {
           one={
             <Select
               value={gender}
-              male="he"
-              female="she"
+              _male="he"
+              _female="she"
               other="they"
             />
           }
@@ -211,22 +211,20 @@ describe("jsx macro", function() {
         }),
         format: "plural",
         options: {
-          one: [
-            {
-              type: "arg",
+          one: {
+            type: "arg",
+            name: "gender",
+            value: expect.objectContaining({
               name: "gender",
-              value: expect.objectContaining({
-                name: "gender",
-                type: "Identifier"
-              }),
-              format: "select",
-              options: {
-                male: "he",
-                female: "she",
-                other: "they"
-              }
+              type: "Identifier"
+            }),
+            format: "select",
+            options: {
+              male: "he",
+              female: "she",
+              other: "they"
             }
-          ]
+          }
         }
       })
     })

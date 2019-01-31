@@ -3,7 +3,7 @@ import * as R from "ramda"
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
-const metaOptions = ["id", "comment"]
+const metaOptions = ["id", "comment", "props"]
 
 const metaOptionsRe = new RegExp(`^(${metaOptions.join("|")})$`)
 const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
@@ -20,14 +20,15 @@ function normalizeWhitespace(text) {
 export default function ICUMessageFormat() {}
 
 ICUMessageFormat.prototype.fromTokens = function(tokens) {
-  console.log(tokens)
   const props = (Array.isArray(tokens) ? tokens : [tokens])
     .map(token => this.processToken(token))
+    // .map(debug)
     .reduce(
       (props, message) => ({
         ...message,
         message: props.message + message.message,
-        values: { ...props.values, ...message.values }
+        values: { ...props.values, ...message.values },
+        jsxElements: { ...props.jsxElements, ...message.jsxElements }
       }),
       {
         message: "",
@@ -43,6 +44,8 @@ ICUMessageFormat.prototype.fromTokens = function(tokens) {
 }
 
 ICUMessageFormat.prototype.processToken = function(token) {
+  const jsxElements = {}
+
   switch (token.type) {
     case "text":
       return {
@@ -70,16 +73,16 @@ ICUMessageFormat.prototype.processToken = function(token) {
 
               if (typeof value !== "string") {
                 // process tokens from nested formatters
-                const { message, values: childValues } = this.fromTokens(value)
+                const {
+                  message,
+                  values: childValues,
+                  jsxElements: childJsxElements
+                } = this.fromTokens(value)
 
                 Object.assign(values, childValues)
+                Object.assign(jsxElements, childJsxElements)
                 value = message
               }
-
-              // strip surrounding curly braces from formatted values:
-              // Wrong: Hello {{count, plural, ...}}
-              // Right: Hello {count, plural, ...}
-              value = value.replace(/^{(.*)}$/, "$1")
 
               return `${key} {${value}}`
             })
@@ -93,6 +96,7 @@ ICUMessageFormat.prototype.processToken = function(token) {
           return {
             message: `{${token.name}, ${token.format}, ${formatOptions}}`,
             values,
+            jsxElements,
             ...metaKeys
           }
         default:
@@ -100,6 +104,28 @@ ICUMessageFormat.prototype.processToken = function(token) {
             message: `{${token.name}}`,
             values
           }
+      }
+    case "element":
+      let message = ""
+      let elementValues = {}
+      Object.assign(jsxElements, { [token.name]: token.value })
+      token.children.forEach(child => {
+        const {
+          message: childMessage,
+          values: childValues,
+          jsxElements: childJsxElements
+        } = this.fromTokens(child)
+
+        message += childMessage
+        Object.assign(elementValues, childValues)
+        Object.assign(jsxElements, childJsxElements)
+      })
+      return {
+        message: token.children
+          ? `<${token.name}>${message}</${token.name}>`
+          : `</${token.name}>`,
+        values: elementValues,
+        jsxElements
       }
     default:
       throw new Error(`Unknown token type ${token.type}`)

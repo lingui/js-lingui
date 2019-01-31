@@ -1,46 +1,64 @@
 import * as R from "ramda"
 import ICUMessageFormat from "./icu"
 
-const jsx2icuExactChoice = value => value.replace(/_(\d+)/, "=$1")
+const pluralRuleRe = /(_[\d\w]+|zero|one|few|many|other)/
+const jsx2icuExactChoice = value =>
+  value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
-const generatorFactory = (index = 0) => () => index++
+const makeCounter = (index = 0) => () => index++
 
-export default function Macro({ types }) {
-  this.types = types
-  this._expressionIndex = generatorFactory()
+// replace whitespace before/after newline with single space
+const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
+// remove whitespace before/after tag or expression
+const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s+|(?:\r\n|\r|\n)+\s+(?=[<{]))/g
+
+function normalizeWhitespace(text) {
+  return (
+    text
+      .replace(stripAroundTagsRe, "$1")
+      .replace(keepSpaceRe, " ")
+      // keep escaped newlines
+      .replace(/\\n/, "\n")
+      .trim()
+  )
 }
 
-Macro.prototype.replaceNode = function(path) {
-  const { node } = path
-  const tokens = this.tokenizeNode(node)
+export default function MacroJSX({ types }) {
+  this.types = types
+  this._expressionIndex = makeCounter()
+  this._elementIndex = makeCounter()
+}
+
+MacroJSX.prototype.replacePath = function(path) {
+  const tokens = this.tokenizeNode(path.node)
 
   const messageFormat = new ICUMessageFormat()
-  const {
-    message,
-    values,
-    id,
-    comment,
-    jsxElements
-  } = messageFormat.fromTokens(tokens)
+  const { message: messageRaw, values, jsxElements } = messageFormat.fromTokens(
+    tokens
+  )
+  const message = normalizeWhitespace(messageRaw)
 
-  // Cleanup children
-  node.children = []
-  node.openingElement.selfClosing = true
+  const { attributes, id } = this.stripMacroAttributes(path.node)
 
-  let attrs = node.openingElement.attributes
-
-  // If `id` prop already exists and generated ID is different,
-  // add it as a `default` prop
-  const idAttr = attrs.filter(this.isIdAttribute.bind(this))[0]
-  if (idAttr && message && idAttr.value.value !== message) {
-    attrs.push(
+  if (!id && !message) {
+    return
+  } else if (id && id !== message) {
+    // If `id` prop already exists and generated ID is different,
+    // add it as a `default` prop
+    attributes.push(
+      this.types.JSXAttribute(
+        this.types.JSXIdentifier("id"),
+        this.types.StringLiteral(id)
+      )
+    )
+    attributes.push(
       this.types.JSXAttribute(
         this.types.JSXIdentifier("defaults"),
         this.types.StringLiteral(message)
       )
     )
-  } else if (!idAttr) {
-    attrs.push(
+  } else {
+    attributes.push(
       this.types.JSXAttribute(
         this.types.JSXIdentifier("id"),
         this.types.StringLiteral(message)
@@ -54,7 +72,7 @@ Macro.prototype.replaceNode = function(path) {
   )
 
   if (valuesObject.length) {
-    attrs.push(
+    attributes.push(
       this.types.JSXAttribute(
         this.types.JSXIdentifier("values"),
         this.types.JSXExpressionContainer(
@@ -65,38 +83,91 @@ Macro.prototype.replaceNode = function(path) {
   }
 
   // Inline elements
-  if (false && jsxElements.length) {
-    attrs.push(
+  if (Object.keys(jsxElements).length) {
+    attributes.push(
       this.types.JSXAttribute(
         this.types.JSXIdentifier("components"),
         this.types.JSXExpressionContainer(
-          this.types.arrayExpression(props.components)
+          this.types.objectExpression(
+            Object.keys(jsxElements).map(key =>
+              this.types.objectProperty(
+                this.types.identifier(key),
+                jsxElements[key]
+              )
+            )
+          )
         )
       )
     )
   }
+
+  path.replaceWith(
+    this.types.JSXElement(
+      this.types.JSXOpeningElement(
+        this.types.JSXIdentifier("Trans"),
+        attributes,
+        /*selfClosing*/ true
+      ),
+      /*closingElement*/ null,
+      /*children*/ [],
+      /*selfClosing*/ true
+    )
+  )
 }
 
-Macro.prototype.tokenizeNode = function(node) {
+MacroJSX.prototype.stripMacroAttributes = function(node) {
+  const { attributes } = node.openingElement
+  const attrName = (names, exclude = false) => {
+    const namesRe = new RegExp("^(" + names.join("|") + ")$")
+    return attr =>
+      exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
+  }
+  const id = attributes.filter(attrName(["id"]))[0]
+  const defaults = attributes.filter(attrName(["defaults"]))[0]
+
+  let reserved = ["id", "defaults"]
+  if (this.isI18nComponent(node)) {
+    // no reserved prop names
+  } else if (this.isChoiceComponent(node)) {
+    reserved = [
+      ...reserved,
+      "_\\d+",
+      "zero",
+      "one",
+      "few",
+      "many",
+      "other",
+      "value",
+      "offset"
+    ]
+  }
+
+  return {
+    id: id != null ? id.value.value : null,
+    defaults,
+    attributes: attributes.filter(attrName(reserved, true))
+  }
+}
+
+MacroJSX.prototype.tokenizeNode = function(node) {
   if (this.isI18nComponent(node)) {
     // t
     return this.tokenizeTrans(node)
   } else if (this.isChoiceComponent(node)) {
     // plural, select and selectOrdinal
     return this.tokenizeChoiceComponent(node)
-    // } else if (isFormatMethod(node.callee)) {
-    //   // date, number
-    //   return transformFormatMethod(node, file, props, root)
+  } else if (this.types.isJSXElement(node)) {
+    return this.tokenizeElement(node)
   } else {
     return this.tokenizeExpression(node)
   }
 }
 
-Macro.prototype.tokenizeTrans = function(node) {
+MacroJSX.prototype.tokenizeTrans = function(node) {
   return node.children.map(child => this.tokenizeChildren(child))
 }
 
-Macro.prototype.tokenizeChildren = function(node) {
+MacroJSX.prototype.tokenizeChildren = function(node) {
   if (this.types.isJSXExpressionContainer(node)) {
     const exp = node.expression
 
@@ -108,16 +179,14 @@ Macro.prototype.tokenizeChildren = function(node) {
       }
     } else if (this.types.isTemplateLiteral(exp)) {
       const tokenize = R.pipe(
+        // Don't output tokens without text.
         R.evolve({
           quasis: R.map(text => {
             // Don't output tokens without text.
             const value = text.value.raw
             if (value === "") return null
 
-            return {
-              type: "text",
-              value
-            }
+            return this.tokenizeText(value)
           }),
           expressions: R.map(exp =>
             this.types.isCallExpression(exp)
@@ -141,21 +210,15 @@ Macro.prototype.tokenizeChildren = function(node) {
   } else if (this.types.isJSXText(node)) {
     // node.value has HTML entities converted to characters, but we need original
     // HTML entities.
-    return {
-      type: "text",
-      value: node.extra.raw
-    }
+    return this.tokenizeText(node.extra.raw)
   } else {
     // Same as above, but this time node.extra.raw also includes surrounding
     // quotes. We need to strip them first.
-    return {
-      type: "text",
-      value: node.extra.raw.replace(/(["'])(.*)\1/, "$2")
-    }
+    return this.tokenizeText(node.extra.raw.replace(/(["'])(.*)\1/, "$2"))
   }
 }
 
-Macro.prototype.tokenizeChoiceComponent = function(node) {
+MacroJSX.prototype.tokenizeChoiceComponent = function(node) {
   const element = node.openingElement
   const format = element.name.name.toLowerCase()
   const props = element.attributes
@@ -169,7 +232,7 @@ Macro.prototype.tokenizeChoiceComponent = function(node) {
   }
 
   for (const attr of props) {
-    const name = jsx2icuExactChoice(attr.name.name)
+    const name = attr.name.name
 
     if (name === "value") {
       const exp = this.types.isLiteral(attr.value)
@@ -180,23 +243,37 @@ Macro.prototype.tokenizeChoiceComponent = function(node) {
     } else if (format !== "select" && name === "offset") {
       // offset is static parameter, so it must be either string or number
       token.options.offset = this.types.isStringLiteral(attr.value)
-        ? attr.value
+        ? attr.value.value
         : attr.value.expression.value
-    } else {
+    } else if (pluralRuleRe.test(name)) {
       let value
       if (this.types.isStringLiteral(attr.value)) {
         value = attr.value.extra.raw.replace(/(["'])(.*)\1/, "$2")
       } else {
         value = this.tokenizeChildren(attr.value)
       }
-      token.options[name] = value
+      token.options[jsx2icuExactChoice(name)] = value
     }
   }
 
   return token
 }
 
-Macro.prototype.tokenizeExpression = function(node) {
+MacroJSX.prototype.tokenizeElement = function(node) {
+  const children = node.children.map(child => this.tokenizeChildren(child))
+
+  node.children = []
+  node.openingElement.selfClosing = true
+
+  return {
+    type: "element",
+    name: this._elementIndex(),
+    value: node,
+    children
+  }
+}
+
+MacroJSX.prototype.tokenizeExpression = function(node) {
   return {
     type: "arg",
     name: this.expressionToArgument(node),
@@ -204,7 +281,14 @@ Macro.prototype.tokenizeExpression = function(node) {
   }
 }
 
-Macro.prototype.expressionToArgument = function(exp) {
+MacroJSX.prototype.tokenizeText = function(value) {
+  return {
+    type: "text",
+    value
+  }
+}
+
+MacroJSX.prototype.expressionToArgument = function(exp) {
   return this.types.isIdentifier(exp) ? exp.name : this._expressionIndex()
 }
 
@@ -212,11 +296,11 @@ Macro.prototype.expressionToArgument = function(exp) {
  * Custom matchers
  */
 
-Macro.prototype.isIdentifier = function(node, name) {
+MacroJSX.prototype.isIdentifier = function(node, name) {
   return this.types.isIdentifier(node, { name })
 }
 
-Macro.prototype.isI18nComponent = function(node, name = "Trans") {
+MacroJSX.prototype.isI18nComponent = function(node, name = "Trans") {
   return (
     this.types.isJSXElement(node) &&
     this.types.isJSXIdentifier(node.openingElement.name, {
@@ -225,31 +309,11 @@ Macro.prototype.isI18nComponent = function(node, name = "Trans") {
   )
 }
 
-Macro.prototype.isChoiceComponent = function(node) {
+MacroJSX.prototype.isChoiceComponent = function(node) {
   return (
     this.isI18nComponent(node, "Plural") ||
     this.isI18nComponent(node, "Select") ||
     this.isI18nComponent(node, "SelectOrdinal")
-  )
-}
-
-Macro.prototype.isIdAttribute = function(node) {
-  return (
-    this.types.isJSXAttribute(node) &&
-    this.types.isJSXIdentifier(node.name, { name: "id" })
-  )
-}
-Macro.prototype.isDefaultsAttribute = function(node) {
-  return (
-    this.types.isJSXAttribute(node) &&
-    this.types.isJSXIdentifier(node.name, { name: "defaults" })
-  )
-}
-
-Macro.prototype.isDescriptionAttribute = function(node) {
-  return (
-    this.types.isJSXAttribute(node) &&
-    this.types.isJSXIdentifier(node.name, { name: "description" })
   )
 }
 

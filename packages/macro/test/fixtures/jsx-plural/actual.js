@@ -19,8 +19,6 @@ import { Trans, Plural } from '@lingui/macro';
 <Trans id="inner-id-removed">
   Looking for{" "}
   <Plural
-    id="msg.plural"
-    render="strong"
     value={items.length}
     offset={1}
     _0="zero items"

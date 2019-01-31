@@ -8,7 +8,7 @@ export default function Macro({ types }) {
   this._expressionIndex = generatorFactory()
 }
 
-Macro.prototype.replaceNode = function(path) {
+Macro.prototype.replacePath = function(path) {
   const tokens = this.tokenizeNode(path.node)
 
   const messageFormat = new ICUMessageFormat()
