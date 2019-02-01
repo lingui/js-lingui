@@ -1,7 +1,8 @@
 module.exports = {
+  preset: "ts-jest/presets/js-with-babel",
   roots: ["<rootDir>/packages/"],
   rootDir: process.cwd(),
-  testMatch: ["**/?(*.)test.js", "**/test/index.js"],
+  testMatch: ["**/?(*.)test.(js|ts)", "**/test/index.(js|ts)"],
   testPathIgnorePatterns: ["/node_modules/", "/locale/"],
   testURL: "http://localhost",
 

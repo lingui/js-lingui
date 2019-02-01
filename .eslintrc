@@ -2,7 +2,6 @@
   "env": {
     "jest/globals": true
   },
-  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -12,10 +11,10 @@
     "plugin:flowtype/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "plugins": [
     "promise",
-    "flowtype",
     "import",
     "react",
     "jest",

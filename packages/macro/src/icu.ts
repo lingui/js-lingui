@@ -48,7 +48,9 @@ ICUMessageFormat.prototype.processToken = function(token) {
         case "select":
         case "selectordinal":
           const formatOptions = Object.keys(token.options)
-            .filter(key => !metaOptionsRe.test(key))
+            .filter(
+              key => !metaOptionsRe.test(key) && token.options[key] != null
+            )
             .map(key => {
               let value = token.options[key]
               key = key.replace(escapedMetaOptionsRe, "$1")
@@ -76,7 +78,7 @@ ICUMessageFormat.prototype.processToken = function(token) {
             .join(" ")
 
           const metaKeys = R.pickBy(
-            (value, key) => metaOptionsRe.test(key),
+            (value, key) => typeof key === "string" && metaOptionsRe.test(key),
             token.options
           )
 

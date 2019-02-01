@@ -1,9 +1,9 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import Macro from "./macroJs"
+import MacroJs from "./macroJs"
 
 function createMacro() {
-  return new Macro({ types })
+  return new MacroJs({ types })
 }
 
 describe("js macro", function() {
