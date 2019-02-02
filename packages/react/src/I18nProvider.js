@@ -17,11 +17,24 @@ export type I18nProviderProps = {
   defaultRender: ?any
 }
 
+type LinguiPublisher = {|
+  i18n: I18n,
+  i18nHash: null,
+
+  getSubscribers(): Array<Function>,
+
+  subscribe(callback: Function): void,
+
+  unsubscribe(callback: Function): void,
+
+  update(?{ catalogs?: Catalogs, language?: string, locales?: string }): void
+|}
+
 /*
  * I18nPublisher - Connects to lingui-i18n/I18n class
  * Allows listeners to subscribe for changes
  */
-export function LinguiPublisher(i18n: I18n) {
+export function makeLinguiPublisher(i18n: I18n): LinguiPublisher {
   let subscribers: Array<Function> = []
 
   return {
@@ -40,11 +53,11 @@ export function LinguiPublisher(i18n: I18n) {
       subscribers = subscribers.filter(cb => cb !== callback)
     },
 
-    update({
-      catalogs,
-      language,
-      locales
-    }: { catalogs?: Catalogs, language?: string, locales?: string } = {}) {
+    update(
+      params: ?{ catalogs?: Catalogs, language?: string, locales?: string } = {}
+    ) {
+      if (!params) return
+      const { catalogs, language, locales } = params
       if (!catalogs && !language && !locales) return
 
       if (catalogs) i18n.load(catalogs)
@@ -81,7 +94,7 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
         locales,
         catalogs
       })
-    this.linguiPublisher = new LinguiPublisher(i18n)
+    this.linguiPublisher = makeLinguiPublisher(i18n)
     this.linguiPublisher.i18n._missing = this.props.missing
   }
 
@@ -106,6 +119,6 @@ export default class I18nProvider extends React.Component<I18nProviderProps> {
   }
 
   render() {
-    return this.props.children
+    return this.props.children || null
   }
 }
