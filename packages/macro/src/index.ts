@@ -12,11 +12,7 @@ function macro({ references, state, babel }) {
 
     if (macroType === "js") {
       nodes.forEach(node => {
-        let macroNode = node.parentPath
-        if (babel.types.isMemberExpression(macroNode)) {
-          macroNode = macroNode.parentPath
-        }
-        jsNodes.push(macroNode)
+        jsNodes.push(node.parentPath)
       })
     } else {
       nodes.forEach(node => {
@@ -70,6 +66,9 @@ function alreadyVisited(path) {
 function getMacroType(tagName) {
   switch (tagName) {
     case "t":
+    case "plural":
+    case "select":
+    case "selectOrdinal":
       return "js"
     case "Trans":
     case "Plural":

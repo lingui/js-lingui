@@ -1,8 +1,8 @@
-import { t, Trans } from '@lingui/macro'
+import { t, plural, Trans } from '@lingui/macro'
 
 const T = <Trans>Read <a href="/more" title={t`Full content of ${articleName}`}>more</a></Trans>
 
-const P = <a href="/about" title={t.plural({
+const P = <a href="/about" title={plural({
   value: count,
   one: "# book",
   other: "# books"

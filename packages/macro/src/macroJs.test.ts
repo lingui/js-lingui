@@ -61,7 +61,7 @@ describe("js macro", function() {
 
     it("message with plural", function() {
       const macro = createMacro()
-      const exp = parseExpression("t`Message ${t.plural({ value: count })}`")
+      const exp = parseExpression("t`Message ${plural({ value: count })}`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
@@ -85,7 +85,7 @@ describe("js macro", function() {
     it("plural", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        "t.plural({ value: count, one: '# book', other: '# books'})"
+        "plural({ value: count, one: '# book', other: '# books'})"
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({
@@ -106,7 +106,7 @@ describe("js macro", function() {
     it("plural with offset", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        `t.plural({
+        `plural({
           value: count,
           offset: 1,
           0: 'No books',
@@ -135,7 +135,7 @@ describe("js macro", function() {
     it("plural with template literal", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        "t.plural({ value: count, one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
+        "plural({ value: count, one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
       )
       const tokens = macro.tokenizeChoiceComponent(exp)
       expect(tokens).toEqual({
@@ -182,9 +182,9 @@ describe("js macro", function() {
     it("plural with select", function() {
       const macro = createMacro()
       const exp = parseExpression(
-        `t.plural({
+        `plural({
           value: count, 
-          one: t.select({
+          one: select({
             value: gender,
             male: "he",
             female: "she",

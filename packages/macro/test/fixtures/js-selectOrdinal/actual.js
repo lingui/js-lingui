@@ -1,6 +1,6 @@
-import { t } from '@lingui/macro'
+import { t, selectOrdinal } from '@lingui/macro'
 
-t`This is my ${t.selectOrdinal({
+t`This is my ${selectOrdinal({
   value: count,
   one: "#st",
   "two": `#nd`,

@@ -88,7 +88,7 @@ export default class MacroJs {
     if (this.isI18nMethod(node)) {
       // t
       return this.tokenizeTemplateLiteral(node)
-    } else if (this.isChoiceMethod(node.callee)) {
+    } else if (this.isChoiceMethod(node)) {
       // plural, select and selectOrdinal
       return [this.tokenizeChoiceComponent(node)]
       // } else if (isFormatMethod(node.callee)) {
@@ -134,7 +134,7 @@ export default class MacroJs {
   }
 
   tokenizeChoiceComponent = node => {
-    const format = node.callee.property.name.toLowerCase()
+    const format = node.callee.name.toLowerCase()
     const props = node.arguments[0].properties
 
     const token = {
@@ -211,11 +211,10 @@ export default class MacroJs {
 
   isChoiceMethod = node => {
     return (
-      this.types.isMemberExpression(node) &&
-      this.isIdentifier(node.object, "t") &&
-      (this.isIdentifier(node.property, "plural") ||
-        this.isIdentifier(node.property, "select") ||
-        this.isIdentifier(node.property, "selectOrdinal"))
+      this.types.isCallExpression(node) &&
+      (this.isIdentifier(node.callee, "plural") ||
+        this.isIdentifier(node.callee, "select") ||
+        this.isIdentifier(node.callee, "selectOrdinal"))
     )
   }
 }

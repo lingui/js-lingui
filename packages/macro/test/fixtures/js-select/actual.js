@@ -1,8 +1,8 @@
-import { t } from '@lingui/macro'
+import { select, plural } from '@lingui/macro'
 
-t.select({
+select({
   value: gender,
-  "male": t.plural({
+  "male": plural({
     value: numOfGuests,
     one: "He invites one guest",
     other: "He invites # guests"
@@ -11,10 +11,10 @@ t.select({
   other: `They is ${gender}`
 });
 
-t.select({
+select({
   id: "id",
   value: "male",
-  "male": t.plural({
+  "male": plural({
     value: 42,
     one: "He invites one guest",
     other: "He invites # guests"
@@ -23,7 +23,7 @@ t.select({
   other: `They is ${gender}`
 });
 
-t.select({
+select({
   value: value,
   _id: 'test escaped id',
   _comment: 'test escaped comment'
