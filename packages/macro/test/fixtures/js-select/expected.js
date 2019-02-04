@@ -1,3 +1,5 @@
+import i18n from "@lingui/core";
+
 i18n._("{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}", {
   gender: gender,
   numOfGuests: numOfGuests

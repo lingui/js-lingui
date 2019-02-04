@@ -34,10 +34,44 @@ function macro({ references, state, babel }) {
     macro.replacePath(path)
   })
 
+  if (jsNodes.length) {
+    addLinguiImport(babel, state)
+  }
+
   if (process.env.LINGUI_EXTRACT === "1") {
     return {
       keepImports: true
     }
+  }
+}
+
+function addLinguiImport(babel, state) {
+  const { types: t } = babel
+
+  const linguiImport = state.file.path.node.body.find(
+    importNode =>
+      t.isImportDeclaration(importNode) &&
+      importNode.source.value === "@lingui/core"
+  )
+
+  // Handle adding the import or altering the existing import
+  if (linguiImport) {
+    if (
+      linguiImport.specifiers.findIndex(
+        specifier => specifier.imported && specifier.imported.name === "i18n"
+      ) === -1
+    ) {
+      linguiImport.specifiers.push(
+        t.importDefaultSpecifier(t.identifier("i18n"))
+      )
+    }
+  } else {
+    state.file.path.node.body.unshift(
+      t.importDeclaration(
+        [t.importDefaultSpecifier(t.identifier("i18n"))],
+        t.stringLiteral("@lingui/core")
+      )
+    )
   }
 }
 

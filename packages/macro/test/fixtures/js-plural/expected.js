@@ -1,3 +1,5 @@
+import i18n from "@lingui/core";
+
 const a = i18n._("{count, plural, one {# book} other {# books}}", {
   count: count
 });
