@@ -103,7 +103,7 @@ function addLinguiReactImport(babel, state) {
     state.file.path.node.body.unshift(
       t.importDeclaration(
         [t.importSpecifier(t.identifier("Trans"), t.identifier("Trans"))],
-        t.stringLiteral("@lingui/core")
+        t.stringLiteral("@lingui/react")
       )
     )
   }
