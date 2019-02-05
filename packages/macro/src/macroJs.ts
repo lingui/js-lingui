@@ -2,6 +2,7 @@ import * as R from "ramda"
 import ICUMessageFormat from "./icu"
 import { zip } from "./utils"
 import * as babelTypes from "@babel/types"
+import { NodePath } from "@babel/traverse"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -24,7 +25,7 @@ export default class MacroJs {
     this._expressionIndex = generatorFactory()
   }
 
-  replacePath = path => {
+  replacePath = (path: NodePath) => {
     const tokens = this.tokenizeNode(path.node)
 
     const messageFormat = new ICUMessageFormat()

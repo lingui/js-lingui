@@ -2,6 +2,7 @@ import * as R from "ramda"
 import ICUMessageFormat from "./icu"
 import { zip } from "./utils"
 import * as babelTypes from "@babel/types"
+import { NodePath } from "@babel/traverse"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = value =>
@@ -37,7 +38,7 @@ export default class MacroJSX {
     this.elementIndex = makeCounter()
   }
 
-  replacePath = path => {
+  replacePath = (path: NodePath) => {
     const tokens = this.tokenizeNode(path.node)
 
     const messageFormat = new ICUMessageFormat()
