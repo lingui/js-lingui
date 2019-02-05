@@ -4,7 +4,7 @@ import { shallow, mount } from "enzyme"
 
 import { setupI18n } from "@lingui/core"
 import { I18nProvider, Trans } from "@lingui/react"
-import { LinguiPublisher } from "./I18nProvider"
+import { makeLinguiPublisher } from "./I18nProvider"
 import { mockConsole } from "./mocks"
 
 describe("I18nProvider", function() {
@@ -132,7 +132,7 @@ describe("I18nProvider", function() {
 
 describe("I18nPublisher", function() {
   it("should pass active language and messages to underlying I18n class", function() {
-    const linguiPublisher = new LinguiPublisher(
+    const linguiPublisher = makeLinguiPublisher(
       setupI18n({
         language: "en",
         catalogs: {
@@ -169,7 +169,7 @@ describe("I18nPublisher", function() {
   })
 
   it("should subscribe/unsubscribe listeners for context changes", function() {
-    const linguiPublisher = new LinguiPublisher(
+    const linguiPublisher = makeLinguiPublisher(
       setupI18n({
         language: "en",
         catalogs: { en: {} }
@@ -188,7 +188,7 @@ describe("I18nPublisher", function() {
 
   it("should notify listeners only when relevant data changes", function() {
     const listener = jest.fn()
-    const linguiPublisher = new LinguiPublisher(
+    const linguiPublisher = makeLinguiPublisher(
       setupI18n({
         language: "en",
         catalogs: { en: {}, fr: {} }
