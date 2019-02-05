@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/core";
 <Trans id="Strip whitespace around arguments: &quot;{name}&quot;" values={{
   name: name
 }} />;

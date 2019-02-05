@@ -38,6 +38,10 @@ function macro({ references, state, babel }) {
     addLinguiImport(babel, state)
   }
 
+  if (jsxNodes.length) {
+    addLinguiReactImport(babel, state)
+  }
+
   if (process.env.LINGUI_EXTRACT === "1") {
     return {
       keepImports: true
@@ -69,6 +73,36 @@ function addLinguiImport(babel, state) {
     state.file.path.node.body.unshift(
       t.importDeclaration(
         [t.importDefaultSpecifier(t.identifier("i18n"))],
+        t.stringLiteral("@lingui/core")
+      )
+    )
+  }
+}
+
+function addLinguiReactImport(babel, state) {
+  const { types: t } = babel
+
+  const linguiImport = state.file.path.node.body.find(
+    importNode =>
+      t.isImportDeclaration(importNode) &&
+      importNode.source.value === "@lingui/react"
+  )
+
+  // Handle adding the import or altering the existing import
+  if (linguiImport) {
+    if (
+      linguiImport.specifiers.findIndex(
+        specifier => specifier.imported && specifier.imported.name === "Trans"
+      ) === -1
+    ) {
+      linguiImport.specifiers.push(
+        t.importSpecifier(t.identifier("Trans"), t.identifier("Trans"))
+      )
+    }
+  } else {
+    state.file.path.node.body.unshift(
+      t.importDeclaration(
+        [t.importSpecifier(t.identifier("Trans"), t.identifier("Trans"))],
         t.stringLiteral("@lingui/core")
       )
     )

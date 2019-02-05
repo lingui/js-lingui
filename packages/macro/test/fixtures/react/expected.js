@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/core";
 import i18n from "@lingui/core";
 const T = <Trans id="Read <0>more</0>" components={{
   0: <a href="/more" title={i18n._("Full content of {articleName}", {

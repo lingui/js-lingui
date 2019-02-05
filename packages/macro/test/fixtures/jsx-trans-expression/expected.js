@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/core";
 <Trans id="Hi, my name is {name}" values={{
   name: name
 }} />;
