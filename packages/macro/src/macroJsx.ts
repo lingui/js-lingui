@@ -171,10 +171,12 @@ export default class MacroJSX {
       ]
     }
 
+    const maybeNodeValue = node => (node != null ? node.value.value : null)
+
     return {
-      id: id != null ? id.value.value : null,
-      defaults,
-      comment,
+      id: maybeNodeValue(id),
+      defaults: maybeNodeValue(defaults),
+      comment: maybeNodeValue(comment),
       attributes: attributes.filter(attrName(reserved, true))
     }
   }
