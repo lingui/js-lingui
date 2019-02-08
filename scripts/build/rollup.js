@@ -57,6 +57,7 @@ function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
     babelrc: false,
     exclude: "node_modules/**",
+    extensions: [".js", ".ts"],
     runtimeHelpers: true
   })
 }
@@ -124,7 +125,9 @@ function getPlugins(
   const shouldStayReadable = forcePrettyOutput
   return [
     // Use Node resolution mechanism.
-    resolve(),
+    resolve({
+      extensions: [".js", ".ts"]
+    }),
 
     // Compile to ES5.
     babel(getBabelConfig(updateBabelOptions, bundleType)),
@@ -153,20 +156,6 @@ function getPlugins(
 
     // Add the whitespace back if necessary.
     shouldStayReadable && prettier(),
-
-    // TODO
-    // License and haste headers, top-level `if` blocks.
-    // {
-    //   transformBundle(source) {
-    //     return Wrappers.wrapBundle(
-    //       source,
-    //       bundleType,
-    //       globalName,
-    //       filename,
-    //       moduleType
-    //     )
-    //   }
-    // },
 
     // Record bundle size.
     sizes({
@@ -218,6 +207,9 @@ function handleRollupError(error) {
     `\x1b[31m-- ${error.code}${error.plugin ? ` (${error.plugin})` : ""} --`
   )
   console.error(error.message)
+
+  if (error.loc == null) return
+
   const { file, line, column } = error.loc
   if (file) {
     // This looks like an error from Rollup, e.g. missing export.

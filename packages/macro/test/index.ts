@@ -266,7 +266,7 @@ const testCases = {
         <Trans>Hello World</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Hello World" />;
       `
     },
@@ -277,7 +277,7 @@ const testCases = {
         <Trans id="Hello World">Hello World</Trans>;
           `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Hello World" />;
       `
     },
@@ -288,7 +288,7 @@ const testCases = {
         <Trans id="msg.hello">Hello World</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="msg.hello" defaults="Hello World" />;
       `
     },
@@ -299,7 +299,7 @@ const testCases = {
         <Trans id={msg} />;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id={msg} />;
       `
     },
@@ -310,7 +310,7 @@ const testCases = {
         <Trans>Hi {yourName}, my name is {myName}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Hi {yourName}, my name is {myName}" values={{
           yourName: yourName,
           myName: myName,
@@ -324,7 +324,7 @@ const testCases = {
         <Trans>{duplicate} variable {duplicate}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="{duplicate} variable {duplicate}" values={{
           duplicate: duplicate
         }} />;
@@ -337,7 +337,7 @@ const testCases = {
         <Trans>{\`How much is \${expression}? \${count}\`}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="How much is {expression}? {count}" values={{
           expression: expression,
           count: count
@@ -351,7 +351,7 @@ const testCases = {
         <Trans>{"hello {count, plural, one {world} other {worlds}}"}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="hello {count, plural, one {world} other {worlds}}" />;
       `
     },
@@ -369,7 +369,7 @@ const testCases = {
         </Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}" values={{
           0: props.name,
           1: random(),
@@ -393,7 +393,7 @@ const testCases = {
         </Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>" values={{
           name: name
         }} components={{
@@ -412,7 +412,7 @@ const testCases = {
         <Trans>{<span>Component inside expression container</span>}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="<0>Component inside expression container</0>" components={{
           0: <span />
         }} />;
@@ -425,7 +425,7 @@ const testCases = {
         <Trans>{<br />}</Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="<0/>" components={{
           0: <br />
         }} />;
@@ -438,7 +438,7 @@ const testCases = {
         <Trans>{...spread}</Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans>{...spread}</Trans>
       `
     },
@@ -450,7 +450,7 @@ const testCases = {
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans> 
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="msg.hello" />;
       `
     },
@@ -464,7 +464,7 @@ const testCases = {
         </Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Strip whitespace around arguments: &quot;{name}&quot;" values={{
           name: name
         }} />;
@@ -480,7 +480,7 @@ const testCases = {
         </Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Strip whitespace around tags, but keep <0>forced spaces</0>!" components={{
           0: <strong />
         }} />;
@@ -495,7 +495,7 @@ const testCases = {
         </Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="Keep forced\\n newlines!" />;
       `
     },
@@ -505,7 +505,7 @@ const testCases = {
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         import i18n from "@lingui/core";
         <Trans id="Read <0>more</0>" components={{
           0: <a href="/more" title={i18n._("Full content of {articleName}", {
@@ -544,7 +544,7 @@ const testCases = {
         />;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="{count, select, male {He} female {She} other {<0>Other</0>}}" values={{
           count: count
         }} components={{
@@ -565,7 +565,7 @@ const testCases = {
         />;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans render="strong" id="msg.select" defaults="{0, select, male {He} female {She} other {<0>Other</0>}}" values={{
           0: user.gender
         }} components={{
@@ -587,7 +587,7 @@ const testCases = {
         />;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}" values={{
           count: count
         }} components={{
@@ -609,7 +609,7 @@ const testCases = {
         />;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans render="strong" id="msg.plural" defaults="{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}" values={{
           count: count
         }} components={{
@@ -632,7 +632,7 @@ const testCases = {
         </Trans>
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="inner-id-removed" defaults="Looking for {0, plural, offset:1 =0 {zero items} few {{1} items {2}} other {<0>a lot of them</0>}}" values={{
           0: items.length,
           1: items.length,
@@ -660,7 +660,7 @@ const testCases = {
         </Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="This is my {count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat." values={{
           count: count
         }} components={{
@@ -681,7 +681,7 @@ const testCases = {
         </Trans>;
       `,
       expected: `
-        import { Trans } from "@lingui/core";
+        import { Trans } from "@lingui/react";
         <Trans id="This is my {0, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat." values={{
           0: user.numCats
         }} components={{
@@ -727,7 +727,7 @@ describe("macro", function() {
 
       cases.forEach(
         ({ name, input, expected, filename, production }, index) => {
-          it(name != null ? name : `${suiteName} #${index}`, () => {
+          it(name != null ? name : `${suiteName} #${index + 1}`, () => {
             expect(input || filename).toBeDefined()
 
             const originalEnv = process.env.NODE_ENV
