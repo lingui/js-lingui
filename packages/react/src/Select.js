@@ -48,7 +48,6 @@ const Select = withI18n()(
 
 const PluralFactory = (ordinal = false) => {
   const displayName = !ordinal ? "Plural" : "SelectOrdinal"
-  const pluralType = !ordinal ? "plural" : "selectOrdinal"
 
   return class extends React.Component<*, PluralProps> {
     displayName = displayName
@@ -76,11 +75,13 @@ const PluralFactory = (ordinal = false) => {
         }
       )
 
+      const translateFunction = !ordinal ? i18n.plural : i18n.selectOrdinal
+
       return (
         <Render
           className={className}
           render={render}
-          value={i18n[pluralType](pluralProps)}
+          value={translateFunction(pluralProps)}
         />
       )
     }
