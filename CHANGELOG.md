@@ -1,5 +1,21 @@
 # Change Log
 
+d62f64c (HEAD -> master, origin/master) fix: Don't prevent babel options to help setup lingui in monorepos (#454)
+e36833c Merge pull request #452 from pybuche/patch-1
+c886d01 Add Staycation to Lingui's showroom
+684bd70 fix: flow typing of React API with Flow 0.92 (#448)
+a9bc0b7 fix: flow typing of React API with Flow 0.92
+
+<a name="2.7.4"></a>
+## [2.7.4](https://github.com/lingui/js-lingui/compare/v2.7.2...v2.7.3) (2019-02-19)
+
+### Bug Fixes
+
+* Conf: Allow `extends` and `rootMode` babel config options([#454](https://github.com/lingui/js-lingui/pull/454/)).
+  Thanks to [Adam Thomas](https://github.com/adamscybot).
+* React: Fix flow typing with Flow 0.92 [#448](https://github.com/lingui/js-lingui/pull/448/)).
+  Thanks to [Florian Rival](https://github.com/4ian).
+
 <a name="2.7.3"></a>
 ## [2.7.3](https://github.com/lingui/js-lingui/compare/v2.7.2...v2.7.3) (2019-01-28)
 

@@ -9,12 +9,12 @@
       "gzip": 1381
     },
     "@lingui/react.development.js (NODE_DEV)": {
-      "size": 19788,
-      "gzip": 5265
+      "size": 19844,
+      "gzip": 5285
     },
     "@lingui/react.production.min.js (NODE_PROD)": {
-      "size": 7541,
-      "gzip": 2605
+      "size": 7560,
+      "gzip": 2613
     },
     "dev.development.js (NODE_DEV)": {
       "size": 14825,
