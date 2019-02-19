@@ -18,11 +18,18 @@ const npmTagForBranch = {
 }
 
 async function devRelease() {
+  // Get the next version
+  const { currentVersion, newVersion } = await getNewVersion("next")
+
   const spinner = ora({
     text: "Building packages"
   })
   spinner.start()
   await exec("yarn release:build")
+
+  // Set correct version in package.json for all packages
+  await preparePackageVersions(newVersion)
+
   // Throw away build stats
   await exec("git checkout -- scripts/build/results.json")
 
