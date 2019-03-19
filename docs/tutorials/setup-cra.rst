@@ -58,7 +58,7 @@ Install
          "scripts": {
             "add-locale": "lingui add-locale",
             "extract": "lingui extract",
-            "compile": "lingui compile",
+            "compile": "lingui compile"
          }
       }
 
