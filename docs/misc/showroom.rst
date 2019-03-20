@@ -7,3 +7,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `MyMusicTaste <https://www.mymusictaste.com/>`__
 - `Caliopen <https://www.caliopen.org/>`__ (`source <https://github.com/CaliOpen/Caliopen/tree/master/src/frontend/web_application>`__)
 - `Staycation <https://www.staycation.co/>`__
+- `Monitora <https://monitora.cz/>`__
