@@ -17,7 +17,7 @@ const a = /*i18n*/{
 });
 
 ( /*i18n*/{
-  id: 'Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}',
+  id: 'Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5} `escaped backticks`',
   values: {
     0: props.name,
     1: random(),

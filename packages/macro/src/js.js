@@ -239,7 +239,7 @@ export default function({ types: t }) {
 
     parts.forEach(item => {
       if (t.isTemplateElement(item)) {
-        props.text += item.value.raw
+        props.text += item.value.raw.replace(/\\`/g, "`")
       } else if (
         t.isCallExpression(item) &&
         (isI18nMethod(item.callee) ||
