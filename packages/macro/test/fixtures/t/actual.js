@@ -13,4 +13,5 @@ t`
   constant ${42},
   object ${new Date()}
   anything ${props.messages[index].value()}
+  \`escaped backticks\`
 `

@@ -2,7 +2,7 @@
 Comparison with react-intl
 **************************
 
-`react-intl`_ is definitely the most popural and widely-used i18n library for React.
+`react-intl`_ is definitely the most popular and widely-used i18n library for React.
 `LinguiJS`_ is in many ways very similar: both libraries use the same syntax for
 (messages ICU MessageFormat) and they also have very similar API.
 

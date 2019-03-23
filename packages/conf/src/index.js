@@ -44,6 +44,8 @@ export const defaultConfig = {
 const exampleConfig = {
   ...defaultConfig,
   extractBabelOptions: {
+    extends: "babelconfig.js",
+    rootMode: "rootmode",
     plugins: ["plugin"],
     presets: ["preset"]
   }
