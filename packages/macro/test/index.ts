@@ -12,8 +12,9 @@ const testCases = {
         const a = t\`Expression assignment\`;
     `,
       expected: `
-        import i18n from "@lingui/core";
-        const a = i18n._("Expression assignment");
+        const a = {
+          id: "Expression assignment"
+        };
     `
     },
     {
@@ -23,9 +24,11 @@ const testCases = {
         t\`Variable \${name}\`;
     `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("Variable {name}", {
-          name: name
+        ({
+          id: "Variable {name}",
+          values: {
+            name: name
+          }
         });
     `
     },
@@ -36,9 +39,11 @@ const testCases = {
         t\`\${duplicate} variable \${duplicate}\`;
     `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("{duplicate} variable {duplicate}", {
-          duplicate: duplicate
+        ({
+          id: "{duplicate} variable {duplicate}",
+          values: {
+            duplicate: duplicate
+          }
         });
     `
     },
@@ -57,14 +62,16 @@ const testCases = {
         \`
     `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}", {
-          0: props.name,
-          1: random(),
-          2: array[index],
-          3: 42,
-          4: new Date(),
-          5: props.messages[index].value()
+        ({
+          id: "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
+          values: {
+            0: props.name,
+            1: random(),
+            2: array[index],
+            3: 42,
+            4: new Date(),
+            5: props.messages[index].value()
+          }  
         });
     `
     },
@@ -76,8 +83,9 @@ const testCases = {
           string\`
       `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("Multiline\\nstring");
+        ({
+          id: "Multiline\\nstring"
+        });
       `
     },
     {
@@ -90,16 +98,17 @@ const testCases = {
       name: "Macro is used in expression assignment",
       input: `
         import { plural } from '@lingui/macro'
-        const a = plural({
-          value: count,
+        const a = plural(count, {
           "one": \`# book\`,
           other: "# books"
         });
       `,
       expected: `
-        import i18n from "@lingui/core";
-        const a = i18n._("{count, plural, one {# book} other {# books}}", {
-          count: count
+        const a = ({
+          id: "{count, plural, one {# book} other {# books}}",
+          values: {
+            count: count
+          }
         });
       `
     },
@@ -107,8 +116,7 @@ const testCases = {
       name: "Macro with offset and exact matches",
       input: `
         import { plural } from '@lingui/macro'
-        plural({
-          value: users.length,
+        plural(users.length, {
           offset: 1,
           0: "No books",
           1: "1 book",
@@ -116,55 +124,11 @@ const testCases = {
         });
       `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}", {
-          0: users.length
-        });
-      `
-    },
-    {
-      name: "Macro with custom ID",
-      input: `
-        import { plural } from '@lingui/macro'
-        plural({
-          id: 'id',
-
-          value: 42,
-          one: \`# book\`,
-          other: \`\${count} books\`
-        });
-      `,
-      expected: `
-        import i18n from "@lingui/core";
-        i18n._("id", {
-          0: 42,
-          count: count
-        }, {
-          defaults: "{0, plural, one {# book} other {{count} books}}"
-        });
-      `
-    },
-    {
-      name: "Macro with custom ID and translator's comment",
-      input: `
-        import { plural } from '@lingui/macro'
-        plural({
-          id: 'id',
-          comment: 'Hello World',
-          value: 42,
-
-          one: \`# book\`,
-          other: \`\${count} books\`
-        });
-      `,
-      expected: `
-        import i18n from "@lingui/core";
-        i18n._("id", {
-          0: 42,
-          count: count
-        }, {
-          defaults: "{0, plural, one {# book} other {{count} books}}",
-          comment: "Hello World"
+        ({
+          id: "{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}",
+          values: {
+            0: users.length
+          }
         });
       `
     }
@@ -174,10 +138,8 @@ const testCases = {
       name: "Nested macros",
       input: `
         import { select, plural } from '@lingui/macro'
-        select({
-          value: gender,
-          "male": plural({
-            value: numOfGuests,
+        select(gender, {
+          "male": plural(numOfGuests, {
             one: "He invites one guest",
             other: "He invites # guests"
           }),
@@ -186,37 +148,12 @@ const testCases = {
         });
       `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}", {
-          gender: gender,
-          numOfGuests: numOfGuests
-        });
-      `
-    },
-    {
-      name: "Macro with custom ID",
-      input: `
-        import { plural, select } from '@lingui/macro'
-        select({
-          id: "id",
-          value: "male",
-          "male": plural({
-            value: 42,
-            one: "He invites one guest",
-            other: "He invites # guests"
-          }),
-          female: \`She is \${gender}\`,
-          other: \`They is \${gender}\`
-        });
-      `,
-      expected: `
-        import i18n from "@lingui/core";
-        i18n._("id", {
-          0: "male",
-          1: 42,
-          gender: gender
-        }, {
-          defaults: "{0, select, male {{1, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}"
+        ({
+          id: "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}",
+          values: {
+            gender: gender,
+            numOfGuests: numOfGuests
+          }
         });
       `
     },
@@ -224,16 +161,17 @@ const testCases = {
       name: "Macro with escaped reserved props",
       input: `
         import { select } from '@lingui/macro'
-        select({
-          value: value,
-          _id: 'test escaped id',
-          _comment: 'test escaped comment'
+        select(value, {
+          id: 'test escaped id',
+          comment: 'test escaped comment'
         })
       `,
       expected: `
-        import i18n from "@lingui/core";
-        i18n._("{value, select, id {test escaped id} comment {test escaped comment}}", {
-          value: value
+        ({
+          id: "{value, select, id {test escaped id} comment {test escaped comment}}",
+          values: {
+            value: value
+          }
         });
       `
     }
@@ -242,18 +180,18 @@ const testCases = {
     {
       input: `
         import { t, selectOrdinal } from '@lingui/macro'
-        t\`This is my \${selectOrdinal({
-          value: count,
+        t\`This is my \${selectOrdinal(count, {
           one: "#st",
           "two": \`#nd\`,
           other: ("#rd")
         })} cat\`
       `,
       expected: `
-        import i18n from "@lingui/core";
-
-        i18n._("This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat", {
-          count: count
+        ({
+          id: "This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat",
+          values: {
+            count: count
+          }
         });
       `
     }
@@ -502,14 +440,18 @@ const testCases = {
     {
       input: `
         import { t, plural, Trans } from '@lingui/macro'
-        <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
+        import i18n from "@lingui/core";
+        <Trans>Read <a href="/more" title={i18n._(t\`Full content of \${articleName}\`)}>more</a></Trans>
       `,
       expected: `
         import { Trans } from "@lingui/react";
         import i18n from "@lingui/core";
         <Trans id="Read <0>more</0>" components={{
-          0: <a href="/more" title={i18n._("Full content of {articleName}", {
-            articleName: articleName
+          0: <a href="/more" title={i18n._({
+            id: "Full content of {articleName}",
+            values: {
+              articleName: articleName
+            }
           })} />
         }} />;
       `
@@ -517,17 +459,20 @@ const testCases = {
     {
       input: `
         import { plural } from '@lingui/macro'
-        <a href="/about" title={plural({
-          value: count,
+        import i18n from "@lingui/core"
+        <a href="/about" title={i18n._(plural(count, {
           one: "# book",
           other: "# books"
-        })}>About</a>
+        }))}>About</a>
       `,
       expected: `
         import i18n from "@lingui/core";
         
-        <a href="/about" title={i18n._("{count, plural, one {# book} other {# books}}", {
-          count: count
+        <a href="/about" title={i18n._({
+          id: "{count, plural, one {# book} other {# books}}",
+          values: {
+            count: count
+          }
         })}>About</a>;
       `
     }

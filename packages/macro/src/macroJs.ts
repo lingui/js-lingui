@@ -38,30 +38,47 @@ export default class MacroJs {
     const message = normalizeWhitespace(messageRaw)
 
     const args = []
-    const meta = []
 
     if (id) {
-      args.push(this.types.stringLiteral(id))
-      meta.push(
+      args.push(
         this.types.objectProperty(
-          this.types.identifier("defaults"),
+          this.types.identifier("id"),
+          this.types.stringLiteral(id)
+        )
+      )
+
+      if (process.env.NODE_ENV !== "production") {
+        args.push(
+          this.types.objectProperty(
+            this.types.identifier("message"),
+            this.types.stringLiteral(message)
+          )
+        )
+      }
+    } else {
+      args.push(
+        this.types.objectProperty(
+          this.types.identifier("id"),
           this.types.stringLiteral(message)
         )
       )
-    } else {
-      args.push(this.types.stringLiteral(message))
     }
 
     const valuesObject = Object.keys(values).map(key =>
       this.types.objectProperty(this.types.identifier(key), values[key])
     )
     if (valuesObject.length) {
-      args.push(this.types.objectExpression(valuesObject))
+      args.push(
+        this.types.objectProperty(
+          this.types.identifier("values"),
+          this.types.objectExpression(valuesObject)
+        )
+      )
     }
 
     if (process.env.NODE_ENV !== "production") {
       if (comment) {
-        meta.push(
+        args.push(
           this.types.objectProperty(
             this.types.identifier("comment"),
             this.types.stringLiteral(comment)
@@ -70,19 +87,7 @@ export default class MacroJs {
       }
     }
 
-    if (meta.length) {
-      args.push(this.types.objectExpression(meta))
-    }
-
-    path.replaceWith(
-      this.types.callExpression(
-        this.types.memberExpression(
-          this.types.identifier("i18n"),
-          this.types.identifier("_")
-        ),
-        args
-      )
-    )
+    path.replaceWith(this.types.objectExpression(args))
   }
 
   tokenizeNode = node => {
@@ -136,17 +141,21 @@ export default class MacroJs {
 
   tokenizeChoiceComponent = node => {
     const format = node.callee.name.toLowerCase()
-    const props = node.arguments[0].properties
+
+    const value = node.arguments[0]
+    const name = this.expressionToArgument(value)
 
     const token = {
       type: "arg",
       format,
-      name: null,
-      value: undefined,
+      name,
+      value,
       options: {
         offset: undefined
       }
     }
+
+    const props = node.arguments[1].properties
 
     for (const attr of props) {
       const { key } = attr
@@ -159,11 +168,7 @@ export default class MacroJs {
         ? `=${key.value}`
         : key.name || key.value
 
-      if (name === "value") {
-        const exp = attr.value
-        token.name = this.expressionToArgument(exp)
-        token.value = exp
-      } else if (format !== "select" && name === "offset") {
+      if (format !== "select" && name === "offset") {
         token.options.offset = attr.value.value
       } else {
         let value
