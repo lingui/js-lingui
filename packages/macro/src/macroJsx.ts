@@ -1,14 +1,14 @@
 import * as R from "ramda"
-import ICUMessageFormat from "./icu"
-import { zip } from "./utils"
 import * as babelTypes from "@babel/types"
 import { NodePath } from "@babel/traverse"
+
+import ICUMessageFormat from "./icu"
+import { zip, makeCounter } from "./utils"
+import { ID, COMMENT, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = value =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
-
-const makeCounter = (index = 0) => () => index++
 
 // replace whitespace before/after newline with single space
 const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
@@ -58,7 +58,7 @@ export default class MacroJSX {
       // add it as a `default` prop
       attributes.push(
         this.types.jsxAttribute(
-          this.types.jsxIdentifier("id"),
+          this.types.jsxIdentifier(ID),
           this.types.stringLiteral(id)
         )
       )
@@ -76,7 +76,7 @@ export default class MacroJSX {
     } else {
       attributes.push(
         this.types.jsxAttribute(
-          this.types.jsxIdentifier("id"),
+          this.types.jsxIdentifier(ID),
           this.types.stringLiteral(message)
         )
       )
@@ -86,7 +86,7 @@ export default class MacroJSX {
       if (comment) {
         attributes.push(
           this.types.jsxAttribute(
-            this.types.jsxIdentifier("comment"),
+            this.types.jsxIdentifier(COMMENT),
             this.types.stringLiteral(comment)
           )
         )
@@ -149,11 +149,11 @@ export default class MacroJSX {
       return attr =>
         exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
     }
-    const id = attributes.filter(attrName(["id"]))[0]
-    const defaults = attributes.filter(attrName(["defaults"]))[0]
-    const comment = attributes.filter(attrName(["comment"]))[0]
+    const id = attributes.filter(attrName([ID]))[0]
+    const message = attributes.filter(attrName([MESSAGE]))[0]
+    const comment = attributes.filter(attrName([COMMENT]))[0]
 
-    let reserved = ["id", "defaults", "comment"]
+    let reserved = [ID, MESSAGE, COMMENT]
     if (this.isI18nComponent(node)) {
       // no reserved prop names
     } else if (this.isChoiceComponent(node)) {
@@ -176,7 +176,7 @@ export default class MacroJSX {
 
     return {
       id: maybeNodeValue(id),
-      defaults: maybeNodeValue(defaults),
+      message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
       attributes: attributes.filter(attrName(reserved, true))
     }

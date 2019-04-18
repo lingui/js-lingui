@@ -10,3 +10,5 @@ export function zip(a, b) {
     b[index]
   ])
 }
+
+export const makeCounter = (index = 0) => () => index++

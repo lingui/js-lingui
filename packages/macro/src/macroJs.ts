@@ -1,8 +1,10 @@
 import * as R from "ramda"
-import ICUMessageFormat from "./icu"
-import { zip } from "./utils"
 import * as babelTypes from "@babel/types"
 import { NodePath } from "@babel/traverse"
+
+import ICUMessageFormat from "./icu"
+import { zip, makeCounter } from "./utils"
+import { ID, COMMENT, MESSAGE } from "./constants"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -14,15 +16,13 @@ function normalizeWhitespace(text) {
     .trim()
 }
 
-const generatorFactory = (index = 0) => () => index++
-
 export default class MacroJs {
   types: typeof babelTypes
   _expressionIndex: () => Number
 
   constructor({ types }) {
     this.types = types
-    this._expressionIndex = generatorFactory()
+    this._expressionIndex = makeCounter()
   }
 
   replacePath = (path: NodePath) => {
@@ -42,7 +42,7 @@ export default class MacroJs {
     if (id) {
       args.push(
         this.types.objectProperty(
-          this.types.identifier("id"),
+          this.types.identifier(ID),
           this.types.stringLiteral(id)
         )
       )
@@ -50,7 +50,7 @@ export default class MacroJs {
       if (process.env.NODE_ENV !== "production") {
         args.push(
           this.types.objectProperty(
-            this.types.identifier("message"),
+            this.types.identifier(MESSAGE),
             this.types.stringLiteral(message)
           )
         )
@@ -58,7 +58,7 @@ export default class MacroJs {
     } else {
       args.push(
         this.types.objectProperty(
-          this.types.identifier("id"),
+          this.types.identifier(ID),
           this.types.stringLiteral(message)
         )
       )
@@ -80,7 +80,7 @@ export default class MacroJs {
       if (comment) {
         args.push(
           this.types.objectProperty(
-            this.types.identifier("comment"),
+            this.types.identifier(COMMENT),
             this.types.stringLiteral(comment)
           )
         )
