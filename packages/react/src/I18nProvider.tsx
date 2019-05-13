@@ -1,51 +1,48 @@
 import * as React from "react"
-import { I18n as I18nType } from "@lingui/core"
-
-interface I18nProviderProps {
-  i18n: I18nType
-  children: any
-  defaultRender?: any
-}
+import { I18n } from "@lingui/core"
 
 interface I18nContext {
-  i18n: I18nType
+  i18n: I18n
   defaultRender?: any
 }
 
-interface I18nProviderState {
-  context: I18nContext
+export interface I18nProviderProps extends I18nContext {
+  children: any
 }
 
-const { Provider: I18nContextProvider, Consumer: I18n } = React.createContext({
-  i18n: {},
-  defaultRender: null
-})
+const LinguiContext = React.createContext<I18nContext>(null)
 
-export { I18n }
+export function useLingui() {
+  const context = React.useContext(LinguiContext)
 
-export class I18nProvider extends React.Component<
-  I18nProviderProps,
-  I18nProviderState
-> {
-  unsubscribe: Function
-
-  constructor(props) {
-    super(props)
-    this.state = this.setContext(false)
+  if (context == null) {
+    if (process.env.NODE_ENV !== "production") {
+      throw new Error("useLingui hook was used without I18nProvider.")
+    }
+    return null
+    // return {}
   }
+
+  const { i18n, defaultRender } = context
+  return { i18n, defaultRender }
+}
+
+export const I18nProvider = (props: I18nProviderProps) => {
+  const [context, setContext] = React.useState<I18nContext>(
+    refreshContext(true)
+  )
 
   /**
+   * Subscribe for locale/message changes
+   *
    * I18n object from `@lingui/core` is the single source of truth for all i18n related
    * data (active locale, catalogs). When new messages are loaded or locale is changed
-   * we need to trigger re-rendering of I18nContextConsumers.
+   * we need to trigger re-rendering of LinguiContext.Consumers.
    */
-  componentDidMount() {
-    this.unsubscribe = this.props.i18n.didActivate(this.setContext)
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
+  React.useEffect(() => {
+    const unsubscribe = props.i18n.didActivate(() => refreshContext())
+    return () => unsubscribe()
+  }, [])
 
   /**
    * We can't pass `i18n` object directly through context, because even when locale
@@ -55,28 +52,19 @@ export class I18nProvider extends React.Component<
    *
    * Due to this effect we also pass `defaultRender` in the same context, instead
    * of creating a separate Provider/Consumer pair.
-   *
-   * When `set` is false, `setState` isn't called and new state is returned. This is
-   * used in constructor when we can't call `setState`
    */
-  setContext = (set: boolean = true) => {
-    const state = {
-      context: {
-        i18n: this.props.i18n,
-        defaultRender: this.props.defaultRender
-      }
+  function refreshContext(initial = false) {
+    const newContext = {
+      i18n: props.i18n,
+      defaultRender: props.defaultRender
     }
-
-    if (set) this.setState(state)
-    return state
+    if (initial) return newContext
+    setContext(newContext)
   }
 
-  render() {
-    const { context } = this.state
-    return (
-      <I18nContextProvider value={context}>
-        {context.i18n.locale && this.props.children}
-      </I18nContextProvider>
-    )
-  }
+  return (
+    <LinguiContext.Provider value={context}>
+      {context.i18n.locale && props.children}
+    </LinguiContext.Provider>
+  )
 }

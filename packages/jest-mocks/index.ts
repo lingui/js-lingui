@@ -25,6 +25,7 @@ export function mockConsole(testCase, mock = {}) {
     error: jest.fn()
   }
 
+  // @ts-ignore: Lot of console methods are missing
   global.console = {
     ...defaults,
     ...mock

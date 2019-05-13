@@ -1,15 +1,16 @@
 import * as React from "react"
-import { mount } from "enzyme"
+import { render, act } from "react-testing-library"
 
-import { setupI18n, I18nProvider, I18n, Trans } from "@lingui/react"
+import { I18nProvider, useLingui } from "@lingui/react"
+import { setupI18n } from "@lingui/core"
 
 describe("I18nProvider", function() {
   it("should subscribe for locale changes", function() {
     const i18n = setupI18n()
-    i18n.didActivate = jest.fn()
+    i18n.didActivate = jest.fn(() => jest.fn())
 
     expect(i18n.didActivate).not.toBeCalled()
-    mount(
+    render(
       <I18nProvider i18n={i18n}>
         <div />
       </I18nProvider>
@@ -22,62 +23,59 @@ describe("I18nProvider", function() {
     const i18n = setupI18n()
     i18n.didActivate = jest.fn(() => unsubscribe)
 
-    const node = mount(
+    const { unmount } = render(
       <I18nProvider i18n={i18n}>
         <div />
       </I18nProvider>
     )
     expect(unsubscribe).not.toBeCalled()
-    node.unmount()
+    unmount()
     expect(unsubscribe).toBeCalled()
   })
 
   it("should re-render on locale changes", function() {
     const i18n = setupI18n({
       locale: "en",
-      catalogs: {
-        en: {},
-        cs: {}
-      }
+      catalogs: {}
     })
 
-    const node = mount(
+    function RenderLocale() {
+      const { i18n } = useLingui()
+      return i18n.locale as null
+    }
+
+    const { container } = render(
       <I18nProvider i18n={i18n}>
-        <I18n>{({ i18n }) => i18n.locale}</I18n>
+        <RenderLocale />
       </I18nProvider>
     )
-    expect(node.text()).toEqual("en")
+    expect(container.textContent).toEqual("en")
 
-    i18n.activate("cs")
-    expect(node.text()).toEqual("cs")
+    act(() => {
+      i18n.activate("cs")
+    })
+    expect(container.textContent).toEqual("cs")
   })
 
   it("should render children", function() {
-    const i18n = setupI18n()
-    i18n.activate("en")
+    const i18n = setupI18n({
+      locale: "en"
+    })
 
-    const child = <div className="testcase" />
-    expect(
-      mount(<I18nProvider i18n={i18n}>{child}</I18nProvider>).contains(child)
-    ).toBeTruthy()
+    const child = <div data-testid="child" />
+    const { getByTestId } = render(
+      <I18nProvider i18n={i18n}>{child}</I18nProvider>
+    )
+    expect(getByTestId("child")).toBeTruthy()
   })
 
   it("shouldn't render children if locales aren't loaded", function() {
     const i18n = setupI18n()
 
-    const child = <div className="testcase" />
-    expect(
-      mount(<I18nProvider i18n={i18n}>{child}</I18nProvider>).contains(child)
-    ).toBeFalsy()
-  })
-
-  it("should render custom message for missing translation", function() {
-    const i18n = setupI18n({ locale: "en", missing: "xxx" })
-    const missing = mount(
-      <I18nProvider i18n={i18n}>
-        <Trans id="missing" />
-      </I18nProvider>
-    ).text()
-    expect(missing).toEqual("xxx")
+    const child = <div data-testid="child" />
+    const { queryByTestId } = render(
+      <I18nProvider i18n={i18n}>{child}</I18nProvider>
+    )
+    expect(queryByTestId("child")).toBeFalsy()
   })
 })

@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-key */
 import * as React from "react"
-import { shallow } from "enzyme"
+import { render } from "react-testing-library"
 import { formatElements } from "./format"
 
 describe("formatElements", function() {
-  const html = elements => shallow(<span>{elements}</span>).html()
-  const wrap = html => `<span>${html}</span>`
+  const html = elements => render(elements).container.innerHTML
 
   it("should return string when there're no elements", function() {
     expect(formatElements("")).toEqual("")
@@ -13,22 +12,22 @@ describe("formatElements", function() {
   })
 
   it("should format unpaired elements", function() {
-    expect(html(formatElements("<0/>", [<br />]))).toEqual(wrap("<br/>"))
+    expect(html(formatElements("<0/>", [<br />]))).toEqual("<br>")
   })
 
   it("should format paired elements", function() {
     expect(html(formatElements("<0>Inner</0>", [<strong />]))).toEqual(
-      wrap("<strong>Inner</strong>")
+      "<strong>Inner</strong>"
     )
 
     expect(
       html(formatElements("Before <0>Inner</0> After", [<strong />]))
-    ).toEqual(wrap("Before <strong>Inner</strong> After"))
+    ).toEqual("Before <strong>Inner</strong> After")
   })
 
   it("should preserve element props", function() {
     expect(html(formatElements("<0>About</0>", [<a href="/about" />]))).toEqual(
-      wrap('<a href="/about">About</a>')
+      '<a href="/about">About</a>'
     )
   })
 
@@ -37,7 +36,7 @@ describe("formatElements", function() {
       html(
         formatElements("<0><1>Deep</1></0>", [<a href="/about" />, <strong />])
       )
-    ).toEqual(wrap('<a href="/about"><strong>Deep</strong></a>'))
+    ).toEqual('<a href="/about"><strong>Deep</strong></a>')
 
     expect(
       html(
@@ -47,9 +46,7 @@ describe("formatElements", function() {
         )
       )
     ).toEqual(
-      wrap(
-        'Before <a href="/about">Inside <strong>Nested</strong> Between <br/> After</a>'
-      )
+      'Before <a href="/about">Inside <strong>Nested</strong> Between <br> After</a>'
     )
   })
 })

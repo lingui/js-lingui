@@ -1,19 +1,20 @@
 import * as React from "react"
-import { mount } from "enzyme"
+import { render } from "react-testing-library"
 
 import {
-  setupI18n,
   I18nProvider,
   DateFormat,
   NumberFormat
 } from "@lingui/react"
+import { setupI18n } from "@lingui/core"
 
-const text = (element, locale, locales: string[] | string | null = []) => {
+const text = (element, locale, locales?: string[] | string) => {
   const i18n = setupI18n({
     locale,
     locales
   })
-  return mount(<I18nProvider i18n={i18n}>{element}</I18nProvider>).text()
+  return render(<I18nProvider i18n={i18n}>{element}</I18nProvider>).container
+    .textContent
 }
 
 describe("DateFormat", function() {
@@ -26,32 +27,33 @@ describe("DateFormat", function() {
       now.getFullYear()
     ]
     const expectedDate = `${month}/${day}/${year}`
-    const dateObj = text(<DateFormat value={now} />, "en")
-    expect(dateObj).toEqual(expectedDate)
 
     const dateString = text(<DateFormat value={nowStr} />, "en")
     expect(dateString).toEqual(expectedDate)
+
+    const dateObj = text(<DateFormat value={now} />, "en")
+    expect(dateObj).toEqual(expectedDate)
   })
 
   it("should render using the given locales", function() {
     const now = new Date("2017-06-17:14:00.000Z")
-    const node = text(<DateFormat value={now} />, "en", "fr-FR")
-    expect(node).toEqual("17/06/2017")
+    const rendered = text(<DateFormat value={now} />, "en", "fr-FR")
+    expect(rendered).toEqual("17/06/2017")
   })
 
   it("should render using the first recognized locale", function() {
     const now = new Date("2017-06-17:14:00.000Z")
-    const node = text(<DateFormat value={now} />, "en", [
+    const rendered = text(<DateFormat value={now} />, "en", [
       "unknown-locale",
       "fr-FR"
     ])
-    expect(node).toEqual("17/06/2017")
+    expect(rendered).toEqual("17/06/2017")
   })
 })
 
 describe("NumberFormat", function() {
   it("should render", function() {
-    const node = text(
+    const rendered = text(
       <NumberFormat
         value={42}
         format={{
@@ -62,11 +64,11 @@ describe("NumberFormat", function() {
       />,
       "en"
     )
-    expect(node).toEqual("€42.00")
+    expect(rendered).toEqual("€42.00")
   })
 
   it("should render using the given locales", function() {
-    const node = text(
+    const rendered = text(
       <NumberFormat
         value={42000}
         format={{
@@ -78,11 +80,11 @@ describe("NumberFormat", function() {
       "en",
       "de-DE"
     )
-    expect(node).toEqual("42.000,00 €")
+    expect(rendered).toEqual("42.000,00 €")
   })
 
   it("should render using the first recognized locale", function() {
-    const node = text(
+    const rendered = text(
       <NumberFormat
         value={42000}
         format={{
@@ -94,6 +96,6 @@ describe("NumberFormat", function() {
       "en",
       ["unknown-locale", "de-DE"]
     )
-    expect(node).toEqual("42.000,00 €")
+    expect(rendered).toEqual("42.000,00 €")
   })
 })

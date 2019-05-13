@@ -70,6 +70,7 @@
     "prettier": "^1.17.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-testing-library": "^7.0.0",
     "regenerator-runtime": "^0.13.2",
     "rimraf": "^2.6.1",
     "rollup": "^1.11.3",

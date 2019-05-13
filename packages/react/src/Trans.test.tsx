@@ -1,7 +1,7 @@
 import * as React from "react"
-import { mount } from "enzyme"
-
-import { setupI18n, Trans, I18nProvider } from "@lingui/react"
+import { wait, render } from "react-testing-library"
+import { Trans, I18nProvider } from "@lingui/react"
+import { setupI18n } from "@lingui/core"
 
 describe("Trans component", function() {
   /*
@@ -24,17 +24,22 @@ describe("Trans component", function() {
     }
   })
 
-  const text = node =>
-    mount(<I18nProvider i18n={i18n}>{node}</I18nProvider>).text()
-  const html = node =>
-    mount(<I18nProvider i18n={i18n}>{node}</I18nProvider>).html()
+  const renderWithI18n = node =>
+    render(<I18nProvider i18n={i18n}>{node}</I18nProvider>)
+  const text = node => renderWithI18n(node).container.textContent
+  const html = node => renderWithI18n(node).container.innerHTML
 
   /*
    * Tests
    */
 
-  it("shouldn't throw runtime error without i18n context", function() {
-    expect(mount(<Trans id="unknown" />).text()).toEqual("unknown")
+  it("should throw error without i18n context", function() {
+    const originalConsole = console.error
+    console.error = jest.fn()
+
+    expect(() => render(<Trans id="unknown" />)).toThrow()
+
+    console.error = originalConsole
   })
 
   it("should render default string", function() {
@@ -76,11 +81,9 @@ describe("Trans component", function() {
 
   it("should render component in variables", function() {
     const translation = html(
-      <span>
-        <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
-      </span>
+      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
     )
-    expect(translation).toMatchSnapshot()
+    expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
   it("should render translation inside custom component", function() {
@@ -114,28 +117,19 @@ describe("Trans component", function() {
   })
 
   describe("rendering", function() {
-    // We must test snapshots of HTML output, because <Trans> component might be renamed
-    // in integration test (e.g. Trans$$1).
-
     it("should render just a text without wrapping element", function() {
-      // <Trans> component must be wrapped in <span> if we want to get HTML, otherwise
-      // it's just text and enzyme throws an error.
-      const txt = mount(
-        <span>
-          <Trans id="Just a text" />
-        </span>
-      ).html()
-      expect(txt).toMatchSnapshot()
+      const txt = html(<Trans id="Just a text" />)
+      expect(txt).toEqual("Just a text")
     })
 
     it("should render with built-in element", function() {
-      const span = mount(<Trans render="span" id="Just a text" />).html()
-      expect(span).toMatchSnapshot()
+      const span = html(<Trans render="span" id="Just a text" />)
+      expect(span).toEqual("<span>Just a text</span>")
     })
 
     it("should render custom element", function() {
-      const element = mount(<Trans render={<h1 />} id="Headline" />).html()
-      expect(element).toMatchSnapshot()
+      const element = html(<Trans render={<h1 />} id="Headline" />)
+      expect(element).toEqual("<h1>Headline</h1>")
     })
 
     it("should render function", function() {
@@ -159,12 +153,12 @@ describe("Trans component", function() {
     })
 
     it("should take default render element", function() {
-      const span = mount(
-        <I18nProvider i18n={i18n} defaultRender="span">
+      const span = render(
+        <I18nProvider i18n={i18n} defaultRender="p">
           <Trans id="Just a text" />
         </I18nProvider>
-      ).html()
-      expect(span).toMatchSnapshot()
+      ).container.innerHTML
+      expect(span).toEqual("<p>Just a text</p>")
     })
   })
 })

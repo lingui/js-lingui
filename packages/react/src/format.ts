@@ -15,9 +15,6 @@ function formatElements(
   value: string,
   elements: Array<any> = []
 ): string | Array<any> {
-  // TODO: warn if there're any unprocessed elements
-  // TODO: warn if element at `index` doesn't exist
-
   const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return

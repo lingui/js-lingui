@@ -11,6 +11,12 @@ Minimal required versions are:
 - React: 16.3
 - Babel: 6
 
+Removed :component:`I18n` and :js:func:`withI18n`
+-------------------------------------------------
+
+:component:`I18n` and :js:func:`withI18n` high-order component
+were removed in favor of :js:func:`useLingui` hook.
+
 Removed :component:`I18nProvider` declarative API
 -------------------------------------------------
 

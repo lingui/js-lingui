@@ -1,20 +1,8 @@
-import { I18nProvider, I18n } from "./I18nProvider"
-import Trans from "./Trans"
+export { I18nProvider, useLingui } from "./I18nProvider"
+export { Trans } from "./Trans"
 
-import { withI18n, withI18nForPure } from "./withI18n"
 import createFormat from "./createFormat"
-import { formats, setupI18n } from "@lingui/core"
+import { formats } from "@lingui/core"
 
-const DateFormat = createFormat(formats.date)
-const NumberFormat = createFormat(formats.number)
-
-export {
-  withI18n,
-  withI18nForPure,
-  I18nProvider,
-  I18n,
-  Trans,
-  DateFormat,
-  NumberFormat,
-  setupI18n
-}
+export const DateFormat = createFormat(formats.date)
+export const NumberFormat = createFormat(formats.number)
