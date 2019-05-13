@@ -12,6 +12,7 @@ module.exports = function(options) {
         modules: options.modules === false ? false : "commonjs"
       }
     ],
+    "@babel/preset-typescript",
     "@babel/preset-react",
     "@babel/preset-flow"
   ]

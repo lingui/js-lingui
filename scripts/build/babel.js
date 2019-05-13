@@ -8,7 +8,7 @@ const babelConfig = require("./babel.config")
 const Packaging = require("./packaging")
 const { asyncMkDirP } = require("./utils")
 
-const ignorePatterns = [/\.test.js$/]
+const ignorePatterns = [/\.test.[jt]s$/]
 
 function walk(base, relativePath = "") {
   let files = []
@@ -18,7 +18,7 @@ function walk(base, relativePath = "") {
     if (fs.lstatSync(path.join(base, directory)).isDirectory()) {
       files = files.concat(walk(base, directory))
     } else if (
-      !/\.js$/.test(directory) ||
+      !/\.[jt]s$/.test(directory) ||
       ignorePatterns.some(pattern => pattern.test(directory))
     ) {
       return
@@ -56,7 +56,7 @@ module.exports = async function(bundle) {
         path.join(srcDir, filename),
         babelConfig({ modules: true })
       )
-      fs.writeFileSync(mainOutputPath, code)
+      fs.writeFileSync(mainOutputPath.replace(/\.ts$/, ".js"), code)
     }
   } catch (error) {
     spinner.fail()

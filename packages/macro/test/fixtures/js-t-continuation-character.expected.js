@@ -1,0 +1,3 @@
+({
+  id: "Multiline with continuation"
+});
