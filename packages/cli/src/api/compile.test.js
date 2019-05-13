@@ -1,4 +1,4 @@
-import generate from "babel-generator"
+import generate from "@babel/generator"
 import { compile, createCompiledCatalog } from "./compile"
 
 describe("compile", function() {

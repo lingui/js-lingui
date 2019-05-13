@@ -92,6 +92,7 @@ export default class MacroJs {
       }
     }
 
+    path.addComment("leading", "i18n")
     path.replaceWith(this.types.objectExpression(args))
   }
 

@@ -1,2 +1,1 @@
-import macro from "./src"
-export default macro
+export { default } from "./src"

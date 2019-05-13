@@ -3,7 +3,7 @@ import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
 
-type MessageOptions = {
+export type MessageOptions = {
   defaults?: string
   formats?: Object
 }
@@ -11,18 +11,18 @@ type MessageOptions = {
 export type Locale = string
 export type Locales = Locale | Locale[]
 
-type LocaleData = {
+export type LocaleData = {
   plurals?: Function
 }
 
-type Messages = { [msgId: string]: string | Function }
+export type Messages = { [msgId: string]: string | Function }
 
-type Catalog = {
+export type Catalog = {
   messages: Messages
   localeData?: LocaleData
 }
 
-type Catalogs = { [locale: string]: Catalog }
+export type Catalogs = { [locale: string]: Catalog }
 
 type setupI18nProps = {
   locale?: Locale
@@ -31,7 +31,7 @@ type setupI18nProps = {
   missing?: string | ((message, id) => string)
 }
 
-class I18n {
+export class I18n {
   messageFormat: typeof icu
   _catalogs: Catalogs
   _didActivate: Array<Function>

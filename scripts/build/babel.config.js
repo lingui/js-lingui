@@ -13,8 +13,7 @@ module.exports = function(options) {
       }
     ],
     "@babel/preset-typescript",
-    "@babel/preset-react",
-    "@babel/preset-flow"
+    "@babel/preset-react"
   ]
 
   const plugins = [

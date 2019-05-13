@@ -1,4 +1,4 @@
-import { createMacro, MacroError } from "babel-plugin-macros"
+import { createMacro } from "babel-plugin-macros"
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
 

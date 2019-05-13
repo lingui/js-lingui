@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Catalog, Catalogs, I18n } from "@lingui/core"
+import { I18n } from "@lingui/core"
 import {
   withI18n,
   I18nProvider,
@@ -22,7 +22,7 @@ interface LocalizeAttributeBaseProps {
 const LocalizeAttributeBase = (props: LocalizeAttributeBaseProps) => {
   const { i18n, age } = props
   return (
-    <span title={i18n._(t`Age: ${age}`)} aria-label={i18n._(t("ageId")`${age} years old`)}>Attributes</span>
+    <span title={i18n._(t`Age: ${age}`)} aria-label={i18n._(t`${age} years old`)}>Attributes</span>
   )
 }
 

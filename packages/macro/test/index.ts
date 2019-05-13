@@ -1,7 +1,8 @@
 import fs from "fs"
 import path from "path"
-import { transformFileSync, transform } from "@babel/core"
+import { transformFileSync, transform, TransformOptions } from "@babel/core"
 import prettier from "prettier"
+import { babel } from "@lingui/cli/src/api/extractors"
 
 const testCases = {
   "js-t": [
@@ -658,7 +659,8 @@ const testCases = {
 }
 
 describe("macro", function() {
-  const babelOptions = {
+  const babelOptions: TransformOptions = {
+    filename: "<filename>",
     configFile: false,
     plugins: ["@babel/plugin-syntax-jsx", "macros"]
   }
@@ -666,17 +668,7 @@ describe("macro", function() {
   // return function, so we can test exceptions
   const transformCode = code => () => {
     try {
-      return transform(
-        `import { 
-        t, plural, select, selectOrdinal, date, number,
-        Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat
-      } from '@lingui/macro';
-    ${code}`,
-        {
-          filename: "<filename>",
-          ...babelOptions
-        }
-      ).code.trim()
+      return transform(code, babelOptions).code.trim()
     } catch (e) {
       e.message = e.message.replace(/([^:]*:){2}/, "")
       throw e
@@ -724,10 +716,7 @@ describe("macro", function() {
                   .trim()
                 expect(actual).toEqual(expected)
               } else {
-                const actual = transform(input, {
-                  filename: "<filename>",
-                  ...babelOptions
-                }).code.trim()
+                const actual = transform(input, babelOptions).code.trim()
 
                 expect(clean(actual)).toEqual(clean(expected))
               }
