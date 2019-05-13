@@ -26,6 +26,11 @@ export default class MacroJs {
   }
 
   replacePath = (path: NodePath) => {
+    if (this.isDefineMessages(path.node)) {
+      this.replaceDefineMessages(path)
+      return
+    }
+
     const tokens = this.tokenizeNode(path.node)
 
     const messageFormat = new ICUMessageFormat()
@@ -88,6 +93,29 @@ export default class MacroJs {
     }
 
     path.replaceWith(this.types.objectExpression(args))
+  }
+
+  replaceDefineMessages = path => {
+    const messages = []
+
+    for (const node of path.node.arguments[0].properties) {
+      this._expressionIndex = makeCounter()
+      const tokens = this.tokenizeNode(node.value)
+
+      const messageFormat = new ICUMessageFormat()
+      const { message: messageRaw, id } = messageFormat.fromTokens(tokens)
+      const message = normalizeWhitespace(messageRaw)
+
+      messages.push([node.key, this.types.stringLiteral(id || message)])
+    }
+
+    path.replaceWith(
+      this.types.newExpression(this.types.identifier("Messages"), [
+        this.types.objectExpression(
+          messages.map(([key, value]) => this.types.objectProperty(key, value))
+        )
+      ])
+    )
   }
 
   tokenizeNode = node => {
@@ -196,7 +224,13 @@ export default class MacroJs {
   }
 
   expressionToArgument = exp => {
-    return this.types.isIdentifier(exp) ? exp.name : this._expressionIndex()
+    if (this.types.isIdentifier(exp)) {
+      return exp.name
+    } else if (this.types.isStringLiteral(exp)) {
+      return exp.value
+    } else {
+      return this._expressionIndex()
+    }
   }
 
   /**
@@ -205,6 +239,13 @@ export default class MacroJs {
 
   isIdentifier = (node, name) => {
     return this.types.isIdentifier(node, { name })
+  }
+
+  isDefineMessages = node => {
+    return (
+      this.types.isCallExpression(node) &&
+      this.isIdentifier(node.callee, "defineMessages")
+    )
   }
 
   isI18nMethod = node => {

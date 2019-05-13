@@ -20,13 +20,13 @@ writing format by hand are following:
      const today = new Date()
 
      // With macro
-     t`Hello ${name}, today is ${t.date(today)}`
+     i18n._(t`Hello ${name}, today is ${t.date(today)}`)
 
      // Without macro
-     i18n('Hello {name}, today is {today, date}', { name, date })
+     i18n._('Hello {name}, today is {today, date}', { name, date })
 
      // For the sake of completeness, macro is transformed into this code:
-     // i18n({
+     // i18n._({
      //   id: 'Hello {name}, today is {today, date}',
      //   values: { name, date }
      //  })
@@ -42,14 +42,14 @@ writing format by hand are following:
      const value = 42
 
      // With macro
-     t`Hello ${name}, you have ${t.plural({
+     i18n._(t`Hello ${name}, you have ${plural({
        value,
        one: '# unread message',
        other: '# unread messages'
-     })}`
+     })}`)
 
      // Without macro
-     i18n(
+     i18n._(
        'Hello {name}, you have {value, plural, one {# unread message} other {# unread messages}}',
        { name, date }
      )
@@ -65,18 +65,18 @@ writing format by hand are following:
      const name = "Joe"
      const today = new Date()
 
-     t`Hello ${name}, today is ${t.date(today)}`
+     i18n._(t`Hello ${name}, today is ${t.date(today)}`)
 
      // Lingui configration { messageFormat: 'icu' }
      // ↓ ↓ ↓ ↓ ↓ ↓
-     // i18n({
+     // i18n._({
      //   id: 'Hello {name}, today is {today, date}',
      //   values: { name, date }
      //  })
 
      // Lingui configration { messageFormat: 'fluent' }
      // ↓ ↓ ↓ ↓ ↓ ↓
-     // i18n({
+     // i18n._({
      //   id: 'Hello { $name }, today is { DATETIME($today) }',
      //   values: { name, date }
      //  })
@@ -168,14 +168,16 @@ It's possible to override message ID or add comments for translators by adding
 
    // Message is used as an ID
    t({
+      id: `Default message`,
       comment: "Comment for translators"
-   })`Default message`
+   })
 
    // Custom ID
    t({
       id: "msg.id",
-      comment: "Comment for translators"
-   })`Default message`
+      comment: "Comment for translators",
+      message: `Default message`
+   })
 
 ``t.plural`` and other formatters are already called with object as a first parameter.
 ``id`` and ``comment`` props can be added there:
@@ -184,16 +186,80 @@ It's possible to override message ID or add comments for translators by adding
 
    import t from '@lingui/macro'
 
-   t.plural({
-      id: "msg.plural",
+   const hello = defineMessage({
+      id: "msg.hello",
       comment: "Comment for translators",
-
-      value,
-      one: "# book",
-      other: "# books"
+      message: t`Hello ${"name"}`
    })
 
-``t.date`` and ``t.number`` don't accept ``id`` not ``comment``.
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   // const hello = "msg.hello"
+
+
+   const plural = defineMessage({
+      id: "msg.plural",
+      comment: "Comment for translators",
+      message: plural('value', {
+         one: "# book",
+         other: "# books"
+      })
+   })
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   // const hello = "msg.plural"
+
+Later, in your code, you can translate and format the message:
+
+i18n(hello, { name: "World" })
+i18n(plural, { value: 42 })
+
+Another approach:
+
+   const messages = defineMessages({
+      hello: {
+         id: "msg.hello",
+         comment: "Comment for translators",
+         message: t`Hello ${"name"}`
+      },
+      plural: {
+         id: "msg.plural",
+         comment: "Comment for translators",
+         message: plural('value', {
+            one: "# book",
+            other: "# books"
+         })
+      }
+   })
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   const messages = new Messages({
+      hello: "msg.hello",
+      plural: "msg.plural"
+   })
+
+Later in the code:
+
+messages.use(i18n)
+messages.hello({ name: "World" })
+messages.plural({ value: 42 })
+
+Boom. API ready for typechecking:
+
+messages.plural({ vale: 42 })  // Argument of type '{ vale: number; }' is not assignable to parameter of type '{ value: number; }'.
+
+const Title = props => <Trans>Hello <a href={props.to}>{props.name}</a></Trans>
+const Title = props => <Trans id="Hello <0>World</0>" components={{ 0: <a href={props.to} />}}/>
+
+const Plural = props => <Plural value={arg("value")} one="# book" two="# books" />
+
+const messages = defineMessages({
+   title: t`Hello World`,
+   Title: props => <Trans>Hello <strong>World</strong></Trans>
+})
+
+const messages = new Messages({
+   title: "Hello World",
+   Title: props =>
+})
+
 
 Transformation
 ==============

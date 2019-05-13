@@ -99,6 +99,7 @@ function alreadyVisited(path) {
 
 function getMacroType(tagName) {
   switch (tagName) {
+    case "defineMessages":
     case "t":
     case "plural":
     case "select":

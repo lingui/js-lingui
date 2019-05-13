@@ -634,6 +634,26 @@ const testCases = {
         }} />;
       `
     }
+  ],
+
+  defineMessages: [
+    {
+      only: true,
+      name: "should expand macros",
+      input: `
+        import { defineMessages } from '@lingui/macro';
+        const messages = defineMessages({
+          hello: t\`Hello World\`,
+          plural: plural("value", { one: "book", other: "books" })
+        })
+    `,
+      expected: `
+        const messages = new Messages({
+          hello: "Hello World",
+          plural: "{value, plural, one {book} other {books}}",
+        })
+    `
+    }
   ]
 }
 
@@ -671,8 +691,14 @@ describe("macro", function() {
         prettier.format(value, { parser: "babel" }).replace(/\n+/, "\n")
 
       cases.forEach(
-        ({ name, input, expected, filename, production }, index) => {
-          it(name != null ? name : `${suiteName} #${index + 1}`, () => {
+        (
+          { name, input, expected, filename, production, only, skip },
+          index
+        ) => {
+          let run = it
+          if (only) run = it.only
+          if (skip) run = it.skip
+          run(name != null ? name : `${suiteName} #${index + 1}`, () => {
             expect(input || filename).toBeDefined()
 
             const originalEnv = process.env.NODE_ENV
