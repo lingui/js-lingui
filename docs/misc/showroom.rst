@@ -9,3 +9,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `Staycation <https://www.staycation.co/>`__
 - `Monitora <https://monitora.cz/>`__
 - `Turisto <https://turisto.com/>`__
+- `Nolt <https://nolt.io/>`__
