@@ -35,8 +35,12 @@ describe("PseudoLocalization", () => {
       pseudoLocalize("{value, plural, one {# book} other {# books}}")
     ).toEqual("{value, plural, one {# ƀōōķ} other {# ƀōōķś}}")
     expect(
-      pseudoLocalize("{count, plural, one {{countString} book} other {{countString} books}}")
-    ).toEqual("{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}")
+      pseudoLocalize(
+        "{count, plural, one {{countString} book} other {{countString} books}}"
+      )
+    ).toEqual(
+      "{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}"
+    )
   })
 
   it("shouldn't pseudolocalize variables", () => {

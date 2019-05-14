@@ -48,7 +48,7 @@ describe.skip(
       mockFs({
         [config.localeDir]: {
           fr: {
-          "messages.po": mockFs.file()
+            "messages.po": mockFs.file()
           }
         }
       })

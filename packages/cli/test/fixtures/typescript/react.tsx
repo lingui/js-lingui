@@ -1,7 +1,7 @@
 import * as React from "react"
-import { I18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core"
 import {
-  withI18n,
+  useLingui,
   I18nProvider,
 } from "@lingui/react"
 import {
@@ -14,19 +14,19 @@ import {
     NumberFormat,
 } from "@lingui/macro"
 
+const i18n = setupI18n()
+
 interface LocalizeAttributeBaseProps {
-  i18n: I18n;
   age: number;
 }
 
-const LocalizeAttributeBase = (props: LocalizeAttributeBaseProps) => {
-  const { i18n, age } = props
+const LocalizeAttribute = (props: LocalizeAttributeBaseProps) => {
+  const { i18n } = useLingui()
+  const { age } = props
   return (
     <span title={i18n._(t`Age: ${age}`)} aria-label={i18n._(t`${age} years old`)}>Attributes</span>
   )
 }
-
-const LocalizeAttribute = withI18n(LocalizeAttributeBase)
 
 const App = () => {
   const name = "Ken"
@@ -35,7 +35,7 @@ const App = () => {
   const price = 21.35
   const lastLogin = new Date()
   return (
-    <I18nProvider>
+    <I18nProvider i18n={i18n}>
       <LocalizeAttribute age={23} />
       <Trans>Name {name} in <code>Trans</code>.</Trans>
       <Trans id="transId">Name {name} in <code>Trans</code> with <code>id</code>.</Trans>

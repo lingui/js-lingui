@@ -1,11 +1,7 @@
 import * as React from "react"
 import { render } from "react-testing-library"
 
-import {
-  I18nProvider,
-  DateFormat,
-  NumberFormat
-} from "@lingui/react"
+import { I18nProvider, DateFormat, NumberFormat } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
 const text = (element, locale, locales?: string[] | string) => {

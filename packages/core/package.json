@@ -2,7 +2,7 @@
   "name": "@lingui/core",
   "version": "0.0.0-managed-by-release-script",
   "description": "I18n tools for javascript",
-  "main": "src/index.ts",
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
