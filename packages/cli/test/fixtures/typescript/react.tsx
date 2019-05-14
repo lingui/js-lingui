@@ -2,7 +2,7 @@ import * as React from "react"
 import { setupI18n } from "@lingui/core"
 import {
   useLingui,
-  I18nProvider,
+  I18nProvider
 } from "@lingui/react"
 import {
     t,

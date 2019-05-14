@@ -110,7 +110,7 @@ function getPlugins(
   const isProduction = isProductionBundleType(bundleType)
   const isInGlobalScope = bundleType === UMD_DEV || bundleType === UMD_PROD
   const shouldStayReadable = forcePrettyOutput
-  const packageDir = path.dirname(require.resolve(entry))
+  const packageDir = path.join(path.dirname(require.resolve(entry)), "src")
 
   return [
     // Use Node resolution mechanism.
