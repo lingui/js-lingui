@@ -20,7 +20,7 @@ export function makeInstall() {
       : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
 
-export async function installPackages(dryRun: boolean) {
+export async function installPackages(dryRun) {
   const install = makeInstall()
 
   const type = detect()

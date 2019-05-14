@@ -8,7 +8,7 @@ https://github.com/django/django/blob/master/docs/_ext/djangodocs.py
 from docutils import nodes
 from sphinx import addnodes
 from sphinx.domains.std import Cmdoption
-from sphinx.locale import l_
+from sphinx.locale import _
 from sphinx.util.docfields import TypedField
 
 
@@ -64,7 +64,7 @@ def setup(app):
         ref_nodeclass=jsxmacro,
         objname='React macro',
         doc_field_types=[
-            TypedField('props', label=l_('Props'),
+            TypedField('props', label=_('Props'),
                        names=('prop',),
                        typerolename='jsxmacro',
                        typenames=('proptype', 'type')),
@@ -80,7 +80,7 @@ def setup(app):
         ref_nodeclass=react_component,
         objname='Component',
         doc_field_types=[
-            TypedField('props', label=l_('Props'),
+            TypedField('props', label=_('Props'),
                        names=('prop',),
                        typerolename='component',
                        typenames=('proptype', 'type')),
@@ -100,7 +100,7 @@ def setup(app):
     app.add_crossref_type('config', 'conf')
     app.add_crossref_type('icu', 'icu')
 
-    app.add_description_unit(
+    app.add_object_type(
         directivename="lingui-cli",
         rolename="cli",
         indextemplate="pair: %s; lingui-cli command",

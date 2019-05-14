@@ -8,6 +8,7 @@ import { getConfig } from "@lingui/conf"
 
 import configureCatalog from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
+import { helpRun } from "./api/help"
 
 function command(config, options) {
   const catalog = configureCatalog(config)
@@ -16,7 +17,7 @@ function command(config, options) {
   if (!locales.length) {
     console.log("No locales defined!\n")
     console.log(
-      `(use "${chalk.yellow("lingui add-locale <language>")}" to add one)`
+      `(use "${chalk.yellow(helpRun("add-locale <locale>"))}" to add one)`
     )
     return false
   }
@@ -34,7 +35,7 @@ function command(config, options) {
     console.log("Nothing to compile, message catalogs are empty!\n")
     console.log(
       `(use "${chalk.yellow(
-        "lingui extract"
+        helpRun("extract")
       )}" to extract messages from source files)`
     )
     return false
@@ -44,7 +45,7 @@ function command(config, options) {
 
   return locales.map(locale => {
     const [language] = locale.split(/[_-]/)
-    if (!plurals[language]) {
+    if (locale !== config.pseudoLocale && !plurals[language]) {
       console.log(
         chalk.red(
           `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
@@ -128,12 +129,12 @@ if (require.main === module) {
       console.log(
         "    # Compile translations and use defaults or message IDs for missing translations"
       )
-      console.log("    $ lingui compile")
+      console.log(`    $ ${helpRun("compile")}`)
       console.log("")
       console.log("    # Compile translations but fail when there're missing")
       console.log("    # translations (don't replace missing translations with")
       console.log("    # default messages or message IDs)")
-      console.log("    $ lingui compile --strict")
+      console.log(`    $ ${helpRun("compile --strict")}`)
     })
     .parse(process.argv)
 

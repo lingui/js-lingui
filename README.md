@@ -11,8 +11,9 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
 
-[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
+[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
@@ -44,33 +45,20 @@ Lingui is an easy yet powerful internationalization framework for global project
   React components are additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
   
-- **Active community** - Join us on [Gitter.im][Gitter] to discuss the latest development.
+- **Active community** - Join us on [Spectrum][Spectrum] to discuss the latest development.
   At the moment, Lingui is the most active intl project on GitHub.
   
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl
   and the message format is the same. It's easy to migrate an existing project.
 
-## How does it look like?
-
-### Example with React
-   
-<div align="center">
-   
-   ![Example with React](https://lingui.js.org/_static/pitch_messages.png)
-   
-</div>
-
-### Example with React using message IDs
-
-<div align="center">
-
-   ![Example with React using message IDs](https://lingui.js.org/_static/pitch_keys.png)
-   
-</div>
-
 ## Quickstart
 
-Checkout these tutorials for installation instructions and brief introduction:
+### Install
+
+- [Create React App][TutorialSetupCRA]
+- [React projects][TutorialSetupReact]
+
+### Tutorials
 
 - [React][TutorialReact]
 - [React Native][TutorialReactNative]
@@ -79,6 +67,32 @@ Checkout these tutorials for installation instructions and brief introduction:
 
 If you're a react-intl user, checkout
 [comparison of react-intl and Lingui](https://lingui.js.org/misc/react-intl.html).
+
+## Example
+
+Short example how i18n looks with JSX:
+
+```js
+import { Trans } from "@lingui/macro"
+
+function App() {
+  return (
+   <Trans id="msg.docs" /* id is optional */>
+     Read the <a href="https://lingui.js.org">documentation</a>
+     for more info.
+   </Trans>
+  )
+}
+```
+
+Message from this component will be extracted in following format:
+
+```po
+msgid "msg.docs"
+msgstr "Read the <0>documentation</0> for more info."
+```
+
+For more example see the [React tutorial][TutorialReact].
 
 ## Support
 
@@ -140,6 +154,8 @@ The project is licensed under the [MIT][License] license.
 [TutorialReactNative]: https://lingui.js.org/tutorials/react-native.html
 [TutorialJavaScript]: https://lingui.js.org/tutorials/javascript.html
 [TutorialCLI]: https://lingui.js.org/tutorials/cli.html
+[TutorialSetupCRA]: https://lingui.js.org/tutorials/setup-cra.html
+[TutorialSetupReact]: https://lingui.js.org/tutorials/setup-react.html
 [RefCLI]: https://lingui.js.org/ref/cli.html
 
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
@@ -165,4 +181,4 @@ The project is licensed under the [MIT][License] license.
 [ocsponsors-local]: #sponsors
 [BundleReact]: https://bundlephobia.com/result?p=@lingui/react
 [BundleCore]: https://bundlephobia.com/result?p=@lingui/core
-[Gitter]: https://gitter.im/lingui/js-lingui
+[Spectrum]: https://spectrum.chat/linguijs

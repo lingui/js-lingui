@@ -11,17 +11,13 @@ responsibility to load messages based on active language. Here's an example of
 ``I18nLoader`` component which is connected to Redux store and loads message
 catalogs using `dynamic import in Webpack <https://webpack.js.org/guides/code-splitting-async/>`_.
 
-Requirements
-============
-
-- babel
-- webpack 2.x
-- redux
-- @lingui/react
-- @lingui/loader
-
 Setup
 =====
+
+.. warning::
+
+   You don't have to install following Babel plugins if you're using Create React App
+   or similar framework which already has it.
 
 We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
 to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and

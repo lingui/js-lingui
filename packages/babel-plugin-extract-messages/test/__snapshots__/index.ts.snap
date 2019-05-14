@@ -13,6 +13,19 @@ Object {
 }
 `;
 
+exports[`babel-plugin-lingui-extract-messages should extract Plural messages from JSX files when there's no Trans tag (integration) 1`] = `
+Object {
+  {count, plural, one {# book} other {# books}}: Object {
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration-without-trans.js,
+        3,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
   msg.hello: Object {
@@ -51,7 +64,35 @@ Object {
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
-        21,
+        36,
+      ],
+    ],
+  },
+  Message With Description Multiline: Object {
+    description: description
+multiline,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        20,
+      ],
+    ],
+  },
+  Message With Description No Colon: Object {
+    description: description,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        13,
+      ],
+    ],
+  },
+  Message With Description Spaced: Object {
+    description: description,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        9,
       ],
     ],
   },
@@ -60,7 +101,7 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
-        14,
+        29,
       ],
     ],
   },
@@ -70,7 +111,7 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
-        9,
+        24,
       ],
     ],
   },

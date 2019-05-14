@@ -107,7 +107,7 @@ async function release() {
   })
   if (!confirmGit) return
 
-  await exec("git add package.json")
+  await exec("git add package.json scripts/build/results.json")
   try {
     await exec(`git commit -m "chore: release v${newVersion}"`)
   } catch (e) {
@@ -182,7 +182,7 @@ async function getNewVersion(npmTag) {
         name: `current ${currentVersion}`
       },
       ...(npmTag === "latest"
-        ? ["path", "minor", "major"]
+        ? ["patch", "minor", "major"]
         : ["prerelease", "prepatch", "preminor", "premajor"]
       ).map(value => ({
         value,

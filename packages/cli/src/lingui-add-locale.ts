@@ -4,6 +4,7 @@ import { getConfig } from "@lingui/conf"
 
 import configureCatalog from "./api/catalog"
 import { LinguiConfig } from "./api/types"
+import { helpRun } from "./api/help"
 
 export default function command(config: LinguiConfig, locales: Array<string>) {
   const catalog = configureCatalog(config)
@@ -26,7 +27,9 @@ export default function command(config: LinguiConfig, locales: Array<string>) {
   // At least one language was added successfully
   if (results.filter(Boolean).length) {
     console.log()
-    console.log(`(use "${chalk.yellow("lingui extract")}" to extract messages)`)
+    console.log(
+      `(use "${chalk.yellow(helpRun("extract"))}" to extract messages)`
+    )
   }
 }
 
@@ -41,10 +44,10 @@ if (require.main === module) {
     .on("--help", function() {
       console.log("\n  Examples:\n")
       console.log("    # Add single locale")
-      console.log("    $ lingui add-locale en")
+      console.log(`    $ ${helpRun("add-locale en")}`)
       console.log("")
       console.log("    # Add multiple locales")
-      console.log("    $ lingui add-locale en es fr ru")
+      console.log(`    $ ${helpRun("add-locale en es fr ru")}`)
     })
     .parse(process.argv)
 

@@ -131,6 +131,23 @@ describe("babel-plugin-lingui-extract-messages", function() {
     }
   )
 
+  testCase(
+    "should extract Plural messages from JSX files when there's no Trans tag (integration)",
+    transform => {
+      // first run should create all required folders and write messages
+      expect(transform("jsx/integration-without-trans.js")).not.toThrow()
+      // another runs should just write messages
+      expect(transform("jsx/integration-without-trans.js")).not.toThrow()
+
+      const messages = JSON.parse(
+        fs.readFileSync(
+          path.join(buildDir, "jsx", "integration-without-trans.js.json")
+        )
+      )
+      expect(messages).toMatchSnapshot()
+    }
+  )
+
   testCase("should extract all messages from JS files", transform => {
     // first run should create all required folders and write messages
     expect(transform("js/all.js", false)).not.toThrow()

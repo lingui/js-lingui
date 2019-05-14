@@ -70,6 +70,13 @@ Documentation contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Installation
+
+   Create React App <tutorials/setup-cra>
+   React project <tutorials/setup-react>
+
+.. toctree::
+   :maxdepth: 1
    :caption: Tutorials
 
    React <tutorials/react>
@@ -99,6 +106,7 @@ Documentation contents
    CLI <ref/cli>
    Configuration <ref/conf>
    Webpack Loader <ref/loader>
+   Catalog Formats <ref/catalog-formats>
    ICU MessageFormat <ref/message-format>
 
 .. toctree::

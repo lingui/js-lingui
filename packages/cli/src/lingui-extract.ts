@@ -13,6 +13,7 @@ import { extract, collect, cleanObsolete, order } from "./api/extract"
 import { printStats } from "./api/stats"
 import { removeDirectory } from "./api/utils"
 import { detect } from "./api/detect"
+import { helpRun } from "./api/help"
 
 type ExtractOptions = {
   verbose: boolean
@@ -48,7 +49,7 @@ export default function command(
   if (!locales.length) {
     console.log("No locales defined!\n")
     console.log(
-      `(use "${chalk.yellow("lingui add-locale <language>")}" to add one)`
+      `(use "${chalk.yellow(helpRun("add-locale <locale>"))}" to add one)`
     )
     return false
   }
@@ -114,17 +115,17 @@ export default function command(
 
   console.log(
     `(use "${chalk.yellow(
-      "lingui add-locale <language>"
+      helpRun("add-locale <locale>")
     )}" to add more locales)`
   )
   console.log(
     `(use "${chalk.yellow(
-      "lingui extract"
+      helpRun("extract")
     )}" to update catalogs with new messages)`
   )
   console.log(
     `(use "${chalk.yellow(
-      "lingui compile"
+      helpRun("compile")
     )}" to compile catalogs for production)`
   )
   return true
@@ -175,7 +176,7 @@ if (require.main === module) {
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
     console.log(
-      chalk.yellow(`lingui extract --format minimal --convert-from lingui`)
+      chalk.yellow(helpRun(`extract --format minimal --convert-from lingui`))
     )
     process.exit(1)
   }

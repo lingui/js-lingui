@@ -45,9 +45,7 @@ describe("lingui extract", function() {
       expect(console.log).toBeCalledWith(
         expect.stringContaining("No locales defined")
       )
-      expect(console.log).toBeCalledWith(
-        expect.stringContaining("lingui add-locale")
-      )
+      expect(console.log).toBeCalledWith(expect.stringContaining("add-locale"))
     })
   })
   it("should add pseudoLocale when defined", () => {

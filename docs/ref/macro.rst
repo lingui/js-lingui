@@ -43,7 +43,7 @@ a message in `MessageFormat syntax <message-format>`_:
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
 |    plural({                                                 |    /*i18n*/{                                                       |
-|      value: count,                                          |      id: "{value, plural, one {Message} other {Messages}}",        |
+|      value: count,                                          |      id: "{count, plural, one {Message} other {Messages}}",        |
 |      one: "Message",                                        |      values: { count }                                             |
 |      other: "Messages"                                      |    }                                                               |
 |    })                                                       |                                                                    |
@@ -71,7 +71,7 @@ the result in :component:`Trans` component:
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | ``<Trans>Attachment {name} saved</Trans>``                  | ``<Trans id="Attachment {name} saved" />``                         |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
-| ``<Plural value={count} one="Message" other="Messages" />`` | ``<Trans id="{value, plural, one {Message} other {Messages}}" />`` |
+| ``<Plural value={count} one="Message" other="Messages" />`` | ``<Trans id="{count, plural, one {Message} other {Messages}}" />`` |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | ``<Trans>Today is <DateFormat value={today} /></Trans>``    | ``<Trans id="Today is {today, date}" />``                          |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
@@ -147,7 +147,7 @@ front of the macro:
      id: 'Message'
    }
 
-Desctiption is extracted to message catalog as a help text for translators.
+Description is extracted to message catalog as a help text for translators.
 
 t
 ^

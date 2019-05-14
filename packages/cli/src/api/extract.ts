@@ -51,7 +51,7 @@ export function extract(
     )
       return
 
-    if (fs.lstatSync(srcFilename).isDirectory()) {
+    if (fs.statSync(srcFilename).isDirectory()) {
       const subdirs = fs
         .readdirSync(srcFilename)
         .map(filename => path.join(srcFilename, filename))

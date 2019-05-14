@@ -1,5 +1,58 @@
 # Change Log
 
+<a name="2.7.4"></a>
+## [2.7.4](https://github.com/lingui/js-lingui/compare/v2.7.2...v2.7.3) (2019-02-19)
+
+### Bug Fixes
+
+* Conf: Allow `extends` and `rootMode` babel config options ([#454](https://github.com/lingui/js-lingui/pull/454/)).
+  Thanks to [Adam Thomas](https://github.com/adamscybot).
+* React: Fix flow typing with Flow 0.92 ([#448](https://github.com/lingui/js-lingui/pull/448/)).
+  Thanks to [Florian Rival](https://github.com/4ian).
+
+<a name="2.7.3"></a>
+## [2.7.3](https://github.com/lingui/js-lingui/compare/v2.7.2...v2.7.3) (2019-01-28)
+
+- Export `@lingui/core/dev` subpackage.
+
+### Bug Fixes
+
+* CLI: Log original info with Babel compatibility info ([#401](https://github.com/lingui/js-lingui/issues/401)).
+  Thanks to [Sam Gluck](https://github.com/sdgluck).
+* CLI: Allow pseudolocales which don't start with a known language ([#411](https://github.com/lingui/js-lingui/issues/411)).
+  Thanks to [Eric Plumb](https://github.com/professorplumb).
+* CLI: Made pseudolocales to take into account variable names ([#419](https://github.com/lingui/js-lingui/issues/419)).
+  Thanks to [Cornel Stefanache](https://github.com/cstefanache).
+* CLI: Fix edge case bug in plural pseudolocalization ([#428](https://github.com/lingui/js-lingui/issues/428)).
+  Thanks to [Eric Plumb](https://github.com/professorplumb).
+* CLI: Fix yarn detection with nps ([#441](https://github.com/lingui/js-lingui/issues/441)).
+  Thanks to [MU AOHUA](https://github.com/AOHUA).
+  
+
+<a name="2.7.2"></a>
+## [2.7.2](https://github.com/lingui/js-lingui/compare/v2.7.1...v2.7.2) (2018-11-14)
+
+### Bug Fixes
+
+* CLI: show more accurate follow-up commands (e.g. show `use (yarn compile) ...` instead of `use (lingui compile) ...` when CLI is invoked using `yarn extract`)
+* CLI: add missing export (regression introduced by [#381](https://github.com/lingui/js-lingui/pull/381))
+
+<a name="2.7.1"></a>
+## [2.7.1](https://github.com/lingui/js-lingui/compare/v2.7.0...v2.7.1) (2018-11-12)
+
+### Bug Fixes
+
+* CLI: remove "macros" from the list of babel plugins ([#360](https://github.com/lingui/js-lingui/pull/360)).
+  Thanks to [Jérôme Steunou](https://github.com/JSteunou).
+* Macro: fix ICU message for nested selects ([#365](https://github.com/lingui/js-lingui/pull/365)).
+  Thanks to [Maxim Zemskov](https://github.com/Nodge).
+* CLI: allow leading space in i18n description comments ([#366](https://github.com/lingui/js-lingui/pull/366)).
+  Thanks to [Maxim Zemskov](https://github.com/Nodge).
+* Disable Google Clojure Compiler rewritePolyfills behavior ([#374](https://github.com/lingui/js-lingui/pull/374)).
+  Thanks to [Ivan Khilko](https://github.com/ikhilko).
+* Show hint for missing babel-core package ([#381](https://github.com/lingui/js-lingui/pull/381)).
+* Fix message extracting when Trans component is missing ([#389](https://github.com/lingui/js-lingui/pull/389)).
+
 <a name="2.7.0"></a>
 ## [2.7.0](https://github.com/lingui/js-lingui/compare/v2.6.1...v2.7.0) (2018-09-10)
 

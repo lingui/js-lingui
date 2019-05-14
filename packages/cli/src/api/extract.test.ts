@@ -92,7 +92,7 @@ describe("extract", function() {
 })
 
 describe("collect", function() {
-  beforeAll(() => {
+  beforeEach(() => {
     mockFs({
       src: {
         components: {
@@ -139,19 +139,28 @@ describe("collect", function() {
     })
   })
 
-  afterAll(() => {
+  afterEach(() => {
     mockFs.restore()
   })
 
   it("should traverse directory and collect messages", function() {
     const { collect } = require("./extract")
     const catalog = collect("src")
+    mockFs.restore()
     expect(catalog).toMatchSnapshot()
   })
 
   it("should throw an error about different defaults", function() {
     const { collect } = require("./extract")
-    expect(() => collect("diffDefaults")).toThrowErrorMatchingSnapshot()
+    try {
+      collect("diffDefaults")
+    } catch (e) {
+      // we have to call mockFs.restore *before* matching with snapshot
+      mockFs.restore()
+      expect(() => {
+        throw e
+      }).toThrowErrorMatchingSnapshot()
+    }
   })
 })
 
