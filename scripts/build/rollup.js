@@ -2,14 +2,13 @@
 
 const { rollup } = require("rollup")
 const babel = require("rollup-plugin-babel")
-const closure = require("rollup-plugin-closure-compiler")
+const { terser } = require("rollup-plugin-terser")
 const commonjs = require("rollup-plugin-commonjs")
 const resolve = require("rollup-plugin-node-resolve")
 const prettier = require("rollup-plugin-prettier")
 const replace = require("rollup-plugin-replace")
 const typescript = require("rollup-plugin-typescript2")
 const ora = require("ora")
-// const stripBanner = require("rollup-plugin-strip-banner")
 const chalk = require("chalk")
 const path = require("path")
 const fs = require("fs")
@@ -40,21 +39,7 @@ process.on("unhandledRejection", err => {
   throw err
 })
 
-const { UNIVERSAL, NODE } = Bundles.bundleTypes
-
 const forcePrettyOutput = argv.pretty
-const shouldExtractErrors = argv["extract-errors"]
-
-const closureOptions = {
-  compilationLevel: "SIMPLE",
-  languageIn: "ECMASCRIPT5_STRICT",
-  languageOut: "ECMASCRIPT5_STRICT",
-  env: "CUSTOM",
-  warningLevel: "QUIET",
-  applyInputSourceMaps: false,
-  useTypesForOptimization: false,
-  processCommonJsModules: false
-}
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
@@ -122,10 +107,11 @@ function getPlugins(
   moduleType,
   modulesToStub
 ) {
-  // const findAndRecordErrorCodes = extractErrorCodes(errorCodeOpts)
   const isProduction = isProductionBundleType(bundleType)
   const isInGlobalScope = bundleType === UMD_DEV || bundleType === UMD_PROD
   const shouldStayReadable = forcePrettyOutput
+  const packageDir = path.dirname(require.resolve(entry))
+
   return [
     // Use Node resolution mechanism.
     resolve({
@@ -133,15 +119,14 @@ function getPlugins(
     }),
 
     typescript({
-      tsconfigDefaults: {
-        compilerOptions: {
-          sourceMap: true,
-          declaration: true,
-          jsx: "react"
-        }
-      },
       tsconfigOverride: {
+        include: [`${packageDir}/**/*.ts`, `${packageDir}/**/*.tsx`],
+        exclude: ["**/*.test.ts", "**/*.test.tsx"],
         compilerOptions: {
+          rootDir: packageDir,
+          declaration: true,
+          declarationMap: true,
+          mapRoot: "",
           module: "esnext",
           target: "esnext"
         }
@@ -150,7 +135,7 @@ function getPlugins(
 
     // Compile to ES5.
     babel(getBabelConfig(updateBabelOptions, bundleType)),
-    // Turn __DEV__ and process.env checks into constants.
+    // Turn process.env checks into constants.
     replace({
       "process.env.NODE_ENV": isProduction ? "'production'" : "'development'"
     }),
@@ -160,26 +145,26 @@ function getPlugins(
 
     // Apply dead code elimination and/or minification.
     isProduction &&
-      closure(
-        Object.assign({}, closureOptions, {
-          // Don't let it create global variables in the browser.
-          // https://github.com/facebook/react/issues/10909
-          assumeFunctionWrapper: !isInGlobalScope,
-          // Works because `google-closure-compiler-js` is forked in Yarn lockfile.
-          // We can remove this if GCC merges my PR:
-          // https://github.com/google/closure-compiler/pull/2707
-          // and then the compiled version is released via `google-closure-compiler-js`.
-          renaming: !shouldStayReadable
-        })
-      ),
+      terser({
+        sourcemap: true,
+        output: { comments: false },
+        compress: {
+          keep_infinity: true,
+          pure_getters: true,
+          collapse_vars: false
+        },
+        ecma: 5,
+        toplevel: !isInGlobalScope,
+        warnings: true
+      }),
 
     // Add the whitespace back if necessary.
     shouldStayReadable && prettier(),
 
     // Record bundle size.
     sizes({
-      getSize: (size, gzip) => {
-        const key = `${filename} (${bundleType})`
+      getSize: (name, size, gzip) => {
+        const key = `@lingui/${name} (${bundleType})`
         Stats.currentBuildResults.bundleSizes[key] = {
           size,
           gzip

@@ -1,6 +1,6 @@
 "use strict"
 
-const path = require("path")
+const pkgUp = require("pkg-up")
 const { UNIVERSAL } = require("./bundles").bundleTypes
 
 // For any external that is used in a DEV-only condition, explicitly
@@ -37,8 +37,9 @@ function getPeerGlobals(externals = [], bundleType) {
 
 // Determines node_modules packages that are safe to assume will exist.
 function getDependencies(bundleType, entry) {
-  const packageJson = require(path.dirname(require.resolve(entry)) +
-    "/package.json")
+  const pkgJsonPath = pkgUp.sync({ cwd: require.resolve(entry) })
+  const packageJson = require(pkgJsonPath)
+
   // Both deps and peerDeps are assumed as accessible.
   return Array.from(
     new Set([

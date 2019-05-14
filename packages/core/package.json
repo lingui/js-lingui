@@ -2,6 +2,12 @@
   "name": "@lingui/core",
   "version": "0.0.0-managed-by-release-script",
   "description": "I18n tools for javascript",
+  "main": "src/index.ts",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
   "keywords": [
     "i18n",
     "i10n",
@@ -10,14 +16,13 @@
     "localization",
     "translation"
   ],
-  "repository": "lingui/js-lingui",
-  "bugs": "https://github.com/lingui/js-lingui/issues",
-  "license": "MIT",
-  "author": {
-    "name": "Tomáš Ehrlich",
-    "email": "tomas.ehrlich@gmail.com"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
   },
-  "main": "index.ts",
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
   "engines": {
     "node": ">=8.0.0"
   },
@@ -25,8 +30,6 @@
     "LICENSE",
     "README.md",
     "index.js",
-    "dev.js",
-    "*.js.flow",
     "cjs/"
   ],
   "dependencies": {
