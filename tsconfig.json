@@ -5,6 +5,6 @@
     "noEmit": true,
     "pretty": true,
     "esModuleInterop": true,
-    "target": "es2018"
+    "target": "es2017"
   }
 }

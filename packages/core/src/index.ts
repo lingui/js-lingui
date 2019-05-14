@@ -1,4 +1,5 @@
-import { setupI18n, Locales, I18n, Catalog, Catalogs } from "./i18n"
-import * as formats from "./formats"
+import { Locales } from "./i18n"
+export { setupI18n, I18n, Catalog, Catalogs } from "./i18n"
 
-export { setupI18n, formats, Locales, I18n, Catalog, Catalogs }
+import * as formats from "./formats"
+export { formats, Locales }

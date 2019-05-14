@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { useLingui } from "@lingui/react"
+import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
 export interface TransProps {

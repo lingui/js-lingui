@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { Locales } from "@lingui/core"
-import { useLingui } from "@lingui/react"
+import { useLingui } from "./I18nProvider"
 
 type FormatProps<V, FormatOptions> = {
   value: V

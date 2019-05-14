@@ -7,6 +7,7 @@ const commonjs = require("rollup-plugin-commonjs")
 const resolve = require("rollup-plugin-node-resolve")
 const prettier = require("rollup-plugin-prettier")
 const replace = require("rollup-plugin-replace")
+const typescript = require("rollup-plugin-typescript2")
 const ora = require("ora")
 // const stripBanner = require("rollup-plugin-strip-banner")
 const chalk = require("chalk")
@@ -26,6 +27,8 @@ const UMD_DEV = "UMD_DEV"
 const UMD_PROD = "UMD_PROD"
 const NODE_DEV = "NODE_DEV"
 const NODE_PROD = "NODE_PROD"
+
+const extensions = [".js", ".ts", ".tsx"]
 
 // Errors in promises should be fatal.
 let loggedErrors = new Set()
@@ -57,7 +60,7 @@ function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
     babelrc: false,
     exclude: "node_modules/**",
-    extensions: [".js", ".ts"],
+    extensions,
     runtimeHelpers: true
   })
 }
@@ -126,7 +129,23 @@ function getPlugins(
   return [
     // Use Node resolution mechanism.
     resolve({
-      extensions: [".js", ".ts"]
+      extensions
+    }),
+
+    typescript({
+      tsconfigDefaults: {
+        compilerOptions: {
+          sourceMap: true,
+          declaration: true,
+          jsx: "react"
+        }
+      },
+      tsconfigOverride: {
+        compilerOptions: {
+          module: "esnext",
+          target: "esnext"
+        }
+      }
     }),
 
     // Compile to ES5.
