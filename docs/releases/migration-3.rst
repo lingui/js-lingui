@@ -11,14 +11,14 @@ Minimal required versions are:
 - React: 16.3
 - Babel: 6
 
-Removed :component:`I18n` and :js:func:`withI18n`
--------------------------------------------------
+@lingui/react
+-------------
 
-:component:`I18n` and :js:func:`withI18n` high-order component
+- :component:`I18n` and :js:func:`withI18n` high-order component
 were removed in favor of :js:func:`useLingui` hook.
 
 Removed :component:`I18nProvider` declarative API
--------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 LinguiJS started as a React library. After `@lingui/core` package was introduced,
 there were two ways how to switch active locales and manage catalogs in React: either
@@ -46,8 +46,11 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
         )
      }
 
+@lingui/core
+------------
+
 `i18n.load` loads a catalog for a single locale
------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``i18n`` manager is the single source of truth and there's no need to keep all catalogs
 loaded outside this object. To make loading easier, `i18n.load` now accepts catalog
@@ -75,6 +78,11 @@ message catalogs in SSR), use `i18n.loadAll` instead.
 
       export const i18n = setupI18n()
       i18n.loadAll({ en: catalogEn })
+
+@lingui/cli
+-----------
+
+- command `lingui init` was removed
 
 Whitespace and HTML entities
 ----------------------------
@@ -177,6 +185,8 @@ needed anymore.
 
       - i18n.t`Hello World`
       + i18n._(t`Hello World`)
+
+
 
 New features
 ============

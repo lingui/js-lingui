@@ -21,7 +21,7 @@ function catchBabelVersionMismatch(fn) {
       ) {
         logged = true
 
-        const { makeInstall } = require("../lingui-init")
+        const { makeInstall } = require("./utils")
         const install = makeInstall()
         console.log(chalk.red("Please install missing Babel 6 core package:"))
         console.log()
@@ -34,7 +34,7 @@ function catchBabelVersionMismatch(fn) {
       ) {
         logged = true
 
-        const { makeInstall } = require("../lingui-init")
+        const { makeInstall } = require("./utils")
         const install = makeInstall()
         console.log(chalk.red("Please install missing Babel 7 core packages:"))
         console.log()
