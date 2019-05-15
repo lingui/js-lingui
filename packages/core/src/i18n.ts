@@ -2,6 +2,7 @@ import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
+import { MessageDescriptor } from "./messages"
 
 export type MessageOptions = {
   defaults?: string
@@ -142,10 +143,14 @@ export class I18n {
 
   // default translate method
   _(
-    id: string,
+    id: MessageDescriptor | string,
     values: Object | undefined = {},
     { defaults, formats }: MessageOptions | undefined = {}
   ) {
+    if (!isString(id)) {
+      defaults = id.message
+      id = id.id
+    }
     let translation = this.messages[id] || defaults || id
 
     // replace missing messages with custom message for debugging
