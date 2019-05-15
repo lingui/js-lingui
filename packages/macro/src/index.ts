@@ -35,7 +35,11 @@ function macro({ references, state, babel }) {
   })
 
   if (jsxNodes.length) {
-    addLinguiReactImport(babel, state)
+    addImport(babel, state, "@lingui/react", "Trans")
+  }
+
+  if (jsNodes && Object.keys(references).includes("defineMessages")) {
+    addImport(babel, state, "@lingui/core", "Messages")
   }
 
   if (process.env.LINGUI_EXTRACT === "1") {
@@ -45,31 +49,30 @@ function macro({ references, state, babel }) {
   }
 }
 
-function addLinguiReactImport(babel, state) {
+function addImport(babel, state, module, importName) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
     importNode =>
-      t.isImportDeclaration(importNode) &&
-      importNode.source.value === "@lingui/react"
+      t.isImportDeclaration(importNode) && importNode.source.value === module
   )
 
+  const tIdentifier = t.identifier(importName)
   // Handle adding the import or altering the existing import
   if (linguiImport) {
     if (
       linguiImport.specifiers.findIndex(
-        specifier => specifier.imported && specifier.imported.name === "Trans"
+        specifier =>
+          specifier.imported && specifier.imported.name === importName
       ) === -1
     ) {
-      linguiImport.specifiers.push(
-        t.importSpecifier(t.identifier("Trans"), t.identifier("Trans"))
-      )
+      linguiImport.specifiers.push(t.importSpecifier(tIdentifier, tIdentifier))
     }
   } else {
     state.file.path.node.body.unshift(
       t.importDeclaration(
-        [t.importSpecifier(t.identifier("Trans"), t.identifier("Trans"))],
-        t.stringLiteral("@lingui/react")
+        [t.importSpecifier(tIdentifier, tIdentifier)],
+        t.stringLiteral(module)
       )
     )
   }

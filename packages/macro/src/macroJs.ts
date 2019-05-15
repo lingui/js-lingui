@@ -110,13 +110,17 @@ export default class MacroJs {
       messages.push([node.key, this.types.stringLiteral(id || message)])
     }
 
-    path.replaceWith(
-      this.types.newExpression(this.types.identifier("Messages"), [
+    path.replaceWith(this.types.callExpression(
+      this.types.memberExpression(
+        this.types.identifier("Messages"),
+        this.types.identifier("from")
+      ),
+      [
         this.types.objectExpression(
           messages.map(([key, value]) => this.types.objectProperty(key, value))
         )
-      ])
-    )
+      ]
+    ) as any)
   }
 
   tokenizeNode = node => {

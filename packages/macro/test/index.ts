@@ -649,7 +649,8 @@ const testCases = {
         })
     `,
       expected: `
-        const messages = new Messages({
+        import { Messages } from '@lingui/core';
+        const messages = Messages.from({
           hello: "Hello World",
           plural: "{value, plural, one {book} other {books}}",
         })
