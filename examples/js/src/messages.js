@@ -1,5 +1,5 @@
 import { setupI18n } from "@lingui/core"
-import { t, plural } from "@lingui/macro"
+import { t, plural, defineMessage, defineMessages } from "@lingui/macro"
 
 export const i18n = setupI18n()
 
@@ -11,16 +11,27 @@ i18n.loadAll({
 /**
  * Example: Lazy messages - common phrases are only defined, but not translated.
  */
-export const common = {
-  yes: /*i18n: Agreement */ t`Yes`,
-  no: /*i18n: Disagreement */ t`No`
-}
+export const common = defineMessages({
+  yes: {
+    comment: "Agreement",
+    message: "Yes"
+  },
+  no: {
+    comment: "Disagreement",
+    message: "No"
+  }
+})
+common.bind(i18n)
 
 /**
  * Example: Static messages - add comment beginning with `i18n:` to add description.
  */
 export function getStatic() {
-  return i18n._(/*i18n: Title of example*/ t`@lingui/core example`)
+  const msg = defineMessage({
+    comment: "Title of example",
+    message: "@lingui/core example"
+  })
+  return i18n._(msg)
 }
 
 /**
@@ -35,8 +46,7 @@ export function getVariables(name) {
  */
 export function getPlural(value) {
   return i18n._(
-    t`There are ${plural({
-      value,
+    t`There are ${plural(value, {
       one: "# bottle",
       other: "# bottles"
     })} hanging on the wall`
@@ -48,8 +58,8 @@ export function getPlural(value) {
  * translation.
  */
 export function getLazy() {
-  const yes = i18n._(common.yes)
-  const no = i18n._(common.no)
+  const yes = common.yes()
+  const no = common.no()
   return i18n._(t`Do you want to proceed? ${yes}/${no}`)
 }
 
