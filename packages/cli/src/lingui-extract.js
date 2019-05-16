@@ -134,6 +134,7 @@ export default function command(
 
 if (require.main === module) {
   program
+    .option("--config <path>", "Path to the config file")
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(

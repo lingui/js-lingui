@@ -117,6 +117,7 @@ if (require.main === module) {
     .description(
       "Add compile message catalogs and add language data (plurals) to compiled bundle."
     )
+    .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalog")
