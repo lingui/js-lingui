@@ -13,9 +13,11 @@ const testCases = {
         const a = t\`Expression assignment\`;
     `,
       expected: `
-        const a = {
-          id: "Expression assignment"
-        };
+        const a = 
+          /*i18n*/
+          {
+            id: "Expression assignment"
+          };
     `
     },
     {
@@ -25,6 +27,7 @@ const testCases = {
         t\`Variable \${name}\`;
     `,
       expected: `
+        /*i18n*/
         ({
           id: "Variable {name}",
           values: {
@@ -40,6 +43,7 @@ const testCases = {
         t\`\${duplicate} variable \${duplicate}\`;
     `,
       expected: `
+        /*i18n*/
         ({
           id: "{duplicate} variable {duplicate}",
           values: {
@@ -63,6 +67,7 @@ const testCases = {
         \`
     `,
       expected: `
+        /*i18n*/
         ({
           id: "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
           values: {
@@ -84,6 +89,7 @@ const testCases = {
           string\`
       `,
       expected: `
+        /*i18n*/
         ({
           id: "Multiline\\nstring"
         });
@@ -105,12 +111,14 @@ const testCases = {
         });
       `,
       expected: `
-        const a = ({
-          id: "{count, plural, one {# book} other {# books}}",
-          values: {
-            count: count
-          }
-        });
+        const a = 
+          /*i18n*/
+          {
+            id: "{count, plural, one {# book} other {# books}}",
+            values: {
+              count: count
+            }
+          };
       `
     },
     {
@@ -125,6 +133,7 @@ const testCases = {
         });
       `,
       expected: `
+        /*i18n*/
         ({
           id: "{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}",
           values: {
@@ -149,6 +158,7 @@ const testCases = {
         });
       `,
       expected: `
+        /*i18n*/
         ({
           id: "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}",
           values: {
@@ -168,6 +178,7 @@ const testCases = {
         })
       `,
       expected: `
+        /*i18n*/
         ({
           id: "{value, select, id {test escaped id} comment {test escaped comment}}",
           values: {
@@ -188,6 +199,7 @@ const testCases = {
         })} cat\`
       `,
       expected: `
+        /*i18n*/
         ({
           id: "This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat",
           values: {
@@ -448,11 +460,13 @@ const testCases = {
         import { Trans } from "@lingui/react";
         import i18n from "@lingui/core";
         <Trans id="Read <0>more</0>" components={{
-          0: <a href="/more" title={i18n._({
-            id: "Full content of {articleName}",
-            values: {
-              articleName: articleName
-            }
+          0: <a href="/more" title={i18n._(
+            /*i18n*/
+            {
+              id: "Full content of {articleName}",
+              values: {
+                articleName: articleName
+              }
           })} />
         }} />;
       `
@@ -469,11 +483,13 @@ const testCases = {
       expected: `
         import i18n from "@lingui/core";
         
-        <a href="/about" title={i18n._({
-          id: "{count, plural, one {# book} other {# books}}",
-          values: {
-            count: count
-          }
+        <a href="/about" title={i18n._(
+          /*i18n*/
+          {
+            id: "{count, plural, one {# book} other {# books}}",
+            values: {
+              count: count
+            }
         })}>About</a>;
       `
     }
