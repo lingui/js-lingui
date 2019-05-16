@@ -5,6 +5,7 @@ import prettier from "prettier"
 import { babel } from "@lingui/cli/src/api/extractors"
 
 const testCases = {
+  "js-arg": require("./js-arg").default,
   "js-t": require("./js-t").default,
   "js-plural": require("./js-plural").default,
   "js-select": require("./js-select").default,

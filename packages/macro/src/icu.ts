@@ -30,9 +30,12 @@ ICUMessageFormat.prototype.processToken = function(token) {
       message: token.value
     }
   } else if (token.type === "arg") {
-    const values = {
-      [token.name]: token.value
-    }
+    const values =
+      token.value !== undefined
+        ? {
+            [token.name]: token.value
+          }
+        : {}
 
     switch (token.format) {
       case "plural":

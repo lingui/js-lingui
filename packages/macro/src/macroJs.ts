@@ -74,17 +74,7 @@ export default class MacroJs {
       )
     }
 
-    const valuesObject = Object.keys(values).map(key =>
-      this.types.objectProperty(this.types.identifier(key), values[key])
-    )
-    if (valuesObject.length) {
-      args.push(
-        this.types.objectProperty(
-          this.types.identifier("values"),
-          this.types.objectExpression(valuesObject)
-        )
-      )
-    }
+    this.addValues(args, values)
 
     if (process.env.NODE_ENV !== "production") {
       if (comment) {
@@ -190,7 +180,7 @@ export default class MacroJs {
    */
   processDescriptor = descriptor => {
     const messageIndex = descriptor.properties.findIndex(
-      property => property.key.name === "message"
+      property => property.key.name === MESSAGE
     )
     if (messageIndex === -1) {
       return descriptor
@@ -206,16 +196,17 @@ export default class MacroJs {
       const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
       const message = normalizeWhitespace(messageRaw)
       messageNode = this.types.stringLiteral(message)
+
+      this.addValues(descriptor.properties, values)
     }
 
     // Don't override custom ID
     const hasId =
-      descriptor.properties.findIndex(
-        property => property.key.name === "id"
-      ) !== -1
+      descriptor.properties.findIndex(property => property.key.name === ID) !==
+      -1
 
     descriptor.properties[messageIndex] = this.types.objectProperty(
-      this.types.identifier(hasId ? "message" : "id"),
+      this.types.identifier(hasId ? MESSAGE : ID),
       messageNode
     )
 
@@ -274,14 +265,9 @@ export default class MacroJs {
   tokenizeChoiceComponent = node => {
     const format = node.callee.name.toLowerCase()
 
-    const value = node.arguments[0]
-    const name = this.expressionToArgument(value)
-
     const token = {
-      type: "arg",
+      ...this.tokenizeExpression(node.arguments[0]),
       format,
-      name,
-      value,
       options: {
         offset: undefined
       }
@@ -320,6 +306,12 @@ export default class MacroJs {
   }
 
   tokenizeExpression = node => {
+    if (this.isArg(node)) {
+      return {
+        type: "arg",
+        name: node.arguments[0].value
+      }
+    }
     return {
       type: "arg",
       name: this.expressionToArgument(node),
@@ -335,6 +327,21 @@ export default class MacroJs {
     } else {
       return this._expressionIndex()
     }
+  }
+
+  addValues = (obj, values) => {
+    const valuesObject = Object.keys(values).map(key =>
+      this.types.objectProperty(this.types.identifier(key), values[key])
+    )
+
+    if (!valuesObject.length) return
+
+    obj.push(
+      this.types.objectProperty(
+        this.types.identifier("values"),
+        this.types.objectExpression(valuesObject)
+      )
+    )
   }
 
   /**
@@ -356,6 +363,12 @@ export default class MacroJs {
     return (
       this.types.isCallExpression(node) &&
       this.isIdentifier(node.callee, "defineMessages")
+    )
+  }
+
+  isArg = node => {
+    return (
+      this.types.isCallExpression(node) && this.isIdentifier(node.callee, "arg")
     )
   }
 

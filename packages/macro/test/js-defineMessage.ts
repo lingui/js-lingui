@@ -2,19 +2,17 @@ export default [
   {
     name: "should expand macros in message property",
     input: `
-        import { defineMessage, plural } from '@lingui/macro';
+        import { defineMessage, plural, arg } from '@lingui/macro';
         const message = defineMessage({
-          id: "msg.id",
           comment: "Description",
-          message: plural("value", { one: "book", other: "books" })
+          message: plural(arg("value"), { one: "book", other: "books" })
         })
     `,
     expected: `
         const message = /*i18n*/
         {
-          id: "msg.id",
           comment: "Description",
-          message: "{value, plural, one {book} other {books}}"
+          id: "{value, plural, one {book} other {books}}"
         }
     `
   },
@@ -23,17 +21,13 @@ export default [
     input: `
         import { defineMessage } from '@lingui/macro';
         const message = defineMessage({
-          id: "msg.id",
-          comment: "Description",
           message: "Message"
         })
     `,
     expected: `
         const message = /*i18n*/
         {
-          id: "msg.id",
-          comment: "Description",
-          message: "Message"
+          id: "Message"
         }
     `
   },
@@ -42,34 +36,48 @@ export default [
     input: `
         import { defineMessage } from '@lingui/macro';
         const message = defineMessage({
-          id: "msg.id",
-          comment: "Description",
           message: \`Message\`
         })
     `,
     expected: `
         const message = /*i18n*/
         {
-          id: "msg.id",
-          comment: "Description",
-          message: \`Message\`
+          id: \`Message\`
         }
     `
   },
   {
-    name: "should use message as id",
+    name: "should preserve custom id",
     input: `
         import { defineMessage } from '@lingui/macro';
         const message = defineMessage({
-          comment: "Description",
+          id: "msg.id",
           message: \`Message\`
         })
     `,
     expected: `
         const message = /*i18n*/
         {
-          comment: "Description",
-          id: \`Message\`,
+          id: "msg.id",
+          message: \`Message\`,
+        }
+    `
+  },
+  {
+    name: "should preserve values",
+    input: `
+        import { defineMessage } from '@lingui/macro';
+        const message = defineMessage({
+          message: t\`Hello $\{name\}\`
+        })
+    `,
+    expected: `
+        const message = /*i18n*/
+        {
+          id: "Hello {name}",
+          values: {
+            name: name
+          }
         }
     `
   }

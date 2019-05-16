@@ -107,6 +107,7 @@ function getMacroType(tagName) {
   switch (tagName) {
     case "defineMessages":
     case "defineMessage":
+    case "arg":
     case "t":
     case "plural":
     case "select":
