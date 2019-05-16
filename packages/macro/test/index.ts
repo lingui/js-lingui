@@ -639,7 +639,6 @@ const testCases = {
 
   defineMessages: [
     {
-      only: true,
       name: "should expand macros",
       input: `
         import { defineMessages } from '@lingui/macro';
@@ -651,9 +650,115 @@ const testCases = {
       expected: `
         import { Messages } from '@lingui/core';
         const messages = Messages.from({
-          hello: "Hello World",
-          plural: "{value, plural, one {book} other {books}}",
+          hello: 
+            /*i18n*/
+            "Hello World",
+          plural:
+            /*i18n*/
+            "{value, plural, one {book} other {books}}",
         })
+    `
+    },
+    {
+      name: "should expand macros inside descriptor",
+      input: `
+        import { defineMessages } from '@lingui/macro';
+        const messages = defineMessages({
+          plural: {
+            id: "msg.id",
+            comment: "Description",
+            message: plural("value", { one: "book", other: "books" })
+          }
+        })
+    `,
+      expected: `
+        import { Messages } from '@lingui/core';
+        const messages = Messages.from({
+          plural: 
+            /*i18n*/
+            {
+              id: "msg.id",
+              comment: "Description",
+              message: "{value, plural, one {book} other {books}}"
+            }
+        })
+    `
+    }
+  ],
+
+  defineMessage: [
+    {
+      name: "should expand macros in message property",
+      input: `
+        import { defineMessage, plural } from '@lingui/macro';
+        const message = defineMessage({
+          id: "msg.id",
+          comment: "Description",
+          message: plural("value", { one: "book", other: "books" })
+        })
+    `,
+      expected: `
+        const message = /*i18n*/
+        {
+          id: "msg.id",
+          comment: "Description",
+          message: "{value, plural, one {book} other {books}}"
+        }
+    `
+    },
+    {
+      name: "should left string message intact",
+      input: `
+        import { defineMessage } from '@lingui/macro';
+        const message = defineMessage({
+          id: "msg.id",
+          comment: "Description",
+          message: "Message"
+        })
+    `,
+      expected: `
+        const message = /*i18n*/
+        {
+          id: "msg.id",
+          comment: "Description",
+          message: "Message"
+        }
+    `
+    },
+    {
+      name: "should left string message intact - template literal",
+      input: `
+        import { defineMessage } from '@lingui/macro';
+        const message = defineMessage({
+          id: "msg.id",
+          comment: "Description",
+          message: \`Message\`
+        })
+    `,
+      expected: `
+        const message = /*i18n*/
+        {
+          id: "msg.id",
+          comment: "Description",
+          message: \`Message\`
+        }
+    `
+    },
+    {
+      name: "should use message as id",
+      input: `
+        import { defineMessage } from '@lingui/macro';
+        const message = defineMessage({
+          comment: "Description",
+          message: \`Message\`
+        })
+    `,
+      expected: `
+        const message = /*i18n*/
+        {
+          comment: "Description",
+          id: \`Message\`,
+        }
     `
     }
   ]

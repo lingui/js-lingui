@@ -148,6 +148,7 @@ export class I18n {
     { defaults, formats }: MessageOptions | undefined = {}
   ) {
     if (!isString(id)) {
+      values = id.values || values
       defaults = id.message
       id = id.id
     }

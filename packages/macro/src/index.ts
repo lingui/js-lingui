@@ -9,6 +9,9 @@ function macro({ references, state, babel }) {
   Object.keys(references).forEach(tagName => {
     const nodes = references[tagName]
     const macroType = getMacroType(tagName)
+    if (macroType == null) {
+      throw nodes[0].buildCodeFrameError(`Unknown macro ${tagName}`)
+    }
 
     if (macroType === "js") {
       nodes.forEach(node => {
@@ -103,6 +106,7 @@ function alreadyVisited(path) {
 function getMacroType(tagName) {
   switch (tagName) {
     case "defineMessages":
+    case "defineMessage":
     case "t":
     case "plural":
     case "select":

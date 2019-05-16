@@ -4,6 +4,7 @@ export interface MessageDescriptor {
   id?: string
   comment?: string
   message?: string
+  values?: string
 }
 
 type LazyMessages<Definitions> = { [key in keyof Definitions]: Function }
