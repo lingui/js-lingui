@@ -7,7 +7,7 @@ export interface TransProps {
   id: string
   message?: string
   values: Object
-  components: Array<React.ElementType | any>
+  components: {[key: string]: React.ElementType | any}
   formats?: Object
   render?: string | React.ElementType | React.ReactElement
 }
@@ -17,7 +17,7 @@ export function Trans(props: TransProps) {
   const { render = defaultRender, id, message, formats } = props
 
   const values = { ...props.values }
-  const components = [...props.components]
+  const components = { ...props.components }
 
   if (values) {
     /*
@@ -37,7 +37,9 @@ export function Trans(props: TransProps) {
       const value = values[key]
       if (!React.isValidElement(value)) return
 
-      const index = components.push(value) - 1 // push returns new length of array
+      const index = Object.keys(components).length
+
+      components[index] = value
       values[key] = `<${index}/>`
     })
   }
@@ -67,5 +69,5 @@ export function Trans(props: TransProps) {
 
 Trans.defaultProps = {
   values: {},
-  components: []
+  components: {}
 }
