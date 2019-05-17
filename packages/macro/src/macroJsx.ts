@@ -128,18 +128,18 @@ export default class MacroJSX {
       )
     }
 
-    path.replaceWith(
-      this.types.jsxElement(
-        this.types.jsxOpeningElement(
-          this.types.jsxIdentifier("Trans"),
-          attributes,
-          /*selfClosing*/ true
-        ),
-        /*closingElement*/ null,
-        /*children*/ [],
+    const newNode = this.types.jsxElement(
+      this.types.jsxOpeningElement(
+        this.types.jsxIdentifier("Trans"),
+        attributes,
         /*selfClosing*/ true
-      )
+      ),
+      /*closingElement*/ null,
+      /*children*/ [],
+      /*selfClosing*/ true
     )
+    newNode.loc = path.node.loc
+    path.replaceWith(newNode)
   }
 
   stripMacroAttributes = node => {
