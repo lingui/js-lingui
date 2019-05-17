@@ -47,7 +47,7 @@ describe("typescript-extractor", function() {
       "utf8"
     )
     const messages = JSON.parse(contents)
-    expect(Object.keys(messages).length).toBe(6)
+    expect(Object.keys(messages).length).toBe(5)
   })
 
   it("should extract Typescript JSX file", function() {
@@ -63,6 +63,6 @@ describe("typescript-extractor", function() {
       "utf8"
     )
     const messages = JSON.parse(contents)
-    expect(Object.keys(messages).length).toBe(13)
+    expect(Object.keys(messages).length).toBe(11)
   })
 })
