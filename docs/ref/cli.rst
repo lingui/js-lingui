@@ -44,6 +44,14 @@ Install
          }
       }
 
+Global options
+==============
+
+.. lingui-cli-option:: --config <config>
+
+Path to LinguiJS configuration file. If not set, the default file
+is loaded as described in :doc:`LinguiJS configuration </ref/conf>` reference.
+
 Commands
 ========
 
