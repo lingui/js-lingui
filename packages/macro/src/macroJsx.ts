@@ -67,7 +67,7 @@ export default class MacroJSX {
         if (message) {
           attributes.push(
             this.types.jsxAttribute(
-              this.types.jsxIdentifier("defaults"),
+              this.types.jsxIdentifier(MESSAGE),
               this.types.stringLiteral(message)
             )
           )

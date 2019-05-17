@@ -1,5 +1,5 @@
 import * as React from "react"
-import { wait, render } from "react-testing-library"
+import { render } from "react-testing-library"
 import { Trans, I18nProvider } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
@@ -45,7 +45,7 @@ describe("Trans component", function() {
   it("should render default string", function() {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
-    expect(text(<Trans id="unknown" defaults="Not translated yet" />)).toEqual(
+    expect(text(<Trans id="unknown" message="Not translated yet" />)).toEqual(
       "Not translated yet"
     )
 
@@ -53,7 +53,7 @@ describe("Trans component", function() {
       text(
         <Trans
           id="unknown"
-          defaults="Not translated yet, {name}"
+          message="Not translated yet, {name}"
           values={{ name: "Dave" }}
         />
       )
@@ -137,7 +137,7 @@ describe("Trans component", function() {
       text(
         <Trans
           id="ID"
-          defaults="Default"
+          message="Default"
           render={props => {
             spy(props)
             return null
@@ -147,7 +147,7 @@ describe("Trans component", function() {
 
       expect(spy).toHaveBeenCalledWith({
         id: "ID",
-        defaults: "Default",
+        message: "Default",
         translation: "Translation"
       })
     })

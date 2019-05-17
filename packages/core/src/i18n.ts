@@ -5,7 +5,7 @@ import * as icu from "./dev"
 import { MessageDescriptor } from "./messages"
 
 export type MessageOptions = {
-  defaults?: string
+  message?: string
   formats?: Object
 }
 
@@ -145,14 +145,14 @@ export class I18n {
   _(
     id: MessageDescriptor | string,
     values: Object | undefined = {},
-    { defaults, formats }: MessageOptions | undefined = {}
+    { message, formats }: MessageOptions | undefined = {}
   ) {
     if (!isString(id)) {
       values = id.values || values
-      defaults = id.message
+      message = id.message
       id = id.id
     }
-    let translation = this.messages[id] || defaults || id
+    let translation = this.messages[id] || message || id
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
