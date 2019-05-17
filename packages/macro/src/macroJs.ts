@@ -151,19 +151,11 @@ export default class MacroJs {
       }
     }
 
-    path.replaceWith(this.types.callExpression(
-      this.types.memberExpression(
-        this.types.identifier("Messages"),
-        this.types.identifier("from")
-      ),
-      [
-        this.types.objectExpression(
-          messages.map(([key, value]) => this.types.objectProperty(key, value))
-        )
-      ]
+    path.replaceWith(this.types.objectExpression(
+      messages.map(([key, value]) => this.types.objectProperty(key, value))
     ) as any)
 
-    for (const property of path.get("arguments.0.properties")) {
+    for (const property of path.get("properties")) {
       this.addExtractMark(property.get("value"))
     }
   }

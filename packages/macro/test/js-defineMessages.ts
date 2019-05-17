@@ -10,8 +10,7 @@ export default [
         })
     `,
     expected: `
-        import { Messages } from '@lingui/core';
-        const messages = Messages.from({
+        const messages = {
           string:
             /*i18n*/
             "Hello World",
@@ -21,7 +20,7 @@ export default [
           plural:
             /*i18n*/
             "{value, plural, one {book} other {books}}",
-        })
+        }
     `
   },
   {
@@ -37,8 +36,7 @@ export default [
         })
     `,
     expected: `
-        import { Messages } from '@lingui/core';
-        const messages = Messages.from({
+        const messages = {
           plural: 
             /*i18n*/
             {
@@ -46,7 +44,7 @@ export default [
               comment: "Description",
               message: "{value, plural, one {book} other {books}}"
             }
-        })
+        }
     `
   }
 ]

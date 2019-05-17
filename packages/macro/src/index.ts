@@ -41,10 +41,6 @@ function macro({ references, state, babel }) {
     addImport(babel, state, "@lingui/react", "Trans")
   }
 
-  if (jsNodes && Object.keys(references).includes("defineMessages")) {
-    addImport(babel, state, "@lingui/core", "Messages")
-  }
-
   if (process.env.LINGUI_EXTRACT === "1") {
     return {
       keepImports: true
