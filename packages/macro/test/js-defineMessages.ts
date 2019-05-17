@@ -4,6 +4,7 @@ export default [
     input: `
         import { defineMessages, plural, arg } from '@lingui/macro';
         const messages = defineMessages({
+          string: "Hello World",
           hello: t\`Hello World\`,
           plural: plural(arg("value"), { one: "book", other: "books" })
         })
@@ -11,6 +12,9 @@ export default [
     expected: `
         import { Messages } from '@lingui/core';
         const messages = Messages.from({
+          string:
+            /*i18n*/
+            "Hello World",
           hello: 
             /*i18n*/
             "Hello World",

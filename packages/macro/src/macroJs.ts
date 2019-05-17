@@ -137,13 +137,17 @@ export default class MacroJs {
         const descriptor = this.processDescriptor(node.value)
         messages.push([node.key, descriptor])
       } else {
-        const tokens = this.tokenizeNode(node.value)
+        const tokens = this.tokenizeNode(node.value, true)
 
-        const messageFormat = new ICUMessageFormat()
-        const { message: messageRaw, id } = messageFormat.fromTokens(tokens)
-        const message = normalizeWhitespace(messageRaw)
+        let messageNode = node.value
+        if (tokens != null) {
+          const messageFormat = new ICUMessageFormat()
+          const { message: messageRaw, id } = messageFormat.fromTokens(tokens)
+          const message = normalizeWhitespace(messageRaw)
+          messageNode = this.types.stringLiteral(id || message)
+        }
 
-        messages.push([node.key, this.types.stringLiteral(id || message)])
+        messages.push([node.key, messageNode])
       }
     }
 
