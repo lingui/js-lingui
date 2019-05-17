@@ -87,8 +87,12 @@ export default class MacroJs {
       }
     }
 
-    path.addComment("leading", "i18n")
-    path.replaceWith(this.types.objectExpression(args))
+    const newNode = this.types.objectExpression(args)
+    // preserve line number
+    newNode.loc = path.node.loc
+
+    this.addExtractMark(path)
+    path.replaceWith(newNode)
   }
 
   /**
@@ -118,7 +122,7 @@ export default class MacroJs {
 
     // TODO: Add argument validation.
     const descriptor = this.processDescriptor(path.node.arguments[0])
-    path.addComment("leading", "i18n")
+    this.addExtractMark(path)
     path.replaceWith(descriptor)
   }
 
@@ -156,7 +160,7 @@ export default class MacroJs {
     ) as any)
 
     for (const property of path.get("arguments.0.properties")) {
-      property.get("value").addComment("leading", "i18n")
+      this.addExtractMark(property.get("value"))
     }
   }
 
@@ -342,6 +346,17 @@ export default class MacroJs {
         this.types.objectExpression(valuesObject)
       )
     )
+  }
+
+  /**
+   * addExtractMark - add comment which marks the string/object
+   * for extraction.
+   * @lingui/babel-extract-messages looks for this comment
+   *
+   * @param path
+   */
+  addExtractMark = path => {
+    path.addComment("leading", "i18n")
   }
 
   /**
