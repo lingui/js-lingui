@@ -57,6 +57,24 @@ Object {
 }
 `;
 
+exports[`collect should use defined default 1`] = `
+Object {
+  msg.id: Object {
+    defaults: Second default,
+    origin: Array [
+      Array [
+        onlyOneDefault/First.js,
+        2,
+      ],
+      Array [
+        onlyOneDefault/Second.js,
+        5,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`order should order messages alphabetically 1`] = `
 Object {
   en: Object {
