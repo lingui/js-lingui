@@ -1,0 +1,29 @@
+{
+  "Hello {name}": {
+    "description": null,
+    "origin": [
+      [
+        "src/messages.js",
+        null
+      ]
+    ]
+  },
+  "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall": {
+    "description": null,
+    "origin": [
+      [
+        "src/messages.js",
+        null
+      ]
+    ]
+  },
+  "Do you want to proceed? {yes}/{no}": {
+    "description": null,
+    "origin": [
+      [
+        "src/messages.js",
+        null
+      ]
+    ]
+  }
+}
