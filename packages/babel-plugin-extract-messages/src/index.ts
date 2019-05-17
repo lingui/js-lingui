@@ -12,24 +12,28 @@ const MESSAGES = Symbol("I18nMessages")
 // Then, i18n._ methods are visited multiple times for each parent CallExpression.
 const VISITED = Symbol("I18nVisited")
 
-function addMessage(path, messages, { id, defaults, origin, ...props }) {
+function addMessage(
+  path,
+  messages,
+  { id, message: newDefault, origin, ...props }
+) {
   if (messages.has(id)) {
     const message = messages.get(id)
 
     // only set/check default language when it's defined.
-    if (message.defaults && defaults && message.defaults !== defaults) {
+    if (message.message && newDefault && message.message !== newDefault) {
       throw path.buildCodeFrameError(
         "Different defaults for the same message ID."
       )
     } else {
-      if (defaults) {
-        message.defaults = defaults
+      if (newDefault) {
+        message.message = newDefault
       }
 
       ;[].push.apply(message.origin, origin)
     }
   } else {
-    messages.set(id, { ...props, defaults, origin })
+    messages.set(id, { ...props, message: newDefault, origin })
   }
 }
 
@@ -48,7 +52,6 @@ export default function({ types: t }) {
     )
   }
 
-  const isNoopMethod = node => t.isIdentifier(node, { name: "i18nMark" })
   const isI18nMethod = node =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: "i18n" }) &&
@@ -93,11 +96,6 @@ export default function({ types: t }) {
           localTransComponentName = importDeclarations["Trans"] || "Trans"
         }
 
-        // Remove imports of i18nMark identity
-        node.specifiers = node.specifiers.filter(
-          specifier => specifier.imported.name !== "i18nMark"
-        )
-
         if (!node.specifiers.length) {
           path.remove()
         }
@@ -112,7 +110,7 @@ export default function({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "defaults" || key === "description") {
+          if (key === "id" || key === "message" || key === "comment") {
             if (item.value.value) {
               acc[key] = item.value.value
             } else if (
@@ -138,62 +136,26 @@ export default function({ types: t }) {
         collectMessage(path, file, props)
       },
 
-      // Extract translation from i18n._ call
-      CallExpression(path, { file }) {
-        const { node } = path
+      StringLiteral(path, { file }) {
         const visited = file.get(VISITED)
 
-        if (
-          // we already visited this node
-          visited.has(node.callee) ||
-          // nothing to extract
-          (!isI18nMethod(node.callee) && !isNoopMethod(node.callee))
-        ) {
+        const comment =
+          path.node.leadingComments &&
+          path.node.leadingComments.filter(node =>
+            node.value.match(/^\s*i18n/)
+          )[0]
+
+        if (!comment || visited.has(path.node)) {
           return
         }
 
-        visited.add(node.callee)
+        visited.add(path.node)
 
-        if (
-          isNoopMethod(node.callee) &&
-          !t.isStringLiteral(node.arguments[0])
-        ) {
-          console.warn("Only string literals are allowed in i18nMark.")
-          return
+        const props = {
+          id: path.node.value
         }
-
-        const attrs =
-          node.arguments[2] && node.arguments[2].properties
-            ? node.arguments[2].properties
-            : []
-
-        const idArg = node.arguments[0]
-        const id = idArg && idArg.value
-        if (!id) {
-          // i18n._(message) is valid, don't raise warning
-          if (idArg === undefined || t.isLiteral(idArg)) {
-            console.warn("Missing message ID, skipping.")
-            console.warn(generate(node).code)
-          }
-
-          return
-        }
-
-        const props = attrs.reduce(
-          (acc, item) => {
-            const key = item.key.name
-            if (key === "defaults") acc[key] = item.value.value
-            return acc
-          },
-          { id }
-        )
 
         collectMessage(path, file, props)
-
-        if (isNoopMethod(node.callee)) {
-          const translation = node.arguments[0]
-          path.replaceWith(t.stringLiteral(translation.value))
-        }
       },
 
       // Extract message descriptors
@@ -212,17 +174,17 @@ export default function({ types: t }) {
 
         visited.add(path.node)
 
-        const props = {
-          description: null
-        }
-
-        const description = comment.value.replace(/\s*i18n:?\s*/, "").trim()
-        if (description) props.description = description
-
-        const copyProps = ["id", "defaults"]
+        const props = {}
+        const copyProps = ["id", "message", "comment"]
         path.node.properties
           .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
-          .forEach(({ key, value }) => {
+          .forEach(({ key, value }, i) => {
+            if (key.name === "comment" && !t.isStringLiteral(value)) {
+              throw path
+                .get(`properties.${i}.value`)
+                .buildCodeFrameError("Only strings are supported as comments.")
+            }
+
             props[key.name] = value.value
           })
 

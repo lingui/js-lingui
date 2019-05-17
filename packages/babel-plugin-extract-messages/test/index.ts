@@ -6,6 +6,17 @@ import plugin from "@lingui/babel-plugin-extract-messages"
 
 const LOCALE_DIR = "./locale"
 
+// CWD is root directory of repository, so origin of all messages is going to
+// relative to root
+const buildDir = path.join(
+  LOCALE_DIR,
+  "_build",
+  "packages",
+  "babel-plugin-extract-messages",
+  "test",
+  "fixtures"
+)
+
 const rmdir = dir => {
   if (!fs.existsSync(dir)) return
   const list = fs.readdirSync(dir)
@@ -49,21 +60,24 @@ function testCase(testName, assertion) {
     }
   }
 
-  it(testName, () => assertion(transform))
+  if (typeof assertion === "function") {
+    it(testName, () => assertion(transform))
+  } else {
+    it(testName, () => {
+      // first run should create all required folders and write messages
+      expect(transform(assertion, false)).not.toThrow()
+      // another runs should just write messages
+      expect(transform(assertion, false)).not.toThrow()
+
+      const messages = JSON.parse(
+        fs.readFileSync(path.join(buildDir, `${assertion}.json`)).toString()
+      )
+      expect(messages).toMatchSnapshot()
+    })
+  }
 }
 
-describe("babel-plugin-lingui-extract-messages", function() {
-  // CWD is root directory of repository, so origin of all messages is going to
-  // relative to root
-  const buildDir = path.join(
-    LOCALE_DIR,
-    "_build",
-    "packages",
-    "babel-plugin-extract-messages",
-    "test",
-    "fixtures"
-  )
-
+describe("@lingui/babel-plugin-extract-messages", function() {
   beforeAll(() => {
     rmdir(LOCALE_DIR)
   })
@@ -75,8 +89,8 @@ describe("babel-plugin-lingui-extract-messages", function() {
   testCase(
     "should raise exception on duplicate id and different defaults",
     transform => {
-      expect(transform("jsx/duplicate-id-valid.js")).not.toThrow()
-      expect(transform("jsx/duplicate-id.js")).toThrow(/Different defaults/)
+      expect(transform("duplicate-id-valid.js")).not.toThrow()
+      expect(transform("duplicate-id.js")).toThrow(/Different defaults/)
     }
   )
 
@@ -89,131 +103,38 @@ describe("babel-plugin-lingui-extract-messages", function() {
   )
 
   testCase("should preserve path to file inside locale dir", transform => {
-    expect(transform("jsx/deep/all.js")).not.toThrow()
+    expect(transform("deep/all.js")).not.toThrow()
     expect(
-      fs.existsSync(path.join(buildDir, "jsx", "deep", "all.js.json"))
+      fs.existsSync(path.join(buildDir, "deep", "all.js.json"))
     ).toBeTruthy()
   })
 
   testCase("should ignore files without lingui import", transform => {
-    expect(transform("jsx/without-lingui.js")).not.toThrow()
+    expect(transform("without-lingui.js")).not.toThrow()
     expect(
-      fs.existsSync(path.join(buildDir, "jsx", "without-lingui.js.json"))
+      fs.existsSync(path.join(buildDir, "without-lingui.js.json"))
     ).toBeFalsy()
   })
 
-  testCase("should extract all messages from JSX files", transform => {
-    // first run should create all required folders and write messages
-    expect(transform("jsx/all.js")).not.toThrow()
-    // another runs should just write messages
-    expect(transform("jsx/all.js")).not.toThrow()
-
-    const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "jsx", "all.js.json")).toString()
-    )
-    expect(messages).toMatchSnapshot()
-  })
+  testCase(
+    "should extract all messages from JSX files",
+    "jsx-without-macros.js"
+  )
 
   testCase(
-    "should extract all messages from JSX files (integration)",
-    transform => {
-      // first run should create all required folders and write messages
-      expect(transform("jsx/integration.js")).not.toThrow()
-      // another runs should just write messages
-      expect(transform("jsx/integration.js")).not.toThrow()
-
-      const messages = JSON.parse(
-        fs
-          .readFileSync(path.join(buildDir, "jsx", "integration.js.json"))
-          .toString()
-      )
-      expect(messages).toMatchSnapshot()
-    }
+    "should extract all messages from JSX files (macros)",
+    "jsx-with-macros.js"
   )
 
   testCase(
     "should extract Plural messages from JSX files when there's no Trans tag (integration)",
-    transform => {
-      // first run should create all required folders and write messages
-      expect(transform("jsx/integration-without-trans.js")).not.toThrow()
-      // another runs should just write messages
-      expect(transform("jsx/integration-without-trans.js")).not.toThrow()
-
-      const messages = JSON.parse(
-        fs.readFileSync(
-          path.join(buildDir, "jsx", "integration-without-trans.js.json")
-        )
-      )
-      expect(messages).toMatchSnapshot()
-    }
+    "jsx-without-trans.js"
   )
 
-  testCase("should extract all messages from JS files", transform => {
-    // first run should create all required folders and write messages
-    expect(transform("js/all.js", false)).not.toThrow()
-    // another runs should just write messages
-    expect(transform("js/all.js", false)).not.toThrow()
-
-    const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "js", "all.js.json")).toString()
-    )
-    expect(messages).toMatchSnapshot()
-  })
-
-  testCase("should extract all messages from JS files (macros)", transform => {
-    // first run should create all required folders and write messages
-    expect(transform("js/macro.js", false)).not.toThrow()
-    // another runs should just write messages
-    expect(transform("js/macro.js", false)).not.toThrow()
-
-    const messages = JSON.parse(
-      fs.readFileSync(path.join(buildDir, "js", "macro.js.json")).toString()
-    )
-    expect(messages).toMatchSnapshot()
-  })
+  testCase("should extract all messages from JS files", "js-without-macros.js")
 
   testCase(
-    "should extract all messages from JS files (integration)",
-    transform => {
-      // first run should create all required folders and write messages
-      expect(transform("js/integration.js", false)).not.toThrow()
-      // another runs should just write messages
-      expect(transform("js/integration.js", false)).not.toThrow()
-
-      const messages = JSON.parse(
-        fs
-          .readFileSync(path.join(buildDir, "js", "integration.js.json"))
-          .toString()
-      )
-      expect(messages).toMatchSnapshot()
-    }
+    "should extract all messages from JS files (macros)",
+    "js-with-macros.js"
   )
-
-  it("should extract JS translations only once inside React components", function() {
-    expect(() =>
-      transformFileSync(
-        path.join(__dirname, "fixtures", "jsx", "with-react.js"),
-        {
-          configFile: false,
-          plugins: [
-            "macros",
-            [
-              plugin,
-              {
-                localeDir: LOCALE_DIR
-              }
-            ]
-          ],
-          presets: ["@babel/preset-react"]
-        }
-      )
-    ).not.toThrow()
-
-    const messages = JSON.parse(
-      fs
-        .readFileSync(path.join(buildDir, "jsx", "with-react.js.json"))
-        .toString()
-    )
-    expect(messages).toMatchSnapshot()
-  })
 })
