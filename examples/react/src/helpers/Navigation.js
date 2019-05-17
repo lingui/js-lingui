@@ -1,10 +1,12 @@
 import * as React from "react"
 import { Dropdown, Menu } from "antd"
 
-import { withI18n } from "@lingui/react"
+import { useLingui } from "@lingui/react"
 import { locales } from "../i18n"
 
-function Navigation({ i18n }) {
+export function Navigation() {
+  const { i18n } = useLingui()
+
   const menu = (
     <Menu>
       {Object.keys(locales).map(locale => (
@@ -20,5 +22,3 @@ function Navigation({ i18n }) {
     </Dropdown>
   )
 }
-
-export default withI18n(Navigation)

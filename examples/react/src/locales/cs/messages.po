@@ -75,7 +75,7 @@ msgstr ""
 
 #: src/App.js:20
 msgid "Select language:"
-msgstr ""
+msgstr "Jazyk rozhraní:"
 
 #: src/App.js:94
 msgid "Show motto of the day"
