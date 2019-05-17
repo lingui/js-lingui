@@ -32,6 +32,6 @@
     "@lingui/cli": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "babel-runtime": "^6.26.0",
-    "ramda": "^0.25.0"
+    "ramda": "^0.26.1"
   }
 }
