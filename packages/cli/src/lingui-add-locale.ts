@@ -40,6 +40,7 @@ if (require.main === module) {
         "directory from your localeDir (e.g. ./locale/en)"
     )
     .arguments("<locale...>")
+    .option("--config <path>", "Path to the config file")
     .option("--format <format>", "Format of message catalog")
     .on("--help", function() {
       console.log("\n  Examples:\n")

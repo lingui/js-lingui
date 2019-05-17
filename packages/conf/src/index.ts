@@ -1,4 +1,5 @@
 const path = require("path")
+const fs = require("fs")
 const chalk = require("chalk")
 const cosmiconfig = require("cosmiconfig")
 const { validate } = require("jest-validate")
@@ -74,12 +75,31 @@ const configValidation = {
   comment: "See https://lingui.js.org/ref/conf.html for a list of valid options"
 }
 
+function configFilePathFromArgs() {
+  const configIndex = process.argv.indexOf("--config")
+
+  if (
+    configIndex >= 0 &&
+    process.argv.length > configIndex &&
+    fs.existsSync(process.argv[configIndex + 1])
+  ) {
+    return process.argv[configIndex + 1]
+  }
+
+  return null
+}
+
 export function getConfig({ cwd } = { cwd: null }) {
-  const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
-  const result = configExplorer.searchSync(defaultRootDir)
-  const userConfig = result ? result.config : {}
-  const config = { ...defaultConfig, ...userConfig }
+  const defaultRootDir = cwd || process.cwd()
+  const configPath = configFilePathFromArgs()
+
+  const result =
+    configPath == null
+      ? configExplorer.searchSync(defaultRootDir)
+      : configExplorer.loadSync(configPath)
+
+  const config = { ...defaultConfig, ...(result ? result.config : {}) }
 
   validate(config, configValidation)
   // Use deprecated fallbackLanguage, if defined
