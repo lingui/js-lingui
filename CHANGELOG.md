@@ -3,10 +3,12 @@
 <a name="2.8.0"></a>
 ## [2.8.0](https://github.com/lingui/js-lingui/compare/v2.7.4...v2.8.0) (2019-05-17)
 
-### Bug Fixes
+### New Features
 
 * Conf: Allow loading specific configuration file using --config argument ([#501](https://github.com/lingui/js-lingui/pull/501/)).
   Thanks to [Brandon Croft](https://github.com/brandonc).
+
+### Bug Fixes
 * Macro: Fix escaped backticks in template string ([#477](https://github.com/lingui/js-lingui/pull/477/)).
   Thanks to [Saxon Landers](https://github.com/ackwell).
 
