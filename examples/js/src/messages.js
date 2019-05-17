@@ -21,7 +21,6 @@ export const common = defineMessages({
     message: "No"
   }
 })
-common.bind(i18n)
 
 /**
  * Example: Static messages - add comment beginning with `i18n:` to add description.
@@ -58,8 +57,8 @@ export function getPlural(value) {
  * translation.
  */
 export function getLazy() {
-  const yes = common.yes()
-  const no = common.no()
+  const yes = i18n._(common.yes)
+  const no = i18n._(common.no)
   return i18n._(t`Do you want to proceed? ${yes}/${no}`)
 }
 

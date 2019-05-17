@@ -17,8 +17,8 @@ function test({ i18n, getStatic, getVariables, getPlural, getLazy }) {
   })
 
   it("should translate message with varibles", function() {
-    i18n.activate("en")
-    expect(getVariables("Joe")).toEqual("Hello Joe")
+    // i18n.activate("en")
+    // expect(getVariables("Joe")).toEqual("Hello Joe")
     i18n.activate("cs")
     expect(getVariables("Joe")).toEqual("Ahoj Joe")
   })
