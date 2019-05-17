@@ -16,7 +16,7 @@ Object {
 `;
 
 exports[`collect should throw an error about different defaults 1`] = `
-Encountered different defaults for message msg.id
+Encountered different default translations for message msg.id
 diffDefaults/First.js:2 First default
 diffDefaults/Second.js:5 Second default
 `;
@@ -24,7 +24,7 @@ diffDefaults/Second.js:5 Second default
 exports[`collect should traverse directory and collect messages 1`] = `
 Object {
   Babel Documentation: Object {
-    defaults: Babel Documentation,
+    message: Babel Documentation,
     origin: Array [
       Array [
         src/components/Babel.js,
@@ -33,7 +33,7 @@ Object {
     ],
   },
   Label: Object {
-    defaults: Label,
+    message: Label,
     origin: Array [
       Array [
         src/components/Babel.js,
@@ -46,7 +46,7 @@ Object {
     ],
   },
   Typescript Documentation: Object {
-    defaults: Typescript Documentation,
+    message: Typescript Documentation,
     origin: Array [
       Array [
         src/components/Typescript.ts,

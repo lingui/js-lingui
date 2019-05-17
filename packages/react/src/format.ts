@@ -1,4 +1,4 @@
-import { cloneElement } from "react"
+import * as React from "react"
 
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
@@ -13,7 +13,7 @@ const nlRe = /(?:\r\n|\r|\n)/g
  */
 function formatElements(
   value: string,
-  elements: Array<any> = []
+  elements: { [key: string]: React.ReactElement<any> } = {}
 ): string | Array<any> {
   const parts = value.replace(nlRe, "").split(tagRe)
 
@@ -28,7 +28,7 @@ function formatElements(
   for (const [index, children, after] of getElements(parts)) {
     const element = elements[index]
     tree.push(
-      cloneElement(
+      React.cloneElement(
         element,
         { key: index },
 

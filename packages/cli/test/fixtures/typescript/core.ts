@@ -12,7 +12,6 @@ import { t, plural, select, selectOrdinal } from "@lingui/macro"
 
 const age = <number>12
 const templateResult: string = i18n._(t`${age} years old`)
-const translateResult: string = i18n._("age", { age }, { defaults: "{age} years old" })
 
 const count = 42 as number
 

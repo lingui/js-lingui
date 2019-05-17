@@ -1,5 +1,5 @@
-import { Locales } from "./i18n"
-export { setupI18n, I18n, Catalog, Catalogs } from "./i18n"
+export { setupI18n, I18n, Catalog, Catalogs, Locales } from "./i18n"
+export { Messages, MessageDescriptor } from "./messages"
 
 import * as formats from "./formats"
-export { formats, Locales }
+export { formats }

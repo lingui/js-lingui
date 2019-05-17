@@ -2,9 +2,10 @@ import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
+import { MessageDescriptor } from "./messages"
 
 export type MessageOptions = {
-  defaults?: string
+  message?: string
   formats?: Object
 }
 
@@ -142,11 +143,16 @@ export class I18n {
 
   // default translate method
   _(
-    id: string,
+    id: MessageDescriptor | string,
     values: Object | undefined = {},
-    { defaults, formats }: MessageOptions | undefined = {}
+    { message, formats }: MessageOptions | undefined = {}
   ) {
-    let translation = this.messages[id] || defaults || id
+    if (!isString(id)) {
+      values = id.values || values
+      message = id.message
+      id = id.id
+    }
+    let translation = this.messages[id] || message || id
 
     // replace missing messages with custom message for debugging
     const missing = this._missing

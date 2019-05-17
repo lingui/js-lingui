@@ -10,8 +10,6 @@ import {
     Plural,
     Select,
     SelectOrdinal,
-    DateFormat,
-    NumberFormat,
 } from "@lingui/macro"
 
 const i18n = setupI18n()
@@ -80,12 +78,6 @@ const App = () => {
                      other={<Trans>#th book from {name}</Trans>}
                      _999999="Just a string"
       />
-      <Trans>Last login on <DateFormat format={{ timeZone: "UTC" }} value={lastLogin} />.</Trans>
-      <Trans>
-        Price of book: <NumberFormat
-        format={{ style: "currency", currency: "EUR", minimumFractionDigits: 2 }}
-        value={price} />.
-      </Trans>
     </I18nProvider>
   )
 }

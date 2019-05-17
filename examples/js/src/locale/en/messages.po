@@ -14,24 +14,24 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. Title of example
-#: src/messages.js:23
+#: src/messages.js:29
 msgid "@lingui/core example"
 msgstr ""
 
-#: src/messages.js:53
+#: src/messages.js:62
 msgid "Do you want to proceed? {yes}/{no}"
 msgstr ""
 
-#: src/messages.js:30
+#: src/messages.js:40
 msgid "Hello {name}"
 msgstr ""
 
 #. Disagreement
-#: src/messages.js:16
+#: src/messages.js:19
 msgid "No"
 msgstr ""
 
-#: src/messages.js:38
+#: src/messages.js:48
 msgid "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgid "Yes"
 msgstr ""
 
 #. Disagreement
-#: src/ids.js:13
+#: src/ids.js:17
 msgid "common.no"
 msgstr "No"
 
@@ -50,19 +50,23 @@ msgstr "No"
 msgid "common.yes"
 msgstr "Yes"
 
-#: src/ids.js:37
+#: src/ids.js:55
 msgid "lazy"
 msgstr "Do you want to proceed? {yes}/{no}"
 
-#: src/ids.js:26
+#: src/ids.js:42
 msgid "plural"
 msgstr "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
 
 #. Title of example
-#: src/ids.js:17
+#: src/ids.js:25
 msgid "static"
 msgstr "@lingui/core example"
 
-#: src/ids.js:21
+#: src/ids.js:25
+#~ msgid "undefined"
+#~ msgstr "undefined"
+
+#: src/ids.js:34
 msgid "variables"
 msgstr "Hello {name}"

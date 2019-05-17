@@ -6,8 +6,7 @@
         "modules": false
       }
     ],
-    "@babel/react",
-    "@babel/flow"
+    "@babel/react"
   ],
   "plugins": [
     "macros",

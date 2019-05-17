@@ -14,21 +14,21 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, date } from `@lingui/macro`
 
      const name = "Joe"
      const today = new Date()
 
      // With macro
-     i18n._(t`Hello ${name}, today is ${t.date(today)}`)
+     i18n._(t`Hello ${name}, today is ${date(today)}`)
 
      // Without macro
-     i18n._('Hello {name}, today is {today, date}', { name, date })
+     i18n._('Hello {name}, today is {today, date}', { name, today })
 
      // For the sake of completeness, macro is transformed into this code:
      // i18n._({
      //   id: 'Hello {name}, today is {today, date}',
-     //   values: { name, date }
+     //   values: { name, today }
      //  })
 
 - Messages are validated and type-checked. Generated message is always syntactically
@@ -36,14 +36,13 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, plural } from `@lingui/macro`
 
      const name = "Joe"
      const value = 42
 
      // With macro
-     i18n._(t`Hello ${name}, you have ${plural({
-       value,
+     i18n._(t`Hello ${name}, you have ${plural(value, {
        one: '# unread message',
        other: '# unread messages'
      })}`)
@@ -60,12 +59,12 @@ writing format by hand are following:
 
   .. code-block:: jsx
 
-     import t from `@lingui/macro`
+     import { t, date } from `@lingui/macro`
 
      const name = "Joe"
      const today = new Date()
 
-     i18n._(t`Hello ${name}, today is ${t.date(today)}`)
+     i18n._(t`Hello ${name}, today is ${date(today)}`)
 
      // Lingui configration { messageFormat: 'icu' }
      // ↓ ↓ ↓ ↓ ↓ ↓
@@ -89,8 +88,6 @@ writing format by hand are following:
 Message definitions
 ===================
 
-``t`` macro is a single entry point to define all kinds of messages.
-
 Tagged template literals
 ------------------------
 
@@ -98,29 +95,27 @@ Tagged template literals
 
 .. code-block:: jsx
 
-   import t from `@lingui/macro`
+   import { t } from `@lingui/macro`
 
    t`Hello ${name}`
 
 Plural, select and selectOrdinal formatters
 -------------------------------------------
 
-``t.plural``, ``t.select``, ``t.selectOrdinal`` macros are used as functions.
+``plural``, ``select``, ``selectOrdinal`` macros are used as functions.
 All of them must be called with an object containing ``value`` key and corresponding
-plural forms (``t.plural``, ``t.selectOrdinal``) or categories (``t.select``):
+plural forms (``plural``, ``selectOrdinal``) or categories (``select``):
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { plural, select } from '@lingui/macro'
 
-   t.plural({
-      value,
+   plural(value, {
       one: "# book",
       other: "# books"
    })
 
-   t.select({
-      value,
+   select(value, {
       male: "he",
       female: "she",
       other: "they"
@@ -131,10 +126,9 @@ for nested template literals:
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { t, plural } from '@lingui/macro'
 
-   t.plural({
-      value,
+   plural(value, {
       one: `${name} has # book`,
       other: `${name} has # books`
    })
@@ -142,161 +136,52 @@ for nested template literals:
 Date and number formatters
 --------------------------
 
-Finally, ``t.date`` and ``t.number`` macros are also used as a functions.
+Finally, ``date`` and ``number`` macros are also used as a functions.
 First argument is value to be formatted, the second is optional format:
 
 .. code-block:: jsx
 
-   import t from `@lingui/macro`
+   import { t, date, number } from `@lingui/macro`
 
    // default format
-   t`Today is ${t.date(today)}`
+   t`Today is ${date(today)}`
 
    // custom format
-   t`Interest rate is ${t.number(rate, 'percent')}`
+   t`Interest rate is ${number(rate, 'percent')}`
 
 Custom ID and comments for translators
 --------------------------------------
 
-If ``t`` macro is used as a function, then it's called with a message descriptor.
-It's possible to override message ID or add comments for translators by adding
-``id`` or ``comment`` respectively to this object.
+All macros above can be wrapped inside ``defineMessage`` macro
+to provide ``comment`` for translators or to override the message ``id``:
 
 .. code-block:: jsx
 
-   import t from '@lingui/macro'
+   import { defineMessage } from '@lingui/macro'
 
    // Message is used as an ID
-   t({
-      id: `Default message`,
+   defineMessage({
+      message: "Default message",
       comment: "Comment for translators"
    })
 
    // Custom ID
-   t({
+   defineMessage({
       id: "msg.id",
       comment: "Comment for translators",
-      message: `Default message`
-   })
-
-``t.plural`` and other formatters are already called with object as a first parameter.
-``id`` and ``comment`` props can be added there:
-
-.. code-block:: jsx
-
-   import t from '@lingui/macro'
-
-   const hello = defineMessage({
-      id: "msg.hello",
-      comment: "Comment for translators",
-      message: t`Hello ${"name"}`
-   })
-
-   // ↓ ↓ ↓ ↓ ↓ ↓
-   // const hello = "msg.hello"
-
-
-   const plural = defineMessage({
-      id: "msg.plural",
-      comment: "Comment for translators",
-      message: plural('value', {
-         one: "# book",
-         other: "# books"
-      })
-   })
-   // ↓ ↓ ↓ ↓ ↓ ↓
-   // const hello = "msg.plural"
-
-Later, in your code, you can translate and format the message:
-
-i18n(hello, { name: "World" })
-i18n(plural, { value: 42 })
-
-Another approach:
-
-   const messages = defineMessages({
-      hello: {
-         id: "msg.hello",
-         comment: "Comment for translators",
-         message: t`Hello ${"name"}`
-      },
-      plural: {
-         id: "msg.plural",
-         comment: "Comment for translators",
-         message: plural('value', {
-            one: "# book",
-            other: "# books"
-         })
-      }
-   })
-   // ↓ ↓ ↓ ↓ ↓ ↓
-   const messages = new Messages({
-      hello: "msg.hello",
-      plural: "msg.plural"
-   })
-
-Later in the code:
-
-messages.use(i18n)
-messages.hello({ name: "World" })
-messages.plural({ value: 42 })
-
-Boom. API ready for typechecking:
-
-messages.plural({ vale: 42 })  // Argument of type '{ vale: number; }' is not assignable to parameter of type '{ value: number; }'.
-
-const Title = props => <Trans>Hello <a href={props.to}>{props.name}</a></Trans>
-const Title = props => <Trans id="Hello <0>World</0>" components={{ 0: <a href={props.to} />}}/>
-
-const Plural = props => <Plural value={arg("value")} one="# book" two="# books" />
-
-const messages = defineMessages({
-   title: t`Hello World`,
-   Title: props => <Trans>Hello <strong>World</strong></Trans>
-})
-
-const messages = new Messages({
-   title: "Hello World",
-   Title: props =>
-})
-
-
-Transformation
-==============
-
-Each ``t`` macro variant is transformed into a message descriptor
-wrapped into ``i18n._`` function:
-
-.. code-block:: jsx
-
-   import t from '@lingui/macro'
-
-   t({
-      id: "msg.id",
-      comment: "Comment for translators"
-   })`Default message`
-
-   // ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-
-   import i18n from '@lingui/core'
-
-   i18n._({
-      id: "msg.id",
-      message: `Default message`,
-      comment: "Comment for translators"
+      message: "Default message"
    })
 
 Lazy translations
 -----------------
 
 Lazy translations are useful when we need to define a message, but translate it later.
-This was previously achieved using ``i18Mark``. Now we can use the same macros.
-Instead of importing the default import, import ``lazy`` instead:
+This was previously achieved using ``i18Mark``. Now we can use the same macros:
 
 .. code-block:: jsx
 
    // The API of `t` and `lazy` are the same.
-   import { lazy as t } from `@lingui/macro`
+   import { t } from `@lingui/macro`
 
    // define the message
    const msg = t`Default message`
@@ -306,16 +191,19 @@ Instead of importing the default import, import ``lazy`` instead:
 
 Lazy translations are usually defined in different scope than evaluated. Parameters
 are therefore unknown, but we still need to know their names, so we can create placeholders
-in MessageFormat. ``t.arg`` macro is used exactly for that:
+in MessageFormat. ``arg`` macro is used exactly for that:
 
 .. code-block:: jsx
 
+   import { plural, arg } from `@lingui/macro`
+
    // Macro
-   const books = t.plural({
-      value: t.arg('count'),
+   const books = plural(arg('count'), {
       one: '# book',
       other: '# books'
    })
+
+   i18n._(books, { count: 42 })
 
 Extracting messages
 ===================
@@ -324,13 +212,16 @@ Messages are extracted from code already transformed by macros. This makes macro
 completely optional and extraction will work also with message descriptors created
 manually.
 
-Extract script will look for  a ``i18nMark`` function calls:
+Extract script will look for  a ``i18n`` comments, which are automatically added by macros:
 
 .. code-block:: js
 
-   i18nMark({
+   t`Message`
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+   /*i18n*/{
      id: 'Message'
-   })
+   }
 
 An object after such comment is considered as message descriptor and extracted.
 
@@ -349,13 +240,13 @@ Feature request from #258:
 
 .. code-block:: jsx
 
-   import { lazy as t } from `@lingui/macro`
+   import { defineMessages, t, arg } from `@lingui/macro`
 
-   export default {
-      yes: t`Yes`,
-      no: t`No`,
-      cancel: t`Cancel`,
-      confirmDelete: t`Do you really want to delete ${t.arg("filename")}?`
-   }
+   export default defineMessages({
+      yes: "Yes",
+      no: "No",
+      cancel: "Cancel",
+      confirmDelete: t`Do you really want to delete ${arg("filename")}?`
+   })
 
 .. _Fluent: https://projectfluent.org/

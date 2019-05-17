@@ -143,7 +143,7 @@ describe("I18n", function() {
         "Missing with default",
         { name: "Fred" },
         {
-          defaults: "Missing {name}"
+          message: "Missing {name}"
         }
       )
     ).toEqual("Missing Fred")
