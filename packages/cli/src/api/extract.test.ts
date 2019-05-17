@@ -100,21 +100,21 @@ describe("collect", function() {
           "Broken.json": "Invalid JSONs are ignored too.",
           "Babel.json": JSON.stringify({
             "Babel Documentation": {
-              defaults: "Babel Documentation",
+              message: "Babel Documentation",
               origin: [["src/components/Babel.js", 5]]
             },
             Label: {
-              defaults: "Label",
+              message: "Label",
               origin: [["src/components/Babel.js", 7]]
             }
           }),
           "Typescript.json": JSON.stringify({
             "Typescript Documentation": {
-              defaults: "Typescript Documentation",
+              message: "Typescript Documentation",
               origin: [["src/components/Typescript.ts", 5]]
             },
             Label: {
-              defaults: "Label",
+              message: "Label",
               origin: [["src/components/Typescript.ts", 7]]
             }
           })
@@ -125,13 +125,13 @@ describe("collect", function() {
       diffDefaults: {
         "First.js.json": JSON.stringify({
           "msg.id": {
-            defaults: "First default",
+            message: "First default",
             origin: [["diffDefaults/First.js", 2]]
           }
         }),
         "Second.js.json": JSON.stringify({
           "msg.id": {
-            defaults: "Second default",
+            message: "Second default",
             origin: [["diffDefaults/Second.js", 5]]
           }
         })

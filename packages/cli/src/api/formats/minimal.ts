@@ -8,7 +8,7 @@ const serialize = R.map((message: MessageType) => message.translation || "")
 const deserialize = R.map((translation: string) => ({
   translation,
   obsolete: false,
-  defaults: null,
+  message: null,
   origin: []
 }))
 

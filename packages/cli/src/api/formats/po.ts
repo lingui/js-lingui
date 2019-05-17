@@ -22,7 +22,7 @@ const serialize = R.compose(
     item.msgid = key
     item.msgstr = [message.translation]
     item.comments = message.comments || []
-    item.extractedComments = message.description ? [message.description] : []
+    item.extractedComments = message.comment ? [message.comment] : []
     item.references = message.origin ? message.origin.map(joinOrigin) : []
     // @ts-ignore: Figure out how to set this flag
     item.obsolete = message.obsolete
@@ -53,7 +53,7 @@ const deserialize = R.map(
       R.defaultTo([]),
       getTranslations
     ),
-    description: R.compose(
+    comment: R.compose(
       R.head,
       R.defaultTo([]),
       getExtractedComments
