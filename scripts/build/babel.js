@@ -40,7 +40,13 @@ module.exports = async function(bundle) {
     const packageDir = path.dirname(resolvedEntry)
     const srcDir = path.join(packageDir, "src")
 
+    const declarationFilePath = path.join(packageDir, "index.d.ts")
+
     const files = walk(srcDir)
+
+    if (fs.existsSync(declarationFilePath)) {
+      files.push("index.d.ts")
+    }
 
     for (const filename of files) {
       const [mainOutputPath] = Packaging.getBundleOutputPaths(
@@ -52,11 +58,15 @@ module.exports = async function(bundle) {
       const outputDir = path.dirname(mainOutputPath)
       await asyncMkDirP(outputDir)
 
-      const { code } = babel.transformFileSync(
-        path.join(srcDir, filename),
-        babelConfig({ modules: true })
-      )
-      fs.writeFileSync(mainOutputPath.replace(/\.ts$/, ".js"), code)
+      if (!filename.endsWith(".d.ts")) {
+        const { code } = babel.transformFileSync(
+          path.join(srcDir, filename),
+          babelConfig({ modules: true })
+        )
+        fs.writeFileSync(mainOutputPath.replace(/\.ts$/, ".js"), code)
+      } else {
+        fs.copyFileSync(path.join(packageDir, filename), mainOutputPath)
+      }
     }
   } catch (error) {
     spinner.fail()
