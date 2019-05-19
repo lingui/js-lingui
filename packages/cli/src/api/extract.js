@@ -22,7 +22,7 @@ type ExtractOptions = {
  * should be the same (raise an error if defaults are different).
  */
 function mergeMessage(msgId, prev, next) {
-  if (prev.defaults !== next.defaults) {
+  if (prev.defaults && next.defaults && prev.defaults !== next.defaults) {
     throw new Error(
       `Encountered different defaults for message ${chalk.yellow(msgId)}` +
         `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.defaults}` +
@@ -32,6 +32,7 @@ function mergeMessage(msgId, prev, next) {
 
   return {
     ...next,
+    defaults: prev.defaults || next.defaults,
     origin: R.concat(prev.origin, next.origin)
   }
 }
