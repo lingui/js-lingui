@@ -3,6 +3,7 @@
   "version": "0.0.0-managed-by-release-script",
   "description": "React components for translations",
   "main": "index.js",
+  "types": "cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
