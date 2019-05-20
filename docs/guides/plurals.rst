@@ -49,7 +49,7 @@ Under the hood, ``i18n.plural`` is replaced with low-level ``i18n._``. For produ
 
    i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
 
-When we extract messages from source code using (lingui-cli)[linguiCliTutorial], we get:
+When we extract messages from source code using :doc:`lingui-cli </tutorials/cli>`, we get:
 
 .. code-block:: default
 
@@ -95,7 +95,7 @@ the process:
 Using other language than English
 =================================
 
-That works perfectly fine! Just learn what [plural forms][cldrPluralRules] your
+That works perfectly fine! Just learn what `plural forms <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_ your
 languages has and then you can use them. Here's the example in Czech:
 
 .. code-block:: js

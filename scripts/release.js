@@ -18,11 +18,18 @@ const npmTagForBranch = {
 }
 
 async function devRelease() {
+  // Get the next version
+  const { currentVersion, newVersion } = await getNewVersion("next")
+
   const spinner = ora({
     text: "Building packages"
   })
   spinner.start()
   await exec("yarn release:build")
+
+  // Set correct version in package.json for all packages
+  await preparePackageVersions(newVersion)
+
   // Throw away build stats
   await exec("git checkout -- scripts/build/results.json")
 
@@ -100,7 +107,7 @@ async function release() {
   })
   if (!confirmGit) return
 
-  await exec("git add package.json")
+  await exec("git add package.json scripts/build/results.json")
   try {
     await exec(`git commit -m "chore: release v${newVersion}"`)
   } catch (e) {
@@ -175,7 +182,7 @@ async function getNewVersion(npmTag) {
         name: `current ${currentVersion}`
       },
       ...(npmTag === "latest"
-        ? ["path", "minor", "major"]
+        ? ["patch", "minor", "major"]
         : ["prerelease", "prepatch", "preminor", "premajor"]
       ).map(value => ({
         value,

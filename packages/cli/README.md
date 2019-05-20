@@ -1,12 +1,12 @@
-[![License][Badge-License]][License]
-[![Version][Badge-Version]][Package]
-[![Downloads][Badge-Downloads]][Package]
+[![License][badge-license]][license]
+[![Version][badge-version]][package]
+[![Downloads][badge-downloads]][package]
 
 # @lingui/cli
 
 > lingui command line tools for manipulating message catalogues
 
-`@lingui/cli` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/cli` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -39,18 +39,18 @@ npm run compile
 
 ## Usage
 
-See the [tutorial][Tutorial] or [reference][Reference] documenation.
+See the [tutorial][tutorial] or [reference][reference] documenation.
 
 ## License
 
-This package is licensed under [MIT][License] license.
+This package is licensed under [MIT][license] license.
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[LinguiJS]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.js.org/
-[Tutorial]: https://lingui.js.org/tutorials/cli.html
-[Reference]: https://lingui.js.org/ref/cli.html
-[Package]: https://www.npmjs.com/package/@lingui/cli
-[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/cli.svg
-[Badge-Version]: https://img.shields.io/npm/v/@lingui/cli.svg 
-[Badge-License]: https://img.shields.io/npm/l/@lingui/cli.svg
+[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[linguijs]: https://github.com/lingui/js-lingui
+[documentation]: https://lingui.js.org/
+[tutorial]: https://lingui.js.org/tutorials/cli.html
+[reference]: https://lingui.js.org/ref/cli.html
+[package]: https://www.npmjs.com/package/@lingui/cli
+[badge-downloads]: https://img.shields.io/npm/dw/@lingui/cli.svg
+[badge-version]: https://img.shields.io/npm/v/@lingui/cli.svg
+[badge-license]: https://img.shields.io/npm/l/@lingui/cli.svg

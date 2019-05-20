@@ -1,0 +1,53 @@
+{
+  "Yes": {
+    "comment": "Agreement",
+    "origin": [
+      [
+        "src/messages.js",
+        15
+      ]
+    ]
+  },
+  "No": {
+    "comment": "Disagreement",
+    "origin": [
+      [
+        "src/messages.js",
+        19
+      ]
+    ]
+  },
+  "@lingui/core example": {
+    "comment": "Title of example",
+    "origin": [
+      [
+        "src/messages.js",
+        29
+      ]
+    ]
+  },
+  "Hello {name}": {
+    "origin": [
+      [
+        "src/messages.js",
+        40
+      ]
+    ]
+  },
+  "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall": {
+    "origin": [
+      [
+        "src/messages.js",
+        48
+      ]
+    ]
+  },
+  "Do you want to proceed? {yes}/{no}": {
+    "origin": [
+      [
+        "src/messages.js",
+        62
+      ]
+    ]
+  }
+}

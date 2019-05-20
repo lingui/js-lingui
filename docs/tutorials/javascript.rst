@@ -29,56 +29,43 @@ Let's start with the three major packages:
    Transforms messages wrapped in tagged template literals to ICU
    MessageFormat and validates them.
 
-1. ``@lingui/cli`` comes with handy :cli:`init` command, which detects the
-   project type and install all required packages automatically. Feel free to run
-   it with ``lingui init --dry-run`` option to inspect what commands will be run:
+1. Install ``@lingui/cli``, ``@lingui/macro``, ``babel-plugin-macros`` and Babel core
+   packages as a development dependencies and ``@lingui/core`` as a runtime dependency:
 
    .. code-block:: shell
 
-      npm install -g @lingui/cli
-      lingui init
+      npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros
+      npm install --save @lingui/core
 
-   Yarn is supported as well:
+      # If you use Babel 7:
+      npm install --save-dev babel-core@bridge @babel/core
+
+      # If you use Babel 6:
+      npm install --save-dev babel-core
+
+   If you use Yarn, add following:
 
    .. code-block:: shell
 
-      yarn global add @lingui/cli
-      lingui init
+      yarn add --dev @lingui/cli @lingui/macro babel-plugin-macros
+      yarn add @lingui/core
 
-   .. note::
+      # If you use Babel 7:
+      yarn add --dev babel-core@bridge @babel/core
 
-      Under the hood it installs ``babel-plugin-macros`` and ``@lingui/macro`` as
-      a development dependency and ``@lingui/core`` as a runtime dependency:
+      # If you use Babel 6:
+      yarn add --dev babel-core
 
-      .. code-block:: shell
 
-         npm install --save @lingui/core
-         npm install --save-dev babel-plugin-macros @lingui/macro
-
-2. Add ``macro`` plugin to Babel config (e.g: ``.babelrc``):
+2. Add ``macros`` plugin to Babel config (e.g: ``.babelrc``):
 
    .. code-block:: json
 
       {
-        "presets": [
-          "env",
-          "react",
-        ],
         "plugins": [
-          "macro"
+          "macros"
         ]
       }
-
-3. If you receive a warning about missing peer dependency ``babel-core``, you need
-to install it manually. Target version depends on whether you're using babel 6 or 7:
-
-   .. code-block:: shell
-
-      # Babel 6.x
-      npm install --save-dev babel-core@6
-
-      # Babel 7.x
-      npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
 
 Now we have the environment up and running and we can start internationalizing our app!
 

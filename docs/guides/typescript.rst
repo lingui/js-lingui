@@ -54,6 +54,15 @@ In your ``webpack.config.js``, use both ``babel-loader`` and ``ts-loader`` for T
    To supply babel options for the extraction process use :conf:`extractBabelOptions` configuration option.
 
 
+:conf:`compileNamespace` must be set to ``es`` (ES6 default export) in the Lingui config
+otherwise compiled catalogs can't be imported using ES ``import``, but rather CommonJS ``require``:
+
+.. code:: js
+
+  {
+    "compileNamespace": "es"
+  }
+
 Type definitions
 ================
 
@@ -66,5 +75,6 @@ The type definitions requires Typescript 2.8 or later.
 
    npm install --save-dev @types/lingui__core  # types for @lingui/core
    npm install --save-dev @types/lingui__react  # types for @lingui/react
+   npm install --save-dev @types/lingui__macro  # types for @lingui/macro
 
 Please report any issues in `maintainers repo <https://github.com/huan086/lingui-typings>`_.

@@ -1,12 +1,9 @@
 const argv = require("minimist")(process.argv.slice(2))
-const ora = require("ora")
-const chalk = require("chalk")
 
-const Modules = require("./modules")
 const Bundles = require("./bundles")
 const Packaging = require("./packaging")
 const Stats = require("./stats")
-const { asyncCopyTo, asyncRimRaf, asyncExecuteCommand } = require("./utils")
+const { asyncRimRaf } = require("./utils")
 
 const rollup = require("./rollup")
 const babel = require("./babel")
@@ -36,22 +33,6 @@ function shouldSkipBundle(bundle, bundleType) {
   return false
 }
 
-async function copyFlowTypes(name) {
-  // Windows isn't supported in flow gen-flow-files
-  if (process.platform === "win32") return
-
-  const srcDir = `packages/${name}/src`
-  const outDir = `build/packages/${name}`
-
-  const msg = chalk.white.bold(`@lingui/${name}`) + chalk.dim(` (flow types)`)
-  const spinner = ora(msg).start()
-
-  await asyncExecuteCommand(
-    `yarn flow-copy-source -i **/*.test.js -i **/fixtures/** ${srcDir} ${outDir}`
-  )
-  spinner.succeed()
-}
-
 async function buildEverything() {
   await asyncRimRaf("build")
 
@@ -67,10 +48,6 @@ async function buildEverything() {
     }
 
     await builder(bundle)
-    if (bundle.type === UNIVERSAL || bundle.type === NODE) {
-      const name = bundle.entry.replace("@lingui/", "")
-      await copyFlowTypes(name)
-    }
   }
 
   console.log(Stats.printResults())

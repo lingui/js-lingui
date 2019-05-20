@@ -12,6 +12,9 @@ results/
 junit.xml
 
 __pycache__/
+.rpt2_cache/
 
 .DS_Store
 .vscode
+.idea
+*.iml

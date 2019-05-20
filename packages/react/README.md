@@ -1,12 +1,12 @@
-[![License][Badge-License]][License]
-[![Version][Badge-Version]][Package]
-[![Downloads][Badge-Downloads]][Package]
+[![License][badge-license]][license]
+[![Version][badge-version]][package]
+[![Downloads][badge-downloads]][package]
 
-# @lingui/react 
+# @lingui/react
 
 > React components for internationalization
 
-`@lingui/react` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/react` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -17,18 +17,18 @@ npm install --save @lingui/react
 
 ## Usage
 
-See the [tutorial][Tutorial] or [reference][Reference] documenation.
+See the [tutorial][tutorial] or [reference][reference] documenation.
 
 ## License
 
-[MIT][License]
+[MIT][license]
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[LinguiJS]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.js.org/
-[Tutorial]: https://lingui.js.org/tutorials/react.html
-[Reference]: https://lingui.js.org/ref/react.html
-[Package]: https://www.npmjs.com/package/@lingui/react
-[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/react.svg
-[Badge-Version]: https://img.shields.io/npm/v/@lingui/react.svg 
-[Badge-License]: https://img.shields.io/npm/l/@lingui/react.svg
+[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[linguijs]: https://github.com/lingui/js-lingui
+[documentation]: https://lingui.js.org/
+[tutorial]: https://lingui.js.org/tutorials/react.html
+[reference]: https://lingui.js.org/ref/react.html
+[package]: https://www.npmjs.com/package/@lingui/react
+[badge-downloads]: https://img.shields.io/npm/dw/@lingui/react.svg
+[badge-version]: https://img.shields.io/npm/v/@lingui/react.svg
+[badge-license]: https://img.shields.io/npm/l/@lingui/react.svg

@@ -7,9 +7,41 @@ import {
   configValidation
 } from "@lingui/conf"
 import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
+import cosmiconfig from "cosmiconfig"
+
+const mockExplorer = {
+  searchSync: jest.fn(),
+  loadSync: jest.fn()
+}
+
+jest.mock("cosmiconfig", function() {
+  return function() {
+    return mockExplorer
+  }
+})
+
+jest.mock("fs", function() {
+  return {
+    existsSync: function() {
+      return true
+    }
+  }
+})
 
 describe("@lingui/conf", function() {
+  beforeEach(function() {
+    cosmiconfig().loadSync.mockClear()
+    cosmiconfig().searchSync.mockClear()
+  })
+
   it("should return default config", function() {
+    cosmiconfig().searchSync.mockReturnValueOnce({
+      config: {
+        rootDir: ".",
+        locales: ["en", "cs"]
+      },
+      filepath: "."
+    })
     expect.assertions(2)
 
     mockConsole(console => {
@@ -97,6 +129,35 @@ describe("@lingui/conf", function() {
         catalogs: {
           "locales/{locale}/messages": ["src", "!src/node_modules/"]
         }
+      })
+    })
+  })
+
+  it("searches for a config file", function() {
+    expect.assertions(1)
+
+    mockConsole(() => {
+      getConfig()
+      expect(cosmiconfig().searchSync).toHaveBeenCalled()
+    })
+  })
+
+  describe("with --config command line argument", function() {
+    beforeEach(function() {
+      process.argv.push("--config")
+      process.argv.push("./lingui/myconfig")
+    })
+
+    afterEach(function() {
+      process.argv.splice(process.argv.length - 2, 2)
+    })
+
+    it("allows specific config file to be loaded", function() {
+      expect.assertions(2)
+      mockConsole(() => {
+        getConfig()
+        expect(cosmiconfig().searchSync).not.toHaveBeenCalled()
+        expect(cosmiconfig().loadSync).toHaveBeenCalledWith("./lingui/myconfig")
       })
     })
   })

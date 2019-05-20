@@ -2,7 +2,7 @@
 Common i18n patterns in React
 *****************************
 
-Following page describes the most common i18n patterns in React. It's a followup
+Following page describes the most common i18n patterns in React. It's a follow-up
 to `tutorial <react>`_ with practical examples. See the
 `API reference <../ref/react>`_ for detailed information about all components.
 
@@ -23,19 +23,45 @@ React components:
 
    <p><Trans>Hello <a href="/profile">{name}</a>.</Trans></p>
 
-You don't need anything special to use :jsxmacro:`Trans` inside out app (except
-of wrapping your app in :component:`I18nProvider`).
+You don't need anything special to use :jsxmacro:`Trans` inside your app (except
+of wrapping the root component in :component:`I18nProvider`).
 
-Using generated message as ID
------------------------------
+Using ID generated from message
+-------------------------------
+
+With :jsxmacro:`Trans`
+^^^^^^^^^^^^^^^^^^^^^^
 
 In the examples above, the content of :jsxmacro:`Trans` is transformed into
-message in MessageFormat syntax. By default, this message is used as a message ID.
-In the example above, messages ``LinguiJS example`` and ``Hello <0>{name}</0>.``
-are extracted.
+message in MessageFormat syntax. By default, this message is used as the message ID.
+Considering the example above, messages ``LinguiJS example`` and ``Hello <0>{name}</0>.``
+are extracted and used as IDs.
+
+With :jsmacro:`t`
+^^^^^^^^^^^^^^^^^
+
+In the following example, message ``Image caption`` will be extracted and used as ID.
+
+.. code-block:: jsx
+
+   import { I18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
+
+   export default function ImageWithCaption() {
+      return (
+         <I18n>
+            {({ i18n }) => (
+               <img src="..." alt={i18n._(t`Image caption`)} />
+            )}
+         </I18n>
+      )
+   }
 
 Using custom ID
 ---------------
+
+With :jsxmacro:`Trans`
+^^^^^^^^^^^^^^^^^^^^^^
 
 If you're using custom IDs in your project, add ``id`` prop to i18n components:
 
@@ -50,67 +76,8 @@ If you're using custom IDs in your project, add ``id`` prop to i18n components:
 Messages ``msg.header`` and ``msg.hello`` will be extracted with default values
 ``LinguiJS example`` and ``Hello <0>{name}</0>.``.
 
-Element attributes and string only translations
-===============================================
-
-Sometimes you can't use :jsxmacro:`Trans` component, for example when translating element
-attributes:
-
-.. code-block:: html
-
-   <img src="..." alt="Image caption" />
-
-In such case you need to use :component:`I18n` render prop component to access ``i18n``
-object and :jsmacro:`t` macro to wrap message:
-
-1. Use render prop component :component:`I18n` from ``@lingui/react``, to access
-   ``i18n`` object.
-
-2. Call :js:meth:`i18n._`` to translate message wrapped in JS macros. :jsmacro:`t` is
-   equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :component:`Plural`.
-
-.. code-block:: jsx
-
-   import { I18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
-
-   export default function ImageWithCaption() {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
-            )}
-         </I18n>
-      )
-   }
-
-Using generated message as ID
------------------------------
-
-You can either use generated messages as IDs or custom ones. This is the same
-as working for i18n components.
-
-In this example:
-
-.. code-block:: jsx
-
-   import { I18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
-
-   export default function ImageWithCaption() {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
-            )}
-         </I18n>
-      )
-   }
-
-Message ``Image caption`` will be extracted.
-
-Using custom ID
----------------
+With :jsmacro:`t`
+^^^^^^^^^^^^^^^^^
 
 If you're using custom IDs in your project, call :jsmacro:`t` with ID as a first
 argument and then use string templates as usual:
@@ -132,8 +99,8 @@ argument and then use string templates as usual:
 
 Message ``msg.caption`` will be extracted with default value ``Image caption``.
 
-For all other js macros (:jsmacro:`plural`, :jsmacro:`select``, :jsmacro:`selectOrdinal``),
-pass ID as object key:
+For all other js macros (:jsmacro:`plural`, :jsmacro:`select`, :jsmacro:`selectOrdinal`),
+pass ID as the first param (in this case, ``'msg.caption'``):
 
 .. code-block:: jsx
 
@@ -154,17 +121,63 @@ pass ID as object key:
       )
    }
 
+Element attributes and string-only translations
+===============================================
+
+Sometimes you can't use :jsxmacro:`Trans` component, for example when translating element
+attributes:
+
+.. code-block:: html
+
+   <img src="..." alt="Image caption" />
+
+In such case you need to use :component:`I18n` render prop component to access ``i18n``
+object and :jsmacro:`t` macro to wrap message:
+
+1. Use :js:func:`withI18n` HOC or :component:`I18n` render prop component from ``@lingui/react``, to access
+   ``i18n`` object.
+
+2. Call :js:meth:`i18n._`` to translate message wrapped in JS macros. :jsmacro:`t` is
+   equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :component:`Plural`.
+
+.. code-block:: jsx
+
+   // using the withI18n HOC
+   import { withI18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
+
+   function ImageWithCaption({ i18n }) {
+      return <img src="..." alt={i18n._(t`Image caption`)} />
+   }
+
+   export default withI18n(ImageWithCaption)
+
+.. code-block:: jsx
+
+   // using the render prop
+   import { I18n } from "@lingui/react"
+   import { t } from "@lingui/macro"
+
+   export default function ImageWithCaption() {
+      return (
+         <I18n>
+            {({ i18n }) => (
+               <img src="..." alt={i18n._(t`Image caption`)} />
+            )}
+         </I18n>
+      )
+   }
+
+
 Translations outside React components
 =====================================
 
 Another common pattern is when you need to access translations (``i18n`` object)
-outside React components, for example inside ``redux-saga``. In such case, you need
-a bit more setup:
+outside React components, for example inside ``redux-saga``:
 
 1. Create your own instance of ``i18n`` using :js:func:`setupI18n` form ``@lingui/core``
 
-2. Pass this instance as ``i18n`` prop to :component:`I18nProvider`. This will replace
-   default ``i18n`` object initialized inside :component:`I18nProvider`.
+2. Pass this instance as ``i18n`` prop to :component:`I18nProvider`.
 
    .. code-block:: jsx
 
@@ -177,7 +190,7 @@ a bit more setup:
       export default function App() {
          return (
             <I18nProvider i18n={i18n}>
-               {/* Out app */}
+               {/* Our app */}
             </I18nProvider>
          )
       }
@@ -191,7 +204,7 @@ a bit more setup:
       import { t } from "@lingui/macro"
 
       export function alert() {
-         // use i18n as you were inside React component
+         // use i18n as if you were inside a React component
          alert(i18n._(t`...`))
       }
 

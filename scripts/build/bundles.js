@@ -15,6 +15,13 @@ const bundles = [
 
   {
     type: bundleTypes.UNIVERSAL,
+    entry: "@lingui/core",
+    label: "dev",
+    externals: []
+  },
+
+  {
+    type: bundleTypes.UNIVERSAL,
     entry: "@lingui/react",
     externals: ["@lingui/core"]
   },

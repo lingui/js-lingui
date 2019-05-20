@@ -6,19 +6,13 @@ Working with LinguiJS CLI
 *************************
 
 ``@lingui/cli`` provides the ``lingui`` command for extracting, merging and
-compiling message catalogs::
+compiling message catalogs. Follow `setup instructions <../ref/cli>`_ to install required
+packages.
 
-   npm install --global @lingui/cli
+.. note::
 
-Install also ``babel-core`` package depending on Babel version you use:
-
-.. code-block:: shell
-
-   # Babel 6.x
-   npm install --save-dev babel-core@6
-
-   # Babel 7.x
-   npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
+   This tutorial assumes you use `yarn` to run commands. If you use `npm`,
+   type `npm run <command>` instead of `yarn <command>`.
 
 Add a new locale
 ================
@@ -27,14 +21,14 @@ First, we need to add all the locales we want to translate our application into.
 :cli:`add-locale` command checks if such locale exists and creates a new directory in
 the ``locale`` directory::
 
-   lingui add-locale en cs
+   yarn add-locale en cs
 
 Example output::
 
    Added locale en.
    Added locale cs.
 
-   (use "lingui extract" to extract messages)
+   (use "yarn extract" to extract messages)
 
 Extracting messages
 ===================
@@ -42,7 +36,7 @@ Extracting messages
 We're going to use an app we built in a `React tutorial <./react>`_. The :cli:`extract`
 command looks for messages in the source files and extracts them::
 
-   lingui extract
+   yarn extract
 
 .. code-block:: shell
 
@@ -59,9 +53,9 @@ command looks for messages in the source files and extracts them::
    │ en       │     40      │   40    │
    └──────────┴─────────────┴─────────┘
 
-   (use "lingui add-locale <locale>" to add more locales)
-   (use "lingui extract" to update catalogs with new messages)
-   (use "lingui compile" to compile catalogs for production)
+   (use "yarn add-locale <locale>" to add more locales)
+   (use "yarn extract" to update catalogs with new messages)
+   (use "yarn compile" to compile catalogs for production)
 
 The message catalog will look like this:
 
@@ -102,8 +96,8 @@ messages are translated::
 
    Messages extracted!
 
-   (use "lingui extract" to update catalogs with new messages)
-   (use "lingui compile" to compile catalogs for production)
+   (use "yarn extract" to update catalogs with new messages)
+   (use "yarn compile" to compile catalogs for production)
 
 :cli:`extract` merges all translations with new messages, so you can run
 this command any time without worrying about losing any translations.
@@ -116,7 +110,7 @@ minified JS file with the :cli:`compile` command. This command parses the
 messages in MessageFormat and compiles them into simple functions. It also adds
 plural rules to a production ready catalog::
 
-   lingui compile
+   yarn compile
 
  .. code-block:: shell
 
@@ -136,7 +130,7 @@ translated messages.
 However, sooner or later some messages will be removed from the source. We can
 use the ``--clean`` option to clean up our message catalogs::
 
-   lingui extract --clean
+   yarn extract --clean
 
 Validation of message catalogs
 ==============================
@@ -147,7 +141,7 @@ option, which does exactly that.
 
 The example output might look like this::
 
-   lingui compile --strict
+   yarn compile --strict
 
 .. code-block:: shell
 
@@ -182,7 +176,7 @@ Running ``lingui extract`` again shows the correct statistics::
 
 And compilation in strict mode no longer throws an error::
 
-   lingui compile --strict
+   yarn compile --strict
 
 .. code-block:: shell
 
@@ -217,7 +211,7 @@ To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
 examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
 
 PseudoLocale folder is automatically created based on configuration when running 
-``lingui extract`` command. Pseudolocalized text is created on  ``lingui compile`` command.
+``yarn extract`` command. Pseudolocalized text is created on  ``yarn compile`` command.
 The pseudolocalization is automatically created from default messages. 
 It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
 
@@ -246,7 +240,7 @@ for translators. The JavaScript functions that return the actual translations wh
 production are created from those json files. See
 `Excluding build files <../guides/excluding-build-files>`_ guide for more info.
 
-If you're using a CI, it is a good idea to add the ``lingui extract`` and ``lingui compile``
+If you're using a CI, it is a good idea to add the ``yarn extract`` and ``yarn compile``
 commands to your build process.
 
 Further reading

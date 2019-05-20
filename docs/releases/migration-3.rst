@@ -8,23 +8,40 @@ Backward incompatible changes
 Minimal required versions are:
 
 - Node.js: 8.x
-- React: 16.3
+- React: 16.8
 - Babel: 6
 
+@lingui/react
+-------------
+
+- ``<I18n>`` render-prop component and ``withI18n`` high-order component were removed in favor of :js:func:`useLingui` hook.
+
+- In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and ``description`` to ``comment``.
+
+- In :component:`Trans`, ``components`` is now an object, not an array. When using the low level API,
+  it allows to name the component placeholders:
+
+  .. code-block:: jsx
+
+     <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
+
+- ``NumberFormat`` and ``DateFormat`` components were removed. Use ``date`` and ``number`` formats
+  from ``@lingui/core`` package instead.
+
 Removed :component:`I18nProvider` declarative API
--------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 LinguiJS started as a React library. After `@lingui/core` package was introduced,
 there were two ways how to switch active locales and manage catalogs in React: either
 using :component:`I18nProvider` declarative API or using `setupI18n` imperative API.
 
-In the same spirit as ``react-apollo` and ``react-redux``, the :component:`I18nProvider`
+In the same spirit as ``react-apollo`` and ``react-redux``, the :component:`I18nProvider`
 is simplified and accepts ``i18n`` manager, which must be created manually:
 
 .. code-block:: diff
 
-   - import { I18nProvider } from '@lingui/react'
-   + import { setupI18n, I18nProvider } from '@lingui/react'
+     import { I18nProvider } from '@lingui/react'
+   + import { setupI18n } from '@lingui/core'
      import catalogEn from './locale/en/messages.js'
 
    + const i18n = setupI18n()
@@ -40,8 +57,31 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
         )
      }
 
+@lingui/core
+------------
+
+- ``i18n.t``, ``i18n.plural``, ``i18n.select`` and ``i18n.selectOrdinal`` methods were
+  removed in favor of macros.
+- Signature of ``i18n._`` method has changed. The third parameter now accepts default
+  message in ``message`` prop, instead of ``defaults``:
+
+  .. code-block:: diff
+
+     - i18n._('Welcome / Greetings', { name: 'Joe' }, { defaults: "Hello {name}" })
+     + i18n._('Welcome / Greetings', { name: 'Joe' }, { message: "Hello {name}" })
+
+- ``i18n._`` also accepts a message descriptor as a first parameter:
+
+  .. code-block:: diff
+
+     i18n._({
+       id: string,
+       message?: string,
+       comment?: string
+     })
+
 `i18n.load` loads a catalog for a single locale
------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``i18n`` manager is the single source of truth and there's no need to keep all catalogs
 loaded outside this object. To make loading easier, `i18n.load` now accepts catalog
@@ -70,14 +110,29 @@ message catalogs in SSR), use `i18n.loadAll` instead.
       export const i18n = setupI18n()
       i18n.loadAll({ en: catalogEn })
 
+@lingui/macro
+-------------
+
+- :jsmacro:`plural`, :jsmacro:`select` and :jsmacro:`selectOrdinal` accepts value as a first parameter:
+
+  .. code-block:: diff
+
+     - plural({ value, one: "# book", other: "# books" })
+     + plural(value, { one: "# book", other: "# books" })
+
+@lingui/cli
+-----------
+
+- command ``lingui init`` was removed
+
 Whitespace and HTML entities
 ----------------------------
 
 Whitespace handling in plugins had few bugs. By fixing them, there might be few
-backward incompatible changes. It's advised to run `lingui extract` and inspect
+backward incompatible changes. It's advised to run :cli:`extract` and inspect
 changes in catalogs (if any).
 
-1. Don't keep spaces before `{variables}` in JSX. This is how React handles whitespaces
+1. Don't keep spaces before ``{variables}`` in JSX. This is how React handles whitespaces
    in JSX. Leading whitespace is always removed:
 
    .. code-block:: jsx
@@ -171,6 +226,8 @@ needed anymore.
 
       - i18n.t`Hello World`
       + i18n._(t`Hello World`)
+
+
 
 New features
 ============

@@ -10,7 +10,7 @@ Documentation uses Sphinx and reStructuredText. Source inside the
 
 2. Run `pipenv install` to setup Python environemnt (requires Python 3.6).
    If you encounter `ValueError('unknown locale: %s' % localename)`,
-   run `export LC_ALL=en_US.UTF-8`, `export LANG=en_US.UTF-8` and try again.
+   run `export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8` and try again.
 
 3. Run `pipenv run make livehtml` to build the docs, watch for changes and preview
    documentation locally at [http://127.0.0.1:8000](http://127.0.0.1:8000).

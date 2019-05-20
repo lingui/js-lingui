@@ -121,7 +121,7 @@ example:
     <YourRootComponent someProp="someValue" />
   </I18nProvider>
 
-  const Inbox = (({ markAsRead, i18n }) => {
+  const Inbox = (({ markAsRead }) => {
     return (
       <View>
         <View>
@@ -129,6 +129,7 @@ example:
             <Trans>Message Inbox</Trans>
           </Text>
           <Trans>See all unread messages or</Trans>
+          {/* you can also use the withI18n HOC */}
           <I18n>
             {({ i18n }) => (
               <Button onPress={markAsRead} title={i18n._(t`mark messages as read`)} />
@@ -143,11 +144,7 @@ example:
 
 .. note::
 
-   The important thing about both the :component:`Trans` (and the other provided components)
-   and ``withI18n`` HOC is that when you change the active language (through the
-   ``language`` prop passed to :component:`I18nProvider`), all the components that show
-   translated text will re-render, making sure the UI shows the correct translations. The
-   two approaches are equivalent in their result.
+   There are several ways to render translations: You may use the the :component:`Trans` component, the ``withI18n`` HOC or the :component:`I18n` component that provides a render prop. The important thing about all of these approaches is that when you change the active language (through the ``language`` prop passed to :component:`I18nProvider`), all the components that show translated text will re-render, making sure the UI shows the correct translations. All of these approaches are equivalent in their result.
 
 Internationalization Outside of React Components
 =================================================

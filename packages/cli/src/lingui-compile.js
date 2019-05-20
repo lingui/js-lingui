@@ -1,4 +1,3 @@
-// @flow
 import chalk from "chalk"
 import fs from "fs"
 import * as R from "ramda"
@@ -9,6 +8,7 @@ import { getConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
+import { helpRun } from "./api/help"
 
 function command(config, options) {
   const catalogs = getCatalogs(config)
@@ -17,7 +17,7 @@ function command(config, options) {
     console.error("Nothing to compile, message catalogs are empty!\n")
     console.error(
       `(use "${chalk.yellow(
-        "lingui extract"
+        helpRun("extract")
       )}" to extract messages from source files)`
     )
     return false
@@ -27,9 +27,11 @@ function command(config, options) {
 
   config.locales.forEach(locale => {
     const [language] = locale.split(/[_-]/)
-    if (!plurals[language]) {
-      console.error(
-        `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
+    if (locale !== config.pseudoLocale && !plurals[language]) {
+      console.log(
+        chalk.red(
+          `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
+        )
       )
       console.error()
       process.exit(1)
@@ -94,6 +96,7 @@ if (require.main === module) {
     .description(
       "Add compile message catalogs and add language data (plurals) to compiled bundle."
     )
+    .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
     .option("--format <format>", "Format of message catalog")
@@ -107,12 +110,12 @@ if (require.main === module) {
       console.log(
         "    # Compile translations and use defaults or message IDs for missing translations"
       )
-      console.log("    $ lingui compile")
+      console.log(`    $ ${helpRun("compile")}`)
       console.log("")
       console.log("    # Compile translations but fail when there're missing")
       console.log("    # translations (don't replace missing translations with")
       console.log("    # default messages or message IDs)")
-      console.log("    $ lingui compile --strict")
+      console.log(`    $ ${helpRun("compile --strict")}`)
     })
     .parse(process.argv)
 

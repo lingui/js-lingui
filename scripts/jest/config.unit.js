@@ -1,7 +1,7 @@
 module.exports = {
   roots: ["<rootDir>/packages/"],
   rootDir: process.cwd(),
-  testMatch: ["**/?(*.)test.js", "**/test/index.js"],
+  testMatch: ["**/?(*.)test.(js|ts|tsx)", "**/test/index.(js|ts|tsx)"],
   testPathIgnorePatterns: ["/node_modules/", "/locale/"],
   testURL: "http://localhost",
 
@@ -18,7 +18,10 @@ module.exports = {
   coverageReporters: ["html", "lcov"],
 
   reporters: ["default", "jest-junit"],
-  setupTestFrameworkScriptFile: require.resolve("./env.js"),
+  setupFilesAfterEnv: [
+    require.resolve("./env.js"),
+    "react-testing-library/cleanup-after-each"
+  ],
   snapshotSerializers: [
     "enzyme-to-json/serializer",
     "jest-serializer-html",

@@ -2,7 +2,7 @@
 Comparison with react-intl
 **************************
 
-`react-intl`_ is definitely the most popural and widely-used i18n library for React.
+`react-intl`_ is definitely the most popular and widely-used i18n library for React.
 `LinguiJS`_ is in many ways very similar: both libraries use the same syntax for
 (messages ICU MessageFormat) and they also have very similar API.
 
@@ -216,8 +216,9 @@ components in both variables and the message itself.
 
       <Plural
          id="welcome"
-         one={Hello <b>{name}</b>, you have <NumberFormat value={number} message.}
-         other={Hello <b>{name}</b>, you have <NumberFormat value={number} messages.}
+         value={number}
+         one={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> message.</>}
+         other={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> messages.</>}
       />
 
    Even though both variants are syntactically valid in ICU MessageFormat, the second
@@ -273,8 +274,8 @@ accept values for interpolation (e.g. components, variables, etc). This makes th
 final bundle smaller and makes the library faster. The compiled catalogs are also bundled with locale
 data like plurals, so it's not necessary to load them manually.
 
-Disadvatages of LinguiJS
-========================
+Disadvantages of LinguiJS
+=========================
 
 `react-intl`_ has been around for some time and it's definitely more popular, more used
 and a lot of production sites are running it. The community is larger and it's much

@@ -12,8 +12,8 @@ module.exports = function(options) {
         modules: options.modules === false ? false : "commonjs"
       }
     ],
-    "@babel/preset-react",
-    "@babel/preset-flow"
+    "@babel/preset-typescript",
+    "@babel/preset-react"
   ]
 
   const plugins = [
