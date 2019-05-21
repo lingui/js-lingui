@@ -75,29 +75,17 @@ const configValidation = {
   comment: "See https://lingui.js.org/ref/conf.html for a list of valid options"
 }
 
-function configFilePathFromArgs() {
-  const configIndex = process.argv.indexOf("--config")
-
-  if (
-    configIndex >= 0 &&
-    process.argv.length > configIndex &&
-    fs.existsSync(process.argv[configIndex + 1])
-  ) {
-    return process.argv[configIndex + 1]
-  }
-
-  return null
+function configExists(path) {
+  return path && fs.existsSync(path)
 }
 
-export function getConfig({ cwd } = {}) {
+export function getConfig({ cwd, configPath } = {}) {
   const configExplorer = cosmiconfig("lingui")
   const defaultRootDir = cwd || process.cwd()
-  const configPath = configFilePathFromArgs()
 
-  const result =
-    configPath == null
-      ? configExplorer.searchSync(defaultRootDir)
-      : configExplorer.loadSync(configPath)
+  const result = configExists(configPath)
+    ? configExplorer.loadSync(configPath)
+    : configExplorer.searchSync(defaultRootDir)
 
   const raw = { ...defaultConfig, ...(result ? result.config : {}) }
 

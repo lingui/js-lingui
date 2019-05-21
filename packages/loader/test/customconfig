@@ -1,0 +1,4 @@
+{
+  "localeDir": "<rootDir>/locale",
+  "compileNamespace": "window.really_long_namespace"
+}

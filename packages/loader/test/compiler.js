@@ -15,7 +15,8 @@ export default (fixture, options = {}) => {
         {
           test: /\.json$/,
           use: {
-            loader: path.resolve(__dirname, "../src/index.js")
+            loader: path.resolve(__dirname, "../src/index.js"),
+            options
           }
         }
       ]

@@ -55,7 +55,7 @@ if (require.main === module) {
 
   if (!program.args.length) program.help()
 
-  const config = getConfig()
+  const config = getConfig({ configPath: program.config })
   if (program.format) {
     const msg =
       "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
