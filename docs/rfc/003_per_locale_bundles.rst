@@ -107,7 +107,7 @@ specific plural rules:
                value={count}
                one={<>Máte <strong>#</strong> nepřečtenou zprávu</>}
                few={<>Máte <strong>#</strong> nepřečtené zprávy</>}
-               other={<>Máte <strong>#</strong> nepřečtené zprávy</>}
+               other={<>Máte <strong>#</strong> nepřečtených zpráv</>}
             />
          </p>
       </div>
