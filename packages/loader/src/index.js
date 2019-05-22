@@ -17,7 +17,7 @@ try {
 }
 
 export default function(source) {
-  const options = loaderUtils.getOptions(this)
+  const options = loaderUtils.getOptions(this) || {}
 
   // Webpack 4 uses json-loader automatically, which breaks this loader because it
   // doesn't return JSON, but JS module. This is a temporary workaround before

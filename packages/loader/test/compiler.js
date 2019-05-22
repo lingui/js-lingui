@@ -2,7 +2,7 @@ import path from "path"
 import webpack from "webpack"
 import MemoryFS from "memory-fs"
 
-export default (fixture, options = {}) => {
+export default (fixture, options) => {
   const compiler = webpack({
     context: __dirname,
     entry: "." + path.sep + fixture,

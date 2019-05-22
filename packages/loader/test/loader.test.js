@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import path from "path"
 import compiler from "./compiler.js"
 
