@@ -1,5 +1,13 @@
 # Change Log
 
+<a name="2.8.3"></a>
+## [2.8.3](https://github.com/lingui/js-lingui/compare/v2.8.2...v2.8.3) (2019-05-22)
+
+### Bug Fixes
+
+* Loader: Fix type error when no loader config is provided
+* Macro: `babel-plugin-macros` are peer dependency and must be installed manually
+
 <a name="2.8.2"></a>
 ## [2.8.2](https://github.com/lingui/js-lingui/compare/v2.8.0...v2.8.2) (2019-05-22)
 
