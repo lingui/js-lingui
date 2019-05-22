@@ -1,5 +1,15 @@
 # Change Log
 
+<a name="2.8.2"></a>
+## [2.8.2](https://github.com/lingui/js-lingui/compare/v2.8.0...v2.8.2) (2019-05-22)
+
+### Bug Fixes
+
+* CLI: Don't warn about conflicting default message if it's empty ([#502](https://github.com/lingui/js-lingui/pull/502/)).
+  Thanks to [Filip Žmuk](https://github.com/filipcro).
+* Conf: Pass config path to getConfig explicitly instead reading it from process.argv ([#509](https://github.com/lingui/js-lingui/pull/509/)).
+  Thanks to [Brandon Croft](https://github.com/brandonc).
+
 <a name="2.8.0"></a>
 ## [2.8.0](https://github.com/lingui/js-lingui/compare/v2.7.4...v2.8.0) (2019-05-17)
 
