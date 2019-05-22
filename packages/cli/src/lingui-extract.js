@@ -149,7 +149,7 @@ if (require.main === module) {
     )
     .parse(process.argv)
 
-  const config = getConfig()
+  const config = getConfig({ configPath: program.config })
 
   if (program.format) {
     const msg =

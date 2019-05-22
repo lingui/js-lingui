@@ -20,4 +20,16 @@ describe("lingui-loader", function() {
     expect(output.errors).toEqual([])
     expect(output.modules[0].source).toMatchSnapshot()
   })
+
+  skipOnWindows("should allow config option", async () => {
+    const stats = await compiler(
+      path.join(".", "locale", "en", "messages.json"),
+      { config: `${path.dirname(module.filename)}/customconfig` }
+    )
+
+    const output = stats.toJson()
+
+    // customconfig contains this namespace
+    expect(output.modules[0].source).toMatch(/window\.really_long_namespace=/)
+  })
 })
