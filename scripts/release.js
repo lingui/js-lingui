@@ -298,8 +298,19 @@ function getPackages() {
 }
 
 function exec(cmd, options) {
+  const _options = {
+    env: {
+      ...process.env,
+      // When this script is run inside `yarn`, yarn sets thenpm_config_registry
+      // env var to yarn one and the authentication fails.
+      // By overriding it, we force `npm publish` to use npm registry.
+      // https://github.com/yarnpkg/yarn/issues/2935#issuecomment-487020430
+      npm_config_registry: undefined
+    },
+    ...options
+  }
   return new Promise(function(resolve, reject) {
-    _exec(cmd, options, function(error, stdout, stderr) {
+    _exec(cmd, _options, function(error, stdout, stderr) {
       stdout = stdout.trim()
       stderr = stderr.trim()
 
