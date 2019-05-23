@@ -276,61 +276,6 @@ it uses **ordinal** plural forms, instead of **cardinal** ones.
        other="#th"
    />
 
-DateFormat
-----------
-
-.. component:: DateFormat
-
-   :prop string|Date value: Date to be formatted
-   :prop string|Object format: Date format passed as options to `Intl.DateTimeFormat`_.
-
-:component:`DateFormat` component is a wrapper around `Intl.DateTimeFormat`_.
-It takes a date object or a date string as a ``value`` prop and formats it using
-``format`` options. ``format`` prop supports the same options as `Intl.DateTimeFormat`_:
-
-.. code-block:: jsx
-
-   // date as a string
-   <DateFormat value="2018-07-23" />;
-
-   const now = new Date();
-   // default language format
-   <DateFormat value={now} />;
-
-   const now = new Date();
-   // custom format
-   <DateFormat value={now} format={{
-       year: "numeric",
-       month: "long",
-       day: "numeric"
-   }} />;
-
-NumberFormat
-------------
-
-.. component:: NumberFormat
-
-   :prop number value: Number to be formatted
-   :prop string|Object format: Number format passed as options to `Intl.NumberFormat`_
-
-:component:`NumberFormat` component is a wrapper around
-`Intl.NumberFormat_. It takes a number as a ``value`` prop
-and formats it using ``format`` options. ``format`` prop supports the same
-options as `Intl.NumberFormat`_:
-
-.. code-block:: jsx
-
-   const num = 0.42;
-   // default language format
-   <NumberFormat value={num} />;
-
-   const amount = 3.14;
-   // custom format
-   <NumberFormat value={amount} format={{
-       style: 'currency',
-       currency: 'EUR',
-       minimumFractionDigits: 2
-   }} />;
 
 Providers
 =========

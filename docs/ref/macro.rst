@@ -76,7 +76,7 @@ the result in :component:`Trans` component:
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | ``<Plural value={count} one="Message" other="Messages" />`` | ``<Trans id="{count, plural, one {Message} other {Messages}}" />`` |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
-| ``<Trans>Today is <DateFormat value={today} /></Trans>``    | ``<Trans id="Today is {today, date}" />``                          |
+| ``<Trans>Today is {date(today)}</Trans>``                   | ``<Trans id="Today is {today, date}" />``                          |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | ``<Trans id="msg.refresh">Refresh inbox</Trans>``           | ``<Trans id="msg.refresh" message="Refresh inbox" />``            |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
@@ -638,63 +638,6 @@ format:
        few="3rd"
        other="#th"
    />
-
-DateFormat
-^^^^^^^^^^
-
-.. jsxmacro:: DateFormat
-
-   :prop string|Date value: (required) date to be formatted
-   :prop string|Object format: date format passed as options to `Intl.DateTimeFormat`_
-
-:jsxmacro:`DateFormat` macro is transformed into :icu:`date` format.
-
-.. code-block:: jsx
-
-   // date as a string
-   <DateFormat value="2018-07-23" />;
-
-   const now = new Date();
-   // default language format
-   <DateFormat value={now} />;
-
-   const now = new Date();
-   // custom format
-   <DateFormat value={now} format={{
-       year: "numeric",
-       month: "long",
-       day: "numeric"
-   }} />;
-
-.. note::
-
-   Standalone :jsxmacro:`DateFormat` is transformed to :component:`DateFormat`
-   which is evaluated directly. It's never transformed to ``{value, date}`` message,
-   because such message can't be translated.
-
-NumberFormat
-^^^^^^^^^^^^
-
-.. jsxmacro:: NumberFormat
-
-   :prop number value: (required) Number to be formatted
-   :prop string|Object format: Number format passed as options to `Intl.NumberFormat`_
-
-:jsxmacro:`NumberFormat` macro is transformed into :icu:`number` format.
-
-.. code-block:: jsx
-
-   const num = 0.42;
-   // default language format
-   <NumberFormat value={num} />;
-
-   const amount = 3.14;
-   // custom format
-   <NumberFormat value={amount} format={{
-       style: 'currency',
-       currency: 'EUR',
-       minimumFractionDigits: 2
-   }} />;
 
 .. _babel-plugin-macros: https://github.com/kentcdodds/babel-plugin-macros
 .. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat

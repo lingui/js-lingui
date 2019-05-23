@@ -219,47 +219,5 @@ describe("macro", function() {
         expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
       })
     })
-
-    describe("Date/Number", function() {
-      it("value of number must be a variable", function() {
-        expect(
-          transformCode("<Trans><NumberFormat /></Trans>")
-        ).toThrowErrorMatchingSnapshot()
-      })
-
-      it("format must be string, variable or object with custom format", function() {
-        expect(
-          transformCode(
-            '<Trans><NumberFormat value={value} format="custom" /></Trans>'
-          )
-        ).not.toThrow()
-        expect(
-          transformCode(
-            '<Trans><NumberFormat value={value} format={"custom"} /></Trans>'
-          )
-        ).not.toThrow()
-        expect(
-          transformCode(
-            "<Trans><NumberFormat value={value} format={custom} /></Trans>"
-          )
-        ).not.toThrow()
-        expect(
-          transformCode(
-            "<Trans><NumberFormat value={value} format={{ digits: 4 }} /></Trans>"
-          )
-        ).not.toThrow()
-        expect(
-          transformCode(
-            "<Trans><NumberFormat value={value} format={42} /></Trans>"
-          )
-        ).toThrowErrorMatchingSnapshot()
-      })
-
-      it("value of date must be a variable", function() {
-        expect(
-          transformCode("<Trans><DateFormat /></Trans>")
-        ).toThrowErrorMatchingSnapshot()
-      })
-    })
   })
 })

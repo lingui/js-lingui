@@ -22,6 +22,4 @@ declare module "@lingui/macro" {
   export const Plural
   export const Select
   export const SelectOrdinal
-  export const DateFormat
-  export const NumberFormat
 }
