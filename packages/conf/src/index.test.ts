@@ -112,9 +112,13 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: {
-          "locales/{locale}/messages": ["<rootDir>", "!*/node_modules/*"]
-        }
+        catalogs: [
+          {
+            path: "locales/{locale}/messages",
+            include: ["<rootDir>"],
+            exclude: ["*/node_modules/*"]
+          }
+        ]
       })
     })
 
@@ -126,9 +130,13 @@ describe("@lingui/conf", function() {
       }
 
       expect(catalogMigration(config)).toEqual({
-        catalogs: {
-          "locales/{locale}/messages": ["src", "!src/node_modules/"]
-        }
+        catalogs: [
+          {
+            path: "locales/{locale}/messages",
+            include: ["src"],
+            exclude: ["src/node_modules/"]
+          }
+        ]
       })
     })
   })

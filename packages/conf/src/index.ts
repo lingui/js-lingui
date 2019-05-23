@@ -6,10 +6,15 @@ const { validate } = require("jest-validate")
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
 
-type CatalogsConfig = { [path: string]: Array<string> }
+type CatalogConfig = {
+  name?: string
+  path: string
+  include: string[]
+  exclude?: string[]
+}
 
 export type LinguiConfig = {
-  catalogs: CatalogsConfig
+  catalogs: CatalogConfig[]
   compileNamespace: string
   extractBabelOptions: Object
   fallbackLocale: string
@@ -21,12 +26,13 @@ export type LinguiConfig = {
 }
 
 export const defaultConfig: LinguiConfig = {
-  catalogs: {
-    [path.join("<rootDir>", "locale", "{locale}", "messages")]: [
-      `<rootDir>`,
-      `!*/node_modules/*`
-    ]
-  },
+  catalogs: [
+    {
+      path: path.join("<rootDir>", "locale", "{locale}", "messages"),
+      include: ["<rootDir>"],
+      exclude: ["*/node_modules/*"]
+    }
+  ],
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocale: "",
@@ -268,14 +274,15 @@ export function catalogMigration(
       newLocaleDir += "/"
     }
 
-    if (typeof newConfig.catalogs !== "object") {
-      newConfig.catalogs = {}
+    if (!Array.isArray(newConfig.catalogs)) {
+      newConfig.catalogs = []
     }
 
-    newConfig.catalogs[path.join(newLocaleDir, "{locale}", "messages")] = [
-      ...srcPathDirs,
-      ...srcPathIgnorePatterns.map(pattern => `!${pattern}`)
-    ]
+    newConfig.catalogs.push({
+      path: path.join(newLocaleDir, "{locale}", "messages"),
+      include: srcPathDirs,
+      exclude: srcPathIgnorePatterns
+    })
   }
 
   return newConfig

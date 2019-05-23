@@ -8,12 +8,17 @@ exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
     @lingui/cli now treats your current configuration as:
     
     {
-      "catalogs": {
-  "locale/{locale}/messages": [
-    "./src",
-    "!/node_modules/"
-  ]
-}
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
     }
     
     Please update your configuration.
@@ -27,12 +32,17 @@ Documentation: https://lingui.js.org/ref/conf.html
     @lingui/cli now treats your current configuration as:
     
     {
-      "catalogs": {
-  "locale/{locale}/messages": [
-    "./src",
-    "!/node_modules/"
-  ]
-}
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
     }
     
     Please update your configuration.
@@ -46,12 +56,17 @@ Documentation: https://lingui.js.org/ref/conf.html
     @lingui/cli now treats your current configuration as:
     
     {
-      "catalogs": {
-  "locale/{locale}/messages": [
-    "./src",
-    "!/node_modules/"
-  ]
-}
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
     }
     
     Please update your configuration.
@@ -62,12 +77,17 @@ Documentation: https://lingui.js.org/ref/conf.html
 
 exports[`@lingui/conf should return default config 1`] = `
 Object {
-  catalogs: Object {
-    ./locale/{locale}/messages: Array [
-      .,
-      !*/node_modules/*,
-    ],
-  },
+  catalogs: Array [
+    Object {
+      exclude: Array [
+        */node_modules/*,
+      ],
+      include: Array [
+        .,
+      ],
+      path: ./locale/{locale}/messages,
+    },
+  ],
   compileNamespace: cjs,
   extractBabelOptions: Object {
     plugins: Array [],
