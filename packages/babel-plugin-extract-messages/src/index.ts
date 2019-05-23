@@ -217,9 +217,10 @@ export default function({ types: t }) {
        * e.g: if file is src/components/App.js (relative to package.json), then
        * catalog will be in locale/_build/src/components/App.json
        */
-      const localeDir = this.opts.localeDir || opts.localeDir
+      const config = file.get(CONFIG)
+      const localeDir = this.opts.localeDir || config.localeDir
       const { filename } = file.opts
-      const rootDir = file.get(CONFIG).rootDir
+      const rootDir = config.rootDir
       const baseDir = fsPath.dirname(fsPath.relative(rootDir, filename))
       const targetDir = fsPath.join(localeDir, "_build", baseDir)
 
