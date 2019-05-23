@@ -86,7 +86,7 @@ const exampleConfig = {
 }
 
 const deprecatedConfig = {
-  fallbackLanguage: (config: LinguiConfig & { fallbackLanguage: string }) =>
+  fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
       "fallbackLocale"
     )}
@@ -100,7 +100,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  localeDir: (config: LinguiConfig) =>
+  localeDir: (config: LinguiConfig & DeprecatedLocaleDir) =>
     ` Option ${chalk.bold(
       "localeDir"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -119,7 +119,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathDirs: (config: LinguiConfig) =>
+  srcPathDirs: (config: LinguiConfig & DeprecatedLocaleDir) =>
     ` Option ${chalk.bold(
       "srcPathDirs"
     )} is deprecated. Configure source paths using ${chalk.bold(
@@ -138,7 +138,7 @@ const deprecatedConfig = {
     
     Please update your configuration.
     `,
-  srcPathIgnorePatterns: (config: LinguiConfig) =>
+  srcPathIgnorePatterns: (config: LinguiConfig & DeprecatedLocaleDir) =>
     ` Option ${chalk.bold(
       "srcPathIgnorePatterns"
     )} is deprecated. Configure excluded source paths using ${chalk.bold(
@@ -198,7 +198,7 @@ export function replaceRootDir(
   config: LinguiConfig,
   rootDir: string
 ): LinguiConfig {
-  return (function replaceDeep<T>(value: T): T {
+  return (function replaceDeep<T>(value: T, rootDir: string): T {
     const replace = s => s.replace("<rootDir>", rootDir)
 
     if (value == null) {
@@ -206,19 +206,17 @@ export function replaceRootDir(
     } else if (typeof value === "string") {
       return replace(value)
     } else if (Array.isArray(value)) {
-      return value.map(item => replaceDeep(item, rootDir))
+      return value.map(item => replaceDeep(item, rootDir)) as any
     } else if (typeof value === "object") {
       Object.keys(value).forEach(key => {
         const newKey = replaceDeep(key, rootDir)
-        // $FlowIgnore: for some reason, value isn't recognized as an object
         value[newKey] = replaceDeep(value[key], rootDir)
-        // $FlowIgnore: for some reason, value isn't recognized as an object
         if (key !== newKey) delete value[key]
       })
     }
 
     return value
-  })(config)
+  })(config, rootDir)
 }
 
 /**
@@ -227,7 +225,11 @@ export function replaceRootDir(
  * Released in lingui-conf 0.9
  * Remove anytime after 3.x
  */
-export function fallbackLanguageMigration(config: Object) {
+type DeprecatedFallbackLanguage = { fallbackLanguage: string | null }
+
+export function fallbackLanguageMigration(
+  config: LinguiConfig & DeprecatedFallbackLanguage
+): LinguiConfig {
   const { fallbackLocale, fallbackLanguage, ...newConfig } = config
 
   return {
@@ -242,7 +244,15 @@ export function fallbackLanguageMigration(config: Object) {
  * Released in @lingui/conf 3.0
  * Remove anytime after 4.x
  */
-export function catalogMigration(config: Object) {
+type DeprecatedLocaleDir = {
+  localeDir: string
+  srcPathDirs: string[]
+  srcPathIgnorePatterns: string[]
+}
+
+export function catalogMigration(
+  config: LinguiConfig & DeprecatedLocaleDir
+): LinguiConfig {
   let { localeDir, srcPathDirs, srcPathIgnorePatterns, ...newConfig } = config
 
   if (localeDir || srcPathDirs || srcPathIgnorePatterns) {
