@@ -3,13 +3,22 @@ import * as React from "react"
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
-export type TransRenderType = string | React.ElementType | React.ReactElement
+export interface TransRenderProps {
+  id: string
+  translation: React.ReactNode
+  message: string | null
+}
+
+export type TransRenderType =
+  | string
+  | React.ElementType<TransRenderProps>
+  | React.ReactElement
 
 export interface TransProps {
   id: string
   message?: string
   values: Object
-  components: {[key: string]: React.ElementType | any}
+  components: { [key: string]: React.ElementType | any }
   formats?: Object
   render?: TransRenderType
 }
@@ -60,13 +69,17 @@ export function Trans(props: TransProps) {
   } else if (typeof render === "string") {
     // Built-in element: h1, p
     return React.createElement(render, {}, translation)
-  } else if (typeof render === "function") {
-    // Function: (props) => <a title={props.translation}>x</a>
-    return render({ id, translation, message })
+  } else if (React.isValidElement(render)) {
+    // Element: <p className="lear' />
+    return React.cloneElement(render, {}, translation)
   }
 
-  // Element: <p className="lear' />
-  return React.cloneElement(render, {}, translation)
+  // Component: (props) => <a title={props.translation}>x</a>
+  return React.createElement(render as React.ElementType<TransRenderProps>, {
+    id,
+    translation,
+    message
+  })
 }
 
 Trans.defaultProps = {

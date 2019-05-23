@@ -17,7 +17,7 @@ export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
 
   if (process.env.NODE_ENV !== "production") {
-    if (context != null) {
+    if (context == null) {
       throw new Error("useLingui hook was used without I18nProvider.")
     }
   }
