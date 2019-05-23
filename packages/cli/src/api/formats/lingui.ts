@@ -1,9 +1,7 @@
 import fs from "fs"
 
-import { TranslationsFormat } from "../types"
-
-const format: TranslationsFormat = {
-  filename: "messages.json",
+export default {
+  catalogExtension: ".json",
 
   write(filename, catalog) {
     fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
@@ -20,5 +18,3 @@ const format: TranslationsFormat = {
     }
   }
 }
-
-export default format

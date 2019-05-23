@@ -8,7 +8,7 @@ const babelConfig = require("./babel.config")
 const Packaging = require("./packaging")
 const { asyncMkDirP } = require("./utils")
 
-const ignorePatterns = [/\.test.[jt]s$/]
+const ignorePatterns = [/\.test.[jt]s$/, /fixtures/]
 
 function walk(base, relativePath = "") {
   let files = []
@@ -21,7 +21,7 @@ function walk(base, relativePath = "") {
       !/\.[jt]s$/.test(directory) ||
       ignorePatterns.some(pattern => pattern.test(directory))
     ) {
-      return
+      // return
     } else {
       files.push(directory)
     }

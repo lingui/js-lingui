@@ -1,6 +1,8 @@
-declare module "@lingui/macro" {
-  import { MessageDescriptor } from "@lingui/core"
+import { ComponentType, ReactNode } from "react"
+import { MessageDescriptor } from "@lingui/core"
+import { TransRenderType } from "@lingui/react"
 
+declare namespace LinguiMacro {
   export function t(
     literals: TemplateStringsArray,
     ...placeholders: any[]
@@ -18,8 +20,29 @@ declare module "@lingui/macro" {
     descriptor: MessageDescriptor
   ): MessageDescriptor
 
-  export const Trans
-  export const Plural
-  export const Select
-  export const SelectOrdinal
+  export interface TransProps {
+    id?: string
+    comment?: string
+    render?: TransRenderType
+  }
+
+  export interface ChoiceProps extends TransProps {
+    value?: string | number
+    offset?: number
+    zero: ReactNode
+    one: ReactNode
+    few: ReactNode
+    many: ReactNode
+    other: ReactNode
+  }
+
+  export interface SelectProps extends TransProps {
+    value?: string
+    other?: ReactNode
+  }
+
+  export const Trans: ComponentType<TransProps>
+  export const Plural: ComponentType<ChoiceProps>
+  export const Select: ComponentType<SelectProps>
+  export const SelectOrdinal: ComponentType<ChoiceProps>
 }

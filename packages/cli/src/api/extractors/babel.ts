@@ -2,7 +2,7 @@ import { transformFileSync } from "../compat"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import { ExtractorType } from "./types"
+import { BabelOptions, ExtractorType } from "./types"
 import { projectType } from "../detect"
 
 const babelRe = /\.jsx?$/i
@@ -13,9 +13,9 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
-    const { babelOptions = {} } = options
-    const plugins = babelOptions.plugins || []
-    const frameworkOptions = {}
+    const { babelOptions: _babelOptions = {} } = options
+    const { plugins = [], ...babelOptions } = _babelOptions
+    const frameworkOptions: BabelOptions = {}
 
     if (options.projectType === projectType.CRA) {
       frameworkOptions.presets = ["react-app"]

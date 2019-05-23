@@ -1,7 +1,8 @@
 import Table from "cli-table"
 import chalk from "chalk"
 
-import { CatalogType, AllCatalogsType, LinguiConfig } from "./types"
+import { CatalogType, AllCatalogsType } from "./types"
+import { LinguiConfig } from "@lingui/conf"
 
 type CatalogStats = [number, number]
 

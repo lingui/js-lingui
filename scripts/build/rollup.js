@@ -182,7 +182,7 @@ function handleRollupWarning(warning) {
   if (warning.code === "UNUSED_EXTERNAL_IMPORT") {
     const match = warning.message.match(/external module '([^']+)'/)
     if (!match || typeof match[1] !== "string") {
-      throw new Error("Could not parse a Rollup warning. " + "Fix this method.")
+      throw new Error("Could not parse a Rollup warning. Fix this method.")
     }
     const importSideEffects = Modules.getImportSideEffects()
     const externalModule = match[1]

@@ -1,8 +1,0 @@
-{
-  "lingui": {
-    "format": "lingui",
-    "localeDir": "./locale",
-    "sourceLocale": "en",
-    "pseudoLocale": "en-PT"
-  }
-}

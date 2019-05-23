@@ -6,16 +6,7 @@ import plugin from "@lingui/babel-plugin-extract-messages"
 
 const LOCALE_DIR = "./locale"
 
-// CWD is root directory of repository, so origin of all messages is going to
-// relative to root
-const buildDir = path.join(
-  LOCALE_DIR,
-  "_build",
-  "packages",
-  "babel-plugin-extract-messages",
-  "test",
-  "fixtures"
-)
+const buildDir = path.join(LOCALE_DIR, "_build")
 
 const rmdir = dir => {
   if (!fs.existsSync(dir)) return
@@ -39,7 +30,7 @@ const rmdir = dir => {
 }
 
 function testCase(testName, assertion) {
-  const transform = (filename, jsx = true) => () => {
+  const transform = filename => () => {
     process.env.LINGUI_EXTRACT = "1"
     try {
       return transformFileSync(path.join(__dirname, "fixtures", filename), {
@@ -65,9 +56,9 @@ function testCase(testName, assertion) {
   } else {
     it(testName, () => {
       // first run should create all required folders and write messages
-      expect(transform(assertion, false)).not.toThrow()
+      expect(transform(assertion)).not.toThrow()
       // another runs should just write messages
-      expect(transform(assertion, false)).not.toThrow()
+      expect(transform(assertion)).not.toThrow()
 
       const messages = JSON.parse(
         fs.readFileSync(path.join(buildDir, `${assertion}.json`)).toString()

@@ -1,7 +1,7 @@
 import fs from "fs"
 import * as R from "ramda"
 
-import { MessageType, TranslationsFormat } from "../types"
+import { MessageType } from "../types"
 
 const serialize = R.map((message: MessageType) => message.translation || "")
 
@@ -12,8 +12,9 @@ const deserialize = R.map((translation: string) => ({
   origin: []
 }))
 
-const format: TranslationsFormat = {
-  filename: "messages.json",
+export default {
+  catalogExtension: ".json",
+
   write(filename, catalog) {
     const messages = serialize(catalog)
     fs.writeFileSync(filename, JSON.stringify(messages, null, 2))
@@ -31,5 +32,3 @@ const format: TranslationsFormat = {
     }
   }
 }
-
-export default format

@@ -5,17 +5,7 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import * as ts from "typescript"
 
 import { projectType } from "../detect"
-import { ExtractorType } from "./types"
-
-interface BabelOptions {
-  plugins?: Array<string>
-  presets?: Array<string>
-}
-
-interface ExtractOptions {
-  projectType?: string
-  babelOptions?: BabelOptions
-}
+import { ExtractorType, BabelOptions } from "./types"
 
 const typescriptRe = /(^.?|\.[^d]|[^.]d|[^.][^d])\.tsx?$/i
 
@@ -24,7 +14,7 @@ const extractor: ExtractorType = {
     return typescriptRe.test(filename)
   },
 
-  extract(filename, localeDir, options: ExtractOptions = {}) {
+  extract(filename, localeDir, options = {}) {
     const content = fs.readFileSync(filename, "utf8")
     const isTsx = filename.endsWith(".tsx")
     // pass jsx to babel untouched

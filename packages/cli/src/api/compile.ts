@@ -5,7 +5,7 @@ import generate from "@babel/generator"
 import plurals from "make-plural"
 import R from "ramda"
 
-import { CatalogType } from "./types"
+import { CatalogType, CompiledCatalogType } from "./types"
 import pseudoLocalize from "./pseudoLocalize"
 
 const isString = s => typeof s === "string"
@@ -96,10 +96,9 @@ function processTokens(tokens, arg) {
   )
 }
 
-function buildExportStatement(expression, namespace: string = "cjs") {
-  namespace = namespace.trim()
+function buildExportStatement(expression, namespace: NamespaceType = "cjs") {
   if (namespace === "es") {
-    return t.ExportDefaultDeclaration(expression)
+    return t.exportDefaultDeclaration(expression)
   } else {
     let exportExpression = null
     const matches = namespace.match(/^(window|global)\.([^.\s]+)$/)
@@ -122,12 +121,22 @@ function buildExportStatement(expression, namespace: string = "cjs") {
   }
 }
 
+type NamespaceType = "cjs" | "es"
+
+interface CreateCompileCatalogOptions {
+  strict: boolean
+  namespace: NamespaceType
+  pseudoLocale?: string
+}
+
 export function createCompiledCatalog(
   locale: string,
-  messages: CatalogType,
-  strict: boolean = false,
-  namespace: string = "cjs",
-  pseudoLocale: string
+  messages: CompiledCatalogType,
+  {
+    strict = false,
+    namespace = "cjs",
+    pseudoLocale
+  }: CreateCompileCatalogOptions
 ) {
   const [language] = locale.split(/[_-]/)
   let pluralRules = plurals[language]
@@ -168,7 +177,7 @@ export function createCompiledCatalog(
 
   return (
     "/* eslint-disable */" +
-    generate(ast, {
+    generate(ast as any, {
       minified: true
     }).code
   )

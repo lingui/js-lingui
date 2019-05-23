@@ -4,7 +4,7 @@ import { format as formatDate } from "date-fns"
 
 import PO from "pofile"
 import { joinOrigin, splitOrigin } from "../utils"
-import { MessageType, TranslationsFormat } from "../types"
+import { MessageType } from "../types"
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "YYYY-MM-DD HH:mmZZ"),
@@ -70,7 +70,7 @@ const deserialize = R.map(
   })
 )
 
-const validateItems = R.map(item => {
+const validateItems = R.forEach((item: PO.Item) => {
   if (R.length(getTranslations(item)) > 1) {
     console.warn(
       "Multiple translations for item with key %s is not supported and it will be ignored.",
@@ -81,18 +81,18 @@ const validateItems = R.map(item => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-const format: TranslationsFormat = {
-  filename: "messages.po",
+export default {
+  catalogExtension: ".po",
 
-  write(filename, catalog, options = {}) {
+  write(filename, catalog, options) {
     let po
-    let indexedItems = {}
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
     } else {
+      // @ts-ignore: In typings the whole module is exported while in code, PO class is default export
       po = new PO()
-      po.headers = getCreateHeaders(options.language)
+      po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog)
@@ -110,5 +110,3 @@ const format: TranslationsFormat = {
     return deserialize(indexItems(po.items))
   }
 }
-
-export default format

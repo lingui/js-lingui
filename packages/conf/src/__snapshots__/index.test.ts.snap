@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
+● Deprecation Warning:
+
+ Option localeDir is deprecated. Configure source paths using catalogs instead.
+    
+    @lingui/cli now treats your current configuration as:
+    
+    {
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
+    }
+    
+    Please update your configuration.
+    
+
+Documentation: https://lingui.js.org/ref/conf.html
+● Deprecation Warning:
+
+ Option srcPathDirs is deprecated. Configure source paths using catalogs instead.
+    
+    @lingui/cli now treats your current configuration as:
+    
+    {
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
+    }
+    
+    Please update your configuration.
+    
+
+Documentation: https://lingui.js.org/ref/conf.html
+● Deprecation Warning:
+
+ Option srcPathIgnorePatterns is deprecated. Configure excluded source paths using catalogs instead.
+    
+    @lingui/cli now treats your current configuration as:
+    
+    {
+      "catalogs": [
+  {
+    "path": "locale/{locale}/messages",
+    "include": [
+      "./src"
+    ],
+    "exclude": [
+      "/node_modules/"
+    ]
+  }
+]
+    }
+    
+    Please update your configuration.
+    
+
+Documentation: https://lingui.js.org/ref/conf.html
+`;
+
+exports[`@lingui/conf should return default config 1`] = `
+Object {
+  catalogs: Array [
+    Object {
+      exclude: Array [
+        */node_modules/*,
+      ],
+      include: Array [
+        .,
+      ],
+      path: ./locale/{locale}/messages,
+    },
+  ],
+  compileNamespace: cjs,
+  extractBabelOptions: Object {
+    plugins: Array [],
+    presets: Array [],
+  },
+  fallbackLocale: ,
+  format: po,
+  locales: Array [
+    en,
+    cs,
+  ],
+  pseudoLocale: ,
+  rootDir: .,
+  sourceLocale: ,
+}
+`;

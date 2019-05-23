@@ -16,6 +16,7 @@
     "lint:eslint": "eslint packages/",
     "lint": "yarn lint:eslint; yarn lint:types",
     "release": "node ./scripts/release.js",
+    "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
     "release:test": "node ./scripts/test.js"
   },
