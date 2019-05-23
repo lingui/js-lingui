@@ -3,13 +3,15 @@ import * as React from "react"
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
+export type TransRenderType = string | React.ElementType | React.ReactElement
+
 export interface TransProps {
   id: string
   message?: string
   values: Object
   components: {[key: string]: React.ElementType | any}
   formats?: Object
-  render?: string | React.ElementType | React.ReactElement
+  render?: TransRenderType
 }
 
 export function Trans(props: TransProps) {
