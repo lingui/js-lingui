@@ -22,8 +22,8 @@ jest.mock("cosmiconfig", function() {
 
 jest.mock("fs", function() {
   return {
-    existsSync: function() {
-      return true
+    existsSync: function(path) {
+      return path === "./lingui/myconfig"
     }
   }
 })
@@ -142,13 +142,19 @@ describe("@lingui/conf", function() {
   })
 
   it("searches for a config file", function() {
-    getConfig()
+    // hide validation warning about missing locales
+    mockConsole(() => {
+      getConfig()
+    })
     expect(cosmiconfig().searchSync).toHaveBeenCalled()
   })
 
   describe("with configPath parameter", function() {
     it("allows specific config file to be loaded", function() {
-      getConfig({ configPath: "./lingui/myconfig" })
+      // hide validation warning about missing locales
+      mockConsole(() => {
+        getConfig({ configPath: "./lingui/myconfig" })
+      })
       expect(cosmiconfig().searchSync).not.toHaveBeenCalled()
       expect(cosmiconfig().loadSync).toHaveBeenCalledWith("./lingui/myconfig")
     })
