@@ -1,9 +1,10 @@
 import * as React from "react"
 import { I18n } from "@lingui/core"
+import { TransRenderType } from "./Trans"
 
 interface I18nContext {
   i18n: I18n
-  defaultRender?: any
+  defaultRender?: TransRenderType
 }
 
 export interface I18nProviderProps extends I18nContext {
@@ -12,25 +13,20 @@ export interface I18nProviderProps extends I18nContext {
 
 const LinguiContext = React.createContext<I18nContext>(null)
 
-export function useLingui() {
+export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
 
-  if (context == null) {
-    if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production") {
+    if (context != null) {
       throw new Error("useLingui hook was used without I18nProvider.")
     }
-    return null
-    // return {}
   }
 
-  const { i18n, defaultRender } = context
-  return { i18n, defaultRender }
+  return context
 }
 
 export const I18nProvider = (props: I18nProviderProps) => {
-  const [context, setContext] = React.useState<I18nContext>(
-    refreshContext(true)
-  )
+  const [context, setContext] = React.useState<I18nContext>(makeContext())
 
   /**
    * Subscribe for locale/message changes
@@ -40,7 +36,7 @@ export const I18nProvider = (props: I18nProviderProps) => {
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
   React.useEffect(() => {
-    const unsubscribe = props.i18n.didActivate(() => refreshContext())
+    const unsubscribe = props.i18n.didActivate(() => setContext(makeContext()))
     return () => unsubscribe()
   }, [])
 
@@ -52,14 +48,14 @@ export const I18nProvider = (props: I18nProviderProps) => {
    *
    * Due to this effect we also pass `defaultRender` in the same context, instead
    * of creating a separate Provider/Consumer pair.
+   *
+   * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  function refreshContext(initial = false) {
-    const newContext = {
+  function makeContext() {
+    return {
       i18n: props.i18n,
       defaultRender: props.defaultRender
     }
-    if (initial) return newContext
-    setContext(newContext)
   }
 
   return (

@@ -4,7 +4,6 @@ import { I18nProvider, Trans, i18nMark } from "@lingui/react"
 import NeverUpdate from "./Usecases/NeverUpdate"
 import Children from "./Usecases/Children"
 import ElementAttributes from "./Usecases/ElementAttributes"
-import Formats from "./Usecases/Formats"
 
 const languages = {
   en: i18nMark("English"),
@@ -78,7 +77,6 @@ class App extends React.Component {
           <h2>
             <Trans>Formats</Trans>
           </h2>
-          <Formats />
 
           <h2>
             <Trans>Translations wrapped in component which never updates</Trans>

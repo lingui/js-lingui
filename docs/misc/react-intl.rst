@@ -179,13 +179,13 @@ Let's take a look at the original example from `react-intl`_ docs:
       values={{name: <b>{name}</b>, unreadCount}}
     />
 
-Using `LinguiJS`_ macros, we could combine :jsxmacro:`Trans`, :jsxmacro:`Plural` and
-:jsxmacro:`NumberFormat` components:
+Using `LinguiJS`_ macros, we could combine :jsxmacro:`Trans`, :jsxmacro:`Plural` components and
+:jsmacro:`number` macro:
 
 .. code-block:: jsx
 
    <Trans id="welcome">
-      Hello <b>{name}</b>, you have <NumberFormat value={number} /> <Plural
+      Hello <b>{name}</b>, you have {number(undreadCount)} <Plural
          one="message"
          other="messages"
       />
@@ -217,8 +217,8 @@ components in both variables and the message itself.
       <Plural
          id="welcome"
          value={number}
-         one={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> message.</>}
-         other={<>Hello <b>{name}</b>, you have <NumberFormat value={number} /> messages.</>}
+         one={<>Hello <b>{name}</b>, you have {number(undreadMessages)} message.</>}
+         other={<>Hello <b>{name}</b>, you have {number(undreadMessages)} messages.</>}
       />
 
    Even though both variants are syntactically valid in ICU MessageFormat, the second

@@ -685,13 +685,13 @@ The last message in our component is again a bit specific:
 
 ``lastLogin`` is a date object and we need to format it properly. Dates are
 formatted differently in different languages, but we don't have
-to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use :jsxmacro:`DateFormat` macro:
+to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use :jsmacro:`date` macro:
 
 .. code-block:: jsx
 
    <footer>
       <Trans>
-         Last login on <DateFormat value={lastLogin} />.
+         Last login on {date(lastLogin)} />.
       </Trans>
    </footer>
 
@@ -706,7 +706,7 @@ After all modifications, the final component with i18n looks like this:
 
    // Inbox.js
    import React from 'react'
-   import { Trans, Plural, DateFormat } from '@lingui/macro'
+   import { Trans, Plural, date } from '@lingui/macro'
 
    const Inbox = ({ messages, markAsRead, user }) => {
      const messagesCount = messages.length
@@ -732,7 +732,7 @@ After all modifications, the final component with i18n looks like this:
            </p>
 
            <footer>
-             <Trans>Last login on <DateFormat value={lastLogin} />.</Trans>
+             <Trans>Last login on {date(lastLogin)} />.</Trans>
            </footer>
          </div>
        )
