@@ -70,7 +70,7 @@ const deserialize = R.map(
   })
 )
 
-const validateItems = R.map(item => {
+const validateItems = R.forEach((item: PO.Item) => {
   if (R.length(getTranslations(item)) > 1) {
     console.warn(
       "Multiple translations for item with key %s is not supported and it will be ignored.",
@@ -81,15 +81,16 @@ const validateItems = R.map(item => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-const format = {
+export default {
   catalogExtension: ".po",
 
-  write(filename, catalog, options = {}) {
+  write(filename, catalog, options) {
     let po
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
     } else {
+      // @ts-ignore: In typings the whole module is exported while in code, PO class is default export
       po = new PO()
       po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)
@@ -109,5 +110,3 @@ const format = {
     return deserialize(indexItems(po.items))
   }
 }
-
-export default format

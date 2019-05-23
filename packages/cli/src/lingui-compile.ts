@@ -44,9 +44,9 @@ function command(config, options) {
       })
 
       if (!options.allowEmpty) {
-        const missing = R.values(messages).some(R.isNil)
+        const missing = R.values(messages)
 
-        if (missing) {
+        if (missing.some(R.isNil)) {
           console.error(
             chalk.red(
               `Error: Failed to compile catalog for locale ${chalk.bold(
@@ -89,6 +89,8 @@ export = catalog;
         console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
     })
   })
+
+  return true
 }
 
 if (require.main === module) {
@@ -136,14 +138,14 @@ if (require.main === module) {
     namespace: program.namespace // we want this to be undefined if user does not specify so default can be used
   })
 
-  if (!results || results.some(res => !res)) {
+  if (!results) {
     process.exit(1)
   }
 
   console.log("Done!")
 }
 
-const noMessages = R.compose(
+const noMessages: (catalogs: Object[]) => boolean = R.compose(
   R.all(R.equals(true)),
   R.values,
   R.map(R.isEmpty)

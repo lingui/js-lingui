@@ -292,6 +292,13 @@ msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himse
 exports[`cleanObsolete should remove obsolete messages from catalog 1`] = `
 Object {
   Label: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        1,
+        catalog.test.ts,
+      ],
+    ],
     translation: Label,
   },
 }

@@ -1,33 +1,30 @@
-type Format = "po" | "lingui" | "minimal"
-
-type Maybe<T> = T | null
-
-export type LinguiConfig = {
-  rootDir: string
-  localeDir: string
-  sourceLocale: string
-  fallbackLocale: string
-  pseudoLocale: string
-  srcPathDirs: Array<string>
-  srcPathIgnorePatterns: Array<string>
-  format: Format
-  prevFormat: Format
-}
+type Maybe<T> = T | null | undefined
 
 export type IdempotentResult<T> = [boolean, Maybe<T>] // [ created, result ]
 
-export type MessageType = {
-  translation: string
-  defaults?: string
+export interface ExtractedMessageType {
+  message?: string
   origin: Array<[number, string]>
-  description?: string
+  comment?: string
   comments?: Array<string>
   obsolete: boolean
   flags?: Array<string>
 }
 
+export interface MessageType extends ExtractedMessageType {
+  translation: string
+}
+
 export type CatalogType = {
   [msgId: string]: MessageType
+}
+
+export type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
+}
+
+export type CompiledCatalogType = {
+  [msgId: string]: string
 }
 
 export type AllCatalogsType = {

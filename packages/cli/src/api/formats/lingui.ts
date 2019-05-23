@@ -1,6 +1,6 @@
 import fs from "fs"
 
-const format = {
+export default {
   catalogExtension: ".json",
 
   write(filename, catalog) {
@@ -18,5 +18,3 @@ const format = {
     }
   }
 }
-
-export default format

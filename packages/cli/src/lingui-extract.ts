@@ -11,10 +11,10 @@ import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
 
 export type CliExtractOptions = {
-  verbose?: boolean
-  clean?: boolean
-  overwrite?: boolean
-  prevFormat?: string
+  verbose: boolean
+  clean: boolean
+  overwrite: boolean
+  prevFormat: string | null
 }
 
 export default function command(
@@ -29,7 +29,7 @@ export default function command(
 
   // We need macros to keep imports, so extract-messages plugin know what componets
   // to collect. Users usually use both BABEN_ENV and NODE_ENV, so it's probably
-  // save to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
+  // safer to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
   process.env.LINGUI_EXTRACT = "1"
 
   options.verbose && console.error("Extracting messages from source files…")
@@ -111,9 +111,7 @@ if (require.main === module) {
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
-    console.log(
-      chalk.yellow(helpRun(`extract --format minimal --convert-from lingui`))
-    )
+    console.log(chalk.yellow(helpRun(`extract --convert-from lingui`)))
     process.exit(1)
   }
 

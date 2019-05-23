@@ -12,7 +12,7 @@ const deserialize = R.map((translation: string) => ({
   origin: []
 }))
 
-const format = {
+export default {
   catalogExtension: ".json",
 
   write(filename, catalog) {
@@ -32,5 +32,3 @@ const format = {
     }
   }
 }
-
-export default format

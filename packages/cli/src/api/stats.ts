@@ -2,6 +2,7 @@ import Table from "cli-table"
 import chalk from "chalk"
 
 import { CatalogType, AllCatalogsType } from "./types"
+import { LinguiConfig } from "@lingui/conf"
 
 type CatalogStats = [number, number]
 
@@ -12,7 +13,7 @@ export function getStats(catalog: CatalogType): CatalogStats {
   ]
 }
 
-export function printStats(config: Object, catalogs: AllCatalogsType) {
+export function printStats(config: LinguiConfig, catalogs: AllCatalogsType) {
   const table = new Table({
     head: ["Language", "Total count", "Missing"],
     colAligns: ["left", "middle", "middle"],

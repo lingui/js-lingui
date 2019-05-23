@@ -4,13 +4,43 @@ import mockFs from "mock-fs"
 import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 
 import {
+  MakeOptions,
   getCatalogs,
   getCatalogForFile,
   Catalog,
   orderByMessageId,
-  cleanObsolete
+  cleanObsolete,
+  MergeOptions
 } from "./catalog"
+
 import { copyFixture } from "../tests"
+import { ExtractedMessageType, MessageType } from "./types"
+
+const defaultMakeOptions: MakeOptions = {
+  verbose: false,
+  clean: false,
+  overwrite: false,
+  prevFormat: null
+}
+
+const defaultMergeOptions: MergeOptions = {
+  overwrite: false
+}
+
+function makePrevMessage(message = {}): MessageType {
+  return {
+    translation: "",
+    ...makeNextMessage(message)
+  }
+}
+
+function makeNextMessage(message = {}): ExtractedMessageType {
+  return {
+    origin: [[1, "catalog.test.ts"]],
+    obsolete: false,
+    ...message
+  }
+}
 
 const fixture = (...dirs) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs))
@@ -37,7 +67,7 @@ describe("Catalog", function() {
       // Everything should be empty
       expect(catalog.readAll()).toMatchSnapshot()
 
-      catalog.make()
+      catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
@@ -58,7 +88,7 @@ describe("Catalog", function() {
       // Everything should be empty
       expect(catalog.readAll()).toMatchSnapshot()
 
-      catalog.make()
+      catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
     })
   })
@@ -75,7 +105,7 @@ describe("Catalog", function() {
         mockConfig()
       )
 
-      const messages = catalog.collect()
+      const messages = catalog.collect(defaultMakeOptions)
       expect(messages).toMatchSnapshot()
     })
 
@@ -91,7 +121,7 @@ describe("Catalog", function() {
       )
 
       mockConsole(console => {
-        const messages = catalog.collect()
+        const messages = catalog.collect(defaultMakeOptions)
         expect(console.error).toBeCalledWith(
           expect.stringContaining(`Cannot process file`)
         )
@@ -137,34 +167,38 @@ describe("Catalog", function() {
     it("should initialize catalog", function() {
       const prevCatalogs = { en: null, cs: null }
       const nextCatalog = {
-        "custom.id": {
-          defaults: "Message with custom ID"
-        },
-        "Message with <0>auto-generated</0> ID": {}
+        "custom.id": makeNextMessage({
+          message: "Message with custom ID"
+        }),
+        "Message with <0>auto-generated</0> ID": makeNextMessage()
       }
 
       expect(
-        makeCatalog({ sourceLocale: "en" }).merge(prevCatalogs, nextCatalog)
+        makeCatalog({ sourceLocale: "en" }).merge(
+          prevCatalogs,
+          nextCatalog,
+          defaultMergeOptions
+        )
       ).toEqual({
         // catalog for sourceLocale - translation is prefilled
         en: {
-          "custom.id": {
-            defaults: "Message with custom ID",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID",
             translation: "Message with custom ID"
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
             translation: "Message with <0>auto-generated</0> ID"
-          }
+          })
         },
         // catalog for other than sourceLocale - translation is empty
         cs: {
-          "custom.id": {
-            defaults: "Message with custom ID",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID",
             translation: ""
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
             translation: ""
-          }
+          })
         }
       })
     })
@@ -172,70 +206,74 @@ describe("Catalog", function() {
     it("should merge translations from existing catalogs", function() {
       const prevCatalogs = {
         en: {
-          "custom.id": {
-            defaults: "Message with custom ID",
+          "custom.id": makePrevMessage({
+            message: "Message with custom ID",
             translation: "Message with custom ID"
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": makePrevMessage({
             translation: "Message with <0>auto-generated</0> ID"
-          }
+          })
         },
         cs: {
-          "custom.id": {
-            defaults: "Message with custom ID",
+          "custom.id": makePrevMessage({
+            message: "Message with custom ID",
             translation: "Translation of message with custom ID"
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": makePrevMessage({
             translation: "Translation of message with auto-generated ID"
-          }
+          })
         }
       }
 
       const nextCatalog = {
-        "custom.id": {
-          defaults: "Message with custom ID, possibly changed"
-        },
-        "new.id": {
-          defaults: "Completely new message"
-        },
-        "Message with <0>auto-generated</0> ID": {},
-        "New message": {}
+        "custom.id": makeNextMessage({
+          message: "Message with custom ID, possibly changed"
+        }),
+        "new.id": makeNextMessage({
+          message: "Completely new message"
+        }),
+        "Message with <0>auto-generated</0> ID": makeNextMessage(),
+        "New message": makeNextMessage()
       }
 
       expect(
-        makeCatalog({ sourceLocale: "en" }).merge(prevCatalogs, nextCatalog)
+        makeCatalog({ sourceLocale: "en" }).merge(
+          prevCatalogs,
+          nextCatalog,
+          defaultMergeOptions
+        )
       ).toEqual({
         en: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Message with custom ID, possibly changed"
-          },
-          "new.id": {
-            defaults: "Completely new message",
+          }),
+          "new.id": expect.objectContaining({
+            message: "Completely new message",
             translation: "Completely new message"
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
             translation: "Message with <0>auto-generated</0> ID"
-          },
-          "New message": {
+          }),
+          "New message": expect.objectContaining({
             translation: "New message"
-          }
+          })
         },
         cs: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Translation of message with custom ID"
-          },
-          "new.id": {
-            defaults: "Completely new message",
+          }),
+          "new.id": expect.objectContaining({
+            message: "Completely new message",
             translation: ""
-          },
-          "Message with <0>auto-generated</0> ID": {
+          }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
             translation: "Translation of message with auto-generated ID"
-          },
-          "New message": {
+          }),
+          "New message": expect.objectContaining({
             translation: ""
-          }
+          })
         }
       })
     })
@@ -243,41 +281,45 @@ describe("Catalog", function() {
     it("should force overwrite of defaults", function() {
       const prevCatalogs = {
         en: {
-          "custom.id": {
-            defaults: "",
+          "custom.id": makePrevMessage({
+            message: "",
             translation: "Message with custom ID"
-          }
+          })
         },
         cs: {
-          "custom.id": {
-            defaults: "",
+          "custom.id": makePrevMessage({
+            message: "",
             translation: "Translation of message with custom ID"
-          }
+          })
         }
       }
 
       const nextCatalog = {
-        "custom.id": {
-          defaults: "Message with custom ID, possibly changed"
-        }
+        "custom.id": makeNextMessage({
+          message: "Message with custom ID, possibly changed"
+        })
       }
 
       // Without `overwrite`:
       // The translation of `custom.id` message for `sourceLocale` is kept intact
       expect(
-        makeCatalog({ sourceLocale: "en" }).merge(prevCatalogs, nextCatalog)
+        makeCatalog({ sourceLocale: "en" }).merge(
+          prevCatalogs,
+          nextCatalog,
+          defaultMergeOptions
+        )
       ).toEqual({
         en: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Message with custom ID"
-          }
+          })
         },
         cs: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Translation of message with custom ID"
-          }
+          })
         }
       })
 
@@ -289,16 +331,16 @@ describe("Catalog", function() {
         })
       ).toEqual({
         en: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Message with custom ID, possibly changed"
-          }
+          })
         },
         cs: {
-          "custom.id": {
-            defaults: "Message with custom ID, possibly changed",
+          "custom.id": expect.objectContaining({
+            message: "Message with custom ID, possibly changed",
             translation: "Translation of message with custom ID"
-          }
+          })
         }
       })
     })
@@ -306,18 +348,20 @@ describe("Catalog", function() {
     it("should mark obsolete messages", function() {
       const prevCatalogs = {
         en: {
-          "msg.hello": {
+          "msg.hello": makePrevMessage({
             translation: "Hello World"
-          }
+          })
         }
       }
       const nextCatalog = {}
-      expect(makeCatalog().merge(prevCatalogs, nextCatalog)).toEqual({
+      expect(
+        makeCatalog().merge(prevCatalogs, nextCatalog, defaultMergeOptions)
+      ).toEqual({
         en: {
-          "msg.hello": {
+          "msg.hello": expect.objectContaining({
             translation: "Hello World",
             obsolete: true
-          }
+          })
         }
       })
     })
@@ -671,12 +715,12 @@ describe("getCatalogForFile", function() {
 describe("cleanObsolete", function() {
   it("should remove obsolete messages from catalog", function() {
     const catalog = {
-      Label: {
+      Label: makeNextMessage({
         translation: "Label"
-      },
-      PreviousLabel: {
+      }),
+      PreviousLabel: makeNextMessage({
         obsolete: true
-      }
+      })
     }
 
     expect(cleanObsolete(catalog)).toMatchSnapshot()

@@ -6,11 +6,34 @@ import chalk from "chalk"
 import glob from "glob"
 import minimatch from "minimatch"
 
+import { LinguiConfig } from "@lingui/conf"
 import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
+import {
+  AllCatalogsType,
+  CatalogType,
+  ExtractedCatalogType,
+  ExtractedMessageType,
+  MessageType
+} from "./types"
 import { CliExtractOptions } from "../lingui-extract"
-import { LinguiConfig } from "@lingui/conf"
+
+const NAME = "{name}"
+const LOCALE = "{locale}"
+
+export interface MakeOptions extends CliExtractOptions {
+  projectType?: string
+}
+
+export interface MergeOptions {
+  overwrite: boolean
+}
+
+export interface GetTranslationsOptions {
+  sourceLocale: string
+  fallbackLocale: string
+}
 
 type CatalogProps = {
   name?: string
@@ -18,24 +41,6 @@ type CatalogProps = {
   include: Array<string>
   exclude?: Array<string>
 }
-
-type MakeOptions = CliExtractOptions & {
-  projectType?: string
-}
-
-const NAME = "{name}"
-const LOCALE = "{locale}"
-
-// export type MessageType = {
-//   id: string,
-//   translation: string,
-//   defaults: ?string,
-//   origin: Array<[number, string]>,
-//   description: ?string,
-//   comments: ?Array<string>,
-//   obsolete: boolean,
-//   flags: ?Array<string>
-// }
 
 export class Catalog {
   name?: string
@@ -57,7 +62,7 @@ export class Catalog {
     this.format = getFormat(config.format)
   }
 
-  make(options: MakeOptions = {}) {
+  make(options: MakeOptions) {
     const nextCatalog = this.collect(options)
     const prevCatalogs = this.readAll()
 
@@ -66,7 +71,7 @@ export class Catalog {
     })
 
     // Map over all locales and post-process each catalog
-    const postProcess = R.map(
+    const cleanAndSort = R.map(
       R.pipe(
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
@@ -74,13 +79,13 @@ export class Catalog {
         orderByMessageId
       )
     )
-    this.writeAll(postProcess(catalogs))
+    this.writeAll(cleanAndSort(catalogs))
   }
 
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  collect(options: Object = {}) {
+  collect(options: MakeOptions) {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -128,7 +133,11 @@ export class Catalog {
     }
   }
 
-  merge(prevCatalogs: Object, nextCatalog: Object, options: Object = {}) {
+  merge(
+    prevCatalogs: AllCatalogsType,
+    nextCatalog: ExtractedCatalogType,
+    options: MergeOptions
+  ) {
     const nextKeys = R.keys(nextCatalog)
 
     return R.mapObjIndexed((prevCatalog, locale) => {
@@ -140,9 +149,9 @@ export class Catalog {
 
       // Initialize new catalog with new keys
       const newMessages = R.mapObjIndexed(
-        (message, key) => ({
+        (message: MessageType, key) => ({
           translation:
-            this.config.sourceLocale === locale ? message.defaults || key : "",
+            this.config.sourceLocale === locale ? message.message || key : "",
           ...message
         }),
         R.pick(newKeys, nextCatalog)
@@ -152,11 +161,11 @@ export class Catalog {
       const mergedMessages = mergeKeys.map(key => {
         const updateFromDefaults =
           this.config.sourceLocale === locale &&
-          (prevCatalog[key].translation === prevCatalog[key].defaults ||
+          (prevCatalog[key].translation === prevCatalog[key].message ||
             options.overwrite)
 
         const translation = updateFromDefaults
-          ? nextCatalog[key].defaults
+          ? nextCatalog[key].message
           : prevCatalog[key].translation
 
         return {
@@ -179,7 +188,7 @@ export class Catalog {
     }, prevCatalogs)
   }
 
-  getTranslations(locale: string, options: Object) {
+  getTranslations(locale: string, options: GetTranslationsOptions) {
     const catalogs = this.readAll()
     return R.mapObjIndexed(
       (value, key) => this.getTranslation(catalogs, locale, key, options),
@@ -191,7 +200,7 @@ export class Catalog {
     catalogs: Object,
     locale: string,
     key: string,
-    { fallbackLocale, sourceLocale }: Object
+    { fallbackLocale, sourceLocale }: GetTranslationsOptions
   ) {
     const getTranslation = locale => catalogs[locale][key].translation
 
@@ -226,7 +235,7 @@ export class Catalog {
     return [created, filename]
   }
 
-  writeAll(catalogs: Object) {
+  writeAll(catalogs: AllCatalogsType) {
     this.locales.forEach(locale => this.write(locale, catalogs[locale]))
   }
 
@@ -259,7 +268,7 @@ export class Catalog {
       this.locales.map(locale => ({
         [locale]: this.read(locale)
       }))
-    )
+    ) as AllCatalogsType
   }
 
   get sourcePaths() {
@@ -448,7 +457,9 @@ function normalizeRelativePath(sourcePath: string): string {
   )
 }
 
-export const cleanObsolete = R.filter(message => !message.obsolete)
+export const cleanObsolete = R.filter(
+  (message: ExtractedMessageType) => !message.obsolete
+)
 
 export const orderByMessageId = R.pipe(
   R.toPairs,

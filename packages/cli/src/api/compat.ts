@@ -1,10 +1,12 @@
 import chalk from "chalk"
 import * as core from "babel-core"
 
-function catchBabelVersionMismatch(fn) {
-  return function() {
+function catchBabelVersionMismatch<T extends (...args: any[]) => any>(
+  fn: T
+): T {
+  return function(...args) {
     try {
-      fn.apply(null, arguments)
+      return fn(...args)
     } catch (e) {
       let logged = false
 
@@ -44,7 +46,7 @@ function catchBabelVersionMismatch(fn) {
         throw e
       }
     }
-  }
+  } as T
 }
 
 export const transform = catchBabelVersionMismatch(core.transform)

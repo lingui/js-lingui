@@ -3,7 +3,7 @@ import { compile, createCompiledCatalog } from "./compile"
 
 describe("compile", function() {
   const getSource = message =>
-    generate(compile(message), {
+    generate(compile(message) as any, {
       compact: true,
       minified: true
     }).code
@@ -77,7 +77,7 @@ describe("compile", function() {
 
 describe("createCompiledCatalog", function() {
   describe("namespace", function() {
-    const getCompiledCatalog = (strict, namespace, pseudoLocale) =>
+    const getCompiledCatalog = (strict, namespace, pseudoLocale = null) =>
       createCompiledCatalog(
         "fr",
         {},
@@ -87,9 +87,6 @@ describe("createCompiledCatalog", function() {
           pseudoLocale
         }
       )
-    it("should compile with cjs by default", function() {
-      expect(getCompiledCatalog()).toMatchSnapshot()
-    })
 
     it("should compile with es", function() {
       expect(getCompiledCatalog(false, "es")).toMatchSnapshot()
