@@ -121,7 +121,7 @@ function buildExportStatement(expression, namespace: NamespaceType = "cjs") {
   }
 }
 
-type NamespaceType = "cjs" | "es"
+type NamespaceType = "cjs" | "es" | string
 
 interface CreateCompileCatalogOptions {
   strict: boolean

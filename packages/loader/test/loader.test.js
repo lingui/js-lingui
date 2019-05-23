@@ -19,7 +19,7 @@ describe("@lingui/loader", function() {
   skipOnWindows("should allow config option", async () => {
     const stats = await compiler(
       path.join(".", "locale", "en", "messages.po"),
-      { config: `${path.dirname(module.filename)}/customconfig.json` }
+      { config: path.join(path.dirname(module.filename), "customConfig.json") }
     )
 
     const output = stats.toJson()
