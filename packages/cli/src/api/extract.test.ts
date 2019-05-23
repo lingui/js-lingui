@@ -135,6 +135,21 @@ describe("collect", function() {
             origin: [["diffDefaults/Second.js", 5]]
           }
         })
+      },
+
+      // test case for when only one defaults message is specified
+      onlyOneDefault: {
+        "First.js.json": JSON.stringify({
+          "msg.id": {
+            origin: [["onlyOneDefault/First.js", 2]]
+          }
+        }),
+        "Second.js.json": JSON.stringify({
+          "msg.id": {
+            message: "Second default",
+            origin: [["onlyOneDefault/Second.js", 5]]
+          }
+        })
       }
     })
   })
@@ -161,6 +176,13 @@ describe("collect", function() {
         throw e
       }).toThrowErrorMatchingSnapshot()
     }
+  })
+
+  it("should use defined default", function() {
+    const { collect } = require("./extract")
+    const catalog = collect("onlyOneDefault")
+    mockFs.restore()
+    expect(catalog).toMatchSnapshot()
   })
 })
 

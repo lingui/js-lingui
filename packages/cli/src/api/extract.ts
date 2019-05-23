@@ -22,7 +22,7 @@ type ExtractOptions = {
  * should be the same (raise an error if defaults are different).
  */
 function mergeMessage(msgId, prev, next) {
-  if (prev.message !== next.message) {
+  if (prev.message && next.message && prev.message !== next.message) {
     throw new Error(
       `Encountered different default translations for message ${chalk.yellow(
         msgId
@@ -34,6 +34,7 @@ function mergeMessage(msgId, prev, next) {
 
   return {
     ...next,
+    message: prev.message || next.message,
     origin: R.concat(prev.origin, next.origin)
   }
 }

@@ -80,7 +80,7 @@ if (require.main === module) {
     .option("--format <format>", "Format of message catalogs")
     .parse(process.argv)
 
-  const config = getConfig()
+  const config = getConfig({ configPath: program.config })
 
   let hasErrors = false
   if (program.format) {

@@ -43,18 +43,25 @@ export const defaultConfig: LinguiConfig = {
   sourceLocale: ""
 }
 
+function configExists(path) {
+  return path && fs.existsSync(path)
+}
+
 export function getConfig({
   cwd,
+  configPath,
   skipValidation = false
-}: { cwd?: string; skipValidation?: boolean } = {}): LinguiConfig {
+}: {
+  cwd?: string
+  configPath?: string
+  skipValidation?: boolean
+} = {}): LinguiConfig {
   const defaultRootDir = cwd || process.cwd()
   const configExplorer = cosmiconfig("lingui")
-  const configPath = configFilePathFromArgs()
 
-  const result =
-    configPath == null
-      ? configExplorer.searchSync(defaultRootDir)
-      : configExplorer.loadSync(configPath)
+  const result = configExists(configPath)
+    ? configExplorer.loadSync(configPath)
+    : configExplorer.searchSync(defaultRootDir)
   const userConfig = result ? result.config : {}
   const config: LinguiConfig = {
     ...defaultConfig,
@@ -184,20 +191,6 @@ function validateLocales(config) {
   }
 
   return config
-}
-
-function configFilePathFromArgs() {
-  const configIndex = process.argv.indexOf("--config")
-
-  if (
-    configIndex >= 0 &&
-    process.argv.length > configIndex &&
-    fs.existsSync(process.argv[configIndex + 1])
-  ) {
-    return process.argv[configIndex + 1]
-  }
-
-  return null
 }
 
 export function replaceRootDir(

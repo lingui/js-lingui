@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import path from "path"
 import compiler from "./compiler.js"
 
@@ -17,5 +14,17 @@ describe("@lingui/loader", function() {
     const output = stats.toJson()
     expect(output.errors).toEqual([])
     expect(output.modules[0].source).toMatchSnapshot()
+  })
+
+  skipOnWindows("should allow config option", async () => {
+    const stats = await compiler(
+      path.join(".", "locale", "en", "messages.po"),
+      { config: `${path.dirname(module.filename)}/customconfig.json` }
+    )
+
+    const output = stats.toJson()
+
+    // customconfig contains this namespace
+    expect(output.modules[0].source).toMatch(/window\.really_long_namespace=/)
   })
 })

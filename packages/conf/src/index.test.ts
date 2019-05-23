@@ -142,31 +142,15 @@ describe("@lingui/conf", function() {
   })
 
   it("searches for a config file", function() {
-    expect.assertions(1)
-
-    mockConsole(() => {
-      getConfig()
-      expect(cosmiconfig().searchSync).toHaveBeenCalled()
-    })
+    getConfig()
+    expect(cosmiconfig().searchSync).toHaveBeenCalled()
   })
 
-  describe("with --config command line argument", function() {
-    beforeEach(function() {
-      process.argv.push("--config")
-      process.argv.push("./lingui/myconfig")
-    })
-
-    afterEach(function() {
-      process.argv.splice(process.argv.length - 2, 2)
-    })
-
+  describe("with configPath parameter", function() {
     it("allows specific config file to be loaded", function() {
-      expect.assertions(2)
-      mockConsole(() => {
-        getConfig()
-        expect(cosmiconfig().searchSync).not.toHaveBeenCalled()
-        expect(cosmiconfig().loadSync).toHaveBeenCalledWith("./lingui/myconfig")
-      })
+      getConfig({ configPath: "./lingui/myconfig" })
+      expect(cosmiconfig().searchSync).not.toHaveBeenCalled()
+      expect(cosmiconfig().loadSync).toHaveBeenCalledWith("./lingui/myconfig")
     })
   })
 })

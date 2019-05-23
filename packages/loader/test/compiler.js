@@ -2,8 +2,9 @@ import path from "path"
 import webpack from "webpack"
 import MemoryFS from "memory-fs"
 
-export default (fixture, options = {}) => {
+export default (fixture, options) => {
   const compiler = webpack({
+    mode: "development",
     context: __dirname,
     entry: "." + path.sep + fixture,
     output: {
@@ -15,7 +16,8 @@ export default (fixture, options = {}) => {
         {
           test: /\.po$/,
           use: {
-            loader: path.resolve(__dirname, "../src/index.js")
+            loader: path.resolve(__dirname, "../src/index.js"),
+            options
           }
         }
       ]

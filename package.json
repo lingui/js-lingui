@@ -41,6 +41,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
+    "babel-plugin-macros": "^2.5.1",
     "chalk": "^2.3.0",
     "cross-env": "^5.2.0",
     "enzyme": "^3.9.0",

@@ -6,6 +6,7 @@ import {
   getCatalogs,
   getCatalogForFile
 } from "@lingui/cli/api"
+import loaderUtils from "loader-utils"
 
 // Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
 let JavascriptParser
@@ -20,6 +21,8 @@ try {
 }
 
 export default function(source) {
+  const options = loaderUtils.getOptions(this) || {}
+
   // Webpack 4 uses json-loader automatically, which breaks this loader because it
   // doesn't return JSON, but JS module. This is a temporary workaround before
   // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)
@@ -31,8 +34,10 @@ export default function(source) {
   }
 
   const config = getConfig({
+    configPath: options.config,
     cwd: path.dirname(this.resourcePath)
   })
+
   const { locale, catalog } = getCatalogForFile(
     path.relative(config.rootDir, this.resourcePath),
     getCatalogs(config)
@@ -53,5 +58,9 @@ export default function(source) {
   // of I18nProvider (React) or setupI18n (core) and therefore we need to get
   // empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
-  return createCompiledCatalog(locale, messages, { strict })
+  return createCompiledCatalog(locale, messages, {
+    strict,
+    namespace: config.compileNamespace,
+    pseudoLocale: config.pseudoLocale
+  })
 }

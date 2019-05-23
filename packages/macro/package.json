@@ -28,7 +28,9 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "babel-plugin-macros": "^2.5.1",
     "ramda": "^0.26.1"
+  },
+  "peerDependencies": {
+    "babel-plugin-macros": "^2.5.1"
   }
 }
