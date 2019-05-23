@@ -4,7 +4,7 @@ import MemoryFS from "memory-fs"
 
 export default (fixture, options) => {
   const compiler = webpack({
-    mode: "development",
+    mode: "none",
     context: __dirname,
     entry: "." + path.sep + fixture,
     output: {
