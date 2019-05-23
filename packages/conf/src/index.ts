@@ -1,8 +1,8 @@
-const path = require("path")
-const fs = require("fs")
-const chalk = require("chalk")
-const cosmiconfig = require("cosmiconfig")
-const { validate } = require("jest-validate")
+import path from "path"
+import fs from "fs"
+import chalk from "chalk"
+import cosmiconfig from "cosmiconfig"
+import { validate } from "jest-validate"
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
 

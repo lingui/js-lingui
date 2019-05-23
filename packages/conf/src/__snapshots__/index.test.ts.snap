@@ -96,8 +96,7 @@ Object {
   fallbackLocale: ,
   format: po,
   locales: Array [
-    en,
-    cs,
+    en-gb,
   ],
   pseudoLocale: ,
   rootDir: .,

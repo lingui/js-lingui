@@ -7,41 +7,9 @@ import {
   configValidation
 } from "@lingui/conf"
 import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
-import cosmiconfig from "cosmiconfig"
-
-const mockExplorer = {
-  searchSync: jest.fn(),
-  loadSync: jest.fn()
-}
-
-jest.mock("cosmiconfig", function() {
-  return function() {
-    return mockExplorer
-  }
-})
-
-jest.mock("fs", function() {
-  return {
-    existsSync: function(path) {
-      return path === "./lingui/myconfig"
-    }
-  }
-})
 
 describe("@lingui/conf", function() {
-  beforeEach(function() {
-    cosmiconfig().loadSync.mockClear()
-    cosmiconfig().searchSync.mockClear()
-  })
-
   it("should return default config", function() {
-    cosmiconfig().searchSync.mockReturnValueOnce({
-      config: {
-        rootDir: ".",
-        locales: ["en", "cs"]
-      },
-      filepath: "."
-    })
     expect.assertions(2)
 
     mockConsole(console => {
@@ -144,19 +112,25 @@ describe("@lingui/conf", function() {
   it("searches for a config file", function() {
     // hide validation warning about missing locales
     mockConsole(() => {
-      getConfig()
+      const config = getConfig({
+        cwd: path.resolve(__dirname, path.join("fixtures", "valid"))
+      })
+      expect(config.locales).toEqual(["en-gb"])
     })
-    expect(cosmiconfig().searchSync).toHaveBeenCalled()
   })
 
   describe("with configPath parameter", function() {
     it("allows specific config file to be loaded", function() {
       // hide validation warning about missing locales
       mockConsole(() => {
-        getConfig({ configPath: "./lingui/myconfig" })
+        const config = getConfig({
+          configPath: path.resolve(
+            __dirname,
+            path.join("fixtures", "valid", "custom.config.js")
+          )
+        })
+        expect(config.locales).toEqual(["cs", "sk"])
       })
-      expect(cosmiconfig().searchSync).not.toHaveBeenCalled()
-      expect(cosmiconfig().loadSync).toHaveBeenCalledWith("./lingui/myconfig")
     })
   })
 })
