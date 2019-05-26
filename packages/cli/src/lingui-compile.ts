@@ -145,8 +145,8 @@ if (require.main === module) {
   console.log("Done!")
 }
 
-const noMessages: (catalogs: Object[]) => boolean = R.compose(
-  R.all(R.equals(true)),
+const noMessages: (catalogs: Object[]) => boolean = R.pipe(
+  R.map(R.isEmpty),
   R.values,
-  R.map(R.isEmpty)
+  R.all(R.equals<any>(true))
 )

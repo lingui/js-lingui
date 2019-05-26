@@ -28,7 +28,9 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "@babel/generator": "^7.1.3",
-    "@lingui/conf": "0.0.0-managed-by-release-script"
+    "@babel/generator": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
+    "@lingui/conf": "0.0.0-managed-by-release-script",
+    "mkdirp": "^0.5.1"
   }
 }

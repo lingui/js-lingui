@@ -8,7 +8,6 @@ import { prettyOrigin } from "./utils"
 
 import * as extractors from "./extractors"
 import { ExtractorType } from "./extractors/types"
-import { AllCatalogsType, MessageType } from "./types"
 
 type ExtractOptions = {
   ignore?: Array<string>
@@ -100,23 +99,4 @@ export function collect(buildDir: string) {
       (catalog, messages) => R.mergeWithKey(mergeMessage, catalog, messages),
       {}
     )
-}
-
-export function cleanObsolete(catalogs: AllCatalogsType) {
-  return R.map(R.filter((message: MessageType) => !message.obsolete), catalogs)
-}
-
-export function order(catalogs: AllCatalogsType) {
-  return R.map(orderByMessageId, catalogs)
-}
-
-function orderByMessageId(messages) {
-  const orderedMessages = {}
-  Object.keys(messages)
-    .sort()
-    .forEach(function(key) {
-      orderedMessages[key] = messages[key]
-    })
-
-  return orderedMessages
 }

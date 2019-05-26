@@ -39,7 +39,10 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.4.5",
     "@lingui/core": "0.0.0-managed-by-release-script"
+  },
+  "devDependencies": {
+    "react-testing-library": "^7.0.1"
   }
 }

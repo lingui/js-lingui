@@ -252,7 +252,7 @@ export default class MacroJs {
             : this.tokenizeExpression(exp)
         )
       }),
-      exp => zip(exp.quasis, exp.expressions),
+      (exp: babelTypes.TemplateLiteral) => zip(exp.quasis, exp.expressions),
       R.flatten,
       R.filter(Boolean)
     )

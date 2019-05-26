@@ -12,7 +12,6 @@ import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import {
   AllCatalogsType,
-  CatalogType,
   ExtractedCatalogType,
   ExtractedMessageType,
   MessageType
@@ -71,14 +70,14 @@ export class Catalog {
     })
 
     // Map over all locales and post-process each catalog
-    const cleanAndSort = R.map(
+    const cleanAndSort = (R.map(
       R.pipe(
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
         orderByMessageId
       )
-    )
+    ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
   }
 
@@ -138,10 +137,10 @@ export class Catalog {
     nextCatalog: ExtractedCatalogType,
     options: MergeOptions
   ) {
-    const nextKeys = R.keys(nextCatalog)
+    const nextKeys = R.keys(nextCatalog).map(String)
 
     return R.mapObjIndexed((prevCatalog, locale) => {
-      const prevKeys = R.keys(prevCatalog)
+      const prevKeys = R.keys(prevCatalog).map(String)
 
       const newKeys = R.difference(nextKeys, prevKeys)
       const mergeKeys = R.intersection(nextKeys, prevKeys)
@@ -461,8 +460,17 @@ export const cleanObsolete = R.filter(
   (message: ExtractedMessageType) => !message.obsolete
 )
 
-export const orderByMessageId = R.pipe(
-  R.toPairs,
-  R.sortBy(R.prop(0)),
-  R.fromPairs
-)
+/**
+ * Object keys are in the same order as they were created
+ * https://stackoverflow.com/a/31102605/1535540
+ */
+export function orderByMessageId(messages) {
+  const orderedMessages = {}
+  Object.keys(messages)
+    .sort()
+    .forEach(function(key) {
+      orderedMessages[key] = messages[key]
+    })
+
+  return orderedMessages
+}

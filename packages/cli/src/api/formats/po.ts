@@ -33,7 +33,7 @@ const serialize = R.compose(
   })
 )
 
-const getMessageKey = R.prop("msgid")
+const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop("msgstr")
 const getExtractedComments = R.prop("extractedComments")
 const getTranslatorComments = R.prop("comments")
@@ -46,7 +46,7 @@ const getFlags = R.compose(
 )
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const deserialize = R.map(
+const deserialize: (Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(
       R.head,

@@ -5,12 +5,12 @@ import { MessageType } from "../types"
 
 const serialize = R.map((message: MessageType) => message.translation || "")
 
-const deserialize = R.map((translation: string) => ({
+const deserialize = (R.map((translation: string) => ({
   translation,
   obsolete: false,
   message: null,
   origin: []
-}))
+})) as unknown) as <T>(message: T) => T
 
 export default {
   catalogExtension: ".json",

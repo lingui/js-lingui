@@ -28,6 +28,7 @@
     "index.d.ts"
   ],
   "dependencies": {
+    "@babel/runtime": "^7.4.5",
     "ramda": "^0.26.1"
   },
   "peerDependencies": {
