@@ -2,7 +2,16 @@ import { setupI18n } from "@lingui/core"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", function() {
-  it(".load should load catalog and merge with existing", function() {
+  it(".load should emit event", function() {
+    const i18n = setupI18n()
+
+    const listener = jest.fn()
+    i18n.on("load", listener)
+    i18n.load("en", { msg: "Message" })
+    expect(listener).toBeCalledWith("en", { msg: "Message" })
+  })
+
+  it(".load should load catalog and merge with existing", () => {
     const messages = {
       Hello: "Hello"
     }
@@ -23,7 +32,21 @@ describe("I18n", function() {
     expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should switch active locale", function() {
+  it(".activate should emit event", function() {
+    const i18n = setupI18n({
+      locale: "en",
+      catalogs: {
+        en: { messages: {} }
+      }
+    })
+
+    const listener = jest.fn()
+    i18n.on("activate", listener)
+    i18n.activate("en")
+    expect(listener).toBeCalledWith("en")
+  })
+
+  it(".activate should switch active locale", async () => {
     const messages = {
       Hello: "Salut"
     }

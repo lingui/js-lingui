@@ -7,21 +7,21 @@ import { setupI18n } from "@lingui/core"
 describe("I18nProvider", function() {
   it("should subscribe for locale changes", function() {
     const i18n = setupI18n()
-    i18n.didActivate = jest.fn(() => jest.fn())
+    i18n.on = jest.fn(() => jest.fn())
 
-    expect(i18n.didActivate).not.toBeCalled()
+    expect(i18n.on).not.toBeCalled()
     render(
       <I18nProvider i18n={i18n}>
         <div />
       </I18nProvider>
     )
-    expect(i18n.didActivate).toBeCalled()
+    expect(i18n.on).toBeCalledWith("activate", expect.anything())
   })
 
   it("should unsubscribe for locale changes on unmount", function() {
     const unsubscribe = jest.fn()
     const i18n = setupI18n()
-    i18n.didActivate = jest.fn(() => unsubscribe)
+    i18n.on = jest.fn(() => unsubscribe)
 
     const { unmount } = render(
       <I18nProvider i18n={i18n}>

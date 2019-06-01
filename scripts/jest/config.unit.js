@@ -15,7 +15,7 @@ module.exports = {
     ".*.json$",
     ".*.js.snap$"
   ],
-  coverageReporters: ["html", "lcov"],
+  coverageReporters: ["html", "lcov", "text"],
 
   reporters: ["default", "jest-junit"],
   setupFilesAfterEnv: [

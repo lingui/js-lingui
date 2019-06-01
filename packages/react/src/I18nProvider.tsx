@@ -36,7 +36,9 @@ export const I18nProvider = (props: I18nProviderProps) => {
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
   React.useEffect(() => {
-    const unsubscribe = props.i18n.didActivate(() => setContext(makeContext()))
+    const unsubscribe = props.i18n.on("activate", () =>
+      setContext(makeContext())
+    )
     return () => unsubscribe()
   }, [])
 

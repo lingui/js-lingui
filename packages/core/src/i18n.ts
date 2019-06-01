@@ -3,6 +3,7 @@ import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
 import { MessageDescriptor } from "./messages"
+import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
   message?: string
@@ -32,21 +33,23 @@ type setupI18nProps = {
   missing?: string | ((message, id) => string)
 }
 
-export class I18n {
+type Events = {
+  activate: (locale: string) => void
+  load: (locale: string, catalog: Catalog | null) => void
+}
+
+export class I18n extends EventEmitter<Events> {
   messageFormat: typeof icu
   _catalogs: Catalogs
-  _didActivate: Array<Function>
-  _willActivate: Array<Function>
   _locale: Locale
   _locales: Locales
   _missing: string | ((message, id) => string)
 
   constructor() {
+    super()
     // Messages and localeData are merged on load,
     // so we must initialize it manually
     this._catalogs = {}
-    this._didActivate = []
-    this._willActivate = []
   }
 
   get locale() {
@@ -82,17 +85,14 @@ export class I18n {
   }
 
   loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).forEach(locale => this.load(locale, catalogs[locale]))
+    return Object.keys(catalogs).map(locale =>
+      this.load(locale, catalogs[locale])
+    )
   }
 
-  load(locale: Locale, catalog?: Catalog): Promise<void> {
-    if (catalog == null) {
-      return Promise.all(
-        this._willActivate.map(load =>
-          load(locale).then(catalog => this.load(locale, catalog))
-        )
-      ).then(() => {})
-    }
+  load(locale: Locale, catalog?: Catalog) {
+    this.emit("load", locale, catalog)
+    if (catalog == null) return
 
     if (this._catalogs[locale] == null) {
       this._catalogs[locale] = {
@@ -104,15 +104,12 @@ export class I18n {
     const prev = this._catalogs[locale]
     Object.assign(prev.messages, catalog.messages)
     Object.assign(prev.localeData, catalog.localeData)
-    return Promise.resolve()
   }
 
   activate(locale: Locale, locales?: Locales) {
-    if (!this._catalogs[locale]) {
-      if (this._willActivate.length) {
-        return this.load(locale).then(() => this.activate(locale, locales))
-      }
+    this.emit("activate", locale)
 
+    if (!this._catalogs[locale]) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(`Message catalog for locale "${locale}" not loaded.`)
       }
@@ -120,8 +117,6 @@ export class I18n {
 
     this._locale = locale
     this._locales = locales
-    this._didActivate.forEach(s => s())
-    return Promise.resolve()
   }
 
   use(locale: Locale, locales?: Locales) {
@@ -129,16 +124,6 @@ export class I18n {
     i18n._catalogs = this._catalogs
     i18n.activate(locale, locales)
     return i18n
-  }
-
-  willActivate(callback: (locale: Locale) => Promise<Catalog>): Function {
-    this._willActivate.push(callback)
-    return () => this._willActivate.filter(cb => cb !== callback)
-  }
-
-  didActivate(callback: () => void): Function {
-    this._didActivate.push(callback)
-    return () => this._didActivate.filter(cb => cb !== callback)
   }
 
   // default translate method
