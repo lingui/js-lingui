@@ -124,7 +124,7 @@ jobs:
 
   build-docs:
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.7-node
         environment:
           PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
@@ -141,10 +141,13 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
+      - run: yarn global add now
+
       - run: cd docs; pipenv run make html
 
       - deploy:
-          command: ./scripts/legacy/deploy-docs.sh
+          command: $(yarn global bin)/now --public --token $NOW_TOKEN --name lingui-docs docs/_build/html
+#          command: ./scripts/legacy/deploy-docs.sh
 
 workflows:
   version: 2
@@ -153,7 +156,7 @@ workflows:
 #      - build-docs:
 #          filters:
 #            branches:
-#              only:
+#              ignore:
 #                - master
 
       - build
