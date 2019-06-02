@@ -119,13 +119,6 @@ export class I18n extends EventEmitter<Events> {
     this._locales = locales
   }
 
-  use(locale: Locale, locales?: Locales) {
-    const i18n = setupI18n()
-    i18n._catalogs = this._catalogs
-    i18n.activate(locale, locales)
-    return i18n
-  }
-
   // default translate method
   _(
     id: MessageDescriptor | string,

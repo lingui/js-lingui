@@ -258,20 +258,6 @@ Reference
          i18n.activate("cs")
          i18n._("Hello")           // Return "Hello" in Czech
 
-   .. js:method:: use(language [, locales])
-
-      Activate a language and locales locally. This method returns a new instance of
-      :js:class:`I18n` and doesn't affect global language.
-
-      .. code-block:: js
-
-         import { setupI18n } from "@lingui/core"
-
-         const i18n = setupI18n({ language: "en" })
-
-         i18n.use("cs")._("Hello") // Return "Hello" in Czech
-         i18n._("Hello")           // Return "Hello" in active language (English)
-
    .. js:method:: _(messageId [, values [, options]])
 
       The core method for translating and formatting messages.

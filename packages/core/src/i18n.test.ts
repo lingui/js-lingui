@@ -88,57 +88,6 @@ describe("I18n", function() {
     })
   })
 
-  it(".use should return new i18n object with switched locale", function() {
-    const catalogs = {
-      en: {
-        messages: {
-          Hello: "Hello"
-        }
-      },
-      fr: {
-        messages: {
-          Hello: "Salut"
-        }
-      }
-    }
-
-    const i18n = setupI18n({
-      locale: "en",
-      catalogs
-    })
-
-    expect(i18n._("Hello")).toEqual("Hello")
-
-    // change locale locally
-    expect(i18n.use("fr")._("Hello")).toEqual("Salut")
-
-    // global locale hasn't changed
-    expect(i18n._("Hello")).toEqual("Hello")
-  })
-
-  it(".use should return new i18n object with switched locales", function() {
-    const i18n = setupI18n({
-      locale: "en",
-      locales: "en-UK"
-    })
-    const plural = "{value, plural, zero {لا كتاب} two {# الكتب}}"
-
-    // change locales locally
-    const ar = i18n.use("ar")
-    expect(ar._(plural, { value: 2 })).toEqual("٢ الكتب")
-
-    const uae = i18n.use("ar", "en-UK")
-    expect(uae._(plural, { value: 2 })).toEqual("2 الكتب")
-
-    const uae2 = i18n.use("ar", ["unknown-locale", "en-UK"])
-    expect(uae2._(plural, { value: 2 })).toEqual("2 الكتب")
-
-    // global locales hasn't changed
-    expect(
-      i18n._("{value, plural, one {# book} other {# books}}", { value: 2 })
-    ).toEqual("2 books")
-  })
-
   it("._ should format message from catalog", function() {
     const messages = {
       Hello: "Salut",
