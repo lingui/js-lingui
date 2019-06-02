@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "lingui-docs",
+  "builds": [
+    {
+      "src": "./now-deploy-docs.sh",
+      "use": "@now/static-build",
+      "config": { "distDir": "./docs/_build/html" }
+    }
+  ]
+}

@@ -9,9 +9,11 @@ export const locales = {
 
 function loadCatalog(locale) {
   /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-  return import(`@lingui/loader!./locales/${locale}/messages.po`)
+  return import(`@lingui/loader!./locales/${locale}.po`).then(catalog =>
+    i18n.load(locale, catalog)
+  )
 }
 
 export const i18n = setupI18n()
-i18n.willActivate(loadCatalog)
+i18n.on("activate", loadCatalog)
 i18n.activate(defaultLocale)

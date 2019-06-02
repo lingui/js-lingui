@@ -2,7 +2,7 @@ import * as React from "react"
 import { Dropdown, Menu } from "antd"
 
 import { useLingui } from "@lingui/react"
-import { locales } from "../i18n"
+import { locales } from "../i18n.config"
 
 export function Navigation() {
   const { i18n } = useLingui()

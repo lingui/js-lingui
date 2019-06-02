@@ -3,6 +3,7 @@ import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
 import { MessageDescriptor } from "./messages"
+import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
   message?: string
@@ -32,21 +33,27 @@ type setupI18nProps = {
   missing?: string | ((message, id) => string)
 }
 
-export class I18n {
+type Events = {
+  activate: (locale: string) => Promise<any>
+  load: (locale: string, catalog: Catalog | null) => Promise<any>
+  change: () => Promise<any>
+}
+
+export class I18n extends EventEmitter<Events> {
   messageFormat: typeof icu
   _catalogs: Catalogs
-  _didActivate: Array<Function>
-  _willActivate: Array<Function>
   _locale: Locale
   _locales: Locales
   _missing: string | ((message, id) => string)
 
-  constructor() {
-    // Messages and localeData are merged on load,
-    // so we must initialize it manually
+  constructor(params: setupI18nProps) {
+    super()
+
     this._catalogs = {}
-    this._didActivate = []
-    this._willActivate = []
+    if (params.catalogs != null) this._loadAll(params.catalogs)
+    if (params.locale != null || params.locales != null) {
+      this._activate(params.locale, params.locales)
+    }
   }
 
   get locale() {
@@ -81,38 +88,37 @@ export class I18n {
     return this.catalog.localeData
   }
 
-  loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).forEach(locale => this.load(locale, catalogs[locale]))
+  private _loadAll(catalogs: Catalogs) {
+    Object.keys(catalogs).map(locale => this._load(locale, catalogs[locale]))
   }
 
-  load(locale: Locale, catalog?: Catalog): Promise<void> {
-    if (catalog == null) {
-      return Promise.all(
-        this._willActivate.map(load =>
-          load(locale).then(catalog => this.load(locale, catalog))
-        )
-      ).then(() => {})
-    }
+  loadAll(catalogs: Catalogs) {
+    return Object.keys(catalogs).map(locale =>
+      this.load(locale, catalogs[locale])
+    )
+  }
+
+  private _load(locale: Locale, catalog: Catalog) {
+    if (catalog == null) return
 
     if (this._catalogs[locale] == null) {
-      this._catalogs[locale] = {
-        messages: {},
-        localeData: {}
-      }
+      this._catalogs[locale] = catalog
+    } else {
+      const prev = this._catalogs[locale]
+      Object.assign(prev.messages, catalog.messages)
+      Object.assign(prev.localeData, catalog.localeData)
     }
-
-    const prev = this._catalogs[locale]
-    Object.assign(prev.messages, catalog.messages)
-    Object.assign(prev.localeData, catalog.localeData)
-    return Promise.resolve()
   }
 
-  activate(locale: Locale, locales?: Locales) {
-    if (!this._catalogs[locale]) {
-      if (this._willActivate.length) {
-        return this.load(locale).then(() => this.activate(locale, locales))
-      }
+  load(locale: Locale, catalog?: Catalog) {
+    return this.emit("load", locale, catalog).then(() => {
+      this._load(locale, catalog)
+      return this.emit("change")
+    })
+  }
 
+  private _activate(locale: Locale, locales?: Locales) {
+    if (!this._catalogs[locale]) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(`Message catalog for locale "${locale}" not loaded.`)
       }
@@ -120,25 +126,14 @@ export class I18n {
 
     this._locale = locale
     this._locales = locales
-    this._didActivate.forEach(s => s())
-    return Promise.resolve()
   }
 
-  use(locale: Locale, locales?: Locales) {
-    const i18n = setupI18n()
-    i18n._catalogs = this._catalogs
-    i18n.activate(locale, locales)
-    return i18n
-  }
+  activate(locale: Locale, locales?: Locales) {
+    return this.emit("activate", locale).then(() => {
+      this._activate(locale, locales)
 
-  willActivate(callback: (locale: Locale) => Promise<Catalog>): Function {
-    this._willActivate.push(callback)
-    return () => this._willActivate.filter(cb => cb !== callback)
-  }
-
-  didActivate(callback: () => void): Function {
-    this._didActivate.push(callback)
-    return () => this._didActivate.filter(cb => cb !== callback)
+      return this.emit("change")
+    })
   }
 
   // default translate method
@@ -183,11 +178,9 @@ export class I18n {
 }
 
 function setupI18n(params: setupI18nProps = {}): I18n {
-  const i18n = new I18n()
+  const i18n = new I18n(params)
   i18n.messageFormat = icu
 
-  if (params.catalogs) i18n.loadAll(params.catalogs)
-  if (params.locale) i18n.activate(params.locale, params.locales)
   if (params.missing) i18n._missing = params.missing
 
   return i18n

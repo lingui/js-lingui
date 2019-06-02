@@ -3,7 +3,7 @@ import { Tag, Button, message } from "antd"
 
 import { I18nProvider, useLingui } from "@lingui/react"
 import { t, Trans, Plural } from "@lingui/macro"
-import { i18n } from "./i18n"
+import { i18n } from "./i18n.config"
 
 import { Navigation } from "./helpers/Navigation"
 import { IntegerStepper } from "./helpers/IntegerStepper"

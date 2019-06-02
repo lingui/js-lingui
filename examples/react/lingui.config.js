@@ -1,6 +1,11 @@
 module.exports = {
+  locales: ["en", "cs"],
   sourceLocale: "en",
-  localeDir: "./src/locales",
-  srcPathDirs: ["./src/"],
-  format: "po"
+  format: "po",
+  catalogs: [
+    {
+      path: "./src/locales/{locale}",
+      include: ["./src"]
+    }
+  ]
 }
