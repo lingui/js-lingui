@@ -2,88 +2,113 @@ import { setupI18n } from "@lingui/core"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", function() {
-  it(".load should emit event", function() {
-    const i18n = setupI18n()
+  describe("I18n.load", () => {
+    it("should emit event", async () => {
+      expect.assertions(3)
 
-    const listener = jest.fn()
-    i18n.on("load", listener)
-    i18n.load("en", { msg: "Message" })
-    expect(listener).toBeCalledWith("en", { msg: "Message" })
-  })
+      const i18n = setupI18n()
 
-  it(".load should load catalog and merge with existing", () => {
-    const messages = {
-      Hello: "Hello"
-    }
+      const cbLoad = jest.fn()
+      const cbChange = jest.fn()
+      i18n.on("load", cbLoad)
+      i18n.on("change", cbChange)
+      const loading = i18n.load("en", { msg: "Message" })
 
-    const localeData = {
-      plurals: jest.fn(),
-      code: "en_US"
-    }
+      expect(cbLoad).toBeCalledWith("en", { msg: "Message" })
+      expect(cbChange).not.toBeCalled()
 
-    const i18n = setupI18n()
-    i18n.load("en", { messages, localeData })
-    i18n.activate("en")
-    expect(i18n.messages).toEqual(messages)
-    expect(i18n.localeData).toEqual(localeData)
+      await loading
+      expect(cbChange).toBeCalled()
+    })
 
-    // fr catalog shouldn't affect the english one
-    i18n.load("fr", { messages: { Hello: "Salut" } })
-    expect(i18n.messages).toEqual(messages)
-  })
-
-  it(".activate should emit event", function() {
-    const i18n = setupI18n({
-      locale: "en",
-      catalogs: {
-        en: { messages: {} }
+    it("should load catalog and merge with existing", async () => {
+      const messages = {
+        Hello: "Hello"
       }
-    })
 
-    const listener = jest.fn()
-    i18n.on("activate", listener)
-    i18n.activate("en")
-    expect(listener).toBeCalledWith("en")
-  })
-
-  it(".activate should switch active locale", async () => {
-    const messages = {
-      Hello: "Salut"
-    }
-
-    const i18n = setupI18n({
-      locale: "en",
-      catalogs: {
-        fr: { messages },
-        en: { messages: {} }
+      const localeData = {
+        plurals: jest.fn(),
+        code: "en_US"
       }
+
+      const i18n = setupI18n()
+      await i18n.load("en", { messages, localeData })
+      await i18n.activate("en")
+      expect(i18n.messages).toEqual(messages)
+      expect(i18n.localeData).toEqual(localeData)
+
+      // fr catalog shouldn't affect the english one
+      await i18n.load("fr", { messages: { Hello: "Salut" } })
+      expect(i18n.messages).toEqual(messages)
     })
-
-    expect(i18n.locale).toEqual("en")
-    expect(i18n.messages).toEqual({})
-
-    i18n.activate("fr")
-    expect(i18n.locale).toEqual("fr")
-    expect(i18n.messages).toEqual(messages)
   })
 
-  it(".activate should throw an error about incorrect locale", function() {
-    const i18n = setupI18n()
+  describe("I18n.activate", () => {
+    it("should emit event", async () => {
+      expect.assertions(3)
 
-    mockConsole(console => {
-      i18n.activate("xyz")
-      expect(console.warn).toBeCalledWith(
-        'Message catalog for locale "xyz" not loaded.'
-      )
+      const i18n = setupI18n({
+        locale: "en",
+        catalogs: {
+          en: { messages: {} }
+        }
+      })
+
+      const cbActivate = jest.fn()
+      const cbChange = jest.fn()
+      i18n.on("activate", cbActivate)
+      i18n.on("change", cbChange)
+
+      const activating = i18n.activate("en")
+      expect(cbActivate).toBeCalledWith("en")
+      expect(cbChange).not.toBeCalled()
+
+      await activating
+      expect(cbChange).toBeCalled()
     })
 
-    mockEnv("production", () => {
-      jest.resetModules()
-      mockConsole(console => {
-        const { setupI18n } = require("@lingui/core")
-        const i18n = setupI18n()
-        i18n.activate("xyz")
-        expect(console.warn).not.toBeCalled()
+    it("should switch active locale", async () => {
+      expect.assertions(4)
+
+      const messages = {
+        Hello: "Salut"
+      }
+
+      const i18n = setupI18n({
+        locale: "en",
+        catalogs: {
+          fr: { messages },
+          en: { messages: {} }
+        }
+      })
+
+      expect(i18n.locale).toEqual("en")
+      expect(i18n.messages).toEqual({})
+
+      await i18n.activate("fr")
+      expect(i18n.locale).toEqual("fr")
+      expect(i18n.messages).toEqual(messages)
+    })
+
+    it("should throw an error about incorrect locale", async () => {
+      expect.assertions(2)
+      const i18n = setupI18n()
+
+      await mockConsole(async console => {
+        await i18n.activate("xyz")
+        expect(console.warn).toBeCalledWith(
+          'Message catalog for locale "xyz" not loaded.'
+        )
+      })
+
+      await mockEnv("production", async () => {
+        jest.resetModules()
+        await mockConsole(async console => {
+          const { setupI18n } = require("@lingui/core")
+          const i18n = setupI18n()
+          await i18n.activate("xyz")
+          expect(console.warn).not.toBeCalled()
+        })
       })
     })
   })

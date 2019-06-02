@@ -1,5 +1,5 @@
 import * as React from "react"
-import { render, act } from "react-testing-library"
+import { render } from "react-testing-library"
 
 import { I18nProvider, useLingui } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
@@ -15,7 +15,7 @@ describe("I18nProvider", function() {
         <div />
       </I18nProvider>
     )
-    expect(i18n.on).toBeCalledWith("activate", expect.anything())
+    expect(i18n.on).toBeCalledWith("change", expect.anything())
   })
 
   it("should unsubscribe for locale changes on unmount", function() {
@@ -33,7 +33,9 @@ describe("I18nProvider", function() {
     expect(unsubscribe).toBeCalled()
   })
 
-  it("should re-render on locale changes", function() {
+  it("should re-render on locale changes", async () => {
+    expect.assertions(2)
+
     const i18n = setupI18n({
       locale: "en",
       catalogs: {}
@@ -51,9 +53,7 @@ describe("I18nProvider", function() {
     )
     expect(container.textContent).toEqual("en")
 
-    act(() => {
-      i18n.activate("cs")
-    })
+    await i18n.activate("cs")
     expect(container.textContent).toEqual("cs")
   })
 
