@@ -2,7 +2,6 @@ import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
-import { MessageDescriptor } from "./messages"
 import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
@@ -18,6 +17,13 @@ export type LocaleData = {
 }
 
 export type Messages = { [msgId: string]: string | Function }
+
+export interface MessageDescriptor {
+  id?: string
+  comment?: string
+  message?: string
+  values?: string
+}
 
 export type Catalog = {
   messages: Messages
