@@ -13,14 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/App.js:24
+#: src/App.js:26
 msgid "Edit <0>src/App.js</0> and save to reload."
 msgstr "Uprav <0>src/App.js</0> a po uložení se nahrají změny"
 
-#: src/App.js:35
+#: src/App.js:36
 msgid "Learn React"
 msgstr "Nauč se React"
 
-#: src/App.js:19
+#: src/App.js:24
 msgid "logo"
 msgstr "logo"

@@ -1,10 +1,12 @@
 import * as React from "react"
 
-import { withI18n } from "@lingui/react"
-import { locales } from "./i18n"
+import { useLingui } from "@lingui/react"
+import { locales } from "./i18n.config"
 import "./LocaleSwitcher.css"
 
-function LocaleSwitcher({ i18n }) {
+export function LocaleSwitcher() {
+  const { i18n } = useLingui()
+
   return (
     <ul className="LocaleSwitcher">
       {Object.keys(locales).map(locale => (
@@ -17,5 +19,3 @@ function LocaleSwitcher({ i18n }) {
     </ul>
   )
 }
-
-export default withI18n(LocaleSwitcher)
