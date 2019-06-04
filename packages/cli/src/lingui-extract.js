@@ -5,7 +5,7 @@ import mkdirp from "mkdirp"
 import chalk from "chalk"
 import program from "commander"
 
-import { getConfig } from "@lingui/conf"
+import { defaultConfig, getConfig } from "@lingui/conf"
 
 import configureCatalog from "./api/catalog"
 
@@ -21,7 +21,8 @@ type ExtractOptions = {|
   clean: boolean,
   overwrite: boolean,
   prevFormat: ?CatalogApi,
-  babelOptions: Object
+  babelOptions: Object,
+  babelVersion: string
 |}
 
 export default function command(
@@ -70,7 +71,8 @@ export default function command(
     projectType,
     ignore: config.srcPathIgnorePatterns,
     verbose: options.verbose,
-    babelOptions: options.babelOptions
+    babelOptions: options.babelOptions,
+    babelVersion: options.babelVersion
   })
   options.verbose && console.log()
 
@@ -188,6 +190,7 @@ if (require.main === module) {
     clean: program.clean || false,
     overwrite: program.overwrite || false,
     babelOptions: config.extractBabelOptions || program.babelOptions || {},
+    babelVersion: config.extractBabelVersion || program.babelVersion,
     prevFormat
   })
 

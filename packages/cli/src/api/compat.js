@@ -1,5 +1,4 @@
 import chalk from "chalk"
-import * as core from "babel-core"
 
 function catchBabelVersionMismatch(fn) {
   return function() {
@@ -47,7 +46,55 @@ function catchBabelVersionMismatch(fn) {
   }
 }
 
-export const transform = catchBabelVersionMismatch(core.transform)
+function getBabelCoreFn(fnName) {
+  return function() {
+    const options = { ...arguments[1] }
+    const { babelVersion } = options
+    let core = null
+
+    if (babelVersion === 6) {
+      try {
+        core = require("babel-core")
+      } catch (e) {
+        console.log(
+          chalk.red(
+            "Babel 6 was requested in extractBabelVersion but no babel-core installed"
+          )
+        )
+        console.log(install("babel-core", true))
+        process.exit(1)
+      }
+    }
+
+    if (babelVersion === 7) {
+      try {
+        core = require("@babel/core")
+      } catch (e) {
+        console.log(
+          chalk.red(
+            "Babel 7 was requested in extractBabelVersion but no @babel/core installed"
+          )
+        )
+        console.log(install("@babel/core", true))
+        process.exit(1)
+      }
+    }
+
+    if (core === null) {
+      console.log(
+        chalk.red("Incorrect version of babel specified in extractBabelVersion")
+      )
+      process.exit(1)
+    }
+
+    delete options.babelVersion
+    const newArguments = [...arguments]
+    newArguments[1] = options
+    return core[fnName].apply(null, newArguments)
+  }
+}
+
+export const transform = catchBabelVersionMismatch(getBabelCoreFn("transform"))
 export const transformFileSync = catchBabelVersionMismatch(
-  core.transformFileSync
+  getBabelCoreFn("transformFileSync")
 )

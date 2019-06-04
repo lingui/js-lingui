@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "@babel/core": "^7.0.1",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^23.4.0",
     "babel-plugin-macros": "^2.5.1",

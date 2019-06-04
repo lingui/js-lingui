@@ -89,6 +89,42 @@ describe("extract", function() {
       { babelOptions: {}, ignore: ["forbidden"] }
     )
   })
+
+  it("should use babel 7 if requested", function() {
+    extract(["src"], "locale", {
+      babelVersion: 7
+    })
+
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.js"),
+      "locale",
+      { babelVersion: 7 }
+    )
+
+    expect(typescript.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Typescript.ts"),
+      "locale",
+      { babelVersion: 7 }
+    )
+  })
+
+  it("should use babel 6 if requested", function() {
+    extract(["src"], "locale", {
+      babelVersion: 6
+    })
+
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.js"),
+      "locale",
+      { babelVersion: 6 }
+    )
+
+    expect(typescript.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Typescript.ts"),
+      "locale",
+      { babelVersion: 6 }
+    )
+  })
 })
 
 describe("collect", function() {

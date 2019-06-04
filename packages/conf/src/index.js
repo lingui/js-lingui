@@ -39,6 +39,7 @@ export const defaultConfig = {
     plugins: [],
     presets: []
   },
+  extractBabelVersion: 6,
   compileNamespace: "cjs"
 }
 

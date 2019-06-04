@@ -16,7 +16,7 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
-    const { babelOptions = {} } = options
+    const { babelOptions = {}, babelVersion } = options
     const plugins = babelOptions.plugins || []
     const frameworkOptions = {}
 
@@ -25,6 +25,7 @@ const extractor: ExtractorType = {
     }
 
     transformFileSync(filename, {
+      babelVersion,
       ...babelOptions,
       ...frameworkOptions,
       plugins: [

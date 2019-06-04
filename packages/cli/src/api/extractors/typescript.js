@@ -38,7 +38,7 @@ const extractor: ExtractorType = {
       frameworkOptions.presets = ["react-app"]
     }
 
-    const { babelOptions = {} } = options
+    const { babelOptions = {}, babelVersion } = options
     const plugins = [
       // Plugins run before presets, so we need to import transform-plugins
       // here until we have a better way to run extract-messages plugin
@@ -55,6 +55,7 @@ const extractor: ExtractorType = {
     }
 
     transform(stripped.outputText, {
+      babelVersion,
       ...babelOptions,
       ...frameworkOptions,
       filename,

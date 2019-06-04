@@ -36,6 +36,7 @@ describe("lingui-conf", function() {
     expect(config.srcPathDirs).toBeDefined()
     expect(config.srcPathIgnorePatterns).toBeDefined()
     expect(config.extractBabelOptions).toBeDefined()
+    expect(config.extractBabelVersion).toBeDefined()
   })
 
   it("should replace <rootDir>", function() {
