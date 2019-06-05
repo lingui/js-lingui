@@ -1,0 +1,5 @@
+{
+  "babelrc": false,
+  "presets": ["es2015"],
+  "plugins": ["syntax-jsx", "macros"]
+}

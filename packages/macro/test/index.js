@@ -33,6 +33,7 @@ describe("macro", function() {
       path.join(testPath, "actual.js")
     )
     const expectedPath = path.join(testPath, "expected.js")
+    const babelrcPath = path.join(testPath, ".babelrc")
 
     it(testName, () => {
       let originalEnv
@@ -49,7 +50,16 @@ describe("macro", function() {
             .replace(/\r/g, "")
             .trim()
 
-        const actual = transformFileSync(actualPath, babelOptions)
+        const fixtureBabelOptions = fs.existsSync(babelrcPath)
+          ? JSON.parse(
+              fs
+                .readFileSync(babelrcPath, "utf8")
+                .replace(/\r/g, "")
+                .trim()
+            )
+          : babelOptions
+
+        const actual = transformFileSync(actualPath, fixtureBabelOptions)
           .code.replace(/\r/g, "")
           .trim()
         expect(actual).toEqual(expected)

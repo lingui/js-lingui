@@ -26,5 +26,8 @@
   },
   "peerDependencies": {
     "babel-plugin-macros": "^2.5.1"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
   }
 }
