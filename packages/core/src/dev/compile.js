@@ -50,7 +50,7 @@ export default function compile(message: string): Function | string {
   try {
     return processTokens(parse(message))
   } catch (e) {
-    console.error(`Message cannot be parsed due to syntax erorrs: ${message}`)
+    console.error(`Message cannot be parsed due to syntax errors: ${message}`)
     return message
   }
 }
