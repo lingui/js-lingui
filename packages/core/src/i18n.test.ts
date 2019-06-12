@@ -159,6 +159,19 @@ describe("I18n", function() {
     expect(i18n._(hello)).toEqual("Salut")
   })
 
+  it("._ allow escaping syntax characters", () => {
+    const messages = {
+      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'"
+    }
+
+    const i18n = setupI18n({
+      locale: "es",
+      catalogs: { es: { messages } }
+    })
+
+    expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
+  })
+
   it("._ shouldn't compile messages in production", function() {
     const messages = {
       Hello: "Salut",
