@@ -12,6 +12,11 @@ describe("compile", function() {
     expect(getSource("Hello World")).toEqual('"Hello World"')
   })
 
+  it("should allow escaping syntax characters", () => {
+    expect(getSource("'{name}'")).toEqual('"{name}"')
+    expect(getSource("''")).toEqual('"\'"')
+  })
+
   it("should compile arguments", function() {
     expect(getSource("{name}")).toEqual('function(a){return[a("name")]}')
 
