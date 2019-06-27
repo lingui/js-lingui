@@ -1,8 +1,8 @@
-import ICUMessageFormat from "./icu"
+import FluentMessageFormat from "./fluent"
 
 describe("ICU MessageFormat", function() {
   it("should collect text message", function() {
-    const messageFormat = new ICUMessageFormat()
+    const messageFormat = new FluentMessageFormat()
     const tokens = [
       {
         type: "text",
@@ -18,7 +18,7 @@ describe("ICU MessageFormat", function() {
   })
 
   it("should collect text message with arguments", function() {
-    const messageFormat = new ICUMessageFormat()
+    const messageFormat = new FluentMessageFormat()
     const tokens = [
       {
         type: "text",
@@ -32,7 +32,7 @@ describe("ICU MessageFormat", function() {
     ]
     expect(messageFormat.fromTokens(tokens)).toEqual(
       expect.objectContaining({
-        message: "Hello {name}",
+        message: "Hello {$name}",
         values: {
           name: "Joe"
         }
@@ -41,12 +41,8 @@ describe("ICU MessageFormat", function() {
   })
 
   it("should collect text message for plural", function() {
-    const messageFormat = new ICUMessageFormat()
+    const messageFormat = new FluentMessageFormat()
     const tokens = [
-      {
-        type: "text",
-        value: "Get "
-      },
       {
         type: "arg",
         name: "count",
@@ -54,7 +50,7 @@ describe("ICU MessageFormat", function() {
         format: "plural",
         options: {
           one: [
-            { type: "text", value: "# glass of " },
+            { type: "text", value: "Get one glass of " },
             {
               type: "arg",
               name: "drink",
@@ -62,7 +58,13 @@ describe("ICU MessageFormat", function() {
             }
           ],
           other: [
-            { type: "text", value: "# glasses of " },
+            { type: "text", value: "Get " },
+            {
+              type: "arg",
+              name: "count",
+              value: "5"
+            },
+            { type: "text", value: " glasses of " },
             {
               type: "arg",
               name: "drink",
@@ -75,7 +77,10 @@ describe("ICU MessageFormat", function() {
     expect(messageFormat.fromTokens(tokens)).toEqual(
       expect.objectContaining({
         message:
-          "Get {count, plural, one {# glass of {drink}} other {# glasses of {drink}}}",
+          "{ PLURAL($count) ->\n" +
+          "    [one] Get one glass of {$drink}\n" +
+          "    [other] Get {$count} glasses of {$drink}\n" +
+          "}",
         values: {
           count: "5",
           drink: "Beer"
