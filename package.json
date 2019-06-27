@@ -61,7 +61,7 @@
     "jest-junit": "^5.1.0",
     "jest-serializer-html": "^5.0.0",
     "memory-fs": "^0.4.1",
-    "mock-fs": "^4.6.0",
+    "mock-fs": "^4.10.1",
     "ncp": "^2.0.0",
     "nixt": "^0.5.0",
     "node-emoji": "^1.6.1",
