@@ -1,8 +1,7 @@
-// @flow
 import fs from "fs"
 import { parse, serializeExpression } from "fluent-syntax"
 
-import { TranslationsFormat, MessageType } from "../types"
+import { MessageType } from "../types"
 import { joinOrigin, splitOrigin } from "../utils"
 
 // Most methods was adopted from
@@ -18,14 +17,10 @@ function indent(content, ind = "    ") {
 }
 
 function serializePattern(content) {
-  // TODO: check selector
-  const startOnNewLine =
-    /* content.some(isSelectExpr) || */ content.indexOf("\n") >= 0
-
+  const startOnNewLine = content.indexOf("\n") >= 0
   if (startOnNewLine) {
     return `\n    ${indent(content, "    ")}`
   }
-
   return ` ${content}`
 }
 
@@ -52,8 +47,8 @@ function serializeMessage(message, key) {
 
   const parts = []
 
-  if (message.description) {
-    parts.push(serializeComment(message.description, "#"))
+  if (message.comment) {
+    parts.push(serializeComment(message.comment, "#"))
   }
 
   if (message.comments) {
@@ -131,9 +126,8 @@ function deserializeMessageAST(entry) {
 
   const message: MessageType = {
     translation: deserializeMessagePatternAST(entry.value), // string,
-    defaults: undefined,
     origin: [], // Array<[number, string]>,
-    description: undefined, // ?string,
+    comment: undefined, // ?string,
     comments: undefined,
     obsolete: false, // boolean,
     flags: undefined // ?Array<string>
@@ -153,10 +147,10 @@ function deserializeMessageAST(entry) {
         if (!message.flags) message.flags = []
         message.flags.push(...line.substr(PREFIX_FLAGS.length + 1).split(","))
       } else {
-        if (!message.description) {
-          message.description = line
+        if (!message.comment) {
+          message.comment = line
         } else {
-          message.description += `\n${line}`
+          message.comment += `\n${line}`
         }
       }
     })
@@ -221,8 +215,8 @@ function deserialize(raw: string) {
   return catalog
 }
 
-const format: TranslationsFormat = {
-  filename: "messages.flt",
+export default {
+  catalogExtension: ".flt",
 
   write(filename, catalog) {
     fs.writeFileSync(filename, serialize(catalog))
@@ -238,5 +232,3 @@ const format: TranslationsFormat = {
     }
   }
 }
-
-export default format

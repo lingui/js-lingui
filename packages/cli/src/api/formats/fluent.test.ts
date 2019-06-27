@@ -62,7 +62,7 @@ describe("fluent format", function() {
       }
     }
 
-    format.write(filename, catalog, { language: "en" })
+    format.write(filename, catalog)
     const fltfile = fs.readFileSync(filename).toString()
     expect(fltfile).toMatchSnapshot()
   })

@@ -3,9 +3,8 @@
 exports[`fluent format should read catalog in fluent format 1`] = `
 Object {
   multilineString: Object {
+    comment: undefined,
     comments: undefined,
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: false,
     origin: Array [],
@@ -21,50 +20,45 @@ a dream. His room, a proper human
      Four spaces before,
   },
   obsolete: Object {
+    comment: undefined,
     comments: Array [
       Old message,
     ],
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: true,
     origin: Array [],
     translation: Obsolete message,
   },
   static: Object {
+    comment: undefined,
     comments: undefined,
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: false,
     origin: Array [],
     translation: Static message,
   },
   withComments: Object {
+    comment: undefined,
     comments: Array [
       Translator comment,
       This one might come from developer,
     ],
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: false,
     origin: Array [],
     translation: Support translator comments separately,
   },
   withDescription: Object {
+    comment: Description is comment from developers to translators,
     comments: undefined,
-    defaults: undefined,
-    description: Description is comment from developers to translators,
     flags: undefined,
     obsolete: false,
     origin: Array [],
     translation: Message with description,
   },
   withFlags: Object {
+    comment: undefined,
     comments: undefined,
-    defaults: undefined,
-    description: undefined,
     flags: Array [
       fuzzy,
       otherFlag,
@@ -74,9 +68,8 @@ a dream. His room, a proper human
     translation: Keeps any flags that are defined,
   },
   withMultipleOrigins: Object {
+    comment: undefined,
     comments: undefined,
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: false,
     origin: Array [
@@ -92,9 +85,8 @@ a dream. His room, a proper human
     translation: Message with multiple origin,
   },
   withOrigin: Object {
+    comment: undefined,
     comments: undefined,
-    defaults: undefined,
-    description: undefined,
     flags: undefined,
     obsolete: false,
     origin: Array [
@@ -118,7 +110,6 @@ withOrigin = Message with origin
 # #: src/Component.js:2
 withMultipleOrigins = Message with multiple origin
 
-# Description is comment from developers to translators
 withDescription = Message with description
 
 # #. Translator comment
