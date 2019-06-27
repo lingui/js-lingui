@@ -4,7 +4,7 @@ import chalk from "chalk"
 import cosmiconfig from "cosmiconfig"
 import { validate } from "jest-validate"
 
-export type CatalogFormat = "po" | "minimal" | "lingui"
+export type CatalogFormat = "po" | "minimal" | "lingui" | "fluent"
 
 type CatalogConfig = {
   name?: string

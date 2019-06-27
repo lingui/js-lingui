@@ -47,6 +47,7 @@
     "cli-table": "^0.3.1",
     "commander": "^2.20.0",
     "date-fns": "^1.29.0",
+    "fluent-syntax": "^0.13.0",
     "fuzzaldrin": "^2.1.0",
     "glob": "^7.1.4",
     "inquirer": "^6.3.1",
