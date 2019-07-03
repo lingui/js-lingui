@@ -5,10 +5,11 @@ export const locales = {
   cs: "Česky"
 }
 
-function loadCatalog(locale) {
-  return import(`@lingui/loader!./locales/${locale}.po`).then(catalog =>
-    i18n.load(locale, catalog)
+async function loadCatalog(locale) {
+  const catalog = await import(
+    /* webpackChunkName: "i18n-[index]" */ `@lingui/loader!./locales/${locale}.po`
   )
+  i18n.load(locale, catalog)
 }
 
 export const i18n = setupI18n()
