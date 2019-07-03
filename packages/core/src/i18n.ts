@@ -16,7 +16,11 @@ export type LocaleData = {
   plurals?: Function
 }
 
-export type Messages = { [msgId: string]: string | Function }
+export type CompiledMessage =
+  | string
+  | Array<string | [string, string?, (string | Object)?]>
+
+export type Messages = { [msgId: string]: CompiledMessage }
 
 export interface MessageDescriptor {
   id?: string
@@ -167,7 +171,8 @@ export class I18n extends EventEmitter<Events> {
         : translation
     }
 
-    if (!isFunction(translation)) return translation
+    if (isString(translation)) return translation
+
     return interpolate(translation, this.locale, this.locales, this.localeData)(
       values,
       formats

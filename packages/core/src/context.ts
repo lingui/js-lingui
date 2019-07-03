@@ -69,22 +69,45 @@ function context({ locale, locales, values, formats, localeData }) {
 }
 
 export function interpolate(
-  translation: Function,
+  translation: string | Array<string | [string, string?, Object?]>,
   locale: string,
   locales: Locales,
   localeData: Object
 ) {
   return (values: Object, formats: Object = {}) => {
-    const message = translation(
-      context({
-        locale,
-        locales,
-        localeData,
-        formats,
-        values
-      })
-    )
+    const ctx = context({
+      locale,
+      locales,
+      localeData,
+      formats,
+      values
+    })
 
-    return Array.isArray(message) ? message.join("").trim() : message
+    const formatMessage = message => {
+      if (!Array.isArray(message)) return message
+
+      return message.reduce((message, token) => {
+        if (isString(token)) return message + token
+
+        const [name, type, format] = token
+
+        let interpolatedFormat = {}
+        if (format != null && !isString(format)) {
+          Object.keys(format).forEach(key => {
+            interpolatedFormat[key] = formatMessage(format[key])
+          })
+        } else {
+          interpolatedFormat = format
+        }
+
+        const value = ctx(name, type, interpolatedFormat)
+        if (value == null) return message
+
+        return message + value
+      }, "")
+    }
+
+    const result = formatMessage(translation)
+    return result.trim()
   }
 }

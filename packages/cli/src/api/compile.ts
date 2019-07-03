@@ -11,8 +11,6 @@ import pseudoLocalize from "./pseudoLocalize"
 const isString = s => typeof s === "string"
 
 export function compile(message: string) {
-  const arg = t.identifier("a")
-
   let tokens
   try {
     tokens = parse(message)
@@ -21,18 +19,14 @@ export function compile(message: string) {
       `Can't parse message. Please check correct syntax: "${message}"`
     )
   }
-  const ast = processTokens(tokens, arg)
+  const ast = processTokens(tokens)
 
   if (isString(ast)) return t.stringLiteral(ast)
 
-  return t.functionExpression(
-    null,
-    [arg],
-    t.blockStatement([t.returnStatement(ast)])
-  )
+  return ast
 }
 
-function processTokens(tokens, arg) {
+function processTokens(tokens) {
   if (!tokens.filter(token => !isString(token)).length) {
     return tokens.join("")
   }
@@ -48,7 +42,7 @@ function processTokens(tokens, arg) {
 
         // simple argument
       } else if (token.type === "argument") {
-        return t.callExpression(arg, [t.stringLiteral(token.arg)])
+        return t.arrayExpression([t.stringLiteral(token.arg)])
 
         // argument with custom format (date, number)
       } else if (token.type === "function") {
@@ -58,7 +52,7 @@ function processTokens(tokens, arg) {
         if (format) {
           params.push(t.stringLiteral(format))
         }
-        return t.callExpression(arg, params)
+        return t.arrayExpression(params)
       }
 
       // complex argument with cases
@@ -74,7 +68,7 @@ function processTokens(tokens, arg) {
       }
 
       token.cases.forEach(item => {
-        const inlineTokens = processTokens(item.tokens, arg)
+        const inlineTokens = processTokens(item.tokens)
         formatProps.push(
           t.objectProperty(
             t.identifier(item.key),
@@ -91,7 +85,7 @@ function processTokens(tokens, arg) {
         t.objectExpression(formatProps)
       ]
 
-      return t.callExpression(arg, params)
+      return t.arrayExpression(params)
     })
   )
 }
