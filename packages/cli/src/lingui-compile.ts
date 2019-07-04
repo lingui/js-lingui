@@ -10,6 +10,12 @@ import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 
+const noMessages: (catalogs: Object[]) => boolean = R.pipe(
+  R.map(R.isEmpty),
+  R.values,
+  R.all(R.equals<any>(true))
+)
+
 function command(config, options) {
   const catalogs = getCatalogs(config)
 
@@ -144,9 +150,3 @@ if (require.main === module) {
 
   console.log("Done!")
 }
-
-const noMessages: (catalogs: Object[]) => boolean = R.pipe(
-  R.map(R.isEmpty),
-  R.values,
-  R.all(R.equals<any>(true))
-)
