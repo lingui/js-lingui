@@ -6,11 +6,10 @@ export default [
         const a = t\`Hello $\{arg('name')\}\`;
     `,
     expected: `
+        import { i18n } from "@lingui/core";
         const a = 
           /*i18n*/
-          {
-            id: "Hello {name}"
-          };
+          i18n._("Hello {name}")
     `
   }
 ]

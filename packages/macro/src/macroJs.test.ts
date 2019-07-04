@@ -3,7 +3,7 @@ import * as types from "@babel/types"
 import MacroJs from "./macroJs"
 
 function createMacro() {
-  return new MacroJs({ types })
+  return new MacroJs({ types }, { i18nImportName: "i18n" })
 }
 
 describe("js macro", function() {

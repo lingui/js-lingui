@@ -14,7 +14,6 @@ const testCases = {
   "jsx-select": require("./jsx-select").default,
   "jsx-plural": require("./jsx-plural").default,
   "jsx-selectOrdinal": require("./jsx-selectOrdinal").default,
-  "js-defineMessages": require("./js-defineMessages").default,
   "js-defineMessage": require("./js-defineMessage").default
 }
 
@@ -59,6 +58,8 @@ describe("macro", function() {
               process.env.NODE_ENV = "production"
             }
 
+            process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
+
             try {
               if (filename) {
                 const inputPath = path.relative(
@@ -81,6 +82,7 @@ describe("macro", function() {
                 expect(clean(actual)).toEqual(clean(expected))
               }
             } finally {
+              process.env.LINGUI_CONFIG = ""
               process.env.NODE_ENV = originalEnv
             }
           })

@@ -1,5 +1,4 @@
-(
+import { i18n } from "@lingui/core";
+
 /*i18n*/
-{
-  id: "Multiline with continuation"
-});
+i18n._("Multiline with continuation");

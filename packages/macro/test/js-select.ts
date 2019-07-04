@@ -13,13 +13,11 @@ export default [
         });
       `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}",
-          values: {
-            gender: gender,
-            numOfGuests: numOfGuests
-          }
+        i18n._("{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}", {
+          gender: gender,
+          numOfGuests: numOfGuests
         });
       `
   },
@@ -33,12 +31,10 @@ export default [
         })
       `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "{value, select, id {test escaped id} comment {test escaped comment}}",
-          values: {
-            value: value
-          }
+        i18n._("{value, select, id {test escaped id} comment {test escaped comment}}", {
+          value: value
         });
       `
   }

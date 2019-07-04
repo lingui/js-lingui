@@ -20,16 +20,10 @@ writing format by hand are following:
      const today = new Date()
 
      // With macro
-     i18n._(t`Hello ${name}, today is ${date(today)}`)
+     t`Hello ${name}, today is ${date(today)}`
 
      // Without macro
      i18n._('Hello {name}, today is {today, date}', { name, today })
-
-     // For the sake of completeness, macro is transformed into this code:
-     // i18n._({
-     //   id: 'Hello {name}, today is {today, date}',
-     //   values: { name, today }
-     //  })
 
 - Messages are validated and type-checked. Generated message is always syntactically
   valid. This is especially important for nested formatters:
@@ -42,10 +36,10 @@ writing format by hand are following:
      const value = 42
 
      // With macro
-     i18n._(t`Hello ${name}, you have ${plural(value, {
+     t`Hello ${name}, you have ${plural(value, {
        one: '# unread message',
        other: '# unread messages'
-     })}`)
+     })}`
 
      // Without macro
      i18n._(
@@ -64,21 +58,15 @@ writing format by hand are following:
      const name = "Joe"
      const today = new Date()
 
-     i18n._(t`Hello ${name}, today is ${date(today)}`)
+     t`Hello ${name}, today is ${date(today)}`
 
      // Lingui configration { messageFormat: 'icu' }
      // ↓ ↓ ↓ ↓ ↓ ↓
-     // i18n._({
-     //   id: 'Hello {name}, today is {today, date}',
-     //   values: { name, date }
-     //  })
+     // i18n._('Hello {name}, today is {today, date}', { name, date } })
 
      // Lingui configration { messageFormat: 'fluent' }
      // ↓ ↓ ↓ ↓ ↓ ↓
-     // i18n._({
-     //   id: 'Hello { $name }, today is { DATETIME($today) }',
-     //   values: { name, date }
-     //  })
+     // i18n._('Hello { $name }, today is { DATETIME($today) }', { name, date } })
 
   .. warning::
 
@@ -172,39 +160,6 @@ to provide ``comment`` for translators or to override the message ``id``:
       message: "Default message"
    })
 
-Lazy translations
------------------
-
-Lazy translations are useful when we need to define a message, but translate it later.
-This was previously achieved using ``i18Mark``. Now we can use the same macros:
-
-.. code-block:: jsx
-
-   // The API of `t` and `lazy` are the same.
-   import { t } from `@lingui/macro`
-
-   // define the message
-   const msg = t`Default message`
-
-   // translate it
-   const msg = i18n._(msg)`
-
-Lazy translations are usually defined in different scope than evaluated. Parameters
-are therefore unknown, but we still need to know their names, so we can create placeholders
-in MessageFormat. ``arg`` macro is used exactly for that:
-
-.. code-block:: jsx
-
-   import { plural, arg } from `@lingui/macro`
-
-   // Macro
-   const books = plural(arg('count'), {
-      one: '# book',
-      other: '# books'
-   })
-
-   i18n._(books, { count: 42 })
-
 Extracting messages
 ===================
 
@@ -219,9 +174,8 @@ Extract script will look for  a ``i18n`` comments, which are automatically added
    t`Message`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
-   /*i18n*/{
-     id: 'Message'
-   }
+   /*i18n*/
+   i18n._('Message')
 
 An object after such comment is considered as message descriptor and extracted.
 

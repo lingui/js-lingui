@@ -4,7 +4,8 @@ import { NodePath } from "@babel/traverse"
 
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
-import { ID, COMMENT, MESSAGE } from "./constants"
+import { COMMENT, ID, MESSAGE } from "./constants"
+import { isString } from "@lingui/core/src/essentials"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -17,19 +18,83 @@ function normalizeWhitespace(text) {
 }
 
 export default class MacroJs {
+  // Babel Types
   types: typeof babelTypes
+
+  // Identifier of i18n object
+  i18nImportName: string
+
+  // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   _expressionIndex: () => Number
 
-  constructor({ types }) {
+  constructor({ types }, { i18nImportName }) {
     this.types = types
+    this.i18nImportName = i18nImportName
     this._expressionIndex = makeCounter()
   }
 
-  replacePath = (path: NodePath) => {
-    if (this.isDefineMessages(path.node)) {
-      this.replaceDefineMessages(path)
-      return
+  replacePathWithMessage = (
+    path: NodePath,
+    { id, message, values, comment }
+  ) => {
+    const args = []
+    const options = []
+
+    const messageNode = isString(message)
+      ? this.types.stringLiteral(message)
+      : message
+
+    if (id) {
+      args.push(this.types.stringLiteral(id))
+
+      if (process.env.NODE_ENV !== "production") {
+        options.push(
+          this.types.objectProperty(this.types.identifier(MESSAGE), messageNode)
+        )
+      }
+    } else {
+      args.push(messageNode)
     }
+
+    if (comment) {
+      options.push(
+        this.types.objectProperty(
+          this.types.identifier(COMMENT),
+          this.types.stringLiteral(comment)
+        )
+      )
+    }
+
+    if (Object.keys(values).length || options.length) {
+      const valuesObject = Object.keys(values).map(key =>
+        this.types.objectProperty(this.types.identifier(key), values[key])
+      )
+
+      args.push(this.types.objectExpression(valuesObject))
+    }
+
+    if (options.length) {
+      args.push(this.types.objectExpression(options))
+    }
+
+    const newNode = this.types.callExpression(
+      this.types.memberExpression(
+        this.types.identifier(this.i18nImportName),
+        this.types.identifier("_")
+      ),
+      args
+    )
+
+    // preserve line number
+    newNode.loc = path.node.loc
+
+    this.addExtractMark(path)
+    path.replaceWith(newNode)
+  }
+
+  replacePath = (path: NodePath) => {
+    // reset the expression counter
+    this._expressionIndex = makeCounter()
 
     if (this.isDefineMessage(path.node)) {
       this.replaceDefineMessage(path)
@@ -47,52 +112,7 @@ export default class MacroJs {
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
-    const args = []
-
-    if (id) {
-      args.push(
-        this.types.objectProperty(
-          this.types.identifier(ID),
-          this.types.stringLiteral(id)
-        )
-      )
-
-      if (process.env.NODE_ENV !== "production") {
-        args.push(
-          this.types.objectProperty(
-            this.types.identifier(MESSAGE),
-            this.types.stringLiteral(message)
-          )
-        )
-      }
-    } else {
-      args.push(
-        this.types.objectProperty(
-          this.types.identifier(ID),
-          this.types.stringLiteral(message)
-        )
-      )
-    }
-
-    this.addValues(args, values)
-
-    if (process.env.NODE_ENV !== "production") {
-      if (comment) {
-        args.push(
-          this.types.objectProperty(
-            this.types.identifier(COMMENT),
-            this.types.stringLiteral(comment)
-          )
-        )
-      }
-    }
-
-    const newNode = this.types.objectExpression(args)
-    // preserve line number
-    newNode.loc = path.node.loc
-
-    this.addExtractMark(path)
-    path.replaceWith(newNode)
+    this.replacePathWithMessage(path, { id, message, values, comment })
   }
 
   /**
@@ -104,60 +124,22 @@ export default class MacroJs {
    * const message = defineMessage({
    *   id: "msg.id",
    *   comment: "Description",
-   *   message: plural("value", { one: "book", other: "books" })
+   *   message: plural(value, { one: "book", other: "books" })
    * })
    *
    * ↓ ↓ ↓ ↓ ↓ ↓
    *
    * const message = {
-   *   id: "msg.id",
-   *   comment: "Description",
-   *   message: "{value, plural, one {book} other {books}}"
-   * }
+   *   i18n._("msg.id", { value }, {
+   *     comment: "Description",
+   *     message: "{value, plural, one {book} other {books}}"
+   *   })
    *
    */
   replaceDefineMessage = path => {
-    // reset the expression counter
-    this._expressionIndex = makeCounter()
-
     // TODO: Add argument validation.
     const descriptor = this.processDescriptor(path.node.arguments[0])
-    this.addExtractMark(path)
-    path.replaceWith(descriptor)
-  }
-
-  replaceDefineMessages = path => {
-    const messages = []
-
-    for (const property of path.get("arguments.0.properties")) {
-      const { node } = property
-
-      this._expressionIndex = makeCounter()
-      if (this.types.isObjectExpression(node.value)) {
-        const descriptor = this.processDescriptor(node.value)
-        messages.push([node.key, descriptor])
-      } else {
-        const tokens = this.tokenizeNode(node.value, true)
-
-        let messageNode = node.value
-        if (tokens != null) {
-          const messageFormat = new ICUMessageFormat()
-          const { message: messageRaw, id } = messageFormat.fromTokens(tokens)
-          const message = normalizeWhitespace(messageRaw)
-          messageNode = this.types.stringLiteral(id || message)
-        }
-
-        messages.push([node.key, messageNode])
-      }
-    }
-
-    path.replaceWith(this.types.objectExpression(
-      messages.map(([key, value]) => this.types.objectProperty(key, value))
-    ) as any)
-
-    for (const property of path.get("properties")) {
-      this.addExtractMark(property.get("value"))
-    }
+    this.replacePathWithMessage(path, descriptor)
   }
 
   /**
@@ -179,38 +161,41 @@ export default class MacroJs {
    *
    */
   processDescriptor = descriptor => {
-    const messageIndex = descriptor.properties.findIndex(
+    const idNode = descriptor.properties.find(
+      property => property.key.name === ID
+    )
+
+    const messageNode = descriptor.properties.find(
       property => property.key.name === MESSAGE
     )
-    if (messageIndex === -1) {
-      return descriptor
+
+    const commentNode = descriptor.properties.find(
+      property => property.key.name === COMMENT
+    )
+
+    const i18nArgs = {
+      id: idNode != null ? idNode.value.value : null,
+      comment: commentNode != null ? commentNode.value.value : null,
+      message: null,
+      values: {}
+    }
+
+    if (messageNode == null) {
+      return i18nArgs
     }
 
     // if there's `message` property, replace macros with formatted message
-    const node = descriptor.properties[messageIndex]
-    const tokens = this.tokenizeNode(node.value, true)
-
-    let messageNode = node.value
+    const tokens = this.tokenizeNode(messageNode.value, true)
     if (tokens != null) {
       const messageFormat = new ICUMessageFormat()
       const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-      const message = normalizeWhitespace(messageRaw)
-      messageNode = this.types.stringLiteral(message)
-
-      this.addValues(descriptor.properties, values)
+      i18nArgs.message = normalizeWhitespace(messageRaw)
+      i18nArgs.values = values
+    } else {
+      i18nArgs.message = messageNode.value
     }
 
-    // Don't override custom ID
-    const hasId =
-      descriptor.properties.findIndex(property => property.key.name === ID) !==
-      -1
-
-    descriptor.properties[messageIndex] = this.types.objectProperty(
-      this.types.identifier(hasId ? MESSAGE : ID),
-      messageNode
-    )
-
-    return descriptor
+    return i18nArgs
   }
 
   tokenizeNode = (node, ignoreExpression = false) => {
@@ -329,27 +314,10 @@ export default class MacroJs {
     }
   }
 
-  addValues = (obj, values) => {
-    const valuesObject = Object.keys(values).map(key =>
-      this.types.objectProperty(this.types.identifier(key), values[key])
-    )
-
-    if (!valuesObject.length) return
-
-    obj.push(
-      this.types.objectProperty(
-        this.types.identifier("values"),
-        this.types.objectExpression(valuesObject)
-      )
-    )
-  }
-
   /**
    * addExtractMark - add comment which marks the string/object
    * for extraction.
    * @lingui/babel-extract-messages looks for this comment
-   *
-   * @param path
    */
   addExtractMark = path => {
     path.addComment("leading", "i18n")
@@ -367,13 +335,6 @@ export default class MacroJs {
     return (
       this.types.isCallExpression(node) &&
       this.isIdentifier(node.callee, "defineMessage")
-    )
-  }
-
-  isDefineMessages = node => {
-    return (
-      this.types.isCallExpression(node) &&
-      this.isIdentifier(node.callee, "defineMessages")
     )
   }
 

@@ -1,6 +1,11 @@
 import { createMacro } from "babel-plugin-macros"
+import { getConfig } from "@lingui/conf"
+
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
+
+const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
+const [i18nImportModule, i18nImportName = "i18n"] = config.runtimeConfigModule
 
 function macro({ references, state, babel }) {
   const jsxNodes = []
@@ -27,7 +32,7 @@ function macro({ references, state, babel }) {
 
   jsNodes.filter(isRootPath(jsNodes)).forEach(path => {
     if (alreadyVisited(path)) return
-    const macro = new MacroJS(babel)
+    const macro = new MacroJS(babel, { i18nImportName })
     macro.replacePath(path)
   })
 
@@ -36,6 +41,10 @@ function macro({ references, state, babel }) {
     const macro = new MacroJSX(babel)
     macro.replacePath(path)
   })
+
+  if (jsNodes.length) {
+    addImport(babel, state, i18nImportModule, i18nImportName)
+  }
 
   if (jsxNodes.length) {
     addImport(babel, state, "@lingui/react", "Trans")

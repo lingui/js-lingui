@@ -9,11 +9,12 @@ export default [
         })
     `,
     expected: `
-        const message = /*i18n*/
-        {
-          comment: "Description",
-          id: "{value, plural, one {book} other {books}}"
-        }
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          i18n._("{value, plural, one {book} other {books}}", {}, {
+            comment: "Description"
+          })
     `
   },
   {
@@ -25,10 +26,10 @@ export default [
         })
     `,
     expected: `
-        const message = /*i18n*/
-        {
-          id: "Message"
-        }
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          i18n._("Message")
     `
   },
   {
@@ -40,10 +41,10 @@ export default [
         })
     `,
     expected: `
-        const message = /*i18n*/
-        {
-          id: \`Message\`
-        }
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          i18n._(\`Message\`)
     `
   },
   {
@@ -52,15 +53,20 @@ export default [
         import { defineMessage } from '@lingui/macro';
         const message = defineMessage({
           id: "msg.id",
-          message: \`Message\`
+          message: "Message"
         })
     `,
     expected: `
-        const message = /*i18n*/
-        {
-          id: "msg.id",
-          message: \`Message\`,
-        }
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          i18n._(
+            "msg.id",
+            {},
+            {
+              message: "Message"
+            }
+          )
     `
   },
   {
@@ -72,13 +78,12 @@ export default [
         })
     `,
     expected: `
-        const message = /*i18n*/
-        {
-          id: "Hello {name}",
-          values: {
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          i18n._("Hello {name}", {
             name: name
-          }
-        }
+          })
     `
   }
 ]

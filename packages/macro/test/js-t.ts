@@ -6,11 +6,10 @@ export default [
         const a = t\`Expression assignment\`;
     `,
     expected: `
-        const a = 
+        import { i18n } from "@lingui/core";
+        const a =
           /*i18n*/
-          {
-            id: "Expression assignment"
-          };
+          i18n._("Expression assignment")
     `
   },
   {
@@ -20,13 +19,11 @@ export default [
         t\`Variable \${name}\`;
     `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "Variable {name}",
-          values: {
-            name: name
-          }
-        });
+        i18n._("Variable {name}", {
+          name: name
+        })
     `
   },
   {
@@ -36,13 +33,11 @@ export default [
         t\`\${duplicate} variable \${duplicate}\`;
     `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "{duplicate} variable {duplicate}",
-          values: {
-            duplicate: duplicate
-          }
-        });
+        i18n._("{duplicate} variable {duplicate}", {
+          duplicate: duplicate
+        })
     `
   },
   {
@@ -60,18 +55,18 @@ export default [
         \`
     `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
-          values: {
+        i18n._(
+          "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}", {
             0: props.name,
             1: random(),
             2: array[index],
             3: 42,
             4: new Date(),
             5: props.messages[index].value()
-          }  
-        });
+          }
+        );
     `
   },
   {
@@ -82,10 +77,9 @@ export default [
           string\`
       `,
     expected: `
+        import { i18n } from "@lingui/core";
         /*i18n*/
-        ({
-          id: "Multiline\\nstring"
-        });
+        i18n._("Multiline\\nstring")
       `
   },
   {

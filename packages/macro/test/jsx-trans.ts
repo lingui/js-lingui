@@ -242,44 +242,37 @@ export default [
   {
     input: `
         import { t, plural, Trans } from '@lingui/macro'
-        import i18n from "@lingui/core";
-        <Trans>Read <a href="/more" title={i18n._(t\`Full content of \${articleName}\`)}>more</a></Trans>
+        <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        import i18n from "@lingui/core";
+        import { i18n } from "@lingui/core";
         <Trans id="Read <0>more</0>" components={{
-          0: <a href="/more" title={i18n._(
+          0: <a href="/more" title={
             /*i18n*/
-            {
-              id: "Full content of {articleName}",
-              values: {
-                articleName: articleName
-              }
-          })} />
+            i18n._("Full content of {articleName}", {
+              articleName: articleName
+            })
+          } />
         }} />;
       `
   },
   {
     input: `
         import { plural } from '@lingui/macro'
-        import i18n from "@lingui/core"
-        <a href="/about" title={i18n._(plural(count, {
+        <a href="/about" title={plural(count, {
           one: "# book",
           other: "# books"
-        }))}>About</a>
+        })}>About</a>
       `,
     expected: `
-        import i18n from "@lingui/core";
-        
-        <a href="/about" title={i18n._(
+        import { i18n } from "@lingui/core";
+        <a href="/about" title={
           /*i18n*/
-          {
-            id: "{count, plural, one {# book} other {# books}}",
-            values: {
-              count: count
-            }
-        })}>About</a>;
+          i18n._("{count, plural, one {# book} other {# books}}", {
+            count: count
+          })
+        }>About</a>;
       `
   }
 ]
