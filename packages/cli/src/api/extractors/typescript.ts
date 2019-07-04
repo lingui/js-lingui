@@ -1,6 +1,5 @@
 import fs from "fs"
-import { transform } from "../compat"
-
+import { transform } from "@babel/core"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import * as ts from "typescript"
 
