@@ -25,10 +25,18 @@
     "jest": "^24.8.0"
   },
   "lingui": {
+    "locales": [
+      "en",
+      "cs"
+    ],
     "format": "po",
-    "localeDir": "./src/locale",
-    "srcPathDirs": [
-      "./src"
+    "catalogs": [
+      {
+        "path": "./src/locale/{locale}/messages",
+        "include": [
+          "./src"
+        ]
+      }
     ],
     "sourceLocale": "en"
   }

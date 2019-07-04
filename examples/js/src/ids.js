@@ -1,5 +1,5 @@
 import { setupI18n } from "@lingui/core"
-import { t, plural, defineMessages, defineMessage } from "@lingui/macro"
+import { t, plural, defineMessage } from "@lingui/macro"
 
 export const i18n = setupI18n()
 
@@ -8,59 +8,56 @@ i18n.loadAll({
   cs: require("./locale/cs/messages")
 })
 
-export const common = defineMessages({
-  yes: {
-    id: "common.yes",
-    comment: "Agreement",
-    message: "Yes"
-  },
-  no: {
-    id: "common.no",
-    comment: "Disagreement",
-    message: "No"
-  }
-})
+export const common = {
+  yes: () =>
+    defineMessage({
+      id: "common.yes",
+      comment: "Agreement",
+      message: "Yes"
+    }),
+  no: () =>
+    defineMessage({
+      id: "common.no",
+      comment: "Disagreement",
+      message: "No"
+    })
+}
 
 export function getStatic() {
-  const message = defineMessage({
+  return defineMessage({
     id: "static",
     comment: "Title of example",
     message: "@lingui/core example"
   })
-  return i18n._(message)
 }
 
 export function getVariables(name) {
-  const message = defineMessage({
+  return defineMessage({
     id: "variables",
     message: t`Hello ${name}`
   })
-  return i18n._(message)
 }
 
 export function getPlural(value) {
-  const message = defineMessage({
+  return defineMessage({
     id: "plural",
     message: t`There are ${plural(value, {
       one: "# bottle",
       other: "# bottles"
     })} hanging on the wall`
   })
-  return i18n._(message)
 }
 
 export function getLazy() {
-  const yes = i18n._(common.yes)
-  const no = i18n._(common.no)
-  const message = defineMessage({
+  const yes = common.yes()
+  const no = common.no()
+  return defineMessage({
     id: "lazy",
     message: t`Do you want to proceed? ${yes}/${no}`
   })
-  return i18n._(message)
 }
 
-function main(locale) {
-  i18n.activate(locale)
+function main() {
   const header = getStatic()
 
   console.log(header)
@@ -77,8 +74,9 @@ function main(locale) {
 }
 
 if (require.main === module) {
-  main("en")
-
-  console.log()
-  main("cs")
+  i18n
+    .activate("en")
+    .then(main)
+    .then(() => i18n.activate("cs"))
+    .then(main)
 }

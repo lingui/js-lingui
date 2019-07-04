@@ -5,7 +5,6 @@ import { NodePath } from "@babel/traverse"
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
 import { COMMENT, ID, MESSAGE } from "./constants"
-import { isString } from "@lingui/core/src/essentials"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -361,3 +360,5 @@ export default class MacroJs {
     )
   }
 }
+
+const isString = (s): s is string => typeof s === "string"

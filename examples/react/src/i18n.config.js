@@ -1,4 +1,4 @@
-import { setupI18n } from "@lingui/core"
+import { i18n } from "@lingui/core"
 
 export const defaultLocale = "en"
 
@@ -14,6 +14,5 @@ function loadCatalog(locale) {
   )
 }
 
-export const i18n = setupI18n()
 i18n.on("activate", loadCatalog)
 i18n.activate(defaultLocale)

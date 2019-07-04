@@ -1,6 +1,10 @@
 {
   "presets": [
-    "@babel/env"
+    ["@babel/env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
   ],
   "plugins": [
     "macros"

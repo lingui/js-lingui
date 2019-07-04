@@ -1,5 +1,5 @@
 import { setupI18n } from "@lingui/core"
-import { t, plural, defineMessage, defineMessages } from "@lingui/macro"
+import { t, plural, defineMessage } from "@lingui/macro"
 
 export const i18n = setupI18n()
 
@@ -11,45 +11,44 @@ i18n.loadAll({
 /**
  * Example: Lazy messages - common phrases are only defined, but not translated.
  */
-export const common = defineMessages({
-  yes: {
-    comment: "Agreement",
-    message: "Yes"
-  },
-  no: {
-    comment: "Disagreement",
-    message: "No"
-  }
-})
+export const common = {
+  yes: () =>
+    defineMessage({
+      comment: "Agreement",
+      message: "Yes"
+    }),
+  no: () =>
+    defineMessage({
+      comment: "Disagreement",
+      message: "No"
+    })
+}
 
 /**
  * Example: Static messages - add comment beginning with `i18n:` to add description.
  */
 export function getStatic() {
-  const msg = defineMessage({
+  return defineMessage({
     comment: "Title of example",
     message: "@lingui/core example"
   })
-  return i18n._(msg)
 }
 
 /**
  * Example: Interpolation - variables are passed to messages using template literals
  */
 export function getVariables(name) {
-  return i18n._(t`Hello ${name}`)
+  return t`Hello ${name}`
 }
 
 /**
  * Example: Plurals - Template literals can contain formats, like `plural`
  */
 export function getPlural(value) {
-  return i18n._(
-    t`There are ${plural(value, {
-      one: "# bottle",
-      other: "# bottles"
-    })} hanging on the wall`
-  )
+  return t`There are ${plural(value, {
+    one: "# bottle",
+    other: "# bottles"
+  })} hanging on the wall`
 }
 
 /**
@@ -57,13 +56,12 @@ export function getPlural(value) {
  * translation.
  */
 export function getLazy() {
-  const yes = i18n._(common.yes)
-  const no = i18n._(common.no)
-  return i18n._(t`Do you want to proceed? ${yes}/${no}`)
+  const yes = common.yes()
+  const no = common.no()
+  return t`Do you want to proceed? ${yes}/${no}`
 }
 
 function main(locale) {
-  i18n.activate(locale)
   const header = getStatic()
 
   console.log(header)
@@ -80,8 +78,9 @@ function main(locale) {
 }
 
 if (require.main === module) {
-  main("en")
-
-  console.log()
-  main("cs")
+  i18n
+    .activate("en")
+    .then(main)
+    .then(() => i18n.activate("cs"))
+    .then(main)
 }

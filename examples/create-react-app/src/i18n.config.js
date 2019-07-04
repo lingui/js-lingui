@@ -1,4 +1,4 @@
-import { setupI18n } from "@lingui/core"
+import { i18n } from "@lingui/core"
 
 export const locales = {
   en: "English",
@@ -12,6 +12,5 @@ async function loadCatalog(locale) {
   i18n.load(locale, catalog)
 }
 
-export const i18n = setupI18n()
 i18n.on("activate", loadCatalog)
 i18n.activate("en")

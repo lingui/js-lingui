@@ -3,7 +3,6 @@ import { Tag, Button, message } from "antd"
 
 import { I18nProvider, useLingui } from "@lingui/react"
 import { t, Trans, Plural } from "@lingui/macro"
-import { i18n } from "./i18n.config"
 
 import { Navigation } from "./helpers/Navigation"
 import { IntegerStepper } from "./helpers/IntegerStepper"
@@ -47,12 +46,7 @@ function App() {
         <Trans>Messages can include variables:</Trans>
       </p>
 
-      <InputValue
-        defaultValue={i18n._(
-          /* i18n: Default value for Hello {name} */ t`World`
-        )}
-        label={i18n._(t`Enter your name`)}
-      >
+      <InputValue defaultValue={t`World`} label={t`Enter your name`}>
         {name => (
           <p>
             <Trans>Hello {name}</Trans>
@@ -79,7 +73,7 @@ function App() {
         <Trans>
           React props and strings can be translated using <Tag>i18n</Tag> core:
         </Trans>{" "}
-        <Button onClick={() => message.info(i18n._(t`You're looking good!`))}>
+        <Button onClick={() => message.info(t`You're looking good!`)}>
           <Trans>Show motto of the day</Trans>
         </Button>
       </p>
