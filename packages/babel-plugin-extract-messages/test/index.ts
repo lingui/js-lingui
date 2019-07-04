@@ -32,6 +32,11 @@ const rmdir = dir => {
 function testCase(testName, assertion) {
   const transform = filename => () => {
     process.env.LINGUI_EXTRACT = "1"
+    process.env.LINGUI_CONFIG = path.join(
+      __dirname,
+      "fixtures",
+      "lingui.config.js"
+    )
     try {
       return transformFileSync(path.join(__dirname, "fixtures", filename), {
         configFile: false,
@@ -48,6 +53,7 @@ function testCase(testName, assertion) {
       })
     } finally {
       process.env.LINGUI_EXTRACT = null
+      process.env.LINGUI_CONFIG = null
     }
   }
 

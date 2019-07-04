@@ -53,23 +53,6 @@ Object {
       ],
     ],
   },
-  defineMessages - descriptor: Object {
-    comment: Descriptor with comment,
-    origin: Array [
-      Array [
-        js-with-macros.js,
-        21,
-      ],
-    ],
-  },
-  defineMessages - string: Object {
-    origin: Array [
-      Array [
-        js-with-macros.js,
-        20,
-      ],
-    ],
-  },
 }
 `;
 
@@ -80,7 +63,7 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        9,
+        5,
       ],
     ],
   },
@@ -89,7 +72,7 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        14,
+        9,
       ],
     ],
   },
@@ -101,7 +84,7 @@ Object {
       ],
       Array [
         js-without-macros.js,
-        5,
+        3,
       ],
     ],
   },
@@ -109,24 +92,7 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        19,
-      ],
-    ],
-  },
-  defineMessages - descriptor: Object {
-    comment: Descriptor with comment,
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        28,
-      ],
-    ],
-  },
-  defineMessages - string: Object {
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        27,
+        13,
       ],
     ],
   },

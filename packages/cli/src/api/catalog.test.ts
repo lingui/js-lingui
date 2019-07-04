@@ -44,6 +44,7 @@ function makeNextMessage(message = {}): ExtractedMessageType {
 
 const fixture = (...dirs) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs))
+
 describe("Catalog", function() {
   afterEach(() => {
     mockFs.restore()

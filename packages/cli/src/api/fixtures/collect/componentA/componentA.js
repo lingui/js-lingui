@@ -1,3 +1,1 @@
-i18n._(/*i18n*/{
-  id: 'Hello World'
-})
+/*i18n*/i18n._("Hello World")

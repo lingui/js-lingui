@@ -1,6 +1,6 @@
 import { t, defineMessage, defineMessages } from "@lingui/macro"
 
-i18n._(t`Message`)
+t`Message`
 
 const msg = t`Message`
 
@@ -15,11 +15,3 @@ const withId = defineMessage({
 })
 
 const withValues = t`Values ${param}`
-
-const definedMessages = defineMessages({
-  string: "defineMessages - string",
-  descriptor: {
-    id: "defineMessages - descriptor",
-    comment: "Descriptor with comment"
-  }
-})

@@ -136,58 +136,37 @@ export default function({ types: t }) {
         collectMessage(path, file, props)
       },
 
-      StringLiteral(path, { file }) {
+      CallExpression(path, { file }) {
         const visited = file.get(VISITED)
+        if (visited.has(path.node)) return
 
-        const comment =
-          path.node.leadingComments &&
-          path.node.leadingComments.filter(node =>
-            node.value.match(/^\s*i18n/)
-          )[0]
-
-        if (!comment || visited.has(path.node)) {
-          return
-        }
-
-        visited.add(path.node)
+        const hasComment = [path.node, path.parent].find(
+          ({ leadingComments }) => {
+            return (
+              leadingComments &&
+              leadingComments.filter(node =>
+                node.value.match(/^\s*i18n\s*$/)
+              )[0]
+            )
+          }
+        )
+        if (!hasComment) return
 
         const props = {
-          id: path.node.value
+          id: path.node.arguments[0].value
         }
 
-        collectMessage(path, file, props)
-      },
+        const copyOptions = ["message", "comment"]
 
-      // Extract message descriptors
-      ObjectExpression(path, { file }) {
-        const visited = file.get(VISITED)
+        if (t.isObjectExpression(path.node.arguments[2])) {
+          path.node.arguments[2].properties.forEach(property => {
+            if (!copyOptions.includes(property.key.name)) return
 
-        const comment =
-          path.node.leadingComments &&
-          path.node.leadingComments.filter(node =>
-            node.value.match(/^\s*i18n/)
-          )[0]
-
-        if (!comment || visited.has(path.node)) {
-          return
+            props[property.key.name] = property.value.value
+          })
         }
 
         visited.add(path.node)
-
-        const props = {}
-        const copyProps = ["id", "message", "comment"]
-        path.node.properties
-          .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
-          .forEach(({ key, value }, i) => {
-            if (key.name === "comment" && !t.isStringLiteral(value)) {
-              throw path
-                .get(`properties.${i}.value`)
-                .buildCodeFrameError("Only strings are supported as comments.")
-            }
-
-            props[key.name] = value.value
-          })
-
         collectMessage(path, file, props)
       }
     },
