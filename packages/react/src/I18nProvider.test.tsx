@@ -1,5 +1,5 @@
 import * as React from "react"
-import { render } from "react-testing-library"
+import { render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "@lingui/react"
 import { setupI18n } from "@lingui/core"

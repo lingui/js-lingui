@@ -20,7 +20,7 @@ module.exports = {
   reporters: ["default", "jest-junit"],
   setupFilesAfterEnv: [
     require.resolve("./env.js"),
-    "react-testing-library/cleanup-after-each"
+    "@testing-library/react/cleanup-after-each"
   ],
   snapshotSerializers: [
     "enzyme-to-json/serializer",
