@@ -22,6 +22,7 @@ export type LinguiConfig = {
   locales: Array<string>
   pseudoLocale: string
   rootDir: string
+  runtimeConfigModule: [string, string?]
   sourceLocale: string
 }
 
@@ -40,6 +41,7 @@ export const defaultConfig: LinguiConfig = {
   locales: [],
   pseudoLocale: "",
   rootDir: ".",
+  runtimeConfigModule: ["@lingui/core", "i18n"],
   sourceLocale: ""
 }
 

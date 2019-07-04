@@ -27,6 +27,7 @@ Default config:
        "srcPathIgnorePatterns": [
            "/node_modules/"
        ],
+       "runtimeConfigModule": ["@lingui/core", "i18n"],
        "format": "lingui",
      }
    }
@@ -193,3 +194,27 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
+
+runtimeConfigModule
+-------------------
+
+Default: ``["@lingui/core", "i18n"]``
+
+Module path with exported i18n object. The first value in array is module path, the second is the import identifier.
+
+You only need to set this alue if you use custom object created using :js:func:`setupI18n`:
+
+.. code-block:: jsx
+
+   // If you import `i18n` object from custom module like this:
+   import { i18n } from "./custom-i18n-config"
+
+   // ... then add following line to Lingui configuration:
+   // "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
+
+You may use a different named export:
+
+.. code-block:: jsx
+
+   import { myI18n } from "./custom-i18n-config"
+   // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]

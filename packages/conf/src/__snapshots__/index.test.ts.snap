@@ -100,6 +100,10 @@ Object {
   ],
   pseudoLocale: ,
   rootDir: .,
+  runtimeConfigModule: Array [
+    @lingui/core,
+    i18n,
+  ],
   sourceLocale: ,
 }
 `;
