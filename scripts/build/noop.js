@@ -1,7 +1,6 @@
 const fs = require("fs")
 const path = require("path")
 const chalk = require("chalk")
-const babel = require("babel-core")
 const ora = require("ora")
 
 const Packaging = require("./packaging")

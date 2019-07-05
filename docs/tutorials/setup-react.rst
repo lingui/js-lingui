@@ -17,19 +17,14 @@ Install
 
    .. code-block:: shell
 
-      npm install --save-dev @lingui/cli @babel/core babel-core@bridge
+      npm install --save-dev @lingui/cli @babel/core
       npm install --save-dev @lingui/macro babel-plugin-macros  # required for macros
       npm install --save @lingui/react
 
       # or using Yarn
-      yarn add --dev @lingui/cli @babel/core babel-core@bridge
+      yarn add --dev @lingui/cli @babel/core
       yarn add --dev @lingui/macro babel-plugin-macros  # required for macros
       yarn add @lingui/react
-
-   .. important::
-
-      Don't forget Babel packages (``@babel/core``, ``babel-core@bridge``) which are
-      required for backward compatibility with projects using Babel 6.
 
 2. Add ``macros`` plugin to Babel config (e.g: ``.babelrc``):
 
@@ -128,14 +123,3 @@ Checkout these reference guides for full documentation:
 - :doc:`Macro reference </ref/react>`
 - :doc:`CLI reference </ref/cli>`
 - :doc:`Configuration reference </ref/conf>`
-
-Troubleshooting
-===============
-
-Cannot find module 'babel-core'
--------------------------------
-
-   1. Check that you installed ``babel-core@bridge`` and ``@babel/core`` (step 2)
-   2. Check that you use local version of ``@lingui/cli``. Installing ``@lingui/cli``
-      globally may clash with other packages which use Babel 6. You should run
-      either ``npm run extract`` or ``yarn extract`` (step 5).

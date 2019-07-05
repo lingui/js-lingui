@@ -15,22 +15,8 @@ Install
 
    .. code-block:: shell
 
-      npm install --save-dev @lingui/cli
-      # yarn add --dev @lingui/cli
-
-   .. important::
-
-      Install also Babel core packages (``@babel/core``, ``babel-core@bridge``):
-
-      .. code-block:: shell
-
-         # Babel 6.x
-         npm install --save-dev babel-core@6
-         # yarn add --dev babel-core@6
-
-         # Babel 7.x
-         npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core
-         # yarn add --dev babel-core@^7.0.0-bridge.0 @babel/core
+      npm install --save-dev @lingui/cli @babel/core
+      # yarn add --dev @lingui/cli @babel/core
 
 2. Add following scripts to your ``package.json``:
 

@@ -34,27 +34,15 @@ Let's start with the three major packages:
 
    .. code-block:: shell
 
-      npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros
+      npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros @babel/core
       npm install --save @lingui/core
-
-      # If you use Babel 7:
-      npm install --save-dev babel-core@bridge @babel/core
-
-      # If you use Babel 6:
-      npm install --save-dev babel-core
 
    If you use Yarn, add following:
 
    .. code-block:: shell
 
-      yarn add --dev @lingui/cli @lingui/macro babel-plugin-macros
+      yarn add --dev @lingui/cli @lingui/macro babel-plugin-macros @babel/core
       yarn add @lingui/core
-
-      # If you use Babel 7:
-      yarn add --dev babel-core@bridge @babel/core
-
-      # If you use Babel 6:
-      yarn add --dev babel-core
 
 
 2. Add ``macros`` plugin to Babel config (e.g: ``.babelrc``):

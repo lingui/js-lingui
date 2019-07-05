@@ -1,4 +1,4 @@
-import { transformFileSync } from "../compat"
+import { transformFileSync } from "@babel/core"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
