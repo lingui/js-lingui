@@ -85,5 +85,8 @@ export default [
   {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js"
+  },
+  {
+    filename: "js-t-var/js-t-var.js"
   }
 ]

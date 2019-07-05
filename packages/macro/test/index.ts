@@ -72,7 +72,12 @@ describe("macro", function() {
                   .replace(/\r/g, "")
                   .trim()
 
-                const actual = transformFileSync(inputPath, babelOptions)
+                const _babelOptions = {
+                  ...babelOptions,
+                  cwd: path.dirname(inputPath)
+                }
+
+                const actual = transformFileSync(inputPath, _babelOptions)
                   .code.replace(/\r/g, "")
                   .trim()
                 expect(actual).toEqual(expected)
