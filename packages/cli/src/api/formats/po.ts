@@ -59,7 +59,10 @@ const deserialize: (Object) => Object = R.map(
       getExtractedComments
     ),
     comments: item =>
-      R.concat(getTranslatorComments(item), R.tail(getExtractedComments(item))),
+      R.concat(
+        getTranslatorComments(item) as string,
+        R.tail(getExtractedComments(item))
+      ),
     obsolete: isObsolete,
     origin: R.compose(
       R.map(splitOrigin),
@@ -70,6 +73,7 @@ const deserialize: (Object) => Object = R.map(
   })
 )
 
+// @ts-ignore: I don't know how to access static property Item on class PO
 const validateItems = R.forEach((item: PO.Item) => {
   if (R.length(getTranslations(item)) > 1) {
     console.warn(
@@ -90,7 +94,6 @@ export default {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
     } else {
-      // @ts-ignore: In typings the whole module is exported while in code, PO class is default export
       po = new PO()
       po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)

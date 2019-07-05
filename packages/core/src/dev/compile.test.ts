@@ -13,7 +13,7 @@ describe("compile", function() {
     }
   }
 
-  const prepare = (translation, locale, locales) =>
+  const prepare = (translation, locale?, locales?) =>
     interpolate(compile(translation), locale || "en", locales, englishPlurals)
 
   it("should handle an error if message has syntax errors", function() {
@@ -37,7 +37,9 @@ describe("compile", function() {
 
   it("should compile message with variable", function() {
     const cache = compile("Hey {name}!")
-    expect(interpolate(cache)({ name: "Joe" })).toEqual("Hey Joe!")
+    expect(interpolate(cache, "en", [], {})({ name: "Joe" })).toEqual(
+      "Hey Joe!"
+    )
   })
 
   it("should compile plurals", function() {

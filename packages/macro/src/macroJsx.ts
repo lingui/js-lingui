@@ -223,13 +223,14 @@ export default class MacroJSX {
 
               return this.tokenizeText(value)
             }),
-            expressions: R.map(exp =>
+            expressions: R.map((exp: babelTypes.Expression) =>
               this.types.isCallExpression(exp)
                 ? this.tokenizeNode(exp)
                 : this.tokenizeExpression(exp)
             )
           }),
-          (exp: babelTypes.TemplateLiteral) => zip(exp.quasis, exp.expressions),
+          exp => zip(exp.quasis, exp.expressions),
+          // @ts-ignore
           R.flatten,
           R.filter(Boolean)
         )
