@@ -184,7 +184,7 @@ export class I18n extends EventEmitter<Events> {
     values: Object = {},
     options: MessageOptions = {}
   ) { 
-    return this._(id, values, options).replace(/<(\d+)>(.*)<\/\1>|<(\d+)\/>/, '$2')
+    return this._(id, values, options).replace(/<(\d+)>(.*)<\/\1>|<(\d+)\/>/g, '$2')
   }
 
   date(value: string | Date, format: Intl.DateTimeFormatOptions): string {
