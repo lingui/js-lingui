@@ -1,7 +1,6 @@
 import { interpolate } from "./context"
 import { isString, isFunction, isEmpty } from "./essentials"
 import { date, number } from "./formats"
-import * as icu from "./dev"
 import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
@@ -50,7 +49,6 @@ type Events = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  messageFormat: typeof icu
   _catalogs: Catalogs
   _locale: Locale
   _locales: Locales
@@ -83,18 +81,6 @@ export class I18n extends EventEmitter<Events> {
   }
 
   get localeData(): LocaleData {
-    if (process.env.NODE_ENV !== "production") {
-      if (!this.catalog) {
-        this._catalogs[this.locale] = {
-          messages: {}
-        }
-      }
-      if (isEmpty(this.catalog.localeData)) {
-        this.catalog.localeData = this.messageFormat.loadLocaleData(
-          this._locale
-        )
-      }
-    }
     return this.catalog.localeData
   }
 
@@ -157,7 +143,7 @@ export class I18n extends EventEmitter<Events> {
       message = id.message
       id = id.id
     }
-    let translation = this.messages[id] || message || id
+    let translation = this.messages[id]
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
@@ -165,10 +151,12 @@ export class I18n extends EventEmitter<Events> {
       return isFunction(missing) ? missing(this.locale, id) : missing
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      translation = isString(translation)
-        ? this.messageFormat.compile(translation)
-        : translation
+    if (!translation) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`Message with id "${id}" not loaded.`)
+      }
+
+      return ""
     }
 
     if (isString(translation)) return translation
@@ -190,7 +178,6 @@ export class I18n extends EventEmitter<Events> {
 
 function setupI18n(params: setupI18nProps = {}): I18n {
   const i18n = new I18n(params)
-  i18n.messageFormat = icu
 
   if (params.missing) i18n._missing = params.missing
 
