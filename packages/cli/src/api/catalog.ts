@@ -207,6 +207,10 @@ export class Catalog {
     key: string,
     { fallbackLocale, sourceLocale }: GetTranslationsOptions
   ) {
+    if (!catalogs[locale].hasOwnProperty(key)) {
+      console.error(`Message with key ${key} is missing in locale ${locale}`)
+    }
+
     const getTranslation = (locale) => catalogs[locale][key].translation
 
     return (
