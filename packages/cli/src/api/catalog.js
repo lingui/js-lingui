@@ -104,6 +104,11 @@ export default (config: LinguiConfig): CatalogApi => {
     },
 
     getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
+      
+      if(!catalogs[locale].hasOwnProperty(key)){
+        console.error('Problem in locale: `' +locale+ '` with key: `' + key);
+      }
+      
       const getTranslation = locale => catalogs[locale][key].translation
 
       return (
