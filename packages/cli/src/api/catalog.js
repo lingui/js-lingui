@@ -104,7 +104,10 @@ export default (config: LinguiConfig): CatalogApi => {
     },
 
     getTranslation(catalogs, locale, key, { fallbackLocale, sourceLocale }) {
-      const getTranslation = locale => catalogs[locale][key].translation
+      const getTranslation = anotherLocale =>
+        (catalogs[anotherLocale][key] &&
+          catalogs[anotherLocale][key].translation) ||
+        undefined
 
       return (
         // Get translation in target locale
@@ -112,7 +115,7 @@ export default (config: LinguiConfig): CatalogApi => {
         // Get translation in fallbackLocale (if any)
         (fallbackLocale && getTranslation(fallbackLocale)) ||
         // Get message default
-        catalogs[locale][key].defaults ||
+        (catalogs[locale][key] && catalogs[locale][key].defaults) ||
         // If sourceLocale is either target locale of fallback one, use key
         (sourceLocale && sourceLocale === locale && key) ||
         (sourceLocale &&
