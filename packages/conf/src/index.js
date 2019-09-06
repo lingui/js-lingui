@@ -33,6 +33,7 @@ export const defaultConfig = {
   pseudoLocale: "",
   srcPathDirs: ["<rootDir>"],
   srcPathIgnorePatterns: [NODE_MODULES],
+  sorting: "messageId",
   format: "lingui",
   rootDir: ".",
   extractBabelOptions: {
@@ -57,14 +58,14 @@ const deprecatedConfig = {
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
       "fallbackLocale"
     )}
-    
+
     @lingui/cli now treats your current configuration as:
     {
       ${chalk.bold('"fallbackLocale"')}: ${chalk.bold(
       `"${config.fallbackLanguage}"`
     )}
     }
-    
+
     Please update your configuration.
     `
 }

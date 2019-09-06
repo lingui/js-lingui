@@ -91,7 +91,8 @@ export default function command(
       catalog.merge(prevCatalogs, nextCatalog, {
         overwrite: options.overwrite
       })
-    )
+    ),
+    config.sorting
   )
   options.verbose && console.log()
 

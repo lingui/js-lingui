@@ -9,7 +9,7 @@ import { prettyOrigin } from "./utils"
 
 import * as extractors from "./extractors"
 import type { ExtractorType } from "./extractors"
-import type { AllCatalogsType } from "./types"
+import type { AllCatalogsType, Sorting } from "./types"
 
 type ExtractOptions = {
   ignore?: Array<string>,
@@ -104,8 +104,16 @@ export function cleanObsolete(catalogs: AllCatalogsType) {
   return R.map(R.filter(message => !message.obsolete), catalogs)
 }
 
-export function order(catalogs: AllCatalogsType) {
-  return R.map(orderByMessageId, catalogs)
+export function order(catalogs: AllCatalogsType, by: Sorting) {
+  if (by === "messageId") {
+    return R.map(orderByMessageId, catalogs)
+  }
+
+  if (by === "origin") {
+    return R.map(orderByOrigin, catalogs)
+  }
+
+  throw new Error("Invalid order by")
 }
 
 function orderByMessageId(messages) {
@@ -117,4 +125,33 @@ function orderByMessageId(messages) {
     })
 
   return orderedMessages
+}
+
+function orderByOrigin(messages) {
+  function getFirstOrigin(messageKey) {
+    const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      return 0
+    })
+    return sortedOrigins[0]
+  }
+
+  return Object.keys(messages)
+    .sort(function(a, b) {
+      const [aFile, aLineNumber] = getFirstOrigin(a)
+      const [bFile, bLineNumber] = getFirstOrigin(b)
+
+      if (aFile < bFile) return -1
+      if (aFile > bFile) return 1
+
+      if (aLineNumber < bLineNumber) return -1
+      if (aLineNumber > bLineNumber) return 1
+
+      return 0
+    })
+    .reduce((acc, key) => {
+      acc[key] = messages[key]
+      return acc
+    }, {})
 }
