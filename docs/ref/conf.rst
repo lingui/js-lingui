@@ -193,3 +193,21 @@ localeDir
 Default: ``<rootDir>/locale``
 
 Directory where message catalogs should be saved.
+
+
+sorting
+---------
+
+Default: ``messageId``
+
+Sorting order for catalog files. Possible values are:
+
+messageId
+^^^^^^
+
+Sort by the message ID.
+
+origin
+^^^^^^^
+
+Sort by file origin of the message.
