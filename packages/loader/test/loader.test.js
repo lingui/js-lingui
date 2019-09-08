@@ -2,6 +2,7 @@ import path from "path"
 import compiler from "./compiler.js"
 
 jest.useFakeTimers()
+jest.setTimeout(20000)
 
 const skipOnWindows = /^win/.test(process.platform) ? it.skip : it
 
