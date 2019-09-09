@@ -249,7 +249,7 @@ describe("order", function() {
       }
     }
 
-    const orderedCatalogs = order(catalogs)
+    const orderedCatalogs = order(catalogs, "messageId")
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toMatchSnapshot()
@@ -258,6 +258,41 @@ describe("order", function() {
     expect({
       en: Object.keys(orderedCatalogs.en),
       fr: Object.keys(orderedCatalogs.fr)
+    }).toMatchSnapshot()
+  })
+
+  it("should order messages by origin", function() {
+    const { order } = require("./extract")
+
+    const catalogs = {
+      en: {
+        LabelB: {
+          translation: "B",
+          origin: [["file2.js", 2], ["file1.js", 2]]
+        },
+        LabelA: {
+          translation: "A",
+          origin: [["file2.js", 3]]
+        },
+        LabelD: {
+          translation: "D",
+          origin: [["file2.js", 100]]
+        },
+        LabelC: {
+          translation: "C",
+          origin: [["file1.js", 1]]
+        }
+      }
+    }
+
+    const orderedCatalogs = order(catalogs, "origin")
+
+    // Test that the message content is the same as before
+    expect(orderedCatalogs).toMatchSnapshot()
+
+    // Jest snapshot order the keys automatically, so test that the key order explicitly
+    expect({
+      en: Object.keys(orderedCatalogs.en)
     }).toMatchSnapshot()
   })
 })

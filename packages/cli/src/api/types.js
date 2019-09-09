@@ -8,8 +8,11 @@ export type LinguiConfig = {|
   pseudoLocale: string,
   srcPathDirs: Array<string>,
   srcPathIgnorePatterns: Array<string>,
-  format: "lingui" | "minimal" | "po"
+  format: "lingui" | "minimal" | "po",
+  sorting: Sorting
 |}
+
+export type Sorting = "messageId" | "origin"
 
 export type IdempotentResult<T> = [boolean, ?T] // [ created, result ]
 

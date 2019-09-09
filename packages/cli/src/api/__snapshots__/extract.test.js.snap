@@ -124,3 +124,61 @@ Object {
   ],
 }
 `;
+
+exports[`order should order messages by origin 1`] = `
+Object {
+  en: Object {
+    LabelA: Object {
+      origin: Array [
+        Array [
+          file2.js,
+          3,
+        ],
+      ],
+      translation: A,
+    },
+    LabelB: Object {
+      origin: Array [
+        Array [
+          file1.js,
+          2,
+        ],
+        Array [
+          file2.js,
+          2,
+        ],
+      ],
+      translation: B,
+    },
+    LabelC: Object {
+      origin: Array [
+        Array [
+          file1.js,
+          1,
+        ],
+      ],
+      translation: C,
+    },
+    LabelD: Object {
+      origin: Array [
+        Array [
+          file2.js,
+          100,
+        ],
+      ],
+      translation: D,
+    },
+  },
+}
+`;
+
+exports[`order should order messages by origin 2`] = `
+Object {
+  en: Array [
+    LabelC,
+    LabelB,
+    LabelA,
+    LabelD,
+  ],
+}
+`;
