@@ -6,7 +6,7 @@ import chalk from "chalk"
 import glob from "glob"
 import minimatch from "minimatch"
 
-import { LinguiConfig } from "@lingui/conf"
+import { LinguiConfig, OrderBy } from "@lingui/conf"
 import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
@@ -23,6 +23,7 @@ const LOCALE = "{locale}"
 
 export interface MakeOptions extends CliExtractOptions {
   projectType?: string
+  orderBy?: OrderType
 }
 
 export interface MergeOptions {
@@ -75,7 +76,7 @@ export class Catalog {
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
-        orderByMessageId
+        this.config.orderBy === 'messageId' ? orderByMessageId : orderByOrigin
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
@@ -473,4 +474,33 @@ export function orderByMessageId(messages) {
     })
 
   return orderedMessages
+}
+
+export function orderByOrigin(messages) {
+  function getFirstOrigin(messageKey) {
+    const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      return 0
+    })
+    return sortedOrigins[0]
+  }
+
+  return Object.keys(messages)
+    .sort(function (a, b) {
+      const [aFile, aLineNumber] = getFirstOrigin(a)
+      const [bFile, bLineNumber] = getFirstOrigin(b)
+
+      if (aFile < bFile) return -1
+      if (aFile > bFile) return 1
+
+      if (aLineNumber < bLineNumber) return -1
+      if (aLineNumber > bLineNumber) return 1
+
+      return 0
+    })
+    .reduce((acc, key) => {
+      acc[key] = messages[key]
+      return acc
+    }, {})
 }

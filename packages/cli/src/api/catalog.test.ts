@@ -9,6 +9,7 @@ import {
   getCatalogForFile,
   Catalog,
   orderByMessageId,
+  orderByOrigin,
   cleanObsolete,
   MergeOptions
 } from "./catalog"
@@ -746,6 +747,37 @@ describe("orderByMessageId", function() {
     }
 
     const orderedCatalogs = orderByMessageId(catalog)
+
+    // Test that the message content is the same as before
+    expect(orderedCatalogs).toEqual(catalog)
+
+    // Jest snapshot order the keys automatically, so test that the key order explicitly
+    expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
+  })
+})
+
+describe("orderByOrigin", function() {
+  it("should order messages by origin alphabetically", function() {
+    const catalog = {
+      LabelB: {
+        translation: "B",
+        origin: [["file2.js", 2], ["file1.js", 2]]
+      },
+      LabelA: {
+        translation: "A",
+        origin: [["file2.js", 3]]
+      },
+      LabelD: {
+        translation: "D",
+        origin: [["file2.js", 100]]
+      },
+      LabelC: {
+        translation: "C",
+        origin: [["file1.js", 1]]
+      }
+    }
+
+    const orderedCatalogs = orderByOrigin(catalog)
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toEqual(catalog)

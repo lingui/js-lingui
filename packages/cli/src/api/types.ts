@@ -15,6 +15,8 @@ export interface MessageType extends ExtractedMessageType {
   translation: string
 }
 
+export type OrderByType = "messageId" | "origin"
+
 export type CatalogType = {
   [msgId: string]: MessageType
 }

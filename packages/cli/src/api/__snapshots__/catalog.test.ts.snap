@@ -318,3 +318,12 @@ Array [
   LabelD,
 ]
 `;
+
+exports[`orderByOrigin should order messages by origin alphabetically 1`] = `
+Array [
+  LabelC,
+  LabelB,
+  LabelA,
+  LabelD,
+]
+`;
