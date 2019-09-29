@@ -6,7 +6,7 @@ import plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { getCatalogs, getCatalogForMerge } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 
@@ -18,7 +18,6 @@ const noMessages: (catalogs: Object[]) => boolean = R.pipe(
 
 function command(config, options) {
   const catalogs = getCatalogs(config)
-
   if (noMessages(catalogs)) {
     console.error("Nothing to compile, message catalogs are empty!\n")
     console.error(
@@ -42,6 +41,9 @@ function command(config, options) {
       console.error()
       process.exit(1)
     }
+    // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
+    const doMerge = !!config.mergePath
+    let mergedCatalogs = {};
 
     catalogs.forEach(catalog => {
       const messages = catalog.getTranslations(locale, {
@@ -67,35 +69,49 @@ function command(config, options) {
           } else {
             console.error(chalk.red(`Missing ${missing.length} translation(s)`))
           }
-          console.error()
           process.exit()
         }
       }
 
-      const compiledCatalog = createCompiledCatalog(locale, messages, {
+      if (doMerge) {
+        mergedCatalogs = {...mergedCatalogs, ...messages}
+      } else {
+        const compiledCatalog = createCompiledCatalog(locale, messages, {
+          strict: false,
+          namespace: options.namespace || config.compile.namespace,
+          pseudoLocale: config.pseudoLocale
+        })  
+
+        const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
+
+        if (options.typescript) {
+          const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
+
+          fs.writeFileSync(
+            typescriptPath,
+            `import { Catalog } from '@lingui/core';
+  declare const catalog: Catalog;
+  export = catalog;
+  `
+          )
+        }
+          options.verbose &&
+            console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
+      }
+    })
+
+    if (doMerge) {
+      const compileCatalog = getCatalogForMerge(config)
+      const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
         strict: false,
-        namespace: options.namespace || config.compileNamespace,
+        namespace: options.namespace || config.namespace,
         pseudoLocale: config.pseudoLocale
       })
-
-      const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
-
-      if (options.typescript) {
-        const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
-        fs.writeFileSync(
-          typescriptPath,
-          `import { Catalog } from '@lingui/core';
-declare const catalog: Catalog;
-export = catalog;
-`
-        )
-      }
-
+      const compiledPath = compileCatalog.writeCompiled(locale, compiledCatalog)
       options.verbose &&
-        console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
-    })
+          console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
+    }
   })
-
   return true
 }
 

@@ -39,6 +39,7 @@ type CatalogProps = {
   path: string
   include: Array<string>
   exclude?: Array<string>
+  target?: string
 }
 
 export class Catalog {
@@ -64,7 +65,6 @@ export class Catalog {
   make(options: MakeOptions) {
     const nextCatalog = this.collect(options)
     const prevCatalogs = this.readAll()
-
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
       overwrite: options.overwrite
     })
@@ -387,6 +387,7 @@ export function getCatalogs(config: LinguiConfig) {
 }
 
 export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
+  console.log('getCatalogForFile');
   for (const catalog of catalogs) {
     const regexp = new RegExp(
       minimatch
@@ -410,6 +411,47 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 
   return null
 }
+
+/**
+ * Create catalog for merged messages.
+ */
+export function getCatalogForMerge(config: LinguiConfig) {
+  const catalogConfig = config
+
+    if (catalogConfig.mergePath.endsWith(path.sep)) {
+      const extension = getFormat(config.format).catalogExtension
+      const correctPath = catalogConfig.mergePath.slice(0, -1)
+      const examplePath =
+        correctPath.replace(
+          LOCALE,
+          // Show example using one of configured locales (if any)
+          (config.locales || [])[0] || "en"
+        ) + extension
+      throw new Error(
+        // prettier-ignore
+        `Remove trailing slash from "${catalogConfig.mergePath}". Catalog path isn't a directory,` +
+          ` but translation file without extension. For example, catalog path "${correctPath}"` +
+          ` results in translation file "${examplePath}".`
+      )
+    }
+
+    // catalog name is the last directory of catalogPath.
+    // If the last part is {locale}, then catalog doesn't have an explicit name
+    const name = (function() {
+      const _name = catalogConfig.mergePath.split(path.sep).slice(-1)[0]
+      return _name !== LOCALE ? _name : null
+    })()
+
+    const catalog = new Catalog({
+        name,
+        path: normalizeRelativePath(catalogConfig.mergePath),
+        include: [],
+        exclude: []
+      },
+      config
+    )
+    return catalog
+  }
 
 /**
  * Merge origins for messages found in different places. All other attributes

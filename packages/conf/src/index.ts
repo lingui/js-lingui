@@ -20,6 +20,7 @@ export type LinguiConfig = {
   fallbackLocale: string
   format: CatalogFormat
   locales: Array<string>
+  mergePath?: string
   pseudoLocale: string
   rootDir: string
   runtimeConfigModule: [string, string?]
@@ -73,7 +74,6 @@ export function getConfig({
 
   if (!skipValidation) {
     validate(config, configValidation)
-
     return pipe(
       // List config migrations from oldest to newest
       fallbackLanguageMigration,
