@@ -78,7 +78,7 @@ function command(config, options) {
       } else {
         const compiledCatalog = createCompiledCatalog(locale, messages, {
           strict: false,
-          namespace: options.namespace || config.compile.namespace,
+          namespace: options.namespace || config.compileNamespace,
           pseudoLocale: config.pseudoLocale
         })  
 
@@ -104,7 +104,7 @@ function command(config, options) {
       const compileCatalog = getCatalogForMerge(config)
       const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
         strict: false,
-        namespace: options.namespace || config.namespace,
+        namespace: options.namespace || config.compileNamespace,
         pseudoLocale: config.pseudoLocale
       })
       const compiledPath = compileCatalog.writeCompiled(locale, compiledCatalog)

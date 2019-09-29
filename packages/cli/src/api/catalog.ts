@@ -39,7 +39,6 @@ type CatalogProps = {
   path: string
   include: Array<string>
   exclude?: Array<string>
-  target?: string
 }
 
 export class Catalog {
@@ -387,7 +386,6 @@ export function getCatalogs(config: LinguiConfig) {
 }
 
 export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
-  console.log('getCatalogForFile');
   for (const catalog of catalogs) {
     const regexp = new RegExp(
       minimatch
