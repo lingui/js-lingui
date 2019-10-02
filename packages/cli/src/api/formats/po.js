@@ -4,7 +4,7 @@ import * as R from "ramda"
 import { format as formatDate } from "date-fns"
 
 import PO from "pofile"
-import { joinOrigin, splitOrigin } from "../utils"
+import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
 import type { TranslationsFormat } from "../types"
 
 const getCreateHeaders = (language = "no") => ({
@@ -86,7 +86,6 @@ const format: TranslationsFormat = {
 
   write(filename, catalog, options = {}) {
     let po
-    let indexedItems = {}
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
@@ -96,7 +95,7 @@ const format: TranslationsFormat = {
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog)
-    fs.writeFileSync(filename, po.toString())
+    writeFileIfChanged(filename, po.toString())
   },
 
   read(filename) {

@@ -2,12 +2,13 @@
 import fs from "fs"
 
 import type { TranslationsFormat } from "../types"
+import { writeFileIfChanged } from "../utils"
 
 const format: TranslationsFormat = {
   filename: "messages.json",
 
   write(filename, catalog) {
-    fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
+    writeFileIfChanged(filename, JSON.stringify(catalog, null, 2))
   },
 
   read(filename) {
