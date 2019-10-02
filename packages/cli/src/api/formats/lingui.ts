@@ -1,5 +1,6 @@
 import fs from "fs"
 import * as R from "ramda"
+import { writeFileIfChanged } from "../utils"
 
 export default {
   catalogExtension: ".json",
@@ -9,7 +10,7 @@ export default {
     if (options.origins === false) {
       outputCatalog = removeOrigins(catalog)
     }
-    fs.writeFileSync(filename, JSON.stringify(outputCatalog, null, 2))
+    writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
   },
 
   read(filename) {
