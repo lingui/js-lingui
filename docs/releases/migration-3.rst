@@ -40,8 +40,8 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 
 .. code-block:: diff
 
-   - import { I18nProvider } from '@lingui/react'
-   + import { setupI18n, I18nProvider } from '@lingui/react'
+     import { I18nProvider } from '@lingui/react'
+   + import { setupI18n } from '@lingui/core'
      import catalogEn from './locale/en/messages.js'
 
    + const i18n = setupI18n()
@@ -62,6 +62,8 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 
 - ``i18n.t``, ``i18n.plural``, ``i18n.select`` and ``i18n.selectOrdinal`` methods were
   removed in favor of macros.
+- ``i18n.use`` was removed. Using two locales at the same time isn't common usecase
+  and can be solved in user land.
 - Signature of ``i18n._`` method has changed. The third parameter now accepts default
   message in ``message`` prop, instead of ``defaults``:
 

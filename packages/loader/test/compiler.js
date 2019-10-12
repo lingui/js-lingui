@@ -4,16 +4,17 @@ import MemoryFS from "memory-fs"
 
 export default (fixture, options) => {
   const compiler = webpack({
+    mode: "none",
     context: __dirname,
     entry: "." + path.sep + fixture,
     output: {
-      path: __dirname,
+      path: path.resolve(__dirname),
       filename: "bundle.js"
     },
     module: {
       rules: [
         {
-          test: /\.json$/,
+          test: /\.po$/,
           use: {
             loader: path.resolve(__dirname, "../src/index.js"),
             options
@@ -28,6 +29,7 @@ export default (fixture, options) => {
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) reject(err)
+      if (stats.hasErrors()) reject(new Error(stats.toJson().errors))
 
       resolve(stats)
     })

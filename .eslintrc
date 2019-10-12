@@ -2,25 +2,36 @@
   "env": {
     "jest/globals": true
   },
-  "parser": "babel-eslint",
   "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
     }
   },
   "extends": [
-    "plugin:flowtype/recommended",
+    "prettier/@typescript-eslint",
     "plugin:import/errors",
-    "plugin:import/warnings",
+    "plugin:import/warnings"
   ],
   "plugins": [
     "promise",
-    "flowtype",
     "import",
     "react",
     "jest",
     "prettier"
   ],
+  "settings": {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
     "no-duplicate-imports": "off",
     "react/display-name": "off",

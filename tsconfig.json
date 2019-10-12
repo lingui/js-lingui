@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "jsx": "react",
+    "noEmit": true,
+    "pretty": true,
+    "esModuleInterop": true,
+    "target": "es2017"
+  },
+  "exclude": ["examples/babel-6-react"]
+}

@@ -15,10 +15,6 @@ The main responsibilities of this package are:
 Installation
 ============
 
-.. note::
-   If you're using :doc:`@lingui/react <react>`, you don't need to install
-   this package explicitly. Install :doc:`@lingui/react <react>` instead.
-
 .. code-block:: sh
 
    yarn add @lingui/core
@@ -34,7 +30,7 @@ Reference
 
    .. code-block:: js
 
-      type Catalogs = {[language: string]: Catalog}
+      type Catalogs = {[locale: string]: Catalog}
 
       // Example:
       const catalogs: Catalogs =  {
@@ -96,15 +92,15 @@ Reference
 
    The factory function accepts one optional parameter, ``options``:
 
-   .. js:attribute:: options.language
+   .. js:attribute:: options.locale
 
-      Initial active language.
+      Initial active locale.
 
       .. code-block:: jsx
 
          import { setupI18n } from "@lingui/core"
 
-         const i18n = setupI18n({ language: "en" })
+         const i18n = setupI18n({ locale: "en" })
 
          // This is a shortcut for:
          // const i18n = setupI18n()
@@ -114,14 +110,14 @@ Reference
 
       List of alternative locales (BCP 47 langauge tags) which are used for number and date
       formatting (some countries use more than one number/date format). If not set, active
-      language is used instead.
+      locale is used instead.
 
       .. code-block:: jsx
 
          import { setupI18n } from "@lingui/core"
 
          const i18n = setupI18n({
-            language: "ar",
+            locale: "ar",
             locales: ["en-UK", "ar-AS"]
          })
 
@@ -185,15 +181,15 @@ Reference
    Constructor for I18n class isn't exported from the package. Instead, always use
    :js:func:`setupI18n` factory function.
 
-   .. js:method:: load(catalogs: Catalogs)
+   .. js:method:: load(locale: string, catalog: Catalog)
 
-      Load message catalogs and merge them with already loaded ones.
+      Load catalog for given locale
 
       .. code-block:: js
 
          import { setupI18n } from "@lingui/core"
 
-         const messagesEn =  {
+         const messages =  {
             "Hello": "Hello",
             "Good bye": "Good bye",
 
@@ -243,10 +239,44 @@ Reference
                en: messagesEn,
             })
 
-   .. js:method:: activate(language [, locales])
+   .. js:method:: loadAll(catalogs: Catalogs)
 
-      Activate a language and locales. :js:meth:`_` from now on will return messages
-      in given language.
+      Load catalogs for multiple locales at once.
+
+      .. code-block:: js
+
+         import { setupI18n } from "@lingui/core"
+
+         const messagesEn =  {
+            "Hello": "Hello",
+            "Good bye": "Good bye",
+
+            // Just an example how catalog looks internally.
+            // Formatting of string messages works in development only.
+            // See note below.
+            "My name is {name}": "My name is {name}"
+         }
+
+         const messagesCs = {
+            "Hello": "Ahoj",
+            "Good bye": "Nashledanou",
+            "My name is {name}": "Jmenuji se {name}"
+         }
+
+         const i18n = setupI18n()
+         i18n.loadAll({
+            en: messagesEn,
+            cs: messagesCs
+         })
+
+         // This is the same as loading message catalogs separately per language:
+         // i18n.load("en", messagesEn)
+         // i18n.load("cs", messagesCs)
+
+   .. js:method:: activate(locale [, locales])
+
+      Activate a locale and locales. :js:meth:`_` from now on will return messages
+      in given locale.
 
       .. code-block:: js
 
@@ -257,20 +287,6 @@ Reference
 
          i18n.activate("cs")
          i18n._("Hello")           // Return "Hello" in Czech
-
-   .. js:method:: use(language [, locales])
-
-      Activate a language and locales locally. This method returns a new instance of
-      :js:class:`I18n` and doesn't affect global language.
-
-      .. code-block:: js
-
-         import { setupI18n } from "@lingui/core"
-
-         const i18n = setupI18n({ language: "en" })
-
-         i18n.use("cs")._("Hello") // Return "Hello" in Czech
-         i18n._("Hello")           // Return "Hello" in active language (English)
 
    .. js:method:: _(messageId [, values [, options]])
 
@@ -299,3 +315,29 @@ Reference
          // Message with custom messageId
          i18n._("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
 
+Events
+======
+
+activate
+--------
+
+Triggered when :js:meth:`I18n.activate` is called.
+
+Arguments:
+
+- ``locale`` - New locale which is about to be activated
+
+load
+----
+
+Triggered when :js:meth:`I18n.load` is called.
+
+Arguments:
+
+- ``locale`` - Locale of loaded catalog
+- ``catalog`` - Content of catalog.
+
+change
+------
+
+Triggered **after** locale is changed or new catalog is loaded. There're no arguments.

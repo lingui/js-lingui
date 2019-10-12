@@ -25,5 +25,5 @@ A clear and concise description of what you expected to happen.
 Add any other context about the problem here.
 
 - jsLingui version ``lingui --version``
-- Babel version ``npm list babel-core``
+- Babel version ``npm list @babel/core``
 - Your Babel config (e.g. `.babelrc`) or framework you use (Create React App, Meteor, etc.)

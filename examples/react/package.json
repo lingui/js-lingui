@@ -1,0 +1,53 @@
+{
+  "private": true,
+  "name": "linguijs-example-react",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --hot",
+    "build": "webpack -p",
+    "test": "jest src"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "@lingui/core": "2.7.0",
+    "@lingui/react": "2.7.0",
+    "antd": "^3.18.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@lingui/cli": "^2.7.0",
+    "@lingui/loader": "2.7.0",
+    "@lingui/macro": "^2.7.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-macros": "^2.5.1",
+    "enzyme-to-json": "^3.3.5",
+    "jest": "^24.8.0",
+    "jest-serializer-html": "^7.0.0",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.0"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "../../scripts/jest/env.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer",
+      "jest-serializer-html"
+    ]
+  }
+}

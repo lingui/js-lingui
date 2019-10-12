@@ -18,24 +18,24 @@ const packages = readdirSync(packagesRoot).filter(dir => {
   return true
 })
 
+const DEV_PACKAGES = ["jest-mocks"]
+
 // Create a module map to point React packages to the build output
 const moduleNameMapper = {}
-packages.forEach(name => {
-  // Root entry point
-  moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/build/packages/${name}`
-  // Named entry points
-  moduleNameMapper[
-    `^@lingui/${name}/(.*)$`
-  ] = `<rootDir>/build/packages/${name}/$1`
-})
+packages
+  .filter(name => !DEV_PACKAGES.includes(name))
+  .forEach(name => {
+    // Root entry point
+    moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/build/packages/${name}`
+    // Named entry points
+    moduleNameMapper[
+      `^@lingui/${name}/(.*)$`
+    ] = `<rootDir>/build/packages/${name}/$1`
+  })
 
 module.exports = Object.assign({}, sourceConfig, {
-  roots: ["<rootDir>/packages/", "<rootDir>/examples/"],
-  testPathIgnorePatterns: [
-    "/node_modules/",
-    "webpack-react",
-    "vanilla-js"
-  ],
+  roots: ["<rootDir>/packages/"],
+  testPathIgnorePatterns: ["/node_modules/"],
   // Redirect imports to the compiled bundles
   moduleNameMapper,
 

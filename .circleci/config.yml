@@ -18,13 +18,11 @@ aliases:
         NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
   - &tests-integration
       command: node ./scripts/integration.js
-      environment:
-        NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
 
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/openjdk:latest-node-browsers-legacy
 
     steps:
       - checkout
@@ -72,68 +70,47 @@ jobs:
       - run: *yarn-install-tools
       - run: *tests
 
-  integration-vanilla-js:
+  integration-js:
     docker:
       - image: circleci/node:latest
 
     steps:
       - checkout
       - attach-workspace: *attach-workspace
-      - restore-cache: *restore-cache
-      - run: *yarn-install
       - run: *yarn-install-tools
 
       - restore-cache:
-          key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
-      - run: cd examples/vanilla-js; yarn
+          key: node-modules-js-{{ checksum "examples/js/yarn.lock" }}
+      - run: cd examples/js; yarn
       - save-cache:
-          key: node-modules-vanilla-js-{{ checksum "examples/vanilla-js/yarn.lock" }}
+          key: node-modules-js-{{ checksum "examples/js/yarn.lock" }}
           paths:
-            - examples/vanilla-js/node_modules
+            - examples/js/node_modules
 
       - run: *tests-integration
-      - run: chmod +x examples/vanilla-js/node_modules/.bin/lingui
-      - run: cd examples/vanilla-js; yarn test
+      - run: chmod +x examples/js/node_modules/.bin/lingui
+      - run: cd examples/js; yarn test
 
-  integration-webpack-react:
+  integration-react:
     docker:
     - image: circleci/node:latest
 
     steps:
     - checkout
     - attach-workspace: *attach-workspace
-    - restore-cache: *restore-cache
-    - run: *yarn-install
     - run: *yarn-install-tools
 
     - restore-cache:
-        key: node-modules-webpack-react-{{ checksum "examples/webpack-react/yarn.lock" }}
-    - run: cd examples/webpack-react; yarn
+        key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
+    - run: cd examples/react; yarn
     - save-cache:
-        key: node-modules-webpack-react-{{ checksum "examples/webpack-react/yarn.lock" }}
+        key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
         paths:
-          - examples/webpack-react/node_modules
+          - examples/react/node_modules
 
     - run: *tests-integration
-    - run: chmod +x examples/webpack-react/node_modules/.bin/lingui
-    - run: cd examples/webpack-react; yarn test
-
-  publish:
-    docker:
-      - image: circleci/node:latest
-
-    steps:
-      - checkout
-      - attach-workspace: *attach-workspace
-      - restore-cache: *restore-cache
-      - run: *yarn-install
-
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
-      - run: node scripts/release/update-versions.js --next
-      - run: node scripts/release/release-npm.js --next
+    - run: chmod +x examples/react/node_modules/.bin/lingui
+    - run: cd examples/react; yarn test
 
   test-linter:
     docker:
@@ -147,7 +124,7 @@ jobs:
 
   build-docs:
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.7-node
         environment:
           PYGMENTS_NODE_COMMAND: /usr/local/bin/node
 
@@ -164,10 +141,13 @@ jobs:
           paths:
               - "{{ pipenv --venv }}"
 
+      - run: yarn global add now
+
       - run: cd docs; pipenv run make html
 
       - deploy:
-          command: ./scripts/legacy/deploy-docs.sh
+          command: $(yarn global bin)/now --public --token $NOW_TOKEN --name lingui-docs docs/_build/html
+#          command: ./scripts/legacy/deploy-docs.sh
 
 workflows:
   version: 2
@@ -176,7 +156,7 @@ workflows:
 #      - build-docs:
 #          filters:
 #            branches:
-#              only:
+#              ignore:
 #                - master
 
       - build
@@ -190,21 +170,9 @@ workflows:
       - test-node-8:
           requires:
             - build
-      - integration-vanilla-js:
-          requires:
-          - build
-      - integration-webpack-react:
-          requires:
-          - build
-
-# Disable automatic publish, because NPM requires OTP token
-#      - publish:
+#      - integration-js:
 #          requires:
-#            - test-linter
-#            - test-node-latest
-#            - test-node-8
-#          filters:
-#            branches:
-#              only:
-#                - master
-#                - stable-2.x
+#          - build
+#      - integration-react:
+#          requires:
+#          - build

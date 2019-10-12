@@ -2,13 +2,13 @@
 
 const { rollup } = require("rollup")
 const babel = require("rollup-plugin-babel")
-const closure = require("rollup-plugin-closure-compiler-js")
+const { terser } = require("rollup-plugin-terser")
 const commonjs = require("rollup-plugin-commonjs")
 const resolve = require("rollup-plugin-node-resolve")
 const prettier = require("rollup-plugin-prettier")
 const replace = require("rollup-plugin-replace")
+const typescript = require("rollup-plugin-typescript2")
 const ora = require("ora")
-// const stripBanner = require("rollup-plugin-strip-banner")
 const chalk = require("chalk")
 const path = require("path")
 const fs = require("fs")
@@ -27,6 +27,8 @@ const UMD_PROD = "UMD_PROD"
 const NODE_DEV = "NODE_DEV"
 const NODE_PROD = "NODE_PROD"
 
+const extensions = [".js", ".ts", ".tsx"]
+
 // Errors in promises should be fatal.
 let loggedErrors = new Set()
 process.on("unhandledRejection", err => {
@@ -37,27 +39,13 @@ process.on("unhandledRejection", err => {
   throw err
 })
 
-const { UNIVERSAL, NODE } = Bundles.bundleTypes
-
 const forcePrettyOutput = argv.pretty
-const shouldExtractErrors = argv["extract-errors"]
-
-const closureOptions = {
-  compilationLevel: "SIMPLE",
-  languageIn: "ECMASCRIPT5_STRICT",
-  languageOut: "ECMASCRIPT5_STRICT",
-  env: "CUSTOM",
-  warningLevel: "QUIET",
-  applyInputSourceMaps: false,
-  useTypesForOptimization: false,
-  processCommonJsModules: false,
-  rewritePolyfills: false,
-}
 
 function getBabelConfig(updateBabelOptions, bundleType, filename) {
   return Object.assign({}, babelConfig({ modules: false }), {
     babelrc: false,
     exclude: "node_modules/**",
+    extensions,
     runtimeHelpers: true
   })
 }
@@ -119,17 +107,35 @@ function getPlugins(
   moduleType,
   modulesToStub
 ) {
-  // const findAndRecordErrorCodes = extractErrorCodes(errorCodeOpts)
   const isProduction = isProductionBundleType(bundleType)
   const isInGlobalScope = bundleType === UMD_DEV || bundleType === UMD_PROD
   const shouldStayReadable = forcePrettyOutput
+  const packageDir = path.join(path.dirname(require.resolve(entry)), "src")
+
   return [
     // Use Node resolution mechanism.
-    resolve(),
+    resolve({
+      extensions
+    }),
+
+    typescript({
+      tsconfigOverride: {
+        include: [`${packageDir}/**/*.ts`, `${packageDir}/**/*.tsx`],
+        exclude: ["**/*.test.ts", "**/*.test.tsx"],
+        compilerOptions: {
+          rootDir: packageDir,
+          declaration: true,
+          declarationMap: true,
+          mapRoot: "",
+          module: "esnext",
+          target: "esnext"
+        }
+      }
+    }),
 
     // Compile to ES5.
     babel(getBabelConfig(updateBabelOptions, bundleType)),
-    // Turn __DEV__ and process.env checks into constants.
+    // Turn process.env checks into constants.
     replace({
       "process.env.NODE_ENV": isProduction ? "'production'" : "'development'"
     }),
@@ -139,40 +145,26 @@ function getPlugins(
 
     // Apply dead code elimination and/or minification.
     isProduction &&
-      closure(
-        Object.assign({}, closureOptions, {
-          // Don't let it create global variables in the browser.
-          // https://github.com/facebook/react/issues/10909
-          assumeFunctionWrapper: !isInGlobalScope,
-          // Works because `google-closure-compiler-js` is forked in Yarn lockfile.
-          // We can remove this if GCC merges my PR:
-          // https://github.com/google/closure-compiler/pull/2707
-          // and then the compiled version is released via `google-closure-compiler-js`.
-          renaming: !shouldStayReadable
-        })
-      ),
+      terser({
+        sourcemap: true,
+        output: { comments: false },
+        compress: {
+          keep_infinity: true,
+          pure_getters: true,
+          collapse_vars: false
+        },
+        ecma: 5,
+        toplevel: !isInGlobalScope,
+        warnings: true
+      }),
 
     // Add the whitespace back if necessary.
     shouldStayReadable && prettier(),
 
-    // TODO
-    // License and haste headers, top-level `if` blocks.
-    // {
-    //   transformBundle(source) {
-    //     return Wrappers.wrapBundle(
-    //       source,
-    //       bundleType,
-    //       globalName,
-    //       filename,
-    //       moduleType
-    //     )
-    //   }
-    // },
-
     // Record bundle size.
     sizes({
-      getSize: (size, gzip) => {
-        const key = `${filename} (${bundleType})`
+      getSize: (name, size, gzip) => {
+        const key = `@lingui/${name} (${bundleType})`
         Stats.currentBuildResults.bundleSizes[key] = {
           size,
           gzip
@@ -190,7 +182,7 @@ function handleRollupWarning(warning) {
   if (warning.code === "UNUSED_EXTERNAL_IMPORT") {
     const match = warning.message.match(/external module '([^']+)'/)
     if (!match || typeof match[1] !== "string") {
-      throw new Error("Could not parse a Rollup warning. " + "Fix this method.")
+      throw new Error("Could not parse a Rollup warning. Fix this method.")
     }
     const importSideEffects = Modules.getImportSideEffects()
     const externalModule = match[1]
@@ -219,6 +211,9 @@ function handleRollupError(error) {
     `\x1b[31m-- ${error.code}${error.plugin ? ` (${error.plugin})` : ""} --`
   )
   console.error(error.message)
+
+  if (error.loc == null) return
+
   const { file, line, column } = error.loc
   if (file) {
     // This looks like an error from Rollup, e.g. missing export.

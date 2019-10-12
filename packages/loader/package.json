@@ -26,13 +26,19 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=4.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.6.3",
     "@lingui/cli": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
-    "babel-runtime": "^6.26.0",
-    "ramda": "^0.26.1",
-    "loader-utils": "^1.1.0"
+    "loader-utils": "^1.1.0",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "memory-fs": "^0.5.0"
+  },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
   }
 }

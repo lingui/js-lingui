@@ -1,0 +1,2 @@
+msgid "Hello World"
+msgstr "Hello World"

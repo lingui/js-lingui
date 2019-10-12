@@ -1,12 +1,8 @@
 module.exports = {
   roots: ["<rootDir>/packages/"],
   rootDir: process.cwd(),
-  testMatch: ["**/?(*.)test.js", "**/test/index.js"],
-  testPathIgnorePatterns: [
-    "/node_modules/",
-    "/locale/",
-    "packages/typescript-extract-messages"
-  ],
+  testMatch: ["**/?(*.)test.(js|ts|tsx)", "**/test/index.(js|ts|tsx)"],
+  testPathIgnorePatterns: ["/node_modules/", "/locale/"],
   testURL: "http://localhost",
 
   collectCoverage: true,
@@ -15,13 +11,14 @@ module.exports = {
     "node_modules",
     "scripts",
     "locale",
+    "fixtures",
     ".*.json$",
     ".*.js.snap$"
   ],
-  coverageReporters: ["html", "lcov"],
+  coverageReporters: ["html", "lcov", "text"],
 
   reporters: ["default", "jest-junit"],
-  setupTestFrameworkScriptFile: require.resolve("./env.js"),
+  setupFilesAfterEnv: [require.resolve("./env.js")],
   snapshotSerializers: [
     "enzyme-to-json/serializer",
     "jest-serializer-html",

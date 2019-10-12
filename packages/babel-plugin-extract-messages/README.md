@@ -1,12 +1,12 @@
-[![License][Badge-License]][License]
-[![Version][Badge-Version]][Package]
-[![Downloads][Badge-Downloads]][Package]
+[![License][badge-license]][license]
+[![Version][badge-version]][package]
+[![Downloads][badge-downloads]][package]
 
 # @lingui/babel-plugin-extract-messages
 
 > Babel plugin which extracts messages for translation from source files
 
-`@lingui/babel-plugin-extract-messages` is part of [LinguiJS][LinguiJS]. See the [documentation][Documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-extract-messages` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation
 
@@ -43,12 +43,12 @@ require("@babel/core").transform("code", {
 
 ## License
 
-[MIT][License]
+[MIT][license]
 
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[LinguiJS]: https://github.com/lingui/js-lingui
-[Documentation]: https://lingui.js.org/
-[Package]: https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages
-[Badge-Downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-extract-messages.svg
-[Badge-Version]: https://img.shields.io/npm/v/@lingui/babel-plugin-extract-messages.svg 
-[Badge-License]: https://img.shields.io/npm/l/@lingui/babel-plugin-extract-messages.svg
+[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[linguijs]: https://github.com/lingui/js-lingui
+[documentation]: https://lingui.js.org/
+[package]: https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages
+[badge-downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-extract-messages.svg
+[badge-version]: https://img.shields.io/npm/v/@lingui/babel-plugin-extract-messages.svg
+[badge-license]: https://img.shields.io/npm/l/@lingui/babel-plugin-extract-messages.svg

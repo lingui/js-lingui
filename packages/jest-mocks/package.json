@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "@lingui/jest-mocks",
+  "version": "0.0.0-managed-by-release-script",
+  "description": "Mocks for Jest",
+  "main": "index.js",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "jest",
+    "testing",
+    "mock"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=6.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "*.js.flow"
+  ]
+}
