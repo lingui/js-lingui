@@ -218,3 +218,20 @@ You may use a different named export:
 
    import { myI18n } from "./custom-i18n-config"
    // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
+
+sorting
+---------
+
+Default: ``messageId``
+
+Sorting order for catalog files. Possible values are:
+
+messageId
+^^^^^^
+
+Sort by the message ID.
+
+origin
+^^^^^^^
+
+Sort by file origin of the message.

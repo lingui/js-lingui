@@ -310,11 +310,114 @@ exports[`getCatalogs should warn if catalogPath is a directory 1`] = `Remove tra
 
 exports[`getCatalogs should warn if catalogPath is a directory 2`] = `Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/cs.json".`;
 
-exports[`orderByMessageId should order messages by ID alphabetically 1`] = `
+exports[`order should order messages alphabetically 1`] = `
+Object {
+  LabelA: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        1,
+        catalog.test.ts,
+      ],
+    ],
+    translation: A,
+  },
+  LabelB: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        1,
+        catalog.test.ts,
+      ],
+    ],
+    translation: B,
+  },
+  LabelC: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        1,
+        catalog.test.ts,
+      ],
+    ],
+    translation: C,
+  },
+  LabelD: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        1,
+        catalog.test.ts,
+      ],
+    ],
+    translation: D,
+  },
+}
+`;
+
+exports[`order should order messages alphabetically 2`] = `
 Array [
   LabelA,
   LabelB,
   LabelC,
+  LabelD,
+]
+`;
+
+exports[`order should order messages by origin 1`] = `
+Object {
+  LabelA: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        file2.js,
+        3,
+      ],
+    ],
+    translation: A,
+  },
+  LabelB: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        file1.js,
+        2,
+      ],
+      Array [
+        file2.js,
+        2,
+      ],
+    ],
+    translation: B,
+  },
+  LabelC: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        file1.js,
+        1,
+      ],
+    ],
+    translation: C,
+  },
+  LabelD: Object {
+    obsolete: false,
+    origin: Array [
+      Array [
+        file2.js,
+        100,
+      ],
+    ],
+    translation: D,
+  },
+}
+`;
+
+exports[`order should order messages by origin 2`] = `
+Array [
+  LabelC,
+  LabelB,
+  LabelA,
   LabelD,
 ]
 `;

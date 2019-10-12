@@ -14,7 +14,8 @@ import {
   AllCatalogsType,
   ExtractedCatalogType,
   ExtractedMessageType,
-  MessageType
+  MessageType,
+  Sorting
 } from "./types"
 import { CliExtractOptions } from "../lingui-extract"
 
@@ -22,6 +23,7 @@ const NAME = "{name}"
 const LOCALE = "{locale}"
 
 export interface MakeOptions extends CliExtractOptions {
+  sorting: Sorting
   projectType?: string
 }
 
@@ -75,7 +77,7 @@ export class Catalog {
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
-        orderByMessageId
+        order(options.sorting)
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
@@ -460,6 +462,15 @@ export const cleanObsolete = R.filter(
   (message: ExtractedMessageType) => !message.obsolete
 )
 
+export function order(
+  by: Sorting
+): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
+  return {
+    messageId: orderByMessageId,
+    origin: orderByOrigin
+  }[by]
+}
+
 /**
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
@@ -473,4 +484,33 @@ export function orderByMessageId(messages) {
     })
 
   return orderedMessages
+}
+
+export function orderByOrigin(messages) {
+  function getFirstOrigin(messageKey) {
+    const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      return 0
+    })
+    return sortedOrigins[0]
+  }
+
+  return Object.keys(messages)
+    .sort(function(a, b) {
+      const [aFile, aLineNumber] = getFirstOrigin(a)
+      const [bFile, bLineNumber] = getFirstOrigin(b)
+
+      if (aFile < bFile) return -1
+      if (aFile > bFile) return 1
+
+      if (aLineNumber < bLineNumber) return -1
+      if (aLineNumber > bLineNumber) return 1
+
+      return 0
+    })
+    .reduce((acc, key) => {
+      acc[key] = messages[key]
+      return acc
+    }, {})
 }

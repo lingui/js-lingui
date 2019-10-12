@@ -63,3 +63,5 @@ export type CatalogApi = {
     options: getTranslationOptions
   ): Maybe<string>
 }
+
+export type Sorting = "messageId" | "origin"

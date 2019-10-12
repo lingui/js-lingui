@@ -23,6 +23,7 @@ export type LinguiConfig = {
   pseudoLocale: string
   rootDir: string
   runtimeConfigModule: [string, string?]
+  sorting: string
   sourceLocale: string
 }
 
@@ -42,6 +43,7 @@ export const defaultConfig: LinguiConfig = {
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
+  sorting: "messageId",
   sourceLocale: ""
 }
 
