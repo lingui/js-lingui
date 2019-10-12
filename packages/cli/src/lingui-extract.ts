@@ -37,7 +37,7 @@ export default function command(
   catalogs.forEach(catalog => {
     catalog.make({
       ...options,
-      sorting: config.sorting,
+      orderBy: config.orderBy,
       projectType: detect()
       // const pseudoLocale = config.pseudoLocale
       // if (pseudoLocale) {

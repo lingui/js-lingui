@@ -6,7 +6,7 @@ import chalk from "chalk"
 import glob from "glob"
 import minimatch from "minimatch"
 
-import { LinguiConfig } from "@lingui/conf"
+import { LinguiConfig, OrderBy } from "@lingui/conf"
 import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
@@ -14,8 +14,7 @@ import {
   AllCatalogsType,
   ExtractedCatalogType,
   ExtractedMessageType,
-  MessageType,
-  Sorting
+  MessageType
 } from "./types"
 import { CliExtractOptions } from "../lingui-extract"
 
@@ -23,8 +22,8 @@ const NAME = "{name}"
 const LOCALE = "{locale}"
 
 export interface MakeOptions extends CliExtractOptions {
-  sorting: Sorting
   projectType?: string
+  orderBy?: OrderBy
 }
 
 export interface MergeOptions {
@@ -77,7 +76,7 @@ export class Catalog {
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
-        order(options.sorting)
+        order(options.orderBy)
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
@@ -463,7 +462,7 @@ export const cleanObsolete = R.filter(
 )
 
 export function order(
-  by: Sorting
+  by: OrderBy
 ): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
   return {
     messageId: orderByMessageId,

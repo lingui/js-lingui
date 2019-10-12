@@ -4,9 +4,9 @@ exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
 ● Deprecation Warning:
 
  Option localeDir is deprecated. Configure source paths using catalogs instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       "catalogs": [
   {
@@ -20,7 +20,7 @@ exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
   }
 ]
     }
-    
+
     Please update your configuration.
     
 
@@ -28,9 +28,9 @@ Documentation: https://lingui.js.org/ref/conf.html
 ● Deprecation Warning:
 
  Option srcPathDirs is deprecated. Configure source paths using catalogs instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       "catalogs": [
   {
@@ -44,7 +44,7 @@ Documentation: https://lingui.js.org/ref/conf.html
   }
 ]
     }
-    
+
     Please update your configuration.
     
 
@@ -52,9 +52,9 @@ Documentation: https://lingui.js.org/ref/conf.html
 ● Deprecation Warning:
 
  Option srcPathIgnorePatterns is deprecated. Configure excluded source paths using catalogs instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       "catalogs": [
   {
@@ -68,7 +68,7 @@ Documentation: https://lingui.js.org/ref/conf.html
   }
 ]
     }
-    
+
     Please update your configuration.
     
 
@@ -98,13 +98,13 @@ Object {
   locales: Array [
     en-gb,
   ],
+  orderBy: messageId,
   pseudoLocale: ,
   rootDir: .,
   runtimeConfigModule: Array [
     @lingui/core,
     i18n,
   ],
-  sorting: messageId,
   sourceLocale: ,
 }
 `;

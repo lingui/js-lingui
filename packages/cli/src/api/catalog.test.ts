@@ -8,7 +8,6 @@ import {
   getCatalogs,
   getCatalogForFile,
   Catalog,
-  orderByMessageId,
   cleanObsolete,
   MergeOptions,
   order
@@ -22,7 +21,7 @@ const defaultMakeOptions: MakeOptions = {
   clean: false,
   overwrite: false,
   prevFormat: null,
-  sorting: "messageId"
+  orderBy: "messageId"
 }
 
 const defaultMergeOptions: MergeOptions = {

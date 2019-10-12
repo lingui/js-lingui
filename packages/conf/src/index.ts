@@ -5,6 +5,7 @@ import cosmiconfig from "cosmiconfig"
 import { validate } from "jest-validate"
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
+export type OrderBy = "messageId" | "origin"
 
 type CatalogConfig = {
   name?: string
@@ -20,10 +21,10 @@ export type LinguiConfig = {
   fallbackLocale: string
   format: CatalogFormat
   locales: Array<string>
+  orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
   runtimeConfigModule: [string, string?]
-  sorting: string
   sourceLocale: string
 }
 
@@ -40,10 +41,10 @@ export const defaultConfig: LinguiConfig = {
   fallbackLocale: "",
   format: "po",
   locales: [],
+  orderBy: "messageId",
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
-  sorting: "messageId",
   sourceLocale: ""
 }
 
@@ -107,14 +108,14 @@ const deprecatedConfig = {
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
       "fallbackLocale"
     )}
-    
+
     @lingui/cli now treats your current configuration as:
     {
       ${chalk.bold('"fallbackLocale"')}: ${chalk.bold(
       `"${config.fallbackLanguage}"`
     )}
     }
-    
+
     Please update your configuration.
     `,
   localeDir: (config: LinguiConfig & DeprecatedLocaleDir) =>
@@ -123,9 +124,9 @@ const deprecatedConfig = {
     )} is deprecated. Configure source paths using ${chalk.bold(
       "catalogs"
     )} instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       ${chalk.bold('"catalogs"')}: ${JSON.stringify(
       catalogMigration(config).catalogs,
@@ -133,7 +134,7 @@ const deprecatedConfig = {
       2
     )}
     }
-    
+
     Please update your configuration.
     `,
   srcPathDirs: (config: LinguiConfig & DeprecatedLocaleDir) =>
@@ -142,9 +143,9 @@ const deprecatedConfig = {
     )} is deprecated. Configure source paths using ${chalk.bold(
       "catalogs"
     )} instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       ${chalk.bold('"catalogs"')}: ${JSON.stringify(
       catalogMigration(config).catalogs,
@@ -152,7 +153,7 @@ const deprecatedConfig = {
       2
     )}
     }
-    
+
     Please update your configuration.
     `,
   srcPathIgnorePatterns: (config: LinguiConfig & DeprecatedLocaleDir) =>
@@ -161,9 +162,9 @@ const deprecatedConfig = {
     )} is deprecated. Configure excluded source paths using ${chalk.bold(
       "catalogs"
     )} instead.
-    
+
     @lingui/cli now treats your current configuration as:
-    
+
     {
       ${chalk.bold('"catalogs"')}: ${JSON.stringify(
       catalogMigration(config).catalogs,
@@ -171,7 +172,7 @@ const deprecatedConfig = {
       2
     )}
     }
-    
+
     Please update your configuration.
     `
 }
