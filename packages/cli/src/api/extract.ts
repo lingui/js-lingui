@@ -62,7 +62,7 @@ export function extract(
       return
     }
 
-    const extracted = R.values(extractors).some((ext: ExtractorType) => {
+    R.values(extractors).some((ext: ExtractorType) => {
       if (!ext.match || !ext.match(srcFilename)) return false
 
       let spinner

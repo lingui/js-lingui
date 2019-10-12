@@ -19,18 +19,10 @@ export class EventEmitter<
     if (~index) this._events[event].splice(index, 1)
   }
 
-  emit(event: keyof Events, ...args: Parameters<Events[typeof event]>): Promise<any> {
-    if (!this._hasEvent(event)) return Promise.resolve()
+  emit(event: keyof Events, ...args: Parameters<Events[typeof event]>): void {
+    if (!this._hasEvent(event)) return
 
-    return Promise.all(
-      this._events[event]
-        .map(listener => listener.apply(this, args))
-        .map(result =>
-          result == null || result.then == null
-            ? Promise.resolve(result)
-            : result
-        )
-    )
+    this._events[event].map(listener => listener.apply(this, args))
   }
 
   private _hasEvent(event: keyof Events) {

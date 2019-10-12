@@ -8,10 +8,9 @@ import {
   getCatalogs,
   getCatalogForFile,
   Catalog,
-  orderByMessageId,
-  orderByOrigin,
   cleanObsolete,
-  MergeOptions
+  MergeOptions,
+  order
 } from "./catalog"
 
 import { copyFixture } from "../tests"
@@ -21,7 +20,8 @@ const defaultMakeOptions: MakeOptions = {
   verbose: false,
   clean: false,
   overwrite: false,
-  prevFormat: null
+  prevFormat: null,
+  orderBy: "messageId"
 }
 
 const defaultMergeOptions: MergeOptions = {
@@ -729,58 +729,56 @@ describe("cleanObsolete", function() {
   })
 })
 
-describe("orderByMessageId", function() {
-  it("should order messages by ID alphabetically", function() {
+describe("order", function() {
+  it("should order messages alphabetically", function() {
     const catalog = {
-      LabelB: {
+      LabelB: makeNextMessage({
         translation: "B"
-      },
-      LabelA: {
+      }),
+      LabelA: makeNextMessage({
         translation: "A"
-      },
-      LabelD: {
+      }),
+      LabelD: makeNextMessage({
         translation: "D"
-      },
-      LabelC: {
+      }),
+      LabelC: makeNextMessage({
         translation: "C"
-      }
+      })
     }
 
-    const orderedCatalogs = orderByMessageId(catalog)
+    const orderedCatalogs = order("messageId")(catalog)
 
     // Test that the message content is the same as before
-    expect(orderedCatalogs).toEqual(catalog)
+    expect(orderedCatalogs).toMatchSnapshot()
 
     // Jest snapshot order the keys automatically, so test that the key order explicitly
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
-})
 
-describe("orderByOrigin", function() {
-  it("should order messages by origin alphabetically", function() {
+  it("should order messages by origin", function() {
     const catalog = {
-      LabelB: {
+      LabelB: makeNextMessage({
         translation: "B",
         origin: [["file2.js", 2], ["file1.js", 2]]
-      },
-      LabelA: {
+      }),
+      LabelA: makeNextMessage({
         translation: "A",
         origin: [["file2.js", 3]]
-      },
-      LabelD: {
+      }),
+      LabelD: makeNextMessage({
         translation: "D",
         origin: [["file2.js", 100]]
-      },
-      LabelC: {
+      }),
+      LabelC: makeNextMessage({
         translation: "C",
         origin: [["file1.js", 1]]
-      }
+      })
     }
 
-    const orderedCatalogs = orderByOrigin(catalog)
+    const orderedCatalogs = order("origin")(catalog)
 
     // Test that the message content is the same as before
-    expect(orderedCatalogs).toEqual(catalog)
+    expect(orderedCatalogs).toMatchSnapshot()
 
     // Jest snapshot order the keys automatically, so test that the key order explicitly
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()

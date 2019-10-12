@@ -21,7 +21,7 @@ export type LinguiConfig = {
   fallbackLocale: string
   format: CatalogFormat
   locales: Array<string>
-  orderBy: OrderBy,
+  orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
   runtimeConfigModule: [string, string?]

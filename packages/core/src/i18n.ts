@@ -44,9 +44,7 @@ type setupI18nProps = {
 }
 
 type Events = {
-  activate: (locale: string) => Promise<any>
-  load: (locale: string, catalog: Catalog | null) => Promise<any>
-  change: () => Promise<any>
+  change: () => void
 }
 
 export class I18n extends EventEmitter<Events> {
@@ -60,9 +58,9 @@ export class I18n extends EventEmitter<Events> {
     super()
 
     this._catalogs = {}
-    if (params.catalogs != null) this._loadAll(params.catalogs)
+    if (params.catalogs != null) this.loadAll(params.catalogs)
     if (params.locale != null || params.locales != null) {
-      this._activate(params.locale, params.locales)
+      this.activate(params.locale, params.locales)
     }
   }
 
@@ -98,17 +96,14 @@ export class I18n extends EventEmitter<Events> {
     return this.catalog.localeData
   }
 
-  private _loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).map(locale => this._load(locale, catalogs[locale]))
-  }
-
   loadAll(catalogs: Catalogs) {
-    return Object.keys(catalogs).map(locale =>
-      this.load(locale, catalogs[locale])
+    Object.keys(catalogs).map(locale =>
+      this.load(locale, catalogs[locale], true)
     )
+    this.emit("change")
   }
 
-  private _load(locale: Locale, catalog: Catalog) {
+  load(locale: Locale, catalog?: Catalog, bulk = false) {
     if (catalog == null) return
 
     if (this._catalogs[locale] == null) {
@@ -118,16 +113,11 @@ export class I18n extends EventEmitter<Events> {
       Object.assign(prev.messages, catalog.messages)
       Object.assign(prev.localeData, catalog.localeData)
     }
+
+    if (!bulk) this.emit("change")
   }
 
-  load(locale: Locale, catalog?: Catalog) {
-    return this.emit("load", locale, catalog).then(() => {
-      this._load(locale, catalog)
-      return this.emit("change")
-    })
-  }
-
-  private _activate(locale: Locale, locales?: Locales) {
+  activate(locale: Locale, locales?: Locales) {
     if (!this._catalogs[locale]) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(`Message catalog for locale "${locale}" not loaded.`)
@@ -136,14 +126,7 @@ export class I18n extends EventEmitter<Events> {
 
     this._locale = locale
     this._locales = locales
-  }
-
-  activate(locale: Locale, locales?: Locales) {
-    return this.emit("activate", locale).then(() => {
-      this._activate(locale, locales)
-
-      return this.emit("change")
-    })
+    this.emit("change")
   }
 
   // default translate method

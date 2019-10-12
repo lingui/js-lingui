@@ -2,21 +2,17 @@ import { EventEmitter } from "./eventEmitter"
 
 describe("@lingui/core/eventEmitter", () => {
   it("should call registered event listeners on emit", async () => {
-    const withoutResponse = jest.fn()
-    const withSyncResponse = jest.fn(() => "sync")
-    const withAsyncResponse = jest.fn(() => Promise.resolve("async"))
+    const firstListener = jest.fn()
+    const secondListener = jest.fn(() => "return value is ignored")
 
     const emitter = new EventEmitter()
-    emitter.on("test", withoutResponse)
-    emitter.on("test", withSyncResponse)
-    emitter.on("test", withAsyncResponse)
+    emitter.on("test", firstListener)
+    emitter.on("test", secondListener)
 
-    const result = await emitter.emit("test", 42)
+    emitter.emit("test", 42)
 
-    expect(withoutResponse).toBeCalledWith(42)
-    expect(withSyncResponse).toBeCalledWith(42)
-    expect(withAsyncResponse).toBeCalledWith(42)
-    expect(result).toEqual([undefined, "sync", "async"])
+    expect(firstListener).toBeCalledWith(42)
+    expect(secondListener).toBeCalledWith(42)
   })
 
   it("should allow unsubscribing from events", () => {
@@ -31,12 +27,6 @@ describe("@lingui/core/eventEmitter", () => {
     unsubscribe()
     emitter.emit("test", 42)
     expect(listener).not.toBeCalled()
-  })
-
-  it("emit should always return a promise", () => {
-    const emitter = new EventEmitter()
-    const response = emitter.emit("test", 42)
-    expect(response.then).toBeDefined()
   })
 
   it("should do nothing when even doesn't exist", () => {

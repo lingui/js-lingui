@@ -23,7 +23,7 @@ const LOCALE = "{locale}"
 
 export interface MakeOptions extends CliExtractOptions {
   projectType?: string
-  orderBy?: OrderType
+  orderBy?: OrderBy
 }
 
 export interface MergeOptions {
@@ -76,7 +76,7 @@ export class Catalog {
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
-        this.config.orderBy === 'messageId' ? orderByMessageId : orderByOrigin
+        order(options.orderBy)
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
@@ -461,6 +461,15 @@ export const cleanObsolete = R.filter(
   (message: ExtractedMessageType) => !message.obsolete
 )
 
+export function order(
+  by: OrderBy
+): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
+  return {
+    messageId: orderByMessageId,
+    origin: orderByOrigin
+  }[by]
+}
+
 /**
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
@@ -487,7 +496,7 @@ export function orderByOrigin(messages) {
   }
 
   return Object.keys(messages)
-    .sort(function (a, b) {
+    .sort(function(a, b) {
       const [aFile, aLineNumber] = getFirstOrigin(a)
       const [bFile, bLineNumber] = getFirstOrigin(b)
 
