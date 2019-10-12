@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Tag, Button, message } from "antd"
 
+import { i18n } from "@lingui/core"
 import { I18nProvider, useLingui } from "@lingui/react"
 import { t, Trans, Plural } from "@lingui/macro"
 
@@ -17,7 +18,6 @@ export default function Root() {
 }
 
 function App() {
-  const { i18n } = useLingui()
   return (
     <div style={{ padding: "20px 50px" }}>
       <p>
