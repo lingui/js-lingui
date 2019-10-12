@@ -28,11 +28,11 @@ export interface TransProps {
 export interface ChoiceProps extends TransProps {
   value?: string | number
   offset?: number
-  zero: ReactNode
-  one: ReactNode
-  few: ReactNode
-  many: ReactNode
-  other: ReactNode
+  zero?: ReactNode
+  one?: ReactNode
+  few?: ReactNode
+  many?: ReactNode
+  other?: ReactNode
 }
 
 export interface SelectProps extends TransProps {

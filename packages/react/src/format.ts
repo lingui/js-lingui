@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*)<\/\1>|<(\d+)\/>/
