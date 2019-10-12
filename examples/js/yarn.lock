@@ -867,7 +867,7 @@
     make-plural "^4.1.1"
     messageformat-parser "^2.0.0"
 
-"@lingui/macro@^3.0.0-7":
+"@lingui/macro@next":
   version "3.0.0-7"
   resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.0.0-7.tgz#9e67e7c1677cf83257c14cf8042da41e4839f8fe"
   integrity sha512-vpfKPTxylKhEB4pQeoyjIlRKVFgwIMprLRYPH+kF47RhMWABkLaREmPcs2+qRUEEYJphEBKUgDndH2g0T4yyug==

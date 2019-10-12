@@ -1,12 +1,14 @@
-import { setupI18n } from "@lingui/core"
+import { i18n } from "@lingui/core"
 import { t, plural, defineMessage } from "@lingui/macro"
 
-export const i18n = setupI18n()
-
-i18n.loadAll({
-  en: require("./locale/en/messages"),
-  cs: require("./locale/cs/messages")
-})
+export function activate(locale) {
+  const catalog = require(`./locale/${locale}/messages`)
+  i18n.load({
+    locale,
+    messages: catalog.messages,
+    localeData: catalog.localeData
+  })
+}
 
 export const common = {
   yes: () =>
@@ -74,10 +76,10 @@ function main() {
 }
 
 if (require.main === module) {
-  i18n.activate("en")
+  activate("en")
   main()
 
   console.log()
-  i18n.activate("cs")
+  activate("cs")
   main()
 }

@@ -1,26 +1,22 @@
 import * as React from "react"
 import { render } from "@testing-library/react"
 import { Trans, I18nProvider } from "@lingui/react"
-import { setupI18n } from "@lingui/core"
+import { I18n } from "@lingui/core"
 
 describe("Trans component", function() {
   /*
    * Setup context, define helpers
    */
-  const i18n = setupI18n({
+  const i18n = new I18n({
     locale: "cs",
-    catalogs: {
-      cs: {
-        messages: {
-          "All human beings are born free and equal in dignity and rights.":
-            "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
-          "My name is {name}": "Jmenuji se {name}",
-          Original: "Původní",
-          Updated: "Aktualizovaný",
-          "msg.currency": "{value, number, currency}",
-          ID: "Translation"
-        }
-      }
+    messages: {
+      "All human beings are born free and equal in dignity and rights.":
+        "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
+      "My name is {name}": "Jmenuji se {name}",
+      Original: "Původní",
+      Updated: "Aktualizovaný",
+      "msg.currency": "{value, number, currency}",
+      ID: "Translation"
     }
   })
 

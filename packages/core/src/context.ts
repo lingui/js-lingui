@@ -4,11 +4,9 @@ import { isString, isFunction } from "./essentials"
 
 const defaultFormats = (
   locale,
-  locales,
   localeData = { plurals: undefined },
   formats = {}
 ) => {
-  locales = locales || locale
   const { plurals } = localeData
   const style = format =>
     isString(format) ? formats[format] || { style: format } : format
@@ -16,7 +14,7 @@ const defaultFormats = (
     return ctx => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
-      const formatter = new Intl.NumberFormat(locales)
+      const formatter = new Intl.NumberFormat(locale)
       const valueStr = formatter.format(value)
       return norm.map(m => (isString(m) ? m.replace("#", valueStr) : m))
     }
@@ -35,9 +33,9 @@ const defaultFormats = (
 
     select: (value, rules) => rules[value] || rules.other,
 
-    number: (value, format) => number(locales, style(format))(value),
+    number: (value, format) => number(locale, style(format))(value),
 
-    date: (value, format) => date(locales, style(format))(value),
+    date: (value, format) => date(locale, style(format))(value),
 
     undefined: value => value
   }
@@ -55,8 +53,8 @@ const defaultFormats = (
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context({ locale, locales, values, formats, localeData }) {
-  const formatters = defaultFormats(locale, locales, localeData, formats)
+function context({ locale, values, formats, localeData }) {
+  const formatters = defaultFormats(locale, localeData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
     const value = values[name]
@@ -71,13 +69,11 @@ function context({ locale, locales, values, formats, localeData }) {
 export function interpolate(
   translation: string | Array<string | [string, string?, Object?]>,
   locale: string,
-  locales: Locales,
   localeData: Object
 ) {
   return (values: Object, formats: Object = {}) => {
     const ctx = context({
       locale,
-      locales,
       localeData,
       formats,
       values

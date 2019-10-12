@@ -1,8 +1,7 @@
 import { interpolate } from "./context"
-import { isString, isFunction, isEmpty } from "./essentials"
+import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
-import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
   message?: string
@@ -37,96 +36,30 @@ export type Catalog = {
 export type Catalogs = { [locale: string]: Catalog }
 
 type setupI18nProps = {
-  locale?: Locale
-  locales?: Locales
-  catalogs?: Catalogs
+  locale: Locale
+  messages: Messages
+  localeData: LocaleData
   missing?: string | ((message, id) => string)
 }
 
-type Events = {
-  change: () => void
-}
+export class I18n {
+  protected messageFormat: typeof icu
+  protected locale: Locale
+  protected messages: Messages
+  protected localeData: LocaleData
+  protected missing: string | ((message, id) => string)
 
-export class I18n extends EventEmitter<Events> {
-  messageFormat: typeof icu
-  _catalogs: Catalogs
-  _locale: Locale
-  _locales: Locales
-  _missing: string | ((message, id) => string)
+  constructor(params?: setupI18nProps) {
+    this.messageFormat = icu
 
-  constructor(params: setupI18nProps) {
-    super()
-
-    this._catalogs = {}
-    if (params.catalogs != null) this.loadAll(params.catalogs)
-    if (params.locale != null || params.locales != null) {
-      this.activate(params.locale, params.locales)
-    }
+    if (params != null) this.load(params)
   }
 
-  get locale() {
-    return this._locale
-  }
-
-  get locales() {
-    return this._locales
-  }
-
-  get catalog(): Catalog {
-    return this._catalogs[this.locale]
-  }
-
-  get messages(): Messages {
-    return this.catalog && this.catalog.messages ? this.catalog.messages : {}
-  }
-
-  get localeData(): LocaleData {
-    if (process.env.NODE_ENV !== "production") {
-      if (!this.catalog) {
-        this._catalogs[this.locale] = {
-          messages: {}
-        }
-      }
-      if (isEmpty(this.catalog.localeData)) {
-        this.catalog.localeData = this.messageFormat.loadLocaleData(
-          this._locale
-        )
-      }
-    }
-    return this.catalog.localeData
-  }
-
-  loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).map(locale =>
-      this.load(locale, catalogs[locale], true)
-    )
-    this.emit("change")
-  }
-
-  load(locale: Locale, catalog?: Catalog, bulk = false) {
-    if (catalog == null) return
-
-    if (this._catalogs[locale] == null) {
-      this._catalogs[locale] = catalog
-    } else {
-      const prev = this._catalogs[locale]
-      Object.assign(prev.messages, catalog.messages)
-      Object.assign(prev.localeData, catalog.localeData)
-    }
-
-    if (!bulk) this.emit("change")
-  }
-
-  activate(locale: Locale, locales?: Locales) {
-    if (!this._catalogs[locale]) {
-      if (process.env.NODE_ENV !== "production") {
-        console.warn(`Message catalog for locale "${locale}" not loaded.`)
-      }
-    }
-
-    this._locale = locale
-    this._locales = locales
-    this.emit("change")
+  load(params: setupI18nProps) {
+    this.locale = params.locale
+    this.messages = params.messages || {}
+    this.localeData = params.localeData
+    this.missing = params.missing
   }
 
   // default translate method
@@ -143,7 +76,7 @@ export class I18n extends EventEmitter<Events> {
     let translation = this.messages[id] || message || id
 
     // replace missing messages with custom message for debugging
-    const missing = this._missing
+    const missing = this.missing
     if (missing && !this.messages[id]) {
       return isFunction(missing) ? missing(this.locale, id) : missing
     }
@@ -156,28 +89,17 @@ export class I18n extends EventEmitter<Events> {
 
     if (isString(translation)) return translation
 
-    return interpolate(translation, this.locale, this.locales, this.localeData)(
+    return interpolate(translation, this.locale, this.localeData)(
       values,
       formats
     )
   }
 
   date(value: string | Date, format: Intl.DateTimeFormatOptions): string {
-    return date(this.locales || this.locale, format)(value)
+    return date(this.locale, format)(value)
   }
 
   number(value: number, format: Intl.NumberFormatOptions): string {
-    return number(this.locales || this.locale, format)(value)
+    return number(this.locale, format)(value)
   }
 }
-
-function setupI18n(params: setupI18nProps = {}): I18n {
-  const i18n = new I18n(params)
-  i18n.messageFormat = icu
-
-  if (params.missing) i18n._missing = params.missing
-
-  return i18n
-}
-
-export { setupI18n }

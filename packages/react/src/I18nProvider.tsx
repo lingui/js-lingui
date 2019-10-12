@@ -27,18 +27,6 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
   const [context, setContext] = React.useState<I18nContext>(makeContext())
 
   /**
-   * Subscribe for locale/message changes
-   *
-   * I18n object from `@lingui/core` is the single source of truth for all i18n related
-   * data (active locale, catalogs). When new messages are loaded or locale is changed
-   * we need to trigger re-rendering of LinguiContext.Consumers.
-   */
-  React.useEffect(() => {
-    const unsubscribe = props.i18n.on("change", () => setContext(makeContext()))
-    return () => unsubscribe()
-  }, [])
-
-  /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
    * reference identity and suggested workaround is create a wrapper object every time
