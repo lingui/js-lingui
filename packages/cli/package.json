@@ -34,11 +34,11 @@
     "*.js.flow"
   ],
   "dependencies": {
-    "@babel/generator": "^7.4.4",
-    "@babel/parser": "^7.4.5",
+    "@babel/generator": "^7.6.4",
+    "@babel/parser": "^7.6.4",
     "@babel/plugin-syntax-jsx": "^7.0.0",
-    "@babel/runtime": "^7.4.5",
-    "@babel/types": "^7.4.4",
+    "@babel/runtime": "^7.6.3",
+    "@babel/types": "^7.6.3",
     "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "babel-plugin-macros": "^2.4.1",
@@ -58,7 +58,7 @@
     "pofile": "^1.0.11",
     "pseudolocale": "^1.1.0",
     "ramda": "^0.26.1",
-    "typescript": "^3.4.5"
+    "typescript": "^3.6.4"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0"

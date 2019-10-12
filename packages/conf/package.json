@@ -18,10 +18,10 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
+    "@babel/runtime": "^7.6.3",
     "chalk": "^2.3.0",
     "cosmiconfig": "^5.2.1",
-    "jest-validate": "^24.8.0"
+    "jest-validate": "^24.9.0"
   },
   "files": [
     "LICENSE",
