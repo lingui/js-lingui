@@ -18,10 +18,7 @@ module.exports = {
   coverageReporters: ["html", "lcov", "text"],
 
   reporters: ["default", "jest-junit"],
-  setupFilesAfterEnv: [
-    require.resolve("./env.js"),
-    "@testing-library/react/cleanup-after-each"
-  ],
+  setupFilesAfterEnv: [require.resolve("./env.js")],
   snapshotSerializers: [
     "enzyme-to-json/serializer",
     "jest-serializer-html",

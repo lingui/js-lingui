@@ -7,12 +7,12 @@ export const locales = {
   cs: "Česky"
 }
 
-function loadCatalog(locale) {
+export async function activate(locale) {
   /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-  return import(`@lingui/loader!./locales/${locale}.po`).then(catalog =>
-    i18n.load(locale, catalog)
-  )
+  const catalog = await import(`@lingui/loader!./locales/${locale}.po`)
+
+  i18n.load(locale, catalog)
+  i18n.activate(locale)
 }
 
-i18n.on("activate", loadCatalog)
-i18n.activate(defaultLocale)
+activate(defaultLocale)

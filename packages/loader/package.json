@@ -29,14 +29,14 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
+    "@babel/runtime": "^7.6.3",
     "@lingui/cli": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "loader-utils": "^1.1.0",
     "ramda": "^0.26.1"
   },
   "devDependencies": {
-    "memory-fs": "^0.4.1"
+    "memory-fs": "^0.5.0"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"

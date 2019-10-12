@@ -78,9 +78,10 @@ function main(locale) {
 }
 
 if (require.main === module) {
-  i18n
-    .activate("en")
-    .then(main)
-    .then(() => i18n.activate("cs"))
-    .then(main)
+  i18n.activate("en")
+  main()
+
+  console.log()
+  i18n.activate("cs")
+  main()
 }

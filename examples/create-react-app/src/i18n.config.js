@@ -5,12 +5,13 @@ export const locales = {
   cs: "Česky"
 }
 
-async function loadCatalog(locale) {
+export async function activate(locale) {
   const catalog = await import(
     /* webpackChunkName: "i18n-[index]" */ `@lingui/loader!./locales/${locale}.po`
   )
+
   i18n.load(locale, catalog)
+  i18n.activate(locale)
 }
 
-i18n.on("activate", loadCatalog)
-i18n.activate("en")
+activate("en")

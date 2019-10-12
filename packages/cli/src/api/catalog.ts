@@ -6,7 +6,7 @@ import chalk from "chalk"
 import glob from "glob"
 import minimatch from "minimatch"
 
-import { LinguiConfig } from "@lingui/conf"
+import { LinguiConfig, OrderBy } from "@lingui/conf"
 import getFormat from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
@@ -23,6 +23,7 @@ const LOCALE = "{locale}"
 
 export interface MakeOptions extends CliExtractOptions {
   projectType?: string
+  orderBy?: OrderBy
 }
 
 export interface MergeOptions {
@@ -74,7 +75,7 @@ export class Catalog {
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
-        orderByMessageId
+        order(options.orderBy)
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
     this.writeAll(cleanAndSort(catalogs))
@@ -500,6 +501,15 @@ export const cleanObsolete = R.filter(
   (message: ExtractedMessageType) => !message.obsolete
 )
 
+export function order(
+  by: OrderBy
+): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
+  return {
+    messageId: orderByMessageId,
+    origin: orderByOrigin
+  }[by]
+}
+
 /**
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
@@ -513,4 +523,33 @@ export function orderByMessageId(messages) {
     })
 
   return orderedMessages
+}
+
+export function orderByOrigin(messages) {
+  function getFirstOrigin(messageKey) {
+    const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      return 0
+    })
+    return sortedOrigins[0]
+  }
+
+  return Object.keys(messages)
+    .sort(function(a, b) {
+      const [aFile, aLineNumber] = getFirstOrigin(a)
+      const [bFile, bLineNumber] = getFirstOrigin(b)
+
+      if (aFile < bFile) return -1
+      if (aFile > bFile) return 1
+
+      if (aLineNumber < bLineNumber) return -1
+      if (aLineNumber > bLineNumber) return 1
+
+      return 0
+    })
+    .reduce((acc, key) => {
+      acc[key] = messages[key]
+      return acc
+    }, {})
 }

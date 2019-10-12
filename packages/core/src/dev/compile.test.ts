@@ -20,7 +20,7 @@ describe("compile", function() {
     mockConsole(console => {
       expect(compile("Invalid {{message}}")).toEqual("Invalid {{message}}")
       expect(console.error).toBeCalledWith(
-        "Message cannot be parsed due to syntax erorrs: Invalid {{message}}"
+        "Message cannot be parsed due to syntax errors: Invalid {{message}}"
       )
     })
   })

@@ -22,21 +22,5 @@
     "babel-jest": "^24.8.0",
     "babel-plugin-macros": "^2.5.1",
     "jest": "^24.8.0"
-  },
-  "lingui": {
-    "locales": [
-      "en",
-      "cs"
-    ],
-    "format": "po",
-    "catalogs": [
-      {
-        "path": "./src/locale/{locale}/messages",
-        "include": [
-          "./src"
-        ]
-      }
-    ],
-    "sourceLocale": "en"
   }
 }
