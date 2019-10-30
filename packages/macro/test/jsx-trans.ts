@@ -241,6 +241,20 @@ export default [
   },
   {
     input: `
+        import { Trans } from "@lingui/macro";
+        <Trans>
+          Keep multiple{"\\n"}
+          forced{"\\n"}
+          newlines!
+        </Trans>
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="Keep multiple\\n forced\\n newlines!" />;
+      `
+  },
+  {
+    input: `
         import { t, plural, Trans } from '@lingui/macro'
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
