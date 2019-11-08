@@ -27,7 +27,7 @@ type LinguiPublisher = {|
 
   unsubscribe(callback: Function): void,
 
-  update(?{ catalogs?: Catalogs, language?: string, locales?: string }): void
+  update(?{ catalogs?: Catalogs, language?: string, locales?: Locales }): void
 |}
 
 /*
@@ -54,7 +54,11 @@ export function makeLinguiPublisher(i18n: I18n): LinguiPublisher {
     },
 
     update(
-      params: ?{ catalogs?: Catalogs, language?: string, locales?: string } = {}
+      params: ?{
+        catalogs?: Catalogs,
+        language?: string,
+        locales?: Locales
+      } = {}
     ) {
       if (!params) return
       const { catalogs, language, locales } = params

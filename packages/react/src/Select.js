@@ -48,7 +48,6 @@ const Select = withI18n()(
 
 const PluralFactory = (ordinal = false) => {
   const displayName = !ordinal ? "Plural" : "SelectOrdinal"
-  const pluralType = !ordinal ? "plural" : "selectOrdinal"
 
   return class extends React.Component<*, PluralProps> {
     displayName = displayName
@@ -61,6 +60,7 @@ const PluralFactory = (ordinal = false) => {
 
     render() {
       const { className, render, i18n, value, offset, ...props } = this.props
+      const getPluralValue = !ordinal ? i18n.plural : i18n.selectOrdinal
 
       // i18n.selectOrdinal/plural uses numbers for exact matches (1, 2),
       // while SelectOrdinal/Plural has to use strings (_1, _2).
@@ -80,7 +80,7 @@ const PluralFactory = (ordinal = false) => {
         <Render
           className={className}
           render={render}
-          value={i18n[pluralType](pluralProps)}
+          value={getPluralValue(pluralProps)}
         />
       )
     }
