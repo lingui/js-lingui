@@ -65,7 +65,11 @@ function command(config, options) {
       }))
     )
 
-    if (!options.allowEmpty && config.sourceLocale !== locale) {
+    if (
+      !options.allowEmpty &&
+      config.sourceLocale !== locale &&
+      config.pseudoLocale !== locale
+    ) {
       const missing = R.keys(messages).filter(
         key => messages[key] === undefined
       )
