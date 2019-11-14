@@ -30,7 +30,10 @@ export default (config: LinguiConfig): CatalogApi => {
       )
 
       const created = !fs.existsSync(filename)
-      format.write(filename, messages, { language: locale })
+      format.write(filename, messages, {
+        language: locale,
+        ...config.formatOptions
+      })
       return [created, filename]
     },
 

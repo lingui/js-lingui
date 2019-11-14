@@ -1,13 +1,20 @@
 // @flow
 import fs from "fs"
+import * as R from "ramda"
 
 import type { TranslationsFormat } from "../types"
+
+const removeOrigins = R.map(({ origin, ...message }) => message)
 
 const format: TranslationsFormat = {
   filename: "messages.json",
 
-  write(filename, catalog) {
-    fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
+  write(filename, catalog, options = {}) {
+    let outputCatalog = catalog
+    if (options.origins === false) {
+      outputCatalog = removeOrigins(catalog)
+    }
+    fs.writeFileSync(filename, JSON.stringify(outputCatalog, null, 2))
   },
 
   read(filename) {
