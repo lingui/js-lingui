@@ -58,14 +58,15 @@
     "ora": "^3.4.0",
     "pofile": "^1.0.11",
     "pseudolocale": "^1.1.0",
-    "ramda": "^0.26.1",
-    "typescript": "^2.9.2"
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
-    "mockdate": "^2.0.2"
+    "mockdate": "^2.0.2",
+    "typescript": "^3.7.2"
   },
   "peerDependencies": {
     "babel-core": "6.x || ^7.0.0-bridge.0",
-    "babel-plugin-macros": "^2.4.2"
+    "babel-plugin-macros": "^2.4.2",
+    "typescript": "2.9.x || 3.x"
   }
 }
