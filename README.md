@@ -5,7 +5,7 @@
 
 <hr />
 
-[![CircleCI][Badge-CI]][CI] 
+[![CircleCI][Badge-CI]][CI]
 [![AppVeyor][Badge-AppVeyor]][AppVeyor]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
@@ -25,29 +25,29 @@ Lingui is an easy yet powerful internationalization framework for global project
 
 - **Clean and readable** - Keep your code clean and readable, while the library uses
   battle-tested and powerful **ICU MessageFormat** under the hood.
-  
+
 - **Universal** - Use it everywhere. `@lingui/core` provides the essential intl
   functionality which works in any JavaScript project while `@lingui/react` offers
   components to leverage React rendering.
 
 - **Full rich-text support** - Use React components inside localized messages
   without any limitation. Writing rich-text messages is as easy as writing JSX.
-  
+
 - **Powerful tooling** - Manage the whole intl workflow using Lingui [CLI][RefCLI]. It
   extracts messages from source code, validates messages coming from translators and
   checks that all messages are translated before shipping to production.
-  
+
 - **Unopinionated** - Integrate Lingui into your existing workflow. It supports
   message keys as well as auto generated messages. Translations are stored either in
   JSON or standard PO file, which is supported in almost all translation tools.
-  
+
 - **Lightweight and optimized** - Core library is only [1.9 kB gzipped][BundleCore],
   React components are additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
-  
+
 - **Active community** - Join us on [Spectrum][Spectrum] to discuss the latest development.
   At the moment, Lingui is the most active intl project on GitHub.
-  
+
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl
   and the message format is the same. It's easy to migrate an existing project.
 
@@ -98,8 +98,7 @@ For more example see the [React tutorial][TutorialReact].
 
 If you are having issues, please let us know.
 
-- Join us at [gitter.im][Gitter] to get almost instant
-  feedback.
+- Join us at [Gitter](https://gitter.im/lingui/js-lingui) to get almost instant feedback.
 - Ask question on [StackOverflow](https://stackoverflow.com/questions/ask?tags=jsLingui)
   and mark it with [Lingui](https://stackoverflow.com/questions/tagged/jslingui) tag.
 - If something doesn't work as documented, documentation is missing or if you just want
