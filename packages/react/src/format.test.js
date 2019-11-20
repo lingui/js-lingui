@@ -53,4 +53,16 @@ describe("formatElements", function() {
       )
     )
   })
+
+  it("should format multiple usages of same element in the same scope", function() {
+    expect(
+      html(
+        formatElements("<0>First</0> second <0>third</0> <0>fourth</0>", [
+          <sup />
+        ])
+      )
+    ).toEqual(
+      wrap("<sup>First</sup> second <sup>third</sup> <sup>fourth</sup>")
+    )
+  })
 })
