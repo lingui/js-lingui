@@ -37,7 +37,7 @@
     "cjs/"
   ],
   "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0"
+    "react": "^16.0.0"
   },
   "dependencies": {
     "@lingui/core": "0.0.0-managed-by-release-script",
