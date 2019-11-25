@@ -9,7 +9,7 @@ describe("Categories", function() {
     setupI18n({
       language: language,
       locales: locales,
-      catalogs: { [language]: {} }
+      catalogs: { [language]: { messages: {} } }
     })
   const languageContext = (language, locales) => ({
     context: { linguiPublisher: { i18n: i18n(language, locales) } }

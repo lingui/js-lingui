@@ -165,14 +165,14 @@ describe("I18nPublisher", function() {
     })
     expect(linguiPublisher.i18n.language).toEqual("fr")
     expect(linguiPublisher.i18n.messages).toEqual({ msg: "salut!" })
-    expect(linguiPublisher.i18n.languageData.plurals()).toEqual("Function")
+    expect(typeof linguiPublisher.i18n.languageData.plurals).toEqual("function")
   })
 
   it("should subscribe/unsubscribe listeners for context changes", function() {
     const linguiPublisher = makeLinguiPublisher(
       setupI18n({
         language: "en",
-        catalogs: { en: {} }
+        catalogs: { en: { messages: {} } }
       })
     )
     const listener = jest.fn()
@@ -191,7 +191,7 @@ describe("I18nPublisher", function() {
     const linguiPublisher = makeLinguiPublisher(
       setupI18n({
         language: "en",
-        catalogs: { en: {}, fr: {} }
+        catalogs: { en: { messages: {} }, fr: { messages: {} } }
       })
     )
     linguiPublisher.subscribe(listener)
