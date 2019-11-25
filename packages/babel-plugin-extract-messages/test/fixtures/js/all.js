@@ -8,3 +8,4 @@ i18n._("{count, plural, one {# book} other {# books}}", {
   count: count
 })
 i18n._(message)
+i18n._("msg.context", null, { defaults: "Hello World", context: "context"})

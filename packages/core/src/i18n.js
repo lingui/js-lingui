@@ -10,7 +10,8 @@ import * as dev from "./dev"
 
 type MessageOptions = {|
   defaults?: string,
-  formats?: Object
+  formats?: Object,
+  context?: string
 |}
 
 type Locales = string | string[]
@@ -183,7 +184,7 @@ class I18n {
   _(
     id: string | Object,
     values: Object = {},
-    { defaults, formats = {} }: MessageOptions = {}
+    { defaults, formats = {}, context }: MessageOptions = {}
   ) {
     // Expand message descriptor
     if (id && typeof id === "object") {
@@ -191,6 +192,7 @@ class I18n {
       defaults = id.defaults
       formats = id.formats
       id = id.id
+      context = id.context
     }
 
     let translation = this.messages[id] || defaults || id

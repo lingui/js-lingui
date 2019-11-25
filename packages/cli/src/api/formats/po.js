@@ -22,6 +22,7 @@ const serialize = R.compose(
     const item = new PO.Item()
     item.msgid = key
     item.msgstr = message.translation
+    item.msgctxt = message.context
     item.comments = message.comments || []
     item.extractedComments = message.description ? [message.description] : []
     item.references = message.origin ? message.origin.map(joinOrigin) : []
@@ -35,6 +36,7 @@ const serialize = R.compose(
 
 const getMessageKey = R.prop("msgid")
 const getTranslations = R.prop("msgstr")
+const getContext = R.prop("msgctxt")
 const getExtractedComments = R.prop("extractedComments")
 const getTranslatorComments = R.prop("comments")
 const getOrigins = R.prop("references")
@@ -52,6 +54,10 @@ const deserialize = R.map(
       R.head,
       R.defaultTo([]),
       getTranslations
+    ),
+    context: R.compose(
+      R.defaultTo(undefined),
+      getContext
     ),
     description: R.compose(
       R.head,

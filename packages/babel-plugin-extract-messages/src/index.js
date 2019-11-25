@@ -12,7 +12,7 @@ const MESSAGES = Symbol("I18nMessages")
 // Then, i18n._ methods are visited multiple times for each parent CallExpression.
 const VISITED = Symbol("I18nVisited")
 
-function addMessage(path, messages, { id, defaults, origin, ...props }) {
+function addMessage(path, messages, { id, defaults, origin, context, ...props }) {
   if (messages.has(id)) {
     const message = messages.get(id)
 
@@ -27,9 +27,10 @@ function addMessage(path, messages, { id, defaults, origin, ...props }) {
       }
 
       ;[].push.apply(message.origin, origin)
+      message.context = context || message.context;
     }
   } else {
-    messages.set(id, { ...props, defaults, origin })
+    messages.set(id, { ...props, defaults, origin, context })
   }
 }
 
@@ -113,7 +114,7 @@ export default function({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "defaults" || key === "description") {
+          if (key === "id" || key === "defaults" || key === "description" || key === "context") {
             if (item.value.value) {
               acc[key] = item.value.value
             } else if (
@@ -184,6 +185,7 @@ export default function({ types: t }) {
           (acc, item) => {
             const key = item.key.name
             if (key === "defaults") acc[key] = item.value.value
+            if (key === "context") acc[key] = item.value.value
             return acc
           },
           { id }
@@ -218,7 +220,7 @@ export default function({ types: t }) {
         const description = comment.value.replace(/\s*i18n:?\s*/, "").trim()
         if (description) props.description = description
 
-        const copyProps = ["id", "defaults"]
+        const copyProps = ["id", "defaults", "context"]
         path.node.properties
           .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
           .forEach(({ key, value }) => {

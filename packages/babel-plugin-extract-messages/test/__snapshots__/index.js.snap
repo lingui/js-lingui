@@ -28,6 +28,25 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files (integration) 1`] = `
 Object {
+  Hello World: Object {
+    context: Context without id,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
+        6,
+      ],
+    ],
+  },
+  customId: Object {
+    context: customContext,
+    defaults: Hello World,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/integration.js,
+        5,
+      ],
+    ],
+  },
   msg.hello: Object {
     origin: Array [
       Array [
@@ -102,6 +121,15 @@ multiline,
       ],
     ],
   },
+  Message with context: Object {
+    context: context,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/macro.js,
+        40,
+      ],
+    ],
+  },
   msg.id: Object {
     defaults: Message With Description,
     origin: Array [
@@ -116,6 +144,16 @@ multiline,
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JS files 1`] = `
 Object {
+  msg.context: Object {
+    context: context,
+    defaults: Hello World,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/js/all.js,
+        11,
+      ],
+    ],
+  },
   msg.default: Object {
     defaults: Hello World,
     origin: Array [
@@ -150,6 +188,15 @@ Object {
 
 exports[`babel-plugin-lingui-extract-messages should extract all messages from JSX files (integration) 1`] = `
 Object {
+  Hello world: Object {
+    context: context,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        4,
+      ],
+    ],
+  },
   Hi, my name is {name}: Object {
     origin: Array [
       Array [
@@ -162,15 +209,15 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        4,
-      ],
-      Array [
-        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        13,
+        5,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
         14,
+      ],
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
+        15,
       ],
     ],
   },
@@ -178,15 +225,15 @@ Object {
     origin: Array [
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        6,
+        7,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        16,
+        17,
       ],
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/integration.js,
-        21,
+        22,
       ],
     ],
   },
@@ -200,6 +247,15 @@ Object {
       Array [
         packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
         9,
+      ],
+    ],
+  },
+  msg.context: Object {
+    context: context,
+    origin: Array [
+      Array [
+        packages/babel-plugin-extract-messages/test/fixtures/jsx/all.js,
+        16,
       ],
     ],
   },

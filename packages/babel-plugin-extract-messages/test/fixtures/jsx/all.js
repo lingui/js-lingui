@@ -13,3 +13,4 @@ i18n._("{count, plural, one {# book} other {# books}}", {
   }
 })
 ;<Trans id={message} />
+;<Trans id="msg.context" context="context" />

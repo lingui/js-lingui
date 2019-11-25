@@ -72,17 +72,36 @@ export default class Transformer {
 
   transformI18nMethod(node, file, props) {
     if (this.t.isCallExpression(node.tag)) {
-      // Message with custom ID, where message is used as defaults
-      // i18n.t('id')`Hello World`
-      const defaults = node.tag.arguments[0]
-      if (!this.t.isStringLiteral(defaults)) {
-        throw file.buildCodeFrameError(node.tag, "Message ID must be a string")
-      }
       const newProps = this.transformTemplateLiteral(node.quasi, file, props)
-      return {
-        ...newProps,
-        text: defaults.value,
-        defaults: props.text
+        
+      // Message with custom ID, where message is used as defaults
+      const defaults = node.tag.arguments[0]
+      if (this.t.isStringLiteral(defaults)) { 
+        // i18n.t('id')`Hello World`
+        return {
+          ...newProps,
+          text: defaults.value,
+          defaults: props.text
+        }
+      } else if (this.t.isObjectExpression(defaults)) {
+        // i18n.t({id: 'id', context: 'context})`Hello World`
+        const idProperty = defaults.properties.find(x => x.key.name === "id");
+        const contextProperty = defaults.properties.find(x => x.key.name === "context");
+        const idOverrides = idProperty ? {
+          text: idProperty.value.value,
+          defaults: props.text,
+        } : {};
+        const contextOverrides = contextProperty ? {
+          context: contextProperty.value.value
+        } : {};
+
+        return {
+          ...newProps,
+          ...idOverrides,
+          ... contextOverrides
+        }
+      } else {
+        throw file.buildCodeFrameError(node.tag, "Message ID must be a string or object with keys { id, context }")
       }
     }
 
@@ -344,6 +363,15 @@ export default class Transformer {
         this.t.objectProperty(
           this.t.identifier("defaults"),
           this.t.stringLiteral(props.defaults)
+        )
+      )
+    }
+
+    if (props.context) {
+      tOptions.push(
+        this.t.objectProperty(
+          this.t.identifier("context"),
+          this.t.stringLiteral(props.context)
         )
       )
     }

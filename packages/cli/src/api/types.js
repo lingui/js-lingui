@@ -22,6 +22,7 @@ export type MessageType = {
   origin: Array<[number, string]>,
   description: ?string,
   comments: ?Array<string>,
+  context: ?string,
   obsolete: boolean,
   flags: ?Array<string>
 }

@@ -1,14 +1,23 @@
 import fs from "fs"
 import path from "path"
-import mockFs from "mock-fs"
+//import mockFs from "mock-fs"
 import mockDate from "mockdate"
 import { mockConsole } from "../../mocks"
 import PO from "pofile"
 
 import format from "./po"
 
-describe.skip(
-  "mock-fs doesn't work with Node.js +10",
+const realFs = jest.requireActual('fs');
+
+jest.mock('fs', () => {
+  return {
+    readFileSync: jest.fn(() => ""),
+    writeFileSync: jest.fn(),
+    existsSync: jest.fn(() => true)
+  }
+});
+
+describe(
   "pofile format",
   function() {
     const dateHeaders = {
@@ -17,15 +26,11 @@ describe.skip(
     }
 
     afterEach(() => {
-      mockFs.restore()
+      fs.writeFileSync.mockReset();
+      //fs.readF.mockReset();
     })
 
     it("should write catalog in pofile format", function() {
-      mockFs({
-        locale: {
-          en: mockFs.directory()
-        }
-      })
       mockDate.set("2018-08-27 10:00", 0)
 
       const filename = path.join("locale", "en", "messages.po")
@@ -52,6 +57,10 @@ describe.skip(
           ],
           translation: "Support translator comments separately"
         },
+        withContext: {
+          context: "Description of the context",
+          translation: "Context can be used to group related items together"
+        },
         obsolete: {
           translation: "Obsolete message",
           obsolete: true
@@ -74,30 +83,18 @@ describe.skip(
       }
 
       format.write(filename, catalog, { language: "en", ...dateHeaders })
-      const pofile = fs.readFileSync(filename).toString()
-      mockFs.restore()
+      const pofile = fs.writeFileSync.mock.calls;
       mockDate.reset()
       expect(pofile).toMatchSnapshot()
     })
 
     it("should read catalog in pofile format", function() {
-      const pofile = fs
-        .readFileSync(
-          path.join(path.resolve(__dirname), "fixtures", "messages.po")
-        )
-        .toString()
-
-      mockFs({
-        locale: {
-          en: {
-            "messages.po": pofile
-          }
-        }
-      })
-
-      const filename = path.join("locale", "en", "messages.po")
+      fs.readFileSync.mockImplementation((...args) => {
+        return realFs.readFileSync(...args);
+      });
+      const filename = path.join(__dirname, "fixtures", "messages.po")
       const actual = format.read(filename)
-      mockFs.restore()
+      
       expect(actual).toMatchSnapshot()
     })
 
@@ -116,68 +113,45 @@ describe.skip(
       msgstr "Second description joins translator comments"
     `)
 
-      mockFs({
-        locale: {
-          en: {
-            "messages.po": po.toString()
-          }
-        }
-      })
+      fs.readFileSync.mockImplementation(() => po.toString());
 
-      const filename = path.join("locale", "en", "messages.po")
-      const actual = format.read(filename)
-      mockFs.restore()
+      const actual = format.read("filename")
       expect(actual).toMatchSnapshot()
     })
 
     it("should throw away additional msgstr if present", function() {
       const po = PO.parse(`
-      msgid "withMultipleTranslation"
-      msgstr[0] "This is just fine"
-      msgstr[1] "Throw away that one"
-    `)
-
-      mockFs({
-        locale: {
-          en: {
-            "messages.po": po.toString()
-          }
-        }
-      })
-
-      const filename = path.join("locale", "en", "messages.po")
+        msgid "withMultipleTranslation"
+        msgstr[0] "This is just fine"
+        msgstr[1] "Throw away that one"
+      `)
+      
+      fs.readFileSync.mockImplementation(() => po.toString());
+      
       mockConsole(console => {
-        const actual = format.read(filename)
+        const actual = format.read("filename")
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("Multiple translations"),
           "withMultipleTranslation"
         )
-        mockFs.restore()
         expect(actual).toMatchSnapshot()
       })
     })
 
     it("should write the same catalog as it was read", function() {
-      const pofile = fs
+      const pofile = realFs
         .readFileSync(
           path.join(path.resolve(__dirname), "fixtures", "messages.po")
         )
         .toString()
 
-      mockFs({
-        locale: {
-          en: {
-            "messages.po": pofile
-          }
-        }
-      })
+      fs.readFileSync.mockImplementation(() => pofile)
+      const catalog = format.read("filename")
+      format.write("filename", catalog)
 
-      const filename = path.join("locale", "en", "messages.po")
-      const catalog = format.read(filename)
-      format.write(filename, catalog)
-      const actual = fs.readFileSync(filename).toString()
-      mockFs.restore()
-      expect(actual).toEqual(pofile)
+      expect(
+        fs.writeFileSync.mock.calls[0][1].replace(/\s/g, '')
+      ).toEqual(pofile.replace(/\s/g, ''))
     })
   }
 )

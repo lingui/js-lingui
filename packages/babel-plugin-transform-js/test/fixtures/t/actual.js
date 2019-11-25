@@ -17,3 +17,4 @@ i18n.t`
 `
 i18n.t('id')`Hello World`
 i18n.t('id')`Hello ${name}`
+i18n.t({id: 'id', context: 'context'})`Hello World`

@@ -23,3 +23,7 @@ i18n._('id', {
 }, {
   defaults: 'Hello {name}'
 });
+i18n._('id', {}, {
+  defaults: 'Hello World',
+  context: 'context'
+});

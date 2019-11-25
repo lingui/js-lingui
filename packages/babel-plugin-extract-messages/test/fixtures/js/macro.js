@@ -36,3 +36,8 @@ const withValues = /*i18n*/{
 i18n._(/*i18n*/{
   id: 'Message With Description'
 })
+
+i18n._(/*i18n*/{
+  id: 'Message with context',
+  context: 'context'
+})
