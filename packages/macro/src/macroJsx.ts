@@ -21,8 +21,8 @@ function normalizeWhitespace(text) {
       .replace(stripAroundTagsRe, "$1")
       .replace(keepSpaceRe, " ")
       // keep escaped newlines
-      .replace(/\\n/, "\n")
-      .replace(/\\s/, " ")
+      .replace(/\\n/g, "\n")
+      .replace(/\\s/g, " ")
       .trim()
   )
 }
