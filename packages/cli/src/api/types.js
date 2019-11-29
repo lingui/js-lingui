@@ -6,11 +6,16 @@ export type LinguiConfig = {|
   sourceLocale: string,
   fallbackLocale: string,
   pseudoLocale: string,
+  formatOptions: ?FormatOptions,
   srcPathDirs: Array<string>,
   srcPathIgnorePatterns: Array<string>,
   format: "lingui" | "minimal" | "po",
   sorting: Sorting
 |}
+
+export type FormatOptions = {
+  origins: ?boolean
+}
 
 export type Sorting = "messageId" | "origin"
 
