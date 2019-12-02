@@ -5,12 +5,14 @@
 
 ### New Features
 
-* Add optional sort by origin/filename ([#563](https://github.com/lingui/js-lingui/pulls/563)).
+* Add optional sort by origin/filename ([#563](https://github.com/lingui/js-lingui/issues/563)).
   Thanks to [Kenneth Skovhus](https://github.com/skovhus)
 * Lazily split messages by value tags ([#593](https://github.com/lingui/js-lingui/issues/593)).
   Thanks to [Danny Sellers](https://github.com/dannysellers)
 * Optional line numbers for lingui format ([#587](https://github.com/lingui/js-lingui/issues/587)).
   Thanks to [Martti Roitto](https://github.com/MarttiR)
+* Moved typescript dependency to peer ([#589](https://github.com/lingui/js-lingui/issues/589)).
+  Thanks to [Daniel K.](https://github.com/FredyC)
 
 ### Bug Fixes
 
