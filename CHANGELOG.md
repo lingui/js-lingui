@@ -1,5 +1,22 @@
 # Change Log
 
+<a name="2.9.0"></a>
+## [2.9.0](https://github.com/lingui/js-lingui/compare/v2.8.3...v2.9.0) (2019-12-02)
+
+### New Features
+
+* Add optional sort by origin/filename ([#563](https://github.com/lingui/js-lingui/pulls/563)).
+  Thanks to [Kenneth Skovhus](https://github.com/skovhus)
+* Lazily split messages by value tags ([#593](https://github.com/lingui/js-lingui/issues/593)).
+  Thanks to [Danny Sellers](https://github.com/dannysellers)
+* Optional line numbers for lingui format ([#587](https://github.com/lingui/js-lingui/issues/587)).
+  Thanks to [Martti Roitto](https://github.com/MarttiR)
+
+### Bug Fixes
+
+* Compile strict skips pseudo locale ([#584](https://github.com/lingui/js-lingui/issues/584)).
+  Thanks to [Daniel Chabr](https://github.com/danielchabr)
+
 <a name="2.8.3"></a>
 ## [2.8.3](https://github.com/lingui/js-lingui/compare/v2.8.2...v2.8.3) (2019-05-22)
 
