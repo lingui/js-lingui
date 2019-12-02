@@ -35,6 +35,9 @@ export const defaultConfig = {
   srcPathIgnorePatterns: [NODE_MODULES],
   sorting: "messageId",
   format: "lingui",
+  formatOptions: {
+    origins: true
+  },
   rootDir: ".",
   extractBabelOptions: {
     plugins: [],
