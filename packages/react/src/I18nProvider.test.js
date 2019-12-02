@@ -59,17 +59,6 @@ describe("I18nProvider", function() {
     ).toBeTruthy()
   })
 
-  it("shouldn't render multiple children wrapped in div", function() {
-    expect(
-      shallow(
-        <I18nProvider {...props}>
-          <span />
-          <span />
-        </I18nProvider>
-      ).find("div")
-    ).toHaveLength(0)
-  })
-
   it("shouldn't have default render component (i.e. render translation without wrapping span)", function() {
     const component = shallow(
       <I18nProvider {...props}>
