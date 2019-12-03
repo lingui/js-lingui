@@ -23,6 +23,17 @@ export default class Render extends React.Component<RenderComponentProps> {
     let render = this.props.render || this.context.linguiDefaultRender
 
     if (render === null || render === undefined) {
+      if (process.env.NODE_ENV === "production" && typeof value === "string") {
+        if (/^15\./.test(React.version)) {
+          console.warn(
+            "lingui is about to return a string from render() in React 15.x, " +
+              "which will likely raise an Uncaught Invariant Violation error. " +
+              "to resolve this, please provide a custom defaultRender function " +
+              "that wraps the string in a component of your choice, or upgrade " +
+              "to React 16."
+          )
+        }
+      }
       return value || null
     } else if (typeof render === "string") {
       // Built-in element: h1, p
