@@ -23,7 +23,7 @@ export default class Render extends React.Component<RenderComponentProps> {
     let render = this.props.render || this.context.linguiDefaultRender
 
     if (render === null || render === undefined) {
-      if (process.env.NODE_ENV === "production" && typeof value === "string") {
+      if (process.env.NODE_ENV !== "production" && typeof value === "string") {
         if (/^15\./.test(React.version)) {
           console.warn(
             "lingui is about to return a string from render() in React 15.x, " +
