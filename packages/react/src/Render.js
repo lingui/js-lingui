@@ -2,6 +2,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 
+const REACT_VERSION = React.version
+
 export type RenderProps = {
   render?: any,
   className?: string
@@ -24,7 +26,7 @@ export default class Render extends React.Component<RenderComponentProps> {
 
     if (render === null || render === undefined) {
       if (process.env.NODE_ENV !== "production" && typeof value === "string") {
-        if (/^15\./.test(React.version)) {
+        if (/^15\./.test(REACT_VERSION)) {
           console.warn(
             "lingui is about to return a string from render() in React 15.x, " +
               "which will likely raise an Uncaught Invariant Violation error. " +
