@@ -47,6 +47,7 @@ const extractor: ExtractorType = {
       linguiTransformJs,
       linguiTransformReact,
       [linguiExtractMessages, { localeDir }],
+      "babel-plugin-macros",
       ...(babelOptions.plugins || [])
     ]
 
