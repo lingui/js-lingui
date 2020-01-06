@@ -21,7 +21,7 @@ LinguiJS - Seamless internationalization in Javascript
 Key features
 ============
 
-Lingui is an easy yet powerfull internationalization framework for global projects.
+Lingui is an easy yet powerful internationalization framework for global projects.
 
 Clean and readable
    Keep your code clean and readable, while the library uses
