@@ -48,24 +48,12 @@ const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
 const deserialize = R.map(
   R.applySpec({
-    translation: R.compose(
-      R.head,
-      R.defaultTo([]),
-      getTranslations
-    ),
-    description: R.compose(
-      R.head,
-      R.defaultTo([]),
-      getExtractedComments
-    ),
+    translation: R.compose(R.head, R.defaultTo([]), getTranslations),
+    description: R.compose(R.head, R.defaultTo([]), getExtractedComments),
     comments: item =>
       R.concat(getTranslatorComments(item), R.tail(getExtractedComments(item))),
     obsolete: isObsolete,
-    origin: R.compose(
-      R.map(splitOrigin),
-      R.defaultTo([]),
-      getOrigins
-    ),
+    origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
     flags: getFlags
   })
 )

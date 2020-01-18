@@ -268,7 +268,10 @@ describe("order", function() {
       en: {
         LabelB: {
           translation: "B",
-          origin: [["file2.js", 2], ["file1.js", 2]]
+          origin: [
+            ["file2.js", 2],
+            ["file1.js", 2]
+          ]
         },
         LabelA: {
           translation: "A",

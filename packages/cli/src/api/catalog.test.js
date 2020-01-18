@@ -263,11 +263,9 @@ describe("Catalog API", function() {
       // With `overwrite`
       // The translation of `custom.id` message for `sourceLocale` is changed
       expect(
-        configureCatalog(createConfig({ sourceLocale: "en" })).merge(
-          prevCatalogs,
-          nextCatalog,
-          { overwrite: true }
-        )
+        configureCatalog(
+          createConfig({ sourceLocale: "en" })
+        ).merge(prevCatalogs, nextCatalog, { overwrite: true })
       ).toEqual({
         en: {
           "custom.id": {

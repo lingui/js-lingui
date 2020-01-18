@@ -101,7 +101,10 @@ export function collect(buildDir: string) {
 }
 
 export function cleanObsolete(catalogs: AllCatalogsType) {
-  return R.map(R.filter(message => !message.obsolete), catalogs)
+  return R.map(
+    R.filter(message => !message.obsolete),
+    catalogs
+  )
 }
 
 export function order(catalogs: AllCatalogsType, by: Sorting) {
