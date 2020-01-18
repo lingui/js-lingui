@@ -5,7 +5,6 @@ import { transform } from "../compat"
 import linguiTransformJs from "@lingui/babel-plugin-transform-js"
 import linguiTransformReact from "@lingui/babel-plugin-transform-react"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
-import * as ts from "typescript"
 
 import { projectType } from "../detect"
 import type { ExtractorType } from "./types"
@@ -18,6 +17,8 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
+    const ts = require("typescript")
+
     const content = fs.readFileSync(filename, "utf8")
     const isTsx = filename.endsWith(".tsx")
     // pass jsx to babel untouched
