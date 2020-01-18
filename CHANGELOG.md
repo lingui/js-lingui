@@ -1,5 +1,15 @@
 # Change Log
 
+<a name="2.9.1"></a>
+## [2.9.1](https://github.com/lingui/js-lingui/compare/v2.9.0..v2.9.1) (2020-01-18)
+
+### Bug Fixes
+
+* Fix import of typescript package ([#611](https://github.com/lingui/js-lingui/pull/611)).
+  Thanks to [Anton Korzunov](https://github.com/theKashey)
+* Fix flow types of withI18n ([#605](https://github.com/lingui/js-lingui/pull/605)).
+  Thanks to [Kamil Tunkiewicz](https://github.com/ktunkiewicz)
+
 <a name="2.9.0"></a>
 ## [2.9.0](https://github.com/lingui/js-lingui/compare/v2.8.3...v2.9.0) (2019-12-02)
 
