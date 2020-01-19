@@ -112,7 +112,7 @@ plural rules to a production ready catalog::
 
    yarn compile
 
- .. code-block:: shell
+.. code-block:: shell
 
    Compiling message catalogs…
    Done!
