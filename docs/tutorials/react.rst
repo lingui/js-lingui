@@ -44,8 +44,8 @@ We're going to translate the following app:
            <p>
              {
                messagesCount === 1
-                 ? "There's {messagesCount} message in your inbox."
-                 : "There're {messagesCount} messages in your inbox."
+                 ? `There's ${messagesCount} message in your inbox.`
+                 : `There're ${messagesCount} messages in your inbox.`
              }
            </p>
 
