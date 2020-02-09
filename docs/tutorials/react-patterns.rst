@@ -201,27 +201,32 @@ Lazy translations
 Messages don't have to be declared at the same code location where they're displayed.
 Tag a string with the :jsmacro:`t` macro, and you've created a "message descriptor", which
 can then be passed around as a variable, and can be displayed as a translated string by
-passing it to :jsxmacro:`Trans` as its ``id`` prop:
+passing its ``id`` attribute to :jsxmacro:`Trans` as its ``id`` prop:
 
 .. code-block:: jsx
 
-   import { t, Trans } from "@lingui/macro"
+   import React from 'react';
+   import { t, Trans } from '@lingui/macro';
 
+   // Creates an array of message descriptor objects
    const favoriteColors = [
       t`Red`,
       t`Orange`,
       t`Yellow`,
-      t`Green`,
-   ]
+      t`Green`
+   ];
 
    export default function ColorList() {
       return (
          <ul>
-            {favoriteColors.map(color => (
-               <li><Trans id={color}/></li>
-            }
+            {favoriteColors.map((color) => (
+            <li key={color.id}>
+               {/* Passing the message descriptor's `id` as the `id` prop */}
+               <Trans id={color.id} />
+            </li>
+            ))}
          </ul>
-      )
+      );
    }
 
 Or to render the message descriptor as a string-only translation, just pass it to
@@ -229,6 +234,8 @@ the :js:meth:`I18n._` method as usual:
 
 .. code-block:: jsx
 
+   import React from 'react';
+   import { I18n } from '@lingui/react';
    import { t } from "@lingui/macro"
 
    const favoriteColors = [
@@ -238,9 +245,29 @@ the :js:meth:`I18n._` method as usual:
       t`Green`,
    ]
 
-   const translatedColorNames = favoriteColors.map(
-      color => i18n._(color)
-   )
+   export default function ColorMenu() {
+      // Using the `<I18n>` component to access the `i18n` object.
+      <I18n>
+         {({ i18n }) => {
+            const options = favoriteColors.map((color) => ({
+               value: color.id,
+
+               // Passing the message descriptor directly to i18n._()
+               label: i18n._(color),
+
+            }));
+            return (
+               <select>
+                  {options.map(({ label, value }) => (
+                     <option key={value} value={value}>
+                        {label}
+                     </option>
+                  ))}
+               </select>
+            );
+         }}
+      </I18n>
+   }
 
 Passing messages as props
 -------------------------
@@ -251,6 +278,7 @@ element as the prop:
 
 .. code-block:: jsx
 
+   import React from 'react';
    import { Trans } from "@lingui/macro"
 
    export default function FancyButton(props) {
@@ -259,8 +287,11 @@ element as the prop:
 
    export function LoginLogoutButtons(props) {
       return <div>
+
+         {/* Passing `<Trans>` elements as props */}
          <FancyButton label={<Trans>Log in</Trans>} />
          <FancyButton label={<Trans>Log out</Trans>} />
+
       </div>
    }
 
@@ -270,28 +301,31 @@ render it as a string using lazy translation:
 
 .. code-block:: jsx
 
+   import React from 'react';
    import { t } from "@lingui/macro"
    import { I18n } from "@lingui/react"
 
-   export default function ImageWithCaption(props) {
+   function ImageWithCaption(props) {
       return (
          <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(props.caption)} />
-            )}
+            {({ i18n }) => <img
+               src="..."
+               title={i18n._(props.hoverText)}
+            />}
          </I18n>
-      )
+      );
    }
 
    export function HappySad(props) {
-      return <div>
-         <ImageWithCaption
-            hoverText={t`I'm so happy!`}
-         />
-         <ImageWithCaption
-            hoverText={t`I'm so sad.`}
-         />
-      </div>
+      return (
+         <div>
+
+            {/* Passing message descriptors tagged with `t` as props */}
+            <ImageWithCaption hoverText={t`I'm so happy!`} />
+            <ImageWithCaption hoverText={t`I'm so sad.`} />
+
+         </div>
+      );
    }
 
 Picking a message based on a variable
@@ -314,6 +348,8 @@ with lazy translation:
          STATUS_CANCELLED = 4,
          STATUS_COMPLETED = 8
 
+   // A mapping object that provides a message descriptor for each expected
+   // value of the "status" variable
    const statusMessages = {
       [STATUS_OPEN]: t`Open`,
       [STATUS_CLOSED]: t`Closed`,
@@ -321,6 +357,14 @@ with lazy translation:
       [STATUS_COMPLETED]: t`Completed`,
    }
 
-   export default function StatusDisplay(statusCode) {
-      return <div><Trans id={statusMessages[statusCode]} /></div>
+   export default function StatusDisplay(props) {
+      // Locate the correct message descriptor
+      const messageDescriptor = statusMessages[props.statusCode];
+
+      return (
+         <div>
+            {/* Pass the message descriptor's `id` as the `id` prop */}
+            <Trans id={messageDescriptor.id} />
+         </div>
+      );
    }
