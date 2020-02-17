@@ -4,7 +4,7 @@ import * as R from "ramda"
 export default {
   catalogExtension: ".json",
 
-  write(filename, catalog, options = {}) {
+  write(filename, catalog, options) {
     let outputCatalog = catalog
     if (options.origins === false) {
       outputCatalog = removeOrigins(catalog)

@@ -7,6 +7,7 @@ const formats: {[key: string]: CatalogFormat} = { lingui, minimal, po }
 
 export interface CatalogFormatOptions {
   locale: string
+  origins: false
 }
 
 export interface CatalogFormat {

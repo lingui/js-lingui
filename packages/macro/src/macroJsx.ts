@@ -139,6 +139,7 @@ export default class MacroJSX {
       /*selfClosing*/ true
     )
     newNode.loc = path.node.loc
+    // @ts-ignore
     path.replaceWith(newNode)
   }
 

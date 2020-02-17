@@ -88,6 +88,7 @@ export default class MacroJs {
     newNode.loc = path.node.loc
 
     this.addExtractMark(path)
+    // @ts-ignore
     path.replaceWith(newNode)
   }
 
