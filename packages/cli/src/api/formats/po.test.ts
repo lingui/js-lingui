@@ -15,6 +15,7 @@ describe("pofile format", function() {
 
   afterEach(() => {
     mockFs.restore()
+    mockDate.reset()
   })
 
   it("should write catalog in pofile format", function() {
@@ -23,7 +24,7 @@ describe("pofile format", function() {
         en: mockFs.directory()
       }
     })
-    mockDate.set("2018-08-27 10:00", 0)
+    mockDate.set("2018-08-27T10:00Z", 0)
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog = {
@@ -73,7 +74,6 @@ describe("pofile format", function() {
     format.write(filename, catalog, { language: "en", ...dateHeaders })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
-    mockDate.reset()
     expect(pofile).toMatchSnapshot()
   })
 
