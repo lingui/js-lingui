@@ -36,7 +36,10 @@ describe("pofile format", function() {
       },
       withMultipleOrigins: {
         translation: "Message with multiple origin",
-        origin: [["src/App.js", 4], ["src/Component.js", 2]]
+        origin: [
+          ["src/App.js", 4],
+          ["src/Component.js", 2]
+        ]
       },
       withDescription: {
         translation: "Message with description",
