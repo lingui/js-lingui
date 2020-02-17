@@ -28,8 +28,8 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.6.3",
-    "ramda": "^0.26.1"
+    "@babel/runtime": "^7.8.4",
+    "ramda": "^0.27.0"
   },
   "peerDependencies": {
     "babel-plugin-macros": "^2.5.1"

@@ -1,4 +1,4 @@
-import plurals from "make-plural/umd/plurals"
+import * as plurals from "make-plural/plurals"
 
 export default (locale: string) => {
   if (!locale) {

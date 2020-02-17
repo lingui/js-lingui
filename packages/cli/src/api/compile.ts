@@ -2,7 +2,7 @@ import * as t from "@babel/types"
 import { parse } from "messageformat-parser"
 import { parseExpression } from "@babel/parser"
 import generate from "@babel/generator"
-import plurals from "make-plural"
+import * as plurals from "make-plural/plurals"
 import R from "ramda"
 
 import { CatalogType, CompiledCatalogType } from "./types"
@@ -48,9 +48,9 @@ function processTokens(tokens) {
       } else if (token.type === "function") {
         const params = [t.stringLiteral(token.arg), t.stringLiteral(token.key)]
 
-        const format = token.params[0]
+        const format = token.param && token.param.tokens[0]
         if (format) {
-          params.push(t.stringLiteral(format))
+          params.push(t.stringLiteral(format.trim()))
         }
         return t.arrayExpression(params)
       }

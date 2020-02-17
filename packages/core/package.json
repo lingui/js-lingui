@@ -34,8 +34,8 @@
     "cjs/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.6.3",
-    "make-plural": "^4.1.1",
-    "messageformat-parser": "^2.0.0"
+    "@babel/runtime": "^7.8.4",
+    "make-plural": "^6.0.1",
+    "messageformat-parser": "^4.1.2"
   }
 }

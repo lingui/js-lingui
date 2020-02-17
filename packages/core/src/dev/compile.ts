@@ -21,7 +21,9 @@ function processTokens(tokens) {
 
       // argument with custom format (date, number)
     } else if (token.type === "function") {
-      return [token.arg, token.key, token.params[0]]
+      const _param = token.param && token.param.tokens[0]
+      const param = typeof _param === "string" ? _param.trim() : _param
+      return [token.arg, token.key, param].filter(Boolean)
     }
 
     const offset = token.offset ? parseInt(token.offset) : undefined

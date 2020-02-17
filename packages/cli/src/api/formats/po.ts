@@ -7,7 +7,7 @@ import { joinOrigin, splitOrigin } from "../utils"
 import { MessageType } from "../types"
 
 const getCreateHeaders = (language = "no") => ({
-  "POT-Creation-Date": formatDate(new Date(), "YYYY-MM-DD HH:mmZZ"),
+  "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
   "Mime-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
   "Content-Transfer-Encoding": "8bit",
@@ -48,27 +48,15 @@ const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
 const deserialize: (Object) => Object = R.map(
   R.applySpec({
-    translation: R.compose(
-      R.head,
-      R.defaultTo([]),
-      getTranslations
-    ),
-    comment: R.compose(
-      R.head,
-      R.defaultTo([]),
-      getExtractedComments
-    ),
+    translation: R.compose(R.head, R.defaultTo([]), getTranslations),
+    comment: R.compose(R.head, R.defaultTo([]), getExtractedComments),
     comments: item =>
       R.concat(
         getTranslatorComments(item) as string,
         R.tail(getExtractedComments(item))
       ),
     obsolete: isObsolete,
-    origin: R.compose(
-      R.map(splitOrigin),
-      R.defaultTo([]),
-      getOrigins
-    ),
+    origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
     flags: getFlags
   })
 )

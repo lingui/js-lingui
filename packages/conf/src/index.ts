@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import cosmiconfig from "cosmiconfig"
+import { cosmiconfigSync } from "cosmiconfig"
 import { validate } from "jest-validate"
 
 export type CatalogFormat = "po" | "minimal" | "lingui"
@@ -62,11 +62,11 @@ export function getConfig({
   skipValidation?: boolean
 } = {}): LinguiConfig {
   const defaultRootDir = cwd || process.cwd()
-  const configExplorer = cosmiconfig("lingui")
+  const configExplorer = cosmiconfigSync("lingui")
 
   const result = configExists(configPath)
-    ? configExplorer.loadSync(configPath)
-    : configExplorer.searchSync(defaultRootDir)
+    ? configExplorer.load(configPath)
+    : configExplorer.search(defaultRootDir)
   const userConfig = result ? result.config : {}
   const config: LinguiConfig = {
     ...defaultConfig,

@@ -1,4 +1,4 @@
-import plurals from "make-plural"
+import * as plurals from "make-plural/plurals"
 import bcp47 from "bcp-47"
 
 export type LocaleInfo = {
