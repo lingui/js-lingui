@@ -15,6 +15,7 @@
     "lint:types": "tsc",
     "lint:eslint": "eslint packages/",
     "lint": "yarn lint:eslint; yarn lint:types",
+    "prettier": "yarn run lint:eslint --fix",
     "release": "node ./scripts/release.js",
     "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",

@@ -129,6 +129,8 @@ Each message is an object composed in the following format:
 
 Origin is filename and line number from where the message was extracted.
 
+Note that origins may produce a large amount of merge conflicts. Origins can be disabled by setting ``origins: false`` in :conf:`formatOptions`.
+
 minimal
 ^^^^^^^
 
@@ -150,6 +152,15 @@ Gettext PO file:
    #: src/App.js:4, src/Component.js:2
    msgid "MessageID"
    msgstr "Translated Message"
+
+.. config:: formatOptions
+
+formatOptions
+-------------
+
+Default: ``{ origins: true }``
+
+Object for configuring message catalog output. See individual formats for options.
 
 .. config:: sourceLocale
 

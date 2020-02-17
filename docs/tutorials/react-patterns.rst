@@ -211,39 +211,129 @@ outside React components, for example inside ``redux-saga``:
 Lazy translations
 =================
 
-:jsxmacro:`Trans` can also translate messages from variables. We can use :jsmacro:`t`
-macro to create a message descriptor and then pass it to :jsxmacro:`Trans` macro as
-``id`` prop:
+Messages don't have to be declared at the same code location where they're displayed.
+Tag a string with the :jsmacro:`t` macro, and you've created a "message descriptor", which
+can then be passed around as a variable, and can be displayed as a translated string by
+passing it to :jsxmacro:`Trans` as its ``id`` prop:
 
 .. code-block:: jsx
 
    import { t, Trans } from "@lingui/macro"
 
-   const languages = [
-      t`English`
-      t`Czech`
+   const favoriteColors = [
+      t`Red`,
+      t`Orange`,
+      t`Yellow`,
+      t`Green`,
    ]
 
-   function LanguageSwitcher() {
+   export default function ColorList() {
       return (
          <ul>
-            {languages.map(lang => <li><Trans id={lang}/></li>}
+            {favoriteColors.map(color => (
+               <li><Trans id={color}/></li>
+            }
          </ul>
       )
    }
 
-This pattern also work with string-only translations. Just pass the message descriptor
-to :js:meth:`I18n._` method as usual:
+Or to render the message descriptor as a string-only translation, just pass it to
+the :js:meth:`I18n._` method as usual:
 
 .. code-block:: jsx
 
    import { t } from "@lingui/macro"
 
-   const languages = [
-      t`English`
-      t`Czech`
+   const favoriteColors = [
+      t`Red`,
+      t`Orange`,
+      t`Yellow`,
+      t`Green`,
    ]
 
-   const translatedLanguages = languages.map(
-      lang => i18n._(lang)
+   const translatedColorNames = favoriteColors.map(
+      color => i18n._(color)
    )
+
+Passing messages as props
+-------------------------
+
+It's often convenient to pass messages around as component props, for example
+as a "label" prop on a button. The easiest way to do this is to pass a :jsxmacro:`Trans`
+element as the prop:
+
+.. code-block:: jsx
+
+   import { Trans } from "@lingui/macro"
+
+   export default function FancyButton(props) {
+      return <button>{props.label}</button>
+   }
+
+   export function LoginLogoutButtons(props) {
+      return <div>
+         <FancyButton label={<Trans>Log in</Trans>} />
+         <FancyButton label={<Trans>Log out</Trans>} />
+      </div>
+   }
+
+If you need the prop to be displayed as a string-only translation, you can pass
+a message descriptor (tagged with the :jsmacro:`t` macro), and have the component
+render it as a string using lazy translation:
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   import { I18n } from "@lingui/react"
+
+   export default function ImageWithCaption(props) {
+      return (
+         <I18n>
+            {({ i18n }) => (
+               <img src="..." alt={i18n._(props.caption)} />
+            )}
+         </I18n>
+      )
+   }
+
+   export function HappySad(props) {
+      return <div>
+         <ImageWithCaption
+            hoverText={t`I'm so happy!`}
+         />
+         <ImageWithCaption
+            hoverText={t`I'm so sad.`}
+         />
+      </div>
+   }
+
+Picking a message based on a variable
+-------------------------------------
+
+Sometimes you need to pick between different messages to display, depending on the value
+of a variable. For example, imagine you have a numeric "status" code that comes from an
+API, and you need to display a message representing the current status.
+
+A simple way to do this, is to make an object that maps the possible values of "status"
+to message descriptors (tagged with the :jsmacro:`t` macro), and render them as needed
+with lazy translation:
+
+.. code-block:: jsx
+
+   import { Trans } from "@lingui/macro";
+
+   const STATUS_OPEN = 1,
+         STATUS_CLOSED = 2,
+         STATUS_CANCELLED = 4,
+         STATUS_COMPLETED = 8
+
+   const statusMessages = {
+      [STATUS_OPEN]: t`Open`,
+      [STATUS_CLOSED]: t`Closed`,
+      [STATUS_CANCELLED]: t`Cancelled`,
+      [STATUS_COMPLETED]: t`Completed`,
+   }
+
+   export default function StatusDisplay(statusCode) {
+      return <div><Trans id={statusMessages[statusCode]} /></div>
+   }

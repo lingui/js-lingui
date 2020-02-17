@@ -44,8 +44,8 @@ We're going to translate the following app:
            <p>
              {
                messagesCount === 1
-                 ? "There's {messagesCount} message in your inbox."
-                 : "There're {messagesCount} messages in your inbox."
+                 ? `There's ${messagesCount} message in your inbox.`
+                 : `There're ${messagesCount} messages in your inbox.`
              }
            </p>
 
@@ -256,7 +256,7 @@ to compile them. As you see in the help in command output, we use :cli:`compile`
    Compiling message catalogs…
    Done!
 
-What just happened? If you look inside ``locale`` directory, you'll see there's a
+What just happened? If you look inside ``locales`` directory, you'll see there's a
 new file for each locale: ``messages.js``. This file contains compiled message catalogs
 but also any locale specific data like plurals.
 
@@ -269,7 +269,7 @@ Let's load this file into our app and set active language to ``cs``:
    import React from 'react'
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
-   import catalogCs from './locale/cs/messages.js'
+   import catalogCs from './locales/cs/messages.js'
 
    import { setupI18n, I18nProvider } from '@lingui/react'
 

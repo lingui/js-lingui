@@ -1,7 +1,6 @@
 import fs from "fs"
 import { transform } from "@babel/core"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
-import * as ts from "typescript"
 
 import { projectType } from "../detect"
 import { ExtractorType, BabelOptions } from "./types"
@@ -14,6 +13,8 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
+    const ts = require("typescript")
+
     const content = fs.readFileSync(filename, "utf8")
     const isTsx = filename.endsWith(".tsx")
     // pass jsx to babel untouched

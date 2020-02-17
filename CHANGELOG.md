@@ -1,5 +1,34 @@
 # Change Log
 
+<a name="2.9.1"></a>
+## [2.9.1](https://github.com/lingui/js-lingui/compare/v2.9.0..v2.9.1) (2020-01-18)
+
+### Bug Fixes
+
+* Fix import of typescript package ([#611](https://github.com/lingui/js-lingui/pull/611)).
+  Thanks to [Anton Korzunov](https://github.com/theKashey)
+* Fix flow types of withI18n ([#605](https://github.com/lingui/js-lingui/pull/605)).
+  Thanks to [Kamil Tunkiewicz](https://github.com/ktunkiewicz)
+
+<a name="2.9.0"></a>
+## [2.9.0](https://github.com/lingui/js-lingui/compare/v2.8.3...v2.9.0) (2019-12-02)
+
+### New Features
+
+* Add optional sort by origin/filename ([#563](https://github.com/lingui/js-lingui/issues/563)).
+  Thanks to [Kenneth Skovhus](https://github.com/skovhus)
+* Lazily split messages by value tags ([#593](https://github.com/lingui/js-lingui/issues/593)).
+  Thanks to [Danny Sellers](https://github.com/dannysellers)
+* Optional line numbers for lingui format ([#587](https://github.com/lingui/js-lingui/issues/587)).
+  Thanks to [Martti Roitto](https://github.com/MarttiR)
+* Moved typescript dependency to peer ([#589](https://github.com/lingui/js-lingui/issues/589)).
+  Thanks to [Daniel K.](https://github.com/FredyC)
+
+### Bug Fixes
+
+* Compile strict skips pseudo locale ([#584](https://github.com/lingui/js-lingui/issues/584)).
+  Thanks to [Daniel Chabr](https://github.com/danielchabr)
+
 <a name="2.8.3"></a>
 ## [2.8.3](https://github.com/lingui/js-lingui/compare/v2.8.2...v2.8.3) (2019-05-22)
 

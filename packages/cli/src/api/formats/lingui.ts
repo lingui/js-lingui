@@ -1,10 +1,15 @@
 import fs from "fs"
+import * as R from "ramda"
 
 export default {
   catalogExtension: ".json",
 
-  write(filename, catalog) {
-    fs.writeFileSync(filename, JSON.stringify(catalog, null, 2))
+  write(filename, catalog, options = {}) {
+    let outputCatalog = catalog
+    if (options.origins === false) {
+      outputCatalog = removeOrigins(catalog)
+    }
+    fs.writeFileSync(filename, JSON.stringify(outputCatalog, null, 2))
   },
 
   read(filename) {
@@ -18,3 +23,5 @@ export default {
     }
   }
 }
+
+const removeOrigins = R.map(({ origin, ...message }) => message)
