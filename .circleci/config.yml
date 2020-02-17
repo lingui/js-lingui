@@ -58,9 +58,9 @@ jobs:
           path: ./results/
           when: always
 
-  test-node-8:
+  test-node-10:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
 
     steps:
       - checkout
