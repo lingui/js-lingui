@@ -13,6 +13,8 @@ module.exports = function sizes(options) {
     name: "sizes",
     generateBundle(config, bundle) {
       for (const [name, obj] of Object.entries(bundle)) {
+        if (obj.code == null) continue
+
         const size = Buffer.byteLength(obj.code)
         const gzipSize = gzip.sync(obj.code)
 
