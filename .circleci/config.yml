@@ -167,7 +167,7 @@ workflows:
       - test-node-latest:
           requires:
             - build
-      - test-node-8:
+      - test-node-10:
           requires:
             - build
 #      - integration-js:
