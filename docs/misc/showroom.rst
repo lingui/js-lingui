@@ -12,3 +12,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `Nolt <https://nolt.io/>`__
 - `easyname <https://www.easyname.com/>`__
 - `LocalEthereum <https://localethereum.com/>`__
+- `Upcount <https://github.com/madisvain/upcount>`__
