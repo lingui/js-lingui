@@ -9,9 +9,14 @@ function macro({ references, state, babel }) {
   const jsxTransformer = new JSXTransformer(babel)
   const reactImportsToCarryOver = ["DateFormat", "NumberFormat"]
   const reactImports = []
+  let allTags = []
 
   Object.keys(references).forEach(tagName => {
     const tags = references[tagName]
+
+    if (tags) {
+      allTags = allTags.concat(tags)
+    }
     const macroType = getMacroType(tagName)
 
     if (macroType === "jsx") {
@@ -30,24 +35,40 @@ function macro({ references, state, babel }) {
           return obj
         }, {})
       )
+    }
+  })
 
-      tags.forEach(openingTag => {
-        if (!t.isJSXOpeningElement(openingTag.container)) return // Exclude closing elements
+  const sortedTagsByStartPosition = allTags.sort((a, b) => {
+    const aStart = a.node.start
+    const bStart = b.node.start
 
-        const node = openingTag.context.parentPath.container
+    let comparison = 0
+    if (aStart > bStart) {
+      comparison = 1
+    } else if (aStart < bStart) {
+      comparison = -1
+    }
+    return comparison
+  })
 
-        jsxTransformer.transform({ node }, state.file)
-      })
+  sortedTagsByStartPosition.forEach(tag => {
+    const tagName = tag.node.name
+    const macroType = getMacroType(tagName)
+
+    if (macroType === "jsx") {
+      if (!t.isJSXOpeningElement(tag.container)) return // Exclude closing elements
+
+      const node = tag.context.parentPath.container
+
+      jsxTransformer.transform({ node }, state.file)
     } else {
-      tags.forEach(tag => {
-        let expression = tag.parentPath
+      let expression = tag.parentPath
 
-        if (tagName === "t" && t.isCallExpression(expression)) {
-          expression = expression.parentPath
-        }
+      if (tagName === "t" && t.isCallExpression(expression)) {
+        expression = expression.parentPath
+      }
 
-        transformer(expression, state.file)
-      })
+      transformer(expression, state.file)
     }
   })
 
