@@ -10,8 +10,11 @@ function macro({ references, state, babel }) {
   const reactImportsToCarryOver = ["DateFormat", "NumberFormat"]
   const reactImports = []
 
-  Object.keys(references).forEach(tagName => {
+  PROCESSING_ORDER.forEach(tagName => {
     const tags = references[tagName]
+    if (!tags) {
+      return
+    }
     const macroType = getMacroType(tagName)
 
     if (macroType === "jsx") {
@@ -128,6 +131,21 @@ const select = () => {}
 const selectOrdinal = () => {}
 const date = () => {}
 const number = () => {}
+
+const PROCESSING_ORDER = [
+  "t",
+  "plural",
+  "select",
+  "selectOrdinal",
+  "date",
+  "number",
+  "Trans",
+  "Plural",
+  "Select",
+  "SelectOrdinal",
+  "DateFormat",
+  "NumberFormat"
+]
 
 export { Trans, Plural, Select, SelectOrdinal, DateFormat, NumberFormat }
 export { t, plural, select, selectOrdinal, date, number }
