@@ -34,23 +34,23 @@
     "*.js.flow"
   ],
   "dependencies": {
-    "@babel/generator": "^7.8.4",
-    "@babel/parser": "^7.8.4",
+    "@babel/generator": "^7.8.8",
+    "@babel/parser": "^7.8.8",
     "@babel/plugin-syntax-jsx": "^7.8.3",
-    "@babel/runtime": "^7.8.4",
-    "@babel/types": "^7.8.3",
+    "@babel/runtime": "^7.8.7",
+    "@babel/types": "^7.8.7",
     "@lingui/babel-plugin-extract-messages": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "babel-plugin-macros": "^2.8.0",
     "bcp-47": "^1.0.7",
     "chalk": "^3.0.0",
     "cli-table": "^0.3.1",
-    "commander": "^4.1.1",
-    "date-fns": "^2.9.0",
+    "commander": "^5.0.0",
+    "date-fns": "^2.11.0",
     "fuzzaldrin": "^2.1.0",
     "glob": "^7.1.4",
-    "inquirer": "^7.0.4",
-    "make-plural": "^6.0.1",
+    "inquirer": "^7.1.0",
+    "make-plural": "^6.1.0",
     "messageformat-parser": "^4.1.2",
     "minimatch": "^3.0.4",
     "mkdirp": "^1.0.3",
@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "mockdate": "^2.0.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0",

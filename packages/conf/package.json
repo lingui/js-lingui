@@ -18,7 +18,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.4",
+    "@babel/runtime": "^7.8.7",
     "chalk": "^3.0.0",
     "cosmiconfig": "^6.0.0",
     "jest-validate": "^25.1.0"
