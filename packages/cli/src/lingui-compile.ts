@@ -2,7 +2,7 @@ import chalk from "chalk"
 import fs from "fs"
 import * as R from "ramda"
 import program from "commander"
-import plurals from "make-plural"
+import * as plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
