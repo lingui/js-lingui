@@ -16,7 +16,7 @@ function test({ i18n, getStatic, getVariables, getPlural, getLazy }) {
     expect(getStatic()).toEqual("Ukázka @lingui/core")
   })
 
-  it("should translate message with varibles", function() {
+  it("should translate message with variables", function() {
     i18n.activate("en")
     expect(getVariables("Joe")).toEqual("Hello Joe")
     i18n.activate("cs")
