@@ -1,0 +1,23 @@
+{
+  "name": "next-js",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@lingui/core": "next",
+    "@lingui/react": "next",
+    "next": "9.3.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@lingui/cli": "next",
+    "@lingui/macro": "next",
+    "@lingui/loader": "next",
+    "babel-plugin-macros": "^2.8.0"
+  }
+}

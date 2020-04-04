@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-04-04 12:09+0200\n"
+"Mime-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: cs\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: pages/index.tsx:7
+msgid "Create Next App"
+msgstr "Next.js Projekt"
+
+#: pages/index.tsx:60
+msgid "Deploy →"
+msgstr "Nasaď →"
+
+#: pages/index.tsx:52
+msgid "Discover and deploy boilerplate example Next.js projects."
+msgstr "Prozkoumej ukázkové projekty napsané v Next.js."
+
+#: pages/index.tsx:27
+msgid "Documentation →"
+msgstr "Dokumentace →"
+
+#: pages/index.tsx:49
+msgid "Examples →"
+msgstr "Ukázky →"
+
+#: pages/index.tsx:30
+msgid "Find in-depth information about Next.js features and API."
+msgstr "Podrobné informace o funkcích a API Next.js"
+
+#: pages/index.tsx:19
+msgid "Get started by editing <0>pages/index.js</0>"
+msgstr "Pro začátek zkus upravit soubor <0>pages/index.js</0>"
+
+#: pages/index.tsx:63
+msgid "Instantly deploy your Next.js site to a public URL with ZEIT Now."
+msgstr "Okamžitě zveřejni svůj Next.js projekt pomocí ZEIT Now"
+
+#: pages/index.tsx:41
+msgid "Learn about Next.js in an interactive course with quizzes!"
+msgstr "Nauč se Next.js v interaktivním kurzu!"
+
+#: pages/index.tsx:38
+msgid "Learn →"
+msgstr "Nauč se →"
+
+#: pages/index.tsx:74
+msgid "Powered by <0/>"
+msgstr "Používá <0/>"
+
+#: pages/index.tsx:13
+msgid "Welcome to <0>Next.js!</0>"
+msgstr "Vítej v  <0>Next.js!</0>"
