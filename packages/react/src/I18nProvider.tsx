@@ -58,7 +58,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
 
   return (
     <LinguiContext.Provider value={context}>
-      {context.i18n.locale && props.children}
+      {props.children}
     </LinguiContext.Provider>
   )
 }

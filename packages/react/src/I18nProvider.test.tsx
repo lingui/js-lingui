@@ -68,14 +68,4 @@ describe("I18nProvider", function() {
     )
     expect(getByTestId("child")).toBeTruthy()
   })
-
-  it("shouldn't render children if locales aren't loaded", function() {
-    const i18n = setupI18n()
-
-    const child = <div data-testid="child" />
-    const { queryByTestId } = render(
-      <I18nProvider i18n={i18n}>{child}</I18nProvider>
-    )
-    expect(queryByTestId("child")).toBeFalsy()
-  })
 })
