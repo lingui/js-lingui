@@ -31,7 +31,7 @@ const extensions = [".js", ".ts", ".tsx"]
 
 // Errors in promises should be fatal.
 let loggedErrors = new Set()
-process.on("unhandledRejection", err => {
+process.on("unhandledRejection", (err) => {
   if (loggedErrors.has(err)) {
     // No need to print it twice.
     process.exit(1)
@@ -46,7 +46,7 @@ function getBabelConfig(updateBabelOptions, bundleType, filename) {
     babelrc: false,
     exclude: "node_modules/**",
     extensions,
-    runtimeHelpers: true
+    runtimeHelpers: true,
   })
 }
 
@@ -57,7 +57,7 @@ function getRollupOutputOptions(outputPath, format, globals, globalName) {
     globals,
     interop: true, // might be turned off with Babel 7, please review
     name: globalName,
-    sourcemap: false
+    sourcemap: false,
   }
 }
 
@@ -115,7 +115,7 @@ function getPlugins(
   return [
     // Use Node resolution mechanism.
     resolve({
-      extensions
+      extensions,
     }),
 
     typescript({
@@ -128,16 +128,16 @@ function getPlugins(
           declarationMap: true,
           mapRoot: "",
           module: "esnext",
-          target: "esnext"
-        }
-      }
+          target: "esnext",
+        },
+      },
     }),
 
     // Compile to ES5.
     babel(getBabelConfig(updateBabelOptions, bundleType)),
     // Turn process.env checks into constants.
     replace({
-      "process.env.NODE_ENV": isProduction ? "'production'" : "'development'"
+      "process.env.NODE_ENV": isProduction ? "'production'" : "'development'",
     }),
 
     // We still need CommonJS for external deps like object-assign.
@@ -151,11 +151,11 @@ function getPlugins(
         compress: {
           keep_infinity: true,
           pure_getters: true,
-          collapse_vars: false
+          collapse_vars: false,
         },
         ecma: 5,
         toplevel: !isInGlobalScope,
-        warnings: true
+        warnings: true,
       }),
 
     // Add the whitespace back if necessary.
@@ -167,10 +167,10 @@ function getPlugins(
         const key = `@lingui/${name} (${bundleType})`
         Stats.currentBuildResults.bundleSizes[key] = {
           size,
-          gzip
+          gzip,
         }
-      }
-    })
+      },
+    }),
   ].filter(Boolean)
 }
 
@@ -223,7 +223,7 @@ function handleRollupError(error) {
     // column + 1 is required due to rollup counting column start position from 0
     // whereas babel-code-frame counts from 1
     const frame = codeFrame(rawLines, line, column + 1, {
-      highlightCode: true
+      highlightCode: true,
     })
     console.error(frame)
   } else {
@@ -256,17 +256,17 @@ async function build(bundle, bundleType) {
   }
 
   const importSideEffects = Modules.getImportSideEffects()
-  const pureExternalModules = Object.keys(importSideEffects).filter(
-    module => !importSideEffects[module]
+  const moduleSideEffects = Object.keys(importSideEffects).filter(
+    (module) => !importSideEffects[module]
   )
 
   const rollupConfig = {
     input: resolvedEntry,
     treeshake: {
-      pureExternalModules
+      moduleSideEffects,
     },
     external(id) {
-      const containsThisModule = pkg => id === pkg || id.startsWith(pkg + "/")
+      const containsThisModule = (pkg) => id === pkg || id.startsWith(pkg + "/")
       const isProvidedByDependency = externals.some(containsThisModule)
       if (!shouldBundleDependencies && isProvidedByDependency) {
         return true
@@ -283,7 +283,7 @@ async function build(bundle, bundleType) {
       bundle.global,
       bundle.moduleType,
       bundle.modulesToStub
-    )
+    ),
   }
   const [mainOutputPath, ...otherOutputPaths] = Packaging.getBundleOutputPaths(
     "UNIVERSAL",
@@ -312,7 +312,7 @@ async function build(bundle, bundleType) {
   spinner.succeed()
 }
 
-module.exports = async function(bundle) {
+module.exports = async function (bundle) {
   await build(bundle, NODE_DEV)
   await build(bundle, NODE_PROD)
   // await build(bundle, UMD_DEV)
