@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "3.0.0-7",
+  "version": "3.0.0-21",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -22,7 +22,7 @@
     "release:test": "node ./scripts/test.js"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
