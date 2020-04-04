@@ -7,5 +7,10 @@
     "esModuleInterop": true,
     "target": "es2017"
   },
-  "exclude": ["examples/babel-6-react"]
+  "exclude": [
+    "examples/js",
+    "examples/next-js",
+    "examples/create-react-app",
+    "build"
+  ]
 }
