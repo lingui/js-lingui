@@ -30,8 +30,7 @@
     "README.md",
     "api",
     "lingui.js",
-    "lingui-*.js",
-    "*.js.flow"
+    "lingui-*.js"
   ],
   "dependencies": {
     "@babel/generator": "^7.8.8",

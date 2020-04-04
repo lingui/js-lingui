@@ -27,7 +27,6 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "*.js.flow"
+    "index.js"
   ]
 }
