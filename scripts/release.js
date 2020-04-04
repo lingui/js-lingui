@@ -32,11 +32,16 @@ async function devRelease() {
 
   // Throw away build stats
   await exec("git checkout -- scripts/build/results.json")
+  await exec(
+    `npm-cli-login -u username -p password -e email@example.com -r http://0.0.0.0:4873`
+  )
 
   spinner.text = "Publishing packages"
   await Promise.all(
     getPackages().map(packagePath => {
-      return exec(`yalc publish`, { cwd: packagePath })
+      return exec(`npm publish --registry http://0.0.0.0:4873 --tag next`, {
+        cwd: packagePath
+      })
     })
   )
   spinner.succeed()
@@ -44,7 +49,7 @@ async function devRelease() {
   console.log()
   console.log(
     `Done! Run ${chalk.yellow(
-      "yalc link @lingui/[package]"
+      "npm install --registry http://0.0.0.0:4873 @lingui/[package]"
     )} in target project to install development version of package.`
   )
 }
