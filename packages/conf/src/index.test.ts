@@ -84,7 +84,7 @@ describe("@lingui/conf", function() {
           {
             path: "locales/{locale}/messages",
             include: ["<rootDir>"],
-            exclude: ["*/node_modules/*"]
+            exclude: ["**/node_modules/**"]
           }
         ]
       })
