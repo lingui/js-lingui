@@ -8,16 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
-    "@lingui/core": "next",
-    "@lingui/react": "next",
+    "@lingui/core": "^3.0.0-19",
+    "@lingui/react": "^3.0.0-19",
     "next": "9.3.4",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "@lingui/cli": "next",
-    "@lingui/macro": "next",
-    "@lingui/loader": "next",
+    "@lingui/cli": "^3.0.0-19",
+    "@lingui/loader": "^3.0.0-19",
+    "@lingui/macro": "^3.0.0-19",
     "babel-plugin-macros": "^2.8.0"
   }
 }
