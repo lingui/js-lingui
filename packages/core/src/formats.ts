@@ -6,7 +6,7 @@ export function date(
   format: Intl.DateTimeFormatOptions = {}
 ): (value: string | Date) => string {
   const formatter = new Intl.DateTimeFormat(locales, format)
-  return value => {
+  return (value) => {
     if (isString(value)) value = new Date(value)
     return formatter.format(value)
   }
@@ -17,5 +17,5 @@ export function number(
   format: Intl.NumberFormatOptions = {}
 ): (value: number) => string {
   const formatter = new Intl.NumberFormat(locales, format)
-  return value => formatter.format(value)
+  return (value) => formatter.format(value)
 }

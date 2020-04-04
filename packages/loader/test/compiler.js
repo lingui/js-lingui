@@ -9,7 +9,7 @@ export default (fixture, options) => {
     entry: "." + path.sep + fixture,
     output: {
       path: path.resolve(__dirname),
-      filename: "bundle.js"
+      filename: "bundle.js",
     },
     module: {
       rules: [
@@ -17,11 +17,11 @@ export default (fixture, options) => {
           test: /\.po$/,
           use: {
             loader: path.resolve(__dirname, "../src/index.js"),
-            options
-          }
-        }
-      ]
-    }
+            options,
+          },
+        },
+      ],
+    },
   })
 
   compiler.outputFileSystem = new MemoryFS()

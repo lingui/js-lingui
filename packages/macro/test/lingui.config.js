@@ -1,3 +1,3 @@
 module.exports = {
-  locales: ["en"]
+  locales: ["en"],
 }

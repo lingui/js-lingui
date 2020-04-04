@@ -33,6 +33,6 @@ export function parse(locale: string): LocaleInfo | null {
 
   return {
     locale: bcp47.stringify(schema),
-    language: schema.language
+    language: schema.language,
   }
 }

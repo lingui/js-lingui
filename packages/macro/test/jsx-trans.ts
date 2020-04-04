@@ -8,7 +8,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Hello World" />;
-      `
+      `,
   },
   {
     name: "Generated ID is the same as custom one",
@@ -19,7 +19,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Hello World" />;
-      `
+      `,
   },
   {
     name: "Macro with custom ID",
@@ -30,7 +30,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="msg.hello" message="Hello World" />;
-      `
+      `,
   },
   {
     name: "Macro without children is noop",
@@ -41,7 +41,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id={msg} />;
-      `
+      `,
   },
   {
     name: "Variables are converted to named arguments",
@@ -55,7 +55,7 @@ export default [
           yourName: yourName,
           myName: myName,
         }} />;
-      `
+      `,
   },
   {
     name: "Variables are deduplicated",
@@ -68,7 +68,7 @@ export default [
         <Trans id="{duplicate} variable {duplicate}" values={{
           duplicate: duplicate
         }} />;
-      `
+      `,
   },
   {
     name: "Template literals as children",
@@ -82,7 +82,7 @@ export default [
           expression: expression,
           count: count
         }} />;
-      `
+      `,
   },
   {
     name: "Strings as children are preserved",
@@ -93,7 +93,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="hello {count, plural, one {world} other {worlds}}" />;
-      `
+      `,
   },
   {
     name: "Expressions are converted to positional arguments",
@@ -118,7 +118,7 @@ export default [
           4: new Date(),
           5: props.messages[index].value()
         }} />;
-      `
+      `,
   },
   {
     name: "Elements are replaced with placeholders",
@@ -143,7 +143,7 @@ export default [
           3: <a href="/about" />,
           4: <em />
         }} />;
-      `
+      `,
   },
   {
     name: "Elements inside expression container",
@@ -156,7 +156,7 @@ export default [
         <Trans id="<0>Component inside expression container</0>" components={{
           0: <span />
         }} />;
-      `
+      `,
   },
   {
     name: "Elements without children",
@@ -169,7 +169,7 @@ export default [
         <Trans id="<0/>" components={{
           0: <br />
         }} />;
-      `
+      `,
   },
   {
     name: "JSX spread child is noop",
@@ -180,7 +180,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans>{...spread}</Trans>
-      `
+      `,
   },
   {
     name: "Production - only essential props are kept",
@@ -192,7 +192,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="msg.hello" />;
-      `
+      `,
   },
   {
     input: `
@@ -208,7 +208,7 @@ export default [
         <Trans id="Strip whitespace around arguments: &quot;{name}&quot;" values={{
           name: name
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -224,7 +224,7 @@ export default [
         <Trans id="Strip whitespace around tags, but keep <0>forced spaces</0>!" components={{
           0: <strong />
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -237,7 +237,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Keep forced\\n newlines!" />;
-      `
+      `,
   },
   {
     input: `
@@ -251,7 +251,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Keep multiple\\n forced\\n newlines!" />;
-      `
+      `,
   },
   {
     input: `
@@ -269,7 +269,7 @@ export default [
             })
           } />
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -287,6 +287,6 @@ export default [
             count: count
           })
         }>About</a>;
-      `
-  }
+      `,
+  },
 ]

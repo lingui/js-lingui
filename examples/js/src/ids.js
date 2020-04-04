@@ -5,7 +5,7 @@ export const i18n = setupI18n()
 
 i18n.loadAll({
   en: require("./locale/en/messages"),
-  cs: require("./locale/cs/messages")
+  cs: require("./locale/cs/messages"),
 })
 
 export const common = {
@@ -13,28 +13,28 @@ export const common = {
     defineMessage({
       id: "common.yes",
       comment: "Agreement",
-      message: "Yes"
+      message: "Yes",
     }),
   no: () =>
     defineMessage({
       id: "common.no",
       comment: "Disagreement",
-      message: "No"
-    })
+      message: "No",
+    }),
 }
 
 export function getStatic() {
   return defineMessage({
     id: "static",
     comment: "Title of example",
-    message: "@lingui/core example"
+    message: "@lingui/core example",
   })
 }
 
 export function getVariables(name) {
   return defineMessage({
     id: "variables",
-    message: t`Hello ${name}`
+    message: t`Hello ${name}`,
   })
 }
 
@@ -43,8 +43,8 @@ export function getPlural(value) {
     id: "plural",
     message: t`There are ${plural(value, {
       one: "# bottle",
-      other: "# bottles"
-    })} hanging on the wall`
+      other: "# bottles",
+    })} hanging on the wall`,
   })
 }
 
@@ -53,7 +53,7 @@ export function getLazy() {
   const no = common.no()
   return defineMessage({
     id: "lazy",
-    message: t`Do you want to proceed? ${yes}/${no}`
+    message: t`Do you want to proceed? ${yes}/${no}`,
   })
 }
 

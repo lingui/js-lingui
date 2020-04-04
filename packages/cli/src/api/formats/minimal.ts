@@ -9,7 +9,7 @@ const deserialize = (R.map((translation: string) => ({
   translation,
   obsolete: false,
   message: null,
-  origin: []
+  origin: [],
 })) as unknown) as <T>(message: T) => T
 
 export default {
@@ -30,5 +30,5 @@ export default {
       console.error(`Cannot read ${filename}: ${e.message}`)
       return null
     }
-  }
+  },
 }

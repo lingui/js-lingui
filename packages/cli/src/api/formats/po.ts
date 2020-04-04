@@ -12,7 +12,7 @@ const getCreateHeaders = (language = "no") => ({
   "Content-Type": "text/plain; charset=utf-8",
   "Content-Transfer-Encoding": "8bit",
   "X-Generator": "@lingui/cli",
-  Language: language
+  Language: language,
 })
 
 const serialize = R.compose(
@@ -27,7 +27,7 @@ const serialize = R.compose(
     // @ts-ignore: Figure out how to set this flag
     item.obsolete = message.obsolete
     item.flags = message.flags
-      ? R.fromPairs(message.flags.map(flag => [flag, true]))
+      ? R.fromPairs(message.flags.map((flag) => [flag, true]))
       : {}
     return item
   })
@@ -50,14 +50,14 @@ const deserialize: (Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
     comment: R.compose(R.head, R.defaultTo([]), getExtractedComments),
-    comments: item =>
+    comments: (item) =>
       R.concat(
         getTranslatorComments(item) as string,
         R.tail(getExtractedComments(item))
       ),
     obsolete: isObsolete,
     origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
-    flags: getFlags
+    flags: getFlags,
   })
 )
 
@@ -99,5 +99,5 @@ export default {
     const po = PO.parse(raw)
     validateItems(po.items)
     return deserialize(indexItems(po.items))
-  }
+  },
 }

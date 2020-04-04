@@ -5,7 +5,7 @@ module.exports = {
     {
       path: "<rootDir>/locale/{locale}/messages",
       include: ["<rootDir>"],
-      exclude: ["**/node_modules/**"]
-    }
-  ]
+      exclude: ["**/node_modules/**"],
+    },
+  ],
 }

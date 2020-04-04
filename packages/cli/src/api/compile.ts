@@ -8,7 +8,7 @@ import R from "ramda"
 import { CatalogType, CompiledCatalogType } from "./types"
 import pseudoLocalize from "./pseudoLocalize"
 
-const isString = s => typeof s === "string"
+const isString = (s) => typeof s === "string"
 
 export function compile(message: string) {
   let tokens
@@ -27,12 +27,12 @@ export function compile(message: string) {
 }
 
 function processTokens(tokens) {
-  if (!tokens.filter(token => !isString(token)).length) {
+  if (!tokens.filter((token) => !isString(token)).length) {
     return tokens.join("")
   }
 
   return t.arrayExpression(
-    tokens.map(token => {
+    tokens.map((token) => {
       if (isString(token)) {
         return t.stringLiteral(token)
 
@@ -67,7 +67,7 @@ function processTokens(tokens) {
         )
       }
 
-      token.cases.forEach(item => {
+      token.cases.forEach((item) => {
         const inlineTokens = processTokens(item.tokens)
         formatProps.push(
           t.objectProperty(
@@ -82,7 +82,7 @@ function processTokens(tokens) {
       const params = [
         t.stringLiteral(token.arg),
         t.stringLiteral(token.type),
-        t.objectExpression(formatProps)
+        t.objectExpression(formatProps),
       ]
 
       return t.arrayExpression(params)
@@ -129,7 +129,7 @@ export function createCompiledCatalog(
   {
     strict = false,
     namespace = "cjs",
-    pseudoLocale
+    pseudoLocale,
   }: CreateCompileCatalogOptions
 ) {
   const [language] = locale.split(/[_-]/)
@@ -150,7 +150,7 @@ export function createCompiledCatalog(
     t.objectProperty(
       t.stringLiteral("plurals"),
       parseExpression(pluralRules.toString())
-    )
+    ),
   ]
 
   const ast = buildExportStatement(
@@ -164,7 +164,7 @@ export function createCompiledCatalog(
       t.objectProperty(
         t.identifier("messages"),
         t.objectExpression(compiledMessages)
-      )
+      ),
     ]),
     namespace
   )
@@ -172,7 +172,7 @@ export function createCompiledCatalog(
   return (
     "/* eslint-disable */" +
     generate(ast as any, {
-      minified: true
+      minified: true,
     }).code
   )
 }

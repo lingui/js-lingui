@@ -3,7 +3,7 @@ import path from "path"
 
 export const projectType = {
   CRA: "CRA",
-  REACT: "REACT"
+  REACT: "REACT",
 }
 
 function getPackageJson() {

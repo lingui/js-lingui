@@ -15,7 +15,7 @@ export default [
           i18n._("{value, plural, one {book} other {books}}", {}, {
             comment: "Description"
           })
-    `
+    `,
   },
   {
     name: "should left string message intact",
@@ -30,7 +30,7 @@ export default [
         const message =
           /*i18n*/
           i18n._("Message")
-    `
+    `,
   },
   {
     name: "should left string message intact - template literal",
@@ -45,7 +45,7 @@ export default [
         const message =
           /*i18n*/
           i18n._(\`Message\`)
-    `
+    `,
   },
   {
     name: "should preserve custom id",
@@ -67,7 +67,7 @@ export default [
               message: "Message"
             }
           )
-    `
+    `,
   },
   {
     name: "should preserve values",
@@ -84,6 +84,6 @@ export default [
           i18n._("Hello {name}", {
             name: name
           })
-    `
-  }
+    `,
+  },
 ]

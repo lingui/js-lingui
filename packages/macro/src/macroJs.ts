@@ -10,10 +10,7 @@ const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
 function normalizeWhitespace(text) {
-  return text
-    .replace(keepSpaceRe, " ")
-    .replace(keepNewLineRe, "\n")
-    .trim()
+  return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
 }
 
 export default class MacroJs {
@@ -65,7 +62,7 @@ export default class MacroJs {
     }
 
     if (Object.keys(values).length || options.length) {
-      const valuesObject = Object.keys(values).map(key =>
+      const valuesObject = Object.keys(values).map((key) =>
         this.types.objectProperty(this.types.identifier(key), values[key])
       )
 
@@ -108,7 +105,7 @@ export default class MacroJs {
       message: messageRaw,
       values,
       id,
-      comment
+      comment,
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
@@ -136,7 +133,7 @@ export default class MacroJs {
    *   })
    *
    */
-  replaceDefineMessage = path => {
+  replaceDefineMessage = (path) => {
     // TODO: Add argument validation.
     const descriptor = this.processDescriptor(path.node.arguments[0])
     this.replacePathWithMessage(path, descriptor)
@@ -160,24 +157,24 @@ export default class MacroJs {
    * }
    *
    */
-  processDescriptor = descriptor => {
+  processDescriptor = (descriptor) => {
     const idNode = descriptor.properties.find(
-      property => property.key.name === ID
+      (property) => property.key.name === ID
     )
 
     const messageNode = descriptor.properties.find(
-      property => property.key.name === MESSAGE
+      (property) => property.key.name === MESSAGE
     )
 
     const commentNode = descriptor.properties.find(
-      property => property.key.name === COMMENT
+      (property) => property.key.name === COMMENT
     )
 
     const i18nArgs = {
       id: idNode != null ? idNode.value.value : null,
       comment: commentNode != null ? commentNode.value.value : null,
       message: null,
-      values: {}
+      values: {},
     }
 
     if (messageNode == null) {
@@ -228,16 +225,16 @@ export default class MacroJs {
 
           return {
             type: "text",
-            value
+            value,
           }
         }),
         expressions: R.map((exp: babelTypes.Expression) =>
           this.types.isCallExpression(exp)
             ? this.tokenizeNode(exp)
             : this.tokenizeExpression(exp)
-        )
+        ),
       }),
-      exp => zip(exp.quasis, exp.expressions),
+      (exp) => zip(exp.quasis, exp.expressions),
       // @ts-ignore
       R.flatten,
       R.filter(Boolean)
@@ -248,15 +245,15 @@ export default class MacroJs {
     )
   }
 
-  tokenizeChoiceComponent = node => {
+  tokenizeChoiceComponent = (node) => {
     const format = node.callee.name.toLowerCase()
 
     const token = {
       ...this.tokenizeExpression(node.arguments[0]),
       format,
       options: {
-        offset: undefined
-      }
+        offset: undefined,
+      },
     }
 
     const props = node.arguments[1].properties
@@ -291,21 +288,21 @@ export default class MacroJs {
     return token
   }
 
-  tokenizeExpression = node => {
+  tokenizeExpression = (node) => {
     if (this.isArg(node)) {
       return {
         type: "arg",
-        name: node.arguments[0].value
+        name: node.arguments[0].value,
       }
     }
     return {
       type: "arg",
       name: this.expressionToArgument(node),
-      value: node
+      value: node,
     }
   }
 
-  expressionToArgument = exp => {
+  expressionToArgument = (exp) => {
     if (this.types.isIdentifier(exp)) {
       return exp.name
     } else if (this.types.isStringLiteral(exp)) {
@@ -320,7 +317,7 @@ export default class MacroJs {
    * for extraction.
    * @lingui/babel-extract-messages looks for this comment
    */
-  addExtractMark = path => {
+  addExtractMark = (path) => {
     path.addComment("leading", "i18n")
   }
 
@@ -332,20 +329,20 @@ export default class MacroJs {
     return this.types.isIdentifier(node, { name })
   }
 
-  isDefineMessage = node => {
+  isDefineMessage = (node) => {
     return (
       this.types.isCallExpression(node) &&
       this.isIdentifier(node.callee, "defineMessage")
     )
   }
 
-  isArg = node => {
+  isArg = (node) => {
     return (
       this.types.isCallExpression(node) && this.isIdentifier(node.callee, "arg")
     )
   }
 
-  isI18nMethod = node => {
+  isI18nMethod = (node) => {
     return (
       this.isIdentifier(node.tag, "t") ||
       (this.types.isCallExpression(node.tag) &&
@@ -353,7 +350,7 @@ export default class MacroJs {
     )
   }
 
-  isChoiceMethod = node => {
+  isChoiceMethod = (node) => {
     return (
       this.types.isCallExpression(node) &&
       (this.isIdentifier(node.callee, "plural") ||

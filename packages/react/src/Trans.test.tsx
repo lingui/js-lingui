@@ -3,7 +3,7 @@ import { render } from "@testing-library/react"
 import { Trans, I18nProvider } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
-describe("Trans component", function() {
+describe("Trans component", function () {
   /*
    * Setup context, define helpers
    */
@@ -18,22 +18,22 @@ describe("Trans component", function() {
           Original: "Původní",
           Updated: "Aktualizovaný",
           "msg.currency": "{value, number, currency}",
-          ID: "Translation"
-        }
-      }
-    }
+          ID: "Translation",
+        },
+      },
+    },
   })
 
-  const renderWithI18n = node =>
+  const renderWithI18n = (node) =>
     render(<I18nProvider i18n={i18n}>{node}</I18nProvider>)
-  const text = node => renderWithI18n(node).container.textContent
-  const html = node => renderWithI18n(node).container.innerHTML
+  const text = (node) => renderWithI18n(node).container.textContent
+  const html = (node) => renderWithI18n(node).container.innerHTML
 
   /*
    * Tests
    */
 
-  it("should throw error without i18n context", function() {
+  it("should throw error without i18n context", function () {
     const originalConsole = console.error
     console.error = jest.fn()
 
@@ -42,7 +42,7 @@ describe("Trans component", function() {
     console.error = originalConsole
   })
 
-  it("should render default string", function() {
+  it("should render default string", function () {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
     expect(text(<Trans id="unknown" message="Not translated yet" />)).toEqual(
@@ -60,7 +60,7 @@ describe("Trans component", function() {
     ).toEqual("Not translated yet, Dave")
   })
 
-  it("should render translation", function() {
+  it("should render translation", function () {
     const translation = text(
       <Trans id="All human beings are born free and equal in dignity and rights." />
     )
@@ -70,7 +70,7 @@ describe("Trans component", function() {
     )
   })
 
-  it("should render translation from variable", function() {
+  it("should render translation from variable", function () {
     const msg =
       "All human beings are born free and equal in dignity and rights."
     const translation = text(<Trans id={msg} />)
@@ -79,14 +79,14 @@ describe("Trans component", function() {
     )
   })
 
-  it("should render component in variables", function() {
+  it("should render component in variables", function () {
     const translation = html(
       <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
     )
     expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
-  it("should render translation inside custom component", function() {
+  it("should render translation inside custom component", function () {
     const html1 = html(<Trans render={<p className="lead" />} id="Original" />)
     const html2 = html(
       <Trans
@@ -99,7 +99,7 @@ describe("Trans component", function() {
     expect(html2).toEqual(html1)
   })
 
-  it("should render custom format", function() {
+  it("should render custom format", function () {
     const translation = text(
       <Trans
         id="msg.currency"
@@ -108,37 +108,37 @@ describe("Trans component", function() {
           currency: {
             style: "currency",
             currency: "EUR",
-            minimumFractionDigits: 2
-          }
+            minimumFractionDigits: 2,
+          },
         }}
       />
     )
     expect(translation).toEqual("1,00 €")
   })
 
-  describe("rendering", function() {
-    it("should render just a text without wrapping element", function() {
+  describe("rendering", function () {
+    it("should render just a text without wrapping element", function () {
       const txt = html(<Trans id="Just a text" />)
       expect(txt).toEqual("Just a text")
     })
 
-    it("should render with built-in element", function() {
+    it("should render with built-in element", function () {
       const span = html(<Trans render="span" id="Just a text" />)
       expect(span).toEqual("<span>Just a text</span>")
     })
 
-    it("should render custom element", function() {
+    it("should render custom element", function () {
       const element = html(<Trans render={<h1 />} id="Headline" />)
       expect(element).toEqual("<h1>Headline</h1>")
     })
 
-    it("should render function", function() {
+    it("should render function", function () {
       const spy = jest.fn()
       text(
         <Trans
           id="ID"
           message="Default"
-          render={props => {
+          render={(props) => {
             spy(props)
             return null
           }}
@@ -148,11 +148,11 @@ describe("Trans component", function() {
       expect(spy).toHaveBeenCalledWith({
         id: "ID",
         message: "Default",
-        translation: "Translation"
+        translation: "Translation",
       })
     })
 
-    it("should take default render element", function() {
+    it("should take default render element", function () {
       const span = render(
         <I18nProvider i18n={i18n} defaultRender="p">
           <Trans id="Just a text" />

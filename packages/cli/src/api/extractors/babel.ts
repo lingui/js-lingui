@@ -24,9 +24,9 @@ const extractor: ExtractorType = {
     transformFileSync(filename, {
       ...babelOptions,
       ...frameworkOptions,
-      plugins: ["macros", [linguiExtractMessages, { localeDir }], ...plugins]
+      plugins: ["macros", [linguiExtractMessages, { localeDir }], ...plugins],
     })
-  }
+  },
 }
 
 export default extractor

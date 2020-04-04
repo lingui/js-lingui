@@ -7,10 +7,10 @@ import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
 
-describe("pofile format", function() {
+describe("pofile format", function () {
   const dateHeaders = {
     "pot-creation-date": "2018-08-09",
-    "po-revision-date": "2018-08-09"
+    "po-revision-date": "2018-08-09",
   }
 
   afterEach(() => {
@@ -18,45 +18,45 @@ describe("pofile format", function() {
     mockDate.reset()
   })
 
-  it("should write catalog in pofile format", function() {
+  it("should write catalog in pofile format", function () {
     mockFs({
       locale: {
-        en: mockFs.directory()
-      }
+        en: mockFs.directory(),
+      },
     })
     mockDate.set("2018-08-27T10:00Z", 0)
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog = {
       static: {
-        translation: "Static message"
+        translation: "Static message",
       },
       withOrigin: {
         translation: "Message with origin",
-        origin: [["src/App.js", 4]]
+        origin: [["src/App.js", 4]],
       },
       withMultipleOrigins: {
         translation: "Message with multiple origin",
         origin: [
           ["src/App.js", 4],
-          ["src/Component.js", 2]
-        ]
+          ["src/Component.js", 2],
+        ],
       },
       withDescription: {
         translation: "Message with description",
-        description: "Description is comment from developers to translators"
+        description: "Description is comment from developers to translators",
       },
       withComments: {
         comments: ["Translator comment", "This one might come from developer"],
-        translation: "Support translator comments separately"
+        translation: "Support translator comments separately",
       },
       obsolete: {
         translation: "Obsolete message",
-        obsolete: true
+        obsolete: true,
       },
       withFlags: {
         flags: ["fuzzy", "otherFlag"],
-        translation: "Keeps any flags that are defined"
+        translation: "Keeps any flags that are defined",
       },
       veryLongString: {
         translation:
@@ -67,8 +67,8 @@ describe("pofile format", function() {
           " hardly able to cover it and seemed ready to slide off any moment. His many" +
           " legs, pitifully thin compared with the size of the rest of him, waved about" +
           " helplessly as he looked. \"What's happened to me?\" he thought. It wasn't" +
-          " a dream. His room, a proper human"
-      }
+          " a dream. His room, a proper human",
+      },
     }
 
     format.write(filename, catalog, { language: "en", ...dateHeaders })
@@ -77,7 +77,7 @@ describe("pofile format", function() {
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should read catalog in pofile format", function() {
+  it("should read catalog in pofile format", function () {
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.po")
@@ -87,9 +87,9 @@ describe("pofile format", function() {
     mockFs({
       locale: {
         en: {
-          "messages.po": pofile
-        }
-      }
+          "messages.po": pofile,
+        },
+      },
     })
 
     const filename = path.join("locale", "en", "messages.po")
@@ -98,7 +98,7 @@ describe("pofile format", function() {
     expect(actual).toMatchSnapshot()
   })
 
-  it("should correct badly used comments", function() {
+  it("should correct badly used comments", function () {
     const po = PO.parse(`
       #. First description
       #. Second comment
@@ -116,9 +116,9 @@ describe("pofile format", function() {
     mockFs({
       locale: {
         en: {
-          "messages.po": po.toString()
-        }
-      }
+          "messages.po": po.toString(),
+        },
+      },
     })
 
     const filename = path.join("locale", "en", "messages.po")
@@ -127,7 +127,7 @@ describe("pofile format", function() {
     expect(actual).toMatchSnapshot()
   })
 
-  it("should throw away additional msgstr if present", function() {
+  it("should throw away additional msgstr if present", function () {
     const po = PO.parse(`
       msgid "withMultipleTranslation"
       msgstr[0] "This is just fine"
@@ -137,13 +137,13 @@ describe("pofile format", function() {
     mockFs({
       locale: {
         en: {
-          "messages.po": po.toString()
-        }
-      }
+          "messages.po": po.toString(),
+        },
+      },
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    mockConsole(console => {
+    mockConsole((console) => {
       const actual = format.read(filename)
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Multiple translations"),
@@ -154,7 +154,7 @@ describe("pofile format", function() {
     })
   })
 
-  it("should write the same catalog as it was read", function() {
+  it("should write the same catalog as it was read", function () {
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.po")
@@ -164,9 +164,9 @@ describe("pofile format", function() {
     mockFs({
       locale: {
         en: {
-          "messages.po": pofile
-        }
-      }
+          "messages.po": pofile,
+        },
+      },
     })
 
     const filename = path.join("locale", "en", "messages.po")

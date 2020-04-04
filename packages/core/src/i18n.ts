@@ -156,10 +156,12 @@ export class I18n extends EventEmitter<Events> {
 
     if (isString(translation)) return translation
 
-    return interpolate(translation, this.locale, this.locales, this.localeData)(
-      values,
-      formats
-    )
+    return interpolate(
+      translation,
+      this.locale,
+      this.locales,
+      this.localeData
+    )(values, formats)
   }
 
   date(value: string | Date, format: Intl.DateTimeFormatOptions): string {

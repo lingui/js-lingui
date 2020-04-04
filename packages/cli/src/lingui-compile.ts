@@ -31,7 +31,7 @@ function command(config, options) {
 
   console.error("Compiling message catalogs…")
 
-  config.locales.forEach(locale => {
+  config.locales.forEach((locale) => {
     const [language] = locale.split(/[_-]/)
     if (locale !== config.pseudoLocale && !plurals[language]) {
       console.log(
@@ -43,10 +43,10 @@ function command(config, options) {
       process.exit(1)
     }
 
-    catalogs.forEach(catalog => {
+    catalogs.forEach((catalog) => {
       const messages = catalog.getTranslations(locale, {
         fallbackLocale: config.fallbackLocale,
-        sourceLocale: config.sourceLocale
+        sourceLocale: config.sourceLocale,
       })
 
       if (!options.allowEmpty) {
@@ -63,7 +63,7 @@ function command(config, options) {
 
           if (options.verbose) {
             console.error(chalk.red("Missing translations:"))
-            missing.forEach(msgId => console.log(msgId))
+            missing.forEach((msgId) => console.log(msgId))
           } else {
             console.error(chalk.red(`Missing ${missing.length} translation(s)`))
           }
@@ -75,7 +75,7 @@ function command(config, options) {
       const compiledCatalog = createCompiledCatalog(locale, messages, {
         strict: false,
         namespace: options.namespace || config.compileNamespace,
-        pseudoLocale: config.pseudoLocale
+        pseudoLocale: config.pseudoLocale,
       })
 
       const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
@@ -113,7 +113,7 @@ if (require.main === module) {
       "--namespace <namespace>",
       "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, window.test -> window.test"
     )
-    .on("--help", function() {
+    .on("--help", function () {
       console.log("\n  Examples:\n")
       console.log(
         "    # Compile translations and use defaults or message IDs for missing translations"
@@ -141,7 +141,7 @@ if (require.main === module) {
     verbose: program.verbose || false,
     allowEmpty: !program.strict,
     typescript: program.typescript || false,
-    namespace: program.namespace // we want this to be undefined if user does not specify so default can be used
+    namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
   })
 
   if (!results) {

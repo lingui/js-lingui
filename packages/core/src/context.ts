@@ -10,15 +10,15 @@ const defaultFormats = (
 ) => {
   locales = locales || locale
   const { plurals } = localeData
-  const style = format =>
+  const style = (format) =>
     isString(format) ? formats[format] || { style: format } : format
   const replaceOctothorpe = (value, message) => {
-    return ctx => {
+    return (ctx) => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
       const formatter = new Intl.NumberFormat(locales)
       const valueStr = formatter.format(value)
-      return norm.map(m => (isString(m) ? m.replace("#", valueStr) : m))
+      return norm.map((m) => (isString(m) ? m.replace("#", valueStr) : m))
     }
   }
 
@@ -39,7 +39,7 @@ const defaultFormats = (
 
     date: (value, format) => date(locales, style(format))(value),
 
-    undefined: value => value
+    undefined: (value) => value,
   }
 }
 
@@ -80,10 +80,10 @@ export function interpolate(
       locales,
       localeData,
       formats,
-      values
+      values,
     })
 
-    const formatMessage = message => {
+    const formatMessage = (message) => {
       if (!Array.isArray(message)) return message
 
       return message.reduce((message, token) => {
@@ -93,7 +93,7 @@ export function interpolate(
 
         let interpolatedFormat = {}
         if (format != null && !isString(format)) {
-          Object.keys(format).forEach(key => {
+          Object.keys(format).forEach((key) => {
             interpolatedFormat[key] = formatMessage(format[key])
           })
         } else {

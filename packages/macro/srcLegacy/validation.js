@@ -8,7 +8,7 @@ export function validatePluralRules(type, rules, onError) {
 
   // validate plural rules
   if (type === "plural" || type === "selectordinal") {
-    rules.forEach(rule => {
+    rules.forEach((rule) => {
       if (!pluralRules.includes(rule) && !/=\d+/.test(rule)) {
         onError(
           `Invalid plural rule '${rule}'. Must be ${pluralRules.join(

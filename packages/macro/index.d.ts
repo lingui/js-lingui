@@ -8,16 +8,11 @@ export function t(
 ): string
 export function plural(arg: number | string, options: Object): string
 export function selectOrdinal(arg: number | string, options: Object): string
-export function select(
-  arg: string,
-  choices: { [key: string]: string }
-): string
-export function defineMessages<
-  M extends { [key: string]: MessageDescriptor }
->(messages: M): M
-export function defineMessage(
-  descriptor: MessageDescriptor
-): MessageDescriptor
+export function select(arg: string, choices: { [key: string]: string }): string
+export function defineMessages<M extends { [key: string]: MessageDescriptor }>(
+  messages: M
+): M
+export function defineMessage(descriptor: MessageDescriptor): MessageDescriptor
 
 export interface TransProps {
   id?: string

@@ -3,9 +3,9 @@ module.exports = {
   catalogs: [
     {
       path: "src/locales/{locale}",
-      include: ["src"]
-    }
+      include: ["src"],
+    },
   ],
   format: "po",
-  sourceLocale: "en"
+  sourceLocale: "en",
 }

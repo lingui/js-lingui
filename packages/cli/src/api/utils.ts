@@ -28,7 +28,7 @@ export function removeDirectory(dir, onlyContent = false) {
 
 export function prettyOrigin(origins) {
   try {
-    return origins.map(origin => origin.join(":")).join(", ")
+    return origins.map((origin) => origin.join(":")).join(", ")
   } catch (e) {
     return ""
   }
@@ -43,7 +43,7 @@ export function prettyOrigin(origins) {
  *    for possible misspelled letter. Output help with suggestions to console.
  */
 export function helpMisspelledCommand(command, availableCommands = []) {
-  const commandNames = availableCommands.map(command => command.name())
+  const commandNames = availableCommands.map((command) => command.name())
 
   // if no command is supplied, then commander.js shows help automatically
   if (!command || commandNames.includes(command)) {
@@ -51,13 +51,13 @@ export function helpMisspelledCommand(command, availableCommands = []) {
   }
 
   const suggestions = commandNames
-    .map(name => ({
+    .map((name) => ({
       name,
-      score: score(name, command.slice(0, name.length))
+      score: score(name, command.slice(0, name.length)),
     }))
-    .filter(nameScore => nameScore.score > 0)
+    .filter((nameScore) => nameScore.score > 0)
     .slice(0, 3)
-    .map(commandScore => chalk.inverse(commandScore.name))
+    .map((commandScore) => chalk.inverse(commandScore.name))
     .join(", ")
 
   console.log(
@@ -71,9 +71,9 @@ export function helpMisspelledCommand(command, availableCommands = []) {
   }
 }
 
-export const splitOrigin = origin => origin.split(":")
+export const splitOrigin = (origin) => origin.split(":")
 
-export const joinOrigin = origin => origin.join(":")
+export const joinOrigin = (origin) => origin.join(":")
 
 export function hasYarn() {
   return fs.existsSync(path.resolve("yarn.lock"))
@@ -87,4 +87,3 @@ export function makeInstall() {
       ? `yarn add ${dev ? "--dev " : ""}${packageName}`
       : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
-

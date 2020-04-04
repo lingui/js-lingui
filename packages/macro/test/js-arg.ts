@@ -10,6 +10,6 @@ export default [
         const a = 
           /*i18n*/
           i18n._("Hello {name}")
-    `
-  }
+    `,
+  },
 ]

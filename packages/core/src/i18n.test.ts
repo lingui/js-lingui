@@ -1,7 +1,7 @@
 import { setupI18n } from "@lingui/core"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
-describe("I18n", function() {
+describe("I18n", function () {
   describe("I18n.load", () => {
     it("should emit event", () => {
       const i18n = setupI18n()
@@ -14,12 +14,12 @@ describe("I18n", function() {
 
     it("should load catalog and merge with existing", () => {
       const messages = {
-        Hello: "Hello"
+        Hello: "Hello",
       }
 
       const localeData = {
         plurals: jest.fn(),
-        code: "en_US"
+        code: "en_US",
       }
 
       const i18n = setupI18n()
@@ -39,8 +39,8 @@ describe("I18n", function() {
       const i18n = setupI18n({
         locale: "en",
         catalogs: {
-          en: { messages: {} }
-        }
+          en: { messages: {} },
+        },
       })
 
       const cbChange = jest.fn()
@@ -51,15 +51,15 @@ describe("I18n", function() {
 
     it("should switch active locale", () => {
       const messages = {
-        Hello: "Salut"
+        Hello: "Salut",
       }
 
       const i18n = setupI18n({
         locale: "en",
         catalogs: {
           fr: { messages },
-          en: { messages: {} }
-        }
+          en: { messages: {} },
+        },
       })
 
       expect(i18n.locale).toEqual("en")
@@ -73,7 +73,7 @@ describe("I18n", function() {
     it("should throw an error about incorrect locale", () => {
       const i18n = setupI18n()
 
-      mockConsole(console => {
+      mockConsole((console) => {
         i18n.activate("xyz")
         expect(console.warn).toBeCalledWith(
           'Message catalog for locale "xyz" not loaded.'
@@ -82,7 +82,7 @@ describe("I18n", function() {
 
       mockEnv("production", () => {
         jest.resetModules()
-        mockConsole(console => {
+        mockConsole((console) => {
           const { setupI18n } = require("@lingui/core")
           const i18n = setupI18n()
           i18n.activate("xyz")
@@ -92,15 +92,15 @@ describe("I18n", function() {
     })
   })
 
-  it("._ should format message from catalog", function() {
+  it("._ should format message from catalog", function () {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}"
+      "My name is {name}": "Je m'appelle {name}",
     }
 
     const i18n = setupI18n({
       locale: "fr",
-      catalogs: { fr: { messages } }
+      catalogs: { fr: { messages } },
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
@@ -119,20 +119,20 @@ describe("I18n", function() {
         "Missing with default",
         { name: "Fred" },
         {
-          message: "Missing {name}"
+          message: "Missing {name}",
         }
       )
     ).toEqual("Missing Fred")
   })
 
-  it("._ should translate message from variable", function() {
+  it("._ should translate message from variable", function () {
     const messages = {
-      Hello: "Salut"
+      Hello: "Salut",
     }
 
     const i18n = setupI18n({
       locale: "fr",
-      catalogs: { fr: { messages } }
+      catalogs: { fr: { messages } },
     })
     const hello = "Hello"
     expect(i18n._(hello)).toEqual("Salut")
@@ -140,28 +140,28 @@ describe("I18n", function() {
 
   it("._ allow escaping syntax characters", () => {
     const messages = {
-      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'"
+      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'",
     }
 
     const i18n = setupI18n({
       locale: "es",
-      catalogs: { es: { messages } }
+      catalogs: { es: { messages } },
     })
 
     expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", function() {
+  it("._ shouldn't compile messages in production", function () {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}"
+      "My name is {name}": "Je m'appelle {name}",
     }
 
     mockEnv("production", () => {
       const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
-        catalogs: { fr: { messages } }
+        catalogs: { fr: { messages } },
       })
 
       expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
@@ -170,27 +170,22 @@ describe("I18n", function() {
     })
   })
 
-  describe("params.missing - handling missing translations", function() {
-    it("._ should return custom string for missing translations", function() {
+  describe("params.missing - handling missing translations", function () {
+    it("._ should return custom string for missing translations", function () {
       const i18n = setupI18n({
         missing: "xxx",
         locale: "en",
-        catalogs: { en: { messages: { exists: "exists" } } }
+        catalogs: { en: { messages: { exists: "exists" } } },
       })
       expect(i18n._("exists")).toEqual("exists")
       expect(i18n._("missing")).toEqual("xxx")
     })
 
-    it("._ should call a function with message ID of missing translation", function() {
-      const missing = jest.fn((locale, id) =>
-        id
-          .split("")
-          .reverse()
-          .join("")
-      )
+    it("._ should call a function with message ID of missing translation", function () {
+      const missing = jest.fn((locale, id) => id.split("").reverse().join(""))
       const i18n = setupI18n({
         locale: "en",
-        missing
+        missing,
       })
       expect(i18n._("missing")).toEqual("gnissim")
       expect(missing).toHaveBeenCalledWith("en", "missing")

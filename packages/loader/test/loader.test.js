@@ -7,7 +7,7 @@ jest.setTimeout(20000)
 const skipOnWindows = /^win/.test(process.platform) ? it.skip : it
 
 // Compilation fails with timeout randomly
-describe.skip("lingui-loader", function() {
+describe.skip("lingui-loader", function () {
   // skip on windows for now
   skipOnWindows("should compile catalog", async () => {
     expect.assertions(2)

@@ -19,7 +19,7 @@ export default [
           gender: gender,
           numOfGuests: numOfGuests
         });
-      `
+      `,
   },
   {
     name: "Macro with escaped reserved props",
@@ -36,6 +36,6 @@ export default [
         i18n._("{value, select, id {test escaped id} comment {test escaped comment}}", {
           value: value
         });
-      `
-  }
+      `,
+  },
 ]

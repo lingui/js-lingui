@@ -21,7 +21,7 @@ export default {
       console.error(`Cannot read ${filename}: ${e.message}`)
       return null
     }
-  }
+  },
 }
 
 const removeOrigins = R.map(({ origin, ...message }) => message)

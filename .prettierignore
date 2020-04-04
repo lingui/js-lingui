@@ -1,3 +1,4 @@
+**/.next/*
 **/dist/*
 **/test/fixtures/**
 **/test/**/actual.js

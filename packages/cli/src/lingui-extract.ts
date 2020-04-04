@@ -34,11 +34,11 @@ export default function command(
 
   options.verbose && console.error("Extracting messages from source files…")
   const catalogs = getCatalogs(config)
-  catalogs.forEach(catalog => {
+  catalogs.forEach((catalog) => {
     catalog.make({
       ...options,
       orderBy: config.orderBy,
-      projectType: detect()
+      projectType: detect(),
       // const pseudoLocale = config.pseudoLocale
       // if (pseudoLocale) {
       //   catalog.addLocale(pseudoLocale)
@@ -122,7 +122,7 @@ if (require.main === module) {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,
-    prevFormat
+    prevFormat,
   })
 
   if (!result) process.exit(1)

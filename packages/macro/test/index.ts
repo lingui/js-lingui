@@ -14,18 +14,18 @@ const testCases = {
   "jsx-select": require("./jsx-select").default,
   "jsx-plural": require("./jsx-plural").default,
   "jsx-selectOrdinal": require("./jsx-selectOrdinal").default,
-  "js-defineMessage": require("./js-defineMessage").default
+  "js-defineMessage": require("./js-defineMessage").default,
 }
 
-describe("macro", function() {
+describe("macro", function () {
   const babelOptions: TransformOptions = {
     filename: "<filename>",
     configFile: false,
-    plugins: ["@babel/plugin-syntax-jsx", "macros"]
+    plugins: ["@babel/plugin-syntax-jsx", "macros"],
   }
 
   // return function, so we can test exceptions
-  const transformCode = code => () => {
+  const transformCode = (code) => () => {
     try {
       return transform(code, babelOptions).code.trim()
     } catch (e) {
@@ -34,11 +34,11 @@ describe("macro", function() {
     }
   }
 
-  Object.keys(testCases).forEach(suiteName => {
+  Object.keys(testCases).forEach((suiteName) => {
     describe(suiteName, () => {
       const cases = testCases[suiteName]
 
-      const clean = value =>
+      const clean = (value) =>
         prettier.format(value, { parser: "babel" }).replace(/\n+/, "\n")
 
       cases.forEach(
@@ -74,7 +74,7 @@ describe("macro", function() {
 
                 const _babelOptions = {
                   ...babelOptions,
-                  cwd: path.dirname(inputPath)
+                  cwd: path.dirname(inputPath),
                 }
 
                 const actual = transformFileSync(inputPath, _babelOptions)
@@ -96,9 +96,9 @@ describe("macro", function() {
     })
   })
 
-  describe.skip("validation", function() {
-    describe("plural/select/selectordinal", function() {
-      it("value is missing", function() {
+  describe.skip("validation", function () {
+    describe("plural/select/selectordinal", function () {
+      it("value is missing", function () {
         const code = `
         plural({
           0: "No books",
@@ -108,7 +108,7 @@ describe("macro", function() {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it("offset must be number or string, not variable", function() {
+      it("offset must be number or string, not variable", function () {
         const code = `
         plural({
           offset: count,
@@ -119,7 +119,7 @@ describe("macro", function() {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural forms are missing", function() {
+      it("plural forms are missing", function () {
         const plural = `
         plural({
           value: count
@@ -139,7 +139,7 @@ describe("macro", function() {
         expect(transformCode(selectOrdinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural forms cannot be variables", function() {
+      it("plural forms cannot be variables", function () {
         const code = `
         plural({
           value: count,
@@ -148,7 +148,7 @@ describe("macro", function() {
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural rules must be valid", function() {
+      it("plural rules must be valid", function () {
         const plural = `
         plural({
           value: count,
@@ -169,12 +169,12 @@ describe("macro", function() {
       })
     })
 
-    describe("formats", function() {
-      it("value is missing", function() {
+    describe("formats", function () {
+      it("value is missing", function () {
         expect(transformCode("date();")).toThrowErrorMatchingSnapshot()
       })
 
-      it("format must be either string, variable or object with custom format", function() {
+      it("format must be either string, variable or object with custom format", function () {
         expect(transformCode('number(value, "currency");')).not.toThrow()
         expect(transformCode("number(value, currency);")).not.toThrow()
         expect(transformCode("number(value, { digits: 4 });")).not.toThrow()
@@ -184,8 +184,8 @@ describe("macro", function() {
       })
     })
 
-    describe("Plural/Select/SelectOrdinal", function() {
-      it("children are not allowed", function() {
+    describe("Plural/Select/SelectOrdinal", function () {
+      it("children are not allowed", function () {
         expect(
           transformCode("<Plural>Not allowed</Plural>")
         ).toThrowErrorMatchingSnapshot()
@@ -197,17 +197,17 @@ describe("macro", function() {
         ).toThrowErrorMatchingSnapshot()
       })
 
-      it("value is missing", function() {
+      it("value is missing", function () {
         const code = `<Plural one="Book" other="Books" />`
         expect(transformCode(code)).toThrowErrorMatchingSnapshot()
       })
 
-      it("offset must be number or string, not variable", function() {
+      it("offset must be number or string, not variable", function () {
         const variable = `<Plural value={value} offset={offset} one="Book" other="Books" />`
         expect(transformCode(variable)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural forms are missing", function() {
+      it("plural forms are missing", function () {
         const plural = `<Plural value={value} />`
         expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 
@@ -218,7 +218,7 @@ describe("macro", function() {
         expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
       })
 
-      it("plural rules must be valid", function() {
+      it("plural rules must be valid", function () {
         const plural = `<Plural value={value} three="Invalid" one="Book" other="Books" />`
         expect(transformCode(plural)).toThrowErrorMatchingSnapshot()
 

@@ -39,19 +39,19 @@ function addMessage(
   }
 }
 
-export default function({ types: t }) {
+export default function ({ types: t }) {
   let localTransComponentName
 
   function isTransComponent(node) {
     return (
       t.isJSXElement(node) &&
       t.isJSXIdentifier(node.openingElement.name, {
-        name: localTransComponentName
+        name: localTransComponentName,
       })
     )
   }
 
-  const isI18nMethod = node =>
+  const isI18nMethod = (node) =>
     t.isMemberExpression(node) &&
     t.isIdentifier(node.object, { name: "i18n" }) &&
     t.isIdentifier(node.property, { name: "_" })
@@ -87,7 +87,7 @@ export default function({ types: t }) {
 
         const importDeclarations = {}
         if (moduleName === "@lingui/react" || moduleName === "@lingui/macro") {
-          node.specifiers.forEach(specifier => {
+          node.specifiers.forEach((specifier) => {
             importDeclarations[specifier.imported.name] = specifier.local.name
           })
 
@@ -125,7 +125,7 @@ export default function({ types: t }) {
 
         if (!props.id) {
           // <Trans id={message} /> is valid, don't raise warning
-          const idProp = attrs.filter(item => item.name.name === "id")[0]
+          const idProp = attrs.filter((item) => item.name.name === "id")[0]
           if (idProp === undefined || t.isLiteral(props.id)) {
             console.warn("Missing message ID, skipping.")
             console.warn(generate(node).code)
@@ -144,7 +144,7 @@ export default function({ types: t }) {
           ({ leadingComments }) => {
             return (
               leadingComments &&
-              leadingComments.filter(node =>
+              leadingComments.filter((node) =>
                 node.value.match(/^\s*i18n\s*$/)
               )[0]
             )
@@ -153,13 +153,13 @@ export default function({ types: t }) {
         if (!hasComment) return
 
         const props = {
-          id: path.node.arguments[0].value
+          id: path.node.arguments[0].value,
         }
 
         const copyOptions = ["message", "comment"]
 
         if (t.isObjectExpression(path.node.arguments[2])) {
-          path.node.arguments[2].properties.forEach(property => {
+          path.node.arguments[2].properties.forEach((property) => {
             if (!copyOptions.includes(property.key.name)) return
 
             props[property.key.name] = property.value.value
@@ -168,7 +168,7 @@ export default function({ types: t }) {
 
         visited.add(path.node)
         collectMessage(path, file, props)
-      }
+      },
     },
 
     pre(file) {
@@ -225,6 +225,6 @@ export default function({ types: t }) {
       })
 
       fs.writeFileSync(catalogFilename, JSON.stringify(catalog, null, 2))
-    }
+    },
   }
 }

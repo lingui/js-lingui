@@ -34,7 +34,7 @@ function mergeMessage(msgId, prev, next) {
   return {
     ...next,
     message: prev.message || next.message,
-    origin: R.concat(prev.origin, next.origin)
+    origin: R.concat(prev.origin, next.origin),
   }
 }
 
@@ -46,7 +46,7 @@ export function extract(
   const { ignore = [], verbose = false } = options
   const ignorePattern = ignore.length ? new RegExp(ignore.join("|"), "i") : null
 
-  srcPaths.forEach(srcFilename => {
+  srcPaths.forEach((srcFilename) => {
     if (
       !fs.existsSync(srcFilename) ||
       (ignorePattern && ignorePattern.test(srcFilename))
@@ -56,7 +56,7 @@ export function extract(
     if (fs.statSync(srcFilename).isDirectory()) {
       const subdirs = fs
         .readdirSync(srcFilename)
-        .map(filename => path.join(srcFilename, filename))
+        .map((filename) => path.join(srcFilename, filename))
 
       extract(subdirs, targetPath, options)
       return
@@ -79,7 +79,7 @@ export function extract(
 export function collect(buildDir: string) {
   return fs
     .readdirSync(buildDir)
-    .map(filename => {
+    .map((filename) => {
       const filepath = path.join(buildDir, filename)
 
       if (fs.lstatSync(filepath).isDirectory()) {

@@ -5,7 +5,7 @@ export const i18n = setupI18n()
 
 i18n.loadAll({
   en: require("./locale/en/messages"),
-  cs: require("./locale/cs/messages")
+  cs: require("./locale/cs/messages"),
 })
 
 /**
@@ -15,13 +15,13 @@ export const common = {
   yes: () =>
     defineMessage({
       comment: "Agreement",
-      message: "Yes"
+      message: "Yes",
     }),
   no: () =>
     defineMessage({
       comment: "Disagreement",
-      message: "No"
-    })
+      message: "No",
+    }),
 }
 
 /**
@@ -30,7 +30,7 @@ export const common = {
 export function getStatic() {
   return defineMessage({
     comment: "Title of example",
-    message: "@lingui/core example"
+    message: "@lingui/core example",
   })
 }
 
@@ -47,7 +47,7 @@ export function getVariables(name) {
 export function getPlural(value) {
   return t`There are ${plural(value, {
     one: "# bottle",
-    other: "# bottles"
+    other: "# bottles",
   })} hanging on the wall`
 }
 

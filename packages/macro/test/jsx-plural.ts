@@ -17,7 +17,7 @@ export default [
         }} components={{
           0: <a href="/more" />
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -39,7 +39,7 @@ export default [
         }} components={{
           0: <a href="/more" />
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -64,9 +64,9 @@ export default [
         }} components={{
           0: <a href="/more" />
         }} />;
-      `
+      `,
   },
   {
-    filename: `jsx-plural-select-nested.js`
-  }
+    filename: `jsx-plural-select-nested.js`,
+  },
 ]

@@ -23,7 +23,7 @@ export function useLingui(): I18nContext {
   return context
 }
 
-export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
+export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
   const [context, setContext] = React.useState<I18nContext>(makeContext())
 
   /**
@@ -52,7 +52,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = props => {
   function makeContext() {
     return {
       i18n: props.i18n,
-      defaultRender: props.defaultRender
+      defaultRender: props.defaultRender,
     }
   }
 

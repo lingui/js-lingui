@@ -1,41 +1,41 @@
 import ICUMessageFormat from "./icu"
 
-describe("ICU MessageFormat", function() {
-  it("should collect text message", function() {
+describe("ICU MessageFormat", function () {
+  it("should collect text message", function () {
     const messageFormat = new ICUMessageFormat()
     const tokens = [
       {
         type: "text",
-        value: "Hello World"
-      }
+        value: "Hello World",
+      },
     ]
     expect(messageFormat.fromTokens(tokens)).toEqual(
       expect.objectContaining({
         message: "Hello World",
-        values: {}
+        values: {},
       })
     )
   })
 
-  it("should collect text message with arguments", function() {
+  it("should collect text message with arguments", function () {
     const messageFormat = new ICUMessageFormat()
     const tokens = [
       {
         type: "text",
-        value: "Hello "
+        value: "Hello ",
       },
       {
         type: "arg",
         name: "name",
-        value: "Joe"
-      }
+        value: "Joe",
+      },
     ]
     expect(messageFormat.fromTokens(tokens)).toEqual(
       expect.objectContaining({
         message: "Hello {name}",
         values: {
-          name: "Joe"
-        }
+          name: "Joe",
+        },
       })
     )
   })

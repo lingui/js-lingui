@@ -33,8 +33,8 @@ export const defaultConfig: LinguiConfig = {
     {
       path: path.join("<rootDir>", "locale", "{locale}", "messages"),
       include: ["<rootDir>"],
-      exclude: ["*/node_modules/*"]
-    }
+      exclude: ["*/node_modules/*"],
+    },
   ],
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
@@ -45,7 +45,7 @@ export const defaultConfig: LinguiConfig = {
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
-  sourceLocale: ""
+  sourceLocale: "",
 }
 
 function configExists(path) {
@@ -55,7 +55,7 @@ function configExists(path) {
 export function getConfig({
   cwd,
   configPath,
-  skipValidation = false
+  skipValidation = false,
 }: {
   cwd?: string
   configPath?: string
@@ -71,7 +71,7 @@ export function getConfig({
   const config: LinguiConfig = {
     ...defaultConfig,
     rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
-    ...userConfig
+    ...userConfig,
   }
 
   if (!skipValidation) {
@@ -86,7 +86,7 @@ export function getConfig({
       validateLocales,
 
       // `replaceRootDir` should always be the last
-      config => replaceRootDir(config, config.rootDir)
+      (config) => replaceRootDir(config, config.rootDir)
     )(config)
   } else {
     return replaceRootDir(config, config.rootDir)
@@ -99,8 +99,8 @@ const exampleConfig = {
     extends: "babelconfig.js",
     rootMode: "rootmode",
     plugins: ["plugin"],
-    presets: ["preset"]
-  }
+    presets: ["preset"],
+  },
 }
 
 const deprecatedConfig = {
@@ -174,13 +174,13 @@ const deprecatedConfig = {
     }
 
     Please update your configuration.
-    `
+    `,
 }
 
 export const configValidation = {
   exampleConfig,
   deprecatedConfig,
-  comment: "Documentation: https://lingui.js.org/ref/conf.html"
+  comment: "Documentation: https://lingui.js.org/ref/conf.html",
 }
 
 function validateLocales(config) {
@@ -203,16 +203,16 @@ export function replaceRootDir(
   rootDir: string
 ): LinguiConfig {
   return (function replaceDeep<T>(value: T, rootDir: string): T {
-    const replace = s => s.replace("<rootDir>", rootDir)
+    const replace = (s) => s.replace("<rootDir>", rootDir)
 
     if (value == null) {
       return value
     } else if (typeof value === "string") {
       return replace(value)
     } else if (Array.isArray(value)) {
-      return value.map(item => replaceDeep(item, rootDir)) as any
+      return value.map((item) => replaceDeep(item, rootDir)) as any
     } else if (typeof value === "object") {
-      Object.keys(value).forEach(key => {
+      Object.keys(value).forEach((key) => {
         const newKey = replaceDeep(key, rootDir)
         value[newKey] = replaceDeep(value[key], rootDir)
         if (key !== newKey) delete value[key]
@@ -238,7 +238,7 @@ export function fallbackLanguageMigration(
 
   return {
     ...newConfig,
-    fallbackLocale: fallbackLocale || fallbackLanguage || ""
+    fallbackLocale: fallbackLocale || fallbackLanguage || "",
   }
 }
 
@@ -279,7 +279,7 @@ export function catalogMigration(
     newConfig.catalogs.push({
       path: path.join(newLocaleDir, "{locale}", "messages"),
       include: srcPathDirs,
-      exclude: srcPathIgnorePatterns
+      exclude: srcPathIgnorePatterns,
     })
   }
 

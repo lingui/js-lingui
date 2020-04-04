@@ -4,8 +4,8 @@ module.exports = {
   catalogs: [
     {
       path: "./src/locale/{locale}/messages",
-      include: ["./src"]
-    }
+      include: ["./src"],
+    },
   ],
-  sourceLocale: "en"
+  sourceLocale: "en",
 }

@@ -1,14 +1,14 @@
 import generate from "@babel/generator"
 import { compile, createCompiledCatalog } from "./compile"
 
-describe("compile", function() {
-  const getSource = message =>
+describe("compile", function () {
+  const getSource = (message) =>
     generate(compile(message) as any, {
       compact: true,
-      minified: true
+      minified: true,
     }).code
 
-  it("should optimize string only messages", function() {
+  it("should optimize string only messages", function () {
     expect(getSource("Hello World")).toEqual('"Hello World"')
   })
 
@@ -17,13 +17,13 @@ describe("compile", function() {
     expect(getSource("''")).toEqual('"\'"')
   })
 
-  it("should compile arguments", function() {
+  it("should compile arguments", function () {
     expect(getSource("{name}")).toEqual('[["name"]]')
 
     expect(getSource("B4 {name} A4")).toEqual('["B4 ",["name"]," A4"]')
   })
 
-  it("should compile arguments with formats", function() {
+  it("should compile arguments with formats", function () {
     expect(getSource("{name, number}")).toEqual('[["name","number"]]')
 
     expect(getSource("{name, number, percent}")).toEqual(
@@ -31,7 +31,7 @@ describe("compile", function() {
     )
   })
 
-  it("should compile plural", function() {
+  it("should compile plural", function () {
     expect(getSource("{name, plural, one {Book} other {Books}}")).toEqual(
       '[["name","plural",{one:"Book",other:"Books"}]]'
     )
@@ -53,7 +53,7 @@ describe("compile", function() {
     )
   })
 
-  it("should compile select", function() {
+  it("should compile select", function () {
     expect(getSource("{name, select, male {He} female {She}}")).toEqual(
       '[["name","select",{male:"He",female:"She"}]]'
     )
@@ -67,15 +67,15 @@ describe("compile", function() {
     )
   })
 
-  it("should report failed message on error", function() {
+  it("should report failed message on error", function () {
     expect(() =>
       getSource("{value, plural, one {Book} other {Books")
     ).toThrowErrorMatchingSnapshot()
   })
 })
 
-describe("createCompiledCatalog", function() {
-  describe("namespace", function() {
+describe("createCompiledCatalog", function () {
+  describe("namespace", function () {
     const getCompiledCatalog = (strict, namespace, pseudoLocale = null) =>
       createCompiledCatalog(
         "fr",
@@ -83,23 +83,23 @@ describe("createCompiledCatalog", function() {
         {
           strict,
           namespace,
-          pseudoLocale
+          pseudoLocale,
         }
       )
 
-    it("should compile with es", function() {
+    it("should compile with es", function () {
       expect(getCompiledCatalog(false, "es")).toMatchSnapshot()
     })
 
-    it("should compile with window", function() {
+    it("should compile with window", function () {
       expect(getCompiledCatalog(false, "window.test")).toMatchSnapshot()
     })
 
-    it("should compile with global", function() {
+    it("should compile with global", function () {
       expect(getCompiledCatalog(false, "global.test")).toMatchSnapshot()
     })
 
-    it("should error with invalid value", function() {
+    it("should error with invalid value", function () {
       expect(() =>
         getCompiledCatalog(false, "global")
       ).toThrowErrorMatchingSnapshot()

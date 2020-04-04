@@ -4,7 +4,7 @@ import { getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
-  getCatalogForFile
+  getCatalogForFile,
 } from "@lingui/cli/api"
 import loaderUtils from "loader-utils"
 
@@ -20,7 +20,7 @@ try {
   }
 }
 
-export default function(source) {
+export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
 
   // Webpack 4 uses json-loader automatically, which breaks this loader because it
@@ -35,7 +35,7 @@ export default function(source) {
 
   const config = getConfig({
     configPath: options.config,
-    cwd: path.dirname(this.resourcePath)
+    cwd: path.dirname(this.resourcePath),
   })
 
   const { locale, catalog } = getCatalogForFile(
@@ -47,7 +47,7 @@ export default function(source) {
     (_, key) =>
       catalog.getTranslation(catalogs, locale, key, {
         fallbackLocale: config.fallbackLocale,
-        sourceLocale: config.sourceLocale
+        sourceLocale: config.sourceLocale,
       }),
     catalogs[locale]
   )
@@ -61,6 +61,6 @@ export default function(source) {
   return createCompiledCatalog(locale, messages, {
     strict,
     namespace: config.compileNamespace,
-    pseudoLocale: config.pseudoLocale
+    pseudoLocale: config.pseudoLocale,
   })
 }

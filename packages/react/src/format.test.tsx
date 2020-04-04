@@ -2,19 +2,19 @@ import * as React from "react"
 import { render } from "@testing-library/react"
 import { formatElements } from "./format"
 
-describe("formatElements", function() {
-  const html = elements => render(elements).container.innerHTML
+describe("formatElements", function () {
+  const html = (elements) => render(elements).container.innerHTML
 
-  it("should return string when there're no elements", function() {
+  it("should return string when there're no elements", function () {
     expect(formatElements("")).toEqual("")
     expect(formatElements("Text only")).toEqual("Text only")
   })
 
-  it("should format unpaired elements", function() {
+  it("should format unpaired elements", function () {
     expect(html(formatElements("<0/>", { 0: <br /> }))).toEqual("<br>")
   })
 
-  it("should format paired elements", function() {
+  it("should format paired elements", function () {
     expect(html(formatElements("<0>Inner</0>", { 0: <strong /> }))).toEqual(
       "<strong>Inner</strong>"
     )
@@ -24,18 +24,18 @@ describe("formatElements", function() {
     ).toEqual("Before <strong>Inner</strong> After")
   })
 
-  it("should preserve element props", function() {
+  it("should preserve element props", function () {
     expect(
       html(formatElements("<0>About</0>", { 0: <a href="/about" /> }))
     ).toEqual('<a href="/about">About</a>')
   })
 
-  it("should format nested elements", function() {
+  it("should format nested elements", function () {
     expect(
       html(
         formatElements("<0><1>Deep</1></0>", {
           0: <a href="/about" />,
-          1: <strong />
+          1: <strong />,
         })
       )
     ).toEqual('<a href="/about"><strong>Deep</strong></a>')

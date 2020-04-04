@@ -26,8 +26,8 @@ const extractor: ExtractorType = {
         module: ts.ModuleKind.ESNext,
         target: ts.ScriptTarget.ES2016, // use ES2015 or ES2016 to preserve tagged template literal
         allowSyntheticDefaultImports: true,
-        moduleResolution: ts.ModuleResolutionKind.NodeJs
-      }
+        moduleResolution: ts.ModuleResolutionKind.NodeJs,
+      },
     })
 
     const frameworkOptions: BabelOptions = {}
@@ -40,7 +40,7 @@ const extractor: ExtractorType = {
     const plugins = [
       "macros",
       [linguiExtractMessages, { localeDir }],
-      ...(babelOptions.plugins || [])
+      ...(babelOptions.plugins || []),
     ]
 
     if (isTsx) {
@@ -51,9 +51,9 @@ const extractor: ExtractorType = {
       ...babelOptions,
       ...frameworkOptions,
       filename,
-      plugins
+      plugins,
     })
-  }
+  },
 }
 
 export default extractor

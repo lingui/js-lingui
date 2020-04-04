@@ -44,7 +44,7 @@ export function Trans(props: TransProps) {
       It'll become "Hello <0 />" with components=[<strong>Jane</strong>]
       */
 
-    Object.keys(values).forEach(key => {
+    Object.keys(values).forEach((key) => {
       const value = values[key]
       if (!React.isValidElement(value)) return
 
@@ -78,11 +78,11 @@ export function Trans(props: TransProps) {
   return React.createElement(render as React.ElementType<TransRenderProps>, {
     id,
     translation,
-    message
+    message,
   })
 }
 
 Trans.defaultProps = {
   values: {},
-  components: {}
+  components: {},
 }

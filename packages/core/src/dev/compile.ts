@@ -3,11 +3,11 @@ import { isString } from "../essentials"
 
 // [Tokens] -> (CTX -> String)
 function processTokens(tokens) {
-  if (!tokens.filter(token => !isString(token)).length) {
+  if (!tokens.filter((token) => !isString(token)).length) {
     return tokens.join("")
   }
 
-  return tokens.map(token => {
+  return tokens.map((token) => {
     if (isString(token)) {
       return token
 
@@ -30,7 +30,7 @@ function processTokens(tokens) {
 
     // complex argument with cases
     const formatProps = {}
-    token.cases.forEach(item => {
+    token.cases.forEach((item) => {
       formatProps[item.key] = processTokens(item.tokens)
     })
 
@@ -39,8 +39,8 @@ function processTokens(tokens) {
       token.type,
       {
         offset,
-        ...formatProps
-      }
+        ...formatProps,
+      },
     ]
   })
 }

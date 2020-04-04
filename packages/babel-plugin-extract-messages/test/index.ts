@@ -8,7 +8,7 @@ const LOCALE_DIR = "./locale"
 
 const buildDir = path.join(LOCALE_DIR, "_build")
 
-const rmdir = dir => {
+const rmdir = (dir) => {
   if (!fs.existsSync(dir)) return
   const list = fs.readdirSync(dir)
 
@@ -30,7 +30,7 @@ const rmdir = dir => {
 }
 
 function testCase(testName, assertion) {
-  const transform = filename => () => {
+  const transform = (filename) => () => {
     process.env.LINGUI_EXTRACT = "1"
     process.env.LINGUI_CONFIG = path.join(
       __dirname,
@@ -46,10 +46,10 @@ function testCase(testName, assertion) {
           [
             plugin,
             {
-              localeDir: LOCALE_DIR
-            }
-          ]
-        ]
+              localeDir: LOCALE_DIR,
+            },
+          ],
+        ],
       })
     } finally {
       process.env.LINGUI_EXTRACT = null
@@ -74,7 +74,7 @@ function testCase(testName, assertion) {
   }
 }
 
-describe("@lingui/babel-plugin-extract-messages", function() {
+describe("@lingui/babel-plugin-extract-messages", function () {
   beforeAll(() => {
     rmdir(LOCALE_DIR)
   })
@@ -85,7 +85,7 @@ describe("@lingui/babel-plugin-extract-messages", function() {
 
   testCase(
     "should raise exception on duplicate id and different defaults",
-    transform => {
+    (transform) => {
       expect(transform("duplicate-id-valid.js")).not.toThrow()
       expect(transform("duplicate-id.js")).toThrow(/Different defaults/)
     }
@@ -93,20 +93,20 @@ describe("@lingui/babel-plugin-extract-messages", function() {
 
   testCase(
     "shouldn't write catalog for files without translatable messages",
-    transform => {
+    (transform) => {
       expect(transform("empty.js")).not.toThrow()
       expect(fs.existsSync(path.join(buildDir, "empty.js.json"))).toBeFalsy()
     }
   )
 
-  testCase("should preserve path to file inside locale dir", transform => {
+  testCase("should preserve path to file inside locale dir", (transform) => {
     expect(transform("deep/all.js")).not.toThrow()
     expect(
       fs.existsSync(path.join(buildDir, "deep", "all.js.json"))
     ).toBeTruthy()
   })
 
-  testCase("should ignore files without lingui import", transform => {
+  testCase("should ignore files without lingui import", (transform) => {
     expect(transform("without-lingui.js")).not.toThrow()
     expect(
       fs.existsSync(path.join(buildDir, "without-lingui.js.json"))

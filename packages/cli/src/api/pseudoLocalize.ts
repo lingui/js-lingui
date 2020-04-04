@@ -26,19 +26,19 @@ Example: https://regex101.com/r/dw1QHb/2
 const VariableRegex = /({\s*[a-zA-Z_$][a-zA-Z_$0-9]*\s*})/g
 
 function addDelimitersHTMLTags(message) {
-  return message.replace(HTMLRegex, matchedString => {
+  return message.replace(HTMLRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
 function addDelimitersPlural(message) {
-  return message.replace(PluralRegex, matchedString => {
+  return message.replace(PluralRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
 function addDelimitersVariables(message) {
-  return message.replace(VariableRegex, matchedString => {
+  return message.replace(VariableRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
@@ -53,7 +53,7 @@ function removeDelimiters(message) {
   return message.replace(new RegExp(delimiter, "g"), "")
 }
 
-export default function(message: string) {
+export default function (message: string) {
   message = addDelimiters(message)
   message = pseudolocale.str(message)
 

@@ -6,18 +6,18 @@ import path from "path"
  */
 import mockFs from "mock-fs"
 
-describe("extract", function() {
+describe("extract", function () {
   let extract, babel, typescript
 
   beforeAll(() => {
     jest.doMock("./extractors/babel", () => ({
-      match: jest.fn(filename => filename.endsWith(".js")),
-      extract: jest.fn()
+      match: jest.fn((filename) => filename.endsWith(".js")),
+      extract: jest.fn(),
     }))
 
     jest.doMock("./extractors/typescript", () => ({
-      match: jest.fn(filename => filename.endsWith(".ts")),
-      extract: jest.fn()
+      match: jest.fn((filename) => filename.endsWith(".ts")),
+      extract: jest.fn(),
     }))
 
     // load before mocking FS
@@ -33,14 +33,14 @@ describe("extract", function() {
           "Babel.js": "",
           "Typescript.ts": "",
           forbidden: {
-            "apple.js": ""
-          }
+            "apple.js": "",
+          },
         },
 
         forbidden: {
-          "file.js": ""
-        }
-      }
+          "file.js": "",
+        },
+      },
     })
   })
 
@@ -48,10 +48,10 @@ describe("extract", function() {
     mockFs.restore()
   })
 
-  it("should traverse directory and call extractors", function() {
+  it("should traverse directory and call extractors", function () {
     extract(["src"], "locale", {
       ignore: ["forbidden"],
-      babelOptions: {}
+      babelOptions: {},
     })
 
     expect(typescript.match).toHaveBeenCalledWith(
@@ -91,7 +91,7 @@ describe("extract", function() {
   })
 })
 
-describe("collect", function() {
+describe("collect", function () {
   beforeEach(() => {
     mockFs({
       src: {
@@ -101,24 +101,24 @@ describe("collect", function() {
           "Babel.json": JSON.stringify({
             "Babel Documentation": {
               message: "Babel Documentation",
-              origin: [["src/components/Babel.js", 5]]
+              origin: [["src/components/Babel.js", 5]],
             },
             Label: {
               message: "Label",
-              origin: [["src/components/Babel.js", 7]]
-            }
+              origin: [["src/components/Babel.js", 7]],
+            },
           }),
           "Typescript.json": JSON.stringify({
             "Typescript Documentation": {
               message: "Typescript Documentation",
-              origin: [["src/components/Typescript.ts", 5]]
+              origin: [["src/components/Typescript.ts", 5]],
             },
             Label: {
               message: "Label",
-              origin: [["src/components/Typescript.ts", 7]]
-            }
-          })
-        }
+              origin: [["src/components/Typescript.ts", 7]],
+            },
+          }),
+        },
       },
 
       // test case for an error with different defaults
@@ -126,31 +126,31 @@ describe("collect", function() {
         "First.js.json": JSON.stringify({
           "msg.id": {
             message: "First default",
-            origin: [["diffDefaults/First.js", 2]]
-          }
+            origin: [["diffDefaults/First.js", 2]],
+          },
         }),
         "Second.js.json": JSON.stringify({
           "msg.id": {
             message: "Second default",
-            origin: [["diffDefaults/Second.js", 5]]
-          }
-        })
+            origin: [["diffDefaults/Second.js", 5]],
+          },
+        }),
       },
 
       // test case for when only one defaults message is specified
       onlyOneDefault: {
         "First.js.json": JSON.stringify({
           "msg.id": {
-            origin: [["onlyOneDefault/First.js", 2]]
-          }
+            origin: [["onlyOneDefault/First.js", 2]],
+          },
         }),
         "Second.js.json": JSON.stringify({
           "msg.id": {
             message: "Second default",
-            origin: [["onlyOneDefault/Second.js", 5]]
-          }
-        })
-      }
+            origin: [["onlyOneDefault/Second.js", 5]],
+          },
+        }),
+      },
     })
   })
 
@@ -158,14 +158,14 @@ describe("collect", function() {
     mockFs.restore()
   })
 
-  it("should traverse directory and collect messages", function() {
+  it("should traverse directory and collect messages", function () {
     const { collect } = require("./extract")
     const catalog = collect("src")
     mockFs.restore()
     expect(catalog).toMatchSnapshot()
   })
 
-  it("should throw an error about different defaults", function() {
+  it("should throw an error about different defaults", function () {
     const { collect } = require("./extract")
     try {
       collect("diffDefaults")
@@ -178,7 +178,7 @@ describe("collect", function() {
     }
   })
 
-  it("should use defined default", function() {
+  it("should use defined default", function () {
     const { collect } = require("./extract")
     const catalog = collect("onlyOneDefault")
     mockFs.restore()

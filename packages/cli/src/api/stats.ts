@@ -9,7 +9,7 @@ type CatalogStats = [number, number]
 export function getStats(catalog: CatalogType): CatalogStats {
   return [
     Object.keys(catalog).length,
-    Object.keys(catalog).filter(key => !catalog[key].translation).length
+    Object.keys(catalog).filter((key) => !catalog[key].translation).length,
   ]
 }
 
@@ -20,11 +20,11 @@ export function printStats(config: LinguiConfig, catalogs: AllCatalogsType) {
     style: {
       head: ["green"],
       border: [],
-      compact: true
-    }
+      compact: true,
+    },
   })
 
-  Object.keys(catalogs).forEach(locale => {
+  Object.keys(catalogs).forEach((locale) => {
     const [all, translated] = getStats(catalogs[locale])
     if (config.sourceLocale === locale) {
       table.push({ [`${chalk.bold(locale)} (source)`]: [all, "-"] })

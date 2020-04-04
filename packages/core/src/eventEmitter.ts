@@ -22,7 +22,7 @@ export class EventEmitter<
   emit(event: keyof Events, ...args: Parameters<Events[typeof event]>): void {
     if (!this._hasEvent(event)) return
 
-    this._events[event].map(listener => listener.apply(this, args))
+    this._events[event].map((listener) => listener.apply(this, args))
   }
 
   private _hasEvent(event: keyof Events) {

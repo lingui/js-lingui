@@ -3,13 +3,13 @@ import { defaultConfig } from "@lingui/conf"
 export function mockConfig(config = {}) {
   return {
     ...defaultConfig,
-    ...config
+    ...config,
   }
 }
 
 export function getConsoleMockCalls({ mock }) {
   if (!mock.calls.length) return
-  return mock.calls.map(call => call[0]).join("\n")
+  return mock.calls.map((call) => call[0]).join("\n")
 }
 
 export function mockConsole(testCase, mock = {}) {
@@ -22,13 +22,13 @@ export function mockConsole(testCase, mock = {}) {
   const defaults = {
     log: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn()
+    error: jest.fn(),
   }
 
   // @ts-ignore: Lot of console methods are missing
   global.console = {
     ...defaults,
-    ...mock
+    ...mock,
   }
 
   let result

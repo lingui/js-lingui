@@ -5,9 +5,9 @@ import * as R from "ramda"
  * (usually zip functions use the `smaller` length, discarding values in larger array)
  */
 export function zip(a, b) {
-  return R.range(0, Math.max(a.length, b.length)).map(index => [
+  return R.range(0, Math.max(a.length, b.length)).map((index) => [
     a[index],
-    b[index]
+    b[index],
   ])
 }
 

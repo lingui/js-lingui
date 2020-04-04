@@ -14,7 +14,7 @@ import {
   AllCatalogsType,
   ExtractedCatalogType,
   ExtractedMessageType,
-  MessageType
+  MessageType,
 } from "./types"
 import { CliExtractOptions } from "../lingui-extract"
 
@@ -67,7 +67,7 @@ export class Catalog {
     const prevCatalogs = this.readAll()
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
-      overwrite: options.overwrite
+      overwrite: options.overwrite,
     })
 
     // Map over all locales and post-process each catalog
@@ -95,18 +95,18 @@ export class Catalog {
     }
 
     try {
-      this.sourcePaths.forEach(filename =>
+      this.sourcePaths.forEach((filename) =>
         extract(filename, tmpDir, {
           verbose: options.verbose,
           babelOptions: this.config.extractBabelOptions,
-          projectType: options.projectType
+          projectType: options.projectType,
         })
       )
 
       return (function traverse(directory) {
         return fs
           .readdirSync(directory)
-          .map(filename => {
+          .map((filename) => {
             const filepath = path.join(directory, filename)
 
             if (fs.lstatSync(filepath).isDirectory()) {
@@ -152,13 +152,13 @@ export class Catalog {
         (message: MessageType, key) => ({
           translation:
             this.config.sourceLocale === locale ? message.message || key : "",
-          ...message
+          ...message,
         }),
         R.pick(newKeys, nextCatalog)
       )
 
       // Merge translations from previous catalog
-      const mergedMessages = mergeKeys.map(key => {
+      const mergedMessages = mergeKeys.map((key) => {
         const updateFromDefaults =
           this.config.sourceLocale === locale &&
           (prevCatalog[key].translation === prevCatalog[key].message ||
@@ -171,17 +171,17 @@ export class Catalog {
         return {
           [key]: {
             translation,
-            ...R.omit(["obsolete, translation"], nextCatalog[key])
-          }
+            ...R.omit(["obsolete, translation"], nextCatalog[key]),
+          },
         }
       })
 
       // Mark all remaining translations as obsolete
-      const obsoleteMessages = obsoleteKeys.map(key => ({
+      const obsoleteMessages = obsoleteKeys.map((key) => ({
         [key]: {
           ...prevCatalog[key],
-          obsolete: true
-        }
+          obsolete: true,
+        },
       }))
 
       return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
@@ -202,7 +202,7 @@ export class Catalog {
     key: string,
     { fallbackLocale, sourceLocale }: GetTranslationsOptions
   ) {
-    const getTranslation = locale => catalogs[locale][key].translation
+    const getTranslation = (locale) => catalogs[locale][key].translation
 
     return (
       // Get translation in target locale
@@ -236,7 +236,7 @@ export class Catalog {
   }
 
   writeAll(catalogs: AllCatalogsType) {
-    this.locales.forEach(locale => this.write(locale, catalogs[locale]))
+    this.locales.forEach((locale) => this.write(locale, catalogs[locale]))
   }
 
   writeCompiled(locale: string, compiledCatalog: string) {
@@ -265,14 +265,14 @@ export class Catalog {
 
   readAll() {
     return R.mergeAll(
-      this.locales.map(locale => ({
-        [locale]: this.read(locale)
+      this.locales.map((locale) => ({
+        [locale]: this.read(locale),
       }))
     ) as AllCatalogsType
   }
 
   get sourcePaths() {
-    const includeGlob = this.include.map(includePath =>
+    const includeGlob = this.include.map((includePath) =>
       path.join(includePath, "**", "*.*")
     )
     const patterns =
@@ -300,7 +300,7 @@ export function getCatalogs(config: LinguiConfig) {
   const catalogsConfig = config.catalogs
   const catalogs = []
 
-  catalogsConfig.forEach(catalog => {
+  catalogsConfig.forEach((catalog) => {
     // Validate that `catalogPath` doesn't end with trailing slash
     if (catalog.path.endsWith(path.sep)) {
       const extension = getFormat(config.format).catalogExtension
@@ -319,17 +319,17 @@ export function getCatalogs(config: LinguiConfig) {
       )
     }
 
-    const include = ensureArray(catalog.include).map(path =>
+    const include = ensureArray(catalog.include).map((path) =>
       normalizeRelativePath(path)
     )
-    const exclude = ensureArray(catalog.exclude).map(path =>
+    const exclude = ensureArray(catalog.exclude).map((path) =>
       normalizeRelativePath(path)
     )
 
     // catalogPath without {name} pattern -> always refers to a single catalog
     if (!catalog.path.includes(NAME)) {
       // Validate that sourcePaths doesn't use {name} pattern either
-      const invalidSource = include.filter(path => path.includes(NAME))[0]
+      const invalidSource = include.filter((path) => path.includes(NAME))[0]
       if (invalidSource !== undefined) {
         throw new Error(
           `Catalog with path "${catalog.path}" doesn't have a {name} pattern` +
@@ -341,7 +341,7 @@ export function getCatalogs(config: LinguiConfig) {
 
       // catalog name is the last directory of catalogPath.
       // If the last part is {locale}, then catalog doesn't have an explicit name
-      const name = (function() {
+      const name = (function () {
         const _name = catalog.path.split(path.sep).slice(-1)[0]
         return _name !== LOCALE ? _name : null
       })()
@@ -352,7 +352,7 @@ export function getCatalogs(config: LinguiConfig) {
             name,
             path: normalizeRelativePath(catalog.path),
             include,
-            exclude
+            exclude,
           },
           config
         )
@@ -360,23 +360,23 @@ export function getCatalogs(config: LinguiConfig) {
       return
     }
 
-    const patterns = include.map(path => path.replace(NAME, "*"))
+    const patterns = include.map((path) => path.replace(NAME, "*"))
     const candidates = glob.sync(
       patterns.length > 1 ? `{${patterns.join(",")}` : patterns[0],
       {
-        ignore: exclude
+        ignore: exclude,
       }
     )
 
-    candidates.forEach(catalogDir => {
+    candidates.forEach((catalogDir) => {
       const name = path.basename(catalogDir)
       catalogs.push(
         new Catalog(
           {
             name,
             path: normalizeRelativePath(catalog.path.replace(NAME, name)),
-            include: include.map(path => path.replace(NAME, name)),
-            exclude: exclude.map(path => path.replace(NAME, name))
+            include: include.map((path) => path.replace(NAME, name)),
+            exclude: exclude.map((path) => path.replace(NAME, name)),
           },
           config
         )
@@ -405,7 +405,7 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 
     return {
       locale: match[1],
-      catalog
+      catalog,
     }
   }
 
@@ -427,7 +427,7 @@ function mergeOrigins(msgId, prev, next) {
 
   return {
     ...next,
-    origin: R.concat(prev.origin, next.origin)
+    origin: R.concat(prev.origin, next.origin),
   }
 }
 
@@ -466,7 +466,7 @@ export function order(
 ): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
   return {
     messageId: orderByMessageId,
-    origin: orderByOrigin
+    origin: orderByOrigin,
   }[by]
 }
 
@@ -478,7 +478,7 @@ export function orderByMessageId(messages) {
   const orderedMessages = {}
   Object.keys(messages)
     .sort()
-    .forEach(function(key) {
+    .forEach(function (key) {
       orderedMessages[key] = messages[key]
     })
 
@@ -496,7 +496,7 @@ export function orderByOrigin(messages) {
   }
 
   return Object.keys(messages)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       const [aFile, aLineNumber] = getFirstOrigin(a)
       const [bFile, bLineNumber] = getFirstOrigin(b)
 

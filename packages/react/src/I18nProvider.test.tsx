@@ -4,8 +4,8 @@ import { render } from "@testing-library/react"
 import { I18nProvider, useLingui } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
-describe("I18nProvider", function() {
-  it("should subscribe for locale changes", function() {
+describe("I18nProvider", function () {
+  it("should subscribe for locale changes", function () {
     const i18n = setupI18n()
     i18n.on = jest.fn(() => jest.fn())
 
@@ -18,7 +18,7 @@ describe("I18nProvider", function() {
     expect(i18n.on).toBeCalledWith("change", expect.anything())
   })
 
-  it("should unsubscribe for locale changes on unmount", function() {
+  it("should unsubscribe for locale changes on unmount", function () {
     const unsubscribe = jest.fn()
     const i18n = setupI18n()
     i18n.on = jest.fn(() => unsubscribe)
@@ -38,7 +38,7 @@ describe("I18nProvider", function() {
 
     const i18n = setupI18n({
       locale: "en",
-      catalogs: {}
+      catalogs: {},
     })
 
     function RenderLocale() {
@@ -57,9 +57,9 @@ describe("I18nProvider", function() {
     expect(container.textContent).toEqual("cs")
   })
 
-  it("should render children", function() {
+  it("should render children", function () {
     const i18n = setupI18n({
-      locale: "en"
+      locale: "en",
     })
 
     const child = <div data-testid="child" />

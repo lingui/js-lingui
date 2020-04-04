@@ -10,7 +10,7 @@ import {
   Catalog,
   cleanObsolete,
   MergeOptions,
-  order
+  order,
 } from "./catalog"
 
 import { copyFixture } from "../tests"
@@ -21,17 +21,17 @@ const defaultMakeOptions: MakeOptions = {
   clean: false,
   overwrite: false,
   prevFormat: null,
-  orderBy: "messageId"
+  orderBy: "messageId",
 }
 
 const defaultMergeOptions: MergeOptions = {
-  overwrite: false
+  overwrite: false,
 }
 
 function makePrevMessage(message = {}): MessageType {
   return {
     translation: "",
-    ...makeNextMessage(message)
+    ...makeNextMessage(message),
   }
 }
 
@@ -39,30 +39,30 @@ function makeNextMessage(message = {}): ExtractedMessageType {
   return {
     origin: [[1, "catalog.test.ts"]],
     obsolete: false,
-    ...message
+    ...message,
   }
 }
 
 const fixture = (...dirs) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs))
 
-describe("Catalog", function() {
+describe("Catalog", function () {
   afterEach(() => {
     mockFs.restore()
   })
 
-  describe("make", function() {
-    it("should collect and write catalogs", function() {
+  describe("make", function () {
+    it("should collect and write catalogs", function () {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
           name: "messages",
           path: path.join(localeDir, "{locale}", "messages"),
           include: [fixture("collect")],
-          exclude: []
+          exclude: [],
         },
         mockConfig({
-          locales: ["en", "cs"]
+          locales: ["en", "cs"],
         })
       )
 
@@ -73,17 +73,17 @@ describe("Catalog", function() {
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should merge with existing catalogs", function() {
+    it("should merge with existing catalogs", function () {
       const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
           name: "messages",
           path: path.join(localeDir, "{locale}"),
           include: [fixture("collect")],
-          exclude: []
+          exclude: [],
         },
         mockConfig({
-          locales: ["en", "cs"]
+          locales: ["en", "cs"],
         })
       )
 
@@ -95,14 +95,14 @@ describe("Catalog", function() {
     })
   })
 
-  describe("collect", function() {
-    it("should extract messages from source files", function() {
+  describe("collect", function () {
+    it("should extract messages from source files", function () {
       const catalog = new Catalog(
         {
           name: "messages",
           path: "locales/{locale}",
           include: [fixture("collect")],
-          exclude: []
+          exclude: [],
         },
         mockConfig()
       )
@@ -111,18 +111,18 @@ describe("Catalog", function() {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should handle errors", function() {
+    it("should handle errors", function () {
       const catalog = new Catalog(
         {
           name: "messages",
           path: "locales/{locale}",
           include: [fixture("collect-invalid")],
-          exclude: []
+          exclude: [],
         },
         mockConfig()
       )
 
-      mockConsole(console => {
+      mockConsole((console) => {
         const messages = catalog.collect(defaultMakeOptions)
         expect(console.error).toBeCalledWith(
           expect.stringContaining(`Cannot process file`)
@@ -132,7 +132,7 @@ describe("Catalog", function() {
     })
   })
 
-  describe("merge", function() {
+  describe("merge", function () {
     /*
     catalog.merge(prevCatalogs, nextCatalog, options)
 
@@ -161,18 +161,18 @@ describe("Catalog", function() {
           name: "messages",
           path: "{locale}/messages",
           include: [],
-          exclude: []
+          exclude: [],
         },
         mockConfig(config)
       )
 
-    it("should initialize catalog", function() {
+    it("should initialize catalog", function () {
       const prevCatalogs = { en: null, cs: null }
       const nextCatalog = {
         "custom.id": makeNextMessage({
-          message: "Message with custom ID"
+          message: "Message with custom ID",
         }),
-        "Message with <0>auto-generated</0> ID": makeNextMessage()
+        "Message with <0>auto-generated</0> ID": makeNextMessage(),
       }
 
       expect(
@@ -186,56 +186,56 @@ describe("Catalog", function() {
         en: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID",
-            translation: "Message with custom ID"
+            translation: "Message with custom ID",
           }),
           "Message with <0>auto-generated</0> ID": expect.objectContaining({
-            translation: "Message with <0>auto-generated</0> ID"
-          })
+            translation: "Message with <0>auto-generated</0> ID",
+          }),
         },
         // catalog for other than sourceLocale - translation is empty
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID",
-            translation: ""
+            translation: "",
           }),
           "Message with <0>auto-generated</0> ID": expect.objectContaining({
-            translation: ""
-          })
-        }
+            translation: "",
+          }),
+        },
       })
     })
 
-    it("should merge translations from existing catalogs", function() {
+    it("should merge translations from existing catalogs", function () {
       const prevCatalogs = {
         en: {
           "custom.id": makePrevMessage({
             message: "Message with custom ID",
-            translation: "Message with custom ID"
+            translation: "Message with custom ID",
           }),
           "Message with <0>auto-generated</0> ID": makePrevMessage({
-            translation: "Message with <0>auto-generated</0> ID"
-          })
+            translation: "Message with <0>auto-generated</0> ID",
+          }),
         },
         cs: {
           "custom.id": makePrevMessage({
             message: "Message with custom ID",
-            translation: "Translation of message with custom ID"
+            translation: "Translation of message with custom ID",
           }),
           "Message with <0>auto-generated</0> ID": makePrevMessage({
-            translation: "Translation of message with auto-generated ID"
-          })
-        }
+            translation: "Translation of message with auto-generated ID",
+          }),
+        },
       }
 
       const nextCatalog = {
         "custom.id": makeNextMessage({
-          message: "Message with custom ID, possibly changed"
+          message: "Message with custom ID, possibly changed",
         }),
         "new.id": makeNextMessage({
-          message: "Completely new message"
+          message: "Completely new message",
         }),
         "Message with <0>auto-generated</0> ID": makeNextMessage(),
-        "New message": makeNextMessage()
+        "New message": makeNextMessage(),
       }
 
       expect(
@@ -248,58 +248,58 @@ describe("Catalog", function() {
         en: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Message with custom ID, possibly changed"
+            translation: "Message with custom ID, possibly changed",
           }),
           "new.id": expect.objectContaining({
             message: "Completely new message",
-            translation: "Completely new message"
+            translation: "Completely new message",
           }),
           "Message with <0>auto-generated</0> ID": expect.objectContaining({
-            translation: "Message with <0>auto-generated</0> ID"
+            translation: "Message with <0>auto-generated</0> ID",
           }),
           "New message": expect.objectContaining({
-            translation: "New message"
-          })
+            translation: "New message",
+          }),
         },
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Translation of message with custom ID"
+            translation: "Translation of message with custom ID",
           }),
           "new.id": expect.objectContaining({
             message: "Completely new message",
-            translation: ""
+            translation: "",
           }),
           "Message with <0>auto-generated</0> ID": expect.objectContaining({
-            translation: "Translation of message with auto-generated ID"
+            translation: "Translation of message with auto-generated ID",
           }),
           "New message": expect.objectContaining({
-            translation: ""
-          })
-        }
+            translation: "",
+          }),
+        },
       })
     })
 
-    it("should force overwrite of defaults", function() {
+    it("should force overwrite of defaults", function () {
       const prevCatalogs = {
         en: {
           "custom.id": makePrevMessage({
             message: "",
-            translation: "Message with custom ID"
-          })
+            translation: "Message with custom ID",
+          }),
         },
         cs: {
           "custom.id": makePrevMessage({
             message: "",
-            translation: "Translation of message with custom ID"
-          })
-        }
+            translation: "Translation of message with custom ID",
+          }),
+        },
       }
 
       const nextCatalog = {
         "custom.id": makeNextMessage({
-          message: "Message with custom ID, possibly changed"
-        })
+          message: "Message with custom ID, possibly changed",
+        }),
       }
 
       // Without `overwrite`:
@@ -314,46 +314,46 @@ describe("Catalog", function() {
         en: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Message with custom ID"
-          })
+            translation: "Message with custom ID",
+          }),
         },
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Translation of message with custom ID"
-          })
-        }
+            translation: "Translation of message with custom ID",
+          }),
+        },
       })
 
       // With `overwrite`
       // The translation of `custom.id` message for `sourceLocale` is changed
       expect(
         makeCatalog({ sourceLocale: "en" }).merge(prevCatalogs, nextCatalog, {
-          overwrite: true
+          overwrite: true,
         })
       ).toEqual({
         en: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Message with custom ID, possibly changed"
-          })
+            translation: "Message with custom ID, possibly changed",
+          }),
         },
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
-            translation: "Translation of message with custom ID"
-          })
-        }
+            translation: "Translation of message with custom ID",
+          }),
+        },
       })
     })
 
-    it("should mark obsolete messages", function() {
+    it("should mark obsolete messages", function () {
       const prevCatalogs = {
         en: {
           "msg.hello": makePrevMessage({
-            translation: "Hello World"
-          })
-        }
+            translation: "Hello World",
+          }),
+        },
       }
       const nextCatalog = {}
       expect(
@@ -362,15 +362,15 @@ describe("Catalog", function() {
         en: {
           "msg.hello": expect.objectContaining({
             translation: "Hello World",
-            obsolete: true
-          })
-        }
+            obsolete: true,
+          }),
+        },
       })
     })
   })
 
-  describe("read", function() {
-    it("should return null if file does not exist", function() {
+  describe("read", function () {
+    it("should return null if file does not exist", function () {
       // mock empty filesystem
       mockFs()
 
@@ -379,7 +379,7 @@ describe("Catalog", function() {
           name: "messages",
           path: "locales/{locale}",
           include: [],
-          exclude: []
+          exclude: [],
         },
         mockConfig()
       )
@@ -388,19 +388,19 @@ describe("Catalog", function() {
       expect(messages).toBeNull()
     })
 
-    it("should read file in given format", function() {
+    it("should read file in given format", function () {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
             path.resolve(__dirname, "formats/fixtures/messages.po")
-          )
-        }
+          ),
+        },
       })
       const catalog = new Catalog(
         {
           name: "messages",
           path: "{locale}/messages",
-          include: []
+          include: [],
         },
         mockConfig()
       )
@@ -411,19 +411,19 @@ describe("Catalog", function() {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should read file in previous format", function() {
+    it("should read file in previous format", function () {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(
             path.resolve(__dirname, "formats/fixtures/messages.json")
-          )
-        }
+          ),
+        },
       })
       const catalog = new Catalog(
         {
           name: "messages",
           path: "{locale}/messages",
-          include: []
+          include: [],
         },
         mockConfig({ prevFormat: "minimal" })
       )
@@ -435,8 +435,8 @@ describe("Catalog", function() {
     })
   })
 
-  describe("readAll", function() {
-    it("should read existing catalogs for all locales", function() {
+  describe("readAll", function () {
+    it("should read existing catalogs for all locales", function () {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -444,10 +444,10 @@ describe("Catalog", function() {
             __dirname,
             path.join("fixtures", "readAll", "{locale}", "messages")
           ),
-          include: []
+          include: [],
         },
         mockConfig({
-          locales: ["en", "cs"]
+          locales: ["en", "cs"],
         })
       )
 
@@ -461,17 +461,17 @@ describe("Catalog", function() {
    * - Compare that original and converted JSON file are identical
    * - Check the content of PO file
    */
-  it("should convert catalog format", function() {
+  it("should convert catalog format", function () {
     mockFs({
       en: {
         "messages.json": fs.readFileSync(
           path.resolve(__dirname, "formats/fixtures/messages.json")
         ),
-        "messages.po": mockFs.file()
-      }
+        "messages.po": mockFs.file(),
+      },
     })
 
-    const fileContent = format =>
+    const fileContent = (format) =>
       fs
         .readFileSync("./en/messages." + (format === "po" ? "po" : "json"))
         .toString()
@@ -480,7 +480,7 @@ describe("Catalog", function() {
     const catalogConfig = {
       name: "messages",
       path: "{locale}/messages",
-      include: []
+      include: [],
     }
 
     const originalJson = fileContent("json")
@@ -488,7 +488,7 @@ describe("Catalog", function() {
       catalogConfig,
       mockConfig({
         format: "po",
-        prevFormat: "minimal"
+        prevFormat: "minimal",
       })
     )
     po2json.write("en", po2json.read("en"))
@@ -499,7 +499,7 @@ describe("Catalog", function() {
       mockConfig({
         format: "minimal",
         prevFormat: "po",
-        localeDir: "."
+        localeDir: ".",
       })
     )
     json2po.write("en", json2po.read("en"))
@@ -511,19 +511,19 @@ describe("Catalog", function() {
   })
 })
 
-describe("getCatalogs", function() {
+describe("getCatalogs", function () {
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should get single catalog if catalogPath doesn't include {name} pattern", function() {
+  it("should get single catalog if catalogPath doesn't include {name} pattern", function () {
     const config = mockConfig({
       catalogs: [
         {
           path: "./src/locales/{locale}",
-          include: "./src/"
-        }
-      ]
+          include: "./src/",
+        },
+      ],
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -531,22 +531,22 @@ describe("getCatalogs", function() {
           name: null,
           path: "src/locales/{locale}",
           include: ["src/"],
-          exclude: []
+          exclude: [],
         },
         config
-      )
+      ),
     ])
   })
 
-  it("should have catalog name and ignore patterns", function() {
+  it("should have catalog name and ignore patterns", function () {
     const config = mockConfig({
       catalogs: [
         {
           path: "src/locales/{locale}/all",
           include: ["src/", "/absolute/path/"],
-          exclude: ["node_modules/"]
-        }
-      ]
+          exclude: ["node_modules/"],
+        },
+      ],
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -554,30 +554,30 @@ describe("getCatalogs", function() {
           name: "all",
           path: "src/locales/{locale}/all",
           include: ["src/", "/absolute/path/"],
-          exclude: ["node_modules/"]
+          exclude: ["node_modules/"],
         },
         config
-      )
+      ),
     ])
   })
 
-  it("should expand {name} for matching directories", function() {
+  it("should expand {name} for matching directories", function () {
     mockFs({
       componentA: {
-        "index.js": mockFs.file()
+        "index.js": mockFs.file(),
       },
       componentB: {
-        "index.js": mockFs.file()
-      }
+        "index.js": mockFs.file(),
+      },
     })
 
     const config = mockConfig({
       catalogs: [
         {
           path: "{name}/locales/{locale}",
-          include: ["./{name}/"]
-        }
-      ]
+          include: ["./{name}/"],
+        },
+      ],
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -585,7 +585,7 @@ describe("getCatalogs", function() {
           name: "componentA",
           path: "componentA/locales/{locale}",
           include: ["componentA/"],
-          exclude: []
+          exclude: [],
         },
         config
       ),
@@ -594,21 +594,21 @@ describe("getCatalogs", function() {
           name: "componentB",
           path: "componentB/locales/{locale}",
           include: ["componentB/"],
-          exclude: []
+          exclude: [],
         },
         config
-      )
+      ),
     ])
   })
 
-  it("shouldn't expand {name} for ignored directories", function() {
+  it("shouldn't expand {name} for ignored directories", function () {
     mockFs({
       componentA: {
-        "index.js": mockFs.file()
+        "index.js": mockFs.file(),
       },
       componentB: {
-        "index.js": mockFs.file()
-      }
+        "index.js": mockFs.file(),
+      },
     })
 
     const config = mockConfig({
@@ -616,9 +616,9 @@ describe("getCatalogs", function() {
         {
           path: "./{name}/locales/{locale}",
           include: ["./{name}/"],
-          exclude: ["componentB/"]
-        }
-      ]
+          exclude: ["componentB/"],
+        },
+      ],
     })
     expect(getCatalogs(config)).toEqual([
       new Catalog(
@@ -626,23 +626,23 @@ describe("getCatalogs", function() {
           name: "componentA",
           path: "componentA/locales/{locale}",
           include: ["componentA/"],
-          exclude: ["componentB/"]
+          exclude: ["componentB/"],
         },
         config
-      )
+      ),
     ])
   })
 
-  it("should warn if catalogPath is a directory", function() {
+  it("should warn if catalogPath is a directory", function () {
     expect(() =>
       getCatalogs(
         mockConfig({
           catalogs: [
             {
               path: "./locales/{locale}/",
-              include: ["."]
-            }
-          ]
+              include: ["."],
+            },
+          ],
         })
       )
     ).toThrowErrorMatchingSnapshot()
@@ -656,52 +656,52 @@ describe("getCatalogs", function() {
           catalogs: [
             {
               path: "./locales/{locale}/",
-              include: ["."]
-            }
-          ]
+              include: ["."],
+            },
+          ],
         })
       )
     ).toThrowErrorMatchingSnapshot()
   })
 
-  it("should warn about missing {name} pattern in catalog path", function() {
+  it("should warn about missing {name} pattern in catalog path", function () {
     expect(() =>
       getCatalogs(
         mockConfig({
           catalogs: [
             {
               path: "./locales/{locale}",
-              include: ["./{name}/"]
-            }
-          ]
+              include: ["./{name}/"],
+            },
+          ],
         })
       )
     ).toThrowErrorMatchingSnapshot()
   })
 })
 
-describe("getCatalogForFile", function() {
-  it("should return null if catalog cannot be found", function() {
+describe("getCatalogForFile", function () {
+  it("should return null if catalog cannot be found", function () {
     const catalogs = [
       new Catalog(
         {
           name: null,
           path: "./src/locales/{locale}",
-          include: ["./src/"]
+          include: ["./src/"],
         },
         mockConfig()
-      )
+      ),
     ]
 
     expect(getCatalogForFile("./xyz/en.po", catalogs)).toBeNull()
   })
 
-  it("should return matching catalog and locale", function() {
+  it("should return matching catalog and locale", function () {
     const catalog = new Catalog(
       {
         name: null,
         path: "./src/locales/{locale}",
-        include: ["./src/"]
+        include: ["./src/"],
       },
       mockConfig({ format: "po" })
     )
@@ -709,41 +709,41 @@ describe("getCatalogForFile", function() {
 
     expect(getCatalogForFile("./src/locales/en.po", catalogs)).toEqual({
       locale: "en",
-      catalog
+      catalog,
     })
   })
 })
 
-describe("cleanObsolete", function() {
-  it("should remove obsolete messages from catalog", function() {
+describe("cleanObsolete", function () {
+  it("should remove obsolete messages from catalog", function () {
     const catalog = {
       Label: makeNextMessage({
-        translation: "Label"
+        translation: "Label",
       }),
       PreviousLabel: makeNextMessage({
-        obsolete: true
-      })
+        obsolete: true,
+      }),
     }
 
     expect(cleanObsolete(catalog)).toMatchSnapshot()
   })
 })
 
-describe("order", function() {
-  it("should order messages alphabetically", function() {
+describe("order", function () {
+  it("should order messages alphabetically", function () {
     const catalog = {
       LabelB: makeNextMessage({
-        translation: "B"
+        translation: "B",
       }),
       LabelA: makeNextMessage({
-        translation: "A"
+        translation: "A",
       }),
       LabelD: makeNextMessage({
-        translation: "D"
+        translation: "D",
       }),
       LabelC: makeNextMessage({
-        translation: "C"
-      })
+        translation: "C",
+      }),
     }
 
     const orderedCatalogs = order("messageId")(catalog)
@@ -755,24 +755,27 @@ describe("order", function() {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
-  it("should order messages by origin", function() {
+  it("should order messages by origin", function () {
     const catalog = {
       LabelB: makeNextMessage({
         translation: "B",
-        origin: [["file2.js", 2], ["file1.js", 2]]
+        origin: [
+          ["file2.js", 2],
+          ["file1.js", 2],
+        ],
       }),
       LabelA: makeNextMessage({
         translation: "A",
-        origin: [["file2.js", 3]]
+        origin: [["file2.js", 3]],
       }),
       LabelD: makeNextMessage({
         translation: "D",
-        origin: [["file2.js", 100]]
+        origin: [["file2.js", 100]],
       }),
       LabelC: makeNextMessage({
         translation: "C",
-        origin: [["file1.js", 1]]
-      })
+        origin: [["file1.js", 1]],
+      }),
     }
 
     const orderedCatalogs = order("origin")(catalog)

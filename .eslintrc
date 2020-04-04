@@ -9,18 +9,8 @@
       "jsx": true
     }
   },
-  "extends": [
-    "prettier/@typescript-eslint",
-    "plugin:import/errors",
-    "plugin:import/warnings"
-  ],
-  "plugins": [
-    "promise",
-    "import",
-    "react",
-    "jest",
-    "prettier"
-  ],
+  "extends": ["plugin:import/errors", "plugin:import/warnings"],
+  "plugins": ["promise", "import", "react", "jest"],
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/parsers": {
@@ -34,7 +24,6 @@
   },
   "rules": {
     "no-duplicate-imports": "off",
-    "react/display-name": "off",
-    "prettier/prettier": "error"
+    "react/display-name": "off"
   }
 }

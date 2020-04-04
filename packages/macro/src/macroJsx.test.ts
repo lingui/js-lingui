@@ -2,69 +2,69 @@ import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
 import MacroJSX from "./macroJsx"
 
-const parseExpression = expression =>
+const parseExpression = (expression) =>
   _parseExpression(expression, {
-    plugins: ["jsx"]
+    plugins: ["jsx"],
   })
 
 function createMacro() {
   return new MacroJSX({ types })
 }
 
-describe("jsx macro", function() {
-  describe("tokenizeTrans", function() {
-    it("simple message without arguments", function() {
+describe("jsx macro", function () {
+  describe("tokenizeTrans", function () {
+    it("simple message without arguments", function () {
       const macro = createMacro()
       const exp = parseExpression("<Trans>Message</Trans>")
       const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message"
-        }
+          value: "Message",
+        },
       ])
     })
 
-    it("message with named argument", function() {
+    it("message with named argument", function () {
       const macro = createMacro()
       const exp = parseExpression("<Trans>Message {name}</Trans>")
       const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message "
+          value: "Message ",
         },
         {
           type: "arg",
           name: "name",
           value: expect.objectContaining({
             name: "name",
-            type: "Identifier"
-          })
-        }
+            type: "Identifier",
+          }),
+        },
       ])
     })
 
-    it("message with positional argument", function() {
+    it("message with positional argument", function () {
       const macro = createMacro()
       const exp = parseExpression("<Trans>Message {obj.name}</Trans>")
       const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message "
+          value: "Message ",
         },
         {
           type: "arg",
           name: 0,
           value: expect.objectContaining({
-            type: "MemberExpression"
-          })
-        }
+            type: "MemberExpression",
+          }),
+        },
       ])
     })
 
-    it("message with plural", function() {
+    it("message with plural", function () {
       const macro = createMacro()
       const exp = parseExpression(
         "<Trans>Message <Plural value={count} /></Trans>"
@@ -73,23 +73,23 @@ describe("jsx macro", function() {
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message "
+          value: "Message ",
         },
         {
           type: "arg",
           name: "count",
           value: expect.objectContaining({
-            type: "Identifier"
+            type: "Identifier",
           }),
           format: "plural",
-          options: {}
-        }
+          options: {},
+        },
       ])
     })
   })
 
-  describe("tokenizeChoiceComponent", function() {
-    it("plural", function() {
+  describe("tokenizeChoiceComponent", function () {
+    it("plural", function () {
       const macro = createMacro()
       const exp = parseExpression(
         "<Plural value={count} one='# book' other='# books' />"
@@ -100,17 +100,17 @@ describe("jsx macro", function() {
         name: "count",
         value: expect.objectContaining({
           name: "count",
-          type: "Identifier"
+          type: "Identifier",
         }),
         format: "plural",
         options: {
           one: "# book",
-          other: "# books"
-        }
+          other: "# books",
+        },
       })
     })
 
-    it("plural with offset", function() {
+    it("plural with offset", function () {
       const macro = createMacro()
       const exp = parseExpression(
         `<Plural
@@ -127,19 +127,19 @@ describe("jsx macro", function() {
         name: "count",
         value: expect.objectContaining({
           name: "count",
-          type: "Identifier"
+          type: "Identifier",
         }),
         format: "plural",
         options: {
           offset: 1,
           "=0": "No books",
           one: "# book",
-          other: "# books"
-        }
+          other: "# books",
+        },
       })
     })
 
-    it("plural with template literal", function() {
+    it("plural with template literal", function () {
       const macro = createMacro()
       const exp = parseExpression(
         "<Plural value={count} one={`# glass of ${drink}`} other={`# glasses of ${drink}`} />"
@@ -150,43 +150,43 @@ describe("jsx macro", function() {
         name: "count",
         value: expect.objectContaining({
           name: "count",
-          type: "Identifier"
+          type: "Identifier",
         }),
         format: "plural",
         options: {
           one: [
             {
               type: "text",
-              value: "# glass of "
+              value: "# glass of ",
             },
             {
               type: "arg",
               name: "drink",
               value: expect.objectContaining({
                 name: "drink",
-                type: "Identifier"
-              })
-            }
+                type: "Identifier",
+              }),
+            },
           ],
           other: [
             {
               type: "text",
-              value: "# glasses of "
+              value: "# glasses of ",
             },
             {
               type: "arg",
               name: "drink",
               value: expect.objectContaining({
                 name: "drink",
-                type: "Identifier"
-              })
-            }
-          ]
-        }
+                type: "Identifier",
+              }),
+            },
+          ],
+        },
       })
     })
 
-    it("plural with select", function() {
+    it("plural with select", function () {
       const macro = createMacro()
       const exp = parseExpression(
         `<Plural
@@ -207,7 +207,7 @@ describe("jsx macro", function() {
         name: "count",
         value: expect.objectContaining({
           name: "count",
-          type: "Identifier"
+          type: "Identifier",
         }),
         format: "plural",
         options: {
@@ -216,16 +216,16 @@ describe("jsx macro", function() {
             name: "gender",
             value: expect.objectContaining({
               name: "gender",
-              type: "Identifier"
+              type: "Identifier",
             }),
             format: "select",
             options: {
               male: "he",
               female: "she",
-              other: "they"
-            }
-          }
-        }
+              other: "they",
+            },
+          },
+        },
       })
     })
   })

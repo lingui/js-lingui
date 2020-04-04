@@ -15,7 +15,7 @@ export default [
           i18n._("{count, plural, one {# book} other {# books}}", {
             count: count
           });
-      `
+      `,
   },
   {
     name: "Macro with offset and exact matches",
@@ -34,6 +34,6 @@ export default [
         i18n._("{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}", {
           0: users.length
         });
-      `
-  }
+      `,
+  },
 ]

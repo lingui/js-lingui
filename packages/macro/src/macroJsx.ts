@@ -7,7 +7,7 @@ import { zip, makeCounter } from "./utils"
 import { ID, COMMENT, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
-const jsx2icuExactChoice = value =>
+const jsx2icuExactChoice = (value) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
 // replace whitespace before/after newline with single space
@@ -45,7 +45,7 @@ export default class MacroJSX {
     const {
       message: messageRaw,
       values,
-      jsxElements
+      jsxElements,
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
@@ -94,7 +94,7 @@ export default class MacroJSX {
     }
 
     // Parameters for variable substitution
-    const valuesObject = Object.keys(values).map(key =>
+    const valuesObject = Object.keys(values).map((key) =>
       this.types.objectProperty(this.types.identifier(key), values[key])
     )
 
@@ -116,7 +116,7 @@ export default class MacroJSX {
           this.types.jsxIdentifier("components"),
           this.types.jsxExpressionContainer(
             this.types.objectExpression(
-              Object.keys(jsxElements).map(key =>
+              Object.keys(jsxElements).map((key) =>
                 this.types.objectProperty(
                   this.types.identifier(key),
                   jsxElements[key]
@@ -143,11 +143,11 @@ export default class MacroJSX {
     path.replaceWith(newNode)
   }
 
-  stripMacroAttributes = node => {
+  stripMacroAttributes = (node) => {
     const { attributes } = node.openingElement
     const attrName = (names, exclude = false) => {
       const namesRe = new RegExp("^(" + names.join("|") + ")$")
-      return attr =>
+      return (attr) =>
         exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
     }
     const id = attributes.filter(attrName([ID]))[0]
@@ -169,21 +169,21 @@ export default class MacroJSX {
         "many",
         "other",
         "value",
-        "offset"
+        "offset",
       ]
     }
 
-    const maybeNodeValue = node => (node != null ? node.value.value : null)
+    const maybeNodeValue = (node) => (node != null ? node.value.value : null)
 
     return {
       id: maybeNodeValue(id),
       message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
-      attributes: attributes.filter(attrName(reserved, true))
+      attributes: attributes.filter(attrName(reserved, true)),
     }
   }
 
-  tokenizeNode = node => {
+  tokenizeNode = (node) => {
     if (this.isI18nComponent(node)) {
       // t
       return this.tokenizeTrans(node)
@@ -197,13 +197,13 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeTrans = node => {
+  tokenizeTrans = (node) => {
     return R.flatten(
-      node.children.map(child => this.tokenizeChildren(child)).filter(Boolean)
+      node.children.map((child) => this.tokenizeChildren(child)).filter(Boolean)
     )
   }
 
-  tokenizeChildren = node => {
+  tokenizeChildren = (node) => {
     if (this.types.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
@@ -211,7 +211,7 @@ export default class MacroJSX {
         // Escape forced newlines to keep them in message.
         return {
           type: "text",
-          value: exp.value.replace(/\n/g, "\\n")
+          value: exp.value.replace(/\n/g, "\\n"),
         }
       } else if (this.types.isTemplateLiteral(exp)) {
         const tokenize = R.pipe(
@@ -228,9 +228,9 @@ export default class MacroJSX {
               this.types.isCallExpression(exp)
                 ? this.tokenizeNode(exp)
                 : this.tokenizeExpression(exp)
-            )
+            ),
           }),
-          exp => zip(exp.quasis, exp.expressions),
+          (exp) => zip(exp.quasis, exp.expressions),
           // @ts-ignore
           R.flatten,
           R.filter(Boolean)
@@ -257,7 +257,7 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeChoiceComponent = node => {
+  tokenizeChoiceComponent = (node) => {
     const element = node.openingElement
     const format = element.name.name.toLowerCase()
     const props = element.attributes
@@ -268,8 +268,8 @@ export default class MacroJSX {
       name: null,
       value: undefined,
       options: {
-        offset: undefined
-      }
+        offset: undefined,
+      },
     }
 
     for (const attr of props) {
@@ -300,12 +300,12 @@ export default class MacroJSX {
     return token
   }
 
-  tokenizeElement = node => {
+  tokenizeElement = (node) => {
     // !!! Important: Calculate element index before traversing children.
     // That way outside elements are numbered before inner elements. (...and it looks pretty).
     const name = this.elementIndex()
     const children = node.children
-      .map(child => this.tokenizeChildren(child))
+      .map((child) => this.tokenizeChildren(child))
       .filter(Boolean)
 
     node.children = []
@@ -315,26 +315,26 @@ export default class MacroJSX {
       type: "element",
       name,
       value: node,
-      children
+      children,
     }
   }
 
-  tokenizeExpression = node => {
+  tokenizeExpression = (node) => {
     return {
       type: "arg",
       name: this.expressionToArgument(node),
-      value: node
+      value: node,
     }
   }
 
-  tokenizeText = value => {
+  tokenizeText = (value) => {
     return {
       type: "text",
-      value
+      value,
     }
   }
 
-  expressionToArgument = exp => {
+  expressionToArgument = (exp) => {
     return this.types.isIdentifier(exp) ? exp.name : this.expressionIndex()
   }
 
@@ -350,12 +350,12 @@ export default class MacroJSX {
     return (
       this.types.isJSXElement(node) &&
       this.types.isJSXIdentifier(node.openingElement.name, {
-        name
+        name,
       })
     )
   }
 
-  isChoiceComponent = node => {
+  isChoiceComponent = (node) => {
     return (
       this.isI18nComponent(node, "Plural") ||
       this.isI18nComponent(node, "Select") ||

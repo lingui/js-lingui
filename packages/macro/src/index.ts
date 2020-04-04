@@ -11,7 +11,7 @@ function macro({ references, state, babel }) {
   const jsxNodes = []
   const jsNodes = []
 
-  Object.keys(references).forEach(tagName => {
+  Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
     const macroType = getMacroType(tagName)
     if (macroType == null) {
@@ -19,24 +19,24 @@ function macro({ references, state, babel }) {
     }
 
     if (macroType === "js") {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         jsNodes.push(node.parentPath)
       })
     } else {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         // identifier.openingElement.jsxElement
         jsxNodes.push(node.parentPath.parentPath)
       })
     }
   })
 
-  jsNodes.filter(isRootPath(jsNodes)).forEach(path => {
+  jsNodes.filter(isRootPath(jsNodes)).forEach((path) => {
     if (alreadyVisited(path)) return
     const macro = new MacroJS(babel, { i18nImportName })
     macro.replacePath(path)
   })
 
-  jsxNodes.filter(isRootPath(jsxNodes)).forEach(path => {
+  jsxNodes.filter(isRootPath(jsxNodes)).forEach((path) => {
     if (alreadyVisited(path)) return
     const macro = new MacroJSX(babel)
     macro.replacePath(path)
@@ -52,7 +52,7 @@ function macro({ references, state, babel }) {
 
   if (process.env.LINGUI_EXTRACT === "1") {
     return {
-      keepImports: true
+      keepImports: true,
     }
   }
 }
@@ -61,7 +61,7 @@ function addImport(babel, state, module, importName) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
-    importNode =>
+    (importNode) =>
       t.isImportDeclaration(importNode) && importNode.source.value === module
   )
 
@@ -70,7 +70,7 @@ function addImport(babel, state, module, importName) {
   if (linguiImport) {
     if (
       linguiImport.specifiers.findIndex(
-        specifier =>
+        (specifier) =>
           specifier.imported && specifier.imported.name === importName
       ) === -1
     ) {
@@ -87,7 +87,7 @@ function addImport(babel, state, module, importName) {
 }
 
 function isRootPath(allPath) {
-  return node =>
+  return (node) =>
     (function traverse(path) {
       if (!path.parentPath) {
         return true

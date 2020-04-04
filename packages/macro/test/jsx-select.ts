@@ -16,7 +16,7 @@ export default [
         }} components={{
           0: <strong />
         }} />;
-      `
+      `,
   },
   {
     input: `
@@ -37,6 +37,6 @@ export default [
         }} components={{
           0: <strong />
         }} />;
-      `
-  }
+      `,
+  },
 ]

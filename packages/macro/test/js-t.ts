@@ -10,7 +10,7 @@ export default [
         const a =
           /*i18n*/
           i18n._("Expression assignment")
-    `
+    `,
   },
   {
     name: "Variables are replaced with named arguments",
@@ -24,7 +24,7 @@ export default [
         i18n._("Variable {name}", {
           name: name
         })
-    `
+    `,
   },
   {
     name: "Variables should be deduplicated",
@@ -38,7 +38,7 @@ export default [
         i18n._("{duplicate} variable {duplicate}", {
           duplicate: duplicate
         })
-    `
+    `,
   },
   {
     name:
@@ -67,7 +67,7 @@ export default [
             5: props.messages[index].value()
           }
         );
-    `
+    `,
   },
   {
     name: "Newlines are preserved",
@@ -80,13 +80,13 @@ export default [
         import { i18n } from "@lingui/core";
         /*i18n*/
         i18n._("Multiline\\nstring")
-      `
+      `,
   },
   {
     name: "Newlines after continuation character are removed",
-    filename: "js-t-continuation-character.js"
+    filename: "js-t-continuation-character.js",
   },
   {
-    filename: "js-t-var/js-t-var.js"
-  }
+    filename: "js-t-var/js-t-var.js",
+  },
 ]
