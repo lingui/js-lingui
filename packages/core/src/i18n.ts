@@ -48,7 +48,6 @@ type Events = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  messageFormat: typeof icu
   _catalogs: Catalogs
   _locale: Locale
   _locales: Locales
@@ -84,20 +83,18 @@ export class I18n extends EventEmitter<Events> {
     if (process.env.NODE_ENV !== "production") {
       if (!this.catalog) {
         this._catalogs[this.locale] = {
-          messages: {}
+          messages: {},
         }
       }
       if (isEmpty(this.catalog.localeData)) {
-        this.catalog.localeData = this.messageFormat.loadLocaleData(
-          this._locale
-        )
+        this.catalog.localeData = icu.loadLocaleData(this._locale)
       }
     }
     return this.catalog.localeData
   }
 
   loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).map(locale =>
+    Object.keys(catalogs).map((locale) =>
       this.load(locale, catalogs[locale], true)
     )
     this.emit("change")
@@ -150,7 +147,7 @@ export class I18n extends EventEmitter<Events> {
 
     if (process.env.NODE_ENV !== "production") {
       translation = isString(translation)
-        ? this.messageFormat.compile(translation)
+        ? icu.compile(translation)
         : translation
     }
 
@@ -175,7 +172,6 @@ export class I18n extends EventEmitter<Events> {
 
 function setupI18n(params: setupI18nProps = {}): I18n {
   const i18n = new I18n(params)
-  i18n.messageFormat = icu
 
   if (params.missing) i18n._missing = params.missing
 
