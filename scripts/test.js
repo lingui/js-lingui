@@ -24,24 +24,20 @@ function installExample(example) {
 
 const logHeading = message => console.log(chalk.bold("\n" + message + "\n"))
 
-try {
-  execSync("yalc")
-} catch (e) {
-  console.error(chalk.red("yalc must be installed globally"))
-  process.exit(1)
-}
-
 if (!argv["skip-build"]) {
   logHeading("Build packages")
   execSync("node scripts/build", { stdio: "inherit" })
 }
 
-logHeading("Install packages in examples")
-const examples = listDirs(EXAMPLES_DIR)
-examples.forEach(installExample)
-
-logHeading("Link packages with examples")
-execSync("node scripts/integration", { stdio: "inherit" })
+// TODO: Replace yalc with verdaccio
+// docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
+//
+// logHeading("Install packages in examples")
+// const examples = listDirs(EXAMPLES_DIR)
+// examples.forEach(installExample)
+//
+// logHeading("Link packages with examples")
+// execSync("node scripts/integration", { stdio: "inherit" })
 
 logHeading("Run tests")
 execSync("yarn test", { stdio: "inherit" })
