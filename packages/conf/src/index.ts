@@ -265,7 +265,7 @@ export function catalogMigration(
       localeDir = path.join("<rootDir>", "locale", "{locale}", "messages")
     if (srcPathDirs === undefined) srcPathDirs = ["<rootDir>"]
     if (srcPathIgnorePatterns === undefined)
-      srcPathIgnorePatterns = ["*/node_modules/*"]
+      srcPathIgnorePatterns = ["**/node_modules/**"]
 
     let newLocaleDir = localeDir
     if (localeDir.slice(-1) !== path.sep) {
