@@ -94,13 +94,11 @@ export class I18n extends EventEmitter<Events> {
   }
 
   loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).map((locale) =>
-      this.load(locale, catalogs[locale], true)
-    )
+    Object.keys(catalogs).map((locale) => this._load(locale, catalogs[locale]))
     this.emit("change")
   }
 
-  load(locale: Locale, catalog?: Catalog, bulk = false) {
+  _load(locale: Locale, catalog?: Catalog) {
     if (catalog == null) return
 
     if (this._catalogs[locale] == null) {
@@ -110,13 +108,16 @@ export class I18n extends EventEmitter<Events> {
       Object.assign(prev.messages, catalog.messages)
       Object.assign(prev.localeData, catalog.localeData)
     }
+  }
 
-    if (!bulk) this.emit("change")
+  load(locale: Locale, catalog?: Catalog) {
+    this._load(locale, catalog)
+    this.emit("change")
   }
 
   activate(locale: Locale, locales?: Locales) {
-    if (!this._catalogs[locale]) {
-      if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== "production") {
+      if (!this._catalogs[locale]) {
         console.warn(`Message catalog for locale "${locale}" not loaded.`)
       }
     }
