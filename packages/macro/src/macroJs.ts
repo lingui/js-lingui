@@ -127,22 +127,24 @@ export default class MacroJs {
    * ↓ ↓ ↓ ↓ ↓ ↓
    *
    * const message = {
-   *   i18n._("msg.id", { value }, {
-   *     comment: "Description",
-   *     message: "{value, plural, one {book} other {books}}"
-   *   })
+   *   id: "msg.id",
+   *   comment: "Description",
+   *   message: "{value, plural, one {book} other {books}}"
+   * }
    *
    */
   replaceDefineMessage = (path) => {
-    // TODO: Add argument validation.
+    // reset the expression counter
+    this._expressionIndex = makeCounter()
+
     const descriptor = this.processDescriptor(path.node.arguments[0])
-    this.replacePathWithMessage(path, descriptor)
+    this.addExtractMark(path)
+    path.replaceWith(descriptor)
   }
 
   /**
    * `processDescriptor` expand macros inside messsage descriptor.
-   * Message descriptor is used in `defineMessage` and `defineMessages`
-   * macros.
+   * Message descriptor is used in `defineMessage`.
    *
    * {
    *   comment: "Description",
@@ -158,41 +160,54 @@ export default class MacroJs {
    *
    */
   processDescriptor = (descriptor) => {
-    const idNode = descriptor.properties.find(
-      (property) => property.key.name === ID
-    )
-
-    const messageNode = descriptor.properties.find(
+    const messageIndex = descriptor.properties.findIndex(
       (property) => property.key.name === MESSAGE
     )
-
-    const commentNode = descriptor.properties.find(
-      (property) => property.key.name === COMMENT
-    )
-
-    const i18nArgs = {
-      id: idNode != null ? idNode.value.value : null,
-      comment: commentNode != null ? commentNode.value.value : null,
-      message: null,
-      values: {},
-    }
-
-    if (messageNode == null) {
-      return i18nArgs
+    if (messageIndex === -1) {
+      return descriptor
     }
 
     // if there's `message` property, replace macros with formatted message
-    const tokens = this.tokenizeNode(messageNode.value, true)
+    const node = descriptor.properties[messageIndex]
+    const tokens = this.tokenizeNode(node.value, true)
+
+    let messageNode = node.value
     if (tokens != null) {
       const messageFormat = new ICUMessageFormat()
       const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-      i18nArgs.message = normalizeWhitespace(messageRaw)
-      i18nArgs.values = values
-    } else {
-      i18nArgs.message = messageNode.value
+      const message = normalizeWhitespace(messageRaw)
+      messageNode = this.types.stringLiteral(message)
+
+      this.addValues(descriptor.properties, values)
     }
 
-    return i18nArgs
+    // Don't override custom ID
+    const hasId =
+      descriptor.properties.findIndex(
+        (property) => property.key.name === ID
+      ) !== -1
+
+    descriptor.properties[messageIndex] = this.types.objectProperty(
+      this.types.identifier(hasId ? MESSAGE : ID),
+      messageNode
+    )
+
+    return descriptor
+  }
+
+  addValues = (obj, values) => {
+    const valuesObject = Object.keys(values).map((key) =>
+      this.types.objectProperty(this.types.identifier(key), values[key])
+    )
+
+    if (!valuesObject.length) return
+
+    obj.push(
+      this.types.objectProperty(
+        this.types.identifier("values"),
+        this.types.objectExpression(valuesObject)
+      )
+    )
   }
 
   tokenizeNode = (node, ignoreExpression = false) => {

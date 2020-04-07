@@ -12,9 +12,10 @@ export default [
         import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
-          i18n._("{value, plural, one {book} other {books}}", {}, {
-            comment: "Description"
-          })
+          {
+            comment: "Description",
+            id: "{value, plural, one {book} other {books}}"
+          };
     `,
   },
   {
@@ -29,7 +30,9 @@ export default [
         import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
-          i18n._("Message")
+          {
+            id: "Message"
+          };
     `,
   },
   {
@@ -44,7 +47,9 @@ export default [
         import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
-          i18n._(\`Message\`)
+          {
+            id: \`Message\`
+          };
     `,
   },
   {
@@ -60,13 +65,10 @@ export default [
         import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
-          i18n._(
-            "msg.id",
-            {},
-            {
-              message: "Message"
-            }
-          )
+          {
+            id: "msg.id",
+            message: "Message"
+          };
     `,
   },
   {
@@ -81,9 +83,12 @@ export default [
         import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
-          i18n._("Hello {name}", {
-            name: name
-          })
+          {
+            id: "Hello {name}",
+            values: {
+              name: name
+            }
+          };
     `,
   },
 ]

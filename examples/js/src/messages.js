@@ -12,26 +12,26 @@ i18n.loadAll({
  * Example: Lazy messages - common phrases are only defined, but not translated.
  */
 export const common = {
-  yes: () =>
-    defineMessage({
-      comment: "Agreement",
-      message: "Yes",
-    }),
-  no: () =>
-    defineMessage({
-      comment: "Disagreement",
-      message: "No",
-    }),
+  yes: defineMessage({
+    comment: "Agreement",
+    message: "Yes",
+  }),
+  no: defineMessage({
+    comment: "Disagreement",
+    message: "No",
+  }),
 }
 
 /**
  * Example: Static messages - add comment beginning with `i18n:` to add description.
  */
 export function getStatic() {
-  return defineMessage({
-    comment: "Title of example",
-    message: "@lingui/core example",
-  })
+  return i18n._(
+    defineMessage({
+      comment: "Title of example",
+      message: "@lingui/core example",
+    })
+  )
 }
 
 /**
@@ -56,8 +56,8 @@ export function getPlural(value) {
  * translation.
  */
 export function getLazy() {
-  const yes = common.yes()
-  const no = common.no()
+  const yes = i18n._(common.yes)
+  const no = i18n._(common.no)
   return t`Do you want to proceed? ${yes}/${no}`
 }
 

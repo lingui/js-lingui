@@ -9,52 +9,50 @@ i18n.loadAll({
 })
 
 export const common = {
-  yes: () =>
-    defineMessage({
-      id: "common.yes",
-      comment: "Agreement",
-      message: "Yes",
-    }),
-  no: () =>
-    defineMessage({
-      id: "common.no",
-      comment: "Disagreement",
-      message: "No",
-    }),
+  yes: defineMessage({
+    id: "common.yes",
+    comment: "Agreement",
+    message: "Yes",
+  }),
+  no: defineMessage({
+    id: "common.no",
+    comment: "Disagreement",
+    message: "No",
+  }),
 }
 
 export function getStatic() {
-  return defineMessage({
+  return i18n._(defineMessage({
     id: "static",
     comment: "Title of example",
     message: "@lingui/core example",
-  })
+  }))
 }
 
 export function getVariables(name) {
-  return defineMessage({
+  return i18n._(defineMessage({
     id: "variables",
     message: t`Hello ${name}`,
-  })
+  }))
 }
 
 export function getPlural(value) {
-  return defineMessage({
+  return i18n._(defineMessage({
     id: "plural",
     message: t`There are ${plural(value, {
       one: "# bottle",
       other: "# bottles",
     })} hanging on the wall`,
-  })
+  }))
 }
 
 export function getLazy() {
-  const yes = common.yes()
-  const no = common.no()
-  return defineMessage({
+  const yes = i18n._(common.yes)
+  const no = i18n._(common.no)
+  return i18n._(defineMessage({
     id: "lazy",
     message: t`Do you want to proceed? ${yes}/${no}`,
-  })
+  }))
 }
 
 function main() {

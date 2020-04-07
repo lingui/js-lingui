@@ -169,6 +169,61 @@ export default function ({ types: t }) {
         visited.add(path.node)
         collectMessage(path, file, props)
       },
+
+      StringLiteral(path, { file }) {
+        const visited = file.get(VISITED)
+
+        const comment =
+          path.node.leadingComments &&
+          path.node.leadingComments.filter((node) =>
+            node.value.match(/^\s*i18n/)
+          )[0]
+
+        if (!comment || visited.has(path.node)) {
+          return
+        }
+
+        visited.add(path.node)
+
+        const props = {
+          id: path.node.value,
+        }
+
+        collectMessage(path, file, props)
+      },
+
+      // Extract message descriptors
+      ObjectExpression(path, { file }) {
+        const visited = file.get(VISITED)
+
+        const comment =
+          path.node.leadingComments &&
+          path.node.leadingComments.filter((node) =>
+            node.value.match(/^\s*i18n/)
+          )[0]
+
+        if (!comment || visited.has(path.node)) {
+          return
+        }
+
+        visited.add(path.node)
+
+        const props = {}
+        const copyProps = ["id", "message", "comment"]
+        path.node.properties
+          .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
+          .forEach(({ key, value }, i) => {
+            if (key.name === "comment" && !t.isStringLiteral(value)) {
+              throw path
+                .get(`properties.${i}.value`)
+                .buildCodeFrameError("Only strings are supported as comments.")
+            }
+
+            props[key.name] = value.value
+          })
+
+        collectMessage(path, file, props)
+      },
     },
 
     pre(file) {

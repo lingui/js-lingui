@@ -72,16 +72,12 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        9,
+        7,
       ],
     ],
   },
   Message: Object {
     origin: Array [
-      Array [
-        js-without-macros.js,
-        1,
-      ],
       Array [
         js-without-macros.js,
         3,
@@ -92,7 +88,7 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        13,
+        9,
       ],
     ],
   },
