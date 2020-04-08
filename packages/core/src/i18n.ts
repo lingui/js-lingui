@@ -57,7 +57,7 @@ export class I18n extends EventEmitter<Events> {
     super()
 
     this._catalogs = {}
-    if (params.catalogs != null) this.loadAll(params.catalogs)
+    if (params.catalogs != null) this.load(params.catalogs)
     if (params.locale != null || params.locales != null) {
       this.activate(params.locale, params.locales)
     }
@@ -93,14 +93,7 @@ export class I18n extends EventEmitter<Events> {
     return this.catalog.localeData
   }
 
-  loadAll(catalogs: Catalogs) {
-    Object.keys(catalogs).map((locale) => this._load(locale, catalogs[locale]))
-    this.emit("change")
-  }
-
-  _load(locale: Locale, catalog?: Catalog) {
-    if (catalog == null) return
-
+  _load(locale: Locale, catalog: Catalog) {
     if (this._catalogs[locale] == null) {
       this._catalogs[locale] = catalog
     } else {
@@ -110,8 +103,22 @@ export class I18n extends EventEmitter<Events> {
     }
   }
 
-  load(locale: Locale, catalog?: Catalog) {
-    this._load(locale, catalog)
+  public load(catalogs: Catalogs): void
+  public load(locale: Locale, catalog: Catalog)
+
+  load(locale_or_catalogs, catalog?) {
+    if (catalog != null) {
+      // load('en', catalog)
+      // Loading a catalog for a single locale.
+      this._load(locale_or_catalogs, catalog)
+    } else {
+      // load(catalogs)
+      // Loading several locales at once.
+      Object.keys(locale_or_catalogs).forEach((locale) =>
+        this._load(locale, locale_or_catalogs[locale])
+      )
+    }
+
     this.emit("change")
   }
 

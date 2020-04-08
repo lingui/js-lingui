@@ -3,7 +3,7 @@ import { t, plural, defineMessage } from "@lingui/macro"
 
 export const i18n = setupI18n()
 
-i18n.loadAll({
+i18n.load({
   en: require("./locale/en/messages"),
   cs: require("./locale/cs/messages"),
 })

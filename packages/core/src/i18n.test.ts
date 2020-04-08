@@ -32,6 +32,39 @@ describe("I18n", function () {
       i18n.load("fr", { messages: { Hello: "Salut" } })
       expect(i18n.messages).toEqual(messages)
     })
+
+    it("should load multiple catalogs at once", () => {
+      const enMessages = {
+        Hello: "Hello",
+      }
+      const frMessages = {
+        Hello: "Salut",
+      }
+
+      const i18n = setupI18n()
+      i18n.load({
+        en: {
+          localeData: {
+            plurals: jest.fn(),
+            code: "en_US",
+          },
+          messages: enMessages,
+        },
+        fr: {
+          localeData: {
+            plurals: jest.fn(),
+            code: "fr_FR",
+          },
+          messages: frMessages,
+        },
+      })
+
+      i18n.activate("en")
+      expect(i18n.messages).toEqual(enMessages)
+
+      i18n.activate("fr")
+      expect(i18n.messages).toEqual(frMessages)
+    })
   })
 
   describe("I18n.activate", () => {

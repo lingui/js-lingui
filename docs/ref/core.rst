@@ -181,9 +181,10 @@ Reference
    Constructor for I18n class isn't exported from the package. Instead, always use
    :js:func:`setupI18n` factory function.
 
+   .. js:method:: load(catalogs: Catalogs)
    .. js:method:: load(locale: string, catalog: Catalog)
 
-      Load catalog for given locale
+      Load catalog for given locale or load multiple catalogs at once.
 
       .. code-block:: js
 
@@ -212,8 +213,8 @@ Reference
          })
 
          // This is the same as loading message catalogs separately per language:
-         // i18n.load({ en: messagesEn })
-         // i18n.load({ cs: messagesCs })
+         // i18n.load('en', messagesEn)
+         // i18n.load('cs', messagesCs)
 
       .. important:: Don't write catalogs manually
 
@@ -235,43 +236,7 @@ Reference
             import messagesEn from "./locale/en/messages.js"
 
             const i18n = setupI18n()
-            i18n.load({
-               en: messagesEn,
-            })
-
-   .. js:method:: loadAll(catalogs: Catalogs)
-
-      Load catalogs for multiple locales at once.
-
-      .. code-block:: js
-
-         import { setupI18n } from "@lingui/core"
-
-         const messagesEn =  {
-            "Hello": "Hello",
-            "Good bye": "Good bye",
-
-            // Just an example how catalog looks internally.
-            // Formatting of string messages works in development only.
-            // See note below.
-            "My name is {name}": "My name is {name}"
-         }
-
-         const messagesCs = {
-            "Hello": "Ahoj",
-            "Good bye": "Nashledanou",
-            "My name is {name}": "Jmenuji se {name}"
-         }
-
-         const i18n = setupI18n()
-         i18n.loadAll({
-            en: messagesEn,
-            cs: messagesCs
-         })
-
-         // This is the same as loading message catalogs separately per language:
-         // i18n.load("en", messagesEn)
-         // i18n.load("cs", messagesCs)
+            i18n.load('en', messagesEn)
 
    .. js:method:: activate(locale [, locales])
 
