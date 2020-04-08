@@ -10,7 +10,8 @@ export async function activate(locale) {
     /* webpackChunkName: "i18n-[index]" */ `@lingui/loader!./locales/${locale}.po`
   )
 
-  i18n.load(locale, catalog)
+  i18n.loadLocaleData(locale, catalog.localeData)
+  i18n.load(locale, catalog.messages)
   i18n.activate(locale)
 }
 

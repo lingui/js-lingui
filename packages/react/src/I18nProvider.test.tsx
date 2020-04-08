@@ -38,7 +38,7 @@ describe("I18nProvider", function () {
 
     const i18n = setupI18n({
       locale: "en",
-      catalogs: {},
+      messages: {},
     })
 
     function RenderLocale() {

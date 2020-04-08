@@ -16,11 +16,15 @@ export type LocaleData = {
   plurals?: Function
 }
 
+export type AllLocaleData = Record<Locale, LocaleData>
+
 export type CompiledMessage =
   | string
   | Array<string | [string, string?, (string | Object)?]>
 
-export type Messages = { [msgId: string]: CompiledMessage }
+export type Messages = Record<string, CompiledMessage>
+
+export type AllMessages = Record<Locale, Messages>
 
 export interface MessageDescriptor {
   id?: string
@@ -29,17 +33,11 @@ export interface MessageDescriptor {
   values?: string
 }
 
-export type Catalog = {
-  messages: Messages
-  localeData?: LocaleData
-}
-
-export type Catalogs = { [locale: string]: Catalog }
-
 type setupI18nProps = {
   locale?: Locale
   locales?: Locales
-  catalogs?: Catalogs
+  messages?: AllMessages
+  localeData?: AllLocaleData
   missing?: string | ((message, id) => string)
 }
 
@@ -48,16 +46,20 @@ type Events = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  _catalogs: Catalogs
   _locale: Locale
   _locales: Locales
+  _localeData: AllLocaleData
+  _messages: AllMessages
   _missing: string | ((message, id) => string)
 
   constructor(params: setupI18nProps) {
     super()
 
-    this._catalogs = {}
-    if (params.catalogs != null) this.load(params.catalogs)
+    this._messages = {}
+    this._localeData = {}
+
+    if (params.messages != null) this.load(params.messages)
+    if (params.localeData != null) this.loadLocaleData(params.localeData)
     if (params.locale != null || params.locales != null) {
       this.activate(params.locale, params.locales)
     }
@@ -71,51 +73,62 @@ export class I18n extends EventEmitter<Events> {
     return this._locales
   }
 
-  get catalog(): Catalog {
-    return this._catalogs[this.locale]
-  }
-
   get messages(): Messages {
-    return this.catalog && this.catalog.messages ? this.catalog.messages : {}
+    return this._messages[this._locale] ?? {}
   }
 
   get localeData(): LocaleData {
-    if (process.env.NODE_ENV !== "production") {
-      if (!this.catalog) {
-        this._catalogs[this.locale] = {
-          messages: {},
-        }
-      }
-      if (isEmpty(this.catalog.localeData)) {
-        this.catalog.localeData = icu.loadLocaleData(this._locale)
-      }
-    }
-    return this.catalog.localeData
+    return this._localeData[this._locale] ?? {}
   }
 
-  _load(locale: Locale, catalog: Catalog) {
-    if (this._catalogs[locale] == null) {
-      this._catalogs[locale] = catalog
+  _loadLocaleData(locale: Locale, localeData: LocaleData) {
+    if (this._localeData[locale] == null) {
+      this._localeData[locale] = localeData
     } else {
-      const prev = this._catalogs[locale]
-      Object.assign(prev.messages, catalog.messages)
-      Object.assign(prev.localeData, catalog.localeData)
+      Object.assign(this._localeData[locale], localeData)
     }
   }
 
-  public load(catalogs: Catalogs): void
-  public load(locale: Locale, catalog: Catalog)
+  public loadLocaleData(allLocaleData: AllLocaleData): void
+  public loadLocaleData(locale: Locale, localeData: LocaleData): void
 
-  load(locale_or_catalogs, catalog?) {
-    if (catalog != null) {
+  loadLocaleData(localeOrAllData, localeData?) {
+    if (localeData != null) {
+      // loadLocaleData('en', enLocaleData)
+      // Loading locale data for a single locale.
+      this._loadLocaleData(localeOrAllData, localeData)
+    } else {
+      // loadLocaleData(allLocaleData)
+      // Loading all locale data at once.
+      Object.keys(localeOrAllData).forEach((locale) =>
+        this._loadLocaleData(locale, localeOrAllData[locale])
+      )
+    }
+
+    this.emit("change")
+  }
+
+  _load(locale: Locale, messages: Messages) {
+    if (this._messages[locale] == null) {
+      this._messages[locale] = messages
+    } else {
+      Object.assign(this._messages[locale], messages)
+    }
+  }
+
+  public load(allMessages: AllMessages): void
+  public load(locale: Locale, messages: Messages): void
+
+  load(localeOrMessages, messages?) {
+    if (messages != null) {
       // load('en', catalog)
       // Loading a catalog for a single locale.
-      this._load(locale_or_catalogs, catalog)
+      this._load(localeOrMessages, messages)
     } else {
       // load(catalogs)
       // Loading several locales at once.
-      Object.keys(locale_or_catalogs).forEach((locale) =>
-        this._load(locale, locale_or_catalogs[locale])
+      Object.keys(localeOrMessages).forEach((locale) =>
+        this._load(locale, localeOrMessages[locale])
       )
     }
 
@@ -124,8 +137,14 @@ export class I18n extends EventEmitter<Events> {
 
   activate(locale: Locale, locales?: Locales) {
     if (process.env.NODE_ENV !== "production") {
-      if (!this._catalogs[locale]) {
-        console.warn(`Message catalog for locale "${locale}" not loaded.`)
+      if (!this._messages[locale]) {
+        console.warn(`Messages for locale "${locale}" not loaded.`)
+      }
+
+      if (!this._localeData[locale]) {
+        console.warn(
+          `Locale data for locale "${locale}" not loaded. Plurals won't work correctly.`
+        )
       }
     }
 

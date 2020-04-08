@@ -3,9 +3,16 @@ import { t, plural, defineMessage } from "@lingui/macro"
 
 export const i18n = setupI18n()
 
+const enCatalog = require("./locale/en/messages")
+const csCatalog = require("./locale/cs/messages")
+
+i18n.loadLocaleData({
+  en: enCatalog.localeData,
+  cs: csCatalog.localeData,
+})
 i18n.load({
-  en: require("./locale/en/messages"),
-  cs: require("./locale/cs/messages"),
+  en: enCatalog.messages,
+  cs: csCatalog.messages,
 })
 
 /**

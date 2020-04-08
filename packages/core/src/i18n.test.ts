@@ -23,13 +23,12 @@ describe("I18n", function () {
       }
 
       const i18n = setupI18n()
-      i18n.load("en", { messages, localeData })
+      i18n.load("en", messages)
       i18n.activate("en")
       expect(i18n.messages).toEqual(messages)
-      expect(i18n.localeData).toEqual(localeData)
 
       // fr catalog shouldn't affect the english one
-      i18n.load("fr", { messages: { Hello: "Salut" } })
+      i18n.load("fr", { Hello: "Salut" })
       expect(i18n.messages).toEqual(messages)
     })
 
@@ -43,20 +42,8 @@ describe("I18n", function () {
 
       const i18n = setupI18n()
       i18n.load({
-        en: {
-          localeData: {
-            plurals: jest.fn(),
-            code: "en_US",
-          },
-          messages: enMessages,
-        },
-        fr: {
-          localeData: {
-            plurals: jest.fn(),
-            code: "fr_FR",
-          },
-          messages: frMessages,
-        },
+        en: enMessages,
+        fr: frMessages,
       })
 
       i18n.activate("en")
@@ -71,8 +58,11 @@ describe("I18n", function () {
     it("should emit event", () => {
       const i18n = setupI18n({
         locale: "en",
-        catalogs: {
-          en: { messages: {} },
+        messages: {
+          en: {},
+        },
+        localeData: {
+          en: {},
         },
       })
 
@@ -89,9 +79,9 @@ describe("I18n", function () {
 
       const i18n = setupI18n({
         locale: "en",
-        catalogs: {
-          fr: { messages },
-          en: { messages: {} },
+        messages: {
+          fr: messages,
+          en: {},
         },
       })
 
@@ -109,7 +99,10 @@ describe("I18n", function () {
       mockConsole((console) => {
         i18n.activate("xyz")
         expect(console.warn).toBeCalledWith(
-          'Message catalog for locale "xyz" not loaded.'
+          'Messages for locale "xyz" not loaded.'
+        )
+        expect(console.warn).toBeCalledWith(
+          'Locale data for locale "xyz" not loaded. Plurals won\'t work correctly.'
         )
       })
 
@@ -133,7 +126,7 @@ describe("I18n", function () {
 
     const i18n = setupI18n({
       locale: "fr",
-      catalogs: { fr: { messages } },
+      messages: { fr: messages },
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
@@ -165,7 +158,7 @@ describe("I18n", function () {
 
     const i18n = setupI18n({
       locale: "fr",
-      catalogs: { fr: { messages } },
+      messages: { fr: messages },
     })
     const hello = "Hello"
     expect(i18n._(hello)).toEqual("Salut")
@@ -178,7 +171,7 @@ describe("I18n", function () {
 
     const i18n = setupI18n({
       locale: "es",
-      catalogs: { es: { messages } },
+      messages: { es: messages },
     })
 
     expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
@@ -194,7 +187,7 @@ describe("I18n", function () {
       const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
-        catalogs: { fr: { messages } },
+        messages: { fr: messages },
       })
 
       expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
@@ -208,7 +201,7 @@ describe("I18n", function () {
       const i18n = setupI18n({
         missing: "xxx",
         locale: "en",
-        catalogs: { en: { messages: { exists: "exists" } } },
+        messages: { en: { exists: "exists" } },
       })
       expect(i18n._("exists")).toEqual("exists")
       expect(i18n._("missing")).toEqual("xxx")
