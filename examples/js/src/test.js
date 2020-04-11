@@ -1,3 +1,5 @@
+import { i18n } from "@lingui/core"
+
 describe("vanilla-js example", function () {
   describe("messages as ids", function () {
     test(require("./messages"))
@@ -8,7 +10,7 @@ describe("vanilla-js example", function () {
   })
 })
 
-function test({ i18n, getStatic, getVariables, getPlural, getLazy }) {
+function test({ getStatic, getVariables, getPlural, getLazy }) {
   it("should translate static message", function () {
     i18n.activate("en")
     expect(getStatic()).toEqual("@lingui/core example")

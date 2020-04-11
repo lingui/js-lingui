@@ -87,8 +87,7 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 
 ``i18n`` manager is the single source of truth and there's no need to keep all catalogs
 loaded outside this object. To make loading easier, `i18n.load` now accepts catalog
-for a single locale. If previous behavior was useful for you (e.g. when loading all
-message catalogs in SSR), use `i18n.loadAll` instead.
+for a single locale or multiple catalogs at once.
 
 .. code-block:: diff
 
@@ -101,16 +100,20 @@ message catalogs in SSR), use `i18n.loadAll` instead.
 
 .. note::
 
-   Use `i18n.loadAll` to load all catalogs at once:
+   You can still use `i18n.load` to load all catalogs at once:
 
    .. code-block:: jsx
 
       // i18n.js
       import { setupI18n } from '@lingui/core'
       import catalogEn from './locale/en/messages.js'
+      import catalogFr from './locale/fr/messages.js'
 
       export const i18n = setupI18n()
-      i18n.loadAll({ en: catalogEn })
+      i18n.load({
+         en: catalogEn
+         fr: catalogFr
+      })
 
 @lingui/macro
 -------------
@@ -234,21 +237,26 @@ needed anymore.
 New features
 ============
 
-`i18n.loadAll`
---------------
+`i18n.load`
+-----------
 
-`i18n.loadAll` method was formerly named `i18n.load`. It loads all available catalogs
-at once. Useful in Node.js environments when we don't need to load catalogs one by one.
+`i18n.load` can now accept one catalog for specific locale. Useful for incremental loading of catalogs.
 
 .. code-block:: jsx
 
    import { setupI18n } from "@lingui/core"
 
    export const i18n = setupI18n()
-   i18n.loadAll({
+
+   // Lingui v2 and v3
+   i18n.load({
      en: require("./locale/en/messages"),
      cs: require("./locale/cs/messages")
    })
+
+   // Lingui v3 only
+   i18n.load('en', require("./locale/en/messages"))
+   i18n.load('cs', require("./locale/cs/messages"))
 
 `i18n.willActivate`
 -------------------
