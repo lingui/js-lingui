@@ -1,15 +1,92 @@
 import * as t from "@babel/types"
-import { parse } from "messageformat-parser"
-import { parseExpression } from "@babel/parser"
 import generate from "@babel/generator"
-import * as plurals from "make-plural/plurals"
-import R from "ramda"
+import { parse } from "messageformat-parser"
+import * as R from "ramda"
 
-import { CatalogType, CompiledCatalogType } from "./types"
+import { CompiledCatalogType } from "./types"
 import pseudoLocalize from "./pseudoLocalize"
 
-const isString = (s) => typeof s === "string"
+export type CompiledCatalogNamespace = "cjs" | "es" | string
 
+export interface CreateCompileCatalogOptions {
+  strict?: boolean
+  namespace?: CompiledCatalogNamespace
+  pseudoLocale?: string
+}
+
+export function createCompiledCatalog(
+  locale: string,
+  messages: CompiledCatalogType,
+  options: CreateCompileCatalogOptions
+) {
+  const { strict = false, namespace = "cjs", pseudoLocale } = options
+  const compiledMessages = R.keys(messages).map((key: string) => {
+    // Don't use `key` as a fallback translation in strict mode.
+    let translation = messages[key] || (!strict ? key : "")
+
+    if (locale === pseudoLocale) {
+      translation = pseudoLocalize(translation)
+    }
+
+    return t.objectProperty(t.stringLiteral(key), compile(translation))
+  })
+
+  const ast = buildExportStatement(
+    t.objectExpression(compiledMessages),
+    namespace
+  )
+
+  return (
+    "/*eslint-disable*/" +
+    generate(ast as any, {
+      minified: true,
+    }).code
+  )
+}
+
+function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
+  if (namespace === "es") {
+    // export const messages = { message: "Translation" }
+    return t.exportNamedDeclaration(
+      t.variableDeclaration("const", [
+        t.variableDeclarator(t.identifier("messages"), expression),
+      ])
+    )
+  } else {
+    let exportExpression = null
+    const matches = namespace.match(/^(window|global)\.([^.\s]+)$/)
+    if (namespace === "cjs") {
+      // module.exports.messages = { message: "Translation" }
+      exportExpression = t.memberExpression(
+        t.identifier("module"),
+        t.identifier("exports")
+      )
+    } else if (matches) {
+      // window.i18nMessages = { messages: { message: "Translation" }}
+      exportExpression = t.memberExpression(
+        t.identifier(matches[1]),
+        t.identifier(matches[2])
+      )
+    } else {
+      throw new Error(`Invalid namespace param: "${namespace}"`)
+    }
+
+    return t.expressionStatement(
+      t.assignmentExpression(
+        "=",
+        exportExpression,
+        t.objectExpression([
+          t.objectProperty(t.identifier("messages"), expression),
+        ])
+      )
+    )
+  }
+}
+
+/**
+ * Compile string message into AST tree. Message format is parsed/compiled into
+ * JS arrays, which are handled in client.
+ */
 export function compile(message: string) {
   let tokens
   try {
@@ -27,6 +104,8 @@ export function compile(message: string) {
 }
 
 function processTokens(tokens) {
+  // Shortcut - if the message doesn't include any formatting,
+  // simply join all string chunks into one message
   if (!tokens.filter((token) => !isString(token)).length) {
     return tokens.join("")
   }
@@ -90,89 +169,4 @@ function processTokens(tokens) {
   )
 }
 
-function buildExportStatement(expression, namespace: NamespaceType = "cjs") {
-  if (namespace === "es") {
-    return t.exportDefaultDeclaration(expression)
-  } else {
-    let exportExpression = null
-    const matches = namespace.match(/^(window|global)\.([^.\s]+)$/)
-    if (namespace === "cjs") {
-      exportExpression = t.memberExpression(
-        t.identifier("module"),
-        t.identifier("exports")
-      )
-    } else if (matches) {
-      exportExpression = t.memberExpression(
-        t.identifier(matches[1]),
-        t.identifier(matches[2])
-      )
-    } else {
-      throw new Error(`Invalid namespace param: "${namespace}"`)
-    }
-    return t.expressionStatement(
-      t.assignmentExpression("=", exportExpression, expression)
-    )
-  }
-}
-
-type NamespaceType = "cjs" | "es" | string
-
-interface CreateCompileCatalogOptions {
-  strict: boolean
-  namespace: NamespaceType
-  pseudoLocale?: string
-}
-
-export function createCompiledCatalog(
-  locale: string,
-  messages: CompiledCatalogType,
-  {
-    strict = false,
-    namespace = "cjs",
-    pseudoLocale,
-  }: CreateCompileCatalogOptions
-) {
-  const [language] = locale.split(/[_-]/)
-  let pluralRules = plurals[language]
-  if (locale === pseudoLocale) {
-    pluralRules = plurals["en"]
-  }
-
-  const compiledMessages = R.keys(messages).map((key: string) => {
-    let translation = messages[key] || (!strict ? key : "")
-    if (locale === pseudoLocale) {
-      translation = pseudoLocalize(translation)
-    }
-    return t.objectProperty(t.stringLiteral(key), compile(translation))
-  })
-
-  const localeData = [
-    t.objectProperty(
-      t.stringLiteral("plurals"),
-      parseExpression(pluralRules.toString())
-    ),
-  ]
-
-  const ast = buildExportStatement(
-    t.objectExpression([
-      // language data
-      t.objectProperty(
-        t.identifier("localeData"),
-        t.objectExpression(localeData)
-      ),
-      // messages
-      t.objectProperty(
-        t.identifier("messages"),
-        t.objectExpression(compiledMessages)
-      ),
-    ]),
-    namespace
-  )
-
-  return (
-    "/* eslint-disable */" +
-    generate(ast as any, {
-      minified: true,
-    }).code
-  )
-}
+const isString = (s) => typeof s === "string"

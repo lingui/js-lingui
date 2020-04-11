@@ -75,34 +75,73 @@ describe("compile", function () {
 })
 
 describe("createCompiledCatalog", function () {
-  describe("namespace", function () {
-    const getCompiledCatalog = (strict, namespace, pseudoLocale = null) =>
+  describe("options.namespace", function () {
+    const getCompiledCatalog = (namespace) =>
       createCompiledCatalog(
         "fr",
         {},
         {
-          strict,
           namespace,
-          pseudoLocale,
         }
       )
 
     it("should compile with es", function () {
-      expect(getCompiledCatalog(false, "es")).toMatchSnapshot()
+      expect(getCompiledCatalog("es")).toMatchSnapshot()
     })
 
     it("should compile with window", function () {
-      expect(getCompiledCatalog(false, "window.test")).toMatchSnapshot()
+      expect(getCompiledCatalog("window.test")).toMatchSnapshot()
     })
 
     it("should compile with global", function () {
-      expect(getCompiledCatalog(false, "global.test")).toMatchSnapshot()
+      expect(getCompiledCatalog("global.test")).toMatchSnapshot()
     })
 
     it("should error with invalid value", function () {
-      expect(() =>
-        getCompiledCatalog(false, "global")
-      ).toThrowErrorMatchingSnapshot()
+      expect(() => getCompiledCatalog("global")).toThrowErrorMatchingSnapshot()
+    })
+  })
+
+  describe("options.strict", function () {
+    const getCompiledCatalog = (strict) =>
+      createCompiledCatalog(
+        "cs",
+        {
+          Hello: "Ahoj",
+          Missing: "",
+        },
+        {
+          strict,
+        }
+      )
+
+    it("should return message key as a fallback translation", function () {
+      expect(getCompiledCatalog(false)).toMatchSnapshot()
+    })
+
+    it("should't return message key as a fallback in strict mode", function () {
+      expect(getCompiledCatalog(true)).toMatchSnapshot()
+    })
+  })
+
+  describe("options.pseudoLocale", function () {
+    const getCompiledCatalog = (pseudoLocale) =>
+      createCompiledCatalog(
+        "cs",
+        {
+          Hello: "Ahoj",
+        },
+        {
+          pseudoLocale,
+        }
+      )
+
+    it("should return catalog with pseudolocalized messages", function () {
+      expect(getCompiledCatalog("cs")).toMatchSnapshot()
+    })
+
+    it("should return compiled catalog when pseudoLocale doesn't match current locale", function () {
+      expect(getCompiledCatalog("en")).toMatchSnapshot()
     })
   })
 })

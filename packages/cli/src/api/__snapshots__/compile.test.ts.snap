@@ -2,10 +2,18 @@
 
 exports[`compile should report failed message on error 1`] = `Can't parse message. Please check correct syntax: "{value, plural, one {Book} other {Books"`;
 
-exports[`createCompiledCatalog namespace should compile with es 1`] = `/* eslint-disable */export default{localeData:{"plurals":function fr(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog options.namespace should compile with es 1`] = `/*eslint-disable*/export const messages={};`;
 
-exports[`createCompiledCatalog namespace should compile with global 1`] = `/* eslint-disable */global.test={localeData:{"plurals":function fr(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog options.namespace should compile with global 1`] = `/*eslint-disable*/global.test={messages:{}};`;
 
-exports[`createCompiledCatalog namespace should compile with window 1`] = `/* eslint-disable */window.test={localeData:{"plurals":function fr(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}},messages:{}};`;
+exports[`createCompiledCatalog options.namespace should compile with window 1`] = `/*eslint-disable*/window.test={messages:{}};`;
 
-exports[`createCompiledCatalog namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
+exports[`createCompiledCatalog options.namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
+
+exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"\\xC0\\u0125\\u014D\\u0134"}};`;
+
+exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
+
+exports[`createCompiledCatalog options.strict should return message key as a fallback translation 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj","Missing":"Missing"}};`;
+
+exports[`createCompiledCatalog options.strict should't return message key as a fallback in strict mode 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj","Missing":""}};`;

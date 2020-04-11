@@ -1,18 +1,13 @@
-import { setupI18n } from "@lingui/core"
+import { i18n } from "@lingui/core"
 import { t, plural, defineMessage } from "@lingui/macro"
+import { en, cs } from "make-plural/plurals"
 
-export const i18n = setupI18n()
+i18n.loadLocaleData("en", { plurals: en })
+i18n.loadLocaleData("cs", { plurals: cs })
 
-const enCatalog = require("./locale/en/messages")
-const csCatalog = require("./locale/cs/messages")
-
-i18n.loadLocaleData({
-  en: enCatalog.localeData,
-  cs: csCatalog.localeData,
-})
 i18n.load({
-  en: enCatalog.messages,
-  cs: csCatalog.messages,
+  en: require("./locale/en/messages").messages,
+  cs: require("./locale/cs/messages").messages,
 })
 
 export const common = {
