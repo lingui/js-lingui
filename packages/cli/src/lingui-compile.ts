@@ -81,12 +81,12 @@ function command(config, options) {
       const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
 
       if (options.typescript) {
-        const typescriptPath = compiledPath.replace(/\.js$/, "") + ".d.ts"
+        const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
         fs.writeFileSync(
           typescriptPath,
-          `import { Catalog } from '@lingui/core';
-declare const catalog: Catalog;
-export = catalog;
+          `import { AllMessages } from '@lingui/core';
+declare const messages: AllMessages;
+export = messages;
 `
         )
       }
