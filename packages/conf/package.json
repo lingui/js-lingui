@@ -21,7 +21,7 @@
     "@babel/runtime": "^7.9.2",
     "chalk": "^4.0.0",
     "cosmiconfig": "^6.0.0",
-    "jest-validate": "^25.2.6"
+    "jest-validate": "^25.3.0"
   },
   "files": [
     "LICENSE",
