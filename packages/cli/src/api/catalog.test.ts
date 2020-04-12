@@ -712,6 +712,23 @@ describe("getCatalogForFile", function () {
       catalog,
     })
   })
+
+  it("should work with Windows path delimiters", function () {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: ".\\src\\locales\\{locale}",
+        include: ["./src/"],
+      },
+      mockConfig({ format: "po" })
+    )
+    const catalogs = [catalog]
+
+    expect(getCatalogForFile(".\\src\\locales\\en.po", catalogs)).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
 })
 
 describe("cleanObsolete", function () {

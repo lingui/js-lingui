@@ -4,7 +4,7 @@ import path from "path"
 import * as R from "ramda"
 import chalk from "chalk"
 import glob from "glob"
-import minimatch from "minimatch"
+import micromatch from "micromatch"
 
 import { LinguiConfig, OrderBy } from "@lingui/conf"
 import getFormat from "./formats"
@@ -389,23 +389,17 @@ export function getCatalogs(config: LinguiConfig) {
 
 export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
   for (const catalog of catalogs) {
-    const regexp = new RegExp(
-      minimatch
-        // convert glob pattern to regexp
-        .makeRe(catalog.path + catalog.format.catalogExtension)
-        // convert it back to string, so we can replace {locale} with regexp pattern
-        .toString()
-        // remove regexp delimiters
-        .slice(1, -1)
-        .replace("\\{locale\\}", "([^/.]+)")
+    const catalogFile = `${catalog.path}${catalog.format.catalogExtension}`
+    const catalogGlob = catalogFile.replace("{locale}", "*")
+    const match = micromatch.capture(
+      normalizeRelativePath(catalogGlob),
+      normalizeRelativePath(file)
     )
-
-    const match = regexp.exec(file)
-    if (!match) continue
-
-    return {
-      locale: match[1],
-      catalog,
+    if (match) {
+      return {
+        locale: match[0],
+        catalog,
+      }
     }
   }
 
