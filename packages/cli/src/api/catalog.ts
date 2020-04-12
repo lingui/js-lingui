@@ -447,7 +447,7 @@ function normalizeRelativePath(sourcePath: string): string {
   // preserve trailing slash for directories
   const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
   return (
-    path.relative(process.cwd(), path.resolve(sourcePathPosix)) +
+    normalize(path.relative(process.cwd(), path.resolve(sourcePathPosix))) +
     (isDir ? PATHSEP : "")
   )
 }
