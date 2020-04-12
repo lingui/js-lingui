@@ -53,6 +53,7 @@
     "messageformat-parser": "^4.1.2",
     "micromatch": "4.0.2",
     "mkdirp": "^1.0.4",
+    "normalize-path": "^3.0.0",
     "ora": "^4.0.3",
     "pofile": "^1.0.11",
     "pseudolocale": "^1.1.0",
@@ -62,7 +63,6 @@
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
     "mockdate": "^2.0.2",
-    "normalize-path": "^3.0.0",
     "typescript": "^3.8.3"
   },
   "peerDependencies": {

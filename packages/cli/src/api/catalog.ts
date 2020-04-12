@@ -321,13 +321,13 @@ export function getCatalogs(config: LinguiConfig) {
       )
     }
 
-    const include = ensureArray(catalog.include)
-    const exclude = ensureArray(catalog.exclude)
+    const include = ensureArray(catalog.include).map(normalizeRelativePath)
+    const exclude = ensureArray(catalog.exclude).map(normalizeRelativePath)
 
     // catalogPath without {name} pattern -> always refers to a single catalog
     if (!catalog.path.includes(NAME)) {
       // Validate that sourcePaths doesn't use {name} pattern either
-      const invalidSource = include.filter((path) => path.includes(NAME))[0]
+      const invalidSource = include.find((path) => path.includes(NAME))
       if (invalidSource !== undefined) {
         throw new Error(
           `Catalog with path "${catalog.path}" doesn't have a {name} pattern` +
@@ -340,7 +340,7 @@ export function getCatalogs(config: LinguiConfig) {
       // catalog name is the last directory of catalogPath.
       // If the last part is {locale}, then catalog doesn't have an explicit name
       const name = (function () {
-        const _name = catalog.path.split(PATHSEP).slice(-1)[0]
+        const _name = normalize(catalog.path).split(PATHSEP).slice(-1)[0]
         return _name !== LOCALE ? _name : null
       })()
 
@@ -440,13 +440,14 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  */
 function normalizeRelativePath(sourcePath: string): string {
   const sourcePathPosix = normalize(sourcePath)
+
   // absolute path, do nothing
-  if (sourcePathPosix.startsWith(PATHSEP)) return sourcePath
+  if (sourcePathPosix.startsWith(PATHSEP)) return sourcePathPosix
 
   // preserve trailing slash for directories
-  const isDir = sourcePath.endsWith(PATHSEP)
+  const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
   return (
-    normalize(path.relative(process.cwd(), path.resolve(sourcePath))) +
+    path.relative(process.cwd(), path.resolve(sourcePathPosix)) +
     (isDir ? PATHSEP : "")
   )
 }
