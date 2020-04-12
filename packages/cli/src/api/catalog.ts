@@ -4,7 +4,8 @@ import path from "path"
 import * as R from "ramda"
 import chalk from "chalk"
 import glob from "glob"
-import minimatch from "minimatch"
+import micromatch from "micromatch"
+import normalize from "normalize-path"
 
 import { LinguiConfig, OrderBy } from "@lingui/conf"
 import getFormat from "./formats"
@@ -20,6 +21,7 @@ import { CliExtractOptions } from "../lingui-extract"
 
 const NAME = "{name}"
 const LOCALE = "{locale}"
+const PATHSEP = "/" // force posix everywhere
 
 export interface MakeOptions extends CliExtractOptions {
   projectType?: string
@@ -55,9 +57,9 @@ export class Catalog {
     config: LinguiConfig
   ) {
     this.name = name
-    this.path = path
-    this.include = include
-    this.exclude = [this.localeDir, ...exclude]
+    this.path = normalizeRelativePath(path)
+    this.include = include.map(normalizeRelativePath)
+    this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
     this.config = config
     this.format = getFormat(config.format)
   }
@@ -272,18 +274,18 @@ export class Catalog {
   }
 
   get sourcePaths() {
-    const includeGlob = this.include.map((includePath) =>
-      path.join(includePath, "**", "*.*")
+    const includeGlobs = this.include.map(
+      (includePath) => `${includePath}${PATHSEP}**${PATHSEP}*.*`
     )
     const patterns =
-      includeGlob.length > 1 ? `{${includeGlob.join("|")}` : includeGlob[0]
+      includeGlobs.length > 1 ? `{${includeGlobs.join("|")}` : includeGlobs[0]
     return glob.sync(patterns, { ignore: this.exclude })
   }
 
   get localeDir() {
-    const localePatternIndex = this.path.indexOf("{locale}")
+    const localePatternIndex = this.path.indexOf(LOCALE)
     if (localePatternIndex === -1) {
-      throw Error("Invalid catalog path: {locale} variable is missing")
+      throw Error(`Invalid catalog path: ${LOCALE} variable is missing`)
     }
     return this.path.substr(0, localePatternIndex)
   }
@@ -302,7 +304,7 @@ export function getCatalogs(config: LinguiConfig) {
 
   catalogsConfig.forEach((catalog) => {
     // Validate that `catalogPath` doesn't end with trailing slash
-    if (catalog.path.endsWith(path.sep)) {
+    if (catalog.path.endsWith(PATHSEP)) {
       const extension = getFormat(config.format).catalogExtension
       const correctPath = catalog.path.slice(0, -1)
       const examplePath =
@@ -319,17 +321,13 @@ export function getCatalogs(config: LinguiConfig) {
       )
     }
 
-    const include = ensureArray(catalog.include).map((path) =>
-      normalizeRelativePath(path)
-    )
-    const exclude = ensureArray(catalog.exclude).map((path) =>
-      normalizeRelativePath(path)
-    )
+    const include = ensureArray(catalog.include).map(normalizeRelativePath)
+    const exclude = ensureArray(catalog.exclude).map(normalizeRelativePath)
 
     // catalogPath without {name} pattern -> always refers to a single catalog
     if (!catalog.path.includes(NAME)) {
       // Validate that sourcePaths doesn't use {name} pattern either
-      const invalidSource = include.filter((path) => path.includes(NAME))[0]
+      const invalidSource = include.find((path) => path.includes(NAME))
       if (invalidSource !== undefined) {
         throw new Error(
           `Catalog with path "${catalog.path}" doesn't have a {name} pattern` +
@@ -342,7 +340,7 @@ export function getCatalogs(config: LinguiConfig) {
       // catalog name is the last directory of catalogPath.
       // If the last part is {locale}, then catalog doesn't have an explicit name
       const name = (function () {
-        const _name = catalog.path.split(path.sep).slice(-1)[0]
+        const _name = normalize(catalog.path).split(PATHSEP).slice(-1)[0]
         return _name !== LOCALE ? _name : null
       })()
 
@@ -389,23 +387,17 @@ export function getCatalogs(config: LinguiConfig) {
 
 export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
   for (const catalog of catalogs) {
-    const regexp = new RegExp(
-      minimatch
-        // convert glob pattern to regexp
-        .makeRe(catalog.path + catalog.format.catalogExtension)
-        // convert it back to string, so we can replace {locale} with regexp pattern
-        .toString()
-        // remove regexp delimiters
-        .slice(1, -1)
-        .replace("\\{locale\\}", "([^/.]+)")
+    const catalogFile = `${catalog.path}${catalog.format.catalogExtension}`
+    const catalogGlob = catalogFile.replace(LOCALE, "*")
+    const match = micromatch.capture(
+      normalizeRelativePath(catalogGlob),
+      normalizeRelativePath(file)
     )
-
-    const match = regexp.exec(file)
-    if (!match) continue
-
-    return {
-      locale: match[1],
-      catalog,
+    if (match) {
+      return {
+        locale: match[0],
+        catalog,
+      }
     }
   }
 
@@ -447,13 +439,16 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
 function normalizeRelativePath(sourcePath: string): string {
+  const sourcePathPosix = normalize(sourcePath)
+
   // absolute path, do nothing
-  if (sourcePath.startsWith("/")) return sourcePath
+  if (sourcePathPosix.startsWith(PATHSEP)) return sourcePathPosix
 
   // preserve trailing slash for directories
-  const isDir = sourcePath.endsWith("/")
+  const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
   return (
-    path.relative(process.cwd(), path.resolve(sourcePath)) + (isDir ? "/" : "")
+    path.relative(process.cwd(), path.resolve(sourcePathPosix)) +
+    (isDir ? PATHSEP : "")
   )
 }
 

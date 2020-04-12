@@ -51,14 +51,17 @@
     "inquirer": "^7.1.0",
     "make-plural": "^6.2.1",
     "messageformat-parser": "^4.1.2",
-    "minimatch": "^3.0.4",
+    "micromatch": "4.0.2",
     "mkdirp": "^1.0.4",
+    "normalize-path": "^3.0.0",
     "ora": "^4.0.3",
     "pofile": "^1.0.11",
     "pseudolocale": "^1.1.0",
     "ramda": "^0.27.0"
   },
   "devDependencies": {
+    "@types/micromatch": "^4.0.1",
+    "@types/normalize-path": "^3.0.0",
     "mockdate": "^2.0.2",
     "typescript": "^3.8.3"
   },
