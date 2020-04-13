@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react"
 import { I18n } from "@lingui/core"
 import { TransRenderType } from "./Trans"
+import { getConfig } from "@lingui/conf"
 
 interface I18nContext {
   i18n: I18n
@@ -11,13 +12,14 @@ export interface I18nProviderProps extends I18nContext {}
 
 const LinguiContext = React.createContext<I18nContext>(null)
 
+const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
+const [i18nImportModule, i18nImportName = "i18n"] = config.runtimeConfigModule
+
 export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
 
-  if (process.env.NODE_ENV !== "production") {
-    if (context == null) {
-      throw new Error("useLingui hook was used without I18nProvider.")
-    }
+  if (context == null) {
+    return require(i18nImportModule)[i18nImportName]
   }
 
   return context
