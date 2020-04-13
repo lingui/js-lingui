@@ -75,6 +75,17 @@ export const splitOrigin = (origin) => origin.split(":")
 
 export const joinOrigin = (origin) => origin.join(":")
 
+export function writeFileIfChanged(filename, newContent) {
+  if (fs.existsSync(filename)) {
+    const raw = fs.readFileSync(filename).toString()
+    if (newContent !== raw) {
+      fs.writeFileSync(filename, newContent)
+    }
+  } else {
+    fs.writeFileSync(filename, newContent)
+  }
+}
+
 export function hasYarn() {
   return fs.existsSync(path.resolve("yarn.lock"))
 }

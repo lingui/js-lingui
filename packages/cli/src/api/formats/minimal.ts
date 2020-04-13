@@ -2,6 +2,7 @@ import fs from "fs"
 import * as R from "ramda"
 
 import { MessageType } from "../types"
+import { writeFileIfChanged } from "../utils"
 
 const serialize = R.map((message: MessageType) => message.translation || "")
 
@@ -17,7 +18,7 @@ export default {
 
   write(filename, catalog) {
     const messages = serialize(catalog)
-    fs.writeFileSync(filename, JSON.stringify(messages, null, 2))
+    writeFileIfChanged(filename, JSON.stringify(messages, null, 2))
   },
 
   read(filename) {

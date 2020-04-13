@@ -3,8 +3,8 @@ import * as R from "ramda"
 import { format as formatDate } from "date-fns"
 
 import PO from "pofile"
-import { joinOrigin, splitOrigin } from "../utils"
 import { MessageType } from "../types"
+import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -87,7 +87,7 @@ export default {
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog)
-    fs.writeFileSync(filename, po.toString())
+    writeFileIfChanged(filename, po.toString())
   },
 
   read(filename) {
