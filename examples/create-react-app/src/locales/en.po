@@ -14,13 +14,13 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/App.js:17
-#~ msgid "Edit <0>src/App.js</0> and save to reload."
-#~ msgstr "Edit <0>src/App.js</0> and save to reload."
+msgid "Edit <0>src/App.js</0> and save to reload."
+msgstr "Edit <0>src/App.js</0> and save to reload."
 
 #: src/App.js:27
-#~ msgid "Learn React"
-#~ msgstr "Learn React"
+msgid "Learn React"
+msgstr "Learn React"
 
 #: src/App.js:15
-#~ msgid "logo"
-#~ msgstr "logo"
+msgid "logo"
+msgstr "logo"
