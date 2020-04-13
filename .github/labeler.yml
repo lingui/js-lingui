@@ -1,0 +1,7 @@
+":package: cli": packages/cli/**/*
+":package: conf": packages/conf/**/*
+":package: core": packages/core/**/*
+":package: loader": packages/loader/**/*
+":package: macro": packages/macro/**/*
+":package: plugin-extract": packages/babel-plugin-extract-messages/**/*
+":package: react": packages/react/**/*
