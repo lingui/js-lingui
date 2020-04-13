@@ -20,9 +20,10 @@ test_script:
   - yarn --version
   # run tests
   - yarn release:build
+  - yarn release:test --skip-build
 
 # Don't actually build.
 build: off
 
 cache:
- - "%LOCALAPPDATA%\\Yarn"
+  - "%LOCALAPPDATA%\\Yarn"

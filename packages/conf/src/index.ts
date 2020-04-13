@@ -28,10 +28,19 @@ export type LinguiConfig = {
   sourceLocale: string
 }
 
+// Enforce posix path delimiters internally
+const pathJoinPosix = (...values) =>
+  path
+    // normalize double slashes
+    .join(...values)
+    // convert platform specific path.sep to posix
+    .split(path.sep)
+    .join("/")
+
 export const defaultConfig: LinguiConfig = {
   catalogs: [
     {
-      path: path.join("<rootDir>", "locale", "{locale}", "messages"),
+      path: pathJoinPosix("<rootDir>", "locale", "{locale}", "messages"),
       include: ["<rootDir>"],
       exclude: ["*/node_modules/*"],
     },
@@ -262,13 +271,13 @@ export function catalogMigration(
   if (localeDir || srcPathDirs || srcPathIgnorePatterns) {
     // Replace missing values with default ones
     if (localeDir === undefined)
-      localeDir = path.join("<rootDir>", "locale", "{locale}", "messages")
+      localeDir = pathJoinPosix("<rootDir>", "locale", "{locale}", "messages")
     if (srcPathDirs === undefined) srcPathDirs = ["<rootDir>"]
     if (srcPathIgnorePatterns === undefined)
       srcPathIgnorePatterns = ["**/node_modules/**"]
 
-    let newLocaleDir = localeDir
-    if (localeDir.slice(-1) !== path.sep) {
+    let newLocaleDir = localeDir.split(path.sep).join("/")
+    if (newLocaleDir.slice(-1) !== path.sep) {
       newLocaleDir += "/"
     }
 
@@ -277,7 +286,7 @@ export function catalogMigration(
     }
 
     newConfig.catalogs.push({
-      path: path.join(newLocaleDir, "{locale}", "messages"),
+      path: pathJoinPosix(newLocaleDir, "{locale}", "messages"),
       include: srcPathDirs,
       exclude: srcPathIgnorePatterns,
     })
