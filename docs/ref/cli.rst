@@ -24,7 +24,6 @@ Install
 
       {
          "scripts": {
-            "add-locale": "lingui add-locale",
             "extract": "lingui extract",
             "compile": "lingui compile",
          }
@@ -40,22 +39,6 @@ is loaded as described in :doc:`LinguiJS configuration </ref/conf>` reference.
 
 Commands
 ========
-
-``add-locale``
---------------
-
-.. lingui-cli:: add-locale [locales...] [--format <format>]
-
-This command creates a new directory for each locale in :conf:`localeDir`.
-
-.. code-block:: shell
-
-   # Add English, French and Spanish locales
-   lingui add-locale en fr es
-
-.. lingui-cli-option:: --format <format>
-
-Format of message catalog (see :conf:`format` option).
 
 ``extract``
 -----------
