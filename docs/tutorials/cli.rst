@@ -14,22 +14,6 @@ packages.
    This tutorial assumes you use `yarn` to run commands. If you use `npm`,
    type `npm run <command>` instead of `yarn <command>`.
 
-Add a new locale
-================
-
-First, we need to add all the locales we want to translate our application into.
-:cli:`add-locale` command checks if such locale exists and creates a new directory in
-the ``locale`` directory::
-
-   yarn add-locale en cs
-
-Example output::
-
-   Added locale en.
-   Added locale cs.
-
-   (use "yarn extract" to extract messages)
-
 Extracting messages
 ===================
 
@@ -53,7 +37,6 @@ command looks for messages in the source files and extracts them::
    │ en       │     40      │   40    │
    └──────────┴─────────────┴─────────┘
 
-   (use "yarn add-locale <locale>" to add more locales)
    (use "yarn extract" to update catalogs with new messages)
    (use "yarn compile" to compile catalogs for production)
 
