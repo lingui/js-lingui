@@ -324,7 +324,7 @@ export function getCatalogs(config: LinguiConfig) {
     const include = ensureArray(catalog.include).map(normalizeRelativePath)
     const exclude = ensureArray(catalog.exclude).map(normalizeRelativePath)
 
-    // catalogPath without {name} pattern -> always refers to a single catalog
+    // catalog.path without {name} pattern -> always refers to a single catalog
     if (!catalog.path.includes(NAME)) {
       // Validate that sourcePaths doesn't use {name} pattern either
       const invalidSource = include.find((path) => path.includes(NAME))
@@ -337,10 +337,10 @@ export function getCatalogs(config: LinguiConfig) {
         )
       }
 
-      // catalog name is the last directory of catalogPath.
+      // catalog name is the last directory of catalog.path.
       // If the last part is {locale}, then catalog doesn't have an explicit name
       const name = (function () {
-        const _name = normalize(catalog.path).split(PATHSEP).slice(-1)[0]
+        const _name = catalog.path.split(PATHSEP).slice(-1)[0]
         return _name !== LOCALE ? _name : null
       })()
 
