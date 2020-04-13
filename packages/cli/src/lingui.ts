@@ -13,7 +13,7 @@ try {
 
 program
   .version(version)
-  .command("init", "Install all required packages")
+  .command("add-locale", "Deprecated, run it for instructions")
   .command("extract [files...]", "Extracts messages from source files")
   .command("compile", "Compile message catalogs")
   .parse(process.argv)
