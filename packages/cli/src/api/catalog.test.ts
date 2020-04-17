@@ -7,6 +7,7 @@ import {
   MakeOptions,
   getCatalogs,
   getCatalogForFile,
+  getCatalogForMerge,
   Catalog,
   cleanObsolete,
   MergeOptions,
@@ -729,6 +730,74 @@ describe("getCatalogForFile", function () {
       locale: "en",
       catalog,
     })
+  })
+})
+
+describe("getCatalogForMerge", function () {
+  afterEach(() => {
+    mockFs.restore()
+  })
+
+  it("should return catalog for merged messages", function () {
+    const config = mockConfig({
+      mergePath: "locales/{locale}",
+    })
+    expect(getCatalogForMerge(config)).toEqual(
+      new Catalog(
+        {
+          name: null,
+          path: "locales/{locale}",
+          include: [],
+          exclude: [],
+        },
+        config
+      )
+    )
+  })
+
+  it("should return catalog with custom name for merged messages", function () {
+    const config = mockConfig({
+      mergePath: "locales/{locale}/my/dir",
+    })
+    expect(getCatalogForMerge(config)).toEqual(
+      new Catalog(
+        {
+          name: "dir",
+          path: "locales/{locale}/my/dir",
+          include: [],
+          exclude: [],
+        },
+        config
+      )
+    )
+  })
+
+  it("should throw error if mergePath ends with slash", function () {
+    const config = mockConfig({
+      mergePath: "locales/{locale}/bad/path/",
+    })
+    expect.assertions(1)
+    try {
+      getCatalogForMerge(config)
+    } catch (e) {
+      expect(e.message).toBe(
+        'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".'
+      )
+    }
+  })
+
+  it("should throw error if {locale} is omitted from mergePath", function () {
+    const config = mockConfig({
+      mergePath: "locales/bad/path",
+    })
+    expect.assertions(1)
+    try {
+      getCatalogForMerge(config)
+    } catch (e) {
+      expect(e.message).toBe(
+        "Invalid catalog path: {locale} variable is missing"
+      )
+    }
   })
 })
 
