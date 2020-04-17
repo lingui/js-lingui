@@ -21,6 +21,7 @@ export type LinguiConfig = {
   fallbackLocale: string
   format: CatalogFormat
   locales: Array<string>
+  mergePath?: string
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string

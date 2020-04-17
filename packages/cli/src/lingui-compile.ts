@@ -6,7 +6,7 @@ import * as plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { getCatalogs, getCatalogForMerge } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 
@@ -28,6 +28,10 @@ function command(config, options) {
     )
     return false
   }
+
+  // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
+  const doMerge = !!config.mergePath
+  let mergedCatalogs = {}
 
   console.error("Compiling message catalogs…")
 
@@ -72,31 +76,35 @@ function command(config, options) {
         }
       }
 
-      const compiledCatalog = createCompiledCatalog(locale, messages, {
-        strict: false,
-        namespace: options.namespace || config.compileNamespace,
-        pseudoLocale: config.pseudoLocale,
-      })
+      if (doMerge) {
+        mergedCatalogs = { ...mergedCatalogs, ...messages }
+      } else {
+        const compiledCatalog = createCompiledCatalog(locale, messages, {
+          strict: false,
+          namespace: options.namespace || config.compileNamespace,
+          pseudoLocale: config.pseudoLocale,
+        })
 
-      const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
+        const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
 
-      if (options.typescript) {
-        const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
-        fs.writeFileSync(
-          typescriptPath,
-          `import { AllMessages } from '@lingui/core';
+        if (options.typescript) {
+          const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
+          fs.writeFileSync(
+            typescriptPath,
+            `import { AllMessages } from '@lingui/core';
 declare const messages: AllMessages;
 export = messages;
 `
-        )
+          )
+        }
+
+        options.verbose &&
+          console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
-
-      options.verbose &&
-        console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
     })
-  })
 
-  return true
+    return true
+  })
 }
 
 if (require.main === module) {
