@@ -219,6 +219,18 @@ describe("I18n", function () {
   })
 
   describe("handling formatters errors", function () {
+    const englishPlurals = {
+      plurals(value, ordinal) {
+        if (ordinal) {
+          return { "1": "one", "2": "two", "3": "few" }[value] || "other"
+        } else {
+          return value === 1 ? "one" : "other"
+        }
+      },
+    }
+
+    const nullPlurals = { plurals: () => null }
+
     const setupI18nWithMessage = (message )=> setupI18n({
       locale: "en",
       messages: { en: {"message": message} }
@@ -234,6 +246,80 @@ describe("I18n", function () {
       const i18n = setupI18nWithMessage("My name is {name, uppercase}")
 
       expect(i18n._("message", { name: "Fred" })).toEqual("My name is")
+    })
+
+    it("._ should return original message for icu parsing errors", function () {
+      // some examples of message in invalid ICU format
+      const messages = {
+        "plural.no-arg": "{count, plural}",
+        "plural.extra-arg": "{count, plural, one {Message} other {Messages}, extra-arg}",
+        "select.no-arg": "{gender, select}",
+        "select.extra-arg": "{gender, select, male {He} female {She}, extra-arg}",
+        "selectordinal.no-arg": "{count, selectordinal}",
+        "selectordinal.extra-arg": "{count, selectordinal, one {1st message} other {#th message}, extra-arg}",
+        "wrong-arg1": "{count, plural, {Message} other {Messages}}",
+        "wrong-arg2": "{count, plural, {Message other {Messages}}",
+        "wrong-arg3": "{gender, select, {she} other {they}",
+        "wrong-arg4": "{gender, select, female {she} {she} other {they}",
+        "wrong-arg5": "{count, selectordinal, one other {#th message}",
+      };
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: messages }
+      })
+
+      Object.keys(messages).forEach(messageId => {
+        expect(i18n._(messageId, {count: 1})).toEqual(messages[messageId])
+      })
+    })
+
+    it("._ should ignore plural when plurals method return no value", function () {
+      const i18n = setupI18nWithMessage("See {count, plural, one {Message} other {Messages}}")
+      i18n.loadLocaleData('en', nullPlurals)
+
+      expect(i18n._("message", {count: 1})).toEqual("See")
+    })
+
+    it("._ should ignore plural when plurals method is not defined", function () {
+      const i18n = setupI18nWithMessage("See {count, plural, one {Message} other {Messages}}")
+
+      expect(i18n._("message", {count: 1})).toEqual("See")
+    })
+
+    it("._ should ignore let handle plurals method case when plural variable is not defined", function () {
+      const i18n = setupI18nWithMessage("See {count, plural, one {Message} other {Messages}}")
+      i18n.loadLocaleData('en', englishPlurals)
+
+      // en plurals fallback to other
+      expect(i18n._("message")).toEqual("See Messages")
+    })
+
+    it("._ should ignore selectordinal when plurals method return no value", function () {
+      const i18n = setupI18nWithMessage("Open {count, selectordinal, one {1st message} other {#th message}}")
+      i18n.loadLocaleData('en', nullPlurals)
+
+      expect(i18n._("message", {count: 1})).toEqual("Open")
+    })
+
+    it("._ should ignore plural when selectordinal method return no value", function () {
+      const i18n = setupI18nWithMessage("Open {count, selectordinal, one {1st message} other {#th message}}")
+      i18n.loadLocaleData('en', nullPlurals)
+
+      expect(i18n._("message")).toEqual("Open")
+    })
+
+    it("._ should ignore selectordinal when plurals method is not defined", function () {
+      const i18n = setupI18nWithMessage("Open {count, selectordinal, one {1st message} other {#th message}}")
+
+      expect(i18n._("message", {count: 1})).toEqual("Open")
+    })
+
+    it("._ should ignore let handle plurals method case when selectordinal variable is not defined", function () {
+      const i18n = setupI18nWithMessage("Open {count, selectordinal, one {1st message} other {#th message}}")
+      i18n.loadLocaleData('en', englishPlurals)
+
+      // en plurals fallback to other with NaN number
+      expect(i18n._("message")).toEqual("Open NaNth message")
     })
   })
 })

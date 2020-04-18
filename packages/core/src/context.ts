@@ -24,11 +24,13 @@ const defaultFormats = (
 
   return {
     plural: (value, { offset = 0, ...rules }) => {
+      if (!isFunction(plurals)) return null;
       const message = rules[value] || rules[plurals(value - offset)]
       return replaceOctothorpe(value - offset, message)
     },
 
     selectordinal: (value, { offset = 0, ...rules }) => {
+      if (!isFunction(plurals)) return null;
       const message = rules[value] || rules[plurals(value - offset, true)]
       return replaceOctothorpe(value - offset, message)
     },
