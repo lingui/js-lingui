@@ -59,6 +59,8 @@ function context({ locale, locales, values, formats, localeData }) {
   const formatters = defaultFormats(locale, locales, localeData, formats)
 
   const ctx = (name: string, type: string, format: any) => {
+    if (!formatters.hasOwnProperty(type)) return null
+
     const value = values[name]
     const formatted = formatters[type](value, format)
     const message = isFunction(formatted) ? formatted(ctx) : formatted

@@ -1,5 +1,5 @@
-import { setupI18n } from "@lingui/core"
-import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import {setupI18n} from "@lingui/core"
+import {mockConsole, mockEnv} from "@lingui/jest-mocks"
 
 describe("I18n", function () {
   describe("I18n.load", () => {
@@ -215,6 +215,25 @@ describe("I18n", function () {
       })
       expect(i18n._("missing")).toEqual("gnissim")
       expect(missing).toHaveBeenCalledWith("en", "missing")
+    })
+  })
+
+  describe("handling formatters errors", function () {
+    const setupI18nWithMessage = (message )=> setupI18n({
+      locale: "en",
+      messages: { en: {"message": message} }
+    })
+
+    it("._ should ignore not defined variable", function () {
+      const i18n = setupI18nWithMessage("My name is {name}")
+
+      expect(i18n._("message")).toEqual("My name is")
+    })
+
+    it("._ should ignore not defined custom formatter", function () {
+      const i18n = setupI18nWithMessage("My name is {name, uppercase}")
+
+      expect(i18n._("message", { name: "Fred" })).toEqual("My name is")
     })
   })
 })
