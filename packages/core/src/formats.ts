@@ -7,8 +7,13 @@ export function date(
 ): (value: string | Date) => string {
   const formatter = new Intl.DateTimeFormat(locales, format)
   return (value) => {
-    if (isString(value)) value = new Date(value)
-    return formatter.format(value)
+    try {
+      if (isString(value)) value = new Date(value)
+      return formatter.format(value)
+    } catch (error) {
+      console.error(`Could not format a date: ${value}`, error)
+      return `${value}`;
+    }
   }
 }
 
@@ -16,6 +21,11 @@ export function number(
   locales: Locales,
   format: Intl.NumberFormatOptions = {}
 ): (value: number) => string {
-  const formatter = new Intl.NumberFormat(locales, format)
-  return (value) => formatter.format(value)
+  try {
+    const formatter = new Intl.NumberFormat(locales, format)
+    return (value) => formatter.format(value)
+  } catch (error) {
+    console.error(`Could not create number formatter of style ${format.style}`, error)
+    return (value) => `${value}`;
+  }
 }

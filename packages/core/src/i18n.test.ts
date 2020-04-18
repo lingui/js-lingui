@@ -321,5 +321,35 @@ describe("I18n", function () {
       // en plurals fallback to other with NaN number
       expect(i18n._("message")).toEqual("Open NaNth message")
     })
+
+    it("._ should ignore number for undefined variable", function () {
+      const i18n = setupI18nWithMessage("{size, number, percent}")
+
+      expect(i18n._("message")).toEqual("NaN%")
+    })
+
+    it("._ should ignore number in wrong type", function () {
+      const i18n = setupI18nWithMessage("{amount, number, currency}")
+
+      expect(i18n._("message", {amount: "data"}, {formats: { currency: "usd"}})).toEqual("NaN")
+    })
+
+    it("._ should ignore number in undefined format", function () {
+      const i18n = setupI18nWithMessage("{size, number, size}")
+
+      expect(i18n._("message", {size: 5})).toEqual("5")
+    })
+
+    it("._ should ignore date in undefined format", function () {
+      const i18n = setupI18nWithMessage("{today, date, tiny}")
+
+      expect(i18n._("message", {today: new Date(1999, 11)})).toEqual("12/1/1999")
+    })
+
+    it("._ should ignore date in a wrong type", function () {
+      const i18n = setupI18nWithMessage("{today, date}")
+
+      expect(i18n._("message", {today: "Monday"})).toEqual("Invalid Date")
+    })
   })
 })
