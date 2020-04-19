@@ -2,9 +2,9 @@ import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 import mockDate from "mockdate"
-import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./lingui"
+import { CatalogType } from "../types"
 
 describe("lingui format", function () {
   afterEach(() => {
@@ -21,7 +21,7 @@ describe("lingui format", function () {
     mockDate.set("2018-08-27T10:00Z", 0)
 
     const filename = path.join("locale", "en", "messages.json")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },
@@ -65,7 +65,7 @@ describe("lingui format", function () {
       },
     }
 
-    format.write(filename, catalog, { origins: true, language: "en" })
+    format.write(filename, catalog, { origins: true, locale: "en" })
     const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(lingui).toMatchSnapshot()
@@ -100,7 +100,7 @@ describe("lingui format", function () {
     })
 
     const filename = path.join("locale", "en", "messages.json")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },

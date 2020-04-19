@@ -6,6 +6,7 @@ import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
+import { CatalogType } from "../types"
 
 describe("pofile format", function () {
   afterEach(() => {
@@ -22,7 +23,7 @@ describe("pofile format", function () {
     mockDate.set("2018-08-27T10:00Z", 0)
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },
@@ -66,7 +67,7 @@ describe("pofile format", function () {
       },
     }
 
-    format.write(filename, catalog, { origins: true, language: "en" })
+    format.write(filename, catalog, { origins: true, locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(pofile).toMatchSnapshot()
@@ -180,7 +181,7 @@ describe("pofile format", function () {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },

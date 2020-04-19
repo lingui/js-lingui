@@ -1,10 +1,11 @@
 import fs from "fs"
 import * as R from "ramda"
 import { format as formatDate } from "date-fns"
-
 import PO from "pofile"
-import { MessageType, CatalogType } from "../types"
+
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
+import { MessageType, CatalogType } from "../types"
+import { CatalogFormatter } from "."
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -76,7 +77,7 @@ const validateItems = R.forEach((item: PO.Item) => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-export default {
+const po: CatalogFormatter = {
   catalogExtension: ".po",
 
   write(filename, catalog, options) {
@@ -98,9 +99,12 @@ export default {
     return this.parse(raw)
   },
 
+  // @ts-ignore
   parse(raw) {
     const po = PO.parse(raw)
     validateItems(po.items)
     return deserialize(indexItems(po.items))
   },
 }
+
+export default po

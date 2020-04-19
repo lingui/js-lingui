@@ -295,8 +295,8 @@ Object {
     obsolete: false,
     origin: Array [
       Array [
-        1,
         catalog.test.ts,
+        1,
       ],
     ],
     translation: Label,
@@ -316,8 +316,8 @@ Object {
     obsolete: false,
     origin: Array [
       Array [
-        1,
         catalog.test.ts,
+        1,
       ],
     ],
     translation: A,
@@ -326,8 +326,8 @@ Object {
     obsolete: false,
     origin: Array [
       Array [
-        1,
         catalog.test.ts,
+        1,
       ],
     ],
     translation: B,
@@ -336,8 +336,8 @@ Object {
     obsolete: false,
     origin: Array [
       Array [
-        1,
         catalog.test.ts,
+        1,
       ],
     ],
     translation: C,
@@ -346,8 +346,8 @@ Object {
     obsolete: false,
     origin: Array [
       Array [
-        1,
         catalog.test.ts,
+        1,
       ],
     ],
     translation: D,

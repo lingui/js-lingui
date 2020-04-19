@@ -37,7 +37,7 @@ function makePrevMessage(message = {}): MessageType {
 
 function makeNextMessage(message = {}): ExtractedMessageType {
   return {
-    origin: [[1, "catalog.test.ts"]],
+    origin: [["catalog.test.ts", 1]],
     obsolete: false,
     ...message,
   }

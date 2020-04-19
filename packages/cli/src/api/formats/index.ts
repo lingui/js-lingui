@@ -22,7 +22,7 @@ export interface CatalogFormatter {
     catalog: CatalogType,
     options: CatalogFormatOptionsInternal
   ): void
-  read(filename: string): void
+  read(filename: string): CatalogType | null
 }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {

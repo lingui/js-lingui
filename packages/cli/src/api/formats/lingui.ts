@@ -1,12 +1,23 @@
 import fs from "fs"
 import * as R from "ramda"
-import { writeFileIfChanged } from "../utils"
 
-export default {
+import { writeFileIfChanged } from "../utils"
+import { CatalogType } from "../types"
+import { CatalogFormatter } from "."
+
+type NoOriginsCatalogType = {
+  [P in keyof CatalogType]: Omit<CatalogType[P], "origin">
+}
+
+const removeOrigins = (R.map(
+  ({ origin, ...message }) => message
+) as unknown) as (catalog: CatalogType) => NoOriginsCatalogType
+
+const lingui: CatalogFormatter = {
   catalogExtension: ".json",
 
   write(filename, catalog, options) {
-    let outputCatalog = catalog
+    let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
     if (options.origins === false) {
       outputCatalog = removeOrigins(catalog)
     }
@@ -25,4 +36,4 @@ export default {
   },
 }
 
-const removeOrigins = R.map(({ origin, ...message }) => message)
+export default lingui
