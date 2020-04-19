@@ -3,8 +3,12 @@ import fs from "fs"
 import chalk from "chalk"
 import { cosmiconfigSync } from "cosmiconfig"
 import { validate } from "jest-validate"
+import {
+  CatalogFormat,
+  CatalogFormatOptions,
+} from "@lingui/cli/src/api/formats"
 
-export type CatalogFormat = "po" | "minimal" | "lingui"
+export { CatalogFormat, CatalogFormatOptions }
 export type OrderBy = "messageId" | "origin"
 
 type CatalogConfig = {
@@ -20,7 +24,8 @@ export type LinguiConfig = {
   extractBabelOptions: Object
   fallbackLocale: string
   format: CatalogFormat
-  locales: Array<string>
+  formatOptions: CatalogFormatOptions
+  locales: string[]
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
@@ -49,6 +54,7 @@ export const defaultConfig: LinguiConfig = {
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocale: "",
   format: "po",
+  formatOptions: { origins: true },
   locales: [],
   orderBy: "messageId",
   pseudoLocale: "",

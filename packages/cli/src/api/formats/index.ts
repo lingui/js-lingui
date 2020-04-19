@@ -3,24 +3,29 @@ import minimal from "./minimal"
 import po from "./po"
 import { CatalogType } from "../types"
 
-const formats: { [key: string]: CatalogFormat } = { lingui, minimal, po }
+const formats: Record<string, CatalogFormatter> = { lingui, minimal, po }
+
+export type CatalogFormat = keyof typeof formats
 
 export interface CatalogFormatOptions {
-  locale: string
-  origins: false
+  origins?: boolean
 }
 
-export interface CatalogFormat {
+export interface CatalogFormatOptionsInternal extends CatalogFormatOptions {
+  locale: string
+}
+
+export interface CatalogFormatter {
   catalogExtension: string
   write(
     filename: string,
     catalog: CatalogType,
-    options: CatalogFormatOptions
+    options: CatalogFormatOptionsInternal
   ): void
   read(filename: string): void
 }
 
-export default function getFormat(name: keyof typeof formats) {
+export default function getFormat(name: CatalogFormat): CatalogFormatter {
   const format = formats[name]
 
   if (!format) {
