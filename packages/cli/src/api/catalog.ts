@@ -436,7 +436,7 @@ export function getCatalogForMerge(config: LinguiConfig) {
   // catalog name is the last directory of catalogPath.
   // If the last part is {locale}, then catalog doesn't have an explicit name
   const name = (function () {
-    const _name = catalogConfig.mergePath.split(path.sep).slice(-1)[0]
+    const _name = path.basename(normalizeRelativePath(catalogConfig.mergePath))
     return _name !== LOCALE ? _name : null
   })()
 
