@@ -3,7 +3,7 @@ import * as R from "ramda"
 import { format as formatDate } from "date-fns"
 
 import PO from "pofile"
-import { MessageType } from "../types"
+import { MessageType, CatalogType } from "../types"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
 
 const getCreateHeaders = (language = "no") => ({
@@ -15,23 +15,26 @@ const getCreateHeaders = (language = "no") => ({
   Language: language,
 })
 
-const serialize = R.compose(
-  R.values,
-  R.mapObjIndexed((message: MessageType, key) => {
-    const item = new PO.Item()
-    item.msgid = key
-    item.msgstr = [message.translation]
-    item.comments = message.comments || []
-    item.extractedComments = message.comment ? [message.comment] : []
-    item.references = message.origin ? message.origin.map(joinOrigin) : []
-    // @ts-ignore: Figure out how to set this flag
-    item.obsolete = message.obsolete
-    item.flags = message.flags
-      ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-      : {}
-    return item
-  })
-)
+const serialize = (items: CatalogType, options) =>
+  R.compose(
+    R.values,
+    R.mapObjIndexed((message: MessageType, key) => {
+      const item = new PO.Item()
+      item.msgid = key
+      item.msgstr = [message.translation]
+      item.comments = message.comments || []
+      item.extractedComments = message.comment ? [message.comment] : []
+      if (options.origins) {
+        item.references = message.origin ? message.origin.map(joinOrigin) : []
+      }
+      // @ts-ignore: Figure out how to set this flag
+      item.obsolete = message.obsolete
+      item.flags = message.flags
+        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
+        : {}
+      return item
+    })
+  )(items)
 
 const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop("msgstr")
@@ -46,7 +49,7 @@ const getFlags = R.compose(
 )
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const deserialize: (Object) => Object = R.map(
+const deserialize: (item: Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
     comment: R.compose(R.head, R.defaultTo([]), getExtractedComments),
@@ -86,7 +89,7 @@ export default {
       po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)
     }
-    po.items = serialize(catalog)
+    po.items = serialize(catalog, options)
     writeFileIfChanged(filename, po.toString())
   },
 
