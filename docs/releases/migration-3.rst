@@ -44,7 +44,7 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 
      import { I18nProvider } from '@lingui/react'
      import { i18n } from "@lingui/core"
-   + import { en } from 'make-plurals/plurals'
+   + import { en } from 'make-plural/plurals'
      import { messages } from './locale/en/messages.js'
 
    + i18n.loadLocaleData('en', { plurals: en })
