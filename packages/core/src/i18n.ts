@@ -1,5 +1,5 @@
 import { interpolate } from "./context"
-import { isString, isFunction, isEmpty } from "./essentials"
+import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
 import { EventEmitter } from "./eventEmitter"
