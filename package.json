@@ -40,7 +40,7 @@
     "babel-code-frame": "^6.26.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^25.3.0",
+    "babel-jest": "^25.4.0",
     "babel-plugin-macros": "^2.8.0",
     "chalk": "^4.0.0",
     "cross-env": "^7.0.2",
