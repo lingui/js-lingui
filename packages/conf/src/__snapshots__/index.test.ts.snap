@@ -22,7 +22,7 @@ exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
     }
 
     Please update your configuration.
-    
+
 
 Documentation: https://lingui.js.org/ref/conf.html
 ● Deprecation Warning:
@@ -46,7 +46,7 @@ Documentation: https://lingui.js.org/ref/conf.html
     }
 
     Please update your configuration.
-    
+
 
 Documentation: https://lingui.js.org/ref/conf.html
 ● Deprecation Warning:
@@ -70,7 +70,7 @@ Documentation: https://lingui.js.org/ref/conf.html
     }
 
     Please update your configuration.
-    
+
 
 Documentation: https://lingui.js.org/ref/conf.html
 `;
@@ -95,6 +95,9 @@ Object {
   },
   fallbackLocale: ,
   format: po,
+  formatOptions: Object {
+    origins: true,
+  },
   locales: Array [
     en-gb,
   ],
