@@ -84,8 +84,8 @@ function command(config, options) {
         const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
         fs.writeFileSync(
           typescriptPath,
-          `import { AllMessages } from '@lingui/core';
-declare const messages: AllMessages;
+          `import { Messages } from '@lingui/core';
+declare const messages: Messages;
 export = messages;
 `
         )
