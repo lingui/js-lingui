@@ -1,13 +1,13 @@
+import { CatalogFormat } from "@lingui/conf"
+
 import lingui from "./lingui"
 import minimal from "./minimal"
 import po from "./po"
-import { CatalogFormatter, CatalogFormatOptions } from "./types"
+import { CatalogFormatter } from "./types"
 
-export { CatalogFormatter, CatalogFormatOptions }
+export { CatalogFormatter }
 
-const formats: Record<string, CatalogFormatter> = { lingui, minimal, po }
-
-export type CatalogFormat = keyof typeof formats
+const formats: Record<CatalogFormat, CatalogFormatter> = { lingui, minimal, po }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {
   const format = formats[name]

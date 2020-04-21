@@ -8,6 +8,7 @@ import micromatch from "micromatch"
 import normalize from "normalize-path"
 
 import { LinguiConfig, OrderBy } from "@lingui/conf"
+
 import getFormat, { CatalogFormatter } from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"

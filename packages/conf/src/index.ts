@@ -3,12 +3,13 @@ import fs from "fs"
 import chalk from "chalk"
 import { cosmiconfigSync } from "cosmiconfig"
 import { validate } from "jest-validate"
-import {
-  CatalogFormat,
-  CatalogFormatOptions,
-} from "@lingui/cli/src/api/formats"
 
-export { CatalogFormat, CatalogFormatOptions }
+export type CatalogFormat = "lingui" | "minimal" | "po"
+
+export interface CatalogFormatOptions {
+  origins?: boolean
+}
+
 export type OrderBy = "messageId" | "origin"
 
 type CatalogConfig = {

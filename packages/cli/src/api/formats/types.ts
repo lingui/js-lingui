@@ -1,8 +1,6 @@
-import { CatalogType } from "../types"
+import { CatalogFormatOptions } from "@lingui/conf"
 
-export interface CatalogFormatOptions {
-  origins?: boolean
-}
+import { CatalogType } from "../types"
 
 export interface CatalogFormatOptionsInternal extends CatalogFormatOptions {
   locale: string
