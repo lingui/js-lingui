@@ -3,7 +3,7 @@ import * as R from "ramda"
 
 import { writeFileIfChanged } from "../utils"
 import { CatalogType } from "../types"
-import { CatalogFormatter } from "."
+import { CatalogFormatter } from "./types"
 
 type NoOriginsCatalogType = {
   [P in keyof CatalogType]: Omit<CatalogType[P], "origin">

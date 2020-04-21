@@ -5,7 +5,7 @@ import PO from "pofile"
 
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
 import { MessageType, CatalogType } from "../types"
-import { CatalogFormatter } from "."
+import { CatalogFormatter } from "./types"
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),

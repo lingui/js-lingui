@@ -3,7 +3,7 @@ import * as R from "ramda"
 
 import { writeFileIfChanged } from "../utils"
 import { MessageType, CatalogType } from "../types"
-import { CatalogFormatter } from "."
+import { CatalogFormatter } from "./types"
 
 type MinimalCatalogType = Record<string, string>
 
