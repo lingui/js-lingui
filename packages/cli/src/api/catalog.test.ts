@@ -461,7 +461,7 @@ describe("Catalog", function () {
    * - Compare that original and converted JSON file are identical
    * - Check the content of PO file
    */
-  it("should convert catalog format", function () {
+  it.skip("should convert catalog format", function () {
     mockFs({
       en: {
         "messages.json": fs.readFileSync(
