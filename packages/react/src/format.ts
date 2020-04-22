@@ -4,6 +4,27 @@ import React from "react"
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
+// For HTML, certain tags should omit their close tag. We keep a whitelist for
+// those special-case tags.
+const voidElementTags = {
+  area: true,
+  base: true,
+  br: true,
+  col: true,
+  embed: true,
+  hr: true,
+  img: true,
+  input: true,
+  keygen: true,
+  link: true,
+  meta: true,
+  param: true,
+  source: true,
+  track: true,
+  wbr: true,
+  menuitem: true
+}
+
 /**
  * `formatElements` - parse string and return tree of react elements
  *
@@ -26,7 +47,23 @@ function formatElements(
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
-    const element = elements[index]
+    let element = elements[index]
+
+    if (!element || (voidElementTags[element.type as string] && children)) {
+      if (!element) {
+        console.error(
+          `Can use element at index '${index}' as it is not declared in the original translation`
+        )
+      } else {
+        console.error(
+          `${element.type} is a void element tag therefore it must have no children`
+        )
+      }
+
+      // ignore problematic element but push its children and elements after it
+      element = React.createElement(React.Fragment)
+    }
+
     tree.push(
       React.cloneElement(
         element,
