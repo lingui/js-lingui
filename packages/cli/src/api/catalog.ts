@@ -258,16 +258,11 @@ export class Catalog {
   }
 
   read(locale: string) {
-    // Read files using previous format, if available
-    const sourceFormat = this.config.prevFormat
-      ? getFormat(this.config.prevFormat)
-      : this.format
-
     const filename =
-      this.path.replace(LOCALE, locale) + sourceFormat.catalogExtension
+      this.path.replace(LOCALE, locale) + this.format.catalogExtension
 
     if (!fs.existsSync(filename)) return null
-    return sourceFormat.read(filename)
+    return this.format.read(filename)
   }
 
   readAll() {
