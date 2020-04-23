@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+    "@lingui/conf": "^3.0.0-11",
     "ramda": "^0.27.0"
   },
   "peerDependencies": {
