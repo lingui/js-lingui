@@ -173,7 +173,9 @@ export default class MacroJSX {
       ]
     }
 
-    const maybeNodeValue = (node) => (node != null ? node.value.value : null)
+    const maybeNodeValue = (node) => {
+      return node != null ? node.value.expression.value : null
+    }
 
     return {
       id: maybeNodeValue(id),
