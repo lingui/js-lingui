@@ -115,7 +115,7 @@ for a single locale or multiple catalogs at once.
      import catalogEn from './locale/en/messages.js'
 
    - i18n.load({ en: catalogEn })
-   + i18n.load('en', catalogEn)
+   + i18n.load('en', catalogEn.messages)
 
 .. note::
 
@@ -129,8 +129,8 @@ for a single locale or multiple catalogs at once.
       import catalogFr from './locale/fr/messages.js'
 
       i18n.load({
-         en: catalogEn
-         fr: catalogFr
+         en: catalogEn.messages,
+         fr: catalogFr.messages
       })
 
 @lingui/macro
