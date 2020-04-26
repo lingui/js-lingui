@@ -15,6 +15,20 @@ const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
 // remove whitespace before/after tag or expression
 const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
+function maybeNodeValue(node) {
+  if (!node)
+    return null
+  if (node.type === "StringLiteral")
+    return node.value
+  if (node.type === "JSXAttribute")
+    return maybeNodeValue(node.value)
+  if (node.type === "JSXExpressionContainer")
+    return maybeNodeValue(node.expression)
+  if (node.type === "TemplateLiteral" && node.expressions.length === 0)
+    return node.quasis[0].value.raw
+  return null
+}
+
 function normalizeWhitespace(text) {
   return (
     text
@@ -171,10 +185,6 @@ export default class MacroJSX {
         "value",
         "offset",
       ]
-    }
-
-    const maybeNodeValue = (node) => {
-      return node != null ? node.value.expression.value : null
     }
 
     return {
