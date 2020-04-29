@@ -311,4 +311,15 @@ export default [
         }>About</a>;
       `,
   },
+  {
+    name: "Ignore JSXEmptyExpression",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans>Hello {/* and I cannot stress this enough */} World</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="Hello  World" />;
+      `,
+  },
 ]

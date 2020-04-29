@@ -7,6 +7,7 @@ export default function ICUMessageFormat() {}
 ICUMessageFormat.prototype.fromTokens = function (tokens) {
   return (Array.isArray(tokens) ? tokens : [tokens])
     .map((token) => this.processToken(token))
+    .filter(Boolean)
     .reduce(
       (props, message) => ({
         ...message,
@@ -30,6 +31,9 @@ ICUMessageFormat.prototype.processToken = function (token) {
       message: token.value,
     }
   } else if (token.type === "arg") {
+    if (token.value !== undefined && token.value.type === 'JSXEmptyExpression') {
+      return null;
+    }
     const values =
       token.value !== undefined
         ? {
