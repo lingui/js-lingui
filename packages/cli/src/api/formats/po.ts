@@ -65,8 +65,9 @@ const deserialize: (item: Object) => Object = R.map(
   })
 )
 
-// @ts-ignore: I don't know how to access static property Item on class PO
-const validateItems = R.forEach((item: PO.Item) => {
+type POItem = InstanceType<typeof PO.Item>
+
+const validateItems = R.forEach<POItem>((item) => {
   if (R.length(getTranslations(item)) > 1) {
     console.warn(
       "Multiple translations for item with key %s is not supported and it will be ignored.",
