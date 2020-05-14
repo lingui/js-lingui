@@ -8,7 +8,7 @@ const serialize = (catalog) => {
   for (const key of Object.keys(catalog)) {
     var cur = catalog[key]
     row += `\"${key}\"`
-    row += `,\"${cur.translation}\"` || ""
+    row += `,\"${cur.translation}\"`
     row += "\n"
   }
   return row
