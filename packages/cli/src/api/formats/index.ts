@@ -1,9 +1,10 @@
 import lingui from "./lingui"
 import minimal from "./minimal"
 import po from "./po"
+import csv from "./csv"
 import { CatalogType } from "../types"
 
-const formats: { [key: string]: CatalogFormat } = { lingui, minimal, po }
+const formats: { [key: string]: CatalogFormat } = { lingui, minimal, po, csv }
 
 export interface CatalogFormatOptions {
   locale: string
