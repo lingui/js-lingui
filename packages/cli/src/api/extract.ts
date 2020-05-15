@@ -56,6 +56,7 @@ export function extract(
     if (fs.statSync(srcFilename).isDirectory()) {
       const subdirs = fs
         .readdirSync(srcFilename)
+        .sort()
         .map((filename) => path.join(srcFilename, filename))
 
       extract(subdirs, targetPath, options)
@@ -79,6 +80,7 @@ export function extract(
 export function collect(buildDir: string) {
   return fs
     .readdirSync(buildDir)
+    .sort()
     .map((filename) => {
       const filepath = path.join(buildDir, filename)
 
