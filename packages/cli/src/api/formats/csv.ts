@@ -1,35 +1,35 @@
 import fs from "fs"
+import Papa from "papaparse"
 
 import { writeFileIfChanged } from "../utils"
 import { MessageType } from "../types"
 
 const serialize = (catalog) => {
-  var row = ""
-  for (const key of Object.keys(catalog)) {
-    var cur = catalog[key]
-    row += `\"${key}\"`
-    row += `,\"${cur.translation}\"`
-    row += "\n"
-  }
-  return row
+  const rawArr = Object.keys(catalog).map((key) => [
+    key,
+    catalog[key].translation,
+  ])
+  return Papa.unparse(rawArr)
 }
 
 const deserialize = (raw: string): { [key: string]: MessageType } => {
-  const rows = raw.split("\n")
-  var rawCatalog = {}
-  rows.forEach((row) => {
-    for (let i = 0; i < row.length; i++) {
-      if (row[i] === "," && row[i - 1] === '"' && row[i + 1] === '"') {
-        rawCatalog[row.substring(1, i - 1)] = {
-          translation: row.substring(i + 2, row.length - 1),
-          obsolete: false,
-          message: null,
-          origin: [],
-        }
-      }
+  const rawCatalog = Papa.parse(raw)
+  const messages = {}
+  if (rawCatalog.errors.length) {
+    throw new Error(
+      rawCatalog.errors.map((err) => JSON.stringify(err)).join(";")
+    )
+  }
+  rawCatalog.data.forEach((raw) => {
+    const [key, translation] = raw
+    messages[key] = {
+      translation,
+      obsolete: false,
+      message: null,
+      origin: [],
     }
   })
-  return rawCatalog
+  return messages
 }
 
 export default {

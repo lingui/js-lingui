@@ -56,6 +56,7 @@
     "mkdirp": "^1.0.4",
     "normalize-path": "^3.0.0",
     "ora": "^4.0.3",
+    "papaparse": "^5.2.0",
     "pofile": "^1.0.11",
     "pseudolocale": "^1.1.0",
     "ramda": "^0.27.0"
@@ -63,6 +64,7 @@
   "devDependencies": {
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
+    "@types/papaparse": "^5.0.3",
     "mockdate": "^2.0.2",
     "typescript": "^3.8.3"
   },
