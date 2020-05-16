@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
-import { I18n } from "@lingui/core"
-import { TransRenderType } from "./Trans"
+import type { I18n } from "@lingui/core"
+import type { TransRenderType } from "./Trans"
 
 type I18nContext = {
   i18n: I18n
@@ -9,7 +9,7 @@ type I18nContext = {
 
 export type I18nProviderProps = I18nContext
 
-const LinguiContext = React.createContext<I18nContext>(null)
+export const LinguiContext = React.createContext<I18nContext>(null)
 
 export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
@@ -21,6 +21,10 @@ export function useLingui(): I18nContext {
   }
 
   return context
+}
+
+export function usei18n(): I18n {
+  return useLingui().i18n
 }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
