@@ -7,7 +7,7 @@ type I18nContext = {
   defaultRender?: TransRenderType
 }
 
-export type I18nProviderProps = I18nContext
+export interface I18nProviderProps extends I18nContext {}
 
 const LinguiContext = React.createContext<I18nContext>(null)
 
