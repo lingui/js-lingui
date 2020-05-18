@@ -26,7 +26,7 @@ export type Messages = Record<string, CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
-export interface MessageDescriptor {
+export type MessageDescriptor = {
   id?: string
   comment?: string
   message?: string

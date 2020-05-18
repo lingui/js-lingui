@@ -6,12 +6,12 @@ import { CatalogType } from "../types"
 
 const formats: { [key: string]: CatalogFormat } = { lingui, minimal, po, csv }
 
-export interface CatalogFormatOptions {
+export type CatalogFormatOptions = {
   locale: string
   origins: false
 }
 
-export interface CatalogFormat {
+export type CatalogFormat = {
   catalogExtension: string
   write(
     filename: string,

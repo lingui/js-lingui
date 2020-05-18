@@ -2,7 +2,7 @@ type Maybe<T> = T | null | undefined
 
 export type IdempotentResult<T> = [boolean, Maybe<T>] // [ created, result ]
 
-export interface ExtractedMessageType {
+export type ExtractedMessageType = {
   message?: string
   origin: Array<[number, string]>
   comment?: string
@@ -11,7 +11,7 @@ export interface ExtractedMessageType {
   flags?: Array<string>
 }
 
-export interface MessageType extends ExtractedMessageType {
+export type MessageType = ExtractedMessageType & {
   translation: string
 }
 

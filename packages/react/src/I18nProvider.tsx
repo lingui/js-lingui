@@ -2,12 +2,12 @@ import React, { FunctionComponent } from "react"
 import { I18n } from "@lingui/core"
 import { TransRenderType } from "./Trans"
 
-interface I18nContext {
+type I18nContext = {
   i18n: I18n
   defaultRender?: TransRenderType
 }
 
-export interface I18nProviderProps extends I18nContext {}
+export type I18nProviderProps = I18nContext
 
 const LinguiContext = React.createContext<I18nContext>(null)
 

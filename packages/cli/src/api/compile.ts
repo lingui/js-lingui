@@ -8,7 +8,7 @@ import pseudoLocalize from "./pseudoLocalize"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | string
 
-export interface CreateCompileCatalogOptions {
+export type CreateCompileCatalogOptions = {
   strict?: boolean
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
