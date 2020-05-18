@@ -23,10 +23,6 @@ export function useLingui(): I18nContext {
   return context
 }
 
-export function usei18n(): I18n {
-  return useLingui().i18n
-}
-
 export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
   const [context, setContext] = React.useState<I18nContext>(makeContext())
 
