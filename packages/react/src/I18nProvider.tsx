@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react"
-import type { I18n } from "@lingui/core"
+import { i18n as i18nGlobal, I18n } from "@lingui/core"
 import type { TransRenderType } from "./Trans"
 
 type I18nContext = {
@@ -9,7 +9,7 @@ type I18nContext = {
 
 export type I18nProviderProps = I18nContext
 
-export const LinguiContext = React.createContext<I18nContext>(null)
+const LinguiContext = React.createContext<I18nContext>(null)
 
 export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
@@ -63,6 +63,21 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
   return (
     <LinguiContext.Provider value={context}>
       {props.children}
+    </LinguiContext.Provider>
+  )
+}
+
+/**
+ * I18nProvider variant without side effect of updating when i18n changes eg. locale.
+ * Useful for tests which don't such functionality and can cause problems (act warning).
+ * Additionally, it doesn't require i18n instance to be passed, global one will be used by default.
+ */
+export const PureI18nProvider: FunctionComponent<Partial<
+  I18nProviderProps
+>> = ({ i18n = i18nGlobal, defaultRender, children }) => {
+  return (
+    <LinguiContext.Provider value={{ i18n, defaultRender }}>
+      {children}
     </LinguiContext.Provider>
   )
 }
