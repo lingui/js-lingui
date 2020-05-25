@@ -8,7 +8,8 @@ import micromatch from "micromatch"
 import normalize from "normalize-path"
 
 import { LinguiConfig, OrderBy } from "@lingui/conf"
-import getFormat from "./formats"
+
+import getFormat, { CatalogFormatter } from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import {
@@ -16,6 +17,7 @@ import {
   ExtractedCatalogType,
   ExtractedMessageType,
   MessageType,
+  CatalogType,
 } from "./types"
 import { CliExtractOptions } from "../lingui-extract"
 
@@ -50,7 +52,7 @@ export class Catalog {
   include: Array<string>
   exclude: Array<string>
   config: LinguiConfig
-  format: any
+  format: CatalogFormatter
 
   constructor(
     { name, path, include, exclude = [] }: CatalogProps,
@@ -224,7 +226,7 @@ export class Catalog {
     )
   }
 
-  write(locale: string, messages: Object) {
+  write(locale: string, messages: CatalogType) {
     const filename =
       this.path.replace(LOCALE, locale) + this.format.catalogExtension
 
@@ -233,7 +235,10 @@ export class Catalog {
     if (!fs.existsSync(basedir)) {
       fs.mkdirpSync(basedir)
     }
-    this.format.write(filename, messages, { locale })
+
+    const options = { ...this.config.formatOptions, locale }
+
+    this.format.write(filename, messages, options)
     return [created, filename]
   }
 
@@ -253,16 +258,11 @@ export class Catalog {
   }
 
   read(locale: string) {
-    // Read files using previous format, if available
-    const sourceFormat = this.config.prevFormat
-      ? getFormat(this.config.prevFormat)
-      : this.format
-
     const filename =
-      this.path.replace(LOCALE, locale) + sourceFormat.catalogExtension
+      this.path.replace(LOCALE, locale) + this.format.catalogExtension
 
     if (!fs.existsSync(filename)) return null
-    return sourceFormat.read(filename)
+    return this.format.read(filename)
   }
 
   readAll() {

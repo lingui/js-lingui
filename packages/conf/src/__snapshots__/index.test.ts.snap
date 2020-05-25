@@ -95,6 +95,9 @@ Object {
   },
   fallbackLocale: ,
   format: po,
+  formatOptions: Object {
+    origins: true,
+  },
   locales: Array [
     en-gb,
   ],

@@ -1,19 +1,24 @@
 import fs from "fs"
 import * as R from "ramda"
 
-import { MessageType } from "../types"
 import { writeFileIfChanged } from "../utils"
+import { MessageType, CatalogType } from "../types"
+import { CatalogFormatter } from "./types"
 
-const serialize = R.map((message: MessageType) => message.translation || "")
+type MinimalCatalogType = Record<string, string>
+
+const serialize = (R.map(
+  (message: MessageType) => message.translation || ""
+) as unknown) as (catalog: CatalogType) => MinimalCatalogType
 
 const deserialize = (R.map((translation: string) => ({
   translation,
   obsolete: false,
   message: null,
   origin: [],
-})) as unknown) as <T>(message: T) => T
+})) as unknown) as (minimalCatalog: MinimalCatalogType) => CatalogType
 
-export default {
+const minimal: CatalogFormatter = {
   catalogExtension: ".json",
 
   write(filename, catalog) {
@@ -25,7 +30,7 @@ export default {
     const raw = fs.readFileSync(filename).toString()
 
     try {
-      const rawCatalog: { [key: string]: string } = JSON.parse(raw)
+      const rawCatalog: Record<string, string> = JSON.parse(raw)
       return deserialize(rawCatalog)
     } catch (e) {
       console.error(`Cannot read ${filename}: ${e.message}`)
@@ -33,3 +38,5 @@ export default {
     }
   },
 }
+
+export default minimal

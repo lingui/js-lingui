@@ -2,19 +2,17 @@ import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 import mockDate from "mockdate"
-import PO from "pofile"
-import { mockConsole } from "@lingui/jest-mocks"
 
-import format from "./po"
+import format from "./lingui"
 import { CatalogType } from "../types"
 
-describe("pofile format", function () {
+describe("lingui format", function () {
   afterEach(() => {
     mockFs.restore()
     mockDate.reset()
   })
 
-  it("should write catalog in pofile format", function () {
+  it("should write catalog in lingui format", function () {
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -22,7 +20,7 @@ describe("pofile format", function () {
     })
     mockDate.set("2018-08-27T10:00Z", 0)
 
-    const filename = path.join("locale", "en", "messages.po")
+    const filename = path.join("locale", "en", "messages.json")
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -68,109 +66,30 @@ describe("pofile format", function () {
     }
 
     format.write(filename, catalog, { origins: true, locale: "en" })
-    const pofile = fs.readFileSync(filename).toString()
+    const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
-    expect(pofile).toMatchSnapshot()
+    expect(lingui).toMatchSnapshot()
   })
 
-  it("should read catalog in pofile format", function () {
-    const pofile = fs
+  it("should read catalog in lingui format", function () {
+    const lingui = fs
       .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.po")
+        path.join(path.resolve(__dirname), "fixtures", "messages.json")
       )
       .toString()
 
     mockFs({
       locale: {
         en: {
-          "messages.po": pofile,
+          "messages.json": lingui,
         },
       },
     })
 
-    const filename = path.join("locale", "en", "messages.po")
+    const filename = path.join("locale", "en", "messages.json")
     const actual = format.read(filename)
     mockFs.restore()
     expect(actual).toMatchSnapshot()
-  })
-
-  it("should correct badly used comments", function () {
-    const po = PO.parse(`
-      #. First description
-      #. Second comment
-      #. Third comment
-      msgid "withMultipleDescriptions"
-      msgstr "Extra comments are separated from the first description line"
-
-      # Translator comment
-      #. Single description only
-      #. Second description?
-      msgid "withDescriptionAndComments"
-      msgstr "Second description joins translator comments"
-    `)
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": po.toString(),
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
-    mockFs.restore()
-    expect(actual).toMatchSnapshot()
-  })
-
-  it("should throw away additional msgstr if present", function () {
-    const po = PO.parse(`
-      msgid "withMultipleTranslation"
-      msgstr[0] "This is just fine"
-      msgstr[1] "Throw away that one"
-    `)
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": po.toString(),
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    mockConsole((console) => {
-      const actual = format.read(filename)
-      expect(console.warn).toHaveBeenCalledWith(
-        expect.stringContaining("Multiple translations"),
-        "withMultipleTranslation"
-      )
-      mockFs.restore()
-      expect(actual).toMatchSnapshot()
-    })
-  })
-
-  it("should write the same catalog as it was read", function () {
-    const pofile = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.po")
-      )
-      .toString()
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": pofile,
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    const catalog = format.read(filename)
-    format.write(filename, catalog, { origins: true, locale: "en" })
-    const actual = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(actual).toEqual(pofile)
   })
 
   it("should not include origins if origins option is false", function () {
@@ -180,7 +99,7 @@ describe("pofile format", function () {
       },
     })
 
-    const filename = path.join("locale", "en", "messages.po")
+    const filename = path.join("locale", "en", "messages.json")
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -198,9 +117,9 @@ describe("pofile format", function () {
       },
     }
     format.write(filename, catalog, { origins: false, locale: "en" })
-    const pofile = fs.readFileSync(filename).toString()
+    const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
-    const pofileOriginPrefix = "#:"
-    expect(pofile).toEqual(expect.not.stringContaining(pofileOriginPrefix))
+    const linguiOriginProperty = '"origin"'
+    expect(lingui).toEqual(expect.not.stringContaining(linguiOriginProperty))
   })
 })

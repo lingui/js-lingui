@@ -2,13 +2,16 @@ type Maybe<T> = T | null | undefined
 
 export type IdempotentResult<T> = [boolean, Maybe<T>] // [ created, result ]
 
+export type MessageOrigin = [string, number]
+
 export type ExtractedMessageType = {
   message?: string
-  origin: Array<[number, string]>
+  origin?: MessageOrigin[]
   comment?: string
-  comments?: Array<string>
-  obsolete: boolean
-  flags?: Array<string>
+  comments?: string[]
+  obsolete?: boolean
+  flags?: string[]
+  description?: string
 }
 
 export type MessageType = ExtractedMessageType & {
