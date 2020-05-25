@@ -23,16 +23,16 @@ const NAME = "{name}"
 const LOCALE = "{locale}"
 const PATHSEP = "/" // force posix everywhere
 
-export interface MakeOptions extends CliExtractOptions {
+export type MakeOptions = CliExtractOptions & {
   projectType?: string
   orderBy?: OrderBy
 }
 
-export interface MergeOptions {
+export type MergeOptions = {
   overwrite: boolean
 }
 
-export interface GetTranslationsOptions {
+export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocale: string
 }

@@ -2,6 +2,7 @@
   "env": {
     "jest/globals": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -10,7 +11,7 @@
     }
   },
   "extends": ["plugin:import/errors", "plugin:import/warnings"],
-  "plugins": ["promise", "import", "react", "jest"],
+  "plugins": ["promise", "import", "react", "jest", "@typescript-eslint"],
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/parsers": {
@@ -24,6 +25,7 @@
   },
   "rules": {
     "no-duplicate-imports": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"]
   }
 }

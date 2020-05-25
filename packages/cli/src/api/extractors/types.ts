@@ -3,12 +3,12 @@ export type ExtractorType = {
   extract(filename: string, targetDir: string, options?: ExtractOptions): void
 }
 
-export interface BabelOptions {
+export type BabelOptions = {
   plugins?: Array<string>
   presets?: Array<string>
 }
 
-export interface ExtractOptions {
+export type ExtractOptions = {
   projectType?: string
   babelOptions?: BabelOptions
 }
