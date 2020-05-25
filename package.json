@@ -13,7 +13,7 @@
     "watch": "cross-env NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.unit.js --watch",
     "watch:integration": "cross-env NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.integration.js --watch",
     "lint:types": "tsc",
-    "lint:eslint": "eslint packages/**",
+    "lint:eslint": "eslint packages",
     "lint": "yarn lint:eslint; yarn lint:types",
     "release": "node ./scripts/release.js",
     "release:integration": "node ./scripts/integration.js",

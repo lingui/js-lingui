@@ -1,5 +1,5 @@
-export declare type CatalogFormat = "lingui" | "minimal" | "po";
-export interface CatalogFormatOptions {
+export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv";
+export type CatalogFormatOptions = {
     origins?: boolean;
 }
 export declare type OrderBy = "messageId" | "origin";

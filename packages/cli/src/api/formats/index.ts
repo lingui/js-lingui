@@ -5,9 +5,7 @@ import minimal from "./minimal"
 import po from "./po"
 import csv from "./csv"
 
-import { CatalogFormatter, CatalogFormatOptions } from "./types"
-
-export { CatalogFormatter, CatalogFormatOptions }
+import { CatalogFormatter } from "./types"
 
 const formats: Record<CatalogFormat, CatalogFormatter> = {
   lingui,

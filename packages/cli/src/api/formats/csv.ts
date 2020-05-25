@@ -3,6 +3,7 @@ import Papa from "papaparse"
 
 import { writeFileIfChanged } from "../utils"
 import { MessageType } from "../types"
+import { CatalogFormatter } from "./types"
 
 const serialize = (catalog) => {
   const rawArr = Object.keys(catalog).map((key) => [
@@ -32,10 +33,10 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
   return messages
 }
 
-export default {
+const csv: CatalogFormatter = {
   catalogExtension: ".csv",
 
-  write(filename, catalog) {
+  write(filename, catalog ) {
     const messages = serialize(catalog)
     writeFileIfChanged(filename, messages)
   },
@@ -50,3 +51,5 @@ export default {
     }
   },
 }
+
+export default csv

@@ -9,7 +9,8 @@ import normalize from "normalize-path"
 
 import { LinguiConfig, OrderBy } from "@lingui/conf"
 
-import getFormat, { CatalogFormatter } from "./formats"
+import getFormat from "./formats"
+import { CatalogFormatter } from "./formats/types"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import {

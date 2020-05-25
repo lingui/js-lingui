@@ -4,9 +4,9 @@ import chalk from "chalk"
 import { cosmiconfigSync } from "cosmiconfig"
 import { validate } from "jest-validate"
 
-export type CatalogFormat = "lingui" | "minimal" | "po"
+export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
-export interface CatalogFormatOptions {
+export type CatalogFormatOptions = {
   origins?: boolean
 }
 
