@@ -84,7 +84,8 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
 
-   import { setupI18n, I18nProvider } from '@lingui/react'
+   import { I18nProvider } from '@lingui/react'
+   import { setupI18n } from '@lingui/core'
 
    const i18n = setupI18n()
    i18n.load('en', catalogEn)
