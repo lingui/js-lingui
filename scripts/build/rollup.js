@@ -57,7 +57,7 @@ function getRollupOutputOptions(outputPath, format, globals, globalName) {
     globals,
     interop: true, // might be turned off with Babel 7, please review
     name: globalName,
-    sourcemap: false,
+    sourcemap: true,
   }
 }
 
@@ -146,7 +146,6 @@ function getPlugins(
     // Apply dead code elimination and/or minification.
     isProduction &&
       terser({
-        sourcemap: true,
         output: { comments: false },
         compress: {
           keep_infinity: true,

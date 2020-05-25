@@ -28,7 +28,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
+    "@babel/runtime": "^7.9.6",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "ramda": "^0.27.0"
   },
