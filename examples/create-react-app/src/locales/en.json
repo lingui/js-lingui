@@ -1,0 +1,10 @@
+{
+  "News": "News",
+  "Hello {name}": "Hello {name}",
+  "Last login on": "Last login on",
+  "Last login on {lastLogin,date}.": "Last login on {lastLogin,date}.",
+  "contact.form.identity.not_twitter": "The twitter username {name} is invalid.",
+  "device.validation.suceed": "The device is now verified, you can continue to use <0>{company}</0>.",
+  "{friends, plural, one {You have # friend} other {You have # friends}}": "{friends, plural, one {You have # friend} other {You have # friends}}",
+  "{messagesCount, plural, one {There is # comment} other {There are # comments}}": "{messagesCount, plural, one {There is # comment} other {There are # comments}}"
+}

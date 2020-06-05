@@ -2,6 +2,7 @@ import { i18n } from "@lingui/core"
 import { en, cs } from "make-plural/plurals"
 
 i18n.loadLocaleData("en", { plurals: en })
+// Using actually Russian translations instead of Cs, just for demo purpose
 i18n.loadLocaleData("cs", { plurals: cs })
 
 export const locales = {
@@ -11,7 +12,7 @@ export const locales = {
 
 export async function activate(locale) {
   const { messages } = await import(
-    /* webpackChunkName: "i18n-[index]" */ `@lingui/loader!./locales/${locale}.po`
+    /* webpackChunkName: "i18n-[index]" */ `@lingui/loader!./locales/${locale}.json`
   )
 
   i18n.load(locale, messages)

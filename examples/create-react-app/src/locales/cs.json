@@ -1,0 +1,10 @@
+{
+  "News": "Новости",
+  "Hello {name}": "Привет {name}",
+  "Last login on": "",
+  "Last login on {lastLogin,date}.": "последний вход на {lastLogin,date}",
+  "contact.form.identity.not_twitter": "Имя пользователя в твиттере {name} недействительно.",
+  "device.validation.suceed": "Устройство теперь проверено, вы можете продолжать использовать <0>{company}</0>",
+  "{friends, plural, one {You have # friend} other {You have # friends}}": "{friends, plural, one {у тебя есть # друг} other {у тебя # друга}}",
+  "{messagesCount, plural, one {There is # comment} other {There are # comments}}": "{messagesCount, plural, one {есть # комментарий} other {есть # комментариеB}}"
+}
