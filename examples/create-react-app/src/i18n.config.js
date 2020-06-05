@@ -1,9 +1,9 @@
 import { i18n } from "@lingui/core"
-import { en, cs } from "make-plural/plurals"
+import { en, ru } from "make-plural/plurals"
 
 i18n.loadLocaleData("en", { plurals: en })
 // Using actually Russian translations instead of Cs, just for demo purpose
-i18n.loadLocaleData("cs", { plurals: cs })
+i18n.loadLocaleData("cs", { plurals: ru })
 
 export const locales = {
   en: "English",
