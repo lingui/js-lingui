@@ -290,77 +290,28 @@ I18nProvider
 
 .. component:: I18nProvider
 
-   :prop string language: Active language
-   :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
-   :prop object catalogs: Message catalogs
+   :prop I18n i18n: Instance of i18n to use
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
-   :prop string|Function missing: Custom message to be returned when translation is missing
+   :prop boolean optOutFromChanges: Stop updating Provider value with locale changes
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
 
-``language`` sets the active language and loads corresponding message catalog.
-``locales`` are used for date/number formatting for countries or regions which use
-different formats for the same language (e.g. arabic numerals have several
-representations).
-
-``missing`` is used as a default translation when translation is missing. It might
-be also a function, which is called with language and message ID. This is useful
-for debugging:
+``optOutFromChanges`` is useful if you don't need components to re-render when any locale data
+changes.
 
 .. code-block:: jsx
 
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
+   import { setupI18n } from '@lingui/core';
 
-   const App = ({ language} ) => {
+   const i18n = setupI18n()
+
+   const App = () => {
         return (
-            <I18nProvider language={language} missing="🚨">
-               {/* This will render as 🚨*/}
-               <Trans id="missing translation" />
-            </I18nProvider>
-        );
-   }
-
-``catalogs`` is a type of ``Catalogs``:
-
-.. code-block:: jsx
-
-   // One catalog per language
-   type Catalogs = {
-     [language: string]: Catalog
-   }
-
-   // Catalog contains messages and language data (i.e: plurals)
-   type Catalog = {
-     messages: Messages,
-     languageData?: {
-       plurals: Function
-     }
-   }
-
-   // Message is either function (compiled message) or string
-   type Messages = {
-     [messageId: string]: string | Function
-   }
-
-This component should live above all i18n components. A good place is as a
-top-level application component. However, if the ``language`` is stored in a
-``redux`` store, this component should be inserted below ``react-redux/Provider``:
-
-.. code-block:: jsx
-
-   import React from 'react';
-   import { I18nProvider } from '@lingui/react';
-
-   const App = ({ language} ) => {
-        const catalog = require(`locales/${language}.js`);
-
-        return (
-            <I18nProvider language={language} catalogs={{ [language]: catalog }}>
-               // rest of the app
-            </I18nProvider>
+            <I18nProvider i18n={i18n} />
         );
    }
 

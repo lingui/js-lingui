@@ -5,9 +5,10 @@ import type { TransRenderType } from "./Trans"
 type I18nContext = {
   i18n: I18n
   defaultRender?: TransRenderType
+  optOutFromChanges?: boolean
 }
 
-export interface I18nProviderProps extends I18nContext {}
+export type I18nProviderProps = {} & I18nContext
 
 const LinguiContext = React.createContext<I18nContext>(null)
 
@@ -34,9 +35,13 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
   React.useEffect(() => {
-    const unsubscribe = props.i18n.on("change", () => setContext(makeContext()))
-    return () => unsubscribe()
-  }, [])
+    if (props.optOutFromChanges !== true) {
+      const unsubscribe = props.i18n.on("change", () =>
+        setContext(makeContext())
+      )
+      return () => unsubscribe()
+    }
+  }, [props.optOutFromChanges])
 
   /**
    * We can't pass `i18n` object directly through context, because even when locale
@@ -59,21 +64,6 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
   return (
     <LinguiContext.Provider value={context}>
       {props.children}
-    </LinguiContext.Provider>
-  )
-}
-
-/**
- * I18nProvider variant without side effect of updating when i18n changes eg. locale.
- * Useful for tests which don't such functionality and can cause problems (act warning).
- * Additionally, it doesn't require i18n instance to be passed, global one will be used by default.
- */
-export const PureI18nProvider: FunctionComponent<Partial<
-  I18nProviderProps
->> = ({ i18n = i18nGlobal, defaultRender, children }) => {
-  return (
-    <LinguiContext.Provider value={{ i18n, defaultRender }}>
-      {children}
     </LinguiContext.Provider>
   )
 }
