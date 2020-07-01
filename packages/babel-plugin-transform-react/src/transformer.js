@@ -425,8 +425,7 @@ export default class Transformer {
 
     if (process.env.NODE_ENV === "production") {
       node.openingElement.attributes = attrs.filter(
-        node =>
-          !this.isDefaultsAttribute(node) && !this.isDescriptionAttribute(node)
+        node => !this.isDescriptionAttribute(node)
       )
     }
   }
