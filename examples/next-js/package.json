@@ -18,6 +18,9 @@
     "@lingui/cli": "next",
     "@lingui/loader": "next",
     "@lingui/macro": "next",
-    "babel-plugin-macros": "^2.8.0"
+    "@types/node": "^14.0.22",
+    "@types/react": "^16.9.43",
+    "babel-plugin-macros": "^2.8.0",
+    "typescript": "^3.9.6"
   }
 }
