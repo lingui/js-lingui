@@ -19,6 +19,15 @@ try {
     throw e
   }
 }
+// Webpack 5 Generator location changed
+try {
+  JavascriptGenerator = require("webpack/lib/javascript/JavascriptGenerator")
+} catch (error) {
+  if (error.code !== "MODULE_NOT_FOUND") {
+    throw e
+  }
+}
+
 
 export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
