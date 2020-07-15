@@ -7,7 +7,7 @@ import {
   getCatalogForFile,
 } from "@lingui/cli/api"
 import loaderUtils from "loader-utils"
-
+const isWebpack5 = parseInt(require('webpack').version) === 5
 // Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
 let JavascriptParser
 let JavascriptGenerator
@@ -20,12 +20,8 @@ try {
   }
 }
 // Webpack 5 Generator location changed
-try {
+if(isWebpack5) {
   JavascriptGenerator = require("webpack/lib/javascript/JavascriptGenerator")
-} catch (error) {
-  if (error.code !== "MODULE_NOT_FOUND") {
-    throw e
-  }
 }
 
 
