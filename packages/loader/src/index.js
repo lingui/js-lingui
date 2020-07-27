@@ -7,6 +7,8 @@ import {
   getCatalogForFile,
 } from "@lingui/cli/api"
 import loaderUtils from "loader-utils"
+// Check if webpack 5
+const isWebpack5 = parseInt(require("webpack").version) === 5;
 
 // Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
 let JavascriptParser
@@ -20,15 +22,29 @@ try {
   }
 }
 
+const requiredType = "javascript/auto";
+
 export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
 
-  // Webpack 4 uses json-loader automatically, which breaks this loader because it
-  // doesn't return JSON, but JS module. This is a temporary workaround before
-  // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)
-  // See https://github.com/webpack/webpack/issues/7057
-  if (JavascriptParser && JavascriptGenerator) {
-    this._module.type = "javascript/auto"
+  if(isWebpack5) {
+    const LoaderDependency = require("webpack/lib/dependencies/LoaderDependency");
+    const factory = this._compilation.dependencyFactories.get(LoaderDependency);
+    if (factory === undefined) {
+      throw new Error(
+        "Could not retrieve module factory for type LoaderDependency"
+      );
+    }
+
+    this._module.type = requiredType;
+    this._module.generator = factory.getGenerator(requiredType);
+    this._module.parser = factory.getParser(requiredType);
+  } else if (JavascriptParser && JavascriptGenerator) {
+    // Webpack 4 uses json-loader automatically, which breaks this loader because it
+    // doesn't return JSON, but JS module. This is a temporary workaround before
+    // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)
+    // See https://github.com/webpack/webpack/issues/7057
+    this._module.type = requiredType
     this._module.parser = new JavascriptParser()
     this._module.generator = new JavascriptGenerator()
   }
