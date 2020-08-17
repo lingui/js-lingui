@@ -29,11 +29,11 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.6",
+    "@babel/runtime": "^7.11.2",
     "@lingui/cli": "0.0.0-managed-by-release-script",
     "@lingui/conf": "0.0.0-managed-by-release-script",
     "loader-utils": "^2.0.0",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "memory-fs": "^0.5.0"

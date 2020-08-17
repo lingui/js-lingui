@@ -28,9 +28,9 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.9.6",
+    "@babel/runtime": "^7.11.2",
     "@lingui/conf": "0.0.0-managed-by-release-script",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.1"
   },
   "peerDependencies": {
     "babel-plugin-macros": "^2.5.1"

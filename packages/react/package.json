@@ -39,7 +39,7 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.6",
+    "@babel/runtime": "^7.11.2",
     "@lingui/core": "0.0.0-managed-by-release-script"
   },
   "devDependencies": {
