@@ -8,7 +8,7 @@ aliases:
       key: node-modules-{{ checksum "yarn.lock" }}
   - &yarn-install
       name: Install dependencies
-      command: yarn install --no-progress
+      command: yarn install --no-progress --ignore-platform --ignore-engines
   - &yarn-install-tools
       name: Install build tools
       command: sudo yarn global add codecov yalc
@@ -22,7 +22,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:latest-node-browsers-legacy
+      - image: circleci/openjdk:latest-node-browsers
 
     steps:
       - checkout
