@@ -132,6 +132,24 @@ describe("Catalog", function () {
     })
   })
 
+  describe("check", function () {
+    it("should check for missing message in the catalog", function () {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: fixture("check/locales/{locale}"),
+          include: [fixture("check/src")],
+          exclude: [],
+        },
+        mockConfig({ locales: ["en"] })
+      )
+
+      const response = catalog.check(defaultMakeOptions)
+
+      expect(response).toMatchSnapshot()
+    })
+  })
+
   describe("merge", function () {
     /*
     catalog.merge(prevCatalogs, nextCatalog, options)

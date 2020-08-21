@@ -193,6 +193,38 @@ export class Catalog {
     }, prevCatalogs)
   }
 
+  check(options: MakeOptions) {
+    const nextCatalog = this.collect(options)
+    const prevCatalogs = this.readAll()
+
+    console.log({ nextCatalog, prevCatalogs })
+
+    const missingMessageIdsByLocale = this.diff(prevCatalogs, nextCatalog)
+
+    console.log({ missingMessageIdsByLocale })
+
+    return missingMessageIdsByLocale
+  }
+
+  diff(prevCatalogs: AllCatalogsType, nextCatalog: ExtractedCatalogType) {
+    const nextCatalogMessageIds = Object.keys(nextCatalog)
+
+    const missingMessageIdsByLocale = R.mapObjIndexed(
+      (prevCatalogForLocale) => {
+        const prevMessageIdsOfLocale = Object.keys(prevCatalogForLocale)
+
+        const missingMessageIdsForLocale = nextCatalogMessageIds.filter(
+          (nextMessageId) => !prevMessageIdsOfLocale.includes(nextMessageId)
+        )
+
+        return missingMessageIdsForLocale
+      },
+      prevCatalogs
+    )
+
+    return missingMessageIdsByLocale
+  }
+
   getTranslations(locale: string, options: GetTranslationsOptions) {
     const catalogs = this.readAll()
     return R.mapObjIndexed(

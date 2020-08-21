@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Catalog check should check for missing message in the catalog 1`] = `
+Object {
+  en: Array [
+    How are you today?,
+  ],
+}
+`;
+
 exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
   Hello World: Object {
