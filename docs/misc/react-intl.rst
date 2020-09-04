@@ -122,10 +122,10 @@ All we need to do is to wrap the message in a :jsxmacro:`Trans` macro:
       <Trans id="msg.docs">Read the <a href="/docs>documentation</a>.</Trans>
    </p>
 
-The macro then parses the :jsxmacro:`Trans` macro childrens and generates
-``defaults`` and ``components`` props automaticaly in the form described in the previous section.
+The macro then parses the :jsxmacro:`Trans` macro children and generates
+``defaults`` and ``components`` props automatically in the form described in the previous section.
 
-This is extremly useful when adding i18n to an existing project. All we need to do is to wrap
+This is extremely useful when adding i18n to an existing project. All we need is to wrap
 all messages in :jsxmacro:`Trans` macro.
 
 Let's compare it with `react-intl`_ solution to see the difference:
