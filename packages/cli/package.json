@@ -71,6 +71,6 @@
   "peerDependencies": {
     "@babel/core": "^7.0.0",
     "babel-plugin-macros": "^2.4.2",
-    "typescript": "2 || 3"
+    "typescript": "2 || 3 || 4"
   }
 }

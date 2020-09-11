@@ -94,7 +94,7 @@ variables and components inside messages. Usage of this component depends on
 whether or not you're using LinguiJS Babel plugins.
 
 Each message is identified by **message ID**.
-``babel-plugin-lingui-transform-react`` automatically generates message ID from
+``@lingui/babel-plugin-transform-react`` automatically generates message ID from
 contents of :component:`Trans` component, but it's possible to provide custom
 message ID by setting the `id` prop.
 
