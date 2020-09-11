@@ -67,6 +67,6 @@
   "peerDependencies": {
     "babel-core": "6.x || ^7.0.0-bridge.0",
     "babel-plugin-macros": "^2.4.2",
-    "typescript": "2 || 3"
+    "typescript": "2 || 3 || 4"
   }
 }
