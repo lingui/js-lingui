@@ -100,9 +100,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/js-lingui"
   }
 }
