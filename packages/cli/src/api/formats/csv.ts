@@ -21,8 +21,7 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
       rawCatalog.errors.map((err) => JSON.stringify(err)).join(";")
     )
   }
-  rawCatalog.data.forEach((raw) => {
-    const [key, translation] = raw
+  rawCatalog.data.forEach(([key, translation]) => {
     messages[key] = {
       translation,
       obsolete: false,
@@ -36,7 +35,7 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
 const csv: CatalogFormatter = {
   catalogExtension: ".csv",
 
-  write(filename, catalog ) {
+  write(filename, catalog) {
     const messages = serialize(catalog)
     writeFileIfChanged(filename, messages)
   },
