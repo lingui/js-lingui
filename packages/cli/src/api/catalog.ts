@@ -251,8 +251,9 @@ export class Catalog {
     this.locales.forEach((locale) => this.write(locale, catalogs[locale]))
   }
 
-  writeCompiled(locale: string, compiledCatalog: string) {
-    const filename = this.path.replace(LOCALE, locale) + ".js"
+  writeCompiled(locale: string, compiledCatalog: string, namespace?: string) {
+    const ext = `.${ namespace === "es" ? "m": ""}js`
+    const filename = this.path.replace(LOCALE, locale) + ext
 
     const basedir = path.dirname(filename)
     if (!fs.existsSync(basedir)) {

@@ -72,13 +72,14 @@ function command(config, options) {
         }
       }
 
+      const namespace = options.namespace || config.compileNamespace
       const compiledCatalog = createCompiledCatalog(locale, messages, {
         strict: false,
-        namespace: options.namespace || config.compileNamespace,
+        namespace,
         pseudoLocale: config.pseudoLocale,
       })
 
-      const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
+      const compiledPath = catalog.writeCompiled(locale, compiledCatalog, namespace)
 
       if (options.typescript) {
         const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
@@ -111,7 +112,7 @@ if (require.main === module) {
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--namespace <namespace>",
-      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, window.test -> window.test"
+      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")
