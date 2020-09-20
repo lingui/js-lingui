@@ -31,6 +31,9 @@ function command(config, options) {
 
   console.error("Compiling message catalogs…")
 
+  if(config.pseudoLocale) {
+    config.locales.push(config.pseudoLocale)
+  }
   config.locales.forEach((locale) => {
     const [language] = locale.split(/[_-]/)
     if (locale !== config.pseudoLocale && !plurals[language]) {
@@ -44,10 +47,13 @@ function command(config, options) {
     }
 
     catalogs.forEach((catalog) => {
-      const messages = catalog.getTranslations(locale, {
-        fallbackLocale: config.fallbackLocale,
-        sourceLocale: config.sourceLocale,
-      })
+      const messages = catalog.getTranslations(
+        locale === config.pseudoLocale ? config.sourceLocale: locale,
+        {
+          fallbackLocale: config.fallbackLocale,
+          sourceLocale: config.sourceLocale,
+        }
+      )
 
       if (!options.allowEmpty) {
         const missing = R.values(messages)
