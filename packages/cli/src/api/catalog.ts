@@ -252,7 +252,7 @@ export class Catalog {
   }
 
   writeCompiled(locale: string, compiledCatalog: string, namespace?: string) {
-    const ext = `.${ namespace === "es" ? "m": ""}js`
+    const ext = `.${ namespace === "es" ? "mjs": "js"}`
     const filename = this.path.replace(LOCALE, locale) + ext
 
     const basedir = path.dirname(filename)
