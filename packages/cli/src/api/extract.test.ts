@@ -10,13 +10,18 @@ describe("extract", function () {
   let extract, babel, typescript
 
   beforeAll(() => {
+
+    // References to the real match functions
+    const babelMatch = require("./extractors/babel").default.match
+    const tsMatch = require("./extractors/typescript").default.match
+
     jest.doMock("./extractors/babel", () => ({
-      match: jest.fn((filename) => filename.endsWith(".js")),
+      match: jest.fn(babelMatch),
       extract: jest.fn(),
     }))
 
     jest.doMock("./extractors/typescript", () => ({
-      match: jest.fn((filename) => filename.endsWith(".ts")),
+      match: jest.fn(tsMatch),
       extract: jest.fn(),
     }))
 
@@ -31,6 +36,10 @@ describe("extract", function () {
 
         components: {
           "Babel.js": "",
+          "Babel.jsx": "",
+          "Babel.es6": "",
+          "Babel.es": "",
+          "Babel.mjs": "",
           "Typescript.ts": "",
           forbidden: {
             "apple.js": "",
@@ -60,33 +69,80 @@ describe("extract", function () {
     expect(babel.match).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js")
     )
-    expect(babel.match).toHaveBeenCalledWith(path.join("src", "index.html"))
+    expect(babel.match).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.jsx")
+    )
+    expect(babel.match).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es6")
+    )
+    expect(babel.match).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es")
+    )
+    expect(babel.match).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.mjs")
+    )
+		
+    expect(babel.match).toHaveBeenCalledWith(
+			path.join("src", "index.html")
+    )
 
     // This file is ignored
     expect(babel.extract).not.toHaveBeenCalledWith(
       path.join("src", "index.html")
     )
 
+    const extractArgs = [
+      "locale", 
+      { babelOptions: {}, ignore: ["forbidden"]}
+    ]
     expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
-      "locale",
-      { babelOptions: {}, ignore: ["forbidden"] }
+      ...extractArgs
+    )
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.jsx"),
+      ...extractArgs
+    )
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es6"),
+      ...extractArgs
+    )
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es"),
+      ...extractArgs
+    )
+    expect(babel.extract).toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.mjs"),
+      ...extractArgs
     )
     expect(babel.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
-      "locale",
-      { babelOptions: {}, ignore: ["forbidden"] }
+      ...extractArgs
     )
 
     expect(typescript.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
-      "locale",
-      { babelOptions: {}, ignore: ["forbidden"] }
+      ...extractArgs
+    )
+    expect(typescript.extract).not.toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.jsx"),
+      ...extractArgs
+    )
+    expect(typescript.extract).not.toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es6"),
+      ...extractArgs
+    )
+    expect(typescript.extract).not.toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.es"),
+      ...extractArgs
+    )
+    expect(typescript.extract).not.toHaveBeenCalledWith(
+      path.join("src", "components", "Babel.mjs"),
+      ...extractArgs
     )
     expect(typescript.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
-      "locale",
-      { babelOptions: {}, ignore: ["forbidden"] }
+      ...extractArgs
     )
   })
 })
