@@ -13,3 +13,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `easyname <https://www.easyname.com/>`__
 - `LocalEthereum <https://localethereum.com/>`__
 - `Upcount <https://github.com/madisvain/upcount>`__
+- `Symbolovník <http://www.symbolovnik.cz>`__
