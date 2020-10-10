@@ -25,23 +25,12 @@ export function useLingui(): I18nContext {
   return context
 }
 
-export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
-
-  const forceRenderOnLocaleChange = props.forceRenderOnLocaleChange ?? true
-
-  /**
-   * Subscribe for locale/message changes
-   *
-   * I18n object from `@lingui/core` is the single source of truth for all i18n related
-   * data (active locale, catalogs). When new messages are loaded or locale is changed
-   * we need to trigger re-rendering of LinguiContext.Consumers.
-   */
-  React.useEffect(() => {
-    const unsubscribe = props.i18n.on("change", () => setContext(makeContext()))
-    return () => unsubscribe()
-  }, [])
-
+export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
+  i18n,
+  defaultRender,
+  forceRenderOnLocaleChange = true,
+  children,
+}) => {
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -53,26 +42,31 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  function makeContext() {
-    return {
-      i18n: props.i18n,
-      defaultRender: props.defaultRender,
-    }
-  }
+  const makeContext = () => ({
+    i18n,
+    defaultRender,
+  })
 
-  if (forceRenderOnLocaleChange) {
-    if (!context.i18n.locale) return null
+  const [context, setContext] = React.useState<I18nContext>(makeContext())
 
-    return (
-      <LinguiContext.Provider value={context} key={context.i18n.locale}>
-        {props.children}
-      </LinguiContext.Provider>
-    )
-  }
+  /**
+   * Subscribe for locale/message changes
+   *
+   * I18n object from `@lingui/core` is the single source of truth for all i18n related
+   * data (active locale, catalogs). When new messages are loaded or locale is changed
+   * we need to trigger re-rendering of LinguiContext.Consumers.
+   */
+  React.useEffect(() => {
+    const unsubscribe = i18n.on("change", () => setContext(makeContext()))
+    return () => unsubscribe()
+  }, [])
+
+  const renderKey = forceRenderOnLocaleChange && i18n.locale
+  if (forceRenderOnLocaleChange && !renderKey) return null
 
   return (
-    <LinguiContext.Provider value={context}>
-      {props.children}
+    <LinguiContext.Provider value={context} key={renderKey}>
+      {children}
     </LinguiContext.Provider>
   )
 }
