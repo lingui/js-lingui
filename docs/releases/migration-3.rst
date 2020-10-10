@@ -40,8 +40,8 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 
 .. code-block:: diff
 
-   - import { I18nProvider } from '@lingui/react'
-   + import { setupI18n, I18nProvider } from '@lingui/react'
+     import { I18nProvider } from '@lingui/react'
+   + import { setupI18n } from '@lingui/core'
      import catalogEn from './locale/en/messages.js'
 
    + const i18n = setupI18n()
