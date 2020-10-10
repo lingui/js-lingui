@@ -295,6 +295,7 @@ I18nProvider
    :prop object catalogs: Message catalogs
    :prop React.Element|React.Class|string defaultRender: Default element to render translation
    :prop string|Function missing: Custom message to be returned when translation is missing
+   :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
 
 ``defaultRender`` has the same meaning as ``render`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
@@ -344,6 +345,15 @@ for debugging:
    type Messages = {
      [messageId: string]: string | Function
    }
+
+``forceRenderOnLocaleChange`` is true by default and it ensures that:
+
+  - Children of ``I18nProvider`` aren't rendered before locales are loaded.
+  - When locale changes, the whole element tree below ``I18nProvider`` is
+    re-rendered.
+
+Disable ``forceRenderOnLocaleChange`` when you have specific needs to handle
+initial state before locales are loaded and when locale changes.
 
 This component should live above all i18n components. A good place is as a
 top-level application component. However, if the ``language`` is stored in a

@@ -7,7 +7,9 @@ type I18nContext = {
   defaultRender?: TransRenderType
 }
 
-export type I18nProviderProps = I18nContext
+export type I18nProviderProps = I18nContext & {
+  forceRenderOnLocaleChange?: boolean
+}
 
 const LinguiContext = React.createContext<I18nContext>(null)
 
@@ -25,6 +27,8 @@ export function useLingui(): I18nContext {
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
   const [context, setContext] = React.useState<I18nContext>(makeContext())
+
+  const forceRenderOnLocaleChange = props.forceRenderOnLocaleChange ?? true
 
   /**
    * Subscribe for locale/message changes
@@ -54,6 +58,16 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = (props) => {
       i18n: props.i18n,
       defaultRender: props.defaultRender,
     }
+  }
+
+  if (forceRenderOnLocaleChange) {
+    if (!context.i18n.locale) return null
+
+    return (
+      <LinguiContext.Provider value={context} key={context.i18n.locale}>
+        {props.children}
+      </LinguiContext.Provider>
+    )
   }
 
   return (
