@@ -13,50 +13,34 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: pages/index.tsx:7
-msgid "Create Next App"
-msgstr "Create Next App"
+#: pages/index.tsx:38
+msgid "Checkout LinguiJS examples and usecases."
+msgstr "Checkout LinguiJS examples and usecases."
 
-#: pages/index.tsx:60
-msgid "Deploy →"
-msgstr "Deploy →"
-
-#: pages/index.tsx:52
-msgid "Discover and deploy boilerplate example Next.js projects."
-msgstr "Discover and deploy boilerplate example Next.js projects."
-
-#: pages/index.tsx:27
+#: pages/index.tsx:23
 msgid "Documentation →"
 msgstr "Documentation →"
 
-#: pages/index.tsx:49
+#: lingui-example/components/Layout.tsx:10
+msgid "Example project using LinguiJS"
+msgstr "Example project using LinguiJS"
+
+#: pages/index.tsx:35
 msgid "Examples →"
 msgstr "Examples →"
 
-#: pages/index.tsx:30
-msgid "Find in-depth information about Next.js features and API."
-msgstr "Find in-depth information about Next.js features and API."
+#: pages/index.tsx:26
+msgid "Find in-depth information about LinguiJS features and API."
+msgstr "Find in-depth information about LinguiJS features and API."
 
-#: pages/index.tsx:19
-msgid "Get started by editing <0>pages/index.js</0>"
-msgstr "Get started by editing <0>pages/index.js</0>"
+#: pages/index.tsx:14
+msgid "Get started by editing <0>locale/en/messages.po</0>"
+msgstr "Get started by editing <0>locale/en/messages.po</0>"
 
-#: pages/index.tsx:63
-msgid "Instantly deploy your Next.js site to a public URL with ZEIT Now."
-msgstr "Instantly deploy your Next.js site to a public URL with ZEIT Now."
-
-#: pages/index.tsx:41
-msgid "Learn about Next.js in an interactive course with quizzes!"
-msgstr "Learn about Next.js in an interactive course with quizzes!"
-
-#: pages/index.tsx:38
-msgid "Learn →"
-msgstr "Learn →"
-
-#: pages/index.tsx:74
+#: lingui-example/components/Layout.tsx:24
 msgid "Powered by <0/>"
 msgstr "Powered by <0/>"
 
-#: pages/index.tsx:13
-msgid "Welcome to <0>Next.js!</0>"
-msgstr "Welcome to <0>Next.js!</0>"
+#: pages/index.tsx:8
+msgid "Welcome to <0>LinguiJS!</0>"
+msgstr "Welcome to <0>LinguiJS!</0>"
