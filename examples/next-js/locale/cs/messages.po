@@ -25,6 +25,10 @@ msgstr "Dokumentace →"
 msgid "Example project using LinguiJS"
 msgstr "Ukázkový projekt s LinguiJS"
 
+#: pages/examples.tsx:7
+msgid "Examples"
+msgstr "Ukázky"
+
 #: pages/index.tsx:35
 msgid "Examples →"
 msgstr "Ukázky →"
@@ -37,6 +41,10 @@ msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
 msgid "Get started by editing <0>locale/en/messages.po</0>"
 msgstr "Začni úpravou <0>locale/cs/messages.po</0>"
 
+#: pages/examples.tsx:11
+msgid "Plurals"
+msgstr "Množné číslo"
+
 #: lingui-example/components/Layout.tsx:24
 msgid "Powered by <0/>"
 msgstr "Používá <0/>"
@@ -44,3 +52,8 @@ msgstr "Používá <0/>"
 #: pages/index.tsx:8
 msgid "Welcome to <0>LinguiJS!</0>"
 msgstr "Vítá tě <0>LinguiJS!</0>"
+
+#: pages/examples.tsx:15
+#: pages/examples.tsx:19
+msgid "{value, plural, one {There's one book} other {There're # books}}"
+msgstr "{value, plural, one {Je tam jedna kniha} few {Jsou tam # knihy} other {Je tam # knih}}"

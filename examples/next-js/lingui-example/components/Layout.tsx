@@ -1,11 +1,12 @@
 import Head from "next/head"
+import classnames from "classnames"
 
 import { t, Trans } from "@lingui/macro"
 
 import { activate } from "lingui-example/i18n"
 import styles from "./Layout.module.css"
 
-export function Layout({ title = null, children }) {
+export function Layout({ title = null, className = "", children }) {
   // Default props can't be translated at module level because active locale
   // isn't known when module is imported, but rather when component
   // is rendered.
@@ -20,9 +21,7 @@ export function Layout({ title = null, children }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        {children}
-      </main>
+      <main className={classnames(styles.main, className)}>{children}</main>
 
       <footer className={styles.footer}>
         <a
