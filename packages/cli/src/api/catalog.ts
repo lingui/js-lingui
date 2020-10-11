@@ -416,7 +416,7 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 export function getCatalogForMerge(config: LinguiConfig) {
   const catalogConfig = config
 
-  if (catalogConfig.mergePath.endsWith(path.sep)) {
+  if (catalogConfig.mergePath.endsWith(PATHSEP)) {
     const extension = getFormat(config.format).catalogExtension
     const correctPath = catalogConfig.mergePath.slice(0, -1)
     const examplePath =
