@@ -14,8 +14,7 @@ Minimal required versions are:
 @lingui/react
 -------------
 
-- ``<I18n>`` render-prop component and ``withI18n`` high-order component were
-  removed in favor of :js:func:`useLingui` hook.
+- ``<I18n>`` render-prop component was removed in favor of :js:func:`useLingui` hook.
 
 - In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and
   ``description`` to ``comment``.
