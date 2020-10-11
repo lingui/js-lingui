@@ -2,6 +2,7 @@ import * as React from "react"
 import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "@lingui/react"
+import { withI18n } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
 
 describe("I18nProvider", function () {
@@ -16,6 +17,30 @@ describe("I18nProvider", function () {
       </I18nProvider>
     )
     expect(i18n.on).toBeCalledWith("change", expect.anything())
+  })
+
+  it("should pass i18n context to wrapped component" , function() {
+    const i18n = setupI18n()
+
+    function WithoutHoc(props) {
+      return <div {...props}>{props?.i18n?.locale}</div>
+    }
+
+    const WithHoc = withI18n()(WithoutHoc)
+
+    act(() => {
+      i18n.load("cs", {})
+      i18n.activate("cs")
+    })
+
+    const { getByTestId } = render(
+      <I18nProvider i18n={i18n}>
+        <WithoutHoc data-testid="not-composed" />
+        <WithHoc data-testid="composed" />
+      </I18nProvider>
+    )
+    expect(getByTestId("not-composed").textContent).toEqual("")
+    expect(getByTestId("composed").textContent).toEqual("cs")
   })
 
   it("should unsubscribe for locale changes on unmount", function () {

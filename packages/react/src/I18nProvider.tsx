@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { ComponentType, FunctionComponent, ReactNode, useContext } from "react"
 import { I18n } from "@lingui/core"
 import { TransRenderType } from "./Trans"
 
@@ -14,7 +14,7 @@ export type I18nProviderProps = I18nContext & {
 const LinguiContext = React.createContext<I18nContext>(null)
 
 export function useLingui(): I18nContext {
-  const context = React.useContext(LinguiContext)
+  const context = React.useContext<I18nContext>(LinguiContext)
 
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
@@ -25,6 +25,34 @@ export function useLingui(): I18nContext {
   return context
 }
 
+export function withI18n(o: Object = {}): <P extends Object>(WrappedComponent: React.FunctionComponent<P>) => React.ComponentClass<P> {
+  return <P extends Object>(WrappedComponent: React.FunctionComponent<P>) => {
+    if (process.env.NODE_ENV !== "production") {
+      if (typeof o === "function" || React.isValidElement(o)) {
+        throw new Error(
+          "withI18n([options]) takes options as a first argument, " +
+            "but received React component itself. Without options, the Component " +
+            "should be wrapped as withI18n()(Component), not withI18n(Component)."
+        )
+      }
+    }
+
+    return class extends React.Component<P> {
+      static contextType = LinguiContext
+      context!: React.ContextType<typeof LinguiContext>
+      render() {
+        if (this.context == null) {
+          throw new Error("withI18n() HOC was used without I18nProvider.")
+        }
+        const { i18n } = this.context;
+        return (
+          <WrappedComponent {...this.props} i18n={i18n} />
+        );
+      }
+    }
+
+  };
+}
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   i18n,
   defaultRender,
