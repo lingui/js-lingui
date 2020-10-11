@@ -1,4 +1,4 @@
-import React, { ComponentType, FunctionComponent, ReactNode, useContext } from "react"
+import React, { FunctionComponent } from "react"
 import { I18n } from "@lingui/core"
 import { TransRenderType } from "./Trans"
 
