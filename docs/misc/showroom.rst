@@ -14,3 +14,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `LocalEthereum <https://localethereum.com/>`__
 - `Upcount <https://github.com/madisvain/upcount>`__
 - `Symbolovník <http://www.symbolovnik.cz>`__
+- `Notos <https://www.notos.co>`__
