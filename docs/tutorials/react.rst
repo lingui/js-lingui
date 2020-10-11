@@ -4,7 +4,7 @@
 Tutorial - Internationalization of React apps
 *********************************************
 
-Through this tutorial, we'll learn how to add internationalization
+Through this tutorial, we'll learn how to add internationalization (i18n)
 to an existing application in React JS.
 
 Let's Start
@@ -70,10 +70,11 @@ Setup
 We will directly start translating the ``Inbox`` component, but we need
 to complete one more step to setup our application.
 
-Components needs to be aware of their active language. All LinguiJS_ components
-read translations and language settings from the React context. In order to get this
-information into the context, we need to wrap our application in
-:component:`I18nProvider` component.
+Components needs to read information about current language and message catalogs from ``i18n`` instance. 
+Initially, you can use the one created and exported from ``@lingui/core`` and later you can replace with
+your one if such need arise.
+
+In order to pass ``i18n`` around the I18nProvider wraps around React Context.
 
 Let's add all required imports and wrap our app inside :component:`I18nProvider`:
 
@@ -82,13 +83,13 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
    // index.js
    import React from 'react'
    import { render } from 'react-dom'
+
+   import { i18n } from '@lingui/core'
+   import { I18nProvider } from '@lingui/react'
+   import { messages } from './locales/en/messages.js'
    import Inbox from './Inbox.js'
 
-   import { I18nProvider } from '@lingui/react'
-   import { setupI18n } from '@lingui/core'
-
-   const i18n = setupI18n()
-   i18n.load('en', catalogEn)
+   i18n.load('en', messages)
    i18n.activate('en')
 
    const App = () => (
@@ -183,21 +184,9 @@ We're going to use `CLI` again. Run :cli:`extract` command to extract messages::
 
    No locales defined!
 
-   (use "lingui add-locale <language>" to add one)
+   Add 'locales' to your configuration. See https://lingui.js.org/ref/conf.html#locales
 
-Oops! Seems we forgot something. First we need to tell the CLI what locales we're
-going to use in our app. Let's start with two locales: ``en`` for English and ``cs``
-for Czech::
-
-   $ lingui add-locale en cs
-
-   Added locale en.
-   Added locale cs.
-
-   (use "lingui extract" to extract messages)
-
-Everything went well and CLI guides us what to do next. Let's run :cli:`extract` command
-again::
+After fixing configuration, let's run :cli:`extract` command again
 
    $ lingui extract
 
@@ -209,7 +198,6 @@ again::
    │ en       │      1      │    1    │
    └──────────┴─────────────┴─────────┘
 
-   (use "lingui add-locale <language>" to add more locales)
    (use "lingui extract" to update catalogs with new messages)
    (use "lingui compile" to compile catalogs for production)
 
@@ -244,7 +232,6 @@ If we run :cli:`extract` command again, we'll see that all Czech messages are tr
    │ en       │      1      │    1    │
    └──────────┴─────────────┴─────────┘
 
-   (use "lingui add-locale <language>" to add more locales)
    (use "lingui extract" to update catalogs with new messages)
    (use "lingui compile" to compile catalogs for production)
 
@@ -258,8 +245,7 @@ to compile them. As you see in the help in command output, we use :cli:`compile`
    Done!
 
 What just happened? If you look inside ``locales`` directory, you'll see there's a
-new file for each locale: ``messages.js``. This file contains compiled message catalogs
-but also any locale specific data like plurals.
+new file for each locale: ``<locale>.js``. This file contains compiled message catalog.
 
 Let's load this file into our app and set active language to ``cs``:
 
@@ -270,15 +256,14 @@ Let's load this file into our app and set active language to ``cs``:
    import React from 'react'
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
-   import catalogCs from './locales/cs/messages.js'
 
-   import { setupI18n, I18nProvider } from '@lingui/react'
+   import { I18nProvider } from '@lingui/react'
+   import { i18n } from '@lingui/core'
 
-   const i18n = setupI18n()
-   i18n.load('cs', catalogCs)
+   import catalogCs from './locales/cs.js'
+   i18n.load('cs', catalogCs.messages)
    i18n.activate('cs')
 
-   const catalogs = { cs: catalogCs };
    const App = () => (
      <I18nProvider i18n={i18n}>
        <Inbox />
@@ -707,9 +692,11 @@ After all modifications, the final component with i18n looks like this:
 
    // Inbox.js
    import React from 'react'
-   import { Trans, Plural, date } from '@lingui/macro'
+   import { Trans, Plural } from '@lingui/macro'
+   import { useLingui } from '@lingui/react'
 
    const Inbox = ({ messages, markAsRead, user }) => {
+     const { i18n } = useLingui()
      const messagesCount = messages.length
      const { name, lastLogin } = user
 
@@ -733,7 +720,7 @@ After all modifications, the final component with i18n looks like this:
            </p>
 
            <footer>
-             <Trans>Last login on {date(lastLogin)} />.</Trans>
+             <Trans>Last login on {i18n.date(lastLogin)} />.</Trans>
            </footer>
          </div>
        )
