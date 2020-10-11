@@ -83,10 +83,14 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
    // index.js
    import React from 'react'
    import { render } from 'react-dom'
-   import Inbox from './Inbox.js'
 
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
+   import { messages } from './locales/en/messages.js'
+   import Inbox from './Inbox.js'
+
+   i18n.load('en', messages)
+   i18n.activate('en')
 
    const App = () => (
      <I18nProvider i18n={i18n}>

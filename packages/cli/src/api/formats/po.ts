@@ -1,10 +1,11 @@
 import fs from "fs"
 import * as R from "ramda"
 import { format as formatDate } from "date-fns"
-
 import PO from "pofile"
-import { MessageType } from "../types"
+
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
+import { MessageType, CatalogType } from "../types"
+import { CatalogFormatter } from "./types"
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -15,23 +16,26 @@ const getCreateHeaders = (language = "no") => ({
   Language: language,
 })
 
-const serialize = R.compose(
-  R.values,
-  R.mapObjIndexed((message: MessageType, key) => {
-    const item = new PO.Item()
-    item.msgid = key
-    item.msgstr = [message.translation]
-    item.comments = message.comments || []
-    item.extractedComments = message.comment ? [message.comment] : []
-    item.references = message.origin ? message.origin.map(joinOrigin) : []
-    // @ts-ignore: Figure out how to set this flag
-    item.obsolete = message.obsolete
-    item.flags = message.flags
-      ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-      : {}
-    return item
-  })
-)
+const serialize = (items: CatalogType, options) =>
+  R.compose(
+    R.values,
+    R.mapObjIndexed((message: MessageType, key) => {
+      const item = new PO.Item()
+      item.msgid = key
+      item.msgstr = [message.translation]
+      item.comments = message.comments || []
+      item.extractedComments = message.comment ? [message.comment] : []
+      if (options.origins) {
+        item.references = message.origin ? message.origin.map(joinOrigin) : []
+      }
+      // @ts-ignore: Figure out how to set this flag
+      item.obsolete = message.obsolete
+      item.flags = message.flags
+        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
+        : {}
+      return item
+    })
+  )(items)
 
 const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop("msgstr")
@@ -46,7 +50,7 @@ const getFlags = R.compose(
 )
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const deserialize: (Object) => Object = R.map(
+const deserialize: (item: Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
     comment: R.compose(R.head, R.defaultTo([]), getExtractedComments),
@@ -61,8 +65,9 @@ const deserialize: (Object) => Object = R.map(
   })
 )
 
-// @ts-ignore: I don't know how to access static property Item on class PO
-const validateItems = R.forEach((item: PO.Item) => {
+type POItem = InstanceType<typeof PO.Item>
+
+const validateItems = R.forEach<POItem>((item) => {
   if (R.length(getTranslations(item)) > 1) {
     console.warn(
       "Multiple translations for item with key %s is not supported and it will be ignored.",
@@ -73,7 +78,7 @@ const validateItems = R.forEach((item: PO.Item) => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-export default {
+const po: CatalogFormatter = {
   catalogExtension: ".po",
 
   write(filename, catalog, options) {
@@ -86,7 +91,7 @@ export default {
       po.headers = getCreateHeaders(options.locale)
       po.headerOrder = R.keys(po.headers)
     }
-    po.items = serialize(catalog)
+    po.items = serialize(catalog, options)
     writeFileIfChanged(filename, po.toString())
   },
 
@@ -95,9 +100,12 @@ export default {
     return this.parse(raw)
   },
 
+  // @ts-ignore
   parse(raw) {
     const po = PO.parse(raw)
     validateItems(po.items)
     return deserialize(indexItems(po.items))
   },
 }
+
+export default po

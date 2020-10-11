@@ -13,15 +13,14 @@ module.exports = {
     "locale",
     "fixtures",
     ".*.json$",
-    ".*.js.snap$"
+    ".*.js.snap$",
   ],
   coverageReporters: ["html", "lcov", "text"],
 
   reporters: ["default", "jest-junit"],
   setupFilesAfterEnv: [require.resolve("./env.js")],
   snapshotSerializers: [
-    "enzyme-to-json/serializer",
     "jest-serializer-html",
-    require.resolve("./stripAnsiSerializer.js")
-  ]
+    require.resolve("./stripAnsiSerializer.js"),
+  ],
 }

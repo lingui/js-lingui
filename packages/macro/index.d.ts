@@ -1,39 +1,46 @@
-import { ComponentType, ReactNode } from "react"
-import { MessageDescriptor } from "@lingui/core"
-import { TransRenderType } from "@lingui/react"
+import type { ComponentType, ReactNode } from "react"
+import type { MessageDescriptor } from "@lingui/core"
+import type { TransRenderType } from "@lingui/react"
 
 export function t(
   literals: TemplateStringsArray,
   ...placeholders: any[]
 ): string
-export function plural(arg: number | string, options: Object): string
-export function selectOrdinal(arg: number | string, options: Object): string
-export function select(arg: string, choices: { [key: string]: string }): string
-export function defineMessages<M extends { [key: string]: MessageDescriptor }>(
+
+export type ChoiceOptions<T = string> = {
+  offset?: number
+  zero?: T
+  one?: T
+  few?: T
+  many?: T
+  other?: T
+}
+export function plural(arg: number | string, options: ChoiceOptions): string
+export function selectOrdinal(
+  arg: number | string,
+  options: ChoiceOptions
+): string
+export function select(arg: string, choices: Record<string, string>): string
+export function defineMessages<M extends Record<string, MessageDescriptor>>(
   messages: M
 ): M
 export function defineMessage(descriptor: MessageDescriptor): MessageDescriptor
 
-export interface TransProps {
+export type TransProps = {
   id?: string
   comment?: string
   render?: TransRenderType
 }
 
-export interface ChoiceProps extends TransProps {
+export type ChoiceProps = {
   value?: string | number
-  offset?: number
-  zero?: ReactNode
-  one?: ReactNode
-  few?: ReactNode
-  many?: ReactNode
-  other?: ReactNode
-}
+} & TransProps &
+  ChoiceOptions<ReactNode>
 
-export interface SelectProps extends TransProps {
+export type SelectProps = {
   value?: string
   other?: ReactNode
-}
+} & TransProps
 
 export const Trans: ComponentType<TransProps>
 export const Plural: ComponentType<ChoiceProps>

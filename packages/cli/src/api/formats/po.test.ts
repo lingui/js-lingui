@@ -6,13 +6,9 @@ import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
+import { CatalogType } from "../types"
 
 describe("pofile format", function () {
-  const dateHeaders = {
-    "pot-creation-date": "2018-08-09",
-    "po-revision-date": "2018-08-09",
-  }
-
   afterEach(() => {
     mockFs.restore()
     mockDate.reset()
@@ -24,10 +20,10 @@ describe("pofile format", function () {
         en: mockFs.directory(),
       },
     })
-    mockDate.set("2018-08-27T10:00Z", 0)
+    mockDate.set("2018-08-27T10:00Z")
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },
@@ -71,7 +67,7 @@ describe("pofile format", function () {
       },
     }
 
-    format.write(filename, catalog, { language: "en", ...dateHeaders })
+    format.write(filename, catalog, { origins: true, locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(pofile).toMatchSnapshot()
@@ -171,9 +167,40 @@ describe("pofile format", function () {
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog = format.read(filename)
-    format.write(filename, catalog, { locale: "en" })
+    format.write(filename, catalog, { origins: true, locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(actual).toEqual(pofile)
+  })
+
+  it("should not include origins if origins option is false", function () {
+    mockFs({
+      locale: {
+        en: mockFs.directory(),
+      },
+    })
+
+    const filename = path.join("locale", "en", "messages.po")
+    const catalog: CatalogType = {
+      static: {
+        translation: "Static message",
+      },
+      withOrigin: {
+        translation: "Message with origin",
+        origin: [["src/App.js", 4]],
+      },
+      withMultipleOrigins: {
+        translation: "Message with multiple origin",
+        origin: [
+          ["src/App.js", 4],
+          ["src/Component.js", 2],
+        ],
+      },
+    }
+    format.write(filename, catalog, { origins: false, locale: "en" })
+    const pofile = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    const pofileOriginPrefix = "#:"
+    expect(pofile).toEqual(expect.not.stringContaining(pofileOriginPrefix))
   })
 })

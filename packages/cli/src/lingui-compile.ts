@@ -31,6 +31,9 @@ function command(config, options) {
 
   console.error("Compiling message catalogs…")
 
+  if(config.pseudoLocale) {
+    config.locales.push(config.pseudoLocale)
+  }
   config.locales.forEach((locale) => {
     const [language] = locale.split(/[_-]/)
     if (locale !== config.pseudoLocale && !plurals[language]) {
@@ -44,10 +47,13 @@ function command(config, options) {
     }
 
     catalogs.forEach((catalog) => {
-      const messages = catalog.getTranslations(locale, {
-        fallbackLocale: config.fallbackLocale,
-        sourceLocale: config.sourceLocale,
-      })
+      const messages = catalog.getTranslations(
+        locale === config.pseudoLocale ? config.sourceLocale: locale,
+        {
+          fallbackLocale: config.fallbackLocale,
+          sourceLocale: config.sourceLocale,
+        }
+      )
 
       if (!options.allowEmpty) {
         const missing = R.values(messages)
@@ -72,21 +78,22 @@ function command(config, options) {
         }
       }
 
+      const namespace = options.namespace || config.compileNamespace
       const compiledCatalog = createCompiledCatalog(locale, messages, {
         strict: false,
-        namespace: options.namespace || config.compileNamespace,
+        namespace,
         pseudoLocale: config.pseudoLocale,
       })
 
-      const compiledPath = catalog.writeCompiled(locale, compiledCatalog)
+      const compiledPath = catalog.writeCompiled(locale, compiledCatalog, namespace)
 
       if (options.typescript) {
         const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
         fs.writeFileSync(
           typescriptPath,
-          `import { AllMessages } from '@lingui/core';
-declare const messages: AllMessages;
-export = messages;
+          `import { Messages } from '@lingui/core';
+declare const messages: Messages;
+export { messages };
 `
         )
       }
@@ -111,7 +118,7 @@ if (require.main === module) {
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--namespace <namespace>",
-      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, window.test -> window.test"
+      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")

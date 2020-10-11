@@ -3,7 +3,7 @@ import React from "react"
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
-export interface TransRenderProps {
+export type TransRenderProps = {
   id: string
   translation: React.ReactNode
   message: string | null
@@ -14,7 +14,7 @@ export type TransRenderType =
   | React.ElementType<TransRenderProps>
   | React.ReactElement
 
-export interface TransProps {
+export type TransProps = {
   id: string
   message?: string
   values: Object

@@ -35,22 +35,28 @@ describe("@lingui/conf", function () {
 
   it("should replace <rootDir>", function () {
     const config = replaceRootDir(
+      // @ts-ignore
       {
-        boolean: false,
-        catalogs: {
-          ["<rootDir>/locales/{locale}/messages"]: [
-            "<rootDir>/src",
-            "!<rootDir>/ignored",
-          ],
-        },
+        compileNamespace: "cjs",
+        catalogs: [
+          {
+            path: "/",
+            include: ["<rootDir>/src"],
+            exclude: ["<rootDir>/ignored"],
+          },
+        ],
       },
       "/Root"
     )
 
-    expect(config.boolean).toEqual(false)
-    expect(config.catalogs).toEqual({
-      "/Root/locales/{locale}/messages": ["/Root/src", "!/Root/ignored"],
-    })
+    expect(config.compileNamespace).toEqual("cjs")
+    expect(config.catalogs).toEqual([
+      {
+        path: "/",
+        include: ["/Root/src"],
+        exclude: ["/Root/ignored"],
+      },
+    ])
   })
 
   describe("catalogMigration", function () {
@@ -71,6 +77,7 @@ describe("@lingui/conf", function () {
     it("shouldn't provide default config if no obsolete config is defined", function () {
       const config = {}
 
+      // @ts-ignore
       expect(catalogMigration(config)).toEqual({})
     })
 
@@ -79,6 +86,7 @@ describe("@lingui/conf", function () {
         localeDir: "./locales",
       }
 
+      // @ts-ignore
       expect(catalogMigration(config)).toEqual({
         catalogs: [
           {
@@ -97,6 +105,7 @@ describe("@lingui/conf", function () {
         srcPathIgnorePatterns: ["src/node_modules/"],
       }
 
+      // @ts-ignore
       expect(catalogMigration(config)).toEqual({
         catalogs: [
           {

@@ -2,6 +2,7 @@ export {
   setupI18n,
   I18n,
   AllMessages,
+  MessageDescriptor,
   Messages,
   AllLocaleData,
   LocaleData,

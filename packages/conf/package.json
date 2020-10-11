@@ -18,14 +18,15 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
-    "chalk": "^4.0.0",
-    "cosmiconfig": "^6.0.0",
-    "jest-validate": "^25.3.0"
+    "@babel/runtime": "^7.11.2",
+    "chalk": "^4.1.0",
+    "cosmiconfig": "^7.0.0",
+    "jest-validate": "^26.5.2"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ]
 }

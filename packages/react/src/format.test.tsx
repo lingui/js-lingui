@@ -51,4 +51,29 @@ describe("formatElements", function () {
       'Before <a href="/about">Inside <strong>Nested</strong> Between <br> After</a>'
     )
   })
+
+  it("should ignore non existing element", function() {
+    expect(html(formatElements("<0>First</0>"))).toEqual("First")
+    expect(html(formatElements("<0>First</0>Second"))).toEqual("FirstSecond")
+    expect(html(formatElements("First<0>Second</0>Third")))
+        .toEqual("FirstSecondThird")
+    expect(html(formatElements("Fir<0/>st"))).toEqual("First")
+  })
+
+  it("should ignore incorrect tags and print them as a text", function() {
+    expect(html(formatElements("text</0>"))).toEqual("text&lt;/0&gt;")
+    expect(html(formatElements("text<0 />"))).toEqual("text&lt;0 /&gt;")
+    expect(html(formatElements("<tag>text</tag>")))
+        .toEqual("&lt;tag&gt;text&lt;/tag&gt;")
+    expect(html(formatElements("text <br/>"))).toEqual("text &lt;br/&gt;")
+  })
+
+  it("should ignore unpaired element used as paired", function() {
+    expect(html(formatElements("<0>text</0>", {0: <br />}))).toEqual("text")
+  })
+
+  it("should ignore paired element used as unpaired", function() {
+    expect(html(formatElements("text<0/>", {0: <span />})))
+        .toEqual("text<span></span>")
+  })
 })

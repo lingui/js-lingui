@@ -1,11 +1,14 @@
-import { transformFileSync } from "@babel/core"
+import { transformFileSync, DEFAULT_EXTENSIONS } from "@babel/core"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import { BabelOptions, ExtractorType } from "./types"
 import { projectType } from "../detect"
 
-const babelRe = /\.jsx?$/i
+const babelRe = new RegExp(
+	"\\.(" + DEFAULT_EXTENSIONS.map(ext => ext.slice(1)).join("|") + ")$",
+	"i"
+)
 
 const extractor: ExtractorType = {
   match(filename) {

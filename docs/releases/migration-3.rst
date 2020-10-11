@@ -7,45 +7,48 @@ Backward incompatible changes
 
 Minimal required versions are:
 
-- Node.js: 8.x
+- Node.js: 10.x
 - React: 16.8
-- Babel: 6
+- Babel: 7
 
 @lingui/react
 -------------
 
-- ``<I18n>`` render-prop component and ``withI18n`` high-order component were removed in favor of :js:func:`useLingui` hook.
+- ``<I18n>`` render-prop component and ``withI18n`` high-order component were
+  removed in favor of :js:func:`useLingui` hook.
 
-- In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and ``description`` to ``comment``.
+- In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and
+  ``description`` to ``comment``.
 
-- In :component:`Trans`, ``components`` is now an object, not an array. When using the low level API,
-  it allows to name the component placeholders:
+- In :component:`Trans`, ``components`` is now an object, not an array. When
+  using the low level API, it allows to name the component placeholders:
 
   .. code-block:: jsx
 
      <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
 
-- ``NumberFormat`` and ``DateFormat`` components were removed. Use ``date`` and ``number`` formats
-  from ``@lingui/core`` package instead.
+- ``NumberFormat`` and ``DateFormat`` components were removed. Use ``date`` and
+  ``number`` formats from ``@lingui/core`` package instead.
 
 Removed :component:`I18nProvider` declarative API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-LinguiJS started as a React library. After `@lingui/core` package was introduced,
+LinguiJS started as a React library. After ``@lingui/core`` package was introduced,
 there were two ways how to switch active locales and manage catalogs in React: either
-using :component:`I18nProvider` declarative API or using `setupI18n` imperative API.
+using :component:`I18nProvider` declarative API or using ``setupI18n`` imperative API.
 
-In the same spirit as ``react-apollo`` and ``react-redux``, the :component:`I18nProvider`
+In the same spirit as ``@apollo/react`` and ``react-redux``, the :component:`I18nProvider`
 is simplified and accepts ``i18n`` manager, which must be created manually:
 
 .. code-block:: diff
 
      import { I18nProvider } from '@lingui/react'
-   + import { setupI18n } from '@lingui/core'
-     import catalogEn from './locale/en/messages.js'
+     import { i18n } from "@lingui/core"
+   + import { en } from 'make-plural/plurals'
+     import { messages } from './locale/en/messages.js'
 
-   + const i18n = setupI18n()
-   + i18n.load('en', catalogEn)
+   + i18n.loadLocaleData('en', { plurals: en })
+   + i18n.load('en', messages)
    + i18n.activate('en')
 
      function App() {
@@ -60,10 +63,27 @@ is simplified and accepts ``i18n`` manager, which must be created manually:
 @lingui/core
 ------------
 
+- Package now exports default ``i18n`` instance. It's recommended to use it unless
+  you need customized instance.
+
+  .. code-block:: diff
+
+   + import { i18n } from "@lingui/core"
+   - import { setupI18n } from "@lingui/core"
+
+   - const i18n = setupI18n()
+     i18n.activate('en')
+
+  .. note::
+
+     If you decide to use custom ``i18n`` instance, you also need to set
+     :conf:`runtimeConfigModule`. Macros automatically import ``i18n`` instance
+     and must be aware of correct import path.
+
 - ``i18n.t``, ``i18n.plural``, ``i18n.select`` and ``i18n.selectOrdinal`` methods were
   removed in favor of macros.
 - ``i18n.use`` was removed. Using two locales at the same time isn't common usecase
-  and can be solved in user land.
+  and can be solved in user land by having two instances of `i18n` object.
 - Signature of ``i18n._`` method has changed. The third parameter now accepts default
   message in ``message`` prop, instead of ``defaults``:
 
@@ -91,12 +111,11 @@ for a single locale or multiple catalogs at once.
 
 .. code-block:: diff
 
-     import { setupI18n } from '@lingui/core'
+     import { i18n } from "@lingui/core"
      import catalogEn from './locale/en/messages.js'
 
-     export const i18n = setupI18n()
    - i18n.load({ en: catalogEn })
-   + i18n.load('en', catalogEn)
+   + i18n.load('en', catalogEn.messages)
 
 .. note::
 
@@ -105,14 +124,13 @@ for a single locale or multiple catalogs at once.
    .. code-block:: jsx
 
       // i18n.js
-      import { setupI18n } from '@lingui/core'
+      import { i18n } from "@lingui/core"
       import catalogEn from './locale/en/messages.js'
       import catalogFr from './locale/fr/messages.js'
 
-      export const i18n = setupI18n()
       i18n.load({
-         en: catalogEn
-         fr: catalogFr
+         en: catalogEn.messages,
+         fr: catalogFr.messages
       })
 
 @lingui/macro
@@ -129,6 +147,7 @@ for a single locale or multiple catalogs at once.
 -----------
 
 - command ``lingui init`` was removed
+- command ``lingui add-locale`` was removed
 
 Whitespace and HTML entities
 ----------------------------
@@ -137,8 +156,8 @@ Whitespace handling in plugins had few bugs. By fixing them, there might be few
 backward incompatible changes. It's advised to run :cli:`extract` and inspect
 changes in catalogs (if any).
 
-1. Don't keep spaces before ``{variables}`` in JSX. This is how React handles whitespaces
-   in JSX. Leading whitespace is always removed:
+1. Spaces before ``{variables}`` in JSX aren't preserved. This is how React
+   handles whitespaces in JSX. Leading whitespace is always removed:
 
    .. code-block:: jsx
 
@@ -150,9 +169,9 @@ changes in catalogs (if any).
 
       // Becomes: &quot;{variable}&quot;
 
-2. Keep forced newlines. Sometimes it's useful to keep newlines in JSX. If that's your
-   case, you need to force it in the same was as spaces are forced before variables
-   or elements:
+2. Forced newlines are preserved. Sometimes it's useful to keep newlines in JSX.
+   If that's your case, you need to force it in the same was as spaces are
+   forced before variables or elements:
 
    .. code-block:: jsx
 
@@ -220,17 +239,15 @@ needed anymore.
 3. :js:meth:`i18n.t`, :js:meth:`i18n.plural`, :js:meth:`i18n.select` and
    :js:meth:`i18n.selectOrdinal` methods are removed and replaced with macros.
 
-   Message descriptor created by macro must be passed to :js:meth:`i18n._` method:
+   These macros automatically binds message to default ``i18n`` object:
 
    .. code-block:: diff
 
-        import { setupI18n } from "@lingui/core"
+        import { i18n } from "@lingui/core"
       + import { t } from "@lingui/macro"
 
-        const i18n = setupI18n()
-
       - i18n.t`Hello World`
-      + i18n._(t`Hello World`)
+      + t`Hello World`
 
 
 
@@ -244,9 +261,7 @@ New features
 
 .. code-block:: jsx
 
-   import { setupI18n } from "@lingui/core"
-
-   export const i18n = setupI18n()
+   import { i18n } from "@lingui/core"
 
    // Lingui v2 and v3
    i18n.load({
@@ -258,25 +273,8 @@ New features
    i18n.load('en', require("./locale/en/messages"))
    i18n.load('cs', require("./locale/cs/messages"))
 
-`i18n.willActivate`
--------------------
+`i18n.on('change', callback)`
+-----------------------------
 
-`willActivate(locale: string)` event is called when locale change is requested using
-`i18n.activate`. It may return a promise. In that case, locale is activated after the
-promise is resolved.
-
-Here's an example with dynamic import in webpack:
-
-.. code-block:: jsx
-
-   const i18n = setupI18n()
-   i18n.willActivate(locale => {
-     /* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */
-     return import(`@lingui/loader!./locales/${locale}/messages.po`)
-   })
-
-`i18n.didActivate`
-------------------
-
-`didActivate` is called after the locale is activated.
-
+Event ``change`` is fired anytime new catalogs are loaded or when locale
+is activated.

@@ -1,5 +1,5 @@
 {
-  "name": "next-js",
+  "name": "next-js-ng",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,16 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@lingui/core": "next",
-    "@lingui/react": "next",
-    "next": "9.3.4",
+    "@lingui/core": "^3.0.0-14",
+    "@lingui/react": "^3.0.0-14",
+    "classnames": "^2.2.6",
+    "next": "9.5.5",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "@lingui/cli": "next",
-    "@lingui/loader": "next",
-    "@lingui/macro": "next",
+    "@lingui/cli": "^3.0.0-15",
+    "@lingui/loader": "^3.0.0-15",
+    "@lingui/macro": "^3.0.0-15",
     "babel-plugin-macros": "^2.8.0"
   }
 }

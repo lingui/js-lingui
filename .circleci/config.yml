@@ -2,27 +2,27 @@ version: 2
 
 aliases:
   - &attach-workspace
-      at: build
+    at: build
 
   - &restore-cache
-      key: node-modules-{{ checksum "yarn.lock" }}
+    key: node-modules-{{ checksum "yarn.lock" }}
   - &yarn-install
-      name: Install dependencies
-      command: yarn install --no-progress
+    name: Install dependencies
+    command: yarn install --no-progress --ignore-platform --ignore-engines
   - &yarn-install-tools
-      name: Install build tools
-      command: sudo yarn global add codecov yalc
+    name: Install build tools
+    command: sudo yarn global add codecov yalc
   - &tests
-      command: node scripts/test.js --skip-build
-      environment:
-        NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
+    command: node scripts/test.js --skip-build
+    environment:
+      NODE_ICU_DATA: /home/circleci/project/node_modules/full-icu
   - &tests-integration
-      command: node ./scripts/integration.js
+    command: node ./scripts/integration.js
 
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:latest-node-browsers-legacy
+      - image: circleci/openjdk:latest-node-browsers
 
     steps:
       - checkout
@@ -33,7 +33,7 @@ jobs:
       - save_cache:
           key: node-modules-{{ checksum "yarn.lock" }}
           paths:
-              - node_modules
+            - node_modules
 
       - run: node ./scripts/build/
 
@@ -93,24 +93,24 @@ jobs:
 
   integration-react:
     docker:
-    - image: circleci/node:latest
+      - image: circleci/node:latest
 
     steps:
-    - checkout
-    - attach-workspace: *attach-workspace
-    - run: *yarn-install-tools
+      - checkout
+      - attach-workspace: *attach-workspace
+      - run: *yarn-install-tools
 
-    - restore-cache:
-        key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
-    - run: cd examples/react; yarn
-    - save-cache:
-        key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
-        paths:
-          - examples/react/node_modules
+      - restore-cache:
+          key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
+      - run: cd examples/react; yarn
+      - save-cache:
+          key: node-modules-react-{{ checksum "examples/react/yarn.lock" }}
+          paths:
+            - examples/react/node_modules
 
-    - run: *tests-integration
-    - run: chmod +x examples/react/node_modules/.bin/lingui
-    - run: cd examples/react; yarn test
+      - run: *tests-integration
+      - run: chmod +x examples/react/node_modules/.bin/lingui
+      - run: cd examples/react; yarn test
 
   test-linter:
     docker:
@@ -139,25 +139,25 @@ jobs:
       - save_cache:
           key: pipenv-{{ checksum "Pipfile.lock" }}
           paths:
-              - "{{ pipenv --venv }}"
+            - "{{ pipenv --venv }}"
 
-      - run: yarn global add now
+      - run: yarn global add vercel
 
       - run: cd docs; pipenv run make html
 
       - deploy:
-          command: $(yarn global bin)/now --public --token $NOW_TOKEN --name lingui-docs docs/_build/html
+          command: $(yarn global bin)/vercel --public --token $NOW_TOKEN --name lingui-docs docs/_build/html
 #          command: ./scripts/legacy/deploy-docs.sh
 
 workflows:
   version: 2
   test_n_deploy:
     jobs:
-#      - build-docs:
-#          filters:
-#            branches:
-#              ignore:
-#                - master
+      #      - build-docs:
+      #          filters:
+      #            branches:
+      #              ignore:
+      #                - master
 
       - build
 

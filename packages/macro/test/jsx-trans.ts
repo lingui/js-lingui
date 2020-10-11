@@ -15,17 +15,39 @@ export default [
     input: `
         import { Trans } from '@lingui/macro';
         <Trans id="Hello World">Hello World</Trans>;
-          `,
+      `,
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Hello World" />;
       `,
   },
   {
-    name: "Macro with custom ID",
+    name: "Macro with custom ID (string literal)",
     input: `
         import { Trans } from '@lingui/macro';
         <Trans id="msg.hello">Hello World</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="msg.hello" message="Hello World" />;
+      `,
+  },
+  {
+    name: "Macro with custom ID (literal expression)",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans id={"msg.hello"}>Hello World</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="msg.hello" message="Hello World" />;
+      `,
+  },
+  {
+    name: "Macro with custom ID (template expression)",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans id={\`msg.hello\`}>Hello World</Trans>;
       `,
     expected: `
         import { Trans } from "@lingui/react";
@@ -287,6 +309,17 @@ export default [
             count: count
           })
         }>About</a>;
+      `,
+  },
+  {
+    name: "Ignore JSXEmptyExpression",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans>Hello {/* and I cannot stress this enough */} World</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="Hello  World" />;
       `,
   },
 ]

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { render } from "@testing-library/react"
+import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
@@ -34,26 +34,34 @@ describe("I18nProvider", function () {
   })
 
   it("should re-render on locale changes", async () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
-    const i18n = setupI18n({
-      locale: "en",
-      messages: {},
-    })
+    const i18n = setupI18n()
 
-    function RenderLocale() {
-      const { i18n } = useLingui()
-      return i18n.locale as null
+    function CurrentLocale() {
+      return <span>{i18n.locale}</span>
     }
 
     const { container } = render(
       <I18nProvider i18n={i18n}>
-        <RenderLocale />
+        <CurrentLocale />
       </I18nProvider>
     )
-    expect(container.textContent).toEqual("en")
+    // First render — no output, because locale isn't activated
+    expect(container.textContent).toEqual("")
 
-    await i18n.activate("cs")
+    act(() => {
+      i18n.load("en", {})
+    })
+    // Again, no output. Catalog is loaded, but locale
+    // still isn't activated.
+    expect(container.textContent).toEqual("")
+
+    act(() => {
+      i18n.load("cs", {})
+      i18n.activate("cs")
+    })
+    // After loading and activating locale, it's finally rendered.
     expect(container.textContent).toEqual("cs")
   })
 
