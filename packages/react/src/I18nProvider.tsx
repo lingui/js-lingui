@@ -37,7 +37,7 @@ export function withI18n(o?: object): <P extends { i18n: I18n }>(Component: Comp
           )
         }
       }
-      
+
       const { i18n } = useLingui();
       return <WrappedComponent {...props} i18n={i18n} />;
     }
