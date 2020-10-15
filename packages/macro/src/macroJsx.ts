@@ -37,6 +37,8 @@ function normalizeWhitespace(text) {
       // keep escaped newlines
       .replace(/\\n/g, "\n")
       .replace(/\\s/g, " ")
+      // we remove trailing whitespace inside Plural
+      .replace(/(\s+})/gm, "}")
       .trim()
   )
 }
