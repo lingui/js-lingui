@@ -182,7 +182,7 @@ but use the one we provide, like this:
 
 .. code-block:: jsx
 
-  <I18nProvider i18n={18n} language="en">
+  <I18nProvider i18n={i18n} language="en">
     <YourRootComponent someProp="someValue" />
   </I18nProvider>
 
