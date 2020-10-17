@@ -411,6 +411,48 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 }
 
 /**
+ * Create catalog for merged messages.
+ */
+export function getCatalogForMerge(config: LinguiConfig) {
+  const catalogConfig = config
+
+  if (catalogConfig.catalogsMergePath.endsWith(PATHSEP)) {
+    const extension = getFormat(config.format).catalogExtension
+    const correctPath = catalogConfig.catalogsMergePath.slice(0, -1)
+    const examplePath =
+      correctPath.replace(
+        LOCALE,
+        // Show example using one of configured locales (if any)
+        (config.locales || [])[0] || "en"
+      ) + extension
+    throw new Error(
+      // prettier-ignore
+      `Remove trailing slash from "${catalogConfig.catalogsMergePath}". Catalog path isn't a directory,` +
+          ` but translation file without extension. For example, catalog path "${correctPath}"` +
+          ` results in translation file "${examplePath}".`
+    )
+  }
+
+  // catalog name is the last directory of catalogPath.
+  // If the last part is {locale}, then catalog doesn't have an explicit name
+  const name = (function () {
+    const _name = path.basename(normalizeRelativePath(catalogConfig.catalogsMergePath))
+    return _name !== LOCALE ? _name : null
+  })()
+
+  const catalog = new Catalog(
+    {
+      name,
+      path: normalizeRelativePath(catalogConfig.catalogsMergePath),
+      include: [],
+      exclude: [],
+    },
+    config
+  )
+  return catalog
+}
+
+/**
  * Merge origins for messages found in different places. All other attributes
  * should be the same (raise an error if defaults are different).
  */

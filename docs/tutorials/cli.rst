@@ -103,6 +103,11 @@ plural rules to a production ready catalog::
 The ``locale`` directory now contains the source catalogs (``messages.json``) and
 the compiled ones (``messages.js``).
 
+It is also possible to merge the translated catalogs into a single file per locale
+by specifying :conf:`catalogsMergePath`. For example if :conf:`catalogsMergePath` is assigned
+``locales/{locale}`` then catalogs will be compiled to ``/locales/cs.js`` and 
+``/locales/en.js``.
+
 Cleaning up obsolete messages
 =============================
 

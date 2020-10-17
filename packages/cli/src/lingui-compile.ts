@@ -6,7 +6,7 @@ import * as plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { getCatalogs, getCatalogForMerge } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 
@@ -29,9 +29,13 @@ function command(config, options) {
     return false
   }
 
+  // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
+  const doMerge = !!config.catalogsMergePath
+  let mergedCatalogs = {}
+
   console.error("Compiling message catalogs…")
 
-  if(config.pseudoLocale) {
+  if (config.pseudoLocale) {
     config.locales.push(config.pseudoLocale)
   }
   config.locales.forEach((locale) => {
@@ -48,7 +52,7 @@ function command(config, options) {
 
     catalogs.forEach((catalog) => {
       const messages = catalog.getTranslations(
-        locale === config.pseudoLocale ? config.sourceLocale: locale,
+        locale === config.pseudoLocale ? config.sourceLocale : locale,
         {
           fallbackLocale: config.fallbackLocale,
           sourceLocale: config.sourceLocale,
@@ -78,32 +82,40 @@ function command(config, options) {
         }
       }
 
-      const namespace = options.namespace || config.compileNamespace
-      const compiledCatalog = createCompiledCatalog(locale, messages, {
-        strict: false,
-        namespace,
-        pseudoLocale: config.pseudoLocale,
-      })
+      if (doMerge) {
+        mergedCatalogs = { ...mergedCatalogs, ...messages }
+      } else {
+        const namespace = options.namespace || config.compileNamespace
+        const compiledCatalog = createCompiledCatalog(locale, messages, {
+          strict: false,
+          namespace,
+          pseudoLocale: config.pseudoLocale,
+        })
 
-      const compiledPath = catalog.writeCompiled(locale, compiledCatalog, namespace)
-
-      if (options.typescript) {
-        const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
-        fs.writeFileSync(
-          typescriptPath,
-          `import { Messages } from '@lingui/core';
-declare const messages: Messages;
-export { messages };
-`
+        const compiledPath = catalog.writeCompiled(
+          locale,
+          compiledCatalog,
+          namespace
         )
+
+        if (options.typescript) {
+          const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
+          fs.writeFileSync(
+            typescriptPath,
+            `import { Messages } from '@lingui/core';
+          declare const messages: Messages;
+          export { messages };
+          `
+          )
+        }
+
+        options.verbose &&
+          console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
-
-      options.verbose &&
-        console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
     })
-  })
 
-  return true
+    return true
+  })
 }
 
 if (require.main === module) {
