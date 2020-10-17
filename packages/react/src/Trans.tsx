@@ -1,4 +1,4 @@
-import React from "react"
+import React, { DOMElement } from "react"
 
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
@@ -10,8 +10,13 @@ export type TransRenderProps = {
 }
 
 export type TransRenderType =
+  string |
+  DOMElement<any, any> |
+  React.ReactElement<TransRenderProps> |
   React.FunctionComponent<TransRenderProps> |
-  ((o: TransRenderProps) => React.ComponentType<TransRenderProps>);
+  ((o: TransRenderProps) => TransRenderType);
+
+export type TransRenderPropsType = TransRenderType & React.ComponentClass<TransRenderProps>
 
 export type TransProps = {
   id: string
@@ -19,7 +24,7 @@ export type TransProps = {
   values: Object
   components: { [key: string]: React.ElementType | any }
   formats?: Object
-  render?: (o: TransRenderProps) => TransRenderType
+  render?: TransRenderPropsType
 }
 
 export function Trans(props: TransProps) {
@@ -68,7 +73,17 @@ export function Trans(props: TransProps) {
   } else if (typeof render === "string") {
     // Built-in element: h1, p
     return React.createElement(render, {}, translation)
-  } else if (React.isValidElement(render)) {
+  } else if (isClassComponent(render as TransRenderPropsType) || isFunctionalComponent(render)) {
+    // We apply the logic of React of:
+    // - Don't call function components. Render them.
+    // If we just use render(), as functional component,
+    // will "work" but not the way you'd expect and it could behave in unexpected ways as you make changes
+    return React.createElement(render as React.ElementType<TransRenderProps>, {
+      id,
+      translation,
+      message
+    })
+  } else if (React.isValidElement(render)) {
     // Element: <p className="lear' />
     return React.cloneElement(render, {}, translation)
   }
@@ -79,6 +94,20 @@ export function Trans(props: TransProps) {
     translation,
     message,
   })
+}
+
+export function isClassComponent(Component: React.ComponentClass) {
+  return !!(
+    typeof Component === 'function'
+    && Component.prototype?.isReactComponent
+  );
+}
+
+export function isFunctionalComponent(Component: TransRenderType) {
+  return (
+    typeof Component === 'function'
+    && !Component.prototype?.isReactComponent
+  );
 }
 
 Trans.defaultProps = {

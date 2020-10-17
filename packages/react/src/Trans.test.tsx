@@ -3,6 +3,8 @@ import { render } from "@testing-library/react"
 import { Trans, I18nProvider } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
+import { isClassComponent, isFunctionalComponent } from "./Trans"
+
 describe("Trans component", function () {
   /*
    * Setup context, define helpers
@@ -157,6 +159,44 @@ describe("Trans component", function () {
         </I18nProvider>
       ).container.innerHTML
       expect(span).toEqual("<p>Just a text</p>")
+    })
+
+    it("should render class component as simple prop", function () {
+      class ClassComponent extends React.Component {
+        render() {
+          return (
+            <div>Headline</div>
+          )
+        }
+      }
+      const element = html(<Trans render={ClassComponent} id="Headline" />)
+      expect(element).toEqual("<div>Headline</div>")
+    })
+
+    it("should render functional component as simple prop", function () {
+      const ComponentFC: React.FunctionComponent = () => {
+        const [state] = React.useState("value")
+        return (<div>{state}</div>)
+      }
+      const element = html(<Trans render={ComponentFC} id="Headline" />)
+      expect(element).toEqual("<div>value</div>")
+    })
+  })
+
+  describe("utils", function() {
+    it("isClassComponent: should return true/false if class component", function() {
+      class ClassComponent extends React.Component {
+        render() {
+          return (
+            <div>Headline</div>
+          )
+        }
+      }
+      expect(isClassComponent(ClassComponent)).toEqual(true)
+    })
+    it("isFunctionalComponent: should return true/false if function component", function() {
+      const FunctionalComponent = () => <div>test</div>
+      expect(isFunctionalComponent(FunctionalComponent)).toEqual(true)
     })
   })
 })
