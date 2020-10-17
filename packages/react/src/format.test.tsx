@@ -1,5 +1,4 @@
 import * as React from "react"
-import ReactDOMServer from 'react-dom/server';
 import { render } from "@testing-library/react"
 import { formatElements } from "./format"
 
