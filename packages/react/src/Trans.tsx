@@ -1,4 +1,4 @@
-import React, { DOMElement } from "react"
+import React from "react"
 
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
@@ -11,7 +11,7 @@ export type TransRenderProps = {
 
 export type TransRenderType =
   string |
-  DOMElement<any, any> |
+  React.DOMElement<TransRenderProps, any> |
   React.ReactElement<TransRenderProps> |
   React.FunctionComponent<TransRenderProps> |
   ((o: TransRenderProps) => TransRenderType);
