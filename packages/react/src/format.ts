@@ -68,7 +68,7 @@ function formatElements(
     tree.push(
       React.cloneElement(
         element,
-        { key: uniqueId("$lingui$") },
+        { key: uniqueId() },
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
@@ -106,7 +106,7 @@ function getElements(parts) {
   )
 }
 
-function uniqueId(prefix = "$lingui$") {
+function uniqueId(prefix: "$lingui$" = "$lingui$") {
   if (!idCounter[prefix]) {
     idCounter[prefix] = 0
   }
