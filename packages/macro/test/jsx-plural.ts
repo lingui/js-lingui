@@ -21,6 +21,33 @@ export default [
   },
   {
     input: `
+        import { Trans, Plural } from '@lingui/macro';
+        <Plural
+          value={count}
+          one={
+            <Trans>
+              <strong>#</strong> slot added
+            </Trans>
+          }
+          other={
+            <Trans>
+              <strong>#</strong> slots added
+            </Trans>
+          }
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}" values={{
+          count: count
+        }} components={{
+          0: <strong />,
+          1: <strong />
+        }} />;
+      `,
+  },
+  {
+    input: `
         import { Plural } from '@lingui/macro';
         <Plural
           id="msg.plural"
