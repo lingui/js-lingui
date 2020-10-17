@@ -416,9 +416,9 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 export function getCatalogForMerge(config: LinguiConfig) {
   const catalogConfig = config
 
-  if (catalogConfig.mergePath.endsWith(PATHSEP)) {
+  if (catalogConfig.catalogsMergePath.endsWith(PATHSEP)) {
     const extension = getFormat(config.format).catalogExtension
-    const correctPath = catalogConfig.mergePath.slice(0, -1)
+    const correctPath = catalogConfig.catalogsMergePath.slice(0, -1)
     const examplePath =
       correctPath.replace(
         LOCALE,
@@ -427,7 +427,7 @@ export function getCatalogForMerge(config: LinguiConfig) {
       ) + extension
     throw new Error(
       // prettier-ignore
-      `Remove trailing slash from "${catalogConfig.mergePath}". Catalog path isn't a directory,` +
+      `Remove trailing slash from "${catalogConfig.catalogsMergePath}". Catalog path isn't a directory,` +
           ` but translation file without extension. For example, catalog path "${correctPath}"` +
           ` results in translation file "${examplePath}".`
     )
@@ -436,14 +436,14 @@ export function getCatalogForMerge(config: LinguiConfig) {
   // catalog name is the last directory of catalogPath.
   // If the last part is {locale}, then catalog doesn't have an explicit name
   const name = (function () {
-    const _name = path.basename(normalizeRelativePath(catalogConfig.mergePath))
+    const _name = path.basename(normalizeRelativePath(catalogConfig.catalogsMergePath))
     return _name !== LOCALE ? _name : null
   })()
 
   const catalog = new Catalog(
     {
       name,
-      path: normalizeRelativePath(catalogConfig.mergePath),
+      path: normalizeRelativePath(catalogConfig.catalogsMergePath),
       include: [],
       exclude: [],
     },

@@ -104,7 +104,7 @@ The ``locale`` directory now contains the source catalogs (``messages.json``) an
 the compiled ones (``messages.js``).
 
 It is also possible to merge the translated catalogs into a single file per locale
-by specifying :conf:`mergePath`. For example if :conf:`mergePath` is assigned 
+by specifying :conf:`catalogsMergePath`. For example if :conf:`catalogsMergePath` is assigned
 ``locales/{locale}`` then catalogs will be compiled to ``/locales/cs.js`` and 
 ``/locales/en.js``.
 

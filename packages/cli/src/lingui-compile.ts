@@ -30,7 +30,7 @@ function command(config, options) {
   }
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
-  const doMerge = !!config.mergePath
+  const doMerge = !!config.catalogsMergePath
   let mergedCatalogs = {}
 
   console.error("Compiling message catalogs…")

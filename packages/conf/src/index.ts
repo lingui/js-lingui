@@ -27,7 +27,7 @@ export type LinguiConfig = {
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
-  mergePath?: string
+  catalogsMergePath?: string
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string

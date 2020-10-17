@@ -740,7 +740,7 @@ describe("getCatalogForMerge", function () {
 
   it("should return catalog for merged messages", function () {
     const config = mockConfig({
-      mergePath: "locales/{locale}",
+      catalogsMergePath: "locales/{locale}",
     })
     expect(getCatalogForMerge(config)).toEqual(
       new Catalog(
@@ -757,7 +757,7 @@ describe("getCatalogForMerge", function () {
 
   it("should return catalog with custom name for merged messages", function () {
     const config = mockConfig({
-      mergePath: "locales/{locale}/my/dir",
+      catalogsMergePath: "locales/{locale}/my/dir",
     })
     expect(getCatalogForMerge(config)).toEqual(
       new Catalog(
@@ -772,9 +772,9 @@ describe("getCatalogForMerge", function () {
     )
   })
 
-  it("should throw error if mergePath ends with slash", function () {
+  it("should throw error if catalogsMergePath ends with slash", function () {
     const config = mockConfig({
-      mergePath: "locales/{locale}/bad/path/",
+      catalogsMergePath: "locales/{locale}/bad/path/",
     })
     expect.assertions(1)
     try {
@@ -786,9 +786,9 @@ describe("getCatalogForMerge", function () {
     }
   })
 
-  it("should throw error if {locale} is omitted from mergePath", function () {
+  it("should throw error if {locale} is omitted from catalogsMergePath", function () {
     const config = mockConfig({
-      mergePath: "locales/bad/path",
+      catalogsMergePath: "locales/bad/path",
     })
     expect.assertions(1)
     try {
