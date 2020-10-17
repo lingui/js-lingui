@@ -3,6 +3,7 @@ import React from "react"
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
+const idCounter = {}
 
 // For HTML, certain tags should omit their close tag. We keep a whitelist for
 // those special-case tags.
@@ -67,7 +68,7 @@ function formatElements(
     tree.push(
       React.cloneElement(
         element,
-        { key: index },
+        { key: uniqueId("$lingui$") },
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
@@ -103,6 +104,16 @@ function getElements(parts) {
   return [[parseInt(paired || unpaired), children || "", after]].concat(
     getElements(parts.slice(4, parts.length))
   )
+}
+
+function uniqueId(prefix = "$lingui$") {
+  if (!idCounter[prefix]) {
+    idCounter[prefix] = 0
+  }
+
+  const id =++idCounter[prefix]
+
+  return `${prefix}_${id}`
 }
 
 export { formatElements }
