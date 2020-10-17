@@ -65,7 +65,7 @@ export function Trans(props: TransProps) {
     : null
 
   if (render === null || render === undefined) {
-    return translation
+    return <>{translation}</>
   } else if (typeof render === "string") {
     // Built-in element: h1, p
     return React.createElement(render, {}, translation)
