@@ -3,7 +3,6 @@ import React from "react"
 // match <0>paired</0> and <1/> unpaired tags
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
-const idCounter = {}
 
 // For HTML, certain tags should omit their close tag. We keep a whitelist for
 // those special-case tags.
@@ -37,6 +36,7 @@ function formatElements(
   value: string,
   elements: { [key: string]: React.ReactElement<any> } = {}
 ): string | Array<any> {
+  const uniqueId = makeCounter(0, '$lingui$')
   const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return
@@ -106,14 +106,6 @@ function getElements(parts) {
   )
 }
 
-function uniqueId(prefix: "$lingui$" = "$lingui$") {
-  if (!idCounter[prefix]) {
-    idCounter[prefix] = 0
-  }
-
-  const id =++idCounter[prefix]
-
-  return `${prefix}_${id}`
-}
+const makeCounter = (count = 0, prefix = "") => () => `${prefix}_${count++}`
 
 export { formatElements }
