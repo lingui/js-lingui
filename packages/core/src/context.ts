@@ -1,4 +1,4 @@
-import { Locales } from "./i18n"
+import { CompiledMessage, Locales } from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
@@ -69,7 +69,7 @@ function context({ locale, locales, values, formats, localeData }) {
 }
 
 export function interpolate(
-  translation: string | Array<string | [string, string?, Object?]>,
+  translation: CompiledMessage,
   locale: string,
   locales: Locales,
   localeData: Object

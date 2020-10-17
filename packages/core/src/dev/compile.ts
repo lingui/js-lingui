@@ -1,5 +1,6 @@
 import { parse } from "messageformat-parser"
 import { isString } from "../essentials"
+import { CompiledMessage } from "../i18n"
 
 // [Tokens] -> (CTX -> String)
 function processTokens(tokens) {
@@ -48,7 +49,7 @@ function processTokens(tokens) {
 // Message -> (Params -> String)
 export default function compile(
   message: string
-): Array<string | [string, string?, Object?]> | string {
+): CompiledMessage {
   try {
     return processTokens(parse(message))
   } catch (e) {
