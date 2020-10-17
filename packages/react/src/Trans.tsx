@@ -10,9 +10,8 @@ export type TransRenderProps = {
 }
 
 export type TransRenderType =
-  | string
-  | React.ElementType<TransRenderProps>
-  | React.ReactElement
+  React.FunctionComponent<TransRenderProps> |
+  ((o: TransRenderProps) => React.ComponentType<TransRenderProps>);
 
 export type TransProps = {
   id: string
@@ -20,7 +19,7 @@ export type TransProps = {
   values: Object
   components: { [key: string]: React.ElementType | any }
   formats?: Object
-  render?: TransRenderType
+  render?: (o: TransRenderProps) => TransRenderType
 }
 
 export function Trans(props: TransProps) {
@@ -75,7 +74,7 @@ export function Trans(props: TransProps) {
   }
 
   // Component: (props) => <a title={props.translation}>x</a>
-  return React.createElement(render as React.ElementType<TransRenderProps>, {
+  return render({
     id,
     translation,
     message,
