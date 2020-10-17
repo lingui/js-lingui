@@ -20,7 +20,7 @@ export type AllLocaleData = Record<Locale, LocaleData>
 
 export type CompiledMessage =
   | string
-  | Array<string | [string, string?, (string | Object)?]>
+  | Array<string | Array<string | (string | undefined) | Record<string, unknown>>>;
 
 export type Messages = Record<string, CompiledMessage>
 
