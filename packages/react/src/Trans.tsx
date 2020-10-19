@@ -4,19 +4,13 @@ import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
 export type TransRenderProps = {
-  id: string
-  translation: React.ReactNode
-  message: string | null
+  id?: string
+  translation?: React.ReactNode
+  children?: string | any[] | React.ReactNode
+  message?: string | null
 }
 
-export type TransRenderType =
-  string |
-  React.DOMElement<TransRenderProps, any> |
-  React.ReactElement<TransRenderProps> |
-  React.FunctionComponent<TransRenderProps> |
-  ((o: TransRenderProps) => TransRenderType);
-
-export type TransRenderPropsType = TransRenderType & React.ComponentClass<TransRenderProps>
+export type TransRenderType = React.ComponentType<TransRenderProps>;
 
 export type TransProps = {
   id: string
@@ -24,12 +18,13 @@ export type TransProps = {
   values: Object
   components: { [key: string]: React.ElementType | any }
   formats?: Object
-  render?: TransRenderPropsType
+  component?: TransRenderType
+  render?: (opts: TransRenderProps) => TransRenderType
 }
 
 export function Trans(props: TransProps) {
-  const { i18n, defaultRender } = useLingui()
-  const { render = defaultRender, id, message, formats } = props
+  const { i18n, defaultComponent: DefaultComponent } = useLingui()
+  const { render, component: Component, id, message, formats } = props
 
   const values = { ...props.values }
   const components = { ...props.components }
@@ -59,7 +54,7 @@ export function Trans(props: TransProps) {
     })
   }
 
-  const _translation =
+  const _translation: string =
     i18n && typeof i18n._ === "function"
       ? i18n._(id, values, { message, formats })
       : id // i18n provider isn't loaded at all
@@ -68,46 +63,29 @@ export function Trans(props: TransProps) {
     ? formatElements(_translation, components)
     : null
 
-  if (render === null || render === undefined) {
-    return <>{translation}</>
-  } else if (typeof render === "string") {
-    // Built-in element: h1, p
-    return React.createElement(render, {}, translation)
-  } else if (isClassComponent(render as TransRenderPropsType) || isFunctionalComponent(render)) {
-    // We apply the logic of React of:
-    // - Don't call function components. Render them.
-    // If we just use render(), as functional component,
-    // will "work" but not the way you'd expect and it could behave in unexpected ways as you make changes
-    return React.createElement(render as React.ElementType<TransRenderProps>, {
-      id,
-      translation,
-      message
-    })
-  } else if (React.isValidElement(render)) {
-    // Element: <p className="lear' />
-    return React.cloneElement(render, {}, translation)
+  if (typeof render === "string" || typeof Component === "string") {
+    console.error(`Invalid prop 'component' supplied to '<Trans />': the prop is not a valid React component`)
+    return <>{translation}</>;
   }
 
-  // Component: (props) => <a title={props.translation}>x</a>
-  return render({
-    id,
-    translation,
-    message,
-  })
-}
+  if (render && Component) {
+    console.error("You can't use 'component' prop at the same time of 'render', we encourage the use of 'component' prop")
+    return <>{translation}</>;
+  }
 
-export function isClassComponent(Component: React.ComponentClass) {
-  return !!(
-    typeof Component === 'function'
-    && Component.prototype?.isReactComponent
-  );
-}
-
-export function isFunctionalComponent(Component: TransRenderType) {
-  return (
-    typeof Component === 'function'
-    && !Component.prototype?.isReactComponent
-  );
+  if (render && typeof render === "function") {
+    // Component: render={(props) => <a title={props.translation}>x</a>}
+    return render({
+      id,
+      translation,
+      message,
+    });
+  } else if (Component) {
+    // Component: component={Text}
+    return <Component>{translation}</Component>
+  } else {
+    return DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> :<>{translation}</>;
+  }
 }
 
 Trans.defaultProps = {

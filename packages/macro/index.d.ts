@@ -1,6 +1,6 @@
 import type { ComponentType, ReactNode } from "react"
 import type { MessageDescriptor } from "@lingui/core"
-import type { TransRenderType } from "@lingui/react"
+import type { TransRenderType, TransRenderProps } from "@lingui/react"
 
 export function t(
   literals: TemplateStringsArray,
@@ -29,7 +29,8 @@ export function defineMessage(descriptor: MessageDescriptor): MessageDescriptor
 export type TransProps = {
   id?: string
   comment?: string
-  render?: TransRenderType
+  component?: TransRenderType
+  render?: (opts: TransRenderProps) => TransRenderType
 }
 
 export type ChoiceProps = {

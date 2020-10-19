@@ -4,7 +4,7 @@ import { TransRenderType } from "./Trans"
 
 type I18nContext = {
   i18n: I18n
-  defaultRender?: TransRenderType
+  defaultComponent?: TransRenderType
 }
 
 export type I18nProviderProps = I18nContext & {
@@ -46,7 +46,7 @@ export function withI18n(o?: object): <P extends { i18n: I18n }>(Component: Comp
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   i18n,
-  defaultRender,
+  defaultComponent,
   forceRenderOnLocaleChange = true,
   children,
 }) => {
@@ -56,14 +56,14 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * reference identity and suggested workaround is create a wrapper object every time
    * we need to trigger re-render. See https://reactjs.org/docs/context.html#caveats.
    *
-   * Due to this effect we also pass `defaultRender` in the same context, instead
+   * Due to this effect we also pass `defaultComponent` in the same context, instead
    * of creating a separate Provider/Consumer pair.
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
   const makeContext = () => ({
     i18n,
-    defaultRender,
+    defaultComponent,
   })
 
   const [context, setContext] = React.useState<I18nContext>(makeContext())

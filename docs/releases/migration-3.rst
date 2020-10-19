@@ -19,6 +19,8 @@ Minimal required versions are:
 - In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and
   ``description`` to ``comment``.
 
+- In :component:`I18nProvider`, ``defaultRender`` prop was renamed to ``defaultComponent``, and now only accepts Custom Components
+
 - In :component:`Trans`, ``components`` is now an object, not an array. When
   using the low level API, it allows to name the component placeholders:
 
