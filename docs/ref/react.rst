@@ -308,7 +308,7 @@ I18nProvider
    | :prop string        | Function missing: Custom message to be returned when translation is missing |
    :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
 
-``defaultComponent`` has the same meaning as ``render`` in other i18n
+``defaultComponent`` has the same meaning as ``component`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
 

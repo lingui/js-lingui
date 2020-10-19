@@ -92,7 +92,7 @@ components are removed.
 
 If you're using React < 16.2 or you want to keep the previous behavior:
 
-1. Set ``defaultComponent`` prop of :component:`I18nProvider` to ``span``.
+1. Set ``defaultRender`` prop of :component:`I18nProvider` to ``span``.
 2. Wrap children of :component:`I18nProvider` into ``div`` explicitly.
 
 .. code-block:: jsx
@@ -102,7 +102,7 @@ If you're using React < 16.2 or you want to keep the previous behavior:
 
    function App() {
       return (
-         <I18nProvider defaultComponent="span">
+         <I18nProvider defaultRender="span">
             <div>
                // original children of I18nProvider
             </div>
