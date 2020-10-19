@@ -63,14 +63,16 @@ export function Trans(props: TransProps) {
     ? formatElements(_translation, components)
     : null
 
+  const fallback = DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> : <>{translation}</>;
+
   if (typeof render === "string" || typeof Component === "string") {
     console.error(`Invalid prop 'component' supplied to '<Trans />': the prop is not a valid React component`)
-    return <>{translation}</>;
+    return fallback
   }
 
   if (render && Component) {
     console.error("You can't use 'component' prop at the same time of 'render', we encourage the use of 'component' prop")
-    return <>{translation}</>;
+    return fallback
   }
 
   if (render && typeof render === "function") {
@@ -84,7 +86,7 @@ export function Trans(props: TransProps) {
     // Component: component={Text}
     return <Component>{translation}</Component>;
   } else {
-    return DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> : <>{translation}</>;
+    return fallback
   }
 }
 
