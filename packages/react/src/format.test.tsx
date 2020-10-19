@@ -76,4 +76,11 @@ describe("formatElements", function () {
     expect(html(formatElements("text<0/>", {0: <span />})))
         .toEqual("text<span></span>")
   })
+
+  it("should create two children with different keys", function() {
+    const cleanPrefix = (str: string): number => Number.parseInt(str.replace("$lingui$_", ""), 10)
+    const childElements = formatElements("<div><0/><0/></div>", { 0: <span>hi</span> }) as Array<any>
+    const childKeys = childElements.map(el => el?.key).filter(Boolean);
+    expect(cleanPrefix(childKeys[0])).toBeLessThan(cleanPrefix(childKeys[1]))
+  })
 })

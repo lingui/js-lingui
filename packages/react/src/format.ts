@@ -36,6 +36,7 @@ function formatElements(
   value: string,
   elements: { [key: string]: React.ReactElement<any> } = {}
 ): string | Array<any> {
+  const uniqueId = makeCounter(0, '$lingui$')
   const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return
@@ -67,7 +68,7 @@ function formatElements(
     tree.push(
       React.cloneElement(
         element,
-        { key: index },
+        { key: uniqueId() },
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
@@ -104,5 +105,7 @@ function getElements(parts) {
     getElements(parts.slice(4, parts.length))
   )
 }
+
+const makeCounter = (count = 0, prefix = "") => () => `${prefix}_${count++}`
 
 export { formatElements }
