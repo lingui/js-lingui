@@ -10,7 +10,7 @@ export type TransRenderProps = {
   message?: string | null
 }
 
-export type TransRenderType = React.ComponentType<TransRenderProps>;
+export type TransRenderType = React.ComponentType<TransRenderProps> | React.ElementType<TransRenderProps>;
 
 export type TransProps = {
   id: string
