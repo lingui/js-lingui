@@ -82,9 +82,9 @@ export function Trans(props: TransProps) {
     });
   } else if (Component) {
     // Component: component={Text}
-    return <Component>{translation}</Component>
+    return <Component>{translation}</Component>;
   } else {
-    return DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> :<>{translation}</>;
+    return DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> : <>{translation}</>;
   }
 }
 
