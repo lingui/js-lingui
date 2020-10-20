@@ -113,9 +113,8 @@ function command(config, options) {
           console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
     })
-
-    return true
   })
+  return true
 }
 
 if (require.main === module) {
