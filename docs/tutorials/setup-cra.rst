@@ -28,6 +28,17 @@ Install
       yarn add --dev @lingui/cli @lingui/macro @babel/core
       yarn add @lingui/react
 
+   In case you get errors with ``import/no-extraneous-dependencies`` eslint rule feel free to add the dependencies as non-dev
+
+   .. code-block:: shell
+
+      npm install --save-dev @lingui/cli @babel/core
+      npm install --save @lingui/macro @lingui/react
+
+      # or using Yarn
+      yarn add --dev @lingui/cli @babel/core
+      yarn add @lingui/macro @lingui/react
+
 3. Create ``.linguirc`` file with LinguiJS configuration in root of your project (next
    to ``package.json``):
 

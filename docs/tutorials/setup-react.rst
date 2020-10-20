@@ -26,6 +26,19 @@ Install
       yarn add --dev @lingui/macro babel-plugin-macros  # required for macros
       yarn add @lingui/react
 
+   In case you get errors with ``import/no-extraneous-dependencies`` eslint rule feel free to add the dependencies as non-dev
+
+   .. code-block:: shell
+
+      npm install --save-dev @lingui/cli @babel/core
+      npm install --save-dev babel-plugin-macros  # required for macros
+      npm install --save @lingui/macro @lingui/react
+
+      # or using Yarn
+      yarn add --dev @lingui/cli @babel/core
+      yarn add --dev babel-plugin-macros  # required for macros
+      yarn add @lingui/macro @lingui/react
+
 2. Add ``macros`` plugin to Babel config (e.g: ``.babelrc``):
 
    .. code-block:: json
