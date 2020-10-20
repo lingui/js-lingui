@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState } from 'react';
 import { Trans, Plural } from "@lingui/macro";
 
-import { i18n, locales } from './i18n';
+import { locales, dynamicActivate, i18n } from './i18n';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,7 +13,7 @@ function App() {
         <h3><Trans>Language switcher example: </Trans></h3>
         <div className="lang-container">
           {Object.values(locales).map((locale, index) => (
-            <button type="button" onClick={() => i18n.activate(Object.keys(locales)[index])} key={locale}>
+            <button type="button" onClick={() => dynamicActivate(Object.keys(locales)[index])} key={locale}>
               {locale}
             </button>
           ))}

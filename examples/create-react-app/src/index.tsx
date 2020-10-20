@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import { I18nProvider } from '@lingui/react'
-import { i18n, defaultLocale } from "./i18n";
+import { defaultLocale, dynamicActivate, i18n } from './i18n';
 
-i18n.activate(defaultLocale)
+const I18nApp = () => {
+  useEffect(() => {
+    // With this method we dynamically load the catalogs
+    dynamicActivate(defaultLocale)
+  }, [])
+
+  return (
+    <I18nProvider i18n={i18n}>
+      <App  />
+    </I18nProvider>
+  )
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <I18nProvider i18n={i18n}>
-      <App />
-    </I18nProvider>
+    <I18nApp />
   </React.StrictMode>,
   document.getElementById('root')
 );
