@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
 import './App.css';
+import React, { useState } from 'react';
 import { Trans, Plural } from "@lingui/macro";
 
 import { i18n, locales } from './i18n';
-import { ObjectFlags } from 'typescript';
 
 function App() {
   const [count, setCount] = useState(0);
