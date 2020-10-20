@@ -301,67 +301,15 @@ I18nProvider
 
 .. component:: I18nProvider
 
-   :prop string language: Active language
-   :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
-   :prop object catalogs: Message catalogs
-   | :prop React.Element | React.Class defaultComponent: Default element to render translation         |
-   | :prop string        | Function missing: Custom message to be returned when translation is missing |
    :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
+   :prop I18n i18n: 
+   :prop React.ReactNode children: React Children node
+   :prop React.ComponentType defaultComponent: A React component for rendering <Trans> within this component (Not required)
+
 
 ``defaultComponent`` has the same meaning as ``component`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
-
-``language`` sets the active language and loads corresponding message catalog.
-``locales`` are used for date/number formatting for countries or regions which use
-different formats for the same language (e.g. arabic numerals have several
-representations).
-
-``missing`` is used as a default translation when translation is missing. It might
-be also a function, which is called with language and message ID. This is useful
-for debugging:
-
-.. code-block:: jsx
-
-   import React from 'react';
-   import { I18nProvider } from '@lingui/react';
-   import { i18n } from "@lingui/core"
-   import { en } from 'make-plural/plurals'
-
-   i18n.loadLocaleData('en', { plurals: en })
-   i18n.load('en', messages)
-   i18n.activate('en')
-
-   const App = ({ language} ) => {
-        return (
-            <I18nProvider i18n={i18n}>
-               {/* This will render as 🚨*/}
-               <Trans id="missing translation" />
-            </I18nProvider>
-        );
-   }
-
-``catalogs`` is a type of ``Catalogs``:
-
-.. code-block:: jsx
-
-   // One catalog per language
-   type Catalogs = {
-     [language: string]: Catalog
-   }
-
-   // Catalog contains messages and language data (i.e: plurals)
-   type Catalog = {
-     messages: Messages,
-     languageData?: {
-       plurals: Function
-     }
-   }
-
-   // Message is either function (compiled message) or string
-   type Messages = {
-     [messageId: string]: string | Function
-   }
 
 ``forceRenderOnLocaleChange`` is true by default and it ensures that:
 
@@ -380,15 +328,21 @@ top-level application component. However, if the ``language`` is stored in a
 
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
+   import { setupI18n } from '@lingui/core';
+   import { messages as MessagesEn } from './locales/en/messages.js';
 
-   const App = ({ language} ) => {
-        const catalog = require(`locales/${language}.js`);
+   const i18n = setupI18n();
+   i18n.load({
+      en: messagesEn,
+   });
+   i18n.activate('en');
 
-        return (
-            <I18nProvider language={language} catalogs={{ [language]: catalog }}>
-               // rest of the app
-            </I18nProvider>
-        );
+   const App = () => {
+      return (
+         <I18nProvider i18n={i18n}>
+            // rest of the app
+         </I18nProvider>
+      );
    }
 
 I18n
@@ -403,7 +357,7 @@ may be lambda component, regular component or React element. This pattern is
 known as `render prop component <https://reactjs.org/docs/render-props.html>`_.
 
 If want to use ``i18n`` object in instance or lifecycle methods, consider using
-:js:func:`withI18n` high-order component.
+:js:func:`withI18n` high-order component or import it from ``@lingui/core``
 
 ``i18nHash`` is useful when rendering pure components or elements as it contains
 hash of active language and catalogs. Instead of comparing ``i18n`` object it's
@@ -449,12 +403,7 @@ Using components and elements:
 withI18n
 --------
 
-.. js:function:: withI18n(options?)
-
-   :param Object options: Configuration for high-order component
-   :param bool update: Subscribe to catalog and activate language updates
-   :param bool withHash: Pass unique ``i18nHash`` prop to force underlying PureComponent re-render on catalog and active language update
-   :param bool withRef: Returns reference to wrapped instance in ``getWrappedInstance``
+.. js:function:: withI18n()
 
 :js:func:`withI18n` is a higher-order component which injects ``i18n`` object to
 wrapped component. ``i18n`` object is needed when you have to access plain JS
