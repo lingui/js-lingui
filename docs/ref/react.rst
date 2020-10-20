@@ -18,48 +18,56 @@ Rendering of Translations
 -------------------------
 
 All i18n components render translation as a text without a wrapping tag. This can be
-customized in two different ways: globally: using ``defaultRender`` prop on
-:component:`I18nProvider` component; or locally: using ``render`` prop on i18n
-components.
+customized in three different ways:
+   - globally: using ``defaultComponent`` prop on :component:`I18nProvider` component;
+   - locally: using ``render`` prop or ``component`` on i18 components
 
 Global Configuration
 ^^^^^^^^^^^^^^^^^^^^
 
-Default rendering component can be set using ``defaultRender`` prop in
+Default rendering component can be set using ``defaultComponent`` prop in
 :component:`I18nProvider`. The main use case for this is rendering translations
 in ``<Text>`` component in React Native.
 
-It's possible to pass in either a string for built-in elements (`span`, `h1`),
-React elements or React classes. This prop has the same type as ``render`` prop on
+.. |ss| raw:: html
+
+    <strike>
+
+.. |se| raw:: html
+
+    </strike>
+
+|ss| It's possible to pass in either a string for built-in elements (`span`, `h1`) |se|,
+React elements or React classes. This prop has the same type as ``render`` and ``component`` prop on
 i18n components described below.
 
 Local Configuration
 ^^^^^^^^^^^^^^^^^^^
 
-============= ==================================== ============================
-Prop name     Type                                 Description
-============= ==================================== ============================
-``className`` string                               Class name to be added to ``<span>`` element
-``render``    Element, Component, string, ``null`` Custom wrapper element to render translation
-============= ==================================== ============================
+============= ========================================  ============================
+Prop name     Type                                         Description
+============= ========================================  ============================
+``className`` string                                       Class name to be added to ``<span>`` element
+``render``    `Function(props) -> Element | Component`     Custom wrapper rendered as function
+``component``  Component, ``null``                         Custom wrapper element to render translation
+============= ========================================  ============================
 
 ``className`` is used only for built-in components (when `render` is string).
 
-When ``render`` is **React.Element** or **string** (built-in tags), it is
-cloned with the ``translation`` passed in as its child:
+``Function(props)`` props returns the translation, an id, and a message.
+
+When ``component`` is **React.Element** |ss| or **string** (built-in tags) |se|, it is
+rendered with the ``translation`` passed in as its child:
 
 .. code-block:: jsx
 
-   // built-in tags
-   <Trans render="h1">Heading</Trans>;
-   // renders as <h1>Heading</h1>
+   import { Text } from "react-native";
 
-   // custom elements
-   <Trans render={<Link to="/docs" />}>Link to docs</Trans>;
-   // renders as <Link to="/docs">Link to docs</Link>
+   <Trans component={Text}>Link to docs</Trans>;
+   // renders as <Text>Link to docs</Text>
 
-Using **React.Component** (or stateless component) in ``render`` prop is useful
-to get more control over the rendering of translation. Component passed to
+To get more control over the rendering of translation, use instead the ``render`` method with 
+**React.Component** (or stateless component). Component passed to
 ``render`` will receive the translation value as a ``translation`` prop:
 
 .. code-block:: jsx
@@ -70,13 +78,16 @@ to get more control over the rendering of translation. Component passed to
    </Trans>;
    // renders as <Icon label="Sign in" />
 
-``render`` also accepts ``null`` value to render
+``render`` or ``component`` also accepts ``null`` value to render
 string without wrapping component. This can be used to override
-custom ``defaultRender`` config.
+custom ``defaultComponent`` config.
 
 .. code-block:: jsx
 
    <Trans render={null}>Heading</Trans>;
+   // renders as "Heading"
+
+   <Trans component={null}>Heading</Trans>;
    // renders as "Heading"
 
 Components
@@ -293,11 +304,11 @@ I18nProvider
    :prop string language: Active language
    :prop string|string[] locales: List of locales used for date/number formatting. Defaults to active language.
    :prop object catalogs: Message catalogs
-   :prop React.Element|React.Class|string defaultRender: Default element to render translation
-   :prop string|Function missing: Custom message to be returned when translation is missing
+   | :prop React.Element | React.Class defaultComponent: Default element to render translation         |
+   | :prop string        | Function missing: Custom message to be returned when translation is missing |
    :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
 
-``defaultRender`` has the same meaning as ``render`` in other i18n
+``defaultComponent`` has the same meaning as ``component`` in other i18n
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
 

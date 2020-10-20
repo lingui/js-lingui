@@ -40,6 +40,27 @@ describe("Trans component", function () {
     console.error = originalConsole
   })
 
+  it("should throw a console.error about deprecated usage of string built-in", function () {
+    const originalConsole = console.error
+    console.error = jest.fn()
+
+    renderWithI18n(<Trans render="span" id="Just a text" />)
+    expect(console.error).toHaveBeenCalled()
+
+    renderWithI18n(<Trans render="span" id="Just a text" />)
+    expect(console.error).toHaveBeenCalledTimes(2)
+    console.error = originalConsole
+  })
+
+  it("should throw a console.error if using twice props", function () {
+    const originalConsole = console.error
+    console.error = jest.fn()
+
+    renderWithI18n(<Trans render="div" component="span" id="Just a text" />)
+    expect(console.error).toHaveBeenCalled()
+    console.error = originalConsole
+  })
+
   it("should render default string", function () {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
@@ -85,7 +106,8 @@ describe("Trans component", function () {
   })
 
   it("should render translation inside custom component", function () {
-    const html1 = html(<Trans render={<p className="lead" />} id="Original" />)
+    const Component = (props) => <p className="lead">{props.children}</p>
+    const html1 = html(<Trans component={Component} id="Original" />)
     const html2 = html(
       <Trans
         render={({ translation }) => <p className="lead">{translation}</p>}
@@ -94,7 +116,7 @@ describe("Trans component", function () {
     )
 
     expect(html1).toEqual('<p class="lead">Původní</p>')
-    expect(html2).toEqual(html1)
+    expect(html2).toEqual('<p class="lead">Původní</p>')
   })
 
   it("should render custom format", function () {
@@ -120,14 +142,9 @@ describe("Trans component", function () {
       expect(txt).toEqual("Just a text")
     })
 
-    it("should render with built-in element", function () {
-      const span = html(<Trans render="span" id="Just a text" />)
-      expect(span).toEqual("<span>Just a text</span>")
-    })
-
     it("should render custom element", function () {
-      const element = html(<Trans render={<h1 />} id="Headline" />)
-      expect(element).toEqual("<h1>Headline</h1>")
+      const element = html(<Trans render={({ id, translation }) => <h1 id={id}>{translation}</h1>} id="Headline" />)
+      expect(element).toEqual(`<h1 id="Headline">Headline</h1>`)
     })
 
     it("should render function", function () {
@@ -150,13 +167,39 @@ describe("Trans component", function () {
       })
     })
 
-    it("should take default render element", function () {
+    it("should take defaultComponent prop with a custom component", function () {
+      const ComponentFC: React.FunctionComponent = (props: { children?: React.ReactNode }) => {
+        return (<div>{props.children}</div>)
+      }
       const span = render(
-        <I18nProvider i18n={i18n} defaultRender="p">
+        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
           <Trans id="Just a text" />
         </I18nProvider>
       ).container.innerHTML
-      expect(span).toEqual("<p>Just a text</p>")
+      expect(span).toEqual(`<div>Just a text</div>`)
+    })
+  })
+
+  describe("component prop rendering", function() {
+    it("should render class component as simple prop", function () {
+      class ClassComponent extends React.Component {
+        render() {
+          return (
+            <div>Headline</div>
+          )
+        }
+      }
+      const element = html(<Trans component={ClassComponent} id="Headline" />)
+      expect(element).toEqual("<div>Headline</div>")
+    })
+
+    it("should render functional component as simple prop", function () {
+      const ComponentFC: React.FunctionComponent = (props: { id: any, children?: React.ReactNode }) => {
+        const [state] = React.useState("value")
+        return <div id={props.id}>{state}</div>
+      }
+      const element = html(<Trans component={ComponentFC} id="Headline" />)
+      expect(element).toEqual(`<div>value</div>`)
     })
   })
 })

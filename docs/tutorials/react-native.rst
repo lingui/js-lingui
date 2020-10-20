@@ -207,7 +207,7 @@ As described in the :ref:`reference <rendering-translations>`, by default, trans
   <Text><Trans>Message Inbox</Trans></Text>
 
 
-You'll surely agree the :component:`Text` component looks a little redundant. That's why the :component:`I18nProvider` component accepts a ``defaultRender`` prop. Just supply the :component:`Text` component as the ``defaultRender`` prop and the previous example can be simplified to: 
+You'll surely agree the :component:`Text` component looks a little redundant. That's why the :component:`I18nProvider` component accepts a ``defaultComponent`` prop. Just supply the :component:`Text` component as the ``defaultComponent`` prop and the previous example can be simplified to: 
 
 .. code-block:: jsx
 
