@@ -53,7 +53,7 @@ Here's the full source of ``i18n.ts`` logic:
 
 .. code-block:: jsx
 
-  import { setupI18n } from "@lingui/core";
+  import { i18n } from '@lingui/core';
   import { en, cs } from 'make-plural/plurals'
 
   export const locales = {
@@ -61,7 +61,6 @@ Here's the full source of ``i18n.ts`` logic:
     cs: "Česky",
   };
   export const defaultLocale = "en";
-  export const i18n = setupI18n();
 
   i18n.loadLocaleData({
     en: { plurals: en },
@@ -86,8 +85,9 @@ Here's the full source of ``i18n.ts`` logic:
   import React, { useEffect } from 'react';
   import App from './App';
 
-  import { I18nProvider } from '@lingui/react'
-  import { defaultLocale, dynamicActivate, i18n } from './i18n';
+  import { I18nProvider } from '@lingui/react';
+  import { i18n } from '@lingui/core';
+  import { defaultLocale, dynamicActivate } from './i18n';
 
   const I18nApp = () => {
     useEffect(() => {

@@ -400,6 +400,21 @@ Using components and elements:
    }
 
 
+Using i18n from ``@lingui/core`` instance:
+
+.. code-block:: jsx
+
+   import React from "react"
+   import { i18n } from "@lingui/core"
+   import { t } from "@lingui/macro"
+
+   function RenderingElements() {
+      return (
+         <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
+      )
+   }
+
+
 withI18n
 --------
 
