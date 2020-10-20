@@ -188,11 +188,11 @@ export class I18n extends EventEmitter<Events> {
     )(values, formats)
   }
 
-  date(value: string | Date, format: Intl.DateTimeFormatOptions): string {
+  date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
     return date(this.locales || this.locale, format)(value)
   }
 
-  number(value: number, format: Intl.NumberFormatOptions): string {
+  number(value: number, format?: Intl.NumberFormatOptions): string {
     return number(this.locales || this.locale, format)(value)
   }
 }
