@@ -1,8 +1,9 @@
 import './App.css';
 import React, { useState } from 'react';
 import { Trans, Plural } from "@lingui/macro";
+import { i18n } from "@lingui/core";
 
-import { locales, dynamicActivate, i18n } from './i18n';
+import { locales, dynamicActivate } from './i18n';
 
 function App() {
   const [count, setCount] = useState(0);

@@ -1,4 +1,4 @@
-import { setupI18n } from "@lingui/core";
+import { i18n } from "@lingui/core";
 import { en, cs } from 'make-plural/plurals'
 
 export const locales = {
@@ -6,7 +6,6 @@ export const locales = {
   cs: "Česky",
 };
 export const defaultLocale = "en";
-export const i18n = setupI18n();
 
 i18n.loadLocaleData({
   en: { plurals: en },
