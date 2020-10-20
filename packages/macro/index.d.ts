@@ -8,6 +8,7 @@ export function t(
 ): string
 
 export type ChoiceOptions<T = string> = {
+  [digit: number]: T,
   offset?: number
   zero?: T
   one?: T
