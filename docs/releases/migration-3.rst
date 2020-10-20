@@ -2,6 +2,9 @@
 Migration guide from 2.x to 3.x
 ********************************
 
+> ⚠️ LinguiJS v3 is in pre-release.
+> Migration steps mentiond in this document do not apply to your setup unless you have specifically chosen to use the pre release version.
+
 Backward incompatible changes
 =============================
 
