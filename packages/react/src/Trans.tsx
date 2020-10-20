@@ -10,7 +10,9 @@ export type TransRenderProps = {
   message?: string | null
 }
 
-export type TransRenderType = React.ComponentType<TransRenderProps> | React.ElementType<TransRenderProps>;
+export type TransRenderType =
+  | React.ComponentType<TransRenderProps>
+  | React.ElementType<TransRenderProps>
 
 export type TransProps = {
   id: string
@@ -23,8 +25,8 @@ export type TransProps = {
 }
 
 export function Trans(props: TransProps) {
-  const { i18n, defaultComponent: DefaultComponent } = useLingui()
-  const { render, component: Component, id, message, formats } = props
+  const { i18n, defaultComponent } = useLingui()
+  const { render, component, id, message, formats } = props
 
   const values = { ...props.values }
   const components = { ...props.components }
@@ -63,31 +65,39 @@ export function Trans(props: TransProps) {
     ? formatElements(_translation, components)
     : null
 
-  const fallback = DefaultComponent ? <DefaultComponent>{translation}</DefaultComponent> : <>{translation}</>;
+  const FallbackComponent = defaultComponent || React.Fragment
 
-  if (typeof render === "string" || typeof Component === "string") {
-    console.error(`Invalid prop 'component' supplied to '<Trans />': the prop is not a valid React component`)
-    return fallback
+  // Validation of `render` and `component` props
+  if (render && component) {
+    console.error(
+      "You can't use both `component` and `render` prop at the same time. `component` is ignored."
+    )
+  } else if (render && typeof render !== "function") {
+    console.error(
+      `Invalid value supplied to prop \`render\`. It must be a function, provided ${render}`
+    )
+  } else if (component && typeof component !== "function") {
+    // Apparently, both function components and class components are functions
+    // See https://stackoverflow.com/a/41658173/1535540
+    console.error(
+      `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
+    )
+    return <FallbackComponent>{translation}</FallbackComponent>
   }
 
-  if (render && Component) {
-    console.error("You can't use 'component' prop at the same time of 'render', we encourage the use of 'component' prop")
-    return fallback
-  }
-
-  if (render && typeof render === "function") {
+  // Rendering using a render prop
+  if (typeof render === "function") {
     // Component: render={(props) => <a title={props.translation}>x</a>}
     return render({
       id,
       translation,
       message,
-    });
-  } else if (Component) {
-    // Component: component={Text}
-    return <Component>{translation}</Component>;
-  } else {
-    return fallback
+    })
   }
+
+  // `component` prop has a higher precedence over `defaultComponent`
+  const Component = component || FallbackComponent
+  return <Component>{translation}</Component>
 }
 
 Trans.defaultProps = {
