@@ -20,12 +20,12 @@ Setup
    or similar framework which already has it.
 
 We are using the `Dynamic Import() Proposal <https://github.com/tc39/proposal-dynamic-import>`_
-to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
-``babel-plugin-dynamic-import-node`` to make it work. Also, the code examples given here make use of ``babel-plugin-transform-class-properties``
+to ECMAScript. We need to install ``@babel/plugin-@babel/plugin-syntax-dynamic-import`` and
+``babel-plugin-dynamic-import-node`` to make it work. Also, the code examples given here make use of ``@babel/plugin-proposal-class-properties``
 
 .. code-block:: shell
 
-   yarn add --dev babel-plugin-syntax-dynamic-import babel-plugin-dynamic-import-node babel-plugin-transform-class-properties
+   yarn add --dev @babel/plugin-@babel/plugin-syntax-dynamic-import babel-plugin-dynamic-import-node @babel/plugin-proposal-class-properties
 
 .. warning::
 
@@ -36,8 +36,8 @@ to ECMAScript. We need to install ``babel-plugin-syntax-dynamic-import`` and
    // .babelrc
    {
      "plugins": [
-       "syntax-dynamic-import",
-       "transform-class-properties"
+       "@babel/plugin-syntax-dynamic-import",
+       "@babel/plugin-proposal-class-properties"
      ],
      "env": {
        "test": {

@@ -325,10 +325,16 @@ for debugging:
 
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
+   import { i18n } from "@lingui/core"
+   import { en } from 'make-plural/plurals'
+
+   i18n.loadLocaleData('en', { plurals: en })
+   i18n.load('en', messages)
+   i18n.activate('en')
 
    const App = ({ language} ) => {
         return (
-            <I18nProvider language={language} missing="🚨">
+            <I18nProvider i18n={i18n}>
                {/* This will render as 🚨*/}
                <Trans id="missing translation" />
             </I18nProvider>

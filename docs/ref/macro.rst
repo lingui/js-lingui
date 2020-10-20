@@ -90,10 +90,12 @@ Babel macros require babel-plugin-macros_ to work. If you use a framework
 (for example GatsbyJS, Create React App >2.0) you might already have macros enabled.
 Otherwise install it as any other Babel plugin:
 
-1. Install ``babel-plugin-macros`` and ``@lingui/macro`` as a development dependency::
+1. Install ``babel-plugin-macros`` as a dev dependency and ``@lingui/macro`` as dependency::
 
-      npm install --save-dev babel-plugin-macros @lingui/macro
-      # yarn add --dev babel-plugin-macros @lingui/macro
+      npm install --save-dev babel-plugin-macros
+      npm install --save @lingui/macro
+      # yarn add --dev babel-plugin-macros
+      # yarn add @lingui/macro
 
 2. Add ``macros`` to the top of plugins section in your Babel config.
 
@@ -403,7 +405,7 @@ render
 
 Custom component to render translation into. This prop is directly passed to
 :component:`Trans` component from :doc:`@lingui/react <react>`. See
-`rendering of translations <rendering-translations>`_ for more info.
+`rendering of translations <react.html#rendering-translations>`_ for more info.
 
 Trans
 ^^^^^
