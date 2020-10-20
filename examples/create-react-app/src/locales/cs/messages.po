@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#: src/App.tsx:26
+msgid "Date formatter example:"
+msgstr "Příklad formátovače data:"
+
+#: src/App.tsx:22
+msgid "Decrement"
+msgstr "Úbytek"
+
+#: src/App.tsx:34
+msgid "I have a balance of {0}"
+msgstr "Mám zůstatek {0}"
+
+#: src/App.tsx:19
+msgid "Increment"
+msgstr "Přírůstek"
+
+#: src/App.tsx:10
+msgid "Language switcher example:"
+msgstr "Příklad přepínače jazyků:"
+
+#: src/App.tsx:32
+msgid "Number formatter example:"
+msgstr "Příklad formátovače čísel:"
+
+#: src/App.tsx:16
+msgid "Plurals example:"
+msgstr "Příklad množného čísla:"
+
+#: src/App.tsx:28
+msgid "Today is {0}"
+msgstr "Dnes je {0}"
+
+#: src/App.tsx:25
+msgid "{count, plural, zero {There're no books} one {There's one book} other {There're # books}}"
+msgstr "{count, plural, zero {Nejsou žádné knihy} one {Je tu jedna kniha} other {Existuje # knih}}"

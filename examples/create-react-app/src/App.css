@@ -3,8 +3,7 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
 }
 
@@ -19,15 +18,19 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+
+.lang-container {
+  display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.lang-container button {
+  margin: 1rem;
+  background: rgb(164, 13, 13);
+  color: white;
+  border-radius: 1rem;
+  box-shadow: none;
+  border: 0;
+  padding: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
 }
