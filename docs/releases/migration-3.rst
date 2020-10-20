@@ -16,10 +16,17 @@ Minimal required versions are:
 
 - ``<I18n>`` render-prop component was removed in favor of :js:func:`useLingui` hook.
 
+- In :component:`I18nProvider`, ``defaultRender`` prop was renamed to
+  ``defaultComponent``, and now only accepts Custom Components
+
 - In :component:`Trans`, ``defaults`` prop was renamed to ``message`` and
   ``description`` to ``comment``.
 
-- In :component:`I18nProvider`, ``defaultRender`` prop was renamed to ``defaultComponent``, and now only accepts Custom Components
+- In :component:`Trans`, ``render`` prop only accepts render-prop function
+  which is used to render translation.
+
+- In :component:`Trans`, new prop ``component`` accepts React component which
+  is used to render transaltion.
 
 - In :component:`Trans`, ``components`` is now an object, not an array. When
   using the low level API, it allows to name the component placeholders:
