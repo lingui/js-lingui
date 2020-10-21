@@ -2,8 +2,7 @@
 Typescript
 **********
 
-Typescript support is in progress. Please follow `typescript label <https://github.com/lingui/js-lingui/issues?q=is%3Aissue+label%3A%22%F0%9F%8C%B1+typescript%22+is%3Aopen>`_
-in GitHub to see latest status.
+Lingui supports typescript out of the box since version ``3.0.0``. Feel free to submit any query you find related to typescript on Github Issues
 
 Webpack setup
 =============
@@ -65,6 +64,10 @@ otherwise compiled catalogs can't be imported using ES ``import``, but rather Co
 
 Type definitions
 ================
+
+Since version ``3.0.0`` types are already inside ``@lingui`` modules, so you don't need to install any external dependency related to types.
+
+**For earlier versions**:
 
 `Jeow Li Huan <https://github.com/huan086>`_ wrote type definition for ``@lingui/core``
 and ``@lingui/react``:

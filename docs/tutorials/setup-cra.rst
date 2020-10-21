@@ -21,22 +21,22 @@ Install
 
    .. code-block:: shell
 
-      npm install --save-dev @lingui/cli @lingui/macro @babel/core
+      npm install --save-dev @lingui/cli @lingui/macro
       npm install --save @lingui/react
 
       # or using Yarn
-      yarn add --dev @lingui/cli @lingui/macro @babel/core
+      yarn add --dev @lingui/cli @lingui/macro
       yarn add @lingui/react
 
    In case you get errors with ``import/no-extraneous-dependencies`` eslint rule feel free to add the dependencies as non-dev
 
    .. code-block:: shell
 
-      npm install --save-dev @lingui/cli @babel/core
+      npm install --save-dev @lingui/cli
       npm install --save @lingui/macro @lingui/react
 
       # or using Yarn
-      yarn add --dev @lingui/cli @babel/core
+      yarn add --dev @lingui/cli
       yarn add @lingui/macro @lingui/react
 
 3. Create ``.linguirc`` file with LinguiJS configuration in root of your project (next
@@ -48,7 +48,7 @@ Install
          "locales": ["en", "cs", "fr"],
          "sourceLocale": "en",
          "catalogs": [{
-            "path": "src/locales/{locale}",
+            "path": "src/locales/{locale}/messages",
             "include": ["src"]
          }],
          "format": "po"
@@ -56,7 +56,7 @@ Install
 
    This configuration will extract messages from source files inside ``src`` directory
    and write them into message catalogs in ``src/locales`` (English catalog would be
-   in e.g: ``src/locales/en.po``). Finally, PO format is recommended. See
+   in e.g: ``src/locales/en/messages.po``). Finally, PO format is recommended. See
    :conf:`format` documentation for other available formats.
 
 4. Optionally, add following scripts to your ``package.json`` for conveniece:

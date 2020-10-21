@@ -80,9 +80,15 @@ Let's translate the screen heading:
 
  import { I18nProvider } from '@lingui/react'
  import { Trans } from '@lingui/macro'
+ import { i18n } from "@lingui/core"
+ import { en } from 'make-plural/plurals'
 
- <I18nProvider language="en">
-   <YourRootComponent someProp="someValue" />
+ i18n.loadLocaleData('en', { plurals: en })
+ i18n.load('en', messages)
+ i18n.activate('en')
+
+ <I18nProvider i18n={i18n}>
+  <YourRootComponent someProp="someValue" />
  </I18nProvider>
 
  // later on somewhere deep in the React component tree:

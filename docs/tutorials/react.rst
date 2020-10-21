@@ -186,7 +186,7 @@ We're going to use `CLI` again. Run :cli:`extract` command to extract messages::
 
    Add 'locales' to your configuration. See https://lingui.js.org/ref/conf.html#locales
 
-After fixing configuration, let's run :cli:`extract` command again
+After fixing configuration, let's run :cli:`extract` command again::
 
    $ lingui extract
 

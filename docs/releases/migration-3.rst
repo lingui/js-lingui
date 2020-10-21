@@ -29,7 +29,7 @@ Minimal required versions are:
   which is used to render translation.
 
 - In :component:`Trans`, new prop ``component`` accepts React component which
-  is used to render transaltion.
+  is used to render translation.
 
 - In :component:`Trans`, ``components`` is now an object, not an array. When
   using the low level API, it allows to name the component placeholders:

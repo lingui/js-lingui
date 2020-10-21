@@ -25,15 +25,11 @@ import. Here's an example of dynamic import:
 
 .. code-block:: jsx
 
-   class I18nLoader extends React.Component {
-      loadMessages = (language) => {
-         return await import(`@lingui/loader!./locale/${language}/messages.json`)
-      }
-
-      render() {
-         // ...
-      }
+   export async function dynamicActivate(locale: string) {
+      const { messages } = await import(`@lingui/loader!./locales/${locale}/messages.js`)
+      i18n.load(locale, messages)
+      i18n.activate(locale)
    }
 
-See the `guide about dynamic loading catalogs <../guides/dynamic-loading-catalogs>`_
+See the `guide about dynamic loading catalogs <../guides/dynamic-loading-catalogs.html>`_
 for more info.
