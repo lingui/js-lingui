@@ -7,6 +7,10 @@ type I18nContext = {
   defaultComponent?: TransRenderType
 }
 
+type withI18nProps = {
+  i18n: I18n
+}
+
 export type I18nProviderProps = I18nContext & {
   forceRenderOnLocaleChange?: boolean
 }
@@ -25,8 +29,8 @@ export function useLingui(): I18nContext {
   return context
 }
 
-export function withI18n(o?: object): <P extends { i18n: I18n }>(Component: ComponentType<P>) => React.ComponentType<P> {
-  return <P extends { i18n: I18n }>(WrappedComponent: ComponentType<P>) : ComponentType<P> => {
+export function withI18n(o?: object): <P extends withI18nProps>(Component: ComponentType<P>) => React.ComponentType<P> {
+  return <P extends withI18nProps>(WrappedComponent: ComponentType<P>) : ComponentType<P> => {
     return (props) => {
       if (process.env.NODE_ENV !== "production") {
         if (typeof o === "function" || React.isValidElement(o)) {
@@ -43,6 +47,8 @@ export function withI18n(o?: object): <P extends { i18n: I18n }>(Component: Comp
     }
   }
 }
+
+export type { withI18nProps }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   i18n,
