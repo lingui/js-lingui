@@ -93,11 +93,10 @@ Examples of JS macros
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
-|    plural({                                                 |    i18n._(/*i18n*/{                                                |
-|      value: count,                                          |      id: "{count, plural, one {Message} other {Messages}}",        |
-|      one: "Message",                                        |      values: { count }                                             |
-|      other: "Messages"                                      |    })                                                              |
-|    })                                                       |                                                                    |
+|    plural(count, {                                          |    i18n._(/*i18n*/{                                                |
+|       one: "Message",                                       |      id: "{count, plural, one {Message} other {Messages}}",        |
+|       other: "Messages"                                     |      values: { count }                                             |
+|    })                                                       |    })                                                              |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
@@ -310,10 +309,10 @@ are transformed automatically:
 .. code-block:: jsx
 
    import { plural } from "@lingui/macro"
-   const message = i18n._(plural(count, {
+   const message = plural(count, {
       one: `${name} has # friend`,
       other: `${name} has # friends`
-   }))
+   })
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -378,7 +377,7 @@ cardinal plural forms it uses ordinal forms:
 
 .. code-block:: jsx
 
-   import { plural } from "@lingui/macro"
+   import { selectOrdinal } from "@lingui/macro"
    const message = selectOrdinal(count, {
       one: "1st",
       two: "2nd",
@@ -408,7 +407,7 @@ provided in ``options`` object which key matches exactly ``value``:
 
 .. code-block:: jsx
 
-   import { plural } from "@lingui/macro"
+   import { select } from "@lingui/macro"
    const message = select(gender, {
       male: "he",
       female: "she",
