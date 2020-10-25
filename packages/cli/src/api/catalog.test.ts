@@ -413,29 +413,6 @@ describe("Catalog", function () {
       mockFs.restore()
       expect(messages).toMatchSnapshot()
     })
-
-    it("should read file in previous format", function () {
-      mockFs({
-        en: {
-          "messages.json": fs.readFileSync(
-            path.resolve(__dirname, "formats/fixtures/messages.json")
-          ),
-        },
-      })
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "{locale}/messages",
-          include: [],
-        },
-        mockConfig({ prevFormat: "minimal" })
-      )
-
-      const messages = catalog.read("en")
-
-      mockFs.restore()
-      expect(messages).toMatchSnapshot()
-    })
   })
 
   describe("readAll", function () {
@@ -491,7 +468,6 @@ describe("Catalog", function () {
       catalogConfig,
       mockConfig({
         format: "po",
-        prevFormat: "minimal",
       })
     )
     po2json.write("en", po2json.read("en"))
@@ -501,8 +477,6 @@ describe("Catalog", function () {
       catalogConfig,
       mockConfig({
         format: "minimal",
-        prevFormat: "po",
-        localeDir: ".",
       })
     )
     json2po.write("en", json2po.read("en"))

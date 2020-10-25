@@ -226,8 +226,6 @@ Object {
 }
 `;
 
-exports[`Catalog read should read file in previous format 1`] = `null`;
-
 exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 Object {
   cs: Object {

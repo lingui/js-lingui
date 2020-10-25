@@ -15,9 +15,7 @@ export declare type LinguiConfig = {
     extractBabelOptions: Object;
     fallbackLocale: string;
     format: CatalogFormat;
-    prevFormat: CatalogFormat;
     formatOptions: CatalogFormatOptions;
-    localeDir: string;
     locales: string[];
     catalogsMergePath?: string;
     orderBy: OrderBy;
