@@ -69,7 +69,7 @@ transformed into ``i18n._`` call.
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    i18n._(/*i18n*/{ id: "Attachment {name} saved", values: { name }})
 
 .. note::
@@ -84,7 +84,7 @@ and can be used anytime later:
 
 .. code-block:: jsx
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    import { defineMessage } from "@lingui/macro"
 
    // define message
@@ -95,7 +95,7 @@ and can be used anytime later:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
 
    // define message
    const message = /*i18n*/{ id: "Attachment {name} saved", values: { name }})
@@ -234,7 +234,7 @@ in ICU MessageFormat:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: 'Hello World',
    })
@@ -248,7 +248,7 @@ Message variables are supported:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: 'My name is {name}',
      values: { name }
@@ -265,7 +265,7 @@ other expressions are referenced by numeric index:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: 'Today is {0}',
      values: { 0: date(name) }
@@ -296,7 +296,7 @@ used in the source code depends on your source locale (e.g. English has only
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: '{count, plural, one {# Book} other {# Books}}',
      values: { count }
@@ -316,7 +316,7 @@ are transformed automatically:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: '{count, plural, one {{name} has # friend} other {{name} has # friends}}',
      values: { count }
@@ -342,7 +342,7 @@ two counters:
    // ↓ ↓ ↓ ↓ ↓ ↓
    // Generated message was wrapped for better readability
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: `{count, plural,
             one {{numArticles, plural,
@@ -387,7 +387,7 @@ cardinal plural forms it uses ordinal forms:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: '{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}',
      values: { count }
@@ -416,7 +416,7 @@ provided in ``options`` object which key matches exactly ``value``:
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import i18n from "@lingui/core"
+   import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
      id: '{gender, select, male {he} female {she} other {they}}',
      values: { gender }

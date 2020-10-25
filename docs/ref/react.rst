@@ -171,7 +171,7 @@ top-level application component. However, if the ``locale`` is stored in a
 
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
-   import i18n from '@lingui/core';
+   import { i18n } from '@lingui/core';
    import { messages as MessagesEn } from './locales/en/messages.js';
 
    i18n.load({
