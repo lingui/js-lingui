@@ -5,6 +5,37 @@
 ``@lingui/macro`` package provides `babel macros <babel-plugin-macros>`_ which
 transforms JavaScript objects and JSX elements into messages in ICU MessageFormat.
 
+Installation
+============
+
+Babel macros require babel-plugin-macros_ to work. If you use a framework
+(for example GatsbyJS, Create React App >2.0) you might already have macros enabled.
+Otherwise install it as any other Babel plugin:
+
+1. Install ``babel-plugin-macros`` as a dev dependency and ``@lingui/macro`` as dependency::
+
+      npm install --save-dev babel-plugin-macros
+      npm install --save @lingui/macro
+
+      # Or using yarn
+      # yarn add --dev babel-plugin-macros
+      # yarn add @lingui/macro
+
+   .. note::
+
+      It's recommended to install ``@lingui/macro`` package as a production dependency rather than development one
+      to avoid ``import/no-extraneous-dependencies`` errors in ESLint.
+
+2. Add ``macros`` to the top of plugins section in your Babel config:
+
+   .. code-block:: json
+
+      {
+         "plugins": [
+            "macros"
+         ]
+      }
+
 Overview
 ========
 
@@ -148,37 +179,6 @@ Examples of JSX macros
 |    </Trans>                                                 |       message="Refresh inbox"                                      |
 |                                                             |    />                                                              |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
-
-Installation
-============
-
-Babel macros require babel-plugin-macros_ to work. If you use a framework
-(for example GatsbyJS, Create React App >2.0) you might already have macros enabled.
-Otherwise install it as any other Babel plugin:
-
-1. Install ``babel-plugin-macros`` as a dev dependency and ``@lingui/macro`` as dependency::
-
-      npm install --save-dev babel-plugin-macros
-      npm install --save @lingui/macro
-
-      # Or using yarn
-      # yarn add --dev babel-plugin-macros
-      # yarn add @lingui/macro
-
-   .. note::
-
-      It's recommended to install ``@lingui/macro`` package as a production dependency rather than development one
-      to avoid ``import/no-extraneous-dependencies`` errors in ESLint.
-
-2. Add ``macros`` to the top of plugins section in your Babel config:
-
-   .. code-block:: json
-
-      {
-         "plugins": [
-            "macros"
-         ]
-      }
 
 Usage
 =====
