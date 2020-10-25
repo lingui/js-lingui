@@ -26,8 +26,20 @@ const defaultMakeOptions: MakeOptions = {
   orderBy: "messageId",
 }
 
-const defaultMergeOptions: MergeOptions = {
+export const defaultMergeOptions: MergeOptions = {
   overwrite: false,
+}
+
+export const makeCatalog = (config = {}) => {
+  return new Catalog(
+    {
+      name: "messages",
+      path: "{locale}/messages",
+      include: [],
+      exclude: [],
+    },
+    mockConfig(config)
+  )
 }
 
 function makePrevMessage(message = {}): MessageType {
@@ -37,7 +49,7 @@ function makePrevMessage(message = {}): MessageType {
   }
 }
 
-function makeNextMessage(message = {}): ExtractedMessageType {
+export function makeNextMessage(message = {}): ExtractedMessageType {
   return {
     origin: [["catalog.test.ts", 1]],
     obsolete: false,
@@ -156,17 +168,6 @@ describe("Catalog", function () {
       (for custom IDs) or `key` (for auto-generated IDs)
     - all other languages: translation is kept empty
     */
-
-    const makeCatalog = (config = {}) =>
-      new Catalog(
-        {
-          name: "messages",
-          path: "{locale}/messages",
-          include: [],
-          exclude: [],
-        },
-        mockConfig(config)
-      )
 
     it("should initialize catalog", function () {
       const prevCatalogs = { en: null, cs: null }

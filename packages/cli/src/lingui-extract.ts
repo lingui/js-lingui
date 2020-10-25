@@ -4,9 +4,10 @@ import program from "commander"
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
-import { extract } from "./api/extract"
+import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
+import { AllCatalogsType } from "./api/types"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -17,7 +18,7 @@ export type CliExtractOptions = {
 
 export default function command(
   config: LinguiConfig,
-  options: CliExtractOptions
+  options: Partial<CliExtractOptions>
 ): boolean {
   // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
   // set. We're setting it here, because lingui macros are going to use them as well.
@@ -32,6 +33,7 @@ export default function command(
 
   options.verbose && console.error("Extracting messages from source files…")
   const catalogs = getCatalogs(config)
+  const catalogStats: { [path: string]: AllCatalogsType }  = {}
   catalogs.forEach((catalog) => {
     catalog.make({
       ...options,
@@ -42,11 +44,15 @@ export default function command(
       //   catalog.addLocale(pseudoLocale)
       // }
     })
+
+    catalogStats[catalog.path] = catalog.readAll()
   })
 
-  // console.log("Catalog statistics:")
-  // printStats(config, catalogs)
-  // console.log()
+  Object.entries(catalogStats).forEach(([key, value]) => {
+    console.log(`Catalog statistics for ${key}: `)
+    console.log(printStats(config, value).toString())
+    console.log()
+  })
 
   console.error(
     `(use "${chalk.yellow(
