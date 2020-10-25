@@ -98,33 +98,24 @@ Trans
 
 .. component:: Trans
 
-   :prop id string?: Override auto-generated message ID
+   :prop id string: Message ID
 
-This is the main and most-used component for translation. It supports
-variables and components inside messages. Usage of this component depends on
-whether or not you're using LinguiJS Babel plugins.
+.. important::
 
-Each message is identified by **message ID**.
-``@lingui/babel-plugin-transform-react`` automatically generates message ID from
-contents of :component:`Trans` component, but it's possible to provide custom
-message ID by setting the `id` prop.
+   Import :jsxmacro:`Trans` macro instead of :component:`Trans` if you use macros:
 
-.. code-block:: jsx
+   .. code-block:: jsx
 
-   <Trans>Hello World</Trans>;
+      import { Trans } from "@lingui/macro"
 
-   // custom message ID
-   <Trans id="msg.hello">Hello World</Trans>;
+      // Trans from @lingui/react won't work in this case
+      // import { Trans } from "@lingui/react"
 
-   // variable interpolation
-   const name = "Fred";
-   <Trans>My name is {name}</Trans>;
+      <Trans>Hello, my name is {name}</Trans>
 
-    // inline components
-    <Trans>See the <Link to="/more">description</Link> below.</Trans>;
-
-It's also possible to use :component:`Trans` component without babel plugin. In
-fact, it's the only i18n component you'll need if you decide to go without the babel plugin.
+It's also possible to use :component:`Trans` component directly without macros.
+In that case, ``id`` is the message being translated. ``values`` and ``components``
+are arguments and components used for formatting translation:
 
 .. code-block:: jsx
 
@@ -141,170 +132,22 @@ fact, it's the only i18n component you'll need if you decide to go without the b
      components={[<Link to="/docs" />]}
    />;
 
-   <Trans
-     id="Today is {today, date, short_date}"
-     values={{ today: new Date() }}
-     formats={{
-       short_date: {
-         year: "numeric",
-         month: "long",
-         day: "numeric"
-       }
-     }}
-   />;
-
-Plural
-------
-
-.. component:: Plural
-
-   :prop string id: Override auto-generated message ID
-   :prop number offset: Offset of value for plural forms
-   :prop string zero: Form for empty ``value``
-   :prop string one: *Singular* form
-   :prop string two: *Dual* form
-   :prop string few: *Paucal* form
-   :prop string many: *Plural* form
-   :prop string other: (required) general *plural* form
-   :prop string _<number>: Exact match form, correspond to ``=N`` rule
-   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
-
-:component:`Plural` component handles pluralization of words or phrases.
-Selected plural form depends on active language and ``value`` props.
-
-This component represents ``plural`` formatter in Message Format:
-
-.. code-block:: default
-
-   {count, plural, one {# book} other {# books}}
-
-Plural forms for all languages can be found at `CLDR Plural Rules`_
-page.
-
-.. warning::
-
-   Not all languages use ``zero`` plural form! English, for example, uses
-   ``other`` form when ``value == 0`` (e.g: 1 book, but 0 books).
-
-As a developer, you only need to know plural rules for the language
-used in source code. For example for English it's only ``one`` and ``other``:
-
-.. code-block:: jsx
-
-   const count = 42
-
-   // renders as '42 books'
-   <Plural
-       value={count}
-       one="# book"
-       other="# books"
-   />
-
-``#`` character inside message is used as a placeholder for ``value``.
-
-``other`` plural form is used when a specific plural form isn't defined.
-
-It's also possible to use exact matches. This is commonly used in combination with
-``offset`` prop. ``offset`` doesn't affect exact matches, only plural forms:
-
-.. code-block:: jsx
-
-   const count = 42
-
-   <Plural
-       value={count}
-       offset={1}
-       // when value == 0
-       _0="Nobody arrived"
-
-       // when value == 1
-       _1="Only you arrived"
-
-       // when value == 2
-       // value - offset = 1 -> `one` plural form
-       one="You and # other guest arrived"
-
-       // when value >= 3
-       other="You and # other guests arrived"
-   />
-
-Select
-------
-
-.. component:: Select
-
-   :prop number value: Override auto-generated message ID
-   :prop number other: (required) Default, catch-all form
-
-This component selects the form based on content of ``value`` prop. It
-works like a ``switch`` statement. ``other`` prop is used when no prop
-matches ``value``:
-
-.. code-block:: jsx
-
-   // gender == "female"      -> Her book
-   // gender == "male"        -> His book
-   // gender == "unspecified" -> Their book
-   <Select
-       value={gender}
-       male="His book"
-       female="Her book"
-       other="Their book"
-   />
-
-SelectOrdinal
--------------
-
-.. component:: SelectOrdinal
-
-   :prop number value: Override auto-generated message ID
-   :prop number offset: Offset of value for plural forms
-   :prop string zero: Form for empty `value`
-   :prop string one: *Singular* form
-   :prop string two: *Dual* form
-   :prop string few: *Paucal* form
-   :prop string many: *Plural* form
-   :prop string other: (required) general *plural* form
-   :prop string _<number>: Exact match form, correspond to ``=N`` rule. (e.g: ``_0``, ``_1``)
-   :prop string|Object format:  Number format passed as options to `Intl.NumberFormat`_
-
-   MessageFormat: ``{arg, selectordinal, ...forms}``
-
-This component is equivalent to :component:`Plural`. The only difference is that
-it uses **ordinal** plural forms, instead of **cardinal** ones.
-
-.. code-block:: jsx
-
-   // count == 1 -> 1st
-   // count == 2 -> 2nd
-   // count == 3 -> 3rd
-   // count == 4 -> 4th
-   <SelectOrdinal
-       value={count}
-       one="#st"
-       two="#nd"
-       few="#rd"
-       other="#th"
-   />
-
-
 Providers
 =========
 
-Message catalogs and the active language are passed to the context in
-:component:`I18nProvider`. However, context should never be accessed
-directly. The :js:func:`withI18n` high-order component passes ``i18n`` prop
-down to wrapped component and shadows all implementation details.
+Message catalogs and the active locale are passed to the context in
+:component:`I18nProvider`. Use `:js:func:`useLingui` hook or :js:func:`withI18n`
+high-order component to access Lingui context.
 
 I18nProvider
 ------------
 
 .. component:: I18nProvider
 
-   :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
-   :prop I18n i18n: 
+   :prop I18n i18n: The i18n instance (usually the one imported from ``@lingui/core``)
    :prop React.ReactNode children: React Children node
    :prop React.ComponentType defaultComponent: A React component for rendering <Trans> within this component (Not required)
+   :prop boolean forceRenderOnLocaleChange: Force re-render when locale changes (default: true)
 
 
 ``defaultComponent`` has the same meaning as ``component`` in other i18n
@@ -321,17 +164,16 @@ Disable ``forceRenderOnLocaleChange`` when you have specific needs to handle
 initial state before locales are loaded and when locale changes.
 
 This component should live above all i18n components. A good place is as a
-top-level application component. However, if the ``language`` is stored in a
+top-level application component. However, if the ``locale`` is stored in a
 ``redux`` store, this component should be inserted below ``react-redux/Provider``:
 
 .. code-block:: jsx
 
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
-   import { setupI18n } from '@lingui/core';
+   import i18n from '@lingui/core';
    import { messages as MessagesEn } from './locales/en/messages.js';
 
-   const i18n = setupI18n();
    i18n.load({
       en: messagesEn,
    });
@@ -345,75 +187,21 @@ top-level application component. However, if the ``language`` is stored in a
       );
    }
 
-I18n
-----
+useLingui
+---------
 
-.. component:: I18n
-
-   :prop bool update: Subscribe to catalog and activate language updates
-
-:component:`I18n` injects ``i18n`` object and ``i18nHash`` to child component, which
-may be lambda component, regular component or React element. This pattern is
-known as `render prop component <https://reactjs.org/docs/render-props.html>`_.
-
-If want to use ``i18n`` object in instance or lifecycle methods, consider using
-:js:func:`withI18n` high-order component or import it from ``@lingui/core``
-
-``i18nHash`` is useful when rendering pure components or elements as it contains
-hash of active language and catalogs. Instead of comparing ``i18n`` object it's
-enough to compare ``i18nHash`` to decide if component should update.
-
-Using lambda components:
+.. js:function:: useLingui()
 
 .. code-block:: jsx
 
    import React from "react"
-   import { I18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
+   import { useLingui } from "@lingui/react"
 
-   function LogoutIcon() {
-      return (
-         <I18n>
-            {({ i18n }) => <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />}
-         </I18n>
-      )
+   const CurrentLocale = () => {
+      const { i18n } = useLingui()
+
+      return <span>Current locale: {i18n.locale}
    }
-
-Using components and elements:
-
-.. code-block:: jsx
-
-   import React from "react"
-   import { I18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
-
-   function TranslatedComponent({ i18n }) {
-      return <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
-   }
-
-   function RenderingElements() {
-      return (
-         <I18n>
-            <TranslatedComponent />
-         </I18n>
-      )
-   }
-
-
-Using i18n from ``@lingui/core`` instance:
-
-.. code-block:: jsx
-
-   import React from "react"
-   import { i18n } from "@lingui/core"
-   import { t } from "@lingui/macro"
-
-   function RenderingElements() {
-      return (
-         <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
-      )
-   }
-
 
 withI18n
 --------
@@ -421,60 +209,16 @@ withI18n
 .. js:function:: withI18n()
 
 :js:func:`withI18n` is a higher-order component which injects ``i18n`` object to
-wrapped component. ``i18n`` object is needed when you have to access plain JS
-API for translation of JSX props:
+wrapped component. ``i18n`` object is needed when you have to access the i18n data:
 
 .. code-block:: jsx
 
    import React from "react"
    import { withI18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
 
-   const LogoutIcon = withI18n()(({ i18n }) => (
-     <Icon name="turn-off" ariaLabel={i18n._(t`Log out`)} />
+   const CurrentLocale = withI18n()(({ i18n }) => (
+      <span>Current locale: {i18n.locale}
    ))
-
-.. note:: :js:func:`withI18n` automatically hoists static properties from wrapped component.
-
-Helpers
-=======
-
-i18nMark
---------
-
-.. js:function:: i18nMark(msgId: string)
-
-Mark string as translated text, but don't translate it immediatelly.
-This string is extracted to message catalog and can be used in
-:component:`Trans` component:
-
-.. code-block:: jsx
-
-   const message = i18nMark('Source text');
-   <Trans id={message} />;
-
-   // This is the same as:
-   <Trans id="Source text" />;
-
-:js:func:`i18nMark` is useful for definition of translations outside
-components:
-
-.. code-block:: jsx
-
-   const languages = {
-     en: i18nMark('English'),
-     fr: i18nMark('French')
-   };
-
-   Object.keys(languages).map(language =>
-     <Trans key={language} id={languages[language]} />
-   );
-
-.. note::
-
-   In development, :js:func:`i18nMark` is an identity function, returning ``msgId``.
-
-   In production, :js:func:`i18nMark` call is replaced with ``msgId`` string.
 
 .. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 .. _Intl.NumberFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
