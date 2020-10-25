@@ -20,7 +20,9 @@ export type AllLocaleData = Record<Locale, LocaleData>
 
 export type CompiledMessage =
   | string
-  | Array<string | Array<string | (string | undefined) | Record<string, unknown>>>;
+  | Array<
+      string | Array<string | (string | undefined) | Record<string, unknown>>
+    >
 
 export type Messages = Record<string, CompiledMessage>
 
@@ -58,6 +60,7 @@ export class I18n extends EventEmitter<Events> {
     this._messages = {}
     this._localeData = {}
 
+    if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
     if (params.localeData != null) this.loadLocaleData(params.localeData)
     if (params.locale != null || params.locales != null) {
@@ -153,7 +156,7 @@ export class I18n extends EventEmitter<Events> {
     this.emit("change")
   }
 
-  // default translate method
+  // method for translation and formatting
   _(
     id: MessageDescriptor | string,
     values: Object | undefined = {},
@@ -198,11 +201,7 @@ export class I18n extends EventEmitter<Events> {
 }
 
 function setupI18n(params: setupI18nProps = {}): I18n {
-  const i18n = new I18n(params)
-
-  if (params.missing) i18n._missing = params.missing
-
-  return i18n
+  return new I18n(params)
 }
 
 export { setupI18n }
