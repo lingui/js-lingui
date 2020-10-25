@@ -125,7 +125,7 @@ Documentation contents
    Projects using LinguiJS <misc/showroom>
    Comparison with react-intl <misc/react-intl>
    Talks and articles about i18n in JavaScript <misc/talks-about-i18n>
-   RFCs and design decisions <rfc/toc>
+   Scripts, tools and services related to LinguiJS <misc/tooling>
 
 
 Indices
