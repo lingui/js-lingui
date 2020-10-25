@@ -353,6 +353,8 @@ source files.
 Note that using ``<rootDir>`` as a string token in any other path-based config
 settings will refer back to this value.
 
+.. config:: runtimeConfigModule
+
 runtimeConfigModule
 -------------------
 
