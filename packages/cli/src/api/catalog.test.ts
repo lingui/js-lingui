@@ -524,7 +524,7 @@ describe("getCatalogs", function () {
       catalogs: [
         {
           path: "./src/locales/{locale}",
-          include: "./src/",
+          include: ["./src/"],
         },
       ],
     })
