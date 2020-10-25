@@ -124,7 +124,7 @@ Examples of JSX macros
 |    <Trans>Attachment {name} saved</Trans>                   |    <Trans                                                          |
 |                                                             |       id="Attachment {name} saved"                                 |
 |                                                             |       values={{ name }}                                            |
-|                                                             |    />                                                              |                                                                 |
+|                                                             |    />                                                              |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: jsx                                         | .. code-block:: jsx                                                |
 |                                                             |                                                                    |
@@ -138,7 +138,7 @@ Examples of JSX macros
 |                                                             |                                                                    |
 |    <Trans>Today is {date(today)}</Trans>                    |    <Trans                                                          |
 |                                                             |       id="Today is {0}"                                            |
-|                                                             |       values={{ 0: date(today) }}                                  |                                                             |
+|                                                             |       values={{ 0: date(today) }}                                  |
 |                                                             |    />                                                              |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: jsx                                         | .. code-block:: jsx                                                |
