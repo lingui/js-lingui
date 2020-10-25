@@ -1,6 +1,6 @@
-import { defaultConfig } from "@lingui/conf"
+import { defaultConfig, LinguiConfig } from "@lingui/conf"
 
-export function mockConfig(config = {}) {
+export function mockConfig(config: Partial<LinguiConfig> = {}) {
   return {
     ...defaultConfig,
     ...config,

@@ -34,5 +34,5 @@ export function printStats(config: LinguiConfig, catalogs: AllCatalogsType) {
     }
   })
 
-  console.log(table.toString())
+  return table
 }
