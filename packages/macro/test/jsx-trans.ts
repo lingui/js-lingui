@@ -217,22 +217,24 @@ export default [
       `,
   },
   {
+    name: "Strip whitespace around arguments",
     input: `
         import { Trans } from "@lingui/macro";
         <Trans>
-          Strip whitespace around arguments: &quot;
+          Strip whitespace around arguments: '
           {name}
-          &quot;
+          '
         </Trans>
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Strip whitespace around arguments: &quot;{name}&quot;" values={{
+        <Trans id="Strip whitespace around arguments: '{name}'" values={{
           name: name
         }} />;
       `,
   },
   {
+    name: "Strip whitespace around tags but keep forced spaces",
     input: `
         import { Trans } from "@lingui/macro";
         <Trans>
@@ -249,6 +251,7 @@ export default [
       `,
   },
   {
+    name: "Keep forced newlines",
     input: `
         import { Trans } from "@lingui/macro";
         <Trans>
@@ -262,6 +265,7 @@ export default [
       `,
   },
   {
+    name: "Keep multiple forced newlines",
     input: `
         import { Trans } from "@lingui/macro";
         <Trans>
@@ -320,6 +324,17 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="Hello  World" />;
+      `,
+  },
+  {
+    name: "Use decoded html entities",
+    input: `
+        import { Trans } from "@lingui/macro";
+        <Trans>&amp;</Trans>
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="&" />;
       `,
   },
 ]
