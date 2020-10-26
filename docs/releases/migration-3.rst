@@ -160,8 +160,8 @@ for a single locale or multiple catalogs at once.
 - command ``lingui init`` was removed
 - command ``lingui add-locale`` was removed
 
-Whitespace and HTML entities
-----------------------------
+Whitespace
+----------
 
 Whitespace handling in plugins had few bugs. By fixing them, there might be few
 backward incompatible changes. It's advised to run :cli:`extract` and inspect
@@ -192,15 +192,6 @@ changes in catalogs (if any).
       </Trans>
 
       // Becomes: 1. Item\n2. Item
-
-3. Keep HTML entities. HTML entities are replaced with characters in Babel. They are now
-   kept in message catalogs and replaced only when rendered:
-
-   .. code-block:: jsx
-
-      <Trans>&quot;Hello&quot;</Trans>
-
-      // Becomes: &quot;Hello&quot;
 
 Plugins/Presets
 ---------------

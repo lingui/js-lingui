@@ -16,12 +16,9 @@ const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
 const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
 function maybeNodeValue(node) {
-  if (!node)
-    return null
-  if (node.type === "StringLiteral")
-    return node.value
-  if (node.type === "JSXAttribute")
-    return maybeNodeValue(node.value)
+  if (!node) return null
+  if (node.type === "StringLiteral") return node.value
+  if (node.type === "JSXAttribute") return maybeNodeValue(node.value)
   if (node.type === "JSXExpressionContainer")
     return maybeNodeValue(node.expression)
   if (node.type === "TemplateLiteral" && node.expressions.length === 0)
@@ -261,13 +258,9 @@ export default class MacroJSX {
     } else if (this.types.isJSXSpreadChild(node)) {
       // just do nothing
     } else if (this.types.isJSXText(node)) {
-      // node.value has HTML entities converted to characters, but we need original
-      // HTML entities.
-      return this.tokenizeText((node as any).extra.raw)
+      return this.tokenizeText(node.value)
     } else {
-      // Same as above, but this time node.extra.raw also includes surrounding
-      // quotes. We need to strip them first.
-      return this.tokenizeText(node.extra.raw.replace(/(["'])(.*)\1/, "$2"))
+      return this.tokenizeText(node.value)
     }
   }
 

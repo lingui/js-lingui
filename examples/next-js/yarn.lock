@@ -1096,10 +1096,10 @@
   resolved "http://0.0.0.0:4873/@hapi%2fhoek/-/hoek-9.1.0.tgz#6c9eafc78c1529248f8f4d92b0799a712b6052c6"
   integrity sha512-i9YbZPN3QgfighY/1X1Pu118VUz2Fmmhd6b2n0/O8YVgGGfw0FbUYoA97k7FkpGJ+pLCFEDLUmAPPV4D1kpeFw==
 
-"@jest/types@^26.5.2":
-  version "26.5.2"
-  resolved "http://0.0.0.0:4873/@jest%2ftypes/-/types-26.5.2.tgz#44c24f30c8ee6c7f492ead9ec3f3c62a5289756d"
-  integrity sha512-QDs5d0gYiyetI8q+2xWdkixVQMklReZr4ltw7GFDtb4fuJIBCE6mzj2LnitGqCuAlLap6wPyb8fpoHgwZz5fdg==
+"@jest/types@^26.6.1":
+  version "26.6.1"
+  resolved "http://0.0.0.0:4873/@jest%2ftypes/-/types-26.6.1.tgz#2638890e8031c0bc8b4681e0357ed986e2f866c5"
+  integrity sha512-ywHavIKNpAVrStiRY5wiyehvcktpijpItvGiK72RAn5ctqmzvPk8OvKnvHeBqa1XdQr959CTWAJMqxI8BTibyg==
   dependencies:
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^3.0.0"
@@ -1107,28 +1107,28 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lingui/babel-plugin-extract-messages@3.0.0-19":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2fbabel-plugin-extract-messages/-/babel-plugin-extract-messages-3.0.0-19.tgz#c147fd643314016684a5a99e92a1f9642c5713b2"
-  integrity sha512-9wh4pPy7oDkuIWr+8vIdas6aMcFaTsuX+QPs9Hj+qHpPbCVPbVvdeEpg3NrBSZIP/DYeeZtduBDTDBppsevK7w==
+"@lingui/babel-plugin-extract-messages@3.0.0-22":
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2fbabel-plugin-extract-messages/-/babel-plugin-extract-messages-3.0.0-22.tgz#63d1da41fa105bd5b245aa4142a2e87712d95a73"
+  integrity sha512-9OY+vCw0ASJ5zaa4ayUTpRSODBmhs8R8hRx7p45kvshE8gKhyFCIgQsE9gCLuWOh2h+2TybertxBFpTiSy0HLw==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.0.0-19"
+    "@lingui/conf" "3.0.0-22"
     mkdirp "^1.0.4"
 
-"@lingui/cli@3.0.0-19", "@lingui/cli@^3.0.0-15":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2fcli/-/cli-3.0.0-19.tgz#f3860a08280597c9a1823542a7298ba3813645a5"
-  integrity sha512-A6kp+e3wad71P2kqMGa/VLbfd9hX00C+GzKbvuyJlLtDWQUzUAx/WErYozjnYj3S4WV0tfxQNhEB/Hm9HkIxJw==
+"@lingui/cli@3.0.0-22", "@lingui/cli@^3.0.0-15":
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2fcli/-/cli-3.0.0-22.tgz#42f0f1e7f7a3d973dcf8ebcafa5b70073cd42d8a"
+  integrity sha512-EJBNnTupMxCEXdwHkMRprpRhmDN5gv3MRGz9NKPfbb8nWiU/YEo/RpZ+3gX9Y1BrHaHgBNQlT0TN/DCGauAxiA==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/parser" "^7.11.5"
     "@babel/plugin-syntax-jsx" "^7.10.4"
     "@babel/runtime" "^7.11.2"
     "@babel/types" "^7.11.5"
-    "@lingui/babel-plugin-extract-messages" "3.0.0-19"
-    "@lingui/conf" "3.0.0-19"
+    "@lingui/babel-plugin-extract-messages" "3.0.0-22"
+    "@lingui/conf" "3.0.0-22"
     babel-plugin-macros "^2.8.0"
     bcp-47 "^1.0.7"
     chalk "^4.1.0"
@@ -1150,52 +1150,52 @@
     pseudolocale "^1.1.0"
     ramda "^0.27.1"
 
-"@lingui/conf@3.0.0-19":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2fconf/-/conf-3.0.0-19.tgz#0f97eed746102b819ee227bdbbd858f9b9d56a1f"
-  integrity sha512-PcLs9XXPEsGB05Q4ktUs2QvGHVJNExcKmeY889tXYFzVg1pP0aXVDVTcE2QwOi+8/EAxTzeBk7sRhAFVV7NhQQ==
+"@lingui/conf@3.0.0-22":
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2fconf/-/conf-3.0.0-22.tgz#346ffd444c493255853fd7c4ece9ab22e71219f4"
+  integrity sha512-bOWXN2bNNDaY1poW5NY7WPfF2otiC36CVYjbHH66Ua2yNGYMV+N8LrYQ4liFUgEtq98fXU8m6z/TldzdBSh3Pw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     chalk "^4.1.0"
     cosmiconfig "^7.0.0"
     jest-validate "^26.5.2"
 
-"@lingui/core@3.0.0-19", "@lingui/core@^3.0.0-14":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2fcore/-/core-3.0.0-19.tgz#786b800f77e3bbd177957a86768e65a52f1f7100"
-  integrity sha512-Lb00c0cWzKRiQ8Br97MtxqtBSgtiYdDZD930onwrlgP5RVVJ8ELXElq8w5i3Fv298Tv83kZTF2vyR/O8Qvglmw==
+"@lingui/core@3.0.0-22", "@lingui/core@^3.0.0-14":
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2fcore/-/core-3.0.0-22.tgz#ce0bea56416e0887383e143d850fe6f02c207d48"
+  integrity sha512-tH4rBV1ue5Y1O0R4Uzib4CD9mp3ZO2KjmK1OH5Txd0wGcSxddJSQlgOP1+zcbzgg0rM21sT0Okew/dgvTyzuZw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
 "@lingui/loader@^3.0.0-15":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2floader/-/loader-3.0.0-19.tgz#ca545e9b7724ac00906b5ffa3a14e3e4379ab760"
-  integrity sha512-WslWv3fwU06aMTwApFk1Y4J2olfgzhLJlfB2kwIGaIW2AbJmpxr3gas88tkfj4wZtOEkRIVwex38tH8GDgr3aQ==
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2floader/-/loader-3.0.0-22.tgz#11c8e6b763e0f631cc8df568fce0cc55d4b55116"
+  integrity sha512-sJv3BEP3LswUQJnYbluWGksl5XvNESyj+ByAQNB5LoLEJICNImaluFptASuX0P0JM8JSqXMfd6Q6lq4ckoL/mA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/cli" "3.0.0-19"
-    "@lingui/conf" "3.0.0-19"
+    "@lingui/cli" "3.0.0-22"
+    "@lingui/conf" "3.0.0-22"
     loader-utils "^2.0.0"
     ramda "^0.27.1"
 
 "@lingui/macro@^3.0.0-15":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2fmacro/-/macro-3.0.0-19.tgz#a9d787be79596a05ed8a0d952db90489b7f0478c"
-  integrity sha512-i6QRsSWcDFTKpJEYvzPgotEIMMva+0s99C5aI5rggEmc6DITb3Tc1v/E2uRzWgWtpvJ5Ajz2OZ7YmWYw4WTi9A==
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2fmacro/-/macro-3.0.0-22.tgz#bd7ec830f23e80864e07560f036a86f57fd9144d"
+  integrity sha512-l68pDM161E5GKblZbXe3IxfStM9IfBVWtnbZISOJ5sh6mjIbQeotS9CQsoQZqsuB98UCz9wJE/ZY7aI3nlkN8w==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.0.0-19"
+    "@lingui/conf" "3.0.0-22"
     ramda "^0.27.1"
 
 "@lingui/react@^3.0.0-14":
-  version "3.0.0-19"
-  resolved "http://0.0.0.0:4873/@lingui%2freact/-/react-3.0.0-19.tgz#f7cdb37374756cc288e4e4d8a940d420b0bdc3df"
-  integrity sha512-lkaM4Y+lA5amBB7JmSvM0cEha0VCPWsxk8OGOs7xt4mFbIzew1XArLsLDhh1eyK2gTt31NAa8ZabtiVM09xt2w==
+  version "3.0.0-22"
+  resolved "http://0.0.0.0:4873/@lingui%2freact/-/react-3.0.0-22.tgz#d581094f23d59dc6d3d9b5ee13c362c47816c29f"
+  integrity sha512-S0Dzi6AyfAUHRHhQVDi1zLq7bnr56RBjyqpEpq2HnGMer5nBfSzIty63/YcwGN/ZobviCLrJqhw5N674aq5pbQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/core" "3.0.0-19"
+    "@lingui/core" "3.0.0-22"
 
 "@next/env@9.5.5":
   version "9.5.5"
@@ -1260,9 +1260,9 @@
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
 "@types/node@*":
-  version "14.11.10"
-  resolved "http://0.0.0.0:4873/@types%2fnode/-/node-14.11.10.tgz#8c102aba13bf5253f35146affbf8b26275069bef"
-  integrity sha512-yV1nWZPlMFpoXyoknm4S56y2nlTAuFYaJuQtYRAOU7xA/FJ9RY0Xm7QOkaYMMmr8ESdHIuUb6oQgR/0+2NqlyA==
+  version "14.14.3"
+  resolved "http://0.0.0.0:4873/@types%2fnode/-/node-14.14.3.tgz#e1c09064121f894baaad2bd9f12ce4a41bffb274"
+  integrity sha512-33/L34xS7HVUx23e0wOT2V1qPF1IrHgQccdJVm9uXGTB9vFBrrzBtkQymT8VskeKOxjz55MSqMv0xuLq+u98WQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -2141,9 +2141,9 @@ colors@1.0.3:
   integrity sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
 
 commander@*, commander@^6.1.0:
-  version "6.1.0"
-  resolved "http://0.0.0.0:4873/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
-  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+  version "6.2.0"
+  resolved "http://0.0.0.0:4873/commander/-/commander-6.2.0.tgz#b990bfb8ac030aedc6d11bc04d1488ffef56db75"
+  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
 
 commander@^2.20.0:
   version "2.20.3"
@@ -3441,16 +3441,16 @@ jest-get-type@^26.3.0:
   integrity sha512-TpfaviN1R2pQWkIihlfEanwOXK0zcxrKEE4MlU6Tn7keoXdN6/3gK/xl0yEh8DOunn5pOVGKf8hB4R9gVh04ig==
 
 jest-validate@^26.5.2:
-  version "26.5.3"
-  resolved "http://0.0.0.0:4873/jest-validate/-/jest-validate-26.5.3.tgz#eefd5a5c87059550548c5ad8d6589746c66929e3"
-  integrity sha512-LX07qKeAtY+lsU0o3IvfDdN5KH9OulEGOMN1sFo6PnEf5/qjS1LZIwNk9blcBeW94pQUI9dLN9FlDYDWI5tyaA==
+  version "26.6.1"
+  resolved "http://0.0.0.0:4873/jest-validate/-/jest-validate-26.6.1.tgz#28730eb8570d60968d9d06f1a8c94d922167bd2a"
+  integrity sha512-BEFpGbylKocnNPZULcnk+TGaz1oFZQH/wcaXlaXABbu0zBwkOGczuWgdLucUouuQqn7VadHZZeTvo8VSFDLMOA==
   dependencies:
-    "@jest/types" "^26.5.2"
+    "@jest/types" "^26.6.1"
     camelcase "^6.0.0"
     chalk "^4.0.0"
     jest-get-type "^26.3.0"
     leven "^3.1.0"
-    pretty-format "^26.5.2"
+    pretty-format "^26.6.1"
 
 jest-worker@24.9.0:
   version "24.9.0"
@@ -4412,15 +4412,15 @@ postcss@^7.0.14, postcss@^7.0.26, postcss@^7.0.32, postcss@^7.0.5, postcss@^7.0.
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-pretty-format@^26.5.2:
-  version "26.5.2"
-  resolved "http://0.0.0.0:4873/pretty-format/-/pretty-format-26.5.2.tgz#5d896acfdaa09210683d34b6dc0e6e21423cd3e1"
-  integrity sha512-VizyV669eqESlkOikKJI8Ryxl/kPpbdLwNdPs2GrbQs18MpySB5S0Yo0N7zkg2xTRiFq4CFw8ct5Vg4a0xP0og==
+pretty-format@^26.6.1:
+  version "26.6.1"
+  resolved "http://0.0.0.0:4873/pretty-format/-/pretty-format-26.6.1.tgz#af9a2f63493a856acddeeb11ba6bcf61989660a8"
+  integrity sha512-MeqqsP5PYcRBbGMvwzsyBdmAJ4EFX7pWFyl7x4+dMVg5pE0ZDdBIvEH2ergvIO+Gvwv1wh64YuOY9y5LuyY/GA==
   dependencies:
-    "@jest/types" "^26.5.2"
+    "@jest/types" "^26.6.1"
     ansi-regex "^5.0.0"
     ansi-styles "^4.0.0"
-    react-is "^16.12.0"
+    react-is "^17.0.1"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -4550,10 +4550,15 @@ react-dom@16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-is@16.13.1, react-is@^16.12.0, react-is@^16.8.1:
+react-is@16.13.1, react-is@^16.8.1:
   version "16.13.1"
   resolved "http://0.0.0.0:4873/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^17.0.1:
+  version "17.0.1"
+  resolved "http://0.0.0.0:4873/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
+  integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
 react-refresh@0.8.3:
   version "0.8.3"
