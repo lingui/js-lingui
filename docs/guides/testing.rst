@@ -21,14 +21,14 @@ Here is a working example with `react-testing-library`_, using the `wrapper-prop
 
    i18n.load('en', messages)
    i18n.activate('en')
-   const TestingProvider = ({ children ) => (
+   const TestingProvider = ({ children }) => (
      <I18nProvider i18n={i18n}>
        {children}
      </I18nProvider>
    )
 
    test('your example-test', () => {
-     render(<Inbox />, { wrapper: TestingProvider } );
+     render(<Inbox />, { wrapper: TestingProvider });
      expect(screen.getByRole('button')).toBeInTheDocument()
    });
 
