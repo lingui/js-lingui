@@ -1,2 +1,9 @@
-export { I18nProvider, useLingui, withI18n } from "./I18nProvider"
-export { Trans } from "./Trans"
+export {
+  I18nProvider,
+  useLingui,
+  withI18n,
+  I18nProviderProps,
+  I18nContext,
+  withI18nProps,
+} from "./I18nProvider"
+export { Trans, TransProps } from "./Trans"

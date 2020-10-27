@@ -2,12 +2,12 @@ import React, { FunctionComponent, ComponentType } from "react"
 import { I18n } from "@lingui/core"
 import { TransRenderType } from "./Trans"
 
-type I18nContext = {
+export type I18nContext = {
   i18n: I18n
   defaultComponent?: TransRenderType
 }
 
-type withI18nProps = {
+export type withI18nProps = {
   i18n: I18n
 }
 
@@ -47,8 +47,6 @@ export function withI18n(o?: object): <P extends withI18nProps>(Component: Compo
     }
   }
 }
-
-export type { withI18nProps }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   i18n,
