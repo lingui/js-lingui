@@ -21,6 +21,7 @@ describe("macro", function () {
   const babelOptions: TransformOptions = {
     filename: "<filename>",
     configFile: false,
+    presets: [],
     plugins: ["@babel/plugin-syntax-jsx", "macros"],
   }
 
@@ -43,7 +44,7 @@ describe("macro", function () {
 
       cases.forEach(
         (
-          { name, input, expected, filename, production, only, skip },
+          { name, input, expected, filename, production, useTypescriptPreset, only, skip },
           index
         ) => {
           let run = it
@@ -56,6 +57,10 @@ describe("macro", function () {
 
             if (production) {
               process.env.NODE_ENV = "production"
+            }
+
+            if (useTypescriptPreset) {
+              babelOptions.presets.push("@babel/preset-typescript")
             }
 
             process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
