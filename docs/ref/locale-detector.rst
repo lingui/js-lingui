@@ -20,8 +20,8 @@ Usage
 =====
 
 ``@lingui/detect-locale:`` exports multiple methods:
-  - detect - `Will return the first occurence of detectors`
-  - multipleDetect - `Will return an array with all the locales detected by each detector`
+  - ``detect`` - `Will return the first occurence of detectors`
+  - ``multipleDetect`` - `Will return an array with all the locales detected by each detector`
 
 and some helpers:
   - ``fromCookie(key: string)`` - `Accepts a key as param will recover from navigator cookies the value`
