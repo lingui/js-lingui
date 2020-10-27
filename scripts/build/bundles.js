@@ -25,7 +25,10 @@ const bundles = [
     entry: "@lingui/react",
     externals: ["@lingui/core"]
   },
-
+  {
+    type: bundleTypes.UNIVERSAL,
+    entry: "@lingui/detect-locale",
+  },
   {
     type: bundleTypes.NODE,
     entry: "@lingui/babel-plugin-extract-messages"
