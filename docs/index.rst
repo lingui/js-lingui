@@ -106,6 +106,7 @@ Documentation contents
    Macros <ref/macro>
    CLI <ref/cli>
    Configuration <ref/conf>
+   Locale Detection <ref/locale-detector>
    Webpack Loader <ref/loader>
    Catalog Formats <ref/catalog-formats>
    ICU MessageFormat <ref/message-format>

@@ -2,10 +2,10 @@ import { LocaleString } from ".."
 
 export default function detectFromStorage(
   key: string,
-  options: { sessionStorage: boolean } = { sessionStorage: false }
+  options: { useSessionStorage: boolean } = { useSessionStorage: false }
 ): LocaleString {
-  if (options.sessionStorage) {
-    return globalThis.sessionStorage.getItem(key);
+  if (options.useSessionStorage) {
+    return globalThis.useSessionStorage.getItem(key);
   }
 
   return globalThis.localStorage.getItem(key);

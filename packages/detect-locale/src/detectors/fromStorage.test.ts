@@ -10,8 +10,8 @@ describe('fromStorage detector', () => {
 
   it('should return a correct value from the session storage if opts passed', () => {
     sessionStorage.setItem("lang", "en_EN")
-    expect(fromStorage("lang", { sessionStorage: true })).toEqual("en_EN")
+    expect(fromStorage("lang", { useSessionStorage: true })).toEqual("en_EN")
     sessionStorage.setItem("lang", null)
-    expect(fromStorage("lang", { sessionStorage: true })).toEqual("null")
+    expect(fromStorage("lang", { useSessionStorage: true })).toEqual("null")
   });
 });
