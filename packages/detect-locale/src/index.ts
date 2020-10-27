@@ -1,3 +1,4 @@
+import "./utils/globalThis.polyfill.js"
 import fromCookie from "./detectors/fromCookie"
 import fromPath from "./detectors/fromPath"
 import fromStorage from "./detectors/fromStorage"
@@ -20,11 +21,11 @@ function detect(...args): LocaleString | null {
 
 export {
   detect,
-  fromUrl,
-  fromSubdomain,
-  fromPath,
   fromCookie,
-  fromStorage,
   fromHtmlTag,
-  fromNavigator
+  fromNavigator,
+  fromPath,
+  fromStorage,
+  fromSubdomain,
+  fromUrl,
 }
