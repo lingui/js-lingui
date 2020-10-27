@@ -61,8 +61,10 @@ function addImport(babel, state, module, importName) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
-    (importNode) =>
-      t.isImportDeclaration(importNode) && importNode.source.value === module
+    (importNode) =>t.isImportDeclaration(importNode) &&
+      importNode.source.value === module &&
+      // https://github.com/lingui/js-lingui/issues/777
+      importNode.importKind !== "type"
   )
 
   const tIdentifier = t.identifier(importName)

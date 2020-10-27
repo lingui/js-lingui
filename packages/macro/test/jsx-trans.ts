@@ -217,6 +217,20 @@ export default [
       `,
   },
   {
+    name: "Production - import type doesn't interference on normal import",
+    production: true,
+    useTypescriptPreset: true,
+    input: `
+        import { withI18nProps } from '@lingui/react'
+        import { Trans } from '@lingui/macro';
+        <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
+      `,
+    expected: `
+        import { withI18nProps, Trans } from "@lingui/react";
+        <Trans id="msg.hello" />;
+      `,
+  },
+  {
     name: "Strip whitespace around arguments",
     input: `
         import { Trans } from "@lingui/macro";
