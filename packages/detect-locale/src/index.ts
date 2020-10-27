@@ -1,6 +1,9 @@
 import fromCookie from "./detectors/fromCookie"
+import fromPath from "./detectors/fromPath"
 import fromStorage from "./detectors/fromStorage"
 import fromNavigator from "./detectors/fromNavigator"
+import fromSubdomain from "./detectors/fromSubdomain"
+import fromHtmlTag from "./detectors/fromHtmlTag"
 import fromUrl from "./detectors/fromUrl"
 
 export type LocaleString = string
@@ -18,7 +21,10 @@ function detect(...args): LocaleString | null {
 export {
   detect,
   fromUrl,
+  fromSubdomain,
+  fromPath,
   fromCookie,
   fromStorage,
+  fromHtmlTag,
   fromNavigator
 }

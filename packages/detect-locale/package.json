@@ -39,6 +39,8 @@
     "esm/"
   ],
   "private": false,
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "jsdom": "^16.4.0"
   }
 }
