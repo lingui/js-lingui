@@ -1,8 +1,7 @@
 import fs from "fs"
 import path from "path"
-import { transformFileSync, transform, TransformOptions } from "@babel/core"
+import { transformFileSync, TransformOptions, transformSync } from "@babel/core"
 import prettier from "prettier"
-import { babel } from "@lingui/cli/src/api/extractors"
 
 const testCases = {
   "js-arg": require("./js-arg").default,
@@ -28,7 +27,7 @@ describe("macro", function () {
   // return function, so we can test exceptions
   const transformCode = (code) => () => {
     try {
-      return transform(code, babelOptions).code.trim()
+      return transformSync(code, babelOptions).code.trim()
     } catch (e) {
       e.message = e.message.replace(/([^:]*:){2}/, "")
       throw e
@@ -87,7 +86,7 @@ describe("macro", function () {
                   .trim()
                 expect(actual).toEqual(expected)
               } else {
-                const actual = transform(input, babelOptions).code.trim()
+                const actual = transformSync(input, babelOptions).code.trim()
 
                 expect(clean(actual)).toEqual(clean(expected))
               }
