@@ -1,4 +1,4 @@
-import { fromUrl, detect, fromNavigator } from "./index"
+import { fromUrl, detect, fromNavigator, multipleDetect } from "./index"
 
 describe("detect", () => {
   it ("accepts fromUrl method", () => {
@@ -53,5 +53,22 @@ describe("detect", () => {
         fallback
       )
     ).toEqual("it")
+  })
+})
+
+describe("multipleDetect", () => {
+  it ("returns multiple locales by order of occurence", () => {
+    const mock: Partial<Navigator> = {
+      language: "en"
+    }
+    const locationMock: Partial<Location> = {
+      search: "?some_param=value&lang=cz"
+    }
+    expect(
+      multipleDetect(
+        fromUrl("lang", locationMock),
+        fromNavigator(mock),
+      )
+    ).toEqual(["cz", "en"])
   })
 })

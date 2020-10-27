@@ -19,8 +19,19 @@ function detect(...args): LocaleString | null {
   return null
 }
 
+function multipleDetect(...args): LocaleString[] {
+  const locales = []
+  for (let i = 0; i < args.length; i++) {
+    const res: LocaleString = typeof args[i] === "function" ? args[i]() : args[i]
+    if (res) locales.push(res)
+  }
+
+  return locales
+}
+
 export {
   detect,
+  multipleDetect,
   fromCookie,
   fromHtmlTag,
   fromNavigator,
