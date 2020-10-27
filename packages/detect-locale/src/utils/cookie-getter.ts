@@ -1,5 +1,5 @@
 export function getCookie(key: string): string {
-  if (!key || !globalThis) {
+  if (!key) {
     return;
   }
 
