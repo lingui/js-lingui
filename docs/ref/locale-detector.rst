@@ -2,7 +2,7 @@
 API Reference - Locale Detection (@lingui/detect-locale)
 *******************************************************
 
-``@lingui/detect-locale`` is little package with some helper functions that will help you detect the locale of the user:
+``@lingui/detect-locale`` is little package ``just (922 B Gzip)`` with some helper functions that will help you detect the locale of the user:
 
 Installation
 ============
