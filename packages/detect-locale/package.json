@@ -1,0 +1,46 @@
+{
+  "name": "@lingui/detect-locale",
+  "version": "0.0.0-managed-by-release-script",
+  "description": "@Lingui package to help you find the correct browser/server locale",
+  "main": "index.js",
+  "types": "cjs/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "i18n",
+    "i10n",
+    "i9n",
+    "internationalization",
+    "localization",
+    "translation"
+  ],
+  "author": {
+    "name": "Sergio Moreno",
+    "email": "sergiomorenoalbert@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "exports": {
+    "require": "./index.js",
+    "import": "./esm/index.js"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "cjs/",
+    "esm/"
+  ],
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "jsdom": "^16.4.0"
+  }
+}

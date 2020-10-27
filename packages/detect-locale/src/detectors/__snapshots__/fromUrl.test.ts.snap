@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fromUrl throws an error if parameter is not passed 1`] = `fromUrl parameter is required`;
