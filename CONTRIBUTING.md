@@ -4,7 +4,7 @@
 ## Contributing to the docs
 
 Documentation uses Sphinx and reStructuredText. Source inside the
-[docs](https://github.com/lingui/js-lingui/tree/master/docs) directory.
+[docs](https://github.com/lingui/js-lingui/tree/main/docs) directory.
 
 1. Go to the `docs` directory
 

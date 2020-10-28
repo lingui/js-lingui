@@ -111,7 +111,7 @@ documentation to implementing features and fixing bugs.
 
 - Do you use **Lingui** in production site? Let us know!
 - Have you seen interesting talk or article about **i18n**?
-  [Share it](https://github.com/lingui/js-lingui/edit/master/docs/misc/talks-about-i18n.rst)!
+  [Share it](https://github.com/lingui/js-lingui/edit/main/docs/misc/talks-about-i18n.rst)!
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
 - Do you want to improve the docs and write some code?
   Read the [contributors guide][Contributing] and send a PR!
@@ -157,9 +157,9 @@ The project is licensed under the [MIT][License] license.
 [TutorialSetupReact]: https://lingui.js.org/tutorials/setup-react.html
 [RefCLI]: https://lingui.js.org/ref/cli.html
 
-[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/master.svg
-[Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/master?svg=true
-[Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/master.svg
+[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/main.svg
+[Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/main?svg=true
+[Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
 [Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
@@ -168,11 +168,11 @@ The project is licensed under the [MIT][License] license.
 [Img-Backers]: https://opencollective.com/js-lingui/backers.svg?width=890
 [Backers]: https://opencollective.com/js-lingui#backers
 
-[CI]: https://circleci.com/gh/lingui/js-lingui/tree/master
-[AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/master
+[CI]: https://circleci.com/gh/lingui/js-lingui/tree/main
+[AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/main
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
-[License]: https://github.com/lingui/js-lingui/blob/master/LICENSE
-[Contributing]: https://github.com/lingui/js-lingui/blob/master/CONTRIBUTING.md
+[License]: https://github.com/lingui/js-lingui/blob/main/LICENSE
+[Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
 [Indiegogo]: https://igg.me/at/js-lingui/x/4367619

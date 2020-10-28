@@ -29,7 +29,7 @@ See the [reference][reference] documenation of `lingui-cli` for all options.
 
 This package is licensed under [MIT][license] license.
 
-[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.js.org/
 [reference]: https://lingui.js.org/ref/conf.html

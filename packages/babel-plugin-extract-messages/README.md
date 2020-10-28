@@ -45,7 +45,7 @@ require("@babel/core").transform("code", {
 
 [MIT][license]
 
-[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.js.org/
 [package]: https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages

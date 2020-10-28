@@ -13,8 +13,8 @@ const BUILD_DIR = "build/"
 const PACKAGES_DIR = "build/packages"
 
 const npmTagForBranch = {
-  master: "latest",
-  next: "next"
+  main: "latest",
+  next: "next",
 }
 
 async function devRelease() {
@@ -22,7 +22,7 @@ async function devRelease() {
   const { currentVersion, newVersion } = await getNewVersion("next")
 
   const spinner = ora({
-    text: "Building packages"
+    text: "Building packages",
   })
   spinner.start()
   await exec("yarn release:build")
@@ -38,9 +38,9 @@ async function devRelease() {
 
   spinner.text = "Publishing packages"
   await Promise.all(
-    getPackages().map(packagePath => {
+    getPackages().map((packagePath) => {
       return exec(`npm publish --registry http://0.0.0.0:4873 --tag next`, {
-        cwd: packagePath
+        cwd: packagePath,
       })
     })
   )
@@ -55,7 +55,7 @@ async function devRelease() {
 }
 
 async function release() {
-  // Check branch: only `master` and `next` branches are allowed to publish releases
+  // Check branch: only `main` and `next` branches are allowed to publish releases
   const { stdout: branch } = await exec(
     "git branch | grep \\* | cut -d ' ' -f2"
   )
@@ -74,7 +74,7 @@ async function release() {
       name: "confirmRebuild",
       message:
         "Build directory already exists. Do you want to rebuild all packages?",
-      default: true
+      default: true,
     })
     build = confirmRebuild
   }
@@ -108,7 +108,7 @@ async function release() {
     type: "confirm",
     name: "confirmGit",
     message: "Do you want to proceed, commit version and create git tag?",
-    default: false
+    default: false,
   })
   if (!confirmGit) return
 
@@ -138,7 +138,7 @@ async function release() {
           return false
         }
         return value.length === 6
-      }
+      },
     },
     {
       type: "expand",
@@ -148,33 +148,33 @@ async function release() {
         {
           key: "y",
           name: "Yes",
-          value: true
+          value: true,
         },
         {
           key: "n",
           name: "No",
-          value: false
+          value: false,
         },
         {
           key: "d",
           name: "Dry run",
-          value: "dry"
-        }
-      ]
-    }
+          value: "dry",
+        },
+      ],
+    },
   ])
   if (!otp || !proceed) return
 
   await npmPublish(newVersion, {
     dryRun: proceed === "dry",
     otp,
-    next: npmTag !== "latest"
+    next: npmTag !== "latest",
   })
 }
 
 async function getNewVersion(npmTag) {
   const { version: currentVersion } = await fs.readJson("package.json")
-  const preview = inc => semver.inc(currentVersion, inc)
+  const preview = (inc) => semver.inc(currentVersion, inc)
 
   let { versionInc } = await inquirer.prompt({
     type: "list",
@@ -184,23 +184,23 @@ async function getNewVersion(npmTag) {
     choices: [
       {
         value: "current",
-        name: `current ${currentVersion}`
+        name: `current ${currentVersion}`,
       },
       ...(npmTag === "latest"
         ? ["patch", "minor", "major"]
         : ["prerelease", "prepatch", "preminor", "premajor"]
-      ).map(value => ({
+      ).map((value) => ({
         value,
-        name: `${value} ${preview(value)}`
+        name: `${value} ${preview(value)}`,
       })),
-      "manual"
-    ]
+      "manual",
+    ],
   })
 
   if (versionInc === "current") {
     return {
       currentVersion,
-      newVersion: currentVersion
+      newVersion: currentVersion,
     }
   } else if (versionInc === "manual") {
     const { manualVersion } = await inquirer.prompt({
@@ -209,7 +209,7 @@ async function getNewVersion(npmTag) {
       message: "Enter valid semver version:",
       validate(value) {
         return semver.valid(value) !== null
-      }
+      },
     })
 
     versionInc = manualVersion
@@ -221,13 +221,13 @@ async function getNewVersion(npmTag) {
   )
   return {
     currentVersion,
-    newVersion: newVersion.slice(1)
+    newVersion: newVersion.slice(1),
   }
 }
 
 async function preparePackageVersions(newVersion) {
   return Promise.all(
-    getPackages().map(packagePath => preparePackage(newVersion, packagePath))
+    getPackages().map((packagePath) => preparePackage(newVersion, packagePath))
   )
 }
 
@@ -253,7 +253,7 @@ function preparePackageDependencies(version, dependencies) {
 
   const updatedDependencies = {}
 
-  Object.keys(dependencies).forEach(dependency => {
+  Object.keys(dependencies).forEach((dependency) => {
     if (dependency.startsWith("@lingui/")) {
       updatedDependencies[dependency] = version
     } else {
@@ -267,11 +267,11 @@ function preparePackageDependencies(version, dependencies) {
 
 async function npmPublish(version, options) {
   const results = await Promise.all(
-    getPackages().map(async packagePath => {
+    getPackages().map(async (packagePath) => {
       const name = packagePath.split("/").reverse()[0]
       const spinner = ora({
         isEnabled: !process.env.CI,
-        text: `Publishing @lingui/${name}@${version}`
+        text: `Publishing @lingui/${name}@${version}`,
       })
 
       spinner.start()
@@ -305,8 +305,8 @@ async function npmPublishPackage(packagePath, { otp, next, dryRun }) {
 function getPackages() {
   return fs
     .readdirSync(PACKAGES_DIR)
-    .map(directory => path.join(PACKAGES_DIR, directory))
-    .filter(directory => fs.lstatSync(directory).isDirectory())
+    .map((directory) => path.join(PACKAGES_DIR, directory))
+    .filter((directory) => fs.lstatSync(directory).isDirectory())
 }
 
 function exec(cmd, options) {
@@ -317,12 +317,12 @@ function exec(cmd, options) {
       // env var to yarn one and the authentication fails.
       // By overriding it, we force `npm publish` to use npm registry.
       // https://github.com/yarnpkg/yarn/issues/2935#issuecomment-487020430
-      npm_config_registry: undefined
+      npm_config_registry: undefined,
     },
-    ...options
+    ...options,
   }
-  return new Promise(function(resolve, reject) {
-    _exec(cmd, _options, function(error, stdout, stderr) {
+  return new Promise(function (resolve, reject) {
+    _exec(cmd, _options, function (error, stdout, stderr) {
       stdout = stdout.trim()
       stderr = stderr.trim()
 
@@ -344,5 +344,5 @@ function main() {
 }
 
 if (require.main === module) {
-  main().catch(error => console.error(error))
+  main().catch((error) => console.error(error))
 }

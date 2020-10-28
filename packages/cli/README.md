@@ -45,7 +45,7 @@ See the [tutorial][tutorial] or [reference][reference] documenation.
 
 This package is licensed under [MIT][license] license.
 
-[license]: https://github.com/lingui/js-lingui/blob/master/LICENSE
+[license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.js.org/
 [tutorial]: https://lingui.js.org/tutorials/cli.html
