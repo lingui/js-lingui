@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "name": "@redteclab/js-lingui",
   "version": "3.0.0-23",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -94,7 +94,6 @@
     "packages/*"
   ],
   "repository": {
-    "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "https://github.com/RedTecLab/js-lingui"
   }
 }
