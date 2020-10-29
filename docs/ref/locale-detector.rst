@@ -1,6 +1,6 @@
-*******************************************************
+********************************************************
 API Reference - Locale Detection (@lingui/detect-locale)
-*******************************************************
+********************************************************
 
 ``@lingui/detect-locale`` is little package ``just (922 B Gzip)`` with some helper functions that will help you detect the locale of the user:
 
@@ -35,7 +35,7 @@ and some helpers:
 Practically all detectors accepts a custom document, location, or window object as param, it's usefull when testing or using some server-side strategy
 
 Usage with ``detect``
-====
+=====================
 
 .. code-block:: jsx
 
@@ -55,7 +55,7 @@ Usage with ``detect``
 
 
 Usage with ``multipleDetect``
-====
+=============================
 
 .. code-block:: jsx
 

@@ -47,7 +47,7 @@ to ECMAScript. We need to install ``@babel/plugin-@babel/plugin-syntax-dynamic-i
      }
 
 Final I18n loader helper
-===============
+========================
 
 Here's the full source of ``i18n.ts`` logic:
 

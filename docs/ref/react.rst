@@ -19,8 +19,9 @@ Rendering of Translations
 
 All i18n components render translation as a text without a wrapping tag. This can be
 customized in three different ways:
-   - globally: using ``defaultComponent`` prop on :component:`I18nProvider` component;
-   - locally: using ``render`` prop or ``component`` on i18 components
+
+- globally: using ``defaultComponent`` prop on :component:`I18nProvider` component;
+- locally: using ``render`` prop or ``component`` on i18 components
 
 Global Configuration
 ^^^^^^^^^^^^^^^^^^^^
