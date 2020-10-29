@@ -1,5 +1,4 @@
-import * as React from "react"
-import { I18n } from "@lingui/react"
+import React from "react"
 import { t, Trans, Plural } from "@lingui/macro"
 
 export default function Lingui({ numUsers, name = "You" }) {
@@ -10,15 +9,8 @@ export default function Lingui({ numUsers, name = "You" }) {
         <Trans id="msg.header">Internationalization in React</Trans>
       </h1>
 
-      {/* Element attributes are translated using i18n core object */}
-      <I18n>
-        {({ i18n }) => (
-          <img
-            src="./logo.png"
-            alt={i18n._(t("image.title")`Logo of Lingui Project`)}
-          />
-        )}
-      </I18n>
+      {/* Element attributes are translated using t macro */}
+      <img src="./logo.png" alt={t`Logo of Lingui Project`} />
 
       <p className="lead">
         {/* Variables are passed to messages in the same way as in JSX */}
@@ -28,12 +20,13 @@ export default function Lingui({ numUsers, name = "You" }) {
         </Trans>
       </p>
 
-      {/* Rendering of translation is customizable. Here it renders inside <p> */}
-      <Trans render="p" id="msg.docs">
-        {/* Also React Elements inside messages works in the same way as in JSX */}
-        Read the <a href="https://lingui.js.org">documentation</a>
-        for more info.
-      </Trans>
+      {/* React Elements inside messages works in the same way as in JSX */}
+      <p>
+        <Trans id="msg.docs">
+          Read the <a href="https://lingui.js.org">documentation</a>
+          for more info.
+        </Trans>
+      </p>
 
       {/*
         Plurals are managed using ICU plural rules.
