@@ -13,7 +13,7 @@
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
 
-[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
+[**Documentation**][Documentation] · [**Documentation 2.x**](https://js-lingui-git-stable-2x.lingui-js.vercel.app/) · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
