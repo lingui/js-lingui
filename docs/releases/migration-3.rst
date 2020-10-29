@@ -2,6 +2,11 @@
 Migration guide from 2.x to 3.x
 ********************************
 
+.. important::
+
+   Check out the `@lingui/codemods <https://www.npmjs.com/package/@lingui/codemods>`_
+   package for semi-automatic migration of your codebase.
+
 Backward incompatible changes
 =============================
 
