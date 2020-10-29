@@ -3,8 +3,8 @@
   "name": "lingui-docs",
   "builds": [
     {
-      "src": "./now-deploy-docs.sh",
-      "use": "@now/static-build",
+      "src": "./vercel-deploy-docs.sh",
+      "use": "@vercel/static-build",
       "config": { "distDir": "./docs/_build/html" }
     }
   ]
