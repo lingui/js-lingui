@@ -4,7 +4,7 @@ LinguiJS - Seamless internationalization in Javascript
 
 .. important:: This documentation is for the latest version Lingui 3.x
 
-   Old documentation is available at https://lingui.github.io/js-lingui/
+   Old documentation is available at https://js-lingui-git-stable-2x.lingui-js.vercel.app/
 
 🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
 
