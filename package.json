@@ -17,7 +17,8 @@
     "prettier": "yarn run lint:eslint --fix",
     "release": "node ./scripts/release.js",
     "release:build": "node ./scripts/build/",
-    "release:test": "node ./scripts/test.js"
+    "release:test": "node ./scripts/test.js",
+    "build:docs": "cd docs; ./vercel-build.sh"
   },
   "engines": {
     "node": ">=5.0"
