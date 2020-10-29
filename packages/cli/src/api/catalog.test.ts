@@ -4,60 +4,25 @@ import mockFs from "mock-fs"
 import { mockConsole, mockConfig } from "@lingui/jest-mocks"
 
 import {
-  MakeOptions,
   getCatalogs,
   getCatalogForFile,
   getCatalogForMerge,
   Catalog,
   cleanObsolete,
-  MergeOptions,
   order,
 } from "./catalog"
-import { createCompiledCatalog} from "./compile"
+import { createCompiledCatalog } from "./compile"
 
-import { copyFixture } from "../tests"
-import { ExtractedMessageType, MessageType } from "./types"
+import {
+  copyFixture,
+  defaultMakeOptions,
+  makeNextMessage,
+  defaultMergeOptions,
+  makeCatalog,
+  makePrevMessage,
+} from "../tests"
 
-const defaultMakeOptions: MakeOptions = {
-  verbose: false,
-  clean: false,
-  overwrite: false,
-  prevFormat: null,
-  orderBy: "messageId",
-}
-
-export const defaultMergeOptions: MergeOptions = {
-  overwrite: false,
-}
-
-export const makeCatalog = (config = {}) => {
-  return new Catalog(
-    {
-      name: "messages",
-      path: "{locale}/messages",
-      include: [],
-      exclude: [],
-    },
-    mockConfig(config)
-  )
-}
-
-function makePrevMessage(message = {}): MessageType {
-  return {
-    translation: "",
-    ...makeNextMessage(message),
-  }
-}
-
-export function makeNextMessage(message = {}): ExtractedMessageType {
-  return {
-    origin: [["catalog.test.ts", 1]],
-    obsolete: false,
-    ...message,
-  }
-}
-
-const fixture = (...dirs) =>
+export const fixture = (...dirs) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs))
 
 describe("Catalog", function () {
@@ -892,7 +857,9 @@ describe("writeCompiled", function () {
     const namespace = "es"
     const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
     // Test that the file extension of the compiled catalog is `.mjs`
-    expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(/\.mjs$/)
+    expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
+      /\.mjs$/
+    )
   })
 
   it("saves anything else than ES modules to .js files", function () {
@@ -914,11 +881,18 @@ describe("writeCompiled", function () {
     compiledCatalog = createCompiledCatalog("en", {}, { namespace: "cjs" })
     expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
 
-    compiledCatalog = createCompiledCatalog("en", {}, { namespace: "window.test" })
+    compiledCatalog = createCompiledCatalog(
+      "en",
+      {},
+      { namespace: "window.test" }
+    )
     expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
 
-    compiledCatalog = createCompiledCatalog("en", {}, { namespace: "global.test" })
+    compiledCatalog = createCompiledCatalog(
+      "en",
+      {},
+      { namespace: "global.test" }
+    )
     expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
-
   })
 })
