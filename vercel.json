@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "lingui-docs",
+  "builds": [
+    {
+      "src": "./vercel-deploy-docs.sh",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "./docs/_build/html" }
+    }
+  ]
+}
