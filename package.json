@@ -18,7 +18,8 @@
     "release": "node ./scripts/release.js",
     "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
-    "release:test": "node ./scripts/test.js"
+    "release:test": "node ./scripts/test.js",
+    "build:docs": "cd docs; ./vercel-build.sh"
   },
   "engines": {
     "node": ">=10.0.0"
