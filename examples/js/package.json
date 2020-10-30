@@ -12,15 +12,15 @@
     "pretest": "lingui compile --strict"
   },
   "dependencies": {
-    "@lingui/core": "next",
-    "@lingui/macro": "next"
+    "@lingui/core": "3.0.0",
+    "@lingui/macro": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@lingui/cli": "next",
-    "babel-jest": "^25.2.6",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@lingui/cli": "3.0.0",
+    "babel-jest": "^26.6.1",
     "babel-plugin-macros": "^2.8.0",
-    "jest": "^25.2.7"
+    "jest": "^26.6.1"
   }
 }
