@@ -65,6 +65,10 @@ export function Trans(props: TransProps) {
     ? formatElements(_translation, components)
     : null
 
+  if (render === null || component === null) {
+      return translation
+  }
+
   const FallbackComponent = defaultComponent || React.Fragment
 
   // Validation of `render` and `component` props
