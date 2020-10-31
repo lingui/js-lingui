@@ -66,7 +66,7 @@ export function Trans(props: TransProps) {
     : null
 
   if (render === null || component === null) {
-      return translation
+    return translation
   }
 
   const FallbackComponent = defaultComponent || React.Fragment
