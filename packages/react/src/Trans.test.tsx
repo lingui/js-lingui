@@ -178,6 +178,30 @@ describe("Trans component", function () {
       ).container.innerHTML
       expect(span).toEqual(`<div>Some text</div>`)
     })
+
+    it("should ignore defaultComponent when render is null", function () {
+      const ComponentFC: React.FunctionComponent = (props: { children?: React.ReactNode }) => {
+        return (<div>{props.children}</div>)
+      }
+      const translation = render(
+        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
+          <Trans id="Some text" render={null} />
+        </I18nProvider>
+      ).container.innerHTML
+      expect(translation).toEqual("Some text")
+    })
+
+    it("should ignore defaultComponent when component is null", function () {
+      const ComponentFC: React.FunctionComponent = (props: { children?: React.ReactNode }) => {
+        return (<div>{props.children}</div>)
+      }
+      const translation = render(
+        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
+          <Trans id="Some text" component={null} />
+        </I18nProvider>
+      ).container.innerHTML
+      expect(translation).toEqual("Some text")
+    })
   })
 
   describe("component prop rendering", function() {
