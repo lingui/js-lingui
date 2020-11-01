@@ -2,12 +2,24 @@
 
 exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
-  Hello World: Object {
+  Component A: Object {
     origin: Array [
       Array [
         collect/componentA/componentA.js,
         1,
       ],
+    ],
+  },
+  Component B: Object {
+    origin: Array [
+      Array [
+        collect/componentB.js,
+        1,
+      ],
+    ],
+  },
+  Hello World: Object {
+    origin: Array [
       Array [
         collect/componentA/index.js,
         1,
@@ -29,7 +41,7 @@ Object {
 exports[`Catalog make should collect and write catalogs 2`] = `
 Object {
   cs: Object {
-    Hello World: Object {
+    Component A: Object {
       comment: undefined,
       comments: Array [],
       flags: Array [],
@@ -39,6 +51,15 @@ Object {
           collect/componentA/componentA.js,
           1,
         ],
+      ],
+      translation: ,
+    },
+    Hello World: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
         Array [
           collect/componentA/index.js,
           1,
@@ -48,7 +69,7 @@ Object {
     },
   },
   en: Object {
-    Hello World: Object {
+    Component A: Object {
       comment: undefined,
       comments: Array [],
       flags: Array [],
@@ -58,6 +79,15 @@ Object {
           collect/componentA/componentA.js,
           1,
         ],
+      ],
+      translation: ,
+    },
+    Hello World: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
         Array [
           collect/componentA/index.js,
           1,
@@ -97,7 +127,7 @@ Object {
 exports[`Catalog make should merge with existing catalogs 2`] = `
 Object {
   cs: Object {
-    Hello World: Object {
+    Component A: Object {
       comment: undefined,
       comments: Array [],
       flags: Array [],
@@ -107,6 +137,28 @@ Object {
           collect/componentA/componentA.js,
           1,
         ],
+      ],
+      translation: ,
+    },
+    Component B: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentB.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Hello World: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
         Array [
           collect/componentA/index.js,
           1,
@@ -116,7 +168,7 @@ Object {
     },
   },
   en: Object {
-    Hello World: Object {
+    Component A: Object {
       comment: undefined,
       comments: Array [],
       flags: Array [],
@@ -126,6 +178,28 @@ Object {
           collect/componentA/componentA.js,
           1,
         ],
+      ],
+      translation: ,
+    },
+    Component B: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentB.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Hello World: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
         Array [
           collect/componentA/index.js,
           1,

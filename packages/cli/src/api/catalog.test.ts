@@ -24,7 +24,9 @@ import {
 } from "../tests"
 
 export const fixture = (...dirs) =>
-  path.resolve(__dirname, path.join("fixtures", ...dirs))
+  path.resolve(__dirname, path.join("fixtures", ...dirs)) +
+  // preserve trailing slash
+  (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
 
 describe("Catalog", function () {
   afterEach(() => {
@@ -38,7 +40,10 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: path.join(localeDir, "{locale}", "messages"),
-          include: [fixture("collect")],
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
           exclude: [],
         },
         mockConfig({
@@ -59,7 +64,7 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: path.join(localeDir, "{locale}"),
-          include: [fixture("collect")],
+          include: [fixture("collect/")],
           exclude: [],
         },
         mockConfig({
@@ -81,7 +86,7 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: "locales/{locale}",
-          include: [fixture("collect")],
+          include: [fixture("collect/")],
           exclude: [],
         },
         mockConfig()
@@ -96,7 +101,7 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: "locales/{locale}",
-          include: [fixture("collect-invalid")],
+          include: [fixture("collect-invalid/")],
           exclude: [],
         },
         mockConfig()
@@ -859,7 +864,7 @@ describe("order", function () {
 
 describe("writeCompiled", function () {
   it("saves ES modules to .mjs files", function () {
-    const localeDir = copyFixture(fixture("locales", "initial"))
+    const localeDir = copyFixture(fixture("locales", "initial/"))
     const catalog = new Catalog(
       {
         name: "messages",
@@ -879,7 +884,7 @@ describe("writeCompiled", function () {
   })
 
   it("saves anything else than ES modules to .js files", function () {
-    const localeDir = copyFixture(fixture("locales", "initial"))
+    const localeDir = copyFixture(fixture("locales", "initial/"))
     const catalog = new Catalog(
       {
         name: "messages",
