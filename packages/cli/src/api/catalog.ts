@@ -281,10 +281,13 @@ export class Catalog {
 
   get sourcePaths() {
     const includeGlobs = this.include.map(
-      (includePath) => `${includePath}${PATHSEP}**${PATHSEP}*.*`
+      (includePath) =>
+        includePath.endsWith(PATHSEP)
+          ? [includePath, "**", "*.*"].join(PATHSEP) // directory
+          : includePath // file
     )
     const patterns =
-      includeGlobs.length > 1 ? `{${includeGlobs.join("|")}` : includeGlobs[0]
+      includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
     return glob.sync(patterns, { ignore: this.exclude })
   }
 
@@ -489,15 +492,14 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
 export function normalizeRelativePath(sourcePath: string): string {
-  const sourcePathPosix = normalize(sourcePath)
+  if (path.isAbsolute(sourcePath)) {
+    // absolute path
+    return normalize(sourcePath, false)
+  }
 
-  // absolute path, do nothing
-  if (path.isAbsolute(sourcePathPosix)) return sourcePathPosix
-
-  // preserve trailing slash for directories
   const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
   return (
-    normalize(path.relative(process.cwd(), path.resolve(sourcePathPosix))) +
+    normalize(path.relative(process.cwd(), path.resolve(sourcePath))) +
     (isDir ? PATHSEP : "")
   )
 }
