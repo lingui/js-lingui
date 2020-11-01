@@ -1,10 +1,9 @@
 import React, { FunctionComponent, ComponentType } from "react"
 import { I18n } from "@lingui/core"
-import { TransRenderType } from "./Trans"
 
 export type I18nContext = {
   i18n: I18n
-  defaultComponent?: TransRenderType
+  defaultComponent?: React.ReactElement<any, any> | null
 }
 
 export type withI18nProps = {
@@ -29,8 +28,14 @@ export function useLingui(): I18nContext {
   return context
 }
 
-export function withI18n(o?: object): <P extends withI18nProps>(Component: ComponentType<P>) => React.ComponentType<P> {
-  return <P extends withI18nProps>(WrappedComponent: ComponentType<P>) : ComponentType<P> => {
+export function withI18n(
+  o?: object
+): <P extends withI18nProps>(
+  Component: ComponentType<P>
+) => React.ComponentType<P> {
+  return <P extends withI18nProps>(
+    WrappedComponent: ComponentType<P>
+  ): ComponentType<P> => {
     return (props) => {
       if (process.env.NODE_ENV !== "production") {
         if (typeof o === "function" || React.isValidElement(o)) {
@@ -42,8 +47,8 @@ export function withI18n(o?: object): <P extends withI18nProps>(Component: Compo
         }
       }
 
-      const { i18n } = useLingui();
-      return <WrappedComponent {...props} i18n={i18n} />;
+      const { i18n } = useLingui()
+      return <WrappedComponent {...props} i18n={i18n} />
     }
   }
 }
