@@ -67,7 +67,8 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
     return (translation as unknown) as React.ReactElement<any, any>
   }
 
-  const FallbackComponent = defaultComponent || React.Fragment
+  const FallbackComponent = (defaultComponent ||
+    React.Fragment) as React.ComponentType<any>
 
   // Validation of `render` and `component` props
   if (render && component) {
@@ -98,7 +99,7 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   }
 
   // `component` prop has a higher precedence over `defaultComponent`
-  const Component = component || FallbackComponent
+  const Component = (component || FallbackComponent) as React.ComponentType<any>
   return <Component>{translation}</Component>
 }
 
