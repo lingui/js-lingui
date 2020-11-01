@@ -44,10 +44,10 @@ describe("Trans component", function () {
     const originalConsole = console.error
     console.error = jest.fn()
 
-    renderWithI18n(<Trans render="span" id="Just a text" />)
+    renderWithI18n(<Trans render="span" id="Some text" />)
     expect(console.error).toHaveBeenCalled()
 
-    renderWithI18n(<Trans render="span" id="Just a text" />)
+    renderWithI18n(<Trans render="span" id="Some text" />)
     expect(console.error).toHaveBeenCalledTimes(2)
     console.error = originalConsole
   })
@@ -56,7 +56,7 @@ describe("Trans component", function () {
     const originalConsole = console.error
     console.error = jest.fn()
 
-    renderWithI18n(<Trans render="div" component="span" id="Just a text" />)
+    renderWithI18n(<Trans render="div" component="span" id="Some text" />)
     expect(console.error).toHaveBeenCalled()
     console.error = originalConsole
   })
@@ -137,9 +137,9 @@ describe("Trans component", function () {
   })
 
   describe("rendering", function () {
-    it("should render just a text without wrapping element", function () {
-      const txt = html(<Trans id="Just a text" />)
-      expect(txt).toEqual("Just a text")
+    it("should render a text node with no wrapper element", function () {
+      const txt = html(<Trans id="Some text" />)
+      expect(txt).toEqual("Some text")
     })
 
     it("should render custom element", function () {
@@ -173,10 +173,34 @@ describe("Trans component", function () {
       }
       const span = render(
         <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
-          <Trans id="Just a text" />
+          <Trans id="Some text" />
         </I18nProvider>
       ).container.innerHTML
-      expect(span).toEqual(`<div>Just a text</div>`)
+      expect(span).toEqual(`<div>Some text</div>`)
+    })
+
+    it("should ignore defaultComponent when render is null", function () {
+      const ComponentFC: React.FunctionComponent = (props: { children?: React.ReactNode }) => {
+        return (<div>{props.children}</div>)
+      }
+      const translation = render(
+        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
+          <Trans id="Some text" render={null} />
+        </I18nProvider>
+      ).container.innerHTML
+      expect(translation).toEqual("Some text")
+    })
+
+    it("should ignore defaultComponent when component is null", function () {
+      const ComponentFC: React.FunctionComponent = (props: { children?: React.ReactNode }) => {
+        return (<div>{props.children}</div>)
+      }
+      const translation = render(
+        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
+          <Trans id="Some text" component={null} />
+        </I18nProvider>
+      ).container.innerHTML
+      expect(translation).toEqual("Some text")
     })
   })
 
