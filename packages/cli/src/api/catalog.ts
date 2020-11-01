@@ -492,7 +492,7 @@ export function normalizeRelativePath(sourcePath: string): string {
   const sourcePathPosix = normalize(sourcePath)
 
   // absolute path, do nothing
-  if (sourcePathPosix.startsWith(PATHSEP)) return sourcePathPosix
+  if (path.isAbsolute(sourcePathPosix)) return sourcePathPosix
 
   // preserve trailing slash for directories
   const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
