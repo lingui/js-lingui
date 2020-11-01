@@ -1,5 +1,12 @@
 # Change Log
 
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/lingui/js-lingui/compare/v3.0.2..v3.0.3) (2020-11-01)
+
+### Bug Fixes
+
+* Handle multiple paths in catalogs.include ([#803](https://github.com/lingui/js-lingui/pull/803)).
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/lingui/js-lingui/compare/v3.0.1..v3.0.2) (2020-11-01)
 
