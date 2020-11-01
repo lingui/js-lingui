@@ -10,21 +10,17 @@ export type TransRenderProps = {
   message?: string | null
 }
 
-export type TransRenderType =
-  | React.ComponentType<TransRenderProps>
-  | React.ElementType<TransRenderProps>
-
 export type TransProps = {
   id: string
   message?: string
   values: Object
   components: { [key: string]: React.ElementType | any }
   formats?: Object
-  component?: TransRenderType
-  render?: (opts: TransRenderProps) => TransRenderType
+  component?: React.ComponentType<TransRenderProps>
+  render?: (props: TransRenderProps) => React.ReactElement<any, any> | null
 }
 
-export function Trans(props: TransProps) {
+export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   const { i18n, defaultComponent } = useLingui()
   const { render, component, id, message, formats } = props
 
@@ -66,7 +62,9 @@ export function Trans(props: TransProps) {
     : null
 
   if (render === null || component === null) {
-    return translation
+    // Although `string` is a valid react element, types only allow `Element`
+    // Upstream issue: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544
+    return (translation as unknown) as React.ReactElement<any, any>
   }
 
   const FallbackComponent = defaultComponent || React.Fragment
