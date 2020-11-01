@@ -252,7 +252,7 @@ export class Catalog {
   }
 
   writeCompiled(locale: string, compiledCatalog: string, namespace?: string) {
-    const ext = `.${ namespace === "es" ? "mjs": "js"}`
+    const ext = `.${namespace === "es" ? "mjs" : "js"}`
     const filename = this.path.replace(LOCALE, locale) + ext
 
     const basedir = path.dirname(filename)
@@ -436,7 +436,9 @@ export function getCatalogForMerge(config: LinguiConfig) {
   // catalog name is the last directory of catalogPath.
   // If the last part is {locale}, then catalog doesn't have an explicit name
   const name = (function () {
-    const _name = path.basename(normalizeRelativePath(catalogConfig.catalogsMergePath))
+    const _name = path.basename(
+      normalizeRelativePath(catalogConfig.catalogsMergePath)
+    )
     return _name !== LOCALE ? _name : null
   })()
 
@@ -486,11 +488,11 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Preserve directories:       ./relative/ => relative/
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
-function normalizeRelativePath(sourcePath: string): string {
+export function normalizeRelativePath(sourcePath: string): string {
   const sourcePathPosix = normalize(sourcePath)
 
   // absolute path, do nothing
-  if (sourcePathPosix.startsWith(PATHSEP)) return sourcePathPosix
+  if (path.isAbsolute(sourcePathPosix)) return sourcePathPosix
 
   // preserve trailing slash for directories
   const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
