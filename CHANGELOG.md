@@ -1,5 +1,21 @@
 # Change Log
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/lingui/js-lingui/compare/v3.0.0..v3.0.1) (2020-11-01)
+
+### Bug Fixes
+
+* Fix catalog include paths on Windows ([#802](https://github.com/lingui/js-lingui/pull/802)).
+* Fix type of Trans component ([#801](https://github.com/lingui/js-lingui/pull/801)).
+* Accept React 17 as a peer dependency ([#789](https://github.com/lingui/js-lingui/pull/789)).
+* Allow null overrides for render and component props ([#799](https://github.com/lingui/js-lingui/pull/799)).
+  Thanks to [Declan Haigh](https://github.com/dhaigh)
+
+<a name="3.0.0"></a>
+## [3.0.0](https://github.com/lingui/js-lingui/compare/v2.9.1..v3.0.0) (2020-11-01)
+
+See [migration guide](https://lingui.js.org/releases/migration-3.html) for a full changelog.
+
 <a name="2.9.1"></a>
 ## [2.9.1](https://github.com/lingui/js-lingui/compare/v2.9.0..v2.9.1) (2020-01-18)
 
