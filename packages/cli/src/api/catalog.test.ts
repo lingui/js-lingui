@@ -10,6 +10,7 @@ import {
   Catalog,
   cleanObsolete,
   order,
+  normalizeRelativePath,
 } from "./catalog"
 import { createCompiledCatalog } from "./compile"
 
@@ -764,6 +765,21 @@ describe("getCatalogForMerge", function () {
         "Invalid catalog path: {locale} variable is missing"
       )
     }
+  })
+})
+
+describe("normalizeRelativePath", function () {
+  it("should preserve absolute paths - posix", function () {
+    const absolute = "/my/directory"
+    expect(normalizeRelativePath(absolute)).toEqual(absolute)
+  })
+
+  it("should preserve absolute paths - win32", function () {
+    const absolute = "C:\\my\\directory"
+    // path remains the same, but separators are converted to posix
+    expect(normalizeRelativePath(absolute)).toEqual(
+      absolute.split("\\").join("/")
+    )
   })
 })
 
