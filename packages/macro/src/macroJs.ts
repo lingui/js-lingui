@@ -98,6 +98,11 @@ export default class MacroJs {
       return
     }
 
+    if (this.types.isCallExpression(path.node) && this.isIdentifier(path.node.callee, "t")) {
+      this.replaceTAsFunction(path)
+      return
+    }
+
     const tokens = this.tokenizeNode(path.node)
 
     const messageFormat = new ICUMessageFormat()
@@ -140,6 +145,26 @@ export default class MacroJs {
     const descriptor = this.processDescriptor(path.node.arguments[0])
     this.addExtractMark(path)
     path.replaceWith(descriptor)
+  }
+
+  /**
+   * macro `t` is called with MessageDescriptor, after that
+   * we create a new node to append it to i18n._
+   */
+  replaceTAsFunction = (path) => {
+    const descriptor = this.processDescriptor(path.node.arguments[0])
+    const newNode = this.types.callExpression(
+      this.types.memberExpression(
+        this.types.identifier(this.i18nImportName),
+        this.types.identifier("_")
+      ),
+      [descriptor]
+    )
+
+    this.addExtractMark(path)
+
+    // @ts-ignore
+    path.replaceWith(newNode)
   }
 
   /**
