@@ -43,7 +43,7 @@ Commands
 ``extract``
 -----------
 
-.. lingui-cli:: extract [--clean] [--overwrite] [--format <format>] [--convert-from <format>] [--verbose]
+.. lingui-cli:: extract [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -64,6 +64,10 @@ Update translations for :conf:`sourceLocale` from source.
 .. lingui-cli-option:: --format <format>
 
 Format of message catalogs (see :conf:`format` option).
+
+.. lingui-cli-option:: --locale <locale>
+
+Only extract data for the specified locale.
 
 .. lingui-cli-option:: --convert-from <format>
 

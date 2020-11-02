@@ -20,6 +20,7 @@ export const defaultMakeOptions: MakeOptions = {
   verbose: false,
   clean: false,
   overwrite: false,
+  locale: null,
   prevFormat: null,
   orderBy: "messageId",
 }

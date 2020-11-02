@@ -211,6 +211,47 @@ Object {
 }
 `;
 
+exports[`Catalog make should only update the specified locale 1`] = `
+Object {
+  cs: null,
+  en: null,
+}
+`;
+
+exports[`Catalog make should only update the specified locale 2`] = `
+Object {
+  cs: null,
+  en: Object {
+    Component A: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Hello World: Object {
+      comment: undefined,
+      comments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+  },
+}
+`;
+
 exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
 
 exports[`Catalog makeTemplate should collect and write a template 2`] = `
