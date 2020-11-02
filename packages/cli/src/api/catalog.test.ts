@@ -774,6 +774,10 @@ describe("getCatalogForMerge", function () {
 })
 
 describe("normalizeRelativePath", function () {
+  afterEach(() => {
+    mockFs.restore()
+  })
+
   it("should preserve absolute paths - posix", function () {
     const absolute = "/my/directory"
     expect(normalizeRelativePath(absolute)).toEqual(absolute)
