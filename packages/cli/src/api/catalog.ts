@@ -288,7 +288,7 @@ export class Catalog {
     )
     const patterns =
       includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
-    return glob.sync(patterns, { ignore: this.exclude })
+    return glob.sync(patterns, { ignore: this.exclude, mark: true })
   }
 
   get localeDir() {
@@ -372,6 +372,7 @@ export function getCatalogs(config: LinguiConfig) {
       patterns.length > 1 ? `{${patterns.join(",")}` : patterns[0],
       {
         ignore: exclude,
+        mark: true
       }
     )
 
@@ -497,7 +498,7 @@ export function normalizeRelativePath(sourcePath: string): string {
     return normalize(sourcePath, false)
   }
 
-  const isDir = normalize(sourcePath, false).endsWith(PATHSEP)
+  const isDir = fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
   return (
     normalize(path.relative(process.cwd(), path.resolve(sourcePath))) +
     (isDir ? PATHSEP : "")

@@ -786,6 +786,19 @@ describe("normalizeRelativePath", function () {
       absolute.split("\\").join("/")
     )
   })
+
+  it("directories without ending slash are correctly treaten as dirs", function() {
+    mockFs({
+      componentA: {
+        "index.js": mockFs.file(),
+      },
+      "componentB": mockFs.file(),
+    })
+    // checked correctly that is a dir, cuz added that ending slash
+    expect(normalizeRelativePath("./componentA")).toEqual("componentA/")
+    // ComponentB is a file shouldn't add ending slash
+    expect(normalizeRelativePath("./componentB")).toEqual("componentB")
+  })
 })
 
 describe("cleanObsolete", function () {
