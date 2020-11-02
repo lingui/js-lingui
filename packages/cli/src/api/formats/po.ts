@@ -89,6 +89,9 @@ const po: CatalogFormatter = {
     } else {
       po = new PO()
       po.headers = getCreateHeaders(options.locale)
+      if (options.locale === undefined) {
+        delete po.headers.Language;
+      }
       po.headerOrder = R.keys(po.headers)
     }
     po.items = serialize(catalog, options)

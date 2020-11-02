@@ -21,15 +21,24 @@ import {
   CatalogType,
 } from "./types"
 import { CliExtractOptions } from "../lingui-extract"
+import { CliExtractTemplateOptions } from "../lingui-extract-template"
 
 const NAME = "{name}"
 const LOCALE = "{locale}"
+const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
 
 export type MakeOptions = CliExtractOptions & {
   projectType?: string
   orderBy?: OrderBy
 }
+
+export type MakeTemplateOptions = CliExtractTemplateOptions & {
+  projectType?: string
+  orderBy?: OrderBy
+}
+
+type CollectOptions = MakeOptions | MakeTemplateOptions
 
 export type MergeOptions = {
   overwrite: boolean
@@ -87,10 +96,16 @@ export class Catalog {
     this.writeAll(cleanAndSort(catalogs))
   }
 
+  makeTemplate(options: MakeTemplateOptions) {
+    const catalog = this.collect(options)
+    const sort = order(options.orderBy) as (catalog: CatalogType) => CatalogType
+    this.writeTemplate(sort(catalog as CatalogType))
+  }
+
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  collect(options: MakeOptions) {
+  collect(options: CollectOptions) {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -251,6 +266,17 @@ export class Catalog {
     this.locales.forEach((locale) => this.write(locale, catalogs[locale]))
   }
 
+  writeTemplate(messages: CatalogType) {
+    const filename = this.templateFile
+    const basedir = path.dirname(filename)
+    if (!fs.existsSync(basedir)) {
+      fs.mkdirpSync(basedir)
+    }
+    const options = { ...this.config.formatOptions, locale: undefined }
+    const poFormat = getFormat("po")
+    poFormat.write(filename, messages, options)
+  }
+
   writeCompiled(locale: string, compiledCatalog: string, namespace?: string) {
     const ext = `.${namespace === "es" ? "mjs" : "js"}`
     const filename = this.path.replace(LOCALE, locale) + ext
@@ -279,6 +305,12 @@ export class Catalog {
     ) as AllCatalogsType
   }
 
+  readTemplate() {
+    const filename = this.templateFile
+    if (!fs.existsSync(filename)) return null
+    return this.format.read(filename)
+  }
+
   get sourcePaths() {
     const includeGlobs = this.include.map(
       (includePath) =>
@@ -289,6 +321,10 @@ export class Catalog {
     const patterns =
       includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
     return glob.sync(patterns, { ignore: this.exclude, mark: true })
+  }
+
+  get templateFile() {
+    return this.path.replace(LOCALE_SUFFIX_RE, "messages.pot")
   }
 
   get localeDir() {
