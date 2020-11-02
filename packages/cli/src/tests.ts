@@ -3,7 +3,7 @@ import fs from "fs-extra"
 import path from "path"
 
 import { mockConfig } from "@lingui/jest-mocks"
-import { Catalog, MakeOptions, MergeOptions } from "./api/catalog"
+import { Catalog, MakeOptions, MakeTemplateOptions, MergeOptions } from "./api/catalog"
 import { ExtractedMessageType, MessageType } from "./api/types"
 
 export function copyFixture(fixtureDir) {
@@ -22,6 +22,11 @@ export const defaultMakeOptions: MakeOptions = {
   clean: false,
   overwrite: false,
   prevFormat: null,
+  orderBy: "messageId",
+}
+
+export const defaultMakeTemplateOptions: MakeTemplateOptions = {
+  verbose: false,
   orderBy: "messageId",
 }
 

@@ -17,6 +17,7 @@ import { createCompiledCatalog } from "./compile"
 import {
   copyFixture,
   defaultMakeOptions,
+  defaultMakeTemplateOptions,
   makeNextMessage,
   defaultMergeOptions,
   makeCatalog,
@@ -77,6 +78,32 @@ describe("Catalog", function () {
 
       catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
+    })
+  })
+
+  describe("makeTemplate", function () {
+    it("should collect and write a template", function () {
+      const localeDir = copyFixture(fixture("locales", "initial"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}", "messages"),
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readTemplate()).toMatchSnapshot()
+
+      catalog.makeTemplate(defaultMakeTemplateOptions)
+      expect(catalog.readTemplate()).toMatchSnapshot()
     })
   })
 

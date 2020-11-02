@@ -211,6 +211,39 @@ Object {
 }
 `;
 
+exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
+
+exports[`Catalog makeTemplate should collect and write a template 2`] = `
+Object {
+  Component A: Object {
+    comment: undefined,
+    comments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        1,
+      ],
+    ],
+    translation: ,
+  },
+  Hello World: Object {
+    comment: undefined,
+    comments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect/componentA/index.js,
+        1,
+      ],
+    ],
+    translation: ,
+  },
+}
+`;
+
 exports[`Catalog read should read file in given format 1`] = `
 Object {
   obsolete: Object {

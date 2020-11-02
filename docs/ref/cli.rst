@@ -73,6 +73,17 @@ Convert message catalogs from previous format (see :conf:`format` option).
 
 Prints additional information.
 
+``extract-template``
+--------------------
+
+.. lingui-cli:: extract-template [--verbose]
+
+This command extracts messages from source files and creates a ``.pot`` template file.
+
+.. lingui-cli-option:: --verbose
+
+Prints additional information.
+
 ``compile``
 -----------
 
