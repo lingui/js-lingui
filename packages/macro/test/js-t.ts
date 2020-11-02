@@ -83,6 +83,28 @@ export default [
       `,
   },
   {
+    name: "Support id and comment in t macro as callExpression",
+    input: `
+        import { t } from '@lingui/macro'
+        t({
+          id: 'msgId_2',
+          message: 'text',
+          comment: 'description for translators'
+        })
+        t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
+      `,
+    expected: `
+      import { i18n } from "@lingui/core"
+      /*i18n*/
+      i18n._({ id: "msgId_2", message: 'text', comment: 'description for translators' })
+      
+      /*i18n*/
+      i18n._({ id: "msgId", comment: 'description for translators', message: '{val, plural, one {...} other {...}}', values: {
+        val: val,
+      } })
+      `,
+  },
+  {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js",
   },
