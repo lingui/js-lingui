@@ -138,6 +138,13 @@ Examples of JS macros
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
+|    t({                                                      |    i18n._(/*i18n*/{                                                |
+|       id: "msg.refresh",                                    |      id: "msg.refresh",                                            |
+|       message: "Refresh inbox"                              |      message: "Refresh inbox"                                      |
+|    })                                                       |    })                                                              |
++-------------------------------------------------------------+--------------------------------------------------------------------+
+| .. code-block:: js                                          | .. code-block:: js                                                 |
+|                                                             |                                                                    |
 |    describeMessage({                                        |    /*i18n*/{                                                       |
 |       id: "msg.refresh",                                    |      id: "msg.refresh",                                            |
 |       message: "Refresh inbox"                              |      message: "Refresh inbox"                                      |
@@ -174,7 +181,7 @@ Examples of JSX macros
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: jsx                                         | .. code-block:: jsx                                                |
 |                                                             |                                                                    |
-|    <Trans id=" msg.refresh">                                |    <Trans                                                          |
+|    <Trans id="msg.refresh">                                 |    <Trans                                                          |
 |       Refresh inbox                                         |       id="msg.refresh"                                             |
 |    </Trans>                                                 |       message="Refresh inbox"                                      |
 |                                                             |    />                                                              |
@@ -271,6 +278,46 @@ other expressions are referenced by numeric index:
      values: { 0: date(name) }
    })
 
+It's also possible to pass custom ``id`` and ``comment`` for translators by
+calling ``t`` macro with a message descriptor:
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   const message = t({
+      id: 'msg.hello',
+      comment: 'Greetings at the homepage',
+      message: `Hello ${name}`
+   })
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+
+   import { i18n } from "@lingui/core"
+   const message = i18n._(/*i18n*/{
+      id: 'msg.hello',
+      comment: 'Greetings at the homepage',
+      message: 'Hello {name}'
+   })
+
+In this case the ``message`` is used as a default message and it's transformed
+as if it were wrapped in ``t`` macro. ``message`` also accepts any other macros:
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   const message = t({
+      id: 'msg.plural',
+      message: plural(value, { one: "...", other: "..." })
+   })
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+
+   import { i18n } from "@lingui/core"
+   const message = i18n._(/*i18n*/{
+      id: 'msg.plural',
+      message: '{value, plural, one {...} other {...}}'
+   })
+
 plural
 ^^^^^^
 
@@ -363,6 +410,11 @@ two counters:
    However, simple is better because in the end it's the translator who's gonna
    have to translate these long and complex strings.
 
+.. important::
+
+   Use ``plural`` inside :jsmacro:`t` macro if you want to add custom ``id``
+   or ``comment`` for translators.
+
 selectOrdinal
 ^^^^^^^^^^^^^
 
@@ -393,6 +445,11 @@ cardinal plural forms it uses ordinal forms:
      values: { count }
    })
 
+.. important::
+
+   Use ``selectOrdinal`` inside :jsmacro:`t` macro if you want to add custom ``id``
+   or ``comment`` for translators.
+
 select
 ^^^^^^
 
@@ -421,6 +478,11 @@ provided in ``options`` object which key matches exactly ``value``:
      id: '{gender, select, male {he} female {she} other {they}}',
      values: { gender }
    })
+
+.. important::
+
+   Use ``select`` inside :jsmacro:`t` macro if you want to add custom ``id``
+   or ``comment`` for translators.
 
 defineMessage
 ^^^^^^^^^^^^^
