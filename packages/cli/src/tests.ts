@@ -7,11 +7,10 @@ import { Catalog, MakeOptions, MakeTemplateOptions, MergeOptions } from "./api/c
 import { ExtractedMessageType, MessageType } from "./api/types"
 
 export function copyFixture(fixtureDir) {
-  const tmpDir = path.join(os.tmpdir(), `lingui-test-${process.pid}`)
-
-  if (!fs.existsSync(fixtureDir)) {
-    fs.mkdirpSync(tmpDir)
-  } else {
+  const tmpDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), `lingui-test-${process.pid}`)
+  )
+  if (fs.existsSync(fixtureDir)) {
     fs.copySync(fixtureDir, tmpDir)
   }
   return tmpDir
