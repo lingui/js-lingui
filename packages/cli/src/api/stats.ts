@@ -26,7 +26,11 @@ export function printStats(config: LinguiConfig, catalogs: AllCatalogsType) {
   })
 
   Object.keys(catalogs).forEach((locale) => {
-    const [all, translated] = getStats(catalogs[locale])
+    const catalog = catalogs[locale]
+    // catalog is null if no catalog exists on disk and the locale
+    // was not extracted due to a `--locale` filter
+    const [all, translated] = catalog ? getStats(catalog) : ["-", "-"]
+
     if (config.sourceLocale === locale) {
       table.push({ [`${chalk.bold(locale)} (source)`]: [all, "-"] })
     } else {

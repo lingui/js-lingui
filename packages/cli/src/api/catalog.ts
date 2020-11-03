@@ -93,7 +93,14 @@ export class Catalog {
         order(options.orderBy)
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
-    this.writeAll(cleanAndSort(catalogs))
+
+    const sortedCatalogs = cleanAndSort(catalogs);
+
+    if (options.locale) {
+      this.write(options.locale, sortedCatalogs[options.locale])
+    } else {
+      this.writeAll(sortedCatalogs)
+    }
   }
 
   makeTemplate(options: MakeTemplateOptions) {

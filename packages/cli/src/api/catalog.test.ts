@@ -59,6 +59,30 @@ describe("Catalog", function () {
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
+    it("should only update the specified locale", function () {
+      const localeDir = copyFixture(fixture("locales", "initial"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}", "messages"),
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readAll()).toMatchSnapshot()
+
+      catalog.make({ ...defaultMakeOptions, locale: "en" })
+      expect(catalog.readAll()).toMatchSnapshot()
+    })
+
     it("should merge with existing catalogs", function () {
       const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(

@@ -13,6 +13,7 @@ export type CliExtractOptions = {
   verbose: boolean
   clean: boolean
   overwrite: boolean
+  locale: string
   prevFormat: string | null
 }
 
@@ -70,6 +71,7 @@ export default function command(
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
+    .option("--locale <locale>", "Only extract the specified locale")
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option("--verbose", "Verbose output")
@@ -120,12 +122,19 @@ if (require.main === module) {
     process.exit(1)
   }
 
+  if (program.locale && !config.locales.includes(program.locale)) {
+    hasErrors = true
+    console.error(`Locale ${chalk.bold(program.locale)} does not exist.`)
+    console.error()
+  }
+
   if (hasErrors) process.exit(1)
 
   const result = command(config, {
     verbose: program.verbose || false,
     clean: program.clean || false,
     overwrite: program.overwrite || false,
+    locale: program.locale,
     prevFormat,
   })
 
