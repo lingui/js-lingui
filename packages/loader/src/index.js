@@ -62,7 +62,7 @@ export default function (source) {
   const messages = R.mapObjIndexed(
     (_, key) =>
       catalog.getTranslation(catalogs, locale, key, {
-        fallbackLocale: config.fallbackLocale,
+        fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
       }),
     catalogs[locale]

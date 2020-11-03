@@ -69,7 +69,9 @@ export declare function replaceRootDir(config: LinguiConfig, rootDir: string): L
  */
 declare type DeprecatedFallbackLanguage = {
     fallbackLanguage: string | null;
+    fallbackLocale: string | null;
 };
+
 export declare function fallbackLanguageMigration(config: LinguiConfig & DeprecatedFallbackLanguage): LinguiConfig;
 /**
  * Replace localeDir, srcPathDirs and srcPathIgnorePatterns with catalogs

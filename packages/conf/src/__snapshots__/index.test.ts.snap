@@ -93,7 +93,9 @@ Object {
     plugins: Array [],
     presets: Array [],
   },
-  fallbackLocale: ,
+  fallbackLocales: Object {
+    en-gb: en,
+  },
   format: po,
   formatOptions: Object {
     origins: true,

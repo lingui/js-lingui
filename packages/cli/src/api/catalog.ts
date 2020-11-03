@@ -44,9 +44,14 @@ export type MergeOptions = {
   overwrite: boolean
 }
 
+// @todo: import from @lingui/conf
+export type FallbackLocales = {
+  [locale: string]: string[] | string
+} | { default: string[] | string }
+
 export type GetTranslationsOptions = {
   sourceLocale: string
-  fallbackLocale: string
+  fallbackLocales: FallbackLocales
 }
 
 type CatalogProps = {
@@ -94,7 +99,7 @@ export class Catalog {
       )
     ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
 
-    const sortedCatalogs = cleanAndSort(catalogs);
+    const sortedCatalogs = cleanAndSort(catalogs)
 
     if (options.locale) {
       this.write(options.locale, sortedCatalogs[options.locale])
@@ -227,7 +232,7 @@ export class Catalog {
     catalogs: Object,
     locale: string,
     key: string,
-    { fallbackLocale, sourceLocale }: GetTranslationsOptions
+    { fallbackLocales, sourceLocale }: GetTranslationsOptions
   ) {
     if (!catalogs[locale].hasOwnProperty(key)) {
       console.error(`Message with key ${key} is missing in locale ${locale}`)
@@ -235,18 +240,36 @@ export class Catalog {
 
     const getTranslation = (locale) => catalogs[locale][key].translation
 
+    const getMultipleFallbacks = (locale) => {
+      let i = 0
+      const fL = fallbackLocales[locale]
+      if (Array.isArray(fL)) {
+        while(i <= fL.length) {
+          const fallbackLocale = fL[i]
+          if (catalogs[fallbackLocale]) {
+            return getTranslation(fallbackLocale)
+          }
+          i++
+        }
+      } else {
+        return getTranslation(fL)
+      }
+    }
+
     return (
       // Get translation in target locale
       getTranslation(locale) ||
-      // Get translation in fallbackLocale (if any)
-      (fallbackLocale && getTranslation(fallbackLocale)) ||
+      // Get translation in fallbackLocales.default (if any)
+      (fallbackLocales.default && getTranslation(fallbackLocales.default)) ||
+      // We search in fallbackLocales as dependent of each locale
+      getMultipleFallbacks(locale) ||
       // Get message default
       catalogs[locale][key].defaults ||
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
       (sourceLocale &&
-        fallbackLocale &&
-        sourceLocale === fallbackLocale &&
+        fallbackLocales.default &&
+        sourceLocale === fallbackLocales.default &&
         key) ||
       // Otherwise no translation is available
       undefined
