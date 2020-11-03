@@ -191,8 +191,10 @@ export class Catalog {
           (prevCatalog[key].translation === prevCatalog[key].message ||
             options.overwrite)
 
+        // when updating from defaults, use the message in case we have one (custom keys)
+        // otherwise (with keys being the source language string) just use the key itself
         const translation = updateFromDefaults
-          ? nextCatalog[key].message
+          ? nextCatalog[key].message || key
           : prevCatalog[key].translation
 
         return {
