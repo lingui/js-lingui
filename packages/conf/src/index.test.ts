@@ -1,4 +1,5 @@
 import path from "path"
+import mockFs from "mock-fs"
 import { validate } from "jest-validate"
 import {
   getConfig,
@@ -139,6 +140,58 @@ describe("@lingui/conf", function () {
           ),
         })
         expect(config.locales).toEqual(["cs", "sk"])
+      })
+    })
+  })
+
+  describe("fallbackLocales logic", () => {
+    afterEach(() => {
+      mockFs.restore()
+    })
+
+    it ("if fallbackLocale is defined, we use the default one on fallbackLocales", () => {
+      mockFs({
+        ".linguirc": JSON.stringify({
+          locales: ["en-US"],
+          fallbackLocale: "en"
+        })
+      })
+      mockConsole((console) => {
+        const config = getConfig({
+          configPath: ".linguirc",
+        })
+        expect(config.fallbackLocales.default).toEqual("en")
+        expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
+      })
+    })
+
+    it ("if fallbackLanguage is defined, we use the default one on fallbackLocales", () => {
+      mockFs({
+        ".linguirc": JSON.stringify({
+          locales: ["en-US"],
+          fallbackLanguage: "en"
+        })
+      })
+      mockConsole((console) => {
+        const config = getConfig({
+          configPath: ".linguirc",
+        })
+        expect(config.fallbackLocales.default).toEqual("en")
+        expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
+      })
+    })
+
+    it ("if fallbackLocales is defined, we also build the cldr", () => {
+      const config = getConfig({
+        configPath: path.resolve(
+          __dirname,
+          path.join("fixtures", "valid", ".fallbacklocalesrc")
+        ),
+      })
+      expect(config.fallbackLocales).toEqual({
+        "en-US": "en",
+        default: "en",
+        "es-MX": "es"
       })
     })
   })

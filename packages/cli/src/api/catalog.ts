@@ -7,7 +7,7 @@ import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
 
-import { LinguiConfig, OrderBy } from "@lingui/conf"
+import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
 
 import getFormat from "./formats"
 import { CatalogFormatter } from "./formats/types"
@@ -43,11 +43,6 @@ type CollectOptions = MakeOptions | MakeTemplateOptions
 export type MergeOptions = {
   overwrite: boolean
 }
-
-// @todo: import from @lingui/conf
-export type FallbackLocales = {
-  [locale: string]: string[] | string
-} | { default: string[] | string }
 
 export type GetTranslationsOptions = {
   sourceLocale: string

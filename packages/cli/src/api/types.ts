@@ -36,9 +36,7 @@ export type AllCatalogsType = {
   [locale: string]: CatalogType
 }
 
-export type FallbackLocales = {
-  [locale: string]: string[] | string
-} | { default: string[] | string }
+export declare type FallbackLocales = { [locale: string]: string[] | string } | { default: string[] | string }
 
 export type getTranslationOptions = {
   fallbackLocales: FallbackLocales

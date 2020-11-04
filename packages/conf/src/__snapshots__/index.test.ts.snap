@@ -75,6 +75,42 @@ Documentation: https://lingui.js.org/ref/conf.html
 Documentation: https://lingui.js.org/ref/conf.html
 `;
 
+exports[`@lingui/conf fallbackLocales logic if fallbackLanguage is defined, we use the default one on fallbackLocales 1`] = `
+● Deprecation Warning:
+
+ Option fallbackLanguage was replaced by fallbackLocale
+
+    @lingui/cli now treats your current configuration as:
+    {
+      "fallbackLocale": "en"
+    }
+
+    Please update your configuration.
+    
+
+Documentation: https://lingui.js.org/ref/conf.html
+`;
+
+exports[`@lingui/conf fallbackLocales logic if fallbackLocale is defined, we use the default one on fallbackLocales 1`] = `
+● Deprecation Warning:
+
+ Option fallbackLocale was replaced by fallbackLocales
+
+    You can find more information here: https://github.com/lingui/js-lingui/issues/791
+
+    @lingui/cli now treats your current configuration as:
+    {
+      "fallbackLocales": {
+        default: "en"
+      }
+    }
+
+    Please update your configuration.
+    
+
+Documentation: https://lingui.js.org/ref/conf.html
+`;
+
 exports[`@lingui/conf should return default config 1`] = `
 Object {
   catalogs: Array [

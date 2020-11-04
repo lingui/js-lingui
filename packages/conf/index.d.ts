@@ -9,11 +9,14 @@ declare type CatalogConfig = {
     include: string[];
     exclude?: string[];
 };
+
+export declare type FallbackLocales = { [locale: string]: string[] | string } | { default: string[] | string }
+
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
     compileNamespace: string;
     extractBabelOptions: Object;
-    fallbackLocale: string;
+    fallbackLocales: FallbackLocales;
     format: CatalogFormat;
     prevFormat: CatalogFormat;
     formatOptions: CatalogFormatOptions;
@@ -42,7 +45,7 @@ export declare const configValidation: {
         };
         catalogs: CatalogConfig[];
         compileNamespace: string;
-        fallbackLocale: string;
+        fallbackLocales: FallbackLocales;
         format: CatalogFormat;
         formatOptions: CatalogFormatOptions;
         locales: string[];
@@ -54,6 +57,7 @@ export declare const configValidation: {
     };
     deprecatedConfig: {
         fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
+        fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
         localeDir: (config: LinguiConfig & DeprecatedLocaleDir) => string;
         srcPathDirs: (config: LinguiConfig & DeprecatedLocaleDir) => string;
         srcPathIgnorePatterns: (config: LinguiConfig & DeprecatedLocaleDir) => string;

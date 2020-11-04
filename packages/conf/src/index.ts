@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs"
 import chalk from "chalk"
 import { cosmiconfigSync } from "cosmiconfig"
-import { validate } from "jest-validate"
+import { multipleValidOptions, validate } from "jest-validate"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -19,15 +19,19 @@ type CatalogConfig = {
   exclude?: string[]
 }
 
-export type FallbackLocales = {
+type LocaleObject = {
   [locale: string]: string[] | string
-} | { default: string[] | string }
+}
+type DefaultLocaleObject = {
+  default: string[] | string
+}
+export type FallbackLocales = LocaleObject | DefaultLocaleObject | false
 
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
   extractBabelOptions: Object
-  fallbackLocales: FallbackLocales
+  fallbackLocales?: FallbackLocales
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -58,7 +62,7 @@ export const defaultConfig: LinguiConfig = {
   ],
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
-  fallbackLocales: null,
+  fallbackLocales: {} as FallbackLocales,
   format: "po",
   formatOptions: { origins: true },
   locales: [],
@@ -116,6 +120,13 @@ export function getConfig({
 
 const exampleConfig = {
   ...defaultConfig,
+  fallbackLocales: multipleValidOptions(
+    {},
+    { "en-US": "en" },
+    { "en-US": ["en"] },
+    { default: "en" },
+    false
+  ),
   extractBabelOptions: {
     extends: "babelconfig.js",
     rootMode: "rootmode",
@@ -274,18 +285,24 @@ export function fallbackLanguageMigration(
 ): LinguiConfig {
   const { fallbackLocale, fallbackLanguage, fallbackLocales } = config
 
-  // if the user doesn't specify the fallback, we build the cldr for each locale
-  if (!fallbackLocales || !fallbackLocales?.default) {
-    config.locales.forEach((locale) => {
-      config.fallbackLocales = {
-        // to avoid issues with en-GB or en-gb, we lowerCase the search on parent locales
-        [locale]: getCldrParentLocale(locale.toLowerCase())
-      }
-    })
+  if (fallbackLocales === false) return {
+    ...config,
+    fallbackLocales: null,
   }
+
+  config.locales.forEach((locale) => {
+    const fl = getCldrParentLocale(locale.toLowerCase())
+    if (fl) {
+      config.fallbackLocales = {
+        ...config.fallbackLocales,
+        [locale]: fl
+      }
+    }
+  })
 
   const DEFAULT_FALLBACK = fallbackLocales?.default || fallbackLocale || fallbackLanguage
   if (DEFAULT_FALLBACK) {
+    if (!config.fallbackLocales) config.fallbackLocales = {}
     config.fallbackLocales.default = DEFAULT_FALLBACK
   }
 

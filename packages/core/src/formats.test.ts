@@ -27,40 +27,4 @@ describe("@lingui/core/formats", () => {
 
     expect(secondRunResult).toBeLessThan(firstRunResult)
   })
-
-  it("date memoized function is faster than the not memoized function", () => {
-    const loopt0 = performance.now()
-    for (let i = 0; i < 1000; i++) {
-      date("es", {})(new Date())
-    }
-    const loopt1 = performance.now()
-    const memoizedDateResult = loopt1 - loopt0
-
-    const loop0 = performance.now()
-    for (let i = 0; i < 1000; i++) {
-      date("es", {}, false)(new Date())
-    }
-    const loop1 = performance.now()
-    const withoutMemoizeResult = loop1 - loop0
-
-    expect(memoizedDateResult).toBeLessThan(withoutMemoizeResult)
-  })
-
-  it("number memoized function is faster than the not memoized function", () => {
-    const loopt0 = performance.now()
-    for (let i = 0; i < 1000; i++) {
-      number("es", {})(999666)
-    }
-    const loopt1 = performance.now()
-    const memoizedNumberResult = loopt1 - loopt0
-
-    const loop0 = performance.now()
-    for (let i = 0; i < 1000; i++) {
-      number("es", {}, false)(999666)
-    }
-    const loop1 = performance.now()
-    const withoutMemoizeResult = loop1 - loop0
-
-    expect(memoizedNumberResult).toBeLessThan(withoutMemoizeResult)
-  })
 })
