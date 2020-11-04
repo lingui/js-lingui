@@ -20,7 +20,7 @@ Default config:
     }],
     "compileNamespace": "cjs",
     "extractBabelOptions": {},
-    "fallbackLocale": "",
+    "fallbackLocales": {},
     "format": "po",
     "locales": [],
     "orderBy": "messageId",
@@ -230,17 +230,49 @@ extracted. This is required when project doesn't use standard Babel config
      }
    }
 
-.. config:: fallbackLocale
+.. config:: fallbackLocales
 
-fallbackLocale
+fallbackLocales
 --------------
 
-Default: ``''``
+Default: ``{}``
 
-Translation from :conf:`fallbackLocale` is used when translation for given locale is missing.
+:conf:`fallbackLocales` by default is using `CLDR Parent Locales <https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json>`_, unless you disable it with a `false`:
 
-If :conf:`fallbackLocale` isn't defined or translation in :conf:`fallbackLocale` is
-missing too, either default message or message ID is used instead.
+.. code-block:: json
+
+   {
+     "fallbackLocales": false
+   }
+
+:conf:`fallbackLocales` object let's us configure fallback locales to each locale instance.
+
+.. code-block:: json
+
+   {
+     "fallbackLocales": {
+         "en-US": ["en-GB", "en"],
+         "es-MX": "es"
+     }
+   }
+
+On this example if any translation isn't found on `en-US` then will search on `en-GB`, after that if not found we'll search in `en`
+
+Also, we can configure a default one for everything:
+
+.. code-block:: json
+
+   {
+     "fallbackLocales": {
+         "en-US": ["en-GB", "en"],
+         "es-MX": "es",
+         "default": "en"
+     }
+   }
+
+Translations from :conf:`fallbackLocales` is used when translation for given locale is missing.
+
+If :conf:`fallbackLocales` is `false` default message or message ID is used instead.
 
 .. config:: format
 
@@ -393,6 +425,6 @@ Catalog for :conf:`sourceLocale` doesn't require translated messages, because me
 IDs are used by default. However, it's still possible to override message ID by
 providing custom translation.
 
-The difference between :conf:`fallbackLocale` and :conf:`sourceLocale` is that
-:conf:`fallbackLocale` is used in translation, while :conf:`sourceLocale` is
+The difference between :conf:`fallbackLocales` and :conf:`sourceLocale` is that
+:conf:`fallbackLocales` is used in translation, while :conf:`sourceLocale` is
 used for the message ID.
