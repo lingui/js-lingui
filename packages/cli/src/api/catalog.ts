@@ -238,6 +238,10 @@ export class Catalog {
     const getMultipleFallbacks = (locale) => {
       let i = 0
       const fL = fallbackLocales[locale]
+
+      // some probably the fallback will be undefined, so just search by locale
+      if (!fL) return null
+
       if (Array.isArray(fL)) {
         while(i <= fL.length) {
           const fallbackLocale = fL[i]
