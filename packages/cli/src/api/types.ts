@@ -36,8 +36,16 @@ export type AllCatalogsType = {
   [locale: string]: CatalogType
 }
 
+export type LocaleObject = {
+  [locale: string]: string[] | string
+}
+export type DefaultLocaleObject = {
+  default: string
+}
+export declare type FallbackLocales = LocaleObject | DefaultLocaleObject | false
+
 export type getTranslationOptions = {
-  fallbackLocale: string
+  fallbackLocales: FallbackLocales
   sourceLocale: string
 }
 

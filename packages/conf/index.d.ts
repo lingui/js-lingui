@@ -9,11 +9,22 @@ declare type CatalogConfig = {
     include: string[];
     exclude?: string[];
 };
+
+export type LocaleObject = {
+    [locale: string]: string[] | string
+}
+
+export type DefaultLocaleObject = {
+    default: string
+}
+
+export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
+
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
     compileNamespace: string;
     extractBabelOptions: Object;
-    fallbackLocale: string;
+    fallbackLocales: FallbackLocales;
     format: CatalogFormat;
     prevFormat: CatalogFormat;
     formatOptions: CatalogFormatOptions;
@@ -42,7 +53,7 @@ export declare const configValidation: {
         };
         catalogs: CatalogConfig[];
         compileNamespace: string;
-        fallbackLocale: string;
+        fallbackLocales: FallbackLocales;
         format: CatalogFormat;
         formatOptions: CatalogFormatOptions;
         locales: string[];
@@ -53,7 +64,7 @@ export declare const configValidation: {
         sourceLocale: string;
     };
     deprecatedConfig: {
-        fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
+        fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
         localeDir: (config: LinguiConfig & DeprecatedLocaleDir) => string;
         srcPathDirs: (config: LinguiConfig & DeprecatedLocaleDir) => string;
         srcPathIgnorePatterns: (config: LinguiConfig & DeprecatedLocaleDir) => string;
@@ -62,14 +73,15 @@ export declare const configValidation: {
 };
 export declare function replaceRootDir(config: LinguiConfig, rootDir: string): LinguiConfig;
 /**
- * Replace fallbackLanguage with fallbackLocale
+ * Replace fallbackLocale with fallbackLocales
  *
  * Released in lingui-conf 0.9
- * Remove anytime after 3.x
+ * Remove anytime after 4.x
  */
 declare type DeprecatedFallbackLanguage = {
-    fallbackLanguage: string | null;
+    fallbackLocale: string | null;
 };
+
 export declare function fallbackLanguageMigration(config: LinguiConfig & DeprecatedFallbackLanguage): LinguiConfig;
 /**
  * Replace localeDir, srcPathDirs and srcPathIgnorePatterns with catalogs

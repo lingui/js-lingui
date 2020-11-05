@@ -54,7 +54,7 @@ function command(config, options) {
       const messages = catalog.getTranslations(
         locale === config.pseudoLocale ? config.sourceLocale : locale,
         {
-          fallbackLocale: config.fallbackLocale,
+          fallbackLocales: config.fallbackLocales,
           sourceLocale: config.sourceLocale,
         }
       )
