@@ -15,11 +15,15 @@
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.integration.js --watch",
     "lint:types": "tsc",
     "lint:eslint": "eslint packages",
-    "lint": "yarn lint:eslint; yarn lint:types",
+    "lint:all": "yarn lint:eslint; yarn lint:types",
     "release": "node ./scripts/release.js",
     "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
     "release:test": "node ./scripts/test.js",
+    "version:next": "lerna version --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
+    "version:latest": "lerna version --no-private --create-release github --conventional-commits --yes",
+    "release:latest": "lerna publish from-package --dist-tag latest --yes",
+    "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
     "build:docs": "cd docs; ./vercel-build.sh"
   },
   "engines": {
@@ -46,6 +50,7 @@
     "babel-jest": "^26.5.2",
     "babel-plugin-macros": "^2.8.0",
     "chalk": "^4.1.0",
+    "codecov": "^3.8.1",
     "cross-env": "^7.0.2",
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.1",
@@ -91,7 +96,8 @@
     "tmp": "^0.2.1",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3",
-    "webpack": "^4.44.2"
+    "webpack": "^4.44.2",
+    "yalc": "^1.0.0-pre.45"
   },
   "workspaces": [
     "packages/*"

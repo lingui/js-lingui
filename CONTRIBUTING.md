@@ -93,7 +93,7 @@ Please make sure that all tests pass and linter doesn't report any error before
 submitting a PR (Don't worry though! If you can't figure out the problem, create a PR
 anyway and we'll help you).
 
-- `yarn lint` - Linting
+- `yarn lint:all` - Linting & Type testing
 - `yarn test` - Quick test suite (sufficient)
 - `yarn release:test` - Full test suite (recommended)
 
