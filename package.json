@@ -1,4 +1,5 @@
 {
+  "name": "js-lingui-workspaces",
   "private": true,
   "version": "3.0.3",
   "author": {
@@ -60,6 +61,7 @@
     "jest": "^26.5.2",
     "jest-junit": "^12.0.0",
     "jest-serializer-html": "^7.0.0",
+    "lerna": "^3.22.1",
     "memory-fs": "^0.5.0",
     "minimist": "^1.2.5",
     "mock-fs": "^4.13.0",

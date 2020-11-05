@@ -1,0 +1,32 @@
+{
+  "version": "3.0.3",
+  "packages": [
+    "packages/*"
+  ],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "command": {
+    "version": {
+      "message": "chore(release): published %s",
+      "ignoreChanges": [
+        "**/CHANGELOG.md",
+        "**/examples/*",
+        "**/node_modules/**",
+        "**/package.json",
+        "**/docs/**",
+        "**/*.md"
+      ]
+    },
+    "publish": {
+      "allowBranch": ["main", "next"],
+      "ignoreChanges": [
+        "**/CHANGELOG.md",
+        "**/examples/*",
+        "**/node_modules/**",
+        "**/package.json",
+        "**/docs/**",
+        "**/*.md"
+      ]
+    }
+  }
+}
