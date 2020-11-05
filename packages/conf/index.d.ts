@@ -64,7 +64,6 @@ export declare const configValidation: {
         sourceLocale: string;
     };
     deprecatedConfig: {
-        fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
         fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;
         localeDir: (config: LinguiConfig & DeprecatedLocaleDir) => string;
         srcPathDirs: (config: LinguiConfig & DeprecatedLocaleDir) => string;
@@ -74,13 +73,12 @@ export declare const configValidation: {
 };
 export declare function replaceRootDir(config: LinguiConfig, rootDir: string): LinguiConfig;
 /**
- * Replace fallbackLanguage with fallbackLocale
+ * Replace fallbackLocale with fallbackLocales
  *
  * Released in lingui-conf 0.9
- * Remove anytime after 3.x
+ * Remove anytime after 4.x
  */
 declare type DeprecatedFallbackLanguage = {
-    fallbackLanguage: string | null;
     fallbackLocale: string | null;
 };
 

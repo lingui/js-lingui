@@ -165,22 +165,6 @@ describe("@lingui/conf", function () {
       })
     })
 
-    it ("if fallbackLanguage is defined, we use the default one on fallbackLocales", () => {
-      mockFs({
-        ".linguirc": JSON.stringify({
-          locales: ["en-US"],
-          fallbackLanguage: "en"
-        })
-      })
-      mockConsole((console) => {
-        const config = getConfig({
-          configPath: ".linguirc",
-        })
-        expect(config.fallbackLocales.default).toEqual("en")
-        expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
-      })
-    })
-
     it ("if fallbackLocales is defined, we also build the cldr", () => {
       const config = getConfig({
         configPath: path.resolve(

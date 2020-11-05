@@ -136,22 +136,6 @@ const exampleConfig = {
 }
 
 const deprecatedConfig = {
-  fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
-    ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
-      "fallbackLocales"
-    )}
-
-    @lingui/cli now treats your current configuration as:
-    {
-      ${chalk.bold('"fallbackLocales"')}: {
-        default: ${chalk.bold(
-          `"${config.fallbackLanguage}"`
-        )}
-      }
-    }
-
-    Please update your configuration.
-    `,
     fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
     ` Option ${chalk.bold("fallbackLocale")} was replaced by ${chalk.bold(
       "fallbackLocales"
@@ -276,16 +260,16 @@ export function replaceRootDir(
 }
 
 /**
- * Replace fallbackLanguage and fallbackLocale, by the new standard fallbackLocales
+ * Replace fallbackLocale, by the new standard fallbackLocales
  * - https://github.com/lingui/js-lingui/issues/791
- * - Remove anytime after 3.x
+ * - Remove anytime after 4.x
  */
-type DeprecatedFallbackLanguage = { fallbackLanguage?: string, fallbackLocale?: string }
+type DeprecatedFallbackLanguage = { fallbackLocale?: string }
 
 export function fallbackLanguageMigration(
   config: LinguiConfig & DeprecatedFallbackLanguage
 ): LinguiConfig {
-  const { fallbackLocale, fallbackLanguage, fallbackLocales } = config
+  const { fallbackLocale, fallbackLocales } = config
 
   if (fallbackLocales === false) return {
     ...config,
@@ -302,7 +286,7 @@ export function fallbackLanguageMigration(
     }
   })
 
-  const DEFAULT_FALLBACK = fallbackLocales?.default || fallbackLocale || fallbackLanguage
+  const DEFAULT_FALLBACK = fallbackLocales?.default || fallbackLocale
   if (DEFAULT_FALLBACK) {
     if (!config.fallbackLocales) config.fallbackLocales = {}
     config.fallbackLocales.default = DEFAULT_FALLBACK

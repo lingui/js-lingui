@@ -236,19 +236,16 @@ export class Catalog {
     const getTranslation = (locale) => catalogs[locale][key].translation
 
     const getMultipleFallbacks = (locale) => {
-      let i = 0
       const fL = fallbackLocales[locale]
 
       // some probably the fallback will be undefined, so just search by locale
       if (!fL) return null
 
       if (Array.isArray(fL)) {
-        while(i <= fL.length) {
-          const fallbackLocale = fL[i]
+        for (const fallbackLocale of fL) {
           if (catalogs[fallbackLocale]) {
             return getTranslation(fallbackLocale)
           }
-          i++
         }
       } else {
         return getTranslation(fL)
@@ -258,10 +255,10 @@ export class Catalog {
     return (
       // Get translation in target locale
       getTranslation(locale) ||
-      // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales.default && getTranslation(fallbackLocales.default)) ||
       // We search in fallbackLocales as dependent of each locale
       getMultipleFallbacks(locale) ||
+      // Get translation in fallbackLocales.default (if any)
+      (fallbackLocales.default && getTranslation(fallbackLocales.default)) ||
       // Get message default
       catalogs[locale][key].defaults ||
       // If sourceLocale is either target locale of fallback one, use key

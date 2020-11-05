@@ -75,24 +75,6 @@ Documentation: https://lingui.js.org/ref/conf.html
 Documentation: https://lingui.js.org/ref/conf.html
 `;
 
-exports[`@lingui/conf fallbackLocales logic if fallbackLanguage is defined, we use the default one on fallbackLocales 1`] = `
-● Deprecation Warning:
-
- Option fallbackLanguage was replaced by fallbackLocales
-
-    @lingui/cli now treats your current configuration as:
-    {
-      "fallbackLocales": {
-        default: "en"
-      }
-    }
-
-    Please update your configuration.
-    
-
-Documentation: https://lingui.js.org/ref/conf.html
-`;
-
 exports[`@lingui/conf fallbackLocales logic if fallbackLocale is defined, we use the default one on fallbackLocales 1`] = `
 ● Deprecation Warning:
 
