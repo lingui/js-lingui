@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "0.0.0-managed-by-release-script",
+  "version": "3.0.3",
   "description": "webpack loader for lingui message catalogs",
   "main": "index.js",
   "author": {

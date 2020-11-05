@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "0.0.0-managed-by-release-script",
+  "version": "3.0.3",
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "index.js",
   "types": "cjs/index.d.ts",
@@ -38,7 +38,6 @@
     "cjs/",
     "esm/"
   ],
-  "private": false,
   "dependencies": {},
   "devDependencies": {
     "jsdom": "^16.4.0"

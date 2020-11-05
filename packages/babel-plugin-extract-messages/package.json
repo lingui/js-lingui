@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "0.0.0-managed-by-release-script",
+  "version": "3.0.3",
   "description": "Babel plugin for collecting messages from source code for internationalization",
   "main": "index.js",
   "author": {

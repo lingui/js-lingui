@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "0.0.0-managed-by-release-script",
+  "version": "3.0.3",
   "description": "React components for translations",
   "main": "index.js",
   "types": "cjs/index.d.ts",
