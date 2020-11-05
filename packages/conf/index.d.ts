@@ -10,7 +10,15 @@ declare type CatalogConfig = {
     exclude?: string[];
 };
 
-export declare type FallbackLocales = { [locale: string]: string[] | string } | { default: string[] | string }
+export type LocaleObject = {
+    [locale: string]: string[] | string
+}
+
+export type DefaultLocaleObject = {
+    default: string
+}
+
+export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
 
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];

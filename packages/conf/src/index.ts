@@ -23,7 +23,7 @@ type LocaleObject = {
   [locale: string]: string[] | string
 }
 type DefaultLocaleObject = {
-  default: string[] | string
+  default: string
 }
 export type FallbackLocales = LocaleObject | DefaultLocaleObject | false
 
@@ -62,7 +62,7 @@ export const defaultConfig: LinguiConfig = {
   ],
   compileNamespace: "cjs",
   extractBabelOptions: { plugins: [], presets: [] },
-  fallbackLocales: {} as FallbackLocales,
+  fallbackLocales: {},
   format: "po",
   formatOptions: { origins: true },
   locales: [],
@@ -138,14 +138,16 @@ const exampleConfig = {
 const deprecatedConfig = {
   fallbackLanguage: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
     ` Option ${chalk.bold("fallbackLanguage")} was replaced by ${chalk.bold(
-      "fallbackLocale"
+      "fallbackLocales"
     )}
 
     @lingui/cli now treats your current configuration as:
     {
-      ${chalk.bold('"fallbackLocale"')}: ${chalk.bold(
-      `"${config.fallbackLanguage}"`
-    )}
+      ${chalk.bold('"fallbackLocales"')}: {
+        default: ${chalk.bold(
+          `"${config.fallbackLanguage}"`
+        )}
+      }
     }
 
     Please update your configuration.
