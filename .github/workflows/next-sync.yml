@@ -8,6 +8,7 @@ on:
 jobs:
   next-sync:
     runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     name: Syncing branches
     steps:
       - name: Checkout

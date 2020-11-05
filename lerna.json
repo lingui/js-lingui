@@ -7,7 +7,7 @@
   "useWorkspaces": true,
   "command": {
     "version": {
-      "message": "chore(release): published %s",
+      "message": "chore(release): published %s [skip ci]",
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",

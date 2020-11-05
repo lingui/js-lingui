@@ -18,6 +18,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     env:
       CI: true
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
