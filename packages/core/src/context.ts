@@ -21,14 +21,18 @@ const defaultFormats = (
     }
   }
 
+  if (!plurals) {
+    console.error(`Plurals for locale ${locale} aren't loaded. Use i18n.loadLocaleData method to load plurals for specific locale. Using other plural rule as a fallback.`)
+  }
+
   return {
     plural: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals(value - offset)]
+      const message = rules[value] || rules[plurals?.(value - offset)] || rules.other
       return replaceOctothorpe(value - offset, message)
     },
 
     selectordinal: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals(value - offset, true)]
+      const message = rules[value] || rules[plurals?.(value - offset, true)] || rules.other
       return replaceOctothorpe(value - offset, message)
     },
 
