@@ -16,14 +16,12 @@
  * ...
  * (use "npm run compile" to compile catalogs for production)
  */
-import path from "path"
+import { resolve, join } from "path"
 
 export function helpRun(command: string) {
   let findRootPkgJson: Record<string, unknown>;
   try {
-    findRootPkgJson = require(path.resolve(
-      path.join(process.cwd(), "package.json")
-    ))
+    findRootPkgJson = require(resolve(join(process.cwd(), "package.json")))
   } catch (error) {}
 
   if (findRootPkgJson?.scripts) {
@@ -31,7 +29,7 @@ export function helpRun(command: string) {
       .entries(findRootPkgJson.scripts)
       .find(([_, value]) => value.includes(`lingui ${command}`))
 
-    if (res[0]) {
+    if (res) {
       return `${preCommand} ${res[0]}`
     }
   }
