@@ -78,7 +78,7 @@ function command(config, options) {
             console.error(chalk.red(`Missing ${missing.length} translation(s)`))
           }
           console.error()
-          process.exit()
+          process.exit(1)
         }
       }
 
