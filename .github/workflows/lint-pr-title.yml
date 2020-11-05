@@ -8,10 +8,15 @@ on:
       - synchronize
 
 jobs:
-  main:
+  check_commit_conventions:
     runs-on: ubuntu-latest
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     steps:
-      - uses: amannn/action-semantic-pull-request@v2.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check commit conventions
+        uses: wagoid/commitlint-github-action@v2
+        with:
+          configFile: .commitlintrc.yml
+          failOnWarnings: true

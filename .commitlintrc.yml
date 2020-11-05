@@ -1,0 +1,23 @@
+extends:
+  - '@commitlint/config-conventional'
+# workaround to accept ! as breaking changes
+rules:
+  footer-max-line-length: [ 2, 'always', 72 ]
+  header-max-length: [ 2, 'always', 72 ]
+  body-max-line-length: [ 2, 'always', 72 ]
+  type-enum: [
+      2,
+      'always',
+    [
+        'build',
+        'ci',
+        'docs',
+        'feat',
+        'fix',
+        'perf',
+        'refactor',
+        'revert',
+        'style',
+        'test',
+    ]
+  ]
