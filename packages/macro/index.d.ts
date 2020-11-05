@@ -3,7 +3,7 @@ import type { MessageDescriptor } from "@lingui/core"
 import type { TransRenderProps } from "@lingui/react"
 
 export function t(
-  literals: TemplateStringsArray,
+  literals: TemplateStringsArray | MessageDescriptor,
   ...placeholders: any[]
 ): string
 
