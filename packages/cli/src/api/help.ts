@@ -1,5 +1,6 @@
 /**
- * Detect how cli command is being run (npm, yarn) and construct help
+ * Detect where's is the command lingui extract or lingui compile
+ * and how is being run (npm, yarn) and construct help
  * for follow-up commands based on that.
  *
  * Example:
@@ -15,7 +16,26 @@
  * ...
  * (use "npm run compile" to compile catalogs for production)
  */
-export function helpRun(command) {
+import path from "path"
+
+export function helpRun(command: string) {
+  let findRootPkgJson: Record<string, unknown>;
+  try {
+    findRootPkgJson = require(path.resolve(
+      path.join(process.cwd(), "package.json")
+    ))
+  } catch (error) {}
+
+  if (findRootPkgJson?.scripts) {
+    const res = Object
+      .entries(findRootPkgJson.scripts)
+      .find(([_, value]) => value.includes(`lingui ${command}`))
+
+    if (res[0]) {
+      return `${preCommand} ${res[0]}`
+    }
+  }
+
   return `${preCommand} ${command}`
 }
 
