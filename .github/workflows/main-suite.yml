@@ -60,17 +60,19 @@ jobs:
         run: yarn lint:all
 
       - name: Build packages
+        if: matrix.node == '12'
         run: yarn release:build
 
       - name: Integration Testing
+        if: matrix.node == '12'
         run: yarn test:integration
 
       - name: Check coverage
-        if: matrix.node == '14'
+        if: matrix.node == '12'
         uses: codecov/codecov-action@v1
 
       - name: Release packages
-        if: ${{github.event.inputs.distTag == 'latest' || github.event.inputs.distTag == 'next'}}
+        if: ${{github.event.inputs.distTag == 'latest' || github.event.inputs.distTag == 'next'}} && matrix.node == '12'
         run: |
           yarn version:${{github.event.inputs.distTag}}
           yarn release:${{github.event.inputs.distTag}}
