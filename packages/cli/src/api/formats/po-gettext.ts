@@ -54,8 +54,10 @@ const serialize = (items: CatalogType, options) => R.compose(
     // message can be found in `message.message` or in the item's `key` itself.
     const icuMessage = message.message || key
 
+    const _simplifiedMessage = icuMessage.replace(/\n|\r\n/g, " ")
+
     // Quick check to see if original message is a plural localization.
-    if (/^{.*, plural, .*}$/.test(icuMessage.replace(/\n|\r\n/g, " "))) {
+    if (/^{.*, plural, .*}$/.test(_simplifiedMessage)) {
       try {
         const [messageAst] = ICUParser.parse(icuMessage)
         
@@ -74,18 +76,31 @@ const serialize = (items: CatalogType, options) => R.compose(
         // If there is a translated value, parse that instead of the original message to prevent overriding localized
         // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
         // plural (above) already causes `pofile` to automatically generate `msgstr[0]` and `msgstr[1]`.
-        if (message.translation) {
+        if (message.translation != null && message.translation.length > 0) {
           try {
             const [ast] = ICUParser.parse(message.translation)
-            item.msgstr = ast.cases.map(stringifyICUCase)
+            if (ast.cases == null) {
+              console.warn(`Found translation without plural cases for key "${key}". ` +
+                `This likely means that a translated .po file misses multiple msgstr[] entries for the key. ` +
+                `Translation found: "${message.translation}"`)
+              item.msgstr = [message.translation]
+            } else {
+              item.msgstr = ast.cases.map(stringifyICUCase)
+            }
           } catch (e) {
-            console.error("Error parsing translation ICU", e)
+            console.error(`Error parsing translation ICU for key "${key}"`, e)
           }
         }
       } catch (e) {
         console.error("Error parsing message ICU:", e)
       }
     } else {
+      if (!options.disableSelectWarning && /^{.*, select(Ordinal)?, .*}$/.test(_simplifiedMessage)) {
+        console.warn(`ICU 'select' and 'selectOrdinal' formats cannot be expressed natively in gettext format. ` +
+          `Item with key "%s" will be included in the catalog as raw ICU message. ` +
+          `To disable this warning, include '{ disableSelectWarning: true }' in the config's 'formatOptions'`,
+          key)
+      }
       item.msgstr = [message.translation]
     }
 

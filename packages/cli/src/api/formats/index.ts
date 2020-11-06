@@ -1,10 +1,10 @@
 import { CatalogFormat } from "@lingui/conf"
 
+import csv from "./csv"
 import lingui from "./lingui"
 import minimal from "./minimal"
 import po from "./po"
-import csv from "./csv"
-
+import poGettext from "./po-gettext"
 import { CatalogFormatter } from "./types"
 
 const formats: Record<CatalogFormat, CatalogFormatter> = {
@@ -12,6 +12,7 @@ const formats: Record<CatalogFormat, CatalogFormatter> = {
   minimal,
   po,
   csv,
+  "po-gettext": poGettext
 }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {

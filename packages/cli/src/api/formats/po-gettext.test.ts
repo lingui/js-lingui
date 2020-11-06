@@ -260,4 +260,54 @@ describe("po-gettext format", () => {
       expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("Nested plurals"), "nested_plural_message")
     })
   })
+
+  describe("when using 'select' format", () => {
+    const catalog = {
+      select_message: {
+        message: `{gender, select, male {he} female {she} other {they}`,
+        translation: ''
+      }
+    }
+
+    it("should warn", () => {
+      mockConsole((console) => {
+        format.serialize(catalog, {})
+
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("select"), "select_message")
+      })
+    })
+
+    it("should not warn when disabling the warning in config", () => {
+      mockConsole((console) => {
+        format.serialize(catalog, { disableSelectWarning: true })
+
+        expect(console.warn).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe("when using 'selectOrdinal' format", () => {
+    const catalog = {
+      select_ordinal_message: {
+        message: `{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}`,
+        translation: ''
+      }
+    }
+
+    it("should warn", () => {
+      mockConsole((console) => {
+        format.serialize(catalog, {})
+
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("selectOrdinal"), "select_ordinal_message")
+      })
+    })
+
+    it("should not warn when disabling the warning in config", () => {
+      mockConsole((console) => {
+        format.serialize(catalog, { disableSelectWarning: true })
+
+        expect(console.warn).not.toHaveBeenCalled()
+      })
+    })
+  })
 })
