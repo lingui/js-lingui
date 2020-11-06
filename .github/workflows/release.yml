@@ -1,24 +1,20 @@
-name: main-suite
+name: relase-workflow
 
 on:
-  pull_request:
-    branches:
-      - '*'
-  push:
-    branches:
-      - main
-      - next
+  workflow_dispatch:
+    inputs:
+        npmTag:
+          description: 'NPM tag to release'
+          required: true
+          default: 'next'
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     env:
       CI: true
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    strategy:
-      matrix:
-        node: ["10", "12", "14"]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,7 +24,7 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           always-auth: true
-          node-version: ${{ matrix.node }}
+          node-version: 12
           scope: '@lingui'
 
       - name: Get yarn cache directory path
@@ -54,13 +50,23 @@ jobs:
         run: yarn lint:all
 
       - name: Build packages
-        if: matrix.node == '14'
         run: yarn release:build
 
       - name: Integration Testing
-        if: matrix.node == '14'
         run: yarn test:integration
 
-      - name: Check coverage
-        if: matrix.node == '14'
-        uses: codecov/codecov-action@v1
+      - name: Creates local .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Prepare Lingui-Bot git account
+        uses: oleksiyrudenko/gha-git-credentials@v1
+        with:
+          name: 'Lingui Bot'
+          email: 'linguibot@gmail.com'
+          actor: 'lingui-bot'
+          token: '${{ secrets.GH_BOT_PWD }}'
+
+      - name: Release packages
+        run: |
+          yarn version:${{github.event.inputs.npmTag}}
+          yarn release:${{github.event.inputs.npmTag}}
