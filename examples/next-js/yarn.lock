@@ -1107,28 +1107,28 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lingui/babel-plugin-extract-messages@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.0.0.tgz#5bc2c08ccde0ebbe736d5ee22cd0b61bc837f7f1"
-  integrity sha512-atjb6sQbDP8ZLZu5fJdAMK+CJWGs/hyn52JxZi3tPgirORFDAOa/FfDP5Sfnv+3wgEQzFA2igEmSKpyTuyZHBg==
+"@lingui/babel-plugin-extract-messages@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.0.3.tgz#8c7bcb9e13e0621b006ee6c47dac0002ee02198b"
+  integrity sha512-3RVx9qharfHGDrxyRMp0jWRG5vzYHyTYiamqFejcmDVCBDHOS1SqFkgyDayFZp3f4CnyRT9W+0ARAeTFjpfuaw==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.0.0"
+    "@lingui/conf" "3.0.3"
     mkdirp "^1.0.4"
 
-"@lingui/cli@3.0.0", "@lingui/cli@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.0.0.tgz#128ce8289d2fbc66cc6a122e1ccc76ff890b8ac7"
-  integrity sha512-ysega+gLQA46i6I9fkW1eQNhx2bYzRTaN0NfFtFxVu4WEIBP0+r+oHGTILys4zFjSj5v0iSJ/2/iroJKI11NeA==
+"@lingui/cli@3.0.3", "@lingui/cli@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.0.3.tgz#17108a2a87251d6f2583e4b5d883760c8fdd8cdc"
+  integrity sha512-LCjiLZz8ODB9cGARmxGrHDMe02GWdoHPlhcZjjQ1KFD5SWYsgJd4FkcRt5MIK+027vr6Iu5sjs/THht0NillLA==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/parser" "^7.11.5"
     "@babel/plugin-syntax-jsx" "^7.10.4"
     "@babel/runtime" "^7.11.2"
     "@babel/types" "^7.11.5"
-    "@lingui/babel-plugin-extract-messages" "3.0.0"
-    "@lingui/conf" "3.0.0"
+    "@lingui/babel-plugin-extract-messages" "3.0.3"
+    "@lingui/conf" "3.0.3"
     babel-plugin-macros "^2.8.0"
     bcp-47 "^1.0.7"
     chalk "^4.1.0"
@@ -1150,67 +1150,67 @@
     pseudolocale "^1.1.0"
     ramda "^0.27.1"
 
-"@lingui/conf@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.0.0.tgz#8a3ea64e7a7c43d12c20aa910d6aeb65911d889b"
-  integrity sha512-oPPU6hdyA2fMlQRB7GoYWApzR2tTXPqN8bGTo3ZFXBOgazAHYgIED/ZrnXEWTKRdGRtxMYkU+xDQ+6BLdgieug==
+"@lingui/conf@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.0.3.tgz#3448d9ffd062daa7f2b5253343beba5599cd1cd2"
+  integrity sha512-LjpKne/DduH3Ovq+2K/u160LIM6eHVpWbufQYn9li6zM9RrRMkZ833Xsb2r5FrKN9uhtDYlrSZgOapLN3IC93Q==
   dependencies:
     "@babel/runtime" "^7.11.2"
     chalk "^4.1.0"
     cosmiconfig "^7.0.0"
     jest-validate "^26.5.2"
 
-"@lingui/core@3.0.0", "@lingui/core@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.0.0.tgz#5591658ea4edaf0e5fc359eef5b70fe292a22265"
-  integrity sha512-Jtwau0dV10SaL/mJmhR+h5Pyos3MTijWvNnPeIiaKfVtXskhopspuKjux0Q2BeDipmGXMxcF6JAuVJvTFxJ47w==
+"@lingui/core@3.0.3", "@lingui/core@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.0.3.tgz#d3791f6e54943d2481d127b6bed015d515e16bb1"
+  integrity sha512-lfDkhgChJ+6f+qlGFFJmHAF28ZZTc/dgxVcT4zpLx4Gqf0MsIsx701MBGLXI1X/Gn2PMkDnhZVP0XkpDma6fxQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
-"@lingui/loader@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.0.0.tgz#90906e1d8babcaf798ea804b8bb53629ae2a4e99"
-  integrity sha512-8q0KmW3HjhxPP1rOZAUUbm2JYMyZIZHqDs2a5pGbcZOcUOYh/WzDEL+GDhxGN6E8vGMvg5c+iPU/1ZiIbpAYzA==
+"@lingui/loader@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.0.3.tgz#cf1016d3f3f6b3d6a8447d51068916c4a8bd3b47"
+  integrity sha512-yOYeDVrOAC6YYA46WKkAlgR87m0cAXxtsbTLwWZIAKhv6F1wMGv2hvyONdzLh0pGbi0WGtr3uqzKOftrDGz47w==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/cli" "3.0.0"
-    "@lingui/conf" "3.0.0"
+    "@lingui/cli" "3.0.3"
+    "@lingui/conf" "3.0.3"
     loader-utils "^2.0.0"
     ramda "^0.27.1"
 
-"@lingui/macro@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.0.0.tgz#afdc4890251e38b657e7c1b4bb357e5a36bf6637"
-  integrity sha512-Gugk8u1tlFEsaQnfzMidDdsbq/OFs3VYZ8H8XfEvygyNtWMZgKjbe1bPpwHEf4+fS3YJHWg/0GfHwIfzbJMP5g==
+"@lingui/macro@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.0.3.tgz#8c19b7bd128d76bbe9ba15726b225ccd3f764da1"
+  integrity sha512-nGvEo5hg+6kKAOAw72zu8xDhBbh0ujlJNOHXNmf3h9T0mI5BlHqcUOJH29meZgn4x19rFyiBJty19gcD4IHTHg==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.0.0"
+    "@lingui/conf" "3.0.3"
     ramda "^0.27.1"
 
-"@lingui/react@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.0.0.tgz#100bd9fd30d8fdf3b4ce128bab2c1da3488a8aa7"
-  integrity sha512-PAL0UfEnZXK8uahyh5ZuXNoYettDq61fg8OWt+Mf79lxdllX3QBJCM7BKp8J8JGZi+KSDS0jGwfvrq/W6MJ9bA==
+"@lingui/react@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.0.3.tgz#4e8ac823a9b97f86d62951c0242070dc31658189"
+  integrity sha512-ws+g1ZG7QAmA/pUb3wrRtFbu665VbnGps3y7olQ7F+LqyeqiVpOBukRxiThBwc51apM5v9/zVbyrtjJtWsdRYg==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/core" "3.0.0"
+    "@lingui/core" "3.0.3"
 
-"@next/env@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@next/env/-/env-10.0.0.tgz#eb0239062226a9c8b604d58d4a4204e26c22eb16"
-  integrity sha512-59+6BnOxPoMY64Qy2crDGHtvQgHwIL1SIkWeNiEud1V6ASs59SM9oDGN+Bo/EswII1nn+wQRpMvax0IIN2j+VQ==
+"@next/env@10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@next/env/-/env-10.0.1.tgz#5f49329fcc4fe8948737aeb8108c9d7d75155f93"
+  integrity sha512-6dwx5YXKG88IR9Q1aai+pprF7WKcmtl0ShQy/iENj5yMWMzsQCem6hxe198u9j7z1IsWyGDXZPsaLEJEatOpeQ==
 
-"@next/polyfill-module@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@next/polyfill-module/-/polyfill-module-10.0.0.tgz#17f59cb7325a03f23b66b979fccc56d133411b0a"
-  integrity sha512-FLSwwWQaP/sXjlS7w4YFu+oottbo/bjoh+L+YED7dblsaRJT89ifV+h8zvLvh1hCL7FJUYVar4rehvj/VO5T9w==
+"@next/polyfill-module@10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@next/polyfill-module/-/polyfill-module-10.0.1.tgz#483c8f8692d842800f6badb59f8de74b540580a9"
+  integrity sha512-Vf8HYy74jx8aQgv/ftFXQtD/udJY4/OXYiiBepqrxC0T3PPl4cns1cbrr5f15xjPELMfcqulxwMYEurioBmv+w==
 
-"@next/react-dev-overlay@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@next/react-dev-overlay/-/react-dev-overlay-10.0.0.tgz#ba1acc79bc9d874f1801a0b312e6a45de74bf425"
-  integrity sha512-HJ44TJXtaGfGxVtljPECZvqw+GctVvBr60Rsedo5A+wU2GIiycJ8n5yUSdc9UiYTnPuxfJFicJec6kgR6GSWKA==
+"@next/react-dev-overlay@10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@next/react-dev-overlay/-/react-dev-overlay-10.0.1.tgz#38f99f78316e9e7fa61a95e1d883e90d6d1fa4d0"
+  integrity sha512-VYwwGBtV9hqpqYoVABvZEFHBt3oL6PMpiLrDmnHaOwsPDQ+kQsiWd1L8tsYvAC2dgu/x/a/TG0D81FGF77Tohw==
   dependencies:
     "@babel/code-frame" "7.10.4"
     ally.js "1.4.1"
@@ -1223,10 +1223,10 @@
     stacktrace-parser "0.1.10"
     strip-ansi "6.0.0"
 
-"@next/react-refresh-utils@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-10.0.0.tgz#45cdd1ad3b55ac442f8431cdc43ff53c3dc44d16"
-  integrity sha512-V1/oiDWb2C1Do0eZONsKX1aqGNkqCUqxUahIiCjwKFu9c3bps+Ygg4JjtaCd9oycv0KzYImUZnU+nqveFUjxUw==
+"@next/react-refresh-utils@10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-10.0.1.tgz#ea6f808a9a6242d2da85138edee5562f17c0243a"
+  integrity sha512-K3thGrgD0uic/x4PZh9oRK/+LWTsn6zmDSHoEXgdft1gtlOjQIVGz7yuPMvuEB9oXDl+giuvRbU+JRlhtSf/eQ==
 
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
@@ -1268,6 +1268,19 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types%2fparse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/prop-types@*":
+  version "15.7.3"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
+  integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
+
+"@types/react@^16.9.56":
+  version "16.9.56"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.56.tgz#ea25847b53c5bec064933095fc366b1462e2adf0"
+  integrity sha512-gIkl4J44G/qxbuC6r2Xh+D3CGZpJ+NdWTItAPmZbR5mUS+JQ8Zvzpl0ea5qT/ZT3ZNTUcDKUVqV3xBE8wv/DyQ==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^3.0.2"
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -2437,6 +2450,11 @@ cssnano-simple@1.2.0:
   dependencies:
     cssnano-preset-simple "1.2.0"
     postcss "^7.0.32"
+
+csstype@^3.0.2:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.4.tgz#b156d7be03b84ff425c9a0a4b1e5f4da9c5ca888"
+  integrity sha512-xc8DUsCLmjvCfoD7LTGE0ou2MIWLx0K9RCZwSHMOdynqRsP4MtUcLeqh1HcQ2dInwDTqn+3CE0/FZh1et+p4jA==
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -4097,10 +4115,10 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-next@10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/next/-/next-10.0.0.tgz#fbc82fa69f05bf82fb5c4e160151f38fb9615e99"
-  integrity sha512-hpJkikt6tqwj7DfD5Mizwc1kDsaaS73TQK6lJL+++Ht8QXIEs+KUqTZULgdMk80mDV2Zhzo9/JYMEranWwAFLA==
+next@10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/next/-/next-10.0.1.tgz#e1366b41b8547dfc7e9a14d1f7dd8a8584dcf0b2"
+  integrity sha512-EFlcWe82CQc1QkeIhNogcdC25KBz4CBwjyzfRHhig+wp28GW1O2P/mX+2a7EG1wXg69GyW1JYXOkKk2/VjIwVg==
   dependencies:
     "@ampproject/toolbox-optimizer" "2.7.0-alpha.1"
     "@babel/code-frame" "7.10.4"
@@ -4121,10 +4139,10 @@ next@10.0.0:
     "@babel/runtime" "7.11.2"
     "@babel/types" "7.11.5"
     "@hapi/accept" "5.0.1"
-    "@next/env" "10.0.0"
-    "@next/polyfill-module" "10.0.0"
-    "@next/react-dev-overlay" "10.0.0"
-    "@next/react-refresh-utils" "10.0.0"
+    "@next/env" "10.0.1"
+    "@next/polyfill-module" "10.0.1"
+    "@next/react-dev-overlay" "10.0.1"
+    "@next/react-refresh-utils" "10.0.1"
     ast-types "0.13.2"
     babel-plugin-transform-define "2.0.0"
     babel-plugin-transform-react-remove-prop-types "0.4.24"
@@ -5701,6 +5719,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.5.tgz#ae9dddfd1069f1cb5beb3ef3b2170dd7c1332389"
+  integrity sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
