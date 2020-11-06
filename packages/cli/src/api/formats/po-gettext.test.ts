@@ -5,6 +5,7 @@ import mockDate from "mockdate"
 import path from "path"
 import PO from "pofile"
 
+import { CatalogType } from "../types"
 import format from "./po-gettext"
 
 
@@ -25,10 +26,10 @@ describe("po-gettext format", () => {
         en: mockFs.directory(),
       },
     })
-    mockDate.set("2018-08-27T10:00Z", 0)
+    mockDate.set("2018-08-27T10:00Z")
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
+    const catalog: CatalogType = {
       static: {
         translation: "Static message",
       },
@@ -182,10 +183,10 @@ describe("po-gettext format", () => {
         en: mockFs.directory(),
       },
     })
-    mockDate.set("2018-08-27T10:00Z", 0)
+    mockDate.set("2018-08-27T10:00Z")
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
+    const catalog: CatalogType = {
       message_with_id_and_octothorpe: {
         message: "{count, plural, one {Singular} other {Number is #}}",
         translation: "{count, plural, one {Singular} other {Number is #}}",
@@ -204,9 +205,12 @@ describe("po-gettext format", () => {
       message_with_id_but_without_translation: {
         message:
           "{count, plural, one {Singular with id but no translation} other {Plural {count} with empty id but no translation}}",
+        translation: ""
       },
       // Entry with automatic ID that generates empty msgstr[] lines
-      "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}": {},
+      "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}": {
+        translation: ""
+      },
     }
 
     format.write(filename, catalog, {
