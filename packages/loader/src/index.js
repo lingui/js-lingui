@@ -65,7 +65,7 @@ export default function (source) {
       po: ".po",
       lingui: ".json"
     }
-    // we replace the .js, becuase webpack appends automatically the .js on imports without extension
+    // we replace the .js, because webpack appends automatically the .js on imports without extension
     throw new Error(`File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(".js", formats[config.format])}")`)
   }
 
