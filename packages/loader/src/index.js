@@ -54,8 +54,23 @@ export default function (source) {
     cwd: path.dirname(this.resourcePath),
   })
 
+  const EMPTY_EXT = /\.[0-9a-z]+$/.test(this.resourcePath)
+  const JS_EXT = /\.js+$/.test(this.resourcePath)
+
+  const catalogRelativePath = path.relative(config.rootDir, this.resourcePath)
+
+  if (!EMPTY_EXT || JS_EXT) {
+    const formats = {
+      minimal: ".json",
+      po: ".po",
+      lingui: ".json"
+    }
+    // we replace the .js, becuase webpack appends automatically the .js on imports without extension
+    throw new Error(`File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(".js", formats[config.format])}")`)
+  }
+
   const { locale, catalog } = getCatalogForFile(
-    path.relative(config.rootDir, this.resourcePath),
+    catalogRelativePath,
     getCatalogs(config)
   )
   const catalogs = catalog.readAll()
