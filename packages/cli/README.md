@@ -10,15 +10,15 @@
 
 ## Installation
 
-The library can be installed globally or locally using `yarn` or `nmp`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
-
-To run the library locally there are three options, with the first one been recommended one.
+The library can be installed globally or locally using `yarn` or `np`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
 
 ```
 npm install --save-dev @lingui/cli
 # or using yarn
 yarn add --dev @lingui/cli
 ```
+
+To run the library locally there are three options, with the first one been recommended one.
 
 ### 1) Add commands to scripts
 
@@ -27,7 +27,6 @@ Add these scripts to your `package.json`.
 ```json
 {
   "scripts": {
-    "add-locale": "lingui add-locale",
     "extract": "lingui extract",
     "compile": "lingui compile"
   }
@@ -37,7 +36,6 @@ Add these scripts to your `package.json`.
 Then you can use:
 
 ```sh
-npm run add-locale -- en cs
 npm run extract
 npm run compile
 ```
@@ -47,7 +45,6 @@ npm run compile
 You can run the scripts directly using a tool for executing Node packages `NPX`. `NPX` is included in `NPM` version 5.2 and higher.
 
 ```
-npx lingui add-locale -- en cs
 npx lingui extract
 npx lingui compile
 ```
@@ -57,7 +54,6 @@ npx lingui compile
 You can run commands directly from `node_modules` folder.
 
 ```
-node_modules/.bin/lingui add-locale -- en cs
 node_modules/.bin/lingui extract
 node_modules/.bin/lingui compile
 ```
