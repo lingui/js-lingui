@@ -5,17 +5,17 @@ import * as R from "ramda"
 
 import pseudoLocalize from "./pseudoLocalize"
 
-type CompiledCatalogNamespace = "cjs" | "es" | string;
+type CompiledCatalogNamespace = "cjs" | "es" | string
 
 type CompiledCatalogType = {
   [msgId: string]: string
-};
+}
 
 export type CreateCompileCatalogOptions = {
   strict?: boolean
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
-};
+}
 
 export function createCompiledCatalog(
   locale: string,
