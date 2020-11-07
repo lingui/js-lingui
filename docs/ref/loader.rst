@@ -25,7 +25,7 @@ Usage
 Simply prepend ``@lingui/loader:`` in front of path to message catalog you want to
 import. Here's an example of dynamic import:
 
-Extension is mandatory, if you use minimal format, you should use ``.json``, in case of using po format, use ``.po``
+Extension is mandatory. If you use minimal or lingui file format, use ``.json``. In case of using po format, use ``.po``.
 
 .. code-block:: jsx
 
