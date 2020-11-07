@@ -1,7 +1,7 @@
 import path from "path"
 /**
  * Fellow contributor!
- * *Never* import `extract` module outsite `it` or `beforeAll`. It would
+ * *Never* import `extract` module outside `it` or `beforeAll`. It would
  * break mocking of extractors in `extract` test suit.
  */
 import mockFs from "mock-fs"

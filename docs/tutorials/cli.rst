@@ -198,9 +198,9 @@ To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
 :conf:`pseudoLocale` option can be any string 
 examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
 
-PseudoLocale folder is automatically created based on configuration when running 
-``yarn extract`` command. Pseudolocalized text is created on  ``yarn compile`` command.
-The pseudolocalization is automatically created from default messages. 
+PseudoLocale string have to be in `locale` config as well. Otherwise no folder is created.
+Pseudolocalized text is created on  ``yarn compile`` command.
+The pseudolocalization is automatically created from TODOTODOTODO.
 It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
 
 How to switch your browser into specified pseudoLocale
