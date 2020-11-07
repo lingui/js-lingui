@@ -373,7 +373,7 @@ Default: ``""``
 
 Locale used for pseudolocalization. For example when you set ``pseudoLocale: "en"``
 then all messages in ``en`` catalog will be pseudo localized. The locale has to be included
-in `locales <https://lingui.js.org/ref/conf.html#locales>`_.
+in `locales <https://lingui.js.org/ref/conf.html#locales>`_ config.
 
 rootDir
 -------
