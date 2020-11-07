@@ -1,17 +1,31 @@
-import { CatalogFormat } from "@lingui/conf"
+import { CatalogFormatOptions, CatalogFormat } from "@lingui/conf"
+
+import { CatalogType } from "../catalog"
 
 import lingui from "./lingui"
 import minimal from "./minimal"
 import po from "./po"
 import csv from "./csv"
 
-import { CatalogFormatter } from "./types"
-
 const formats: Record<CatalogFormat, CatalogFormatter> = {
   lingui,
   minimal,
   po,
   csv,
+}
+
+type CatalogFormatOptionsInternal = {
+  locale: string
+} & CatalogFormatOptions
+
+export type CatalogFormatter = {
+  catalogExtension: string
+  write(
+    filename: string,
+    catalog: CatalogType,
+    options?: CatalogFormatOptionsInternal
+  ): void
+  read(filename: string): CatalogType | null
 }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {

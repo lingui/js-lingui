@@ -3,7 +3,7 @@ import { transform } from "@babel/core"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import { projectType } from "../detect"
-import { ExtractorType, BabelOptions } from "./types"
+import { ExtractorType, BabelOptions } from "."
 
 const typescriptRe = /(^.?|\.[^d]|[^.]d|[^.][^d])\.tsx?$/i
 

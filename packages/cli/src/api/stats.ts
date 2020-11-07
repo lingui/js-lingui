@@ -3,9 +3,9 @@ import chalk from "chalk"
 
 import { LinguiConfig } from "@lingui/conf"
 
-import { CatalogType, AllCatalogsType } from "./types"
+import { CatalogType, AllCatalogsType } from "./catalog"
 
-type CatalogStats = [number, number]
+type CatalogStats = [number, number];
 
 export function getStats(catalog: CatalogType): CatalogStats {
   return [

@@ -2,8 +2,8 @@ import fs from "fs"
 import * as R from "ramda"
 
 import { writeFileIfChanged } from "../utils"
-import { CatalogType } from "../types"
-import { CatalogFormatter } from "./types"
+import { CatalogType } from "../catalog"
+import { CatalogFormatter } from "."
 
 type NoOriginsCatalogType = {
   [P in keyof CatalogType]: Omit<CatalogType[P], "origin">
