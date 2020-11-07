@@ -10,7 +10,7 @@
 
 ## Installation
 
-The library can be installed globally or locally using `yarn` or `np`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
+The library can be installed globally or locally using `yarn` or `npm`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
 
 ```
 npm install --save-dev @lingui/cli
