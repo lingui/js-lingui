@@ -4,20 +4,25 @@
 
 # @lingui/cli
 
-> lingui command line tools for manipulating message catalogues
+> lingui command line library for manipulating message catalogues
 
 `@lingui/cli` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation
 
-```sh
-npm install --global @lingui/cli
-# yarn global add @lingui/cli
+The library can be installed globally or locally using `yarn` or `nmp`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
+
+To run the library locally there are three options, with the first one been recommended one.
+
+```
+npm install --save-dev @lingui/cli
+# or using yarn
+yarn add --dev @lingui/cli
 ```
 
-**Note:** If you don't wist to install package globally, it works locally
-as well. However, you need either run it from `node_modules/.bin/lingui` or
-add it to your `package.json`:
+### 1) Add commands to scripts
+
+Add these scripts to your `package.json`.
 
 ```json
 {
@@ -37,9 +42,29 @@ npm run extract
 npm run compile
 ```
 
+### 2) Use NPX
+
+You can run the scripts directly using a tool for executing Node packages `NPX`. `NPX` is included in `NPM` version 5.2 and higher.
+
+```
+npx lingui add-locale -- en cs
+npx lingui extract
+npx lingui compile
+```
+
+### 3) Run commands directly
+
+You can run commands directly from `node_modules` folder.
+
+```
+node_modules/.bin/lingui add-locale -- en cs
+node_modules/.bin/lingui extract
+node_modules/.bin/lingui compile
+```
+
 ## Usage
 
-See the [tutorial][tutorial] or [reference][reference] documenation.
+See the [tutorial][tutorial] or [reference][reference] documentation.
 
 ## License
 
