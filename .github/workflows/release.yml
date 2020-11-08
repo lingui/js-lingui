@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           always-auth: true
-          node-version: 12
+          node-version: 14
           scope: '@lingui'
 
       - name: Get yarn cache directory path
