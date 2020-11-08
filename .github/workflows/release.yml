@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
         npmTag:
-          description: 'NPM tag to release'
+          description: 'NPM tag to release (latest|next)'
           required: true
-          default: 'next'
+          default: "latest"
 
 jobs:
   release:
