@@ -51,6 +51,7 @@ jobs:
         run: yarn test
 
       - name: Linting & Types
+        if: matrix.node == '14'
         run: yarn lint:all
 
       - name: Build packages
