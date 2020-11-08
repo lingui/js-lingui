@@ -19,6 +19,14 @@ jobs:
         with:
           node-version: 14
 
+      - name: Prepare Lingui-Bot git account
+        uses: oleksiyrudenko/gha-git-credentials@v1
+        with:
+          name: 'Lingui Bot'
+          email: 'linguibot@gmail.com'
+          actor: 'lingui-bot'
+          token: '${{ secrets.GH_BOT_PWD }}'
+          
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.2.0
