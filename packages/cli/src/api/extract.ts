@@ -7,7 +7,8 @@ import * as R from "ramda"
 import { prettyOrigin } from "./utils"
 
 import * as extractors from "./extractors"
-import { ExtractorType } from "./extractors/types"
+import { ExtractorType } from "./extractors"
+
 
 type ExtractOptions = {
   ignore?: Array<string>

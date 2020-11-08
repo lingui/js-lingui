@@ -4,7 +4,7 @@ import mockFs from "mock-fs"
 import mockDate from "mockdate"
 
 import format from "./lingui"
-import { CatalogType } from "../types"
+import { CatalogType } from "../catalog"
 
 describe("lingui format", function () {
   afterEach(() => {

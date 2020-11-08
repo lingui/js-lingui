@@ -2,8 +2,8 @@ import fs from "fs"
 import Papa from "papaparse"
 
 import { writeFileIfChanged } from "../utils"
-import { MessageType } from "../types"
-import { CatalogFormatter } from "./types"
+import { MessageType } from "../catalog"
+import { CatalogFormatter } from "."
 
 const serialize = (catalog) => {
   const rawArr = Object.keys(catalog).map((key) => [

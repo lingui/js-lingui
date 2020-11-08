@@ -9,17 +9,9 @@ import normalize from "normalize-path"
 
 import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
 
-import getFormat from "./formats"
-import { CatalogFormatter } from "./formats/types"
+import getFormat, { CatalogFormatter } from "./formats"
 import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
-import {
-  AllCatalogsType,
-  ExtractedCatalogType,
-  ExtractedMessageType,
-  MessageType,
-  CatalogType,
-} from "./types"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 
@@ -27,6 +19,34 @@ const NAME = "{name}"
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
+
+type MessageOrigin = [string, number];
+
+export type ExtractedMessageType = {
+  message?: string
+  origin?: MessageOrigin[]
+  comment?: string
+  comments?: string[]
+  obsolete?: boolean
+  flags?: string[]
+  description?: string
+}
+
+export type MessageType = ExtractedMessageType & {
+  translation: string
+}
+
+type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
+}
+
+export type CatalogType = {
+  [msgId: string]: MessageType
+}
+
+export type AllCatalogsType = {
+  [locale: string]: CatalogType
+}
 
 export type MakeOptions = CliExtractOptions & {
   projectType?: string

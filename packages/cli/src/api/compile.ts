@@ -3,10 +3,13 @@ import generate from "@babel/generator"
 import { parse } from "messageformat-parser"
 import * as R from "ramda"
 
-import { CompiledCatalogType } from "./types"
 import pseudoLocalize from "./pseudoLocalize"
 
-export type CompiledCatalogNamespace = "cjs" | "es" | string
+type CompiledCatalogNamespace = "cjs" | "es" | string
+
+type CompiledCatalogType = {
+  [msgId: string]: string
+}
 
 export type CreateCompileCatalogOptions = {
   strict?: boolean

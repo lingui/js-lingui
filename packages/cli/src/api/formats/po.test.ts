@@ -6,7 +6,7 @@ import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
-import { CatalogType } from "../types"
+import { CatalogType } from "../catalog"
 
 describe("pofile format", function () {
   afterEach(() => {
