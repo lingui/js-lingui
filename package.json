@@ -91,6 +91,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "semver": "^7.3.2",
+    "set-tz": "^0.2.0",
     "strip-ansi": "^6.0.0",
     "targz": "^1.0.1",
     "tmp": "^0.2.1",
