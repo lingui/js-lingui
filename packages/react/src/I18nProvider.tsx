@@ -74,9 +74,15 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * I18n object from `@lingui/core` is the single source of truth for all i18n related
    * data (active locale, catalogs). When new messages are loaded or locale is changed
    * we need to trigger re-rendering of LinguiContext.Consumers.
+   *
+   * We call `setContext(makeContext())` after adding the observer in case the `change`
+   * event would already have fired between the inital renderKey calculation and the
+   * `useEffect` hook being called. This can happen if locales are loaded/activated
+   * async.
    */
   React.useEffect(() => {
     const unsubscribe = i18n.on("change", () => setContext(makeContext()))
+    setContext(makeContext())
     return () => unsubscribe()
   }, [])
 
