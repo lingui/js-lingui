@@ -51,7 +51,7 @@ jobs:
         run: yarn test
 
       - name: Linting & Types
-        if: matrix.node == '14'
+        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
         run: yarn lint:all
 
       - name: Build packages
@@ -63,5 +63,5 @@ jobs:
         run: yarn test:integration
 
       - name: Check coverage
-        if: matrix.node == '14'
+        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1
