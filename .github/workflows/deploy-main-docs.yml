@@ -1,0 +1,39 @@
+name: deploy-main-docs
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "**/docs/**"
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+    env:
+      CI: true
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Deploy documentation
+        run: |
+          cd docs/
+          ./vercel-build.sh
+          npx vercel --public  --prod --token ${{secrets.NOW_TOKEN}} --name lingui-docs _build/html

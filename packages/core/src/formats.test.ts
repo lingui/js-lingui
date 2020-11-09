@@ -8,7 +8,7 @@ describe("@lingui/core/formats", () => {
     const firstRunResult = firstRunt1 - firstRunt0
 
     const seconddRunt0 = performance.now()
-    number("es", {})(10000)
+    number("es", {}, false)(10000)
     const seconddRunt1 = performance.now()
     const secondRunResult = seconddRunt1 - seconddRunt0
 
@@ -21,7 +21,7 @@ describe("@lingui/core/formats", () => {
     const firstRunResult = firstRunt1 - firstRunt0
 
     const seconddRunt0 = performance.now()
-    date("es", {})(new Date())
+    date("es", {}, false)(new Date())
     const seconddRunt1 = performance.now()
     const secondRunResult = seconddRunt1 - seconddRunt0
 
