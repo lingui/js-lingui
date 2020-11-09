@@ -2,7 +2,7 @@ import { transformFileSync, DEFAULT_EXTENSIONS } from "@babel/core"
 
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import { BabelOptions, ExtractorType } from "./types"
+import { BabelOptions, ExtractorType } from "."
 import { projectType } from "../detect"
 
 const babelRe = new RegExp(

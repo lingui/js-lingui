@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@lingui/cli": "^3.0.0",
+    "@lingui/loader": "^3.0.0",
     "@lingui/macro": "^3.0.0"
   }
 }

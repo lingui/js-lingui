@@ -25,10 +25,12 @@ Usage
 Simply prepend ``@lingui/loader:`` in front of path to message catalog you want to
 import. Here's an example of dynamic import:
 
+Extension is mandatory. If you use minimal or lingui file format, use ``.json``. In case of using po format, use ``.po``.
+
 .. code-block:: jsx
 
    export async function dynamicActivate(locale: string) {
-      const { messages } = await import(`@lingui/loader!./locales/${locale}/messages.js`)
+      const { messages } = await import(`@lingui/loader!./locales/${locale}/messages.json`)
       i18n.load(locale, messages)
       i18n.activate(locale)
    }

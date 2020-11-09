@@ -10,7 +10,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     "node_modules",
     "scripts",
-    "locale",
+    // removed because detect-locale package is ignored
+    // "locale",
     "fixtures",
     ".*.json$",
     ".*.js.snap$",

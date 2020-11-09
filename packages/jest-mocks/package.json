@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@lingui/jest-mocks",
-  "version": "0.0.0-managed-by-release-script",
+  "version": "3.0.3",
   "description": "Mocks for Jest",
   "main": "index.js",
   "author": {

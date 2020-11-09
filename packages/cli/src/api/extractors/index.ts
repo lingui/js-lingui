@@ -2,14 +2,24 @@ import ora from "ora"
 import babel from "./babel"
 import typescript from "./typescript"
 import * as R from "ramda"
-import { ExtractorType } from "./types"
 
 const extractors = { babel, typescript }
 
-type ExtractOptions = {
-  verbose: boolean
-  projectType: string
-  babelOptions?: Object
+
+export type BabelOptions = {
+  plugins?: Array<string>
+  presets?: Array<string>
+}
+
+export type ExtractOptions = {
+  verbose?: boolean
+  projectType?: string
+  babelOptions?: BabelOptions
+}
+
+export type ExtractorType = {
+  match(filename: string): boolean
+  extract(filename: string, targetDir: string, options?: ExtractOptions): void
 }
 
 export default function extract(

@@ -2,8 +2,8 @@ import fs from "fs"
 import * as R from "ramda"
 
 import { writeFileIfChanged } from "../utils"
-import { MessageType, CatalogType } from "../types"
-import { CatalogFormatter } from "./types"
+import { MessageType, CatalogType } from "../catalog"
+import { CatalogFormatter } from "."
 
 type MinimalCatalogType = Record<string, string>
 

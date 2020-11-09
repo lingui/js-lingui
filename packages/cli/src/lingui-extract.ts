@@ -3,11 +3,10 @@ import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { AllCatalogsType, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
-import { AllCatalogsType } from "./api/types"
 
 export type CliExtractOptions = {
   verbose: boolean
