@@ -207,8 +207,7 @@ examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :c
 
 PseudoLocale string have to be in :conf:`locales` config as well. Otherwise no folder is going to be created.
 Pseudolocalized text is created on  ``yarn compile`` command.
-The pseudolocalization is automatically created from messages in order specified in :ref:`Preparing catalogs for production`.
-It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
+The pseudolocalization is automatically created on ``yarn extract`` from messages in order specified in :ref:`Preparing catalogs for production`.
 
 How to switch your browser into specified pseudoLocale
 ------------------------------------------------------
