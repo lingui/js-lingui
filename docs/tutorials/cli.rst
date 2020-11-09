@@ -205,7 +205,7 @@ To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
 :conf:`pseudoLocale` option can be any string 
 examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
 
-PseudoLocale string have to be in `locale` config as well. Otherwise no folder is going to be created.
+PseudoLocale string have to be in :conf:`locales` config as well. Otherwise no folder is going to be created.
 Pseudolocalized text is created on  ``yarn compile`` command.
 The pseudolocalization is automatically created from messages in order specified in :ref:`Preparing catalogs for production`.
 It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
