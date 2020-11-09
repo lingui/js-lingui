@@ -20,7 +20,7 @@ describe("pofile format", function () {
         en: mockFs.directory(),
       },
     })
-    mockDate.set(new Date(2018,7,27, 10, 0, 0, 0))
+    mockDate.set(new Date(2018,7,27,10,0,0).toUTCString())
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog: CatalogType = {
