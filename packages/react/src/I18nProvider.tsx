@@ -74,8 +74,12 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     i18n,
     defaultComponent,
   })
+  const getRenderKey = () => {
+    return (forceRenderOnLocaleChange ? (i18n.locale || 'default') : 'default') as string
+  }
 
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
+  const [context, setContext] = React.useState<I18nContext>(makeContext()),
+    [renderKey, setRenderKey] = React.useState<string>(getRenderKey())
 
   /**
    * Subscribe for locale/message changes
@@ -83,14 +87,27 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * I18n object from `@lingui/core` is the single source of truth for all i18n related
    * data (active locale, catalogs). When new messages are loaded or locale is changed
    * we need to trigger re-rendering of LinguiContext.Consumers.
+   *
+   * We call `setContext(makeContext())` after adding the observer in case the `change`
+   * event would already have fired between the inital renderKey calculation and the
+   * `useEffect` hook being called. This can happen if locales are loaded/activated
+   * async.
    */
   React.useEffect(() => {
-    const unsubscribe = i18n.on("change", () => setContext(makeContext()))
+    const unsubscribe = i18n.on("change", () => {
+      setContext(makeContext())
+      setRenderKey(getRenderKey())
+    })
+    if (renderKey === 'default') {
+      setRenderKey(getRenderKey())
+    }
+    if (forceRenderOnLocaleChange && renderKey === 'default') {
+      console.log("I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false.")
+    }
     return () => unsubscribe()
   }, [])
 
-  const renderKey = forceRenderOnLocaleChange && i18n.locale
-  if (forceRenderOnLocaleChange && !renderKey) return null
+  if (forceRenderOnLocaleChange && renderKey === 'default') return null
 
   return (
     <LinguiContext.Provider value={context} key={renderKey}>
