@@ -10,12 +10,12 @@
   "scripts": {
     "test": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/unit.xml jest -c scripts/jest/config.unit.js --no-cache",
     "test:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/integration.xml jest -c scripts/jest/config.integration.js --no-cache",
-    "test:all": "yarn test; yarn test:integration",
+    "test:all": "yarn test && yarn test:integration",
     "watch": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.unit.js --watch",
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.integration.js --watch",
     "lint:types": "tsc",
     "lint:eslint": "eslint packages",
-    "lint:all": "yarn lint:eslint; yarn lint:types",
+    "lint:all": "yarn lint:eslint && yarn lint:types",
     "release": "node ./scripts/release.js",
     "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
@@ -24,7 +24,7 @@
     "version:latest": "lerna version --no-private --create-release github --conventional-commits --yes",
     "release:latest": "lerna publish from-package --dist-tag latest --yes",
     "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
-    "build:docs": "cd docs; ./vercel-build.sh"
+    "build:docs": "cd docs && ./vercel-build.sh"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -91,6 +91,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "semver": "^7.3.2",
+    "set-tz": "^0.2.0",
     "strip-ansi": "^6.0.0",
     "targz": "^1.0.1",
     "tmp": "^0.2.1",

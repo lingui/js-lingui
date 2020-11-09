@@ -19,6 +19,7 @@ module.exports = {
   coverageReporters: ["html", "lcov", "text"],
 
   reporters: ["default", "jest-junit"],
+  setupFiles: ['set-tz/utc'],
   setupFilesAfterEnv: [require.resolve("./env.js")],
   snapshotSerializers: [
     "jest-serializer-html",
