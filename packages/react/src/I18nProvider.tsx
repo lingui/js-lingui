@@ -92,6 +92,9 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     if (renderKey === 'default') {
       setRenderKey(getRenderKey())
     }
+    if (forceRenderOnLocaleChange && renderKey === 'default') {
+      console.log("I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false.")
+    }
     return () => unsubscribe()
   }, [])
 
