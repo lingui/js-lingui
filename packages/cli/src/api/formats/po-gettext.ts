@@ -3,12 +3,10 @@ import fs from "fs"
 import ICUParser from "messageformat-parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
-import querystring from "querystring"
 import * as R from "ramda"
 
 import { CatalogType, MessageType } from "../types"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
-
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItemType = InstanceType<typeof PO.Item>
@@ -44,77 +42,114 @@ function stringifyICUCase(icuCase) {
     .join("")
 }
 
-const serialize = (items: CatalogType, options) => R.compose(
-  R.values,
-  R.mapObjIndexed((message: MessageType, key) => {
-    const item = new PO.Item()
-    item.msgid = key
+const ICU_PLURAL_REGEX = /^{.*, plural, .*}$/
+const ICU_SELECT_REGEX = /^{.*, select(Ordinal)?, .*}$/
+const LINE_ENDINGS = /\n|\r\n/g
 
-    // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
-    // message can be found in `message.message` or in the item's `key` itself.
-    const icuMessage = message.message || key
+const serialize = (items: CatalogType, options) =>
+  R.compose(
+    R.values,
+    R.mapObjIndexed((message: MessageType, key) => {
+      const item = new PO.Item()
+      item.msgid = key
 
-    const _simplifiedMessage = icuMessage.replace(/\n|\r\n/g, " ")
+      // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
+      // message can be found in `message.message` or in the item's `key` itself.
+      const icuMessage = message.message || key
 
-    // Quick check to see if original message is a plural localization.
-    if (/^{.*, plural, .*}$/.test(_simplifiedMessage)) {
-      try {
-        const [messageAst] = ICUParser.parse(icuMessage)
-        
-        // Check if any of the plural cases contain plurals themselves.
-        if (messageAst.cases.some((icuCase) => icuCase.tokens.some((token) => token.type === "plural"))) {
-          console.warn(`Nested plurals cannot be expressed with gettext plurals. ` +
-            `Message with key "%s" will not be saved correctly.`, key)
-        }
+      const _simplifiedMessage = icuMessage.replace(LINE_ENDINGS, " ")
 
-        // Store placeholder that is pluralized upon to allow restoring ICU format later.
-        item.msgctxt = querystring.encode({ pluralize_on: messageAst.arg })
+      // Quick check to see if original message is a plural localization.
+      if (ICU_PLURAL_REGEX.test(_simplifiedMessage)) {
+        try {
+          const [messageAst] = ICUParser.parse(icuMessage)
 
-        // For the plural key, simple append "_plural" to the original message key (might be the full message or its id)
-        item.msgid_plural = key + "_plural"
-
-        // If there is a translated value, parse that instead of the original message to prevent overriding localized
-        // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
-        // plural (above) already causes `pofile` to automatically generate `msgstr[0]` and `msgstr[1]`.
-        if (message.translation != null && message.translation.length > 0) {
-          try {
-            const [ast] = ICUParser.parse(message.translation)
-            if (ast.cases == null) {
-              console.warn(`Found translation without plural cases for key "${key}". ` +
-                `This likely means that a translated .po file misses multiple msgstr[] entries for the key. ` +
-                `Translation found: "${message.translation}"`)
-              item.msgstr = [message.translation]
-            } else {
-              item.msgstr = ast.cases.map(stringifyICUCase)
-            }
-          } catch (e) {
-            console.error(`Error parsing translation ICU for key "${key}"`, e)
+          // Check if any of the plural cases contain plurals themselves.
+          if (
+            messageAst.cases.some((icuCase) =>
+              icuCase.tokens.some((token) => token.type === "plural")
+            )
+          ) {
+            console.warn(
+              `Nested plurals cannot be expressed with gettext plurals. ` +
+                `Message with key "%s" will not be saved correctly.`,
+              key
+            )
           }
-        }
-      } catch (e) {
-        console.error("Error parsing message ICU:", e)
-      }
-    } else {
-      if (!options.disableSelectWarning && /^{.*, select(Ordinal)?, .*}$/.test(_simplifiedMessage)) {
-        console.warn(`ICU 'select' and 'selectOrdinal' formats cannot be expressed natively in gettext format. ` +
-          `Item with key "%s" will be included in the catalog as raw ICU message. ` +
-          `To disable this warning, include '{ disableSelectWarning: true }' in the config's 'formatOptions'`,
-          key)
-      }
-      item.msgstr = [message.translation]
-    }
 
-    item.comments = message.comments || []
-    item.extractedComments = message.comment ? [message.comment] : []
-    item.references = message.origin ? message.origin.map(joinOrigin) : []
-    // @ts-ignore: Figure out how to set this flag
-    item.obsolete = message.obsolete
-    item.flags = message.flags
-      ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-      : {}
-    return item
-  })
-)(items)
+          // Store placeholder that is pluralized upon to allow restoring ICU format later.
+          const ctx = new URLSearchParams({
+            pluralize_on: messageAst.arg,
+          })
+
+          if (message.message == null) {
+            // For messages without developer-set ID, use first case as `msgid` and the last case as `msgid_plural`.
+            // This does not necessarily make sense for development languages with more than two numbers, but gettext
+            // only supports exactly two plural forms.
+            item.msgid = stringifyICUCase(messageAst.cases[0])
+            item.msgid_plural = stringifyICUCase(
+              messageAst.cases[messageAst.cases.length - 1]
+            )
+
+            // Since the original msgid is overwritten, store ICU message to allow restoring that ID later.
+            ctx.set("icu", key)
+          } else {
+            // For messages with developer-set ID, append `_plural` to the key to generate `msgid_plural`.
+            item.msgid_plural = key + "_plural"
+          }
+
+          ctx.sort()
+          item.msgctxt = ctx.toString()
+
+          // If there is a translated value, parse that instead of the original message to prevent overriding localized
+          // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
+          // plural (above) already causes `pofile` to automatically generate `msgstr[0]` and `msgstr[1]`.
+          if (message.translation?.length > 0) {
+            try {
+              const [ast] = ICUParser.parse(message.translation)
+              if (ast.cases == null) {
+                console.warn(
+                  `Found translation without plural cases for key "${key}". ` +
+                    `This likely means that a translated .po file misses multiple msgstr[] entries for the key. ` +
+                    `Translation found: "${message.translation}"`
+                )
+                item.msgstr = [message.translation]
+              } else {
+                item.msgstr = ast.cases.map(stringifyICUCase)
+              }
+            } catch (e) {
+              console.error(`Error parsing translation ICU for key "${key}"`, e)
+            }
+          }
+        } catch (e) {
+          console.error(`Error parsing message ICU for key "${key}":`, e)
+        }
+      } else {
+        if (
+          !options.disableSelectWarning &&
+          ICU_SELECT_REGEX.test(_simplifiedMessage)
+        ) {
+          console.warn(
+            `ICU 'select' and 'selectOrdinal' formats cannot be expressed natively in gettext format. ` +
+              `Item with key "%s" will be included in the catalog as raw ICU message. ` +
+              `To disable this warning, include '{ disableSelectWarning: true }' in the config's 'formatOptions'`,
+            key
+          )
+        }
+        item.msgstr = [message.translation]
+      }
+
+      item.comments = message.comments || []
+      item.extractedComments = message.comment ? [message.comment] : []
+      item.references = message.origin ? message.origin.map(joinOrigin) : []
+      // @ts-ignore: Figure out how to set this flag
+      item.obsolete = message.obsolete
+      item.flags = message.flags
+        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
+        : {}
+      return item
+    })
+  )(items)
 
 const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop<"msgstr", string[]>("msgstr")
@@ -129,10 +164,7 @@ const getFlags = R.compose(
 )
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const getTranslationCount = R.compose(
-  R.length,
-  getTranslations
-)
+const getTranslationCount = R.compose(R.length, getTranslations)
 
 const deserialize: (Object) => Object = R.map(
   R.applySpec({
@@ -176,6 +208,14 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
       return
     }
 
+    const ctx = new URLSearchParams(item.msgctxt)
+
+    // If an original ICU was stored, use that as `msgid` to match the catalog that was originally exported.
+    const storedICU = ctx.get("icu")
+    if (storedICU != null) {
+      item.msgid = storedICU
+    }
+
     // If all translations are empty, ignore item.
     if (item.msgstr.every((str) => str.length === 0)) {
       return
@@ -205,8 +245,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
       .join(" ")
 
     // Find out placeholder name from item's message context, defaulting to "count".
-    let { pluralize_on: pluralizeOn } = querystring.parse(item.msgctxt)
-
+    let pluralizeOn = ctx.get("pluralize_on")
     if (!pluralizeOn) {
       console.warn(
         `Unable to determine plural placeholder name for item with key "%s" (should be stored in "msgctxt"), assuming "count".`,
@@ -233,7 +272,7 @@ export default {
       po = new PO()
       po.headers = getCreateHeaders(options.locale)
       if (options.locale === undefined) {
-        delete po.headers.Language;
+        delete po.headers.Language
       }
       po.headerOrder = Object.keys(po.headers)
     }
@@ -252,5 +291,5 @@ export default {
     const po = PO.parse(raw)
     convertPluralsToICU(po.items, po.headers.Language)
     return deserialize(indexItems(po.items))
-  }
+  },
 }

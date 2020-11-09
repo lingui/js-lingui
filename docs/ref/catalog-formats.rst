@@ -57,7 +57,7 @@ With `po-gettext`, plural messages are exported in the following way, depending 
 
    # Message with custom ID "my_message" that is pluralized on property "someCount".
    #
-   # Notice that 'msgid_plural' was genera
+   # Notice that 'msgid_plural' was generad by appending a '_plural' suffix.
    msgctxt "pluralize_on=someCount"
    msgid "my_message"
    msgid_plural "my_message_plural"
@@ -66,10 +66,12 @@ With `po-gettext`, plural messages are exported in the following way, depending 
 
    # Message without custom ID that is pluralized on property "anotherCount".
    #
-   # Notice how 'msgid_plural' was extracted from original message but 'msgid' was kept
-   # as-is, which is required to restore the ICU message when parsing the PO file.
-   msgctxt "pluralize_on=anotherCount"
-   msgid "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}"
+   # Notice how 'msgid' and 'msgid_plural' were extracted from original message.
+   #
+   # To allow matching this PO item to the appropriate catalog entry when deserializing,
+   # the original ICU message is also stored in msgctxt.
+   msgctxt "icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount"
+   msgid "Singular case"
    msgid_plural "Case number {anotherCount}"
    msgstr[0] "Singular case"
    msgstr[1] "Case number {anotherCount}"
@@ -84,10 +86,9 @@ not an option:
     is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected
     behavior, include :code:`{ disableSelectWarning: true }` in the :conf:`formatOptions`.
 
-  - Source/development languages with more than two plurals could experience difficulties depending on whether custom
-    message IDs are used and how the localization backend tool handles the catalog.
+  - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used,
+    as gettext cannot have more than two plurals cases identifying an item (:code:`msgid` and :code:`msgid_plural`).
 
-.. catalogformats:: pogettext
 
 JSON
 ====

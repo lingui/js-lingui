@@ -8,13 +8,12 @@ import PO from "pofile"
 import { CatalogType } from "../types"
 import format from "./po-gettext"
 
-
 describe("po-gettext format", () => {
   const dateHeaders = {
     "pot-creation-date": "2018-08-09",
     "po-revision-date": "2018-08-09",
   }
-  
+
   afterEach(() => {
     mockFs.restore()
     mockDate.reset()
@@ -136,7 +135,7 @@ describe("po-gettext format", () => {
     const filename = path.join("locale", "en", "messages.po")
     mockConsole((console) => {
       const file = fs.readFileSync(filename).toString()
-      const actual = format.parse(file) 
+      const actual = format.parse(file)
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Multiple translations"),
         "withMultipleTranslation"
@@ -145,7 +144,7 @@ describe("po-gettext format", () => {
       expect(actual).toMatchSnapshot()
     })
   })
-  
+
   it("should write the same catalog as it was read", () => {
     const pofile = fs
       .readFileSync(
@@ -205,11 +204,11 @@ describe("po-gettext format", () => {
       message_with_id_but_without_translation: {
         message:
           "{count, plural, one {Singular with id but no translation} other {Plural {count} with empty id but no translation}}",
-        translation: ""
+        translation: "",
       },
       // Entry with automatic ID that generates empty msgstr[] lines
       "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}": {
-        translation: ""
+        translation: "",
       },
     }
 
@@ -254,14 +253,17 @@ describe("po-gettext format", () => {
             one {{numBooks} books and 1 article}
             other {{numBooks} books and {numArticles} articles}
           }}
-        }`
-      }
+        }`,
+      },
     }
 
     mockConsole((console) => {
       format.serialize(catalog, {})
-      
-      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("Nested plurals"), "nested_plural_message")
+
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.stringContaining("Nested plurals"),
+        "nested_plural_message"
+      )
     })
   })
 
@@ -269,15 +271,18 @@ describe("po-gettext format", () => {
     const catalog = {
       select_message: {
         message: `{gender, select, male {he} female {she} other {they}`,
-        translation: ''
-      }
+        translation: "",
+      },
     }
 
     it("should warn", () => {
       mockConsole((console) => {
         format.serialize(catalog, {})
 
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("select"), "select_message")
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining("select"),
+          "select_message"
+        )
       })
     })
 
@@ -294,15 +299,18 @@ describe("po-gettext format", () => {
     const catalog = {
       select_ordinal_message: {
         message: `{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}`,
-        translation: ''
-      }
+        translation: "",
+      },
     }
 
     it("should warn", () => {
       mockConsole((console) => {
         format.serialize(catalog, {})
 
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("selectOrdinal"), "select_ordinal_message")
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining("selectOrdinal"),
+          "select_ordinal_message"
+        )
       })
     })
 
