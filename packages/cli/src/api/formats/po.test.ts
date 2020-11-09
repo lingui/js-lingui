@@ -170,7 +170,7 @@ describe("pofile format", function () {
     format.write(filename, catalog, { origins: true, locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
-    expect(actual).toEqual(pofile)
+    expect(actual.trim()).toEqual(pofile.trim())
   })
 
   it("should not include origins if origins option is false", function () {
