@@ -65,8 +65,12 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     i18n,
     defaultComponent,
   })
+  const getRenderKey = () => {
+    return (forceRenderOnLocaleChange ? (i18n.locale || 'default') : 'default') as string
+  }
 
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
+  const [context, setContext] = React.useState<I18nContext>(makeContext()),
+    [renderKey, setRenderKey] = React.useState<string>(getRenderKey())
 
   /**
    * Subscribe for locale/message changes
@@ -81,13 +85,17 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * async.
    */
   React.useEffect(() => {
-    const unsubscribe = i18n.on("change", () => setContext(makeContext()))
-    setContext(makeContext())
+    const unsubscribe = i18n.on("change", () => {
+      setContext(makeContext())
+      setRenderKey(getRenderKey())
+    })
+    if (renderKey === 'default') {
+      setRenderKey(getRenderKey())
+    }
     return () => unsubscribe()
   }, [])
 
-  const renderKey = forceRenderOnLocaleChange && i18n.locale
-  if (forceRenderOnLocaleChange && !renderKey) return null
+  if (forceRenderOnLocaleChange && renderKey === 'default') return null
 
   return (
     <LinguiContext.Provider value={context} key={renderKey}>
