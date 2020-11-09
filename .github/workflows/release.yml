@@ -63,7 +63,7 @@ jobs:
           name: 'Lingui Bot'
           email: 'linguibot@gmail.com'
           actor: 'lingui-bot'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          token: '${{ secrets.GH_TOKEN }}'
 
       - name: Release packages
         run: |
