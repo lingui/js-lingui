@@ -5,7 +5,7 @@ import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 import * as R from "ramda"
 
-import { CatalogType, MessageType } from "../types"
+import { CatalogType, MessageType } from "../catalog"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284

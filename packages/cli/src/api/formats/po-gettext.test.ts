@@ -5,7 +5,7 @@ import mockDate from "mockdate"
 import path from "path"
 import PO from "pofile"
 
-import { CatalogType } from "../types"
+import { CatalogType } from "../catalog"
 import format from "./po-gettext"
 
 describe("po-gettext format", () => {
