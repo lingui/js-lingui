@@ -153,18 +153,8 @@ export default class MacroJs {
    */
   replaceTAsFunction = (path) => {
     const descriptor = this.processDescriptor(path.node.arguments[0])
-    const newNode = this.types.callExpression(
-      this.types.memberExpression(
-        this.types.identifier(this.i18nImportName),
-        this.types.identifier("_")
-      ),
-      [descriptor]
-    )
-
     this.addExtractMark(path)
-
-    // @ts-ignore
-    path.replaceWith(newNode)
+    path.replaceWith(descriptor)
   }
 
   /**

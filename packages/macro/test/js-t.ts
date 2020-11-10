@@ -86,22 +86,19 @@ export default [
     name: "Support id and comment in t macro as callExpression",
     input: `
         import { t } from '@lingui/macro'
-        t({
-          id: 'msgId_2',
-          message: 'text',
-          comment: 'description for translators'
-        })
-        t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
+        const msg = t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
       `,
-    expected: `
-      import { i18n } from "@lingui/core"
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
       /*i18n*/
-      i18n._({ id: "msgId_2", message: 'text', comment: 'description for translators' })
-      
-      /*i18n*/
-      i18n._({ id: "msgId", comment: 'description for translators', message: '{val, plural, one {...} other {...}}', values: {
-        val: val,
-      } })
+      {
+        id: "msgId",
+        comment: "description for translators",
+        message: "{val, plural, one {...} other {...}}",
+        values: {
+          val: val,
+        },
+      };
       `,
   },
   {
