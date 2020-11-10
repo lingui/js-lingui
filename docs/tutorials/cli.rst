@@ -103,6 +103,13 @@ plural rules to a production ready catalog::
 The ``locale`` directory now contains the source catalogs (``messages.json``) and
 the compiled ones (``messages.js``).
 
+Messages added to compiled file are collected in specific order:
+
+1. Translated message from specified locale
+2. Translated message from fallback locale for specified locale
+3. Translated message from default fallback locale
+4. Message key
+
 It is also possible to merge the translated catalogs into a single file per locale
 by specifying :conf:`catalogsMergePath`. For example if :conf:`catalogsMergePath` is assigned
 ``locales/{locale}`` then catalogs will be compiled to ``/locales/cs.js`` and 
@@ -198,10 +205,9 @@ To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
 :conf:`pseudoLocale` option can be any string 
 examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
 
-PseudoLocale folder is automatically created based on configuration when running 
-``yarn extract`` command. Pseudolocalized text is created on  ``yarn compile`` command.
-The pseudolocalization is automatically created from default messages. 
-It can also be changed by setting translation in :conf:`message.json` into non-pseudolocalized text.
+PseudoLocale string have to be in :conf:`locales` config as well. Otherwise no folder is going to be created.
+Pseudolocalized text is created on  ``yarn compile`` command.
+The pseudolocalization is automatically created on ``yarn extract`` from messages in order specified in :ref:`Preparing catalogs for production`.
 
 How to switch your browser into specified pseudoLocale
 ------------------------------------------------------

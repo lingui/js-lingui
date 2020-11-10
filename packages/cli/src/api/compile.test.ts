@@ -127,7 +127,7 @@ describe("createCompiledCatalog", function () {
   describe("options.pseudoLocale", function () {
     const getCompiledCatalog = (pseudoLocale) =>
       createCompiledCatalog(
-        "cs",
+        "ps",
         {
           Hello: "Ahoj",
         },
@@ -137,7 +137,7 @@ describe("createCompiledCatalog", function () {
       )
 
     it("should return catalog with pseudolocalized messages", function () {
-      expect(getCompiledCatalog("cs")).toMatchSnapshot()
+      expect(getCompiledCatalog("ps")).toMatchSnapshot()
     })
 
     it("should return compiled catalog when pseudoLocale doesn't match current locale", function () {

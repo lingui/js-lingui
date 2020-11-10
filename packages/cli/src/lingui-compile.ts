@@ -6,7 +6,7 @@ import * as plurals from "make-plural"
 
 import { getConfig } from "@lingui/conf"
 
-import { getCatalogs, getCatalogForMerge } from "./api/catalog"
+import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 
@@ -35,9 +35,6 @@ function command(config, options) {
 
   console.error("Compiling message catalogs…")
 
-  if (config.pseudoLocale) {
-    config.locales.push(config.pseudoLocale)
-  }
   config.locales.forEach((locale) => {
     const [language] = locale.split(/[_-]/)
     if (locale !== config.pseudoLocale && !plurals[language]) {
@@ -52,7 +49,7 @@ function command(config, options) {
 
     catalogs.forEach((catalog) => {
       const messages = catalog.getTranslations(
-        locale === config.pseudoLocale ? config.sourceLocale : locale,
+        locale,
         {
           fallbackLocales: config.fallbackLocales,
           sourceLocale: config.sourceLocale,

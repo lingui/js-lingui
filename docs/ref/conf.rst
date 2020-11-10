@@ -372,7 +372,8 @@ pseudoLocale
 Default: ``""``
 
 Locale used for pseudolocalization. For example when you set ``pseudoLocale: "en"``
-then all messages in ``en`` catalog will be pseudo localized.
+then all messages in ``en`` catalog will be pseudo localized. The locale has to be included
+in :conf:`locales` config.
 
 rootDir
 -------

@@ -39,10 +39,6 @@ export default function command(
       ...options,
       orderBy: config.orderBy,
       projectType: detect(),
-      // const pseudoLocale = config.pseudoLocale
-      // if (pseudoLocale) {
-      //   catalog.addLocale(pseudoLocale)
-      // }
     })
 
     catalogStats[catalog.path] = catalog.readAll()
