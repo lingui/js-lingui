@@ -54,11 +54,7 @@ const deserialize: (item: Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
     extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
-    comments: (item) =>
-      R.concat(
-        getTranslatorComments(item) as string,
-        R.tail(getExtractedComments(item))
-      ),
+    comments: R.compose(R.defaultTo([]), getTranslatorComments),
     obsolete: isObsolete,
     origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
     flags: getFlags,

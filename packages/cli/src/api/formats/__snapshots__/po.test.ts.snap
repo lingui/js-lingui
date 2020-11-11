@@ -5,7 +5,6 @@ Object {
   withDescriptionAndComments: Object {
     comments: Array [
       Translator comment,
-      Second description?,
     ],
     extractedComments: Array [
       Single description only,
@@ -17,10 +16,7 @@ Object {
     translation: Second description joins translator comments,
   },
   withMultipleDescriptions: Object {
-    comments: Array [
-      Second comment,
-      Third comment,
-    ],
+    comments: Array [],
     extractedComments: Array [
       First description,
       Second comment,

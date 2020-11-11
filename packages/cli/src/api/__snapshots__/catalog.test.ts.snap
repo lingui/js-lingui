@@ -21,8 +21,15 @@ Object {
     ],
   },
   Hello World: Object {
-    extractedComments: Array [],
+    extractedComments: Array [
+      Comment A,
+      Hello comment,
+    ],
     origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        2,
+      ],
       Array [
         collect/componentA/index.js,
         1,
@@ -59,10 +66,17 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
-      extractedComments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -87,10 +101,17 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
-      extractedComments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -158,10 +179,17 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
-      extractedComments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -199,10 +227,17 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
-      extractedComments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -240,10 +275,17 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
-      extractedComments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -274,10 +316,17 @@ Object {
   },
   Hello World: Object {
     comments: Array [],
-    extractedComments: Array [],
+    extractedComments: Array [
+      Comment A,
+      Hello comment,
+    ],
     flags: Array [],
     obsolete: false,
     origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        2,
+      ],
       Array [
         collect/componentA/index.js,
         1,
