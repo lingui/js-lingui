@@ -17,7 +17,7 @@ const VISITED = Symbol("I18nVisited")
 function addMessage(
   path,
   messages,
-  { id, message: newDefault, origin, ...props }
+  { id, message: newDefault, origin, comment, ...props }
 ) {
   if (messages.has(id)) {
     const message = messages.get(id)
@@ -33,9 +33,13 @@ function addMessage(
       }
 
       ;[].push.apply(message.origin, origin)
+      if (comment) {
+        ;[].push.apply(message.extractedComments, comment)
+      }
     }
   } else {
-    messages.set(id, { ...props, message: newDefault, origin })
+    const extractedComments = comment ? [comment] : []
+    messages.set(id, { ...props, message: newDefault, origin, extractedComments })
   }
 }
 
@@ -56,7 +60,7 @@ export default function ({ types: t }) {
     t.isIdentifier(node.object, { name: "i18n" }) &&
     t.isIdentifier(node.property, { name: "_" })
 
-  function collectMessage(path, file, {comment, ...props}) {
+  function collectMessage(path, file, props) {
     const messages = file.get(MESSAGES)
 
     const rootDir = file.get(CONFIG).rootDir
@@ -64,7 +68,7 @@ export default function ({ types: t }) {
       .relative(rootDir, file.opts.filename)
       .replace(/\\/g, "/")
     const line = path.node.loc ? path.node.loc.start.line : null
-    props.origin = [[filename, line, comment]]
+    props.origin = [[filename, line]]
 
     addMessage(path, messages, props)
   }
