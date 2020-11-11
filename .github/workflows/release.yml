@@ -66,6 +66,8 @@ jobs:
           token: '${{ secrets.GH_TOKEN }}'
 
       - name: Release packages
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
         run: |
           yarn version:${{github.event.inputs.npmTag}}
           yarn release:${{github.event.inputs.npmTag}}
