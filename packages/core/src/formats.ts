@@ -14,8 +14,9 @@ export function date(
     if (isString(value)) value = new Date(value)
     if (memoize) {
       const key = cacheKey<Intl.DateTimeFormatOptions>(locales, format)
-      if (dateFormats.has(key)) {
-        return dateFormats.get(key).format(value)
+      const cachedFormatter = dateFormats.get(key)
+      if (cachedFormatter) {
+        return cachedFormatter.format(value)
       }
 
       const formatter = new Intl.DateTimeFormat(locales, format)
@@ -36,8 +37,9 @@ export function number(
   return (value) => {
     if (memoize) {
       const key = cacheKey<Intl.NumberFormatOptions>(locales, format)
-      if (numberFormats.has(key)) {
-        return numberFormats.get(key).format(value)
+      const cachedFormatter = numberFormats.get(key)
+      if (cachedFormatter) {
+        return cachedFormatter.format(value)
       }
 
       const formatter = new Intl.NumberFormat(locales, format)
