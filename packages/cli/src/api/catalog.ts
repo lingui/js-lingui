@@ -168,7 +168,7 @@ export class Catalog {
           .filter(Boolean)
           .reduce(
             (catalog, messages) =>
-              R.mergeWithKey(mergeOrigins, catalog, messages),
+              R.mergeWithKey(mergeOriginsAndExtractedComments, catalog, messages),
             {}
           )
       })(tmpDir)
@@ -540,10 +540,10 @@ export function getCatalogForMerge(config: LinguiConfig) {
 }
 
 /**
- * Merge origins for messages found in different places. All other attributes
+ * Merge origins and extractedComments for messages found in different places. All other attributes
  * should be the same (raise an error if defaults are different).
  */
-function mergeOrigins(msgId, prev, next) {
+function mergeOriginsAndExtractedComments(msgId, prev, next) {
   if (prev.defaults !== next.defaults) {
     throw new Error(
       `Encountered different defaults for message ${chalk.yellow(msgId)}` +
@@ -554,6 +554,7 @@ function mergeOrigins(msgId, prev, next) {
 
   return {
     ...next,
+    extractedComments: R.concat(prev.extractedComments, next.extractedComments),
     origin: R.concat(prev.origin, next.origin),
   }
 }
