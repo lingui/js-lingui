@@ -842,6 +842,10 @@ describe("normalizeRelativePath", function () {
     )
   })
 
+  it("rootDir path is normalized to a relative path", function () {
+    expect(normalizeRelativePath("/")).toEqual("/")
+  })
+
   it("directories without ending slash are correctly treaten as dirs", function() {
     mockFs({
       componentA: {

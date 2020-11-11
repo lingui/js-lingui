@@ -575,6 +575,10 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
 export function normalizeRelativePath(sourcePath: string): string {
+  if (sourcePath === "/") {
+    return normalize(path.resolve(process.cwd(), sourcePath))
+  }
+
   if (path.isAbsolute(sourcePath)) {
     // absolute path
     return normalize(sourcePath, false)
@@ -582,7 +586,7 @@ export function normalizeRelativePath(sourcePath: string): string {
 
   const isDir = fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
   return (
-    normalize(path.relative(process.cwd(), path.resolve(sourcePath))) +
+    normalize(path.relative(process.cwd(), sourcePath)) +
     (isDir ? PATHSEP : "")
   )
 }

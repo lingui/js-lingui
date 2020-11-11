@@ -14,46 +14,46 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: pages/index.tsx:38
-msgid "Checkout LinguiJS examples and usecases."
-msgstr "Checkout LinguiJS examples and usecases."
+#~ msgid "Checkout LinguiJS examples and usecases."
+#~ msgstr "Checkout LinguiJS examples and usecases."
 
 #: pages/index.tsx:23
-msgid "Documentation →"
-msgstr "Documentation →"
+#~ msgid "Documentation →"
+#~ msgstr "Documentation →"
 
 #: lingui-example/components/Layout.tsx:10
-msgid "Example project using LinguiJS"
-msgstr "Example project using LinguiJS"
+#~ msgid "Example project using LinguiJS"
+#~ msgstr "Example project using LinguiJS"
 
 #: pages/examples.tsx:7
-msgid "Examples"
-msgstr "Examples"
+#~ msgid "Examples"
+#~ msgstr "Examples"
 
 #: pages/index.tsx:35
-msgid "Examples →"
-msgstr "Examples →"
+#~ msgid "Examples →"
+#~ msgstr "Examples →"
 
 #: pages/index.tsx:26
-msgid "Find in-depth information about LinguiJS features and API."
-msgstr "Find in-depth information about LinguiJS features and API."
+#~ msgid "Find in-depth information about LinguiJS features and API."
+#~ msgstr "Find in-depth information about LinguiJS features and API."
 
 #: pages/index.tsx:14
-msgid "Get started by editing <0>locale/en/messages.po</0>"
-msgstr "Get started by editing <0>locale/en/messages.po</0>"
+#~ msgid "Get started by editing <0>locale/en/messages.po</0>"
+#~ msgstr "Get started by editing <0>locale/en/messages.po</0>"
 
 #: pages/examples.tsx:11
-msgid "Plurals"
-msgstr "Plurals"
+#~ msgid "Plurals"
+#~ msgstr "Plurals"
 
 #: lingui-example/components/Layout.tsx:24
-msgid "Powered by <0/>"
-msgstr "Powered by <0/>"
+#~ msgid "Powered by <0/>"
+#~ msgstr "Powered by <0/>"
 
 #: pages/index.tsx:8
-msgid "Welcome to <0>LinguiJS!</0>"
-msgstr "Welcome to <0>LinguiJS!</0>"
+#~ msgid "Welcome to <0>LinguiJS!</0>"
+#~ msgstr "Welcome to <0>LinguiJS!</0>"
 
 #: pages/examples.tsx:15
 #: pages/examples.tsx:19
-msgid "{value, plural, one {There's one book} other {There're # books}}"
-msgstr "{value, plural, one {There's one book} other {There're # books}}"
+#~ msgid "{value, plural, one {There's one book} other {There're # books}}"
+#~ msgstr "{value, plural, one {There's one book} other {There're # books}}"
