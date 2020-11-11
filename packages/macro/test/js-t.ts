@@ -90,15 +90,15 @@ export default [
       `,
     expected: `import { i18n } from "@lingui/core";
     const msg =
-      /*i18n*/
-      {
-        id: "msgId",
-        comment: "description for translators",
-        message: "{val, plural, one {...} other {...}}",
-        values: {
-          val: val,
-        },
-      };
+      i18n._(/*i18n*/
+        {
+          id: "msgId",
+          comment: "description for translators",
+          message: "{val, plural, one {...} other {...}}",
+          values: {
+            val: val,
+          },
+        });
       `,
   },
   {
