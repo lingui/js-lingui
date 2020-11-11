@@ -40,8 +40,8 @@ Minimal required versions are:
 
      <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
 
-- ``NumberFormat`` and ``DateFormat`` components were removed. Use ``date`` and
-  ``number`` formats from ``@lingui/core`` package instead.
+- ``NumberFormat`` and ``DateFormat`` components were removed. Import ``i18n`` from ``@lingui/core``
+package and use ``i18n.date()`` and ``ì18n.number()`` instead.
 
 Removed :component:`I18nProvider` declarative API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
