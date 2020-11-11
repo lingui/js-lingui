@@ -17,7 +17,7 @@ packages.
 Extracting messages
 ===================
 
-We're going to use an app we built in a `React tutorial <./react>`_. The :cli:`extract`
+We're going to use an app we built in a `React tutorial <./react.html>`_. The :cli:`extract`
 command looks for messages in the source files and extracts them::
 
    yarn extract
