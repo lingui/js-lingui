@@ -33,6 +33,15 @@ Object {
       ],
     ],
   },
+  ID Some: Object {
+    message: Message with id some,
+    origin: Array [
+      Array [
+        js-with-macros.js,
+        19,
+      ],
+    ],
+  },
   Message: Object {
     origin: Array [
       Array [

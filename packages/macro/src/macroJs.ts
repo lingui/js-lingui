@@ -4,7 +4,7 @@ import { NodePath } from "@babel/traverse"
 
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
-import { COMMENT, ID, MESSAGE } from "./constants"
+import { COMMENT, ID, MESSAGE, EXTRACT_MARK } from "./constants"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -84,7 +84,7 @@ export default class MacroJs {
     // preserve line number
     newNode.loc = path.node.loc
 
-    this.addExtractMark(path)
+    path.addComment("leading", EXTRACT_MARK)
     // @ts-ignore
     path.replaceWith(newNode)
   }
@@ -98,7 +98,10 @@ export default class MacroJs {
       return
     }
 
-    if (this.types.isCallExpression(path.node) && this.isIdentifier(path.node.callee, "t")) {
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.isIdentifier(path.node.callee, "t")
+    ) {
       this.replaceTAsFunction(path)
       return
     }
@@ -143,7 +146,6 @@ export default class MacroJs {
     this._expressionIndex = makeCounter()
 
     const descriptor = this.processDescriptor(path.node.arguments[0])
-    this.addExtractMark(path)
     path.replaceWith(descriptor)
   }
 
@@ -160,10 +162,6 @@ export default class MacroJs {
       ),
       [descriptor]
     )
-
-    this.addExtractMark(path)
-
-    // @ts-ignore
     path.replaceWith(newNode)
   }
 
@@ -185,6 +183,7 @@ export default class MacroJs {
    *
    */
   processDescriptor = (descriptor) => {
+    this.types.addComment(descriptor, "leading", EXTRACT_MARK)
     const messageIndex = descriptor.properties.findIndex(
       (property) => property.key.name === MESSAGE
     )
@@ -352,14 +351,6 @@ export default class MacroJs {
     }
   }
 
-  /**
-   * addExtractMark - add comment which marks the string/object
-   * for extraction.
-   * @lingui/babel-extract-messages looks for this comment
-   */
-  addExtractMark = (path) => {
-    path.addComment("leading", "i18n")
-  }
 
   /**
    * Custom matchers
