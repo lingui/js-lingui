@@ -576,7 +576,7 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  */
 export function normalizeRelativePath(sourcePath: string): string {
   if (sourcePath === "/") {
-    return normalize(path.resolve(process.cwd(), sourcePath))
+    return normalize(path.relative(process.cwd(), sourcePath))
   }
 
   if (path.isAbsolute(sourcePath)) {
