@@ -7,6 +7,7 @@ Object {
       Array [
         jsx-without-trans.js,
         3,
+        null,
       ],
     ],
   },
@@ -16,11 +17,11 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files (macros) 1`] = `
 Object {
   Description: Object {
-    comment: description,
     origin: Array [
       Array [
         js-with-macros.js,
         7,
+        description,
       ],
     ],
   },
@@ -30,6 +31,7 @@ Object {
       Array [
         js-with-macros.js,
         12,
+        null,
       ],
     ],
   },
@@ -39,6 +41,7 @@ Object {
       Array [
         js-with-macros.js,
         19,
+        null,
       ],
     ],
   },
@@ -47,10 +50,12 @@ Object {
       Array [
         js-with-macros.js,
         3,
+        null,
       ],
       Array [
         js-with-macros.js,
         5,
+        null,
       ],
     ],
   },
@@ -59,6 +64,7 @@ Object {
       Array [
         js-with-macros.js,
         17,
+        null,
       ],
     ],
   },
@@ -68,11 +74,11 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files 1`] = `
 Object {
   Description: Object {
-    comment: description,
     origin: Array [
       Array [
         js-without-macros.js,
         5,
+        description,
       ],
     ],
   },
@@ -82,6 +88,7 @@ Object {
       Array [
         js-without-macros.js,
         7,
+        null,
       ],
     ],
   },
@@ -90,6 +97,7 @@ Object {
       Array [
         js-without-macros.js,
         3,
+        null,
       ],
     ],
   },
@@ -98,6 +106,7 @@ Object {
       Array [
         js-without-macros.js,
         9,
+        null,
       ],
     ],
   },
@@ -111,6 +120,7 @@ Object {
       Array [
         jsx-with-macros.js,
         3,
+        null,
       ],
     ],
   },
@@ -119,6 +129,7 @@ Object {
       Array [
         jsx-with-macros.js,
         4,
+        null,
       ],
     ],
   },
@@ -127,6 +138,7 @@ Object {
       Array [
         jsx-with-macros.js,
         6,
+        null,
       ],
     ],
   },
@@ -140,6 +152,7 @@ Object {
       Array [
         jsx-without-macros.js,
         9,
+        null,
       ],
     ],
   },
@@ -149,19 +162,21 @@ Object {
       Array [
         jsx-without-macros.js,
         7,
+        null,
       ],
       Array [
         jsx-without-macros.js,
         8,
+        null,
       ],
     ],
   },
   msg.hello: Object {
-    comment: Description,
     origin: Array [
       Array [
         jsx-without-macros.js,
         6,
+        Description,
       ],
     ],
   },
