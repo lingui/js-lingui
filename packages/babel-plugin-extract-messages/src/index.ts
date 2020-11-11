@@ -34,7 +34,7 @@ function addMessage(
 
       ;[].push.apply(message.origin, origin)
       if (comment) {
-        ;[].push.apply(message.extractedComments, comment)
+        ;[].push.apply(message.extractedComments, [comment])
       }
     }
   } else {
