@@ -32,7 +32,7 @@ export type MessageDescriptor = {
   id?: string
   comment?: string
   message?: string
-  values?: string
+  values?: Record<string, unknown>
 }
 
 type setupI18nProps = {
