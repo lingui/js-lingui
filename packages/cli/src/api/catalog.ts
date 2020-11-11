@@ -25,11 +25,10 @@ type MessageOrigin = [string, number];
 export type ExtractedMessageType = {
   message?: string
   origin?: MessageOrigin[]
-  comment?: string
+  extractedComments?: string[]
   comments?: string[]
   obsolete?: boolean
   flags?: string[]
-  description?: string
 }
 
 export type MessageType = ExtractedMessageType & {
