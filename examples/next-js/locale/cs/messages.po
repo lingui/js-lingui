@@ -13,47 +13,47 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: pages/index.tsx:38
-#~ msgid "Checkout LinguiJS examples and usecases."
-#~ msgstr "Podívej se na ukázky a příklady LinguiJS"
+#: pages/index.tsx:36
+msgid "Checkout LinguiJS examples and usecases."
+msgstr "Podívej se na ukázky a příklady LinguiJS"
 
-#: pages/index.tsx:23
-#~ msgid "Documentation →"
-#~ msgstr "Dokumentace →"
+#: pages/index.tsx:21
+msgid "Documentation →"
+msgstr "Dokumentace →"
 
-#: lingui-example/components/Layout.tsx:10
-#~ msgid "Example project using LinguiJS"
-#~ msgstr "Ukázkový projekt s LinguiJS"
+#: lingui-example/components/Layout.tsx:11
+msgid "Example project using LinguiJS"
+msgstr "Ukázkový projekt s LinguiJS"
 
 #: pages/examples.tsx:7
-#~ msgid "Examples"
-#~ msgstr "Ukázky"
+msgid "Examples"
+msgstr "Ukázky"
 
-#: pages/index.tsx:35
-#~ msgid "Examples →"
-#~ msgstr "Ukázky →"
+#: pages/index.tsx:33
+msgid "Examples →"
+msgstr "Ukázky →"
 
-#: pages/index.tsx:26
-#~ msgid "Find in-depth information about LinguiJS features and API."
-#~ msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
+#: pages/index.tsx:24
+msgid "Find in-depth information about LinguiJS features and API."
+msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
 
-#: pages/index.tsx:14
-#~ msgid "Get started by editing <0>locale/en/messages.po</0>"
-#~ msgstr "Začni úpravou <0>locale/cs/messages.po</0>"
+#: pages/index.tsx:13
+msgid "Get started by editing <0>locale/en/messages.po</0>"
+msgstr "Začni úpravou <0>locale/cs/messages.po</0>"
 
 #: pages/examples.tsx:11
-#~ msgid "Plurals"
-#~ msgstr "Množné číslo"
+msgid "Plurals"
+msgstr "Množné číslo"
 
-#: lingui-example/components/Layout.tsx:24
-#~ msgid "Powered by <0/>"
-#~ msgstr "Používá <0/>"
+#: lingui-example/components/Layout.tsx:23
+msgid "Powered by <0/>"
+msgstr "Používá <0/>"
 
 #: pages/index.tsx:8
-#~ msgid "Welcome to <0>LinguiJS!</0>"
-#~ msgstr "Vítá tě <0>LinguiJS!</0>"
+msgid "Welcome to <0>LinguiJS!</0>"
+msgstr "Vítá tě <0>LinguiJS!</0>"
 
 #: pages/examples.tsx:15
 #: pages/examples.tsx:19
-#~ msgid "{value, plural, one {There's one book} other {There're # books}}"
-#~ msgstr "{value, plural, one {Je tam jedna kniha} few {Jsou tam # knihy} other {Je tam # knih}}"
+msgid "{value, plural, one {There's one book} other {There're # books}}"
+msgstr "{value, plural, one {Je tam jedna kniha} few {Jsou tam # knihy} other {Je tam # knih}}"

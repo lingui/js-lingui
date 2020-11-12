@@ -359,11 +359,16 @@ export class Catalog {
 
   get sourcePaths() {
     const includeGlobs = this.include.map(
-      (includePath) =>
-        includePath.endsWith(PATHSEP)
-          ? [includePath, "**", "*.*"].join(PATHSEP) // directory
-          : includePath // file
+      (includePath) => {
+        const isDir = fs.existsSync(includePath) && fs.lstatSync(includePath).isDirectory()
+        /**
+         * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
+         * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
+         */
+        return isDir ? normalize(path.resolve(process.cwd(), `/${includePath}/**/*.*`)) : includePath
+      }
     )
+
     const patterns =
       includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
     return glob.sync(patterns, { ignore: this.exclude, mark: true })
@@ -575,20 +580,13 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Preserve absolute paths:    /absolute/path => /absolute/path
  */
 export function normalizeRelativePath(sourcePath: string): string {
-  if (sourcePath === "/") {
-    return normalize(path.relative(process.cwd(), sourcePath))
-  }
-
   if (path.isAbsolute(sourcePath)) {
     // absolute path
     return normalize(sourcePath, false)
   }
 
   const isDir = fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
-  return (
-    normalize(path.relative(process.cwd(), sourcePath)) +
-    (isDir ? PATHSEP : "")
-  )
+  return normalize(path.relative(process.cwd(), sourcePath), false) + (isDir ? "/" : "")
 }
 
 export const cleanObsolete = R.filter(
