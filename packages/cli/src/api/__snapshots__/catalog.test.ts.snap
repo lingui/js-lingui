@@ -3,6 +3,7 @@
 exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
   Component A: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         collect/componentA/componentA.js,
@@ -11,6 +12,7 @@ Object {
     ],
   },
   Component B: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         collect/componentB.js,
@@ -19,7 +21,20 @@ Object {
     ],
   },
   Hello World: Object {
+    extractedComments: Array [
+      Comment A,
+      Comment A again,
+      Hello comment,
+    ],
     origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        2,
+      ],
+      Array [
+        collect/componentA/componentA.js,
+        3,
+      ],
       Array [
         collect/componentA/index.js,
         1,
@@ -42,8 +57,8 @@ exports[`Catalog make should collect and write catalogs 2`] = `
 Object {
   cs: Object {
     Component A: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -55,11 +70,23 @@ Object {
       translation: ,
     },
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Comment A again,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
+        Array [
+          collect/componentA/componentA.js,
+          3,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -70,8 +97,8 @@ Object {
   },
   en: Object {
     Component A: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -83,11 +110,23 @@ Object {
       translation: ,
     },
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Comment A again,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
+        Array [
+          collect/componentA/componentA.js,
+          3,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -103,8 +142,8 @@ exports[`Catalog make should merge with existing catalogs 1`] = `
 Object {
   cs: Object {
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [],
@@ -113,8 +152,8 @@ Object {
   },
   en: Object {
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [],
@@ -128,8 +167,8 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
 Object {
   cs: Object {
     Component A: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -141,8 +180,8 @@ Object {
       translation: ,
     },
     Component B: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -154,11 +193,23 @@ Object {
       translation: ,
     },
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Comment A again,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
+        Array [
+          collect/componentA/componentA.js,
+          3,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -169,8 +220,8 @@ Object {
   },
   en: Object {
     Component A: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -182,8 +233,8 @@ Object {
       translation: ,
     },
     Component B: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -195,11 +246,23 @@ Object {
       translation: ,
     },
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Comment A again,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
+        Array [
+          collect/componentA/componentA.js,
+          3,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -223,8 +286,8 @@ Object {
   cs: null,
   en: Object {
     Component A: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [
@@ -236,11 +299,23 @@ Object {
       translation: ,
     },
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [
+        Comment A,
+        Comment A again,
+        Hello comment,
+      ],
       flags: Array [],
       obsolete: false,
       origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          2,
+        ],
+        Array [
+          collect/componentA/componentA.js,
+          3,
+        ],
         Array [
           collect/componentA/index.js,
           1,
@@ -257,8 +332,8 @@ exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
 exports[`Catalog makeTemplate should collect and write a template 2`] = `
 Object {
   Component A: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [
@@ -270,11 +345,23 @@ Object {
     translation: ,
   },
   Hello World: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [
+      Comment A,
+      Comment A again,
+      Hello comment,
+    ],
     flags: Array [],
     obsolete: false,
     origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        2,
+      ],
+      Array [
+        collect/componentA/componentA.js,
+        3,
+      ],
       Array [
         collect/componentA/index.js,
         1,
@@ -288,51 +375,53 @@ Object {
 exports[`Catalog read should read file in given format 1`] = `
 Object {
   obsolete: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: true,
     origin: Array [],
     translation: Is marked as obsolete,
   },
   static: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Static message,
   },
   veryLongString: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
   withComments: Object {
-    comment: undefined,
     comments: Array [
       Translator comment,
       This one might come from developer,
     ],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Support translator comments separately,
   },
   withDescription: Object {
-    comment: Description is comment from developers to translators,
     comments: Array [],
+    extractedComments: Array [
+      Description is comment from developers to translators,
+    ],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Message with description,
   },
   withFlags: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [
       fuzzy,
       otherFlag,
@@ -342,8 +431,8 @@ Object {
     translation: Keeps any flags that are defined,
   },
   withMultipleOrigins: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [
@@ -359,8 +448,8 @@ Object {
     translation: Message with multiple origin,
   },
   withOrigin: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [
@@ -380,8 +469,8 @@ exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 Object {
   cs: Object {
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [],
@@ -390,8 +479,8 @@ Object {
   },
   en: Object {
     Hello World: Object {
-      comment: undefined,
       comments: Array [],
+      extractedComments: Array [],
       flags: Array [],
       obsolete: false,
       origin: Array [],

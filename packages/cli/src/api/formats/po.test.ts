@@ -40,7 +40,7 @@ describe("pofile format", function () {
       },
       withDescription: {
         translation: "Message with description",
-        description: "Description is comment from developers to translators",
+        extractedComments: ["Description is comment from developers to translators"],
       },
       withComments: {
         comments: ["Translator comment", "This one might come from developer"],

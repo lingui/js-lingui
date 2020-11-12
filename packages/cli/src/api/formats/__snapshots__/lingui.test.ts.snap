@@ -36,7 +36,9 @@ exports[`lingui format should write catalog in lingui format 1`] = `
   },
   "withDescription": {
     "translation": "Message with description",
-    "description": "Description is comment from developers to translators"
+    "extractedComments": [
+      "Description is comment from developers to translators"
+    ]
   },
   "withComments": {
     "comments": [
