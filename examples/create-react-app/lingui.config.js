@@ -2,8 +2,9 @@ module.exports =  {
   locales: ["en", "cs"],
   sourceLocale: "en",
   catalogs: [{
-    path: "src/locales/{locale}/messages",
-    include: ["src"]
+    path: "<rootDir>/src/locales/{locale}/messages",
+    include: ["<rootDir>"],
+    exclude: ["**/node_modules/**"],
   }],
   format: "po"
 }
