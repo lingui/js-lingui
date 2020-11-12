@@ -16,10 +16,12 @@ Here is a working example with `react-testing-library`_, using the `wrapper-prop
    import { render } from '@testing-library/react'
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
+   import { en } from 'make-plural/plurals';
    import { messages } from '../your-path-to/en/messages.js'
    import Inbox from './Inbox'
 
    i18n.load('en', messages)
+   i18n.loadLocaleData({ en: { plurals: en } });
    i18n.activate('en')
    const TestingProvider = ({ children }) => (
      <I18nProvider i18n={i18n}>
