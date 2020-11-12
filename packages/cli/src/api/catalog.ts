@@ -273,19 +273,19 @@ export class Catalog {
 
     return (
       // Get translation in target locale
-      getTranslation(locale) ||
+      getTranslation(locale) ??
       // We search in fallbackLocales as dependent of each locale
-      getMultipleFallbacks(locale) ||
+      getMultipleFallbacks(locale) ??
       // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales.default && getTranslation(fallbackLocales.default)) ||
+      (fallbackLocales.default && getTranslation(fallbackLocales.default)) ??
       // Get message default
-      catalogs[locale][key].defaults ||
+      catalogs[locale][key].defaults ??
       // If sourceLocale is either target locale of fallback one, use key
-      (sourceLocale && sourceLocale === locale && key) ||
+      (sourceLocale && sourceLocale === locale && key) ??
       (sourceLocale &&
         fallbackLocales.default &&
         sourceLocale === fallbackLocales.default &&
-        key) ||
+        key) ??
       // Otherwise no translation is available
       undefined
     )
