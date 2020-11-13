@@ -282,3 +282,8 @@ New features
 
 Event ``change`` is fired anytime new catalogs are loaded or when locale
 is activated.
+
+`Native TypeScript support`
+--------------------------
+
+Lingui now supports TypeScript out of the box, don't forget to remove the `@types/lingui` packages from your project. 
