@@ -17,6 +17,7 @@ module.exports = {
     ".*.js.snap$",
   ],
   coverageReporters: ["html", "lcov", "text"],
+  modulePathIgnorePatterns: ["/build"],
 
   reporters: ["default", "jest-junit"],
   setupFiles: ['set-tz/utc'],

@@ -10,7 +10,7 @@ const semver = require("semver")
 const R = require("ramda")
 
 const BUILD_DIR = "build/"
-const PACKAGES_DIR = "build/packages"
+const PACKAGES_DIR = "packages/build"
 
 const npmTagForBranch = {
   main: "latest",

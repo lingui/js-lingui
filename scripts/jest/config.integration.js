@@ -26,11 +26,11 @@ packages
   .filter(name => !DEV_PACKAGES.includes(name))
   .forEach(name => {
     // Root entry point
-    moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/build/packages/${name}`
+    moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/packages/${name}/build`
     // Named entry points
     moduleNameMapper[
       `^@lingui/${name}/(.*)$`
-    ] = `<rootDir>/build/packages/${name}/$1`
+    ] = `<rootDir>/packages/${name}/build/$1`
   })
 
 module.exports = Object.assign({}, sourceConfig, {
@@ -41,8 +41,12 @@ module.exports = Object.assign({}, sourceConfig, {
   setupFiles: ['set-tz/utc'],
 
   // Exclude the build output from transforms
-  transformIgnorePatterns: ["/node_modules/", "<rootDir>/build/"],
-  modulePathIgnorePatterns: [".yalc/"],
+  transformIgnorePatterns: ["/node_modules/", "<rootDir>/packages/*/build/"],
+  modulePathIgnorePatterns: [".yalc/", "/build"],
 
-  collectCoverage: false
+  collectCoverage: false,
+
+  haste: {
+    throwOnModuleCollision: false,
+  }
 })

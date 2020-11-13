@@ -22,8 +22,8 @@
     "release:test": "node ./scripts/test.js",
     "version:next": "lerna version --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
     "version:latest": "lerna version --no-private --create-release github --conventional-commits --yes",
-    "release:latest": "lerna publish from-package --dist-tag latest --yes",
-    "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
+    "release:latest": "lerna publish from-package --contents build --dist-tag latest --yes",
+    "release:next": "lerna publish from-package --contents build --canary --preid next --pre-dist-tag next --yes",
     "build:docs": "cd docs && ./vercel-build.sh"
   },
   "engines": {
