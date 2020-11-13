@@ -83,6 +83,23 @@ export default [
       `,
   },
   {
+    name: "Support template strings in t macro message",
+    input: `
+        import { t } from '@lingui/macro'
+        const msg = t({ message: \`Hello \${name}\` })
+      `,
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
+      i18n._(/*i18n*/
+        {
+          id: "Hello {name}",
+          values: {
+            name: name,
+          },
+        });
+      `,
+  },
+  {
     name: "Support id and comment in t macro as callExpression",
     input: `
         import { t } from '@lingui/macro'

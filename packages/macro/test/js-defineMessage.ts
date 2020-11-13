@@ -36,11 +36,11 @@ export default [
     `,
   },
   {
-    name: "should left string message intact - template literal",
+    name: "should transform template literals",
     input: `
         import { defineMessage } from '@lingui/macro';
         const message = defineMessage({
-          message: \`Message\`
+          message: \`Message \${name}\`
         })
     `,
     expected: `
@@ -48,7 +48,10 @@ export default [
         const message =
           /*i18n*/
           {
-            id: \`Message\`
+            id: "Message {name}",
+            values: {
+              name: name
+            }
           };
     `,
   },
