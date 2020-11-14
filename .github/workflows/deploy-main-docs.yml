@@ -41,4 +41,4 @@ jobs:
         run: |
           cd docs/
           ./vercel-build.sh
-          npx vercel --public  --prod --token ${{secrets.NOW_TOKEN}} --name lingui-docs _build/html
+          npx vercel --public --yes --prod --token ${{secrets.NOW_TOKEN}} --name lingui-docs _build/html

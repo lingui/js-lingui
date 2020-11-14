@@ -23,13 +23,13 @@ function getBundleOutputPaths(bundleType, filename, packageName) {
   switch (bundleType) {
     case NOOP:
     case NODE:
-      return [`build/packages/${name}/${_filename}`]
+      return [`packages/${name}/build/${_filename}`]
     case UNIVERSAL:
-      return [`build/packages/${name}/cjs/${_filename}`]
+      return [`packages/${name}/build/cjs/${_filename}`]
     // case UMD_DEV:
     // case UMD_PROD:
     //   return [
-    //     `build/packages/${packageName}/umd/${filename}`,
+    //     `packages/build/${packageName}/umd/${filename}`,
     //     `build/dist/${filename}`
     //   ]
     default:
@@ -44,7 +44,7 @@ function getTarOptions(tgzName, packageName) {
   const CONTENTS_FOLDER = "package"
   return {
     src: tgzName,
-    dest: `build/packages/${packageName}`,
+    dest: `packages/${packageName}/build`,
     tar: {
       entries: [CONTENTS_FOLDER],
       map(header) {
@@ -57,34 +57,36 @@ function getTarOptions(tgzName, packageName) {
 }
 
 async function prepareNpmPackage(name) {
+  if (!existsSync(`packages/${name}/build`)) {
+    // We didn't build any npm packages.
+    return
+  }
+
   await Promise.all([
-    asyncCopyTo("LICENSE", `build/packages/${name}/LICENSE`),
+    asyncCopyTo("LICENSE", `packages/${name}/build/LICENSE`),
     asyncCopyTo(
       `packages/${name}/package.json`,
-      `build/packages/${name}/package.json`
+      `packages/${name}/build/package.json`
     ),
     asyncCopyTo(
       `packages/${name}/README.md`,
-      `build/packages/${name}/README.md`
+      `packages/${name}/build/README.md`
     ),
-    asyncCopyTo(`packages/${name}/npm`, `build/packages/${name}`)
+    asyncCopyTo(`packages/${name}/npm`, `packages/${name}/build/`)
   ])
   const tgzName = (await asyncExecuteCommand(
-    `npm pack build/packages/${name}`
+    `npm pack packages/${name}/build`
   )).trim()
-  await asyncRimRaf(`build/packages/${name}`)
+  await asyncRimRaf(`packages/${name}/build/`)
   await asyncExtractTar(getTarOptions(tgzName, name))
   unlinkSync(tgzName)
 }
 
 async function prepareNpmPackages() {
-  if (!existsSync("build/packages")) {
-    // We didn't build any npm packages.
-    return
-  }
-  const builtPackageFolders = readdirSync("build/packages").filter(
+  const builtPackageFolders = readdirSync("packages/").filter(
     dir => dir.charAt(0) !== "."
   )
+
   await Promise.all(builtPackageFolders.map(prepareNpmPackage))
 }
 

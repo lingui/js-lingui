@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const { execSync } = require("child_process")
 
-const BUILD_DIR = path.resolve("build/packages")
+const BUILD_DIR = path.resolve("packages/")
 const EXAMPLES_DIR = path.resolve("examples")
 
 function listDirs(dir) {
@@ -23,7 +23,7 @@ function linkDependencies(example) {
 }
 
 function linkPackage(packageName) {
-  execSync("yalc publish", { cwd: path.join(BUILD_DIR, packageName) })
+  execSync("yalc publish", { cwd: path.join(BUILD_DIR, packageName, "build") })
 }
 
 const packages = listDirs(BUILD_DIR)
