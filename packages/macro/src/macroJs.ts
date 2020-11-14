@@ -193,7 +193,12 @@ export default class MacroJs {
 
     // if there's `message` property, replace macros with formatted message
     const node = descriptor.properties[messageIndex]
-    const tokens = this.tokenizeNode(node.value, true)
+
+    // Inside message descriptor the `t` macro in `message` prop is optional.
+    // Template strings are always processed as if they were wrapped by `t`.
+    const tokens = this.types.isTemplateLiteral(node.value)
+      ? this.tokenizeTemplateLiteral(node.value)
+      : this.tokenizeNode(node.value, true)
 
     let messageNode = node.value
     if (tokens != null) {
@@ -350,7 +355,6 @@ export default class MacroJs {
       return this._expressionIndex()
     }
   }
-
 
   /**
    * Custom matchers
