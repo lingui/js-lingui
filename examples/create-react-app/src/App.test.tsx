@@ -28,7 +28,7 @@ test('Test that lang is translated correctly in English' , () => {
     i18n.activate('en')
   })
   const { getByTestId, container } = render(<App />, { wrapper: TestingProvider });
-  expect(getByTestId('h2-title')).toBeInTheDocument()
+  expect(getByTestId('h3-title')).toBeInTheDocument()
   expect(getByText(container, "Language switcher example:")).toBeDefined()
 });
 
