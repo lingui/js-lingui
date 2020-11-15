@@ -21,7 +21,7 @@ async function main() {
     spinner.succeed()
   } catch (error) {
     spinner.fail()
-    process.exit(0)
+    process.exit(1)
   }
 }
 
@@ -41,6 +41,7 @@ function exec(cmd, options) {
         resolve({ stdout, stderr })
       } else {
         reject({ error, stdout, stderr })
+        process.exit(1)
       }
     })
   })

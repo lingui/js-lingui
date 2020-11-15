@@ -41,7 +41,7 @@ async function releaseInVerdaccio() {
   )
 
   // we revert the changed files from index
-  await exec("git update-index --really-refresh")
+  await exec("git ls-files -v | grep '^[a-z]' | cut -c3- | xargs git update-index --no-assume-unchanged --");
 }
 
 function exec(cmd, options) {
@@ -60,6 +60,7 @@ function exec(cmd, options) {
         resolve({ stdout, stderr })
       } else {
         reject({ error, stdout, stderr })
+        process.exit(1)
       }
     })
   })

@@ -1,9 +1,13 @@
-name: relase-workflow-test
+name: release-workflow-test
 
 on:
+  pull_request:
+    branches:
+      - '*'
   push:
     branches:
-      - "*"
+      - main
+      - next
 
 jobs:
   release-test:
@@ -30,9 +34,7 @@ jobs:
       - uses: actions/cache@v2
         id: yarn-cache
         with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            node_modules/
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -41,5 +43,12 @@ jobs:
         run: yarn install --frozen-lockfile --pure-lockfile
 
       - name: Publish with Verdaccio
-        uses: semoal/github-actions/publish@master
+        run: |
+          git checkout ${{ github.head_ref }}
+          npm i -g {verdaccio,verdaccio-auth-memory,verdaccio-memory}
+          mkdir -p $HOME/.config/verdaccio
+          cp --verbose .github/verdaccio/config.yaml $HOME/.config/verdaccio/config.yaml
+          nohup verdaccio --config $HOME/.config/verdaccio/config.yaml &>mktemp &
+          node ./scripts/verdaccio-release.js
+          node ./scripts/verdaccio-integration.js
 
