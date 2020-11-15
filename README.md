@@ -5,8 +5,8 @@
 
 <hr />
 
-[![CircleCI][Badge-CI]][CI]
-[![AppVeyor][Badge-AppVeyor]][AppVeyor]
+![Main Suite][Badge-MainSuite-GithubCI]
+![Release Workflow Testing][Badge-ReleaseWorkflowTesting-GithubCI]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
@@ -157,6 +157,8 @@ The project is licensed under the [MIT][License] license.
 [TutorialSetupReact]: https://lingui.js.org/tutorials/setup-react.html
 [RefCLI]: https://lingui.js.org/ref/cli.html
 
+[Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
+[Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
 [Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/main.svg
 [Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/main?svg=true
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
