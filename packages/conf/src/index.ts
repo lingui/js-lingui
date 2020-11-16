@@ -278,7 +278,7 @@ export function fallbackLanguageMigration(
 
   config.locales.forEach((locale) => {
     const fl = getCldrParentLocale(locale.toLowerCase())
-    if (fl) {
+    if (fl && !config.fallbackLocales[locale]) {
       config.fallbackLocales = {
         ...config.fallbackLocales,
         [locale]: fl
