@@ -3,17 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.2.2](https://github.com/lingui/js-lingui/compare/v3.2.1...v3.2.2) (2020-11-16)
-
-
-### Bug Fixes
-
-* parse template strings in t and defineMessage macros ([#862](https://github.com/lingui/js-lingui/issues/862)) ([024a7e6](https://github.com/lingui/js-lingui/commit/024a7e61e8d76efc2b4a8dd3bb4e0a3932945496))
-
-
-
-
-
 # [3.2.0](https://github.com/lingui/js-lingui/compare/v3.1.0...v3.2.0) (2020-11-12)
 
 
