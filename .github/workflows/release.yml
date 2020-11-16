@@ -65,9 +65,15 @@ jobs:
           actor: 'lingui-bot'
           token: '${{ secrets.GH_TOKEN }}'
 
-      - name: Release packages
+      - name: Versioning packages
         env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
-        run: |
-          yarn version:${{github.event.inputs.npmTag}}
-          yarn release:${{github.event.inputs.npmTag}}
+        run: yarn version:${{github.event.inputs.npmTag}}
+
+      - name: Packaging packages with newer version
+        run: yarn release:build
+
+      - name: Publishing packages
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+        run: yarn release:${{github.event.inputs.npmTag}}
