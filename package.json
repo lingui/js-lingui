@@ -20,8 +20,8 @@
     "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
     "release:test": "node ./scripts/test.js",
-    "version:next": "lerna version --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
-    "version:latest": "lerna version --no-private --create-release github --conventional-commits --yes",
+    "version:next": "lerna version --force-publish --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
+    "version:latest": "lerna version --force-publish --no-private --create-release github --conventional-commits --yes",
     "release:latest": "lerna publish from-package --contents build --dist-tag latest --yes",
     "release:next": "lerna publish from-package --contents build --canary --preid next --pre-dist-tag next --yes",
     "build:docs": "cd docs && ./vercel-build.sh"
