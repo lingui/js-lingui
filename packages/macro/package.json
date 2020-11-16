@@ -1,6 +1,6 @@
 {
   "name": "@lingui/macro",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
   "main": "index.ts",
   "author": {
