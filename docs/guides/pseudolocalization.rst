@@ -37,7 +37,7 @@ PseudoLocale string have to be in :conf:`locales` config as well.
 Otherwise no folder and no pseudolocalization is going to be created.
 After running ``yarn extract`` verify that the folder has been created.
 The pseudolocalization is automatically created on ``yarn compile`` from messages 
-in order specified in :cli:`Preparing catalogs for production`. 
+in order specified in `in this cli section <../tutorials/cli.html#preparing-catalogs-for-production>`_.
 In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallbacklocale.
 
 Switch browser into specified pseudoLocale

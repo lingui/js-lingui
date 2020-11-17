@@ -6,7 +6,7 @@ Working with LinguiJS CLI
 *************************
 
 ``@lingui/cli`` provides the ``lingui`` command for extracting, merging and
-compiling message catalogs. Follow `setup instructions <../ref/cli>`_ to install required
+compiling message catalogs. Follow `setup instructions <../ref/cli.html>`_ to install required
 packages.
 
 .. note::
