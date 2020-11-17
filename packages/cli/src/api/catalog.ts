@@ -252,7 +252,21 @@ export class Catalog {
       console.error(`Message with key ${key} is missing in locale ${locale}`)
     }
 
-    const getTranslation = (locale) => catalogs[locale][key].translation
+    const getTranslation = (locale) => {
+      const configLocales = this.config.locales.join('", "')
+      if (catalogs[locale]) {
+        return catalogs[locale][key].translation
+      }
+
+      console.warn(`
+        Catalog "${locale}" isn't present in locales config parameter
+        Add "${locale}" to your lingui.config.js:
+        {
+          locales: ["${configLocales}", "${locale}"]
+        }
+      `)
+      return null
+    }
 
     const getMultipleFallbacks = (locale) => {
       const fL = fallbackLocales[locale]

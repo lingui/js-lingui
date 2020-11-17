@@ -173,7 +173,7 @@ describe("@lingui/conf", function () {
         ),
       })
       expect(config.fallbackLocales).toEqual({
-        "en-US": "en",
+        "en-US": ["en"],
         default: "en",
         "es-MX": "es"
       })
