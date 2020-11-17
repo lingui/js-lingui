@@ -6,7 +6,7 @@ Working with LinguiJS CLI
 *************************
 
 ``@lingui/cli`` provides the ``lingui`` command for extracting, merging and
-compiling message catalogs. Follow `setup instructions <../ref/cli>`_ to install required
+compiling message catalogs. Follow `setup instructions <../ref/cli.html>`_ to install required
 packages.
 
 .. note::
@@ -181,49 +181,6 @@ And compilation in strict mode no longer throws an error::
 If you use natural language for message IDs (that's the default),
 set :conf:`sourceLocale`. You shouldn't use this config if you're using custom
 IDs (e.g: ``Component.title``).
-
-Pseudolocalization
-==================
-
-There is built in support for `pseudolocalization <https://en.wikipedia.org/wiki/Pseudolocalization>`. 
-Pseudolocalization is a method for testing the internationalization aspects 
-of your application by replacing your strings with altered versions 
-and maintaining string readability. It also makes hard coded strings 
-and improperly concatenated strings easy to spot so that they can be properly localized.
-
-  Example:
-  Ţĥĩś ţēxţ ĩś ƥśēũďōĺōćàĺĩźēď
-
-To setup pseudolocalization add :conf:`pseudoLocale` in ``package.json``::
-
-   {
-      "lingui": {
-         "pseudoLocale": "pseudo-LOCALE"
-      }
-   }
-
-:conf:`pseudoLocale` option can be any string 
-examples: :conf:`en-PL`, :conf:`pseudo-LOCALE`, :conf:`pseudolocalization` or :conf:`en-UK`
-
-PseudoLocale string have to be in :conf:`locales` config as well. Otherwise no folder is going to be created.
-Pseudolocalized text is created on  ``yarn compile`` command.
-The pseudolocalization is automatically created on ``yarn extract`` from messages in order specified in :ref:`Preparing catalogs for production`.
-
-How to switch your browser into specified pseudoLocale
-------------------------------------------------------
-
-We can use browsers settings or extensions. Extensions allow to use any locale.
-Browsers are usually limited into valid language tags (BCP 47). 
-In that case, the locale for pseudolocalization has to be standard locale,
-which is not used in your application for example :conf:`zu_ZA` Zulu - SOUTH AFRICA
-
-Chrome:
-a) With extension (any string) - https://chrome.google.com/webstore/detail/quick-language-switcher/pmjbhfmaphnpbehdanbjphdcniaelfie
-b) Without extension - chrome://settings/?search=languages
-
-Firefox:
-a) With extension (any string) - https://addons.mozilla.org/en-GB/firefox/addon/quick-accept-language-switc/?src=search
-b) Without extension - about:preferences#general > Language
 
 Catalogs in VCS and CI
 ======================
