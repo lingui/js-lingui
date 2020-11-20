@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "I18n tools for javascript",
   "main": "index.js",
   "types": "cjs/index.d.ts",
