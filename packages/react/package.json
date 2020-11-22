@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "React components for translations",
   "main": "index.js",
   "types": "cjs/index.d.ts",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@lingui/core": "^3.2.2"
+    "@lingui/core": "^3.2.3"
   },
   "devDependencies": {
     "react-testing-library": "^8.0.1"
