@@ -6,4 +6,4 @@ export {
   I18nContext,
   withI18nProps,
 } from "./I18nProvider"
-export { Trans, TransProps } from "./Trans"
+export { Trans, TransProps, TransRenderProps } from "./Trans"
