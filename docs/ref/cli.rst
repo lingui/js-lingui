@@ -16,7 +16,8 @@ Install
    .. code-block:: shell
 
       npm install --save-dev @lingui/cli @babel/core
-      # yarn add --dev @lingui/cli @babel/core
+      # Or yarn
+      yarn add --dev @lingui/cli @babel/core
 
 2. Add following scripts to your ``package.json``:
 
@@ -43,7 +44,7 @@ Commands
 ``extract``
 -----------
 
-.. lingui-cli:: extract [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose]
+.. lingui-cli:: extract [files...] [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -51,6 +52,29 @@ each language using the following steps:
 1. Extract messages from all ``*.jsx?`` files inside :conf:`srcPathDirs`
 2. Merge them with existing catalogs in :conf:`localeDir` (if any)
 3. Write updated message catalogs to :conf:`localeDir`
+
+.. lingui-cli-option:: [files...]
+
+Filters source paths to only extract messages from passed files.
+For ex:
+
+   .. code-block:: shell
+
+      lingui extract src/components
+
+Will extract only messages from ``src/components/**/*`` files, you can also pass multiple paths.
+
+It's useful if you want to run extract command on files that are staged, using for example ``husky``, before commiting will extract messages from staged files:
+
+   .. code-block:: json
+
+      {
+         "husky": {
+            "hooks": {
+               "pre-commit": "lingui extract $(git diff --name-only --staged)"
+            }
+         }
+      }
 
 .. lingui-cli-option:: --clean
 
