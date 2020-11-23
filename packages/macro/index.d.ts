@@ -7,15 +7,16 @@ export function t(
   ...placeholders: any[]
 ): string
 
+export type UnderscoreDigit<T = string> = { [digit: string]: T }
 export type ChoiceOptions<T = string> = {
-  [digit: number]: T
   offset?: number
   zero?: T
   one?: T
   few?: T
   many?: T
   other?: T
-}
+} & UnderscoreDigit<T>
+
 export function plural(arg: number | string, options: ChoiceOptions): string
 export function selectOrdinal(
   arg: number | string,
