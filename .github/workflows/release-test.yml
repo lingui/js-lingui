@@ -1,9 +1,6 @@
 name: release-workflow-test
 
 on:
-  pull_request:
-    branches:
-      - '*'
   push:
     branches:
       - main

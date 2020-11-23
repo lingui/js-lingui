@@ -147,6 +147,24 @@ describe("Catalog", function () {
       expect(messages).toMatchSnapshot()
     })
 
+    it("should extract only files passed on options", function () {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect/componentA"), fixture("collect/componentB.js")],
+          exclude: [],
+        },
+        mockConfig()
+      )
+
+      const messages = catalog.collect({
+        ...defaultMakeOptions,
+        files: [fixture("collect/componentA")]
+      })
+      expect(messages).toMatchSnapshot()
+    })
+
     it("should handle errors", function () {
       const catalog = new Catalog(
         {

@@ -10,6 +10,7 @@ import { helpRun } from "./api/help"
 
 export type CliExtractOptions = {
   verbose: boolean
+  files?: string[]
   clean: boolean
   overwrite: boolean
   locale: string

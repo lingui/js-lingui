@@ -8,6 +8,7 @@ import { detect } from "./api/detect"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
+  files?: string[]
 }
 
 export default function command(

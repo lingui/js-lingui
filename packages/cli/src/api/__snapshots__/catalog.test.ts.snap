@@ -44,6 +44,41 @@ Object {
 }
 `;
 
+exports[`Catalog collect should extract only files passed on options 1`] = `
+Object {
+  Component A: Object {
+    extractedComments: Array [],
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        1,
+      ],
+    ],
+  },
+  Hello World: Object {
+    extractedComments: Array [
+      Comment A,
+      Comment A again,
+      Hello comment,
+    ],
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        2,
+      ],
+      Array [
+        collect/componentA/componentA.js,
+        3,
+      ],
+      Array [
+        collect/componentA/index.js,
+        1,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`Catalog collect should handle errors 1`] = `Object {}`;
 
 exports[`Catalog make should collect and write catalogs 1`] = `

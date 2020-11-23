@@ -141,7 +141,14 @@ export class Catalog {
     }
 
     try {
-      this.sourcePaths.forEach((filename) =>
+      let paths = this.sourcePaths
+      if (options.files) {
+        options.files = options.files.map(p => normalize(p, false))
+        const regex = new RegExp(options.files.join("|"), "i")
+        paths = paths.filter((path: string) => regex.test(path))
+      }
+
+      paths.forEach((filename) =>
         extract(filename, tmpDir, {
           verbose: options.verbose,
           babelOptions: this.config.extractBabelOptions,

@@ -10,17 +10,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@lingui/core": "^3.1.0",
-    "@lingui/react": "^3.1.0",
+    "@lingui/core": "^3.2.3",
+    "@lingui/react": "^3.2.3",
     "classnames": "^2.2.6",
     "next": "10.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "@lingui/cli": "^3.1.0",
-    "@lingui/loader": "^3.1.0",
-    "@lingui/macro": "^3.1.0",
+    "@lingui/cli": "^3.2.3",
+    "@lingui/loader": "^3.2.3",
+    "@lingui/macro": "^3.2.3",
     "@types/react": "^16.9.56",
     "babel-plugin-macros": "^2.8.0",
     "typescript": "^4.0.5"
