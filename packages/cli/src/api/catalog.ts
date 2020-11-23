@@ -144,7 +144,7 @@ export class Catalog {
       let paths = this.sourcePaths
       if (options.files) {
         options.files = options.files.map(p => normalize(p, false))
-        const regex = new RegExp(options.files.join("|"), "gi")
+        const regex = new RegExp(options.files.join("|"), "i")
         paths = paths.filter((path: string) => regex.test(path))
       }
 
