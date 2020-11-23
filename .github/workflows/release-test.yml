@@ -1,9 +1,6 @@
 name: release-workflow-test
 
 on:
-  pull_request:
-    branches:
-      - '*'
   push:
     branches:
       - main
@@ -44,6 +41,7 @@ jobs:
 
       - name: Publish with Verdaccio
         run: |
+          git checkout ${{ github.head_ref }}
           npm i -g {verdaccio,verdaccio-auth-memory,verdaccio-memory}
           mkdir -p $HOME/.config/verdaccio
           cp --verbose .github/verdaccio/config.yaml $HOME/.config/verdaccio/config.yaml
