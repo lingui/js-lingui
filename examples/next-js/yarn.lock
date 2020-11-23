@@ -1107,28 +1107,28 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lingui/babel-plugin-extract-messages@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.1.0.tgz#6c24e3082ef205bc0b1b056c112f1b52a3b7cc81"
-  integrity sha512-8wDae+HxpGrN/gsT+fLo+cTkzlE1V9hwMHLmjQ6uA26emyPtXQrJnltHi+gbDYFf/JJgvmVpo6HvqWvn9Kvo9Q==
+"@lingui/babel-plugin-extract-messages@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.2.3.tgz#59f861bb02edb7eb4d29d1d283a3351f98b4e4f4"
+  integrity sha512-F1N6cwjxSxKClUT4yfRnRtJ6lkUckrDx73RSbVL7OgrefQzZS9/RjnufULPV0kU9p1XDKfaBI1YHR4zQvdR+5A==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.1.0"
+    "@lingui/conf" "^3.2.3"
     mkdirp "^1.0.4"
 
-"@lingui/cli@3.1.0", "@lingui/cli@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.1.0.tgz#bf541403f2d05dd02d79d42568a4b80c4a57ed75"
-  integrity sha512-/zYl7N+uiAUGL1spWqyOuCdBK6sE7YGQVL93n7VAE+lKlLrrjbu0mEGT8DpzBixFqt2JrY1H9M5cpJ4uMAGt/A==
+"@lingui/cli@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.2.3.tgz#40b83512edb468fe3b61da00c3f8885d9946c104"
+  integrity sha512-fsbiKrO8CO5dWy3hDQ6a8w0/m82Elv3UZ+T/LPyLT0spSxEVsZbJgySmomy2u/tYEkOEhXipkvoGR8mueaF8rA==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/parser" "^7.11.5"
     "@babel/plugin-syntax-jsx" "^7.10.4"
     "@babel/runtime" "^7.11.2"
     "@babel/types" "^7.11.5"
-    "@lingui/babel-plugin-extract-messages" "3.1.0"
-    "@lingui/conf" "3.1.0"
+    "@lingui/babel-plugin-extract-messages" "^3.2.3"
+    "@lingui/conf" "^3.2.3"
     babel-plugin-macros "^2.8.0"
     bcp-47 "^1.0.7"
     chalk "^4.1.0"
@@ -1150,52 +1150,52 @@
     pseudolocale "^1.1.0"
     ramda "^0.27.1"
 
-"@lingui/conf@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.1.0.tgz#953b71ceef9cf0a07091892a927b16b59577d42a"
-  integrity sha512-DhBGeOC4qY0tjVwTdwLr59YjqcRPfA7+Ehj346cJZXkfLylCb4TLKIhnGJbDF7lReNWDltECJCHxvPfotre6Vw==
+"@lingui/conf@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.2.3.tgz#ab3ac70eef8f2f219ce85d8b8516ecc128af477a"
+  integrity sha512-9Zfq/Z0vH9BucaXVbeIIoWDb7RsnqBizdHn9+PUzQx5AiudzBeKrW8gF0IGxFwugFoS5ho8qVLovYoDS2JSDYA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     chalk "^4.1.0"
     cosmiconfig "^7.0.0"
     jest-validate "^26.5.2"
 
-"@lingui/core@3.1.0", "@lingui/core@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.1.0.tgz#c8e185cee881ccc935ab9c2d363d620c006901f7"
-  integrity sha512-dKUcX2Swm8bjed6qIRYQ9xUv6Yq3kxzfKm+jtdLQCO3hlfq/w6Zt16EsAgeJZ92081ZhlJLNGy/dELEczajUBw==
+"@lingui/core@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.2.3.tgz#2eeba173d3a3a1cbe9f9de4ed57380d2dc45ecff"
+  integrity sha512-TiWk6LGjZ9sNVi7itiJDWUIB1Uyr8WKR/8M6RhQVTRnL+Yh3mElsVPjIRPH1he4ClkwaH6G5eDOfWiB67Csgbw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
-"@lingui/loader@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.1.0.tgz#9a9124cd9e5b71c2361e5e446522b72ad8cde5bb"
-  integrity sha512-dUnLykFdLruV/5hjQREcLdoNA3aInddhLEp5fiAIGElxlfVPj77YZZzEJBBUJ/v7v+48AyPOOPmbcbhHfb1BsQ==
+"@lingui/loader@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.2.3.tgz#13468bc294da4d4f88d00e7bec3ebe2ef83b8d59"
+  integrity sha512-ylyvPeWjomCXZIZC8SZ0VAuhR62vt+jghYdkB0QQbxzgMkwZLTkaA1zGW7im0mjrI0Hwa4PgXCivS7K3krwxSw==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/cli" "3.1.0"
-    "@lingui/conf" "3.1.0"
+    "@lingui/cli" "^3.2.3"
+    "@lingui/conf" "^3.2.3"
     loader-utils "^2.0.0"
     ramda "^0.27.1"
 
-"@lingui/macro@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.1.0.tgz#ae98371964cf716f96b67b7207c9d00f4471e0f2"
-  integrity sha512-yE8FGLV0175wAh9nSNOFjtyYITHsA98IRFyMn/OqLbDDummdvahXQrQPtO8SQ/ecVJdh7LrZGmsYawCFVQ2XQg==
+"@lingui/macro@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.2.3.tgz#d054f9f6008b068a134d7bb3bfe87b3573c5d556"
+  integrity sha512-XcGUD8qQe8b351qGA/AyX+WKQWJu3T/r8wlXsttKoeFd7OXIitAw53L+OLc6xauM5xUssdaWo6BtOJnLw034gA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "3.1.0"
+    "@lingui/conf" "^3.2.3"
     ramda "^0.27.1"
 
-"@lingui/react@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.1.0.tgz#ff650b03c3a29cb2576941032b916a63d3b2b2c2"
-  integrity sha512-a3eYTcV8V5fhF0k/BxAT2DQNHlY2UPRvZqeA3OkQvkREptExVeNzo3gfS0bdyOGvJIpILFFBIVtxUhvHSU+dmQ==
+"@lingui/react@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.2.3.tgz#8cf78a217d4a2314ab38c68521a6dd544f87b258"
+  integrity sha512-oPqy7LhJddBDvgDvfKikZh8sFP4uG1/NaDhIkHXVCwf+ONxuAwsDPvW47e/K5hQ60UX2LqGbbB7LuAFK5Klr1Q==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/core" "3.1.0"
+    "@lingui/core" "^3.2.3"
 
 "@next/env@10.0.1":
   version "10.0.1"
