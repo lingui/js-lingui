@@ -152,7 +152,7 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: "locales/{locale}",
-          include: [fixture("collect/componentA")],
+          include: [fixture("collect/componentA"), fixture("collect/componentB.js")],
           exclude: [],
         },
         mockConfig()
