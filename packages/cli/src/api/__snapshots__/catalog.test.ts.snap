@@ -59,6 +59,7 @@ Object {
     extractedComments: Array [
       Comment A,
       Comment A again,
+      Hello comment,
     ],
     origin: Array [
       Array [
@@ -68,6 +69,10 @@ Object {
       Array [
         collect/componentA/componentA.js,
         3,
+      ],
+      Array [
+        collect/componentA/index.js,
+        1,
       ],
     ],
   },
