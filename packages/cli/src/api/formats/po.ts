@@ -62,6 +62,9 @@ const deserialize: (item: Object) => Object = R.map(
 )
 
 type POItem = InstanceType<typeof PO.Item>
+type PoFormatter = {
+  parse: (raw: string) => Object
+}
 
 const validateItems = R.forEach<POItem>((item) => {
   if (R.length(getTranslations(item)) > 1) {
@@ -74,7 +77,7 @@ const validateItems = R.forEach<POItem>((item) => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-const po: CatalogFormatter = {
+const po: CatalogFormatter & PoFormatter = {
   catalogExtension: ".po",
 
   write(filename, catalog, options) {
@@ -99,7 +102,6 @@ const po: CatalogFormatter = {
     return this.parse(raw)
   },
 
-  // @ts-ignore
   parse(raw) {
     const po = PO.parse(raw)
     validateItems(po.items)
