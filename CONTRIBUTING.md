@@ -75,17 +75,27 @@ local build of packages in examples. You can do the same in your project:
    docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
    ```
 
-2. Publish local build of packages to registry. Run release script with `--dev` flag:
+> Make sure that your verdaccio user is the same that appears in verdacio-release.js script.
+2. Publish local build of packages to registry. Run local release script:
 
    ```sh
-   yarn release --dev
+   node ./scripts/verdaccio-release.js
    ```
 
-3. Inside your project, run `yarn install @lingui/package@next` to install pre-release
-   of packages.
+3. If you enter inside http://0.0.0.0:4873 (verdaccio instance), you will see your packages published, so you're ready to install them.
 
-4. After you make some changes, you need to run `yarn release --dev` and then
-   `yalc upgrade` inside your project.
+4. Inside your project, run:
+
+```sh
+   # Install a small package to update all lingui packages
+   npm i -g update-by-scope
+   # Point to your local registry
+   npm config set registry http://0.0.0.0:4873/
+   # Run update-by-scope will update all @lingui packages
+   update-by-scope @lingui
+```
+
+4. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
 
 ### Finalize changes
 
