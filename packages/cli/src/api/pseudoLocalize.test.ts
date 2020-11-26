@@ -20,30 +20,55 @@ describe("PseudoLocalization", () => {
     )
   })
 
-  it("should pseudlocalize plurals with HTML tags", () => {
-    expect(
-      pseudoLocalize(
-        "{messagesCount, plural, zero {There's # <span>message</span>} other {There're # messages}"
+  describe("Plurals", () => {
+    it("with value", () => {
+      expect(
+        pseudoLocalize("{value, plural, one {# book} other {# books}}")
+      ).toEqual("{value, plural, one {# ƀōōķ} other {# ƀōōķś}}")
+    })
+
+    it("with variable placeholder", () => {
+      expect(
+        pseudoLocalize(
+          "{count, plural, one {{countString} book} other {{countString} books}}"
+        )
+      ).toEqual(
+        "{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}"
       )
-    ).toEqual(
-      "{messagesCount, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
-    )
+    })
+
+    it("with offset", () => {
+      expect(
+        pseudoLocalize(
+          "{count, plural, offset:1 zero {There're no messages} other {There're # messages in your inbox}}"
+        )
+      ).toEqual(
+        "{count, plural, offset:1 zero {Ţĥēŕē'ŕē ńō mēśśàĝēś} other {Ţĥēŕē'ŕē # mēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
+      )
+    })
+
+    it("with HTML tags", () => {
+      expect(
+        pseudoLocalize(
+          "{count, plural, zero {There's # <span>message</span>} other {There're # messages}"
+        )
+      ).toEqual(
+        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
+      )
+    })
+
+    it("with exact number", () => {
+      expect(
+        pseudoLocalize(
+          "{count, plural, =0 {There's # <span>message</span>} other {There're # messages}"
+        )
+      ).toEqual(
+        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
+      )
+    })
   })
 
-  it("should pseudolocalize plurals", () => {
-    expect(
-      pseudoLocalize("{value, plural, one {# book} other {# books}}")
-    ).toEqual("{value, plural, one {# ƀōōķ} other {# ƀōōķś}}")
-    expect(
-      pseudoLocalize(
-        "{count, plural, one {{countString} book} other {{countString} books}}"
-      )
-    ).toEqual(
-      "{count, plural, one {{countString} ƀōōķ} other {{countString} ƀōōķś}}"
-    )
-  })
-
-  it("shouldn't pseudolocalize variables", () => {
+  it("should not pseudolocalize variables", () => {
     expect(pseudoLocalize("replace {count}")).toEqual("ŕēƥĺàćē {count}")
     expect(pseudoLocalize("replace { count }")).toEqual("ŕēƥĺàćē { count }")
   })
