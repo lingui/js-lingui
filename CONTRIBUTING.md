@@ -76,6 +76,7 @@ local build of packages in examples. You can do the same in your project:
    ```
 
 > Make sure that your verdaccio user is the same that appears in verdacio-release.js script.
+
 2. Publish local build of packages to registry. Run local release script:
 
    ```sh
@@ -95,7 +96,13 @@ local build of packages in examples. You can do the same in your project:
    update-by-scope @lingui
 ```
 
-4. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
+5. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
+
+6. When finished testing, restore default registry
+
+```sh
+   npm config set registry https://registry.npmjs.org/
+```
 
 ### Finalize changes
 
