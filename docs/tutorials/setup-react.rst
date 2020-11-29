@@ -63,8 +63,10 @@ Install
 
       {
          "locales": ["en", "cs"],
-         "localeDir": "src/locales/",
-         "srcPathDirs": ["src/"],
+         "catalogs": [{
+            "path": "src/locales/{locale}/messages",
+            "include": ["src"]
+         }],
          "format": "po"
       }
 
