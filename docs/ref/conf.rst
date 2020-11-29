@@ -416,6 +416,20 @@ You may use a different named export:
 
 .. config:: sourceLocale
 
+In some advanced cases you may also need to change the module from which
+`Trans` is imported. To do that, pass an object to `runtimeConfigModule`:
+
+.. code-block:: jsx
+
+   // If you import `i18n` object from custom module like this:
+   import { Trans, i18n } from "./custom-config"
+
+   // ... then add following line to Lingui configuration:
+   // "runtimeConfigModule": {
+   //   i18n: ["./custom-config", "i18n"],
+   //   Trans: ["./custom-config", "Trans"]
+   // }
+
 sourceLocale
 ------------
 
