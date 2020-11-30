@@ -8,6 +8,7 @@ import { COMMENT, ID, MESSAGE, EXTRACT_MARK } from "./constants"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
+const removeExtraScapedLiterals = /(?:\\(.))/
 
 function normalizeWhitespace(text) {
   return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
@@ -269,7 +270,7 @@ export default class MacroJs {
 
           return {
             type: "text",
-            value,
+            value: this.clearBackslashes(value),
           }
         }),
         expressions: R.map((exp: babelTypes.Expression) =>
@@ -279,7 +280,6 @@ export default class MacroJs {
         ),
       }),
       (exp) => zip(exp.quasis, exp.expressions),
-      // @ts-ignore
       R.flatten,
       R.filter(Boolean)
     )
@@ -354,6 +354,13 @@ export default class MacroJs {
     } else {
       return this._expressionIndex()
     }
+  }
+
+  /**
+   * We clean '//\` ' to just '`'
+   */
+  clearBackslashes(value: string) {
+    return value.replace(removeExtraScapedLiterals, "`")
   }
 
   /**
