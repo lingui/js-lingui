@@ -24,8 +24,8 @@ const getSymbolSource = (name: string) => {
   }
 }
 
-const [i18nImportModule, i18nImportName = `i18n`] = getSymbolSource(`i18n`)
-const [TransImportModule, TransImportName = `Trans`] = getSymbolSource(`Trans`)
+const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
+const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
 function macro({ references, state, babel }) {
   const jsxNodes = []
