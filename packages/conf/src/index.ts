@@ -27,6 +27,8 @@ type DefaultLocaleObject = {
 }
 export type FallbackLocales = LocaleObject | DefaultLocaleObject | false
 
+type ModuleSource = [string, string?];
+
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
@@ -39,7 +41,7 @@ export type LinguiConfig = {
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
-  runtimeConfigModule: [string, string?]
+  runtimeConfigModule: ModuleSource | {[symbolName: string]: ModuleSource},
   sourceLocale: string
 }
 

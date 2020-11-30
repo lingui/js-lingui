@@ -5,7 +5,27 @@ import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
 
 const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
-const [i18nImportModule, i18nImportName = "i18n"] = config.runtimeConfigModule
+
+const getSymbolSource = (name: string) => {
+  if (Array.isArray(config.runtimeConfigModule)) {
+    if (name === "i18n") {
+      return config.runtimeConfigModule
+    } else {
+      return ["@lingui/react", name]
+    }
+  } else {
+    if (
+      Object.prototype.hasOwnProperty.call(config.runtimeConfigModule, name)
+    ) {
+      return config.runtimeConfigModule[name]
+    } else {
+      return ["@lingui/react", name]
+    }
+  }
+}
+
+const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
+const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
 function macro({ references, state, babel }) {
   const jsxNodes = []
@@ -47,7 +67,7 @@ function macro({ references, state, babel }) {
   }
 
   if (jsxNodes.length) {
-    addImport(babel, state, "@lingui/react", "Trans")
+    addImport(babel, state, TransImportModule, TransImportName)
   }
 
   if (process.env.LINGUI_EXTRACT === "1") {
@@ -61,7 +81,8 @@ function addImport(babel, state, module, importName) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
-    (importNode) =>t.isImportDeclaration(importNode) &&
+    (importNode) =>
+      t.isImportDeclaration(importNode) &&
       importNode.source.value === module &&
       // https://github.com/lingui/js-lingui/issues/777
       importNode.importKind !== "type"
