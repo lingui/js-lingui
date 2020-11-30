@@ -7,6 +7,7 @@ import { zip, makeCounter } from "./utils"
 import { ID, COMMENT, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
+const removeExtraScapedLiterals = /(?:\\(.))/
 const jsx2icuExactChoice = (value) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
@@ -233,7 +234,7 @@ export default class MacroJSX {
               const value = text.value.raw
               if (value === "") return null
 
-              return this.tokenizeText(value)
+              return this.tokenizeText(this.clearBackslashes(value))
             }),
             expressions: R.map((exp: babelTypes.Expression) =>
               this.types.isCallExpression(exp)
@@ -343,6 +344,13 @@ export default class MacroJSX {
 
   expressionToArgument = (exp) => {
     return this.types.isIdentifier(exp) ? exp.name : this.expressionIndex()
+  }
+
+  /**
+   * We clean '//\` ' to just '`'
+   */
+  clearBackslashes(value: string) {
+    return value.replace(removeExtraScapedLiterals, "`")
   }
 
   /**

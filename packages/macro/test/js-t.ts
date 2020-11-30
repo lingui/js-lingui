@@ -27,6 +27,32 @@ export default [
     `,
   },
   {
+    name: "Variables with scaped template literals are correctly formatted",
+    input: `
+        import { t } from '@lingui/macro';
+        t\`Variable \\\`\${name}\\\`\`;
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        /*i18n*/
+        i18n._("Variable \`{name}\`", {
+          name: name
+        })
+    `,
+  },
+  {
+    name: "Variables with scaped double quotes are correctly formatted",
+    input: `
+        import { t } from '@lingui/macro';
+        t\`Variable \"name\" \`;
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        /*i18n*/
+        i18n._("Variable \\"name\\"")
+    `,
+  },
+  {
     name: "Variables should be deduplicated",
     input: `
         import { t } from '@lingui/macro';
