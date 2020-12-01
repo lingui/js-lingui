@@ -46,6 +46,9 @@ const ICU_PLURAL_REGEX = /^{.*, plural, .*}$/
 const ICU_SELECT_REGEX = /^{.*, select(Ordinal)?, .*}$/
 const LINE_ENDINGS = /\n|\r\n/g
 
+// Prefix that is used to identitify context information used by this module in PO's "extracted comments".
+const CTX_PREFIX = "js-lingui:"
+
 const serialize = (items: CatalogType, options) =>
   R.compose(
     R.values,
@@ -99,7 +102,7 @@ const serialize = (items: CatalogType, options) =>
           }
 
           ctx.sort()
-          item.msgctxt = ctx.toString()
+          item.extractedComments.push(CTX_PREFIX + ctx.toString())
 
           // If there is a translated value, parse that instead of the original message to prevent overriding localized
           // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
@@ -140,7 +143,10 @@ const serialize = (items: CatalogType, options) =>
       }
 
       item.comments = message.comments || []
-      item.extractedComments = message.comment ? [message.comment] : []
+      if (message.comment != null) {
+        // Developer comments should come first beacuse they are human readable and thus more important.
+        item.extractedComments.unshift(message.comment)
+      }
       item.references = message.origin ? message.origin.map(joinOrigin) : []
       // @ts-ignore: Figure out how to set this flag
       item.obsolete = message.obsolete
@@ -208,7 +214,16 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
       return
     }
 
-    const ctx = new URLSearchParams(item.msgctxt)
+    const contextComment = item.extractedComments
+      .find((comment) => comment.startsWith(CTX_PREFIX))
+      ?.substr(CTX_PREFIX.length)
+    const ctx = new URLSearchParams(contextComment)
+
+    if (contextComment != null) {
+      item.extractedComments = item.extractedComments.filter(
+        (comment) => !comment.startsWith(CTX_PREFIX)
+      )
+    }
 
     // If an original ICU was stored, use that as `msgid` to match the catalog that was originally exported.
     const storedICU = ctx.get("icu")

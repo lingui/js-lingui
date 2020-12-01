@@ -195,6 +195,8 @@ describe("po-gettext format", () => {
           "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
         translation:
           "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
+        comment:
+          "This is a comment by the developers about how the content must be localized.",
       },
       "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}": {
         translation:

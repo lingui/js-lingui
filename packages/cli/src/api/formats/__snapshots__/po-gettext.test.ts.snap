@@ -10,31 +10,32 @@ msgstr ""
 "X-Generator: @lingui/cli\\n"
 "Language: en\\n"
 
-msgctxt "pluralize_on=count"
+#. js-lingui:pluralize_on=count
 msgid "message_with_id_and_octothorpe"
 msgid_plural "message_with_id_and_octothorpe_plural"
 msgstr[0] "Singular"
 msgstr[1] "Number is #"
 
-msgctxt "pluralize_on=someCount"
+#. This is a comment by the developers about how the content must be localized.
+#. js-lingui:pluralize_on=someCount
 msgid "message_with_id"
 msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case with id"
 msgstr[1] "Case number {someCount} with id"
 
-msgctxt "icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount"
+#. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
 msgid "Singular case"
 msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"
 msgstr[1] "Case number {anotherCount}"
 
-msgctxt "pluralize_on=count"
+#. js-lingui:pluralize_on=count
 msgid "message_with_id_but_without_translation"
 msgid_plural "message_with_id_but_without_translation_plural"
 msgstr[0] ""
 msgstr[1] ""
 
-msgctxt "icu=%7Bcount%2C+plural%2C+one+%7BSingular+automatic+id+no+translation%7D+other+%7BPlural+%7Bcount%7D+automatic+id+no+translation%7D%7D&pluralize_on=count"
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular+automatic+id+no+translation%7D+other+%7BPlural+%7Bcount%7D+automatic+id+no+translation%7D%7D&pluralize_on=count
 msgid "Singular automatic id no translation"
 msgid_plural "Plural {count} automatic id no translation"
 msgstr[0] ""
@@ -53,7 +54,7 @@ Object {
     translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
   },
   message_with_id_but_without_translation: Object {
-    comment: undefined,
+    comment: Comment made by the developers.,
     comments: Array [],
     flags: Array [],
     obsolete: false,
