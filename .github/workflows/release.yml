@@ -58,14 +58,22 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Prepare Lingui-Bot git account
-        uses: oleksiyrudenko/gha-git-credentials@v1
+        uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           name: 'Lingui Bot'
           email: 'linguibot@gmail.com'
           actor: 'lingui-bot'
           token: '${{ secrets.GH_TOKEN }}'
 
-      - name: Release packages
-        run: |
-          yarn version:${{github.event.inputs.npmTag}}
-          yarn release:${{github.event.inputs.npmTag}}
+      - name: Versioning packages
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+        run: yarn version:${{github.event.inputs.npmTag}}
+
+      - name: Packaging packages with newer version
+        run: yarn release:build
+
+      - name: Publishing packages
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+        run: yarn release:${{github.event.inputs.npmTag}}

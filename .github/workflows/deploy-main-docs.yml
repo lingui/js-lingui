@@ -19,6 +19,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -36,4 +41,4 @@ jobs:
         run: |
           cd docs/
           ./vercel-build.sh
-          npx vercel --public  --prod --token ${{secrets.NOW_TOKEN}} --name lingui-docs _build/html
+          npx vercel --public --yes --prod --token ${{secrets.NOW_TOKEN}} --name lingui-docs _build/html

@@ -32,7 +32,7 @@ export function withI18n(
   o?: object
 ): <P extends withI18nProps>(
   Component: ComponentType<P>
-) => React.ComponentType<P> {
+) => React.ComponentType<Omit<P, 'i18n'>> {
   return <P extends withI18nProps>(
     WrappedComponent: ComponentType<P>
   ): ComponentType<P> => {

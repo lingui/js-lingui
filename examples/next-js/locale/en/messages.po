@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: pages/index.tsx:38
+#: pages/index.tsx:36
 msgid "Checkout LinguiJS examples and usecases."
 msgstr "Checkout LinguiJS examples and usecases."
 
-#: pages/index.tsx:23
+#: pages/index.tsx:21
 msgid "Documentation →"
 msgstr "Documentation →"
 
-#: lingui-example/components/Layout.tsx:10
+#: lingui-example/components/Layout.tsx:11
 msgid "Example project using LinguiJS"
 msgstr "Example project using LinguiJS"
 
@@ -29,15 +29,15 @@ msgstr "Example project using LinguiJS"
 msgid "Examples"
 msgstr "Examples"
 
-#: pages/index.tsx:35
+#: pages/index.tsx:33
 msgid "Examples →"
 msgstr "Examples →"
 
-#: pages/index.tsx:26
+#: pages/index.tsx:24
 msgid "Find in-depth information about LinguiJS features and API."
 msgstr "Find in-depth information about LinguiJS features and API."
 
-#: pages/index.tsx:14
+#: pages/index.tsx:13
 msgid "Get started by editing <0>locale/en/messages.po</0>"
 msgstr "Get started by editing <0>locale/en/messages.po</0>"
 
@@ -45,7 +45,7 @@ msgstr "Get started by editing <0>locale/en/messages.po</0>"
 msgid "Plurals"
 msgstr "Plurals"
 
-#: lingui-example/components/Layout.tsx:24
+#: lingui-example/components/Layout.tsx:23
 msgid "Powered by <0/>"
 msgstr "Powered by <0/>"
 

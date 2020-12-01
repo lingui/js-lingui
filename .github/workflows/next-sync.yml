@@ -20,7 +20,7 @@ jobs:
           node-version: 14
 
       - name: Prepare Lingui-Bot git account
-        uses: oleksiyrudenko/gha-git-credentials@v1
+        uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           name: 'Lingui Bot'
           email: 'linguibot@gmail.com'

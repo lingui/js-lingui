@@ -100,6 +100,7 @@ Documentation contents
    Optimized components <guides/optimized-components>
    How plurals work <guides/plurals>
    Lingui within monorepo <guides/monorepo>
+   Pseudolocalization <guides/pseudolocalization>
 
 .. toctree::
    :maxdepth: 1

@@ -20,7 +20,7 @@ describe("pofile format", function () {
         en: mockFs.directory(),
       },
     })
-    mockDate.set("2018-08-27T10:00Z")
+    mockDate.set(new Date(2018,7,27,10,0,0).toUTCString())
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog: CatalogType = {
@@ -40,7 +40,7 @@ describe("pofile format", function () {
       },
       withDescription: {
         translation: "Message with description",
-        description: "Description is comment from developers to translators",
+        extractedComments: ["Description is comment from developers to translators"],
       },
       withComments: {
         comments: ["Translator comment", "This one might come from developer"],
@@ -170,7 +170,9 @@ describe("pofile format", function () {
     format.write(filename, catalog, { origins: true, locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
-    expect(actual).toEqual(pofile)
+    // on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
+    // we test that the content if the same inlined...
+    expect(actual.replace(/(\r\n|\n|\r)/gm,"")).toEqual(pofile.replace(/(\r\n|\n|\r)/gm,""))
   })
 
   it("should not include origins if origins option is false", function () {

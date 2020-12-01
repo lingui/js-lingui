@@ -17,7 +17,7 @@ const VISITED = Symbol("I18nVisited")
 function addMessage(
   path,
   messages,
-  { id, message: newDefault, origin, ...props }
+  { id, message: newDefault, origin, comment, ...props }
 ) {
   if (messages.has(id)) {
     const message = messages.get(id)
@@ -33,9 +33,13 @@ function addMessage(
       }
 
       ;[].push.apply(message.origin, origin)
+      if (comment) {
+        ;[].push.apply(message.extractedComments, [comment])
+      }
     }
   } else {
-    messages.set(id, { ...props, message: newDefault, origin })
+    const extractedComments = comment ? [comment] : []
+    messages.set(id, { ...props, message: newDefault, origin, extractedComments })
   }
 }
 
@@ -156,6 +160,12 @@ export default function ({ types: t }) {
           id: path.node.arguments[0].value,
         }
 
+        if (!props.id) {
+          console.warn("Missing message ID, skipping.")
+          console.warn(generate(path.node).code)
+          return
+        }
+
         const copyOptions = ["message", "comment"]
 
         if (t.isObjectExpression(path.node.arguments[2])) {
@@ -187,6 +197,12 @@ export default function ({ types: t }) {
 
         const props = {
           id: path.node.value,
+        }
+
+        if (!props.id) {
+          console.warn("Missing message ID, skipping.")
+          console.warn(generate(path.node).code)
+          return
         }
 
         collectMessage(path, file, props)

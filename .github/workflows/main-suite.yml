@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     env:
       CI: true
@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         node: ["10", "12", "14"]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -50,7 +51,7 @@ jobs:
         run: yarn test
 
       - name: Linting & Types
-        if: matrix.node == '14'
+        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
         run: yarn lint:all
 
       - name: Build packages
@@ -62,5 +63,5 @@ jobs:
         run: yarn test:integration
 
       - name: Check coverage
-        if: matrix.node == '14'
+        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1

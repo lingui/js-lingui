@@ -30,20 +30,14 @@ export function helpRun(command: string) {
       .find(([_, value]) => value.includes(`lingui ${command}`))
 
     if (res) {
-      return `${preCommand} ${res[0]}`
+      command = res[0]
     }
   }
 
-  return `${preCommand} ${command}`
+  return `${runCommand} ${command}`
 }
 
-let commands
-try {
-  commands = JSON.parse(process.env.npm_config_argv).original.slice(0, -1)
-} catch (e) {
-  commands = ["run"]
-}
 const isYarn =
   process.env.npm_config_user_agent &&
   process.env.npm_config_user_agent.includes("yarn")
-const preCommand = [isYarn ? "yarn" : "npm", ...commands].join(" ")
+const runCommand = isYarn ? "yarn": "npm run"

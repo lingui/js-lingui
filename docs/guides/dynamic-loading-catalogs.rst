@@ -24,7 +24,7 @@ to ECMAScript. We need to install ``@babel/plugin-@babel/plugin-syntax-dynamic-i
 
 .. code-block:: shell
 
-   yarn add --dev @babel/plugin-@babel/plugin-syntax-dynamic-import babel-plugin-dynamic-import-node @babel/plugin-proposal-class-properties
+   yarn add --dev @babel/plugin-syntax-dynamic-import babel-plugin-dynamic-import-node @babel/plugin-proposal-class-properties
 
 .. warning::
 
@@ -45,6 +45,7 @@ to ECMAScript. We need to install ``@babel/plugin-@babel/plugin-syntax-dynamic-i
          ]
        }
      }
+   }
 
 Final I18n loader helper
 ========================

@@ -27,6 +27,32 @@ export default [
     `,
   },
   {
+    name: "Variables with scaped template literals are correctly formatted",
+    input: `
+        import { t } from '@lingui/macro';
+        t\`Variable \\\`\${name}\\\`\`;
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        /*i18n*/
+        i18n._("Variable \`{name}\`", {
+          name: name
+        })
+    `,
+  },
+  {
+    name: "Variables with scaped double quotes are correctly formatted",
+    input: `
+        import { t } from '@lingui/macro';
+        t\`Variable \"name\" \`;
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        /*i18n*/
+        i18n._("Variable \\"name\\"")
+    `,
+  },
+  {
     name: "Variables should be deduplicated",
     input: `
         import { t } from '@lingui/macro';
@@ -83,25 +109,39 @@ export default [
       `,
   },
   {
+    name: "Support template strings in t macro message",
+    input: `
+        import { t } from '@lingui/macro'
+        const msg = t({ message: \`Hello \${name}\` })
+      `,
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
+      i18n._(/*i18n*/
+        {
+          id: "Hello {name}",
+          values: {
+            name: name,
+          },
+        });
+      `,
+  },
+  {
     name: "Support id and comment in t macro as callExpression",
     input: `
         import { t } from '@lingui/macro'
-        t({
-          id: 'msgId_2',
-          message: 'text',
-          comment: 'description for translators'
-        })
-        t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
+        const msg = t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
       `,
-    expected: `
-      import { i18n } from "@lingui/core"
-      /*i18n*/
-      i18n._({ id: "msgId_2", message: 'text', comment: 'description for translators' })
-      
-      /*i18n*/
-      i18n._({ id: "msgId", comment: 'description for translators', message: '{val, plural, one {...} other {...}}', values: {
-        val: val,
-      } })
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
+      i18n._(/*i18n*/
+        {
+          id: "msgId",
+          comment: "description for translators",
+          message: "{val, plural, one {...} other {...}}",
+          values: {
+            val: val,
+          },
+        });
       `,
   },
   {

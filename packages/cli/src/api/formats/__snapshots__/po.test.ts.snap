@@ -3,9 +3,11 @@
 exports[`pofile format should correct badly used comments 1`] = `
 Object {
   withDescriptionAndComments: Object {
-    comment: Single description only,
     comments: Array [
       Translator comment,
+    ],
+    extractedComments: Array [
+      Single description only,
       Second description?,
     ],
     flags: Array [],
@@ -14,8 +16,9 @@ Object {
     translation: Second description joins translator comments,
   },
   withMultipleDescriptions: Object {
-    comment: First description,
-    comments: Array [
+    comments: Array [],
+    extractedComments: Array [
+      First description,
       Second comment,
       Third comment,
     ],
@@ -30,51 +33,53 @@ Object {
 exports[`pofile format should read catalog in pofile format 1`] = `
 Object {
   obsolete: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: true,
     origin: Array [],
     translation: Is marked as obsolete,
   },
   static: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Static message,
   },
   veryLongString: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
   withComments: Object {
-    comment: undefined,
     comments: Array [
       Translator comment,
       This one might come from developer,
     ],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Support translator comments separately,
   },
   withDescription: Object {
-    comment: Description is comment from developers to translators,
     comments: Array [],
+    extractedComments: Array [
+      Description is comment from developers to translators,
+    ],
     flags: Array [],
     obsolete: false,
     origin: Array [],
     translation: Message with description,
   },
   withFlags: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [
       fuzzy,
       otherFlag,
@@ -84,8 +89,8 @@ Object {
     translation: Keeps any flags that are defined,
   },
   withMultipleOrigins: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [
@@ -101,8 +106,8 @@ Object {
     translation: Message with multiple origin,
   },
   withOrigin: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [
@@ -119,8 +124,8 @@ Object {
 exports[`pofile format should throw away additional msgstr if present 1`] = `
 Object {
   withMultipleTranslation: Object {
-    comment: undefined,
     comments: Array [],
+    extractedComments: Array [],
     flags: Array [],
     obsolete: false,
     origin: Array [],
@@ -151,6 +156,7 @@ msgstr "Message with origin"
 msgid "withMultipleOrigins"
 msgstr "Message with multiple origin"
 
+#. Description is comment from developers to translators
 msgid "withDescription"
 msgstr "Message with description"
 

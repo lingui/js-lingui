@@ -3,6 +3,7 @@
 exports[`@lingui/babel-plugin-extract-messages should extract Plural messages from JSX files when there's no Trans tag (integration) 1`] = `
 Object {
   {count, plural, one {# book} other {# books}}: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         jsx-without-trans.js,
@@ -16,7 +17,9 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files (macros) 1`] = `
 Object {
   Description: Object {
-    comment: description,
+    extractedComments: Array [
+      description,
+    ],
     origin: Array [
       Array [
         js-with-macros.js,
@@ -25,6 +28,7 @@ Object {
     ],
   },
   ID: Object {
+    extractedComments: Array [],
     message: Message with id,
     origin: Array [
       Array [
@@ -33,7 +37,18 @@ Object {
       ],
     ],
   },
+  ID Some: Object {
+    extractedComments: Array [],
+    message: Message with id some,
+    origin: Array [
+      Array [
+        js-with-macros.js,
+        19,
+      ],
+    ],
+  },
   Message: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         js-with-macros.js,
@@ -46,6 +61,7 @@ Object {
     ],
   },
   Values {param}: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         js-with-macros.js,
@@ -59,7 +75,9 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files 1`] = `
 Object {
   Description: Object {
-    comment: description,
+    extractedComments: Array [
+      description,
+    ],
     origin: Array [
       Array [
         js-without-macros.js,
@@ -68,6 +86,7 @@ Object {
     ],
   },
   ID: Object {
+    extractedComments: Array [],
     message: Message with id,
     origin: Array [
       Array [
@@ -77,6 +96,7 @@ Object {
     ],
   },
   Message: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         js-without-macros.js,
@@ -85,6 +105,7 @@ Object {
     ],
   },
   Values {param}: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         js-without-macros.js,
@@ -98,6 +119,7 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JSX files (macros) 1`] = `
 Object {
   Hi, my name is {name}: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         jsx-with-macros.js,
@@ -106,6 +128,7 @@ Object {
     ],
   },
   Title: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         jsx-with-macros.js,
@@ -114,6 +137,7 @@ Object {
     ],
   },
   {count, plural, one {# book} other {# books}}: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         jsx-with-macros.js,
@@ -127,6 +151,7 @@ Object {
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JSX files 1`] = `
 Object {
   Hi, my name is <0>{name}</0>: Object {
+    extractedComments: Array [],
     origin: Array [
       Array [
         jsx-without-macros.js,
@@ -135,6 +160,7 @@ Object {
     ],
   },
   msg.default: Object {
+    extractedComments: Array [],
     message: Hello World,
     origin: Array [
       Array [
@@ -148,7 +174,9 @@ Object {
     ],
   },
   msg.hello: Object {
-    comment: Description,
+    extractedComments: Array [
+      Description,
+    ],
     origin: Array [
       Array [
         jsx-without-macros.js,

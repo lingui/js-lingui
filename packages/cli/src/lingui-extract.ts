@@ -10,6 +10,7 @@ import { helpRun } from "./api/help"
 
 export type CliExtractOptions = {
   verbose: boolean
+  files?: string[]
   clean: boolean
   overwrite: boolean
   locale: string
@@ -39,10 +40,6 @@ export default function command(
       ...options,
       orderBy: config.orderBy,
       projectType: detect(),
-      // const pseudoLocale = config.pseudoLocale
-      // if (pseudoLocale) {
-      //   catalog.addLocale(pseudoLocale)
-      // }
     })
 
     catalogStats[catalog.path] = catalog.readAll()

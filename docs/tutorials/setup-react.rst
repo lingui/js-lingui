@@ -62,8 +62,11 @@ Install
    .. code-block:: json
 
       {
-         "localeDir": "src/locales/",
-         "srcPathDirs": ["src/"],
+         "locales": ["en", "cs"],
+         "catalogs": [{
+            "path": "src/locales/{locale}/messages",
+            "include": ["src"]
+         }],
          "format": "po"
       }
 
@@ -76,24 +79,12 @@ Install
 
       {
          "scripts": {
-            "add-locale": "lingui add-locale",
             "extract": "lingui extract",
             "compile": "lingui compile",
          }
       }
 
-5. Run ``npm run add-locale`` (or ``yarn add-locale``) with
-   `locale codes <https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry>`_
-   you would like to use in your app:
-
-   .. code-block:: shell
-
-      npm run add-locale en es fr  # Add English, Spanish and French locale
-
-      # or using Yarn
-      yarn add-locale en es fr
-
-6. Check the installation by running ``npm run extract`` (or ``yarn extract``):
+5. Check the installation by running ``npm run extract`` (or ``yarn extract``):
 
    .. code-block:: shell
 
@@ -117,7 +108,6 @@ Install
       │ fr       │     0       │   0     │
       └──────────┴─────────────┴─────────┘
 
-      (use "lingui add-locale <language>" to add more locales)
       (use "lingui extract" to update catalogs with new messages)
       (use "lingui compile" to compile catalogs for production)
 

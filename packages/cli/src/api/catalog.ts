@@ -25,11 +25,10 @@ type MessageOrigin = [string, number];
 export type ExtractedMessageType = {
   message?: string
   origin?: MessageOrigin[]
-  comment?: string
+  extractedComments?: string[]
   comments?: string[]
   obsolete?: boolean
   flags?: string[]
-  description?: string
 }
 
 export type MessageType = ExtractedMessageType & {
@@ -142,7 +141,14 @@ export class Catalog {
     }
 
     try {
-      this.sourcePaths.forEach((filename) =>
+      let paths = this.sourcePaths
+      if (options.files) {
+        options.files = options.files.map(p => normalize(p, false))
+        const regex = new RegExp(options.files.join("|"), "i")
+        paths = paths.filter((path: string) => regex.test(path))
+      }
+
+      paths.forEach((filename) =>
         extract(filename, tmpDir, {
           verbose: options.verbose,
           babelOptions: this.config.extractBabelOptions,
@@ -169,7 +175,7 @@ export class Catalog {
           .filter(Boolean)
           .reduce(
             (catalog, messages) =>
-              R.mergeWithKey(mergeOrigins, catalog, messages),
+              R.mergeWithKey(mergeOriginsAndExtractedComments, catalog, messages),
             {}
           )
       })(tmpDir)
@@ -253,7 +259,21 @@ export class Catalog {
       console.error(`Message with key ${key} is missing in locale ${locale}`)
     }
 
-    const getTranslation = (locale) => catalogs[locale][key].translation
+    const getTranslation = (locale) => {
+      const configLocales = this.config.locales.join('", "')
+      if (catalogs[locale]) {
+        return catalogs[locale][key].translation
+      }
+
+      console.warn(`
+        Catalog "${locale}" isn't present in locales config parameter
+        Add "${locale}" to your lingui.config.js:
+        {
+          locales: ["${configLocales}", "${locale}"]
+        }
+      `)
+      return null
+    }
 
     const getMultipleFallbacks = (locale) => {
       const fL = fallbackLocales[locale]
@@ -359,11 +379,22 @@ export class Catalog {
 
   get sourcePaths() {
     const includeGlobs = this.include.map(
-      (includePath) =>
-        includePath.endsWith(PATHSEP)
-          ? [includePath, "**", "*.*"].join(PATHSEP) // directory
-          : includePath // file
+      (includePath) => {
+        const isDir = fs.existsSync(includePath) && fs.lstatSync(includePath).isDirectory()
+        /**
+         * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
+         * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
+         */
+        return isDir ? normalize(
+          path.resolve(
+            process.cwd(),
+            includePath === "/" ? "" : includePath,
+            "**/*.*"
+          )
+        ) : includePath
+      }
     )
+
     const patterns =
       includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
     return glob.sync(patterns, { ignore: this.exclude, mark: true })
@@ -541,10 +572,10 @@ export function getCatalogForMerge(config: LinguiConfig) {
 }
 
 /**
- * Merge origins for messages found in different places. All other attributes
+ * Merge origins and extractedComments for messages found in different places. All other attributes
  * should be the same (raise an error if defaults are different).
  */
-function mergeOrigins(msgId, prev, next) {
+function mergeOriginsAndExtractedComments(msgId, prev, next) {
   if (prev.defaults !== next.defaults) {
     throw new Error(
       `Encountered different defaults for message ${chalk.yellow(msgId)}` +
@@ -555,6 +586,7 @@ function mergeOrigins(msgId, prev, next) {
 
   return {
     ...next,
+    extractedComments: R.concat(prev.extractedComments, next.extractedComments),
     origin: R.concat(prev.origin, next.origin),
   }
 }
@@ -581,10 +613,7 @@ export function normalizeRelativePath(sourcePath: string): string {
   }
 
   const isDir = fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
-  return (
-    normalize(path.relative(process.cwd(), path.resolve(sourcePath))) +
-    (isDir ? PATHSEP : "")
-  )
+  return normalize(path.relative(process.cwd(), sourcePath), false) + (isDir ? "/" : "")
 }
 
 export const cleanObsolete = R.filter(

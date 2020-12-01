@@ -15,3 +15,8 @@ const withId = defineMessage({
 })
 
 const withValues = t`Values ${param}`
+
+const withTId = t({
+  id: "ID Some",
+  message: "Message with id some"
+})

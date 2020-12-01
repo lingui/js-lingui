@@ -12,25 +12,48 @@ Here is a working example with `react-testing-library`_, using the `wrapper-prop
 .. code-block:: jsx
 
    // index.js
-   import React from 'react'
-   import { render } from '@testing-library/react'
-   import { i18n } from '@lingui/core'
-   import { I18nProvider } from '@lingui/react'
-   import { messages } from '../your-path-to/en/messages.js'
-   import Inbox from './Inbox'
+    import React from 'react'
+    import { getByText, render, act } from '@testing-library/react'
+    import { i18n } from '@lingui/core'
+    import { I18nProvider } from '@lingui/react'
+    import { en, cs } from 'make-plural/plurals'
 
-   i18n.load('en', messages)
-   i18n.activate('en')
-   const TestingProvider = ({ children }) => (
-     <I18nProvider i18n={i18n}>
-       {children}
-     </I18nProvider>
-   )
+    import { messages } from './locales/en/messages'
+    import { messages as csMessages } from './locales/cs/messages'
+    import App from './App'
 
-   test('your example-test', () => {
-     render(<Inbox />, { wrapper: TestingProvider });
-     expect(screen.getByRole('button')).toBeInTheDocument()
-   });
+    i18n.load({
+      en: messages,
+      cs: csMessages
+    })
+    i18n.loadLocaleData({
+      en: { plurals: en },
+      cs: { plurals: cs }
+    });
+
+    const TestingProvider = ({ children }: any) => (
+      <I18nProvider i18n={i18n}>
+        {children}
+      </I18nProvider>
+    )
+
+    test('Content should be translated correctly in English' , () => {
+      act(() => {
+        i18n.activate('en')
+      })
+      const { getByTestId, container } = render(<App />, { wrapper: TestingProvider });
+      expect(getByTestId('h3-title')).toBeInTheDocument()
+      expect(getByText(container, "Language switcher example:")).toBeDefined()
+    });
+
+    test('Content should be translated correctly in Czech', () => {
+      act(() => {
+        i18n.activate('cs')
+      })
+      const { getByTestId, container } = render(<App />, { wrapper: TestingProvider });
+      expect(getByTestId('h3-title')).toBeInTheDocument()
+      expect(getByText(container, "Příklad přepínače jazyků:")).toBeDefined()
+    });
 
 You could define a custom renderer to re-use this TestingProvider, see `react testing library - Custom Render`_
 
