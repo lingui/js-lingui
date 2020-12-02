@@ -7,6 +7,7 @@ import * as R from "ramda"
 
 import { CatalogType, MessageType } from "../catalog"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
+import { CatalogFormatter } from "."
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItemType = InstanceType<typeof PO.Item>
@@ -44,7 +45,7 @@ function stringifyICUCase(icuCase) {
 
 const ICU_PLURAL_REGEX = /^{.*, plural, .*}$/
 const ICU_SELECT_REGEX = /^{.*, select(Ordinal)?, .*}$/
-const LINE_ENDINGS = /\n|\r\n/g
+const LINE_ENDINGS = /\r?\n/g
 
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
 const CTX_PREFIX = "js-lingui:"
@@ -55,6 +56,21 @@ const serialize = (items: CatalogType, options) =>
     R.mapObjIndexed((message: MessageType, key) => {
       const item = new PO.Item()
       item.msgid = key
+      item.comments = message.comments || []
+
+      // The extractedComments array may be modified in this method, so create a new array with the message's elements.
+      // Destructuring `undefined` is forbidden, so fallback to `[]` if the message has no extracted comments.
+      item.extractedComments = [...(message.extractedComments ?? [])]
+
+      if (options.origins) {
+        item.references = message.origin ? message.origin.map(joinOrigin) : []
+      }
+
+      // @ts-ignore: Figure out how to set this flag
+      item.obsolete = message.obsolete
+      item.flags = message.flags
+        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
+        : {}
 
       // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
       // message can be found in `message.message` or in the item's `key` itself.
@@ -142,17 +158,6 @@ const serialize = (items: CatalogType, options) =>
         item.msgstr = [message.translation]
       }
 
-      item.comments = message.comments || []
-      if (message.comment != null) {
-        // Developer comments should come first beacuse they are human readable and thus more important.
-        item.extractedComments.unshift(message.comment)
-      }
-      item.references = message.origin ? message.origin.map(joinOrigin) : []
-      // @ts-ignore: Figure out how to set this flag
-      item.obsolete = message.obsolete
-      item.flags = message.flags
-        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-        : {}
       return item
     })
   )(items)
@@ -175,12 +180,8 @@ const getTranslationCount = R.compose(R.length, getTranslations)
 const deserialize: (Object) => Object = R.map(
   R.applySpec({
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
-    comment: R.compose(R.head, R.defaultTo([]), getExtractedComments),
-    comments: (item) =>
-      R.concat(
-        getTranslatorComments(item) as string,
-        R.tail(getExtractedComments(item))
-      ),
+    extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
+    comments: R.compose(R.defaultTo([]), getTranslatorComments),
     obsolete: isObsolete,
     origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
     flags: getFlags,
@@ -208,7 +209,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
     // msgid_plural must be set, but its actual value is not important.
     if (!item.msgid_plural) {
       console.warn(
-        `Multiple translations for item with key "%s" but missing 'msgid_plural' is not supported and it will be ignored.`,
+        `Multiple translations for item with key "%s" but missing 'msgid_plural' in catalog "${lang}". This is not supported and the plural cases will be ignored.`,
         messageKey
       )
       return
@@ -263,7 +264,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
     let pluralizeOn = ctx.get("pluralize_on")
     if (!pluralizeOn) {
       console.warn(
-        `Unable to determine plural placeholder name for item with key "%s" (should be stored in "msgctxt"), assuming "count".`,
+        `Unable to determine plural placeholder name for item with key "%s" in language "${lang}" (should be stored in a comment starting with "#. ${CTX_PREFIX}"), assuming "count".`,
         messageKey
       )
       pluralizeOn = "count"
@@ -275,7 +276,15 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
 
 const indexItems = R.indexBy(getMessageKey)
 
-export default {
+type PoFormatter = {
+  parse: (raw: string) => Object
+  serialize: (
+    catalog: CatalogType,
+    options: Record<string, any>
+  ) => POItemType[]
+}
+
+const poGettext: CatalogFormatter & PoFormatter = {
   catalogExtension: ".po",
 
   write(filename, catalog: CatalogType, options) {
@@ -295,6 +304,7 @@ export default {
     writeFileIfChanged(filename, po.toString())
   },
 
+  // Mainly exported for easier testing
   serialize,
 
   read(filename) {
@@ -308,3 +318,5 @@ export default {
     return deserialize(indexItems(po.items))
   },
 }
+
+export default poGettext

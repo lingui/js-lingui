@@ -45,7 +45,9 @@ describe("po-gettext format", () => {
       },
       withDescription: {
         translation: "Message with description",
-        description: "Description is comment from developers to translators",
+        extractedComments: [
+          "Description is comment from developers to translators",
+        ],
       },
       withComments: {
         comments: ["Translator comment", "This one might come from developer"],
@@ -72,7 +74,11 @@ describe("po-gettext format", () => {
       },
     }
 
-    format.write(filename, catalog, { locale: "en", ...dateHeaders })
+    format.write(filename, catalog, {
+      origins: true,
+      locale: "en",
+      ...dateHeaders,
+    })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(pofile).toMatchSnapshot()
@@ -119,7 +125,7 @@ describe("po-gettext format", () => {
 
   it("should throw away additional msgstr if present", () => {
     const po = PO.parse(`
-      msgid "withMultipleTranslation"
+      msgid "withMultipleTranslations"
       msgstr[0] "This is just fine"
       msgstr[1] "Throw away that one"
     `)
@@ -138,7 +144,7 @@ describe("po-gettext format", () => {
       const actual = format.parse(file)
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Multiple translations"),
-        "withMultipleTranslation"
+        "withMultipleTranslations"
       )
       mockFs.restore()
       expect(actual).toMatchSnapshot()
@@ -168,7 +174,7 @@ describe("po-gettext format", () => {
     })
 
     const mock_filename = path.join("locale", "en", "messages.po")
-    format.write(mock_filename, catalog, { locale: "en" })
+    format.write(mock_filename, catalog, { origins: true, locale: "en" })
     const actual = fs.readFileSync(mock_filename).toString()
 
     mockFs.restore()
@@ -192,11 +198,13 @@ describe("po-gettext format", () => {
       },
       message_with_id: {
         message:
-          "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
+          "{someCount, plural, one {Singular case with id\
+          and linebreak} other {Case number {someCount} with id}}",
         translation:
           "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
-        comment:
+        extractedComments: [
           "This is a comment by the developers about how the content must be localized.",
+        ],
       },
       "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}": {
         translation:
