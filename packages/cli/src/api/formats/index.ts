@@ -1,17 +1,18 @@
-import { CatalogFormatOptions, CatalogFormat } from "@lingui/conf"
+import { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
 
 import { CatalogType } from "../catalog"
-
+import csv from "./csv"
 import lingui from "./lingui"
 import minimal from "./minimal"
 import po from "./po"
-import csv from "./csv"
+import poGettext from "./po-gettext"
 
 const formats: Record<CatalogFormat, CatalogFormatter> = {
   lingui,
   minimal,
   po,
   csv,
+  "po-gettext": poGettext,
 }
 
 type CatalogFormatOptionsInternal = {

@@ -1,0 +1,260 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`po-gettext format should convert ICU plural messages to gettext plurals 1`] = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"Mime-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#. js-lingui:pluralize_on=count
+msgid "message_with_id_and_octothorpe"
+msgid_plural "message_with_id_and_octothorpe_plural"
+msgstr[0] "Singular"
+msgstr[1] "Number is #"
+
+#. This is a comment by the developers about how the content must be localized.
+#. js-lingui:pluralize_on=someCount
+msgid "message_with_id"
+msgid_plural "message_with_id_plural"
+msgstr[0] "Singular case with id"
+msgstr[1] "Case number {someCount} with id"
+
+#. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+msgid "Singular case"
+msgid_plural "Case number {anotherCount}"
+msgstr[0] "Singular case"
+msgstr[1] "Case number {anotherCount}"
+
+#. js-lingui:pluralize_on=count
+msgid "message_with_id_but_without_translation"
+msgid_plural "message_with_id_but_without_translation_plural"
+msgstr[0] ""
+msgstr[1] ""
+
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular+automatic+id+no+translation%7D+other+%7BPlural+%7Bcount%7D+automatic+id+no+translation%7D%7D&pluralize_on=count
+msgid "Singular automatic id no translation"
+msgid_plural "Plural {count} automatic id no translation"
+msgstr[0] ""
+msgstr[1] ""
+
+`;
+
+exports[`po-gettext format should convert gettext plurals to ICU plural messages 1`] = `
+Object {
+  message_with_id: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+  },
+  message_with_id_but_without_translation: Object {
+    comments: Array [],
+    extractedComments: Array [
+      Comment made by the developers.,
+    ],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: ,
+  },
+  {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  {count, plural, one {Singular} other {Plural}}: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: ,
+  },
+}
+`;
+
+exports[`po-gettext format should correct badly used comments 1`] = `
+Object {
+  withDescriptionAndComments: Object {
+    comments: Array [
+      Translator comment,
+    ],
+    extractedComments: Array [
+      Single description only,
+      Second description?,
+    ],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Second description joins translator comments,
+  },
+  withMultipleDescriptions: Object {
+    comments: Array [],
+    extractedComments: Array [
+      First description,
+      Second comment,
+      Third comment,
+    ],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Extra comments are separated from the first description line,
+  },
+}
+`;
+
+exports[`po-gettext format should read catalog in pofile format 1`] = `
+Object {
+  obsolete: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: true,
+    origin: Array [],
+    translation: Is marked as obsolete,
+  },
+  static: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Static message,
+  },
+  veryLongString: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
+  },
+  withComments: Object {
+    comments: Array [
+      Translator comment,
+      This one might come from developer,
+    ],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Support translator comments separately,
+  },
+  withDescription: Object {
+    comments: Array [],
+    extractedComments: Array [
+      Description is comment from developers to translators,
+    ],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: Message with description,
+  },
+  withFlags: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [
+      fuzzy,
+      otherFlag,
+    ],
+    obsolete: false,
+    origin: Array [],
+    translation: Keeps any flags that are defined,
+  },
+  withMultipleOrigins: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        src/App.js,
+        4,
+      ],
+      Array [
+        src/Component.js,
+        2,
+      ],
+    ],
+    translation: Message with multiple origin,
+  },
+  withOrigin: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        src/App.js,
+        4,
+      ],
+    ],
+    translation: Message with origin,
+  },
+}
+`;
+
+exports[`po-gettext format should throw away additional msgstr if present 1`] = `
+Object {
+  withMultipleTranslations: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: This is just fine,
+  },
+}
+`;
+
+exports[`po-gettext format should write catalog in pofile format 1`] = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"Mime-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+msgid "static"
+msgstr "Static message"
+
+#: src/App.js:4
+msgid "withOrigin"
+msgstr "Message with origin"
+
+#: src/App.js:4
+#: src/Component.js:2
+msgid "withMultipleOrigins"
+msgstr "Message with multiple origin"
+
+#. Description is comment from developers to translators
+msgid "withDescription"
+msgstr "Message with description"
+
+# Translator comment
+# This one might come from developer
+msgid "withComments"
+msgstr "Support translator comments separately"
+
+#~ msgid "obsolete"
+#~ msgstr "Obsolete message"
+
+#, fuzzy,otherFlag
+msgid "withFlags"
+msgstr "Keeps any flags that are defined"
+
+msgid "veryLongString"
+msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. \\"What's happened to me?\\" he thought. It wasn't a dream. His room, a proper human"
+
+`;

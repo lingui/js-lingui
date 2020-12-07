@@ -36,6 +36,63 @@ The advantages of this format are:
 
 .. _gettext: https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html
 
+.. _po-gettext:
+
+PO File with gettext Plurals
+============================
+
+When using localization backends that don't understand the ICU plural syntax exported by the default `po` formatter,
+**po-gettext** can be used to read and write to PO files using gettext-native plurals.
+
+This is how the regular PO format exports plurals:
+
+.. code-block:: po
+
+   msgid "{count, plural, one {Message} other {Messages}}"
+   msgstr "{count, plural, one {Message} other {Messages}}"
+
+With `po-gettext`, plural messages are exported in the following way, depending on wheter an explicit ID is set:
+
+.. code-block:: po
+
+   # Message with custom ID "my_message" that is pluralized on property "someCount".
+   #
+   # Notice that 'msgid_plural' was generad by appending a '_plural' suffix.
+   #. js-lingui:pluralize_on=someCount
+   msgid "my_message"
+   msgid_plural "my_message_plural"
+   msgstr[0] "Singular case"
+   msgstr[1] "Case number {someCount}"
+
+   # Message without custom ID that is pluralized on property "anotherCount".
+   #
+   # Notice how 'msgid' and 'msgid_plural' were extracted from original message.
+   #
+   # To allow matching this PO item to the appropriate catalog entry when deserializing,
+   # the original ICU message is also stored in the generated comment.
+   #. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+   msgid "Singular case"
+   msgid_plural "Case number {anotherCount}"
+   msgstr[0] "Singular case"
+   msgstr[1] "Case number {anotherCount}"
+
+Note that this format comes with several caveats and should therefore only be used if using ICU plurals in PO files is
+not an option:
+
+  - Nested/multiple plurals in one message as shown in :jsmacro:`plural` are not supported as they cannot be expressed 
+    with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
+  
+  - :jsmacro:`select` and :jsmacro:`selectOrdinal` cannot be expressed with gettext plurals, but the original ICU format
+    is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected
+    behavior, include :code:`{ disableSelectWarning: true }` in the :conf:`formatOptions`.
+
+  - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used,
+    as gettext cannot have more than two plurals cases identifying an item (:code:`msgid` and :code:`msgid_plural`).
+
+  - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules
+    for these cases.
+
+
 JSON
 ====
 

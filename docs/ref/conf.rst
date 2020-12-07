@@ -295,6 +295,11 @@ Gettext PO file:
    msgid "MessageID"
    msgstr "Translated Message"
 
+po-gettext
+^^^^^^^^^^
+
+Uses PO files but with gettext-style plurals, see :ref:`po-gettext`.
+
 minimal
 ^^^^^^^
 
