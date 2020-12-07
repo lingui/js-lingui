@@ -179,7 +179,11 @@ describe("po-gettext format", () => {
 
     mockFs.restore()
 
-    expect(actual).toEqual(pofile)
+    // on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
+    // we test that the content if the same inlined...
+    expect(actual.replace(/(\r\n|\n|\r)/gm, "")).toEqual(
+      pofile.replace(/(\r\n|\n|\r)/gm, "")
+    )
   })
 
   it("should convert ICU plural messages to gettext plurals", function () {
