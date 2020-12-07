@@ -32,7 +32,8 @@ type ModuleSource = [string, string?];
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
-  extractBabelOptions: Object
+  extractBabelOptions: Record<string, unknown>
+  compilerBabelOptions: Record<string, unknown>
   fallbackLocales?: FallbackLocales
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
@@ -63,6 +64,7 @@ export const defaultConfig: LinguiConfig = {
     },
   ],
   compileNamespace: "cjs",
+  compilerBabelOptions: {},
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",

@@ -1,14 +1,14 @@
 import generate from "@babel/generator"
 import { compile, createCompiledCatalog } from "./compile"
 
-describe("compile", function () {
+describe("compile", () => {
   const getSource = (message) =>
     generate(compile(message) as any, {
       compact: true,
       minified: true,
     }).code
 
-  it("should optimize string only messages", function () {
+  it("should optimize string only messages", () => {
     expect(getSource("Hello World")).toEqual('"Hello World"')
   })
 
@@ -17,13 +17,13 @@ describe("compile", function () {
     expect(getSource("''")).toEqual('"\'"')
   })
 
-  it("should compile arguments", function () {
+  it("should compile arguments", () => {
     expect(getSource("{name}")).toEqual('[["name"]]')
 
     expect(getSource("B4 {name} A4")).toEqual('["B4 ",["name"]," A4"]')
   })
 
-  it("should compile arguments with formats", function () {
+  it("should compile arguments with formats", () => {
     expect(getSource("{name, number}")).toEqual('[["name","number"]]')
 
     expect(getSource("{name, number, percent}")).toEqual(
@@ -31,7 +31,7 @@ describe("compile", function () {
     )
   })
 
-  it("should compile plural", function () {
+  it("should compile plural", () => {
     expect(getSource("{name, plural, one {Book} other {Books}}")).toEqual(
       '[["name","plural",{one:"Book",other:"Books"}]]'
     )
@@ -53,7 +53,7 @@ describe("compile", function () {
     )
   })
 
-  it("should compile select", function () {
+  it("should compile select", () => {
     expect(getSource("{name, select, male {He} female {She}}")).toEqual(
       '[["name","select",{male:"He",female:"She"}]]'
     )
@@ -67,15 +67,15 @@ describe("compile", function () {
     )
   })
 
-  it("should report failed message on error", function () {
+  it("should report failed message on error", () => {
     expect(() =>
       getSource("{value, plural, one {Book} other {Books")
     ).toThrowErrorMatchingSnapshot()
   })
 })
 
-describe("createCompiledCatalog", function () {
-  describe("options.namespace", function () {
+describe("createCompiledCatalog", () => {
+  describe("options.namespace", () => {
     const getCompiledCatalog = (namespace) =>
       createCompiledCatalog(
         "fr",
@@ -85,24 +85,24 @@ describe("createCompiledCatalog", function () {
         }
       )
 
-    it("should compile with es", function () {
+    it("should compile with es", () => {
       expect(getCompiledCatalog("es")).toMatchSnapshot()
     })
 
-    it("should compile with window", function () {
+    it("should compile with window", () => {
       expect(getCompiledCatalog("window.test")).toMatchSnapshot()
     })
 
-    it("should compile with global", function () {
+    it("should compile with global", () => {
       expect(getCompiledCatalog("global.test")).toMatchSnapshot()
     })
 
-    it("should error with invalid value", function () {
+    it("should error with invalid value", () => {
       expect(() => getCompiledCatalog("global")).toThrowErrorMatchingSnapshot()
     })
   })
 
-  describe("options.strict", function () {
+  describe("options.strict", () => {
     const getCompiledCatalog = (strict) =>
       createCompiledCatalog(
         "cs",
@@ -115,16 +115,16 @@ describe("createCompiledCatalog", function () {
         }
       )
 
-    it("should return message key as a fallback translation", function () {
+    it("should return message key as a fallback translation", () => {
       expect(getCompiledCatalog(false)).toMatchSnapshot()
     })
 
-    it("should't return message key as a fallback in strict mode", function () {
+    it("should't return message key as a fallback in strict mode", () => {
       expect(getCompiledCatalog(true)).toMatchSnapshot()
     })
   })
 
-  describe("options.pseudoLocale", function () {
+  describe("options.pseudoLocale", () => {
     const getCompiledCatalog = (pseudoLocale) =>
       createCompiledCatalog(
         "ps",
@@ -136,12 +136,37 @@ describe("createCompiledCatalog", function () {
         }
       )
 
-    it("should return catalog with pseudolocalized messages", function () {
+    it("should return catalog with pseudolocalized messages", () => {
       expect(getCompiledCatalog("ps")).toMatchSnapshot()
     })
 
-    it("should return compiled catalog when pseudoLocale doesn't match current locale", function () {
+    it("should return compiled catalog when pseudoLocale doesn't match current locale", () => {
       expect(getCompiledCatalog("en")).toMatchSnapshot()
+    })
+  })
+
+  describe("options.compilerBabelOptions", () => {
+    const getCompiledCatalog = (opts = {}) =>
+      createCompiledCatalog(
+        "ru",
+        {
+          Hello: "Alohà",
+        },
+        opts
+      )
+
+    it("should return catalog with ASCII chars", () => {
+      expect(getCompiledCatalog()).toMatchSnapshot()
+    })
+
+    it("should return catalog without ASCII chars", () => {
+      expect(getCompiledCatalog({
+        compilerBabelOptions: { 
+          jsescOption: {
+            minimal: true,
+          }
+        }
+      })).toMatchSnapshot()
     })
   })
 })

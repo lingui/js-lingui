@@ -4,7 +4,7 @@ import * as R from "ramda"
 import program from "commander"
 import * as plurals from "make-plural"
 
-import { getConfig } from "@lingui/conf"
+import { getConfig, LinguiConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
@@ -16,7 +16,7 @@ const noMessages: (catalogs: Object[]) => boolean = R.pipe(
   R.all(R.equals<any>(true))
 )
 
-function command(config, options) {
+function command(config: LinguiConfig, options) {
   const catalogs = getCatalogs(config)
 
   if (noMessages(catalogs)) {
@@ -87,6 +87,7 @@ function command(config, options) {
           strict: false,
           namespace,
           pseudoLocale: config.pseudoLocale,
+          compilerBabelOptions: config.compilerBabelOptions,
         })
 
         const compiledPath = catalog.writeCompiled(

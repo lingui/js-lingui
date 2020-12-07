@@ -109,6 +109,7 @@ Object {
     },
   ],
   compileNamespace: cjs,
+  compilerBabelOptions: Object {},
   extractBabelOptions: Object {
     plugins: Array [],
     presets: Array [],
