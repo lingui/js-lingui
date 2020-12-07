@@ -202,7 +202,7 @@ const deserialize: (Object) => Object = R.map(
 const getPluralCases = (lang: string): string[] | undefined => {
   const gettextPluralsInfo = gettextPlurals[lang]
 
-  return gettextPluralsInfo?.examples.flatMap((pluralCase) =>
+  return gettextPluralsInfo?.examples.map((pluralCase) =>
     pluralsCldr(lang, pluralCase.sample)
   )
 }
