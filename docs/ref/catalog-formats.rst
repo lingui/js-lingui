@@ -58,7 +58,7 @@ With `po-gettext`, plural messages are exported in the following way, depending 
    # Message with custom ID "my_message" that is pluralized on property "someCount".
    #
    # Notice that 'msgid_plural' was generad by appending a '_plural' suffix.
-   msgctxt "pluralize_on=someCount"
+   #. js-lingui:pluralize_on=someCount
    msgid "my_message"
    msgid_plural "my_message_plural"
    msgstr[0] "Singular case"
@@ -69,8 +69,8 @@ With `po-gettext`, plural messages are exported in the following way, depending 
    # Notice how 'msgid' and 'msgid_plural' were extracted from original message.
    #
    # To allow matching this PO item to the appropriate catalog entry when deserializing,
-   # the original ICU message is also stored in msgctxt.
-   msgctxt "icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount"
+   # the original ICU message is also stored in the generated comment.
+   #. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
    msgid "Singular case"
    msgid_plural "Case number {anotherCount}"
    msgstr[0] "Singular case"
@@ -88,6 +88,9 @@ not an option:
 
   - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used,
     as gettext cannot have more than two plurals cases identifying an item (:code:`msgid` and :code:`msgid_plural`).
+
+  - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules
+    for these cases.
 
 
 JSON
