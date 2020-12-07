@@ -4,6 +4,7 @@ import ICUParser from "messageformat-parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 import * as R from "ramda"
+import gettextPlurals from "node-gettext/lib/plurals"
 
 import { CatalogType, MessageType } from "../catalog"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
@@ -188,14 +189,29 @@ const deserialize: (Object) => Object = R.map(
   })
 )
 
+/**
+ * Returns ICU case labels in the order that gettext lists localized messages, e.g. 0,1,2 => `["one", "two", "other"]`.
+ *
+ * Obtaining the ICU case labels for gettext-supported inputs (gettext doesn't support fractions, even though some
+ * languages have a separate case for fractional numbers) works by applying the CLDR selector to the example values
+ * listed in the node-gettext plurals module.
+ *
+ * This approach is heavily influenced by
+ * https://github.com/LLK/po2icu/blob/9eb97f81f72b2fee02b77f1424702e019647e9b9/lib/po2icu.js#L148.
+ */
+const getPluralCases = (lang: string): string[] | undefined => {
+  const gettextPluralsInfo = gettextPlurals[lang]
+
+  return gettextPluralsInfo?.examples.flatMap((pluralCase) =>
+    pluralsCldr(lang, pluralCase.sample)
+  )
+}
+
 const convertPluralsToICU = (items: POItemType[], lang?: string) => {
   // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
   // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
-  let pluralForms: string[] | null = []
-  if (lang) {
-    pluralForms = pluralsCldr.forms(lang)
-    // Plurals may be `null` if lang is not found. As long as no plural is used, don't report an error.
-  }
+  // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
+  let pluralForms = getPluralCases(lang)
 
   items.forEach((item) => {
     const translationCount = getTranslationCount(item)
@@ -237,7 +253,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
       return
     }
 
-    if (pluralForms === null) {
+    if (pluralForms == null) {
       console.warn(
         `Multiple translations for item with key "%s" in language "${lang}", but no plural cases were found. ` +
           `This prohibits the translation of .po plurals into ICU plurals. Pluralization will not work for this key.`,
@@ -249,7 +265,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
     const pluralCount = pluralForms.length
     if (translationCount > pluralCount) {
       console.warn(
-        `More translations provided for item with key "%s" (${translationCount}) in language "${lang}" than there are plural cases available (${pluralCount}). ` +
+        `More translations provided (${translationCount}) for item with key "%s" in language "${lang}" than there are plural cases available (${pluralCount}). ` +
           `This will result in not all translations getting picked up.`,
         messageKey
       )

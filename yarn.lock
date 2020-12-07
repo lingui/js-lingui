@@ -2728,6 +2728,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/plurals-cldr@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/plurals-cldr/-/plurals-cldr-1.0.1.tgz#3b165778d8310c9f456a4f627f49921337c49152"
+  integrity sha512-enSHTQeNTPmC3D4BOyAltzHSt7HraFXG5ONwWIsG8g6VUvJB9XiOEu56Y5LoNRj9ppq4mYqCmNfELPAJOsu21A==
+
 "@types/prettier@^2.0.0":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.2.tgz#5bb52ee68d0f8efa9cc0099920e56be6cc4e37f3"
@@ -8963,6 +8968,13 @@ node-fetch@^2.2.0, node-fetch@^2.5.0, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
+node-gettext@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/node-gettext/-/node-gettext-3.0.0.tgz#6b3a253309aa1e53164646c6c644fcddd0d45c58"
+  integrity sha512-/VRYibXmVoN6tnSAY2JWhNRhWYJ8Cd844jrZU/DwLVoI4vBI6ceYbd8i42sYZ9uOgDH3S7vslIKOWV/ZrT2YBA==
+  dependencies:
+    lodash.get "^4.4.2"
 
 node-gyp@^5.0.2:
   version "5.1.1"

@@ -277,6 +277,36 @@ describe("po-gettext format", () => {
     })
   })
 
+  it("should use correct ICU plural cases for languages having an additional plural case for fractions", () => {
+    // This tests the edge case described in https://github.com/lingui/js-lingui/pull/677#issuecomment-737152022
+    const po = `
+msgid ""
+msgstr ""
+"Language: cs\n"
+
+#. js-lingui:icu=%7B#%2C+plural%2C+one+%7Bday%7D+other+%7Bdays%7D%7D&pluralize_on=#
+msgid "# day"
+msgid_plural "# days"
+msgstr[0] "# den"
+msgstr[1] "# dny"
+msgstr[2] "# dní"
+`
+
+    const parsed = format.parse(po)
+
+    expect(parsed).toEqual({
+      "{#, plural, one {day} other {days}}": {
+        // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+        translation: "{#, plural, one {# den} few {# dny} other {# dní}}",
+        extractedComments: [],
+        comments: [],
+        obsolete: false,
+        origin: [],
+        flags: [],
+      },
+    })
+  })
+
   describe("when using 'select' format", () => {
     const catalog = {
       select_message: {

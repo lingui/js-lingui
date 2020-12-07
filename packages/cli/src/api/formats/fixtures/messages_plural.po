@@ -8,14 +8,12 @@ msgstr ""
 "Language: en\n"
 
 #. js-lingui:pluralize_on=someCount
-msgctxt "pluralize_on=someCount"
 msgid "message_with_id"
 msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case"
 msgstr[1] "Case number {someCount}"
 
 #. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
-msgctxt "icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount"
 msgid "Singular case"
 msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"
@@ -23,14 +21,12 @@ msgstr[1] "Case number {anotherCount}"
 
 #. Comment made by the developers.
 #. js-lingui:pluralize_on=count
-msgctxt "pluralize_on=count"
 msgid "message_with_id_but_without_translation"
 msgid_plural "message_with_id_but_without_translation_plural"
 msgstr[0] ""
 msgstr[1] ""
 
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular%7D+other+%7BPlural%7D%7D&pluralize_on=count
-msgctxt "icu=%7Bcount%2C+plural%2C+one+%7BSingular%7D+other+%7BPlural%7D%7D&pluralize_on=count"
 msgid "Singular"
 msgid_plural "Plural"
 msgstr[0] ""
