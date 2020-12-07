@@ -9,6 +9,7 @@ const OPTS = {
 async function main() {
   const spinner = ora()
 
+  await exec('yarn', OPTS)
   spinner.start("Linking create-react-app")
   await exec('npm i -g update-by-scope --registry https://registry.npmjs.org', OPTS)
   await exec('npm config set registry http://0.0.0.0:4873/', OPTS)
