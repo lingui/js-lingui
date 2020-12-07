@@ -40,6 +40,9 @@ function exec(cmd, options) {
       if (error === null) {
         resolve({ stdout, stderr })
       } else {
+        console.error(error)
+        console.error(stdout)
+        console.error(stderr)
         reject({ error, stdout, stderr })
         process.exit(1)
       }
