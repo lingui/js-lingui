@@ -18,7 +18,7 @@ async function main() {
 
   spinner.start("Running tests")
   try {
-    await exec('yarn test --watchAll=false', OPTS)
+    await exec('yarn test:ci', OPTS)
     spinner.succeed()
   } catch (error) {
     spinner.fail()
