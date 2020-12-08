@@ -108,6 +108,7 @@ Object {
       path: ./locale/{locale}/messages,
     },
   ],
+  catalogsMergePath: undefined,
   compileNamespace: cjs,
   compilerBabelOptions: Object {},
   extractBabelOptions: Object {
