@@ -20,6 +20,7 @@
     "start": "yarn extract && yarn compile && react-scripts start",
     "build": "yarn extract && yarn compile && react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "yarn extract && yarn compile && react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "extract": "lingui extract",
     "compile": "lingui compile"

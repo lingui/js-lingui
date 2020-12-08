@@ -20,6 +20,7 @@ Default config:
     }],
     "compileNamespace": "cjs",
     "extractBabelOptions": {},
+    "compilerBabelOptions": {},
     "fallbackLocales": {},
     "format": "po",
     "locales": [],
@@ -230,7 +231,37 @@ extracted. This is required when project doesn't use standard Babel config
      }
    }
 
-.. config:: fallbackLocales
+.. config:: extractBabelOptions
+
+compilerBabelOptions
+-------------------
+
+Default: ``{
+   "minified": true,
+   "jsescOption": {
+      "minimal": true
+   }
+}``
+
+
+Specify extra babel options used to generate files when messages are being
+compiled. We use internaly ``@babel/generator`` that accepts some configuration for generating code with/out ASCII characters.
+These are all the options available: https://github.com/mathiasbynens/jsesc
+
+.. code-block:: json
+
+   {
+     "compilerBabelOptions": {
+       "jsescOption": {
+         "minimal": false
+      }
+     }
+   }
+
+This example configuration will compile with scaped ASCII characters. https://github.com/mathiasbynens/jsesc#minimal
+
+.. config:: compilerBabelOptions
+
 
 fallbackLocales
 --------------

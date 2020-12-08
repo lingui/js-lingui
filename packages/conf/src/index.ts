@@ -32,12 +32,13 @@ type ModuleSource = [string, string?];
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
-  extractBabelOptions: Object
+  extractBabelOptions: Record<string, unknown>
+  compilerBabelOptions: Record<string, unknown>
   fallbackLocales?: FallbackLocales
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
-  catalogsMergePath?: string
+  catalogsMergePath: string
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
@@ -62,7 +63,9 @@ export const defaultConfig: LinguiConfig = {
       exclude: ["*/node_modules/*"],
     },
   ],
+  catalogsMergePath: "",
   compileNamespace: "cjs",
+  compilerBabelOptions: {},
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",

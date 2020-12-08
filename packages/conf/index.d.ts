@@ -23,14 +23,15 @@ export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
     compileNamespace: string;
-    extractBabelOptions: Object;
+    extractBabelOptions: Record<string, unknown>;
+    compilerBabelOptions: Record<string, unknown>;
     fallbackLocales: FallbackLocales;
     format: CatalogFormat;
     prevFormat: CatalogFormat;
     formatOptions: CatalogFormatOptions;
     localeDir: string;
     locales: string[];
-    catalogsMergePath?: string;
+    catalogsMergePath: string;
     orderBy: OrderBy;
     pseudoLocale: string;
     rootDir: string;
@@ -51,6 +52,7 @@ export declare const configValidation: {
             plugins: string[];
             presets: string[];
         };
+        compilerBabelOptions: Record<string, unknown>;
         catalogs: CatalogConfig[];
         compileNamespace: string;
         fallbackLocales: FallbackLocales;
