@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/lingui/js-lingui/compare/v3.2.3...v3.3.0) (2020-12-08)
+
+
+### Bug Fixes
+
+* macro underscore type ([#884](https://github.com/lingui/js-lingui/issues/884)) ([5cade19](https://github.com/lingui/js-lingui/commit/5cade1924dd038ba73ff85cdcf7ce80d31ddbd0f))
+* scaped literals double backslash formatting ([#898](https://github.com/lingui/js-lingui/issues/898)) ([fc8c628](https://github.com/lingui/js-lingui/commit/fc8c628e05522167c5ad76e2cb8c6161be95b8b4))
+* select prop types ([#890](https://github.com/lingui/js-lingui/issues/890)) ([672fb1f](https://github.com/lingui/js-lingui/commit/672fb1f5731fe0abeb2fa7ea0de78827e547873c))
+
+
+### Features
+
+* add support for runtimeConfigModule w/ Trans ([#895](https://github.com/lingui/js-lingui/issues/895)) ([23b06b5](https://github.com/lingui/js-lingui/commit/23b06b5dfbf0db306cdfab83801898caceb5a8b0))
+
+
+
+
+
 ## [3.2.3](https://github.com/lingui/js-lingui/compare/v3.2.2...v3.2.3) (2020-11-22)
 
 **Note:** Version bump only for package @lingui/macro
