@@ -2,9 +2,9 @@
 
 exports[`compile should report failed message on error 1`] = `Can't parse message. Please check correct syntax: "{value, plural, one {Book} other {Books"`;
 
-exports[`createCompiledCatalog options.compilerBabelOptions should return catalog with ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Aloh\\xE0"}};`;
+exports[`createCompiledCatalog options.compilerBabelOptions by default should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Alohà"}};`;
 
-exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Alohà"}};`;
+exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Aloh\\xE0"}};`;
 
 exports[`createCompiledCatalog options.namespace should compile with es 1`] = `/*eslint-disable*/export const messages={};`;
 
@@ -14,7 +14,7 @@ exports[`createCompiledCatalog options.namespace should compile with window 1`] 
 
 exports[`createCompiledCatalog options.namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
 
-exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"\\xC0\\u0125\\u014D\\u0134"}};`;
+exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"ÀĥōĴ"}};`;
 
 exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
 

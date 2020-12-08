@@ -44,6 +44,9 @@ export function createCompiledCatalog(
     "/*eslint-disable*/" +
     generate(ast, {
       minified: true,
+      jsescOption: {
+        minimal: true,
+      },
       ...compilerBabelOptions,
     }).code
   )

@@ -236,11 +236,16 @@ extracted. This is required when project doesn't use standard Babel config
 compilerBabelOptions
 -------------------
 
-Default: ``{}``
+Default: ``{
+   "minified": true,
+   "jsescOption": {
+      "minimal": true
+   }
+}``
 
 
 Specify extra babel options used to generate files when messages are being
-compiled. We use internaly ``@babel/generator`` that accepts some configuration like generating code without ASCII characters.
+compiled. We use internaly ``@babel/generator`` that accepts some configuration for generating code with/out ASCII characters.
 These are all the options available: https://github.com/mathiasbynens/jsesc
 
 .. code-block:: json
@@ -248,12 +253,12 @@ These are all the options available: https://github.com/mathiasbynens/jsesc
    {
      "compilerBabelOptions": {
        "jsescOption": {
-         "minimal": true
+         "minimal": false
       }
      }
    }
 
-This example configuration will compile without scaped characters. https://github.com/mathiasbynens/jsesc#minimal
+This example configuration will compile with scaped ASCII characters. https://github.com/mathiasbynens/jsesc#minimal
 
 .. config:: compilerBabelOptions
 

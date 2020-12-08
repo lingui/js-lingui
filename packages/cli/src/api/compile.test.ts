@@ -155,7 +155,7 @@ describe("createCompiledCatalog", () => {
         opts
       )
 
-    it("should return catalog with ASCII chars", () => {
+    it("by default should return catalog without ASCII chars", () => {
       expect(getCompiledCatalog()).toMatchSnapshot()
     })
 
@@ -163,7 +163,7 @@ describe("createCompiledCatalog", () => {
       expect(getCompiledCatalog({
         compilerBabelOptions: { 
           jsescOption: {
-            minimal: true,
+            minimal: false,
           }
         }
       })).toMatchSnapshot()

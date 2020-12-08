@@ -31,7 +31,7 @@ export declare type LinguiConfig = {
     formatOptions: CatalogFormatOptions;
     localeDir: string;
     locales: string[];
-    catalogsMergePath?: string;
+    catalogsMergePath: string;
     orderBy: OrderBy;
     pseudoLocale: string;
     rootDir: string;
