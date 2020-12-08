@@ -63,6 +63,7 @@ export const defaultConfig: LinguiConfig = {
       exclude: ["*/node_modules/*"],
     },
   ],
+  catalogsMergePath: undefined,
   compileNamespace: "cjs",
   compilerBabelOptions: {},
   extractBabelOptions: { plugins: [], presets: [] },
