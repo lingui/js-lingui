@@ -19,6 +19,9 @@ function addMessage(
   messages,
   { id, message: newDefault, origin, comment, ...props }
 ) {
+  // prevent from adding undefined msgid
+  if (id === undefined) return
+
   if (messages.has(id)) {
     const message = messages.get(id)
 
@@ -27,15 +30,15 @@ function addMessage(
       throw path.buildCodeFrameError(
         "Different defaults for the same message ID."
       )
-    } else {
-      if (newDefault) {
-        message.message = newDefault
-      }
+    }
 
-      ;[].push.apply(message.origin, origin)
-      if (comment) {
-        ;[].push.apply(message.extractedComments, [comment])
-      }
+    if (newDefault) {
+      message.message = newDefault
+    }
+
+    ;[].push.apply(message.origin, origin)
+    if (comment) {
+      ;[].push.apply(message.extractedComments, [comment])
     }
   } else {
     const extractedComments = comment ? [comment] : []

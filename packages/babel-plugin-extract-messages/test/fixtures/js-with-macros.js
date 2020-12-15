@@ -20,3 +20,9 @@ const withTId = t({
   id: "ID Some",
   message: "Message with id some"
 })
+
+const id = 'message id'
+
+const withUnknownId = t({
+  id: id
+})
