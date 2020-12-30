@@ -236,12 +236,16 @@ extracted. This is required when project doesn't use standard Babel config
 compilerBabelOptions
 -------------------
 
-Default: ``{
-   "minified": true,
-   "jsescOption": {
-      "minimal": true
-   }
-}``
+Default:
+
+.. code-block:: json
+
+  {
+     "minified": true,
+     "jsescOption": {
+        "minimal": true
+     }
+  }
 
 
 Specify extra babel options used to generate files when messages are being
