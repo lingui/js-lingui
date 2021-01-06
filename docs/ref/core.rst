@@ -225,30 +225,23 @@ Reference
          // const i18n = setupI18n()
          // i18n.activate("en", ["en-UK", "ar-AS"])
 
-   .. js:attribute:: options.catalogs
+   .. js:attribute:: options.messages
 
-      Initial :js:data:`Catalogs`.
+      Initial :js:data:`Messages`.
 
       .. code-block:: jsx
 
          import { setupI18n } from "@lingui/core"
 
-         const catalogs =  {
-            en: {
-               "Hello": "Hello",
-               "Good bye": "Good bye"
-            },
-            cs: {
-               "Hello": "Ahoj",
-               "Good bye": "Nashledanou"
-            }
+         const messages: {
+           en: require("./locale/en/messages").messages, // your path to compiled messages here
+           cs: require("./locale/cs/messages").messages  // your path to compiled messages here
          }
-
-         const i18n = setupI18n({ catalogs })
+         const i18n = setupI18n({ messages })
 
          // This is a shortcut for:
          // const i18n = setupI18n()
-         // i18n.load(catalogs)
+         // i18n.load(messages)
 
    .. js:attribute:: options.missing
 
