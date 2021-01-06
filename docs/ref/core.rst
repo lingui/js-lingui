@@ -273,8 +273,7 @@ Reference
 
 .. js:data:: Catalogs
 
-   Type of ``catalogs`` parameters in :js:func:`setupI18n <options.catalogs>`
-   constructor and :js:meth:`I18n.load` method:
+   Type of ``catalogs`` parameters in :js:meth:`I18n.load` method:
 
    .. code-block:: js
 
