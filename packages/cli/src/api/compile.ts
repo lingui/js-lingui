@@ -1,5 +1,5 @@
 import * as t from "@babel/types"
-import generate from "@babel/generator"
+import generate, { GeneratorOptions } from "@babel/generator"
 import { parse } from "messageformat-parser"
 import * as R from "ramda"
 
@@ -15,7 +15,7 @@ export type CreateCompileCatalogOptions = {
   strict?: boolean
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
-  compilerBabelOptions?: Record<string, unknown>
+  compilerBabelOptions?: GeneratorOptions
 }
 
 export function createCompiledCatalog(

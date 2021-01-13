@@ -1,3 +1,5 @@
+import type { GeneratorOptions } from "@babel/core";
+
 export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext";
 export type CatalogFormatOptions = {
     origins?: boolean;
@@ -24,7 +26,7 @@ export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
     compileNamespace: string;
     extractBabelOptions: Record<string, unknown>;
-    compilerBabelOptions: Record<string, unknown>;
+    compilerBabelOptions: GeneratorOptions;
     fallbackLocales: FallbackLocales;
     format: CatalogFormat;
     prevFormat: CatalogFormat;
@@ -52,7 +54,7 @@ export declare const configValidation: {
             plugins: string[];
             presets: string[];
         };
-        compilerBabelOptions: Record<string, unknown>;
+        compilerBabelOptions: GeneratorOptions;
         catalogs: CatalogConfig[];
         compileNamespace: string;
         fallbackLocales: FallbackLocales;
