@@ -89,6 +89,10 @@ describe("createCompiledCatalog", () => {
       expect(getCompiledCatalog("es")).toMatchSnapshot()
     })
 
+    it("should compile with ts", () => {
+      expect(getCompiledCatalog("ts")).toMatchSnapshot()
+    })
+
     it("should compile with window", () => {
       expect(getCompiledCatalog("window.test")).toMatchSnapshot()
     })

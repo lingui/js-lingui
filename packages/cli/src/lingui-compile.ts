@@ -156,7 +156,7 @@ if (require.main === module) {
   const results = command(config, {
     verbose: program.verbose || false,
     allowEmpty: !program.strict,
-    typescript: program.typescript || false,
+    typescript: program.typescript || config.compileNamespace === "ts" || false,
     namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
   })
 

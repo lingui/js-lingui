@@ -969,6 +969,25 @@ describe("writeCompiled", function () {
     )
   })
 
+  it("saves TS modules to .ts files", function () {
+    const localeDir = copyFixture(fixture("locales", "initial/"))
+    const catalog = new Catalog(
+      {
+        name: "messages",
+        path: path.join(localeDir, "{locale}", "messages"),
+        include: [],
+        exclude: [],
+      },
+      mockConfig()
+    )
+
+    const namespace = "ts"
+    const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+    expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
+      /\.ts$/
+    )
+  })
+
   it("saves anything else than ES modules to .js files", function () {
     const localeDir = copyFixture(fixture("locales", "initial/"))
     const catalog = new Catalog(

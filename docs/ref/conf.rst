@@ -199,6 +199,16 @@ Use ES6 named export:
 
    /* eslint-disable */export const messages = {"..."}
 
+ts
+^^
+
+Use ES6 named export + .ts file with an additional index.d.ts file:
+
+.. code-block:: js
+
+   /* eslint-disable */export const messages = {"..."}
+
+
 (window|global)\.(.*)
 ^^^^^^^^^^^^^^^^^^^^^
 

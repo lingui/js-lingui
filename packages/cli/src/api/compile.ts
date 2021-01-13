@@ -5,7 +5,7 @@ import * as R from "ramda"
 
 import pseudoLocalize from "./pseudoLocalize"
 
-type CompiledCatalogNamespace = "cjs" | "es" | string
+export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
 type CompiledCatalogType = {
   [msgId: string]: string
@@ -53,7 +53,7 @@ export function createCompiledCatalog(
 }
 
 function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
-  if (namespace === "es") {
+  if (namespace === "es" || namespace === "ts") {
     // export const messages = { message: "Translation" }
     return t.exportNamedDeclaration(
       t.variableDeclaration("const", [
