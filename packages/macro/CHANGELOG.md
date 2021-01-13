@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/lingui/js-lingui/compare/v3.3.0...v3.4.0) (2021-01-13)
+
+
+### Bug Fixes
+
+* Last scaped brackets were not unscaped ([db2f768](https://github.com/lingui/js-lingui/commit/db2f7684f4a8b6babe1c87fef9fb2775ebf3a97c))
+
+
+
+
+
 # [3.3.0](https://github.com/lingui/js-lingui/compare/v3.2.3...v3.3.0) (2020-12-08)
 
 

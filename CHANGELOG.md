@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/lingui/js-lingui/compare/v3.3.0...v3.4.0) (2021-01-13)
+
+
+### Bug Fixes
+
+* added return type to i18n._ ([#922](https://github.com/lingui/js-lingui/issues/922)) ([249c486](https://github.com/lingui/js-lingui/commit/249c486d258a4fb44bae1e3da1765e00003429a7))
+* compilerBabelOptions warning with jest-validate ([#938](https://github.com/lingui/js-lingui/issues/938)) ([087ec1f](https://github.com/lingui/js-lingui/commit/087ec1fe45076bcfc8ea3a6f7657f39bbe1c1d58))
+* Last scaped brackets were not unscaped ([db2f768](https://github.com/lingui/js-lingui/commit/db2f7684f4a8b6babe1c87fef9fb2775ebf3a97c))
+* Use LINGUI_CONFIG env as fallback for extract ([#932](https://github.com/lingui/js-lingui/issues/932)) ([ce71a8b](https://github.com/lingui/js-lingui/commit/ce71a8bc6f7b7bb9d1f3c46d473dc5e700a6b6b5))
+* **detect-locale:** ESM import not published ([#926](https://github.com/lingui/js-lingui/issues/926)) ([4ad90d4](https://github.com/lingui/js-lingui/commit/4ad90d4c60b752e9f0d82f3dd71936711c51573d))
+* prevent adding undefined msgid to messages ([#915](https://github.com/lingui/js-lingui/issues/915)) ([3afacec](https://github.com/lingui/js-lingui/commit/3afaceccb669b59ee2f5b42ee2e138646ccdb79d))
+
+
+### Features
+
+* Lingui compiles to typescript files ([#942](https://github.com/lingui/js-lingui/issues/942)) ([10bce7d](https://github.com/lingui/js-lingui/commit/10bce7dc890f208dc71bcf81dc34e57d389544fe))
+* Support lingui config in multiple formats ([#941](https://github.com/lingui/js-lingui/issues/941)) ([8631111](https://github.com/lingui/js-lingui/commit/8631111a83c5f2fb87e7b6d794a279dbf7e8579d))
+
+
+
+
+
 # [3.3.0](https://github.com/lingui/js-lingui/compare/v3.2.3...v3.3.0) (2020-12-08)
 
 
