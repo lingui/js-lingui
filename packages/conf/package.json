@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
+    "@endemolshinegroup/cosmiconfig-typescript-loader": "^3.0.2",
     "chalk": "^4.1.0",
     "cosmiconfig": "^7.0.0",
     "jest-validate": "^26.5.2"
