@@ -14,6 +14,7 @@ import extract from "./extractors"
 import { prettyOrigin, removeDirectory } from "./utils"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
+import { CompiledCatalogNamespace } from "./compile"
 
 const NAME = "{name}"
 const LOCALE = "{locale}"
@@ -343,9 +344,17 @@ export class Catalog {
     poFormat.write(filename, messages, options)
   }
 
-  writeCompiled(locale: string, compiledCatalog: string, namespace?: string) {
-    const ext = `.${namespace === "es" ? "mjs" : "js"}`
-    const filename = this.path.replace(LOCALE, locale) + ext
+  writeCompiled(locale: string, compiledCatalog: string, namespace?: CompiledCatalogNamespace) {
+    let ext;
+    if (namespace === "es") {
+      ext = "mjs"
+    } else if (namespace === "ts") {
+      ext = "ts"
+    } else {
+      ext = "js"
+    }
+
+    const filename = `${this.path.replace(LOCALE, locale)}.${ext}`
 
     const basedir = path.dirname(filename)
     if (!fs.existsSync(basedir)) {

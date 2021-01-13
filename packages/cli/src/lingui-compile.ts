@@ -82,7 +82,7 @@ function command(config: LinguiConfig, options) {
       if (doMerge) {
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
-        const namespace = options.namespace || config.compileNamespace
+        const namespace = options.typescript ? "ts" : options.namespace || config.compileNamespace
         const compiledCatalog = createCompiledCatalog(locale, messages, {
           strict: false,
           namespace,
@@ -97,7 +97,7 @@ function command(config: LinguiConfig, options) {
         )
 
         if (options.typescript) {
-          const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
+          const typescriptPath = compiledPath.replace(/\.ts?$/, "") + ".d.ts"
           fs.writeFileSync(
             typescriptPath,
             `import { Messages } from '@lingui/core';
@@ -156,7 +156,7 @@ if (require.main === module) {
   const results = command(config, {
     verbose: program.verbose || false,
     allowEmpty: !program.strict,
-    typescript: program.typescript || false,
+    typescript: program.typescript || config.compileNamespace === "ts" || false,
     namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
   })
 

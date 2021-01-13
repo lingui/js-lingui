@@ -24,7 +24,7 @@ export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
 
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
-    compileNamespace: string;
+    compileNamespace: "es" | "cjs" | "ts" | string;
     extractBabelOptions: Record<string, unknown>;
     compilerBabelOptions: GeneratorOptions;
     fallbackLocales: FallbackLocales;
@@ -56,7 +56,7 @@ export declare const configValidation: {
         };
         compilerBabelOptions: GeneratorOptions;
         catalogs: CatalogConfig[];
-        compileNamespace: string;
+        compileNamespace: "es" | "ts" | "cjs" | string;
         fallbackLocales: FallbackLocales;
         format: CatalogFormat;
         formatOptions: CatalogFormatOptions;

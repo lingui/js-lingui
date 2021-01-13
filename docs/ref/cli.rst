@@ -139,3 +139,8 @@ Prints additional information.
 
 Specify namespace for compiled message catalogs (also see :conf:`compileNamespace` for
 global configuration).
+
+.. lingui-cli-option:: --typescript
+
+Is the same as using :conf:`compileNamespace` with the value "ts".
+Generates a {compiledFile}.d.ts and the compiled file is generated using the extension .ts

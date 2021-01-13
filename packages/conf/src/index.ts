@@ -33,7 +33,7 @@ type ModuleSource = [string, string?]
 
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
-  compileNamespace: string
+  compileNamespace: "es" | "ts" | "cjs" | string
   extractBabelOptions: Record<string, unknown>
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
