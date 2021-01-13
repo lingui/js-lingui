@@ -13,6 +13,7 @@
     "test:all": "yarn test && yarn test:integration",
     "watch": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.unit.js --watch",
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.integration.js --watch",
+    "size-build": "size-limit",
     "lint:types": "tsc",
     "lint:eslint": "eslint packages",
     "lint:all": "yarn lint:eslint && yarn lint:types",
@@ -29,6 +30,28 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "size-limit": [
+    {
+      "path": "./packages/core/build/cjs/dev.production.min.js",
+      "limit": "5 kB"
+    },
+    {
+      "path": "./packages/core/build/cjs/core.production.min.js",
+      "limit": "5 kB"
+    },
+    {
+      "path": "./packages/react/build/cjs/react.production.min.js",
+      "limit": "5 kB",
+      "ignore": [
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "path": "./packages/detect-locale/build/cjs/detect-locale.production.min.js",
+      "limit": "5 kB"
+    }
+  ],
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
@@ -37,6 +60,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@size-limit/preset-small-lib": "^4.9.1",
     "@testing-library/react": "^11.0.4",
     "@types/babel-types": "^7.0.9",
     "@types/jest": "^26.0.14",
@@ -92,6 +116,7 @@
     "rollup-plugin-typescript2": "^0.27.3",
     "semver": "^7.3.2",
     "set-tz": "^0.2.0",
+    "size-limit": "^4.9.1",
     "strip-ansi": "^6.0.0",
     "targz": "^1.0.1",
     "tmp": "^0.2.1",
