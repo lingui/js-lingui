@@ -110,7 +110,12 @@ Object {
   ],
   catalogsMergePath: ,
   compileNamespace: cjs,
-  compilerBabelOptions: Object {},
+  compilerBabelOptions: Object {
+    jsescOption: Object {
+      minimal: true,
+    },
+    minified: true,
+  },
   extractBabelOptions: Object {
     plugins: Array [],
     presets: Array [],

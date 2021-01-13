@@ -1,3 +1,4 @@
+import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
@@ -33,7 +34,7 @@ export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
   extractBabelOptions: Record<string, unknown>
-  compilerBabelOptions: Record<string, unknown>
+  compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
@@ -65,7 +66,12 @@ export const defaultConfig: LinguiConfig = {
   ],
   catalogsMergePath: "",
   compileNamespace: "cjs",
-  compilerBabelOptions: {},
+  compilerBabelOptions: {
+    minified: true,
+    jsescOption: {
+      minimal: true,
+    }
+  },
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",
@@ -251,7 +257,7 @@ export function replaceRootDir(
     } else if (typeof value === "string") {
       return replace(value)
     } else if (Array.isArray(value)) {
-      return value.map((item) => replaceDeep(item, rootDir)) as any
+      return (value as any).map((item) => replaceDeep(item, rootDir))
     } else if (typeof value === "object") {
       Object.keys(value).forEach((key) => {
         const newKey = replaceDeep(key, rootDir)
