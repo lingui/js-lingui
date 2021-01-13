@@ -61,7 +61,7 @@ const defaultFormats = (
 function context({ locale, locales, values, formats, localeData }) {
   const formatters = defaultFormats(locale, locales, localeData, formats)
 
-  const ctx = (name: string, type: string, format: any) => {
+  const ctx = (name: string, type: string, format: any): string => {
     const value = values[name]
     const formatted = formatters[type](value, format)
     const message = isFunction(formatted) ? formatted(ctx) : formatted
@@ -77,7 +77,7 @@ export function interpolate(
   locales: Locales,
   localeData: Object
 ) {
-  return (values: Object, formats: Object = {}) => {
+  return (values: Object, formats: Object = {}): string => {
     const ctx = context({
       locale,
       locales,
