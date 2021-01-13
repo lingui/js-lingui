@@ -82,7 +82,7 @@ function command(config: LinguiConfig, options) {
       if (doMerge) {
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
-        const namespace = options.namespace || config.compileNamespace
+        const namespace = options.typescript ? "ts" : options.namespace || config.compileNamespace
         const compiledCatalog = createCompiledCatalog(locale, messages, {
           strict: false,
           namespace,
@@ -97,7 +97,7 @@ function command(config: LinguiConfig, options) {
         )
 
         if (options.typescript) {
-          const typescriptPath = compiledPath.replace(/\.jsx?$/, "") + ".d.ts"
+          const typescriptPath = compiledPath.replace(/\.ts?$/, "") + ".d.ts"
           fs.writeFileSync(
             typescriptPath,
             `import { Messages } from '@lingui/core';
