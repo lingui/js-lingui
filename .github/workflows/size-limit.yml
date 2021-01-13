@@ -4,8 +4,9 @@ jobs:
   size:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: andresz1/size-limit-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_script: release:build
+    - uses: actions/checkout@v2
+    - uses: preactjs/compressed-size-action@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        build-script: "release:build"
+        pattern: "./packages/**/build/cjs/*.production.min.js"
