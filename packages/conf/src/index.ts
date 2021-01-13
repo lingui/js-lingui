@@ -1,8 +1,10 @@
+import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import { cosmiconfigSync } from "cosmiconfig"
+import { Loader, cosmiconfigSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
+import get from "lodash.get"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -27,13 +29,13 @@ type DefaultLocaleObject = {
 }
 export type FallbackLocales = LocaleObject | DefaultLocaleObject | false
 
-type ModuleSource = [string, string?];
+type ModuleSource = [string, string?]
 
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: string
   extractBabelOptions: Record<string, unknown>
-  compilerBabelOptions: Record<string, unknown>
+  compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
@@ -42,7 +44,7 @@ export type LinguiConfig = {
   orderBy: OrderBy
   pseudoLocale: string
   rootDir: string
-  runtimeConfigModule: ModuleSource | {[symbolName: string]: ModuleSource},
+  runtimeConfigModule: ModuleSource | { [symbolName: string]: ModuleSource }
   sourceLocale: string
 }
 
@@ -65,7 +67,12 @@ export const defaultConfig: LinguiConfig = {
   ],
   catalogsMergePath: "",
   compileNamespace: "cjs",
-  compilerBabelOptions: {},
+  compilerBabelOptions: {
+    minified: true,
+    jsescOption: {
+      minimal: true,
+    }
+  },
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",
@@ -92,7 +99,23 @@ export function getConfig({
   skipValidation?: boolean
 } = {}): LinguiConfig {
   const defaultRootDir = cwd || process.cwd()
-  const configExplorer = cosmiconfigSync("lingui")
+  const moduleName = "lingui"
+  const configExplorer = cosmiconfigSync(moduleName, {
+    searchPlaces: [
+      "package.json",
+      `.${moduleName}rc`,
+      `.${moduleName}rc.json`,
+      `.${moduleName}rc.yaml`,
+      `.${moduleName}rc.yml`,
+      `.${moduleName}rc.ts`,
+      `.${moduleName}rc.js`,
+      `${moduleName}.config.ts`,
+      `${moduleName}.config.js`,
+    ],
+    loaders: {
+      ".ts": TypeScriptLoader,
+    },
+  })
 
   const result = configExists(configPath)
     ? configExplorer.load(configPath)
@@ -141,7 +164,7 @@ const exampleConfig = {
 }
 
 const deprecatedConfig = {
-    fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
+  fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) =>
     ` Option ${chalk.bold("fallbackLocale")} was replaced by ${chalk.bold(
       "fallbackLocales"
     )}
@@ -151,9 +174,7 @@ const deprecatedConfig = {
     @lingui/cli now treats your current configuration as:
     {
       ${chalk.bold('"fallbackLocales"')}: {
-        default: ${chalk.bold(
-          `"${config.fallbackLocale}"`
-        )}
+        default: ${chalk.bold(`"${config.fallbackLocale}"`)}
       }
     }
 
@@ -251,7 +272,7 @@ export function replaceRootDir(
     } else if (typeof value === "string") {
       return replace(value)
     } else if (Array.isArray(value)) {
-      return value.map((item) => replaceDeep(item, rootDir)) as any
+      return (value as any).map((item) => replaceDeep(item, rootDir))
     } else if (typeof value === "object") {
       Object.keys(value).forEach((key) => {
         const newKey = replaceDeep(key, rootDir)
@@ -276,17 +297,18 @@ export function fallbackLanguageMigration(
 ): LinguiConfig {
   const { fallbackLocale, fallbackLocales } = config
 
-  if (fallbackLocales === false) return {
-    ...config,
-    fallbackLocales: null,
-  }
+  if (fallbackLocales === false)
+    return {
+      ...config,
+      fallbackLocales: null,
+    }
 
   config.locales.forEach((locale) => {
     const fl = getCldrParentLocale(locale.toLowerCase())
     if (fl && !config.fallbackLocales[locale]) {
       config.fallbackLocales = {
         ...config.fallbackLocales,
-        [locale]: fl
+        [locale]: fl,
       }
     }
   })
@@ -475,7 +497,7 @@ function getCldrParentLocale(sourceLocale: string) {
     "yue-hans": "yue",
     "zh-hant": "zh",
     "zh-hant-hk": "zh",
-    "zh-hant-mo": "zh-hant-hk"
+    "zh-hant-mo": "zh-hant-hk",
   }[sourceLocale]
 }
 
@@ -525,3 +547,21 @@ export function catalogMigration(
 
 const pipe = (...functions: Array<Function>) => (args: any): any =>
   functions.reduce((arg, fn) => fn(arg), args)
+
+// copied from @EndemolShineGroup/cosmiconfig-typescript-loader
+// to support sync operations
+// if this PR gets merged and published, this piece of code can be thrown away
+// https://github.com/EndemolShineGroup/cosmiconfig-typescript-loader/pull/132
+function TypeScriptLoader(filePath: string) {
+  try {
+    require("ts-node/register")
+    const result = require(filePath)
+
+    return get(result, "default", result)
+  } catch (error) {
+    // Replace with logger class OR throw a more specific error
+    throw require("@endemolshinegroup/cosmiconfig-typescript-loader/dist/Errors/TypeScriptCompileError").fromError(
+      error
+    )
+  }
+}
