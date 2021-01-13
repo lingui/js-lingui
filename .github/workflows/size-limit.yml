@@ -3,11 +3,9 @@ on: [pull_request]
 jobs:
   size:
     runs-on: ubuntu-latest
-    env:
-      CI_JOB_NUMBER: 1
     steps:
-      - uses: actions/checkout@v1
-      - uses: andresz1/size-limit-action@v1.2.2
+      - uses: actions/checkout@v2
+      - uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build_script: release:build
