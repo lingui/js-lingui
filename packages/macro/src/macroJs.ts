@@ -8,7 +8,7 @@ import { COMMENT, ID, MESSAGE, EXTRACT_MARK } from "./constants"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
-const removeExtraScapedLiterals = /(?:\\(.))/
+const removeExtraScapedLiterals = /(?:\\(.))/g
 
 function normalizeWhitespace(text) {
   return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
