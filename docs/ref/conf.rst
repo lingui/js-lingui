@@ -7,6 +7,11 @@ Configuration is read from 3 different sources (the first found wins):
 - from ``lingui`` section in ``package.json``
 - from ``.linguirc``
 - from ``lingui.config.js``
+- from ``lingui.config.ts`` _(since 3.4.0)_
+
+You can also define environment variable ``LINGUI_CONFIG`` with path to your config file.
+
+In the case of TypeScript based config you can use ESM format and `export default`.
 
 Default config:
 
