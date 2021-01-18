@@ -22,7 +22,8 @@
     "@endemolshinegroup/cosmiconfig-typescript-loader": "^3.0.2",
     "chalk": "^4.1.0",
     "cosmiconfig": "^7.0.0",
-    "jest-validate": "^26.5.2"
+    "jest-validate": "^26.5.2",
+    "lodash.get": "^4.4.2"
   },
   "files": [
     "LICENSE",
