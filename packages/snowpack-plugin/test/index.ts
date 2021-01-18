@@ -1,7 +1,7 @@
 import path from "path"
 import snowpackPlugin from "../src"
 
-describe("snowpack-loader", () => {
+describe("snowpack-plugin", () => {
   it("to match snapshot", () => {
     const p = snowpackPlugin();
     expect(p).toMatchSnapshot();

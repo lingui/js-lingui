@@ -35,7 +35,7 @@ const bundles = [
   },
   {
     type: bundleTypes.NODE,
-    entry: "@lingui/snowpack-loader"
+    entry: "@lingui/snowpack-plugin"
   },
 
   {

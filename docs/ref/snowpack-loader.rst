@@ -1,34 +1,34 @@
 ***********************************************
-API Reference - Snowpack Loader (@lingui/snowpack-loader)
+API Reference - Snowpack Loader (@lingui/snowpack-plugin)
 ***********************************************
 
 It's a good practice to use compiled message catalogs during development. However,
 running :cli:`compile` everytime messages are changed soon becomes tedious.
 
-``@lingui/snowpack-loader`` is a snowpack loader, which compiles messages on the fly:
+``@lingui/snowpack-plugin`` is a snowpack loader, which compiles messages on the fly:
 
 Installation
 ============
 
-Install ``@lingui/snowpack-loader`` as a development dependency:
+Install ``@lingui/snowpack-plugin`` as a development dependency:
 
 .. code-block:: sh
 
-   npm install --save-dev @lingui/snowpack-loader
+   npm install --save-dev @lingui/snowpack-plugin
 
    # Or using yarn
-   # yarn add --dev @lingui/snowpack-loader
+   # yarn add --dev @lingui/snowpack-plugin
 
 Usage
 =====
 
-Simply add ``@lingui/snowpack-loader`` inside your ``snowpack.config.js``:
+Simply add ``@lingui/snowpack-plugin`` inside your ``snowpack.config.js``:
 
 .. code-block:: js
 
    module.exports = {
       plugins: [
-         '@lingui/snowpack-loader',
+         '@lingui/snowpack-plugin',
       ],
    }
 

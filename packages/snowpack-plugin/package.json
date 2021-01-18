@@ -1,5 +1,5 @@
 {
-  "name": "@lingui/snowpack-loader",
+  "name": "@lingui/snowpack-plugin",
   "version": "3.4.0",
   "description": "Snowpack plugin for Lingui message catalogs",
   "main": "index.js",

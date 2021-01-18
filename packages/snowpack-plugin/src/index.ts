@@ -15,7 +15,7 @@ function extractLinguiMessages(_?, linguiConfig: LinguiConfigOpts = {}) {
   const config = getConfig(linguiConfig)
 
   return {
-    name: '@lingui/snowpack-loader',
+    name: '@lingui/snowpack-plugin',
     resolve: {
       input: ['.po'],
       output: ['.js'],
@@ -31,7 +31,7 @@ function extractLinguiMessages(_?, linguiConfig: LinguiConfigOpts = {}) {
           po: ".po",
           lingui: ".json"
         }
-        throw new Error(`@lingui/snowpack-loader: File extension is mandatory, for ex: import('./locales/en/messages${formats[config.format]}')`)
+        throw new Error(`@lingui/snowpack-plugin: File extension is mandatory, for ex: import('./locales/en/messages${formats[config.format]}')`)
       }
 
       const fileCatalog = getCatalogForFile(
