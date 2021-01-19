@@ -1,5 +1,5 @@
 ***********************************************
-API Reference - Snowpack Loader (@lingui/snowpack-plugin)
+API Reference - Snowpack Plugin (@lingui/snowpack-plugin)
 ***********************************************
 
 It's a good practice to use compiled message catalogs during development. However,
