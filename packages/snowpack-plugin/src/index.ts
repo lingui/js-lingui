@@ -17,7 +17,7 @@ function extractLinguiMessages(_?, linguiConfig: LinguiConfigOpts = {}) {
   return {
     name: '@lingui/snowpack-plugin',
     resolve: {
-      input: ['.po'],
+      input: ['.po', '.json'],
       output: ['.js'],
     },
     async load({ filePath }: SnowpackLoadOpts) {
