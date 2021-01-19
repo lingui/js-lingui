@@ -10,7 +10,7 @@ type LinguiConfigOpts = {
 type SnowpackLoadOpts = {
   filePath: string
 }
-function extractLinguiMessages(_?, linguiConfig: LinguiConfigOpts = {}) {
+function extractLinguiMessages(snowpackConfig?, linguiConfig: LinguiConfigOpts = {}) {
   const strict = process.env.NODE_ENV !== 'production'
   const config = getConfig(linguiConfig)
 
