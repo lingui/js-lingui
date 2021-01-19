@@ -113,6 +113,7 @@ Documentation contents
    Configuration <ref/conf>
    Locale Detection <ref/locale-detector>
    Webpack Loader <ref/loader>
+   Snowpack Plugin <ref/snowpack-plugin>
    Catalog Formats <ref/catalog-formats>
    ICU MessageFormat <ref/message-format>
 

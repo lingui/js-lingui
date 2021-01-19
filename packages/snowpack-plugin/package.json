@@ -1,0 +1,33 @@
+{
+  "name": "@lingui/snowpack-plugin",
+  "version": "3.4.0",
+  "description": "Snowpack plugin for Lingui message catalogs",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "snowpack-plugin",
+    "i18n",
+    "snowpack",
+    "linguijs",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7",
+    "@lingui/cli": "^3.4.0",
+    "@lingui/conf": "^3.4.0"
+  }
+}

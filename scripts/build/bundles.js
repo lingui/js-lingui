@@ -33,6 +33,10 @@ const bundles = [
     type: bundleTypes.NODE,
     entry: "@lingui/babel-plugin-extract-messages"
   },
+  {
+    type: bundleTypes.NODE,
+    entry: "@lingui/snowpack-plugin"
+  },
 
   {
     type: bundleTypes.NODE,

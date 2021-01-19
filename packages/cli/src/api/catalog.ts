@@ -522,8 +522,8 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
     const catalogFile = `${catalog.path}${catalog.format.catalogExtension}`
     const catalogGlob = catalogFile.replace(LOCALE, "*")
     const match = micromatch.capture(
-      normalizeRelativePath(catalogGlob),
-      normalizeRelativePath(file)
+      normalizeRelativePath(path.relative(catalog.config.rootDir, catalogGlob)),
+      normalizeRelativePath(file),
     )
     if (match) {
       return {
