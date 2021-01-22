@@ -30,9 +30,9 @@ function App() {
         </div>
         <Plural
           value={count}
-          zero={"There're no books"}
+          zero={"There are no books"}
           one={"There's one book"}
-          other={"There're # books"}
+          other={"There are # books"}
         />
         <h3><Trans>Date formatter example:</Trans></h3>
         <div>

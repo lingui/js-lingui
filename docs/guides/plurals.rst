@@ -3,7 +3,7 @@ Pluralization
 *************
 
 Plurals are essential when dealing with internationalization. LinguiJS_
-uses `CLDR Plural Rules`_. In general, there're 6 plural forms (taken
+uses `CLDR Plural Rules`_. In general, there are 6 plural forms (taken
 from `CLDR Plurals`_ page):
 
 - zero

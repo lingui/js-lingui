@@ -45,7 +45,7 @@ We're going to translate the following app:
              {
                messagesCount === 1
                  ? `There's ${messagesCount} message in your inbox.`
-                 : `There're ${messagesCount} messages in your inbox.`
+                 : `There are ${messagesCount} messages in your inbox.`
              }
            </p>
 
@@ -473,7 +473,7 @@ Let's move on and add i18n to another text in our component:
       {
          messagesCount === 1
             ? "There's {messagesCount} message in your inbox."
-            : "There're {messagesCount} messages in your inbox."
+            : "There are {messagesCount} messages in your inbox."
       }
    </p>
 
@@ -515,12 +515,12 @@ the right plural form:
       <Plural
          value={messagesCount}
          one="There's # message in your inbox"
-         other="There're # messages in your inbox"
+         other="There are # messages in your inbox"
       />
    </p>
 
 This component will render ``There's 1 message in your inbox`` when
-``messageCount = 1`` and ``There're # messages in your inbox`` for any other
+``messageCount = 1`` and ``There are # messages in your inbox`` for any other
 values of ``messageCount``. ``#`` is a placeholder, which is replaced with ``value``.
 
 Cool! Curious how this component is transformed under the hood and how the
@@ -529,7 +529,7 @@ yourself::
 
    {messagesCount, plural,
       one {There's # message in your inbox}
-      other {There're # messages in your inbox}}
+      other {There are # messages in your inbox}}
 
 In the catalog, you'll see the message in one line. Here we wrapped it to make it more readable.
 
@@ -550,12 +550,12 @@ You may wonder, why the following code doesn't work as expected:
 
    <Plural
       value={messagesCount}
-      zero="There're no messages"
+      zero="There are no messages"
       one="There's # message in your inbox"
-      other="There're # messages in your inbox"
+      other="There are # messages in your inbox"
    />
 
-This component will render ``There're 0 messages in your inbox`` for
+This component will render ``There are 0 messages in your inbox`` for
 ``messagesCount = 0``. Why so? Because English doesn't have ``zero``
 `plural form <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en>`_.
 
@@ -571,23 +571,23 @@ n other (anything else)
 
 However, decimal numbers (even ``1.0``) use ``other`` form every time::
 
-   There're 0.0 messages in your inbox.
+   There are 0.0 messages in your inbox.
 
 Aren't languages beautiful? 
 
 Exact forms
 -----------
 
-Alright, back to our example. What if we really want to render ``There're no messages``
+Alright, back to our example. What if we really want to render ``There are no messages``
 for ``messagesCount = 0``? Exact forms to the rescue!
 
 .. code-block:: jsx
 
    <Plural
       value={messagesCount}
-      _0="There're no messages"
+      _0="There are no messages"
       one="There's # message in your inbox"
-      other="There're # messages in your inbox"
+      other="There are # messages in your inbox"
    />
 
 What's that ``_0``? MessageFormat allows exact forms, like ``=0``. However,
@@ -600,10 +600,10 @@ It works with any number, so we can go wild and customize it this way:
 
    <Plural
       value={messagesCount}
-      _0="There're no messages"
+      _0="There are no messages"
       _1="There's one message in your inbox"
-      _2="There're two messages in your inbox, that's not much!"
-      other="There're # messages in your inbox"
+      _2="There are two messages in your inbox, that's not much!"
+      other="There are # messages in your inbox"
    />
 
 … and so on. Exact matches always take precedence before plural forms.
@@ -619,7 +619,7 @@ Let's go back to our original pluralized message:
       <Plural
          value={messagesCount}
          one="There's # message in your inbox"
-         other="There're # messages in your inbox"
+         other="There are # messages in your inbox"
       />
    </p>
 
@@ -633,7 +633,7 @@ wrap messages in :jsxmacro:`Trans` macro or use template literals
       <Plural
          value={messagesCount}
          one={`There's # message in your inbox, ${name}`}
-         other={<Trans>There're <strong>#</strong> messages in your inbox, {name}</Trans>}
+         other={<Trans>There are <strong>#</strong> messages in your inbox, {name}</Trans>}
       />
    </p>
 
@@ -654,7 +654,7 @@ pass an ``id`` prop to :jsxmacro:`Plural` as we would to :jsxmacro:`Trans`:
          id="Inbox.messagesCount"
          value={messagesCount}
          one="There's # message in your inbox"
-         other="There're # messages in your inbox"
+         other="There are # messages in your inbox"
       />
    </p>
 
@@ -715,7 +715,7 @@ After all modifications, the final component with i18n looks like this:
              <Plural
                value={messagesCount}
                one="There's # message in your inbox."
-               other="There're # messages in your inbox."
+               other="There are # messages in your inbox."
              />
            </p>
 

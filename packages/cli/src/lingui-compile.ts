@@ -136,7 +136,7 @@ if (require.main === module) {
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
-      console.log("    # Compile translations but fail when there're missing")
+      console.log("    # Compile translations but fail when there are missing")
       console.log("    # translations (don't replace missing translations with")
       console.log("    # default messages or message IDs)")
       console.log(`    $ ${helpRun("compile --strict")}`)

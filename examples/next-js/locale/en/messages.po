@@ -55,5 +55,5 @@ msgstr "Welcome to <0>LinguiJS!</0>"
 
 #: pages/examples.tsx:15
 #: pages/examples.tsx:19
-msgid "{value, plural, one {There's one book} other {There're # books}}"
-msgstr "{value, plural, one {There's one book} other {There're # books}}"
+msgid "{value, plural, one {There's one book} other {There are # books}}"
+msgstr "{value, plural, one {There's one book} other {There are # books}}"

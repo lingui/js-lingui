@@ -5,7 +5,7 @@ import { formatElements } from "./format"
 describe("formatElements", function () {
   const html = (elements) => render(elements).container.innerHTML
 
-  it("should return string when there're no elements", function () {
+  it("should return string when there are no elements", function () {
     expect(formatElements("")).toEqual("")
     expect(formatElements("Text only")).toEqual("Text only")
   })

@@ -40,7 +40,7 @@ describe("PseudoLocalization", () => {
     it("with offset", () => {
       expect(
         pseudoLocalize(
-          "{count, plural, offset:1 zero {There're no messages} other {There're # messages in your inbox}}"
+          "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}"
         )
       ).toEqual(
         "{count, plural, offset:1 zero {Ţĥēŕē'ŕē ńō mēśśàĝēś} other {Ţĥēŕē'ŕē # mēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
@@ -50,7 +50,7 @@ describe("PseudoLocalization", () => {
     it("with HTML tags", () => {
       expect(
         pseudoLocalize(
-          "{count, plural, zero {There's # <span>message</span>} other {There're # messages}"
+          "{count, plural, zero {There's # <span>message</span>} other {There are # messages}"
         )
       ).toEqual(
         "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
@@ -60,7 +60,7 @@ describe("PseudoLocalization", () => {
     it("with exact number", () => {
       expect(
         pseudoLocalize(
-          "{count, plural, =0 {There's # <span>message</span>} other {There're # messages}"
+          "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}"
         )
       ).toEqual(
         "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
