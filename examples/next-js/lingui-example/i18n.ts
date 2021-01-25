@@ -6,7 +6,7 @@ i18n.loadLocaleData("cs", { plurals: cs })
 
 /**
  * Load messages for requested locale and activate it.
- * This function isn't part of the LinguiJS library because there're
+ * This function isn't part of the LinguiJS library because there are
  * many ways how to load messages — from REST API, from file, from cache, etc.
  */
 export async function activate(locale: string) {

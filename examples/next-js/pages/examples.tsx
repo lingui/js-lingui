@@ -20,7 +20,7 @@ export default function Home() {
             <Plural
               value={value}
               one="There's one book"
-              other="There're # books"
+              other="There are # books"
             />
           </p>
         )}
@@ -31,7 +31,7 @@ export default function Home() {
           <p>
             {plural(value, {
               one: "There's one book",
-              other: "There're # books",
+              other: "There are # books",
             })}
           </p>
         )}

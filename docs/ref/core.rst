@@ -35,7 +35,7 @@ it and use it:
 
    /**
     * Load messages for requested locale and activate it.
-    * This function isn't part of the LinguiJS library because there're
+    * This function isn't part of the LinguiJS library because there are
     * many ways how to load messages — from REST API, from file, from cache, etc.
     */
    async function activate(locale: string) {
@@ -330,4 +330,4 @@ Events
 change
 ------
 
-Triggered **after** locale is changed or new catalog is loaded. There're no arguments.
+Triggered **after** locale is changed or new catalog is loaded. There are no arguments.

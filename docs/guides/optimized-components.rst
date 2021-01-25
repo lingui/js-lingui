@@ -15,7 +15,7 @@ component*.
 React components can be optimized to skip updates implementing
 ``shouldComponentUpdate``. Based on change of props and state, component
 can decide to continue re-rendering or skip the update completely.
-However, LinguiJS reads translations from context and there're two cases
+However, LinguiJS reads translations from context and there are two cases
 which must be handled to make i18n related updates reliable.
 
 The two cases to handle are:

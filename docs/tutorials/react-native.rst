@@ -53,7 +53,7 @@ We're going to translate the following app:
          <Text>
            {messagesCount === 1
              ? `There's {messagesCount} message in your inbox.`
-             : `There're ${messagesCount} messages in your inbox.`}
+             : `There are ${messagesCount} messages in your inbox.`}
          </Text>
        </View>
 

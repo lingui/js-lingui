@@ -44,5 +44,5 @@ msgid "Today is {0}"
 msgstr "Dnes je {0}"
 
 #: src/App.tsx:26
-msgid "{count, plural, zero {There're no books} one {There's one book} other {There're # books}}"
+msgid "{count, plural, zero {There are no books} one {There's one book} other {There are # books}}"
 msgstr "{count, plural, zero {Nejsou žádné knihy} one {Je tu jedna kniha} other {Existuje # knih}}"
