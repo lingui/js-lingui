@@ -1,9 +1,9 @@
-import React, { FunctionComponent, ComponentType } from "react"
+import React, { FunctionComponent, ComponentType, ReactNode } from "react"
 import { I18n } from "@lingui/core"
 
 export type I18nContext = {
   i18n: I18n
-  defaultComponent?: React.ReactElement<any, any> | null
+  defaultComponent?: ComponentType<{ children?: ReactNode }>
 }
 
 export type withI18nProps = {
