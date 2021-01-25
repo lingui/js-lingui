@@ -122,7 +122,7 @@ Further reading
 Checkout these reference guides for full documentation:
 
 - :doc:`ICU Message Format </ref/message-format>`
-- :doc:`React reference </ref/macro>`
-- :doc:`Macro reference </ref/react>`
+- :doc:`React reference </ref/react>`
+- :doc:`Macro reference </ref/macro>`
 - :doc:`CLI reference </ref/cli>`
 - :doc:`Configuration reference </ref/conf>`
