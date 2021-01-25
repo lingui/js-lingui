@@ -62,7 +62,7 @@ This catalog is ready for translation. Let's translate it into Czech by filling 
    {
      "Message Inbox": "Přijaté zprávy",
      "See all <0>unread messages</0> or <1>mark them</1> as read.": "Zobrazit všechny <0>nepřečtené zprávy</0> nebo je <1>označit</1> jako přečtené.",
-     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {Therere {messagesCount} messages in your inbox.}}": "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy. } other {V příchozí poště je {messagesCount} zpráv.}}",
+     "{messagesCount, plural, one {There's {messagesCount} message in your inbox.} other {There are {messagesCount} messages in your inbox.}}": "{messagesCount, plural, one {V příchozí poště je {messagesCount} zpráva.} few {V příchozí poště jsou {messagesCount} zprávy. } other {V příchozí poště je {messagesCount} zpráv.}}",
      "Last login on {lastLogin,date}.": "Poslední přihlášení {lastLogin,date}",
    }
 
