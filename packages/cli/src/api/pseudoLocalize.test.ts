@@ -43,7 +43,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}"
         )
       ).toEqual(
-        "{count, plural, offset:1 zero {Ţĥēŕē'ŕē ńō mēśśàĝēś} other {Ţĥēŕē'ŕē # mēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
+        "{count, plural, offset:1 zero {Ţĥēŕē àŕē ńō mēśśàĝēś} other {Ţĥēŕē àŕē # mēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
       )
     })
 
@@ -53,7 +53,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, zero {There's # <span>message</span>} other {There are # messages}"
         )
       ).toEqual(
-        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
+        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}"
       )
     })
 
@@ -63,7 +63,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}"
         )
       ).toEqual(
-        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē'ŕē # mēśśàĝēś}"
+        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}"
       )
     })
   })
