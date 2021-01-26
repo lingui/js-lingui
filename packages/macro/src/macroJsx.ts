@@ -157,16 +157,17 @@ export default class MacroJSX {
     path.replaceWith(newNode)
   }
 
+  attrName = (names, exclude = false) => {
+    const namesRe = new RegExp("^(" + names.join("|") + ")$")
+    return (attr) =>
+      exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
+  }
+
   stripMacroAttributes = (node) => {
     const { attributes } = node.openingElement
-    const attrName = (names, exclude = false) => {
-      const namesRe = new RegExp("^(" + names.join("|") + ")$")
-      return (attr) =>
-        exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
-    }
-    const id = attributes.filter(attrName([ID]))[0]
-    const message = attributes.filter(attrName([MESSAGE]))[0]
-    const comment = attributes.filter(attrName([COMMENT]))[0]
+    const id = attributes.filter(this.attrName([ID]))[0]
+    const message = attributes.filter(this.attrName([MESSAGE]))[0]
+    const comment = attributes.filter(this.attrName([COMMENT]))[0]
 
     let reserved = [ID, MESSAGE, COMMENT]
     if (this.isI18nComponent(node)) {
@@ -191,7 +192,7 @@ export default class MacroJSX {
       id: maybeNodeValue(id),
       message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
-      attributes: attributes.filter(attrName(reserved, true)),
+      attributes: attributes.filter(this.attrName(reserved, true)),
     }
   }
 
@@ -227,10 +228,10 @@ export default class MacroJSX {
         }
       } else if (this.types.isTemplateLiteral(exp)) {
         const tokenize = R.pipe(
-          // Don't output tokens without text.
+          // Don"t output tokens without text.
           R.evolve({
             quasis: R.map((text: babelTypes.TemplateElement) => {
-              // Don't output tokens without text.
+              // Don"t output tokens without text.
               const value = text.value.raw
               if (value === "") return null
 
@@ -268,7 +269,15 @@ export default class MacroJSX {
   tokenizeChoiceComponent = (node) => {
     const element = node.openingElement
     const format = element.name.name.toLowerCase()
-    const props = element.attributes
+    const props = element.attributes.filter(this.attrName([
+      ID,
+      COMMENT,
+      MESSAGE,
+      // we remove <Trans /> react props that are not useful for translation
+      "render",
+      "component",
+      "components"
+    ], true))
 
     const token = {
       type: "arg",
@@ -294,14 +303,18 @@ export default class MacroJSX {
         token.options.offset = this.types.isStringLiteral(attr.value)
           ? attr.value.value
           : attr.value.expression.value
-      } else if (pluralRuleRe.test(name)) {
+      } else {
         let value
         if (this.types.isStringLiteral(attr.value)) {
           value = attr.value.extra.raw.replace(/(["'])(.*)\1/, "$2")
         } else {
           value = this.tokenizeChildren(attr.value)
         }
-        token.options[jsx2icuExactChoice(name)] = value
+        if (pluralRuleRe.test(name)) {
+          token.options[jsx2icuExactChoice(name)] = value
+        } else {
+          token.options[name] = value
+        }
       }
     }
 
@@ -348,7 +361,7 @@ export default class MacroJSX {
 
   /**
    * We clean '//\` ' to just '`'
-   */
+   * */
   clearBackslashes(value: string) {
     return value.replace(removeExtraScapedLiterals, "`")
   }
