@@ -228,10 +228,10 @@ export default class MacroJSX {
         }
       } else if (this.types.isTemplateLiteral(exp)) {
         const tokenize = R.pipe(
-          // Don't output tokens without text.
+          // Don"t output tokens without text.
           R.evolve({
             quasis: R.map((text: babelTypes.TemplateElement) => {
-              // Don't output tokens without text.
+              // Don"t output tokens without text.
               const value = text.value.raw
               if (value === "") return null
 
@@ -273,7 +273,10 @@ export default class MacroJSX {
       ID,
       COMMENT,
       MESSAGE,
-      'render',
+      // we remove <Trans /> react props that are not useful for translation
+      "render",
+      "component",
+      "components"
     ], true))
 
     const token = {
@@ -358,7 +361,7 @@ export default class MacroJSX {
 
   /**
    * We clean '//\` ' to just '`'
-   */
+   * */
   clearBackslashes(value: string) {
     return value.replace(removeExtraScapedLiterals, "`")
   }
