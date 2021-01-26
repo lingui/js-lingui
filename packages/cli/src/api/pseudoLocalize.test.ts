@@ -78,6 +78,16 @@ describe("PseudoLocalization", () => {
     )
   })
 
+  it("Select", () => {
+    expect(
+      pseudoLocalize(
+        "{gender, select, male {He} female {She} other {<span>Other</span>}}"
+      )
+    ).toEqual(
+      "{gender, select, male {Ĥē} female {Śĥē} other {<span>Ōţĥēŕ</span>}}"
+    )
+  })
+
   it("should not pseudolocalize variables", () => {
     expect(pseudoLocalize("replace {count}")).toEqual("ŕēƥĺàćē {count}")
     expect(pseudoLocalize("replace { count }")).toEqual("ŕēƥĺàćē { count }")
