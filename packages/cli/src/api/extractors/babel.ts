@@ -27,6 +27,9 @@ const extractor: ExtractorType = {
     transformFileSync(filename, {
       ...babelOptions,
       ...frameworkOptions,
+      // we override envName to avoid issues with NODE_ENV=production
+      // https://github.com/lingui/js-lingui/issues/952
+      envName: "development",
       plugins: ["macros", [linguiExtractMessages, { localeDir }], ...plugins],
     })
   },
