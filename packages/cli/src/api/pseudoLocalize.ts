@@ -8,21 +8,26 @@ pseudolocale.option.delimiter = delimiter
 pseudolocale.option.prepend = ""
 pseudolocale.option.append = ""
 
-/*
-Regex should match HTML tags
-It was taken from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/
-Example: https://regex101.com/r/bDHD9z/3
-*/
+/**
+ * Regex should match HTML tags
+ * It was taken from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/
+ * Example: https://regex101.com/r/bDHD9z/3
+ */
 const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g
-/*
-Regex should match js-lingui plurals
-Example: https://regex101.com/r/utnbQw/4
-*/
-const PluralRegex = /({\w*,\s*(plural|selectordinal),(.|\n)*?{)|(}\s*(offset|zero|one|two|few|many|other)\s*{)/g
-/*
-Regex should match js-lingui variables
-Example: https://regex101.com/r/dw1QHb/2
-*/
+
+/**
+ * Regex should match js-lingui Plurals, Select and SelectOrdinal  components
+ * Example:
+ * Plurals https://regex101.com/r/VUJXg0/1
+ * SelectOrdinal https://regex101.com/r/T7hSLU/2
+ * Select https://regex101.com/r/9JnqB9/1
+ */
+const MacroRegex = /({\w*,\s*(plural|selectordinal|select),(.|\n)*?{)|(}\s*\w*\s*{)/g
+
+/**
+ * Regex should match js-lingui variables
+ * Example: https://regex101.com/r/dw1QHb/2
+ */
 const VariableRegex = /({\s*[a-zA-Z_$][a-zA-Z_$0-9]*\s*})/g
 
 function addDelimitersHTMLTags(message) {
@@ -31,8 +36,8 @@ function addDelimitersHTMLTags(message) {
   })
 }
 
-function addDelimitersPlural(message) {
-  return message.replace(PluralRegex, (matchedString) => {
+function addDelimitersMacro(message) {
+  return message.replace(MacroRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
@@ -45,7 +50,7 @@ function addDelimitersVariables(message) {
 
 const addDelimiters = R.compose(
   addDelimitersVariables,
-  addDelimitersPlural,
+  addDelimitersMacro,
   addDelimitersHTMLTags
 )
 
