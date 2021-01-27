@@ -50,7 +50,7 @@ function addDelimitersVariables(message) {
 
 const addDelimiters = R.compose(
   addDelimitersVariables,
-  addDelimitersPlural,
+  addDelimitersMacro,
   addDelimitersHTMLTags
 )
 
