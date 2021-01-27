@@ -298,12 +298,8 @@ render it as a string using lazy translation:
 
    export function HappySad(props) {
       return <div>
-         <ImageWithCaption
-            hoverText={t`I'm so happy!`}
-         />
-         <ImageWithCaption
-            hoverText={t`I'm so sad.`}
-         />
+         <ImageWithCaption caption={t`I'm so happy!`} />
+         <ImageWithCaption caption={t`I'm so sad.`} />
       </div>
    }
 
