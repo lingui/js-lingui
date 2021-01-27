@@ -262,6 +262,13 @@ export class Catalog {
 
     const getTranslation = (locale) => {
       const configLocales = this.config.locales.join('", "')
+      
+      if (!catalogs[locale].hasOwnProperty(key)) {
+        console.error(`Message with key ${key} is missing in locale ${locale}`);
+        return null;
+      }
+
+      
       if (catalogs[locale]) {
         return catalogs[locale][key].translation
       }
