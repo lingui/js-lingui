@@ -62,6 +62,7 @@ type CollectOptions = MakeOptions | MakeTemplateOptions
 
 export type MergeOptions = {
   overwrite: boolean
+  files?: string[]
 }
 
 export type GetTranslationsOptions = {
@@ -102,6 +103,7 @@ export class Catalog {
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
       overwrite: options.overwrite,
+      files: options.files,
     })
 
     // Map over all locales and post-process each catalog
@@ -231,10 +233,11 @@ export class Catalog {
       })
 
       // Mark all remaining translations as obsolete
+      // Only if *options.files* is not provided
       const obsoleteMessages = obsoleteKeys.map((key) => ({
         [key]: {
           ...prevCatalog[key],
-          obsolete: true,
+          obsolete: options.files ? false : true,
         },
       }))
 
