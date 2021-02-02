@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/lingui/js-lingui/compare/v3.4.0...v3.5.0) (2021-02-02)
+
+
+### Bug Fixes
+
+* React macros fixes ([#958](https://github.com/lingui/js-lingui/issues/958)) ([353c537](https://github.com/lingui/js-lingui/commit/353c5379a22473293aafcb4651db387e72c82a7a))
+* wrong typing of Trans macro component prop ([#960](https://github.com/lingui/js-lingui/issues/960)) ([57482c0](https://github.com/lingui/js-lingui/commit/57482c0f1ecab7c266628e7c9be2bd10538c7a57))
+
+
+
+
+
 # [3.4.0](https://github.com/lingui/js-lingui/compare/v3.3.0...v3.4.0) (2021-01-13)
 
 

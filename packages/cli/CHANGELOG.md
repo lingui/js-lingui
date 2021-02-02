@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/lingui/js-lingui/compare/v3.4.0...v3.5.0) (2021-02-02)
+
+
+### Bug Fixes
+
+* <Select /> pseudolocalization ([#961](https://github.com/lingui/js-lingui/issues/961)) ([f1e1a25](https://github.com/lingui/js-lingui/commit/f1e1a25acd654c9877147ce3f40bc827bc54987a))
+* message when translations are missing ([#964](https://github.com/lingui/js-lingui/issues/964)) ([14f24f2](https://github.com/lingui/js-lingui/commit/14f24f2725771dcea0793de146abc9b86ea88789))
+* NODE_ENV=production crashes lingui extract [#952](https://github.com/lingui/js-lingui/issues/952) ([f368b35](https://github.com/lingui/js-lingui/commit/f368b353e975dab4024b755eb9d70f48b535a693))
+* obsolete flag disable when using extract [files] ([#967](https://github.com/lingui/js-lingui/issues/967)) ([0ea63e9](https://github.com/lingui/js-lingui/commit/0ea63e9a0b5cd2463fca18621e6dba16642f4d00))
+* React macros fixes ([#958](https://github.com/lingui/js-lingui/issues/958)) ([353c537](https://github.com/lingui/js-lingui/commit/353c5379a22473293aafcb4651db387e72c82a7a))
+* **docs:** documentation-typos ([#955](https://github.com/lingui/js-lingui/issues/955)) ([f73cb8c](https://github.com/lingui/js-lingui/commit/f73cb8c09d9919489f5fbb9a539da30faae53004))
+
+
+### Features
+
+* Introduced @lingui/snowpack-plugin ([#947](https://github.com/lingui/js-lingui/issues/947)) ([96bd31b](https://github.com/lingui/js-lingui/commit/96bd31b54d5ebfa2e28c96e14ee92d43b4199ae5))
+
+
+
+
+
 # [3.4.0](https://github.com/lingui/js-lingui/compare/v3.3.0...v3.4.0) (2021-01-13)
 
 

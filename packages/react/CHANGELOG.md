@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/lingui/js-lingui/compare/v3.4.0...v3.5.0) (2021-02-02)
+
+
+### Bug Fixes
+
+* **docs:** documentation-typos ([#955](https://github.com/lingui/js-lingui/issues/955)) ([f73cb8c](https://github.com/lingui/js-lingui/commit/f73cb8c09d9919489f5fbb9a539da30faae53004))
+* I18nProvider defaultComponent typing ([#953](https://github.com/lingui/js-lingui/issues/953)) ([6b08dd3](https://github.com/lingui/js-lingui/commit/6b08dd309d1ac8e0a8dc081e097e69678e822eda))
+
+
+
+
+
 # [3.4.0](https://github.com/lingui/js-lingui/compare/v3.3.0...v3.4.0) (2021-01-13)
 
 **Note:** Version bump only for package @lingui/react
