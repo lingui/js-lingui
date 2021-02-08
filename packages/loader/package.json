@@ -39,6 +39,6 @@
     "memory-fs": "^0.5.0"
   },
   "peerDependencies": {
-    "webpack": "^4.0.0"
+    "webpack": "^4.0.0 || ^5.0.0"
   }
 }
