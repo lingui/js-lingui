@@ -30,6 +30,10 @@ function walk(base, relativePath = "") {
   return files
 }
 
+function declarationFinder(typesPath) {
+  return typesPath.map(p => fs.existsSync(p) && path.basename(p)).filter(Boolean)
+}
+
 module.exports = async function(bundle) {
   const logKey = chalk.white.bold(bundle.entry)
 
@@ -39,14 +43,13 @@ module.exports = async function(bundle) {
     const resolvedEntry = require.resolve(bundle.entry)
     const packageDir = path.dirname(resolvedEntry)
     const srcDir = path.join(packageDir, "src")
-
-    const declarationFilePath = path.join(packageDir, "index.d.ts")
-
-    const files = walk(srcDir)
-
-    if (fs.existsSync(declarationFilePath)) {
-      files.push("index.d.ts")
-    }
+    const files = [
+      ...walk(srcDir),
+      ...declarationFinder([
+        path.join(packageDir, "index.d.ts"),
+        path.join(packageDir, "global.d.ts"),
+      ])
+    ]
 
     for (const filename of files) {
       const [mainOutputPath] = Packaging.getBundleOutputPaths(
@@ -65,7 +68,7 @@ module.exports = async function(bundle) {
         )
         fs.writeFileSync(mainOutputPath.replace(/\.ts$/, ".js"), code)
       } else {
-        fs.copyFileSync(path.join(packageDir, filename), mainOutputPath)
+        fs.copyFileSync(path.join(packageDir, filename), path.join(outputDir, filename))
       }
     }
   } catch (error) {
