@@ -148,6 +148,7 @@ export function getConfig({
 
 const exampleConfig = {
   ...defaultConfig,
+  runtimeConfigModule: multipleValidOptions({i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"]}, ["@lingui/core", "i18n"]),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },
