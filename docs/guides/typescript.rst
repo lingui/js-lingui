@@ -2,7 +2,7 @@
 Typescript
 **********
 
-Lingui supports typescript out of the box since version ``3.0.0``. Feel free to submit any query you find related to typescript on Github Issues
+Lingui supports typescript types out of the box since version ``3.0.0``. Feel free to submit any query you find related to typescript on Github Issues
 
 Webpack setup
 =============
@@ -61,6 +61,29 @@ otherwise compiled catalogs can't be imported using ES ``import``, but rather Co
   {
     "compileNamespace": "ts"
   }
+
+
+Macros types in non-React environments
+======================================
+
+Since the opening of this issue we investigated that macros can be used on Typescript environments where React isn't required.
+
+Now we're shipping two declaration types:
+  - ``index.d.ts`` files with ``@lingui/core``, ``@lingui/react`` and ``react`` as peerDependencies.
+  - ``global.d.ts`` files with just ``@lingui/core`` as peerDependencies.
+
+Now you can modify your ``tsconfig.json`` in your root directory and reference the global file:
+
+.. code-block:: json
+
+  {
+    "compilerOptions": {
+      "types": [
+        "./node_modules/@lingui/macro/global",
+      ]
+    }
+  }
+
 
 Type definitions
 ================
