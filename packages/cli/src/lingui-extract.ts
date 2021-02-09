@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import chokidar from "chokidar"
 import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
@@ -15,6 +16,7 @@ export type CliExtractOptions = {
   overwrite: boolean
   locale: string
   prevFormat: string | null
+  watch?: boolean
 }
 
 export default function command(
@@ -33,6 +35,7 @@ export default function command(
   process.env.LINGUI_EXTRACT = "1"
 
   options.verbose && console.error("Extracting messages from source files…")
+
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType }  = {}
   catalogs.forEach((catalog) => {
@@ -51,16 +54,19 @@ export default function command(
     console.log()
   })
 
-  console.error(
-    `(use "${chalk.yellow(
-      helpRun("extract")
-    )}" to update catalogs with new messages)`
-  )
-  console.error(
-    `(use "${chalk.yellow(
-      helpRun("compile")
-    )}" to compile catalogs for production)`
-  )
+  if (!options.watch) {
+    console.error(
+      `(use "${chalk.yellow(
+        helpRun("extract")
+      )}" to update catalogs with new messages)`
+    )
+    console.error(
+      `(use "${chalk.yellow(
+        helpRun("compile")
+      )}" to compile catalogs for production)`
+    ) 
+  }
+
   return true
 }
 
@@ -75,6 +81,7 @@ if (require.main === module) {
       "--convert-from <format>",
       "Convert from previous format of message catalogs"
     )
+    .option("--watch", "Enables Watch Mode")
     // Obsolete options
     .option(
       "--babelOptions",
@@ -127,14 +134,46 @@ if (require.main === module) {
   }
 
   if (hasErrors) process.exit(1)
+  
+  const extract = (filePath?: string) => 
+    command(config, {
+      verbose: program.watch ? true : program.verbose || false,
+      clean: program.watch ? false : program.clean || false,
+      overwrite: program.watch ? true : program.overwrite || false,
+      locale: program.locale,
+      watch: program.watch || false,
+      files: filePath ? [filePath] : undefined,
+      prevFormat,
+    })
+  
 
-  const result = command(config, {
-    verbose: program.verbose || false,
-    clean: program.clean || false,
-    overwrite: program.overwrite || false,
-    locale: program.locale,
-    prevFormat,
-  })
+  // Check if Watch Mode is enabled
+  if (program.watch) {
+    console.info(chalk.bold("Initializing Watch Mode..."))
 
-  if (!result) process.exit(1)
+    const catalogs = getCatalogs(config)
+    let paths = []; 
+    let ignored = [];
+
+    catalogs.forEach((catalog) => {
+      paths.push(...catalog.include);
+      ignored.push(...catalog.exclude);
+    })
+
+    const watcher = chokidar.watch(paths, {
+      ignored: ['/(^|[\/\\])\../', ...ignored],
+      persistent: true,
+    });
+
+    const onReady = () => {
+      console.info(chalk.green.bold("Watcher is ready!"))    
+      watcher.on('add', (path) => extract(path)).on('change', (path) => extract(path));
+    };
+
+    watcher.on('ready', () => onReady());
+  } else {
+    const result = extract();
+  
+    if (!result) process.exit(1)
+  }
 }

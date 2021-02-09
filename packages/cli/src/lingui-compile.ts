@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import chokidar from "chokidar"
 import fs from "fs"
 import * as R from "ramda"
 import program from "commander"
@@ -129,6 +130,7 @@ if (require.main === module) {
       "--namespace <namespace>",
       "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
     )
+    .option("--watch", "Enables Watch Mode")
     .on("--help", function () {
       console.log("\n  Examples:\n")
       console.log(
@@ -153,16 +155,46 @@ if (require.main === module) {
     config.format = program.format
   }
 
-  const results = command(config, {
-    verbose: program.verbose || false,
+  const compile = () => command(config, {
+    verbose: program.watch ? true : program.verbose || false,
     allowEmpty: !program.strict,
     typescript: program.typescript || config.compileNamespace === "ts" || false,
     namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
   })
 
-  if (!results) {
-    process.exit(1)
-  }
+  // Check if Watch Mode is enabled
+  if (program.watch) {
+    const NAME = "{name}"
+    const LOCALE = "{locale}"
 
-  console.log("Done!")
+    console.info(chalk.bold("Initializing Watch Mode...")) 
+
+    const catalogs = getCatalogs(config);
+    let paths = []; 
+
+    config.locales.forEach((locale) => {
+      catalogs.forEach((catalog) => {
+        paths.push(`${catalog.path.replace(LOCALE, locale).replace(NAME, "*")}.${config.format}`)
+      })  
+    })
+
+    const watcher = chokidar.watch(paths, {
+      persistent: true,
+    });
+
+    const onReady = () => {
+      console.info(chalk.green.bold("Watcher is ready!"))
+      watcher.on('add', () => compile()).on('change', () => compile());
+    };
+
+    watcher.on('ready', () => onReady());
+  } else {
+    const results = compile();
+
+    if (!results) {
+      process.exit(1)
+    }
+
+    console.log("Done!")
+  }
 }
