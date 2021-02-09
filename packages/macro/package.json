@@ -1,6 +1,6 @@
 {
   "name": "@lingui/macro",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
   "main": "index.ts",
   "author": {
@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@lingui/conf": "^3.5.0",
+    "@lingui/conf": "^3.5.1",
     "ramda": "^0.27.1"
   },
   "peerDependencies": {
