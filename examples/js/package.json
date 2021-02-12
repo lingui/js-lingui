@@ -12,13 +12,13 @@
     "pretest": "lingui compile --strict"
   },
   "dependencies": {
-    "@lingui/core": "^3.2.3",
-    "@lingui/macro": "^3.2.3"
+    "@lingui/core": "^3.5.1",
+    "@lingui/macro": "^3.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
-    "@lingui/cli": "^3.2.3",
+    "@lingui/cli": "^3.5.1",
     "babel-jest": "^26.6.1",
     "babel-plugin-macros": "^2.8.0",
     "jest": "^26.6.1"

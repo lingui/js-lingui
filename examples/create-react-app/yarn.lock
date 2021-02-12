@@ -1162,6 +1162,16 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@endemolshinegroup/cosmiconfig-typescript-loader@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@endemolshinegroup/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-3.0.2.tgz#eea4635828dde372838b0909693ebd9aafeec22d"
+  integrity sha512-QRVtqJuS1mcT56oHpVegkKBlgtWjXw/gHNWO3eL9oyB5Sc7HBoc2OLG/nYpVfT/Jejvo3NUrD0Udk7XgoyDKkA==
+  dependencies:
+    lodash.get "^4"
+    make-error "^1"
+    ts-node "^9"
+    tslib "^2"
+
 "@eslint/eslintrc@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.2.1.tgz#f72069c330461a06684d119384435e12a5d76e3c"
@@ -1408,28 +1418,28 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lingui/babel-plugin-extract-messages@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.2.3.tgz#59f861bb02edb7eb4d29d1d283a3351f98b4e4f4"
-  integrity sha512-F1N6cwjxSxKClUT4yfRnRtJ6lkUckrDx73RSbVL7OgrefQzZS9/RjnufULPV0kU9p1XDKfaBI1YHR4zQvdR+5A==
+"@lingui/babel-plugin-extract-messages@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.5.1.tgz#998ecb93bd07ef2980ae815eb42e1729926eb4f7"
+  integrity sha512-uPMEbe5r3Zj3KVd6XTln8LTUik+lavsrf18FssiiuGNg7c0QoihsO2xnJjONSdpM30yVwZGLO1nhM/lEB08XcQ==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "^3.2.3"
+    "@lingui/conf" "^3.5.1"
     mkdirp "^1.0.4"
 
-"@lingui/cli@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.2.3.tgz#40b83512edb468fe3b61da00c3f8885d9946c104"
-  integrity sha512-fsbiKrO8CO5dWy3hDQ6a8w0/m82Elv3UZ+T/LPyLT0spSxEVsZbJgySmomy2u/tYEkOEhXipkvoGR8mueaF8rA==
+"@lingui/cli@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.5.1.tgz#e2ac505358663214e608368cc22686c13f0764d0"
+  integrity sha512-34CieHCMgVgZqzR0mgw/ZD6zJ7I/HwloCgoKJGFd2IT53PusG89e8I5OvvlhnTL1sQhTPqABpBR+iu6LywGleQ==
   dependencies:
     "@babel/generator" "^7.11.6"
     "@babel/parser" "^7.11.5"
     "@babel/plugin-syntax-jsx" "^7.10.4"
     "@babel/runtime" "^7.11.2"
     "@babel/types" "^7.11.5"
-    "@lingui/babel-plugin-extract-messages" "^3.2.3"
-    "@lingui/conf" "^3.2.3"
+    "@lingui/babel-plugin-extract-messages" "^3.5.1"
+    "@lingui/conf" "^3.5.1"
     babel-plugin-macros "^2.8.0"
     bcp-47 "^1.0.7"
     chalk "^4.1.0"
@@ -1444,22 +1454,26 @@
     messageformat-parser "^4.1.3"
     micromatch "4.0.2"
     mkdirp "^1.0.4"
+    node-gettext "^3.0.0"
     normalize-path "^3.0.0"
     ora "^5.1.0"
     papaparse "^5.3.0"
-    pofile "^1.0.11"
+    plurals-cldr "^1.0.4"
+    pofile "^1.1.0"
     pseudolocale "^1.1.0"
     ramda "^0.27.1"
 
-"@lingui/conf@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.2.3.tgz#ab3ac70eef8f2f219ce85d8b8516ecc128af477a"
-  integrity sha512-9Zfq/Z0vH9BucaXVbeIIoWDb7RsnqBizdHn9+PUzQx5AiudzBeKrW8gF0IGxFwugFoS5ho8qVLovYoDS2JSDYA==
+"@lingui/conf@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.5.1.tgz#3d9ff58d4881a08f3bb2e42b06e86e926d568281"
+  integrity sha512-N8LfbgJUFSBFTC85+BhmbZ2B+N3a4wTPjhJxohE4n8T/mA0LnxVkC1ldgZxZG6IKYxb2D9acxyLTxTh064Kr9A==
   dependencies:
     "@babel/runtime" "^7.11.2"
+    "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
     chalk "^4.1.0"
     cosmiconfig "^7.0.0"
     jest-validate "^26.5.2"
+    lodash.get "^4.4.2"
 
 "@lingui/core@^3.2.3":
   version "3.2.3"
@@ -1470,24 +1484,24 @@
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
-"@lingui/loader@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.2.3.tgz#13468bc294da4d4f88d00e7bec3ebe2ef83b8d59"
-  integrity sha512-ylyvPeWjomCXZIZC8SZ0VAuhR62vt+jghYdkB0QQbxzgMkwZLTkaA1zGW7im0mjrI0Hwa4PgXCivS7K3krwxSw==
+"@lingui/loader@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/loader/-/loader-3.5.1.tgz#b79045996246c3b7a2e1198c361b91a44c388aea"
+  integrity sha512-IfalTjtIN8DsAhYozaKI2to0a+MGD553cVjXrKuTv9gO6Sr0cg1Y6ryCbdPhsbf9kQx3PLIcBVAi0qsjcW4xfA==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/cli" "^3.2.3"
-    "@lingui/conf" "^3.2.3"
+    "@lingui/cli" "^3.5.1"
+    "@lingui/conf" "^3.5.1"
     loader-utils "^2.0.0"
     ramda "^0.27.1"
 
-"@lingui/macro@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.2.3.tgz#d054f9f6008b068a134d7bb3bfe87b3573c5d556"
-  integrity sha512-XcGUD8qQe8b351qGA/AyX+WKQWJu3T/r8wlXsttKoeFd7OXIitAw53L+OLc6xauM5xUssdaWo6BtOJnLw034gA==
+"@lingui/macro@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/macro/-/macro-3.5.1.tgz#130b6b56982fc8ae63bd534651137b61a1b32f97"
+  integrity sha512-hLMCcA4ocBsemjCJFPQnW43jDvSv8xOovIDzcjh1dFQP5EjdRGyJRjmqaC3d3v3b8LpdUKN//EChLAF/dwwGrw==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/conf" "^3.2.3"
+    "@lingui/conf" "^3.5.1"
     ramda "^0.27.1"
 
 "@lingui/react@^3.2.3":
@@ -2454,6 +2468,11 @@ aproba@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
   integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
+
+arg@^4.1.0:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/arg/-/arg-4.1.3.tgz#269fc7ad5b8e42cb63c896d5666017261c144089"
+  integrity sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -3798,6 +3817,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+create-require@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
+  integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
 cross-spawn@7.0.3, cross-spawn@^7.0.0, cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -4281,6 +4305,11 @@ diff-sequences@^26.5.0:
   version "26.5.0"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.5.0.tgz#ef766cf09d43ed40406611f11c6d8d9dd8b2fefd"
   integrity sha512-ZXx86srb/iYy6jG71k++wBN9P9J05UNQ5hQHQd9MtMPvcqXPx/vKU69jfHV637D00Q2gSgPk2D+jSx3l1lDW/Q==
+
+diff@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
+  integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -7326,6 +7355,11 @@ lodash._reinterpolate@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
 
+lodash.get@^4, lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -7430,6 +7464,11 @@ make-dir@^3.0.0, make-dir@^3.0.2:
   integrity sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==
   dependencies:
     semver "^6.0.0"
+
+make-error@^1, make-error@^1.1.1:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/make-error/-/make-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
+  integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
 
 make-plural@^6.2.2:
   version "6.2.2"
@@ -7852,6 +7891,13 @@ node-forge@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.0.tgz#d624050edbb44874adca12bb9a52ec63cb782579"
   integrity sha512-7ASaDa3pD+lJ3WvXFsxekJQelBKRpne+GOVbLbtHYdd7pFspyeuJHnWfLplGf3SwKGbfs/aYl5V/JCIaHVUKKQ==
+
+node-gettext@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/node-gettext/-/node-gettext-3.0.0.tgz#6b3a253309aa1e53164646c6c644fcddd0d45c58"
+  integrity sha512-/VRYibXmVoN6tnSAY2JWhNRhWYJ8Cd844jrZU/DwLVoI4vBI6ceYbd8i42sYZ9uOgDH3S7vslIKOWV/ZrT2YBA==
+  dependencies:
+    lodash.get "^4.4.2"
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -8529,6 +8575,11 @@ pkg-up@3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+plurals-cldr@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/plurals-cldr/-/plurals-cldr-1.0.4.tgz#534e4784f80679d3b0b39b0fb6cc46645fcf5de8"
+  integrity sha512-4nLXqtel7fsCgzi8dvRZvUjfL8SXpP982sKg7b2TgpnR8rDnes06iuQ83trQ/+XdtyMIQkBBbKzX6x97eLfsJQ==
+
 pnp-webpack-plugin@1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/pnp-webpack-plugin/-/pnp-webpack-plugin-1.6.4.tgz#c9711ac4dc48a685dabafc86f8b6dd9f8df84149"
@@ -8536,7 +8587,7 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
-pofile@^1.0.11:
+pofile@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pofile/-/pofile-1.1.0.tgz#9ce84bbef5043ceb4f19bdc3520d85778fad4f94"
   integrity sha512-6XYcNkXWGiJ2CVXogTP7uJ6ZXQCldYLZc16wgRp8tqRaBTTyIfF+TUT3EQJPXTLAT7OTPpTAoaFdoXKfaTRU1w==
@@ -10520,18 +10571,18 @@ source-map-resolve@^0.6.0:
     atob "^2.1.2"
     decode-uri-component "^0.2.0"
 
-source-map-support@^0.5.6, source-map-support@~0.5.12:
-  version "0.5.16"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
-  integrity sha512-efyLRJDr68D9hBBNIPWFjhpFzURh+KJykQwvMyW5UiZzYwoF6l4YMMDIJJEyFWxWCqfyxLzz6tSfUFR+kXXsVQ==
+source-map-support@^0.5.17, source-map-support@~0.5.19:
+  version "0.5.19"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
+  integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map-support@~0.5.19:
-  version "0.5.19"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
-  integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
+source-map-support@^0.5.6, source-map-support@~0.5.12:
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
+  integrity sha512-efyLRJDr68D9hBBNIPWFjhpFzURh+KJykQwvMyW5UiZzYwoF6l4YMMDIJJEyFWxWCqfyxLzz6tSfUFR+kXXsVQ==
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
@@ -11207,6 +11258,18 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
+ts-node@^9:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
+  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
+  dependencies:
+    arg "^4.1.0"
+    create-require "^1.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.17"
+    yn "3.1.1"
+
 ts-pnp@1.2.0, ts-pnp@^1.1.6:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
@@ -11226,6 +11289,11 @@ tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+
+tslib@^2:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tsutils@^3.17.1:
   version "3.17.1"
@@ -12120,3 +12188,8 @@ yargs@^15.4.1:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yn@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
+  integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
