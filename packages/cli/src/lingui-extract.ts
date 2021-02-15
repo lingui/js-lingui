@@ -137,9 +137,9 @@ if (require.main === module) {
   
   const extract = (filePath?: string) => 
     command(config, {
-      verbose: program.watch ? true : program.verbose || false,
+      verbose: program.watch || program.verbose || false,
       clean: program.watch ? false : program.clean || false,
-      overwrite: program.watch ? true : program.overwrite || false,
+      overwrite: program.watch || program.overwrite || false,
       locale: program.locale,
       watch: program.watch || false,
       files: filePath ? [filePath] : undefined,
