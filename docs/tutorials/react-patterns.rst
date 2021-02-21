@@ -3,8 +3,8 @@ Common i18n patterns in React
 *****************************
 
 Following page describes the most common i18n patterns in React. It's a follow-up
-to `tutorial <react>`_ with practical examples. See the
-`API reference <../ref/react>`_ for detailed information about all components.
+to :doc:`tutorial <react>` with practical examples. See the
+:doc:`API reference <../ref/react>` for detailed information about all components.
 
 Macros
 ======
