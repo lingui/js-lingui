@@ -3,7 +3,7 @@
   "version": "3.5.1",
   "description": "React components for translations",
   "main": "index.js",
-  "module": "esm/react.esm.js",
+  "module": "esm/index.js",
   "types": "cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@lingui/core": "^3.5.2"
+    "@lingui/core": "^3.5.1"
   },
   "devDependencies": {
     "react-testing-library": "^8.0.1"
