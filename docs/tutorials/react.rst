@@ -732,6 +732,7 @@ in the documentation for more info and happy internationalizing!
 Further reading
 ===============
 
+- `Common i18n patterns in React <./react-patterns.html>`_
 - `@lingui/react reference documentation <../ref/react.html>`_
 - `@lingui/cli reference documentation <../ref/cli.html>`_
 - `Pluralization Guide <../guides/plurals.html>`_
