@@ -3,6 +3,7 @@
   "version": "3.5.1",
   "description": "I18n tools for javascript",
   "main": "index.js",
+  "module": "esm/index.js",
   "types": "cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",

@@ -1,6 +1,18 @@
-import i18nModule from '../index.js'
+import {
+    i18n as i18nProd,
+    setupI18n as setupI18nProd,
+    formats as formatsProd,
+    I18n as I18nProd
+} from './core.esm';
 
-export const setupI18n = i18nModule.setupI18n
-export const I18n = i18nModule.I18n
-export const i18n = i18nModule.i18n
-export const formats = i18nModule.formats
+import {
+    i18n as i18nDev,
+    setupI18n as setupI18nDev,
+    formats as formatsDev,
+    I18n as I18nDev
+} from './dev.esm';
+
+export const i18n = process.env.NODE_ENV === 'production' ? i18nProd : i18nDev;
+export const setupI18n = process.env.NODE_ENV === 'production' ? setupI18nProd : setupI18nDev;
+export const formats = process.env.NODE_ENV === 'production' ? formatsProd : formatsDev;
+export const I18n = process.env.NODE_ENV === 'production' ? I18nProd : I18nDev;

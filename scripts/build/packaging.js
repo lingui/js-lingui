@@ -10,7 +10,7 @@ const {
   asyncRimRaf
 } = require("./utils")
 
-const { UNIVERSAL, NODE, NOOP } = Bundles.bundleTypes
+const { UNIVERSAL, NODE, NOOP, ESM } = Bundles.bundleTypes
 
 function getPackageName(name) {
   return name.split("/", 2).reverse()[0]
@@ -24,6 +24,8 @@ function getBundleOutputPaths(bundleType, filename, packageName) {
     case NOOP:
     case NODE:
       return [`packages/${name}/build/${_filename}`]
+    case ESM:
+      return [`packages/${name}/build/esm/${_filename}`]
     case UNIVERSAL:
       return [`packages/${name}/build/cjs/${_filename}`]
     // case UMD_DEV:

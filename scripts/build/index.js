@@ -34,7 +34,7 @@ function shouldSkipBundle(bundle, bundleType) {
 }
 
 async function buildEverything() {
-  await asyncRimRaf("build")
+  await asyncRimRaf("packages/**/build")
 
   // Run them serially for better console output
   // and to avoid any potential race conditions.
