@@ -44,17 +44,12 @@ In the following example, message ``Image caption`` will be extracted and used a
 
 .. code-block:: jsx
 
-   import { I18n } from "@lingui/react"
+   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
-            )}
-         </I18n>
-      )
+      const { i18n } = useLingui()
+      return <img src="..." alt={i18n._(t`Image caption`)} />
    }
 
 Using custom ID
@@ -84,17 +79,12 @@ argument and then use string templates as usual:
 
 .. code-block:: jsx
 
-   import { I18n } from "@lingui/react"
+   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(t('msg.caption')`Image caption`)} />
-            )}
-         </I18n>
-      )
+      const { i18n } = useLingui()
+      return <img src="..." alt={i18n._(t('msg.caption')`Image caption`)} />
    }
 
 Message ``msg.caption`` will be extracted with default value ``Image caption``.
@@ -104,20 +94,17 @@ pass ID as the first param (in this case, ``'msg.caption'``):
 
 .. code-block:: jsx
 
-   import { I18n } from "@lingui/react"
+   import { useLingui } from "@lingui/react"
    import { plural } from "@lingui/macro"
 
    export default function ImageWithCaption({ count }) {
+      const { i18n } = useLingui()
       return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(plural('msg.caption', {
-                  value: count,
-                  one: "# image caption",
-                  other: "# image captions",
-               }))} />
-            )}
-         </I18n>
+         <img src="..." alt={i18n._(plural('msg.caption', {
+            value: count,
+            one: "# image caption",
+            other: "# image captions",
+         }))} />
       )
    }
 
@@ -131,10 +118,9 @@ attributes:
 
    <img src="..." alt="Image caption" />
 
-In such case you need to use :component:`I18n` render prop component to access ``i18n``
-object and :jsmacro:`t` macro to wrap message:
+In such case you need to use ``i18n`` object and :jsmacro:`t` macro to wrap message:
 
-1. Use :js:func:`withI18n` HOC or :component:`I18n` render prop component from ``@lingui/react``, to access
+1. Use :js:func:`withI18n` HOC or :js:func:`useLingui` hook from ``@lingui/react``, to access
    ``i18n`` object.
 
 2. Call :js:meth:`i18n._`` to translate message wrapped in JS macros. :jsmacro:`t` is
@@ -154,18 +140,13 @@ object and :jsmacro:`t` macro to wrap message:
 
 .. code-block:: jsx
 
-   // using the render prop
-   import { I18n } from "@lingui/react"
+   // using the useLingui hook
+   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(t`Image caption`)} />
-            )}
-         </I18n>
-      )
+      const { i18n } = useLingui()
+      return <img src="..." alt={i18n._(t`Image caption`)} />
    }
 
 
@@ -284,16 +265,11 @@ render it as a string using lazy translation:
 .. code-block:: jsx
 
    import { t } from "@lingui/macro"
-   import { I18n } from "@lingui/react"
+   import { useLingui } from "@lingui/react"
 
    export default function ImageWithCaption(props) {
-      return (
-         <I18n>
-            {({ i18n }) => (
-               <img src="..." alt={i18n._(props.caption)} />
-            )}
-         </I18n>
-      )
+      const { i18n } = useLingui()
+      return <img src="..." alt={i18n._(props.caption)} />
    }
 
    export function HappySad(props) {
