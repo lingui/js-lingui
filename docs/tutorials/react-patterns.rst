@@ -123,7 +123,7 @@ In such case you need to use ``i18n`` object and :jsmacro:`t` macro to wrap mess
 1. Use :js:func:`withI18n` HOC or :js:func:`useLingui` hook from ``@lingui/react``, to access
    ``i18n`` object.
 
-2. Call :js:meth:`i18n._`` to translate message wrapped in JS macros. :jsmacro:`t` is
+2. Call :js:meth:`i18n._` to translate message wrapped in JS macros. :jsmacro:`t` is
    equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :component:`Plural`.
 
 .. code-block:: jsx
