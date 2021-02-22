@@ -189,7 +189,7 @@ The ``locale/_build`` folder and ``locale/*/*.js`` (compiled catalogs) are safe 
 What you do need to keep in VCS are the json files (``locale/*/*.json``) that contain the messages
 for translators. The JavaScript functions that return the actual translations when your app runs in
 production are created from those json files. See
-`Excluding build files <../guides/excluding-build-files>`_ guide for more info.
+:doc:`Excluding build files <../guides/excluding-build-files>` guide for more info.
 
 If you're using a CI, it is a good idea to add the ``yarn extract`` and ``yarn compile``
 commands to your build process.
@@ -197,6 +197,6 @@ commands to your build process.
 Further reading
 ===============
 
-That's it! Checkout `CLI reference <../ref/cli>`_ documentation for more
-info about ``lingui`` commands or `configuration reference <../ref/conf>`_
+That's it! Checkout :doc:`CLI reference <../ref/cli>` documentation for more
+info about ``lingui`` commands or :doc:`configuration reference <../ref/conf>`
 for info about configuration parameters.

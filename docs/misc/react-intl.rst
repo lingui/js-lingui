@@ -230,7 +230,7 @@ to the translator.
 `react-intl`_ comes with the Babel plugin which extracts messages from individual files,
 but it's up to you to merge them into one file which you can send to translators.
 
-`LinguiJS`_ provides handy `CLI <../tutorials/cli>`_ which extracts messages and merges
+`LinguiJS`_ provides handy :doc:`CLI <../tutorials/cli>` which extracts messages and merges
 them with any existing translations. Again, the story doesn't end here.
 
 Compiling messages

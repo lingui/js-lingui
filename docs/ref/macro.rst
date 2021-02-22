@@ -2,7 +2,7 @@
 @lingui/macro - Reference
 *************************
 
-``@lingui/macro`` package provides `babel macros <babel-plugin-macros>`_ which
+``@lingui/macro`` package provides `babel macros <https://github.com/kentcdodds/babel-plugin-macros>`_ which
 transforms JavaScript objects and JSX elements into messages in ICU MessageFormat.
 
 Installation
