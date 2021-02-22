@@ -156,7 +156,7 @@ if (require.main === module) {
   }
 
   const compile = () => command(config, {
-    verbose: program.watch ? true : program.verbose || false,
+    verbose: program.watch || program.verbose || false,
     allowEmpty: !program.strict,
     typescript: program.typescript || config.compileNamespace === "ts" || false,
     namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
