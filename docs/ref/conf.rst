@@ -405,8 +405,10 @@ locales
 Default: ``[]``
 
 Locale tags which are used in the project. :cli:`extract` and :cli:`compile`
-writes one catalog for each locale. Each locale must be a valid
-`BCP-47 code <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_.
+writes one catalog for each locale. Each locale should be a valid `BCP-47 code <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_ code. If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData. 
+
+For example for `pt-br`: ``i18n.loadLocaleData('pt-br', { plurals: pt })``
+
 
 orderBy
 -------
