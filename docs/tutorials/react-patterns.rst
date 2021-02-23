@@ -126,40 +126,17 @@ equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :jsxmacro:`
 Translations outside React components
 =====================================
 
-Another common pattern is when you need to access translations (``i18n`` object)
-outside React components, for example inside ``redux-saga``:
-
-1. Create your own instance of ``i18n`` using :js:func:`setupI18n` form ``@lingui/core``
-
-2. Pass this instance as ``i18n`` prop to :component:`I18nProvider`.
+Another common pattern is when you need to access translations outside React components,
+for example inside ``redux-saga``. You can use :jsmacro:`t` macro outside React context
+as usual:
 
    .. code-block:: jsx
 
-      // App.js
-      import { setupI18n } from "@lingui/core"
-      import { I18nProvider } from "@lingui/react"
-
-      export const i18n = setupI18n()
-
-      export default function App() {
-         return (
-            <I18nProvider i18n={i18n}>
-               {/* Our app */}
-            </I18nProvider>
-         )
-      }
-
-3. Whenever you are outside React context (i.e. you can't access props), you can use this
-   ``i18n`` object.
-
-   .. code-block:: jsx
-
-      import { i18n } from "./App.js"
       import { t } from "@lingui/macro"
 
       export function alert() {
-         // use i18n as if you were inside a React component
-         alert(i18n._(t`...`))
+         // use t as if you were inside a React component
+         alert(t`...`)
       }
 
 Lazy translations
