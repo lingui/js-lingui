@@ -44,12 +44,10 @@ In the following example, message ``Image caption`` will be extracted and used a
 
 .. code-block:: jsx
 
-   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      const { i18n } = useLingui()
-      return <img src="..." alt={i18n._(t`Image caption`)} />
+      return <img src="..." alt={t`Image caption`} />
    }
 
 Using custom ID
@@ -74,37 +72,32 @@ Messages ``msg.header`` and ``msg.hello`` will be extracted with default values
 With :jsmacro:`t`
 ^^^^^^^^^^^^^^^^^
 
-If you're using custom IDs in your project, call :jsmacro:`t` with ID as a first
-argument and then use string templates as usual:
+If you're using custom IDs in your project, call :jsmacro:`t` with a message descriptor
+object and pass ID as ``id`` prop:
 
 .. code-block:: jsx
 
-   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      const { i18n } = useLingui()
-      return <img src="..." alt={i18n._(t('msg.caption')`Image caption`)} />
+      return <img src="..." alt={t({id: 'msg.caption', message: `Image caption`})} />
    }
 
 Message ``msg.caption`` will be extracted with default value ``Image caption``.
 
 For all other js macros (:jsmacro:`plural`, :jsmacro:`select`, :jsmacro:`selectOrdinal`),
-pass ID as the first param (in this case, ``'msg.caption'``):
+use them inside :jsmacro:`t` macro to pass ID (in this case, ``'msg.caption'``).
 
 .. code-block:: jsx
 
-   import { useLingui } from "@lingui/react"
-   import { plural } from "@lingui/macro"
+   import { t, plural } from "@lingui/macro"
 
    export default function ImageWithCaption({ count }) {
-      const { i18n } = useLingui()
       return (
-         <img src="..." alt={i18n._(plural('msg.caption', {
-            value: count,
+         <img src="..." alt={t({id: 'msg.caption', message: plural(count, {
             one: "# image caption",
             other: "# image captions",
-         }))} />
+         })})} />
       )
    }
 
@@ -118,35 +111,15 @@ attributes:
 
    <img src="..." alt="Image caption" />
 
-In such case you need to use ``i18n`` object and :jsmacro:`t` macro to wrap message:
-
-1. Use :js:func:`withI18n` HOC or :js:func:`useLingui` hook from ``@lingui/react``, to access
-   ``i18n`` object.
-
-2. Call :js:meth:`i18n._` to translate message wrapped in JS macros. :jsmacro:`t` is
-   equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :component:`Plural`.
+In such case you need to use :jsmacro:`t` macro to wrap message. :jsmacro:`t` is
+equivalent for :jsxmacro:`Trans`, :jsmacro:`plural` is equivalent to :jsxmacro:`Plural`.
 
 .. code-block:: jsx
 
-   // using the withI18n HOC
-   import { withI18n } from "@lingui/react"
-   import { t } from "@lingui/macro"
-
-   function ImageWithCaption({ i18n }) {
-      return <img src="..." alt={i18n._(t`Image caption`)} />
-   }
-
-   export default withI18n(ImageWithCaption)
-
-.. code-block:: jsx
-
-   // using the useLingui hook
-   import { useLingui } from "@lingui/react"
    import { t } from "@lingui/macro"
 
    export default function ImageWithCaption() {
-      const { i18n } = useLingui()
-      return <img src="..." alt={i18n._(t`Image caption`)} />
+      return <img src="..." alt={t`Image caption`} />
    }
 
 
