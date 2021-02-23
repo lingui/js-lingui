@@ -3,7 +3,8 @@
 const bundleTypes = {
   UNIVERSAL: "UNIVERSAL",
   NODE: "NODE",
-  NOOP: "NOOP"
+  NOOP: "NOOP",
+  ESM: "ESM",
 }
 
 const bundles = [

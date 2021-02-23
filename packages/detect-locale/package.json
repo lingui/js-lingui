@@ -3,6 +3,7 @@
   "version": "3.5.1",
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "index.js",
+  "module": "esm/index.js",
   "types": "cjs/index.d.ts",
   "license": "MIT",
   "keywords": [
