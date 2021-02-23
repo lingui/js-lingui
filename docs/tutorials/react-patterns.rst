@@ -169,10 +169,11 @@ passing it to :jsxmacro:`Trans` as its ``id`` prop:
    }
 
 Or to render the message descriptor as a string-only translation, just pass it to
-the :js:meth:`I18n._` method as usual:
+the :js:meth:`I18n._` method:
 
 .. code-block:: jsx
 
+   import { i18n } from '@lingui/core'
    import { t } from "@lingui/macro"
 
    const favoriteColors = [
@@ -182,9 +183,11 @@ the :js:meth:`I18n._` method as usual:
       t`Green`,
    ]
 
-   const translatedColorNames = favoriteColors.map(
-      color => i18n._(color)
-   )
+   export function getTranslatedColorNames() {
+      return favoriteColors.map(
+         color => i18n._(color)
+      )
+   }
 
 Passing messages as props
 -------------------------
