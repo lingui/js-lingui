@@ -186,7 +186,7 @@ passing it to :jsxmacro:`Trans` as its ``id`` prop:
          <ul>
             {favoriteColors.map(color => (
                <li><Trans id={color}/></li>
-            }
+            ))}
          </ul>
       )
    }
