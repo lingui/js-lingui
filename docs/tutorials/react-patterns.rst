@@ -209,17 +209,14 @@ element as the prop:
    }
 
 If you need the prop to be displayed as a string-only translation, you can pass
-a message descriptor (tagged with the :jsmacro:`t` macro), and have the component
-render it as a string using lazy translation:
+a message tagged with the :jsmacro:`t` macro:
 
 .. code-block:: jsx
 
    import { t } from "@lingui/macro"
-   import { useLingui } from "@lingui/react"
 
    export default function ImageWithCaption(props) {
-      const { i18n } = useLingui()
-      return <img src="..." alt={i18n._(props.caption)} />
+      return <img src="..." alt={props.caption} />
    }
 
    export function HappySad(props) {
