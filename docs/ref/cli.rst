@@ -44,7 +44,7 @@ Commands
 ``extract``
 -----------
 
-.. lingui-cli:: extract [files...] [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose]
+.. lingui-cli:: extract [files...] [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose] [--watch]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -101,6 +101,14 @@ Convert message catalogs from previous format (see :conf:`format` option).
 
 Prints additional information.
 
+.. lingui-cli-option:: --watch
+
+Watch mode.
+
+Watches only for changes in files in paths defined in config file or in the command itself.
+
+Remember to use this only in development as this command do not cleans obsolete translations.
+
 ``extract-template``
 --------------------
 
@@ -115,7 +123,7 @@ Prints additional information.
 ``compile``
 -----------
 
-.. lingui-cli:: compile [--strict] [--format <format>] [--verbose] [--namespace <namespace>]
+.. lingui-cli:: compile [--strict] [--format <format>] [--verbose] [--namespace <namespace>] [--watch]
 
 This command compiles message catalogs in :conf:`localeDir` and outputs
 minified Javascript files. Each message is replaced with a function
@@ -144,3 +152,9 @@ global configuration).
 
 Is the same as using :conf:`compileNamespace` with the value "ts".
 Generates a {compiledFile}.d.ts and the compiled file is generated using the extension .ts
+
+.. lingui-cli-option:: --watch
+
+Watch mode.
+
+Watches only for changes in locale files in your defined locale catalogs. For ex. ``locales\en\messages.po``
