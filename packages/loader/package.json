@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "3.5.1",
+  "version": "3.6.0",
   "description": "webpack loader for lingui message catalogs",
   "main": "index.js",
   "author": {
@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@lingui/cli": "^3.5.1",
-    "@lingui/conf": "^3.5.1",
+    "@lingui/cli": "^3.6.0",
+    "@lingui/conf": "^3.6.0",
     "loader-utils": "^2.0.0",
     "ramda": "^0.27.1"
   },
