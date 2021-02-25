@@ -59,6 +59,7 @@
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
     "papaparse": "^5.3.0",
+    "pkg-up": "^3.1.0",
     "plurals-cldr": "^1.0.4",
     "pofile": "^1.1.0",
     "pseudolocale": "^1.1.0",
