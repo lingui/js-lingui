@@ -1,5 +1,5 @@
 import fs from "fs"
-import path from "path"
+import pkgUp from "pkg-up"
 
 export const projectType = {
   CRA: "CRA",
@@ -7,7 +7,7 @@ export const projectType = {
 }
 
 function getPackageJson() {
-  const packageJsonPath = path.resolve("package.json")
+  const packageJsonPath = pkgUp.sync()
 
   try {
     const json = fs.readFileSync(packageJsonPath, "utf8")
