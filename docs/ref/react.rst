@@ -133,6 +133,22 @@ are arguments and components used for formatting translation:
      components={[<Link to="/docs" />]}
    />;
 
+Plurals
+^^^^^^^
+
+If you cannot use `@lingui/macro` for some reason(maybe you compile your code using just TS instead of babel), you can render plurals using the plain Trans component like this:
+
+.. code-block:: jsx
+
+   import React from 'react';
+   import { Trans } from '@lingui/react';
+   
+   <Trans
+      id="{count, plural, =1 {car} other {cars}}"
+      values={{ count: cars.length }}
+   ></Trans>
+
+
 Providers
 =========
 

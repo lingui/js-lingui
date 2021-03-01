@@ -8,7 +8,7 @@ This guide suppose you use Create React App 2.0 (the default version).
 Install
 =======
 
-1. Follow `Create React App`_ documentation for more info. Boostrap your project with
+1. Follow `Create React App`_ documentation for more info. Bootstrap your project with
    following commands:
 
    .. code-block:: shell
@@ -59,7 +59,7 @@ Install
    in e.g: ``src/locales/en/messages.po``). Finally, PO format is recommended. See
    :conf:`format` documentation for other available formats.
 
-4. Optionally, add following scripts to your ``package.json`` for conveniece:
+4. Optionally, add following scripts to your ``package.json`` for convenience:
 
    .. code-block:: json
 
@@ -81,7 +81,7 @@ Install
 
    There should be no error and you can find extracted messages in src/locales.
 
-Congratulations! You've sucessfully set up project with LinguiJS.
+Congratulations! You've successfully set up project with LinguiJS.
 Now it's good time to follow :doc:`React tutorial </tutorials/react>`
 or read about :doc:`ICU Message Format </ref/message-format>` which
 is used in messages.
