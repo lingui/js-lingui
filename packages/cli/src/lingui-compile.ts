@@ -58,9 +58,12 @@ function command(config: LinguiConfig, options) {
       )
 
       if (!options.allowEmpty) {
-        const missing = R.values(messages)
+        const missingMsgIds = R.pipe(
+          R.pickBy(R.isNil),
+          R.keys,
+        )(messages)
 
-        if (missing.some(R.isNil)) {
+        if (missingMsgIds.length > 0) {
           console.error(
             chalk.red(
               `Error: Failed to compile catalog for locale ${chalk.bold(
@@ -71,9 +74,9 @@ function command(config: LinguiConfig, options) {
 
           if (options.verbose) {
             console.error(chalk.red("Missing translations:"))
-            missing.forEach((msgId) => console.log(msgId))
+            missingMsgIds.forEach((msgId) => console.log(msgId))
           } else {
-            console.error(chalk.red(`Missing ${missing.length} translation(s)`))
+            console.error(chalk.red(`Missing ${missingMsgIds.length} translation(s)`))
           }
           console.error()
           process.exit(1)
