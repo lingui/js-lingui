@@ -143,26 +143,26 @@ Lazy translations
 =================
 
 Messages don't have to be declared at the same code location where they're displayed.
-Tag a string with the :jsmacro:`t` macro, and you've created a "message descriptor", which
-can then be passed around as a variable, and can be displayed as a translated string by
-passing it to :jsxmacro:`Trans` as its ``id`` prop:
+Tag a string with the :jsmacro:`defineMessage` macro, and you've created a "message
+descriptor", which can then be passed around as a variable, and can be displayed as a
+translated string by passing its ``id`` to :jsxmacro:`Trans` as its ``id`` prop:
 
 .. code-block:: jsx
 
-   import { t, Trans } from "@lingui/macro"
+   import { defineMessage, Trans } from "@lingui/macro"
 
    const favoriteColors = [
-      t`Red`,
-      t`Orange`,
-      t`Yellow`,
-      t`Green`,
+      defineMessage({message: "Red"}),
+      defineMessage({message: "Orange"}),
+      defineMessage({message: "Yellow"}),
+      defineMessage({message: "Green"}),
    ]
 
    export default function ColorList() {
       return (
          <ul>
             {favoriteColors.map(color => (
-               <li><Trans id={color}/></li>
+               <li><Trans id={color.id}/></li>
             ))}
          </ul>
       )
@@ -174,13 +174,13 @@ the :js:meth:`I18n._` method:
 .. code-block:: jsx
 
    import { i18n } from '@lingui/core'
-   import { t } from "@lingui/macro"
+   import { defineMessage } from "@lingui/macro"
 
    const favoriteColors = [
-      t`Red`,
-      t`Orange`,
-      t`Yellow`,
-      t`Green`,
+      defineMessage({message: "Red"}),
+      defineMessage({message: "Orange"}),
+      defineMessage({message: "Yellow"}),
+      defineMessage({message: "Green"}),
    ]
 
    export function getTranslatedColorNames() {
@@ -237,12 +237,12 @@ of a variable. For example, imagine you have a numeric "status" code that comes 
 API, and you need to display a message representing the current status.
 
 A simple way to do this, is to make an object that maps the possible values of "status"
-to message descriptors (tagged with the :jsmacro:`t` macro), and render them as needed
-with lazy translation:
+to message descriptors (tagged with the :jsmacro:`defineMessage` macro), and render them
+as needed with lazy translation:
 
 .. code-block:: jsx
 
-   import { Trans } from "@lingui/macro";
+   import { defineMessage, Trans } from "@lingui/macro";
 
    const STATUS_OPEN = 1,
          STATUS_CLOSED = 2,
@@ -250,12 +250,12 @@ with lazy translation:
          STATUS_COMPLETED = 8
 
    const statusMessages = {
-      [STATUS_OPEN]: t`Open`,
-      [STATUS_CLOSED]: t`Closed`,
-      [STATUS_CANCELLED]: t`Cancelled`,
-      [STATUS_COMPLETED]: t`Completed`,
+      [STATUS_OPEN]: defineMessage({message: "Open"}),
+      [STATUS_CLOSED]: defineMessage({message: "Closed"}),
+      [STATUS_CANCELLED]: defineMessage({message: "Cancelled"}),
+      [STATUS_COMPLETED]: defineMessage({message: "Completed"}),
    }
 
-   export default function StatusDisplay(statusCode) {
-      return <div><Trans id={statusMessages[statusCode]} /></div>
+   export default function StatusDisplay({ statusCode }) {
+      return <div><Trans id={statusMessages[statusCode].id} /></div>
    }
