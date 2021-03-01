@@ -21,7 +21,7 @@ const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
 
-type MessageOrigin = [string, number];
+type MessageOrigin = [string, number]
 
 export type ExtractedMessageType = {
   message?: string
@@ -146,7 +146,7 @@ export class Catalog {
     try {
       let paths = this.sourcePaths
       if (options.files) {
-        options.files = options.files.map(p => normalize(p, false))
+        options.files = options.files.map((p) => normalize(p, false))
         const regex = new RegExp(options.files.join("|"), "i")
         paths = paths.filter((path: string) => regex.test(path))
       }
@@ -178,7 +178,11 @@ export class Catalog {
           .filter(Boolean)
           .reduce(
             (catalog, messages) =>
-              R.mergeWithKey(mergeOriginsAndExtractedComments, catalog, messages),
+              R.mergeWithKey(
+                mergeOriginsAndExtractedComments,
+                catalog,
+                messages
+              ),
             {}
           )
       })(tmpDir)
@@ -248,7 +252,7 @@ export class Catalog {
   getTranslations(locale: string, options: GetTranslationsOptions) {
     const catalogs = this.readAll()
     return R.mapObjIndexed(
-      (value, key) => this.getTranslation(catalogs, locale, key, options),
+      (_value, key) => this.getTranslation(catalogs, locale, key, options),
       catalogs[locale]
     )
   }
@@ -265,24 +269,27 @@ export class Catalog {
 
     const getTranslation = (locale) => {
       const configLocales = this.config.locales.join('", "')
-      
-      if (!catalogs[locale].hasOwnProperty(key)) {
-        console.error(`Message with key ${key} is missing in locale ${locale}`);
-        return null;
-      }
+      const localeCatalog = catalogs[locale]
 
-      
-      if (catalogs[locale]) {
-        return catalogs[locale][key].translation
-      }
-
-      console.warn(`
+      if (!localeCatalog) {
+        console.warn(`
         Catalog "${locale}" isn't present in locales config parameter
         Add "${locale}" to your lingui.config.js:
         {
           locales: ["${configLocales}", "${locale}"]
         }
       `)
+        return null
+      }
+      if (!localeCatalog.hasOwnProperty(key)) {
+        console.error(`Message with key ${key} is missing in locale ${locale}`)
+        return null
+      }
+
+      if (catalogs[locale]) {
+        return catalogs[locale][key].translation
+      }
+
       return null
     }
 
@@ -354,8 +361,12 @@ export class Catalog {
     poFormat.write(filename, messages, options)
   }
 
-  writeCompiled(locale: string, compiledCatalog: string, namespace?: CompiledCatalogNamespace) {
-    let ext;
+  writeCompiled(
+    locale: string,
+    compiledCatalog: string,
+    namespace?: CompiledCatalogNamespace
+  ) {
+    let ext: string
     if (namespace === "es") {
       ext = "mjs"
     } else if (namespace === "ts") {
@@ -397,22 +408,23 @@ export class Catalog {
   }
 
   get sourcePaths() {
-    const includeGlobs = this.include.map(
-      (includePath) => {
-        const isDir = fs.existsSync(includePath) && fs.lstatSync(includePath).isDirectory()
-        /**
-         * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
-         * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
-         */
-        return isDir ? normalize(
-          path.resolve(
-            process.cwd(),
-            includePath === "/" ? "" : includePath,
-            "**/*.*"
+    const includeGlobs = this.include.map((includePath) => {
+      const isDir =
+        fs.existsSync(includePath) && fs.lstatSync(includePath).isDirectory()
+      /**
+       * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
+       * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
+       */
+      return isDir
+        ? normalize(
+            path.resolve(
+              process.cwd(),
+              includePath === "/" ? "" : includePath,
+              "**/*.*"
+            )
           )
-        ) : includePath
-      }
-    )
+        : includePath
+    })
 
     const patterns =
       includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
@@ -504,7 +516,7 @@ export function getCatalogs(config: LinguiConfig) {
       patterns.length > 1 ? `{${patterns.join(",")}` : patterns[0],
       {
         ignore: exclude,
-        mark: true
+        mark: true,
       }
     )
 
@@ -533,7 +545,7 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
     const catalogGlob = catalogFile.replace(LOCALE, "*")
     const match = micromatch.capture(
       normalizeRelativePath(path.relative(catalog.config.rootDir, catalogGlob)),
-      normalizeRelativePath(file),
+      normalizeRelativePath(file)
     )
     if (match) {
       return {
@@ -631,8 +643,12 @@ export function normalizeRelativePath(sourcePath: string): string {
     return normalize(sourcePath, false)
   }
 
-  const isDir = fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
-  return normalize(path.relative(process.cwd(), sourcePath), false) + (isDir ? "/" : "")
+  const isDir =
+    fs.existsSync(sourcePath) && fs.lstatSync(sourcePath).isDirectory()
+  return (
+    normalize(path.relative(process.cwd(), sourcePath), false) +
+    (isDir ? "/" : "")
+  )
 }
 
 export const cleanObsolete = R.filter(
