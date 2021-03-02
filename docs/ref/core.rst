@@ -331,3 +331,15 @@ change
 ------
 
 Triggered **after** locale is changed or new catalog is loaded. There are no arguments.
+
+missing
+------
+
+Triggered when a translation is requested with ``i18n._`` that does not exist in the active locale's messages. 
+Information about the locale and message are available from the event.
+
+.. code-block:: js
+
+   i18n.on('missing', (event) => {
+      alert(`alert(`Translation in ${event.locale} for ${event.id} is missing!`)`)
+   })

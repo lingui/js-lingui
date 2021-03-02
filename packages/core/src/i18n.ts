@@ -35,6 +35,11 @@ export type MessageDescriptor = {
   values?: Record<string, unknown>
 }
 
+export type MissingMessageEvent = {
+  locale: Locale
+  id: string
+}
+
 type setupI18nProps = {
   locale?: Locale
   locales?: Locales
@@ -45,6 +50,7 @@ type setupI18nProps = {
 
 type Events = {
   change: () => void
+  missing: (event: MissingMessageEvent) => void
 }
 
 export class I18n extends EventEmitter<Events> {
@@ -173,6 +179,10 @@ export class I18n extends EventEmitter<Events> {
     const missing = this._missing
     if (missing && !this.messages[id]) {
       return isFunction(missing) ? missing(this.locale, id) : missing
+    }
+
+    if (!this.messages[id]) {
+      this.emit("missing", { id, locale: this._locale })
     }
 
     if (process.env.NODE_ENV !== "production") {
