@@ -273,6 +273,7 @@ export default class MacroJSX {
       ID,
       COMMENT,
       MESSAGE,
+      "key",
       // we remove <Trans /> react props that are not useful for translation
       "render",
       "component",

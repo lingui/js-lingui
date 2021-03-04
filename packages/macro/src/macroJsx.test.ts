@@ -139,6 +139,34 @@ describe("jsx macro", () => {
       })
     })
 
+    it("plural with key should be omitted", () => {
+      const macro = createMacro()
+      const exp = parseExpression(
+        `<Plural
+          key='somePLural'
+          value={count}
+          _0='No books'
+          one='# book'
+          other='# books'
+         />`
+      )
+      const tokens = macro.tokenizeChoiceComponent(exp)
+      expect(tokens).toEqual({
+        type: "arg",
+        name: "count",
+        value: expect.objectContaining({
+          name: "count",
+          type: "Identifier",
+        }),
+        format: "plural",
+        options: {
+          "=0": "No books",
+          one: "# book",
+          other: "# books",
+        },
+      })
+    })
+
     it("plural with template literal", () => {
       const macro = createMacro()
       const exp = parseExpression(
