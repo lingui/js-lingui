@@ -186,10 +186,12 @@ We're going to use `CLI` again. Run :cli:`extract` command to extract messages::
 
    Add 'locales' to your configuration. See https://lingui.js.org/ref/conf.html#locales
 
-We need here to fix the configuration. Create a .linguirc file with 
+We need here to fix the configuration. Create a ``.linguirc`` file with 
    
+.. code-block:: json
+
    {
-      "locales": ["en", "de", "fr"]
+      "locales": ["cs", "en"]
    }
 
 After fixing configuration, let's run :cli:`extract` command again::
