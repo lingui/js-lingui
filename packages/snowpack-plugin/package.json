@@ -1,6 +1,6 @@
 {
   "name": "@lingui/snowpack-plugin",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "Snowpack plugin for Lingui message catalogs",
   "main": "index.js",
   "license": "MIT",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7",
-    "@lingui/cli": "^3.7.0",
-    "@lingui/conf": "^3.7.0"
+    "@lingui/cli": "^3.7.1",
+    "@lingui/conf": "^3.7.1"
   }
 }

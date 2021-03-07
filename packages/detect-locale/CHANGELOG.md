@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/lingui/js-lingui/compare/v3.7.0...v3.7.1) (2021-03-07)
+
+
+### Bug Fixes
+
+* exports attribute on package.json, expo compat ([#997](https://github.com/lingui/js-lingui/issues/997)) ([79aa509](https://github.com/lingui/js-lingui/commit/79aa50998185847064d80f2a38be0ebcb64424f9))
+
+
+
+
+
 # [3.7.0](https://github.com/lingui/js-lingui/compare/v3.6.0...v3.7.0) (2021-03-04)
 
 **Note:** Version bump only for package @lingui/detect-locale
