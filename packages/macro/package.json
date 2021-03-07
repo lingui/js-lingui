@@ -2,7 +2,7 @@
   "name": "@lingui/macro",
   "version": "3.7.0",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
-  "main": "index.ts",
+  "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
