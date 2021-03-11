@@ -13,7 +13,7 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "index.js",
+  "main": "build/index.js",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -28,7 +28,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "index.d.ts"
+    "/build/index.js",
+    "/build/index.d.ts"
   ]
 }
