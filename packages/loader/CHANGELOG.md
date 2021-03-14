@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.2](https://github.com/lingui/js-lingui/compare/v3.7.1...v3.7.2) (2021-03-14)
+
+
+### Bug Fixes
+
+* webpack 5 issue with jest @lingui/loader [#999](https://github.com/lingui/js-lingui/issues/999) ([9e68a8d](https://github.com/lingui/js-lingui/commit/9e68a8d1e6f3565f724dd027b165e85b1d891c92))
+
+
+
+
+
 ## [3.7.1](https://github.com/lingui/js-lingui/compare/v3.7.0...v3.7.1) (2021-03-07)
 
 **Note:** Version bump only for package @lingui/loader

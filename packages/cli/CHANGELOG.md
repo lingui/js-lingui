@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.2](https://github.com/lingui/js-lingui/compare/v3.7.1...v3.7.2) (2021-03-14)
+
+
+### Bug Fixes
+
+* lingui extract ignores custom directories as args [#998](https://github.com/lingui/js-lingui/issues/998) ([f426881](https://github.com/lingui/js-lingui/commit/f426881d2b6fb51de06ed43159f56b67a36e2ece))
+
+
+
+
+
 ## [3.7.1](https://github.com/lingui/js-lingui/compare/v3.7.0...v3.7.1) (2021-03-07)
 
 **Note:** Version bump only for package @lingui/cli
