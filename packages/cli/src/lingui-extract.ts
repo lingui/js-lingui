@@ -134,25 +134,25 @@ if (require.main === module) {
   }
 
   if (hasErrors) process.exit(1)
-  
-  const extract = (filePath?: string) => 
-    command(config, {
+
+  const extract = (filePath?: string[]) => {
+    return command(config, {
       verbose: program.watch || program.verbose || false,
       clean: program.watch ? false : program.clean || false,
       overwrite: program.watch || program.overwrite || false,
       locale: program.locale,
       watch: program.watch || false,
-      files: filePath ? [filePath] : undefined,
+      files: filePath?.length ? filePath : undefined,
       prevFormat,
     })
-  
+  }
 
   // Check if Watch Mode is enabled
   if (program.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
-    let paths = []; 
+    let paths = [];
     let ignored = [];
 
     catalogs.forEach((catalog) => {
@@ -166,14 +166,20 @@ if (require.main === module) {
     });
 
     const onReady = () => {
-      console.info(chalk.green.bold("Watcher is ready!"))    
-      watcher.on('add', (path) => extract(path)).on('change', (path) => extract(path));
+      console.info(chalk.green.bold("Watcher is ready!"))
+      watcher
+      .on('add', (path) => extract([path]))
+      .on('change', (path) => extract([path]));
     };
 
     watcher.on('ready', () => onReady());
+  } else if (program.args) {
+    // this behaviour occurs when we extract files by his name
+    // for ex: lingui extract src/app, this will extract only files included in src/app
+    const result = extract(program.args);
+    if (!result) process.exit(1)
   } else {
     const result = extract();
-  
     if (!result) process.exit(1)
   }
 }

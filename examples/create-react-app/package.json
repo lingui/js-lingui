@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@lingui/react": "^3.2.3",
+    "@lingui/react": "latest",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -41,8 +41,8 @@
     ]
   },
   "devDependencies": {
-    "@lingui/cli": "^3.5.1",
-    "@lingui/loader": "^3.5.1",
-    "@lingui/macro": "^3.5.1"
+    "@lingui/cli": "latest",
+    "@lingui/loader": "latest",
+    "@lingui/macro": "latest"
   }
 }
