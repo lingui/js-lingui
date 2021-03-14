@@ -27,7 +27,7 @@ const requiredType = "javascript/auto";
 export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
 
-  if(isWebpack5) {
+  if(isWebpack5 && this._compilation) {
     const LoaderDependency = require("webpack/lib/dependencies/LoaderDependency");
     const factory = this._compilation.dependencyFactories.get(LoaderDependency);
     if (factory === undefined) {
