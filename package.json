@@ -24,7 +24,8 @@
     "version:latest": "lerna version --force-publish --no-private --create-release github --conventional-commits --yes",
     "release:latest": "lerna publish from-package --contents build --dist-tag latest --yes",
     "release:next": "lerna publish from-package --contents build --canary --preid next --pre-dist-tag next --yes",
-    "build:docs": "cd docs && ./vercel-build.sh"
+    "build:docs": "cd docs && ./vercel-build.sh",
+    "size-limit": "size-limit"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -37,6 +38,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@size-limit/preset-small-lib": "^4.10.1",
     "@testing-library/react": "^11.0.4",
     "@types/babel-types": "^7.0.9",
     "@types/jest": "^26.0.14",
@@ -92,6 +94,7 @@
     "rollup-plugin-typescript2": "^0.27.3",
     "semver": "^7.3.2",
     "set-tz": "^0.2.0",
+    "size-limit": "^4.10.1",
     "strip-ansi": "^6.0.0",
     "targz": "^1.0.1",
     "tmp": "^0.2.1",
@@ -106,5 +109,19 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
-  }
+  },
+  "size-limit": [
+    {
+      "path": "./packages/core/build/cjs/core.production.min.js",
+      "limit": "3 kB"
+    },
+    {
+      "path": "./packages/detect-locale/build/cjs/detect-locale.production.min.js",
+      "limit": "1 kB"
+    },
+    {
+      "path": "./packages/react/build/cjs/react.production.min.js",
+      "limit": "5 kB"
+    }
+  ]
 }
