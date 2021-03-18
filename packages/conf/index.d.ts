@@ -3,6 +3,7 @@ import type { GeneratorOptions } from "@babel/core";
 export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext";
 export type CatalogFormatOptions = {
     origins?: boolean;
+    lineNumbers?: boolean;
 }
 export declare type OrderBy = "messageId" | "origin";
 declare type CatalogConfig = {

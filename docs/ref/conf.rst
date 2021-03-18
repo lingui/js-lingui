@@ -388,12 +388,14 @@ Origin is filename and line number from where the message was extracted.
 Note that origins may produce a large amount of merge conflicts. Origins can be
 disabled by setting ``origins: false`` in :conf:`formatOptions`.
 
+Also, you can disable just ``lineNumbers`` but keep ``origins``
+
 .. config:: formatOptions
 
 formatOptions
 -------------
 
-Default: ``{ origins: true }``
+Default: ``{ origins: true, lineNumbers: true }``
 
 Object for configuring message catalog output. See individual formats for options.
 

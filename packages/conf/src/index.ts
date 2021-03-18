@@ -10,6 +10,7 @@ export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
 export type CatalogFormatOptions = {
   origins?: boolean
+  lineNumbers?: boolean
 }
 
 export type OrderBy = "messageId" | "origin"
@@ -76,7 +77,7 @@ export const defaultConfig: LinguiConfig = {
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",
-  formatOptions: { origins: true },
+  formatOptions: { origins: true, lineNumbers: true },
   locales: [],
   orderBy: "messageId",
   pseudoLocale: "",

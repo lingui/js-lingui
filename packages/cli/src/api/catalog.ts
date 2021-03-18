@@ -36,7 +36,7 @@ export type MessageType = ExtractedMessageType & {
   translation: string
 }
 
-type ExtractedCatalogType = {
+export type ExtractedCatalogType = {
   [msgId: string]: ExtractedMessageType
 }
 

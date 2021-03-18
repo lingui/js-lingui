@@ -125,6 +125,7 @@ Object {
   },
   format: po,
   formatOptions: Object {
+    lineNumbers: true,
     origins: true,
   },
   locales: Array [
