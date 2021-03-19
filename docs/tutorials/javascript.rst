@@ -97,8 +97,7 @@ Plurals and selections are possible using plural and select methods:
 
    const count = 42
 
-   plural({
-     value: count,
+   plural(count, {
      one: "# book",
      other: "# books"
    })
