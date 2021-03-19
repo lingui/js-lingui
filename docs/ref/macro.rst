@@ -441,7 +441,7 @@ cardinal plural forms it uses ordinal forms:
 
    import { i18n } from "@lingui/core"
    const message = i18n._(/*i18n*/{
-     id: '{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}',
+     id: '{count, selectordinal, one {1st} two {2nd} few {3rd} other {#th}}',
      values: { count }
    })
 
