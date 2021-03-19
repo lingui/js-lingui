@@ -22,7 +22,7 @@ const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\
  * SelectOrdinal https://regex101.com/r/T7hSLU/2
  * Select https://regex101.com/r/9JnqB9/1
  */
-const MacroRegex = /({\w*,\s*(plural|selectordinal|select),(.|\n)*?{)|(}\s*\w*\s*{)/g
+const MacroRegex = /({\w*,\s*(plural|selectordinal|select),(.|\n)*?{)|(}\s*\w*\s*{)/gi
 
 /**
  * Regex should match js-lingui variables
