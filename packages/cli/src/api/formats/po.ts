@@ -25,8 +25,15 @@ const serialize = (items: CatalogType, options) =>
       item.msgstr = [message.translation]
       item.comments = message.comments || []
       item.extractedComments = message.extractedComments || []
-      if (options.origins) {
-        item.references = message.origin ? message.origin.map(joinOrigin) : []
+      if (options.origins !== false) {
+        if (message.origin && options.lineNumbers === false) {
+          item.references = message.origin.map(msg => {
+            msg.pop()
+            return msg
+          }).map(joinOrigin)
+        } else {
+          item.references = message.origin ? message.origin.map(joinOrigin) : []
+        }
       }
       // @ts-ignore: Figure out how to set this flag
       item.obsolete = message.obsolete

@@ -38,7 +38,9 @@ describe("lingui format", function () {
       },
       withDescription: {
         translation: "Message with description",
-        extractedComments: ["Description is comment from developers to translators"],
+        extractedComments: [
+          "Description is comment from developers to translators",
+        ],
       },
       withComments: {
         comments: ["Translator comment", "This one might come from developer"],
@@ -121,5 +123,60 @@ describe("lingui format", function () {
     mockFs.restore()
     const linguiOriginProperty = '"origin"'
     expect(lingui).toEqual(expect.not.stringContaining(linguiOriginProperty))
+  })
+
+  it("should not include lineNumbers if lineNumbers option is false", function () {
+    mockFs({
+      locale: {
+        en: mockFs.directory(),
+      },
+    })
+
+    const filename = path.join("locale", "en", "messages.json")
+    const catalog: CatalogType = {
+      static: {
+        translation: "Static message",
+      },
+      withOrigin: {
+        translation: "Message with origin",
+        origin: [["src/App.js", 4]],
+      },
+      withMultipleOrigins: {
+        translation: "Message with multiple origin",
+        origin: [
+          ["src/App.js", 4],
+          ["src/Component.js", 2],
+        ],
+      },
+    }
+    format.write(filename, catalog, { lineNumbers: false, locale: "en" })
+    const lingui = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(lingui).toMatchInlineSnapshot(`
+      {
+        "static": {
+          "translation": "Static message"
+        },
+        "withOrigin": {
+          "translation": "Message with origin",
+          "origin": [
+            [
+              "src/App.js"
+            ]
+          ]
+        },
+        "withMultipleOrigins": {
+          "translation": "Message with multiple origin",
+          "origin": [
+            [
+              "src/App.js"
+            ],
+            [
+              "src/Component.js"
+            ]
+          ]
+        }
+      }
+    `)
   })
 })
