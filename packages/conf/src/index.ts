@@ -305,20 +305,22 @@ export function fallbackLanguageMigration(
       fallbackLocales: null,
     }
 
-  config.locales.forEach((locale) => {
-    const fl = getCldrParentLocale(locale.toLowerCase())
-    if (fl && !config.fallbackLocales[locale]) {
-      config.fallbackLocales = {
-        ...config.fallbackLocales,
-        [locale]: fl,
-      }
-    }
-  })
-
   const DEFAULT_FALLBACK = fallbackLocales?.default || fallbackLocale
   if (DEFAULT_FALLBACK) {
     if (!config.fallbackLocales) config.fallbackLocales = {}
     config.fallbackLocales.default = DEFAULT_FALLBACK
+  }
+
+  if (config.fallbackLocales !== false && !config.fallbackLocales.default) {
+    config.locales.forEach((locale) => {
+      const fl = getCldrParentLocale(locale.toLowerCase())
+      if (fl && !config.fallbackLocales[locale]) {
+        config.fallbackLocales = {
+          ...config.fallbackLocales,
+          [locale]: fl,
+        }
+      }
+    })
   }
 
   return config

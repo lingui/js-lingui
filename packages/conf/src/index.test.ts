@@ -165,7 +165,7 @@ describe("@lingui/conf", function () {
       })
     })
 
-    it ("if fallbackLocales is defined, we also build the cldr", () => {
+    it ("if fallbackLocales default is defined, we dont build the cldr", () => {
       const config = getConfig({
         configPath: path.resolve(
           __dirname,
@@ -175,7 +175,6 @@ describe("@lingui/conf", function () {
       expect(config.fallbackLocales).toEqual({
         "en-US": ["en"],
         default: "en",
-        "es-MX": "es"
       })
     })
   })
