@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.1](https://github.com/lingui/js-lingui/compare/v3.8.0...v3.8.1) (2021-03-23)
+
+
+### Bug Fixes
+
+* fallback locales default not overwritten ([78e4576](https://github.com/lingui/js-lingui/commit/78e45766fda0c147b77f96d71e9d775743ee8d18))
+
+
+
+
+
 # [3.8.0](https://github.com/lingui/js-lingui/compare/v3.7.2...v3.8.0) (2021-03-23)
 
 
