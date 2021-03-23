@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/lingui/js-lingui/compare/v3.7.2...v3.8.0) (2021-03-23)
+
+
+### Bug Fixes
+
+* selectOrdinal pseudolocalize insensitive ([16acafe](https://github.com/lingui/js-lingui/commit/16acafe42a2ae1c33200ab9b89bc7a17db69897d))
+
+
+### Features
+
+* allow to disable lineNumbers ([#1007](https://github.com/lingui/js-lingui/issues/1007)) ([fe67e0f](https://github.com/lingui/js-lingui/commit/fe67e0f7986188bff2c102703c4df3507506e0f2))
+
+
+
+
+
 ## [3.7.2](https://github.com/lingui/js-lingui/compare/v3.7.1...v3.7.2) (2021-03-14)
 
 
