@@ -145,6 +145,24 @@ export default [
       `,
   },
   {
+    name: "Support id with message interpolation",
+    input: `
+        import { t } from '@lingui/macro'
+        const msg = t({ id: 'msgId', message: \`Some \${value}\` })
+      `,
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
+      i18n._(/*i18n*/
+        {
+          id: "msgId",
+          message: "Some {value}",
+          values: {
+            value: value,
+          },
+        });
+      `,
+  },
+  {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js",
   },
