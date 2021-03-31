@@ -31,6 +31,7 @@ export function defineMessage(descriptor: MessageDescriptor): MessageDescriptor
 export type TransProps = {
   id?: string
   comment?: string
+  values?: Record<string, unknown>
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => ReactElement<any, any> | null
 }
