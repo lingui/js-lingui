@@ -4,7 +4,7 @@ import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
-import { AllCatalogsType, getCatalogs } from "./api/catalog"
+import { AllCatalogsType, Catalog, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
@@ -36,8 +36,10 @@ export default function command(
 
   options.verbose && console.error("Extracting messages from source files…")
 
-  const catalogs = getCatalogs(config)
-  const catalogStats: { [path: string]: AllCatalogsType }  = {}
+  const catalogs = getCatalogs(config).filter((c: Catalog) => {
+    return c.status === "active"
+  })
+  const catalogStats: { [path: string]: AllCatalogsType } = {}
   catalogs.forEach((catalog) => {
     catalog.make({
       ...options,
@@ -64,7 +66,7 @@ export default function command(
       `(use "${chalk.yellow(
         helpRun("compile")
       )}" to compile catalogs for production)`
-    ) 
+    )
   }
 
   return true
@@ -151,35 +153,37 @@ if (require.main === module) {
   if (program.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
-    const catalogs = getCatalogs(config)
-    let paths = [];
-    let ignored = [];
+    const catalogs = getCatalogs(config).filter((c: Catalog) => {
+      return c.status === "active"
+    })
+    let paths = []
+    let ignored = []
 
     catalogs.forEach((catalog) => {
-      paths.push(...catalog.include);
-      ignored.push(...catalog.exclude);
+      paths.push(...catalog.include)
+      ignored.push(...catalog.exclude)
     })
 
     const watcher = chokidar.watch(paths, {
-      ignored: ['/(^|[\/\\])\../', ...ignored],
+      ignored: ["/(^|[/\\])../", ...ignored],
       persistent: true,
-    });
+    })
 
     const onReady = () => {
       console.info(chalk.green.bold("Watcher is ready!"))
       watcher
-      .on('add', (path) => extract([path]))
-      .on('change', (path) => extract([path]));
-    };
+        .on("add", (path) => extract([path]))
+        .on("change", (path) => extract([path]))
+    }
 
-    watcher.on('ready', () => onReady());
+    watcher.on("ready", () => onReady())
   } else if (program.args) {
     // this behaviour occurs when we extract files by his name
     // for ex: lingui extract src/app, this will extract only files included in src/app
-    const result = extract(program.args);
+    const result = extract(program.args)
     if (!result) process.exit(1)
   } else {
-    const result = extract();
+    const result = extract()
     if (!result) process.exit(1)
   }
 }

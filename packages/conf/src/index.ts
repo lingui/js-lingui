@@ -15,11 +15,14 @@ export type CatalogFormatOptions = {
 
 export type OrderBy = "messageId" | "origin"
 
+export type CatalogStatus = "active" | "locked"
+
 type CatalogConfig = {
   name?: string
   path: string
   include: string[]
   exclude?: string[]
+  status?: CatalogStatus
 }
 
 type LocaleObject = {
@@ -72,7 +75,7 @@ export const defaultConfig: LinguiConfig = {
     minified: true,
     jsescOption: {
       minimal: true,
-    }
+    },
   },
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
@@ -149,7 +152,10 @@ export function getConfig({
 
 const exampleConfig = {
   ...defaultConfig,
-  runtimeConfigModule: multipleValidOptions({i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"]}, ["@lingui/core", "i18n"]),
+  runtimeConfigModule: multipleValidOptions(
+    { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
+    ["@lingui/core", "i18n"]
+  ),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },

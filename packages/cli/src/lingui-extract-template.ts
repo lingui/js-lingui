@@ -3,7 +3,7 @@ import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { Catalog, getCatalogs } from "./api/catalog"
 import { detect } from "./api/detect"
 
 export type CliExtractTemplateOptions = {
@@ -27,7 +27,9 @@ export default function command(
   process.env.LINGUI_EXTRACT = "1"
 
   options.verbose && console.error("Extracting messages from source files…")
-  const catalogs = getCatalogs(config)
+  const catalogs = getCatalogs(config).filter((c: Catalog) => {
+    return c.status === "active"
+  })
   const catalogStats: { [path: string]: Number } = {}
   catalogs.forEach((catalog) => {
     catalog.makeTemplate({
@@ -36,7 +38,9 @@ export default function command(
       projectType: detect(),
     })
 
-    catalogStats[catalog.templateFile] = Object.keys(catalog.readTemplate()).length
+    catalogStats[catalog.templateFile] = Object.keys(
+      catalog.readTemplate()
+    ).length
   })
 
   Object.entries(catalogStats).forEach(([key, value]) => {

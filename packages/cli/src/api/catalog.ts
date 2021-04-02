@@ -7,7 +7,12 @@ import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
 
-import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
+import {
+  LinguiConfig,
+  OrderBy,
+  FallbackLocales,
+  CatalogStatus,
+} from "@lingui/conf"
 
 import getFormat, { CatalogFormatter } from "./formats"
 import extract from "./extractors"
@@ -73,6 +78,7 @@ export type GetTranslationsOptions = {
 type CatalogProps = {
   name?: string
   path: string
+  status?: CatalogStatus
   include: Array<string>
   exclude?: Array<string>
 }
@@ -84,9 +90,10 @@ export class Catalog {
   exclude: Array<string>
   config: LinguiConfig
   format: CatalogFormatter
+  status?: CatalogStatus
 
   constructor(
-    { name, path, include, exclude = [] }: CatalogProps,
+    { name, path, include, exclude = [], status = "active" }: CatalogProps,
     config: LinguiConfig
   ) {
     this.name = name
@@ -95,6 +102,7 @@ export class Catalog {
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
     this.config = config
     this.format = getFormat(config.format)
+    this.status = status
   }
 
   make(options: MakeOptions) {
@@ -504,6 +512,7 @@ export function getCatalogs(config: LinguiConfig) {
             path: normalizeRelativePath(catalog.path),
             include,
             exclude,
+            status: catalog.status,
           },
           config
         )
@@ -529,6 +538,7 @@ export function getCatalogs(config: LinguiConfig) {
             path: normalizeRelativePath(catalog.path.replace(NAME, name)),
             include: include.map((path) => path.replace(NAME, name)),
             exclude: exclude.map((path) => path.replace(NAME, name)),
+            status: catalog.status,
           },
           config
         )
