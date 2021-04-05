@@ -237,8 +237,8 @@ export default function ({ types: t }) {
                 .get(`properties.${i}.value`)
                 .buildCodeFrameError("Only strings are supported as comments.")
             }
-
-            props[key.name] = value.value
+            const isIdLiteral = !value.value && key.name === "id" && t.isTemplateLiteral(value)
+            props[key.name] = isIdLiteral ? value?.quasis[0]?.value?.cooked : value.value
           })
 
         collectMessage(path, file, props)
