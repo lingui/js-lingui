@@ -97,11 +97,12 @@ function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
  */
 export function compile(message: string) {
   let tokens
+
   try {
     tokens = parse(message)
   } catch (e) {
     throw new Error(
-      `Can't parse message. Please check correct syntax: "${message}"`
+      `Can't parse message. Please check correct syntax: "${message}" \n \n Messageformat-parser trace: ${e.message}`,
     )
   }
   const ast = processTokens(tokens)
