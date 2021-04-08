@@ -111,6 +111,7 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    return result.trim()
+    if (typeof result === "string") return result.trim()
+    return result
   }
 }
