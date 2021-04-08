@@ -364,6 +364,9 @@ export default class MacroJSX {
    * We clean '//\` ' to just '`'
    * */
   clearBackslashes(value: string) {
+    // it's an unicode char so we should keep them
+    if (value.includes('\\u')) return value
+    // if not we replace the extra scaped literals
     return value.replace(removeExtraScapedLiterals, "`")
   }
 

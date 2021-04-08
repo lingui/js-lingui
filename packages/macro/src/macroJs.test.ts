@@ -79,6 +79,55 @@ describe("js macro", () => {
         },
       ])
     })
+
+    it("message with unicode chars is respected", () => {
+      const macro = createMacro()
+      const exp = parseExpression('t`Message \\u0020`')
+      const tokens = macro.tokenizeTemplateLiteral(exp)
+      expect(tokens).toEqual([
+        {
+          type: "text",
+          value: 'Message \\u0020',
+        },
+      ])
+    })
+
+    it("message with double scaped literals it's stripped", () => {
+      const macro = createMacro()
+      const exp = parseExpression('t\`Passing \\`${argSet}\\` is not supported.\`')
+      const tokens = macro.tokenizeTemplateLiteral(exp)
+      expect(tokens).toEqual([
+        {
+          type: "text",
+          value: 'Passing `',
+        },
+        {
+          name: "argSet",
+          type: "arg",
+          value: {
+            end: 20,
+            loc:  {
+              end:  {
+                column: 20,
+                line: 1,
+              },
+              identifierName: "argSet",
+              start:  {
+                column: 14,
+                line: 1,
+              },
+            },
+            name: "argSet",
+            start: 14,
+            type: "Identifier",
+          },
+        },
+        {
+          type: "text",
+          value: "` is not supported.",
+        },
+      ])
+    })
   })
 
   describe("tokenizeChoiceMethod", () => {
