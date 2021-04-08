@@ -361,7 +361,7 @@ export default class MacroJs {
    */
   clearBackslashes(value: string) {
     // it's an unicode char so we should keep them
-    if (value.includes('\\u')) return value
+    if (value.includes('\\u')) return value.replace(removeExtraScapedLiterals, "\/u")
     // if not we replace the extra scaped literals
     return value.replace(removeExtraScapedLiterals, "`")
   }
