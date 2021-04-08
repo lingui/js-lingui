@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "3.8.3",
+  "version": "3.8.4",
   "description": "Babel plugin for collecting messages from source code for internationalization",
   "main": "index.js",
   "author": {
@@ -30,7 +30,7 @@
   "dependencies": {
     "@babel/generator": "^7.11.6",
     "@babel/runtime": "^7.11.2",
-    "@lingui/conf": "^3.8.3",
+    "@lingui/conf": "^3.8.4",
     "mkdirp": "^1.0.4"
   }
 }

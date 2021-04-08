@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.4](https://github.com/lingui/js-lingui/compare/v3.8.3...v3.8.4) (2021-04-08)
+
+
+### Bug Fixes
+
+* respect unicode chars in t macro ([#1032](https://github.com/lingui/js-lingui/issues/1032)) ([7597621](https://github.com/lingui/js-lingui/commit/7597621827f66e81a4e1fdf6ec64c986c9c88c7d))
+* typescript loader config ([#1029](https://github.com/lingui/js-lingui/issues/1029)) ([93afb72](https://github.com/lingui/js-lingui/commit/93afb72c1d6235df1516655d5ab4eea0eeb606ee))
+* undefined interpolation on t macro ([#1030](https://github.com/lingui/js-lingui/issues/1030)) ([194f9b3](https://github.com/lingui/js-lingui/commit/194f9b318434bcaf4b68af549a6ed246fed2be02))
+
+
+
+
+
 ## [3.8.3](https://github.com/lingui/js-lingui/compare/v3.8.2...v3.8.3) (2021-04-05)
 
 

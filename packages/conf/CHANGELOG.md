@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.4](https://github.com/lingui/js-lingui/compare/v3.8.3...v3.8.4) (2021-04-08)
+
+
+### Bug Fixes
+
+* typescript loader config ([#1029](https://github.com/lingui/js-lingui/issues/1029)) ([93afb72](https://github.com/lingui/js-lingui/commit/93afb72c1d6235df1516655d5ab4eea0eeb606ee))
+
+
+
+
+
 ## [3.8.3](https://github.com/lingui/js-lingui/compare/v3.8.2...v3.8.3) (2021-04-05)
 
 **Note:** Version bump only for package @lingui/conf

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.4](https://github.com/lingui/js-lingui/compare/v3.8.3...v3.8.4) (2021-04-08)
+
+
+### Bug Fixes
+
+* respect unicode chars in t macro ([#1032](https://github.com/lingui/js-lingui/issues/1032)) ([7597621](https://github.com/lingui/js-lingui/commit/7597621827f66e81a4e1fdf6ec64c986c9c88c7d))
+
+
+
+
+
 ## [3.8.3](https://github.com/lingui/js-lingui/compare/v3.8.2...v3.8.3) (2021-04-05)
 
 
