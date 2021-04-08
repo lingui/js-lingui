@@ -552,20 +552,11 @@ export function catalogMigration(
 const pipe = (...functions: Array<Function>) => (args: any): any =>
   functions.reduce((arg, fn) => fn(arg), args)
 
-// copied from @EndemolShineGroup/cosmiconfig-typescript-loader
-// to support sync operations
-// if this PR gets merged and published, this piece of code can be thrown away
-// https://github.com/EndemolShineGroup/cosmiconfig-typescript-loader/pull/132
+/** Typescript loader using just typescript API and eval(), instead of using ts-node/register which is slower */
 function TypeScriptLoader(filePath: string) {
-  try {
-    require("ts-node/register")
-    const result = require(filePath)
-
-    return get(result, "default", result)
-  } catch (error) {
-    // Replace with logger class OR throw a more specific error
-    throw require("@endemolshinegroup/cosmiconfig-typescript-loader/dist/Errors/TypeScriptCompileError").fromError(
-      error
-    )
-  }
+  const tsc = require("typescript")
+  const fileContent = fs.readFileSync(filePath, "utf-8")
+  const { outputText } = tsc.transpileModule(fileContent, { compilerOptions: { module: tsc.ModuleKind.CommonJS }});
+  const configFileParsed = eval(outputText)
+  return configFileParsed
 }
