@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.6](https://github.com/lingui/js-lingui/compare/v3.8.5...v3.8.6) (2021-04-08)
+
+
+### Bug Fixes
+
+* unicode chars were extracting with double slashes ([#1035](https://github.com/lingui/js-lingui/issues/1035)) ([aed49b1](https://github.com/lingui/js-lingui/commit/aed49b15f3d13635a4e4a8d19fc4cb9f6e4a6f70))
+
+
+
+
+
+## [3.8.5](https://github.com/lingui/js-lingui/compare/v3.8.4...v3.8.5) (2021-04-08)
+
+
+### Bug Fixes
+
+* improve compile log error if bad syntax on the string ([9b2705f](https://github.com/lingui/js-lingui/commit/9b2705feada95f5272346bacee54a26b5518af5e))
+
+
+
+
+
 ## [3.8.4](https://github.com/lingui/js-lingui/compare/v3.8.3...v3.8.4) (2021-04-08)
 
 
