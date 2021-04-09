@@ -8,7 +8,6 @@ import { COMMENT, ID, MESSAGE, EXTRACT_MARK } from "./constants"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
-const removeExtraScapedLiterals = /(?:\\(.))/g
 
 function normalizeWhitespace(text) {
   return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
@@ -360,10 +359,8 @@ export default class MacroJs {
    * We clean '//\` ' to just '`'
    */
   clearBackslashes(value: string) {
-    // it's an unicode char so we should keep them
-    if (value.includes('\\u')) return value.replace(removeExtraScapedLiterals, "\/u")
     // if not we replace the extra scaped literals
-    return value.replace(removeExtraScapedLiterals, "`")
+    return value.replace(/\\`/g, "`")
   }
 
   /**

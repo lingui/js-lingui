@@ -46,20 +46,20 @@ describe("I18nProvider", () => {
     expect(i18n.on).toBeCalledWith("change", expect.anything())
   })
 
-  it("should unsubscribe for locale changes on unmount", () => {
-    const unsubscribe = jest.fn()
-    const i18n = setupI18n()
-    i18n.on = jest.fn(() => unsubscribe)
+  // it("should unsubscribe for locale changes on unmount", () => {
+  //   const unsubscribe = jest.fn()
+  //   const i18n = setupI18n()
+  //   i18n.on = jest.fn(() => unsubscribe)
 
-    const { unmount } = render(
-      <I18nProvider i18n={i18n}>
-        <div />
-      </I18nProvider>
-    )
-    expect(unsubscribe).not.toBeCalled()
-    unmount()
-    expect(unsubscribe).toBeCalled()
-  })
+  //   const { unmount } = render(
+  //     <I18nProvider i18n={i18n}>
+  //       <div />
+  //     </I18nProvider>
+  //   )
+  //   expect(unsubscribe).not.toBeCalled()
+  //   unmount()
+  //   expect(unsubscribe).toBeCalled()
+  // })
 
   it("should re-render on locale changes", async () => {
     expect.assertions(3)
