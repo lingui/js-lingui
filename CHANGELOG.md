@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.9](https://github.com/lingui/js-lingui/compare/v3.8.8...v3.8.9) (2021-04-09)
+
+
+### Bug Fixes
+
+* event emitter refactor (reverted)  ([#1038](https://github.com/lingui/js-lingui/issues/1038)) ([f299493](https://github.com/lingui/js-lingui/commit/f299493999299fe9a7d0e01b9045e7f0a9813c6a))
+
+
+
+
+
 ## [3.8.8](https://github.com/lingui/js-lingui/compare/v3.8.7...v3.8.8) (2021-04-09)
 
 

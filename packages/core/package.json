@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "3.8.8",
+  "version": "3.8.9",
   "description": "I18n tools for javascript",
   "main": "index.js",
   "module": "esm/index.js",
