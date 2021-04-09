@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.8](https://github.com/lingui/js-lingui/compare/v3.8.7...v3.8.8) (2021-04-09)
+
+
+### Bug Fixes
+
+* unicode char was not extracting correctly ([3653f6f](https://github.com/lingui/js-lingui/commit/3653f6f62043a095a2babaf16a54280db9996228))
+
+
+
+
+
 ## [3.8.7](https://github.com/lingui/js-lingui/compare/v3.8.6...v3.8.7) (2021-04-09)
 
 
