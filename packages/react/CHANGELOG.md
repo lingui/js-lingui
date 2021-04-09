@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.7](https://github.com/lingui/js-lingui/compare/v3.8.6...v3.8.7) (2021-04-09)
+
+
+### Bug Fixes
+
+* unicode chars in native environments + event emitter refactor ([#1036](https://github.com/lingui/js-lingui/issues/1036)) ([39fa90d](https://github.com/lingui/js-lingui/commit/39fa90d95c08f105f3f7feb17b65d9b8f916b73a))
+
+
+
+
+
 ## [3.8.6](https://github.com/lingui/js-lingui/compare/v3.8.5...v3.8.6) (2021-04-08)
 
 **Note:** Version bump only for package @lingui/react
