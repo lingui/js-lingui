@@ -94,7 +94,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * async.
    */
   React.useEffect(() => {
-    i18n.on("change", () => {
+    const unsubscribe = i18n.on("change", () => {
       setContext(makeContext())
       setRenderKey(getRenderKey())
     })
@@ -104,6 +104,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     if (forceRenderOnLocaleChange && renderKey === 'default') {
       console.log("I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false.")
     }
+    return () => unsubscribe()
   }, [])
 
   if (forceRenderOnLocaleChange && renderKey === 'default') return null
