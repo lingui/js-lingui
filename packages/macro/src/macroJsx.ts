@@ -7,7 +7,6 @@ import { zip, makeCounter } from "./utils"
 import { ID, COMMENT, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
-const removeExtraScapedLiterals = /(?:\\(.))/g
 const jsx2icuExactChoice = (value) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
@@ -364,10 +363,8 @@ export default class MacroJSX {
    * We clean '//\` ' to just '`'
    * */
   clearBackslashes(value: string) {
-    // it's an unicode char so we should keep them
-    if (value.includes('\\u')) return value.replace(removeExtraScapedLiterals, "\/u")
     // if not we replace the extra scaped literals
-    return value.replace(removeExtraScapedLiterals, "`")
+    return value.replace(/\\`/g, "`")
   }
 
   /**

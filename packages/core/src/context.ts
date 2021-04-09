@@ -111,7 +111,8 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    if (typeof result === "string") return result.trim()
+    if (isString(result) && /\\u[a-fA-F0-9]{4}/g.test(result)) return JSON.parse(`"${result.trim()}"`)
+    if (isString(result)) return result.trim()
     return result
   }
 }

@@ -191,6 +191,9 @@ export class I18n extends EventEmitter {
         : translation
     }
 
+
+    // hack for parsing unicode values inside a string to get parsed in react native environments
+    if (isString(translation) && /\\u[a-fA-F0-9]{4}/g.test(translation)) return JSON.parse(`"${translation}"`)
     if (isString(translation)) return translation
 
     return interpolate(
