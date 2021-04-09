@@ -53,7 +53,7 @@ type Events = {
   missing: (event: MissingMessageEvent) => void
 }
 
-export class I18n extends EventEmitter<Events> {
+export class I18n extends EventEmitter {
   _locale: Locale
   _locales: Locales
   _localeData: AllLocaleData

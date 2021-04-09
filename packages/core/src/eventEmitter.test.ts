@@ -19,12 +19,12 @@ describe("@lingui/core/eventEmitter", () => {
     const listener = jest.fn()
     const emitter = new EventEmitter()
 
-    const unsubscribe = emitter.on("test", listener)
+    emitter.on("test", listener)
     emitter.emit("test", 42)
     expect(listener).toBeCalledWith(42)
 
     listener.mockReset()
-    unsubscribe()
+    emitter.removeAllListeners()
     emitter.emit("test", 42)
     expect(listener).not.toBeCalled()
   })
