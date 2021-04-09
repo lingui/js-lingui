@@ -87,7 +87,7 @@ describe("js macro", () => {
       expect(tokens).toEqual([
         {
           type: "text",
-          value: 'Message \/u0020',
+          value: 'Message \\u0020',
         },
       ])
     })
