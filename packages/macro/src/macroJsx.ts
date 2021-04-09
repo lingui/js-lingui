@@ -231,7 +231,7 @@ export default class MacroJSX {
           R.evolve({
             quasis: R.map((text: babelTypes.TemplateElement) => {
               // Don"t output tokens without text.
-              const value = text.value.raw
+              const value = /\\u[a-fA-F0-9]{4}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
               if (value === "") return null
 
               return this.tokenizeText(this.clearBackslashes(value))

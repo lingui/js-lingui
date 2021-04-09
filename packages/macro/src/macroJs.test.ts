@@ -80,14 +80,14 @@ describe("js macro", () => {
       ])
     })
 
-    it("message with unicode chars is respected", () => {
+    it("message with unicode chars is interpreted by babel", () => {
       const macro = createMacro()
       const exp = parseExpression('t`Message \\u0020`')
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: 'Message \\u0020',
+          value: 'Message  ',
         },
       ])
     })

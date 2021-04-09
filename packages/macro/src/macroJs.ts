@@ -264,7 +264,8 @@ export default class MacroJs {
       R.evolve({
         quasis: R.map((text: babelTypes.TemplateElement) => {
           // Don't output tokens without text.
-          const value = text.value.raw
+          // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+          const value = /\\u[a-fA-F0-9]{4}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
           if (value === "") return null
 
           return {
