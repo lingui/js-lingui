@@ -10,7 +10,7 @@ i18n.loadLocaleData("cs", { plurals: cs })
  * many ways how to load messages — from REST API, from file, from cache, etc.
  */
 export async function activate(locale: string) {
-  const { messages } = await import(`../locale/${locale}/messages.js`)
+  const { messages } = await import(`../locale/${locale}/messages.po`)
   i18n.load(locale, messages)
   i18n.activate(locale)
 }
