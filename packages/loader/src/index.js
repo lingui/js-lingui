@@ -27,19 +27,7 @@ const requiredType = "javascript/auto";
 export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
 
-  if(isWebpack5 && this._compilation) {
-    const LoaderDependency = require("webpack/lib/dependencies/LoaderDependency");
-    const factory = this._compilation.dependencyFactories.get(LoaderDependency);
-    if (factory === undefined) {
-      throw new Error(
-        "Could not retrieve module factory for type LoaderDependency"
-      );
-    }
-
-    this._module.type = requiredType;
-    this._module.generator = factory.getGenerator(requiredType);
-    this._module.parser = factory.getParser(requiredType);
-  } else if (JavascriptParser && JavascriptGenerator) {
+  if (!isWebpack5 && JavascriptParser && JavascriptGenerator) {
     // Webpack 4 uses json-loader automatically, which breaks this loader because it
     // doesn't return JSON, but JS module. This is a temporary workaround before
     // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)

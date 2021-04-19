@@ -7,6 +7,9 @@
       "dom.iterable",
       "esnext"
     ],
+    "paths": {
+      "lingui-example/*": ["./lingui-example/*"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
