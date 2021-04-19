@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.10](https://github.com/lingui/js-lingui/compare/v3.8.9...v3.8.10) (2021-04-19)
+
+
+### Bug Fixes
+
+* loader works smoothly on webpack 5 & 4 ([#1046](https://github.com/lingui/js-lingui/issues/1046)) ([78ad09f](https://github.com/lingui/js-lingui/commit/78ad09fc88e8ec07daefb455457e778471977f2f))
+
+
+
+
+
 ## [3.8.9](https://github.com/lingui/js-lingui/compare/v3.8.8...v3.8.9) (2021-04-09)
 
 **Note:** Version bump only for package @lingui/loader
