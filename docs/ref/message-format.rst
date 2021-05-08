@@ -7,6 +7,8 @@ ICU MessageFormat
 ICU MessageFormat is a flexible yet powerful syntax to express all nuances of grammar
 for each language.
 
+Use `online ICU editor <https://devpal.co/icu-message-editor/>`_ to explore or validate ICU formats.
+
 Overview
 --------
 
