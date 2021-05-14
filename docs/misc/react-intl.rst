@@ -42,7 +42,7 @@ Suppose we have the following text:
 
 .. code-block:: html
 
-   <p>Read the <a href="/docs>documentation</a>.</p>
+   <p>Read the <a href="/docs">documentation</a>.</p>
 
 In `react-intl`_, this would be translated as:
 
@@ -83,7 +83,7 @@ Let's go back to the previous example:
 .. code-block:: html
 
    <p>
-      Read the <a href="/docs>documentation</a>.
+      Read the <a href="/docs">documentation</a>.
    </p>
 
 All we need to do is to wrap the message in a :jsxmacro:`Trans` macro:
@@ -91,7 +91,7 @@ All we need to do is to wrap the message in a :jsxmacro:`Trans` macro:
 .. code-block:: html
 
    <p>
-      <Trans id="msg.docs">Read the <a href="/docs>documentation</a>.</Trans>
+      <Trans id="msg.docs">Read the <a href="/docs">documentation</a>.</Trans>
    </p>
 
 The macro then parses the :jsxmacro:`Trans` macro children and generates
@@ -123,7 +123,7 @@ Let's compare it with `react-intl`_ solution to see the difference:
    .. code-block:: html
 
       <p>
-         <Trans>Read the <a href="/docs>documentation</a>.</Trans>
+         <Trans>Read the <a href="/docs">documentation</a>.</Trans>
       </p>
 
    The message ID is ``Read the <0>documentation</0>.`` instead of ``msg.id``. Both
