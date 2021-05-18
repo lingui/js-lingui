@@ -1,10 +1,7 @@
 import ora from "ora"
 import babel from "./babel"
-import typescript from "./typescript"
-import * as R from "ramda"
 
-const extractors = { babel, typescript }
-
+const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 
 export type BabelOptions = {
   plugins?: Array<string>
@@ -14,6 +11,7 @@ export type BabelOptions = {
 export type ExtractOptions = {
   verbose?: boolean
   projectType?: string
+  extractors?: ExtractorType[]
   babelOptions?: BabelOptions
 }
 
@@ -27,7 +25,9 @@ export default function extract(
   targetPath: string,
   options: ExtractOptions
 ): boolean {
-  return R.values(extractors).some((ext: ExtractorType) => {
+  const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
+
+  return extractorsToExtract.some((ext) => {
     if (!ext.match(filename)) return false
 
     let spinner
@@ -48,5 +48,3 @@ export default function extract(
     return true
   })
 }
-
-export { babel, typescript }

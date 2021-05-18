@@ -6,13 +6,12 @@ import * as R from "ramda"
 
 import { prettyOrigin } from "./utils"
 
-import * as extractors from "./extractors"
-import { ExtractorType } from "./extractors"
-
+import cliExtractor, { ExtractorType } from "./extractors"
 
 type ExtractOptions = {
   ignore?: Array<string>
   verbose?: boolean
+  extractors?: ExtractorType[]
   projectType?: string
   babelOptions?: Object
 }
@@ -44,7 +43,7 @@ export function extract(
   targetPath: string,
   options: ExtractOptions = {}
 ) {
-  const { ignore = [], verbose = false } = options
+  const { ignore = [] } = options
   const ignorePattern = ignore.length ? new RegExp(ignore.join("|"), "i") : null
 
   srcPaths.forEach((srcFilename) => {
@@ -64,17 +63,7 @@ export function extract(
       return
     }
 
-    R.values(extractors).some((ext: ExtractorType) => {
-      if (!ext.match || !ext.match(srcFilename)) return false
-
-      let spinner
-      if (verbose) spinner = ora().start(srcFilename)
-
-      ext.extract(srcFilename, targetPath, options)
-      if (verbose && spinner) spinner.succeed()
-
-      return true
-    })
+    cliExtractor(srcFilename, targetPath, options)
   })
 }
 

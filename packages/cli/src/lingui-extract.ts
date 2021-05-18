@@ -42,6 +42,7 @@ export default function command(
     catalog.make({
       ...options,
       orderBy: config.orderBy,
+      extractors: config.extractors,
       projectType: detect(),
     })
 

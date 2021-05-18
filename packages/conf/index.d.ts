@@ -23,6 +23,11 @@ export type DefaultLocaleObject = {
 
 export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
 
+declare type ExtractorType = {
+    match(filename: string): boolean;
+    extract(filename: string, targetDir: string, options?: any): void;
+}
+
 export declare type LinguiConfig = {
     catalogs: CatalogConfig[];
     compileNamespace: "es" | "cjs" | "ts" | string;
@@ -30,6 +35,7 @@ export declare type LinguiConfig = {
     compilerBabelOptions: GeneratorOptions;
     fallbackLocales: FallbackLocales;
     format: CatalogFormat;
+    extractors?: ExtractorType[];
     prevFormat: CatalogFormat;
     formatOptions: CatalogFormatOptions;
     localeDir: string;
