@@ -71,7 +71,7 @@ describe("extract", function () {
     })
 
     expect(typescript.match).toHaveBeenCalledWith(
-      path.join("src", "components", "Typescript.ts")
+      path.join("src", "index.html")
     )
     expect(babel.match).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js")
@@ -122,7 +122,7 @@ describe("extract", function () {
       path.join("src", "components", "Babel.mjs"),
       ...extractArgs
     )
-    expect(babel.extract).not.toHaveBeenCalledWith(
+    expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
       ...extractArgs
     )
@@ -147,7 +147,7 @@ describe("extract", function () {
       path.join("src", "components", "Babel.mjs"),
       ...extractArgs
     )
-    expect(typescript.extract).toHaveBeenCalledWith(
+    expect(typescript.extract).not.toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
       ...extractArgs
     )
@@ -211,7 +211,7 @@ describe("extract", function () {
       path.join("src", "components", "Babel.mjs"),
       ...extractArgs
     )
-    expect(babel.extract).not.toHaveBeenCalledWith(
+    expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Typescript.ts"),
       ...extractArgs
     )
