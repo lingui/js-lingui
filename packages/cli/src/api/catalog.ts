@@ -155,6 +155,8 @@ export class Catalog {
         extract(filename, tmpDir, {
           verbose: options.verbose,
           babelOptions: this.config.extractBabelOptions,
+          // @ts-ignore
+          extractors: options.extractors,
           projectType: options.projectType,
         })
       )

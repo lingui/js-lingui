@@ -32,12 +32,18 @@ export type FallbackLocales = LocaleObject | DefaultLocaleObject | false
 
 type ModuleSource = [string, string?]
 
+type ExtractorType = {
+  match(filename: string): boolean
+  extract(filename: string, targetDir: string, options?: any): void
+}
+
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: "es" | "ts" | "cjs" | string
   extractBabelOptions: Record<string, unknown>
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
+  extractors?: ExtractorType[]
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]

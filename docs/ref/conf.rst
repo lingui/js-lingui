@@ -29,6 +29,7 @@ Default config:
     "fallbackLocales": {},
     "format": "po",
     "locales": [],
+    "extractors": ["babel"],
     "orderBy": "messageId",
     "pseudoLocale": "",
     "rootDir": ".",
@@ -506,3 +507,26 @@ providing custom translation.
 The difference between :conf:`fallbackLocales` and :conf:`sourceLocale` is that
 :conf:`fallbackLocales` is used in translation, while :conf:`sourceLocale` is
 used for the message ID.
+
+extractors
+------------
+
+Default: ``[babel]``
+
+Extractors it's the way to customize which extractor you want for your codebase, a long time ago Babel wasn't ready yet to work with Typescript,
+so we added two extractors as default ``[babel, typescript]``, but right now Babel already works good with Typescript so isn't a requirement anymore to compile two times the same code.
+
+Anyway, if you want to use the typescript extractor in conjuntion with babel you can do:
+
+.. code-block:: js
+
+   {
+      "extractors": [
+         require.resolve("@lingui/cli/api/extractors/babel"),
+         require.resolve("@lingui/cli/api/extractors/typescript"),
+      ]
+   }
+
+Of course you can build your own extractor, take a look to babel and typescript extractors to see how you should do it, but basically exports two methods:
+ - match: regex to a filename extension, should return true|false
+ - extract: is the responsible of transforming the code and using @lingui/babel-plugin-extract-messages
