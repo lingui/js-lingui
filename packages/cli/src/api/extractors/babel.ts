@@ -6,7 +6,7 @@ import { BabelOptions, ExtractorType } from "."
 import { projectType } from "../detect"
 
 const babelRe = new RegExp(
-	"\\.(" + DEFAULT_EXTENSIONS.map(ext => ext.slice(1)).join("|") + ")$",
+	"\\.(" + [...DEFAULT_EXTENSIONS, ".ts", ".tsx"].map(ext => ext.slice(1)).join("|") + ")$",
 	"i"
 )
 
