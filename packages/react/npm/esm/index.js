@@ -3,7 +3,7 @@ import {
 } from "./react.development.js"
 
 import {
-  I18nProviderProd, TransProd, useLinguiProd, withI18nProd
+  I18nProvider as I18nProviderProd, Trans as TransProd, useLingui as useLinguiProd, withI18n as withI18nProd
 } from "./react.production.min.js"
 
 export const I18nProvider = process.env.NODE_ENV === "production" ? I18nProviderProd : devI18nProvider;
