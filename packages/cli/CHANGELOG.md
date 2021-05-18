@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/lingui/js-lingui/compare/v3.8.10...v3.9.0) (2021-05-18)
+
+
+### Bug Fixes
+
+* lineNumbers false was removing the entire origin ([#1060](https://github.com/lingui/js-lingui/issues/1060)) ([2d25f2c](https://github.com/lingui/js-lingui/commit/2d25f2c5d8f7c624250a1218f83cbe43433c264b))
+
+
+### Features
+
+* configurable and extendable extractors with Lingui config ([#1065](https://github.com/lingui/js-lingui/issues/1065)) ([263ee59](https://github.com/lingui/js-lingui/commit/263ee59163c94220f5ba3999aa60ca40dc352e0c))
+
+
+
+
+
 ## [3.8.10](https://github.com/lingui/js-lingui/compare/v3.8.9...v3.8.10) (2021-04-19)
 
 **Note:** Version bump only for package @lingui/cli
