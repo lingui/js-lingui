@@ -16,7 +16,10 @@ const removeOrigins = (R.map(
 const removeLineNumbers = (R.map(
   (message: ExtractedMessageType) => {
     if (message.origin) {
-      message.origin.map(originValue => originValue.pop())
+      message.origin.map(originValue => {
+        originValue.pop()
+        return originValue
+      })
     }
     return message
   }
