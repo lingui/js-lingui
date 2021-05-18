@@ -19,7 +19,6 @@ const codeFrame = require("babel-code-frame")
 const babelConfig = require("./babel.config")
 
 const Modules = require("./modules")
-const Bundles = require("./bundles")
 const Packaging = require("./packaging")
 
 const UMD_DEV = "UMD_DEV"
@@ -27,6 +26,7 @@ const UMD_PROD = "UMD_PROD"
 const NODE_DEV = "NODE_DEV"
 const NODE_PROD = "NODE_PROD"
 const ESM_PROD = "ESM_PROD"
+const ESM_DEV = "ESM_DEV"
 
 const extensions = [".js", ".ts", ".tsx"]
 
@@ -71,6 +71,7 @@ function getFormat(bundleType) {
     case NODE_PROD:
       return 'cjs'
     case ESM_PROD:
+    case ESM_DEV:
       return 'es'
   }
 }
@@ -79,13 +80,13 @@ function getFilename(bundle, bundleType) {
   const filename = bundle.label || bundle.entry
   switch (bundleType) {
     case NODE_DEV:
+    case ESM_DEV:
     case UMD_DEV:
       return `${filename}.development.js`
     case UMD_PROD:
     case NODE_PROD:
-      return `${filename}.production.min.js`
     case ESM_PROD:
-      return `${filename}.esm.js`
+      return `${filename}.production.min.js`
   }
 }
 
@@ -93,6 +94,7 @@ function isProductionBundleType(bundleType) {
   switch (bundleType) {
     case UMD_DEV:
     case NODE_DEV:
+    case ESM_DEV:
       return false
     case UMD_PROD:
     case NODE_PROD:
@@ -291,7 +293,7 @@ async function build(bundle, bundleType) {
     ),
   }
   const [mainOutputPath, ...otherOutputPaths] = Packaging.getBundleOutputPaths(
-    bundleType === ESM_PROD ? "ESM" : "UNIVERSAL",
+    bundleType === ESM_PROD || bundleType === ESM_DEV ? "ESM" : "UNIVERSAL",
     filename,
     packageName
   )
@@ -320,6 +322,7 @@ async function build(bundle, bundleType) {
 module.exports = async function (bundle) {
   await build(bundle, NODE_DEV)
   await build(bundle, NODE_PROD)
+  await build(bundle, ESM_DEV)
   await build(bundle, ESM_PROD)
   // await build(bundle, UMD_DEV)
   // await build(bundle, UMD_PROD)
