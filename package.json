@@ -122,22 +122,6 @@
     {
       "path": "./packages/react/build/cjs/react.production.min.js",
       "limit": "5 kB"
-    },
-    {
-      "path": "./packages/core/build/esm/index.js",
-      "limit": "3 kB"
-    },
-    {
-      "path": "./packages/core/build/esm/dev.js",
-      "limit": "10 kB"
-    },
-    {
-      "path": "./packages/detect-locale/build/esm/index.js",
-      "limit": "1 kB"
-    },
-    {
-      "path": "./packages/react/build/esm/index.js",
-      "limit": "5 kB"
     }
   ]
 }
