@@ -16,7 +16,7 @@ type POItemType = InstanceType<typeof PO.Item>
 function getCreateHeaders(language = "no") {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
-    "Mime-Version": "1.0",
+    "MIME-Version": "1.0",
     "Content-Type": "text/plain; charset=utf-8",
     "Content-Transfer-Encoding": "8bit",
     "X-Generator": "@lingui/cli",
