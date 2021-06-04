@@ -17,6 +17,7 @@ const formats: Record<CatalogFormat, CatalogFormatter> = {
 
 type CatalogFormatOptionsInternal = {
   locale: string
+  disableSelectWarning?: boolean
 } & CatalogFormatOptions
 
 export type CatalogFormatter = {
