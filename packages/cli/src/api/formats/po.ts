@@ -9,7 +9,7 @@ import { CatalogFormatter } from "."
 
 const getCreateHeaders = (language = "no") => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
-  "Mime-Version": "1.0",
+  "MIME-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
   "Content-Transfer-Encoding": "8bit",
   "X-Generator": "@lingui/cli",
