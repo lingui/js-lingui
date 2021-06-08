@@ -6,18 +6,42 @@ describe("remote-loader", () => {
   it("should compile correctly JSON messages coming from the fly", async () => {
     const unlink = createConfig("minimal")
     const messages = await simulatedJsonResponse()
-    expect(remoteLoader("en", messages)).toMatchInlineSnapshot(
-      `/*eslint-disable*/module.exports={messages:{"property.key":"value","{0} Deposited":[["0"]," Deposited"],"{0} Strategy":[["0"]," Strategy"]}};`
-    )
+    const remoteMessages = remoteLoader("en", messages)
+    expect(remoteMessages).toMatchInlineSnapshot(`
+      Object {
+        property.key: value,
+        {0} Deposited: Array [
+          Array [
+            0,
+          ],
+           Deposited,
+        ],
+        {0} Strategy: Array [
+          Array [
+            0,
+          ],
+           Strategy,
+        ],
+      }
+    `)
+    expect(remoteMessages["property.key"]).toEqual("value")
     unlink()
   })
 
   it("should compile correctly .po messages coming from the fly", async () => {
     const unlink = createConfig("po")
     const messages = await simulatedPoResponse()
-    expect(remoteLoader("en", messages)).toMatchInlineSnapshot(
-      `/*eslint-disable*/module.exports={messages:{"Hello World":"Hello World","My name is {name}":["My name is ",["name"]]}};`
-    )
+    expect(remoteLoader("en", messages)).toMatchInlineSnapshot(`
+      Object {
+        Hello World: Hello World,
+        My name is {name}: Array [
+          My name is ,
+          Array [
+            name,
+          ],
+        ],
+      }
+    `)
     unlink()
   })
 
@@ -27,11 +51,24 @@ describe("remote-loader", () => {
       const messages = await simulatedJsonResponse(true)
       const fallbackMessages = await simulatedJsonResponse()
 
-      expect(
-        remoteLoader("en", messages, fallbackMessages)
-      ).toMatchInlineSnapshot(
-        `/*eslint-disable*/module.exports={messages:{"property.key":"value","{0} Deposited":[["0"]," Deposited"],"{0} Strategy":[["0"]," Strategy"]}};`
-      )
+      expect(remoteLoader("en", messages, fallbackMessages))
+        .toMatchInlineSnapshot(`
+        Object {
+          property.key: value,
+          {0} Deposited: Array [
+            Array [
+              0,
+            ],
+             Deposited,
+          ],
+          {0} Strategy: Array [
+            Array [
+              0,
+            ],
+             Strategy,
+          ],
+        }
+      `)
       unlink()
     })
 
@@ -40,11 +77,18 @@ describe("remote-loader", () => {
       const messages = await simulatedPoResponse("es")
       const fallbackMessages = await simulatedPoCompiledFile()
 
-      expect(
-        remoteLoader("en", messages, fallbackMessages)
-      ).toMatchInlineSnapshot(
-        `/*eslint-disable*/module.exports={messages:{"Hello World":"Hello World","My name is {name}":["My name is ",["name"]]}};`
-      )
+      expect(remoteLoader("en", messages, fallbackMessages))
+        .toMatchInlineSnapshot(`
+        Object {
+          Hello World: Hello World,
+          My name is {name}: Array [
+            My name is ,
+            Array [
+              name,
+            ],
+          ],
+        }
+      `)
       unlink()
     })
   })

@@ -16,6 +16,7 @@ export type CreateCompileCatalogOptions = {
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
   compilerBabelOptions?: GeneratorOptions
+  pure?: boolean
 }
 
 export function createCompiledCatalog(
@@ -23,7 +24,7 @@ export function createCompiledCatalog(
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
 ) {
-  const { strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {} } = options
+  const { strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}, pure = false } = options
   const compiledMessages = R.keys(messages).map((key: string) => {
     // Don't use `key` as a fallback translation in strict mode.
     let translation = messages[key] || (!strict ? key : "")
@@ -35,21 +36,20 @@ export function createCompiledCatalog(
     return t.objectProperty(t.stringLiteral(key), compile(translation))
   })
 
-  const ast = buildExportStatement(
+  const ast = pure ? t.objectExpression(compiledMessages) :  buildExportStatement(
     t.objectExpression(compiledMessages),
     namespace
   )
 
-  return (
-    "/*eslint-disable*/" +
-    generate(ast, {
-      minified: true,
-      jsescOption: {
-        minimal: true,
-      },
-      ...compilerBabelOptions,
-    }).code
-  )
+  const code = generate(ast, {
+    minified: true,
+    jsescOption: {
+      minimal: true,
+    },
+    ...compilerBabelOptions,
+  }).code
+
+  return pure ? JSON.parse(code) : ("/*eslint-disable*/" + code)
 }
 
 function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {

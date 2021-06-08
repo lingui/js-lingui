@@ -51,6 +51,8 @@ export function remoteLoader<T>(locale: string, messages: RemoteLoaderMessages<T
     ...config,
     namespace: config.compileNamespace,
     pseudoLocale: config.pseudoLocale,
+    // important, because without it returns an export statement
+    pure: true,
   })
 
 }
