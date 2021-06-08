@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.10.1](https://github.com/lingui/js-lingui/compare/v3.10.0...v3.10.1) (2021-06-08)
+
+
+### Bug Fixes
+
+* reverts reduce size of ESM packages ([#1066](https://github.com/lingui/js-lingui/issues/1066)) ([3a057e0](https://github.com/lingui/js-lingui/commit/3a057e0c61224b98c93203e0d88136fa48f309ba))
+
+
+
+
+
 # [3.10.0](https://github.com/lingui/js-lingui/compare/v3.9.0...v3.10.0) (2021-06-08)
 
 
