@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/lingui/js-lingui/compare/v3.9.0...v3.10.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* po-gettext format issues with CLI ([#1073](https://github.com/lingui/js-lingui/issues/1073)) ([a529aca](https://github.com/lingui/js-lingui/commit/a529aca239b232926b786811f9ac03c9b771417b))
+* use correct case for PO file header MIME-Version ([#1074](https://github.com/lingui/js-lingui/issues/1074)) ([f31afc5](https://github.com/lingui/js-lingui/commit/f31afc53837f0e67660d2825125f74fc11db8e0b))
+
+
+### Features
+
+* load remote catalogs with remoteLoader() ([#1080](https://github.com/lingui/js-lingui/issues/1080)) ([e73a4b3](https://github.com/lingui/js-lingui/commit/e73a4b34cf8d83a45044c220148761d79b4fd8a9))
+
+
+
+
+
 # [3.9.0](https://github.com/lingui/js-lingui/compare/v3.8.10...v3.9.0) (2021-05-18)
 
 

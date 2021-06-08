@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/lingui/js-lingui/compare/v3.9.0...v3.10.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* reduce size of ESM packages ([#1066](https://github.com/lingui/js-lingui/issues/1066)) ([9990eba](https://github.com/lingui/js-lingui/commit/9990ebaa9d30f7e218c106a2abfd7ddbcf0e0170))
+
+
+
+
+
 # [3.9.0](https://github.com/lingui/js-lingui/compare/v3.8.10...v3.9.0) (2021-05-18)
 
 **Note:** Version bump only for package @lingui/detect-locale
