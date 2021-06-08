@@ -106,7 +106,7 @@ const po: CatalogFormatter & PoFormatter = {
     return this.parse(raw)
   },
 
-  parse(raw) {
+  parse(raw: string) {
     const po = PO.parse(raw)
     validateItems(po.items)
     return deserialize(indexItems(po.items))

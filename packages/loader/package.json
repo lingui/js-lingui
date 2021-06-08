@@ -2,6 +2,7 @@
   "name": "@lingui/loader",
   "version": "3.9.0",
   "description": "webpack loader for lingui message catalogs",
+  "types": "index.d.ts",
   "main": "index.js",
   "author": {
     "name": "Tomáš Ehrlich",

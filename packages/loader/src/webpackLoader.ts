@@ -18,7 +18,7 @@ try {
   JavascriptGenerator = require("webpack/lib/JavascriptGenerator")
 } catch (error) {
   if (error.code !== "MODULE_NOT_FOUND") {
-    throw e
+    throw error
   }
 }
 

@@ -28,6 +28,7 @@ export type CatalogFormatter = {
     options?: CatalogFormatOptionsInternal
   ): void
   read(filename: string): CatalogType | null
+  parse(content): any
 }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {
