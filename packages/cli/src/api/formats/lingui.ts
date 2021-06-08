@@ -49,6 +49,10 @@ const lingui: CatalogFormatter = {
       throw new Error(`Cannot read ${filename}: ${e.message}`)
     }
   },
+
+  parse(content) {
+    return content
+  }
 }
 
 export default lingui

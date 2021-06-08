@@ -332,7 +332,7 @@ const poGettext: CatalogFormatter & PoFormatter = {
     return this.parse(raw)
   },
 
-  parse(raw) {
+  parse(raw: string) {
     const po = PO.parse(raw)
     convertPluralsToICU(po.items, po.headers.Language)
     return deserialize(indexItems(po.items))

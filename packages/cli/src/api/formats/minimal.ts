@@ -36,6 +36,10 @@ const minimal: CatalogFormatter = {
       throw new Error(`Cannot read ${filename}: ${e.message}`)
     }
   },
+
+  parse(content: Record<string, any>) {
+    return deserialize(content)
+  }
 }
 
 export default minimal
