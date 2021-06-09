@@ -11,6 +11,7 @@ export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 export type CatalogFormatOptions = {
   origins?: boolean
   lineNumbers?: boolean
+  disableSelectWarning?: boolean
 }
 
 export type OrderBy = "messageId" | "origin"
