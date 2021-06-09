@@ -16,3 +16,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `Symbolovník <http://www.symbolovnik.cz>`__
 - `Notos <https://www.notos.co>`__
 - `Greenlight <https://greenlightready.com>`__
+- `OkCupid <https://www.okcupid.com>`__
