@@ -57,6 +57,11 @@ const bundles = [
   {
     type: bundleTypes.NODE,
     entry: "@lingui/loader"
+  },
+
+  {
+    type: bundleTypes.UNIVERSAL,
+    entry: "@lingui/remote-loader"
   }
 ]
 

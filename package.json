@@ -122,6 +122,10 @@
     {
       "path": "./packages/react/build/cjs/react.production.min.js",
       "limit": "5 kB"
+    },
+    {
+      "path": "./packages/remote-loader/build/cjs/remote-loader.production.min.js",
+      "limit": "5 kB"
     }
   ]
 }
