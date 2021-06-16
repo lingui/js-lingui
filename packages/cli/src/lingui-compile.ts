@@ -10,6 +10,7 @@ import { getConfig, LinguiConfig } from "@lingui/conf"
 import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
+import { getFormat } from "./api";
 
 const noMessages: (catalogs: Object[]) => boolean = R.pipe(
   R.map(R.isEmpty),
@@ -174,10 +175,11 @@ if (require.main === module) {
 
     const catalogs = getCatalogs(config);
     let paths = []; 
+    const catalogExtension = getFormat(config.format).catalogExtension;
 
     config.locales.forEach((locale) => {
       catalogs.forEach((catalog) => {
-        paths.push(`${catalog.path.replace(LOCALE, locale).replace(NAME, "*")}.${config.format}`)
+        paths.push(`${catalog.path.replace(LOCALE, locale).replace(NAME, "*")}${catalogExtension}`)
       })  
     })
 
