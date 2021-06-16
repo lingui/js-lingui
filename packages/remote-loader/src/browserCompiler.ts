@@ -1,5 +1,6 @@
 import * as R from "ramda"
 import * as t from "@babel/types"
+import JSON5 from "json5"
 import generate from "@babel/generator"
 import { parse } from "messageformat-parser"
 
@@ -11,14 +12,14 @@ export function createBrowserCompiledCatalog(messages: Record<string, any>) {
   })
 
   const ast = t.objectExpression(compiledMessages)
-  const code = generate(ast as any, {
+  const code =  generate(ast as any, {
     minified: true,
     jsescOption: {
       minimal: true,
     }
   }).code
 
-  return JSON.parse(code)
+  return JSON5.parse(code)
 }
 
 /**

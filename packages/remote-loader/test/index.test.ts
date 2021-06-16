@@ -5,9 +5,19 @@ describe("remote-loader", () => {
   it("should compile correctly JSON messages coming from the fly", async () => {
     const unlink = createConfig("minimal")
     const messages = await simulatedJsonResponse()
-    const remoteMessages = remoteLoader({ format: "minimal", messages})
+    const remoteMessages = remoteLoader({ format: "minimal", messages })
     expect(remoteMessages).toMatchInlineSnapshot(`
       Object {
+        customKey: Array [
+          Array [
+            someVariable,
+            select,
+            Object {
+              other: SomeOtherText,
+              someVarValue: SomeTextHere,
+            },
+          ],
+        ],
         property.key: value,
         {0} Deposited: Array [
           Array [
@@ -36,6 +46,16 @@ describe("remote-loader", () => {
       expect(remoteLoader({ format: "minimal", messages, fallbackMessages }))
         .toMatchInlineSnapshot(`
         Object {
+          customKey: Array [
+            Array [
+              someVariable,
+              select,
+              Object {
+                other: SomeOtherText,
+                someVarValue: SomeTextHere,
+              },
+            ],
+          ],
           property.key: value,
           {0} Deposited: Array [
             Array [
@@ -62,10 +82,11 @@ function simulatedJsonResponse(nully?: boolean) {
       "property.key": nully ? "" : "value",
       "{0} Deposited": "{0} Deposited",
       "{0} Strategy": "{0} Strategy",
+      customKey:
+        "{someVariable, select, someVarValue {SomeTextHere} other {SomeOtherText}}",
     })
   })
 }
-
 
 function createConfig(format: string) {
   const filename = `${process.cwd()}/.linguirc`
