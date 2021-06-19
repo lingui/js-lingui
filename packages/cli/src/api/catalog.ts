@@ -359,8 +359,7 @@ export class Catalog {
       fs.mkdirpSync(basedir)
     }
     const options = { ...this.config.formatOptions, locale: undefined }
-    const poFormat = getFormat("po")
-    poFormat.write(filename, messages, options)
+    this.format.write(filename, messages, options)
   }
 
   writeCompiled(
