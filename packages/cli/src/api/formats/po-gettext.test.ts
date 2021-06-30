@@ -303,6 +303,7 @@ msgstr[2] "# dní"
         // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
         translation: "{#, plural, one {# den} few {# dny} other {# dní}}",
         extractedComments: [],
+        context: null,
         comments: [],
         obsolete: false,
         origin: [],

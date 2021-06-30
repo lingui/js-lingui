@@ -32,6 +32,7 @@ export type TransProps = {
   id?: string
   comment?: string
   values?: Record<string, unknown>
+  context?: string
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => ReactElement<any, any> | null
 }

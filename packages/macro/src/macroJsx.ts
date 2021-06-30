@@ -4,7 +4,7 @@ import { NodePath } from "@babel/traverse"
 
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
-import { ID, COMMENT, MESSAGE } from "./constants"
+import { ID, COMMENT, MESSAGE, CONTEXT } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value) =>
@@ -62,7 +62,7 @@ export default class MacroJSX {
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
-    const { attributes, id, comment } = this.stripMacroAttributes(path.node)
+    const { attributes, id, comment, context } = this.stripMacroAttributes(path.node)
 
     if (!id && !message) {
       return
@@ -104,6 +104,15 @@ export default class MacroJSX {
           )
         )
       }
+    }
+
+    if (context) {
+      attributes.push(
+        this.types.jsxAttribute(
+          this.types.jsxIdentifier(CONTEXT),
+          this.types.stringLiteral(context)
+        )
+      )
     }
 
     // Parameters for variable substitution
@@ -167,8 +176,9 @@ export default class MacroJSX {
     const id = attributes.filter(this.attrName([ID]))[0]
     const message = attributes.filter(this.attrName([MESSAGE]))[0]
     const comment = attributes.filter(this.attrName([COMMENT]))[0]
+    const context = attributes.filter(this.attrName([CONTEXT]))[0]
 
-    let reserved = [ID, MESSAGE, COMMENT]
+    let reserved = [ID, MESSAGE, COMMENT, CONTEXT]
     if (this.isI18nComponent(node)) {
       // no reserved prop names
     } else if (this.isChoiceComponent(node)) {
@@ -191,6 +201,7 @@ export default class MacroJSX {
       id: maybeNodeValue(id),
       message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
+      context: maybeNodeValue(context),
       attributes: attributes.filter(this.attrName(reserved, true)),
     }
   }
@@ -272,6 +283,7 @@ export default class MacroJSX {
       ID,
       COMMENT,
       MESSAGE,
+      CONTEXT,
       "key",
       // we remove <Trans /> react props that are not useful for translation
       "render",

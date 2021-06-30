@@ -93,6 +93,7 @@ Object {
   cs: Object {
     Component A: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -106,6 +107,7 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [
         Comment A,
         Comment A again,
@@ -133,6 +135,7 @@ Object {
   en: Object {
     Component A: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -146,6 +149,7 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [
         Comment A,
         Comment A again,
@@ -178,6 +182,7 @@ Object {
   cs: Object {
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -188,6 +193,7 @@ Object {
   en: Object {
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -203,6 +209,7 @@ Object {
   cs: Object {
     Component A: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -216,6 +223,7 @@ Object {
     },
     Component B: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -229,6 +237,7 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [
         Comment A,
         Comment A again,
@@ -256,6 +265,7 @@ Object {
   en: Object {
     Component A: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -269,6 +279,7 @@ Object {
     },
     Component B: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -282,6 +293,7 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [
         Comment A,
         Comment A again,
@@ -322,6 +334,7 @@ Object {
   en: Object {
     Component A: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -335,6 +348,7 @@ Object {
     },
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [
         Comment A,
         Comment A again,
@@ -368,6 +382,7 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
 Object {
   Component A: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -381,6 +396,7 @@ Object {
   },
   Hello World: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [
       Comment A,
       Comment A again,
@@ -411,6 +427,7 @@ exports[`Catalog read should read file in given format 1`] = `
 Object {
   obsolete: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: true,
@@ -419,6 +436,7 @@ Object {
   },
   static: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -427,6 +445,7 @@ Object {
   },
   veryLongString: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -438,6 +457,7 @@ Object {
       Translator comment,
       This one might come from developer,
     ],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -446,6 +466,7 @@ Object {
   },
   withDescription: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [
       Description is comment from developers to translators,
     ],
@@ -456,6 +477,7 @@ Object {
   },
   withFlags: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [
       fuzzy,
@@ -467,6 +489,7 @@ Object {
   },
   withMultipleOrigins: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -484,6 +507,7 @@ Object {
   },
   withOrigin: Object {
     comments: Array [],
+    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -505,6 +529,7 @@ Object {
   cs: Object {
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
@@ -515,6 +540,7 @@ Object {
   en: Object {
     Hello World: Object {
       comments: Array [],
+      context: null,
       extractedComments: Array [],
       flags: Array [],
       obsolete: false,
