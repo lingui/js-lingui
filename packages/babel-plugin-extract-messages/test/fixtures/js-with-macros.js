@@ -30,3 +30,18 @@ const id = 'message id'
 const withUnknownId = t({
   id: id
 })
+
+const tWithContextA = t({
+  id: "Some ID",
+  context: "Context1"
+})
+
+const tWithContextB = t({
+  id: "Some other ID",
+  context: "Context1"
+})
+
+const defineMessageWithContext = defineMessage({
+  id: "Some ID",
+  context: "Context2"
+})
