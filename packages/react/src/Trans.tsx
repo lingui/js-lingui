@@ -14,6 +14,7 @@ export type TransProps = {
   id: string
   message?: string
   values: Object
+  context?: string
   components: { [key: string]: React.ElementType | any }
   formats?: Object
   component?: React.ComponentType<TransRenderProps>

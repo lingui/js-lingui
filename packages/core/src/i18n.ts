@@ -6,6 +6,7 @@ import { EventEmitter } from "./eventEmitter"
 
 export type MessageOptions = {
   message?: string
+  context?: string
   formats?: Object
 }
 
@@ -32,12 +33,14 @@ export type MessageDescriptor = {
   id?: string
   comment?: string
   message?: string
+  context?: string
   values?: Record<string, unknown>
 }
 
 export type MissingMessageEvent = {
   locale: Locale
   id: string
+  context?: string
 }
 
 type setupI18nProps = {
@@ -45,7 +48,7 @@ type setupI18nProps = {
   locales?: Locales
   messages?: AllMessages
   localeData?: AllLocaleData
-  missing?: string | ((message, id) => string)
+  missing?: string | ((message, id, context) => string)
 }
 
 type Events = {
@@ -58,7 +61,7 @@ export class I18n extends EventEmitter<Events> {
   _locales: Locales
   _localeData: AllLocaleData
   _messages: AllMessages
-  _missing: string | ((message, id) => string)
+  _missing: string | ((message, id, context) => string)
 
   constructor(params: setupI18nProps) {
     super()
@@ -166,23 +169,36 @@ export class I18n extends EventEmitter<Events> {
   _(
     id: MessageDescriptor | string,
     values: Object | undefined = {},
-    { message, formats }: MessageOptions | undefined = {}
+    { message, formats, context }: MessageOptions | undefined = {}
   ) {
     if (!isString(id)) {
       values = id.values || values
       message = id.message
+      context = id.context
       id = id.id
     }
-    let translation = this.messages[id] || message || id
+    
+    const messageMissing = !context && !this.messages[id];
+    const contextualMessageMissing = context && !this.messages[context][id];
+    const messageUnreachable = contextualMessageMissing || messageMissing
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
-    if (missing && !this.messages[id]) {
-      return isFunction(missing) ? missing(this.locale, id) : missing
+    if (missing && messageUnreachable) {
+      return isFunction(missing) ? missing(this.locale, id, context) : missing
     }
 
-    if (!this.messages[id]) {
-      this.emit("missing", { id, locale: this._locale })
+    if (messageUnreachable) {
+      this.emit("missing", { id, context, locale: this._locale })
+    }
+
+    let translation;
+
+    if (context && !contextualMessageMissing) {
+      // context is like a subdirectory of other keys
+      translation = this.messages[context][id] || message || id
+    } else {
+      translation = this.messages[id] || message || id
     }
 
     if (process.env.NODE_ENV !== "production") {
