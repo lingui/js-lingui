@@ -8,7 +8,7 @@ import pseudoLocalize from "./pseudoLocalize"
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
 type CompiledCatalogType = {
-  [msgId: string]: string
+  [msgId: string]: string | object
 }
 
 export type CreateCompileCatalogOptions = {
@@ -19,21 +19,42 @@ export type CreateCompileCatalogOptions = {
   pure?: boolean
 }
 
+/**
+ * Transform a single key/value translation into a Babel expression,
+ * applying pseudolocalization where necessary.
+ */
+function compileSingleKey(key: string, translation: string, shouldPseudolocalize: boolean): t.ObjectProperty {
+  if (shouldPseudolocalize) {
+    translation = pseudoLocalize(translation)
+  }
+
+  return t.objectProperty(t.stringLiteral(key), compile(translation))
+}
+
 export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
 ) {
   const { strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}, pure = false } = options
-  const compiledMessages = R.keys(messages).map((key: string) => {
-    // Don't use `key` as a fallback translation in strict mode.
-    let translation = messages[key] || (!strict ? key : "")
+  const shouldPseudolocalize = locale === pseudoLocale
 
-    if (locale === pseudoLocale) {
-      translation = pseudoLocalize(translation)
+  const compiledMessages = R.keys(messages).map((key: string) => {
+    const value = messages[key];
+
+    // If the current ID's value is a context object, create a nested 
+    // expression, and assign the current ID to that expression
+    if (typeof value === "object") {
+      const contextExpression = t.objectExpression(Object.keys(value).map((contextKey) => {
+        const contextTranslation = value[contextKey];
+        return compileSingleKey(contextKey, contextTranslation, shouldPseudolocalize)
+      }))
+      return t.objectProperty(t.stringLiteral(key), contextExpression);
     }
 
-    return t.objectProperty(t.stringLiteral(key), compile(translation))
+    // Don't use `key` as a fallback translation in strict mode.
+    let translation = (messages[key] || (!strict ? key : "")) as string
+    return compileSingleKey(key, translation, shouldPseudolocalize)
   })
 
   const ast = pure ? t.objectExpression(compiledMessages) :  buildExportStatement(

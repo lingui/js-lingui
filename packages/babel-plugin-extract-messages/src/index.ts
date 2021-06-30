@@ -17,33 +17,83 @@ const VISITED = Symbol("I18nVisited")
 function addMessage(
   path,
   messages,
-  { id, message: newDefault, origin, comment, ...props }
+  { id, message: newDefault, origin, comment, context, ...props }
 ) {
   // prevent from adding undefined msgid
   if (id === undefined) return
 
-  if (messages.has(id)) {
-    const message = messages.get(id)
+  const extractedComments = comment ? [comment] : []
 
-    // only set/check default language when it's defined.
-    if (message.message && newDefault && message.message !== newDefault) {
-      throw path.buildCodeFrameError(
-        "Different defaults for the same message ID."
-      )
-    }
+  if (context) {
+    if (messages.has(context)) {
+      const existingContext = messages.get(context)
+      if (existingContext.has(id)) {
+        const message = messages.get(id)
+        // only set/check default language when it's defined.
+        if (message.message && newDefault && message.message !== newDefault) {
+          throw path.buildCodeFrameError(
+            "Different defaults for the same message ID."
+          )
+        }
+  
+        if (newDefault) {
+          message.message = newDefault
+        }
 
-    if (newDefault) {
-      message.message = newDefault
-    }
-
-    ;[].push.apply(message.origin, origin)
-    if (comment) {
-      ;[].push.apply(message.extractedComments, [comment])
+        ;[].push.apply(message.origin, origin)
+        
+        if (comment) {
+          ;[].push.apply(message.extractedComments, [comment])
+        }
+      } else {
+        existingContext.set(id, { ...props, message: newDefault, origin, extractedComments })
+        messages.set(context, existingContext)
+      }
+    } else {
+      const newContext = new Map();
+      newContext.set(id, { ...props, message: newDefault, origin, extractedComments })
+      messages.set(context, newContext)
     }
   } else {
-    const extractedComments = comment ? [comment] : []
-    messages.set(id, { ...props, message: newDefault, origin, extractedComments })
+    if (messages.has(id)) {
+      const message = messages.get(id)
+  
+      // only set/check default language when it's defined.
+      if (message.message && newDefault && message.message !== newDefault) {
+        throw path.buildCodeFrameError(
+          "Different defaults for the same message ID."
+        )
+      }
+  
+      if (newDefault) {
+        message.message = newDefault
+      }
+  
+      ;[].push.apply(message.origin, origin)
+      if (comment) {
+        ;[].push.apply(message.extractedComments, [comment])
+      }
+    } else {
+      messages.set(id, { ...props, message: newDefault, origin, extractedComments })
+    }
   }
+}
+
+/**
+ * An ES6 Map type is not possible to encode with JSON.stringify,
+ * so we can instead use a replacer function as an argument to 
+ * tell the JSON parser how to serialize / deserialize the Maps
+ * it encounters.
+ */
+function mapReplacer(key, value) {
+  if (value instanceof Map) {
+    const object = {}
+    value.forEach((v, k) => {
+      return object[k] = v;
+    });
+    return object;
+  }
+  return value;
 }
 
 export default function ({ types: t }) {
@@ -117,7 +167,7 @@ export default function ({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "message" || key === "comment") {
+          if (key === "id" || key === "message" || key === "comment" || key === "context") {
             if (item.value.value) {
               acc[key] = item.value.value
             } else if (
@@ -169,7 +219,7 @@ export default function ({ types: t }) {
           return
         }
 
-        const copyOptions = ["message", "comment"]
+        const copyOptions = ["message", "comment", "context"]
 
         if (t.isObjectExpression(path.node.arguments[2])) {
           path.node.arguments[2].properties.forEach((property) => {
@@ -228,7 +278,7 @@ export default function ({ types: t }) {
         visited.add(path.node)
 
         const props = {}
-        const copyProps = ["id", "message", "comment"]
+        const copyProps = ["id", "message", "comment", "context"]
         path.node.properties
           .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
           .forEach(({ key, value }, i) => {
@@ -298,7 +348,7 @@ export default function ({ types: t }) {
         catalog[key] = value
       })
 
-      fs.writeFileSync(catalogFilename, JSON.stringify(catalog, null, 2))
+      fs.writeFileSync(catalogFilename, JSON.stringify(catalog, mapReplacer, 2))
     },
   }
 }
