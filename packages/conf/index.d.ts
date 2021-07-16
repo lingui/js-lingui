@@ -23,6 +23,11 @@ export type DefaultLocaleObject = {
 
 export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
 
+export type CatalogService = {
+    name: string
+    apiKey: string
+}
+
 declare type ExtractorType = {
     match(filename: string): boolean;
     extract(filename: string, targetDir: string, options?: any): void;
@@ -46,6 +51,7 @@ export declare type LinguiConfig = {
     rootDir: string;
     runtimeConfigModule: [string, string?];
     sourceLocale: string;
+    service: CatalogService
 };
 export declare const defaultConfig: LinguiConfig;
 export declare function getConfig({ cwd, configPath, skipValidation, }?: {
@@ -73,6 +79,7 @@ export declare const configValidation: {
         rootDir: string;
         runtimeConfigModule: [string, string?];
         sourceLocale: string;
+        service: CatalogService;
     };
     deprecatedConfig: {
         fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;

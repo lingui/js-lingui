@@ -29,6 +29,7 @@
     "LICENSE",
     "README.md",
     "api",
+    "services",
     "lingui.js",
     "lingui-*.js"
   ],
