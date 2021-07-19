@@ -3,6 +3,16 @@ import { dirname } from "path"
 import PO from "pofile"
 import https from "https"
 import glob from "glob"
+import { format as formatDate } from "date-fns"
+
+const getCreateHeaders = (language = "no") => ({
+  "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
+  "MIME-Version": "1.0",
+  "Content-Type": "text/plain; charset=utf-8",
+  "Content-Transfer-Encoding": "8bit",
+  "X-Generator": "@lingui/cli",
+  Language: language,
+})
 
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default function syncProcess(config, options) {
@@ -132,17 +142,15 @@ function sync(config, options, successCallback, failCallback) {
 }
 
 function createSegmentFromPoItem(item) {
-  let segmentIsPlural = item.msgstr.length > 1
-  let segmentHasKey   = item.msgid != item.msgstr[0] && item.msgstr[0].length
-  let segmentType     = !segmentIsPlural && segmentHasKey ? 'key' : 'source' // no key support for plurals!
+  let itemHasId = item.msgid != item.msgstr[0] && item.msgstr[0].length
 
   let segment = {
-    type: segmentType,
-    source: segmentHasKey ? item.msgstr[0] : item.msgid // if source segment, msgstr may be empty if --overwrite is used
+    type: 'source',                                 // No way to edit text for source language (inside code), so not using "key" here
+    source: itemHasId ? item.msgstr[0] : item.msgid // msgstr may be empty if --overwrite is used and no ID is used
   }
 
-  if (segmentType === 'key') {
-    segment.key = item.msgid
+  if (itemHasId) {
+    segment.context = item.msgid
   }
 
   if (item.references.length) {
@@ -157,16 +165,12 @@ function createSegmentFromPoItem(item) {
 }
 
 function createPoItemFromSegment(segment) {
-  let segmentIsPlural = "source_plural" in segment
-
   let item = new PO.Item()
 
-  item.msgid             = segment.type === "key" ? segment.key : segment.source
+  item.msgid             = segment.context ? segment.context : segment.source
   item.msgstr            = [segment.target]
   item.references        = (segment.references && segment.references.length) ? segment.references : []
   item.extractedComments = segment.comment ? segment.comment.split(' | ') : []
-
-  //item.msgid_plural = null
 
   return item
 }
@@ -192,6 +196,8 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
     const segments = segmentsPerLocale[targetLocale]
 
     let po = new PO()
+    po.headers = getCreateHeaders(targetLocale)
+
     let items = []
 
     segments.forEach((segment) => {
