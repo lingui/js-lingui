@@ -113,6 +113,11 @@ function sync(config, options, successCallback, failCallback) {
     "segments": segments
   }
 
+  // Sync and then remove unused segments (not present in the local application) from Translation.io
+  if (options.clean) {
+    request['purge'] = true
+  }
+
   postTio("sync", request, config.service.apiKey, (response) => {
     if (response.errors) {
       failCallback(response.errors)
@@ -204,7 +209,10 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
     // Check that localePath directory exists and save PO file
     fs.promises.mkdir(dirname(localePath), {recursive: true}).then(() => {
       po.save(localePath, (err) => {
-        console.error(err)
+        if (err) {
+          console.error('Error while saving target PO files')
+          console.error(err)
+        }
       })
     })
   })
