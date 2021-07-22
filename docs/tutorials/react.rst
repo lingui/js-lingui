@@ -14,7 +14,7 @@ We're going to translate the following app:
 
 .. code-block:: jsx
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
    import Inbox from './Inbox.js'
@@ -25,7 +25,7 @@ We're going to translate the following app:
 
 .. code-block:: jsx
 
-   // Inbox.js
+   // src/Inbox.js
    import React from 'react'
 
    export default function Inbox() {
@@ -82,7 +82,7 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
 
 .. code-block:: jsx
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
 
@@ -193,7 +193,11 @@ We need here to fix the configuration. Create a ``.linguirc`` file with
 .. code-block:: json
 
    {
-      "locales": ["cs", "en"]
+     "locales": ["cs", "en"],
+     "catalogs": [{
+       "path": "src/locales/{locale}/messages",
+       "include": ["src"]
+     }]
    }
 
 After fixing configuration, let's run :cli:`extract` command again::
