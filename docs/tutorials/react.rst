@@ -39,7 +39,7 @@ We're going to translate the following app:
            <h1>Message Inbox</h1>
 
            <p>
-             See all <Link to="/unread">unread messages</Link>{" or "}
+             See all <a href="/unread">unread messages</a>{" or "}
              <a onClick={markAsRead}>mark them</a> as read.
            </p>
 
@@ -315,7 +315,7 @@ variables, some HTML and components inside:
 .. code-block:: jsx
 
    <p>
-      See all <Link to="/unread">unread messages</Link>{" or "}
+      See all <a href="/unread">unread messages</a>{" or "}
       <a onClick={markAsRead}>mark them</a> as read.
    </p>
 
@@ -326,7 +326,7 @@ of the paragraph in :jsxmacro:`Trans` and let the macro do the magic:
 
    <p>
       <Trans>
-         See all <Link to="/unread">unread messages</Link>{" or "}
+         See all <a href="/unread">unread messages</a>{" or "}
          <a onClick={markAsRead}>mark them</a> as read.
       </Trans>
    </p>
