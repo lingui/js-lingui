@@ -28,9 +28,11 @@ We're going to translate the following app:
    // Inbox.js
    import React from 'react'
 
-   const Inbox = ({ messages, markAsRead, user }) => {
+   export default function Inbox() {
+      const messages = [{}, {}]
       const messagesCount = messages.length
-      const { name, lastLogin } = user
+      const lastLogin = new Date()
+      const markAsRead = () => { alert('Marked as read.') }
 
       return (
          <div>
