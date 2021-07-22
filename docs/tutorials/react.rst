@@ -268,8 +268,8 @@ to compile them. As you see in the help in command output, we use :cli:`compile`
    Compiling message catalogs…
    Done!
 
-What just happened? If you look inside ``locales`` directory, you'll see there's a
-new file for each locale: ``<locale>.js``. This file contains compiled message catalog.
+What just happened? If you look inside ``locales/<locale>`` directory, you'll see there's a
+new file for each locale: ``messages.js``. This file contains compiled message catalog.
 
 Let's load this file into our app and set active language to ``cs``:
 
