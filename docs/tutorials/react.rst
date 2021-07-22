@@ -761,40 +761,44 @@ After all modifications, the final component with i18n looks like this:
 
 .. code-block:: jsx
 
-   // Inbox.js
+   // src/Inbox.js
    import React from 'react'
    import { Trans, Plural } from '@lingui/macro'
    import { useLingui } from '@lingui/react'
 
-   const Inbox = ({ messages, markAsRead, user }) => {
+   export default function Inbox() {
      const { i18n } = useLingui()
+     const messages = [{}, {}]
      const messagesCount = messages.length
-     const { name, lastLogin } = user
+     const lastLogin = new Date()
+     const markAsRead = () => { alert('Marked as read.') }
 
      return (
-         <div>
-           <h1><Trans>Message Inbox</Trans></h1>
+       <div>
+         <h1><Trans>Message Inbox</Trans></h1>
 
-           <p>
-             <Trans>
-               See all <Link to="/unread">unread messages</Link>{" or "}
-               <a onClick={markAsRead}>mark them</a> as read.
-             </Trans>
-           </p>
+         <p>
+           <Trans>
+              See all <a href="/unread">unread messages</a>{" or "}
+              <a onClick={markAsRead}>mark them</a> as read.
+           </Trans>
+         </p>
 
-           <p>
-             <Plural
-               value={messagesCount}
-               one="There's # message in your inbox."
-               other="There are # messages in your inbox."
-             />
-           </p>
+         <p>
+           <Plural
+              value={messagesCount}
+              one="There's # message in your inbox"
+              other="There are # messages in your inbox"
+           />
+         </p>
 
-           <footer>
-             <Trans>Last login on {i18n.date(lastLogin)} />.</Trans>
-           </footer>
-         </div>
-       )
+         <footer>
+           <Trans>
+             Last login on {i18n.date(lastLogin)}.
+           </Trans>
+         </footer>
+       </div>
+     )
    }
 
 That's all for this tutorial! Checkout the reference documentation or various guides
