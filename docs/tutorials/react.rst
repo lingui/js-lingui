@@ -135,7 +135,7 @@ macro:
 
 .. code-block:: jsx
 
-   import { Trans } from '@lingui/macro';
+   import { Trans } from '@lingui/macro'
    
    <h1><Trans>Message Inbox</Trans></h1>
 
