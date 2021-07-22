@@ -21,7 +21,7 @@ We're going to translate the following app:
 
    const App = () => <Inbox />
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 .. code-block:: jsx
 
@@ -100,7 +100,7 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
      </I18nProvider>
    )
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 .. hint::
 
@@ -280,7 +280,7 @@ Let's load this file into our app and set active language to ``cs``:
      </I18nProvider>
    )
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 When we run the app, we see the inbox header is translated into Czech.
 
