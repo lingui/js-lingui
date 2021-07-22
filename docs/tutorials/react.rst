@@ -212,23 +212,33 @@ After fixing configuration, let's run :cli:`extract` command again::
    (use "lingui compile" to compile catalogs for production)
 
 Nice! It seems it worked, we have two message catalogs (one per each locale) with
-1 message each. Let's take a look at file ``locale/cs/messages.json``
+1 message each. Let's take a look at file ``src/locales/cs/messages.po``
 
-.. code-block:: json
+.. code-block:: po
 
-   {
-      "Message Inbox": ""
-   }
+   msgid ""
+   msgstr ""
+   "POT-Creation-Date: 2021-07-22 21:44+0900\n"
+   "MIME-Version: 1.0\n"
+   "Content-Type: text/plain; charset=utf-8\n"
+   "Content-Transfer-Encoding: 8bit\n"
+   "X-Generator: @lingui/cli\n"
+   "Language: cs\n"
+
+   #: src/Inbox.js:12
+   msgid "Message Inbox"
+   msgstr ""
+
 
 That's the message we've wrapped inside :jsxmacro:`Trans` macro!
 
 Let's add a Czech translation:
 
-.. code-block:: json
+.. code-block:: po
 
-   {
-      "Message Inbox": "Příchozí zprávy"
-   }
+   #: src/Inbox.js:12
+   msgid "Message Inbox"
+   msgstr "Příchozí zprávy"
 
 If we run :cli:`extract` command again, we'll see that all Czech messages are translated::
 
