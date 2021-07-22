@@ -517,6 +517,36 @@ languages have up to 6 plural forms and some don't have plurals at all!
    Plural forms for all languages can be found in the
    `CLDR repository <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_.
 
+Let's load plural data into our app:
+
+.. code-block:: jsx
+   :emphasize-lines: 7,12,13
+
+   // src/index.js
+   import React from 'react'
+   import { render } from 'react-dom'
+
+   import { i18n } from '@lingui/core'
+   import { I18nProvider } from '@lingui/react'
+   import { en, cs } from 'make-plural/plurals'
+   import { messages as enMessages } from './locales/en/messages.js'
+   import { messages as csMessages } from './locales/cs/messages.js'
+   import Inbox from './Inbox.js'
+
+   i18n.loadLocaleData('en', { plurals: en })
+   i18n.loadLocaleData('cs', { plurals: cs })
+   i18n.load('en', enMessages)
+   i18n.load('cs', csMessages)
+   i18n.activate('cs')
+
+   const App = () => (
+     <I18nProvider i18n={i18n}>
+       <Inbox />
+     </I18nProvider>
+   )
+
+   render(<App />, document.getElementById('root'))
+
 English plural rules
 --------------------
 
