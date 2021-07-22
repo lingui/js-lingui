@@ -52,7 +52,7 @@ We're going to translate the following app:
            </p>
 
            <footer>
-             Last login on {lastLogin}.
+             Last login on {lastLogin.toLocaleDateString()}.
            </footer>
          </div>
       )
