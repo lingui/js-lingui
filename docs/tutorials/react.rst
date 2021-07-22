@@ -498,8 +498,8 @@ Let's move on and add i18n to another text in our component:
    <p>
       {
          messagesCount === 1
-            ? "There's {messagesCount} message in your inbox."
-            : "There are {messagesCount} messages in your inbox."
+            ? `There's ${messagesCount} message in your inbox.`
+            : `There are ${messagesCount} messages in your inbox.`
       }
    </p>
 
