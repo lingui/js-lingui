@@ -274,18 +274,20 @@ new file for each locale: ``<locale>.js``. This file contains compiled message c
 Let's load this file into our app and set active language to ``cs``:
 
 .. code-block:: jsx
-   :emphasize-lines: 5,10
+   :emphasize-lines: 7,8,11-13
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
+
+   import { i18n } from '@lingui/core'
+   import { I18nProvider } from '@lingui/react'
+   import { messages as enMessages } from './locales/en/messages.js'
+   import { messages as csMessages } from './locales/cs/messages.js'
    import Inbox from './Inbox.js'
 
-   import { I18nProvider } from '@lingui/react'
-   import { i18n } from '@lingui/core'
-
-   import catalogCs from './locales/cs.js'
-   i18n.load('cs', catalogCs.messages)
+   i18n.load('en', enMessages)
+   i18n.load('cs', csMessages)
    i18n.activate('cs')
 
    const App = () => (
