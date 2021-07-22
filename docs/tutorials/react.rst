@@ -567,6 +567,8 @@ the right plural form:
 
 .. code-block:: jsx
 
+   import { Trans, Plural } from '@lingui/macro'
+
    <p>
       <Plural
          value={messagesCount}
