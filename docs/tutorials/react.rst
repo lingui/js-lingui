@@ -724,20 +724,33 @@ The last message in our component is again a bit specific:
 .. code-block:: jsx
 
    <footer>
-      Last login on {lastLogin}.
+      Last login on {lastLogin.toLocaleDateString()}.
    </footer>
 
 ``lastLogin`` is a date object and we need to format it properly. Dates are
 formatted differently in different languages, but we don't have
-to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use :jsmacro:`date` macro:
+to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use ``i18n.date`` function.
+The ``i18n`` object can be accessed by :js:func:`useLingui` hook:
 
 .. code-block:: jsx
 
-   <footer>
-      <Trans>
-         Last login on {date(lastLogin)} />.
-      </Trans>
-   </footer>
+   import { useLingui } from '@lingui/react'
+
+   export default function Inbox() {
+     const { i18n } = useLingui()
+     // ...
+
+     return (
+       <div>
+         {/* ... */}
+         <footer>
+           <Trans>
+             Last login on {i18n.date(lastLogin)}.
+           </Trans>
+         </footer>
+       </div>
+     )
+   }
 
 This will format the date using the conventional format for the active language.
 
