@@ -274,7 +274,7 @@ new file for each locale: ``messages.js``. This file contains compiled message c
 Let's load this file into our app and set active language to ``cs``:
 
 .. code-block:: jsx
-   :emphasize-lines: 7,8,11-13
+   :emphasize-lines: 7,8,11-15
 
    // src/index.js
    import React from 'react'
@@ -286,8 +286,10 @@ Let's load this file into our app and set active language to ``cs``:
    import { messages as csMessages } from './locales/cs/messages'
    import Inbox from './Inbox'
 
-   i18n.load('en', enMessages)
-   i18n.load('cs', csMessages)
+   i18n.load({
+     en: enMessages,
+     cs: csMessages,
+   })
    i18n.activate('cs')
 
    const App = () => (
@@ -520,7 +522,7 @@ languages have up to 6 plural forms and some don't have plurals at all!
 Let's load plural data into our app:
 
 .. code-block:: jsx
-   :emphasize-lines: 7,12,13
+   :emphasize-lines: 7,12-15
 
    // src/index.js
    import React from 'react'
@@ -533,10 +535,14 @@ Let's load plural data into our app:
    import { messages as csMessages } from './locales/cs/messages'
    import Inbox from './Inbox'
 
-   i18n.loadLocaleData('en', { plurals: en })
-   i18n.loadLocaleData('cs', { plurals: cs })
-   i18n.load('en', enMessages)
-   i18n.load('cs', csMessages)
+   i18n.loadLocaleData({
+     en: { plurals: en },
+     cs: { plurals: cs },
+   })
+   i18n.load({
+     en: enMessages,
+     cs: csMessages,
+   })
    i18n.activate('cs')
 
    const App = () => (
