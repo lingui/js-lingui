@@ -17,7 +17,7 @@ We're going to translate the following app:
    // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
-   import Inbox from './Inbox.js'
+   import Inbox from './Inbox'
 
    const App = () => <Inbox />
 
@@ -88,8 +88,8 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
 
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
-   import { messages } from './locales/en/messages.js'
-   import Inbox from './Inbox.js'
+   import { messages } from './locales/en/messages'
+   import Inbox from './Inbox'
 
    i18n.load('en', messages)
    i18n.activate('en')
@@ -282,9 +282,9 @@ Let's load this file into our app and set active language to ``cs``:
 
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
-   import { messages as enMessages } from './locales/en/messages.js'
-   import { messages as csMessages } from './locales/cs/messages.js'
-   import Inbox from './Inbox.js'
+   import { messages as enMessages } from './locales/en/messages'
+   import { messages as csMessages } from './locales/cs/messages'
+   import Inbox from './Inbox'
 
    i18n.load('en', enMessages)
    i18n.load('cs', csMessages)
@@ -529,9 +529,9 @@ Let's load plural data into our app:
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
    import { en, cs } from 'make-plural/plurals'
-   import { messages as enMessages } from './locales/en/messages.js'
-   import { messages as csMessages } from './locales/cs/messages.js'
-   import Inbox from './Inbox.js'
+   import { messages as enMessages } from './locales/en/messages'
+   import { messages as csMessages } from './locales/cs/messages'
+   import Inbox from './Inbox'
 
    i18n.loadLocaleData('en', { plurals: en })
    i18n.loadLocaleData('cs', { plurals: cs })
