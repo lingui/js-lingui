@@ -131,13 +131,6 @@ Examples of JS macros
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
-|    t`Today is ${date(today)}`                               |    i18n._(/*i18n*/{                                                |
-|                                                             |      id: "Today is {0}",                                           |
-|                                                             |      values: { 0: date(today) }                                    |
-|                                                             |    })                                                              |
-+-------------------------------------------------------------+--------------------------------------------------------------------+
-| .. code-block:: js                                          | .. code-block:: js                                                 |
-|                                                             |                                                                    |
 |    t({                                                      |    i18n._(/*i18n*/{                                                |
 |       id: "msg.refresh",                                    |      id: "msg.refresh",                                            |
 |       message: "Refresh inbox"                              |      message: "Refresh inbox"                                      |
@@ -171,13 +164,6 @@ Examples of JSX macros
 |       one="Message"                                         |       values={{ name }}                                            |
 |       other="Messages"                                      |    />                                                              |
 |    />                                                       |                                                                    |
-+-------------------------------------------------------------+--------------------------------------------------------------------+
-| .. code-block:: jsx                                         | .. code-block:: jsx                                                |
-|                                                             |                                                                    |
-|    <Trans>Today is {date(today)}</Trans>                    |    <Trans                                                          |
-|                                                             |       id="Today is {0}"                                            |
-|                                                             |       values={{ 0: date(today) }}                                  |
-|                                                             |    />                                                              |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: jsx                                         | .. code-block:: jsx                                                |
 |                                                             |                                                                    |
@@ -268,15 +254,17 @@ other expressions are referenced by numeric index:
 .. code-block:: jsx
 
    import { t } from "@lingui/macro"
-   const message = t`Today is ${date(name)}`
+   const message = t`Today is ${new Date()}`
 
    // ↓ ↓ ↓ ↓ ↓ ↓
 
-   import { i18n } from "@lingui/core"
-   const message = i18n._(/*i18n*/{
-     id: 'Today is {0}',
-     values: { 0: date(name) }
-   })
+   import { i18n } from "@lingui/core";
+
+   const message =
+   /*i18n*/
+   i18n._("Today is {0}", {
+     0: new Date()
+   });
 
 It's also possible to pass custom ``id`` and ``comment`` for translators by
 calling ``t`` macro with a message descriptor:
