@@ -5,7 +5,7 @@ import https from "https"
 import glob from "glob"
 import { format as formatDate } from "date-fns"
 
-const getCreateHeaders = (language = "no") => ({
+const getCreateHeaders = (language) => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
   "MIME-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
