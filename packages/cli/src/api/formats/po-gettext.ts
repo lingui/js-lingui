@@ -222,7 +222,7 @@ const convertPluralsToICU = (items: POItemType[], lang?: string) => {
     const messageKey = getMessageKey(item)
 
     // Messages without multiple translations (= plural cases) need no further processing.
-    if (translationCount <= 1) {
+    if (translationCount <= 1 && !item.msgid_plural) {
       return
     }
 
