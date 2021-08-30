@@ -161,6 +161,65 @@ Reference
          // Message with custom messageId
          i18n._("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
 
+   .. js:method:: date(value: string | Date[, format: Intl.DateTimeFormatOptions])
+
+      :returns: Formatted date string
+
+      Format a date using the conventional format for the active language.
+
+      ``date`` is a Date object to be formatted. When ``date`` is a string, the Date object is created by ``new Date(date)``.
+
+      ``format`` is an object passed to the ``options`` argument of the `Intl.DateTimeFormat constructor <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat>`_ (optional).
+
+      .. code-block:: js
+
+         import { i18n } from "@lingui/core"
+
+         const d = new Date("2021-07-23T16:23:00")
+
+         i18n.activate("en")
+         i18n.date(d)
+         // Returns "7/23/2021"
+
+         i18n.date(d, { timeStyle: "medium"})
+         // Returns "4:23:00 PM"
+
+         i18n.date(d, { dateStyle: "medium", timeStyle: "medium"})
+         // Returns "Jul 23, 2021, 4:23:00 PM"
+
+         i18n.activate("cs")
+         i18n.date(d)
+         // Returns "23. 7. 2021"
+
+
+   .. js:method:: number(value: number[, format: Intl.NumberFormatOptions])
+
+      :returns: Formatted number string
+
+      Format a number using the conventional format for the active language.
+
+      ``number`` is a number to be formatted.
+
+      ``format`` is an object passed to the ``options`` argument of the `Intl.NumberFormat constructor <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat>`_ (optional).
+
+      .. code-block:: js
+
+         import { i18n } from "@lingui/core"
+
+         i18n.activate("en")
+         i18n.number(12345.678)
+         // Returns "12,345.678"
+
+         i18n.number(12345.678, { style: "currency", currency: "USD"})
+         // Returns "$12,345.68"
+
+         i18n.activate("cs")
+         i18n.number(12345.678)
+         // Returns "12 345,678"
+
+         i18n.number(12345.678, { style: "currency", currency: "CZK"})
+         // Returns "12 345,68 Kč"
+
 .. js:function:: setupI18n([options])
 
    :returns: instance of I18n
