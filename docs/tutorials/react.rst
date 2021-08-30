@@ -14,30 +14,32 @@ We're going to translate the following app:
 
 .. code-block:: jsx
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
-   import Inbox from './Inbox.js'
+   import Inbox from './Inbox'
 
    const App = () => <Inbox />
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 .. code-block:: jsx
 
-   // Inbox.js
+   // src/Inbox.js
    import React from 'react'
 
-   const Inbox = ({ messages, markAsRead, user }) => {
+   export default function Inbox() {
+      const messages = [{}, {}]
       const messagesCount = messages.length
-      const { name, lastLogin } = user
+      const lastLogin = new Date()
+      const markAsRead = () => { alert('Marked as read.') }
 
       return (
          <div>
            <h1>Message Inbox</h1>
 
            <p>
-             See all <Link to="/unread">unread messages</Link>{" or "}
+             See all <a href="/unread">unread messages</a>{" or "}
              <a onClick={markAsRead}>mark them</a> as read.
            </p>
 
@@ -50,7 +52,7 @@ We're going to translate the following app:
            </p>
 
            <footer>
-             Last login on {lastLogin}.
+             Last login on {lastLogin.toLocaleDateString()}.
            </footer>
          </div>
       )
@@ -80,14 +82,14 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
 
 .. code-block:: jsx
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
 
    import { i18n } from '@lingui/core'
    import { I18nProvider } from '@lingui/react'
-   import { messages } from './locales/en/messages.js'
-   import Inbox from './Inbox.js'
+   import { messages } from './locales/en/messages'
+   import Inbox from './Inbox'
 
    i18n.load('en', messages)
    i18n.activate('en')
@@ -98,7 +100,7 @@ Let's add all required imports and wrap our app inside :component:`I18nProvider`
      </I18nProvider>
    )
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 .. hint::
 
@@ -133,7 +135,7 @@ macro:
 
 .. code-block:: jsx
 
-   import { Trans } from '@lingui/macro';
+   import { Trans } from '@lingui/macro'
    
    <h1><Trans>Message Inbox</Trans></h1>
 
@@ -191,7 +193,11 @@ We need here to fix the configuration. Create a ``.linguirc`` file with
 .. code-block:: json
 
    {
-      "locales": ["cs", "en"]
+     "locales": ["cs", "en"],
+     "catalogs": [{
+       "path": "src/locales/{locale}/messages",
+       "include": ["src"]
+     }]
    }
 
 After fixing configuration, let's run :cli:`extract` command again::
@@ -210,23 +216,33 @@ After fixing configuration, let's run :cli:`extract` command again::
    (use "lingui compile" to compile catalogs for production)
 
 Nice! It seems it worked, we have two message catalogs (one per each locale) with
-1 message each. Let's take a look at file ``locale/cs/messages.json``
+1 message each. Let's take a look at file ``src/locales/cs/messages.po``
 
-.. code-block:: json
+.. code-block:: po
 
-   {
-      "Message Inbox": ""
-   }
+   msgid ""
+   msgstr ""
+   "POT-Creation-Date: 2021-07-22 21:44+0900\n"
+   "MIME-Version: 1.0\n"
+   "Content-Type: text/plain; charset=utf-8\n"
+   "Content-Transfer-Encoding: 8bit\n"
+   "X-Generator: @lingui/cli\n"
+   "Language: cs\n"
+
+   #: src/Inbox.js:12
+   msgid "Message Inbox"
+   msgstr ""
+
 
 That's the message we've wrapped inside :jsxmacro:`Trans` macro!
 
 Let's add a Czech translation:
 
-.. code-block:: json
+.. code-block:: po
 
-   {
-      "Message Inbox": "Příchozí zprávy"
-   }
+   #: src/Inbox.js:12
+   msgid "Message Inbox"
+   msgstr "Příchozí zprávy"
 
 If we run :cli:`extract` command again, we'll see that all Czech messages are translated::
 
@@ -252,24 +268,28 @@ to compile them. As you see in the help in command output, we use :cli:`compile`
    Compiling message catalogs…
    Done!
 
-What just happened? If you look inside ``locales`` directory, you'll see there's a
-new file for each locale: ``<locale>.js``. This file contains compiled message catalog.
+What just happened? If you look inside ``locales/<locale>`` directory, you'll see there's a
+new file for each locale: ``messages.js``. This file contains compiled message catalog.
 
 Let's load this file into our app and set active language to ``cs``:
 
 .. code-block:: jsx
-   :emphasize-lines: 5,10
+   :emphasize-lines: 7,8,11-15
 
-   // index.js
+   // src/index.js
    import React from 'react'
    import { render } from 'react-dom'
-   import Inbox from './Inbox.js'
 
-   import { I18nProvider } from '@lingui/react'
    import { i18n } from '@lingui/core'
+   import { I18nProvider } from '@lingui/react'
+   import { messages as enMessages } from './locales/en/messages'
+   import { messages as csMessages } from './locales/cs/messages'
+   import Inbox from './Inbox'
 
-   import catalogCs from './locales/cs.js'
-   i18n.load('cs', catalogCs.messages)
+   i18n.load({
+     en: enMessages,
+     cs: csMessages,
+   })
    i18n.activate('cs')
 
    const App = () => (
@@ -278,7 +298,7 @@ Let's load this file into our app and set active language to ``cs``:
      </I18nProvider>
    )
 
-   render(<App />, document.getElementById('app'))
+   render(<App />, document.getElementById('root'))
 
 When we run the app, we see the inbox header is translated into Czech.
 
@@ -313,7 +333,7 @@ variables, some HTML and components inside:
 .. code-block:: jsx
 
    <p>
-      See all <Link to="/unread">unread messages</Link>{" or "}
+      See all <a href="/unread">unread messages</a>{" or "}
       <a onClick={markAsRead}>mark them</a> as read.
    </p>
 
@@ -324,7 +344,7 @@ of the paragraph in :jsxmacro:`Trans` and let the macro do the magic:
 
    <p>
       <Trans>
-         See all <Link to="/unread">unread messages</Link>{" or "}
+         See all <a href="/unread">unread messages</a>{" or "}
          <a onClick={markAsRead}>mark them</a> as read.
       </Trans>
    </p>
@@ -480,8 +500,8 @@ Let's move on and add i18n to another text in our component:
    <p>
       {
          messagesCount === 1
-            ? "There's {messagesCount} message in your inbox."
-            : "There are {messagesCount} messages in your inbox."
+            ? `There's ${messagesCount} message in your inbox.`
+            : `There are ${messagesCount} messages in your inbox.`
       }
    </p>
 
@@ -498,6 +518,40 @@ languages have up to 6 plural forms and some don't have plurals at all!
 
    Plural forms for all languages can be found in the
    `CLDR repository <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_.
+
+Let's load plural data into our app:
+
+.. code-block:: jsx
+   :emphasize-lines: 7,12-15
+
+   // src/index.js
+   import React from 'react'
+   import { render } from 'react-dom'
+
+   import { i18n } from '@lingui/core'
+   import { I18nProvider } from '@lingui/react'
+   import { en, cs } from 'make-plural/plurals'
+   import { messages as enMessages } from './locales/en/messages'
+   import { messages as csMessages } from './locales/cs/messages'
+   import Inbox from './Inbox'
+
+   i18n.loadLocaleData({
+     en: { plurals: en },
+     cs: { plurals: cs },
+   })
+   i18n.load({
+     en: enMessages,
+     cs: csMessages,
+   })
+   i18n.activate('cs')
+
+   const App = () => (
+     <I18nProvider i18n={i18n}>
+       <Inbox />
+     </I18nProvider>
+   )
+
+   render(<App />, document.getElementById('root'))
 
 English plural rules
 --------------------
@@ -518,6 +572,8 @@ component, which takes a ``value`` prop and based on the active language, select
 the right plural form:
 
 .. code-block:: jsx
+
+   import { Trans, Plural } from '@lingui/macro'
 
    <p>
       <Plural
@@ -674,20 +730,33 @@ The last message in our component is again a bit specific:
 .. code-block:: jsx
 
    <footer>
-      Last login on {lastLogin}.
+      Last login on {lastLogin.toLocaleDateString()}.
    </footer>
 
 ``lastLogin`` is a date object and we need to format it properly. Dates are
 formatted differently in different languages, but we don't have
-to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use :jsmacro:`date` macro:
+to do this manually. The heavylifting is done by the `Intl object <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl>`_, we'll just use ``i18n.date`` function.
+The ``i18n`` object can be accessed by :js:func:`useLingui` hook:
 
 .. code-block:: jsx
 
-   <footer>
-      <Trans>
-         Last login on {date(lastLogin)} />.
-      </Trans>
-   </footer>
+   import { useLingui } from '@lingui/react'
+
+   export default function Inbox() {
+     const { i18n } = useLingui()
+     // ...
+
+     return (
+       <div>
+         {/* ... */}
+         <footer>
+           <Trans>
+             Last login on {i18n.date(lastLogin)}.
+           </Trans>
+         </footer>
+       </div>
+     )
+   }
 
 This will format the date using the conventional format for the active language.
 
@@ -698,40 +767,44 @@ After all modifications, the final component with i18n looks like this:
 
 .. code-block:: jsx
 
-   // Inbox.js
+   // src/Inbox.js
    import React from 'react'
    import { Trans, Plural } from '@lingui/macro'
    import { useLingui } from '@lingui/react'
 
-   const Inbox = ({ messages, markAsRead, user }) => {
+   export default function Inbox() {
      const { i18n } = useLingui()
+     const messages = [{}, {}]
      const messagesCount = messages.length
-     const { name, lastLogin } = user
+     const lastLogin = new Date()
+     const markAsRead = () => { alert('Marked as read.') }
 
      return (
-         <div>
-           <h1><Trans>Message Inbox</Trans></h1>
+       <div>
+         <h1><Trans>Message Inbox</Trans></h1>
 
-           <p>
-             <Trans>
-               See all <Link to="/unread">unread messages</Link>{" or "}
-               <a onClick={markAsRead}>mark them</a> as read.
-             </Trans>
-           </p>
+         <p>
+           <Trans>
+              See all <a href="/unread">unread messages</a>{" or "}
+              <a onClick={markAsRead}>mark them</a> as read.
+           </Trans>
+         </p>
 
-           <p>
-             <Plural
-               value={messagesCount}
-               one="There's # message in your inbox."
-               other="There are # messages in your inbox."
-             />
-           </p>
+         <p>
+           <Plural
+              value={messagesCount}
+              one="There's # message in your inbox"
+              other="There are # messages in your inbox"
+           />
+         </p>
 
-           <footer>
-             <Trans>Last login on {i18n.date(lastLogin)} />.</Trans>
-           </footer>
-         </div>
-       )
+         <footer>
+           <Trans>
+             Last login on {i18n.date(lastLogin)}.
+           </Trans>
+         </footer>
+       </div>
+     )
    }
 
 That's all for this tutorial! Checkout the reference documentation or various guides
