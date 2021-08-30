@@ -44,7 +44,7 @@ Commands
 ``extract``
 -----------
 
-.. lingui-cli:: extract [files...] [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose] [--watch]
+.. lingui-cli:: extract [files...] [--clean] [--overwrite] [--format <format>] [--locale <locale>] [--convert-from <format>] [--verbose] [--watch [--debounce <delay>]]
 
 This command extracts messages from source files and creates a message catalog for
 each language using the following steps:
@@ -109,6 +109,11 @@ Watches only for changes in files in paths defined in config file or in the comm
 
 Remember to use this only in development as this command do not cleans obsolete translations.
 
+.. lingui-cli-option:: --debounce <delay>
+
+Debounce, when used with ``--debounce <delay>``, delays extraction for ``<delay>`` milliseconds,
+bundling multiple file changes together.
+
 ``extract-template``
 --------------------
 
@@ -123,7 +128,7 @@ Prints additional information.
 ``compile``
 -----------
 
-.. lingui-cli:: compile [--strict] [--format <format>] [--verbose] [--namespace <namespace>] [--watch]
+.. lingui-cli:: compile [--strict] [--format <format>] [--verbose] [--namespace <namespace>] [--watch [--debounce <delay>]]
 
 This command compiles message catalogs in :conf:`localeDir` and outputs
 minified Javascript files. Each message is replaced with a function
@@ -158,3 +163,8 @@ Generates a {compiledFile}.d.ts and the compiled file is generated using the ext
 Watch mode.
 
 Watches only for changes in locale files in your defined locale catalogs. For ex. ``locales\en\messages.po``
+
+.. lingui-cli-option:: --debounce <delay>
+
+Debounce, when used with ``--debounce <delay>``, delays compilation for ``<delay>`` milliseconds,
+to avoid compiling multiple times for subsequent file changes.

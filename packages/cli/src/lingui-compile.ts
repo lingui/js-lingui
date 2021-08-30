@@ -10,7 +10,7 @@ import { getConfig, LinguiConfig } from "@lingui/conf"
 import { getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
-import { getFormat } from "./api";
+import { getFormat } from "./api"
 
 const noMessages: (catalogs: Object[]) => boolean = R.pipe(
   R.map(R.isEmpty),
@@ -50,19 +50,13 @@ function command(config: LinguiConfig, options) {
     }
 
     catalogs.forEach((catalog) => {
-      const messages = catalog.getTranslations(
-        locale,
-        {
-          fallbackLocales: config.fallbackLocales,
-          sourceLocale: config.sourceLocale,
-        }
-      )
+      const messages = catalog.getTranslations(locale, {
+        fallbackLocales: config.fallbackLocales,
+        sourceLocale: config.sourceLocale,
+      })
 
       if (!options.allowEmpty) {
-        const missingMsgIds = R.pipe(
-          R.pickBy(R.isNil),
-          R.keys,
-        )(messages)
+        const missingMsgIds = R.pipe(R.pickBy(R.isNil), R.keys)(messages)
 
         if (missingMsgIds.length > 0) {
           console.error(
@@ -77,7 +71,9 @@ function command(config: LinguiConfig, options) {
             console.error(chalk.red("Missing translations:"))
             missingMsgIds.forEach((msgId) => console.log(msgId))
           } else {
-            console.error(chalk.red(`Missing ${missingMsgIds.length} translation(s)`))
+            console.error(
+              chalk.red(`Missing ${missingMsgIds.length} translation(s)`)
+            )
           }
           console.error()
           process.exit(1)
@@ -87,7 +83,9 @@ function command(config: LinguiConfig, options) {
       if (doMerge) {
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
-        const namespace = options.typescript ? "ts" : options.namespace || config.compileNamespace
+        const namespace = options.typescript
+          ? "ts"
+          : options.namespace || config.compileNamespace
         const compiledCatalog = createCompiledCatalog(locale, messages, {
           strict: false,
           namespace,
@@ -135,6 +133,10 @@ if (require.main === module) {
       "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
     )
     .option("--watch", "Enables Watch Mode")
+    .option(
+      "--debounce <delay>",
+      "Debounces compilation for given amount of milliseconds"
+    )
     .on("--help", function () {
       console.log("\n  Examples:\n")
       console.log(
@@ -159,42 +161,60 @@ if (require.main === module) {
     config.format = program.format
   }
 
-  const compile = () => command(config, {
-    verbose: program.watch || program.verbose || false,
-    allowEmpty: !program.strict,
-    typescript: program.typescript || config.compileNamespace === "ts" || false,
-    namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
-  })
+  const compile = () =>
+    command(config, {
+      verbose: program.watch || program.verbose || false,
+      allowEmpty: !program.strict,
+      typescript:
+        program.typescript || config.compileNamespace === "ts" || false,
+      namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
+    })
+
+  let debounceTimer: NodeJS.Timer
+  const dispatchCompile = () => {
+    // Skip debouncing if not enabled
+    if (!program.debounce) return compile()
+
+    // CLear the previous timer if there is any, and schedule the next
+    debounceTimer && clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => compile(), program.debounce)
+  }
 
   // Check if Watch Mode is enabled
   if (program.watch) {
     const NAME = "{name}"
     const LOCALE = "{locale}"
 
-    console.info(chalk.bold("Initializing Watch Mode...")) 
+    console.info(chalk.bold("Initializing Watch Mode..."))
 
-    const catalogs = getCatalogs(config);
-    let paths = []; 
-    const catalogExtension = getFormat(config.format).catalogExtension;
+    const catalogs = getCatalogs(config)
+    let paths = []
+    const catalogExtension = getFormat(config.format).catalogExtension
 
     config.locales.forEach((locale) => {
       catalogs.forEach((catalog) => {
-        paths.push(`${catalog.path.replace(LOCALE, locale).replace(NAME, "*")}${catalogExtension}`)
-      })  
+        paths.push(
+          `${catalog.path
+            .replace(LOCALE, locale)
+            .replace(NAME, "*")}${catalogExtension}`
+        )
+      })
     })
 
     const watcher = chokidar.watch(paths, {
       persistent: true,
-    });
+    })
 
     const onReady = () => {
       console.info(chalk.green.bold("Watcher is ready!"))
-      watcher.on('add', () => compile()).on('change', () => compile());
-    };
+      watcher
+        .on("add", () => dispatchCompile())
+        .on("change", () => dispatchCompile())
+    }
 
-    watcher.on('ready', () => onReady());
+    watcher.on("ready", () => onReady())
   } else {
-    const results = compile();
+    const results = compile()
 
     if (!results) {
       process.exit(1)

@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import chokidar from "chokidar"
+import chokidar, { watch } from "chokidar"
 import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
@@ -37,7 +37,7 @@ export default function command(
   options.verbose && console.error("Extracting messages from source files…")
 
   const catalogs = getCatalogs(config)
-  const catalogStats: { [path: string]: AllCatalogsType }  = {}
+  const catalogStats: { [path: string]: AllCatalogsType } = {}
   catalogs.forEach((catalog) => {
     catalog.make({
       ...options,
@@ -65,7 +65,7 @@ export default function command(
       `(use "${chalk.yellow(
         helpRun("compile")
       )}" to compile catalogs for production)`
-    ) 
+    )
   }
 
   return true
@@ -77,6 +77,10 @@ if (require.main === module) {
     .option("--locale <locale>", "Only extract the specified locale")
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
+    .option(
+      "--debounce <delay>",
+      "Debounces extraction for given amount of milliseconds"
+    )
     .option("--verbose", "Verbose output")
     .option(
       "--convert-from <format>",
@@ -148,39 +152,57 @@ if (require.main === module) {
     })
   }
 
+  const changedPaths = new Set<string>()
+  let debounceTimer: NodeJS.Timer
+  const dispatchExtract = (filePath?: string[]) => {
+    // Skip debouncing if not enabled
+    if (!program.debounce) return extract(filePath)
+
+    filePath?.forEach((path) => changedPaths.add(path))
+
+    // CLear the previous timer if there is any, and schedule the next
+    debounceTimer && clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+      const filePath = [...changedPaths]
+      changedPaths.clear()
+
+      extract(filePath)
+    }, program.debounce)
+  }
+
   // Check if Watch Mode is enabled
   if (program.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
-    let paths = [];
-    let ignored = [];
+    let paths = []
+    let ignored = []
 
     catalogs.forEach((catalog) => {
-      paths.push(...catalog.include);
-      ignored.push(...catalog.exclude);
+      paths.push(...catalog.include)
+      ignored.push(...catalog.exclude)
     })
 
     const watcher = chokidar.watch(paths, {
-      ignored: ['/(^|[\/\\])\../', ...ignored],
+      ignored: ["/(^|[/\\])../", ...ignored],
       persistent: true,
-    });
+    })
 
     const onReady = () => {
       console.info(chalk.green.bold("Watcher is ready!"))
       watcher
-      .on('add', (path) => extract([path]))
-      .on('change', (path) => extract([path]));
-    };
+        .on("add", (path) => dispatchExtract([path]))
+        .on("change", (path) => dispatchExtract([path]))
+    }
 
-    watcher.on('ready', () => onReady());
+    watcher.on("ready", () => onReady())
   } else if (program.args) {
     // this behaviour occurs when we extract files by his name
     // for ex: lingui extract src/app, this will extract only files included in src/app
-    const result = extract(program.args);
+    const result = extract(program.args)
     if (!result) process.exit(1)
   } else {
-    const result = extract();
+    const result = extract()
     if (!result) process.exit(1)
   }
 }
