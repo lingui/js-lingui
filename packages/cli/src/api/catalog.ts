@@ -516,7 +516,7 @@ export function getCatalogs(config: LinguiConfig) {
 
     const patterns = include.map((path) => path.replace(NAME, "*"))
     const candidates = glob.sync(
-      patterns.length > 1 ? `{${patterns.join(",")}` : patterns[0],
+      patterns.length > 1 ? `{${patterns.join(",")}}` : patterns[0],
       {
         ignore: exclude,
         mark: true,
