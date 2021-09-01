@@ -5,6 +5,8 @@ import * as R from "ramda"
 
 import pseudoLocalize from "./pseudoLocalize"
 
+
+const INVALID_OBJECT_KEY_REGEX = /^(\d+[a-zA-Z]|[a-zA-Z]+\d)(\d|[a-zA-Z])*/
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
 type CompiledCatalogType = {
@@ -159,7 +161,8 @@ function processTokens(tokens) {
         const inlineTokens = processTokens(item.tokens)
         formatProps.push(
           t.objectProperty(
-            t.identifier(item.key),
+            // if starts with number must be wrapped with quotes
+            INVALID_OBJECT_KEY_REGEX.test(item.key) ? t.stringLiteral(item.key) : t.identifier(item.key),
             isString(inlineTokens)
               ? t.stringLiteral(inlineTokens)
               : inlineTokens

@@ -113,6 +113,7 @@ describe("createCompiledCatalog", () => {
         {
           Hello: "Ahoj",
           Missing: "",
+          Select: "{id, select, Gen {Genesis} 1John {1 John}  other {____}}"
         },
         {
           strict,
