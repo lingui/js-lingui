@@ -2,9 +2,8 @@ import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import { Loader, cosmiconfigSync } from "cosmiconfig"
+import { cosmiconfigSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
-import get from "lodash.get"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -44,7 +43,7 @@ export type LinguiConfig = {
   extractBabelOptions: Record<string, unknown>
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
-  extractors?: ExtractorType[]
+  extractors?: ExtractorType[] | string[]
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -81,6 +80,14 @@ export const defaultConfig: LinguiConfig = {
       minimal: true,
     }
   },
+  extractors: multipleValidOptions(
+    [],
+    ["babel"],
+    [{
+      match: (fileName: string) => false,
+      extract: (filename: string, targetDir: string, options?: any) => {}
+    } as ExtractorType]
+  ),
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",
