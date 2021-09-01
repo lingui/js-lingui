@@ -1,4 +1,4 @@
-import { interpolate } from "./context"
+import { interpolate, UNICODE_REGEX } from "./context"
 import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
@@ -193,7 +193,7 @@ export class I18n extends EventEmitter<Events> {
 
 
     // hack for parsing unicode values inside a string to get parsed in react native environments
-    if (isString(translation) && /\\u[a-fA-F0-9]{4}/g.test(translation)) return JSON.parse(`"${translation}"`) as string;
+    if (isString(translation) && UNICODE_REGEX.test(translation)) return JSON.parse(`"${translation}"`) as string;
     if (isString(translation)) return translation
 
     return interpolate(

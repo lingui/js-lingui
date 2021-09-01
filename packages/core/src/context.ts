@@ -2,6 +2,8 @@ import { CompiledMessage, Locales } from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
+export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g;
+
 const defaultFormats = (
   locale,
   locales,
@@ -111,7 +113,7 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    if (isString(result) && /\\u[a-fA-F0-9]{4}/g.test(result)) return JSON.parse(`"${result.trim()}"`)
+    if (isString(result) && UNICODE_REGEX.test(result)) return JSON.parse(`"${result.trim()}"`)
     if (isString(result)) return result.trim()
     return result
   }

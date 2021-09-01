@@ -1,6 +1,7 @@
 import * as R from "ramda"
 import * as babelTypes from "@babel/types"
 import { NodePath } from "@babel/traverse"
+import { UNICODE_REGEX } from "@lingui/conf"
 
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
@@ -265,7 +266,7 @@ export default class MacroJs {
         quasis: R.map((text: babelTypes.TemplateElement) => {
           // Don't output tokens without text.
           // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-          const value = /\\u[a-fA-F0-9]{4}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
+          const value = UNICODE_REGEX.test(text.value.raw) ? text.value.cooked : text.value.raw
           if (value === "") return null
 
           return {
