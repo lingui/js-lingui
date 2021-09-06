@@ -1,6 +1,7 @@
 {
   "name": "@lingui/remote-loader",
   "version": "3.10.4",
+  "sideEffects": false,
   "description": "Load remotely your translations",
   "main": "index.js",
   "module": "esm/remote-loader.production.min.js",
