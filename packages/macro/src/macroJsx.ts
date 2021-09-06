@@ -1,7 +1,6 @@
 import * as R from "ramda"
 import * as babelTypes from "@babel/types"
 import { NodePath } from "@babel/traverse"
-import { UNICODE_REGEX } from "@lingui/conf"
 
 import ICUMessageFormat from "./icu"
 import { zip, makeCounter } from "./utils"
@@ -231,8 +230,10 @@ export default class MacroJSX {
           // Don"t output tokens without text.
           R.evolve({
             quasis: R.map((text: babelTypes.TemplateElement) => {
-              // Don"t output tokens without text.
-              const value = UNICODE_REGEX.test(text.value.raw) ? text.value.cooked : text.value.raw
+              // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+              // This regex will detect if a string contains unicode chars, when they're we should interpolate them
+              // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+              const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
               if (value === "") return null
 
               return this.tokenizeText(this.clearBackslashes(value))

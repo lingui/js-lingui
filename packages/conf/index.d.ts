@@ -1,6 +1,5 @@
 import type { GeneratorOptions } from "@babel/core";
 
-export const UNICODE_REGEX: RegExp
 export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext";
 export type CatalogFormatOptions = {
     origins?: boolean;
