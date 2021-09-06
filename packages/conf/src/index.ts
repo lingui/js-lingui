@@ -45,7 +45,7 @@ export type LinguiConfig = {
   extractBabelOptions: Record<string, unknown>
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
-  extractors?: ExtractorType[]
+  extractors?: ExtractorType[] | string[]
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -82,6 +82,14 @@ export const defaultConfig: LinguiConfig = {
       minimal: true,
     }
   },
+  extractors: multipleValidOptions(
+    [],
+    ["babel"],
+    [{
+      match: (fileName: string) => false,
+      extract: (filename: string, targetDir: string, options?: any) => {}
+    } as ExtractorType]
+  ),
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",

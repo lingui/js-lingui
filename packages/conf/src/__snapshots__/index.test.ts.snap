@@ -120,6 +120,18 @@ Object {
     plugins: Array [],
     presets: Array [],
   },
+  extractors: Array [
+    Array [],
+    Array [
+      babel,
+    ],
+    Array [
+      Object {
+        extract: [Function],
+        match: [Function],
+      },
+    ],
+  ],
   fallbackLocales: Object {
     en-gb: en,
   },
