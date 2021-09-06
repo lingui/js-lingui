@@ -1,6 +1,7 @@
 {
   "name": "@lingui/conf",
   "version": "3.10.4",
+  "sideEffects": false,
   "description": "Get lingui configuration from package.json",
   "keywords": [
     "lingui",
