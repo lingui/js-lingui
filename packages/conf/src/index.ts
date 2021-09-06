@@ -2,10 +2,11 @@ import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import { Loader, cosmiconfigSync } from "cosmiconfig"
+import { cosmiconfigSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
-import get from "lodash.get"
-
+// This regex will detect if a string contains unicode chars, when they're we should interpolate them
+// why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g;
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
 export type CatalogFormatOptions = {

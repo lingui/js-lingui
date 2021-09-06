@@ -80,7 +80,7 @@ describe("js macro", () => {
       ])
     })
 
-    it("message with unicode chars is interpreted by babel", () => {
+    it("message with unicode \\u chars is interpreted by babel", () => {
       const macro = createMacro()
       const exp = parseExpression('t`Message \\u0020`')
       const tokens = macro.tokenizeTemplateLiteral(exp)
@@ -88,6 +88,19 @@ describe("js macro", () => {
         {
           type: "text",
           value: 'Message  ',
+        },
+      ])
+    })
+
+    it("message with unicode \\x chars is interpreted by babel", () => {
+      const macro = createMacro()
+      const exp = parseExpression('t`Bienvenue\\xA0!`')
+      const tokens = macro.tokenizeTemplateLiteral(exp)
+      expect(tokens).toEqual([
+        {
+          type: "text",
+          // Looks like an empty space, but it isn't 
+          value: 'Bienvenue !',
         },
       ])
     })
