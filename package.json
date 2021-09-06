@@ -125,7 +125,7 @@
     },
     {
       "path": "./packages/remote-loader/build/cjs/remote-loader.production.min.js",
-      "limit": "5 kB"
+      "limit": "1 MB"
     }
   ]
 }
