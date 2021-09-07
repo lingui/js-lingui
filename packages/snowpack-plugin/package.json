@@ -1,6 +1,7 @@
 {
   "name": "@lingui/snowpack-plugin",
   "version": "3.11.0",
+  "private": true,
   "description": "Snowpack plugin for Lingui message catalogs",
   "main": "index.js",
   "license": "MIT",
