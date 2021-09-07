@@ -16,6 +16,11 @@ const getCreateHeaders = (language) => ({
 
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default function syncProcess(config, options) {
+  if (config.format != 'po') {
+    console.error(`\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`)
+    process.exit(1)
+  }
+
   const successCallback = (project) => {
     console.log(`\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`)
   }
@@ -219,8 +224,9 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
     fs.promises.mkdir(dirname(localePath), {recursive: true}).then(() => {
       po.save(localePath, (err) => {
         if (err) {
-          console.error('Error while saving target PO files')
+          console.error('Error while saving target PO files:')
           console.error(err)
+          process.exit(1)
         }
       })
     })
