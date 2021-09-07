@@ -1,6 +1,6 @@
 import type { GeneratorOptions } from "@babel/core";
 
-export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext";
+export declare type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext";
 export type CatalogFormatOptions = {
     origins?: boolean;
     lineNumbers?: boolean;
@@ -22,6 +22,11 @@ export type DefaultLocaleObject = {
 }
 
 export declare type FallbackLocales = LocaleObject | DefaultLocaleObject
+
+declare type CatalogService = {
+    name: string;
+    apiKey: string;
+}
 
 declare type ExtractorType = {
     match(filename: string): boolean;
@@ -46,6 +51,7 @@ export declare type LinguiConfig = {
     rootDir: string;
     runtimeConfigModule: [string, string?];
     sourceLocale: string;
+    service: CatalogService;
 };
 export declare const defaultConfig: LinguiConfig;
 export declare function getConfig({ cwd, configPath, skipValidation, }?: {
@@ -63,7 +69,7 @@ export declare const configValidation: {
         };
         compilerBabelOptions: GeneratorOptions;
         catalogs: CatalogConfig[];
-        compileNamespace: "es" | "ts" | "cjs" | string;
+        compileNamespace: "es" | "ts" | "cjs" | string;
         fallbackLocales: FallbackLocales;
         format: CatalogFormat;
         formatOptions: CatalogFormatOptions;
@@ -73,6 +79,7 @@ export declare const configValidation: {
         rootDir: string;
         runtimeConfigModule: [string, string?];
         sourceLocale: string;
+        service: CatalogService;
     };
     deprecatedConfig: {
         fallbackLocale: (config: LinguiConfig & DeprecatedFallbackLanguage) => string;

@@ -150,6 +150,10 @@ Object {
     @lingui/core,
     i18n,
   ],
+  service: Object {
+    apiKey: ,
+    name: ,
+  },
   sourceLocale: ,
 }
 `;
