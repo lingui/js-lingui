@@ -52,8 +52,7 @@ function init(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
-    // @ts-ignore: Figure out how to set this flag
-    po.items.filter((item) => !item.obsolete).forEach((item) => {
+    po.items.filter((item) => !item['obsolete']).forEach((item) => {
       targetLocales.forEach((targetLocale) => {
         let newSegment = createSegmentFromPoItem(item)
 
@@ -68,8 +67,7 @@ function init(config, options, successCallback, failCallback) {
       let raw = fs.readFileSync(path).toString()
       let po = PO.parse(raw)
 
-      // @ts-ignore: Figure out how to set this flag
-      po.items.filter((item) => !item.obsolete).forEach((item, index) => {
+      po.items.filter((item) => !item['obsolete']).forEach((item, index) => {
         segments[targetLocale][index].target = item.msgstr[0]
       })
     })
@@ -110,8 +108,7 @@ function sync(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
-    // @ts-ignore: Figure out how to set this flag
-    po.items.filter((item) => !item.obsolete).forEach((item) => {
+    po.items.filter((item) => !item['obsolete']).forEach((item) => {
       let newSegment = createSegmentFromPoItem(item)
 
       segments.push(newSegment)
