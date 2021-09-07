@@ -77,7 +77,7 @@ function init(config, options, successCallback, failCallback) {
 
   let request = {
     "client": "lingui",
-    "version": require("../package.json").version,
+    "version": require('@lingui/core/package.json').version,
     "source_language": sourceLocale,
     "target_languages": targetLocales,
     "segments": segments
@@ -120,7 +120,7 @@ function sync(config, options, successCallback, failCallback) {
 
   let request = {
     "client": "lingui",
-    "version": require("../package.json").version,
+    "version": require('@lingui/core/package.json').version,
     "source_language": sourceLocale,
     "target_languages": targetLocales,
     "segments": segments
