@@ -1,6 +1,6 @@
 {
   "name": "@lingui/remote-loader",
-  "version": "3.10.4",
+  "version": "3.11.0",
   "sideEffects": false,
   "description": "Load remotely your translations",
   "main": "index.js",

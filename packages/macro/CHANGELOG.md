@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/lingui/js-lingui/compare/v3.10.4...v3.11.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* fix testing suite [#1098](https://github.com/lingui/js-lingui/issues/1098) ([1144cc7](https://github.com/lingui/js-lingui/commit/1144cc782b25113366245922131e58bc40b2047d))
+* unicode chars were removed from .po files when extracting ([#1125](https://github.com/lingui/js-lingui/issues/1125)) ([d688329](https://github.com/lingui/js-lingui/commit/d688329c0457a080d5cd485a95e94ffa5e00c5ae))
+
+
+
+
+
 ## [3.10.4](https://github.com/lingui/js-lingui/compare/v3.10.3...v3.10.4) (2021-06-16)
 
 **Note:** Version bump only for package @lingui/macro

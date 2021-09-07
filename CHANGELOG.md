@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/lingui/js-lingui/compare/v3.10.4...v3.11.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* 'compile --watch' not watching for correct file based on format ([#1088](https://github.com/lingui/js-lingui/issues/1088)) ([ab68c06](https://github.com/lingui/js-lingui/commit/ab68c06775c37bf5960536f274ed35fb2420f6a8))
+* add extract-template for po-gettext format ([#1089](https://github.com/lingui/js-lingui/issues/1089)) ([ea00f55](https://github.com/lingui/js-lingui/commit/ea00f551cbae2ae7596f7fe3055cb8442863f53a))
+* country-coded language breaks plurals with po-gettext ([#1131](https://github.com/lingui/js-lingui/issues/1131)) ([6b60b8a](https://github.com/lingui/js-lingui/commit/6b60b8af20e7a8e4e74354a870aaa8ef0d25d1e8))
+* extractors CLI validation and accept require and require.resolve ([#1126](https://github.com/lingui/js-lingui/issues/1126)) ([c50a06e](https://github.com/lingui/js-lingui/commit/c50a06eac65d71853ec2c29905a0c4883a5cc70d))
+* fallbackLocales to false causing unexpected behaviour ([#1123](https://github.com/lingui/js-lingui/issues/1123)) ([60e3952](https://github.com/lingui/js-lingui/commit/60e3952f9e99a6d21992821bff573e42f6ecf5fd))
+* fix testing suite [#1098](https://github.com/lingui/js-lingui/issues/1098) ([1144cc7](https://github.com/lingui/js-lingui/commit/1144cc782b25113366245922131e58bc40b2047d))
+* keys with leading number was generating bad object keys ([#1127](https://github.com/lingui/js-lingui/issues/1127)) ([8bb2983](https://github.com/lingui/js-lingui/commit/8bb2983fa93e024ba2cb3d2f63262d2495755755))
+* no files being found when catalogs.include has more than one entry ([#1108](https://github.com/lingui/js-lingui/issues/1108)) ([04efd85](https://github.com/lingui/js-lingui/commit/04efd85ab5bae72607c06672f5c8da809a45dbcb))
+* sideEffects to false for shrinking bundle size ([#1129](https://github.com/lingui/js-lingui/issues/1129)) ([57cd2e5](https://github.com/lingui/js-lingui/commit/57cd2e576945ba30aea30d5cf5bcb27d1f77fe4c))
+* unicode chars were removed from .po files when extracting ([#1125](https://github.com/lingui/js-lingui/issues/1125)) ([d688329](https://github.com/lingui/js-lingui/commit/d688329c0457a080d5cd485a95e94ffa5e00c5ae))
+* wrong detect whether a translation is plural ([#1119](https://github.com/lingui/js-lingui/issues/1119)) ([48b6644](https://github.com/lingui/js-lingui/commit/48b6644f56d66a80d08ca9d95faca8c04d47eba0))
+
+
+### Features
+
+* Add debounce option to compile and extract CLI ([#1101](https://github.com/lingui/js-lingui/issues/1101)) ([a13334c](https://github.com/lingui/js-lingui/commit/a13334ceba850bfd50818d66551877867b86d655))
+* Cloud service providers & Translation.io ([#1107](https://github.com/lingui/js-lingui/issues/1107)) ([cbc87b5](https://github.com/lingui/js-lingui/commit/cbc87b5dab8daf0cd2217b2a2525dfd12dad7272))
+
+
+
+
+
 ## [3.10.4](https://github.com/lingui/js-lingui/compare/v3.10.3...v3.10.4) (2021-06-16)
 
 

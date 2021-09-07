@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/lingui/js-lingui/compare/v3.10.4...v3.11.0) (2021-09-07)
+
+
+### Bug Fixes
+
+* sideEffects to false for shrinking bundle size ([#1129](https://github.com/lingui/js-lingui/issues/1129)) ([57cd2e5](https://github.com/lingui/js-lingui/commit/57cd2e576945ba30aea30d5cf5bcb27d1f77fe4c))
+
+
+
+
+
 ## [3.10.4](https://github.com/lingui/js-lingui/compare/v3.10.3...v3.10.4) (2021-06-16)
 
 
