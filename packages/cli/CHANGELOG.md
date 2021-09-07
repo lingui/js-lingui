@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.11.1](https://github.com/lingui/js-lingui/compare/v3.11.0...v3.11.1) (2021-09-07)
+
+
+### Bug Fixes
+
+* cli and conf needed hotfix for [#1110](https://github.com/lingui/js-lingui/issues/1110) ([1c6378d](https://github.com/lingui/js-lingui/commit/1c6378daa84f77757f99f6e592f6cb0e1fe02ebd))
+
+
+
+
+
 # [3.11.0](https://github.com/lingui/js-lingui/compare/v3.10.4...v3.11.0) (2021-09-07)
 
 
