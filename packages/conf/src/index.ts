@@ -97,7 +97,7 @@ export const defaultConfig: LinguiConfig = {
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   sourceLocale: "",
-  service: {}
+  service: { name: "", apiKey: "" }
 }
 
 function configExists(path) {

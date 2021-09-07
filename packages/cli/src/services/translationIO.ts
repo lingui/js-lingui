@@ -52,6 +52,7 @@ function init(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
+    // @ts-ignore: Figure out how to set this flag
     po.items.filter((item) => !item.obsolete).forEach((item) => {
       targetLocales.forEach((targetLocale) => {
         let newSegment = createSegmentFromPoItem(item)
@@ -67,6 +68,7 @@ function init(config, options, successCallback, failCallback) {
       let raw = fs.readFileSync(path).toString()
       let po = PO.parse(raw)
 
+      // @ts-ignore: Figure out how to set this flag
       po.items.filter((item) => !item.obsolete).forEach((item, index) => {
         segments[targetLocale][index].target = item.msgstr[0]
       })
@@ -108,6 +110,7 @@ function sync(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
+    // @ts-ignore: Figure out how to set this flag
     po.items.filter((item) => !item.obsolete).forEach((item) => {
       let newSegment = createSegmentFromPoItem(item)
 
@@ -146,7 +149,10 @@ function createSegmentFromPoItem(item) {
 
   let segment = {
     type: 'source',                                 // No way to edit text for source language (inside code), so not using "key" here
-    source: itemHasId ? item.msgstr[0] : item.msgid // msgstr may be empty if --overwrite is used and no ID is used
+    source: itemHasId ? item.msgstr[0] : item.msgid, // msgstr may be empty if --overwrite is used and no ID is used
+    context: '',
+    references: [],
+    comment: ''
   }
 
   if (itemHasId) {
