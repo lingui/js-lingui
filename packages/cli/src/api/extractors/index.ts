@@ -32,10 +32,11 @@ export default function extract(
     if (typeof e === "string") {
       // in case of the user using require.resolve in their extractors, we require that module
       ext = require(e)
-      if ((ext as any).default) {
-        ext = (ext as any).default
-      }
     }
+    if ((ext as any).default) {
+      ext = (ext as any).default
+    }
+    
     if (!ext.match(filename)) return false
 
     let spinner

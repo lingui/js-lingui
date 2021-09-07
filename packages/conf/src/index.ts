@@ -86,14 +86,6 @@ export const defaultConfig: LinguiConfig = {
       minimal: true,
     }
   },
-  extractors: multipleValidOptions(
-    [],
-    ["babel"],
-    [{
-      match: (fileName: string) => false,
-      extract: (filename: string, targetDir: string, options?: any) => {}
-    } as ExtractorType]
-  ),
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
   format: "po",
@@ -170,6 +162,14 @@ export function getConfig({
 
 const exampleConfig = {
   ...defaultConfig,
+  extractors: multipleValidOptions(
+    [],
+    ["babel"],
+    [{
+      match: (fileName: string) => false,
+      extract: (filename: string, targetDir: string, options?: any) => {}
+    } as ExtractorType]
+  ),
   runtimeConfigModule: multipleValidOptions({i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"]}, ["@lingui/core", "i18n"]),
   fallbackLocales: multipleValidOptions(
     {},
