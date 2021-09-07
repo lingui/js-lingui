@@ -366,4 +366,15 @@ msgstr[2] "# dní"
       })
     })
   })
+
+  describe("convertPluralsToIco handle correctly locales with 4-letter", () => {
+    const pofile = fs
+    .readFileSync(
+      path.join(path.resolve(__dirname), "fixtures", "messages_plural-4-letter.po")
+    )
+    .toString()
+
+  const catalog = format.parse(pofile)
+  expect(catalog).toMatchSnapshot()
+  })
 })
