@@ -1,5 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` 1`] = `
+Object {
+  message_with_id: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+  },
+  message_with_id_but_without_translation: Object {
+    comments: Array [],
+    extractedComments: Array [
+      Comment made by the developers.,
+    ],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: ,
+  },
+  {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  {count, plural, one {Singular} other {Plural}}: Object {
+    comments: Array [],
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: ,
+  },
+}
+`;
+
 exports[`po-gettext format should convert ICU plural messages to gettext plurals 1`] = `
 msgid ""
 msgstr ""

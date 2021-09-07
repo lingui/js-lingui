@@ -204,10 +204,12 @@ const deserialize: (Object) => Object = R.map(
  * https://github.com/LLK/po2icu/blob/9eb97f81f72b2fee02b77f1424702e019647e9b9/lib/po2icu.js#L148.
  */
 const getPluralCases = (lang: string): string[] | undefined => {
-  const gettextPluralsInfo = gettextPlurals[lang]
+  // If users uses locale with underscore or slash, es-ES, es_ES, gettextplural is "es" not es-ES.
+  const [correctLang] = lang.split(/[-_]/g)
+  const gettextPluralsInfo = gettextPlurals[correctLang]
 
   return gettextPluralsInfo?.examples.map((pluralCase) =>
-    pluralsCldr(lang, pluralCase.sample)
+    pluralsCldr(correctLang, pluralCase.sample)
   )
 }
 
