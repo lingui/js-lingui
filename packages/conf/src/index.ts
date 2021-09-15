@@ -183,6 +183,8 @@ const exampleConfig = {
     rootMode: "rootmode",
     plugins: ["plugin"],
     presets: ["preset"],
+    targets: multipleValidOptions({}, 'path', ['ie', 'ff'], undefined),
+    assumptions: multipleValidOptions({}, undefined),
   },
 }
 
