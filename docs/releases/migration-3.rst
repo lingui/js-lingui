@@ -41,7 +41,7 @@ Minimal required versions are:
      <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
 
 - ``NumberFormat`` and ``DateFormat`` components were removed. Import ``i18n`` from ``@lingui/core``
-package and use ``i18n.date()`` and ``ì18n.number()`` instead.
+  package and use ``i18n.date()`` and ``ì18n.number()`` instead.
 
 Removed :component:`I18nProvider` declarative API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -284,6 +284,6 @@ Event ``change`` is fired anytime new catalogs are loaded or when locale
 is activated.
 
 `Native TypeScript support`
---------------------------
+---------------------------
 
 Lingui now supports TypeScript out of the box, don't forget to remove the `@types/lingui` packages from your project. 

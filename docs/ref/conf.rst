@@ -70,10 +70,10 @@ is replaced by value of :conf:`rootDir`.
 ``{name}`` token in ``path`` is replaced with a catalog name. Source path must
 include ``{name}`` pattern as well and it works as a ``*`` glob pattern:
 
-.. code-block:: json
+.. code-block:: js
 
    {
-      "catalogs": [{
+      catalogs: [{
          path: "./components/{name}/locale/{locale}",
          include: ["./components/{name}/"],
       }]
@@ -251,10 +251,10 @@ extracted. This is required when project doesn't use standard Babel config
      }
    }
 
-.. config:: extractBabelOptions
+.. config:: compilerBabelOptions
 
 compilerBabelOptions
--------------------
+--------------------
 
 Default:
 
@@ -284,11 +284,11 @@ These are all the options available: https://github.com/mathiasbynens/jsesc
 
 This example configuration will compile with scaped ASCII characters. https://github.com/mathiasbynens/jsesc#minimal
 
-.. config:: compilerBabelOptions
+.. config:: fallbackLocales
 
 
 fallbackLocales
---------------
+---------------
 
 Default: ``{}``
 

@@ -715,6 +715,7 @@ but in React this isn't a valid prop name. Therefore, exact matches are expresse
    <Plural
        value={count}
        offset={1}
+
        // when value == 0
        _0="Nobody arrived"
 
@@ -729,11 +730,13 @@ but in React this isn't a valid prop name. Therefore, exact matches are expresse
        other="You and # other guests arrived"
    />
 
-   // This is transformed to Trans component with ID:
-   // {count, plural, _0    {Nobody arrived}
-   //                 _1    {Only you arrived}
-   //                 one   {You and # other guest arrived}
-   //                 other {You and # other guests arrived}}
+   /*
+     This is transformed to Trans component with ID:
+     {count, plural, offset:1 _0    {Nobody arrived}
+                              _1    {Only you arrived}
+                              one   {You and # other guest arrived}
+                              other {You and # other guests arrived}}
+   */
 
 SelectOrdinal
 ^^^^^^^^^^^^^
