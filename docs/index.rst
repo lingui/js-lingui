@@ -104,6 +104,13 @@ Documentation contents
 
 .. toctree::
    :maxdepth: 1
+   :caption: Sync & Collaboration Tools
+
+   Introduction <tools/introduction>
+   Translation.io <tools/translation-io>
+
+.. toctree::
+   :maxdepth: 1
    :caption: API References
 
    Core (JavaScript) <ref/core>
