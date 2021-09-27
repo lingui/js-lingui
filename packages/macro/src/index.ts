@@ -30,6 +30,7 @@ const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 function macro({ references, state, babel }) {
   const jsxNodes = []
   const jsNodes = []
+  let needsI18nImport = false
 
   Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
@@ -53,7 +54,7 @@ function macro({ references, state, babel }) {
   jsNodes.filter(isRootPath(jsNodes)).forEach((path) => {
     if (alreadyVisited(path)) return
     const macro = new MacroJS(babel, { i18nImportName })
-    macro.replacePath(path)
+    if (macro.replacePath(path)) needsI18nImport = true
   })
 
   jsxNodes.filter(isRootPath(jsxNodes)).forEach((path) => {
@@ -62,7 +63,7 @@ function macro({ references, state, babel }) {
     macro.replacePath(path)
   })
 
-  if (jsNodes.length) {
+  if (needsI18nImport) {
     addImport(babel, state, i18nImportModule, i18nImportName)
   }
 
