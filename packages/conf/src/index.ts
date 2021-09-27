@@ -183,6 +183,10 @@ const exampleConfig = {
     rootMode: "rootmode",
     plugins: ["plugin"],
     presets: ["preset"],
+    targets: multipleValidOptions({}, '> 0.5%', ['> 0.5%', 'not dead'], undefined),
+    assumptions: multipleValidOptions({}, undefined),
+    browserslistConfigFile: multipleValidOptions(true, undefined),
+    browserslistEnv: multipleValidOptions('.browserslistrc', undefined),
   },
 }
 
