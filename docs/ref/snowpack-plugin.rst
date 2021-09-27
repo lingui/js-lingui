@@ -1,6 +1,6 @@
-***********************************************
+*********************************************************
 API Reference - Snowpack Plugin (@lingui/snowpack-plugin)
-***********************************************
+*********************************************************
 
 It's a good practice to use compiled message catalogs during development. However,
 running :cli:`compile` everytime messages are changed soon becomes tedious.
