@@ -128,6 +128,18 @@ export default class MacroJs {
       return false
     }
 
+    // t(i18nInstance)(messageDescriptor) -> i18nInstance._(messageDescriptor)
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.types.isCallExpression(path.parentPath.node) &&
+      this.types.isIdentifier(path.node.arguments[0]) &&
+      this.isIdentifier(path.node.callee, "t")
+    ) {
+      const i18nInstance = path.node.arguments[0]
+      this.replaceTAsFunction(path.parentPath, i18nInstance)
+      return false
+    }
+
     if (
       this.types.isCallExpression(path.node) &&
       this.isIdentifier(path.node.callee, "t")
@@ -185,11 +197,11 @@ export default class MacroJs {
    * macro `t` is called with MessageDescriptor, after that
    * we create a new node to append it to i18n._
    */
-  replaceTAsFunction = (path) => {
+  replaceTAsFunction = (path, linguiInstance?: babelTypes.Identifier) => {
     const descriptor = this.processDescriptor(path.node.arguments[0])
     const newNode = this.types.callExpression(
       this.types.memberExpression(
-        this.types.identifier(this.i18nImportName),
+        linguiInstance ?? this.types.identifier(this.i18nImportName),
         this.types.identifier("_")
       ),
       [descriptor]

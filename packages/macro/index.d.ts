@@ -34,9 +34,9 @@ export type ChoiceOptions<T = string> = {
  * });
  * ```
  *
- * @param messageDescriptior The descriptor to translate
+ * @param descriptor The message descriptor to translate
  */
-export function t(messageDescriptior: MessageDescriptor): string
+export function t(descriptor: MessageDescriptor): string
 
 /**
  * Translates a template string using the global I18n instance
@@ -53,7 +53,7 @@ export function t(
 ): string
 
 /**
- * Translates a template string using a given I18n instance
+ * Translates a template string or message descriptor using a given I18n instance
  *
  * @example
  * ```
@@ -65,12 +65,24 @@ export function t(
  * });
  * const message = t(i18n)`Hello ${name}`;
  * ```
+ *
+ * @example
+ * ```
+ * import { t } from "@lingui/macro";
+ * import { I18n } from "@lingui/core";
+ * const i18n = new I18n({
+ *   locale: "nl",
+ *   messages: { "Hello {0}": "Hallo {0}" },
+ * });
+ * const message = t(i18n)({ message: `Hello ${name}` });
+ * ```
  */
 export function t(
-  i18n: I18n,
-  literals: TemplateStringsArray,
-  ...placeholders: any[]
-): string
+  i18n: I18n
+): {
+  (literals: TemplateStringsArray, ...placeholders: any[]): string
+  (descriptor: MessageDescriptor): string
+}
 
 /**
  * Pluralize a message
