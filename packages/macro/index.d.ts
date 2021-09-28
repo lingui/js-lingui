@@ -67,10 +67,8 @@ export function t(
  * ```
  */
 export function t(
-  i18n: I18n,
-  literals: TemplateStringsArray,
-  ...placeholders: any[]
-): string
+  i18n: I18n
+): (literals: TemplateStringsArray, ...placeholders: any[]) => string
 
 /**
  * Pluralize a message

@@ -61,10 +61,8 @@ declare module "@lingui/macro" {
    * ```
    */
   export function t(
-    i18n: I18n,
-    literals: TemplateStringsArray,
-    ...placeholders: any[]
-  ): string
+    i18n: I18n
+  ): (literals: TemplateStringsArray, ...placeholders: any[]) => string
 
   export type UnderscoreDigit<T = string> = { [digit: string]: T }
   export type ChoiceOptions<T = string> = {
