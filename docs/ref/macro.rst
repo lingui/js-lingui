@@ -146,6 +146,13 @@ Examples of JS macros
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
+|    t(customI18n)({                                          |    customI18n._(/*i18n*/{                                          |
+|       id: "msg.refresh",                                    |      id: "msg.refresh",                                            |
+|       message: "Refresh inbox"                              |      message: "Refresh inbox"                                      |
+|    })                                                       |    })                                                              |
++-------------------------------------------------------------+--------------------------------------------------------------------+
+| .. code-block:: js                                          | .. code-block:: js                                                 |
+|                                                             |                                                                    |
 |    defineMessage({                                          |    /*i18n*/{                                                       |
 |       id: "msg.refresh",                                    |      id: "msg.refresh",                                            |
 |       message: "Refresh inbox"                              |      message: "Refresh inbox"                                      |
