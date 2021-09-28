@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/lingui/js-lingui/compare/v3.11.1...v3.12.0) (2021-09-28)
+
+
+### Features
+
+* **macro:** Add support for passing custom i18n instance ([#1139](https://github.com/lingui/js-lingui/issues/1139)) ([5cad96f](https://github.com/lingui/js-lingui/commit/5cad96fc68a4219178d6caf6ad5c02e2f68f68fa))
+
+
+
+
+
 ## [3.11.1](https://github.com/lingui/js-lingui/compare/v3.11.0...v3.11.1) (2021-09-07)
 
 **Note:** Version bump only for package @lingui/macro

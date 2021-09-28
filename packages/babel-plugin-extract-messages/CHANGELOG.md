@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/lingui/js-lingui/compare/v3.11.1...v3.12.0) (2021-09-28)
+
+
+### Bug Fixes
+
+* **#1137:** configPath is passed through babel-plugin-extract-messages ([#1140](https://github.com/lingui/js-lingui/issues/1140)) ([8921156](https://github.com/lingui/js-lingui/commit/89211567632733cf9955cafc9c92bd87c6154852)), closes [#1137](https://github.com/lingui/js-lingui/issues/1137)
+
+
+
+
+
 ## [3.11.1](https://github.com/lingui/js-lingui/compare/v3.11.0...v3.11.1) (2021-09-07)
 
 **Note:** Version bump only for package @lingui/babel-plugin-extract-messages
