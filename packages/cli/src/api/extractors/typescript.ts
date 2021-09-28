@@ -36,10 +36,10 @@ const extractor: ExtractorType = {
       frameworkOptions.presets = ["react-app"]
     }
 
-    const { babelOptions = {} } = options
+    const { babelOptions = {}, configPath } = options
     const plugins = [
       "macros",
-      [linguiExtractMessages, { localeDir }],
+      [linguiExtractMessages, { localeDir, configPath }],
       ...(babelOptions.plugins || []),
     ]
 

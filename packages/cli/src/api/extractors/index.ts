@@ -11,6 +11,7 @@ export type BabelOptions = {
 export type ExtractOptions = {
   verbose?: boolean
   projectType?: string
+  configPath?: string
   extractors?: ExtractorType[]
   babelOptions?: BabelOptions
 }
@@ -36,7 +37,7 @@ export default function extract(
     if ((ext as any).default) {
       ext = (ext as any).default
     }
-    
+
     if (!ext.match(filename)) return false
 
     let spinner

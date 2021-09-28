@@ -5,9 +5,12 @@ import { getConfig, LinguiConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
 import { detect } from "./api/detect"
+import { ExtractorType } from "./api/extractors"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
+  configPath: string
+  extractors?: ExtractorType[]
   files?: string[]
 }
 
@@ -56,10 +59,11 @@ if (require.main === module) {
     .option("--verbose", "Verbose output")
     .parse(process.argv)
 
-  const config = getConfig({ configPath: program.config })
+  const config = getConfig({ configPath: program.config || process.env.LINGUI_CONFIG })
 
   const result = command(config, {
     verbose: program.verbose || false,
+    configPath: program.config || process.env.LINGUI_CONFIG,
   })
 
   if (!result) process.exit(1)
