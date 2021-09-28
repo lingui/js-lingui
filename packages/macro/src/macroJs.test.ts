@@ -20,6 +20,18 @@ describe("js macro", () => {
       ])
     })
 
+    it("with custom lingui instance", () => {
+      const macro = createMacro()
+      const exp = parseExpression("t(i18n)`Message`")
+      const tokens = macro.tokenizeTemplateLiteral(exp)
+      expect(tokens).toEqual([
+        {
+          type: "text",
+          value: "Message",
+        },
+      ])
+    })
+
     it("message with named argument", () => {
       const macro = createMacro()
       const exp = parseExpression("t`Message ${name}`")
@@ -82,50 +94,52 @@ describe("js macro", () => {
 
     it("message with unicode \\u chars is interpreted by babel", () => {
       const macro = createMacro()
-      const exp = parseExpression('t`Message \\u0020`')
+      const exp = parseExpression("t`Message \\u0020`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: 'Message  ',
+          value: "Message  ",
         },
       ])
     })
 
     it("message with unicode \\x chars is interpreted by babel", () => {
       const macro = createMacro()
-      const exp = parseExpression('t`Bienvenue\\xA0!`')
+      const exp = parseExpression("t`Bienvenue\\xA0!`")
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          // Looks like an empty space, but it isn't 
-          value: 'Bienvenue !',
+          // Looks like an empty space, but it isn't
+          value: "Bienvenue !",
         },
       ])
     })
 
     it("message with double scaped literals it's stripped", () => {
       const macro = createMacro()
-      const exp = parseExpression('t\`Passing \\`${argSet}\\` is not supported.\`')
+      const exp = parseExpression(
+        "t`Passing \\`${argSet}\\` is not supported.`"
+      )
       const tokens = macro.tokenizeTemplateLiteral(exp)
       expect(tokens).toEqual([
         {
           type: "text",
-          value: 'Passing `',
+          value: "Passing `",
         },
         {
           name: "argSet",
           type: "arg",
           value: {
             end: 20,
-            loc:  {
-              end:  {
+            loc: {
+              end: {
                 column: 20,
                 line: 1,
               },
               identifierName: "argSet",
-              start:  {
+              start: {
                 column: 14,
                 line: 1,
               },
@@ -298,7 +312,7 @@ describe("js macro", () => {
           female: "she",
           male: "he",
           offset: undefined,
-          other: "they"
+          other: "they",
         }),
         type: "arg",
         value: {
@@ -317,7 +331,7 @@ describe("js macro", () => {
           name: "gender",
           start: 7,
           type: "Identifier",
-        }
+        },
       })
     })
   })

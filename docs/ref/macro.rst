@@ -77,7 +77,7 @@ transformed into ``i18n._`` call.
 
    By default, the ``i18n`` object is imported from ``@lingui/core``.
    If you use a custom instance of ``i18n`` object, you need to set
-   :conf:`runtimeConfigModule`
+   :conf:`runtimeConfigModule` or pass a custom instance to :jsmacro:`t`.
 
 The only exception is :jsmacro:`defineMessage` which is transformed into
 message descriptor. In other words, the message isn't translated directly
@@ -119,6 +119,16 @@ Examples of JS macros
 |                                                             |                                                                    |
 |    t`Attachment ${name} saved`                              |    /*i18n*/                                                        |
 |                                                             |    i18n._("Attachment {name} saved", { name })                     |
++-------------------------------------------------------------+--------------------------------------------------------------------+
+| .. code-block:: js                                          | .. code-block:: js                                                 |
+|                                                             |                                                                    |
+|    t(customI18n)`Refresh inbox`                             |    /*i18n*/                                                        |
+|                                                             |    customI18n._("Refresh inbox")                                   |
++-------------------------------------------------------------+--------------------------------------------------------------------+
+| .. code-block:: js                                          | .. code-block:: js                                                 |
+|                                                             |                                                                    |
+|    t(customI18n)`Attachment ${name} saved`                  |    /*i18n*/                                                        |
+|                                                             |    customI18n._("Attachment {name} saved", { name })               |
 +-------------------------------------------------------------+--------------------------------------------------------------------+
 | .. code-block:: js                                          | .. code-block:: js                                                 |
 |                                                             |                                                                    |
@@ -184,7 +194,7 @@ into a *Message Descriptor* wrapped inside of ``i18n._`` call.
 
    By default, the ``i18n`` object is imported from ``@lingui/core``.
    If you use a custom instance of ``i18n`` object, you need to set
-   :conf:`runtimeConfigModule`
+   :conf:`runtimeConfigModule` or pass a custom instance to :jsmacro:`t`.
 
 *Message Descriptor* is an object with message ID, default message and other parameters.
 ``i18n._`` accepts message descriptors and performs translation and formatting:
@@ -264,6 +274,22 @@ other expressions are referenced by numeric index:
    i18n._("Today is {0}", {
      0: new Date()
    });
+
+Optionally, a custom ``i18n`` instance can be passed that can be used
+instead of the global instance:
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   import { i18n } from "./lingui"
+   const message = t(i18n)`Hello World`
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+
+   import { i18n } from "./lingui"
+   const message =
+   /*i18n*/
+   i18n._("Hello World")
 
 It's also possible to pass custom ``id`` and ``comment`` for translators by
 calling ``t`` macro with a message descriptor:

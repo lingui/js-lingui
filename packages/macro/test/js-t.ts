@@ -13,6 +13,20 @@ export default [
     `,
   },
   {
+    name: "Macro is used in expression assignment, with custom lingui instance",
+    input: `
+        import { t } from '@lingui/macro';
+        import { i18n } from './lingui';
+        const a = t(i18n)\`Expression assignment\`;
+    `,
+    expected: `
+        import { i18n } from './lingui';
+        const a =
+          /*i18n*/
+          i18n._("Expression assignment")
+    `,
+  },
+  {
     name: "Variables are replaced with named arguments",
     input: `
         import { t } from '@lingui/macro';

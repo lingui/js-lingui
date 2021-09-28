@@ -31,7 +31,8 @@ export default class MacroJs {
 
   replacePathWithMessage = (
     path: NodePath,
-    { id, message, values, comment }
+    { id, message, values, comment },
+    linguiInstance?: babelTypes.Identifier
   ) => {
     const args = []
     const options = []
@@ -75,7 +76,7 @@ export default class MacroJs {
 
     const newNode = this.types.callExpression(
       this.types.memberExpression(
-        this.types.identifier(this.i18nImportName),
+        linguiInstance ?? this.types.identifier(this.i18nImportName),
         this.types.identifier("_")
       ),
       args
@@ -89,13 +90,42 @@ export default class MacroJs {
     path.replaceWith(newNode)
   }
 
-  replacePath = (path: NodePath) => {
+  // Returns a boolean indicating if the replacement requires i18n import
+  replacePath = (path: NodePath): boolean => {
     // reset the expression counter
     this._expressionIndex = makeCounter()
 
     if (this.isDefineMessage(path.node)) {
       this.replaceDefineMessage(path)
-      return
+      return true
+    }
+
+    // t(i18nInstance)`Message` -> i18nInstance._('Message')
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.types.isTaggedTemplateExpression(path.parentPath.node) &&
+      this.types.isIdentifier(path.node.arguments[0]) &&
+      this.isIdentifier(path.node.callee, "t")
+    ) {
+      // Use the first argument as i18n instance instead of the default i18n instance
+      const i18nInstance = path.node.arguments[0]
+      const tokens = this.tokenizeNode(path.parentPath.node)
+
+      const messageFormat = new ICUMessageFormat()
+      const {
+        message: messageRaw,
+        values,
+        id,
+        comment,
+      } = messageFormat.fromTokens(tokens)
+      const message = normalizeWhitespace(messageRaw)
+
+      this.replacePathWithMessage(
+        path.parentPath,
+        { id, message, values, comment },
+        i18nInstance
+      )
+      return false
     }
 
     if (
@@ -103,7 +133,7 @@ export default class MacroJs {
       this.isIdentifier(path.node.callee, "t")
     ) {
       this.replaceTAsFunction(path)
-      return
+      return true
     }
 
     const tokens = this.tokenizeNode(path.node)
@@ -118,6 +148,8 @@ export default class MacroJs {
     const message = normalizeWhitespace(messageRaw)
 
     this.replacePathWithMessage(path, { id, message, values, comment })
+
+    return true
   }
 
   /**
@@ -267,7 +299,11 @@ export default class MacroJs {
           // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
           // This regex will detect if a string contains unicode chars, when they're we should interpolate them
           // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
+          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
+            text.value.raw
+          )
+            ? text.value.cooked
+            : text.value.raw
           if (value === "") return null
 
           return {
@@ -361,7 +397,7 @@ export default class MacroJs {
   /**
    * We clean '//\` ' to just '`'
    */
-  clearBackslashes(value: string) {
+  clearBackslashes(value: string) {
     // if not we replace the extra scaped literals
     return value.replace(/\\`/g, "`")
   }
