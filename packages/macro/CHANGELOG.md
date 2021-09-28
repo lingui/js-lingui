@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.12.1](https://github.com/lingui/js-lingui/compare/v3.12.0...v3.12.1) (2021-09-28)
+
+
+### Bug Fixes
+
+* **types:** correct types for  macro with custom i18n instance ([#1141](https://github.com/lingui/js-lingui/issues/1141)) ([a9bffdd](https://github.com/lingui/js-lingui/commit/a9bffddf2ae0c9b6ab6a48552d085cfd53140cca))
+
+
+
+
+
 # [3.12.0](https://github.com/lingui/js-lingui/compare/v3.11.1...v3.12.0) (2021-09-28)
 
 
