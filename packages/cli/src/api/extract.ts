@@ -1,7 +1,6 @@
 import fs from "fs"
 import path from "path"
 import chalk from "chalk"
-import ora from "ora"
 import * as R from "ramda"
 
 import { prettyOrigin } from "./utils"
@@ -11,6 +10,7 @@ import cliExtractor, { ExtractorType } from "./extractors"
 type ExtractOptions = {
   ignore?: Array<string>
   verbose?: boolean
+  configPath?: string
   extractors?: ExtractorType[]
   projectType?: string
   babelOptions?: Object

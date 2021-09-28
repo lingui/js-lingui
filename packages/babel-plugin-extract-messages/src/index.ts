@@ -252,7 +252,7 @@ export default function ({ types: t }) {
       // Config was already validated in CLI.
       file.set(
         CONFIG,
-        getConfig({ cwd: file.opts.filename, skipValidation: true })
+        getConfig({ cwd: file.opts.filename, skipValidation: true, configPath: this.opts.configPath })
       )
 
       // Ignore else path for now. Collision is possible if other plugin is

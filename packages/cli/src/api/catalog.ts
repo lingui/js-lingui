@@ -154,8 +154,8 @@ export class Catalog {
       paths.forEach((filename) =>
         extract(filename, tmpDir, {
           verbose: options.verbose,
+          configPath: options.configPath,
           babelOptions: this.config.extractBabelOptions,
-          // @ts-ignore
           extractors: options.extractors,
           projectType: options.projectType,
         })

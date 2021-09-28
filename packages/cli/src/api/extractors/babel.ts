@@ -16,7 +16,7 @@ const extractor: ExtractorType = {
   },
 
   extract(filename, localeDir, options = {}) {
-    const { babelOptions: _babelOptions = {} } = options
+    const { babelOptions: _babelOptions = {}, configPath } = options
     const { plugins = [], ...babelOptions } = _babelOptions
     const frameworkOptions: BabelOptions = {}
 
@@ -30,7 +30,7 @@ const extractor: ExtractorType = {
       // we override envName to avoid issues with NODE_ENV=production
       // https://github.com/lingui/js-lingui/issues/952
       envName: "development",
-      plugins: ["macros", [linguiExtractMessages, { localeDir }], ...plugins],
+      plugins: ["macros", [linguiExtractMessages, { localeDir, configPath }], ...plugins],
     })
   },
 }

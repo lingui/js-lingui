@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import chokidar, { watch } from "chokidar"
+import chokidar from "chokidar"
 import program from "commander"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
@@ -8,11 +8,14 @@ import { AllCatalogsType, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
 import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
+import { ExtractorType } from "./api/extractors"
 
 export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
+  extractors?: ExtractorType[]
+  configPath: string
   overwrite: boolean
   locale: string
   prevFormat: string | null
@@ -153,6 +156,7 @@ if (require.main === module) {
       clean: program.watch ? false : program.clean || false,
       overwrite: program.watch || program.overwrite || false,
       locale: program.locale,
+      configPath: program.config || process.env.LINGUI_CONFIG,
       watch: program.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,

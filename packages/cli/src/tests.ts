@@ -22,11 +22,13 @@ export const defaultMakeOptions: MakeOptions = {
   overwrite: false,
   locale: null,
   prevFormat: null,
+  configPath: null,
   orderBy: "messageId",
 }
 
 export const defaultMakeTemplateOptions: MakeTemplateOptions = {
   verbose: false,
+  configPath: null,
   orderBy: "messageId",
 }
 
