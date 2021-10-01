@@ -266,4 +266,60 @@ describe("pofile format", () => {
 
     `)
   })
+
+  it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
+    mockFs({
+      locale: {
+        en: mockFs.directory(),
+      },
+    })
+
+    const filename = path.join("locale", "en", "messages.po")
+    const catalog: CatalogType = {
+      static: {
+        translation: "Static message",
+      },
+      withOrigin: {
+        translation: "Message with origin",
+        origin: [["src/App.js"]],
+      },
+      withMultipleOrigins: {
+        translation: "Message with multiple origin",
+        origin: [
+          ["src/App.js"],
+          ["src/Component.js"],
+        ],
+      },
+    }
+    format.write(filename, catalog, {
+      origins: true,
+      lineNumbers: false,
+      locale: "en",
+    })
+    const pofile = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(pofile).toMatchInlineSnapshot(`
+      msgid ""
+      msgstr ""
+      "POT-Creation-Date: ${formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx")}\\n"
+      "MIME-Version: 1.0\\n"
+      "Content-Type: text/plain; charset=utf-8\\n"
+      "Content-Transfer-Encoding: 8bit\\n"
+      "X-Generator: @lingui/cli\\n"
+      "Language: en\\n"
+
+      msgid "static"
+      msgstr "Static message"
+
+      #: src/App.js
+      msgid "withOrigin"
+      msgstr "Message with origin"
+
+      #: src/App.js
+      #: src/Component.js
+      msgid "withMultipleOrigins"
+      msgstr "Message with multiple origin"
+
+    `)
+  })
 })

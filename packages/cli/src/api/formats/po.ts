@@ -27,7 +27,7 @@ const serialize = (items: CatalogType, options) =>
       item.extractedComments = message.extractedComments || []
       if (options.origins !== false) {
         if (message.origin && options.lineNumbers === false) {
-          item.references = message.origin.map(msg => msg.slice(0, -1)).map(joinOrigin)
+          item.references = message.origin.map(([path]) => path);
         } else {
           item.references = message.origin ? message.origin.map(joinOrigin) : []
         }

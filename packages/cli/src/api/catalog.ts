@@ -21,7 +21,7 @@ const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
 
-type MessageOrigin = [string, number]
+type MessageOrigin = [string, number?]
 
 export type ExtractedMessageType = {
   message?: string
