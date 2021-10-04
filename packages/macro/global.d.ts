@@ -1,3 +1,4 @@
+// @ts-ignore
 declare module "@lingui/macro" {
   import type { MessageDescriptor, I18n } from "@lingui/core"
 

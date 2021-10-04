@@ -3,9 +3,16 @@
     "module": "commonjs",
     "jsx": "react",
     "noEmit": true,
+    "baseUrl": "./",
     "pretty": true,
     "esModuleInterop": true,
-    "target": "es2017"
+    "target": "es2017",
+    "paths": {
+      "@lingui/core": ["./packages/core/src"],
+      "@lingui/react": ["./packages/react/src"],
+      "@lingui/conf": ["./packages/conf"],
+      "@lingui/macro": ["./packages/macro/src"]
+    }
   },
   "exclude": [
     "examples/js",
