@@ -24,8 +24,8 @@ Smooth Team Management
 ----------------------
 
 Invite your collaborators using their email or username, and assign them a
-role and a target language. We'll take care to bring them on board, and keep
-them informed about new activity in their language.
+role and a target language. We'll bring them on board and keep them informed
+about any new activity in their language.
 
 .. image:: https://translation.io/gifs/lingui/translation-collaborators.gif
    :alt: Smooth Team Management on Translation.io
@@ -47,8 +47,8 @@ provides translation suggestions (from
 or DeepL), context, discussion and history.
 
 Keyboard shortcuts allow translators to stay focused on their work, visual
-hints indicates when something went wrong like a missing interpolated
-variable or HTML tag.
+hints indicate when something went wrong, for example when an interpolated
+variable or HTML tag is missing.
 
 .. image:: https://translation.io/gifs/lingui/translation-interface.gif
    :alt: Elegant Translation Process on Translation.io
@@ -106,7 +106,7 @@ then reconstruct them inside your local ``.po`` files.
 
 If the target language has more plural forms than the source language,
 we also provide some examples to the translator, because it could be unclear what
-plural form the ``few`` or ``other`` keyword may reference to in that specific
+plural form the ``few`` or ``other`` keyword may refer to in that specific
 target language (in this example, Czech has 3 plural forms).
 
 .. image:: ../tools/translation-lingui-plural-forms.png
@@ -137,9 +137,9 @@ Learn more:
 Adaptive Workflows using Tags
 -----------------------------
 
-Our interface is flexible enough to fit your own translation workflows.
+Our interface is flexible enough to adapt to your own translation workflows.
 Add custom tags to your segments and you'll be directly able to filter them.
-Also, these tags will appear in the statistics page so you can use them for
+Moreover, these tags will appear in the statistics page so you can use them for
 reporting.
 
 .. image:: https://translation.io/gifs/lingui/translation-tags.gif

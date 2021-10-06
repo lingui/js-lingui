@@ -10,8 +10,8 @@ The easiest way to translate your application is to translate the
 `Poedit <https://poedit.net>`_.
 
 This solution may be good enough when your application is still
-small and doesn't evolve much, but quickly becomes a pain when the number
-of sentences to translate, and target languages to manage, increases with
+small and doesn't evolve much, but it quickly becomes hard work when the number
+of sentences to translate and the target languages to manage increase with
 time.
 
 It then becomes more and more difficult and time-consuming to manage the
@@ -20,8 +20,8 @@ back and forth with the translators, while keeping your application
 stop evolving.
 
 That's why sync and collaboration tools are directly integrated into Lingui
-to help structure your work with your translators team, ensure the consistency
-of the translations, and make your life easier.
+to help structure your work with your translators team, to ensure the consistency
+of the translations, and to make your life easier.
 
 Regular Workflow
 ----------------
@@ -44,14 +44,14 @@ Sync & Collaboration Tool Workflow
 
 When the amount of text to translate increases, and the number of target
 languages grows, it becomes more efficient to use a sync and
-collaboration tools to assist you with the management of your team of
+collaboration tool to assist you with the management of your team of
 translators, and co-evolution between your code and the translated
 files.
 
 Instead of manually sending and receiving many emails and fixing the
 inconsistencies with your code, a ``sync`` method is called and your ``.po``
 and ``.js`` files are directly updated with the latest translations. Your
-translators will also be warned when there are new text to translate.
+translators will also be notified when there are new text to translate.
 
 Benefits of these tools
 =======================
