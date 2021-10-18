@@ -30,6 +30,7 @@ export type ExtractedMessageType = {
   comments?: string[]
   obsolete?: boolean
   flags?: string[]
+  context?: string
 }
 
 export type MessageType = ExtractedMessageType & {

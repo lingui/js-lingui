@@ -63,6 +63,9 @@ const serialize = (items: CatalogType, options) =>
       // Destructuring `undefined` is forbidden, so fallback to `[]` if the message has no extracted comments.
       item.extractedComments = [...(message.extractedComments ?? [])]
       
+      if (message.context) {
+        item.msgctxt = message.context
+      }
       if (options.origins !== false) {
         if (message.origin && options.lineNumbers === false) {
           item.references = message.origin.map(([path]) => path);
@@ -171,6 +174,7 @@ const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop<"msgstr", string[]>("msgstr")
 const getExtractedComments = R.prop("extractedComments")
 const getTranslatorComments = R.prop("comments")
+const getMessageContext = R.prop("msgctxt")
 const getOrigins = R.prop("references")
 const getFlags = R.compose(
   R.map(R.trim),
@@ -187,6 +191,7 @@ const deserialize: (Object) => Object = R.map(
     translation: R.compose(R.head, R.defaultTo([]), getTranslations),
     extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
     comments: R.compose(R.defaultTo([]), getTranslatorComments),
+    context: R.compose(R.defaultTo(null), getMessageContext),
     obsolete: isObsolete,
     origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
     flags: getFlags,
