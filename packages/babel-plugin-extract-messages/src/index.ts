@@ -96,6 +96,19 @@ function mapReplacer(key, value) {
   return value;
 }
 
+function extractStringContatentation(t, node, error): string {
+  if (t.isStringLiteral(node)) {
+    return node.value
+  } else if (t.isBinaryExpression(node)) {
+    return (
+      extractStringContatentation(t, node.left, error) +
+      extractStringContatentation(t, node.right, error)
+    )
+  } else {
+    throw error
+  }
+}
+
 export default function ({ types: t }) {
   let localTransComponentName
 
@@ -282,13 +295,31 @@ export default function ({ types: t }) {
         path.node.properties
           .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
           .forEach(({ key, value }, i) => {
+            // By default, the value is just the string value of the object property.
+            let valueToExtract = value.value;
+
             if (key.name === "comment" && !t.isStringLiteral(value)) {
-              throw path
+              // Comments can be single or multi-line strings.
+              const errorIfNotAString = path
                 .get(`properties.${i}.value`)
                 .buildCodeFrameError("Only strings are supported as comments.")
+
+              if (t.isBinaryExpression(value)) {
+                valueToExtract = extractStringContatentation(
+                  t,
+                  value,
+                  errorIfNotAString
+                )
+              } else {
+                throw errorIfNotAString
+              }
+            } else if (key.name === "id") {
+                const isIdLiteral = !value.value && t.isTemplateLiteral(value)
+                if (isIdLiteral) {
+                    valueToExtract = value?.quasis[0]?.value?.cooked;
+                }
             }
-            const isIdLiteral = !value.value && key.name === "id" && t.isTemplateLiteral(value)
-            props[key.name] = isIdLiteral ? value?.quasis[0]?.value?.cooked : value.value
+            props[key.name] = valueToExtract;
           })
 
         collectMessage(path, file, props)
