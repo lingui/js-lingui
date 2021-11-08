@@ -126,7 +126,7 @@ Let's compare it with `react-intl`_ solution to see the difference:
          <Trans>Read the <a href="/docs">documentation</a>.</Trans>
       </p>
 
-   The message ID is ``Read the <0>documentation</0>.`` instead of ``msg.id``. Both
+   The message ID is ``Read the <0>documentation</0>.`` instead of ``msg.docs``. Both
    solutions have pros and cons and the library lets you choose the one which works best for you.
 
 Plurals
