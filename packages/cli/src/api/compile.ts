@@ -27,7 +27,7 @@ export type CreateCompileCatalogOptions = {
  */
 function compileSingleKey(key: string, translation: string, shouldPseudolocalize: boolean): t.ObjectProperty {
   if (shouldPseudolocalize) {
-    translation = pseudoLocalize(translation)
+    translation = pseudoLocalize(key)
   }
 
   return t.objectProperty(t.stringLiteral(key), compile(translation))
