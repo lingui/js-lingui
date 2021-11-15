@@ -228,7 +228,7 @@ export class Catalog {
             options.overwrite)
 
         const translation = updateFromDefaults
-          ? nextCatalog[key].message
+          ? nextCatalog[key].message || key
           : prevCatalog[key].translation
 
         return {
