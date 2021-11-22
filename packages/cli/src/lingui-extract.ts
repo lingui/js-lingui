@@ -22,10 +22,10 @@ export type CliExtractOptions = {
   watch?: boolean
 }
 
-export default function command(
+export default async function command(
   config: LinguiConfig,
   options: Partial<CliExtractOptions>
-): boolean {
+): Promise<boolean> {
   // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
   // set. We're setting it here, because lingui macros are going to use them as well.
   if (!process.env.BABEL_ENV && !process.env.NODE_ENV) {
@@ -41,8 +41,8 @@ export default function command(
 
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
-  catalogs.forEach((catalog) => {
-    catalog.make({
+  for (let catalog of catalogs) {
+    await catalog.make({
       ...options,
       orderBy: config.orderBy,
       extractors: config.extractors,
@@ -50,7 +50,7 @@ export default function command(
     })
 
     catalogStats[catalog.path] = catalog.readAll()
-  })
+  }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(`Catalog statistics for ${key}: `)
@@ -173,11 +173,11 @@ if (require.main === module) {
 
     // CLear the previous timer if there is any, and schedule the next
     debounceTimer && clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => {
+    debounceTimer = setTimeout(async () => {
       const filePath = [...changedPaths]
       changedPaths.clear()
 
-      extract(filePath)
+      await extract(filePath)
     }, program.debounce)
   }
 
@@ -210,10 +210,12 @@ if (require.main === module) {
   } else if (program.args) {
     // this behaviour occurs when we extract files by his name
     // for ex: lingui extract src/app, this will extract only files included in src/app
-    const result = extract(program.args)
-    if (!result) process.exit(1)
+    extract(program.args).then(result => {
+      if (!result) process.exit(1)
+    })
   } else {
-    const result = extract()
-    if (!result) process.exit(1)
+    extract().then(result => {
+      if (!result) process.exit(1)
+    })
   }
 }

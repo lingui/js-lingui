@@ -38,7 +38,7 @@ function mergeMessage(msgId, prev, next) {
   }
 }
 
-export function extract(
+export async function extract(
   srcPaths: Array<string>,
   targetPath: string,
   options: ExtractOptions = {}
@@ -46,12 +46,12 @@ export function extract(
   const { ignore = [] } = options
   const ignorePattern = ignore.length ? new RegExp(ignore.join("|"), "i") : null
 
-  srcPaths.forEach((srcFilename) => {
+  for (let srcFilename of srcPaths) {
     if (
       !fs.existsSync(srcFilename) ||
       (ignorePattern && ignorePattern.test(srcFilename))
     )
-      return
+      continue
 
     if (fs.statSync(srcFilename).isDirectory()) {
       const subdirs = fs
@@ -59,12 +59,12 @@ export function extract(
         .sort()
         .map((filename) => path.join(srcFilename, filename))
 
-      extract(subdirs, targetPath, options)
-      return
+      await extract(subdirs, targetPath, options)
+      continue
     }
 
-    cliExtractor(srcFilename, targetPath, options)
-  })
+    await cliExtractor(srcFilename, targetPath, options)
+  }
 }
 
 export function collect(buildDir: string) {

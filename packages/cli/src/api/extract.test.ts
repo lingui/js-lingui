@@ -60,8 +60,8 @@ describe("extract", function () {
     mockFs.restore()
   })
 
-  it("should traverse directory and call extractors", function () {
-    extract(["src"], "locale", {
+  it("should traverse directory and call extractors", async function () {
+    await extract(["src"], "locale", {
       ignore: ["forbidden"],
       extractors: [
         babel,
@@ -153,8 +153,8 @@ describe("extract", function () {
     )
   })
 
-  it("by default the traverse directory only uses babel", function () {
-    extract(["src"], "locale", {
+  it("by default the traverse directory only uses babel", async function () {
+    await extract(["src"], "locale", {
       ignore: ["forbidden"],
       babelOptions: {},
     })

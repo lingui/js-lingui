@@ -18,17 +18,17 @@ export type ExtractOptions = {
 
 export type ExtractorType = {
   match(filename: string): boolean
-  extract(filename: string, targetDir: string, options?: ExtractOptions): void
+  extract(filename: string, targetDir: string, options?: ExtractOptions): Promise<void> | void
 }
 
-export default function extract(
+export default async function extract(
   filename: string,
   targetPath: string,
   options: ExtractOptions
-): boolean {
+): Promise<boolean> {
   const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
 
-  return extractorsToExtract.some((e) => {
+  for (let e of extractorsToExtract) {
     let ext: ExtractorType = e;
     if (typeof e === "string") {
       // in case of the user using require.resolve in their extractors, we require that module
@@ -38,13 +38,13 @@ export default function extract(
       ext = (ext as any).default
     }
 
-    if (!ext.match(filename)) return false
+    if (!ext.match(filename)) continue
 
     let spinner
     if (options.verbose) spinner = ora().start(filename)
 
     try {
-      ext.extract(filename, targetPath, options)
+      await ext.extract(filename, targetPath, options)
     } catch (e) {
       if (options.verbose && spinner) {
         spinner.fail(e.message)
@@ -56,5 +56,7 @@ export default function extract(
 
     if (options.verbose && spinner) spinner.succeed()
     return true
-  })
+  }
+
+  return false
 }

@@ -98,8 +98,8 @@ export class Catalog {
     this.format = getFormat(config.format)
   }
 
-  make(options: MakeOptions) {
-    const nextCatalog = this.collect(options)
+  async make(options: MakeOptions) {
+    const nextCatalog = await this.collect(options)
     const prevCatalogs = this.readAll()
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
@@ -126,8 +126,8 @@ export class Catalog {
     }
   }
 
-  makeTemplate(options: MakeTemplateOptions) {
-    const catalog = this.collect(options)
+  async makeTemplate(options: MakeTemplateOptions) {
+    const catalog = await this.collect(options)
     const sort = order(options.orderBy) as (catalog: CatalogType) => CatalogType
     this.writeTemplate(sort(catalog as CatalogType))
   }
@@ -135,7 +135,7 @@ export class Catalog {
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  collect(options: CollectOptions) {
+  async collect(options: CollectOptions) {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -152,15 +152,15 @@ export class Catalog {
         paths = paths.filter((path: string) => regex.test(path))
       }
 
-      paths.forEach((filename) =>
-        extract(filename, tmpDir, {
+      for (let filename of paths) {
+        await extract(filename, tmpDir, {
           verbose: options.verbose,
           configPath: options.configPath,
           babelOptions: this.config.extractBabelOptions,
           extractors: options.extractors,
           projectType: options.projectType,
         })
-      )
+      }
 
       return (function traverse(directory) {
         return fs
