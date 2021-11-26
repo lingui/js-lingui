@@ -330,11 +330,17 @@ describe("Catalog", function () {
             message: "",
             translation: "Message with custom ID",
           }),
+          "Message with <0>auto-generated</0> ID": makePrevMessage({
+            translation: "Source of message with <0>auto-generated</0> ID",
+          }),
         },
         cs: {
           "custom.id": makePrevMessage({
             message: "",
             translation: "Translation of message with custom ID",
+          }),
+          "Message with <0>auto-generated</0> ID": makePrevMessage({
+            translation: "Translation of message with auto-generated ID",
           }),
         },
       }
@@ -343,10 +349,11 @@ describe("Catalog", function () {
         "custom.id": makeNextMessage({
           message: "Message with custom ID, possibly changed",
         }),
+        "Message with <0>auto-generated</0> ID": makeNextMessage(),
       }
 
       // Without `overwrite`:
-      // The translation of `custom.id` message for `sourceLocale` is kept intact
+      // The translations of all IDs for `sourceLocale` are kept intact
       expect(
         makeCatalog({ sourceLocale: "en" }).merge(
           prevCatalogs,
@@ -359,17 +366,23 @@ describe("Catalog", function () {
             message: "Message with custom ID, possibly changed",
             translation: "Message with custom ID",
           }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
+            translation: "Source of message with <0>auto-generated</0> ID",
+          }),
         },
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
             translation: "Translation of message with custom ID",
           }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
+            translation: "Translation of message with auto-generated ID",
+          }),
         },
       })
 
       // With `overwrite`
-      // The translation of `custom.id` message for `sourceLocale` is changed
+      // The translations of all IDs for `sourceLocale` are changed
       expect(
         makeCatalog({ sourceLocale: "en" }).merge(prevCatalogs, nextCatalog, {
           overwrite: true,
@@ -380,11 +393,17 @@ describe("Catalog", function () {
             message: "Message with custom ID, possibly changed",
             translation: "Message with custom ID, possibly changed",
           }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
+            translation: "Message with <0>auto-generated</0> ID",
+          }),
         },
         cs: {
           "custom.id": expect.objectContaining({
             message: "Message with custom ID, possibly changed",
             translation: "Translation of message with custom ID",
+          }),
+          "Message with <0>auto-generated</0> ID": expect.objectContaining({
+            translation: "Translation of message with auto-generated ID",
           }),
         },
       })
