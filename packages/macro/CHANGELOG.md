@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
+
+
+### Features
+
+* msgctxt support ([#1094](https://github.com/lingui/js-lingui/issues/1094)) ([8ee42cb](https://github.com/lingui/js-lingui/commit/8ee42cbfe26bc6d055748dcf2713ab8ade7ec827))
+
+
+
+
+
 ## [3.12.1](https://github.com/lingui/js-lingui/compare/v3.12.0...v3.12.1) (2021-09-28)
 
 

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
+
+
+### Bug Fixes
+
+* pin cli-table to 0.3.6 ([#1172](https://github.com/lingui/js-lingui/issues/1172)) ([b659b18](https://github.com/lingui/js-lingui/commit/b659b1802054d76862663decd9ef49d983e0304e))
+* **cli:** extract with --overwrite should fallback to key ([#1166](https://github.com/lingui/js-lingui/issues/1166)) ([e5e9d59](https://github.com/lingui/js-lingui/commit/e5e9d598a2f1a27845b414d8be1927b84f3d8e9c))
+* Allow pseudoLocalize to work in @lingui/loader ([#1165](https://github.com/lingui/js-lingui/issues/1165)) ([356c224](https://github.com/lingui/js-lingui/commit/356c224530a0fde730b31602eb6f95c7496f245e))
+* don't push pseudoLocale to translation.io provider ([#1161](https://github.com/lingui/js-lingui/issues/1161)) ([5d2186b](https://github.com/lingui/js-lingui/commit/5d2186bccf7721aaef8573a6a6e9764f00c107e6))
+* stripping origin if line numbers already strippped ([#1143](https://github.com/lingui/js-lingui/issues/1143)) ([82a3265](https://github.com/lingui/js-lingui/commit/82a32655d2cd362ec4d7164822585cbd3ae5dd6e))
+
+
+### Features
+
+* **cli:** make extract cmd asynchronous execution ([#1170](https://github.com/lingui/js-lingui/issues/1170)) ([f99d8b1](https://github.com/lingui/js-lingui/commit/f99d8b17f3f05c3caef9481feb142f0b35916f91))
+* add the ability to extract concatenated comments ([#1152](https://github.com/lingui/js-lingui/issues/1152)) ([0e553cf](https://github.com/lingui/js-lingui/commit/0e553cf14f5f6dce87839abed76fd21f351a2eae))
+* msgctxt support ([#1094](https://github.com/lingui/js-lingui/issues/1094)) ([8ee42cb](https://github.com/lingui/js-lingui/commit/8ee42cbfe26bc6d055748dcf2713ab8ade7ec827))
+
+
+
+
+
 ## [3.12.1](https://github.com/lingui/js-lingui/compare/v3.12.0...v3.12.1) (2021-09-28)
 
 
