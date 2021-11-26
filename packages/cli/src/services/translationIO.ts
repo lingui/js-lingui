@@ -43,7 +43,8 @@ export default function syncProcess(config, options) {
 // Cf. https://translation.io/docs/create-library#initialization
 function init(config, options, successCallback, failCallback) {
   const sourceLocale  = config.sourceLocale || 'en'
-  const targetLocales = config.locales.filter((value) => value != sourceLocale)
+  const pseudoLocale  = config.pseudoLocale || 'pseudo'
+  const targetLocales = config.locales.filter((value) => value != sourceLocale && value != pseudoLocale)
   const paths         = poPathsPerLocale(config)
 
   let segments = {}
