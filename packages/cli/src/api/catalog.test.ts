@@ -35,7 +35,7 @@ describe("Catalog", function () {
   })
 
   describe("make", function () {
-    it("should collect and write catalogs", function () {
+    it("should collect and write catalogs", async function () {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -55,11 +55,11 @@ describe("Catalog", function () {
       // Everything should be empty
       expect(catalog.readAll()).toMatchSnapshot()
 
-      catalog.make(defaultMakeOptions)
+      await catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should only update the specified locale", function () {
+    it("should only update the specified locale", async function () {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -79,11 +79,11 @@ describe("Catalog", function () {
       // Everything should be empty
       expect(catalog.readAll()).toMatchSnapshot()
 
-      catalog.make({ ...defaultMakeOptions, locale: "en" })
+      await catalog.make({ ...defaultMakeOptions, locale: "en" })
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should merge with existing catalogs", function () {
+    it("should merge with existing catalogs", async function () {
       const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
@@ -100,13 +100,13 @@ describe("Catalog", function () {
       // Everything should be empty
       expect(catalog.readAll()).toMatchSnapshot()
 
-      catalog.make(defaultMakeOptions)
+      await catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
     })
   })
 
   describe("makeTemplate", function () {
-    it("should collect and write a template", function () {
+    it("should collect and write a template", async function () {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -126,13 +126,13 @@ describe("Catalog", function () {
       // Everything should be empty
       expect(catalog.readTemplate()).toMatchSnapshot()
 
-      catalog.makeTemplate(defaultMakeTemplateOptions)
+      await catalog.makeTemplate(defaultMakeTemplateOptions)
       expect(catalog.readTemplate()).toMatchSnapshot()
     })
   })
 
   describe("collect", function () {
-    it("should extract messages from source files", function () {
+    it("should extract messages from source files", async function () {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -143,11 +143,11 @@ describe("Catalog", function () {
         mockConfig()
       )
 
-      const messages = catalog.collect(defaultMakeOptions)
+      const messages = await catalog.collect(defaultMakeOptions)
       expect(messages).toMatchSnapshot()
     })
 
-    it("should extract only files passed on options", function () {
+    it("should extract only files passed on options", async function () {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -158,7 +158,7 @@ describe("Catalog", function () {
         mockConfig()
       )
 
-      const messages = catalog.collect({
+      const messages = await catalog.collect({
         ...defaultMakeOptions,
         files: [fixture("collect/componentA")]
       })
@@ -176,8 +176,8 @@ describe("Catalog", function () {
         mockConfig()
       )
 
-      mockConsole((console) => {
-        const messages = catalog.collect(defaultMakeOptions)
+      mockConsole(async (console) => {
+        const messages = await catalog.collect(defaultMakeOptions)
         expect(console.error).toBeCalledWith(
           expect.stringContaining(`Cannot process file`)
         )
