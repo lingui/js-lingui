@@ -131,7 +131,7 @@ Object {
       origin: Array [
         Array [
           js-without-macros.js,
-          11,
+          13,
         ],
       ],
     },
@@ -153,7 +153,7 @@ Object {
     origin: Array [
       Array [
         js-without-macros.js,
-        7,
+        9,
       ],
     ],
   },
@@ -166,12 +166,23 @@ Object {
       ],
     ],
   },
+  Multiline: Object {
+    extractedComments: Array [
+      this is 2 lines long,
+    ],
+    origin: Array [
+      Array [
+        js-without-macros.js,
+        7,
+      ],
+    ],
+  },
   Values {param}: Object {
     extractedComments: Array [],
     origin: Array [
       Array [
         js-without-macros.js,
-        9,
+        11,
       ],
     ],
   },
