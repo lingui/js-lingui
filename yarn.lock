@@ -4534,10 +4534,10 @@ cli-spinners@^2.5.0:
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.5.0.tgz#12763e47251bf951cb75c201dfa58ff1bcb2d047"
   integrity sha512-PC+AmIuK04E6aeSs/pUccSujsTzBhu4HzC2dL+CfJB/Jcc2qTRbEwZQDfIUpt2Xl8BodYBEq8w4fc0kU2I9DjQ==
 
-cli-table@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.1.tgz#f53b05266a8b1a0b934b3d0821e6e2dc5914ae23"
-  integrity sha1-9TsFJmqLGguTSz0IIebi3FkUriM=
+cli-table@0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.6.tgz#e9d6aa859c7fe636981fd3787378c2a20bce92fc"
+  integrity sha512-ZkNZbnZjKERTY5NwC2SeMeLeifSPq/pubeRoTpdr3WchLlnZg6hEgvHkK5zL7KNFdd9PmHN8lxrENUwI3cE8vQ==
   dependencies:
     colors "1.0.3"
 

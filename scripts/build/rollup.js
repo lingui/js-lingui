@@ -135,6 +135,7 @@ function getPlugins(
           declaration: true,
           declarationMap: true,
           mapRoot: "",
+          paths: null,
           module: "esnext",
           target: "esnext",
         },
@@ -153,17 +154,17 @@ function getPlugins(
 
     // Apply dead code elimination and/or minification.
     isProduction &&
-      terser({
-        output: { comments: false },
-        compress: {
-          keep_infinity: true,
-          pure_getters: true,
-          collapse_vars: false,
-        },
-        ecma: 5,
-        toplevel: !isInGlobalScope,
-        warnings: true,
-      }),
+    terser({
+      output: { comments: false },
+      compress: {
+        keep_infinity: true,
+        pure_getters: true,
+        collapse_vars: false,
+      },
+      ecma: 5,
+      toplevel: !isInGlobalScope,
+      warnings: true,
+    }),
 
     // Add the whitespace back if necessary.
     shouldStayReadable && prettier(),
@@ -196,10 +197,10 @@ function handleRollupWarning(warning) {
     if (typeof importSideEffects[externalModule] !== "boolean") {
       throw new Error(
         'An external module "' +
-          externalModule +
-          '" is used in a DEV-only code path ' +
-          "but we do not know if it is safe to omit an unused require() to it in production. " +
-          "Please add it to the `importSideEffects` list in `scripts/rollup/modules.js`."
+        externalModule +
+        '" is used in a DEV-only code path ' +
+        "but we do not know if it is safe to omit an unused require() to it in production. " +
+        "Please add it to the `importSideEffects` list in `scripts/rollup/modules.js`."
       )
     }
     // Don't warn. We will remove side effectless require() in a later pass.
