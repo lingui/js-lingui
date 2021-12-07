@@ -73,11 +73,11 @@ export default async function command(
 
   // If service key is present in configuration, synchronize with cloud translation platform
   if (typeof config.service === 'object' && config.service.name && config.service.name.length) {
-    const serviceFileName = config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1);
+    const serviceName = config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1);
 
-    import(`./services/${serviceFileName}`)
+    import(`./services/${serviceName}`)
       .then(module => module.default(config, options))
-      .catch(err => console.error(`Can't load service module ${config.service.name}`, err))
+      .catch(err => console.error(`Can't load service module ${serviceName}`, err))
   }
 
   return true
