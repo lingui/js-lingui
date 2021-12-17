@@ -160,13 +160,6 @@ declare module "@lingui/macro" {
   ): string
 
   /**
-   * Defines multiple messages for extraction
-   */
-  export function defineMessages<M extends Record<string, MessageDescriptor>>(
-    messages: M
-  ): M
-
-  /**
    * Define a message for later use
    *
    * `defineMessage` can be used to add comments for translators,

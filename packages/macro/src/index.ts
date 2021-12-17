@@ -134,7 +134,6 @@ function alreadyVisited(path) {
 
 function getMacroType(tagName) {
   switch (tagName) {
-    case "defineMessages":
     case "defineMessage":
     case "arg":
     case "t":
