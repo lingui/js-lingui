@@ -177,22 +177,22 @@ export class I18n extends EventEmitter<Events> {
       context = id.context
       id = id.id
     }
-    
-    const messageMissing = !context && !this.messages[id];
-    const contextualMessageMissing = context && !this.messages[context][id];
+
+    const messageMissing = !context && !this.messages[id]
+    const contextualMessageMissing = context && !this.messages[context][id]
     const messageUnreachable = contextualMessageMissing || messageMissing
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
     if (missing && messageUnreachable) {
-      return isFunction(missing) ? missing(this.locale, id, context) : missing
+      return isFunction(missing) ? missing(this._locale, id, context) : missing
     }
 
     if (messageUnreachable) {
       this.emit("missing", { id, context, locale: this._locale })
     }
 
-    let translation;
+    let translation
 
     if (context && !contextualMessageMissing) {
       // context is like a subdirectory of other keys
@@ -207,25 +207,25 @@ export class I18n extends EventEmitter<Events> {
         : translation
     }
 
-
     // hack for parsing unicode values inside a string to get parsed in react native environments
-    if (isString(translation) && UNICODE_REGEX.test(translation)) return JSON.parse(`"${translation}"`) as string;
+    if (isString(translation) && UNICODE_REGEX.test(translation))
+      return JSON.parse(`"${translation}"`) as string
     if (isString(translation)) return translation
 
     return interpolate(
       translation,
-      this.locale,
-      this.locales,
-      this.localeData
+      this._locale,
+      this._locales,
+      this._localeData
     )(values, formats)
   }
 
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
-    return date(this.locales || this.locale, format)(value)
+    return date(this._locales || this._locale, format)(value)
   }
 
   number(value: number, format?: Intl.NumberFormatOptions): string {
-    return number(this.locales || this.locale, format)(value)
+    return number(this._locales || this._locale, format)(value)
   }
 }
 

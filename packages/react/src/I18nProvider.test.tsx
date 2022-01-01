@@ -1,11 +1,10 @@
 import * as React from "react"
 import { act, render } from "@testing-library/react"
 
-import { withI18n, I18nProvider } from "./I18nProvider"
+import { withI18n, I18nProvider } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
 
 describe("I18nProvider", () => {
-
   it("should pass i18n context to wrapped component", () => {
     const i18n = setupI18n({
       locale: "cs",
@@ -17,7 +16,7 @@ describe("I18nProvider", () => {
 
     const WithHoc = withI18n()(WithoutHoc)
 
-    const { getByTestId } = render(
+    const { getByTestId } = render(
       <I18nProvider i18n={i18n}>
         <WithoutHoc data-testid="not-composed" />
         <WithHoc data-testid="composed" />
