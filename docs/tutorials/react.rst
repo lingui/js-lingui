@@ -357,7 +357,7 @@ Run :cli:`extract` command and take a look at the message::
 You may notice that components and html tags are replaced with indexed
 tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which
 allows rich-text formatting inside translations. Components and their props
-remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: their are used to seeing tags and their tools support them. Also, in case we
+remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: they are used to seeing tags and their tools support them. Also, in case we
 change a ``className``, we don't need to update our message catalogs. How
 cool is that?
 
