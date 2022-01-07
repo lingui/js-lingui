@@ -34,6 +34,8 @@
     "ramda": "^0.27.1"
   },
   "peerDependencies": {
+    "@lingui/core": "^3.13.0",
+    "@lingui/react": "^3.13.0",
     "babel-plugin-macros": "2 || 3"
   }
 }
