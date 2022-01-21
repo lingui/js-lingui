@@ -72,6 +72,29 @@ describe("I18n", function () {
       expect(cbChange).toBeCalled()
     })
 
+    it("should activate instantly", () => {
+      const i18n = setupI18n({
+        locales: ["en", "es"],
+        messages: {
+          en: {
+            Hello: "Hello",
+          },
+          es: {
+            Hello: "Hola",
+          },
+        },
+        localeData: {
+          en: {},
+          es: {},
+        },
+      })
+
+      i18n.activate("en")
+      expect(i18n._("Hello")).toEqual("Hello")
+      i18n.activate("es")
+      expect(i18n._("Hello")).toEqual("Hola")
+    })
+
     it("should switch active locale", () => {
       const messages = {
         Hello: "Salut",
