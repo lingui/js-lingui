@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/lingui/js-lingui/compare/v3.13.0...v3.13.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* add lingui core to macro peer dependencies ([#1187](https://github.com/lingui/js-lingui/issues/1187)) ([daaa773](https://github.com/lingui/js-lingui/commit/daaa7738c1ca08ee30d5bec4c32214bf665cbfbe))
+* remove the obsolete `defineMessages` function from the typings. ([#1179](https://github.com/lingui/js-lingui/issues/1179)) ([19b032f](https://github.com/lingui/js-lingui/commit/19b032f2d3634722c6bb9cc69ae3ae6c99773cb7))
+
+
+
+
+
 # [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
 
 

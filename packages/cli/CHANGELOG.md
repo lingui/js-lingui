@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/lingui/js-lingui/compare/v3.13.0...v3.13.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* cloud service `import()` on case-sensitive filesystems ([#1174](https://github.com/lingui/js-lingui/issues/1174)) ([5feb120](https://github.com/lingui/js-lingui/commit/5feb120e8c75d7b8c082d5c4b68185ef5dcc3ebc))
+
+
+
+
+
 # [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
 
 

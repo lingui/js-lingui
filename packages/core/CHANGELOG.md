@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/lingui/js-lingui/compare/v3.13.0...v3.13.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* i18n.activate should load instantly new messages ([#1182](https://github.com/lingui/js-lingui/issues/1182)) ([f8f47a2](https://github.com/lingui/js-lingui/commit/f8f47a2385fe3d8dd3395c493027de2492509325))
+
+
+
+
+
 # [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
 
 

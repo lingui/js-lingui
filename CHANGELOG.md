@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.1](https://github.com/lingui/js-lingui/compare/v3.13.0...v3.13.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* add lingui core to macro peer dependencies ([#1187](https://github.com/lingui/js-lingui/issues/1187)) ([daaa773](https://github.com/lingui/js-lingui/commit/daaa7738c1ca08ee30d5bec4c32214bf665cbfbe))
+* cloud service `import()` on case-sensitive filesystems ([#1174](https://github.com/lingui/js-lingui/issues/1174)) ([5feb120](https://github.com/lingui/js-lingui/commit/5feb120e8c75d7b8c082d5c4b68185ef5dcc3ebc))
+* i18n.activate should load instantly new messages ([#1182](https://github.com/lingui/js-lingui/issues/1182)) ([f8f47a2](https://github.com/lingui/js-lingui/commit/f8f47a2385fe3d8dd3395c493027de2492509325))
+* remove the obsolete `defineMessages` function from the typings. ([#1179](https://github.com/lingui/js-lingui/issues/1179)) ([19b032f](https://github.com/lingui/js-lingui/commit/19b032f2d3634722c6bb9cc69ae3ae6c99773cb7))
+
+
+
+
+
 # [3.13.0](https://github.com/lingui/js-lingui/compare/v3.12.1...v3.13.0) (2021-11-26)
 
 

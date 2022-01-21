@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "3.13.0",
+  "version": "3.13.1",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "index.js",
