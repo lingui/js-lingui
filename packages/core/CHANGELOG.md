@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.2](https://github.com/lingui/js-lingui/compare/v3.13.1...v3.13.2) (2022-01-24)
+
+
+### Bug Fixes
+
+* localeData interpolation broken ([457735b](https://github.com/lingui/js-lingui/commit/457735bb61f0a75d0ce176874b1c67a65c4b3084))
+
+
+
+
+
 ## [3.13.1](https://github.com/lingui/js-lingui/compare/v3.13.0...v3.13.1) (2022-01-21)
 
 
