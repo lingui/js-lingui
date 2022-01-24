@@ -216,7 +216,7 @@ export class I18n extends EventEmitter<Events> {
       translation,
       this._locale,
       this._locales,
-      this._localeData
+      this.localeData
     )(values, formats)
   }
 
