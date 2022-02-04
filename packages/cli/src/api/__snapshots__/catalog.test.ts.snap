@@ -41,6 +41,16 @@ Object {
       ],
     ],
   },
+  Top: Object {
+    extractedComments: Array [],
+    context: best
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        5,
+      ],
+    ],
+  },
 }
 `;
 
@@ -73,6 +83,16 @@ Object {
       Array [
         collect/componentA/index.js,
         1,
+      ],
+    ],
+  },
+  Top: Object {
+    extractedComments: Array [],
+    context: best
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        5,
       ],
     ],
   },
@@ -131,6 +151,20 @@ Object {
       ],
       translation: ,
     },
+    Top: Object {
+      comments: Array [],
+      context: best,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          5,
+        ],
+      ],
+      translation: ,
+    },
   },
   en: Object {
     Component A: Object {
@@ -169,6 +203,20 @@ Object {
         Array [
           collect/componentA/index.js,
           1,
+        ],
+      ],
+      translation: ,
+    },
+    Top: Object {
+      comments: Array [],
+      context: best,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          5,
         ],
       ],
       translation: ,
@@ -261,6 +309,20 @@ Object {
       ],
       translation: Ahoj Brno,
     },
+    Top: Object {
+      comments: Array [],
+      context: best,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          5,
+        ],
+      ],
+      translation: ,
+    },
   },
   en: Object {
     Component A: Object {
@@ -317,6 +379,20 @@ Object {
       ],
       translation: Ahoj Brno,
     },
+    Top: Object {
+      comments: Array [],
+      context: best,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          5,
+        ],
+      ],
+      translation: ,
+    },
   },
 }
 `;
@@ -372,6 +448,20 @@ Object {
       ],
       translation: ,
     },
+    Top: Object {
+      comments: Array [],
+      context: best,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          5,
+        ],
+      ],
+      translation: ,
+    },
   },
 }
 `;
@@ -420,6 +510,20 @@ Object {
     ],
     translation: ,
   },
+  Top: Object {
+    comments: Array [],
+    context: best,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        5,
+      ],
+    ],
+    translation: ,
+  },
 }
 `;
 
@@ -463,6 +567,15 @@ Object {
     obsolete: false,
     origin: Array [],
     translation: Support translator comments separately,
+  },
+  withContext: Object {
+    comments: Array [],
+    context: test purpose,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: The context should be visible for translators.,
   },
   withDescription: Object {
     comments: Array [],

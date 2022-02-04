@@ -49,6 +49,10 @@ describe("pofile format", () => {
         comments: ["Translator comment", "This one might come from developer"],
         translation: "Support translator comments separately",
       },
+      withContext: {
+        context: "test purpose",
+        translation: "The context should be visible for translators.",
+      },
       obsolete: {
         translation: "Obsolete message",
         obsolete: true,

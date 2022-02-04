@@ -202,6 +202,15 @@ Object {
     origin: Array [],
     translation: Support translator comments separately,
   },
+  withContext: Object {
+    comments: Array [],
+    context: test purpose,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [],
+    translation: The context should be visible for translators.,
+  },
   withDescription: Object {
     comments: Array [],
     context: null,
