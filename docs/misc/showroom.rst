@@ -19,3 +19,4 @@ Feel free to `send a PR <https://github.com/lingui/js-lingui/issues/new>`__ to l
 - `OkCupid <https://www.okcupid.com>`__
 - `mapflow.ai <https://mapflow.ai>`__
 - `Ascendero.com <https://ascendero.com/>`__
+- `InterMenu.com <https://intermenu.com>`__
