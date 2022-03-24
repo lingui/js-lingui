@@ -217,7 +217,7 @@ useLingui
    const CurrentLocale = () => {
       const { i18n } = useLingui()
 
-      return <span>Current locale: {i18n.locale}
+      return <span>Current locale: {i18n.locale}</span>
    }
 
 withI18n
@@ -234,7 +234,7 @@ wrapped component. ``i18n`` object is needed when you have to access the i18n da
    import { withI18n } from "@lingui/react"
 
    const CurrentLocale = withI18n()(({ i18n }) => (
-      <span>Current locale: {i18n.locale}
+      <span>Current locale: {i18n.locale}</span>
    ))
 
 .. _Intl.DateTimeFormat: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
