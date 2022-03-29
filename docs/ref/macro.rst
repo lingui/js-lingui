@@ -456,9 +456,9 @@ cardinal plural forms it uses ordinal forms:
 
    import { selectOrdinal } from "@lingui/macro"
    const message = selectOrdinal(count, {
-      one: "1st",
-      two: "2nd",
-      few: "3rd",
+      one: "#st",
+      two: "#nd",
+      few: "#rd",
       other: "#th",
    })
 
@@ -467,7 +467,7 @@ cardinal plural forms it uses ordinal forms:
    import { i18n } from "@lingui/core"
    const message =
    /*i18n*/
-   i18n._('{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}', {
+   i18n._('{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}', {
      count
    })
 
@@ -802,9 +802,9 @@ format:
    // count == 4 -> 4th
    <SelectOrdinal
        value={count}
-       one="1st"
-       two="2nd"
-       few="3rd"
+       one="#st"
+       two="#nd"
+       few="#rd"
        other="#th"
    />
 

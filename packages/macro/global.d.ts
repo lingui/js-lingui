@@ -119,9 +119,9 @@ declare module "@lingui/macro" {
    * ```
    * import { selectOrdinal } from "@lingui/macro";
    * const message = selectOrdinal(count, {
-   *    one: "1st",
-   *    two: "2nd",
-   *    few: "3rd",
+   *    one: "#st",
+   *    two: "#nd",
+   *    few: "#rd",
    *    other: "#th",
    * });
    * ```

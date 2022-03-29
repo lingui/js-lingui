@@ -47,8 +47,8 @@ Overview
 +------------------+------------------------------------------------------------------+
 | .. icu:: ordinal | .. code-block:: none                                             |
 |                  |                                                                  |
-| Ordinals         |    {count, selectOrdinal, one {1st message}                      |
-|                  |                           two {2nd message}                      |
-|                  |                           few {3rd message}                      |
+| Ordinals         |    {count, selectOrdinal, one {#st message}                      |
+|                  |                           two {#nd message}                      |
+|                  |                           few {#rd message}                      |
 |                  |                           other {#th message}}                   |
 +------------------+------------------------------------------------------------------+
