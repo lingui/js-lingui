@@ -343,7 +343,7 @@ msgstr[2] "# dní"
   describe("when using 'selectOrdinal' format", () => {
     const catalog = {
       select_ordinal_message: {
-        message: `{count, selectOrdinal, one {1st} two {2nd} few {3rd} other {#th}}`,
+        message: `{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}`,
         translation: "",
       },
     }
