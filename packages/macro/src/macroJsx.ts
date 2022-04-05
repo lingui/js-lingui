@@ -87,11 +87,15 @@ export default class MacroJSX {
         }
       }
     } else {
+      // Quoted JSX attributes use XML-style escapes instead of JavaScript-style escapes.
+      // This means that <Trans id="Say \"hi\"!" /> is invalid, but <Trans id={"Say \"hi\"!"} /> works.
+      // We could consider removing the condition here and always wrap in a jsxExpressionContainer.
+      const value = message.includes('"')
+        ? this.types.jsxExpressionContainer(this.types.stringLiteral(message))
+        : this.types.stringLiteral(message)
+
       attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier(ID),
-          this.types.stringLiteral(message)
-        )
+        this.types.jsxAttribute(this.types.jsxIdentifier(ID), value)
       )
     }
 
