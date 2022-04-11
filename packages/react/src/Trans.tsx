@@ -17,6 +17,7 @@ export type TransProps = {
   context?: string
   components: { [key: string]: React.ElementType | any }
   formats?: Object
+  children?: string | any[] | React.ReactNode
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => React.ReactElement<any, any> | null
 }
