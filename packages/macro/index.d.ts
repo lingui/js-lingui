@@ -172,7 +172,7 @@ export type TransProps = {
   comment?: string
   values?: Record<string, unknown>
   context?: string
-  children?: string | any[] | React.ReactNode
+  children?: React.ReactNode
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => ReactElement<any, any> | null
 }

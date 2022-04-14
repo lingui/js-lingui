@@ -12,7 +12,7 @@ export type withI18nProps = {
 
 export type I18nProviderProps = I18nContext & {
   forceRenderOnLocaleChange?: boolean
-  children?: string | any[] | React.ReactNode
+  children?: React.ReactNode
 }
 
 const LinguiContext = React.createContext<I18nContext>(null)
