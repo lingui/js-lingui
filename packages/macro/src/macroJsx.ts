@@ -51,6 +51,21 @@ export default class MacroJSX {
     this.elementIndex = makeCounter()
   }
 
+  safeJsxAttribute = (name: string, value: string) => {
+    // Quoted JSX attributes use XML-style escapes instead of JavaScript-style escapes.
+    // This means that <Trans id="Say \"hi\"!" /> is invalid, but <Trans id={"Say \"hi\"!"} /> is valid.
+
+    // We could consider removing this condition and always wrap in a jsxExpressionContainer.
+    const attributeValue = value.includes('"')
+      ? this.types.jsxExpressionContainer(this.types.stringLiteral(value))
+      : this.types.stringLiteral(value)
+
+    return this.types.jsxAttribute(
+      this.types.jsxIdentifier(name),
+      attributeValue
+    )
+  }
+
   replacePath = (path: NodePath) => {
     const tokens = this.tokenizeNode(path.node)
 
@@ -78,25 +93,11 @@ export default class MacroJSX {
 
       if (process.env.NODE_ENV !== "production") {
         if (message) {
-          attributes.push(
-            this.types.jsxAttribute(
-              this.types.jsxIdentifier(MESSAGE),
-              this.types.stringLiteral(message)
-            )
-          )
+          attributes.push(this.safeJsxAttribute(MESSAGE, message))
         }
       }
     } else {
-      // Quoted JSX attributes use XML-style escapes instead of JavaScript-style escapes.
-      // This means that <Trans id="Say \"hi\"!" /> is invalid, but <Trans id={"Say \"hi\"!"} /> works.
-      // We could consider removing the condition here and always wrap in a jsxExpressionContainer.
-      const value = message.includes('"')
-        ? this.types.jsxExpressionContainer(this.types.stringLiteral(message))
-        : this.types.stringLiteral(message)
-
-      attributes.push(
-        this.types.jsxAttribute(this.types.jsxIdentifier(ID), value)
-      )
+      attributes.push(this.safeJsxAttribute(ID, message))
     }
 
     if (process.env.NODE_ENV !== "production") {
