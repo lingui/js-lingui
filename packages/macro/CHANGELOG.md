@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.13.3](https://github.com/lingui/js-lingui/compare/v3.13.2...v3.13.3) (2022-04-24)
+
+
+### Bug Fixes
+
+* JSX attribute parsing issue when using double quotes ([#1226](https://github.com/lingui/js-lingui/issues/1226)) ([27a7ded](https://github.com/lingui/js-lingui/commit/27a7ded08be7299417ccebddfd25fa39bda99e77))
+* specify children for react v18 types ([#1230](https://github.com/lingui/js-lingui/issues/1230)) ([ee69736](https://github.com/lingui/js-lingui/commit/ee69736089d4c48117d85582b56a26c09cdf82ea))
+
+
+
+
+
 ## [3.13.2](https://github.com/lingui/js-lingui/compare/v3.13.1...v3.13.2) (2022-01-24)
 
 **Note:** Version bump only for package @lingui/macro
