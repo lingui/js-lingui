@@ -93,6 +93,19 @@ export default [
       `,
   },
   {
+    name: "Quoted JSX attributes are handled",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans>Speak "friend"!</Trans>;
+        <Trans id="custom-id">Speak "friend"!</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id={'Speak "friend"!'} />;
+        <Trans id="custom-id" message={'Speak "friend"!'} />;
+      `,
+  },
+  {
     name: "Template literals as children",
     input: `
         import { Trans } from '@lingui/macro';
