@@ -44,8 +44,8 @@ select(value, {
 
 /** Select Ordinal test */
 selectOrdinal(value, {
-  one: "1st",
-  two: "2nd",
-  few: "3rd",
+  one: "#st",
+  two: "#nd",
+  few: "#rd",
   other: "#th",
 })

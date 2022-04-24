@@ -71,10 +71,10 @@ describe("PseudoLocalization", () => {
   it("SelectOrdinal", () => {
     expect(
       pseudoLocalize(
-        "{count, selectordinal, offset:1 one {1st} two {2nd} few {3rd} =4 {4th} many {testMany} other {#th}}"
+        "{count, selectordinal, offset:1 one {#st} two {#nd} few {#rd} =4 {4th} many {testMany} other {#th}}"
       )
     ).toEqual(
-      "{count, selectordinal, offset:1 one {1śţ} two {2ńď} few {3ŕď} =4 {4ţĥ} many {ţēśţMàńŷ} other {#ţĥ}}"
+      "{count, selectordinal, offset:1 one {#śţ} two {#ńď} few {#ŕď} =4 {4ţĥ} many {ţēśţMàńŷ} other {#ţĥ}}"
     )
   })
 

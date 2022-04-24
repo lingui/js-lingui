@@ -59,7 +59,7 @@ describe("compile", function () {
 
   it("should compile selectordinal", function () {
     const cache = prepare(
-      "{value, selectordinal, one {1st Book} two {2nd Book}}"
+      "{value, selectordinal, one {#st Book} two {#nd Book}}"
     )
     expect(cache({ value: 1 })).toEqual("1st Book")
     expect(cache({ value: 2 })).toEqual("2nd Book")
