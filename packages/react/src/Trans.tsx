@@ -6,7 +6,7 @@ import { formatElements } from "./format"
 export type TransRenderProps = {
   id?: string
   translation?: React.ReactNode
-  children?: string | any[] | React.ReactNode
+  children?: React.ReactNode
   message?: string | null
 }
 
@@ -17,6 +17,7 @@ export type TransProps = {
   context?: string
   components: { [key: string]: React.ElementType | any }
   formats?: Object
+  children?: React.ReactNode
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => React.ReactElement<any, any> | null
 }
