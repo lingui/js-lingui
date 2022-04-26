@@ -106,6 +106,23 @@ export default [
       `,
   },
   {
+    name: "HTML attributes are handled",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans>
+          <Text>This should work &nbsp;</Text>
+        </Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id={"<0>This should work \\xA0</0>"}
+           components={{
+             0: <Text />,
+           }}
+        />;
+      `,
+  },
+  {
     name: "Template literals as children",
     input: `
         import { Trans } from '@lingui/macro';
