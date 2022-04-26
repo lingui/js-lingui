@@ -12,7 +12,10 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}" values={{
+        <Trans id={
+          "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
+         }
+         values={{
           count: count
         }} components={{
           0: <a href="/more" />
@@ -38,7 +41,10 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}" values={{
+        <Trans id={
+          "{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}"
+        }
+        values={{
           count: count
         }} components={{
           0: <strong />,
@@ -61,7 +67,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans render="strong" id="msg.plural" message="{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}" values={{
+        <Trans render="strong" id="msg.plural" message={"{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"} values={{
           count: count
         }} components={{
           0: <a href="/more" />
@@ -84,7 +90,10 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="inner-id-removed" message="Looking for {0, plural, offset:1 =0 {zero items} few {{1} items {2}} other {<0>a lot of them</0>}}" values={{
+        <Trans id="inner-id-removed" message={
+            "Looking for {0, plural, offset:1 =0 {zero items} few {{1} items {2}} other {<0>a lot of them</0>}}"
+         }
+         values={{
           0: items.length,
           1: items.length,
           2: 42
