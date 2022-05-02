@@ -108,6 +108,7 @@ Documentation contents
 
    Introduction <tools/introduction>
    Translation.io <tools/translation-io>
+   Crowdin <tools/crowdin>
 
 .. toctree::
    :maxdepth: 1

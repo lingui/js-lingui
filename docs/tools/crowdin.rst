@@ -89,6 +89,88 @@ repository and never deal with localization files manually again.
    :alt: Manage and synchronize your localization resources with Crowdin CLI
    :width: 700
 
+1. Create the ``crowdin.yml`` configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: yaml
+
+  project_id: '123456' # Your Crowdin project ID
+  api_token_env: CROWDIN_PERSONAL_TOKEN
+
+  preserve_hierarchy: true
+
+  files: # Paths to the source and translation files
+    - source: /**/locales/en/*
+      translation: /**/locales/%two_letters_code%/%original_file_name%
+
+2. Install the Crowdin CLI as an npm package
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: sh
+
+  npm install @crowdin/cli@3
+
+3. Add the following scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add these lines to your ``package.json`` to make your life easier.
+
+.. code-block:: js
+
+  {
+    "scripts": {
+      "crowdin": "crowdin",
+      "sync": "crowdin push && crowdin pull",
+      "sync:sources": "crowdin push",
+      "sync:translations": "crowdin pull"
+    }
+  }
+
+4. Configuration
+~~~~~~~~~~~~~~~~
+
+Set the ``CROWDIN_PERSONAL_TOKEN`` env variable on your computer, to allow the CLI to authenticate with the Crowdin API.
+
+5. Usage
+~~~~~~~~
+
+Test that you can run the Crowdin CLI:
+
+.. code-block:: sh
+
+  npm run crowdin --version
+
+
+Upload all the source files to Crowdin:
+
+.. code-block:: sh
+
+  npm run sync:sources
+
+Download translation files from Crowdin:
+
+.. code-block:: sh
+
+  npm run sync:translations
+
+Upload sources to Crowdin and download translations from Crowdin:
+
+.. code-block:: sh
+
+  npm run sync
+
+To run other Crowdin CLI commands you can use the following command:
+
+.. code-block:: sh
+
+  npm run crowdin <command> <options>
+
+To see the full list of possible commands and options:
+
+.. code-block:: sh
+
+  npm run crowdin -h
+
 `API <https://support.crowdin.com/api/v2/>`__ and webhooks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
