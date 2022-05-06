@@ -327,6 +327,7 @@ export class Catalog {
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
       (sourceLocale &&
+        fallbackLocales &&
         fallbackLocales.default &&
         sourceLocale === fallbackLocales.default &&
         key) ||
