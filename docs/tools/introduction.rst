@@ -98,6 +98,13 @@ Translation.io (https://translation.io/lingui)
 * Documentation: `translation-io <../tools/translation-io.html>`_
 * GitHub: `https://github.com/translation/lingui <https://github.com/translation/lingui>`_
 
+Crowdin (https://crowdin.com/)
+------------------------------
+
+* Documentation: `Crowdin <../tools/crowdin.html>`_
+* GitHub: `https://github.com/crowdin <https://github.com/crowdin>`_
+
+
 Adding a new tool to Lingui
 ===========================
 
