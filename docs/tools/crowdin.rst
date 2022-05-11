@@ -178,7 +178,7 @@ Customize your experience. Automate and scale your localization
 workflow. Seamlessly add new content for translation to your Crowdin
 project, check translation status, merge new content, etc.
 
-To get started, register a `Crowdin.com <https://accounts.crowdin.com/register>`__ or `Crowdin Enterprise <%5Bhttps://accounts.crowdin.com/workspace/create%5D(https://accounts.crowdin.com/workspace/create)>`__ account.
+To get started, register a `Crowdin.com <https://accounts.crowdin.com/register>`__ or `Crowdin Enterprise <https://accounts.crowdin.com/workspace/create>`__ account.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once you have signed up, we recommend `creating your localization
