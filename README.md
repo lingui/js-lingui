@@ -11,7 +11,7 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
+[![Join the community on Discord]][Discord]
 
 [**Documentation**][Documentation] · [**Documentation 2.x**](https://js-lingui-git-stable-2x.lingui-js.vercel.app/) · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
 </div>
@@ -45,7 +45,7 @@ Lingui is an easy yet powerful internationalization framework for global project
   React components are additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
 
-- **Active community** - Join us on [Spectrum][Spectrum] to discuss the latest development.
+- **Active community** - Join us on [Discord][Discord] to discuss the latest development.
   At the moment, Lingui is the most active intl project on GitHub.
 
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl
@@ -98,7 +98,7 @@ For more example see the [React tutorial][TutorialReact].
 
 If you are having issues, please let us know.
 
-- Join us at [Gitter](https://gitter.im/lingui/js-lingui) to get almost instant feedback.
+- Join us on [Discord](https://discord.gg/gFWwAYnMtA) to chat with the community.
 - Ask question on [StackOverflow](https://stackoverflow.com/questions/ask?tags=jsLingui)
   and mark it with [Lingui](https://stackoverflow.com/questions/tagged/jslingui) tag.
 - If something doesn't work as documented, documentation is missing or if you just want
@@ -182,4 +182,4 @@ The project is licensed under the [MIT][License] license.
 [ocsponsors-local]: #sponsors
 [BundleReact]: https://bundlephobia.com/result?p=@lingui/react
 [BundleCore]: https://bundlephobia.com/result?p=@lingui/core
-[Spectrum]: https://spectrum.chat/linguijs
+[Discord]: https://discord.gg/gFWwAYnMtA
