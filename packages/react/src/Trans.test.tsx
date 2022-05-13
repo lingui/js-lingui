@@ -172,6 +172,7 @@ describe("Trans component", function () {
         id: "ID",
         message: "Default",
         translation: "Translation",
+        isTranslated: true,
       })
     })
 
@@ -239,6 +240,56 @@ describe("Trans component", function () {
       }
       const element = html(<Trans component={ComponentFC} id="Headline" />)
       expect(element).toEqual(`<div>value</div>`)
+    })
+  })
+
+  describe("I18nProvider defaulComponent accepts render-like props", function () {
+    const DefaultComponent: React.FunctionComponent = (props: {
+      children?: React.ReactNode
+      id: string
+      translation: string
+      message: string
+      isTranslated: boolean
+    }) => (
+      <>
+        <div data-testid="children">{props.children}</div>
+        {props.id && <div data-testid="id">{props.id}</div>}
+        {props.message && <div data-testid="message">{props.message}</div>}
+        {props.translation && (
+          <div data-testid="translation">{props.translation}</div>
+        )}
+
+        <div data-testid="is-translated">{String(props.isTranslated)}</div>
+      </>
+    )
+
+    it("should render defaultComponent with Trans props", function () {
+      const markup = render(
+        <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
+          <Trans id="ID" message="Some message" />
+        </I18nProvider>
+      )
+
+      expect(markup.queryByTestId("id").innerHTML).toEqual("ID")
+      expect(markup.queryByTestId("message").innerHTML).toEqual("Some message")
+      expect(markup.queryByTestId("translation").innerHTML).toEqual(
+        "Translation"
+      )
+      expect(markup.queryByTestId("is-translated").innerHTML).toEqual("true")
+    })
+
+    it("should pass isTranslated: false if no translation", function () {
+      const markup = render(
+        <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
+          <Trans id="NO_ID" message="Some message" />
+        </I18nProvider>
+      )
+
+      expect(markup.queryByTestId("id").innerHTML).toEqual("NO_ID")
+      expect(markup.queryByTestId("translation").innerHTML).toEqual(
+        "Some message"
+      )
+      expect(markup.queryByTestId("is-translated").innerHTML).toEqual("false")
     })
   })
 })
