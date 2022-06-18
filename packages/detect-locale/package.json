@@ -4,7 +4,7 @@
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "index.js",
-  "module": "esm/index.js",
+  "module": "esm/index.mjs",
   "types": "cjs/index.d.ts",
   "license": "MIT",
   "keywords": [
@@ -32,7 +32,7 @@
   "exports": {
     ".": {
       "require": "./index.js",
-      "import": "./esm/index.js"
+      "import": "./esm/index.mjs"
     },
     "./package.json": "./package.json"
   },

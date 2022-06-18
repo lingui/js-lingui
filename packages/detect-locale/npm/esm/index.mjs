@@ -8,7 +8,7 @@ import {
   fromSubdomain as fromSubdomainDev,
   fromUrl as fromUrlDev,
   multipleDetect as multipleDetectDev,
-} from "./detect-locale.development.js"
+} from "./detect-locale.development.mjs"
 
 import {
   detect as detectProd,
@@ -20,7 +20,7 @@ import {
   fromSubdomain as fromSubdomainProd,
   fromUrl as fromUrlProd,
   multipleDetect as multipleDetectProd,
-} from "./detect-locale.production.min.js"
+} from "./detect-locale.production.min.mjs"
 
 export const detect = process.env.NODE_ENV === "production" ? detectProd : detectDev;
 export const fromCookie = process.env.NODE_ENV === "production" ? fromCookieProd : fromCookieDev;

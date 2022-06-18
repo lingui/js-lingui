@@ -4,7 +4,7 @@
   "sideEffects": false,
   "description": "React components for translations",
   "main": "index.js",
-  "module": "esm/index.js",
+  "module": "esm/index.mjs",
   "types": "cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",

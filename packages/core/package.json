@@ -4,7 +4,7 @@
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "index.js",
-  "module": "esm/index.js",
+  "module": "esm/index.mjs",
   "types": "cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -32,7 +32,7 @@
   "exports": {
     ".": {
       "require": "./index.js",
-      "import": "./esm/index.js"
+      "import": "./esm/index.mjs"
     },
     "./package.json": "./package.json"
   },

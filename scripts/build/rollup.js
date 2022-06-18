@@ -76,17 +76,28 @@ function getFormat(bundleType) {
   }
 }
 
+function getExtension(bundleType) {
+  switch (bundleType) {
+    case ESM_PROD:
+    case ESM_DEV:
+      return ".mjs"
+    default:
+      return ".js"
+  }
+}
+
 function getFilename(bundle, bundleType) {
   const filename = bundle.label || bundle.entry
+  const extension = getExtension(bundleType)
   switch (bundleType) {
     case NODE_DEV:
     case ESM_DEV:
     case UMD_DEV:
-      return `${filename}.development.js`
+      return `${filename}.development${extension}`
     case UMD_PROD:
     case NODE_PROD:
     case ESM_PROD:
-      return `${filename}.production.min.js`
+      return `${filename}.production.min${extension}`
   }
 }
 

@@ -1,10 +1,10 @@
 import {
   I18nProvider as devI18nProvider, Trans as devTrans, useLingui as devuseLingui, withI18n as devwithI18n
-} from "./react.development.js"
+} from "./react.development.mjs"
 
 import {
   I18nProvider as I18nProviderProd, Trans as TransProd, useLingui as useLinguiProd, withI18n as withI18nProd
-} from "./react.production.min.js"
+} from "./react.production.min.mjs"
 
 export const I18nProvider = process.env.NODE_ENV === "production" ? I18nProviderProd : devI18nProvider;
 export const Trans = process.env.NODE_ENV === "production" ? TransProd : devTrans;
