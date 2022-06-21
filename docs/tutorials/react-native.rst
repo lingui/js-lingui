@@ -70,6 +70,17 @@ Introducing internationalization
 
 Not surprisingly, this part isn't too different from the :ref:`React tutorial <react-tutorial-label>`.
 
+⚠️ make sure to update ``metro.config.js`` with to avoid `this problem <https://github.com/eemeli/make-plural/issues/15>`_:
+
+.. code-block:: jsx
+
+  resolver: {
+   sourceExts: ['js', 'ts', 'tsx', 'mjs'],
+  },
+
+
+
+
 Let's use the :jsxmacro:`Trans` macro first. Don't forget that we need to wrap our root
 component with the :component:`I18nProvider` so we can set the active language
 and load catalogs:
