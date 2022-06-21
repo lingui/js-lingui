@@ -70,7 +70,7 @@ Introducing internationalization
 
 Not surprisingly, this part isn't too different from the :ref:`React tutorial <react-tutorial-label>`.
 
-⚠️ make sure to update ``metro.config.js`` with to avoid `this problem <https://github.com/eemeli/make-plural/issues/15>`_:
+⚠️ make sure to update ``metro.config.js`` resolvers with ``mjs`` extension to avoid `this problem <https://github.com/eemeli/make-plural/issues/15>`_:
 
 .. code-block:: jsx
 
