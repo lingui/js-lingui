@@ -11,7 +11,7 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
-[![Join the community on Discord]][Discord]
+[![Join the community on Discord][Badge-Discord]][Discord]
 
 [**Documentation**][Documentation] · [**Documentation 2.x**](https://js-lingui-git-stable-2x.lingui-js.vercel.app/) · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
 </div>
@@ -164,6 +164,7 @@ The project is licensed under the [MIT][License] license.
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
+[Badge-Discord]: https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square
 [Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
 [Img-Contributors]: https://opencollective.com/js-lingui/contributors.svg?width=890&button=false
 [Contributors]: https://github.com/lingui/js-lingui/graphs/contributors
