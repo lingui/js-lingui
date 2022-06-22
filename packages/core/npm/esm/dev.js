@@ -3,14 +3,14 @@ import {
   setupI18n as setupI18nProd,
   formats as formatsProd,
   I18n as I18nProd
-} from './dev.production.min';
+} from './dev.production.min.js';
 
 import {
   i18n as i18nDev,
   setupI18n as setupI18nDev,
   formats as formatsDev,
   I18n as I18nDev
-} from './dev.development';
+} from './dev.development.js';
 
 export const i18n = process.env.NODE_ENV === 'production' ? i18nProd : i18nDev;
 export const setupI18n = process.env.NODE_ENV === 'production' ? setupI18nProd : setupI18nDev;
