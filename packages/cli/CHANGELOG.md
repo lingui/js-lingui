@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
+
+
+### Bug Fixes
+
+* Fix error read properties of undefined ([#1239](https://github.com/lingui/js-lingui/issues/1239)) ([8dd2398](https://github.com/lingui/js-lingui/commit/8dd2398e0d1fdce1663b8aee391f6ab2208be77b))
+
+
+
+
+
 ## [3.13.3](https://github.com/lingui/js-lingui/compare/v3.13.2...v3.13.3) (2022-04-24)
 
 **Note:** Version bump only for package @lingui/cli

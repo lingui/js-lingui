@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
+
+
+### Bug Fixes
+
+* JSX attribute parsing issue when using html entities ([#1234](https://github.com/lingui/js-lingui/issues/1234)) ([98e9332](https://github.com/lingui/js-lingui/commit/98e93322216ab0fc87b8b545fbdd9263b4b6b76b))
+
+
+
+
+
 ## [3.13.3](https://github.com/lingui/js-lingui/compare/v3.13.2...v3.13.3) (2022-04-24)
 
 

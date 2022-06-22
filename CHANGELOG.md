@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
+
+
+### Bug Fixes
+
+* Add extra package.json under `/esm` ([#1258](https://github.com/lingui/js-lingui/issues/1258)) ([80cd337](https://github.com/lingui/js-lingui/commit/80cd3378ceb5677bfa50b14f67e4e31703392298))
+* Fix error read properties of undefined ([#1239](https://github.com/lingui/js-lingui/issues/1239)) ([8dd2398](https://github.com/lingui/js-lingui/commit/8dd2398e0d1fdce1663b8aee391f6ab2208be77b))
+* JSX attribute parsing issue when using html entities ([#1234](https://github.com/lingui/js-lingui/issues/1234)) ([98e9332](https://github.com/lingui/js-lingui/commit/98e93322216ab0fc87b8b545fbdd9263b4b6b76b))
+
+
+### Features
+
+* Pass props to I18nProvider.defaultComponent in Trans.render style ([#1242](https://github.com/lingui/js-lingui/issues/1242)) ([fe4cac4](https://github.com/lingui/js-lingui/commit/fe4cac4f89ae195ad8b5216fdaede73900753686))
+
+
+
+
+
 ## [3.13.3](https://github.com/lingui/js-lingui/compare/v3.13.2...v3.13.3) (2022-04-24)
 
 
