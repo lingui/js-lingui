@@ -283,7 +283,7 @@ Discussion
 ==========
 
 Do you have any comments or questions? Please join the discussion at
-`gitter <https://gitter.im/lingui/js-lingui>`_ or raise an
+`Discord <https://discord.gg/gFWwAYnMtA>`_ or raise an
 `issue <https://github.com/lingui/js-lingui/issues/new>`_. All feedback is welcome!
 
 .. _react-intl: https://github.com/yahoo/react-intl
