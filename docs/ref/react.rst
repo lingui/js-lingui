@@ -171,6 +171,32 @@ I18nProvider
 components. :ref:`Rendering of translations <rendering-translations>` is explained
 at the beginning of this document.
 
+.. code-block:: jsx
+
+   import React from 'react';
+   import { I18nProvider } from '@lingui/react';
+   import { i18n } from '@lingui/core';
+   import { messages as messagesEn } from './locales/en/messages.js';
+
+   i18n.load({
+      en: messagesEn,
+   });
+   i18n.activate('en');
+
+   const DefaultI18n = ({ isTranslated, children }) => (
+      <span style={{ color: isTranslated ? undefined : 'red' }}>
+         {children}
+      </span>
+   )
+
+   const App = () => {
+      return (
+         <I18nProvider i18n={i18n} defaultComponent={DefaultI18n}>
+            // rest of the app
+         </I18nProvider>
+      );
+   }
+
 ``forceRenderOnLocaleChange`` is true by default and it ensures that:
 
   - Children of ``I18nProvider`` aren't rendered before locales are loaded.
