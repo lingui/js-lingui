@@ -7,7 +7,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Hello World" />;
+        <Trans id={"Hello World"} />;
       `,
   },
   {
@@ -18,7 +18,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Hello World" />;
+        <Trans id={"Hello World"} />;
       `,
   },
   {
@@ -29,7 +29,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message="Hello World" />;
+        <Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -40,7 +40,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message="Hello World" />;
+        <Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -51,7 +51,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message="Hello World" />;
+        <Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -73,7 +73,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Hi {yourName}, my name is {myName}" values={{
+        <Trans id={"Hi {yourName}, my name is {myName}"} values={{
           yourName: yourName,
           myName: myName,
         }} />;
@@ -87,7 +87,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="{duplicate} variable {duplicate}" values={{
+        <Trans id={"{duplicate} variable {duplicate}"} values={{
           duplicate: duplicate
         }} />;
       `,
@@ -106,6 +106,23 @@ export default [
       `,
   },
   {
+    name: "HTML attributes are handled",
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans>
+          <Text>This should work &nbsp;</Text>
+        </Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id={"<0>This should work \\xA0</0>"}
+           components={{
+             0: <Text />,
+           }}
+        />;
+      `,
+  },
+  {
     name: "Template literals as children",
     input: `
         import { Trans } from '@lingui/macro';
@@ -113,7 +130,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="How much is {expression}? {count}" values={{
+        <Trans id={"How much is {expression}? {count}"} values={{
           expression: expression,
           count: count
         }} />;
@@ -127,7 +144,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="hello {count, plural, one {world} other {worlds}}" />;
+        <Trans id={"hello {count, plural, one {world} other {worlds}}"} />;
       `,
   },
   {
@@ -145,7 +162,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}" values={{
+        <Trans id={"Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}"} values={{
           0: props.name,
           1: random(),
           2: array[index],
@@ -169,7 +186,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>" values={{
+        <Trans id={"Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>"} values={{
           name: name
         }} components={{
           0: <strong />,
@@ -188,7 +205,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="<0>Component inside expression container</0>" components={{
+        <Trans id={"<0>Component inside expression container</0>"} components={{
           0: <span />
         }} />;
       `,
@@ -201,7 +218,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="<0/>" components={{
+        <Trans id={"<0/>"} components={{
           0: <br />
         }} />;
       `,
@@ -222,7 +239,7 @@ export default [
     production: true,
     input: `
         import { Trans } from '@lingui/macro';
-        <Trans id="msg.hello" comment="Hello World">Hello World</Trans> 
+        <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
         import { Trans } from "@lingui/react";
@@ -255,7 +272,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Strip whitespace around arguments: '{name}'" values={{
+        <Trans id={"Strip whitespace around arguments: '{name}'"} values={{
           name: name
         }} />;
       `,
@@ -272,7 +289,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Strip whitespace around tags, but keep <0>forced spaces</0>!" components={{
+        <Trans id={"Strip whitespace around tags, but keep <0>forced spaces</0>!"} components={{
           0: <strong />
         }} />;
       `,
@@ -288,7 +305,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Keep forced\\n newlines!" />;
+        <Trans id={"Keep forced\\n newlines!"} />;
       `,
   },
   {
@@ -303,7 +320,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Keep multiple\\n forced\\n newlines!" />;
+        <Trans id={"Keep multiple\\n forced\\n newlines!"} />;
       `,
   },
   {
@@ -314,7 +331,7 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         import { i18n } from "@lingui/core";
-        <Trans id="Read <0>more</0>" components={{
+        <Trans id={"Read <0>more</0>"} components={{
           0: <a href="/more" title={
             /*i18n*/
             i18n._("Full content of {articleName}", {
@@ -350,7 +367,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="Hello  World" />;
+        <Trans id={"Hello  World"} />;
       `,
   },
   {
@@ -361,7 +378,7 @@ export default [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id="&" />;
+        <Trans id={"&"} />;
       `,
   },
 ]
