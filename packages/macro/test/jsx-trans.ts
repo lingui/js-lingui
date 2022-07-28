@@ -381,4 +381,15 @@ export default [
         <Trans id={"&"} />;
       `,
   },
+  {
+    name: "Correctly pass context",
+    input: `
+        import { Trans } from "@lingui/macro";
+        <Trans context="my_ctx">Just testing context</Trans>
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id={"Just testing context"} context="my_ctx"/>;
+      `,
+  },
 ]

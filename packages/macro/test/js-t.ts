@@ -210,6 +210,21 @@ export default [
       `,
   },
   {
+    name: "Correctly pass context",
+    input: `
+        import { t } from '@lingui/macro'
+        const msg = t({ context: "my_ctx", message: "Just testing context" })
+      `,
+    expected: `import { i18n } from "@lingui/core";
+    const msg =
+      i18n._(/*i18n*/
+        {
+          context: "my_ctx",
+          id: "Just testing context"
+        });
+      `,
+  },
+  {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js",
   },
