@@ -6,7 +6,6 @@ Object {
     comments: Array [
       Translator comment,
     ],
-    context: null,
     extractedComments: Array [
       Single description only,
       Second description?,
@@ -18,7 +17,6 @@ Object {
   },
   withMultipleDescriptions: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [
       First description,
       Second comment,
@@ -36,7 +34,6 @@ exports[`pofile format should read catalog in pofile format 1`] = `
 Object {
   obsolete: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: true,
@@ -45,7 +42,6 @@ Object {
   },
   static: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -54,7 +50,6 @@ Object {
   },
   veryLongString: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -66,7 +61,6 @@ Object {
       Translator comment,
       This one might come from developer,
     ],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -75,7 +69,6 @@ Object {
   },
   withDescription: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [
       Description is comment from developers to translators,
     ],
@@ -86,7 +79,6 @@ Object {
   },
   withFlags: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [
       fuzzy,
@@ -98,7 +90,6 @@ Object {
   },
   withMultipleOrigins: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -116,7 +107,6 @@ Object {
   },
   withOrigin: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,
@@ -135,7 +125,6 @@ exports[`pofile format should throw away additional msgstr if present 1`] = `
 Object {
   withMultipleTranslation: Object {
     comments: Array [],
-    context: null,
     extractedComments: Array [],
     flags: Array [],
     obsolete: false,

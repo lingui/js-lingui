@@ -1,2 +1,6 @@
 msgid "Hello World"
-msgstr "Ahoj Brno"
+msgstr "Hello World"
+
+msgctxt "world ctxt"
+msgid "Hello World"
+msgstr "Hello Context"

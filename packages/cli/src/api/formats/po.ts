@@ -16,33 +16,41 @@ const getCreateHeaders = (language = "no") => ({
   Language: language,
 })
 
-const serialize = (items: CatalogType, options) =>
-  R.compose(
-    R.values,
-    R.mapObjIndexed((message: MessageType, key) => {
-      const item = new PO.Item()
-      item.msgid = key
-      item.msgstr = [message.translation]
-      item.comments = message.comments || []
-      item.extractedComments = message.extractedComments || []
-      if (message.context) {
-        item.msgctxt = message.context
+const serialize = (items: CatalogType, options) => {
+  function serializeItem(message: MessageType, key: string, context?: string) {
+    const item = new PO.Item()
+    item.msgid = key
+    item.msgstr = [message.translation]
+    item.comments = message.comments || []
+    item.extractedComments = message.extractedComments || []
+    if (message.context || context) {
+      item.msgctxt = message.context || context
+    }
+    if (options.origins !== false) {
+      if (message.origin && options.lineNumbers === false) {
+        item.references = message.origin.map(([path]) => path);
+      } else {
+        item.references = message.origin ? message.origin.map(joinOrigin) : []
       }
-      if (options.origins !== false) {
-        if (message.origin && options.lineNumbers === false) {
-          item.references = message.origin.map(([path]) => path);
-        } else {
-          item.references = message.origin ? message.origin.map(joinOrigin) : []
-        }
+    }
+    // @ts-ignore: Figure out how to set this flag
+    item.obsolete = message.obsolete
+    item.flags = message.flags
+      ? R.fromPairs(message.flags.map((flag) => [flag, true]))
+      : {}
+    return item
+  }
+  return Object.entries(items).reduce((acc, [key, message]) => {
+      if (message.hasOwnProperty('origin') || message.hasOwnProperty('translation') || message.context) {
+        acc.push(serializeItem(message, key))
+      } else {
+        Object.entries(message as any as CatalogType).forEach(([itemKey, itemMessage]) => {
+          acc.push(serializeItem(itemMessage, itemKey, key))
+        })
       }
-      // @ts-ignore: Figure out how to set this flag
-      item.obsolete = message.obsolete
-      item.flags = message.flags
-        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-        : {}
-      return item
-    })
-  )(items)
+      return acc
+  }, [])
+}
 
 const getMessageKey = R.prop<"msgid", string>("msgid")
 const getTranslations = R.prop("msgstr")
@@ -58,17 +66,33 @@ const getFlags = R.compose(
 )
 const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
 
-const deserialize: (item: Object) => Object = R.map(
-  R.applySpec({
-    translation: R.compose(R.head, R.defaultTo([]), getTranslations),
-    extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
-    comments: R.compose(R.defaultTo([]), getTranslatorComments),
-    context: R.compose(R.defaultTo(null), getMessageContext),
-    obsolete: isObsolete,
-    origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
-    flags: getFlags,
-  })
-)
+const deserialize = (items: any[]): Object => {
+  return items.reduce((acc, value) => {
+    const key = getMessageKey(value)
+    const context: string = getMessageContext(value)
+    if (context) {
+      acc[context] = acc[context] || {}
+      acc[context][key] = R.applySpec({
+        translation: R.compose(R.head, R.defaultTo([]), getTranslations),
+        extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
+        comments: R.compose(R.defaultTo([]), getTranslatorComments),
+        obsolete: isObsolete,
+        origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
+        flags: getFlags,
+      })(value)
+    } else {
+      acc[key] = R.applySpec({
+        translation: R.compose(R.head, R.defaultTo([]), getTranslations),
+        extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
+        comments: R.compose(R.defaultTo([]), getTranslatorComments),
+        obsolete: isObsolete,
+        origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
+        flags: getFlags,
+      })(value)
+    }
+    return acc
+  }, {})
+}
 
 type POItem = InstanceType<typeof PO.Item>
 type PoFormatter = {
@@ -114,7 +138,7 @@ const po: CatalogFormatter & PoFormatter = {
   parse(raw: string) {
     const po = PO.parse(raw)
     validateItems(po.items)
-    return deserialize(indexItems(po.items))
+    return deserialize(po.items)
   },
 }
 

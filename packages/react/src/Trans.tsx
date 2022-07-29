@@ -25,7 +25,7 @@ export type TransProps = {
 
 export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   const { i18n, defaultComponent } = useLingui()
-  const { render, component, id, message, formats } = props
+  const { render, component, id, message, formats, context } = props
 
   const values = { ...props.values }
   const components = { ...props.components }
@@ -57,7 +57,7 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
 
   const _translation: string =
     i18n && typeof i18n._ === "function"
-      ? i18n._(id, values, { message, formats })
+      ? i18n._(id, values, { message, formats, context })
       : id // i18n provider isn't loaded at all
 
   const translation = _translation

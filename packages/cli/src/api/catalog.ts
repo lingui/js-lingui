@@ -20,6 +20,7 @@ const NAME = "{name}"
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
+const DEFAULT_CTX = "$"
 
 type MessageOrigin = [string, number?]
 
@@ -196,83 +197,156 @@ export class Catalog {
     }
   }
 
+  splitCatalogByContext(catalog: CatalogType | ExtractedCatalogType): {[context: string]: CatalogType} {
+    return Object.entries(catalog || {}).reduce((acc, [msgId, message]) => {
+      if (message.hasOwnProperty('origin') || message.hasOwnProperty('translation') || message.context) {
+        acc[DEFAULT_CTX] = {
+          ...acc[DEFAULT_CTX],
+          [msgId]: message,
+        }
+      } else {
+         acc[msgId] = message
+      }
+      return acc
+    }, {})
+  }
+
   merge(
     prevCatalogs: AllCatalogsType,
     nextCatalog: ExtractedCatalogType,
     options: MergeOptions
   ) {
-    const nextKeys = R.keys(nextCatalog).map(String)
+    const nextCatalogByContext = this.splitCatalogByContext(nextCatalog)
+    const nextContextKeys = R.keys(nextCatalogByContext).map(String)
 
     return R.mapObjIndexed((prevCatalog, locale) => {
-      const prevKeys = R.keys(prevCatalog).map(String)
+      const prevCatalogByContext = this.splitCatalogByContext(prevCatalog)
+      const prevContextKeys = R.keys(prevCatalogByContext).map(String)
 
-      const newKeys = R.difference(nextKeys, prevKeys)
-      const mergeKeys = R.intersection(nextKeys, prevKeys)
-      const obsoleteKeys = R.difference(prevKeys, nextKeys)
+      const contexts = nextContextKeys.reduce((acc, context) => {
+        acc[context] = this.mergeContext(
+          prevCatalogByContext[context] || {}, 
+          nextCatalogByContext[context] || {}, 
+          locale, 
+          options
+        )
+        return acc
+      }, {})
 
-      // Initialize new catalog with new keys
-      const newMessages = R.mapObjIndexed(
-        (message: MessageType, key) => ({
-          translation:
-            this.config.sourceLocale === locale ? message.message || key : "",
-          ...message,
-        }),
-        R.pick(newKeys, nextCatalog)
-      )
+      const obsoleteContextKeys = R.difference(prevContextKeys, nextContextKeys)
 
-      // Merge translations from previous catalog
-      const mergedMessages = mergeKeys.map((key) => {
-        const updateFromDefaults =
-          this.config.sourceLocale === locale &&
-          (prevCatalog[key].translation === prevCatalog[key].message ||
-            options.overwrite)
-
-        const translation = updateFromDefaults
-          ? nextCatalog[key].message || key
-          : prevCatalog[key].translation
-
-        return {
-          [key]: {
-            translation,
-            ...R.omit(["obsolete, translation"], nextCatalog[key]),
-          },
-        }
-      })
-
-      // Mark all remaining translations as obsolete
+      // Mark remaining context messages as obsolete
       // Only if *options.files* is not provided
-      const obsoleteMessages = obsoleteKeys.map((key) => ({
-        [key]: {
-          ...prevCatalog[key],
-          obsolete: options.files ? false : true,
-        },
-      }))
+      const obsoleteContexts = obsoleteContextKeys.reduce((acc, context) => {
+        acc[context] = Object.entries(prevCatalogByContext[context]).reduce((_acc, [key, message]) => {
+          _acc[key] = {
+            ...message,
+            obsolete: options.files ? false : true,
+          }
+          return _acc
+        }, {})
+        return acc
+      }, {})
 
-      return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
+      const result = {
+        ...contexts[DEFAULT_CTX],
+        ...contexts,
+        ...obsoleteContexts[DEFAULT_CTX],
+        ...obsoleteContexts,
+      }
+      delete result[DEFAULT_CTX]
+      return result
     }, prevCatalogs)
+  }
+
+  mergeContext(
+    prevCatalog: CatalogType,
+    nextCatalog: ExtractedCatalogType,
+    locale: string,
+    options: MergeOptions
+  ) {
+    const nextKeys = R.keys(nextCatalog).map(String)
+    const prevKeys = R.keys(prevCatalog).map(String)
+
+    const newKeys = R.difference(nextKeys, prevKeys)
+    const mergeKeys = R.intersection(nextKeys, prevKeys)
+    const obsoleteKeys = R.difference(prevKeys, nextKeys)
+
+    // Initialize new catalog with new keys
+    const newMessages = R.mapObjIndexed(
+      (message: MessageType, key) => ({
+        translation:
+          this.config.sourceLocale === locale ? message.message || key : "",
+        ...message,
+      }),
+      R.pick(newKeys, nextCatalog)
+    )
+
+    // Merge translations from previous catalog
+    const mergedMessages = mergeKeys.map((key) => {
+      const updateFromDefaults =
+        this.config.sourceLocale === locale &&
+        (prevCatalog[key].translation === prevCatalog[key].message ||
+          options.overwrite)
+
+      const translation = updateFromDefaults
+        ? nextCatalog[key].message || key
+        : prevCatalog[key].translation
+
+      return {
+        [key]: {
+          translation,
+          ...R.omit(["obsolete, translation"], nextCatalog[key]),
+        },
+      }
+    })
+
+    // Mark all remaining translations as obsolete
+    // Only if *options.files* is not provided
+    const obsoleteMessages = obsoleteKeys.map((key) => ({
+      [key]: {
+        ...prevCatalog[key],
+        obsolete: options.files ? false : true,
+      },
+    }))
+
+    return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
   }
 
   getTranslations(locale: string, options: GetTranslationsOptions) {
     const catalogs = this.readAll()
-    return R.mapObjIndexed(
-      (_value, key) => this.getTranslation(catalogs, locale, key, options),
-      catalogs[locale]
-    )
+    return Object.entries(catalogs[locale] || {}).reduce(
+      (acc, [key, message]) => {
+        if (message.hasOwnProperty('origin') || message.hasOwnProperty('translation')) {
+          acc[key] = this.getTranslation(catalogs, locale, key, options)
+        } else {
+          // Context
+          acc[key] = acc[key] || {}
+          Object.entries(message || {}).forEach(([messageKey]) => {
+            acc[key][messageKey] = this.getTranslation(catalogs, locale, messageKey, options, key)
+          })
+        }
+        return acc
+      }
+    , {})
   }
 
   getTranslation(
     catalogs: Object,
     locale: string,
     key: string,
-    { fallbackLocales, sourceLocale }: GetTranslationsOptions
+    { fallbackLocales, sourceLocale }: GetTranslationsOptions,
+    context?: string
   ) {
-    if (!catalogs[locale].hasOwnProperty(key)) {
-      console.error(`Message with key ${key} is missing in locale ${locale}`)
+    const getCatalog = (locale: string) => context ? catalogs[locale][context] || catalogs[locale] : catalogs[locale]
+
+    if (!getCatalog(locale).hasOwnProperty(key)) {
+      console.error(`Message with key ${key}${context ? ` and context ${context}`: ``} is missing in locale ${locale}`)
     }
 
     const getTranslation = (locale) => {
       const configLocales = this.config.locales.join('", "')
-      const localeCatalog = catalogs[locale]
+      const localeCatalog = getCatalog(locale)
 
       if (!localeCatalog) {
         console.warn(`
@@ -289,14 +363,14 @@ export class Catalog {
         return null
       }
 
-      if (catalogs[locale]) {
-        return catalogs[locale][key].translation
+      if (localeCatalog) {
+        return localeCatalog[key].translation
       }
 
       return null
     }
 
-    const getMultipleFallbacks = (locale) => {
+    const getMultipleFallbacks = (locale: string) => {
       const fL = fallbackLocales && fallbackLocales[locale]
 
       // some probably the fallback will be undefined, so just search by locale
@@ -304,7 +378,7 @@ export class Catalog {
 
       if (Array.isArray(fL)) {
         for (const fallbackLocale of fL) {
-          if (catalogs[fallbackLocale]) {
+          if (getCatalog(fallbackLocale)) {
             return getTranslation(fallbackLocale)
           }
         }
@@ -323,7 +397,7 @@ export class Catalog {
         fallbackLocales.default &&
         getTranslation(fallbackLocales.default)) ||
       // Get message default
-      catalogs[locale][key].defaults ||
+      getCatalog(locale)[key].defaults ||
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
       (sourceLocale &&
@@ -612,6 +686,15 @@ export function getCatalogForMerge(config: LinguiConfig) {
  * should be the same (raise an error if defaults are different).
  */
 function mergeOriginsAndExtractedComments(msgId, prev, next) {
+  if (!prev.extractedComments || !next.extractedComments || !prev.origin || !next.origin) {
+    // it's a context
+    return R.mergeWithKey(
+      mergeOriginsAndExtractedComments,
+      prev,
+      next
+    )
+  }
+
   if (prev.defaults !== next.defaults) {
     throw new Error(
       `Encountered different defaults for message ${chalk.yellow(msgId)}` +

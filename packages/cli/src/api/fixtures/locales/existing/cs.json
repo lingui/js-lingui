@@ -1,0 +1,14 @@
+{
+  "Hello World": {
+    "extractedComments": [],
+    "origin": [["collect/componentA/componentA.js", 1]],
+    "translation": "Ahoj Brno"
+  },
+  "world ctxt": {
+    "Hello World": {
+      "extractedComments":  [],
+      "origin":  [["collect/componentA/componentA.js", 1]],
+      "translation": "Ahoj Brno"
+    }
+  }
+}

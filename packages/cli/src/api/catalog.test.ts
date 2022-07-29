@@ -35,7 +35,7 @@ describe("Catalog", function () {
   })
 
   describe("make", function () {
-    it("should collect and write catalogs", async function () {
+    it("should collect and write catalogs (po)", async function () {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -48,6 +48,32 @@ describe("Catalog", function () {
           exclude: [],
         },
         mockConfig({
+          format: 'po',
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readAll()).toMatchSnapshot()
+
+      await catalog.make(defaultMakeOptions)
+      expect(catalog.readAll()).toMatchSnapshot()
+    })
+
+    it("should collect and write catalogs (lingui)", async function () {
+      const localeDir = copyFixture(fixture("locales", "initial"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}", "messages"),
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
+          exclude: [],
+        },
+        mockConfig({
+          format: 'lingui',
           locales: ["en", "cs"],
         })
       )
@@ -83,16 +109,45 @@ describe("Catalog", function () {
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should merge with existing catalogs", async function () {
+    it("should merge with existing catalogs (po)", async function () {
       const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
           name: "messages",
           path: path.join(localeDir, "{locale}"),
-          include: [fixture("collect/")],
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
           exclude: [],
         },
         mockConfig({
+          format: 'po',
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readAll()).toMatchSnapshot()
+
+      await catalog.make(defaultMakeOptions)
+      expect(catalog.readAll()).toMatchSnapshot()
+    })
+
+    it("should merge with existing catalogs (lingui)", async function () {
+      const localeDir = copyFixture(fixture("locales", "existing"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}"),
+          include: [
+            fixture("collect/componentA/"),
+            fixture("collect/componentB"),
+          ],
+          exclude: [],
+        },
+        mockConfig({
+          format: 'lingui',
           locales: ["en", "cs"],
         })
       )
