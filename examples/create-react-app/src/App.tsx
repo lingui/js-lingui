@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
-import { Trans, Plural } from "@lingui/macro";
+import { Trans, Plural, t } from "@lingui/macro";
 import { i18n } from "@lingui/core";
 
 import { locales, dynamicActivate } from './i18n';
@@ -46,6 +46,9 @@ function App() {
           I have a balance of {i18n.number(1_000_000, { style: "currency", currency: "EUR" })}
           </Trans>
         </div>
+        <h3><Trans context="example ctxt">Context example:</Trans></h3>
+        <div>{t`Hello World`}</div>
+        <div>{t({context: 'example ctxt', message: 'Hello World'})}</div>
       </header>
     </div>
   );

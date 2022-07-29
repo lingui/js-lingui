@@ -19,6 +19,10 @@ msgstr "Příklad formátovače data:"
 msgid "Decrement"
 msgstr "Úbytek"
 
+#: src/App.tsx:51
+msgid "Hello World"
+msgstr "Ahoj Brno"
+
 #: src/App.tsx:45
 msgid "I have a balance of {0}"
 msgstr "Mám zůstatek {0}"
@@ -42,6 +46,16 @@ msgstr "Příklad množného čísla:"
 #: src/App.tsx:39
 msgid "Today is {0}"
 msgstr "Dnes je {0}"
+
+#: src/App.tsx:49
+msgctxt "example ctxt"
+msgid "Context example:"
+msgstr "Kontext příklad:"
+
+#: src/App.tsx:52
+msgctxt "example ctxt"
+msgid "Hello World"
+msgstr "Ahoj Kontext"
 
 #: src/App.tsx:31
 msgid "{count, plural, zero {There are no books} one {There's one book} other {There are # books}}"
