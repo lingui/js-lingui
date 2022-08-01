@@ -41,6 +41,11 @@ const tWithContextB = t({
   context: "Context1"
 })
 
+const tWithContextSameAsB = t({
+  id: "Some other ID",
+  context: "Context1"
+})
+
 const defineMessageWithContext = defineMessage({
   id: "Some ID",
   context: "Context2"

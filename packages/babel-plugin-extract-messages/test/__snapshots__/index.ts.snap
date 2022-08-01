@@ -53,6 +53,10 @@ Object {
           js-with-macros.js,
           39,
         ],
+        Array [
+          js-with-macros.js,
+          44,
+        ],
       ],
     },
   },
@@ -62,7 +66,7 @@ Object {
       origin: Array [
         Array [
           js-with-macros.js,
-          44,
+          49,
         ],
       ],
     },

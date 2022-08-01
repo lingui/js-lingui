@@ -28,7 +28,7 @@ function addMessage(
     if (messages.has(context)) {
       const existingContext = messages.get(context)
       if (existingContext.has(id)) {
-        const message = messages.get(id)
+        const message = existingContext.get(id)
         // only set/check default language when it's defined.
         if (message.message && newDefault && message.message !== newDefault) {
           throw path.buildCodeFrameError(
