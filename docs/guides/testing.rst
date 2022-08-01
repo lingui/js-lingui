@@ -58,3 +58,6 @@ Here is a working example with `react-testing-library`_, using the `wrapper-prop
 You could define a custom renderer to re-use this TestingProvider, see `react testing library - Custom Render`_
 
 .. _`react testing library - Custom Render`: https://testing-library.com/docs/react-testing-library/setup#custom-render
+
+
+Currently, there is no way to run unit tests using ts-jest because of @lingui/macro as we don't have a mock for it, nor a transformer. If you want to use lingui with ts-jest, please submit a PR.
