@@ -3,6 +3,9 @@ import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g;
+const OCT_REGEX = /(.)(#)/g;
+const OCT_ESCAPE_CHARACTER = '\\';
+const octReplacerGetter = valueStr => (match, p1, p2) => p1 === OCT_ESCAPE_CHARACTER ? p2 : p1 + valueStr;
 
 const defaultFormats = (
   locale,
@@ -19,7 +22,7 @@ const defaultFormats = (
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
       const valueStr = number(locales)(value)
-      return norm.map((m) => (isString(m) ? m.replace("#", valueStr) : m))
+      return norm.map((m) => (isString(m) ? m.replace(OCT_REGEX, octReplacerGetter(valueStr)) : m))
     }
   }
 
