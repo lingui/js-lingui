@@ -46,7 +46,6 @@ function command(config: LinguiConfig, options) {
         )
       )
       console.error()
-      process.exit(1)
     }
 
     catalogs.forEach((catalog) => {
