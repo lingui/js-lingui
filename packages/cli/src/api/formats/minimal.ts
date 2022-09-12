@@ -23,7 +23,17 @@ const minimal: CatalogFormatter = {
 
   write(filename, catalog) {
     const messages = serialize(catalog)
-    writeFileIfChanged(filename, JSON.stringify(messages, null, 2))
+    let file = null
+    try {
+      file = await fsPromises.readFile(filePath, 'utf8')
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        throw error
+      }
+    }
+    const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
+    const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
+    fs.writeFileSync(filename, `${JSON.stringify(messages, null, 2)}${trailingNewLine}`)
   },
 
   read(filename) {
