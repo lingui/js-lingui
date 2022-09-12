@@ -119,18 +119,18 @@ describe("@lingui/conf", function () {
     })
   })
 
-  it("searches for a config file", function () {
-    // hide validation warning about missing locales
-    mockConsole(() => {
-      const config = getConfig({
-        cwd: path.resolve(__dirname, path.join("fixtures", "valid")),
+  describe("config file", function () {
+    it("searches for a .linguirc config file", function () {
+      // hide validation warning about missing locales
+      mockConsole(() => {
+        const config = getConfig({
+          cwd: path.resolve(__dirname, path.join("fixtures", "valid")),
+        })
+        expect(config.locales).toEqual(["en-gb"])
       })
-      expect(config.locales).toEqual(["en-gb"])
     })
-  })
 
-  describe("with configPath parameter", function () {
-    it("allows specific config file to be loaded", function () {
+    it("allows specific config file to be loaded with configPath parameter", function () {
       // hide validation warning about missing locales
       mockConsole(() => {
         const config = getConfig({
@@ -142,39 +142,52 @@ describe("@lingui/conf", function () {
         expect(config.locales).toEqual(["cs", "sk"])
       })
     })
-  })
 
-  describe("fallbackLocales logic", () => {
-    afterEach(() => {
-      mockFs.restore()
-    })
-
-    it ("if fallbackLocale is defined, we use the default one on fallbackLocales", () => {
-      mockFs({
-        ".linguirc": JSON.stringify({
-          locales: ["en-US"],
-          fallbackLocale: "en"
-        })
-      })
-      mockConsole((console) => {
+    it("loads TypeScript config", function () {
+      // hide validation warning about missing locales
+      mockConsole(() => {
         const config = getConfig({
-          configPath: ".linguirc",
+          configPath: path.resolve(
+            __dirname,
+            path.join("fixtures", "valid", "custom.config.ts")
+          ),
         })
-        expect(config.fallbackLocales.default).toEqual("en")
-        expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
+        expect(config.locales).toEqual(["pl"])
       })
     })
 
-    it ("if fallbackLocales default is defined, we dont build the cldr", () => {
-      const config = getConfig({
-        configPath: path.resolve(
-          __dirname,
-          path.join("fixtures", "valid", ".fallbacklocalesrc")
-        ),
+    describe("fallbackLocales logic", () => {
+      afterEach(() => {
+        mockFs.restore()
       })
-      expect(config.fallbackLocales).toEqual({
-        "en-US": ["en"],
-        default: "en",
+
+      it("if fallbackLocale is defined, we use the default one on fallbackLocales", () => {
+        mockFs({
+          ".linguirc": JSON.stringify({
+            locales: ["en-US"],
+            fallbackLocale: "en",
+          }),
+        })
+        mockConsole((console) => {
+          const config = getConfig({
+            configPath: ".linguirc",
+          })
+          expect(config.fallbackLocales.default).toEqual("en")
+          expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
+        })
+      })
+
+      it("if fallbackLocales default is defined, we dont build the cldr", () => {
+        const config = getConfig({
+          configPath: path.resolve(
+            __dirname,
+            path.join("fixtures", "valid", ".fallbacklocalesrc")
+          ),
+        })
+        expect(config.fallbackLocales).toEqual({
+          "en-US": ["en"],
+          default: "en",
+        })
       })
     })
   })
