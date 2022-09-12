@@ -67,7 +67,7 @@ rendered with the ``translation`` passed in as its child:
    <Trans component={Text}>Link to docs</Trans>;
    // renders as <Text>Link to docs</Text>
 
-To get more control over the rendering of translation, use instead the ``render`` method with 
+To get more control over the rendering of translation, use instead the ``render`` method with
 **React.Component** (or stateless component). Component passed to
 ``render`` will receive the translation value as a ``translation`` prop:
 
@@ -142,7 +142,7 @@ If you cannot use `@lingui/macro` for some reason(maybe you compile your code us
 
    import React from 'react';
    import { Trans } from '@lingui/react';
-   
+
    <Trans
       id="{count, plural, =1 {car} other {cars}}"
       values={{ count: cars.length }}
@@ -153,7 +153,7 @@ Providers
 =========
 
 Message catalogs and the active locale are passed to the context in
-:component:`I18nProvider`. Use `:js:func:`useLingui` hook or :js:func:`withI18n`
+:component:`I18nProvider`. Use :js:func:`useLingui` hook or :js:func:`withI18n`
 high-order component to access Lingui context.
 
 I18nProvider
@@ -176,7 +176,7 @@ at the beginning of this document.
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
    import { i18n } from '@lingui/core';
-   import { messages as messagesEn } from './locales/en/messages.js';
+   import { messages as messagesEn } from './locales/en/messages.js';
 
    i18n.load({
       en: messagesEn,
@@ -215,7 +215,7 @@ top-level application component. However, if the ``locale`` is stored in a
    import React from 'react';
    import { I18nProvider } from '@lingui/react';
    import { i18n } from '@lingui/core';
-   import { messages as messagesEn } from './locales/en/messages.js';
+   import { messages as messagesEn } from './locales/en/messages.js';
 
    i18n.load({
       en: messagesEn,
