@@ -13,13 +13,28 @@ describe("PrintStats", () => {
       locales: ["en", "cs"],
     })
 
-    const prevCatalogs = { en: null, cs: null }
+    const prevCatalogs = { en: null, cs: {
+      "custom.id": makeNextMessage({
+        message: "Message with custom ID",
+        translation: "Hello"
+      }), 
+      "context": {
+        "custom.id": makeNextMessage({
+          translation: "Test"
+        }),
+      }
+    } } as any
     const nextCatalog = {
       "custom.id": makeNextMessage({
         message: "Message with custom ID",
       }),
       "Message with <0>auto-generated</0> ID": makeNextMessage(),
-    }
+      "context": {
+        "custom.id": makeNextMessage(),
+        "hello": makeNextMessage(),
+        "another message": makeNextMessage(),
+      }
+    } as any
 
     const catalogs = makeCatalog({ sourceLocale: "en" }).merge(
       prevCatalogs,
@@ -30,8 +45,8 @@ describe("PrintStats", () => {
     const { options, ...table } = printStats(config, catalogs)
     expect(options.head).toEqual(["Language", "Total count", "Missing"])
     expect(Object.values(table)).toStrictEqual([
-      { en: [2, 0] },
-      { cs: [2, 2] },
+      { en: [5, 0] },
+      { cs: [5, 3] },
       2,
     ])
   })

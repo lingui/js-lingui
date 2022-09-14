@@ -8,9 +8,17 @@ import { CatalogType, AllCatalogsType } from "./catalog"
 type CatalogStats = [number, number]
 
 export function getStats(catalog: CatalogType): CatalogStats {
+  const allMessages = []
+  Object.values(catalog).forEach(messageOrContext => {
+    if (messageOrContext.hasOwnProperty('origin') || messageOrContext.hasOwnProperty('translation')) {
+      allMessages.push(messageOrContext)
+    } else {
+      allMessages.push(...Object.values(messageOrContext))
+    }
+  })
   return [
-    Object.keys(catalog).length,
-    Object.keys(catalog).filter((key) => !catalog[key].translation).length,
+    allMessages.length,
+    allMessages.filter((message) => !message.translation).length,
   ]
 }
 
