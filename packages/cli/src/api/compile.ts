@@ -48,7 +48,7 @@ export function createCompiledCatalog(
     // expression, and assign the current ID to that expression
     if (typeof value === "object") {
       const contextExpression = t.objectExpression(Object.keys(value).map((contextKey) => {
-        const contextTranslation = value[contextKey];
+        const contextTranslation = value[contextKey] || (!strict ? contextKey : "");
         return compileSingleKey(contextKey, contextTranslation, shouldPseudolocalize)
       }))
       return t.objectProperty(t.stringLiteral(key), contextExpression);
