@@ -739,9 +739,28 @@ export function normalizeRelativePath(sourcePath: string): string {
   )
 }
 
-export const cleanObsolete = R.filter(
-  (message: ExtractedMessageType) => !message.obsolete
-)
+export const cleanObsolete = (catalog: ExtractedCatalogType) => {
+  const newCatalog = {}
+  Object.entries(catalog).forEach(([key, value]) => {
+    if (value.hasOwnProperty('origin') || value.hasOwnProperty('translation')) {
+      if (!value.obsolete) {
+        newCatalog[key] = value
+      }
+    } else {
+      const ctxCatalog = value as ExtractedCatalogType
+      const newCtxCatalog = {}
+      Object.entries(ctxCatalog).forEach(([id, message]) => {
+        if (!message.obsolete) {
+          newCtxCatalog[id] = message
+        }
+      })
+      if (Object.keys(newCtxCatalog).length) {
+        newCatalog[key] = newCtxCatalog
+      }
+    }
+  })
+  return newCatalog
+}
 
 export function order(
   by: OrderBy

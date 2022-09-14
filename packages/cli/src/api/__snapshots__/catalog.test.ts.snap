@@ -918,6 +918,18 @@ Object {
     ],
     translation: Label,
   },
+  ctxt: Object {
+    messageInsideCtx: Object {
+      obsolete: false,
+      origin: Array [
+        Array [
+          catalog.test.ts,
+          1,
+        ],
+      ],
+      translation: Context,
+    },
+  },
 }
 `;
 

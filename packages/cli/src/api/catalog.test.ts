@@ -957,7 +957,23 @@ describe("cleanObsolete", function () {
       PreviousLabel: makeNextMessage({
         obsolete: true,
       }),
-    }
+      ctxt: {
+        messageInsideCtx:  makeNextMessage({
+          translation: "Context",
+        }),
+        obsoleteInsideCtx:  makeNextMessage({
+          obsolete: true,
+        }),
+      },
+      obsoleteCtxt: {
+        messageInsideCtx:  makeNextMessage({
+          obsolete: true,
+        }),
+        obsoleteInsideCtx:  makeNextMessage({
+          obsolete: true,
+        }),
+      }
+    } as any
 
     expect(cleanObsolete(catalog)).toMatchSnapshot()
   })
