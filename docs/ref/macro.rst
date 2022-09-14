@@ -213,11 +213,12 @@ into a *Message Descriptor* wrapped inside of ``i18n._`` call.
       message?: String,
       values?: Object,
       formats?: Object,
-      comment?: string
+      comment?: string,
+      context?: string
    }
 
-``id`` is message ID and the only required parameter. ``id`` and ``message``
-are extracted to message catalog. Only ``id``, ``values``, and ``formats``
+``id`` is message ID and the only required parameter. ``id``, ``message``, ``comment``
+and ``context`` are extracted to message catalog. Only ``id``, ``context``, ``values``, and ``formats``
 are used at runtime, all other attributes are removed from production code
 for size optimization.
 
@@ -340,6 +341,40 @@ as if it were wrapped in ``t`` macro. ``message`` also accepts any other macros:
       values: { value }
    })
 
+You can also use ``context`` to have different entries in catalog for
+identical messages and allow translator to provide differents translations:
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   const message = t({
+      comment: 'Commercial term for Free offer',
+      context: 'commercial subapp',
+      message: 'Free'
+   })
+
+   const anotherMessage = t({
+      comment: 'Like in "free to move the item"',
+      context: 'main subapp',
+      message: 'Free'
+   })
+
+   // ↓ ↓ ↓ ↓ ↓ ↓
+
+   import { i18n } from "@lingui/core"
+   const message = i18n._(/*i18n*/{
+      comment: 'Commercial term for Free offer',
+      context: 'commercial subapp',
+      message: 'Free'
+   })
+
+   const anotherMessage = i18n._(/*i18n*/{
+      comment: 'Like in "free to move the item"',
+      context: 'main subapp',
+      message: 'Free'
+   })
+
+
 plural
 ^^^^^^
 
@@ -437,8 +472,21 @@ two counters:
 
 .. important::
 
-   Use ``plural`` inside :jsmacro:`t` macro if you want to add custom ``id``
-   or ``comment`` for translators.
+   Use ``plural`` inside :jsmacro:`t` macro if you want to add custom ``id``, ``comment``
+   or ``context`` for translators.
+
+.. code-block:: jsx
+
+   import { t } from "@lingui/macro"
+   const message = t({
+      comment: 'Purchase summary',
+      context: 'cart',
+      message: plural(count, {
+         one: "# article",
+         other: "# articles"
+      })
+   })
+
 
 selectOrdinal
 ^^^^^^^^^^^^^
@@ -527,6 +575,7 @@ Unlike the other JS macros, it doesn't wrap generated *MessageDescription* into
    type MessageDescriptor = {
      id?: string,
      message?: string,
+     context?: string,
      comment?: string
    }
 
@@ -576,7 +625,7 @@ string literals don't need to be tagged with :jsmacro:`t`.
    }
 
 ``comment`` is a comment for translators. It's extracted to the message catalog
-and it gives extra context for translators. It's removed from production code:
+and it gives extra context for translators. It is removed from production code:
 
 .. code-block:: jsx
 
@@ -611,7 +660,12 @@ and it gives extra context for translators. It's removed from production code:
 
       const message = "Navigation / About"
 
-   ``message`` and ``comment`` are used in message catalogs only.
+   ``message``, ``comment`` and are used in message catalogs only.
+
+``context`` is for both translators and developers. Unlike a comment, it creates
+a new entry in the catalog and allows to distinguish equal messages that would
+need different translation or to create subset of messages.
+It is also used in production code at runtime.
 
 JSX Macros
 ----------
@@ -644,6 +698,14 @@ comment
 Comment for translators to give them additional context about the message.
 It's removed from production code.
 
+context
+~~~~~~~~~~~
+
+Context is for both translators and developers. Unlike a comment, it creates
+a new entry in the catalog and allows to distinguish equal messages that would
+need different translation or to create subset of messages.
+It is also used in production code at runtime.
+
 render
 ~~~~~~
 
@@ -658,6 +720,7 @@ Trans
 
    :prop string id: Custom message ID
    :prop string comment: Comment for translators
+   :prop string context: Context to group messages or distinguish similar messages
 
 :jsxmacro:`Trans` is the basic macro for static messages, messages with variables,
 but also for messages with inline markup:

@@ -26,6 +26,7 @@ The advantages of this format are:
 
    #: src/App.js:3
    #  Comment for translators
+   msgctx "context"
    msgid "messageId"
    msgstr "Translated Message"
 
@@ -79,9 +80,9 @@ With `po-gettext`, plural messages are exported in the following way, depending 
 Note that this format comes with several caveats and should therefore only be used if using ICU plurals in PO files is
 not an option:
 
-  - Nested/multiple plurals in one message as shown in :jsmacro:`plural` are not supported as they cannot be expressed 
+  - Nested/multiple plurals in one message as shown in :jsmacro:`plural` are not supported as they cannot be expressed
     with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
-  
+
   - :jsmacro:`select` and :jsmacro:`selectOrdinal` cannot be expressed with gettext plurals, but the original ICU format
     is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected
     behavior, include :code:`{ disableSelectWarning: true }` in the :conf:`formatOptions`.
@@ -123,6 +124,7 @@ process catalog data.
       "messageId": {
          "translation": "Translated message",
          "defaults": "Default message",
+         "context": "more context",
          "description": "Comment for translators",
          "origin": [["src/App.js", 3]]
       },
