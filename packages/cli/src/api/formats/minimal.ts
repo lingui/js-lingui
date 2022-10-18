@@ -1,7 +1,6 @@
 import fs from "fs"
 import * as R from "ramda"
 
-import { writeFileIfChanged } from "../utils"
 import { MessageType, CatalogType } from "../catalog"
 import { CatalogFormatter } from "."
 
@@ -25,7 +24,7 @@ const minimal: CatalogFormatter = {
     const messages = serialize(catalog)
     let file = null
     try {
-      file = await fsPromises.readFile(filePath, 'utf8')
+      file = fs.readFileSync(filename, 'utf8')
     } catch (error) {
       if (error.code !== "ENOENT") {
         throw error

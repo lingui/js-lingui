@@ -18,7 +18,7 @@ jobs:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     strategy:
       matrix:
-        node: ["10", "12", "14"]
+        node: ["12", "14", "16"]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2

@@ -215,9 +215,10 @@ Use ES6 named export + .ts file with an additional {compiledFile}.d.ts file:
    /* eslint-disable */export const messages = {"..."}
 
 .. code-block:: js
-      import { Messages } from '@lingui/core';
-      declare const messages: Messages;
-      export { messages };
+
+   import { Messages } from '@lingui/core';
+   declare const messages: Messages;
+   export { messages };
 
 (window|global)\.(.*)
 ^^^^^^^^^^^^^^^^^^^^^
