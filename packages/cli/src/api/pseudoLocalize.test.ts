@@ -50,20 +50,20 @@ describe("PseudoLocalization", () => {
     it("with HTML tags", () => {
       expect(
         pseudoLocalize(
-          "{count, plural, zero {There's # <span>message</span>} other {There are # messages}"
+          "{count, plural, zero {There's # <span>message</span>} other {There are # messages}}"
         )
       ).toEqual(
-        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}"
+        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}}"
       )
     })
 
     it("with exact number", () => {
       expect(
         pseudoLocalize(
-          "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}"
+          "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}}"
         )
       ).toEqual(
-        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}"
+        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}}"
       )
     })
   })
@@ -91,5 +91,15 @@ describe("PseudoLocalization", () => {
   it("should not pseudolocalize variables", () => {
     expect(pseudoLocalize("replace {count}")).toEqual("ŕēƥĺàćē {count}")
     expect(pseudoLocalize("replace { count }")).toEqual("ŕēƥĺàćē { count }")
+  })
+
+  it("multiple plurals is wrong45", () => {
+    expect(
+      pseudoLocalize(
+        "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}"
+      )
+    ).not.toEqual(
+      "{bcount, plural, one {ƀōŷ} other {# ƀōŷś}} {gcount, plural, one {ĝĩŕĺ} other {# ĝĩŕĺś}}"
+    )
   })
 })
