@@ -39,8 +39,13 @@ export default async function command(
       orderBy: config.orderBy,
       projectType: detect(),
     })
-
-    catalogStats[catalog.templateFile] = Object.keys(catalog.readTemplate()).length
+    const catalogTemplate = catalog.readTemplate()
+    if (
+      catalogTemplate !== null &&
+      catalogTemplate !== undefined
+    ) {
+      catalogStats[catalog.templateFile] = Object.keys(catalogTemplate).length
+    }
   }))
 
   Object.entries(catalogStats).forEach(([key, value]) => {
