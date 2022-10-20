@@ -26,6 +26,14 @@ exports[`createCompiledCatalog options.pseudoLocale should return catalog with p
 
 exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
 
+exports[`createCompiledCatalog options.pure should return code catalog 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
+
+exports[`createCompiledCatalog options.pure should return pure catalog 1`] = `
+Object {
+  Hello: Ahoj,
+}
+`;
+
 exports[`createCompiledCatalog options.strict should return message key as a fallback translation 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj","Missing":"Missing","Select":[["id","select",{Gen:"Genesis","1John":"1 John",other:"____"}]]}};`;
 
 exports[`createCompiledCatalog options.strict should't return message key as a fallback in strict mode 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj","Missing":"","Select":[["id","select",{Gen:"Genesis","1John":"1 John",other:"____"}]]}};`;

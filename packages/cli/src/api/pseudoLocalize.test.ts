@@ -93,7 +93,7 @@ describe("PseudoLocalization", () => {
     expect(pseudoLocalize("replace { count }")).toEqual("ŕēƥĺàćē { count }")
   })
 
-  it("multiple plurals is wrong45", () => {
+  it("multiple plurals pseudolocalize gives wrong ICU message", () => {
     expect(
       pseudoLocalize(
         "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}"

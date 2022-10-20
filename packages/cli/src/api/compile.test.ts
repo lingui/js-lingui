@@ -2,8 +2,8 @@ import generate from "@babel/generator"
 import { compile, createCompiledCatalog } from "./compile"
 
 describe("compile", () => {
-  const getSource = (message: string, shouldPseudolocalize: boolean = false) =>
-    generate(compile(message, shouldPseudolocalize) as any, {
+  const getSource = (message: string) =>
+    generate(compile(message) as any, {
       compact: true,
       minified: true,
       jsescOption: { minimal: true },
@@ -85,7 +85,12 @@ describe("compile", () => {
   })
 
   describe("with pseudo-localization", () => {
-    const getPSource = (message: string) => getSource(message, true)
+    const getPSource = (message: string) =>
+      generate(compile(message, true) as any, {
+        compact: true,
+        minified: true,
+        jsescOption: { minimal: true },
+      }).code
 
     it("should pseudolocalize strings", () => {
       expect(getPSource("Martin Černý")).toEqual('"Màŕţĩń Čēŕńý"')
@@ -93,8 +98,8 @@ describe("compile", () => {
 
     it("should pseudolocalize escaping syntax characters", () => {
       // TODO: should this turn into pseudoLocale string?
-      expect(getSource("'{name}'", true)).toEqual('"{name}"')
-      // expect(getSource("'{name}'", true)).toEqual('"{ńàmē}"')
+      expect(getPSource("'{name}'")).toEqual('"{name}"')
+      // expect(getPSource("'{name}'")).toEqual('"{ńàmē}"')
     })
 
     it("should not pseudolocalize arguments", () => {
@@ -111,16 +116,18 @@ describe("compile", () => {
 
     it("should not pseudolocalize HTML tags", () => {
       expect(getPSource('Martin <span id="spanId">Černý</span>')).toEqual(
-        '"Màŕţĩń <span id=\\"spanId\\">Čēŕńý</span>"'
+        JSON.stringify('Màŕţĩń <span id="spanId">Čēŕńý</span>')
       )
       expect(
         getPSource("Martin Cerny  123a<span id='id'>Černý</span>")
-      ).toEqual('"Màŕţĩń Ćēŕńŷ  123à<span id=\'id\'>Čēŕńý</span>"')
+      ).toEqual(
+        JSON.stringify("Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>")
+      )
       expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual(
-        '"Màŕţĩń <a title=\'>>a\'>à</a>"'
+        JSON.stringify("Màŕţĩń <a title='>>a'>à</a>")
       )
       expect(getPSource("<a title=TITLE>text</a>")).toEqual(
-        '"<a title=TITLE>ţēxţ</a>"'
+        JSON.stringify("<a title=TITLE>ţēxţ</a>")
       )
     })
 
@@ -299,6 +306,27 @@ describe("createCompiledCatalog", () => {
 
     it("should return compiled catalog when pseudoLocale doesn't match current locale", () => {
       expect(getCompiledCatalog("en")).toMatchSnapshot()
+    })
+  })
+
+  describe("options.pure", () => {
+    const getCompiledCatalog = (pure) =>
+      createCompiledCatalog(
+        "ps",
+        {
+          Hello: "Ahoj",
+        },
+        {
+          pure,
+        }
+      )
+
+    it("should return pure catalog", () => {
+      expect(getCompiledCatalog(true)).toMatchSnapshot()
+    })
+
+    it("should return code catalog", () => {
+      expect(getCompiledCatalog(false)).toMatchSnapshot()
     })
   })
 
