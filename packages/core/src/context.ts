@@ -18,7 +18,7 @@ const defaultFormats = (
     return (ctx) => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
-      const valueStr = number(locales)(value)
+      const valueStr = number(locales, style('number'))(value)
       return norm.map((m) => (isString(m) ? m.replace("#", valueStr) : m))
     }
   }
