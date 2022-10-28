@@ -131,6 +131,61 @@ describe("Catalog", function () {
     })
   })
 
+  describe("POT Flow", function () {
+    it('Should merge source messages from template if provided', () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.resolve(
+            __dirname,
+            path.join("fixtures", "pot-template", "{locale}")
+          ),
+          include: [],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ['en', 'pl'],
+        })
+      )
+
+      const translations = catalog.getTranslations('pl', {
+        sourceLocale: 'en',
+        fallbackLocales: {
+          default: 'en'
+        }
+      });
+
+      expect(translations).toMatchSnapshot()
+    })
+
+    it('Should get translations from template if locale file not presented', () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.resolve(
+            __dirname,
+            path.join("fixtures", "pot-template", "{locale}")
+          ),
+          include: [],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ['en', 'pl'],
+        })
+      )
+
+      const translations = catalog.getTranslations('en', {
+        sourceLocale: 'en',
+        fallbackLocales: {
+          default: 'en'
+        }
+      });
+
+      console.log(translations);
+      expect(translations).toMatchSnapshot()
+    })
+  })
+
   describe("collect", function () {
     it("should extract messages from source files", async function () {
       const catalog = new Catalog(

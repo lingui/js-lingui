@@ -31,6 +31,7 @@ export type ExtractedMessageType = {
   obsolete?: boolean
   flags?: string[]
   context?: string
+  defaults?: string
 }
 
 export type MessageType = ExtractedMessageType & {
@@ -254,50 +255,55 @@ export class Catalog {
 
   getTranslations(locale: string, options: GetTranslationsOptions) {
     const catalogs = this.readAll()
+    const template = this.readTemplate() || {}
+
+
     return R.mapObjIndexed(
       (_value, key) => this.getTranslation(catalogs, locale, key, options),
-      catalogs[locale]
+      { ...template, ...catalogs[locale] },
     )
   }
 
   getTranslation(
-    catalogs: Object,
+    catalogs: AllCatalogsType,
     locale: string,
     key: string,
     { fallbackLocales, sourceLocale }: GetTranslationsOptions
   ) {
-    if (!catalogs[locale].hasOwnProperty(key)) {
+    const catalog = catalogs[locale] || {}
+
+    if (!catalog.hasOwnProperty(key)) {
       console.error(`Message with key ${key} is missing in locale ${locale}`)
     }
 
-    const getTranslation = (locale) => {
+    const getTranslation = (_locale: string) => {
       const configLocales = this.config.locales.join('", "')
-      const localeCatalog = catalogs[locale]
+      const localeCatalog = catalogs[_locale] || {}
 
       if (!localeCatalog) {
         console.warn(`
-        Catalog "${locale}" isn't present in locales config parameter
-        Add "${locale}" to your lingui.config.js:
+        Catalog "${_locale}" isn't present in locales config parameter
+        Add "${_locale}" to your lingui.config.js:
         {
-          locales: ["${configLocales}", "${locale}"]
+          locales: ["${configLocales}", "${_locale}"]
         }
       `)
         return null
       }
       if (!localeCatalog.hasOwnProperty(key)) {
-        console.error(`Message with key ${key} is missing in locale ${locale}`)
+        console.error(`Message with key ${key} is missing in locale ${_locale}`)
         return null
       }
 
-      if (catalogs[locale]) {
-        return catalogs[locale][key].translation
+      if (catalogs[_locale]) {
+        return catalogs[_locale][key].translation
       }
 
       return null
     }
 
-    const getMultipleFallbacks = (locale) => {
-      const fL = fallbackLocales && fallbackLocales[locale]
+    const getMultipleFallbacks = (_locale: string) => {
+      const fL = fallbackLocales && fallbackLocales[_locale]
 
       // some probably the fallback will be undefined, so just search by locale
       if (!fL) return null
@@ -319,16 +325,13 @@ export class Catalog {
       // We search in fallbackLocales as dependent of each locale
       getMultipleFallbacks(locale) ||
       // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales &&
-        fallbackLocales.default &&
-        getTranslation(fallbackLocales.default)) ||
+      (fallbackLocales?.default && getTranslation(fallbackLocales.default as string)) ||
       // Get message default
-      catalogs[locale][key].defaults ||
+      catalog[key]?.defaults ||
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
       (sourceLocale &&
-        fallbackLocales &&
-        fallbackLocales.default &&
+        fallbackLocales?.default &&
         sourceLocale === fallbackLocales.default &&
         key) ||
       // Otherwise no translation is available
@@ -398,7 +401,7 @@ export class Catalog {
     return this.format.read(filename)
   }
 
-  readAll() {
+  readAll(): AllCatalogsType {
     return R.mergeAll(
       this.locales.map((locale) => ({
         [locale]: this.read(locale),
@@ -406,7 +409,7 @@ export class Catalog {
     ) as AllCatalogsType
   }
 
-  readTemplate() {
+  readTemplate(): CatalogType {
     const filename = this.templateFile
     if (!fs.existsSync(filename)) return null
     return this.format.read(filename)
@@ -456,9 +459,9 @@ export class Catalog {
 /**
  * Parse `config.catalogs` and return a list of configured Catalog instances.
  */
-export function getCatalogs(config: LinguiConfig) {
+export function getCatalogs(config: LinguiConfig): Catalog[] {
   const catalogsConfig = config.catalogs
-  const catalogs = []
+  const catalogs: Catalog[] = []
 
   catalogsConfig.forEach((catalog) => {
     // Validate that `catalogPath` doesn't end with trailing slash
