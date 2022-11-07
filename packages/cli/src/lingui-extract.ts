@@ -43,7 +43,7 @@ export default async function command(
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   for (let catalog of catalogs) {
     await catalog.make({
-      ...options,
+      ...options as CliExtractOptions,
       orderBy: config.orderBy,
       extractors: config.extractors,
       projectType: detect(),

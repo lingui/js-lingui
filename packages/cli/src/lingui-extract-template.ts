@@ -35,7 +35,7 @@ export default async function command(
 
   await Promise.all(catalogs.map(async (catalog) => {
     await catalog.makeTemplate({
-      ...options,
+      ...options as CliExtractTemplateOptions,
       orderBy: config.orderBy,
       projectType: detect(),
     })

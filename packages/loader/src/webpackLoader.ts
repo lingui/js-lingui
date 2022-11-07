@@ -1,5 +1,4 @@
 import path from "path"
-import * as R from "ramda"
 import { getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
@@ -61,15 +60,11 @@ export default function (source) {
     catalogRelativePath,
     getCatalogs(config)
   )
-  const catalogs = catalog.readAll()
-  const messages = R.mapObjIndexed(
-    (_, key) =>
-      catalog.getTranslation(catalogs, locale, key, {
-        fallbackLocales: config.fallbackLocales,
-        sourceLocale: config.sourceLocale,
-      }),
-    catalogs[locale]
-  )
+
+  const messages = catalog.getTranslations(locale, {
+    fallbackLocales: config.fallbackLocales,
+    sourceLocale: config.sourceLocale,
+  })
 
   // In production we don't want untranslated strings. It's better to use message
   // keys as a last resort.
