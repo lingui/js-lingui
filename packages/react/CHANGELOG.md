@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
+
+**Note:** Version bump only for package @lingui/react
+
+
+
+
+
 # [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
 
 

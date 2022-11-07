@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
+
+
+### Features
+
+* Reduce @lingui/macro CPU and memory usage ([#1298](https://github.com/lingui/js-lingui/issues/1298)) ([c993d9e](https://github.com/lingui/js-lingui/commit/c993d9e8dfd7f1aa1a750dc5ec69f94b5bbd5c39))
+
+
+
+
+
 # [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
 
 

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
+
+
+### Bug Fixes
+
+* add null undefined check ([016ff0e](https://github.com/lingui/js-lingui/commit/016ff0e4812b68a699cb06a3f8824b50cbef2e22))
+* allow lingui compile to compile without plural ([#1280](https://github.com/lingui/js-lingui/issues/1280)) ([be265ef](https://github.com/lingui/js-lingui/commit/be265efbfa1f6276314141daaf0c352ea96ad892))
+* extract-template async race issue ([#1279](https://github.com/lingui/js-lingui/issues/1279)) ([a69ed8f](https://github.com/lingui/js-lingui/commit/a69ed8f713eb7f895158ea3b5f0ef99c26b63578))
+* Make pseudolocal use the message AST instead of the key ([#1293](https://github.com/lingui/js-lingui/issues/1293)) ([7c85cb7](https://github.com/lingui/js-lingui/commit/7c85cb70b3b791951a9239c037aa73bb890c26e6))
+* Pass formatter to pluralization function ([#1294](https://github.com/lingui/js-lingui/issues/1294)) ([33af3ba](https://github.com/lingui/js-lingui/commit/33af3ba3dc22bd4128d98e061cb9d97f75c6503a))
+* remove Node v10, add node v16, fix the fsPromises error ([9739e4f](https://github.com/lingui/js-lingui/commit/9739e4f97d2e2680886f313bb50077f10a570507))
+* Try to add a trailing newline if the file had one ([#1260](https://github.com/lingui/js-lingui/issues/1260)) ([da25b94](https://github.com/lingui/js-lingui/commit/da25b9475d4e622183eb21ad8eae926d09f51c1c))
+* use the 3.9 Python version in the 'deploy-docs' workflow ([83d76f3](https://github.com/lingui/js-lingui/commit/83d76f332c421c316b77ce332b790a767dd2a195))
+
+
+### Features
+
+* Reduce @lingui/macro CPU and memory usage ([#1298](https://github.com/lingui/js-lingui/issues/1298)) ([c993d9e](https://github.com/lingui/js-lingui/commit/c993d9e8dfd7f1aa1a750dc5ec69f94b5bbd5c39))
+* Support GetText template files support during compile ([#1296](https://github.com/lingui/js-lingui/issues/1296)) ([5e43810](https://github.com/lingui/js-lingui/commit/5e43810c98a57ef5ada16f149cf761eab611b715))
+* Switch to cosmiconfig-typescript-loader [#1247](https://github.com/lingui/js-lingui/issues/1247) ([118d183](https://github.com/lingui/js-lingui/commit/118d183805d6cfe160e6160ebd6cf6b4ed338c03))
+
+
+
+
+
 # [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
 
 

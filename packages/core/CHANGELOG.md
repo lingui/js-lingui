@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
+
+
+### Bug Fixes
+
+* Pass formatter to pluralization function ([#1294](https://github.com/lingui/js-lingui/issues/1294)) ([33af3ba](https://github.com/lingui/js-lingui/commit/33af3ba3dc22bd4128d98e061cb9d97f75c6503a))
+
+
+
+
+
 # [3.14.0](https://github.com/lingui/js-lingui/compare/v3.13.3...v3.14.0) (2022-06-22)
 
 
