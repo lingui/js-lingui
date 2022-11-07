@@ -32,6 +32,16 @@ function macro({ references, state, babel }) {
   const jsNodes = []
   let needsI18nImport = false
 
+  const alreadyVisitedCache = new WeakSet()
+  const alreadyVisited = (path) => {
+    if (alreadyVisitedCache.has(path)) {
+      return true
+    } else {
+      alreadyVisitedCache.add(path)
+      return false
+    }
+  }
+
   Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
     const macroType = getMacroType(tagName)
@@ -119,17 +129,6 @@ function isRootPath(allPath) {
         return !allPath.includes(path.parentPath) && traverse(path.parentPath)
       }
     })(node)
-}
-
-const alreadyVisitedCache = []
-
-function alreadyVisited(path) {
-  if (alreadyVisitedCache.includes(path)) {
-    return true
-  } else {
-    alreadyVisitedCache.push(path)
-    return false
-  }
 }
 
 function getMacroType(tagName) {
