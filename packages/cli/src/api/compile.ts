@@ -5,7 +5,6 @@ import * as R from "ramda"
 
 import pseudoLocalize from "./pseudoLocalize"
 
-
 const INVALID_OBJECT_KEY_REGEX = /^(\d+[a-zA-Z]|[a-zA-Z]+\d)(\d|[a-zA-Z])*/
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
@@ -26,11 +25,7 @@ export type CreateCompileCatalogOptions = {
  * applying pseudolocalization where necessary.
  */
 function compileSingleKey(key: string, translation: string, shouldPseudolocalize: boolean): t.ObjectProperty {
-  if (shouldPseudolocalize) {
-    translation = pseudoLocalize(key)
-  }
-
-  return t.objectProperty(t.stringLiteral(key), compile(translation))
+  return t.objectProperty(t.stringLiteral(key), compile(translation, shouldPseudolocalize))
 }
 
 export function createCompiledCatalog(
@@ -118,34 +113,40 @@ function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
  * Compile string message into AST tree. Message format is parsed/compiled into
  * JS arrays, which are handled in client.
  */
-export function compile(message: string) {
+export function compile(message: string, shouldPseudolocalize: boolean = false) {
   let tokens
 
   try {
     tokens = parse(message)
   } catch (e) {
     throw new Error(
-      `Can't parse message. Please check correct syntax: "${message}" \n \n Messageformat-parser trace: ${e.message}`,
+      `Can't parse message. Please check correct syntax: "${message}" \n \n Messageformat-parser trace: ${e.message}`
     )
   }
-  const ast = processTokens(tokens)
+  const ast = processTokens(tokens, shouldPseudolocalize)
 
   if (isString(ast)) return t.stringLiteral(ast)
 
   return ast
 }
 
-function processTokens(tokens) {
+function processTokens(tokens, shouldPseudolocalize: boolean) {
   // Shortcut - if the message doesn't include any formatting,
   // simply join all string chunks into one message
   if (!tokens.filter((token) => !isString(token)).length) {
-    return tokens.join("")
+    if (shouldPseudolocalize) {
+      return tokens.map((token) => pseudoLocalize(token)).join("")
+    } else {
+      return tokens.join("")
+    }
   }
 
   return t.arrayExpression(
     tokens.map((token) => {
       if (isString(token)) {
-        return t.stringLiteral(token)
+        return t.stringLiteral(
+          shouldPseudolocalize ? pseudoLocalize(token) : token
+        )
 
         // # in plural case
       } else if (token.type === "octothorpe") {
@@ -179,7 +180,7 @@ function processTokens(tokens) {
       }
 
       token.cases.forEach((item) => {
-        const inlineTokens = processTokens(item.tokens)
+        const inlineTokens = processTokens(item.tokens, shouldPseudolocalize)
         formatProps.push(
           t.objectProperty(
             // if starts with number must be wrapped with quotes

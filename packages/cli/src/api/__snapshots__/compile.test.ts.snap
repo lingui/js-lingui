@@ -6,6 +6,8 @@ Can't parse message. Please check correct syntax: "{value, plural, one {Book} ot
  Messageformat-parser trace: Expected "#", "{", "}", doubled apostrophe, escaped string, or plain char but end of input found.
 `;
 
+exports[`createCompiledCatalog nested message 1`] = `/*eslint-disable*/module.exports={messages:{"nested":{"one":"Uno","two":"Dos","three":"Tres","hello":["Hola ",["name"]]}}};`;
+
 exports[`createCompiledCatalog options.compilerBabelOptions by default should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Alohà"}};`;
 
 exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Aloh\\xE0"}};`;
@@ -20,9 +22,17 @@ exports[`createCompiledCatalog options.namespace should compile with window 1`] 
 
 exports[`createCompiledCatalog options.namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
 
-exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ĥēĺĺō"}};`;
+exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"ÀĥōĴ"}};`;
 
 exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
+
+exports[`createCompiledCatalog options.pure should return code catalog 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj"}};`;
+
+exports[`createCompiledCatalog options.pure should return pure catalog 1`] = `
+Object {
+  Hello: Ahoj,
+}
+`;
 
 exports[`createCompiledCatalog options.strict should return message key as a fallback translation 1`] = `/*eslint-disable*/module.exports={messages:{"Hello":"Ahoj","Missing":"Missing","Select":[["id","select",{Gen:"Genesis","1John":"1 John",other:"____"}]]}};`;
 
