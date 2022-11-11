@@ -41,8 +41,9 @@ export default async function command(
 
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
+  let commandSuccess = true
   for (let catalog of catalogs) {
-    await catalog.make({
+    const catalogSuccess = await catalog.make({
       ...options as CliExtractOptions,
       orderBy: config.orderBy,
       extractors: config.extractors,
@@ -50,6 +51,7 @@ export default async function command(
     })
 
     catalogStats[catalog.path] = catalog.readAll()
+    commandSuccess &&= catalogSuccess
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
@@ -80,7 +82,7 @@ export default async function command(
       .catch(err => console.error(`Can't load service module ${moduleName}`, err))
   }
 
-  return true
+  return commandSuccess
 }
 
 if (require.main === module) {
