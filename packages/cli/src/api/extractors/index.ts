@@ -58,5 +58,5 @@ export default async function extract(
     }
   }
 
-  return false
+  return true
 }
