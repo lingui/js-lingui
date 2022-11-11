@@ -93,7 +93,7 @@ Object {
 }
 `;
 
-exports[`Catalog collect should handle errors 1`] = `Object {}`;
+exports[`Catalog collect should handle errors 1`] = `undefined`;
 
 exports[`Catalog make should collect and write catalogs 1`] = `
 Object {
