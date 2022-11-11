@@ -134,7 +134,7 @@ export class Catalog {
     if (!catalog) return false
     const sort = order(options.orderBy) as (catalog: CatalogType) => CatalogType
     this.writeTemplate(sort(catalog as CatalogType))
-    return true;
+    return true
   }
 
   /**
