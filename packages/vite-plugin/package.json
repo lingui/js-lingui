@@ -1,0 +1,35 @@
+{
+  "name": "@lingui/vite-plugin",
+  "version": "3.11.0",
+  "description": "Vite plugin for Lingui message catalogs",
+  "main": "./build/index.js",
+  "license": "MIT",
+  "keywords": [
+    "vite-plugin",
+    "i18n",
+    "vite",
+    "linguijs",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@lingui/cli": "^3.16.1",
+    "@lingui/conf": "^3.16.1"
+  },
+  "devDependencies": {
+    "vite": "3.2.4"
+  }
+}

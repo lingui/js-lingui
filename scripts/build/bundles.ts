@@ -54,6 +54,10 @@ export const bundles: readonly BundleDef[] = [
   },
   {
     type: BundleType.NODE,
+    packageName: 'vite-plugin',
+  },
+  {
+    type: BundleType.NODE,
     packageName: 'macro',
   },
   {
