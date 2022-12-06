@@ -114,6 +114,11 @@ describe("@lingui/babel-plugin-extract-messages", function () {
   })
 
   testCase(
+    "should handle duplicate ids",
+    "duplicate-id-valid.js"
+  )
+
+  testCase(
     "should extract all messages from JSX files",
     "jsx-without-macros.js"
   )
@@ -133,5 +138,10 @@ describe("@lingui/babel-plugin-extract-messages", function () {
   testCase(
     "should extract all messages from JS files (macros)",
     "js-with-macros.js"
+  )
+
+  testCase(
+    "should extract all messages from JS files (without macros or i18n comments)",
+    "js-without-macros-or-comments.js"
   )
 })

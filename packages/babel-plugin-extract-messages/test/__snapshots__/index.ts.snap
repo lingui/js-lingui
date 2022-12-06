@@ -123,6 +123,72 @@ Object {
 }
 `;
 
+exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files (without macros or i18n comments) 1`] = `
+Object {
+  Context1: Object {
+    Some id: Object {
+      extractedComments: Array [],
+      origin: Array [
+        Array [
+          js-without-macros-or-comments.js,
+          11,
+        ],
+      ],
+    },
+  },
+  Description: Object {
+    extractedComments: Array [
+      description,
+    ],
+    origin: Array [
+      Array [
+        js-without-macros-or-comments.js,
+        3,
+      ],
+    ],
+  },
+  ID: Object {
+    extractedComments: Array [],
+    message: Message with id,
+    origin: Array [
+      Array [
+        js-without-macros-or-comments.js,
+        7,
+      ],
+    ],
+  },
+  Message: Object {
+    extractedComments: Array [],
+    origin: Array [
+      Array [
+        js-without-macros-or-comments.js,
+        1,
+      ],
+    ],
+  },
+  Multiline: Object {
+    extractedComments: Array [
+      this is 2 lines long,
+    ],
+    origin: Array [
+      Array [
+        js-without-macros-or-comments.js,
+        5,
+      ],
+    ],
+  },
+  Values {param}: Object {
+    extractedComments: Array [],
+    origin: Array [
+      Array [
+        js-without-macros-or-comments.js,
+        9,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files 1`] = `
 Object {
   Context1: Object {
@@ -316,6 +382,33 @@ Object {
       Array [
         jsx-without-macros.js,
         6,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`@lingui/babel-plugin-extract-messages should handle duplicate ids 1`] = `
+Object {
+  msg: Object {
+    extractedComments: Array [],
+    message: Hello World!,
+    origin: Array [
+      Array [
+        duplicate-id-valid.js,
+        5,
+      ],
+      Array [
+        duplicate-id-valid.js,
+        8,
+      ],
+      Array [
+        duplicate-id-valid.js,
+        11,
+      ],
+      Array [
+        duplicate-id-valid.js,
+        14,
       ],
     ],
   },
