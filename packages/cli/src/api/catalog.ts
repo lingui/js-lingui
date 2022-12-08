@@ -99,8 +99,9 @@ export class Catalog {
     this.format = getFormat(config.format)
   }
 
-  async make(options: MakeOptions) {
+  async make(options: MakeOptions): Promise<boolean> {
     const nextCatalog = await this.collect(options)
+    if (!nextCatalog) return false
     const prevCatalogs = this.readAll()
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
@@ -125,18 +126,21 @@ export class Catalog {
     } else {
       this.writeAll(sortedCatalogs)
     }
+    return true
   }
 
-  async makeTemplate(options: MakeTemplateOptions) {
+  async makeTemplate(options: MakeTemplateOptions): Promise<boolean> {
     const catalog = await this.collect(options)
+    if (!catalog) return false
     const sort = order(options.orderBy) as (catalog: CatalogType) => CatalogType
     this.writeTemplate(sort(catalog as CatalogType))
+    return true
   }
 
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  async collect(options: CollectOptions) {
+  async collect(options: CollectOptions): Promise<CatalogType | undefined> {
     const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
 
     if (fs.existsSync(tmpDir)) {
@@ -153,15 +157,18 @@ export class Catalog {
         paths = paths.filter((path: string) => regex.test(path))
       }
 
+      let catalogSuccess = true
       for (let filename of paths) {
-        await extract(filename, tmpDir, {
+        const fileSuccess = await extract(filename, tmpDir, {
           verbose: options.verbose,
           configPath: options.configPath,
           babelOptions: this.config.extractBabelOptions,
           extractors: options.extractors,
           projectType: options.projectType,
         })
+        catalogSuccess &&= fileSuccess
       }
+      if (!catalogSuccess) return undefined
 
       return (function traverse(directory) {
         return fs

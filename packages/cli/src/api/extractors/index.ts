@@ -45,18 +45,18 @@ export default async function extract(
 
     try {
       await ext.extract(filename, targetPath, options)
+
+      if (options.verbose && spinner) spinner.succeed()
+      return true
     } catch (e) {
       if (options.verbose && spinner) {
         spinner.fail(e.message)
       } else {
         console.error(`Cannot process file ${e.message}`)
       }
-      return true
+      return false
     }
-
-    if (options.verbose && spinner) spinner.succeed()
-    return true
   }
 
-  return false
+  return true
 }
