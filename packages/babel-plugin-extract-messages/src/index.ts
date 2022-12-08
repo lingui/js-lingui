@@ -109,6 +109,28 @@ function extractStringContatentation(t, node, error): string {
   }
 }
 
+function extractCommentString(t, path, valuePath, valueObj): string {
+  if (t.isStringLiteral(valueObj)) {
+    // Comment is a single line string
+    return valueObj.value;
+  }
+
+  // Comment is a multi-line string.
+  const errorIfNotAString = path
+    .get(valuePath)
+    .buildCodeFrameError("Only strings are supported as comments.")
+
+  if (t.isBinaryExpression(valueObj)) {
+    return extractStringContatentation(
+      t,
+      valueObj,
+      errorIfNotAString
+    )
+  } else {
+    throw errorIfNotAString
+  }
+}
+
 export default function ({ types: t }) {
   let localTransComponentName
 
@@ -220,25 +242,32 @@ export default function ({ types: t }) {
             )
           }
         )
-        if (!hasComment) return
-
+        
+        const isNonMacroI18n = isI18nMethod(path.node.callee) && !hasComment && path.node.arguments[0] && !path.node.arguments[0].leadingComments;
+        if (!hasComment && !isNonMacroI18n) return;
         const props = {
-          id: path.node.arguments[0].value,
-        }
+          id: path.node.arguments[0].value
+        };
 
         if (!props.id) {
-          console.warn("Missing message ID, skipping.")
+          console.warn("Missing message ID, skipping.");
           console.warn(generate(path.node).code)
-          return
+          return;
         }
 
         const copyOptions = ["message", "comment", "context"]
 
         if (t.isObjectExpression(path.node.arguments[2])) {
-          path.node.arguments[2].properties.forEach((property) => {
-            if (!copyOptions.includes(property.key.name)) return
+          path.node.arguments[2].properties.forEach(({key, value}, i) => {
+            if (!copyOptions.includes(key.name)) return
 
-            props[property.key.name] = property.value.value
+            let valueToExtract = value.value;
+
+            if (key.name === "comment") {
+              valueToExtract = extractCommentString(t, path, `arguments.2.properties.${i}.value`, value);
+            }
+
+            props[key.name] = valueToExtract
           })
         }
 
@@ -298,21 +327,8 @@ export default function ({ types: t }) {
             // By default, the value is just the string value of the object property.
             let valueToExtract = value.value;
 
-            if (key.name === "comment" && !t.isStringLiteral(value)) {
-              // Comments can be single or multi-line strings.
-              const errorIfNotAString = path
-                .get(`properties.${i}.value`)
-                .buildCodeFrameError("Only strings are supported as comments.")
-
-              if (t.isBinaryExpression(value)) {
-                valueToExtract = extractStringContatentation(
-                  t,
-                  value,
-                  errorIfNotAString
-                )
-              } else {
-                throw errorIfNotAString
-              }
+            if (key.name === "comment") {
+              valueToExtract = extractCommentString(t, path, `properties.${i}.value`, value);
             } else if (key.name === "id") {
                 const isIdLiteral = !value.value && t.isTemplateLiteral(value)
                 if (isIdLiteral) {
