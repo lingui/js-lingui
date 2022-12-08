@@ -175,6 +175,7 @@ export type TransProps = {
   children?: React.ReactNode
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => ReactElement<any, any> | null
+  i18n?: I18n
 }
 
 export type ChoiceProps = {
