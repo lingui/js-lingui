@@ -29,6 +29,8 @@ export const fixture = (...dirs) =>
   // preserve trailing slash
   (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
 
+const enPluralRule = "(n, ord) => {return n == 1  ? 'one' : 'other';}"
+
 describe("Catalog", function () {
   afterEach(() => {
     mockFs.restore()
@@ -1072,6 +1074,8 @@ describe("order", function () {
 
 describe("writeCompiled", function () {
   const localeDir = copyFixture(fixture("locales", "initial/"))
+  const enPluralRule = "(n, ord) => {return n == 1 ? 'one' : 'other';}"
+
   const catalog = new Catalog(
     {
       name: "messages",
@@ -1092,7 +1096,7 @@ describe("writeCompiled", function () {
   ])(
     "Should save namespace $namespace in $extension extension",
     ({ namespace, extension }) => {
-      const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+      const compiledCatalog = createCompiledCatalog("en", {}, enPluralRule, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
       expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
         extension

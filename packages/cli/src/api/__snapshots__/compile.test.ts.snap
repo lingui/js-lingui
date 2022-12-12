@@ -1,25 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createCompiledCatalog nested message 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"nested\\":{\\"one\\":\\"Uno\\",\\"two\\":\\"Dos\\",\\"three\\":\\"Tres\\",\\"hello\\":[\\"Hola \\",[\\"name\\"]]}}")};`;
+exports[`createCompiledCatalog nested message 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"nested\\":{\\"one\\":\\"Uno\\",\\"two\\":\\"Dos\\",\\"three\\":\\"Tres\\",\\"hello\\":[\\"Hola \\",[\\"name\\"]]}}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.compilerBabelOptions by default should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Alohà\\"}")};`;
+exports[`createCompiledCatalog options.compilerBabelOptions by default should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Alohà\\"}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Aloh\\xE0\\"}")};`;
+exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Aloh\\xE0\\"}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.namespace should compile with es 1`] = `/*eslint-disable*/export const messages=JSON.parse("{}");`;
+exports[`createCompiledCatalog options.namespace should compile with es 1`] = `
+/*eslint-disable*/export const messages = JSON.parse("{}");
+export const plurals = (n, ord) => {
+  return n == 1 ? 'one' : 'other';
+};
+`;
 
-exports[`createCompiledCatalog options.namespace should compile with global 1`] = `/*eslint-disable*/global.test={messages:JSON.parse("{}")};`;
+exports[`createCompiledCatalog options.namespace should compile with global 1`] = `
+/*eslint-disable*/global.test = {
+  messages: JSON.parse("{}"),
+  plurals: (n, ord) => {
+    return n == 1 ? 'one' : 'other';
+  }
+};
+`;
 
-exports[`createCompiledCatalog options.namespace should compile with ts 1`] = `/*eslint-disable*/export const messages=JSON.parse("{}");`;
+exports[`createCompiledCatalog options.namespace should compile with ts 1`] = `
+/*eslint-disable*/export const messages = JSON.parse("{}");
+export const plurals = (n, ord) => {
+  return n == 1 ? 'one' : 'other';
+};
+`;
 
-exports[`createCompiledCatalog options.namespace should compile with window 1`] = `/*eslint-disable*/window.test={messages:JSON.parse("{}")};`;
+exports[`createCompiledCatalog options.namespace should compile with window 1`] = `
+/*eslint-disable*/window.test = {
+  messages: JSON.parse("{}"),
+  plurals: (n, ord) => {
+    return n == 1 ? 'one' : 'other';
+  }
+};
+`;
 
 exports[`createCompiledCatalog options.namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
 
-exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"ÀĥōĴ\\"}")};`;
+exports[`createCompiledCatalog options.pseudoLocale should return catalog with pseudolocalized messages 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"ÀĥōĴ\\"}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\"}")};`;
+exports[`createCompiledCatalog options.pseudoLocale should return compiled catalog when pseudoLocale doesn't match current locale 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\"}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.strict should return message key as a fallback translation 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\",\\"Missing\\":\\"Missing\\",\\"Select\\":[[\\"id\\",\\"select\\",{\\"Gen\\":\\"Genesis\\",\\"1John\\":\\"1 John\\",\\"other\\":\\"____\\"}]]}")};`;
+exports[`createCompiledCatalog options.strict should return message key as a fallback translation 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\",\\"Missing\\":\\"Missing\\",\\"Select\\":[[\\"id\\",\\"select\\",{\\"Gen\\":\\"Genesis\\",\\"1John\\":\\"1 John\\",\\"other\\":\\"____\\"}]]}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;
 
-exports[`createCompiledCatalog options.strict should't return message key as a fallback in strict mode 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\",\\"Missing\\":\\"\\",\\"Select\\":[[\\"id\\",\\"select\\",{\\"Gen\\":\\"Genesis\\",\\"1John\\":\\"1 John\\",\\"other\\":\\"____\\"}]]}")};`;
+exports[`createCompiledCatalog options.strict should't return message key as a fallback in strict mode 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Ahoj\\",\\"Missing\\":\\"\\",\\"Select\\":[[\\"id\\",\\"select\\",{\\"Gen\\":\\"Genesis\\",\\"1John\\":\\"1 John\\",\\"other\\":\\"____\\"}]]}"),plurals:(n,ord)=>{return n==1?"one":"other"}};`;

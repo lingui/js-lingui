@@ -51,7 +51,7 @@ function extractLinguiMessages(snowpackConfig?, linguiConfig: LinguiConfigOpts =
         return acc
       }, {})
 
-      const compiled = createCompiledCatalog(locale, messages, {
+      const compiled = createCompiledCatalog(locale, messages, catalog.getPluralRule(locale), {
         strict,
         namespace: config.compileNamespace,
         pseudoLocale: config.pseudoLocale,

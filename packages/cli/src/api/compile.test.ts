@@ -1,4 +1,16 @@
 import { compile, createCompiledCatalog } from "./compile"
+import vm from "vm";
+
+function evalCjsSource(code: string) {
+  const context = {
+    module: {
+      exports: {},
+    },
+  }
+
+  vm.runInContext(code, vm.createContext(context))
+  return context.module.exports
+}
 
 describe("compile", () => {
   describe("with pseudo-localization", () => {
@@ -130,31 +142,70 @@ describe("compile", () => {
 
 describe("createCompiledCatalog", () => {
   it("nested message", () => {
-      expect(
-        createCompiledCatalog(
-          "cs",
-          {
-            nested: {
-              one: "Uno",
-              two: "Dos",
-              three: "Tres",
-              hello: "Hola {name}",
-            },
+    expect(
+      createCompiledCatalog(
+        "cs",
+        {
+          nested: {
+            one: "Uno",
+            two: "Dos",
+            three: "Tres",
+            hello: "Hola {name}",
           },
-          {}
-        )
-      ).toMatchSnapshot()
+        },
+        "(n, ord) => {return n == 1  ? 'one' : 'other';}",
+        {},
+      ),
+    ).toMatchSnapshot();
+  });
+
+  it("Should create callable function from plurals string, arrow function", () => {
+    const source = createCompiledCatalog(
+      "cs",
+      {},
+      "(n, ord) => {return n == 1  ? 'one' : 'other';}",
+      {
+        namespace: "cjs",
+      },
+    )
+
+    const data: any = evalCjsSource(source)
+
+    expect(data.messages).toBeDefined()
+    expect(data.plurals(1)).toBe("one")
+    expect(data.plurals(2)).toBe("other")
   })
 
-  describe("options.namespace", () => {
+  it("Should create callable function from plurals string, function declaration", () => {
+    const source = createCompiledCatalog(
+      "cs",
+      {},
+      "function en(n, ord) {return n == 1  ? 'one' : 'other';}",
+      {
+        namespace: "cjs",
+      },
+    )
+
+    const data: any = evalCjsSource(source)
+
+    expect(data.messages).toBeDefined()
+    expect(data.plurals(1)).toBe("one")
+    expect(data.plurals(2)).toBe("other")
+  })
+
+  describe('options.namespace', () => {
     const getCompiledCatalog = (namespace) =>
       createCompiledCatalog(
-        "fr",
+        'fr',
         {},
+        `(n, ord) => {return n == 1  ? 'one' : 'other';}`,
         {
           namespace,
-        }
-      )
+          compilerBabelOptions: {
+            minified: false,
+          },
+        },
+      );
 
     it("should compile with es", () => {
       expect(getCompiledCatalog("es")).toMatchSnapshot()
@@ -186,6 +237,7 @@ describe("createCompiledCatalog", () => {
           Missing: "",
           Select: "{id, select, Gen {Genesis} 1John {1 John}  other {____}}",
         },
+        "(n, ord) => {return n == 1  ? 'one' : 'other';}",
         {
           strict,
         }
@@ -207,6 +259,7 @@ describe("createCompiledCatalog", () => {
         {
           Hello: "Ahoj",
         },
+        "(n, ord) => {return n == 1  ? 'one' : 'other';}",
         {
           pseudoLocale,
         }
@@ -228,6 +281,7 @@ describe("createCompiledCatalog", () => {
         {
           Hello: "Alohà",
         },
+        "(n, ord) => {return n == 1  ? 'one' : 'other';}",
         opts
       )
 

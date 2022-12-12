@@ -54,6 +54,8 @@ function command(config: LinguiConfig, options) {
         sourceLocale: config.sourceLocale,
       })
 
+      const plurals = catalog.getPluralRule(locale)
+
       if (!options.allowEmpty) {
         const missingMsgIds = R.pipe(R.pickBy(R.isNil), R.keys)(messages)
 
@@ -85,7 +87,7 @@ function command(config: LinguiConfig, options) {
         const namespace = options.typescript
           ? "ts"
           : options.namespace || config.compileNamespace
-        const compiledCatalog = createCompiledCatalog(locale, messages, {
+        const compiledCatalog = createCompiledCatalog(locale, messages, plurals, {
           strict: false,
           namespace,
           pseudoLocale: config.pseudoLocale,

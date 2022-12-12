@@ -6,6 +6,7 @@ import chalk from "chalk"
 import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
+import * as plurals from "make-plural/plurals"
 
 import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
 
@@ -270,6 +271,15 @@ export class Catalog {
       (_value, key) => this.getTranslation(catalogs, locale, key, options),
       { ...template, ...catalogs[locale] }
     )
+  }
+
+  /**
+   *
+   * Return strigified plural rule function which can be hydrated and used in client code
+   */
+  getPluralRule(locale: string): string {
+    const l = locale as keyof typeof plurals;
+    return plurals[l].toString()
   }
 
   getTranslation(
