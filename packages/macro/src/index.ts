@@ -1,8 +1,10 @@
-import { createMacro } from "babel-plugin-macros"
+import {createMacro, MacroParams} from "babel-plugin-macros"
 import { getConfig } from "@lingui/conf"
 
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
+import {NodePath} from "@babel/traverse"
+import {ImportDeclaration, isImportSpecifier, isIdentifier} from "@babel/types"
 
 const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
 
@@ -25,13 +27,13 @@ const getSymbolSource = (name: 'i18n' | 'Trans'): [source: string, identifier?: 
 const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
 const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
-function macro({ references, state, babel }) {
-  const jsxNodes = []
-  const jsNodes = []
+function macro({ references, state, babel }: MacroParams) {
+  const jsxNodes: NodePath[] = []
+  const jsNodes: NodePath[] = []
   let needsI18nImport = false
 
   const alreadyVisitedCache = new WeakSet()
-  const alreadyVisited = (path) => {
+  const alreadyVisited = (path: NodePath) => {
     if (alreadyVisitedCache.has(path)) {
       return true
     } else {
@@ -86,7 +88,7 @@ function macro({ references, state, babel }) {
   }
 }
 
-function addImport(babel, state, module, importName) {
+function addImport(babel: MacroParams["babel"], state: MacroParams["state"], module: string, importName: string) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
@@ -95,7 +97,7 @@ function addImport(babel, state, module, importName) {
       importNode.source.value === module &&
       // https://github.com/lingui/js-lingui/issues/777
       importNode.importKind !== "type"
-  )
+  ) as ImportDeclaration
 
   const tIdentifier = t.identifier(importName)
   // Handle adding the import or altering the existing import
@@ -103,7 +105,7 @@ function addImport(babel, state, module, importName) {
     if (
       linguiImport.specifiers.findIndex(
         (specifier) =>
-          specifier.imported && specifier.imported.name === importName
+          isImportSpecifier(specifier) && isIdentifier(specifier.imported, {name: importName})
       ) === -1
     ) {
       linguiImport.specifiers.push(t.importSpecifier(tIdentifier, tIdentifier))
@@ -118,9 +120,9 @@ function addImport(babel, state, module, importName) {
   }
 }
 
-function isRootPath(allPath) {
-  return (node) =>
-    (function traverse(path) {
+function isRootPath(allPath: NodePath[]) {
+  return (node: NodePath) =>
+    (function traverse(path): boolean {
       if (!path.parentPath) {
         return true
       } else {
@@ -129,7 +131,7 @@ function isRootPath(allPath) {
     })(node)
 }
 
-function getMacroType(tagName) {
+function getMacroType(tagName: string): string {
   switch (tagName) {
     case "defineMessage":
     case "arg":

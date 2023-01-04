@@ -36,6 +36,9 @@
   "peerDependencies": {
     "@lingui/core": "^3.13.0",
     "@lingui/react": "^3.13.0",
-    "babel-plugin-macros": "2 || 3"
+    "babel-plugin-macros": "2 || 3"
+  },
+  "devDependencies": {
+    "@types/babel-plugin-macros": "^2.8.5"
   }
 }

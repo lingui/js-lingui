@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     input: `
         import { Plural } from '@lingui/macro';
@@ -20,6 +22,41 @@ export default [
         }} components={{
           0: <a href="/more" />
         }} />;
+      `,
+  },
+  {
+    name: 'Should preserve reserved props: `comment`, `context`, `render`, `id`',
+    input: `
+        import { Plural } from '@lingui/macro';
+        <Plural
+          comment="Comment for translator"
+          context="translation context"
+          id="custom.id"
+          render={() => {}}
+          value={count}
+          offset="1"
+          _0="Zero items"
+          few={\`\${count} items\`}
+          other={<a href="/more">A lot of them</a>}
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans
+          render={() => {}}
+          id="custom.id"
+          message={
+            "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
+          }
+          comment="Comment for translator"
+          context="translation context"
+          values={{
+            count: count
+          }}
+          components={{
+            0: <a href="/more" />
+          }}
+        />;
       `,
   },
   {
@@ -106,3 +143,4 @@ export default [
     filename: `jsx-plural-select-nested.js`,
   },
 ]
+export default cases;

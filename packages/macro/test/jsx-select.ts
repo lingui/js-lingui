@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     input: `
         import { Select } from '@lingui/macro';
@@ -40,3 +42,4 @@ export default [
       `,
   },
 ]
+export default cases;

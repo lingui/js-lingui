@@ -3,7 +3,18 @@ import path from "path"
 import { transformFileSync, TransformOptions, transformSync } from "@babel/core"
 import prettier from "prettier"
 
-const testCases = {
+export type TestCase = {
+  name?: string
+  input?: string
+  expected?: string
+  filename?: string
+  production?: boolean
+  useTypescriptPreset?: boolean
+  only?: boolean
+  skip?: boolean
+}
+
+const testCases: Record<string, TestCase[]> = {
   "js-arg": require("./js-arg").default,
   "js-t": require("./js-t").default,
   "js-plural": require("./js-plural").default,
@@ -25,7 +36,7 @@ describe("macro", function () {
   }
 
   // return function, so we can test exceptions
-  const transformCode = (code) => () => {
+  const transformCode = (code: string) => () => {
     try {
       return transformSync(code, babelOptions).code.trim()
     } catch (e) {
@@ -38,7 +49,7 @@ describe("macro", function () {
     describe(suiteName, () => {
       const cases = testCases[suiteName]
 
-      const clean = (value) =>
+      const clean = (value: string) =>
         prettier.format(value, { parser: "babel" }).replace(/\n+/, "\n")
 
       cases.forEach(

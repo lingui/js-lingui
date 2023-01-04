@@ -1,17 +1,69 @@
 import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import MacroJSX from "./macroJsx"
+import MacroJSX, {normalizeWhitespace} from "./macroJsx"
+import {JSXElement} from "@babel/types"
 
-const parseExpression = (expression) =>
+const parseExpression = (expression: string) =>
   _parseExpression(expression, {
     plugins: ["jsx"],
-  })
+  }) as JSXElement
 
 function createMacro() {
   return new MacroJSX({ types })
 }
 
 describe("jsx macro", () => {
+  describe('normalizeWhitespace', () => {
+    it('should remove whitespace before/after expression', () => {
+      const actual = normalizeWhitespace(
+          `You have
+
+          {count, plural, one {Message} other {Messages}}`)
+
+      expect(actual).toBe(`You have{count, plural, one {Message} other {Messages}}`)
+    })
+
+    it('should remove whitespace before/after tag', () => {
+      const actual = normalizeWhitespace(
+          `    Hello <strong>World!</strong><br />
+    <p>
+     My name is <a href="/about">{{" "}}
+      <em>{{name}}</em></a>
+    </p>`)
+
+      expect(actual).toBe(`Hello <strong>World!</strong><br /><p>My name is <a href="/about">{{" "}}<em>{{name}}</em></a></p>`)
+    })
+
+    it('should remove whitespace before/after tag', () => {
+      const actual = normalizeWhitespace(
+          `Property {0},
+          function {1},
+          array {2},
+          constant {3},
+          object {4},
+          everything {5}`)
+
+      expect(actual).toBe(`Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}`)
+    })
+
+    it('should remove trailing whitespaces in icu expressions', () => {
+      const actual = normalizeWhitespace(
+          `{count, plural, one {
+
+              <0>#</0> slot added
+
+            } other {
+
+              <1>#</1> slots added
+
+            }}
+`)
+
+      expect(actual).toBe(`{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}`)
+    })
+
+  })
+
   describe("tokenizeTrans", () => {
     it("simple message without arguments", () => {
       const macro = createMacro()
@@ -20,8 +72,8 @@ describe("jsx macro", () => {
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message",
-        },
+          value: "Message"
+        }
       ])
     })
 
@@ -56,7 +108,7 @@ describe("jsx macro", () => {
         },
         {
           type: "arg",
-          name: 0,
+          name: "0",
           value: expect.objectContaining({
             type: "MemberExpression",
           }),

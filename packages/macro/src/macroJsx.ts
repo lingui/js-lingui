@@ -1,13 +1,24 @@
 import * as R from "ramda"
 import * as babelTypes from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import {
+  Expression,
+  Identifier,
+  JSXAttribute,
+  JSXElement,
+  JSXExpressionContainer,
+  JSXIdentifier,
+  JSXSpreadAttribute,
+  Node,
+  StringLiteral
+} from "@babel/types"
+import {NodePath} from "@babel/traverse"
 
-import ICUMessageFormat from "./icu"
-import { zip, makeCounter } from "./utils"
-import { ID, COMMENT, MESSAGE, CONTEXT } from "./constants"
+import ICUMessageFormat, {ArgToken, ElementToken, TextToken, Token, Tokens} from "./icu"
+import {makeCounter, zip} from "./utils"
+import {COMMENT, CONTEXT, ID, MESSAGE} from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
-const jsx2icuExactChoice = (value) =>
+const jsx2icuExactChoice = (value: string) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
 // replace whitespace before/after newline with single space
@@ -15,7 +26,7 @@ const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
 // remove whitespace before/after tag or expression
 const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
-function maybeNodeValue(node) {
+function maybeNodeValue(node: Node): string {
   if (!node) return null
   if (node.type === "StringLiteral") return node.value
   if (node.type === "JSXAttribute") return maybeNodeValue(node.value)
@@ -26,7 +37,7 @@ function maybeNodeValue(node) {
   return null
 }
 
-function normalizeWhitespace(text) {
+export function normalizeWhitespace(text: string): string {
   return (
     text
       .replace(stripAroundTagsRe, "$1")
@@ -42,13 +53,11 @@ function normalizeWhitespace(text) {
 
 export default class MacroJSX {
   types: typeof babelTypes
-  expressionIndex: () => Number
-  elementIndex: () => Number
+  expressionIndex = makeCounter()
+  elementIndex = makeCounter()
 
-  constructor({ types }) {
+  constructor({ types }: {types: typeof babelTypes}) {
     this.types = types
-    this.expressionIndex = makeCounter()
-    this.elementIndex = makeCounter()
   }
 
   safeJsxAttribute = (name: string, value: string) => {
@@ -70,7 +79,7 @@ export default class MacroJSX {
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
-    const { attributes, id, comment, context } = this.stripMacroAttributes(path.node)
+    const { attributes, id, comment, context } = this.stripMacroAttributes(path.node as JSXElement)
 
     if (!id && !message) {
       return
@@ -159,17 +168,20 @@ export default class MacroJSX {
       /*selfClosing*/ true
     )
     newNode.loc = path.node.loc
-    // @ts-ignore
+
     path.replaceWith(newNode)
   }
 
-  attrName = (names, exclude = false) => {
+  attrName = (names: string[], exclude = false) => {
     const namesRe = new RegExp("^(" + names.join("|") + ")$")
-    return (attr) =>
-      exclude ? !namesRe.test(attr.name.name) : namesRe.test(attr.name.name)
+    return (attr: JSXAttribute | JSXSpreadAttribute) => {
+      const name = (((attr as JSXAttribute).name) as JSXIdentifier).name
+      return exclude ? !namesRe.test(name) : namesRe.test(name)
+    }
+
   }
 
-  stripMacroAttributes = (node) => {
+  stripMacroAttributes = (node: JSXElement) => {
     const { attributes } = node.openingElement
     const id = attributes.filter(this.attrName([ID]))[0]
     const message = attributes.filter(this.attrName([MESSAGE]))[0]
@@ -204,7 +216,7 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeNode = (node) => {
+  tokenizeNode = (node: Node): Tokens => {
     if (this.isI18nComponent(node)) {
       // t
       return this.tokenizeTrans(node)
@@ -218,13 +230,13 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeTrans = (node) => {
+  tokenizeTrans = (node: JSXElement): Token[] => {
     return R.flatten(
       node.children.map((child) => this.tokenizeChildren(child)).filter(Boolean)
     )
   }
 
-  tokenizeChildren = (node) => {
+  tokenizeChildren = (node: JSXElement['children'][number]): Tokens => {
     if (this.types.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
@@ -254,7 +266,6 @@ export default class MacroJSX {
             ),
           }),
           (exp) => zip(exp.quasis, exp.expressions),
-          // @ts-ignore
           R.flatten,
           R.filter(Boolean)
         )
@@ -272,13 +283,14 @@ export default class MacroJSX {
     } else if (this.types.isJSXText(node)) {
       return this.tokenizeText(node.value)
     } else {
-      return this.tokenizeText(node.value)
+      // impossible path
+      // return this.tokenizeText(node.value)
     }
   }
 
-  tokenizeChoiceComponent = (node) => {
+  tokenizeChoiceComponent = (node: JSXElement): Token => {
     const element = node.openingElement
-    const format = element.name.name.toLowerCase()
+    const format = this.getJsxTagName(node).toLowerCase()
     const props = element.attributes.filter(this.attrName([
       ID,
       COMMENT,
@@ -291,7 +303,7 @@ export default class MacroJSX {
       "components"
     ], true))
 
-    const token = {
+    const token: Token = {
       type: "arg",
       format,
       name: null,
@@ -302,23 +314,32 @@ export default class MacroJSX {
     }
 
     for (const attr of props) {
+      if (this.types.isJSXSpreadAttribute(attr)) {
+        continue;
+      }
+
+      if (this.types.isJSXNamespacedName(attr.name)) {
+        continue;
+      }
+
       const name = attr.name.name
 
       if (name === "value") {
         const exp = this.types.isLiteral(attr.value)
           ? attr.value
-          : attr.value.expression
+          : (attr.value as JSXExpressionContainer).expression
         token.name = this.expressionToArgument(exp)
-        token.value = exp
+        token.value = exp as Expression
       } else if (format !== "select" && name === "offset") {
         // offset is static parameter, so it must be either string or number
         token.options.offset = this.types.isStringLiteral(attr.value)
           ? attr.value.value
-          : attr.value.expression.value
+          : ((attr.value as JSXExpressionContainer).expression as StringLiteral).value
       } else {
-        let value
+        let value: ArgToken['options'][number]
+
         if (this.types.isStringLiteral(attr.value)) {
-          value = attr.value.extra.raw.replace(/(["'])(.*)\1/, "$2")
+          value = (attr.value.extra.raw as string).replace(/(["'])(.*)\1/, "$2")
         } else {
           value = this.tokenizeChildren(attr.value)
         }
@@ -333,13 +354,13 @@ export default class MacroJSX {
     return token
   }
 
-  tokenizeElement = (node) => {
+  tokenizeElement = (node: JSXElement): ElementToken => {
     // !!! Important: Calculate element index before traversing children.
     // That way outside elements are numbered before inner elements. (...and it looks pretty).
     const name = this.elementIndex()
-    const children = node.children
+    const children = R.flatten(node.children
       .map((child) => this.tokenizeChildren(child))
-      .filter(Boolean)
+      .filter(Boolean))
 
     node.children = []
     node.openingElement.selfClosing = true
@@ -352,29 +373,29 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeExpression = (node) => {
+  tokenizeExpression = (node: Expression | Node): ArgToken => {
     return {
       type: "arg",
       name: this.expressionToArgument(node),
-      value: node,
+      value: node as Expression,
     }
   }
 
-  tokenizeText = (value) => {
+  tokenizeText = (value: string): TextToken => {
     return {
       type: "text",
       value,
     }
   }
 
-  expressionToArgument = (exp) => {
-    return this.types.isIdentifier(exp) ? exp.name : this.expressionIndex()
+  expressionToArgument(exp: Expression | Node): string {
+    return this.types.isIdentifier(exp) ? exp.name : String(this.expressionIndex())
   }
 
   /**
    * We clean '//\` ' to just '`'
-   * */
-  clearBackslashes(value: string) {
+   **/
+  clearBackslashes(value: string): string {
     // if not we replace the extra scaped literals
     return value.replace(/\\`/g, "`")
   }
@@ -382,12 +403,11 @@ export default class MacroJSX {
   /**
    * Custom matchers
    */
-
-  isIdentifier = (node, name) => {
+  isIdentifier = (node: Node, name: string): node is Identifier => {
     return this.types.isIdentifier(node, { name })
   }
 
-  isI18nComponent = (node, name = "Trans") => {
+  isI18nComponent = (node: Node, name = "Trans"): node is JSXElement => {
     return (
       this.types.isJSXElement(node) &&
       this.types.isJSXIdentifier(node.openingElement.name, {
@@ -396,11 +416,17 @@ export default class MacroJSX {
     )
   }
 
-  isChoiceComponent = (node) => {
+  isChoiceComponent = (node: Node): node is JSXElement => {
     return (
       this.isI18nComponent(node, "Plural") ||
       this.isI18nComponent(node, "Select") ||
       this.isI18nComponent(node, "SelectOrdinal")
     )
+  }
+
+  getJsxTagName = (node: JSXElement): string => {
+    if ( this.types.isJSXIdentifier(node.openingElement.name)) {
+      return node.openingElement.name.name;
+    }
   }
 }

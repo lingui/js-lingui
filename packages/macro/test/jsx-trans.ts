@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     name: "Generate ID from children",
     input: `
@@ -52,6 +54,28 @@ export default [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id="msg.hello" message={"Hello World"} />;
+      `,
+  },
+  {
+    name: 'Should preserve reserved props: `comment`, `context`, `render`, `id`',
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans
+          comment="Comment for translator"
+          context="translation context"
+          id="custom.id"
+          render={() => {}}
+        >Hello World</Trans>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans
+          render={() => {}}
+          id="custom.id"
+          message={"Hello World"}
+          comment="Comment for translator"
+          context="translation context"
+        />;
       `,
   },
   {
@@ -324,8 +348,9 @@ export default [
       `,
   },
   {
+    name: 'Use a js macro inside a JSX Attribute of a component handled by JSX macro',
     input: `
-        import { t, plural, Trans } from '@lingui/macro'
+        import { t, Trans } from '@lingui/macro';
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
     expected: `
@@ -342,8 +367,9 @@ export default [
       `,
   },
   {
+    name: 'Use a js macro inside a JSX Attribute of a non macro JSX component',
     input: `
-        import { plural } from '@lingui/macro'
+        import { plural } from '@lingui/macro';
         <a href="/about" title={plural(count, {
           one: "# book",
           other: "# books"
@@ -382,3 +408,4 @@ export default [
       `,
   },
 ]
+export default cases;

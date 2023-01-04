@@ -1,6 +1,7 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
 import MacroJs from "./macroJs"
+import {CallExpression} from "@babel/types"
 
 function createMacro() {
   return new MacroJs({ types }, { i18nImportName: "i18n" })
@@ -63,7 +64,7 @@ describe("js macro", () => {
         },
         {
           type: "arg",
-          name: 0,
+          name: "0",
           value: expect.objectContaining({
             type: "MemberExpression",
           }),
@@ -163,7 +164,7 @@ describe("js macro", () => {
       const exp = parseExpression(
         "plural(count, { one: '# book', other: '# books'})"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -189,7 +190,7 @@ describe("js macro", () => {
           other: '# books'
          })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -212,7 +213,7 @@ describe("js macro", () => {
       const exp = parseExpression(
         "plural(count, { one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -265,7 +266,7 @@ describe("js macro", () => {
           })
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -304,7 +305,7 @@ describe("js macro", () => {
           other: "they"
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
       expect(tokens).toEqual({
         format: "select",
         name: "gender",
