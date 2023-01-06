@@ -1,12 +1,20 @@
 name: Size Testing
-on: [pull_request]
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+
 jobs:
   size:
     runs-on: ubuntu-latest
     env:
       CI_JOB_NUMBER: 1
+
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+
       - uses: andresz1/size-limit-action@v1
         with:
           build_script: release:build

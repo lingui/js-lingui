@@ -12,37 +12,21 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
-    env:
-      CI: true
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     strategy:
       matrix:
-        node: ["12", "14", "16"]
+        node: ["14", "16", "18"]
         os: [ubuntu-latest, windows-latest]
+
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v3
 
       - name: Setup node
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v3
         with:
           always-auth: true
           node-version: ${{ matrix.node }}
+          cache: 'yarn'
           scope: '@lingui'
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Install dependencies if needed
         run: yarn install --frozen-lockfile --pure-lockfile
@@ -50,18 +34,33 @@ jobs:
       - name: Unit Testing
         run: yarn test
 
+  validate:
+    runs-on: ubuntu-latest
+    name: validate (16, ubuntu-latest)
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: 16
+          cache: 'yarn'
+          scope: '@lingui'
+
+      - name: Install dependencies if needed
+        run: yarn install --frozen-lockfile --pure-lockfile
+
       - name: Linting & Types
-        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
         run: yarn lint:all
 
       - name: Build packages
-        if: matrix.node == '14'
         run: yarn release:build
 
       - name: Integration Testing
-        if: matrix.node == '14'
         run: yarn test:integration
 
       - name: Check coverage
-        if: matrix.node == '14' && matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3

@@ -8,29 +8,22 @@ on:
 jobs:
   next-sync:
     runs-on: ubuntu-latest
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     name: Syncing branches
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
-
-      - name: Prepare Lingui-Bot git account
-        uses: oleksiyrudenko/gha-git-credentials@v2-latest
-        with:
-          name: 'Lingui Bot'
-          email: 'linguibot@gmail.com'
-          actor: 'lingui-bot'
-          token: '${{ secrets.GH_TOKEN }}'
+          node-version: 16
 
       - name: Opening pull request
         id: pull
-        uses: tretuna/sync-branches@1.2.0
+        uses: tretuna/sync-branches@1.4.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "main"
           TO_BRANCH: "next"
+          PULL_REQUEST_TITLE: "chore: sync main to next"

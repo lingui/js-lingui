@@ -16,8 +16,6 @@
     "lint:types": "tsc",
     "lint:eslint": "eslint packages",
     "lint:all": "yarn lint:eslint && yarn lint:types",
-    "release": "node ./scripts/release.js",
-    "release:integration": "node ./scripts/integration.js",
     "release:build": "node ./scripts/build/",
     "release:test": "node ./scripts/test.js",
     "version:next": "lerna version --force-publish --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
