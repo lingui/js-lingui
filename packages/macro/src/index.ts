@@ -6,7 +6,7 @@ import MacroJSX from "./macroJsx"
 
 const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
 
-const getSymbolSource = (name: string) => {
+const getSymbolSource = (name: 'i18n' | 'Trans'): [source: string, identifier?: string] => {
   if (Array.isArray(config.runtimeConfigModule)) {
     if (name === "i18n") {
       return config.runtimeConfigModule
@@ -14,9 +14,7 @@ const getSymbolSource = (name: string) => {
       return ["@lingui/react", name]
     }
   } else {
-    if (
-      Object.prototype.hasOwnProperty.call(config.runtimeConfigModule, name)
-    ) {
+    if (config.runtimeConfigModule[name]) {
       return config.runtimeConfigModule[name]
     } else {
       return ["@lingui/react", name]
