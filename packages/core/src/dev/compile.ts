@@ -1,16 +1,16 @@
-import { parse } from "messageformat-parser"
-import { isString } from "../essentials"
-import { CompiledMessage } from "../i18n"
+import {Content, parse, Token} from "@messageformat/parser"
+import {CompiledMessage, CompiledMessageToken} from "../i18n"
+
 
 // [Tokens] -> (CTX -> String)
-function processTokens(tokens) {
-  if (!tokens.filter((token) => !isString(token)).length) {
-    return tokens.join("")
+function processTokens(tokens: Array<Token>): CompiledMessage {
+  if (!tokens.filter((token) => token.type !== "content").length) {
+    return tokens.map(token => (token as Content).value).join("")
   }
 
-  return tokens.map((token) => {
-    if (isString(token)) {
-      return token
+  return tokens.map<CompiledMessageToken>((token) => {
+    if (token.type === 'content') {
+      return token.value
 
       // # in plural case
     } else if (token.type === "octothorpe") {
@@ -22,17 +22,21 @@ function processTokens(tokens) {
 
       // argument with custom format (date, number)
     } else if (token.type === "function") {
-      const _param = token.param && token.param.tokens[0]
-      const param = typeof _param === "string" ? _param.trim() : _param
-      return [token.arg, token.key, param].filter(Boolean)
+      const _param = token?.param?.[0] as Content
+
+      if (_param) {
+        return [token.arg, token.key, _param.value.trim()]
+      } else {
+        return [token.arg, token.key]
+      }
     }
 
-    const offset = token.offset ? parseInt(token.offset) : undefined
+    const offset = token.pluralOffset
 
     // complex argument with cases
     const formatProps = {}
     token.cases.forEach((item) => {
-      formatProps[item.key] = processTokens(item.tokens)
+      formatProps[item.key.replace(/^=(.)+/, "$1")] = processTokens(item.tokens)
     })
 
     return [
@@ -41,8 +45,8 @@ function processTokens(tokens) {
       {
         offset,
         ...formatProps,
-      },
-    ]
+      } as any,
+    ] as CompiledMessageToken
   })
 }
 
@@ -53,7 +57,7 @@ export default function compile(
   try {
     return processTokens(parse(message))
   } catch (e) {
-    console.error(`Message cannot be parsed due to syntax errors: ${message}`)
+    console.error(`${e.message} \n\nMessage: ${message}`)
     return message
   }
 }

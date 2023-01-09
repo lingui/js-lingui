@@ -7,23 +7,26 @@ import { EventEmitter } from "./eventEmitter"
 export type MessageOptions = {
   message?: string
   context?: string
-  formats?: Object
+  formats?: Formats
 }
 
 export type Locale = string
 export type Locales = Locale | Locale[]
+export type Formats = Record<string, Intl.DateTimeFormatOptions | Intl.NumberFormatOptions>
+
+export type Values = Record<string, unknown>;
 
 export type LocaleData = {
-  plurals?: Function
+  plurals?: (n: number, ordinal?: boolean) => number
 }
 
 export type AllLocaleData = Record<Locale, LocaleData>
 
-export type CompiledMessage =
-  | string
-  | Array<
-      string | Array<string | (string | undefined) | Record<string, unknown>>
-    >
+export type CompiledIcuChoices = Record<string, CompiledMessage> & {offset: number};
+export type CompiledMessageToken = string | [name: string, type?: string, format?: null | string | CompiledIcuChoices];
+
+export type CompiledMessage = string | CompiledMessageToken[]
+
 
 export type Messages = Record<string, CompiledMessage>
 
@@ -48,7 +51,7 @@ type setupI18nProps = {
   locales?: Locales
   messages?: AllMessages
   localeData?: AllLocaleData
-  missing?: string | ((message, id, context) => string)
+  missing?: string | ((message: string, id: string, context: string) => string)
 }
 
 type Events = {
@@ -57,11 +60,11 @@ type Events = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  _locale: Locale
-  _locales: Locales
-  _localeData: AllLocaleData
-  _messages: AllMessages
-  _missing: string | ((message, id, context) => string)
+  private _locale: Locale
+  private _locales: Locales
+  private _localeData: AllLocaleData
+  private _messages: AllMessages
+  private _missing: string | ((message, id, context) => string)
 
   constructor(params: setupI18nProps) {
     super()
@@ -93,7 +96,7 @@ export class I18n extends EventEmitter<Events> {
     return this._localeData[this._locale] ?? {}
   }
 
-  _loadLocaleData(locale: Locale, localeData: LocaleData) {
+  private _loadLocaleData(locale: Locale, localeData: LocaleData) {
     if (this._localeData[locale] == null) {
       this._localeData[locale] = localeData
     } else {
@@ -120,7 +123,7 @@ export class I18n extends EventEmitter<Events> {
     this.emit("change")
   }
 
-  _load(locale: Locale, messages: Messages) {
+  private _load(locale: Locale, messages: Messages) {
     if (this._messages[locale] == null) {
       this._messages[locale] = messages
     } else {
@@ -168,7 +171,7 @@ export class I18n extends EventEmitter<Events> {
   // method for translation and formatting
   _(
     id: MessageDescriptor | string,
-    values: Object | undefined = {},
+    values: Values | undefined = {},
     { message, formats, context }: MessageOptions | undefined = {}
   ) {
     if (!isString(id)) {
