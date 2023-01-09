@@ -1,8 +1,7 @@
 const { exec: _exec } = require("child_process")
 const chalk = require("chalk")
 const ora = require("ora")
-
-const LERNA_COMMAND = "./node_modules/.bin/lerna"
+const os = require("os")
 
 async function releaseInVerdaccio() {
   const spinner = ora()
@@ -16,21 +15,44 @@ async function releaseInVerdaccio() {
 
   spinner.start("Versioning packages")
   const { stdout: actualBranch } = await exec("git rev-parse --abbrev-ref HEAD")
-  await exec(`${LERNA_COMMAND} version patch --no-git-tag-version --force-publish --no-private --no-push --yes --allow-branch ${actualBranch}`)
+  await exec(
+    `npx lerna version patch --no-git-tag-version --force-publish --no-private --no-push --yes --allow-branch ${actualBranch}`
+  )
   spinner.succeed()
 
   spinner.start("Building packages")
   await exec("yarn release:build")
   spinner.succeed()
 
-  spinner.start("Dont't mark files as changed to let publish, but not create a git history")
-  await exec("git ls-files -m | xargs git update-index --assume-unchanged");
+  spinner.start(
+    "Dont't mark files as changed to let publish, but not create a git history"
+  )
+  if (isWindows()) {
+    await exec(
+      `for /f "" %f in ('git ls-files -m') do git update-index --assume-unchanged %f`
+    )
+  } else {
+    await exec("git ls-files -m | xargs git update-index --assume-unchanged")
+  }
   spinner.succeed()
 
   spinner.start("Publishing packages to local registry")
   await exec(
-    `${LERNA_COMMAND} publish from-package --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --contents build --registry="http://0.0.0.0:4873"
-  `)
+    `npx lerna publish from-package --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --contents build --registry="http://0.0.0.0:4873"
+  `
+  )
+  spinner.succeed()
+
+  spinner.start("Reverting the changed files from index")
+  if (isWindows()) {
+    await exec(
+      `for /f "tokens=2" %f in ('git ls-files -v ^| findstr /R /C:"^[abcdefghijklmnopqrstuvwxyz]"') do git update-index --no-assume-unchanged %f --"`
+    )
+  } else {
+    await exec(
+      "git ls-files -v | grep '^[a-z]' | cut -c3- | xargs git update-index --no-assume-unchanged --"
+    )
+  }
   spinner.succeed()
 
   console.log()
@@ -39,9 +61,10 @@ async function releaseInVerdaccio() {
       "npm install --registry http://0.0.0.0:4873 @lingui/[package]"
     )} in target project to install development version of package.`
   )
+}
 
-  // we revert the changed files from index
-  await exec("git ls-files -v | grep '^[a-z]' | cut -c3- | xargs git update-index --no-assume-unchanged --");
+function isWindows() {
+  return os.platform() === "win32"
 }
 
 function exec(cmd, options) {
