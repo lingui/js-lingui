@@ -1,6 +1,6 @@
 import { format as formatDate } from "date-fns"
 import fs from "fs"
-import ICUParser from "messageformat-parser"
+import {parse as parseIcu, Select, SelectCase, Token} from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 import * as R from "ramda"
@@ -8,7 +8,7 @@ import gettextPlurals from "node-gettext/lib/plurals"
 
 import { CatalogType, MessageType } from "../catalog"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
-import { CatalogFormatter } from "."
+import type {CatalogFormatOptionsInternal, CatalogFormatter} from "./"
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItemType = InstanceType<typeof PO.Item>
@@ -25,11 +25,11 @@ function getCreateHeaders(language = "no") {
 }
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
-function stringifyICUCase(icuCase) {
+function stringifyICUCase(icuCase: SelectCase): string {
   return icuCase.tokens
     .map((token) => {
-      if (typeof token === "string") {
-        return token
+      if (token.type === "content") {
+        return token.value
       } else if (token.type === "octothorpe") {
         return "#"
       } else if (token.type === "argument") {
@@ -51,7 +51,7 @@ const LINE_ENDINGS = /\r?\n/g
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
 const CTX_PREFIX = "js-lingui:"
 
-const serialize = (items: CatalogType, options) =>
+const serialize = (items: CatalogType, options: CatalogFormatOptionsInternal & {disableSelectWarning: boolean}) =>
   R.compose(
     R.values,
     R.mapObjIndexed((message: MessageType, key) => {
@@ -62,7 +62,7 @@ const serialize = (items: CatalogType, options) =>
       // The extractedComments array may be modified in this method, so create a new array with the message's elements.
       // Destructuring `undefined` is forbidden, so fallback to `[]` if the message has no extracted comments.
       item.extractedComments = [...(message.extractedComments ?? [])]
-      
+
       if (message.context) {
         item.msgctxt = message.context
       }
@@ -89,7 +89,7 @@ const serialize = (items: CatalogType, options) =>
       // Quick check to see if original message is a plural localization.
       if (ICU_PLURAL_REGEX.test(_simplifiedMessage)) {
         try {
-          const [messageAst] = ICUParser.parse(icuMessage)
+          const messageAst = parseIcu(icuMessage)[0] as Select
 
           // Check if any of the plural cases contain plurals themselves.
           if (
@@ -133,7 +133,7 @@ const serialize = (items: CatalogType, options) =>
           // plural (above) already causes `pofile` to automatically generate `msgstr[0]` and `msgstr[1]`.
           if (message.translation?.length > 0) {
             try {
-              const [ast] = ICUParser.parse(message.translation)
+              const ast = parseIcu(message.translation)[0] as Select
               if (ast.cases == null) {
                 console.warn(
                   `Found translation without plural cases for key "${key}". ` +

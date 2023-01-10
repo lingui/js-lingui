@@ -13,6 +13,7 @@ describe("remote-loader", () => {
             someVariable,
             select,
             Object {
+              offset: undefined,
               other: SomeOtherText,
               someVarValue: SomeTextHere,
             },
@@ -51,6 +52,7 @@ describe("remote-loader", () => {
               someVariable,
               select,
               Object {
+                offset: undefined,
                 other: SomeOtherText,
                 someVarValue: SomeTextHere,
               },

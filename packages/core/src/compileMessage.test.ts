@@ -1,7 +1,7 @@
-import compile from "./compile"
+import {compileMessage as compile} from "./compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
-import { interpolate } from "../context"
-import {Locale, Locales} from "../i18n"
+import { interpolate } from "./context"
+import {Locale, Locales} from "./i18n"
 
 describe("compile", () => {
   const englishPlurals = {
@@ -25,6 +25,30 @@ describe("compile", () => {
       expect(console.error).toBeCalledWith(expect.stringMatching('Unexpected message end at line'))
     })
   })
+
+  it("should process string chunks with provided map fn", () => {
+    const tokens = compile("Message {value, plural, one {{value} Book} other {# Books}}", (text) => `<${text}>`)
+    expect(tokens).toEqual([
+      "<Message >",
+      [
+        "value",
+        "plural",
+        {
+          "one": [
+            [
+              "value"
+            ],
+            "< Book>"
+          ],
+          "other": [
+            "#",
+            "< Books>"
+          ]
+        }
+      ]
+    ])
+  })
+
 
   it("should compile static message", () => {
     const cache = compile("Static message")

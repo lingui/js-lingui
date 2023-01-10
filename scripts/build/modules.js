@@ -12,7 +12,7 @@ const importSideEffects = Object.freeze({
   "@babel/runtime-corejs2/helpers/typeof": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "babel-runtime/core-js/object/get-own-property-names": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "babel-runtime/helpers/slicedToArray": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
-  "messageformat-parser": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
+  "@messageformat/parser": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "make-plural/umd/plurals": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   "@lingui/core": HAS_NO_SIDE_EFFECTS_ON_IMPORT,
   deepFreezeAndThrowOnMutationInDev: HAS_NO_SIDE_EFFECTS_ON_IMPORT

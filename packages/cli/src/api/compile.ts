@@ -1,11 +1,8 @@
 import * as t from "@babel/types"
-import generate, { GeneratorOptions } from "@babel/generator"
-import { parse } from "messageformat-parser"
-import * as R from "ramda"
-
+import generate, {GeneratorOptions} from "@babel/generator"
+import {compileMessage} from "@lingui/core"
 import pseudoLocalize from "./pseudoLocalize"
 
-const INVALID_OBJECT_KEY_REGEX = /^(\d+[a-zA-Z]|[a-zA-Z]+\d)(\d|[a-zA-Z])*/
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
 type CompiledCatalogType = {
@@ -20,54 +17,59 @@ export type CreateCompileCatalogOptions = {
   pure?: boolean
 }
 
-/**
- * Transform a single key/value translation into a Babel expression,
- * applying pseudolocalization where necessary.
- */
-function compileSingleKey(key: string, translation: string, shouldPseudolocalize: boolean): t.ObjectProperty {
-  return t.objectProperty(t.stringLiteral(key), compile(translation, shouldPseudolocalize))
-}
-
 export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
 ) {
-  const { strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}, pure = false } = options
+  const {strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}, pure = false} = options
   const shouldPseudolocalize = locale === pseudoLocale
 
-  const compiledMessages = R.keys(messages).map((key: string) => {
-    const value = messages[key];
+  const compiledMessages = Object.keys(messages).reduce((obj, key: string) => {
+    const value = messages[key]
 
-    // If the current ID's value is a context object, create a nested 
+    // If the current ID's value is a context object, create a nested
     // expression, and assign the current ID to that expression
     if (typeof value === "object") {
-      const contextExpression = t.objectExpression(Object.keys(value).map((contextKey) => {
-        const contextTranslation = value[contextKey];
-        return compileSingleKey(contextKey, contextTranslation, shouldPseudolocalize)
-      }))
-      return t.objectProperty(t.stringLiteral(key), contextExpression);
+      obj[key] = Object.keys(value).reduce((obj, contextKey) => {
+        obj[contextKey] = compile(value[contextKey], shouldPseudolocalize)
+        return obj
+      }, {})
+
+      return obj
     }
 
     // Don't use `key` as a fallback translation in strict mode.
-    let translation = (messages[key] || (!strict ? key : "")) as string
-    return compileSingleKey(key, translation, shouldPseudolocalize)
-  })
+    const translation = (messages[key] || (!strict ? key : "")) as string
 
-  const ast = pure ? t.objectExpression(compiledMessages) :  buildExportStatement(
-    t.objectExpression(compiledMessages),
+    obj[key] = compile(translation, shouldPseudolocalize)
+    return obj
+  }, {})
+
+  if (pure) {
+    return compiledMessages
+  }
+
+  const ast = buildExportStatement(
+    //build JSON.parse(<compiledMessages>) statement
+    t.callExpression(
+      t.memberExpression(
+        t.identifier('JSON'), t.identifier('parse')
+      ),
+      [t.stringLiteral(JSON.stringify(compiledMessages))]
+    ),
     namespace
   )
 
   const code = generate(ast, {
     minified: true,
     jsescOption: {
-      minimal: true,
+      minimal: true
     },
-    ...compilerBabelOptions,
+    ...compilerBabelOptions
   }).code
 
-  return pure ? JSON.parse(code) : ("/*eslint-disable*/" + code)
+  return "/*eslint-disable*/" + code;
 }
 
 function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
@@ -114,93 +116,7 @@ function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
  * JS arrays, which are handled in client.
  */
 export function compile(message: string, shouldPseudolocalize: boolean = false) {
-  let tokens
-
-  try {
-    tokens = parse(message)
-  } catch (e) {
-    throw new Error(
-      `Can't parse message. Please check correct syntax: "${message}" \n \n Messageformat-parser trace: ${e.message}`
-    )
-  }
-  const ast = processTokens(tokens, shouldPseudolocalize)
-
-  if (isString(ast)) return t.stringLiteral(ast)
-
-  return ast
-}
-
-function processTokens(tokens, shouldPseudolocalize: boolean) {
-  // Shortcut - if the message doesn't include any formatting,
-  // simply join all string chunks into one message
-  if (!tokens.filter((token) => !isString(token)).length) {
-    if (shouldPseudolocalize) {
-      return tokens.map((token) => pseudoLocalize(token)).join("")
-    } else {
-      return tokens.join("")
-    }
-  }
-
-  return t.arrayExpression(
-    tokens.map((token) => {
-      if (isString(token)) {
-        return t.stringLiteral(
-          shouldPseudolocalize ? pseudoLocalize(token) : token
-        )
-
-        // # in plural case
-      } else if (token.type === "octothorpe") {
-        return t.stringLiteral("#")
-
-        // simple argument
-      } else if (token.type === "argument") {
-        return t.arrayExpression([t.stringLiteral(token.arg)])
-
-        // argument with custom format (date, number)
-      } else if (token.type === "function") {
-        const params = [t.stringLiteral(token.arg), t.stringLiteral(token.key)]
-
-        const format = token.param && token.param.tokens[0]
-        if (format) {
-          params.push(t.stringLiteral(format.trim()))
-        }
-        return t.arrayExpression(params)
-      }
-
-      // complex argument with cases
-      const formatProps = []
-
-      if (token.offset) {
-        formatProps.push(
-          t.objectProperty(
-            t.identifier("offset"),
-            t.numericLiteral(parseInt(token.offset))
-          )
-        )
-      }
-
-      token.cases.forEach((item) => {
-        const inlineTokens = processTokens(item.tokens, shouldPseudolocalize)
-        formatProps.push(
-          t.objectProperty(
-            // if starts with number must be wrapped with quotes
-            INVALID_OBJECT_KEY_REGEX.test(item.key) ? t.stringLiteral(item.key) : t.identifier(item.key),
-            isString(inlineTokens)
-              ? t.stringLiteral(inlineTokens)
-              : inlineTokens
-          )
-        )
-      })
-
-      const params = [
-        t.stringLiteral(token.arg),
-        t.stringLiteral(token.type),
-        t.objectExpression(formatProps),
-      ]
-
-      return t.arrayExpression(params)
-    })
+  return compileMessage(message, (value) =>
+    shouldPseudolocalize ? pseudoLocalize(value) : value
   )
 }
-
-const isString = (s) => typeof s === "string"

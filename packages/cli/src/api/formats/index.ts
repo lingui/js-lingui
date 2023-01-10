@@ -15,7 +15,10 @@ const formats: Record<CatalogFormat, CatalogFormatter> = {
   "po-gettext": poGettext,
 }
 
-type CatalogFormatOptionsInternal = {
+/**
+ * @internal
+ */
+export type CatalogFormatOptionsInternal = {
   locale: string
 } & CatalogFormatOptions
 
