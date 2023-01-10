@@ -9,32 +9,19 @@ on:
 jobs:
   release-test:
     runs-on: ubuntu-latest
-    env:
-      CI: true
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v3
         with:
           always-auth: true
-          node-version: 14
+          node-version: 16
+          cache: 'yarn'
           scope: '@lingui'
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Install dependencies if needed
         run: yarn install --frozen-lockfile --pure-lockfile
@@ -48,4 +35,3 @@ jobs:
           nohup verdaccio --config $HOME/.config/verdaccio/config.yaml &>mktemp &
           node ./scripts/verdaccio-release.js
           node ./scripts/verdaccio-integration.js
-
