@@ -4,7 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       npmTag:
-        description: 'NPM tag to release (latest|next)'
+        type: choice
+        description: 'NPM tag to release'
+        options:
+        - latest
+        - next
         required: true
         default: "latest"
 
