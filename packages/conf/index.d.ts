@@ -49,7 +49,10 @@ export declare type LinguiConfig = {
     orderBy: OrderBy;
     pseudoLocale: string;
     rootDir: string;
-    runtimeConfigModule: [string, string?];
+    runtimeConfigModule: [source: string, identifier?: string] | {
+        i18n?: [source: string, identifier?: string]
+        Trans?: [source: string, identifier?: string]
+    };
     sourceLocale: string;
     service: CatalogService;
 };
@@ -77,7 +80,7 @@ export declare const configValidation: {
         orderBy: OrderBy;
         pseudoLocale: string;
         rootDir: string;
-        runtimeConfigModule: [string, string?];
+        runtimeConfigModule: LinguiConfig['runtimeConfigModule'];
         sourceLocale: string;
         service: CatalogService;
     };
