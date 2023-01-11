@@ -16,7 +16,7 @@ async function releaseInVerdaccio() {
   spinner.start("Versioning packages")
   const { stdout: actualBranch } = await exec("git rev-parse --abbrev-ref HEAD")
   await exec(
-    `npx lerna version patch --no-git-tag-version --force-publish --no-private --no-push --yes --allow-branch ${actualBranch}`
+    `npx lerna version patch --exact --no-git-tag-version --force-publish --no-private --no-push --yes --allow-branch ${actualBranch}`
   )
   spinner.succeed()
 
