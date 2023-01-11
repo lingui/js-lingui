@@ -10,6 +10,10 @@ export {
   Locales,
 } from "./i18n"
 
+export {
+  compileMessage
+} from './compileMessage'
+
 // Default i18n object
 import { setupI18n } from "./i18n"
 export const i18n = setupI18n()

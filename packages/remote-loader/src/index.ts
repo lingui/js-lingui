@@ -4,8 +4,8 @@ import PARSERS from "./minimalParser"
 
 type RemoteLoaderOpts<T> = {
   format?: "minimal"
-  fallbackMessages?: string | Record<string, any> | T
-  messages: string | Record<string, any> | T
+  fallbackMessages?: string | Record<string, any> | T
+  messages: string | Record<string, any> | T
 }
 
 function remoteLoader<T>({ format = "minimal", fallbackMessages, messages}: RemoteLoaderOpts<T>) {
@@ -28,6 +28,7 @@ function remoteLoader<T>({ format = "minimal", fallbackMessages, messages}: Remo
       `)
   }
 
+  // todo: that will not work with context
   const mapTranslationsToInterporlatedString = R.mapObjIndexed(
     (_, key) => {
       // if there's fallback and translation is empty, return the fallback

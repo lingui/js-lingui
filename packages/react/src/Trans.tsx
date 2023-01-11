@@ -14,10 +14,10 @@ export type TransRenderProps = {
 export type TransProps = {
   id: string
   message?: string
-  values: Object
+  values: Record<string, unknown>
   context?: string
   components: { [key: string]: React.ElementType | any }
-  formats?: Object
+  formats?: Record<string, unknown>
   children?: React.ReactNode
   component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => React.ReactElement<any, any> | null

@@ -1,20 +1,22 @@
-import { CompiledMessage, Locales } from "./i18n"
+import {CompiledMessage, Formats, LocaleData, Locales, Values} from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g;
 
 const defaultFormats = (
-  locale,
-  locales,
-  localeData = { plurals: undefined },
-  formats = {}
+  locale: string,
+  locales: Locales,
+  localeData: LocaleData = { plurals: undefined },
+  formats: Formats = {}
 ) => {
   locales = locales || locale
   const { plurals } = localeData
-  const style = (format) =>
-    isString(format) ? formats[format] || { style: format } : format
-  const replaceOctothorpe = (value, message) => {
+  const style = <T>(format: string | T): T =>
+    isString(format)
+      ? formats[format] || { style: format }
+      : format as any
+  const replaceOctothorpe = (value: number, message) => {
     return (ctx) => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
@@ -29,25 +31,27 @@ const defaultFormats = (
   }
 
   return {
-    plural: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals?.(value - offset)] || rules.other
+    plural: (value: number, { offset = 0, ...rules }) => {
+      const message = rules[value] || rules[plurals?.(value - offset)] || rules.other
+
       return replaceOctothorpe(value - offset, message)
     },
 
-    selectordinal: (value, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals?.(value - offset, true)] || rules.other
+    selectordinal: (value: number, { offset = 0, ...rules }) => {
+      const message = rules[value] || rules[plurals?.(value - offset, true)] || rules.other
       return replaceOctothorpe(value - offset, message)
     },
 
-    select: (value, rules) => rules[value] || rules.other,
+    select: (value: string, rules) => rules[value] || rules.other,
 
-    number: (value, format) => number(locales, style(format))(value),
+    number: (value: number, format: string | Intl.NumberFormatOptions) => number(locales, style(format))(value),
 
-    date: (value, format) => date(locales, style(format))(value),
+    date: (value: string, format: string | Intl.DateTimeFormatOptions) => date(locales, style(format))(value),
 
-    undefined: (value) => value,
+    undefined: (value: unknown) => value,
   }
 }
+
 
 // Params -> CTX
 /**
@@ -61,7 +65,13 @@ const defaultFormats = (
  * @param formats - Custom format styles
  * @returns {function(string, string, any)}
  */
-function context({ locale, locales, values, formats, localeData }) {
+function context(
+  locale: string,
+  locales: Locales,
+  values: Values,
+  formats: Formats,
+  localeData: LocaleData
+) {
   const formatters = defaultFormats(locale, locales, localeData, formats)
 
   const ctx = (name: string, type: string, format: any): string => {
@@ -78,21 +88,21 @@ export function interpolate(
   translation: CompiledMessage,
   locale: string,
   locales: Locales,
-  localeData: Object
+  localeData: LocaleData
 ) {
-  return (values: Object, formats: Object = {}): string => {
-    const ctx = context({
+  return (values: Values, formats: Formats = {}): string => {
+    const ctx = context(
       locale,
       locales,
-      localeData,
-      formats,
       values,
-    })
+      formats,
+      localeData,
+    )
 
-    const formatMessage = (message) => {
+    const formatMessage = (message: CompiledMessage): string => {
       if (!Array.isArray(message)) return message
 
-      return message.reduce((message, token) => {
+      return message.reduce<string>((message, token) => {
         if (isString(token)) return message + token
 
         const [name, type, format] = token
