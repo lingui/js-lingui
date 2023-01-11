@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     name: "should expand macros in message property",
     input: `
@@ -95,3 +97,5 @@ export default [
     `,
   },
 ]
+
+export default cases;

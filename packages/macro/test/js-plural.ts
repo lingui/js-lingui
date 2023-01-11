@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     name: "Macro is used in expression assignment",
     input: `
@@ -37,3 +39,4 @@ export default [
       `,
   },
 ]
+export default cases;

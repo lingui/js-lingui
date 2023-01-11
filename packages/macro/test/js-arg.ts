@@ -1,4 +1,6 @@
-export default [
+import { TestCase } from "./index"
+
+const cases: TestCase[] = [
   {
     name: "Arg macro should be exluded from values",
     input: `
@@ -13,3 +15,5 @@ export default [
     `,
   },
 ]
+
+export default cases;

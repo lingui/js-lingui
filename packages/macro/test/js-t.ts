@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     name: "Macro is used in expression assignment",
     input: `
@@ -217,3 +219,4 @@ export default [
     filename: "js-t-var/js-t-var.js",
   },
 ]
+export default cases;

@@ -1,4 +1,6 @@
-export default [
+import {TestCase} from "./index"
+
+const cases: TestCase[] = [
   {
     name: "Nested macros",
     input: `
@@ -39,3 +41,4 @@ export default [
       `,
   },
 ]
+export default cases;
