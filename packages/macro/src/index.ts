@@ -32,16 +32,6 @@ function macro({ references, state, babel }: MacroParams) {
   const jsNodes: NodePath[] = []
   let needsI18nImport = false
 
-  const alreadyVisitedCache = new WeakSet()
-  const alreadyVisited = (path: NodePath) => {
-    if (alreadyVisitedCache.has(path)) {
-      return true
-    } else {
-      alreadyVisitedCache.add(path)
-      return false
-    }
-  }
-
   Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
     const macroType = getMacroType(tagName)
@@ -129,6 +119,16 @@ function isRootPath(allPath: NodePath[]) {
         return !allPath.includes(path.parentPath) && traverse(path.parentPath)
       }
     })(node)
+}
+
+const alreadyVisitedCache = new WeakSet()
+const alreadyVisited = (path: NodePath) => {
+  if (alreadyVisitedCache.has(path)) {
+    return true
+  } else {
+    alreadyVisitedCache.add(path)
+    return false
+  }
 }
 
 function getMacroType(tagName: string): string {
