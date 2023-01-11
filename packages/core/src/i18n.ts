@@ -3,6 +3,7 @@ import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import * as icu from "./dev"
 import { EventEmitter } from "./eventEmitter"
+import type {PluralCategory} from "make-plural"
 
 export type MessageOptions = {
   message?: string
@@ -17,7 +18,7 @@ export type Formats = Record<string, Intl.DateTimeFormatOptions | Intl.NumberFor
 export type Values = Record<string, unknown>;
 
 export type LocaleData = {
-  plurals?: (n: number, ordinal?: boolean) => number
+  plurals?: (n: number, ordinal?: boolean) => PluralCategory
 }
 
 export type AllLocaleData = Record<Locale, LocaleData>
@@ -26,7 +27,6 @@ export type CompiledIcuChoices = Record<string, CompiledMessage> & {offset: numb
 export type CompiledMessageToken = string | [name: string, type?: string, format?: null | string | CompiledIcuChoices];
 
 export type CompiledMessage = string | CompiledMessageToken[]
-
 
 export type Messages = Record<string, CompiledMessage>
 
