@@ -221,27 +221,6 @@ describe("createCompiledCatalog", () => {
     })
   })
 
-  describe("options.pure", () => {
-    const getCompiledCatalog = (pure) =>
-      createCompiledCatalog(
-        "ps",
-        {
-          Hello: "Ahoj",
-        },
-        {
-          pure,
-        }
-      )
-
-    it("should return pure catalog", () => {
-      expect(getCompiledCatalog(true)).toMatchSnapshot()
-    })
-
-    it("should return code catalog", () => {
-      expect(getCompiledCatalog(false)).toMatchSnapshot()
-    })
-  })
-
   describe("options.compilerBabelOptions", () => {
     const getCompiledCatalog = (opts = {}) =>
       createCompiledCatalog(

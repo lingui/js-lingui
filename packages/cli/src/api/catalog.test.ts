@@ -1023,76 +1023,29 @@ describe("order", function () {
 })
 
 describe("writeCompiled", function () {
-  it("saves ES modules to .mjs files", function () {
-    const localeDir = copyFixture(fixture("locales", "initial/"))
-    const catalog = new Catalog(
-      {
-        name: "messages",
-        path: path.join(localeDir, "{locale}", "messages"),
-        include: [],
-        exclude: [],
-      },
-      mockConfig()
-    )
+  const localeDir = copyFixture(fixture("locales", "initial/"))
+  const catalog = new Catalog(
+    {
+      name: "messages",
+      path: path.join(localeDir, "{locale}", "messages"),
+      include: [],
+      exclude: []
+    },
+    mockConfig()
+  )
 
-    const namespace = "es"
-    const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+  it.each([
+    {namespace: "es", extension: /\.mjs$/},
+    {namespace: "ts", extension: /\.ts$/},
+    {namespace: undefined, extension: /\.js$/},
+    {namespace: 'cjs', extension: /\.js$/},
+    {namespace: 'window.test', extension: /\.js$/},
+    {namespace: 'global.test', extension: /\.js$/}
+  ])('Should save namespace $namespace in $extension extension', ({namespace, extension}) => {
+    const compiledCatalog = createCompiledCatalog("en", {}, {namespace})
     // Test that the file extension of the compiled catalog is `.mjs`
     expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
-      /\.mjs$/
+      extension
     )
-  })
-
-  it("saves TS modules to .ts files", function () {
-    const localeDir = copyFixture(fixture("locales", "initial/"))
-    const catalog = new Catalog(
-      {
-        name: "messages",
-        path: path.join(localeDir, "{locale}", "messages"),
-        include: [],
-        exclude: [],
-      },
-      mockConfig()
-    )
-
-    const namespace = "ts"
-    const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
-    expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
-      /\.ts$/
-    )
-  })
-
-  it("saves anything else than ES modules to .js files", function () {
-    const localeDir = copyFixture(fixture("locales", "initial/"))
-    const catalog = new Catalog(
-      {
-        name: "messages",
-        path: path.join(localeDir, "{locale}", "messages"),
-        include: [],
-        exclude: [],
-      },
-      mockConfig()
-    )
-
-    let compiledCatalog = createCompiledCatalog("en", {}, {})
-    // Test that the file extension of the compiled catalog is `.js`
-    expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
-
-    compiledCatalog = createCompiledCatalog("en", {}, { namespace: "cjs" })
-    expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
-
-    compiledCatalog = createCompiledCatalog(
-      "en",
-      {},
-      { namespace: "window.test" }
-    )
-    expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
-
-    compiledCatalog = createCompiledCatalog(
-      "en",
-      {},
-      { namespace: "global.test" }
-    )
-    expect(catalog.writeCompiled("en", compiledCatalog)).toMatch(/\.js$/)
   })
 })

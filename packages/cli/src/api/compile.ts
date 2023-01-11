@@ -14,15 +14,14 @@ export type CreateCompileCatalogOptions = {
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
   compilerBabelOptions?: GeneratorOptions
-  pure?: boolean
 }
 
 export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
-) {
-  const {strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}, pure = false} = options
+): string {
+  const {strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}} = options
   const shouldPseudolocalize = locale === pseudoLocale
 
   const compiledMessages = Object.keys(messages).reduce((obj, key: string) => {
@@ -45,10 +44,6 @@ export function createCompiledCatalog(
     obj[key] = compile(translation, shouldPseudolocalize)
     return obj
   }, {})
-
-  if (pure) {
-    return compiledMessages
-  }
 
   const ast = buildExportStatement(
     //build JSON.parse(<compiledMessages>) statement
