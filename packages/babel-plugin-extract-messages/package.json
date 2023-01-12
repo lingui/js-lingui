@@ -2,7 +2,7 @@
   "name": "@lingui/babel-plugin-extract-messages",
   "version": "3.15.0",
   "description": "Babel plugin for collecting messages from source code for internationalization",
-  "main": "index.js",
+  "main": "./build/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -16,6 +16,11 @@
     "localization",
     "i9n",
     "translation"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build/"
   ],
   "repository": {
     "type": "git",

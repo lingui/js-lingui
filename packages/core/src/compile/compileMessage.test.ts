@@ -1,7 +1,7 @@
 import {compileMessage as compile} from "./compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
-import { interpolate } from "./context"
-import {Locale, Locales} from "./i18n"
+import { interpolate } from "../context"
+import {Locale, Locales} from "../i18n"
 
 describe("compile", () => {
   const englishPlurals = {

@@ -1,5 +1,3 @@
-"use strict"
-
 const Table = require("cli-table")
 const filesize = require("filesize")
 const chalk = require("chalk")
@@ -7,12 +5,12 @@ const join = require("path").join
 const fs = require("fs")
 const prevBuildResults = require("./results.json")
 
-const currentBuildResults = {
+export const currentBuildResults = {
   // Mutated during the build.
   bundleSizes: Object.assign({}, prevBuildResults.bundleSizes)
 }
 
-function saveResults() {
+export function saveResults() {
   fs.writeFileSync(
     join("scripts", "build", "results.json"),
     JSON.stringify(currentBuildResults, null, 2)
@@ -29,7 +27,7 @@ function percentChange(prev, current) {
   }
 }
 
-function printResults() {
+export function printResults() {
   const table = new Table({
     head: [
       chalk.gray.yellow("Bundle"),
@@ -64,10 +62,4 @@ function printResults() {
     ])
   })
   return table.toString()
-}
-
-module.exports = {
-  printResults,
-  saveResults,
-  currentBuildResults
 }

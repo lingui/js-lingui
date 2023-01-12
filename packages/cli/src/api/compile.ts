@@ -1,6 +1,6 @@
 import * as t from "@babel/types"
 import generate, {GeneratorOptions} from "@babel/generator"
-import {compileMessage} from "@lingui/core"
+import {compileMessage} from "@lingui/core/compile"
 import pseudoLocalize from "./pseudoLocalize"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string

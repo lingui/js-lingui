@@ -1,7 +1,6 @@
-"use strict"
-
-const pkgUp = require("pkg-up")
-const { UNIVERSAL } = require("./bundles").bundleTypes
+import  { BundleType }  from "./bundles"
+import {getPackageDir} from "./utils"
+import * as path from "path"
 
 // For any external that is used in a DEV-only condition, explicitly
 // specify whether it has side effects during import or not. This lets
@@ -24,10 +23,10 @@ const knownGlobals = Object.freeze({
 })
 
 // Given ['react'] in bundle externals, returns { 'react': 'React' }.
-function getPeerGlobals(externals = [], bundleType) {
+export function getPeerGlobals(externals = [], bundleType) {
   const peerGlobals = {}
   externals.forEach(name => {
-    if (!knownGlobals[name] && bundleType === UNIVERSAL) {
+    if (!knownGlobals[name] && bundleType === BundleType.UNIVERSAL) {
       throw new Error("Cannot build UMD without a global name for: " + name)
     }
     peerGlobals[name] = knownGlobals[name]
@@ -36,9 +35,8 @@ function getPeerGlobals(externals = [], bundleType) {
 }
 
 // Determines node_modules packages that are safe to assume will exist.
-function getDependencies(bundleType, entry) {
-  const pkgJsonPath = pkgUp.sync({ cwd: require.resolve(entry) })
-  const packageJson = require(pkgJsonPath)
+export function getDependencies(packageName: string) {
+  const packageJson = require(path.join(getPackageDir(packageName), 'package.json'))
 
   // Both deps and peerDeps are assumed as accessible.
   return Array.from(
@@ -49,12 +47,6 @@ function getDependencies(bundleType, entry) {
   )
 }
 
-function getImportSideEffects() {
+export function getImportSideEffects() {
   return importSideEffects
-}
-
-module.exports = {
-  getImportSideEffects,
-  getPeerGlobals,
-  getDependencies
 }

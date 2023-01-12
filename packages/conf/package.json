@@ -14,7 +14,7 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "index.js",
+  "main": "build/index.js",
   "engines": {
     "node": ">=10.0.0"
   },

@@ -1,3 +1,7 @@
+import {BundleDef, BundleType} from "./bundles"
+import {getBundleOutputPaths} from "./packaging"
+import {asyncMkDirP, getPackageDir} from "./utils"
+
 const fs = require("fs")
 const path = require("path")
 const chalk = require("chalk")
@@ -5,12 +9,10 @@ const babel = require("babel-core")
 const ora = require("ora")
 
 const babelConfig = require("./babel.config")
-const Packaging = require("./packaging")
-const { asyncMkDirP } = require("./utils")
 
 const ignorePatterns = [/\.test.[jt]s$/, /fixtures/]
 
-function walk(base, relativePath = "") {
+function walk(base: string, relativePath = "") {
   let files = []
 
   fs.readdirSync(path.join(base, relativePath)).forEach(dirname => {
@@ -34,14 +36,14 @@ function declarationFinder(typesPath) {
   return typesPath.map(p => fs.existsSync(p) && path.basename(p)).filter(Boolean)
 }
 
-module.exports = async function(bundle) {
-  const logKey = chalk.white.bold(bundle.entry)
+export default async function(bundle: BundleDef) {
+  const logKey = chalk.white.bold(bundle.packageName)
 
   const spinner = ora(logKey).start()
 
   try {
-    const resolvedEntry = require.resolve(bundle.entry)
-    const packageDir = path.dirname(resolvedEntry)
+    const packageDir = getPackageDir(bundle.packageName)
+
     const srcDir = path.join(packageDir, "src")
     const files = [
       ...walk(srcDir),
@@ -52,10 +54,10 @@ module.exports = async function(bundle) {
     ]
 
     for (const filename of files) {
-      const [mainOutputPath] = Packaging.getBundleOutputPaths(
-        "NODE",
+      const [mainOutputPath] = getBundleOutputPaths(
+        BundleType.NODE,
         filename,
-        bundle.entry
+        bundle.packageName
       )
 
       const outputDir = path.dirname(mainOutputPath)

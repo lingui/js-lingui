@@ -3,7 +3,7 @@
   "version": "3.11.0",
   "private": true,
   "description": "Snowpack plugin for Lingui message catalogs",
-  "main": "index.js",
+  "main": "./build/index.js",
   "license": "MIT",
   "keywords": [
     "snowpack-plugin",
@@ -26,6 +26,11 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build/"
+  ],
   "dependencies": {
     "@babel/runtime": "^7",
     "@lingui/cli": "^3.11.0",

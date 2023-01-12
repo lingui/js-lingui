@@ -1,43 +1,15 @@
-const { readdirSync, statSync } = require("fs")
-const { join } = require("path")
 const sourceConfig = require("./config.unit")
 
-// Find all folders in packages/* with package.json
-const packagesRoot = join(process.cwd(), "packages")
-const packages = readdirSync(packagesRoot).filter(dir => {
-  if (dir.charAt(0) === ".") {
-    return false
-  }
-  const packagePath = join(packagesRoot, dir, "package.json")
-  try {
-    require(packagePath)
-  } catch (error) {
-    return false
-  }
+/**
+ * @type {import('jest').Config}
+ */
+module.exports = {
+  ...sourceConfig,
 
-  return true
-})
-
-const DEV_PACKAGES = ["jest-mocks"]
-
-// Create a module map to point React packages to the build output
-const moduleNameMapper = {}
-packages
-  .filter(name => !DEV_PACKAGES.includes(name))
-  .forEach(name => {
-    // Root entry point
-    moduleNameMapper[`^@lingui/${name}$`] = `<rootDir>/packages/${name}/build`
-    // Named entry points
-    moduleNameMapper[
-      `^@lingui/${name}/(.*)$`
-    ] = `<rootDir>/packages/${name}/build/$1`
-  })
-
-module.exports = Object.assign({}, sourceConfig, {
   roots: ["<rootDir>/packages/"],
   testPathIgnorePatterns: ["/node_modules/"],
   // Redirect imports to the compiled bundles
-  moduleNameMapper,
+  moduleNameMapper: {},
   setupFiles: ['set-tz/utc'],
 
   // Exclude the build output from transforms
@@ -49,4 +21,4 @@ module.exports = Object.assign({}, sourceConfig, {
   haste: {
     throwOnModuleCollision: false,
   }
-})
+}

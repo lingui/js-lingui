@@ -1,7 +1,7 @@
 import { interpolate, UNICODE_REGEX } from "./context"
 import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
-import * as icu from "./dev"
+import { compileMessage } from "./compile"
 import { EventEmitter } from "./eventEmitter"
 import type {PluralCategory} from "make-plural"
 
@@ -206,7 +206,7 @@ export class I18n extends EventEmitter<Events> {
 
     if (process.env.NODE_ENV !== "production") {
       translation = isString(translation)
-        ? icu.compile(translation)
+        ? compileMessage(translation)
         : translation
     }
 

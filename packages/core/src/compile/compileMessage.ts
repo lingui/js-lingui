@@ -1,5 +1,5 @@
 import {Content, parse, Token} from "@messageformat/parser"
-import {CompiledMessage, CompiledMessageToken} from "./i18n"
+import {CompiledMessage, CompiledMessageToken} from "../i18n"
 
 type MapTextFn =  (value: string) => string;
 
@@ -52,6 +52,7 @@ function processTokens(tokens: Array<Token>, mapText?: MapTextFn): CompiledMessa
 }
 
 // Message -> (Params -> String)
+/** @internal */
 export function compileMessage(
   message: string,
   mapText: MapTextFn = (v) => v,
