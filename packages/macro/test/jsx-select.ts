@@ -41,5 +41,34 @@ const cases: TestCase[] = [
         }} />;
       `,
   },
+  {
+    name: "Select should support JSX elements in cases",
+    input: `
+        import { Select } from '@lingui/macro';
+        <Select
+          value="happy"
+          _happy={
+            <Trans>Hooray! <Icon /></Trans>
+          }
+          _sad={
+            <Trans>Oh no! <Icon /></Trans>
+          }
+          other="Dunno"
+        />
+      `,
+    expected: `
+      import { Trans } from "@lingui/react";
+      <Trans
+        id={"{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}"}
+        values={{
+          0: "happy",
+        }}
+        components={{
+          0: <Icon />,
+          1: <Icon />,
+        }}
+      />;
+      `,
+  },
 ]
 export default cases

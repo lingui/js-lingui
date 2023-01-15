@@ -1,3 +1,5 @@
+// read more about this file here
+// https://github.com/lingui/js-lingui/issues/936
 // @ts-ignore
 declare module "@lingui/macro" {
   import type { MessageDescriptor, I18n } from "@lingui/core"

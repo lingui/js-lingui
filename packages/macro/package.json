@@ -3,9 +3,13 @@
   "version": "3.17.1",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
   "main": "./build/index.js",
+  "types": "./index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
+  },
+  "scripts": {
+    "test:tsd": "tsd"
   },
   "license": "MIT",
   "keywords": [
@@ -24,7 +28,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "build/"
+    "build/",
+    "index.d.ts"
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
@@ -38,6 +43,12 @@
     "babel-plugin-macros": "2 || 3"
   },
   "devDependencies": {
-    "@types/babel-plugin-macros": "^2.8.5"
+    "@types/babel-plugin-macros": "^2.8.5",
+    "tsd": "^0.25.0"
+  },
+  "tsd": {
+    "compilerOptions": {
+      "strict": false
+    }
   }
 }

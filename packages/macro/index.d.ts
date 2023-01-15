@@ -1,16 +1,35 @@
-import type { ReactElement, ComponentType, ReactNode } from "react"
-import type { MessageDescriptor, I18n } from "@lingui/core"
+import type { ReactElement, ReactNode, VFC, FC } from "react"
+import type { I18n, MessageDescriptor } from "@lingui/core"
 import type { TransRenderProps } from "@lingui/react"
 
-export type UnderscoreDigit<T = string> = { [digit: string]: T }
-export type ChoiceOptions<T = string> = {
+export type ChoiceOptions = {
+  /** Offset of value when calculating plural forms */
   offset?: number
-  zero?: T
-  one?: T
-  few?: T
-  many?: T
-  other?: T
-} & UnderscoreDigit<T>
+  zero?: string
+  one?: string
+  two?: string
+  few?: string
+  many?: string
+
+  /** Catch-all option */
+  other?: string
+  /** Exact match form, corresponds to =N rule */
+  [digit: `${number}`]: string
+}
+
+type MacroMessageDescriptor = (
+  | {
+      id: string
+      message?: string
+    }
+  | {
+      id?: string
+      message: string
+    }
+) & {
+  comment?: string
+  context?: string
+}
 
 /**
  * Translates a message descriptor
@@ -36,7 +55,7 @@ export type ChoiceOptions<T = string> = {
  *
  * @param descriptor The message descriptor to translate
  */
-export function t(descriptor: MessageDescriptor): string
+export function t(descriptor: MacroMessageDescriptor): string
 
 /**
  * Translates a template string using the global I18n instance
@@ -79,7 +98,7 @@ export function t(
  */
 export function t(i18n: I18n): {
   (literals: TemplateStringsArray, ...placeholders: any[]): string
-  (descriptor: MessageDescriptor): string
+  (descriptor: MacroMessageDescriptor): string
 }
 
 /**
@@ -124,6 +143,12 @@ export function selectOrdinal(
   options: ChoiceOptions
 ): string
 
+type SelectOptions = {
+  /** Catch-all option */
+  other: string
+  [matches: string]: string
+}
+
 /**
  * Selects a translation based on a value
  *
@@ -144,7 +169,7 @@ export function selectOrdinal(
  * @param value The key of choices to use
  * @param choices
  */
-export function select(value: string, choices: ChoiceOptions): string
+export function select(value: string, choices: SelectOptions): string
 
 /**
  * Define a message for later use
@@ -163,46 +188,108 @@ export function select(value: string, choices: ChoiceOptions): string
  *
  * @param descriptor The message descriptor
  */
-export function defineMessage(descriptor: MessageDescriptor): MessageDescriptor
+export function defineMessage(
+  descriptor: MacroMessageDescriptor
+): MessageDescriptor
 
-export type TransProps = {
+type CommonProps = {
   id?: string
   comment?: string
-  values?: Record<string, unknown>
   context?: string
-  children?: React.ReactNode
-  component?: React.ComponentType<TransRenderProps>
   render?: (props: TransRenderProps) => ReactElement<any, any> | null
   i18n?: I18n
 }
 
-export type ChoiceProps = {
-  value?: string | number
-} & TransProps &
-  ChoiceOptions<ReactNode>
+type TransProps = {
+  children: ReactNode
+} & CommonProps
+
+type PluralChoiceProps = {
+  value: string | number
+  /** Offset of value when calculating plural forms */
+  offset?: number
+  zero?: ReactNode
+  one?: ReactNode
+  few?: ReactNode
+  many?: ReactNode
+
+  /** Catch-all option */
+  other: ReactNode
+  /** Exact match form, corresponds to =N rule */
+  [digit: `_${number}`]: ReactNode
+} & CommonProps
+
+type SelectChoiceProps = {
+  value: string
+  /** Catch-all option */
+  other: ReactNode
+  [option: `_${string}`]: ReactNode
+} & CommonProps
 
 /**
- * The types should be changed after this PR is merged
- * https://github.com/Microsoft/TypeScript/pull/26797
+ * Trans is the basic macro for static messages,
+ * messages with variables, but also for messages with inline markup
  *
- * then we should be able to specify that key of values is same type as value.
- * We would be able to remove separate type Values = {...} definition
- * eg.
- * type SelectProps<Values> = {
- *  value?: Values
- *  [key: Values]: string
- * }
- *
+ * @example
+ * ```
+ * <Trans>Hello {username}. Read the <a href="/docs">docs</a>.</Trans>
+ * ```
+ * @example
+ * ```
+ * <Trans id="custom.id">Hello {username}.</Trans>
+ * ```
  */
-type Values = { [key: string]: string }
+export const Trans: FC<TransProps>
 
-export type SelectProps = {
-  value: string
-  other: ReactNode
-} & TransProps &
-  Values
+/**
+ * Props of Plural macro are transformed into plural format.
+ *
+ * @example
+ * ```
+ * import { Plural } from "@lingui/macro"
+ * <Plural value={numBooks} one="Book" other="Books" />
+ *
+ * // ↓ ↓ ↓ ↓ ↓ ↓
+ * import { Trans } from "@lingui/react"
+ * <Trans id="{numBooks, plural, one {Book} other {Books}}" values={{ numBooks }} />
+ * ```
+ */
+export const Plural: VFC<PluralChoiceProps>
+/**
+ * Props of SelectOrdinal macro are transformed into selectOrdinal format.
+ *
+ * @example
+ * ```
+ * // count == 1 -> 1st
+ * // count == 2 -> 2nd
+ * // count == 3 -> 3rd
+ * // count == 4 -> 4th
+ * <SelectOrdinal
+ *     value={count}
+ *     one="#st"
+ *     two="#nd"
+ *     few="#rd"
+ *     other="#th"
+ * />
+ * ```
+ */
+export const SelectOrdinal: VFC<PluralChoiceProps>
 
-export const Trans: ComponentType<TransProps>
-export const Plural: ComponentType<ChoiceProps>
-export const Select: ComponentType<SelectProps>
-export const SelectOrdinal: ComponentType<ChoiceProps>
+/**
+ * Props of Select macro are transformed into select format
+ *
+ * @example
+ * ```
+ * // gender == "female"      -> Her book
+ * // gender == "male"        -> His book
+ * // gender == "non-binary"  -> Their book
+ *
+ * <Select
+ *     value={gender}
+ *     _male="His book"
+ *     _female="Her book"
+ *     other="Their book"
+ * />
+ * ```
+ */
+export const Select: VFC<SelectChoiceProps>
