@@ -402,3 +402,15 @@ Information about the locale and message are available from the event.
    i18n.on('missing', (event) => {
       alert(`alert(`Translation in ${event.locale} for ${event.id} is missing!`)`)
    })
+
+getting-translation
+-------
+
+Triggered when a translation is requested with ``i18n._``, regardless the message exists or not in the active locale's messages.
+Information about the locale and message are available from the event.
+
+.. code-block:: js
+
+   i18n.on('getting-translation', (event) => {
+      alert(`alert(`Translation in ${event.locale} for ${event.id} is requested!`)`)
+   })

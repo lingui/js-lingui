@@ -42,6 +42,11 @@ export type MissingMessageEvent = {
   id: string
   context?: string
 }
+export type GettingTranslatingMessageEvent = {
+  locale: Locale
+  id: string
+  context?: string
+}
 
 type setupI18nProps = {
   locale?: Locale
@@ -54,6 +59,7 @@ type setupI18nProps = {
 type Events = {
   change: () => void
   missing: (event: MissingMessageEvent) => void
+  "getting-translation": (event: GettingTranslatingMessageEvent) => void
 }
 
 export class I18n extends EventEmitter<Events> {
@@ -191,6 +197,7 @@ export class I18n extends EventEmitter<Events> {
     if (messageUnreachable) {
       this.emit("missing", { id, context, locale: this._locale })
     }
+    this.emit("getting-translation", { id, context, locale: this._locale })
 
     let translation
 

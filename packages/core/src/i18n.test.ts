@@ -236,6 +236,27 @@ describe("I18n", function () {
       locale: "en",
     })
   })
+  
+  it("._ should emit 'getting-translation' event for every translation request", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: { exists: "exists" } },
+    })
+
+    const handler = jest.fn()
+    i18n.on("getting-translation", handler)
+    i18n._("exists")
+    expect(handler).toHaveBeenCalledWith({
+      id: "exists",
+      locale: "en",
+    })
+    i18n._("missing")
+    expect(handler).toHaveBeenCalledTimes(2)
+    expect(handler).toHaveBeenCalledWith({
+      id: "missing",
+      locale: "en",
+    })
+  })
 
   describe("params.missing - handling missing translations", function () {
     it("._ should return custom string for missing translations", function () {
