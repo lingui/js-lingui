@@ -7,7 +7,7 @@ import * as plurals from "make-plural"
 
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { getCatalogForMerge, getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { getFormat } from "./api"
@@ -113,6 +113,17 @@ function command(config: LinguiConfig, options) {
           console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
     })
+
+    if (doMerge) {
+      const compileCatalog = getCatalogForMerge(config)
+      const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
+        strict: false,
+        namespace: options.namespace || config.compileNamespace,
+        pseudoLocale: config.pseudoLocale,
+      })
+      const compiledPath = compileCatalog.writeCompiled(locale, compiledCatalog)
+      options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
+    }
   })
   return true
 }
