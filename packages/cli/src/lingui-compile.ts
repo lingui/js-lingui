@@ -181,9 +181,6 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (program.watch) {
-    const NAME = "{name}"
-    const LOCALE = "{locale}"
-
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
@@ -194,8 +191,8 @@ if (require.main === module) {
       catalogs.forEach((catalog) => {
         paths.push(
           `${catalog.path
-            .replace(LOCALE, locale)
-            .replace(NAME, "*")}${catalogExtension}`
+            .replace(/{locale}/g, locale)
+            .replace(/{name}/g, "*")}${catalogExtension}`
         )
       })
     })

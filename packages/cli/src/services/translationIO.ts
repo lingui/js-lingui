@@ -185,9 +185,6 @@ function createPoItemFromSegment(segment) {
 }
 
 function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
-  const NAME = "{name}"
-  const LOCALE = "{locale}"
-
   Object.keys(segmentsPerLocale).forEach((targetLocale) => {
     // Remove existing target POs and JS for this target locale
     paths[targetLocale].forEach((path) => {
@@ -201,7 +198,12 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
     })
 
     // Find target path (ignoring {name})
-    const localePath = "".concat(config.catalogs[0].path.replace(LOCALE, targetLocale).replace(NAME, ''), ".po")
+    const localePath = "".concat(
+      config.catalogs[0].path
+        .replace(/{locale}/g, targetLocale)
+        .replace(/{name}/g, ""),
+      ".po"
+    )
     const segments = segmentsPerLocale[targetLocale]
 
     let po = new PO()
@@ -235,15 +237,16 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
 }
 
 function poPathsPerLocale(config) {
-  const NAME = "{name}"
-  const LOCALE = "{locale}"
   const paths = []
 
   config.locales.forEach((locale) => {
     paths[locale] = []
 
     config.catalogs.forEach((catalog) => {
-      const path = "".concat(catalog.path.replace(LOCALE, locale).replace(NAME, "*"), ".po")
+      const path = "".concat(
+        catalog.path.replace(/{locale}/g, locale).replace(/{name}/g, "*"),
+        ".po"
+      )
 
       // If {name} is present (replaced by *), list all the existing POs
       if (path.includes('*')) {

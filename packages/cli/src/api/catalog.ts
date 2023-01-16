@@ -17,7 +17,9 @@ import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
 
 const NAME = "{name}"
+const NAME_REPLACE_RE = /{name}/g
 const LOCALE = "{locale}"
+const LOCALE_REPLACE_RE = /{locale}/g
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
 
@@ -264,10 +266,9 @@ export class Catalog {
     const catalogs = this.readAll()
     const template = this.readTemplate() || {}
 
-
     return R.mapObjIndexed(
       (_value, key) => this.getTranslation(catalogs, locale, key, options),
-      { ...template, ...catalogs[locale] },
+      { ...template, ...catalogs[locale] }
     )
   }
 
@@ -332,7 +333,8 @@ export class Catalog {
       // We search in fallbackLocales as dependent of each locale
       getMultipleFallbacks(locale) ||
       // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales?.default && getTranslation(fallbackLocales.default as string)) ||
+      (fallbackLocales?.default &&
+        getTranslation(fallbackLocales.default as string)) ||
       // Get message default
       catalog[key]?.defaults ||
       // If sourceLocale is either target locale of fallback one, use key
@@ -348,7 +350,8 @@ export class Catalog {
 
   write(locale: string, messages: CatalogType) {
     const filename =
-      this.path.replace(LOCALE, locale) + this.format.catalogExtension
+      this.path.replace(LOCALE_REPLACE_RE, locale) +
+      this.format.catalogExtension
 
     const created = !fs.existsSync(filename)
     const basedir = path.dirname(filename)
@@ -390,7 +393,7 @@ export class Catalog {
       ext = "js"
     }
 
-    const filename = `${this.path.replace(LOCALE, locale)}.${ext}`
+    const filename = `${this.path.replace(LOCALE_REPLACE_RE, locale)}.${ext}`
 
     const basedir = path.dirname(filename)
     if (!fs.existsSync(basedir)) {
@@ -402,7 +405,8 @@ export class Catalog {
 
   read(locale: string) {
     const filename =
-      this.path.replace(LOCALE, locale) + this.format.catalogExtension
+      this.path.replace(LOCALE_REPLACE_RE, locale) +
+      this.format.catalogExtension
 
     if (!fs.existsSync(filename)) return null
     return this.format.read(filename)
@@ -477,7 +481,7 @@ export function getCatalogs(config: LinguiConfig): Catalog[] {
       const correctPath = catalog.path.slice(0, -1)
       const examplePath =
         correctPath.replace(
-          LOCALE,
+          LOCALE_REPLACE_RE,
           // Show example using one of configured locales (if any)
           (config.locales || [])[0] || "en"
         ) + extension
@@ -526,7 +530,7 @@ export function getCatalogs(config: LinguiConfig): Catalog[] {
       return
     }
 
-    const patterns = include.map((path) => path.replace(NAME, "*"))
+    const patterns = include.map((path) => path.replace(NAME_REPLACE_RE, "*"))
     const candidates = glob.sync(
       patterns.length > 1 ? `{${patterns.join(",")}}` : patterns[0],
       {
@@ -541,9 +545,11 @@ export function getCatalogs(config: LinguiConfig): Catalog[] {
         new Catalog(
           {
             name,
-            path: normalizeRelativePath(catalog.path.replace(NAME, name)),
-            include: include.map((path) => path.replace(NAME, name)),
-            exclude: exclude.map((path) => path.replace(NAME, name)),
+            path: normalizeRelativePath(
+              catalog.path.replace(NAME_REPLACE_RE, name)
+            ),
+            include: include.map((path) => path.replace(NAME_REPLACE_RE, name)),
+            exclude: exclude.map((path) => path.replace(NAME_REPLACE_RE, name)),
           },
           config
         )
@@ -557,7 +563,7 @@ export function getCatalogs(config: LinguiConfig): Catalog[] {
 export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
   for (const catalog of catalogs) {
     const catalogFile = `${catalog.path}${catalog.format.catalogExtension}`
-    const catalogGlob = catalogFile.replace(LOCALE, "*")
+    const catalogGlob = catalogFile.replace(LOCALE_REPLACE_RE, "*")
     const match = micromatch.capture(
       normalizeRelativePath(path.relative(catalog.config.rootDir, catalogGlob)),
       normalizeRelativePath(file)
@@ -584,7 +590,7 @@ export function getCatalogForMerge(config: LinguiConfig) {
     const correctPath = catalogConfig.catalogsMergePath.slice(0, -1)
     const examplePath =
       correctPath.replace(
-        LOCALE,
+        LOCALE_REPLACE_RE,
         // Show example using one of configured locales (if any)
         (config.locales || [])[0] || "en"
       ) + extension
