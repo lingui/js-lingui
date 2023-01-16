@@ -116,12 +116,18 @@ function command(config: LinguiConfig, options) {
 
     if (doMerge) {
       const compileCatalog = getCatalogForMerge(config)
+      const namespace = options.namespace || config.compileNamespace
       const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
         strict: false,
-        namespace: options.namespace || config.compileNamespace,
+        namespace: namespace,
         pseudoLocale: config.pseudoLocale,
+        compilerBabelOptions: config.compilerBabelOptions
       })
-      const compiledPath = compileCatalog.writeCompiled(locale, compiledCatalog)
+      const compiledPath = compileCatalog.writeCompiled(
+        locale,
+        compiledCatalog,
+        namespace
+      )
       options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     }
   })
