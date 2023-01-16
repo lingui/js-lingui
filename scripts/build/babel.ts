@@ -2,18 +2,18 @@ import {BundleDef, BundleType} from "./bundles"
 import {getBundleOutputPaths} from "./packaging"
 import {asyncMkDirP, getPackageDir} from "./utils"
 
+import {transformFileSync} from '@babel/core';
 const fs = require("fs")
 const path = require("path")
 const chalk = require("chalk")
-const babel = require("babel-core")
 const ora = require("ora")
 
 const babelConfig = require("./babel.config")
 
 const ignorePatterns = [/\.test.[jt]s$/, /fixtures/]
 
-function walk(base: string, relativePath = "") {
-  let files = []
+function walk(base: string, relativePath = ""): string[] {
+  let files: string[] = []
 
   fs.readdirSync(path.join(base, relativePath)).forEach(dirname => {
     const directory = path.join(relativePath, dirname)
@@ -64,7 +64,7 @@ export default async function(bundle: BundleDef) {
       await asyncMkDirP(outputDir)
 
       if (!filename.endsWith(".d.ts")) {
-        const { code } = babel.transformFileSync(
+        const { code } = transformFileSync(
           path.join(srcDir, filename),
           babelConfig({ modules: true })
         )

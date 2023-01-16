@@ -321,7 +321,6 @@ async function build(bundle: BundleDef, bundleType: RollupBundleType) {
 
 export default async function (bundle: BundleDef) {
   await build(bundle, RollupBundleType.NODE_DEV)
-
   await build(bundle, RollupBundleType.NODE_PROD)
   await build(bundle, RollupBundleType.ESM_DEV)
   await build(bundle, RollupBundleType.ESM_PROD)

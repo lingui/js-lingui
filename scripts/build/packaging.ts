@@ -1,4 +1,4 @@
-import {existsSync, readdirSync, unlinkSync} from "fs"
+import {existsSync, readdirSync} from "fs"
 import {BundleType as BundleType} from "./bundles"
 
 import {
@@ -6,16 +6,14 @@ import {
 } from "./utils"
 
 export function getBundleOutputPaths(bundleType: BundleType, filename: string, packageName: string) {
-  const _filename = filename.replace(/^@lingui\//, "")
-
   switch (bundleType) {
     case BundleType.NOOP:
     case BundleType.NODE:
-      return [`packages/${packageName}/build/${_filename}`]
+      return [`packages/${packageName}/build/${filename}`]
     case BundleType.ESM:
-      return [`packages/${packageName}/build/esm/${_filename}`]
+      return [`packages/${packageName}/build/esm/${filename}`]
     case BundleType.UNIVERSAL:
-      return [`packages/${packageName}/build/cjs/${_filename}`]
+      return [`packages/${packageName}/build/cjs/${filename}`]
     // case BundleType.UMD_DEV:
     // case BundleType.UMD_PROD:
     //   return [

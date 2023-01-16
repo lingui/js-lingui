@@ -9,7 +9,7 @@ export async function asyncCopyTo(from: string, to: string) {
 
   await asyncMkDirP(path.dirname(to))
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     ncp(from, to, error => {
       if (error) {
         // Wrap to have a useful stack trace.
@@ -30,7 +30,7 @@ export function asyncMkDirP(filepath: string) {
 }
 
 export function asyncRimRaf(filepath: string) {
-  return new Promise((resolve, reject) =>
+  return new Promise<void>((resolve, reject) =>
     rimraf(filepath, error => {
       if (error) {
         reject(error)
