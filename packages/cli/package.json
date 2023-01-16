@@ -18,9 +18,17 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "index.js",
+  "main": "./build/index.js",
   "bin": {
-    "lingui": "./lingui.js"
+    "lingui": "./build/lingui.js"
+  },
+  "exports": {
+    ".": {
+      "require": "./build/index.js"
+    },
+    "./api": {
+      "require": "./build/api/index.js"
+    }
   },
   "engines": {
     "node": ">=10.0.0"
@@ -28,10 +36,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "api",
-    "services",
-    "lingui.js",
-    "lingui-*.js"
+    "build/"
   ],
   "dependencies": {
     "@babel/generator": "^7.11.6",

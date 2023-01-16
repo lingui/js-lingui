@@ -38,7 +38,7 @@ async function releaseInVerdaccio() {
 
   spinner.start("Publishing packages to local registry")
   await exec(
-    `npx lerna publish from-package --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --contents build --registry="http://0.0.0.0:4873"
+    `npx lerna publish from-package --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --registry="http://0.0.0.0:4873"
   `
   )
   spinner.succeed()
@@ -83,6 +83,7 @@ function exec(cmd, options) {
         resolve({ stdout, stderr })
       } else {
         reject({ error, stdout, stderr })
+        console.error(stderr)
         process.exit(1)
       }
     })

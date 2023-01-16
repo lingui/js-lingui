@@ -1,14 +1,15 @@
 const argv = require("minimist")(process.argv.slice(2))
 
-const fs = require("fs")
-const path = require("path")
-const { execSync } = require("child_process")
+import * as fs from "fs"
+import * as path from "path"
+import {execSync} from "child_process"
+
 const chalk = require("chalk")
 const ora = require("ora")
 
 const EXAMPLES_DIR = path.resolve("examples")
 
-function listDirs(dir) {
+function listDirs(dir: string) {
   return fs
     .readdirSync(dir)
     .filter(dirname => fs.lstatSync(path.join(dir, dirname)).isDirectory())
@@ -26,7 +27,7 @@ const logHeading = message => console.log(chalk.bold("\n" + message + "\n"))
 
 if (!argv["skip-build"]) {
   logHeading("Build packages")
-  execSync("node scripts/build", { stdio: "inherit" })
+  execSync("yarn release:build", { stdio: "inherit" })
 }
 
 // TODO: Replace yalc with verdaccio

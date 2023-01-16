@@ -1,3 +1,9 @@
+const { pathsToModuleNameMapper } = require('ts-jest');
+const tsConfig = require( '../../tsconfig.json');
+
+/**
+ * @type {import('jest').Config}
+ */
 module.exports = {
   roots: ["<rootDir>/packages/"],
   rootDir: process.cwd(),
@@ -18,6 +24,9 @@ module.exports = {
   ],
   coverageReporters: ["html", "lcov", "text"],
   modulePathIgnorePatterns: ["/build"],
+  moduleNameMapper: pathsToModuleNameMapper(tsConfig.compilerOptions.paths, {
+    prefix: '<rootDir>/',
+  }),
 
   reporters: ["default", "jest-junit"],
   setupFiles: ['set-tz/utc'],

@@ -4,8 +4,8 @@
   "sideEffects": false,
   "description": "React components for translations",
   "main": "index.js",
-  "module": "esm/index.js",
-  "types": "cjs/index.d.ts",
+  "module": "./build/esm/index.js",
+  "types": "./build/cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -34,9 +34,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "cjs/",
-    "esm/"
+    "build/"
   ],
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0"

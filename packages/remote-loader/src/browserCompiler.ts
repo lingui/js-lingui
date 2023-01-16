@@ -1,4 +1,4 @@
-import { compileMessage } from "@lingui/core"
+import { compileMessage } from "@lingui/core/compile"
 
 export function createBrowserCompiledCatalog(messages: Record<string, any>) {
   return Object.keys(messages).reduce((obj, key: string) => {

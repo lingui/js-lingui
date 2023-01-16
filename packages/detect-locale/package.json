@@ -4,8 +4,8 @@
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "index.js",
-  "module": "esm/index.js",
-  "types": "cjs/index.d.ts",
+  "module": "./build/esm/index.js",
+  "types": "./build/cjs/index.d.ts",
   "license": "MIT",
   "keywords": [
     "i18n",
@@ -31,17 +31,15 @@
   },
   "exports": {
     ".": {
-      "require": "./index.js",
-      "import": "./esm/index.js"
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "cjs/",
-    "esm/"
+    "build/"
   ],
   "devDependencies": {
     "jsdom": "^16.4.0"

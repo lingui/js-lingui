@@ -1,30 +1,28 @@
 const argv = require("minimist")(process.argv.slice(2))
 
-const Bundles = require("./bundles")
-const Packaging = require("./packaging")
-const Stats = require("./stats")
-const { asyncRimRaf } = require("./utils")
+import {BundleType, bundles, BundleDef} from "./bundles"
+import {prepareNpmPackages} from "./packaging";
+import * as Stats from "./stats";
+import {asyncRimRaf} from "./utils";
 
-const rollup = require("./rollup")
-const babel = require("./babel")
-const noop = require("./noop")
-
-const { UNIVERSAL, NODE, NOOP } = Bundles.bundleTypes
+import rollup from "./rollup";
+import babel from "./babel";
+import noop from "./noop";
 
 const builders = {
-  [UNIVERSAL]: rollup,
-  [NODE]: babel,
-  [NOOP]: noop
+  [BundleType.UNIVERSAL]: rollup,
+  [BundleType.NODE]: babel,
+  [BundleType.NOOP]: noop
 }
 
 const requestedEntries = (argv._[0] || "")
   .split(",")
   .map(name => name.toLowerCase())
 
-function shouldSkipBundle(bundle, bundleType) {
+function shouldSkipBundle(bundle: BundleDef) {
   if (requestedEntries.length > 0) {
     const isAskingForDifferentEntries = requestedEntries.every(
-      requestedName => bundle.entry.indexOf(requestedName) === -1
+      requestedName => !bundle.packageName.includes(requestedName)
     )
     if (isAskingForDifferentEntries) {
       return true
@@ -38,8 +36,8 @@ async function buildEverything() {
 
   // Run them serially for better console output
   // and to avoid any potential race conditions.
-  for (const bundle of Bundles.bundles) {
-    if (shouldSkipBundle(bundle, bundle.type)) continue
+  for (const bundle of bundles) {
+    if (shouldSkipBundle(bundle)) continue
 
     const builder = builders[bundle.type]
     if (!builder) {
@@ -53,7 +51,7 @@ async function buildEverything() {
   console.log(Stats.printResults())
   if (argv.saveStats) Stats.saveResults()
 
-  await Packaging.prepareNpmPackages()
+  await prepareNpmPackages()
 }
 
 buildEverything()

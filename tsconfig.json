@@ -6,9 +6,13 @@
     "baseUrl": "./",
     "pretty": true,
     "esModuleInterop": true,
+    "stripInternal": true,
+    "resolveJsonModule": true,
     "target": "es2017",
     "paths": {
       "@lingui/core": ["./packages/core/src"],
+      "@lingui/core/compile": ["./packages/core/src/compile/index.ts"],
+      "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
       "@lingui/conf": ["./packages/conf"],
       "@lingui/macro": ["./packages/macro/src"]

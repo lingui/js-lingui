@@ -2,8 +2,8 @@
   "name": "@lingui/loader",
   "version": "3.15.0",
   "description": "webpack loader for lingui message catalogs",
-  "types": "index.d.ts",
-  "main": "index.js",
+  "types": "./build/index.d.ts",
+  "main": "./build/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -29,6 +29,11 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build/"
+  ],
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "@lingui/cli": "^3.15.0",

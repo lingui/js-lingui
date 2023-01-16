@@ -1,4 +1,12 @@
-"use strict"
+import {BundleDef, BundleType} from "./bundles"
+import {asyncCopyTo, getPackageDir} from "./utils"
+import * as Modules from "./modules"
+import * as Packaging from "./packaging"
+import * as Stats from "./stats"
+
+import * as fs from "fs";
+import * as path from "path";
+import sizes from "./plugins/sizes";
 
 const { rollup } = require("rollup")
 const babel = require("rollup-plugin-babel")
@@ -10,23 +18,18 @@ const replace = require("rollup-plugin-replace")
 const typescript = require("rollup-plugin-typescript2")
 const ora = require("ora")
 const chalk = require("chalk")
-const path = require("path")
-const fs = require("fs")
 const argv = require("minimist")(process.argv.slice(2))
-const Stats = require("./stats")
-const sizes = require("./plugins/sizes")
 const codeFrame = require("babel-code-frame")
 const babelConfig = require("./babel.config")
 
-const Modules = require("./modules")
-const Packaging = require("./packaging")
-
-const UMD_DEV = "UMD_DEV"
-const UMD_PROD = "UMD_PROD"
-const NODE_DEV = "NODE_DEV"
-const NODE_PROD = "NODE_PROD"
-const ESM_PROD = "ESM_PROD"
-const ESM_DEV = "ESM_DEV"
+enum RollupBundleType {
+  UMD_DEV= "UMD_DEV",
+  UMD_PROD= "UMD_PROD",
+  NODE_DEV= "NODE_DEV",
+  NODE_PROD= "NODE_PROD",
+  ESM_PROD= "ESM_PROD",
+  ESM_DEV= "ESM_DEV",
+}
 
 const extensions = [".js", ".ts", ".tsx"]
 
@@ -42,7 +45,7 @@ process.on("unhandledRejection", (err) => {
 
 const forcePrettyOutput = argv.pretty
 
-function getBabelConfig(updateBabelOptions, bundleType, filename) {
+function getBabelConfig() {
   return Object.assign({}, babelConfig({ modules: false }), {
     babelrc: false,
     exclude: "node_modules/**",
@@ -51,7 +54,7 @@ function getBabelConfig(updateBabelOptions, bundleType, filename) {
   })
 }
 
-function getRollupOutputOptions(outputPath, format, globals, globalName) {
+function getRollupOutputOptions(outputPath: string, format, globals, globalName) {
   return {
     file: outputPath,
     format,
@@ -62,43 +65,43 @@ function getRollupOutputOptions(outputPath, format, globals, globalName) {
   }
 }
 
-function getFormat(bundleType) {
+function getFormat(bundleType: RollupBundleType) {
   switch (bundleType) {
-    case UMD_DEV:
-    case UMD_PROD:
+    case RollupBundleType.UMD_DEV:
+    case RollupBundleType.UMD_PROD:
       return 'umd'
-    case NODE_DEV:
-    case NODE_PROD:
+    case RollupBundleType.NODE_DEV:
+    case RollupBundleType.NODE_PROD:
       return 'cjs'
-    case ESM_PROD:
-    case ESM_DEV:
+    case RollupBundleType.ESM_PROD:
+    case RollupBundleType.ESM_DEV:
       return 'es'
   }
 }
 
-function getFilename(bundle, bundleType) {
-  const filename = bundle.label || bundle.entry
+function getFilename(bundle: BundleDef, bundleType: RollupBundleType) {
+  const filename = bundle.label || bundle.packageName
   switch (bundleType) {
-    case NODE_DEV:
-    case ESM_DEV:
-    case UMD_DEV:
+    case RollupBundleType.NODE_DEV:
+    case RollupBundleType.ESM_DEV:
+    case RollupBundleType.UMD_DEV:
       return `${filename}.development.js`
-    case UMD_PROD:
-    case NODE_PROD:
-    case ESM_PROD:
+    case RollupBundleType.UMD_PROD:
+    case RollupBundleType.NODE_PROD:
+    case RollupBundleType.ESM_PROD:
       return `${filename}.production.min.js`
   }
 }
 
-function isProductionBundleType(bundleType) {
+function isProductionBundleType(bundleType: RollupBundleType) {
   switch (bundleType) {
-    case UMD_DEV:
-    case NODE_DEV:
-    case ESM_DEV:
+    case RollupBundleType.UMD_DEV:
+    case RollupBundleType.NODE_DEV:
+    case RollupBundleType.ESM_DEV:
       return false
-    case UMD_PROD:
-    case NODE_PROD:
-    case ESM_PROD:
+    case RollupBundleType.UMD_PROD:
+    case RollupBundleType.NODE_PROD:
+    case RollupBundleType.ESM_PROD:
       return true
     default:
       throw new Error(`Unknown type: ${bundleType}`)
@@ -106,19 +109,17 @@ function isProductionBundleType(bundleType) {
 }
 
 function getPlugins(
-  entry,
+  packageName: string,
   externals,
   updateBabelOptions,
   filename,
-  bundleType,
-  globalName,
-  moduleType,
-  modulesToStub
+  bundleType: RollupBundleType,
 ) {
   const isProduction = isProductionBundleType(bundleType)
-  const isInGlobalScope = bundleType === UMD_DEV || bundleType === UMD_PROD
+  const isInGlobalScope = bundleType === RollupBundleType.UMD_DEV || bundleType === RollupBundleType.UMD_PROD
   const shouldStayReadable = forcePrettyOutput
-  const packageDir = path.join(path.dirname(require.resolve(entry)), "src")
+
+  const packageDir = path.join(getPackageDir(packageName), "src")
 
   return [
     // Use Node resolution mechanism.
@@ -143,7 +144,7 @@ function getPlugins(
     }),
 
     // Compile to ES5.
-    babel(getBabelConfig(updateBabelOptions, bundleType)),
+    babel(getBabelConfig()),
     // Turn process.env checks into constants.
     replace({
       "process.env.NODE_ENV": isProduction ? "'production'" : "'development'",
@@ -242,24 +243,23 @@ function handleRollupError(error) {
   }
 }
 
-async function build(bundle, bundleType) {
+
+async function build(bundle: BundleDef, bundleType: RollupBundleType) {
   const filename = getFilename(bundle, bundleType)
   const logKey =
     chalk.white.bold(filename) + chalk.dim(` (${bundleType.toLowerCase()})`)
   const format = getFormat(bundleType)
-  const packageName = Packaging.getPackageName(bundle.entry)
 
-  let resolvedEntry = require.resolve(bundle.entry)
 
   const shouldBundleDependencies =
-    bundleType === UMD_DEV || bundleType === UMD_PROD
+    bundleType === RollupBundleType.UMD_DEV || bundleType === RollupBundleType.UMD_PROD
   const peerGlobals = Modules.getPeerGlobals(
     bundle.externals,
     bundle.moduleType
   )
   let externals = Object.keys(peerGlobals)
   if (!shouldBundleDependencies) {
-    const deps = Modules.getDependencies(bundleType, bundle.entry)
+    const deps = Modules.getDependencies(bundle.packageName)
     externals = externals.concat(deps)
   }
 
@@ -269,7 +269,7 @@ async function build(bundle, bundleType) {
   )
 
   const rollupConfig = {
-    input: resolvedEntry,
+    input: path.resolve(getPackageDir(bundle.packageName), bundle.entry || 'index.js'),
     treeshake: {
       moduleSideEffects,
     },
@@ -283,20 +283,19 @@ async function build(bundle, bundleType) {
     },
     onwarn: handleRollupWarning,
     plugins: getPlugins(
-      bundle.entry,
+      bundle.packageName,
       externals,
       bundle.babel,
       filename,
       bundleType,
-      bundle.global,
-      bundle.moduleType,
-      bundle.modulesToStub
     ),
   }
   const [mainOutputPath, ...otherOutputPaths] = Packaging.getBundleOutputPaths(
-    bundleType === ESM_PROD || bundleType === ESM_DEV ? "ESM" : "UNIVERSAL",
+    bundleType === RollupBundleType.ESM_PROD || bundleType === RollupBundleType.ESM_DEV
+      ? BundleType.ESM
+      : BundleType.UNIVERSAL,
     filename,
-    packageName
+    bundle.packageName
   )
   const rollupOutputOptions = getRollupOutputOptions(
     mainOutputPath,
@@ -320,11 +319,12 @@ async function build(bundle, bundleType) {
   spinner.succeed()
 }
 
-module.exports = async function (bundle) {
-  await build(bundle, NODE_DEV)
-  await build(bundle, NODE_PROD)
-  await build(bundle, ESM_DEV)
-  await build(bundle, ESM_PROD)
+export default async function (bundle: BundleDef) {
+  await build(bundle, RollupBundleType.NODE_DEV)
+  await build(bundle, RollupBundleType.NODE_PROD)
+  await build(bundle, RollupBundleType.ESM_DEV)
+  await build(bundle, RollupBundleType.ESM_PROD)
+
   // await build(bundle, UMD_DEV)
   // await build(bundle, UMD_PROD)
 }

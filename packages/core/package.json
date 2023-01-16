@@ -3,9 +3,9 @@
   "version": "3.15.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "index.js",
-  "module": "esm/index.js",
-  "types": "cjs/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/cjs/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -27,21 +27,23 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "exports": {
     ".": {
-      "require": "./index.js",
-      "import": "./esm/index.js"
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
+    },
+    "./compile": {
+      "require": "./build/compile.js",
+      "import": "./build/esm/compile.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "cjs/",
-    "esm/"
+    "build/"
   ],
   "dependencies": {
     "@babel/runtime": "^7.11.2",

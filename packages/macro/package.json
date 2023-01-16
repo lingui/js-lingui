@@ -2,7 +2,7 @@
   "name": "@lingui/macro",
   "version": "3.15.0",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
-  "main": "index.js",
+  "main": "./build/index.js",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -24,9 +24,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "*.js",
-    "global.d.ts",
-    "index.d.ts"
+    "build/"
   ],
   "dependencies": {
     "@babel/runtime": "^7.11.2",
