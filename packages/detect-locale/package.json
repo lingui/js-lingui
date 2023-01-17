@@ -3,9 +3,9 @@
   "version": "3.15.0",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
-  "main": "index.js",
+  "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
-  "types": "./build/cjs/index.d.ts",
+  "types": "./build/index.d.ts",
   "license": "MIT",
   "keywords": [
     "i18n",
@@ -27,11 +27,11 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "exports": {
     ".": {
-      "require": "./build/index.js",
+      "require": "./build/cjs/index.js",
       "import": "./build/esm/index.js"
     },
     "./package.json": "./package.json"

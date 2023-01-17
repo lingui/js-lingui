@@ -1,30 +1,8 @@
 import {existsSync, readdirSync} from "fs"
-import {BundleType as BundleType} from "./bundles"
 
 import {
-  asyncCopyTo,
+  asyncCopyTo
 } from "./utils"
-
-export function getBundleOutputPaths(bundleType: BundleType, filename: string, packageName: string) {
-  switch (bundleType) {
-    case BundleType.NOOP:
-    case BundleType.NODE:
-      return [`packages/${packageName}/build/${filename}`]
-    case BundleType.ESM:
-      return [`packages/${packageName}/build/esm/${filename}`]
-    case BundleType.UNIVERSAL:
-      return [`packages/${packageName}/build/cjs/${filename}`]
-    // case BundleType.UMD_DEV:
-    // case BundleType.UMD_PROD:
-    //   return [
-    //     `packages/build/${packageName}/umd/${filename}`,
-    //     `build/dist/${filename}`
-    //   ]
-    default:
-      throw new Error("Unknown bundle type.")
-  }
-}
-
 
 async function prepareNpmPackage(name: string) {
   if (!existsSync(`packages/${name}/build`)) {

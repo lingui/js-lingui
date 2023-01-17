@@ -1,4 +1,4 @@
-const sourceConfig = require("./config.unit")
+const sourceConfig = require("./jest.config")
 
 /**
  * @type {import('jest').Config}

@@ -3,9 +3,8 @@ const argv = require("minimist")(process.argv.slice(2))
 import * as fs from "fs"
 import * as path from "path"
 import {execSync} from "child_process"
-
-const chalk = require("chalk")
-const ora = require("ora")
+import chalk from "chalk";
+import ora from "ora";
 
 const EXAMPLES_DIR = path.resolve("examples")
 

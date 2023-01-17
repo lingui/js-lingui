@@ -7,7 +7,7 @@ export enum BundleType {
 
 export type BundleDef = {
   type: BundleType,
-  externals?: string[]
+  externals?: readonly string[]
 
   /**
    * Optional. Default index.js
@@ -19,24 +19,21 @@ export type BundleDef = {
    */
   packageName: string
   label?: string,
-  // all following not used now
-  moduleType?: unknown,
-  global?: unknown,
-  babel?: unknown,
 };
 
-export const bundles: BundleDef[] = [
+export const bundles: readonly BundleDef[] = [
   {
     type: BundleType.UNIVERSAL,
     packageName: "core",
-    externals: []
+    externals: [
+      "@lingui/core/compile"
+    ]
   },
   {
     type: BundleType.UNIVERSAL,
     packageName: "core",
     entry: 'compile.entry.js',
     label: 'compile',
-    externals: []
   },
   {
     type: BundleType.UNIVERSAL,
@@ -75,24 +72,9 @@ export const bundles: BundleDef[] = [
 
   {
     type: BundleType.UNIVERSAL,
-    packageName: "remote-loader"
+    packageName: "remote-loader",
+    externals: [
+      "@lingui/core/compile"
+    ]
   }
 ]
-
-// Based on deep-freeze by substack (public domain)
-function deepFreeze(o) {
-  Object.freeze(o)
-  Object.getOwnPropertyNames(o).forEach(function(prop) {
-    if (
-      o[prop] !== null &&
-      (typeof o[prop] === "object" || typeof o[prop] === "function") &&
-      !Object.isFrozen(o[prop])
-    ) {
-      deepFreeze(o[prop])
-    }
-  })
-  return o
-}
-
-// Don't accidentally mutate config as part of the build
-deepFreeze(bundles)

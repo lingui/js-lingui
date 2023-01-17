@@ -3,9 +3,9 @@
   "version": "3.15.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "./build/index.js",
+  "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
-  "types": "./build/cjs/index.d.ts",
+  "types": "./build/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -31,11 +31,11 @@
   },
   "exports": {
     ".": {
-      "require": "./build/index.js",
+      "require": "./build/cjs/index.js",
       "import": "./build/esm/index.js"
     },
     "./compile": {
-      "require": "./build/compile.js",
+      "require": "./build/cjs/compile.js",
       "import": "./build/esm/compile.js"
     },
     "./package.json": "./package.json"

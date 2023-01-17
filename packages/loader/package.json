@@ -27,7 +27,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "files": [
     "LICENSE",
@@ -41,7 +41,8 @@
     "loader-utils": "^2.0.0"
   },
   "devDependencies": {
-    "memory-fs": "^0.5.0"
+    "memory-fs": "^0.5.0",
+    "webpack": "^4.44.2"
   },
   "peerDependencies": {
     "webpack": "^4.0.0 || ^5.0.0"

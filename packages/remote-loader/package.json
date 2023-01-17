@@ -4,9 +4,9 @@
   "sideEffects": false,
   "private": true,
   "description": "Load remotely your translations",
-  "main": "index.js",
-  "module": "./build/esm/remote-loader.production.min.js",
-  "types": "./build/cjs/index.d.ts",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "author": {
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
@@ -30,7 +30,14 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
+  },
+  "exports": {
+    ".": {
+      "require": "./build/cjs/index.js",
+      "import": "./build/esm/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
