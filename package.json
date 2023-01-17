@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
-    "@size-limit/preset-small-lib": "^4.10.1",
+    "@size-limit/preset-small-lib": "^8.1.1",
     "@swc/jest": "^0.2.24",
     "@swc/core": "^1.3.26",
     "swc-node": "^1.0.0",
@@ -96,7 +96,7 @@
     "rollup-plugin-typescript2": "^0.27.3",
     "semver": "^7.3.2",
     "set-tz": "^0.2.0",
-    "size-limit": "^4.10.1",
+    "size-limit": "^8.1.1",
     "strip-ansi": "^6.0.0",
     "tmp": "^0.2.1",
     "ts-jest": "^26.4.1",
@@ -113,20 +113,22 @@
   },
   "size-limit": [
     {
-      "path": "./packages/core/build/cjs/core.production.min.js",
+      "path": "./packages/core/build/esm/core.production.min.js",
+      "import": "{ i18n }",
       "limit": "3 kB"
     },
     {
-      "path": "./packages/detect-locale/build/cjs/detect-locale.production.min.js",
+      "path": "./packages/detect-locale/build/esm/detect-locale.production.min.js",
       "limit": "1 kB"
     },
     {
-      "path": "./packages/react/build/cjs/react.production.min.js",
-      "limit": "5 kB"
+      "path": "./packages/react/build/esm/react.production.min.js",
+      "limit": "3 kB",
+      "ignore": ["react"]
     },
     {
-      "path": "./packages/remote-loader/build/cjs/remote-loader.production.min.js",
-      "limit": "1 MB"
+      "path": "./packages/remote-loader/build/esm/remote-loader.production.min.js",
+      "limit": "8 kB"
     }
   ]
 }
