@@ -2,7 +2,6 @@ const argv = require("minimist")(process.argv.slice(2))
 
 import {BundleType, bundles, BundleDef} from "./bundles"
 import {prepareNpmPackages} from "./packaging";
-import * as Stats from "./stats";
 import {asyncRimRaf} from "./utils";
 
 import rollup from "./rollup";
@@ -47,9 +46,6 @@ async function buildEverything() {
 
     await builder(bundle)
   }
-
-  console.log(Stats.printResults())
-  if (argv.saveStats) Stats.saveResults()
 
   await prepareNpmPackages()
 }

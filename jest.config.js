@@ -1,5 +1,5 @@
-const { pathsToModuleNameMapper } = require('ts-jest');
-const tsConfig = require( '../../tsconfig.json');
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const tsConfig = require( './tsconfig.json');
 
 /**
  * @type {import('jest').Config}
@@ -30,9 +30,9 @@ module.exports = {
 
   reporters: ["default", "jest-junit"],
   setupFiles: ['set-tz/utc'],
-  setupFilesAfterEnv: [require.resolve("./env.js")],
+  setupFilesAfterEnv: [require.resolve("./scripts/jest/env.js")],
   snapshotSerializers: [
     "jest-serializer-html",
-    require.resolve("./stripAnsiSerializer.js"),
+    require.resolve("./scripts/jest/stripAnsiSerializer.js"),
   ],
 }

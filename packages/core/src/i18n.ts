@@ -1,7 +1,7 @@
 import { interpolate, UNICODE_REGEX } from "./context"
 import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
-import { compileMessage } from "./compile"
+import { compileMessage } from "@lingui/core/compile"
 import { EventEmitter } from "./eventEmitter"
 import type {PluralCategory} from "make-plural"
 

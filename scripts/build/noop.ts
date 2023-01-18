@@ -1,10 +1,8 @@
-import {BundleDef, BundleType} from "./bundles"
-import {getBundleOutputPaths} from "./packaging"
+import {BundleDef} from "./bundles"
 import {asyncCopyTo, getPackageDir} from "./utils"
-
-const path = require("path")
-const chalk = require("chalk")
-const ora = require("ora")
+import nodePath from "path";
+import ora from "ora";
+import chalk from "chalk";
 
 export default async function(bundle: BundleDef) {
   const logKey = chalk.white.bold(bundle.packageName)
@@ -13,14 +11,8 @@ export default async function(bundle: BundleDef) {
 
   try {
     const packageDir = getPackageDir(bundle.packageName)
-
-    const [mainOutputPath] = getBundleOutputPaths(
-      BundleType.NOOP,
-      "index.js",
-      bundle.packageName
-    )
-
-    await asyncCopyTo(path.join(packageDir, "index.js"), mainOutputPath)
+    const outputPath = nodePath.join(packageDir, "build", "index.js")
+    await asyncCopyTo(nodePath.join(packageDir, "index.js"), outputPath)
   } catch (error) {
     spinner.fail()
     throw error

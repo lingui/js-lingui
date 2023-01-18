@@ -19,9 +19,7 @@ export async function asyncCopyTo(from: string, to: string) {
       resolve()
     })
   })
-
 }
-
 
 export function asyncMkDirP(filepath: string) {
   return fsPromises.mkdir(filepath, {
@@ -41,6 +39,6 @@ export function asyncRimRaf(filepath: string) {
   )
 }
 
-export function getPackageDir(packageName: string): string {
-  return path.resolve(__dirname, "../../packages", packageName);
+export function getPackageDir(packageName: string, ...segments: string[]): string {
+  return path.resolve(__dirname, "../../packages", packageName, ...segments);
 }

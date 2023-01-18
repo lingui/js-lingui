@@ -1,14 +1,11 @@
-import {BundleDef, BundleType} from "./bundles"
-import {getBundleOutputPaths} from "./packaging"
+import {BundleDef} from "./bundles"
 import {asyncMkDirP, getPackageDir} from "./utils"
 
-import {transformFileSync} from '@babel/core';
-const fs = require("fs")
-const path = require("path")
-const chalk = require("chalk")
-const ora = require("ora")
-
-const babelConfig = require("./babel.config")
+import {transformFileSync} from '@babel/core'
+import fs from "fs";
+import path from "path";
+import ora from "ora";
+import chalk from "chalk";
 
 const ignorePatterns = [/\.test.[jt]s$/, /fixtures/]
 
@@ -32,7 +29,7 @@ function walk(base: string, relativePath = ""): string[] {
   return files
 }
 
-function declarationFinder(typesPath) {
+function declarationFinder(typesPath: string[]) {
   return typesPath.map(p => fs.existsSync(p) && path.basename(p)).filter(Boolean)
 }
 
@@ -53,24 +50,33 @@ export default async function(bundle: BundleDef) {
       ])
     ]
 
-    for (const filename of files) {
-      const [mainOutputPath] = getBundleOutputPaths(
-        BundleType.NODE,
-        filename,
-        bundle.packageName
-      )
+    for (const filePath of files) {
+      const outputPath = path.join(packageDir, 'build', filePath)
+      const outputDir = path.dirname(outputPath)
 
-      const outputDir = path.dirname(mainOutputPath)
       await asyncMkDirP(outputDir)
 
-      if (!filename.endsWith(".d.ts")) {
+      if (!filePath.endsWith(".d.ts")) {
         const { code } = transformFileSync(
-          path.join(srcDir, filename),
-          babelConfig({ modules: true })
+          path.join(srcDir, filePath),
+          {
+            configFile: false,
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    node: 14,
+                  },
+                }
+              ],
+              "@babel/preset-typescript",
+            ],
+          }
         )
-        fs.writeFileSync(mainOutputPath.replace(/\.ts$/, ".js"), code)
+        fs.writeFileSync(outputPath.replace(/\.ts$/, ".js"), code)
       } else {
-        fs.copyFileSync(path.join(packageDir, filename), path.join(outputDir, filename))
+        fs.copyFileSync(path.join(packageDir, filePath), path.join(outputDir, filePath))
       }
     }
   } catch (error) {
