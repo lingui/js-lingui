@@ -47,6 +47,14 @@ jobs:
       - name: Creates local .npmrc
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
+      - name: Prepare Lingui-Bot git account
+        uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          name: 'Lingui Bot'
+          email: 'linguibot@gmail.com'
+          actor: 'lingui-bot'
+          token: '${{ secrets.GITHUB_TOKEN }}'
+
       - name: Versioning packages
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
