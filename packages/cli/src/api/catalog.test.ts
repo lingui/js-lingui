@@ -132,7 +132,7 @@ describe("Catalog", function () {
   })
 
   describe("POT Flow", function () {
-    it('Should merge source messages from template if provided', () => {
+    it("Should merge source messages from template if provided", () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -144,21 +144,21 @@ describe("Catalog", function () {
           exclude: [],
         },
         mockConfig({
-          locales: ['en', 'pl'],
+          locales: ["en", "pl"],
         })
       )
 
-      const translations = catalog.getTranslations('pl', {
-        sourceLocale: 'en',
+      const translations = catalog.getTranslations("pl", {
+        sourceLocale: "en",
         fallbackLocales: {
-          default: 'en'
-        }
-      });
+          default: "en",
+        },
+      })
 
       expect(translations).toMatchSnapshot()
     })
 
-    it('Should get translations from template if locale file not presented', () => {
+    it("Should get translations from template if locale file not presented", () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -170,18 +170,18 @@ describe("Catalog", function () {
           exclude: [],
         },
         mockConfig({
-          locales: ['en', 'pl'],
+          locales: ["en", "pl"],
         })
       )
 
-      const translations = catalog.getTranslations('en', {
-        sourceLocale: 'en',
+      const translations = catalog.getTranslations("en", {
+        sourceLocale: "en",
         fallbackLocales: {
-          default: 'en'
-        }
-      });
+          default: "en",
+        },
+      })
 
-      console.log(translations);
+      console.log(translations)
       expect(translations).toMatchSnapshot()
     })
   })
@@ -207,7 +207,10 @@ describe("Catalog", function () {
         {
           name: "messages",
           path: "locales/{locale}",
-          include: [fixture("collect/componentA"), fixture("collect/componentB.js")],
+          include: [
+            fixture("collect/componentA"),
+            fixture("collect/componentB.js"),
+          ],
           exclude: [],
         },
         mockConfig()
@@ -215,7 +218,7 @@ describe("Catalog", function () {
 
       const messages = await catalog.collect({
         ...defaultMakeOptions,
-        files: [fixture("collect/componentA")]
+        files: [fixture("collect/componentA")],
       })
       expect(messages).toMatchSnapshot()
     })
@@ -718,6 +721,34 @@ describe("getCatalogs", function () {
     ])
   })
 
+  it("should expand {name} multiple times in path", function () {
+    mockFs({
+      componentA: {
+        "index.js": mockFs.file(),
+      },
+    })
+
+    const config = mockConfig({
+      catalogs: [
+        {
+          path: "{name}/locales/{locale}/{name}_messages_{locale}",
+          include: ["./{name}/"],
+        },
+      ],
+    })
+    expect(getCatalogs(config)).toEqual([
+      new Catalog(
+        {
+          name: "componentA",
+          path: "componentA/locales/{locale}/componentA_messages_{locale}",
+          include: ["componentA/"],
+          exclude: [],
+        },
+        config
+      ),
+    ])
+  })
+
   it("shouldn't expand {name} for ignored directories", function () {
     mockFs({
       componentA: {
@@ -811,6 +842,23 @@ describe("getCatalogForFile", function () {
     ]
 
     expect(getCatalogForFile("./xyz/en.po", catalogs)).toBeNull()
+  })
+
+  it("should return matching catalog and locale if {locale} is present multiple times in path", function () {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/{locale}/messages_{locale}",
+        include: ["./src/"],
+      },
+      mockConfig({ format: "po" })
+    )
+    const catalogs = [catalog]
+
+    expect(getCatalogForFile("./src/locales/en/messages_en.po", catalogs)).toEqual({
+      locale: "en",
+      catalog,
+    })
   })
 
   it("should return matching catalog and locale", function () {
@@ -934,12 +982,12 @@ describe("normalizeRelativePath", function () {
     )
   })
 
-  it("directories without ending slash are correctly treaten as dirs", function() {
+  it("directories without ending slash are correctly treaten as dirs", function () {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
       },
-      "componentB": mockFs.file(),
+      componentB: mockFs.file(),
     })
     // checked correctly that is a dir, cuz added that ending slash
     expect(normalizeRelativePath("./componentA")).toEqual("componentA/")
@@ -1029,23 +1077,26 @@ describe("writeCompiled", function () {
       name: "messages",
       path: path.join(localeDir, "{locale}", "messages"),
       include: [],
-      exclude: []
+      exclude: [],
     },
     mockConfig()
   )
 
   it.each([
-    {namespace: "es", extension: /\.mjs$/},
-    {namespace: "ts", extension: /\.ts$/},
-    {namespace: undefined, extension: /\.js$/},
-    {namespace: 'cjs', extension: /\.js$/},
-    {namespace: 'window.test', extension: /\.js$/},
-    {namespace: 'global.test', extension: /\.js$/}
-  ])('Should save namespace $namespace in $extension extension', ({namespace, extension}) => {
-    const compiledCatalog = createCompiledCatalog("en", {}, {namespace})
-    // Test that the file extension of the compiled catalog is `.mjs`
-    expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
-      extension
-    )
-  })
+    { namespace: "es", extension: /\.mjs$/ },
+    { namespace: "ts", extension: /\.ts$/ },
+    { namespace: undefined, extension: /\.js$/ },
+    { namespace: "cjs", extension: /\.js$/ },
+    { namespace: "window.test", extension: /\.js$/ },
+    { namespace: "global.test", extension: /\.js$/ },
+  ])(
+    "Should save namespace $namespace in $extension extension",
+    ({ namespace, extension }) => {
+      const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+      // Test that the file extension of the compiled catalog is `.mjs`
+      expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
+        extension
+      )
+    }
+  )
 })
