@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/lingui/js-lingui/compare/v3.15.0...v3.16.0) (2023-01-18)
+
+
+### Bug Fixes
+
+* **macro:** Extraction outputting empty objects ([#1331](https://github.com/lingui/js-lingui/issues/1331)) ([261265f](https://github.com/lingui/js-lingui/commit/261265f8a838386caa13d153e56e25363d806c19))
+* **types:** `<Trans>`can have an `i18n` props ([#1308](https://github.com/lingui/js-lingui/issues/1308)) ([de01f8d](https://github.com/lingui/js-lingui/commit/de01f8df0d814f2a42d26d7235c72d4592325ad3))
+
+
+
+
+
 # [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
 
 

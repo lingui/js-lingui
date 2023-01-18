@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/lingui/js-lingui/compare/v3.15.0...v3.16.0) (2023-01-18)
+
+
+### Bug Fixes
+
+* **cli:** {locale} and {name} replace only once in catalog path ([#1342](https://github.com/lingui/js-lingui/issues/1342)) ([9e2d7d2](https://github.com/lingui/js-lingui/commit/9e2d7d28147169e70e9e54bc61d09745a1cbf813))
+* **cli:** catalogsMergePath doesn't merge catalogs ([#1341](https://github.com/lingui/js-lingui/issues/1341)) ([12ad0df](https://github.com/lingui/js-lingui/commit/12ad0dfa69004e1aeb3ac4aad57e6c7bf2325bad))
+
+
+### Features
+
+* `lingui extract` should fail with a non-zero exit code when there are extraction failures ([#1299](https://github.com/lingui/js-lingui/issues/1299)) ([c863322](https://github.com/lingui/js-lingui/commit/c863322a5f4706cc888ea351c463e7a343cc6dfd))
+
+
+
+
+
 # [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
 
 

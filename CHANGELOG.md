@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/lingui/js-lingui/compare/v3.15.0...v3.16.0) (2023-01-18)
+
+
+### Bug Fixes
+
+* **cli:** {locale} and {name} replace only once in catalog path ([#1342](https://github.com/lingui/js-lingui/issues/1342)) ([9e2d7d2](https://github.com/lingui/js-lingui/commit/9e2d7d28147169e70e9e54bc61d09745a1cbf813))
+* **cli:** catalogsMergePath doesn't merge catalogs ([#1341](https://github.com/lingui/js-lingui/issues/1341)) ([12ad0df](https://github.com/lingui/js-lingui/commit/12ad0dfa69004e1aeb3ac4aad57e6c7bf2325bad))
+* Dynamic versioning of internal packages ([#1332](https://github.com/lingui/js-lingui/issues/1332)) ([a1ff393](https://github.com/lingui/js-lingui/commit/a1ff393ec14cc4ce44cf2717eee80bd77312b8c1))
+* **macro:** Extraction outputting empty objects ([#1331](https://github.com/lingui/js-lingui/issues/1331)) ([261265f](https://github.com/lingui/js-lingui/commit/261265f8a838386caa13d153e56e25363d806c19))
+* Local development not working on Windows ([ad9b735](https://github.com/lingui/js-lingui/commit/ad9b73566b105e13812da2f515116ed1cf80c3e8))
+* **types:** `<Trans>`can have an `i18n` props ([#1308](https://github.com/lingui/js-lingui/issues/1308)) ([de01f8d](https://github.com/lingui/js-lingui/commit/de01f8df0d814f2a42d26d7235c72d4592325ad3))
+
+
+### Features
+
+* `lingui extract` should fail with a non-zero exit code when there are extraction failures ([#1299](https://github.com/lingui/js-lingui/issues/1299)) ([c863322](https://github.com/lingui/js-lingui/commit/c863322a5f4706cc888ea351c463e7a343cc6dfd))
+* allow extract to work with i18n._ calls not created from macro ([#1309](https://github.com/lingui/js-lingui/issues/1309)) ([90be171](https://github.com/lingui/js-lingui/commit/90be1719becc4710c910ea16928b7ce41ef9ab19))
+
+
+
+
+
 # [3.15.0](https://github.com/lingui/js-lingui/compare/v3.14.0...v3.15.0) (2022-11-07)
 
 
