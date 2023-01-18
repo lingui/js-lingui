@@ -1,9 +1,11 @@
 name: Size Testing
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   size:
