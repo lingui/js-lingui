@@ -10,7 +10,8 @@
   "scripts": {
     "test": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/unit.xml jest -c jest.config.js --no-cache",
     "test:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/integration.xml jest -c jest.config.integration.js --no-cache",
-    "test:all": "yarn test && yarn test:integration",
+    "test:node-api": "node scripts/test-node-api.js",
+    "test:all": "yarn test && yarn test:integration && test:node-api",
     "watch": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.unit.js --watch",
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c scripts/jest/config.integration.js --watch",
     "lint:types": "tsc",
