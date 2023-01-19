@@ -32,7 +32,7 @@ export const bundles: readonly BundleDef[] = [
   {
     type: BundleType.UNIVERSAL,
     packageName: "core",
-    entry: 'compile.entry.js',
+    entry: 'compile.entry.ts',
     label: 'compile',
   },
   {
