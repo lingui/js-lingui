@@ -18,13 +18,13 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "./build/index.js",
+  "main": "./build/lingui.js",
   "bin": {
     "lingui": "./build/lingui.js"
   },
   "exports": {
     ".": {
-      "require": "./build/index.js"
+      "require": "./build/lingui.js"
     },
     "./api": {
       "require": "./build/api/index.js"
