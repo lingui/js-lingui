@@ -29,10 +29,10 @@
     "./api": {
       "require": "./build/api/index.js"
     },
-    "./api/extractors/babel.js": {
+    "./api/extractors/babel": {
       "require": "./build/api/extractors/babel.js"
     },
-    "./api/extractors/typescript.js": {
+    "./api/extractors/typescript": {
       "require": "./build/api/extractors/typescript.js"
     }
   },
