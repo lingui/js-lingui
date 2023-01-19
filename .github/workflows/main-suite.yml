@@ -62,5 +62,8 @@ jobs:
       - name: Integration Testing
         run: yarn test:integration
 
+      - name: Node Api Testing
+        run: yarn test:node-api
+
       - name: Check coverage
         uses: codecov/codecov-action@v3
