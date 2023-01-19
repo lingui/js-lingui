@@ -43,7 +43,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "build/"
+    "build/",
+    "compile.js"
   ],
   "dependencies": {
     "@babel/runtime": "^7.11.2",
