@@ -53,11 +53,11 @@ jobs:
           name: 'Lingui Bot'
           email: 'linguibot@gmail.com'
           actor: 'lingui-bot'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          token: '${{ secrets.GH_TOKEN }}'
 
       - name: Versioning packages
         env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: yarn version:${{github.event.inputs.npmTag}}
 
       - name: Packaging packages with newer version
@@ -65,5 +65,5 @@ jobs:
 
       - name: Publishing packages
         env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: yarn release:${{github.event.inputs.npmTag}}
