@@ -1,7 +1,6 @@
 const { exec: _exec } = require("child_process")
 const chalk = require("chalk")
 const ora = require("ora")
-const os = require("os")
 
 async function releaseInVerdaccio() {
   const spinner = ora()
@@ -27,13 +26,8 @@ async function releaseInVerdaccio() {
   spinner.start(
     "Dont't mark files as changed to let publish, but not create a git history"
   )
-  if (isWindows()) {
-    await exec(
-      `for /f "" %f in ('git ls-files -m') do git update-index --assume-unchanged %f`
-    )
-  } else {
-    await exec("git ls-files -m | xargs git update-index --assume-unchanged")
-  }
+  await exec("git commit --all -m \"TEMP: verdaccio release\"")
+
   spinner.succeed()
 
   spinner.start("Publishing packages to local registry")
@@ -44,15 +38,7 @@ async function releaseInVerdaccio() {
   spinner.succeed()
 
   spinner.start("Reverting the changed files from index")
-  if (isWindows()) {
-    await exec(
-      `for /f "tokens=2" %f in ('git ls-files -v ^| findstr /R /C:"^[abcdefghijklmnopqrstuvwxyz]"') do git update-index --no-assume-unchanged %f --"`
-    )
-  } else {
-    await exec(
-      "git ls-files -v | grep '^[a-z]' | cut -c3- | xargs git update-index --no-assume-unchanged --"
-    )
-  }
+  await exec("git reset --soft HEAD~1")
   spinner.succeed()
 
   console.log()
@@ -61,10 +47,6 @@ async function releaseInVerdaccio() {
       "npm install --registry http://0.0.0.0:4873 @lingui/[package]"
     )} in target project to install development version of package.`
   )
-}
-
-function isWindows() {
-  return os.platform() === "win32"
 }
 
 function exec(cmd, options) {
