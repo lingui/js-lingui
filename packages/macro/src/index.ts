@@ -27,6 +27,22 @@ const getSymbolSource = (name: 'i18n' | 'Trans'): [source: string, identifier?: 
 const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
 const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
+const jsMacroTags = new Set([
+  'defineMessage',
+  'arg',
+  't',
+  'plural',
+  'select',
+  'selectOrdinal'
+])
+
+const jsxMacroTags = new Set([
+  'Trans',
+  'Plural',
+  'Select',
+  'SelectOrdinal',
+])
+
 function macro({ references, state, babel }: MacroParams) {
   const jsxNodes: NodePath[] = []
   const jsNodes: NodePath[] = []
@@ -34,20 +50,18 @@ function macro({ references, state, babel }: MacroParams) {
 
   Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
-    const macroType = getMacroType(tagName)
-    if (macroType == null) {
-      throw nodes[0].buildCodeFrameError(`Unknown macro ${tagName}`)
-    }
 
-    if (macroType === "js") {
+    if (jsMacroTags.has(tagName)) {
       nodes.forEach((node) => {
         jsNodes.push(node.parentPath)
       })
-    } else {
+    } else if(jsxMacroTags.has(tagName)) {
       nodes.forEach((node) => {
         // identifier.openingElement.jsxElement
         jsxNodes.push(node.parentPath.parentPath)
       })
+    } else {
+      throw nodes[0].buildCodeFrameError(`Unknown macro ${tagName}`)
     }
   })
 
@@ -131,21 +145,15 @@ const alreadyVisited = (path: NodePath) => {
   }
 }
 
-function getMacroType(tagName: string): string {
-  switch (tagName) {
-    case "defineMessage":
-    case "arg":
-    case "t":
-    case "plural":
-    case "select":
-    case "selectOrdinal":
-      return "js"
-    case "Trans":
-    case "Plural":
-    case "Select":
-    case "SelectOrdinal":
-      return "jsx"
-  }
-}
+[...jsMacroTags, ...jsxMacroTags].forEach((name) => {
+  Object.defineProperty(module.exports, name, {
+    get() {
+      throw new Error(`The macro you imported from "@lingui/macro" is being executed outside the context of compilation with babel-plugin-macros. `
+        + `This indicates that you don't have the babel plugin "babel-plugin-macros" configured correctly. `
+        + `Please see the documentation for how to configure babel-plugin-macros properly: `
+        + 'https://github.com/kentcdodds/babel-plugin-macros/blob/main/other/docs/user.md');
+    }
+  })
+})
 
 export default createMacro(macro)
