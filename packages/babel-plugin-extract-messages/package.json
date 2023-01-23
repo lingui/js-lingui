@@ -33,9 +33,9 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@babel/generator": "^7.20.14",
-    "@babel/runtime": "^7.20.13",
-    "@lingui/conf": "3.17.1",
-    "mkdirp": "^1.0.4"
+    "@babel/runtime": "^7.20.13"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.20.7"
   }
 }

@@ -8,10 +8,19 @@ export type BabelOptions = {
   presets?: Array<string>
 }
 
+export type ExtractedMessage = {
+  id: string
+
+  message?: string
+  context?: string
+  origin?: [filename: string, line: number]
+
+  comment?: string
+}
+
 export type ExtractOptions = {
   verbose?: boolean
   projectType?: string
-  configPath?: string
   extractors?: ExtractorType[]
   babelOptions?: BabelOptions
 }
@@ -20,14 +29,14 @@ export type ExtractorType = {
   match(filename: string): boolean
   extract(
     filename: string,
-    targetDir: string,
+    onMessageExtracted: (msg: ExtractedMessage) => void,
     options?: ExtractOptions
   ): Promise<void> | void
 }
 
 export default async function extract(
   filename: string,
-  targetPath: string,
+  onMessageExtracted: (msg: ExtractedMessage) => void,
   options: ExtractOptions
 ): Promise<boolean> {
   const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
@@ -48,15 +57,16 @@ export default async function extract(
     if (options.verbose) spinner = ora().start(filename)
 
     try {
-      await ext.extract(filename, targetPath, options)
+      await ext.extract(filename, onMessageExtracted, options)
 
       if (options.verbose && spinner) spinner.succeed()
       return true
     } catch (e) {
       if (options.verbose && spinner) {
-        spinner.fail(e.message)
+        spinner.fail((e as Error).message)
       } else {
-        console.error(`Cannot process file ${e.message}`)
+        console.error(`Cannot process file ${(e as Error).message}`)
+        console.error((e as Error).stack)
       }
       return false
     }

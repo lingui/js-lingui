@@ -26,7 +26,7 @@ const minimal: CatalogFormatter = {
     try {
       file = fs.readFileSync(filename, "utf8")
     } catch (error) {
-      if (error.code !== "ENOENT") {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
         throw error
       }
     }
@@ -45,7 +45,7 @@ const minimal: CatalogFormatter = {
       const rawCatalog: Record<string, string> = JSON.parse(raw)
       return deserialize(rawCatalog)
     } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${e.message}`)
+      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
     }
   },
 

@@ -4,6 +4,7 @@ import fs from "fs"
 import chalk from "chalk"
 import { cosmiconfigSync, type LoaderSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
+import { ExtractOptions } from "@lingui/cli/src/api/extractors"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -37,9 +38,23 @@ type CatalogService = {
   apiKey: string
 }
 
-type ExtractorType = {
+export type ExtractedMessage = {
+  id: string
+
+  message?: string
+  context?: string
+  origin?: [filename: string, line: number]
+
+  comment?: string
+}
+
+export type ExtractorType = {
   match(filename: string): boolean
-  extract(filename: string, targetDir: string, options?: any): void
+  extract(
+    filename: string,
+    onMessageExtracted: (msg: ExtractedMessage) => void,
+    options?: ExtractOptions
+  ): Promise<void> | void
 }
 
 export type LinguiConfig = {
@@ -198,7 +213,7 @@ const exampleConfig = {
     [
       {
         match: (fileName: string) => false,
-        extract: (filename: string, targetDir: string, options?: any) => {},
+        extract: (filename: string, onMessageExtracted, options?: any) => {},
       } as ExtractorType,
     ]
   ),

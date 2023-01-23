@@ -1,5 +1,6 @@
-import { transformFileSync, DEFAULT_EXTENSIONS } from "@babel/core"
+import { DEFAULT_EXTENSIONS, transformFileSync } from "@babel/core"
 
+import type { ExtractPluginOpts } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import { BabelOptions, ExtractorType } from "."
@@ -19,13 +20,17 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  extract(filename, localeDir, options = {}) {
-    const { babelOptions: _babelOptions = {}, configPath } = options
+  extract(filename, onMessageExtracted, options = {}) {
+    const { babelOptions: _babelOptions = {} } = options
     const { plugins = [], ...babelOptions } = _babelOptions
     const frameworkOptions: BabelOptions = {}
 
     if (options.projectType === projectType.CRA) {
       frameworkOptions.presets = ["react-app"]
+    }
+
+    const pluginOpts: ExtractPluginOpts = {
+      onMessageExtracted,
     }
 
     transformFileSync(filename, {
@@ -34,11 +39,7 @@ const extractor: ExtractorType = {
       // we override envName to avoid issues with NODE_ENV=production
       // https://github.com/lingui/js-lingui/issues/952
       envName: "development",
-      plugins: [
-        "macros",
-        [linguiExtractMessages, { localeDir, configPath }],
-        ...plugins,
-      ],
+      plugins: ["macros", [linguiExtractMessages, pluginOpts], ...plugins],
     })
   },
 }

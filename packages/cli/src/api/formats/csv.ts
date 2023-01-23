@@ -45,11 +45,11 @@ const csv: CatalogFormatter = {
     try {
       return deserialize(raw)
     } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${e.message}`)
+      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
     }
   },
 
-  parse(content) {
+  parse(content: string) {
     return deserialize(content)
   },
 }

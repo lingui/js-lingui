@@ -197,8 +197,8 @@ if (require.main === module) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
-    let paths = []
-    let ignored = []
+    let paths: string[] = []
+    let ignored: string[] = []
 
     catalogs.forEach((catalog) => {
       paths.push(...catalog.include)

@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "target": "es2017",
     "paths": {
+      "@lingui/babel-plugin-extract-messages": ["./packages/babel-plugin-extract-messages/src"],
       "@lingui/core": ["./packages/core/src"],
       "@lingui/core/compile": ["./packages/core/src/compile/index.ts"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
