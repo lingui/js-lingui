@@ -2,12 +2,13 @@ import {compileMessage as compile} from "./compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "../context"
 import {Locale, Locales} from "../i18n"
+import {PluralCategory} from "make-plural"
 
 describe("compile", () => {
   const englishPlurals = {
     plurals(value: number, ordinal: boolean) {
       if (ordinal) {
-        return { "1": "one", "2": "two", "3": "few" }[value] || "other"
+        return { "1": "one", "2": "two", "3": "few" }[value] as PluralCategory || "other"
       } else {
         return value === 1 ? "one" : "other"
       }
