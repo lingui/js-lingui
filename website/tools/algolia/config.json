@@ -1,0 +1,24 @@
+{
+  "index_name": "lingui",
+  "start_urls": ["https://lingui.js.org/"],
+  "sitemap_urls": ["https://lingui.js.org/sitemap.xml"],
+  "stop_urls": [],
+  "strip_chars": "#",
+  "selectors": {
+    "lvl0": {
+      "selector": "(//nav[contains(@class, 'navbar')]//div[contains(@class, 'navbar__items')]//a[contains(@class, 'navbar__link--active')]/text())",
+      "type": "xpath",
+      "global": true,
+      "default_value": "Lingui"
+    },
+    "lvl1": "article h1",
+    "lvl2": "article h2",
+    "lvl3": "article h3",
+    "lvl4": "article h4",
+    "lvl5": "article h5",
+    "text": "article p, article li"
+  },
+  "custom_settings": {
+    "attributesForFaceting": ["language", "version", "type", "docusaurus_tag"]
+  }
+}

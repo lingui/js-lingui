@@ -1,0 +1,171 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+:root {
+  --ifm-color-primary: #ef4242;
+  --ifm-color-primary-dark: #ed2626;
+  --ifm-color-primary-darker: #eb1818;
+  --ifm-color-primary-darkest: #c51111;
+  --ifm-color-primary-light: #f15e5e;
+  --ifm-color-primary-lighter: #f36c6c;
+  --ifm-color-primary-lightest: #f69696;
+  --ifm-link-color: #ef4242;
+  --text: #1a1a1a;
+
+  --ifm-hero-background-bg: linear-gradient(180deg, transparent 0%, rgba(239, 66, 66, 0.05) 100%);
+
+  --ifm-heading-font-weight: 500;
+
+  --ifm-h2-font-size: 1.85rem;
+  --ifm-h3-font-size: 1.7rem;
+  --ifm-h4-font-size: 1.3rem;
+  --ifm-h5-font-size: 1.2rem;
+
+  --ifm-menu-link-sublist-icon-filter: opacity(50%);
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --ifm-navbar-height: 4rem;
+  --lingui-gray-bg: #f5f5f5;
+  --lingui-card-raduis: 64px;
+  --lingui-card-raduis-sm: 32px;
+  --lingui-card-bg: rgba(255, 255, 255, 0.1);
+  --lingui-card-border-color: rgba(239, 239, 239, 0.9);
+}
+
+[data-theme='dark']:root {
+  --lingui-gray-bg: var(--ifm-navbar-background-color);
+  --ifm-hero-background-color: var(----lingui-gray-bg);
+  --lingui-card-bg: rgba(255, 255, 255, 0.05);
+  --lingui-card-border-color: transparent;
+}
+
+.d-block {
+  display: block;
+}
+
+ol {
+  list-style: none;
+  counter-reset: item;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: item;
+  padding-left: var(--ifm-list-left-padding);
+}
+
+ol > li:before {
+  margin-left: calc(-1 * var(--ifm-list-left-padding) - 11px);
+  content: counter(item) '.';
+  position: absolute;
+  font-weight: var(--ifm-font-weight-bold);
+  width: calc(var(--ifm-list-left-padding));
+  text-align: right;
+}
+
+.navbar__title {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  font-size: 200%;
+}
+
+.hero {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Line up the left edge of the logo with the left edge of the docs sidebar */
+@media (min-width: 997px) {
+  .navbar__logo {
+    margin-left: calc(var(--ifm-menu-link-padding-horizontal) - 8px);
+    height: 3rem;
+  }
+}
+
+.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible > a {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  font-size: 130%;
+
+  margin-top: calc(3 * var(--ifm-menu-link-padding-vertical));
+}
+
+.menu__link > a,
+.menu__list-item > a {
+  padding-right: calc(0.5 * var(--ifm-menu-link-padding-horizontal));
+}
+
+.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible:hover,
+.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible:active {
+  background: none;
+}
+
+.menu > ul.menu__list > li.menu__list-item:first-of-type > .menu__list-item-collapsible > a {
+  margin-top: 0;
+}
+
+.menu__list .menu__list {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.menu__list .menu__list .menu__list {
+  margin-left: var(--ifm-menu-link-padding-horizontal);
+}
+
+.menu__list-item {
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+
+.DocSearch-Button,
+input[type='search'] {
+  font-family: var(--ifm-font-family-base);
+}
+
+.DocSearch-Button-Placeholder {
+  margin-bottom: 2px;
+}
+
+.pagination-nav,
+.pagination-nav__sublabel {
+  display: none;
+}
+
+.footer__copyright {
+  margin-top: 50px;
+  color: var(--ifm-color-gray-500);
+  font-size: 0.875rem;
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+html[data-theme='dark'] {
+  .header-github-link:before {
+    filter: invert(1);
+  }
+
+  .footer--dark {
+    --ifm-footer-background-color: var(--ifm-navbar-background-color);
+  }
+}
+
+.main-page-content {
+  overflow: hidden;
+  padding-top: 4rem;
+}

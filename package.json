@@ -23,7 +23,7 @@
     "version:latest": "lerna version --exact --force-publish --no-private --create-release github --conventional-commits --yes",
     "release:latest": "lerna publish from-package --dist-tag latest --yes",
     "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
-    "build:docs": "cd docs && ./vercel-build.sh",
+    "build:docs": "cd website && yarn install && yarn build",
     "size-limit": "size-limit"
   },
   "engines": {

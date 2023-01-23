@@ -13,7 +13,7 @@
         "**/examples/*",
         "**/node_modules/**",
         "**/package.json",
-        "**/docs/**",
+        "**/website/**",
         "**/*.md"
       ]
     },
@@ -27,7 +27,7 @@
         "**/examples/*",
         "**/node_modules/**",
         "**/package.json",
-        "**/docs/**",
+        "**/website/**",
         "**/*.md"
       ]
     }

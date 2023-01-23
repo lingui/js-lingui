@@ -1,27 +1,48 @@
+# Contributing
+
+:tada: First off, thanks for taking the time to contribute! :tada:
+
+The following is a set of guidelines for contributing to Lingui. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+
+This project and everyone participating in it are governed by the [Code of Conduct](/CODE_OF_CONDUCT.md). We expect that all community members adhere to the guidelines within.
+
 **Working on your first Pull Request?** You can learn how from this _free_ series
 [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
 
 ## Contributing to the docs
 
-Documentation uses Sphinx and reStructuredText. Source inside the
-[docs](https://github.com/lingui/js-lingui/tree/main/docs) directory.
+The documentation is based on [Docusaurus](https://docusaurus.io/) framework. Source inside the [website](https://github.com/lingui/js-lingui/tree/main/website) directory.
 
-1. Go to the `docs` directory
+- Go to the `website` directory: 
 
-2. Run `pipenv install` to setup Python environemnt (requires Python 3.6).
-   If you encounter `ValueError('unknown locale: %s' % localename)`,
-   run `export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8` and try again.
+  ```sh
+  cd website
+  ```
 
-3. Run `pipenv run make livehtml` to build the docs, watch for changes and preview
-   documentation locally at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+- Install dependencies:
 
-4. It's also possible to run `pipenv run make html` for single build. Incremental builds
-   are much faster than the first one as only changed files are built.
+   ```sh
+   yarn install
+   ```
+
+- To build the docs, watch for changes and preview documentation locally at [http://localhost:3000/](http://localhost:3000/):
+
+   ```sh
+   yarn start
+   ```
+
+- It's also possible to run `yarn build` for single build. Incremental builds are much faster than the first one as only changed files are built.
+
+- Please lint and validate the documentation before submitting any changes:
+
+   ```sh
+   yarn lint
+   yarn checkFormat
+   ```
 
 ## Contributing the code
 
-This project uses [yarn][yarninstall] package manager. Please follow
-[official][yarninstall] docs to install it.
+This project uses [yarn][yarninstall] package manager. Please follow [official][yarninstall] docs to install it.
 
 ### Setup local environment
 
@@ -32,10 +53,7 @@ This project uses [yarn][yarninstall] package manager. Please follow
    cd js-lingui
    ```
 
-2. Install development packages. This project uses
-   [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna,
-   so running `yarn` installs all development packages and also dependencies for all
-   workspaces (inside `packages/*`).
+2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna, so running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
 
    ```sh
    yarn
@@ -51,22 +69,20 @@ This project uses [yarn][yarninstall] package manager. Please follow
    yarn test
    ```
 
-   NOTE: if you are using an IDE to run test make sure to use the right Jest config.
-   For unit tests use `-c scripts/jest/config.unit.js`. Integration tests use
-   build packages (created using `yarn release:build`) and config `-c scripts/jest/config.integration.js`.
-   See [package.json](./package.json) for more info.
-
-   If you run tests manually instead of using `yarn watch` or `yarn test` commands and your tests
-   fail due to missing locale data (typically you'll get wrong number and currency formating)
-   make sure you have `NODE_ICU_DATA` variable set: `NODE_ICU_DATA=node_modules/full-icu`.
+   > **Note**
+   > If you are using an IDE to run test make sure to use the right Jest config.
+   > For unit tests use `-c scripts/jest/config.unit.js`. Integration tests use
+   > build packages (created using `yarn release:build`) and config `-c scripts/jest/config.integration.js`.
+   > See [package.json](./package.json) for more info.
+   > If you run tests manually instead of using `yarn watch` or `yarn test` commands and your tests
+   > fail due to missing locale data (typically you'll get wrong number and currency formating)
+   > make sure you have `NODE_ICU_DATA` variable set: `NODE_ICU_DATA=node_modules/full-icu`.
 
 ### Using development version in your project
 
-After you successfully fix a bug or add a new feature, you most probably want
-to test it in your project as soon as possible.
+After you successfully fix a bug or add a new feature, you most probably want to test it in your project as soon as possible.
 
-`jsLingui` uses [verdaccio](https://verdaccio.org/), a lightweight local NPM registry, to install
-local build of packages in examples. You can do the same in your project:
+`jsLingui` uses [verdaccio](https://verdaccio.org/), a lightweight local NPM registry, to install local build of packages in examples. You can do the same in your project:
 
 1. Run `verdaccio` locally in docker (follow [verdaccio guide](https://verdaccio.org/docs/en/what-is-verdaccio.html)
    if you don't want to run it in Docker):
@@ -106,18 +122,16 @@ local build of packages in examples. You can do the same in your project:
 
 ### Finalize changes
 
-Please make sure that all tests pass and linter doesn't report any error before
-submitting a PR (Don't worry though! If you can't figure out the problem, create a PR
-anyway and we'll help you).
+Please make sure that all tests pass and linter doesn't report any error before submitting a PR (Don't worry though! If you can't figure out the problem, create a PR anyway, and we'll help you).
 
 - `yarn lint:all` - Linting & Type testing
 - `yarn test` - Quick test suite (sufficient)
 - `yarn release:test` - Full test suite (recommended)
 
-`yarn release:test` builds all packages, simulates creating packages for NPM, runs unit
-tests and finally runs integration tests using production build.
+`yarn release:test` builds all packages, simulates creating packages for NPM, runs unit tests and finally runs integration tests using production build.
 
-**Note**: Don't commit `scripts/build/results.json` created by `yarn release:test`.
+> **Note**
+> Don't commit `scripts/build/results.json` created by `yarn release:test`.
 
 Now you can create PR and let CI service do their work!
 

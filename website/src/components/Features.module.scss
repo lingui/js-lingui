@@ -1,0 +1,101 @@
+.features {
+  &--wrap {
+    display: grid;
+    gap: 1.5rem;
+    row-gap: 0;
+    grid-template-columns: repeat(1, 1fr);
+
+    @media screen and (min-width: 581px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media only screen and (min-width: 851px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &--left-img {
+    position: relative;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    height: 0;
+    z-index: 0;
+
+    img {
+      bottom: -40px;
+      position: absolute;
+      left: -150px;
+      width: 900px;
+      height: 680px;
+    }
+  }
+
+  &--right-img {
+    position: relative;
+    grid-row: 4;
+    grid-column: 1 / -1;
+    height: 0;
+    z-index: 0;
+
+    img {
+      top: -70px;
+      position: absolute;
+      right: -150px;
+      width: 900px;
+      height: 680px;
+    }
+  }
+}
+
+.linkFeatures {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.featureCard {
+  background-color: var(--lingui-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: grid;
+  z-index: 1;
+  position: relative;
+  border: 1px solid;
+  border-color: var(--lingui-card-border-color);
+  margin-bottom: 1.5rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: 64px 1fr;
+
+  &CellWide {
+    @media screen and (min-width: 851px) {
+      grid-column-start: auto;
+      grid-column-end: span 2;
+    }
+  }
+
+  img {
+    width: 4rem;
+  }
+
+  &Content {
+    margin-top: 1rem;
+  }
+
+  h3 {
+    color: var(--ifm-heading-color);
+    font-weight: normal;
+    font-size: 1.375rem;
+  }
+
+  p {
+    color: var(--p-color);
+    font-size: var(--font-size);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .featureCard {
+    text-align: left;
+    column-gap: 2rem;
+  }
+}
