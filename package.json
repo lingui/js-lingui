@@ -91,7 +91,7 @@
     "strip-ansi": "^6.0.0",
     "swc-node": "^1.0.0",
     "ts-jest": "^26.4.1",
-    "typescript": "^4.9.4",
+    "typescript": "^4.0.3",
     "yalc": "^1.0.0-pre.45"
   },
   "workspaces": [
