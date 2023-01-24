@@ -30,4 +30,9 @@ jobs:
         run: |
           npx vercel --public --yes --prod --token ${{ secrets.NOW_TOKEN }} --name lingui-docs build
 
-      # TODO: update Algolia index
+      - name: Update Algolia index
+        uses: darrenjennings/algolia-docsearch-action@v0.2.0
+        with:
+          algolia_application_id: ${{ vars.ALGOLIA_APP_ID }}
+          algolia_api_key: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          file: 'website/tools/algolia/config.json'
