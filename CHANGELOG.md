@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.16.1](https://github.com/lingui/js-lingui/compare/v3.16.0...v3.16.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **build:** explicitly expose api/extractors ([#1349](https://github.com/lingui/js-lingui/issues/1349)) ([59b6c97](https://github.com/lingui/js-lingui/commit/59b6c9755280eaf511b2e3393aebeff253dd088d))
+* **build:** Revert typescript update ([#1362](https://github.com/lingui/js-lingui/issues/1362)) ([3f0e61e](https://github.com/lingui/js-lingui/commit/3f0e61eae2417ea78431322b8f1fb5acf4d59170))
+* **cli:** incorrect main entry in package.json ([#1351](https://github.com/lingui/js-lingui/issues/1351)) ([cd430f3](https://github.com/lingui/js-lingui/commit/cd430f31812b5e184007eaa2d22683bd0b82cf84))
+* **core:** sub entry export for react-native ([#1350](https://github.com/lingui/js-lingui/issues/1350)) ([c178ce3](https://github.com/lingui/js-lingui/commit/c178ce3cc91e64d190965dc684df74162cc17d02))
+
+
+
+
+
 # [3.16.0](https://github.com/lingui/js-lingui/compare/v3.15.0...v3.16.0) (2023-01-18)
 
 
