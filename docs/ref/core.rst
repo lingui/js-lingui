@@ -144,7 +144,7 @@ Reference
 
       ``values`` is an object of variables used in translated message.
 
-      ``options.defaults`` is the default translation (optional). This is mostly used when
+      ``options.message`` is the default translation (optional). This is mostly used when
       application doesn't use message IDs in natural language (e.g.: ``msg.id`` or
       ``Component.title``).
 
@@ -159,7 +159,7 @@ Reference
          i18n._("My name is {name}", { name: "Tom" })
 
          // Message with custom messageId
-         i18n._("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
+         i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" })
 
    .. js:method:: date(value: string | Date[, format: Intl.DateTimeFormatOptions])
 
@@ -394,7 +394,7 @@ Triggered **after** locale is changed or new catalog is loaded. There are no arg
 missing
 -------
 
-Triggered when a translation is requested with ``i18n._`` that does not exist in the active locale's messages. 
+Triggered when a translation is requested with ``i18n._`` that does not exist in the active locale's messages.
 Information about the locale and message are available from the event.
 
 .. code-block:: js

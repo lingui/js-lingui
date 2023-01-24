@@ -25,7 +25,7 @@ Looking at the low-level API of `LinguiJS`_, there isn't much difference:
 
    <Trans
       id="welcome"
-      defaults={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+      message={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
         one {message}
         other {messages}
       }`}
@@ -62,7 +62,7 @@ In `react-intl`_, this would be translated as:
 
    <Trans
        id='msg.docs'
-       defaults='Read the <0>documentation</0>.'
+       message='Read the <0>documentation</0>.'
        components={[
            <a href="/docs" />
        ]}
@@ -95,7 +95,7 @@ All we need to do is to wrap the message in a :jsxmacro:`Trans` macro:
    </p>
 
 The macro then parses the :jsxmacro:`Trans` macro children and generates
-``defaults`` and ``components`` props automatically in the form described in the previous section.
+``message`` and ``components`` props automatically in the form described in the previous section.
 
 This is extremely useful when adding i18n to an existing project. All we need is to wrap
 all messages in :jsxmacro:`Trans` macro.
@@ -165,7 +165,7 @@ and the final message would be very similar:
 
    <Trans
       id="welcome"
-      defaults={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
+      message={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
         one {message}
         other {messages}
       }`}

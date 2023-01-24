@@ -72,7 +72,7 @@ Setup
 We will directly start translating the ``Inbox`` component, but we need
 to complete one more step to setup our application.
 
-Components needs to read information about current language and message catalogs from ``i18n`` instance. 
+Components needs to read information about current language and message catalogs from ``i18n`` instance.
 Initially, you can use the one created and exported from ``@lingui/core`` and later you can replace with
 your one if such need arise.
 
@@ -136,7 +136,7 @@ macro:
 .. code-block:: jsx
 
    import { Trans } from '@lingui/macro'
-   
+
    <h1><Trans>Message Inbox</Trans></h1>
 
 Macros vs. Components
@@ -188,8 +188,8 @@ We're going to use `CLI` again. Run :cli:`extract` command to extract messages::
 
    Add 'locales' to your configuration. See https://lingui.js.org/ref/conf.html#locales
 
-We need here to fix the configuration. Create a ``.linguirc`` file with 
-   
+We need here to fix the configuration. Create a ``.linguirc`` file with
+
 .. code-block:: json
 
    {
@@ -482,7 +482,7 @@ This will generate:
 
 .. code-block:: jsx
 
-   <h1><Trans id="inbox.title" defaults="Message Inbox" /></h1>
+   <h1><Trans id="inbox.title" message="Message Inbox" /></h1>
 
 In our message catalog, we'll see ``inbox.title`` as message ID, but we also
 get ``Message Inbox`` as default translation for English.
@@ -637,7 +637,7 @@ However, decimal numbers (even ``1.0``) use ``other`` form every time::
 
    There are 0.0 messages in your inbox.
 
-Aren't languages beautiful? 
+Aren't languages beautiful?
 
 Exact forms
 -----------

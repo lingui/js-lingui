@@ -378,7 +378,7 @@ Raw catalog data serialized to JSON:
    {
      "MessageID": {
        "translation": "Translated Message",
-       "defaults": "Default string (from source code)",
+       "message": "Default string (from source code)",
        "origin": [
          ["path/to/src.js", 42]
        ]
@@ -409,7 +409,7 @@ locales
 Default: ``[]``
 
 Locale tags which are used in the project. :cli:`extract` and :cli:`compile`
-writes one catalog for each locale. Each locale should be a valid `BCP-47 code <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_ code. If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData. 
+writes one catalog for each locale. Each locale should be a valid `BCP-47 code <http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html>`_ code. If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData.
 
 For example for `pt-br`: ``i18n.loadLocaleData('pt-br', { plurals: pt })``
 
