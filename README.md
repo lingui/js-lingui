@@ -13,7 +13,7 @@
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
 [![Join the community on Discord][Badge-Discord]][Discord]
 
-[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#license)
+[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
