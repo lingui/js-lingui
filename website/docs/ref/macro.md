@@ -36,7 +36,7 @@ The advantages of using macros are:
 - Additional validation of plural rules is performed during transformation.
 - Non essentials data are removed from production build (e.g. comments and default messages) to shave few bytes.
 
-**JSX macros** are transformed to [`Trans`](/docs/ref/react#trans) component from [`@lingui/react`](/docs/ref/react.md):
+**JSX macros** are transformed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md):
 
 ``` jsx
 import { Trans } from "@lingui/macro"
@@ -48,7 +48,7 @@ import { Trans } from "@lingui/react"
 <Trans id="Attachment {name} saved" values={{ name }} />
 ```
 
-**JS macros** (i.e. macros that looks like a simple JavaScript functions) are transformed into [`i18n._`](/docs/ref/core#i18n._) call.
+**JS macros** (i.e. macros that looks like a simple JavaScript functions) are transformed into [`i18n._`](/docs/ref/core.md#i18n._) call.
 
 ``` jsx
 import { t } from "@lingui/macro"
@@ -62,10 +62,10 @@ i18n._("Attachment {name} saved", { name })
 ```
 
 :::note
-By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro#t).
+By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.md#t).
 :::
 
-The only exception is [`defineMessage`](/docs/ref/macro#definemessage) which is transformed into message descriptor. In other words, the message isn't translated directly and can be used anytime later:
+The only exception is [`defineMessage`](/docs/ref/macro.md#definemessage) which is transformed into message descriptor. In other words, the message isn't translated directly and can be used anytime later:
 
 ``` jsx
 import { i18n } from "@lingui/core"
@@ -216,13 +216,13 @@ defineMessage({
 
 ## JS macros
 
-These macros can be used in any context (e.g. outside JSX). All JS macros are transformed into a *Message Descriptor* wrapped inside of [`i18n._`](/docs/ref/core#i18n._) call.
+These macros can be used in any context (e.g. outside JSX). All JS macros are transformed into a *Message Descriptor* wrapped inside of [`i18n._`](/docs/ref/core.md#i18n._) call.
 
 :::note
-By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro#t).
+By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.md#t).
 :::
 
-*Message Descriptor* is an object with message ID, default message and other parameters. [`i18n._`](/docs/ref/core#i18n._) accepts message descriptors and performs translation and formatting:
+*Message Descriptor* is an object with message ID, default message and other parameters. [`i18n._`](/docs/ref/core.md#i18n._) accepts message descriptors and performs translation and formatting:
 
 ``` jsx
 type MessageDescriptor = {
@@ -371,7 +371,7 @@ i18n._('{count, plural, one {# Book} other {# Books}}', {
 })
 ```
 
-If you need to add variables to plural form, you can use template string literals. This time [`t`](/docs/ref/macro#t) macro isn't required as template strings are transformed automatically:
+If you need to add variables to plural form, you can use template string literals. This time [`t`](/docs/ref/macro.md#t) macro isn't required as template strings are transformed automatically:
 
 ``` jsx
 import { plural } from "@lingui/macro"
@@ -498,7 +498,7 @@ Use `select` inside [`t`](#t) macro if you want to add custom `id` or `comment` 
 
 `defineMessage` macro is a wrapper around macros above which allows you to add comments for translators or override the message ID.
 
-Unlike the other JS macros, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core#i18n._) call.
+Unlike the other JS macros, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core.md#i18n._) call.
 
 ``` ts
 type MessageDescriptor = {
@@ -614,7 +614,7 @@ Comment for translators to give them additional context about the message. It's 
 
 #### `render`
 
-Render prop function used to render translation. This prop is directly passed to [`Trans`](/docs/ref/react#trans) component from [`@lingui/react`](/docs/ref/react). See [rendering of translations](/docs/ref/react#rendering-translations) for more info.
+Render prop function used to render translation. This prop is directly passed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md). See [rendering of translations](/docs/ref/react.md#rendering-translations) for more info.
 
 ### `Trans`
 
@@ -623,7 +623,7 @@ Render prop function used to render translation. This prop is directly passed to
 | `id`      | string | Custom message ID       |
 | `comment` | string | Comment for translators |
 
-[`Trans`](/docs/ref/react#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
+[`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
 
 ``` jsx
 import { Trans } from "@lingui/macro"
@@ -682,7 +682,7 @@ Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which 
 
  > MessageFormat: `{arg, plural, ...forms}`
 
-Props of [`Plural`](/docs/ref/macro#plural-1) macro are transformed into [`plural`](/docs/ref/message-format) format.
+Props of [`Plural`](/docs/ref/macro.md#plural-1) macro are transformed into [`plural`](/docs/ref/message-format.md) format.
 
 ``` jsx
 import { Plural } from "@lingui/macro"
@@ -744,7 +744,7 @@ import { Plural } from "@lingui/macro"
 
  > MessageFormat: `{arg, selectordinal, ...forms}`
 
-Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/ref/message-format) format:
+Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/ref/message-format.md) format:
 
 ``` jsx
 import { SelectOrdinal } from "@lingui/macro"
@@ -771,7 +771,7 @@ import { SelectOrdinal } from "@lingui/macro"
 
  > MessageFormat: `{arg, select, ...forms}`
 
-Props of `Select` macro are transformed into [`select`](/docs/ref/message-format) format:
+Props of `Select` macro are transformed into [`select`](/docs/ref/message-format.md) format:
 
 ``` jsx
 import { Select } from "@lingui/macro"

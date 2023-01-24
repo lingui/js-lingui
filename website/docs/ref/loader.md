@@ -1,6 +1,6 @@
 # Webpack Loader
 
-It's a good practice to use compiled message catalogs during development. However, running [`compile`](/docs/ref/cli#compile) everytime messages are changed soon becomes tedious.
+It's a good practice to use compiled message catalogs during development. However, running [`compile`](/docs/ref/cli.md#compile) everytime messages are changed soon becomes tedious.
 
 `@lingui/loader` is a webpack loader, which compiles messages on the fly:
 
@@ -26,4 +26,4 @@ export async function dynamicActivate(locale: string) {
 }
 ```
 
-See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs) for more info.
+See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.

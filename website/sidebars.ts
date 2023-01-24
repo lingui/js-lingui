@@ -2,7 +2,7 @@ const sidebar = [
   {
     type: 'doc',
     label: 'Introduction',
-    id: 'index',
+    id: 'introduction',
   },
   {
     type: 'category',

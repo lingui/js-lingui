@@ -186,7 +186,7 @@ const Features = (): React.ReactElement => {
         </div>
       </div>
       <div className={styles.linkFeatures}>
-        <Button href={withBaseUrl('/docs/#key-features')} isOutline={true}>
+        <Button href={withBaseUrl('/introduction/#key-features')} isOutline={true}>
           More Features
         </Button>
       </div>

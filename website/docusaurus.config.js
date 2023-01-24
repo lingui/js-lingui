@@ -1,5 +1,5 @@
 const copyright = `Copyright © 2017-2022 Tom Ehrlich, © 2022-${new Date().getFullYear()} Crowdin.`;
-const url = process.env['SITE_URL'] || 'https://lingui.js.org';
+const url = process.env['SITE_URL'] || 'https://lingui.dev';
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -23,8 +23,8 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          to: '/introduction',
+          activeBasePath: '/introduction',
           label: 'Docs',
           position: 'left',
         },
@@ -45,15 +45,15 @@ module.exports = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/',
+              to: '/introduction/',
             },
             {
               label: 'CLI Reference',
-              to: '/docs/ref/cli',
+              to: '/ref/cli',
             },
             {
               label: 'Configuration',
-              to: '/docs/ref/conf',
+              to: '/ref/conf',
             },
           ],
         },
@@ -112,7 +112,8 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.ts'),
           sidebarCollapsible: false,
           breadcrumbs: false,
-          editUrl: 'https://github.com/lingui/js-lingui/docs',
+          routeBasePath: '/',
+          editUrl: 'https://github.com/lingui/js-lingui/tree/main/website',
           remarkPlugins: [[require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]],
         },
         sitemap: {

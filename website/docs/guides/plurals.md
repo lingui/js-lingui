@@ -32,13 +32,13 @@ When `numBooks == 1`, this will render as *1 book* and for `numBook == 2` it wil
 
 > Funny fact for non-English speakers: In English, 0 uses plural form too, *0 books*.
 
-Under the hood, [`plural`](/docs/ref/macro#plural) is replaced with low-level [`i18n._`](/docs/ref/core#i18n._). For production, the above example will become:
+Under the hood, [`plural`](/docs/ref/macro.md#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
 
 ``` js
 i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
 ```
 
-When we extract messages from source code using [`lingui-cli`](/docs/tutorials/cli), we get:
+When we extract messages from source code using [`lingui-cli`](/docs/tutorials/cli.md), we get:
 
 ``` icu-message-format
 {numBooks, plural, one {# book} other {# books}}

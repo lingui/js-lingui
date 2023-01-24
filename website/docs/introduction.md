@@ -20,7 +20,7 @@ Keep your code clean and readable, while the library uses battle-tested and powe
 
 ### Universal
 
-Use it everywhere. [`@lingui/core`](/docs/ref/core) provides the essential intl functionality which works in any JavaScript project while [`@lingui/react`](/docs/ref/react) offers components to leverage React rendering.
+Use it everywhere. [`@lingui/core`](/docs/ref/core.md) provides the essential intl functionality which works in any JavaScript project while [`@lingui/react`](/docs/ref/react.md) offers components to leverage React rendering.
 
 ### Full rich-text support
 
@@ -28,7 +28,7 @@ Use React components inside localized messages without any limitation. Writing r
 
 ### Powerful tooling
 
-Manage the whole intl workflow using Lingui [CLI](/docs/tutorials/cli). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.
+Manage the whole intl workflow using Lingui [CLI](/docs/tutorials/cli.md). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.
 
 ### Unopinionated
 

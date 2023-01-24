@@ -14,24 +14,24 @@ Minimal required versions are:
 
 ### `@lingui/react`
 
-- `<I18n>` render-prop component was removed in favor of [`useLingui`](/docs/ref/react#uselingui) hook.
-- In [`I18nProvider`](/docs/ref/react#i18nprovider), `defaultRender` prop was renamed to `defaultComponent`, and now only accepts Custom Components
-- In [`Trans`](/docs/ref/react#Trans), `defaults` prop was renamed to `message` and `description` to `comment`.
-- In [`Trans`](/docs/ref/react#Trans), `render` prop only accepts render-prop function which is used to render translation.
-- In [`Trans`](/docs/ref/react#Trans), new prop `component` accepts React component which is used to render translation.
-- In [`Trans`](/docs/ref/react#Trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
+- `<I18n>` render-prop component was removed in favor of [`useLingui`](/docs/ref/react.md#uselingui) hook.
+- In [`I18nProvider`](/docs/ref/react.md#i18nprovider), `defaultRender` prop was renamed to `defaultComponent`, and now only accepts Custom Components
+- In [`Trans`](/docs/ref/react.md#Trans), `defaults` prop was renamed to `message` and `description` to `comment`.
+- In [`Trans`](/docs/ref/react.md#Trans), `render` prop only accepts render-prop function which is used to render translation.
+- In [`Trans`](/docs/ref/react.md#Trans), new prop `component` accepts React component which is used to render translation.
+- In [`Trans`](/docs/ref/react.md#Trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
 
   ``` jsx
   <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
   ```
 
-- `NumberFormat` and `DateFormat` components were removed. Import `i18n` from `@lingui/core` package and use [`i18n.date()`](/docs/ref/core#i18n.date) and [`i18n.number()`](/docs/ref/core#i18n.number) instead.
+- `NumberFormat` and `DateFormat` components were removed. Import `i18n` from `@lingui/core` package and use [`i18n.date()`](/docs/ref/core.md#i18n.date) and [`i18n.number()`](/docs/ref/core.md#i18n.number) instead.
 
 #### Removed `I18nProvider` declarative API
 
-LinguiJS started as a React library. After `@lingui/core` package was introduced, there were two ways how to switch active locales and manage catalogs in React: either using [`I18nProvider`](/docs/ref/react#i18nprovider) declarative API or using `setupI18n` imperative API.
+LinguiJS started as a React library. After `@lingui/core` package was introduced, there were two ways how to switch active locales and manage catalogs in React: either using [`I18nProvider`](/docs/ref/react.md#i18nprovider) declarative API or using `setupI18n` imperative API.
 
-In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/docs/ref/react#i18nprovider) is simplified and accepts `i18n` manager, which must be created manually:
+In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/docs/ref/react.md#i18nprovider) is simplified and accepts `i18n` manager, which must be created manually:
 
 ``` diff
   import { I18nProvider } from '@lingui/react'
@@ -66,21 +66,21 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
   ```
 
   :::caution Note
-  If you decide to use custom `i18n` instance, you also need to set [`runtimeConfigModule`](/docs/ref/conf#runtimeconfigmodule). Macros automatically import `i18n` instance and must be aware of correct import path.
+  If you decide to use custom `i18n` instance, you also need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule). Macros automatically import `i18n` instance and must be aware of correct import path.
   :::
 
 - `i18n.t`, `i18n.plural`, `i18n.select` and `i18n.selectOrdinal` methods were removed in favor of macros.
 
 - `i18n.use` was removed. Using two locales at the same time isn't common use-case and can be solved in user land by having two instances of `i18n` object.
 
-- Signature of [`i18n._`](/docs/ref/core#i18n._) method has changed. The third parameter now accepts default message in `message` prop, instead of `defaults`:
+- Signature of [`i18n._`](/docs/ref/core.md#i18n._) method has changed. The third parameter now accepts default message in `message` prop, instead of `defaults`:
 
   ``` diff
   - i18n._('Welcome / Greetings', { name: 'Joe' }, { defaults: "Hello {name}" })
   + i18n._('Welcome / Greetings', { name: 'Joe' }, { message: "Hello {name}" })
   ```
 
-- [`i18n._`](/docs/ref/core#i18n._) also accepts a message descriptor as a first parameter:
+- [`i18n._`](/docs/ref/core.md#i18n._) also accepts a message descriptor as a first parameter:
 
   ``` diff
   i18n._({
@@ -90,9 +90,9 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
   })
   ```
 
-#### [`i18n.load`](/docs/ref/core#i18n.load) loads a catalog for a single locale
+#### [`i18n.load`](/docs/ref/core.md#i18n.load) loads a catalog for a single locale
 
-`i18n` manager is the single source of truth and there's no need to keep all catalogs loaded outside this object. To make loading easier, [`i18n.load`](/docs/ref/core#i18n.load) now accepts catalog for a single locale or multiple catalogs at once.
+`i18n` manager is the single source of truth and there's no need to keep all catalogs loaded outside this object. To make loading easier, [`i18n.load`](/docs/ref/core.md#i18n.load) now accepts catalog for a single locale or multiple catalogs at once.
 
 ``` diff
   import { i18n } from "@lingui/core"
@@ -103,7 +103,7 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 ```
 
 :::caution Note
-You can still use [`i18n.load`](/docs/ref/core#i18n.load(catalogs)) to load all catalogs at once:
+You can still use [`i18n.load`](/docs/ref/core.md#i18n.load(catalogs)) to load all catalogs at once:
 
 ``` jsx
 // i18n.js
@@ -120,7 +120,7 @@ i18n.load({
 
 ### `@lingui/macro`
 
-- [`plural`](/docs/ref/macro#plural), [`select`](/docs/ref/macro#select) and [`selectOrdinal`](/docs/ref/macro#selectordinal) accepts value as a first parameter:
+- [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select) and [`selectOrdinal`](/docs/ref/macro.md#selectordinal) accepts value as a first parameter:
 
   ``` diff
   - plural({ value, one: "# book", other: "# books" })
@@ -134,7 +134,7 @@ i18n.load({
 
 ### Whitespace
 
-Whitespace handling in plugins had few bugs. By fixing them, there might be few backward incompatible changes. It's advised to run [`extract`](/docs/ref/cli#extract) and inspect changes in catalogs (if any).
+Whitespace handling in plugins had few bugs. By fixing them, there might be few backward incompatible changes. It's advised to run [`extract`](/docs/ref/cli.md#extract) and inspect changes in catalogs (if any).
 
 1. Spaces before `{variables}` in JSX aren't preserved. This is how React handles whitespaces in JSX. Leading whitespace is always removed:
 
@@ -181,7 +181,7 @@ Plugins are replaced with macros. Presets are removed completely because they ar
     }
     ```
 
-2. Import [`Trans`](/docs/ref/macro#trans), [`Plural`](/docs/ref/macro#plural-1), [`Select`](/docs/ref/macro#select-1) and [`SelectOrdinal`](/docs/ref/macro#selectordinal-1) from `@lingui/macro`:
+2. Import [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1), [`Select`](/docs/ref/macro.md#select-1) and [`SelectOrdinal`](/docs/ref/macro.md#selectordinal-1) from `@lingui/macro`:
 
     ```diff
     - import { Trans } from "@lingui/react"
@@ -189,7 +189,7 @@ Plugins are replaced with macros. Presets are removed completely because they ar
     ```
 
     :::caution Note
-    If you used [`Trans`](/docs/ref/macro#trans) component without children, then keep the import from `@lingui/react`:
+    If you used [`Trans`](/docs/ref/macro.md#trans) component without children, then keep the import from `@lingui/react`:
 
     ```jsx
     import { Trans } from "@lingui/react"
@@ -213,9 +213,9 @@ Plugins are replaced with macros. Presets are removed completely because they ar
 
 ## New features
 
-### [`i18n.load`](/docs/ref/core#i18n.load)
+### [`i18n.load`](/docs/ref/core.md#i18n.load)
 
-[`i18n.load`](/docs/ref/core#i18n.load) can now accept one catalog for specific locale. Useful for incremental loading of catalogs.
+[`i18n.load`](/docs/ref/core.md#i18n.load) can now accept one catalog for specific locale. Useful for incremental loading of catalogs.
 
 ```jsx
 import { i18n } from "@lingui/core"
@@ -233,7 +233,7 @@ i18n.load('cs', require("./locale/cs/messages"))
 
 ### `i18n.on('change', callback)`
 
-Event [`change`](/docs/ref/core#change) is fired anytime new catalogs are loaded or when locale is activated.
+Event [`change`](/docs/ref/core.md#change) is fired anytime new catalogs are loaded or when locale is activated.
 
 ### Native TypeScript support
 

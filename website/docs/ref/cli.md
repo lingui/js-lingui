@@ -25,7 +25,7 @@
 
 ### `--config <config>`
 
-Path to LinguiJS configuration file. If not set, the default file is loaded as described in [LinguiJS configuration](/docs/ref/conf) reference.
+Path to LinguiJS configuration file. If not set, the default file is loaded as described in [LinguiJS configuration](/docs/ref/conf.md) reference.
 
 ## Commands
 
@@ -76,11 +76,11 @@ Remove obsolete messages from catalogs. Message becomes obsolete when it's missi
 
 #### `--overwrite` {#extract-overwrite}
 
-Update translations for [`sourceLocale`](/docs/ref/conf#sourcelocale) from source.
+Update translations for [`sourceLocale`](/docs/ref/conf.md#sourcelocale) from source.
 
 #### `--format <format>` {#extract-format}
 
-Format of message catalogs (see [`format`](/docs/ref/conf#format) option).
+Format of message catalogs (see [`format`](/docs/ref/conf.md#format) option).
 
 #### `--locale <locale>` {#extract-locale}
 
@@ -88,7 +88,7 @@ Only extract data for the specified locale.
 
 #### `--convert-from <format>` {#extract-convert-from}
 
-Convert message catalogs from previous format (see [`format`](/docs/ref/conf#format) option).
+Convert message catalogs from previous format (see [`format`](/docs/ref/conf.md#format) option).
 
 #### `--verbose` {#extract-verbose}
 
@@ -141,7 +141,7 @@ Fail if a catalog has missing translations.
 
 #### `--format <format>` {#compile-format}
 
-Format of message catalogs (see [`format`](/docs/ref/conf#format) option).
+Format of message catalogs (see [`format`](/docs/ref/conf.md#format) option).
 
 #### `--verbose` {#compile-verbose}
 
@@ -149,11 +149,11 @@ Prints additional information.
 
 #### `--namespace` {#compile-namespace}
 
-Specify namespace for compiled message catalogs (also see [`compileNamespace`](/docs/ref/conf#compilenamespace) for global configuration).
+Specify namespace for compiled message catalogs (also see [`compileNamespace`](/docs/ref/conf.md#compilenamespace) for global configuration).
 
 #### `--typescript` {#compile-typescript}
 
-Is the same as using [`compileNamespace`](/docs/ref/conf#compilenamespace) with the value "ts". Generates a `{compiledFile}.d.ts` and the compiled file is generated using the extension .ts
+Is the same as using [`compileNamespace`](/docs/ref/conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.d.ts` and the compiled file is generated using the extension .ts
 
 #### `--watch` {#compile-watch}
 

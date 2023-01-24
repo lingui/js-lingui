@@ -48,10 +48,10 @@ In your `webpack.config.js`, use both `babel-loader` and `ts-loader` for Typescr
 ```
 
 :::note
-If you are not using `.babelrc` file, keep in mind that by running [`lingui extract`](/docs/ref/cli#extract), the Webpack config is not used. To supply babel options for the extraction process use [`extractBabelOptions`](/docs/ref/conf#extractbabeloptions) configuration option.
+If you are not using `.babelrc` file, keep in mind that by running [`lingui extract`](/docs/ref/cli.md#extract), the Webpack config is not used. To supply babel options for the extraction process use [`extractBabelOptions`](/docs/ref/conf.md#extractbabeloptions) configuration option.
 :::
 
-[`compileNamespace`](/docs/ref/conf#compilenamespace) must be set to `ts` (ES6 default export) in the Lingui config otherwise compiled catalogs can't be imported using ES `import`, but rather CommonJS `require`:
+[`compileNamespace`](/docs/ref/conf.md#compilenamespace) must be set to `ts` (ES6 default export) in the Lingui config otherwise compiled catalogs can't be imported using ES `import`, but rather CommonJS `require`:
 
 ``` js
 {

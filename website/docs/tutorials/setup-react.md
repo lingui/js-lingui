@@ -1,7 +1,7 @@
 # Setup with React project
 
 :::info
-If you use Create React App, even ejected, follow [LinguiJS and Create React App](/docs/tutorials/setup-cra) setup guide.
+If you use Create React App, even ejected, follow [LinguiJS and Create React App](/docs/tutorials/setup-cra.md) setup guide.
 :::
 
 This setup guide is for any project which uses React.
@@ -88,15 +88,15 @@ This setup guide is for any project which uses React.
     (use "lingui compile" to compile catalogs for production)
     ```
 
-Congratulations! You've successfully set up project with LinguiJS. Now it's good time to follow [React tutorial](/docs/tutorials/react) or read about [ICU Message Format](/docs/ref/message-format) which is used in messages.
+Congratulations! You've successfully set up project with LinguiJS. Now it's good time to follow [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/ref/message-format.md) which is used in messages.
 
 ## Further reading
 
 Checkout these reference guides for full documentation:
 
--   [Internationalization of React apps](/docs/tutorials/react)
--   [Common i18n patterns in React](/docs/tutorials/react-patterns)
--   [`@lingui/react` reference documentation](/docs/ref/react)
--   [ICU Message Format](/docs/ref/message-format)
--   [CLI reference](/docs/ref/cli)
--   [Configuration reference](/docs/ref/conf)
+-   [Internationalization of React apps](/docs/tutorials/react.md)
+-   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+-   [`@lingui/react` reference documentation](/docs/ref/react.md)
+-   [ICU Message Format](/docs/ref/message-format.md)
+-   [CLI reference](/docs/ref/cli.md)
+-   [Configuration reference](/docs/ref/conf.md)

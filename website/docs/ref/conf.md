@@ -47,9 +47,9 @@ Default:
 }]
 ```
 
-Defines location of message catalogs and what files are included when [`extract`](/docs/ref/cli#extract) is scanning for messages.
+Defines location of message catalogs and what files are included when [`extract`](/docs/ref/cli.md#extract) is scanning for messages.
 
-`path` shouldn't end with slash and it shouldn't include file extension which depends on [`format`](/docs/ref/catalog-formats).
+`path` shouldn't end with slash and it shouldn't include file extension which depends on [`format`](/docs/ref/catalog-formats.md).
 `{locale}` token is replaced by catalog locale.
 
 Patterns in `include` and `exclude` are passed to [minimatch](https://github.com/isaacs/minimatch).
@@ -165,7 +165,7 @@ components/
 
 Default: `cjs`
 
-Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli#compile) command.
+Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli.md#compile) command.
 
 #### cjs
 
@@ -352,7 +352,7 @@ Object for configuring message catalog output. See individual formats for option
 
 Default: `[]`
 
-Locale tags which are used in the project. [`extract`](/docs/ref/cli#extract) and [`compile`](/docs/ref/cli#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html). If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData.
+Locale tags which are used in the project. [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html). If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData.
 
 For example for `pt-br`: `i18n.loadLocaleData('pt-br', { plurals: pt })`
 
@@ -407,7 +407,7 @@ import { myI18n } from "./custom-i18n-config"
 // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
-In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro#trans) is imported. To do that, pass an object to `runtimeConfigModule`:
+In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro.md#trans) is imported. To do that, pass an object to `runtimeConfigModule`:
 
 ``` jsx
 // If you import `i18n` object from custom module like this:

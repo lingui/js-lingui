@@ -54,7 +54,7 @@ As you can see, it's a simple mailbox application with only one page.
 
 ## Installing LinguiJS
 
-Follow setup guide either for projects using [LinguiJS with Create React App](/docs/tutorials/setup-cra) or for general [React projects](/docs/tutorials/setup-react).
+Follow setup guide either for projects using [LinguiJS with Create React App](/docs/tutorials/setup-cra.md) or for general [React projects](/docs/tutorials/setup-react.md).
 
 ## Setup
 
@@ -64,7 +64,7 @@ Components need to read information about current language and message catalogs 
 
 In order to pass `i18n` around the I18nProvider wraps around React Context.
 
-Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/ref/react#i18nprovider):
+Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/ref/react.md#i18nprovider):
 
 ```jsx title="src/index.js"
 import React from 'react'
@@ -88,9 +88,9 @@ render(<App />, document.getElementById('root'))
 ```
 
 :::tip
-You might be wondering: how are we going to change the active language? That's what the [`I18n.load`](/docs/ref/core#i18n.load) and [`i18n.activate`](/docs/ref/core#i18n.activate) calls are for! However, we cannot change the language unless we have the translated message catalog. And to get the catalog, we first need to extract all messages from the source code.
+You might be wondering: how are we going to change the active language? That's what the [`I18n.load`](/docs/ref/core.md#i18n.load) and [`i18n.activate`](/docs/ref/core.md#i18n.activate) calls are for! However, we cannot change the language unless we have the translated message catalog. And to get the catalog, we first need to extract all messages from the source code.
 
-Let's deal with language switching later... but if you're still curious, take a look at [example](/docs/guides/dynamic-loading-catalogs) with Redux and Webpack.
+Let's deal with language switching later... but if you're still curious, take a look at [example](/docs/guides/dynamic-loading-catalogs.md) with Redux and Webpack.
 :::
 
 ## Introducing internationalization
@@ -107,7 +107,7 @@ Let's start with the basics - static messages. These messages don't have any var
 <h1>Message Inbox</h1>
 ```
 
-All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro#trans) macro:
+All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.md#trans) macro:
 
 ``` jsx
 import { Trans } from '@lingui/macro'
@@ -121,7 +121,7 @@ If you're wondering what Babel macros are and what's the difference between macr
 
 In general, macros are executed at compile time and they transform source code in some way. We use this feature in [LinguiJS](https://github.com/lingui/js-lingui) to simplify writing messages.
 
-Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react#trans) component. Take a look at this short example. This is what we write:
+Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
 ``` jsx
 import { Trans } from '@lingui/macro'
@@ -137,7 +137,7 @@ import { Trans } from '@lingui/react'
 <Trans id="Hello {name}" values={{ name }} />
 ```
 
-See the difference? [`Trans`](/docs/ref/react#trans) component receives `id` prop with a message in ICU MessageFormat syntax.
+See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` prop with a message in ICU MessageFormat syntax.
 We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros to generate message for ourselves.
 
 ### Extracting messages
@@ -146,7 +146,7 @@ Back to our project. It's nice to use JSX and let macros generate messages under
 
 All messages from the source code must be extracted into external message catalogs. Message catalogs are interchange files between developers and translators. We're going to have one file per language. Let's enter command line for a while.
 
-We're going to use [CLI](/docs/ref/cli) again. Run [`extract`](/docs/ref/cli#extract) command to extract messages:
+We're going to use [CLI](/docs/ref/cli.md) again. Run [`extract`](/docs/ref/cli.md#extract) command to extract messages:
 
 ```bash
 > lingui extract
@@ -168,7 +168,7 @@ We need here to fix the configuration. Create a `.linguirc` file:
 }
 ```
 
-After fixing configuration, let's run [`extract`](/docs/ref/cli#extract) command again:
+After fixing configuration, let's run [`extract`](/docs/ref/cli.md#extract) command again:
 
 ```bash
 > lingui extract
@@ -202,7 +202,7 @@ msgid "Message Inbox"
 msgstr ""
 ```
 
-That's the message we've wrapped inside [`Trans`](/docs/ref/macro#trans) macro!
+That's the message we've wrapped inside [`Trans`](/docs/ref/macro.md#trans) macro!
 
 Let's add a Czech translation:
 
@@ -212,7 +212,7 @@ msgid "Message Inbox"
 msgstr "Příchozí zprávy"
 ```
 
-If we run [`extract`](/docs/ref/cli#extract) command again, we'll see that all Czech messages are translated:
+If we run [`extract`](/docs/ref/cli.md#extract) command again, we'll see that all Czech messages are translated:
 
 ```bash
 > lingui extract
@@ -229,7 +229,7 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into your app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli#compile) for that:
+That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into your app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
 
 ```bash
 > lingui compile
@@ -273,17 +273,17 @@ When we run the app, we see the inbox header is translated into Czech.
 
 Let's go through the workflow again:
 
-1.  Add an [`I18nProvider`](/docs/ref/react#i18nprovider), this component provides the active language and catalog(s) to other components
-2.  Wrap messages in [`Trans`](/docs/ref/macro#trans) macro
-3.  Run [`extract`](/docs/ref/cli#extract) command to generate message catalogs
+1.  Add an [`I18nProvider`](/docs/ref/react.md#i18nprovider), this component provides the active language and catalog(s) to other components
+2.  Wrap messages in [`Trans`](/docs/ref/macro.md#trans) macro
+3.  Run [`extract`](/docs/ref/cli.md#extract) command to generate message catalogs
 4.  Translate message catalogs (send them to translators usually)
-5.  Run [`compile`](/docs/ref/cli#compile) to create runtime catalogs
+5.  Run [`compile`](/docs/ref/cli.md#compile) to create runtime catalogs
 6.  Load runtime catalog
 7.  Profit
 
 Steps 1 and 7 needs to be done only once per project and locale. Steps 2 to 5 become the common workflow for internationalizing the app.
 
-It isn't necessary to extract/translate messages one by one. This usually happens in batches. When you finalize your work or PR, run [`extract`](/docs/ref/cli#extract) to generate latest message catalogs and before building the app for production, run [`compile`](/docs/ref/cli#compile).
+It isn't necessary to extract/translate messages one by one. This usually happens in batches. When you finalize your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate latest message catalogs and before building the app for production, run [`compile`](/docs/ref/cli.md#compile).
 
 For more info about CLI, checkout the [CLI tutorial](/docs/tutorials/cli.md).
 
@@ -298,7 +298,7 @@ Let's move on to another paragraph in our project. This paragraph has some varia
 </p>
 ```
 
-Although it looks complex, there's really nothing special here. Just wrap the content of the paragraph in [`Trans`](/docs/ref/macro#trans) and let the macro do the magic:
+Although it looks complex, there's really nothing special here. Just wrap the content of the paragraph in [`Trans`](/docs/ref/macro.md#trans) and let the macro do the magic:
 
 ```jsx
 <p>
@@ -309,7 +309,7 @@ Although it looks complex, there's really nothing special here. Just wrap the co
 </p>
 ```
 
-Spooky, right? Let's see how this message actually looks in the message catalog. Run [`extract`](/docs/ref/cli#extract) command and take a look at the message:
+Spooky, right? Let's see how this message actually looks in the message catalog. Run [`extract`](/docs/ref/cli.md#extract) command and take a look at the message:
 
 ``` jsx
 See all <0>unread messages</0> or <1>mark them</1> as read.
@@ -400,7 +400,7 @@ Here's an example of a simple message catalog in **Czech** language:
 | Tuesday    | Mardi       |
 | Wednesday  | Mercredi    |
 
-The message ID is *what all catalogs have in common* – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro#trans) macro.
+The message ID is *what all catalogs have in common* – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.md#trans) macro.
 
 There are two approaches to how a message ID can be created:
 
@@ -409,7 +409,7 @@ There are two approaches to how a message ID can be created:
 
 Both approaches have their pros and cons and it's not in the scope of this tutorial to compare them.
 
-By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
+By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.md#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
 
 ```jsx
 <h1><Trans id="inbox.title">Message Inbox</Trans></h1>
@@ -493,7 +493,7 @@ How do we know which plural form we should use? It's very simple: we, as develop
 
 > Plural form
 
-We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
+We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.md#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
 ``` jsx
 import { Trans, Plural } from '@lingui/macro'
@@ -509,7 +509,7 @@ import { Trans, Plural } from '@lingui/macro'
 
 This component will render `There's 1 message in your inbox` when `messageCount = 1` and `There are # messages in your inbox` for any other values of `messageCount`. `#` is a placeholder, which is replaced with `value`.
 
-Cool! Curious how this component is transformed under the hood and how the message looks in MessageFormat syntax? Run [`extract`](/docs/ref/cli#extract) command and find out by yourself:
+Cool! Curious how this component is transformed under the hood and how the message looks in MessageFormat syntax? Run [`extract`](/docs/ref/cli.md#extract) command and find out by yourself:
 
 ```icu-message-format
 {messagesCount, plural,
@@ -519,7 +519,7 @@ Cool! Curious how this component is transformed under the hood and how the messa
 
 In the catalog, you'll see the message in one line. Here we wrapped it to make it more readable.
 
-The [`Plural`](/docs/ref/macro#plural-1) is gone and replaced with [`Trans`](/docs/ref/react#trans) again! The sole purpose of [`Plural`](/docs/ref/macro#plural-1) is to generate proper syntax in message.
+The [`Plural`](/docs/ref/macro.md#plural-1) is gone and replaced with [`Trans`](/docs/ref/react.md#trans) again! The sole purpose of [`Plural`](/docs/ref/macro.md#plural-1) is to generate proper syntax in message.
 
 Things are getting a bit more complicated, but i18n is a complex process. At least we don't have to write this message manually!
 
@@ -640,7 +640,7 @@ The last message in our component is again a bit specific:
 </footer>
 ```
 
-`lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react#uselingui) hook:
+`lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core.md#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react.md#uselingui) hook:
 
 ```jsx title="src/Inbox.js"
 import { useLingui } from '@lingui/react'
@@ -713,7 +713,7 @@ That's all for this tutorial! Checkout the reference documentation or various gu
 
 ## Further reading
 
--   [Common i18n patterns in React](/docs/tutorials/react-patterns)
--   [`@lingui/react` reference documentation](/docs/ref/react)
--   [`@lingui/cli` reference documentation](/docs/ref/cli)
--   [Pluralization Guide](/docs/guides/plurals)
+-   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+-   [`@lingui/react` reference documentation](/docs/ref/react.md)
+-   [`@lingui/cli` reference documentation](/docs/ref/cli.md)
+-   [Pluralization Guide](/docs/guides/plurals.md)

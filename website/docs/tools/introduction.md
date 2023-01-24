@@ -49,18 +49,18 @@ To synchronize your current application with an online tool, you just have to ad
 }
 ```
 
-The synchronization will then be part of the [`extract`](/docs/ref/cli#extract) command.
+The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
 
 ## List of available tools
 
 ### Crowdin (<https://crowdin.com/>)
 
--   Documentation: [Crowdin](/docs/tools/crowdin)
+-   Documentation: [Crowdin](/docs/tools/crowdin.md)
 -   GitHub: <https://github.com/crowdin>
 
 ### Translation.io (<https://translation.io/lingui>)
 
--   Documentation: [translation-io](/docs/tools/translation-io)
+-   Documentation: [translation-io](/docs/tools/translation-io.md)
 -   GitHub: <https://github.com/translation/lingui>
 
 ## Adding a new tool to Lingui

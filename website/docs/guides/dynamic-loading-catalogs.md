@@ -1,6 +1,6 @@
 # Dynamic loading of message catalogs
 
-[`I18nProvider`](/docs/ref/react#i18nprovider) doesn't assume anything about your app and it's your responsibility to load messages based on active language.
+[`I18nProvider`](/docs/ref/react.md#i18nprovider) doesn't assume anything about your app and it's your responsibility to load messages based on active language.
 
 Here's an example of a basic setup with a dynamic load of catalogs.
 

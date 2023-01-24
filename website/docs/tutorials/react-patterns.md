@@ -21,7 +21,7 @@ function render() {
 }
 ```
 
-You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react#i18nprovider)).
+You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react.md#i18nprovider)).
 
 ### Using ID generated from message
 
@@ -64,7 +64,7 @@ Messages `msg.header` and `msg.hello` will be extracted with default values `Lin
 
 #### With [`t`](/docs/ref/macro.md#t)
 
-If you're using custom IDs in your project, call [`t`](/docs/ref/macro#t) with a message descriptor object and pass ID as `id` prop:
+If you're using custom IDs in your project, call [`t`](/docs/ref/macro.md#t) with a message descriptor object and pass ID as `id` prop:
 
 ```jsx
 import { t } from "@lingui/macro"
@@ -99,7 +99,7 @@ Sometimes you can't use [`Trans`](/docs/ref/macro.md#trans) component, for examp
 <img src="..." alt="Image caption" />
 ```
 
-In such case you need to use [`t`](/docs/ref/macro.md#t) macro to wrap message. [`t`](/docs/ref/macro.md#t) is equivalent for [`Trans`](/docs/ref/macro.md#trans), [`plural`](/docs/ref/macro.md#plural) is equivalent to [`Plural`](/docs/ref/macro#plural-1).
+In such case you need to use [`t`](/docs/ref/macro.md#t) macro to wrap message. [`t`](/docs/ref/macro.md#t) is equivalent for [`Trans`](/docs/ref/macro.md#trans), [`plural`](/docs/ref/macro.md#plural) is equivalent to [`Plural`](/docs/ref/macro.md#plural-1).
 
 ```jsx
 import { t } from "@lingui/macro"
@@ -147,7 +147,7 @@ export default function ColorList() {
 }
 ```
 
-Or to render the message descriptor as a string-only translation, just pass it to the [`i18n._()`](/docs/ref/core#i18n._) method:
+Or to render the message descriptor as a string-only translation, just pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
 
 ```jsx
 import { i18n } from "@lingui/core"

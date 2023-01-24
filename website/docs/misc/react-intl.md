@@ -78,7 +78,7 @@ Let's go back to the previous example:
 </p>
 ```
 
-All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro#trans) macro:
+All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans) macro:
 
 ``` html
 <p>
@@ -86,9 +86,9 @@ All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro#trans) m
 </p>
 ```
 
-The macro then parses the [`Trans`](/docs/ref/macro#trans) macro children and generates `defaults` and `components` props  automatically in the form described in the previous section.
+The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `defaults` and `components` props  automatically in the form described in the previous section.
 
-This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro#trans) macro.
+This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.md#trans) macro.
 
 Let's compare it with [react-intl](https://github.com/yahoo/react-intl) solution to see the difference:
 
@@ -133,7 +133,7 @@ Let's take a look at the original example from [react-intl](https://github.com/y
  />
 ```
 
-Using [LinguiJS](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro#trans), [`Plural`](/docs/ref/macro#plural-1) components and [`i18n.number`](/docs/ref/core#i18n.number) macro:
+Using [LinguiJS](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
 
 ``` jsx
 <Trans id="welcome">
@@ -193,7 +193,7 @@ Custom IDs are supported as well:
 ```
 
 :::note
-To inject `i18n` object into props, you need to use HOC [`withI18n`](/docs/ref/react#withi18n). It's very similar to `injectIntl` from [react-intl](https://github.com/yahoo/react-intl). Alternatively, you can also use `I18n` render prop component.
+To inject `i18n` object into props, you need to use HOC [`withI18n`](/docs/ref/react.md#withi18n). It's very similar to `injectIntl` from [react-intl](https://github.com/yahoo/react-intl). Alternatively, you can also use `I18n` render prop component.
 :::
 
 ## External message catalog
@@ -202,7 +202,7 @@ Let's say our app has been internationalized and we now want to send the message
 
 [react-intl](https://github.com/yahoo/react-intl) comes with the Babel plugin which extracts messages from individual files, but it's up to you to merge them into one file which you can send to translators.
 
-[LinguiJS](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/tutorials/cli) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
+[LinguiJS](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/tutorials/cli.md) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
 
 ## Compiling messages
 

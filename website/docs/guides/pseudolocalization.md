@@ -6,7 +6,7 @@ There is built in support for [pseudolocalization](https://en.wikipedia.org/wiki
 
 ## Configuration
 
-To setup pseudolocalization add [`pseudoLocale`](/docs/ref/conf#pseudolocale) to your lingui [`configuration file`](/docs/ref/conf):
+To setup pseudolocalization add [`pseudoLocale`](/docs/ref/conf.md#pseudolocale) to your lingui [`configuration file`](/docs/ref/conf.md):
 
 ```json
 {
@@ -20,13 +20,13 @@ To setup pseudolocalization add [`pseudoLocale`](/docs/ref/conf#pseudolocale) to
 }
 ```
 
-[`pseudoLocale`](/docs/ref/conf#pseudolocale) option can be any string that is in `locale`
+[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) option can be any string that is in `locale`
 
 Examples: `en-PL`, `pseudo-LOCALE`, `pseudolocalization` or `en-UK`
 
 ## Create pseudolocalization
 
-[`pseudoLocale`](/docs/ref/conf#pseudolocale) string has to be in [`locales`](/docs/ref/conf#locales) config as well. Otherwise, no folder and no pseudolocalization is going to be created. After running [`extract`](/docs/ref/cli#extract) verify that the folder has been created. The pseudolocalization is automatically created on [`compile`](/docs/ref/cli#compile) from messages in order specified in [this cli section](/docs/tutorials/cli#preparing-catalogs-for-production). In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallbacklocale.
+[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) string has to be in [`locales`](/docs/ref/conf.md#locales) config as well. Otherwise, no folder and no pseudolocalization is going to be created. After running [`extract`](/docs/ref/cli.md#extract) verify that the folder has been created. The pseudolocalization is automatically created on [`compile`](/docs/ref/cli.md#compile) from messages in order specified in [this cli section](/docs/tutorials/cli.md#preparing-catalogs-for-production). In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallbacklocale.
 
 ## Switch browser into specified pseudoLocale
 

@@ -1,7 +1,7 @@
 {
   "index_name": "lingui",
-  "start_urls": ["https://lingui.js.org/"],
-  "sitemap_urls": ["https://lingui.js.org/sitemap.xml"],
+  "start_urls": ["https://lingui.dev/"],
+  "sitemap_urls": ["https://lingui.dev/sitemap.xml"],
   "stop_urls": [],
   "strip_chars": "#",
   "selectors": {
