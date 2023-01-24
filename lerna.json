@@ -14,7 +14,8 @@
         "**/node_modules/**",
         "**/package.json",
         "**/website/**",
-        "**/*.md"
+        "**/*.md",
+        "test/**"
       ]
     },
     "publish": {
@@ -28,7 +29,8 @@
         "**/node_modules/**",
         "**/package.json",
         "**/website/**",
-        "**/*.md"
+        "**/*.md",
+        "test/**"
       ]
     }
   }

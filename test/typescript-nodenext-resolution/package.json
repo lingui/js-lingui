@@ -1,0 +1,15 @@
+{
+  "name": "typescript-nodenext-resolution",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test:e2e": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@lingui/core": "*",
+    "@lingui/react": "*"
+  },
+  "devDependencies": {
+    "typescript": "4.8.4"
+  }
+}
