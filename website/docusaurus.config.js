@@ -24,8 +24,12 @@ module.exports = {
       items: [
         {
           to: '/introduction',
-          activeBasePath: '/introduction',
           label: 'Docs',
+          position: 'left',
+        },
+        {
+          to: '/misc/community',
+          label: 'Community',
           position: 'left',
         },
         {
