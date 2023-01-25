@@ -328,7 +328,7 @@ Format of message catalogs. Possible values are:
   {
     "MessageID": {
       "translation": "Translated Message",
-      "defaults": "Default string (from source code)",
+      "message": "Default string (from source code)",
       "origin": [
         ["path/to/src.js", 42]
       ]

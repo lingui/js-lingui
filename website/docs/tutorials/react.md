@@ -418,7 +418,7 @@ By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID
 This will generate:
 
 ```jsx
-<h1><Trans id="inbox.title" defaults="Message Inbox" /></h1>
+<h1><Trans id="inbox.title" message="Message Inbox" /></h1>
 ```
 
 In our message catalog, we'll see `inbox.title` as message ID, but we also get `Message Inbox` as default translation for English.

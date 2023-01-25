@@ -91,7 +91,7 @@ This file format simply outputs all internal data in JSON format. It's the origi
 {
    "messageId": {
       "translation": "Translated message",
-      "defaults": "Default message",
+      "message": "Default message",
       "description": "Comment for translators",
       "origin": [["src/App.js", 3]]
    },

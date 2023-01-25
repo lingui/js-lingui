@@ -128,7 +128,7 @@ The core method for translating and formatting messages.
 
 `values` is an object of variables used in translated message.
 
-`options.defaults` is the default translation (optional). This is mostly used when application doesn't use message IDs in natural language (e.g.: `msg.id` or `Component.title`).
+`options.message` is the default translation (optional). This is mostly used when application doesn't use message IDs in natural language (e.g.: `msg.id` or `Component.title`).
 
 ``` js
 import { i18n } from "@lingui/core"
@@ -140,7 +140,7 @@ i18n._("Hello")
 i18n._("My name is {name}", { name: "Tom" })
 
 // Message with custom messageId
-i18n._("msg.id", { name: "Tom" }, { defaults: "My name is {name}" })
+i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" })
 ```
 
 ### `i18n.date(value: string | Date[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
