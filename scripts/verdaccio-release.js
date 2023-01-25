@@ -12,33 +12,16 @@ async function releaseInVerdaccio() {
   )
   spinner.succeed()
 
-  spinner.start("Versioning packages")
-  const { stdout: actualBranch } = await exec("git rev-parse --abbrev-ref HEAD")
-  await exec(
-    `npx lerna version patch --exact --no-git-tag-version --force-publish --no-private --no-push --yes --allow-branch ${actualBranch}`
-  )
-  spinner.succeed()
-
   spinner.start("Building packages")
   await exec("yarn release:build")
   spinner.succeed()
 
-  spinner.start(
-    "Dont't mark files as changed to let publish, but not create a git history"
-  )
-  await exec("git commit --all -m \"TEMP: verdaccio release\"")
+  spinner.start("Versioning and Publishing packages to local registry")
+  const { stdout: actualBranch } = await exec("git rev-parse --abbrev-ref HEAD")
 
-  spinner.succeed()
-
-  spinner.start("Publishing packages to local registry")
   await exec(
-    `npx lerna publish from-package --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --registry="http://0.0.0.0:4873"
-  `
-  )
-  spinner.succeed()
-
-  spinner.start("Reverting the changed files from index")
-  await exec("git reset --soft HEAD~1")
+    `npx lerna publish patch --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --registry="http://0.0.0.0:4873"
+  `)
   spinner.succeed()
 
   console.log()
