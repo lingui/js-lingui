@@ -28,6 +28,8 @@ const testCases: Record<string, TestCase[]> = {
 }
 
 describe("macro", function () {
+  process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
+
   const babelOptions: TransformOptions = {
     filename: "<filename>",
     configFile: false,
@@ -54,7 +56,16 @@ describe("macro", function () {
 
       cases.forEach(
         (
-          { name, input, expected, filename, production, useTypescriptPreset, only, skip },
+          {
+            name,
+            input,
+            expected,
+            filename,
+            production,
+            useTypescriptPreset,
+            only,
+            skip,
+          },
           index
         ) => {
           let run = it
@@ -72,8 +83,6 @@ describe("macro", function () {
             if (useTypescriptPreset) {
               babelOptions.presets.push("@babel/preset-typescript")
             }
-
-            process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
             try {
               if (filename) {
@@ -109,6 +118,17 @@ describe("macro", function () {
         }
       )
     })
+  })
+
+  it("Should throw error if used without babel-macro-plugin", async () => {
+    await expect(
+      async () => {
+        const mod = await import("../src/index");
+        return (mod as unknown as typeof import('@lingui/macro')).Trans
+      }
+    ).rejects.toThrow(
+      'The macro you imported from "@lingui/macro"'
+    )
   })
 
   describe.skip("validation", function () {
