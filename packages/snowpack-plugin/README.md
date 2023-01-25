@@ -35,7 +35,7 @@ module.exports = {
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
+[documentation]: https://lingui.dev
 [package]: https://www.npmjs.com/package/@lingui/snowpack-plugin
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/snowpack-plugin.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/snowpack-plugin.svg

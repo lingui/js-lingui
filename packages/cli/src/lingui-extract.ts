@@ -118,7 +118,7 @@ if (require.main === module) {
     hasErrors = true
     const msg =
       "--format option is deprecated." +
-      " Please set format in configuration https://lingui.js.org/ref/conf.html#format"
+      " Please set format in configuration https://lingui.dev/ref/conf#format"
     console.error(msg)
     console.error()
   }
@@ -127,7 +127,7 @@ if (require.main === module) {
     hasErrors = true
     const msg =
       "--babelOptions option is deprecated." +
-      " Please set extractBabelOptions in configuration https://lingui.js.org/ref/conf.html#extractBabelOptions"
+      " Please set extractBabelOptions in configuration https://lingui.dev/ref/conf#extractBabelOptions"
     console.error(msg)
     console.error()
   }

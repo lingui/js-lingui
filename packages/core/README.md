@@ -25,9 +25,9 @@ This package is licensed under [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
-[tutorial]: https://lingui.js.org/tutorials/js.html
-[reference]: https://lingui.js.org/ref/core.html
+[documentation]: https://lingui.dev
+[tutorial]: https://lingui.dev/tutorials/js
+[reference]: https://lingui.dev/ref/core
 [package]: https://www.npmjs.com/package/@lingui/core
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/core.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/core.svg

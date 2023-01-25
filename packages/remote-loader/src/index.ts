@@ -24,7 +24,7 @@ function remoteLoader<T>({ format = "minimal", fallbackMessages, messages}: Remo
   } else {
     throw new Error(`
         *format* value in the Lingui configuration is required to make this loader 100% functional
-        Read more about this here: https://lingui.js.org/ref/conf.html#format
+        Read more about this here: https://lingui.dev/ref/conf#format
       `)
   }
 
