@@ -18,7 +18,7 @@ npm install --save-dev @lingui/loader
 
 ## Usage
 
-See the [reference][reference] documenation.
+See the [reference][reference] documentation.
 
 ## License
 

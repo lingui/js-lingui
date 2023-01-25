@@ -17,7 +17,7 @@ npm install --save @lingui/react
 
 ## Usage
 
-See the [tutorial][tutorial] or [reference][reference] documenation.
+See the [tutorial][tutorial] or [reference][reference] documentation.
 
 ## License
 

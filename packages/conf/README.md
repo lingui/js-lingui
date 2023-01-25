@@ -23,7 +23,7 @@ const config = getConfig()
 // config.localeDir === '/app/locale'
 ```
 
-See the [reference][reference] documenation of `lingui-cli` for all options.
+See the [reference][reference] documentation of `lingui-cli` for all options.
 
 ## License
 

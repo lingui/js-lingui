@@ -127,7 +127,7 @@ if (require.main === module) {
     hasErrors = true
     const msg =
       "--babelOptions option is deprecated." +
-      " Please set extractBabelOptions in configuration https://lingui.dev/ref/conf#extractBabelOptions"
+      " Please set extractBabelOptions in configuration https://lingui.dev/ref/conf#extractbabeloptions"
     console.error(msg)
     console.error()
   }
