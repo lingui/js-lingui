@@ -28,22 +28,26 @@ function normalizeWhitespace(text: string): string {
   return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
 }
 
+export type MacroJsOpts = {
+  i18nImportName: string
+  stripNonEssentialProps: boolean
+}
+
 export default class MacroJs {
   // Babel Types
   types: typeof babelTypes
 
   // Identifier of i18n object
   i18nImportName: string
+  stripNonEssentialProps: boolean
 
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   _expressionIndex = makeCounter()
 
-  constructor(
-    { types }: { types: typeof babelTypes },
-    { i18nImportName }: { i18nImportName: string }
-  ) {
+  constructor({ types }: { types: typeof babelTypes }, opts: MacroJsOpts) {
     this.types = types
-    this.i18nImportName = i18nImportName
+    this.i18nImportName = opts.i18nImportName
+    this.stripNonEssentialProps = opts.stripNonEssentialProps
   }
 
   replacePathWithMessage = (
@@ -258,7 +262,7 @@ export default class MacroJs {
       messageNode
     )
 
-    if (process.env.NODE_ENV === "production") {
+    if (this.stripNonEssentialProps) {
       descriptor.properties = descriptor.properties.filter(
         (property) =>
           isObjectProperty(property) &&

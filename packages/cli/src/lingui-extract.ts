@@ -6,15 +6,13 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { AllCatalogsType, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
-import { detect } from "./api/detect"
 import { helpRun } from "./api/help"
-import { ExtractorType } from "./api/extractors"
+import ora from "ora"
 
 export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
-  extractors?: ExtractorType[]
   configPath: string
   overwrite: boolean
   locale: string
@@ -32,26 +30,28 @@ export default async function command(
     process.env.BABEL_ENV = "development"
   }
 
-  // We need macros to keep imports, so extract-messages plugin know what componets
-  // to collect. Users usually use both BABEN_ENV and NODE_ENV, so it's probably
-  // safer to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
-  process.env.LINGUI_EXTRACT = "1"
-
   options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
+
+  const spinner = ora().start()
+
   for (let catalog of catalogs) {
     const catalogSuccess = await catalog.make({
       ...(options as CliExtractOptions),
       orderBy: config.orderBy,
-      extractors: config.extractors as ExtractorType[],
-      projectType: detect(),
     })
 
     catalogStats[catalog.path] = catalog.readAll()
     commandSuccess &&= catalogSuccess
+  }
+
+  if (commandSuccess) {
+    spinner.succeed()
+  } else {
+    spinner.fail()
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
@@ -108,12 +108,6 @@ if (require.main === module) {
       "Convert from previous format of message catalogs"
     )
     .option("--watch", "Enables Watch Mode")
-    // Obsolete options
-    .option(
-      "--babelOptions",
-      "Babel options passed to transform/extract plugins"
-    )
-    .option("--format <format>", "Format of message catalogs")
     .parse(process.argv)
 
   const config = getConfig({
@@ -121,23 +115,6 @@ if (require.main === module) {
   })
 
   let hasErrors = false
-  if (program.format) {
-    hasErrors = true
-    const msg =
-      "--format option is deprecated." +
-      " Please set format in configuration https://lingui.dev/ref/conf#format"
-    console.error(msg)
-    console.error()
-  }
-
-  if (program.babelOptions) {
-    hasErrors = true
-    const msg =
-      "--babelOptions option is deprecated." +
-      " Please set extractBabelOptions in configuration https://lingui.dev/ref/conf#extractbabeloptions"
-    console.error(msg)
-    console.error()
-  }
 
   const prevFormat = program.convertFrom
   if (prevFormat && config.format === prevFormat) {

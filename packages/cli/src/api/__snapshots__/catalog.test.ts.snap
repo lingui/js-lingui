@@ -118,7 +118,84 @@ Object {
 }
 `;
 
-exports[`Catalog collect should handle errors 1`] = `undefined`;
+exports[`Catalog collect should support Flow syntax if enabled 1`] = `Object {}`;
+
+exports[`Catalog collect should support JSX and Typescript 1`] = `
+Object {
+  Description: Object {
+    extractedComments: Array [
+      description,
+    ],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        6,
+      ],
+    ],
+  },
+  Hi, my name is {name}: Object {
+    extractedComments: Array [],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        17,
+      ],
+    ],
+  },
+  ID Some: Object {
+    extractedComments: Array [],
+    message: Message with id some,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        11,
+      ],
+    ],
+  },
+  Message: Object {
+    extractedComments: Array [],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        4,
+      ],
+    ],
+  },
+  Some message: Object {
+    extractedComments: Array [],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        18,
+      ],
+    ],
+  },
+  Title: Object {
+    extractedComments: Array [],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        19,
+      ],
+    ],
+  },
+  {count, plural, one {# book} other {# books}}: Object {
+    extractedComments: Array [],
+    message: undefined,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        21,
+      ],
+    ],
+  },
+}
+`;
 
 exports[`Catalog make should collect and write catalogs 1`] = `
 Object {

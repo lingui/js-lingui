@@ -4,13 +4,10 @@ import program from "commander"
 import { getConfig, LinguiConfig } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
-import { detect } from "./api/detect"
-import { ExtractorType } from "./api/extractors"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
   configPath: string
-  extractors?: ExtractorType[]
   files?: string[]
 }
 
@@ -24,11 +21,6 @@ export default async function command(
     process.env.BABEL_ENV = "development"
   }
 
-  // We need macros to keep imports, so extract-messages plugin know what componets
-  // to collect. Users usually use both BABEN_ENV and NODE_ENV, so it's probably
-  // safer to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
-  process.env.LINGUI_EXTRACT = "1"
-
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: Number } = {}
@@ -38,7 +30,6 @@ export default async function command(
       await catalog.makeTemplate({
         ...(options as CliExtractTemplateOptions),
         orderBy: config.orderBy,
-        projectType: detect(),
       })
       const catalogTemplate = catalog.readTemplate()
       if (catalogTemplate !== null && catalogTemplate !== undefined) {

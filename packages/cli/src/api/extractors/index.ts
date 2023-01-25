@@ -1,11 +1,11 @@
-import ora from "ora"
+import fs from "fs/promises"
 import babel from "./babel"
 
 const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 
-export type BabelOptions = {
-  plugins?: Array<string>
-  presets?: Array<string>
+export type ParserOptions = {
+  decoratorsBeforeExport?: boolean
+  flow?: boolean
 }
 
 export type ExtractedMessage = {
@@ -18,19 +18,23 @@ export type ExtractedMessage = {
   comment?: string
 }
 
-export type ExtractOptions = {
-  verbose?: boolean
-  projectType?: string
+type ExtractOptions = {
   extractors?: ExtractorType[]
-  babelOptions?: BabelOptions
+  parserOptions?: ParserOptions
+}
+
+export type ExtractorOptions = {
+  parserOptions?: ParserOptions
+  sourceMaps?: any
 }
 
 export type ExtractorType = {
   match(filename: string): boolean
   extract(
     filename: string,
+    code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    options?: ExtractOptions
+    options?: ExtractorOptions
   ): Promise<void> | void
 }
 
@@ -53,21 +57,15 @@ export default async function extract(
 
     if (!ext.match(filename)) continue
 
-    let spinner
-    if (options.verbose) spinner = ora().start(filename)
-
     try {
-      await ext.extract(filename, onMessageExtracted, options)
-
-      if (options.verbose && spinner) spinner.succeed()
+      const file = await fs.readFile(filename)
+      await ext.extract(filename, file.toString(), onMessageExtracted, {
+        parserOptions: options.parserOptions,
+      })
       return true
     } catch (e) {
-      if (options.verbose && spinner) {
-        spinner.fail((e as Error).message)
-      } else {
-        console.error(`Cannot process file ${(e as Error).message}`)
-        console.error((e as Error).stack)
-      }
+      console.error(`Cannot process file ${(e as Error).message}`)
+      console.error((e as Error).stack)
       return false
     }
   }

@@ -1,5 +1,5 @@
 import { GeneratorOptions } from "@babel/core"
-import { ExtractOptions } from "@lingui/cli/src/api/extractors"
+import type { ExtractorOptions } from "@lingui/cli/src/api/extractors"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
 
@@ -17,8 +17,9 @@ export type ExtractorType = {
   match(filename: string): boolean
   extract(
     filename: string,
+    code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    options?: ExtractOptions
+    options?: ExtractorOptions
   ): Promise<void> | void
 }
 
@@ -54,7 +55,16 @@ type CatalogService = {
 export type LinguiConfig = {
   catalogs: CatalogConfig[]
   compileNamespace: "es" | "ts" | "cjs" | string
-  extractBabelOptions: Record<string, unknown>
+  extractorParserOptions: {
+    /**
+     * default true
+     */
+    decoratorsBeforeExport?: boolean
+    /**
+     * Enable if you use flow. This will apply Flow syntax to js files
+     */
+    flow?: boolean
+  }
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales | false
   extractors?: ExtractorType[] | string[]

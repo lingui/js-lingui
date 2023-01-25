@@ -276,6 +276,36 @@ const cases: TestCase[] = [
     `,
   },
   {
+    name: "Production - all props kept if extract: true",
+    production: true,
+    macroOpts: {
+      extract: true,
+    },
+    input: `
+        import { t } from '@lingui/macro';
+        const msg = t({
+            message: \`Hello $\{name\}\`,
+            id: 'msgId',
+            comment: 'description for translators',
+            context: 'My Context',
+        })
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const msg =
+        i18n._(/*i18n*/
+          {
+            message: "Hello {name}",
+            id: 'msgId',
+            comment: "description for translators",
+            context: 'My Context',
+            values: {
+              name: name,
+            },
+         });
+    `,
+  },
+  {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js",
   },

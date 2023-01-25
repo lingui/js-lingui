@@ -41,10 +41,7 @@ Object {
     },
     minified: true,
   },
-  extractBabelOptions: Object {
-    plugins: Array [],
-    presets: Array [],
-  },
+  extractorParserOptions: Object {},
   fallbackLocales: Object {
     en-gb: en,
   },

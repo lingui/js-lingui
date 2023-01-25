@@ -198,6 +198,49 @@ describe("Catalog", () => {
   })
 
   describe("collect", () => {
+    it("should support JSX and Typescript", async () => {
+      process.env.LINGUI_CONFIG = path.join(
+        __dirname,
+        "fixtures/collect-typescript-jsx/lingui.config.js"
+      )
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect-typescript-jsx/")],
+          exclude: [],
+        },
+        mockConfig()
+      )
+
+      const messages = await catalog.collect()
+      expect(messages).toBeTruthy()
+      expect(messages).toMatchSnapshot()
+    })
+
+    it("should support Flow syntax if enabled", async () => {
+      process.env.LINGUI_CONFIG = path.join(
+        __dirname,
+        "fixtures/collect-syntax-flow/lingui.config.js"
+      )
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect-syntax-flow/")],
+          exclude: [],
+        },
+        mockConfig({
+          extractorParserOptions: {
+            flow: true,
+          },
+        })
+      )
+
+      const messages = await catalog.collect()
+      expect(messages).toBeTruthy()
+      expect(messages).toMatchSnapshot()
+    })
     it("should extract messages from source files", async () => {
       const catalog = new Catalog(
         {
@@ -209,7 +252,7 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      const messages = await catalog.collect(defaultMakeOptions)
+      const messages = await catalog.collect()
       expect(messages).toMatchSnapshot()
     })
 
@@ -228,7 +271,6 @@ describe("Catalog", () => {
       )
 
       const messages = await catalog.collect({
-        ...defaultMakeOptions,
         files: [fixture("collect/componentA")],
       })
       expect(messages).toMatchSnapshot()
@@ -247,7 +289,6 @@ describe("Catalog", () => {
 
       mockConsole(async (console) => {
         await catalog.collect({
-          ...defaultMakeOptions,
           files: [fixture("duplicate-id.js")],
         })
 
@@ -271,7 +312,7 @@ describe("Catalog", () => {
       )
 
       mockConsole(async (console) => {
-        const messages = await catalog.collect(defaultMakeOptions)
+        const messages = await catalog.collect()
         expect(console.error).toBeCalledWith(
           expect.stringContaining(`Cannot process file`)
         )

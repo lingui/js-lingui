@@ -1,14 +1,14 @@
-import { DEFAULT_EXTENSIONS, transformFileSync } from "@babel/core"
+import { DEFAULT_EXTENSIONS, transformAsync } from "@babel/core"
 
 import type { ExtractPluginOpts } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import { BabelOptions, ExtractorType } from "."
-import { projectType } from "../detect"
+import { ExtractorType } from "."
+import { ParserPlugin } from "@babel/parser"
 
 const babelRe = new RegExp(
   "\\.(" +
-    [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
+    [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
       .map((ext) => ext.slice(1))
       .join("|") +
     ")$",
@@ -20,26 +20,57 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  extract(filename, onMessageExtracted, options = {}) {
-    const { babelOptions: _babelOptions = {} } = options
-    const { plugins = [], ...babelOptions } = _babelOptions
-    const frameworkOptions: BabelOptions = {}
+  async extract(filename, code, onMessageExtracted, options = {}) {
+    const parserPlugins: ParserPlugin[] = [
+      // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
+      [
+        "decorators",
+        {
+          decoratorsBeforeExport:
+            options?.parserOptions?.decoratorsBeforeExport || true,
+        },
+      ],
+    ]
 
-    if (options.projectType === projectType.CRA) {
-      frameworkOptions.presets = ["react-app"]
+    if (
+      [/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))
+    ) {
+      parserPlugins.push("typescript")
+    } else if (options?.parserOptions?.flow) {
+      parserPlugins.push("flow")
     }
 
-    const pluginOpts: ExtractPluginOpts = {
+    if ([/\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
+      parserPlugins.push("jsx")
+    }
+
+    const extractPluginOpts: ExtractPluginOpts = {
       onMessageExtracted,
     }
 
-    transformFileSync(filename, {
-      ...babelOptions,
-      ...frameworkOptions,
-      // we override envName to avoid issues with NODE_ENV=production
-      // https://github.com/lingui/js-lingui/issues/952
-      envName: "development",
-      plugins: ["macros", [linguiExtractMessages, pluginOpts], ...plugins],
+    await transformAsync(code, {
+      // don't generate code
+      code: false,
+
+      babelrc: false,
+      configFile: false,
+
+      filename: filename,
+
+      sourceMaps: options.sourceMaps,
+      parserOpts: {
+        plugins: parserPlugins,
+      },
+
+      plugins: [
+        [
+          "macros",
+          {
+            lingui: { extract: true },
+          },
+        ],
+        [linguiExtractMessages, extractPluginOpts],
+      ],
     })
   },
 }

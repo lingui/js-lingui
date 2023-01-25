@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { transformFileSync, TransformOptions, transformSync } from "@babel/core"
 import prettier from "prettier"
+import { LinguiMacroOpts } from "../src/index"
 
 export type TestCase = {
   name?: string
@@ -10,6 +11,7 @@ export type TestCase = {
   filename?: string
   production?: boolean
   useTypescriptPreset?: boolean
+  macroOpts?: LinguiMacroOpts
   only?: boolean
   skip?: boolean
 }
@@ -30,29 +32,34 @@ const testCases: Record<string, TestCase[]> = {
 describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
-  const babelOptions: TransformOptions = {
-    filename: "<filename>",
-    configFile: false,
-    presets: [],
-    plugins: [
-      "@babel/plugin-syntax-jsx",
-      [
-        "macros",
-        {
-          // macro plugin uses package `resolve` to find a path of macro file
-          // this will not follow jest pathMapping and will resolve path from ./build
-          // instead of ./src which makes testing & developing hard.
-          // here we override resolve and provide correct path for testing
-          resolvePath: (source: string) => require.resolve(source),
-        },
+  const getDefaultBabelOptions = (
+    macroOpts: LinguiMacroOpts = {}
+  ): TransformOptions => {
+    return {
+      filename: "<filename>",
+      configFile: false,
+      presets: [],
+      plugins: [
+        "@babel/plugin-syntax-jsx",
+        [
+          "macros",
+          {
+            lingui: macroOpts,
+            // macro plugin uses package `resolve` to find a path of macro file
+            // this will not follow jest pathMapping and will resolve path from ./build
+            // instead of ./src which makes testing & developing hard.
+            // here we override resolve and provide correct path for testing
+            resolvePath: (source: string) => require.resolve(source),
+          },
+        ],
       ],
-    ],
+    }
   }
 
   // return function, so we can test exceptions
   const transformCode = (code: string) => () => {
     try {
-      return transformSync(code, babelOptions).code.trim()
+      return transformSync(code, getDefaultBabelOptions()).code.trim()
     } catch (e) {
       e.message = e.message.replace(/([^:]*:){2}/, "")
       throw e
@@ -77,6 +84,7 @@ describe("macro", function () {
             useTypescriptPreset,
             only,
             skip,
+            macroOpts,
           },
           index
         ) => {
@@ -84,6 +92,7 @@ describe("macro", function () {
           if (only) run = it.only
           if (skip) run = it.skip
           run(name != null ? name : `${suiteName} #${index + 1}`, () => {
+            const babelOptions = getDefaultBabelOptions(macroOpts)
             expect(input || filename).toBeDefined()
 
             const originalEnv = process.env.NODE_ENV
