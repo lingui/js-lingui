@@ -1,0 +1,38 @@
+name: release-docs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        working-directory: website
+        run: yarn install --frozen-lockfile --pure-lockfile
+
+      - name: Build
+        working-directory: website
+        run: yarn build
+
+      - name: Deploy documentation
+        working-directory: website
+        run: |
+          npx vercel --public --yes --prod --token ${{ secrets.NOW_TOKEN }} --name lingui-docs build
+
+      - name: Update Algolia index
+        uses: darrenjennings/algolia-docsearch-action@v0.2.0
+        with:
+          algolia_application_id: ${{ vars.ALGOLIA_APP_ID }}
+          algolia_api_key: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          file: 'website/tools/algolia/config.json'

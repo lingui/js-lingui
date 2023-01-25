@@ -1,0 +1,6 @@
+.docusaurus/
+.github/
+.idea/
+build/
+node_modules/
+docs/

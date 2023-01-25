@@ -22,6 +22,7 @@
     "examples/js",
     "examples/next-js",
     "examples/create-react-app",
-    "build"
+    "build",
+    "website"
   ]
 }

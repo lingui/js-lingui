@@ -1,0 +1,73 @@
+.heroBanner {
+  text-align: center;
+  position: relative;
+
+  &Holder {
+    padding: 0;
+    overflow: hidden;
+    background: var(--ifm-hero-background-bg);
+    border-radius: 0 0 var(--lingui-card-raduis) var(--lingui-card-raduis);
+    display: flex;
+    flex: 1;
+    position: relative;
+
+    @media screen and (max-width: 850px) {
+      border-radius: 0 0 var(--lingui-card-raduis-sm) var(--lingui-card-raduis-sm);
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 562px;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      top: 0;
+      z-index: 0;
+
+      @media screen and (max-width: 850px) {
+        opacity: 0.5;
+      }
+    }
+
+    &:before {
+      left: 0;
+      background-image: url('/img/header/left-bg.svg');
+    }
+
+    &:after {
+      right: 0;
+      background-image: url('/img/header/right-bg.svg');
+    }
+  }
+
+  &Container {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 4rem;
+    padding-top: 4rem;
+
+    @media screen and (max-width: 850px) {
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.heroBannerLogo {
+  max-width: 170px;
+  max-height: 170px;
+  margin-left: -10px;
+}
+
+.heroButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

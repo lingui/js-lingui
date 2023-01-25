@@ -1,0 +1,28 @@
+<svg width="1230" height="930" viewBox="0 0 1230 930" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_13_97" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="79" width="1026" height="851">
+<rect y="79" width="1026" height="851" fill="url(#paint0_linear_13_97)"/>
+</mask>
+<g mask="url(#mask0_13_97)">
+<rect width="1464" height="1179.89" rx="259" transform="matrix(-1 0 0 1 1558.94 -315.899)" stroke="url(#paint1_radial_13_97)" stroke-width="122"/>
+</g>
+<rect width="36" height="77" rx="18" transform="matrix(1.19249e-08 1 1 -1.19249e-08 125 244)" stroke="url(#paint2_linear_13_97)" stroke-width="11"/>
+<rect x="134" y="720" width="110" height="110" rx="55" transform="rotate(90 134 720)" stroke="url(#paint3_linear_13_97)" stroke-width="30"/>
+<defs>
+<linearGradient id="paint0_linear_13_97" x1="453.5" y1="930" x2="453.5" y2="113" gradientUnits="userSpaceOnUse">
+<stop offset="0.307696" stop-color="#D9D9D9"/>
+<stop offset="1" stop-color="#D9D9D9" stop-opacity="0"/>
+</linearGradient>
+<radialGradient id="paint1_radial_13_97" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1079.94 720.899) rotate(47.0685) scale(626.905 465.706)">
+<stop offset="0.222631" stop-color="#EF706B" stop-opacity="0.53"/>
+<stop offset="1" stop-color="#EF706B" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="paint2_linear_13_97" x1="-5.48554e-07" y1="-18" x2="45.3322" y2="104.608" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5CBBBD" stop-opacity="0"/>
+<stop offset="1" stop-color="#5CBBBD"/>
+</linearGradient>
+<linearGradient id="paint3_linear_13_97" x1="116.857" y1="622.143" x2="80.5694" y2="818.345" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FBE293"/>
+<stop offset="1" stop-color="#FBE293" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

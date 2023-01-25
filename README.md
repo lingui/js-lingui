@@ -13,7 +13,7 @@
 [![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
 [![Join the community on Discord][Badge-Discord]][Discord]
 
-[**Documentation**][Documentation] · [**Documentation 2.x**](https://js-lingui-git-stable-2x.lingui-js.vercel.app/) · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**Licence**](#licence)
+[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
@@ -111,10 +111,9 @@ documentation to implement features and fixing bugs.
 
 - Do you use **Lingui** in production site? Let us know!
 - Have you seen any interesting talk or article about **i18n**?
-  [Share it](https://github.com/lingui/js-lingui/edit/main/docs/misc/talks-about-i18n.rst)!
+  [Share it](https://github.com/lingui/js-lingui/edit/main/website/docs/misc/resources.md)!
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
-- Do you want to improve the docs and write some code?
-  Read the [contributors guide][Contributing] and send a PR!
+- Do you want to improve the docs and write some code? Read the [contributors guide][Contributing] and send a PR!
 
 ### Contributors
 
@@ -147,7 +146,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 The project is licensed under the [MIT][License] license.
 
-[ReactIntl]: https://github.com/yahoo/react-intl
 [Documentation]: https://lingui.js.org/
 [TutorialReact]: https://lingui.js.org/tutorials/react.html
 [TutorialReactNative]: https://lingui.js.org/tutorials/react-native.html
@@ -159,8 +157,6 @@ The project is licensed under the [MIT][License] license.
 
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
-[Badge-CI]: https://img.shields.io/circleci/project/github/lingui/js-lingui/main.svg
-[Badge-AppVeyor]: https://ci.appveyor.com/api/projects/status/0wjdm3qofrjo2c4n/branch/main?svg=true
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
@@ -171,14 +167,11 @@ The project is licensed under the [MIT][License] license.
 [Img-Backers]: https://opencollective.com/js-lingui/backers.svg?width=890
 [Backers]: https://opencollective.com/js-lingui#backers
 
-[CI]: https://circleci.com/gh/lingui/js-lingui/tree/main
-[AppVeyor]: https://ci.appveyor.com/project/tricoder42/js-lingui/branch/main
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
-[Indiegogo]: https://igg.me/at/js-lingui/x/4367619
 [ocbackers-local]: #backers
 [ocsponsors-local]: #sponsors
 [BundleReact]: https://bundlephobia.com/result?p=@lingui/react

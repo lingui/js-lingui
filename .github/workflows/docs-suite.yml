@@ -1,0 +1,36 @@
+name: docs-suite
+
+on:
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - website/**
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        working-directory: website
+        run: yarn install --frozen-lockfile --pure-lockfile
+
+      - name: Build
+        working-directory: website
+        run: yarn build
+
+      - name: Lint
+        working-directory: website
+        run: yarn lint
+
+      - name: Check Formatting
+        working-directory: website
+        run: yarn checkFormat

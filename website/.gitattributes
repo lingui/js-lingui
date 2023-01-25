@@ -1,0 +1,13 @@
+*                text=auto
+
+*.editorconfig   text       eol=lf
+*.html           text       eol=lf
+*.md             text       eol=lf
+*.py             text       eol=lf
+*.sh             text       eol=lf
+*.txt            text       eol=lf
+*.yml            text       eol=lf
+*.json           text       eol=lf
+
+*.gitignore      text=auto
+*.gitattributes  text=auto

@@ -1,0 +1,10 @@
+{
+    "exclude": [
+        ".docusaurus",
+        ".idea",
+        "build",
+        "build-linkcheck",
+        "node_modules",
+        "*.md"
+    ]
+}

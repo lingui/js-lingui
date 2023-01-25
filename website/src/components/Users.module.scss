@@ -1,0 +1,46 @@
+.users {
+  margin-top: 80px;
+  margin-bottom: 50px;
+  padding: 0;
+
+  &Holder {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    border-radius: var(--lingui-card-raduis);
+    background: var(--lingui-gray-bg);
+
+    @media screen and (max-width: 850px) {
+      border-radius: var(--lingui-card-raduis-sm);
+    }
+  }
+}
+
+.usersList {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.usersList > * {
+  margin: 0 40px;
+
+  @media screen and (max-width: 580px) {
+    margin: 0;
+    flex-basis: 50%;
+  }
+}
+
+.logo {
+  width: 64px;
+  height: auto;
+}
+
+.user,
+.muted {
+  color: grey;
+}
+
+.user:hover {
+  text-decoration: none;
+}
