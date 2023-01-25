@@ -20,7 +20,7 @@ Looking at the low-level API of [LinguiJS](https://github.com/lingui/js-lingui),
 ``` jsx
 <Trans
    id="welcome"
-   defaults={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+   message={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
@@ -55,7 +55,7 @@ In [react-intl](https://github.com/yahoo/react-intl), this would be translated a
 ``` jsx
 <Trans
     id='msg.docs'
-    defaults='Read the <0>documentation</0>.'
+    message='Read the <0>documentation</0>.'
     components={[
         <a href="/docs" />
     ]}
@@ -86,7 +86,7 @@ All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans
 </p>
 ```
 
-The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `defaults` and `components` props  automatically in the form described in the previous section.
+The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `message` and `components` props  automatically in the form described in the previous section.
 
 This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.md#trans) macro.
 
@@ -149,7 +149,7 @@ and the final message would be very similar:
 ``` jsx
 <Trans
    id="welcome"
-   defaults={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
+   message={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
