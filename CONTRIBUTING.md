@@ -102,18 +102,21 @@ After you successfully fix a bug or add a new feature, you most probably want to
 
 4. Inside your project, run:
 
-    ```sh
-    # Install a small package to update all lingui packages
-    npm i -g update-by-scope
+    with NPM:
+    ```sh 
     # Point to your local registry
     npm config set registry http://0.0.0.0:4873/
     # Run update-by-scope will update all @lingui packages
-    update-by-scope @lingui
+    npx update-by-scope @lingui
+    ```
+    with Yarn (1.*):
+    ```sh 
+    yarn upgrade --scope @lingui --registry http://0.0.0.0:4873/ --latest
     ```
 
 5. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
 
-6. When finished testing, restore default registry
+6. When finished testing, restore default registry (only for NPM)
 
     ```sh
     npm config set registry https://registry.npmjs.org/
