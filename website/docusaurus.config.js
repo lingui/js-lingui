@@ -20,6 +20,8 @@ module.exports = {
       logo: {
         alt: 'Lingui',
         src: 'img/logo-small.svg',
+        width: '48px',
+        height: '48px',
       },
       items: [
         {

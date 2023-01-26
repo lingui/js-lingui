@@ -22,6 +22,7 @@ const Header = (): React.ReactElement => {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
+        <meta name="description" content={siteConfig.tagline} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={siteConfig.title} />
         <meta name="twitter:description" content={siteConfig.tagline} />
@@ -34,6 +35,7 @@ const Header = (): React.ReactElement => {
             <div className="col col--8 col--offset-2">
               <img
                 width="128"
+                height="128"
                 className={clsx(styles.heroBannerLogo, 'margin-vert--md')}
                 src={'./img/lingui-logo.svg'}
                 alt="Lingui"
@@ -47,7 +49,7 @@ const Header = (): React.ReactElement => {
               <div className={clsx(styles.heroButtons, 'name', 'margin-vert--md')}>
                 <Button href={useBaseUrl('/tutorials/setup-react')}>Get Started</Button>
                 <Button href={useBaseUrl('/introduction')} isOutline={true}>
-                  Learn More
+                  View Docs
                 </Button>
               </div>
               <iframe
@@ -55,6 +57,7 @@ const Header = (): React.ReactElement => {
                 width="160px"
                 height="30px"
                 className={'margin-top--md'}
+                title="GitHub Stars counter"
               />
             </div>
           </div>
