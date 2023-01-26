@@ -9,17 +9,23 @@ import styles from './Header.module.scss';
 
 const Header = (): React.ReactElement => {
   const context = useDocusaurusContext();
-  const { siteConfig = { title: '', tagline: '' } } = context;
+  const { siteConfig = { url: '', title: '', tagline: '' } } = context;
+  const ogImage = `${siteConfig.url}/img/og-image.png`;
 
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <Head>
         <title>{siteConfig.title}</title>
-        <meta property="og:image" content={'./img/og-image.png'} />
+        <meta property="og:image" content={ogImage} />
         <meta property="og:title" content={siteConfig.title} />
         <meta property="og:description" content={siteConfig.tagline} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={siteConfig.title} />
+        <meta name="twitter:description" content={siteConfig.tagline} />
+        <meta name="twitter:image" content={ogImage} />
       </Head>
 
       <div className={clsx(styles.heroBannerHolder)}>
