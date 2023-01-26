@@ -65,8 +65,7 @@ Lingui is an easy yet powerful internationalization framework for global project
 - [Plain JavaScript][TutorialJavaScript]
 - [Working with Command Line Tool][TutorialCLI]
 
-If you're a react-intl user, check out
-[a comparison of react-intl and Lingui](https://lingui.js.org/misc/react-intl.html).
+If you're a react-intl user, check out [a comparison of react-intl and Lingui](https://lingui.dev/misc/react-intl).
 
 ## Example
 
@@ -78,7 +77,7 @@ import { Trans } from "@lingui/macro"
 function App() {
   return (
    <Trans id="msg.docs" /* id is optional */>
-     Read the <a href="https://lingui.js.org">documentation</a>
+     Read the <a href="https://lingui.dev">documentation</a>
      for more info.
    </Trans>
   )
@@ -99,19 +98,15 @@ For more example see the [React tutorial][TutorialReact].
 If you are having issues, please let us know.
 
 - Join us on [Discord](https://discord.gg/gFWwAYnMtA) to chat with the community.
-- Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=jsLingui)
-  and mark it with [Lingui](https://stackoverflow.com/questions/tagged/jslingui) tag.
-- If something doesn't work as documented, documentation is missing or if you just want
-  to suggest a new feature, [create an issue][Issues].
+- Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=linguijs) and mark it with [Lingui](https://stackoverflow.com/questions/tagged/linguijs) tag.
+- If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
 
 ## Contribute
 
-Contribution to open-source project is everything from spreading the word, writing
-documentation to implement features and fixing bugs.
+Contribution to open-source project is everything from spreading the word, writing documentation to implement features and fixing bugs.
 
 - Do you use **Lingui** in production site? Let us know!
-- Have you seen any interesting talk or article about **i18n**?
-  [Share it](https://github.com/lingui/js-lingui/edit/main/website/docs/misc/resources.md)!
+- Have you seen any interesting talk or article about **i18n**? [Share it](https://github.com/lingui/js-lingui/edit/main/website/docs/misc/resources.md)!
 - Have you found a bug or do you want to suggest a new feature? [Create an issue][Issues]!
 - Do you want to improve the docs and write some code? Read the [contributors guide][Contributing] and send a PR!
 
@@ -146,14 +141,14 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 The project is licensed under the [MIT][License] license.
 
-[Documentation]: https://lingui.js.org/
-[TutorialReact]: https://lingui.js.org/tutorials/react.html
-[TutorialReactNative]: https://lingui.js.org/tutorials/react-native.html
-[TutorialJavaScript]: https://lingui.js.org/tutorials/javascript.html
-[TutorialCLI]: https://lingui.js.org/tutorials/cli.html
-[TutorialSetupCRA]: https://lingui.js.org/tutorials/setup-cra.html
-[TutorialSetupReact]: https://lingui.js.org/tutorials/setup-react.html
-[RefCLI]: https://lingui.js.org/ref/cli.html
+[Documentation]: https://lingui.dev
+[TutorialReact]: https://lingui.dev/tutorials/react
+[TutorialReactNative]: https://lingui.dev/tutorials/react-native
+[TutorialJavaScript]: https://lingui.dev/tutorials/javascript
+[TutorialCLI]: https://lingui.dev/tutorials/cli
+[TutorialSetupCRA]: https://lingui.dev/tutorials/setup-cra
+[TutorialSetupReact]: https://lingui.dev/tutorials/setup-react
+[RefCLI]: https://lingui.dev/ref/cli
 
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg

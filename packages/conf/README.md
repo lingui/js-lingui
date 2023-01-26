@@ -23,7 +23,7 @@ const config = getConfig()
 // config.localeDir === '/app/locale'
 ```
 
-See the [reference][reference] documenation of `lingui-cli` for all options.
+See the [reference][reference] documentation of `lingui-cli` for all options.
 
 ## License
 
@@ -31,8 +31,8 @@ This package is licensed under [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
-[reference]: https://lingui.js.org/ref/conf.html
+[documentation]: https://lingui.dev
+[reference]: https://lingui.dev/ref/conf
 [package]: https://www.npmjs.com/package/@lingui/conf
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/conf.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/conf.svg

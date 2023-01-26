@@ -68,9 +68,9 @@ This package is licensed under [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
-[tutorial]: https://lingui.js.org/tutorials/cli.html
-[reference]: https://lingui.js.org/ref/cli.html
+[documentation]: https://lingui.dev
+[tutorial]: https://lingui.dev/tutorials/cli
+[reference]: https://lingui.dev/ref/cli
 [package]: https://www.npmjs.com/package/@lingui/cli
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/cli.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/cli.svg

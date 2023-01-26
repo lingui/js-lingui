@@ -24,7 +24,7 @@ exports[`@lingui/conf catalogMigration should show deprecation warning 1`] = `
     Please update your configuration.
     
 
-Documentation: https://lingui.js.org/ref/conf.html
+Documentation: https://lingui.dev/ref/conf
 ● Deprecation Warning:
 
  Option srcPathDirs is deprecated. Configure source paths using catalogs instead.
@@ -48,7 +48,7 @@ Documentation: https://lingui.js.org/ref/conf.html
     Please update your configuration.
     
 
-Documentation: https://lingui.js.org/ref/conf.html
+Documentation: https://lingui.dev/ref/conf
 ● Deprecation Warning:
 
  Option srcPathIgnorePatterns is deprecated. Configure excluded source paths using catalogs instead.
@@ -72,7 +72,7 @@ Documentation: https://lingui.js.org/ref/conf.html
     Please update your configuration.
     
 
-Documentation: https://lingui.js.org/ref/conf.html
+Documentation: https://lingui.dev/ref/conf
 `;
 
 exports[`@lingui/conf config file fallbackLocales logic if fallbackLocale is defined, we use the default one on fallbackLocales 1`] = `
@@ -92,7 +92,7 @@ exports[`@lingui/conf config file fallbackLocales logic if fallbackLocale is def
     Please update your configuration.
     
 
-Documentation: https://lingui.js.org/ref/conf.html
+Documentation: https://lingui.dev/ref/conf
 `;
 
 exports[`@lingui/conf should return default config 1`] = `

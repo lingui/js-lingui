@@ -10,7 +10,7 @@ export default function Home() {
     <Layout className={styles.main}>
       <h1 className={styles.title}>
         <Trans>
-          Welcome to <a href="https://lingui.js.org">LinguiJS!</a>
+          Welcome to <a href="https://lingui.dev">LinguiJS!</a>
         </Trans>
       </h1>
       <p className={styles.description}>
@@ -20,7 +20,7 @@ export default function Home() {
         </Trans>
       </p>
       <div className={styles.grid}>
-        <a href="https://lingui.js.org" className={styles.card}>
+        <a href="https://lingui.dev" className={styles.card}>
           <h3>
             <Trans>Documentation →</Trans>
           </h3>

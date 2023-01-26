@@ -40,8 +40,8 @@ const message = i18n._(t`Hello, my name is ${name} and today is ${date(now)}`)
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
-[reference]: https://lingui.js.org/ref/macro/
+[documentation]: https://lingui.dev
+[reference]: https://lingui.dev/ref/macro/
 [package]: https://www.npmjs.com/package/@lingui/macro
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/macro.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/macro.svg

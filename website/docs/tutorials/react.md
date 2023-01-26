@@ -153,7 +153,7 @@ We're going to use [CLI](/docs/ref/cli.md) again. Run [`extract`](/docs/ref/cli.
 
 No locales defined!
 
-Add 'locales' to your configuration. See https://lingui.js.org/ref/conf.html#locales
+Add 'locales' to your configuration. See https://lingui.dev/ref/conf#locales
 ```
 
 We need here to fix the configuration. Create a `.linguirc` file:

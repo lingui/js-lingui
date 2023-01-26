@@ -4,7 +4,7 @@ const url = process.env['SITE_URL'] || 'https://lingui.dev';
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'Lingui',
-  tagline: 'Professional localization framework for global products',
+  tagline: 'Internationalization Framework for Global Products',
   url: url,
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -24,8 +24,12 @@ module.exports = {
       items: [
         {
           to: '/introduction',
-          activeBasePath: '/introduction',
           label: 'Docs',
+          position: 'left',
+        },
+        {
+          to: '/misc/community',
+          label: 'Community',
           position: 'left',
         },
         {

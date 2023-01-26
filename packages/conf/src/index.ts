@@ -269,7 +269,7 @@ const deprecatedConfig = {
 export const configValidation = {
   exampleConfig,
   deprecatedConfig,
-  comment: "Documentation: https://lingui.js.org/ref/conf.html",
+  comment: "Documentation: https://lingui.dev/ref/conf",
 }
 
 function validateLocales(config) {
@@ -279,7 +279,7 @@ function validateLocales(config) {
       `Add ${chalk.yellow(
         "'locales'"
       )} to your configuration. See ${chalk.underline(
-        "https://lingui.js.org/ref/conf.html#locales"
+        "https://lingui.dev/ref/conf#locales"
       )}`
     )
   }

@@ -74,7 +74,7 @@ export default function Lingui({ numUsers, name = "You" }) {
       {/* React Elements inside messages works in the same way as in JSX */}
       <p>
         <Trans id="msg.docs">
-          Read the <a href="https://lingui.js.org">documentation</a>
+          Read the <a href="https://lingui.dev">documentation</a>
           for more info.
         </Trans>
       </p>

@@ -18,7 +18,7 @@ npm install --save-dev @lingui/loader
 
 ## Usage
 
-See the [reference][reference] documenation.
+See the [reference][reference] documentation.
 
 ## License
 
@@ -26,8 +26,8 @@ This package is licensed under [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
-[documentation]: https://lingui.js.org/
-[reference]: https://lingui.js.org/ref/loader.html
+[documentation]: https://lingui.dev
+[reference]: https://lingui.dev/ref/loader
 [package]: https://www.npmjs.com/package/@lingui/loader
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/loader.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/loader.svg
