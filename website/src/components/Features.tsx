@@ -128,7 +128,7 @@ const FEATURES: FeatureDetails[] = [
 
 const FeatureCard = ({ title, description, image, additionalClass }: FeatureDetails): React.ReactElement => (
   <div className={clsx(styles.featureCard, additionalClass)}>
-    <img loading="lazy" src={image} alt="Feature Logo" />
+    <img loading="lazy" src={image} width="64px" height="64px" alt="Feature Logo" />
     <div className={styles.featureCardContent}>
       <h3>{title}</h3>
       <div>{description}</div>
@@ -158,7 +158,7 @@ const Features = (): React.ReactElement => {
                 />
               ))}
               <div className={styles['features--left-img']}>
-                <img src={'./img/features/pattern-left-big.svg'} />
+                <img src={'./img/features/pattern-left-big.svg'} width="900" height="680" alt="Features Background" />
               </div>
               {FEATURES.slice(4, 6).map((feature: FeatureDetails, idx) => (
                 <FeatureCard
@@ -170,7 +170,7 @@ const Features = (): React.ReactElement => {
                 />
               ))}
               <div className={styles['features--right-img']}>
-                <img src={'./img/features/pattern-right-big.svg'} />
+                <img src={'./img/features/pattern-right-big.svg'} width="900" height="680" alt="Features Background" />
               </div>
               {FEATURES.slice(6).map((feature: FeatureDetails, idx) => (
                 <FeatureCard

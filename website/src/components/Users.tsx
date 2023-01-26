@@ -68,6 +68,8 @@ const Users = (): React.ReactElement => {
                   className={clsx(styles.logo, 'margin-bottom--sm')}
                   alt={user.name}
                   src={withBaseUrl(`/img/users/${user.logo}`)}
+                  width="64px"
+                  height="64px"
                 />
                 <p>{user.name}</p>
               </a>
