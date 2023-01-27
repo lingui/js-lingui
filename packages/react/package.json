@@ -33,8 +33,14 @@
   },
   "exports": {
     ".": {
-      "require": "./build/cjs/index.js",
-      "import": "./build/esm/index.js"
+      "require": {
+        "types": "./build/index.d.ts",
+        "default": "./build/cjs/index.js"
+      },
+      "import": {
+        "types": "./build/index.d.ts",
+        "default": "./build/esm/index.js"
+      }
     },
     "./package.json": "./package.json"
   },

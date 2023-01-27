@@ -1,0 +1,12 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test:e2e": "node index.js"
+  },
+  "dependencies": {
+    "@lingui/core": "*",
+    "@lingui/cli": "*"
+  }
+}

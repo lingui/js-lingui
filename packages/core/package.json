@@ -31,12 +31,24 @@
   },
   "exports": {
     ".": {
-      "require": "./build/cjs/index.js",
-      "import": "./build/esm/index.js"
+      "require": {
+        "types": "./build/index.d.ts",
+        "default": "./build/cjs/index.js"
+      },
+      "import": {
+        "types": "./build/index.d.ts",
+        "default": "./build/esm/index.js"
+      }
     },
     "./compile": {
-      "require": "./build/cjs/compile.js",
-      "import": "./build/esm/compile.js"
+      "require": {
+        "types": "./build/compile.d.ts",
+        "default": "./build/cjs/compile.js"
+      },
+      "import": {
+        "types": "./build/compile.d.ts",
+        "default": "./build/esm/compile.js"
+      }
     },
     "./package.json": "./package.json"
   },
