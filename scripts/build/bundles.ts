@@ -11,7 +11,7 @@ export type BundleDef = {
   externals?: readonly string[]
 
   /**
-   * CMD to execute, used with {@see BundleType.CUSTOM}
+   * Command to execute, used with {@link BundleType.CUSTOM}
    */
   cmd?: string;
 

@@ -7,8 +7,7 @@ import {asyncRimRaf} from "./utils"
 import rollup from "./rollup"
 import babel from "./babel"
 import noop from "./noop"
-import {customBuilder} from "./custom"
-
+import customBuilder from "./custom"
 
 const builders = {
   [BundleType.UNIVERSAL]: rollup,

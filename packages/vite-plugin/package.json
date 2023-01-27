@@ -1,6 +1,6 @@
 {
   "name": "@lingui/vite-plugin",
-  "version": "3.11.0",
+  "version": "3.16.1",
   "description": "Vite plugin for Lingui message catalogs",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

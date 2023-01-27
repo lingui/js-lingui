@@ -18,7 +18,7 @@ function asyncExecuteCommand(command: string) {
   )
 }
 
-export async function customBuilder(bundle: BundleDef) {
+export default async function(bundle: BundleDef) {
   const logKey = chalk.white.bold(bundle.packageName)
 
   const spinner = ora(logKey).start()
