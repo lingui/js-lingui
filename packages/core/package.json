@@ -31,10 +31,12 @@
   },
   "exports": {
     ".": {
+      "types": "./build/index.d.ts",
       "require": "./build/cjs/index.js",
       "import": "./build/esm/index.js"
     },
     "./compile": {
+      "types": "./build/compile.d.ts",
       "require": "./build/cjs/compile.js",
       "import": "./build/esm/compile.js"
     },
