@@ -1,17 +1,20 @@
 const argv = require("minimist")(process.argv.slice(2))
 
 import {BundleType, bundles, BundleDef} from "./bundles"
-import {prepareNpmPackages} from "./packaging";
-import {asyncRimRaf} from "./utils";
+import {prepareNpmPackages} from "./packaging"
+import {asyncRimRaf} from "./utils"
 
-import rollup from "./rollup";
-import babel from "./babel";
-import noop from "./noop";
+import rollup from "./rollup"
+import babel from "./babel"
+import noop from "./noop"
+import {customBuilder} from "./custom"
+
 
 const builders = {
   [BundleType.UNIVERSAL]: rollup,
   [BundleType.NODE]: babel,
-  [BundleType.NOOP]: noop
+  [BundleType.NOOP]: noop,
+  [BundleType.CUSTOM]: customBuilder
 }
 
 const requestedEntries = (argv._[0] || "")
