@@ -1,6 +1,7 @@
 export enum BundleType {
   UNIVERSAL = "UNIVERSAL",
   NODE = "NODE",
+  CUSTOM = "CUSTOM",
   NOOP = "NOOP",
   ESM = "ESM",
 }
@@ -8,6 +9,11 @@ export enum BundleType {
 export type BundleDef = {
   type: BundleType,
   externals?: readonly string[]
+
+  /**
+   * Command to execute, used with {@link BundleType.CUSTOM}
+   */
+  cmd?: string;
 
   /**
    * Optional. Default index.js
@@ -51,6 +57,11 @@ export const bundles: readonly BundleDef[] = [
   {
     type: BundleType.NODE,
     packageName: 'snowpack-plugin',
+  },
+  {
+    type: BundleType.CUSTOM,
+    packageName: 'vite-plugin',
+    cmd: 'yarn workspace @lingui/vite-plugin build',
   },
   {
     type: BundleType.NODE,

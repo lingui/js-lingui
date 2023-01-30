@@ -138,6 +138,11 @@ const sidebar = [
       },
       {
         type: 'doc',
+        label: '@lingui/vite-plugin',
+        id: 'ref/vite-plugin',
+      },
+      {
+        type: 'doc',
         label: 'Lingui Configuration',
         id: 'ref/conf',
       },
