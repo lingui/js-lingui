@@ -6,8 +6,7 @@ The following is a set of guidelines for contributing to Lingui. These are mostl
 
 This project and everyone participating in it are governed by the [Code of Conduct](/CODE_OF_CONDUCT.md). We expect that all community members adhere to the guidelines within.
 
-**Working on your first Pull Request?** You can learn how from this _free_ series
-[How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+**Working on your first Pull Request?** You can learn how from this _free_ series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github).
 
 ## Contributing to the docs
 
@@ -71,12 +70,8 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
 
    > **Note**
    > If you are using an IDE to run test make sure to use the right Jest config.
-   > For unit tests use `-c jest.config.js`. Integration tests use
-   > build packages (created using `yarn release:build`) and config `-c jest.config.integration.js`.
-   > See [package.json](./package.json) for more info.
-   > If you run tests manually instead of using `yarn watch` or `yarn test` commands and your tests
-   > fail due to missing locale data (typically you'll get wrong number and currency formating)
-   > make sure you have `NODE_ICU_DATA` variable set: `NODE_ICU_DATA=node_modules/full-icu`.
+   > For unit tests use `-c jest.config.js`. Integration tests use build packages (created using `yarn release:build`) and config `-c jest.config.integration.js`. See [package.json](./package.json) for more info.
+   > If you run tests manually instead of using `yarn watch` or `yarn test` commands and your tests fail due to missing locale data (typically you'll get wrong number and currency formatting) make sure you have `NODE_ICU_DATA` variable set: `NODE_ICU_DATA=node_modules/full-icu`.
 
 ### Using development version in your project
 
@@ -137,6 +132,9 @@ Please make sure that all tests pass and linter doesn't report any error before 
 
 Now you can create PR and let CI service do their work!
 
-If you need any help, just raise an issue or submit an working draft of PR.
+> **Note**
+> This project uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages and PR titles.
+
+If you need any help, just raise an issue or submit a working draft of PR.
 
 [yarninstall]: https://yarnpkg.com/en/docs/install
