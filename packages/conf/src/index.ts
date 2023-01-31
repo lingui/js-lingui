@@ -4,6 +4,7 @@ import fs from "fs"
 import chalk from "chalk"
 import { cosmiconfigSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
+import { TypeScriptLoader } from "cosmiconfig-typescript-loader";
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -127,7 +128,7 @@ export function getConfig({
       `${moduleName}.config.js`,
     ],
     loaders: {
-      ".ts": TypeScriptLoader,
+      ".ts": TypeScriptLoader(),
     },
   })
 
@@ -576,12 +577,3 @@ export function catalogMigration(
 
 const pipe = (...functions: Array<Function>) => (args: any): any =>
   functions.reduce((arg, fn) => fn(arg), args)
-
-/** Typescript loader using just typescript API and eval(), instead of using ts-node/register which is slower */
-function TypeScriptLoader(filePath: string) {
-  const tsc = require("typescript")
-  const fileContent = fs.readFileSync(filePath, "utf-8")
-  const { outputText } = tsc.transpileModule(fileContent, { compilerOptions: { module: tsc.ModuleKind.CommonJS }});
-  const configFileParsed = eval(outputText)
-  return configFileParsed
-}

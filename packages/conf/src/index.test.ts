@@ -1,5 +1,4 @@
 import path from "path"
-import mockFs from "mock-fs"
 import { validate } from "jest-validate"
 import {
   getConfig,
@@ -143,34 +142,24 @@ describe("@lingui/conf", function () {
       })
     })
 
-    it("loads TypeScript config", function () {
-      // hide validation warning about missing locales
-      mockConsole(() => {
-        const config = getConfig({
-          configPath: path.resolve(
-            __dirname,
-            path.join("fixtures", "valid", "custom.config.ts")
-          ),
-        })
-        expect(config.locales).toEqual(["pl"])
+    it("loads TypeScript config", () => {
+      const config = getConfig({
+        configPath: path.resolve(
+          __dirname,
+          path.join("fixtures", "valid", "custom.config.ts")
+        ),
       })
+      expect(config.locales).toEqual(["pl"])
     })
 
     describe("fallbackLocales logic", () => {
-      afterEach(() => {
-        mockFs.restore()
-      })
-
       it("if fallbackLocale is defined, we use the default one on fallbackLocales", () => {
-        mockFs({
-          ".linguirc": JSON.stringify({
-            locales: ["en-US"],
-            fallbackLocale: "en",
-          }),
-        })
         mockConsole((console) => {
           const config = getConfig({
-            configPath: ".linguirc",
+            configPath: path.resolve(
+              __dirname,
+              path.join("fixtures", "fallback-locales", ".linguirc")
+            ),
           })
           expect(config.fallbackLocales.default).toEqual("en")
           expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
