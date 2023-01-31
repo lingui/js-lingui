@@ -280,10 +280,6 @@ export class Catalog {
   ) {
     const catalog = catalogs[locale] || {}
 
-    if (!catalog.hasOwnProperty(key)) {
-      console.error(`Message with key ${key} is missing in locale ${locale}`)
-    }
-
     const getTranslation = (_locale: string) => {
       const configLocales = this.config.locales.join('", "')
       const localeCatalog = catalogs[_locale] || {}
@@ -299,7 +295,6 @@ export class Catalog {
         return null
       }
       if (!localeCatalog.hasOwnProperty(key)) {
-        console.error(`Message with key ${key} is missing in locale ${_locale}`)
         return null
       }
 

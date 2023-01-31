@@ -62,6 +62,11 @@ export declare function getConfig({ cwd, configPath, skipValidation, }?: {
     configPath?: string;
     skipValidation?: boolean;
 }): LinguiConfig;
+
+export declare function makeConfig(userConfig: Partial<LinguiConfig>, opts?: {
+    skipValidation?: boolean
+}): LinguiConfig;
+
 export declare const configValidation: {
     exampleConfig: {
         extractBabelOptions: {

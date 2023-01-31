@@ -18,9 +18,18 @@ const noMessages: (catalogs: Object[]) => boolean = R.pipe(
   R.all(R.equals<any>(true))
 )
 
-function command(config: LinguiConfig, options) {
+export type CliCompileOptions = {
+  verbose?: boolean
+  allowEmpty?: boolean,
+  typescript?: boolean,
+  watch?: boolean
+  namespace?: string,
+}
+
+export function command(config: LinguiConfig, options: CliCompileOptions) {
   const catalogs = getCatalogs(config)
 
+  // fixme: this is definitely doesn't work
   if (noMessages(catalogs)) {
     console.error("Nothing to compile, message catalogs are empty!\n")
     console.error(
@@ -35,12 +44,13 @@ function command(config: LinguiConfig, options) {
   const doMerge = !!config.catalogsMergePath
   let mergedCatalogs = {}
 
-  console.error("Compiling message catalogs…")
+  console.log("Compiling message catalogs…")
 
-  config.locales.forEach((locale) => {
+  for (const locale of config.locales) {
     const [language] = locale.split(/[_-]/)
+    // todo: this validation should be in @lingui/conf
     if (locale !== config.pseudoLocale && !plurals[language]) {
-      console.log(
+      console.error(
         chalk.red(
           `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
         )
@@ -48,10 +58,10 @@ function command(config: LinguiConfig, options) {
       console.error()
     }
 
-    catalogs.forEach((catalog) => {
+    for (const catalog of catalogs) {
       const messages = catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
-        sourceLocale: config.sourceLocale,
+        sourceLocale: config.sourceLocale
       })
 
       if (!options.allowEmpty) {
@@ -68,14 +78,14 @@ function command(config: LinguiConfig, options) {
 
           if (options.verbose) {
             console.error(chalk.red("Missing translations:"))
-            missingMsgIds.forEach((msgId) => console.log(msgId))
+            missingMsgIds.forEach((msgId) => console.error(msgId))
           } else {
             console.error(
               chalk.red(`Missing ${missingMsgIds.length} translation(s)`)
             )
           }
           console.error()
-          process.exit(1)
+          return false
         }
       }
 
@@ -112,7 +122,7 @@ function command(config: LinguiConfig, options) {
         options.verbose &&
           console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
-    })
+    }
 
     if (doMerge) {
       const compileCatalog = getCatalogForMerge(config)
@@ -130,7 +140,7 @@ function command(config: LinguiConfig, options) {
       )
       options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     }
-  })
+  }
   return true
 }
 

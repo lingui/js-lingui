@@ -49,6 +49,8 @@ export type LinguiConfig = {
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
   extractors?: ExtractorType[] | string[]
+  prevFormat?: CatalogFormat;
+  localeDir?: string;
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -148,13 +150,22 @@ export function getConfig({
     ? configExplorer.load(configPath)
     : configExplorer.search(defaultRootDir)
   const userConfig = result ? result.config : {}
+
+  return makeConfig({
+    rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
+    ...userConfig,
+  }, {skipValidation})
+}
+
+export function makeConfig(userConfig: Partial<LinguiConfig>, opts: {
+  skipValidation?: boolean
+} = {}): LinguiConfig {
   const config: LinguiConfig = {
     ...defaultConfig,
-    rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
     ...userConfig,
   }
 
-  if (!skipValidation) {
+  if (!opts.skipValidation) {
     validate(config, configValidation)
 
     return pipe(
