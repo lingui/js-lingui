@@ -175,10 +175,6 @@ export default class MacroJs {
 
     let descriptor = this.processDescriptor(path.node.arguments[0])
 
-    if (process.env.NODE_ENV === "production") {
-      descriptor = this.stripNonEssentialProps(descriptor)
-    }
-
     path.replaceWith(descriptor)
   }
 
@@ -191,10 +187,6 @@ export default class MacroJs {
     linguiInstance?: babelTypes.Identifier
   ) => {
     let descriptor = this.processDescriptor(path.node.arguments[0])
-
-    if (process.env.NODE_ENV === "production") {
-      descriptor = this.stripNonEssentialProps(descriptor)
-    }
 
     const newNode = this.types.callExpression(
       this.types.memberExpression(
@@ -265,6 +257,16 @@ export default class MacroJs {
       this.types.identifier(hasId ? MESSAGE : ID),
       messageNode
     )
+
+    if (process.env.NODE_ENV === "production") {
+      descriptor.properties = descriptor.properties.filter(
+        (property) =>
+          isObjectProperty(property) &&
+          !this.isIdentifier(property.key, MESSAGE) &&
+          isObjectProperty(property) &&
+          !this.isIdentifier(property.key, COMMENT)
+      )
+    }
 
     return descriptor
   }
@@ -410,19 +412,6 @@ export default class MacroJs {
       return exp.value
     } else {
       return String(this._expressionIndex())
-    }
-  }
-
-  stripNonEssentialProps(descriptor: babelTypes.ObjectExpression) {
-    return {
-      ...descriptor,
-      properties: descriptor.properties.filter(
-        (property) =>
-          isObjectProperty(property) &&
-          !this.isIdentifier(property.key, MESSAGE) &&
-          isObjectProperty(property) &&
-          !this.isIdentifier(property.key, COMMENT)
-      ),
     }
   }
 
