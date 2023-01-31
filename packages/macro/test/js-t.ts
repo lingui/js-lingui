@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -212,6 +212,84 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name:
+      "Production - only essential props are kept, with plural, with custom i18n instance",
+    production: true,
+    input: `
+      import { t } from '@lingui/macro';
+      const msg = t({
+        id: 'msgId',
+        comment: 'description for translators',
+        context: 'some context',
+        message: plural(val, { one: '...', other: '...' })
+      })
+    `,
+    expected: `
+      import { i18n } from "@lingui/core";
+      const msg =
+      i18n._(/*i18n*/
+      {
+        id: "msgId",
+        context: "some context",
+        values: {
+          val: val,
+        },
+      });
+    `,
+  },
+  {
+    name:
+      "Production - only essential props are kept, with custom i18n instance",
+    production: true,
+    input: `
+        import { t } from '@lingui/macro';
+        import { i18n } from './lingui';
+        const msg = t(i18n)({
+            message: \`Hello $\{name\}\`,
+            id: 'msgId',
+            comment: 'description for translators',
+            context: 'My Context',
+        })
+    `,
+    expected: `
+        import { i18n } from "./lingui";
+        const msg =
+        i18n._(/*i18n*/
+          {
+            id: 'msgId',
+            context: 'My Context',
+            values: {
+              name: name,
+            },
+         });
+    `,
+  },
+  {
+    name: "Production - only essential props are kept",
+    production: true,
+    input: `
+        import { t } from '@lingui/macro';
+        const msg = t({
+            message: \`Hello $\{name\}\`,
+            id: 'msgId',
+            comment: 'description for translators',
+            context: 'My Context',
+        })
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const msg =
+        i18n._(/*i18n*/
+          {
+            id: 'msgId',
+            context: 'My Context',
+            values: {
+              name: name,
+            },
+         });
+    `,
+  },
+  {
     name: "Newlines after continuation character are removed",
     filename: "js-t-continuation-character.js",
   },
@@ -219,4 +297,5 @@ const cases: TestCase[] = [
     filename: "js-t-var/js-t-var.js",
   },
 ]
-export default cases;
+
+export default cases

@@ -568,20 +568,24 @@ const message = /*i18n*/{
 ```
 
 :::caution Note
-In production build, the whole macro is replaced with an `id`:
+In production build, the macro is stripped of `message` and `comment` properties:
 
 ``` jsx
 import { defineMessage } from "@lingui/macro"
 const message = defineMessage({
-   id: "Navigation / About",
+   id: "msg.navigation.about",
    comment: "Link in navigation pointing to About page",
-   message: "About us"
+   message: "About us",
+   context: "Context about the link"
 })
 
 // process.env.NODE_ENV === "production"
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = "Navigation / About"
+const message = /*i18n*/{
+  context: "Context about the link",
+  id: "msg.navigation.about"
+}
 ```
 
 `message` and `comment` are used in message catalogs only.
