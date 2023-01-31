@@ -21,8 +21,8 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "chalk": "^4.1.0",
-    "cosmiconfig": "^7.0.0",
-    "cosmiconfig-typescript-loader": "^2.0.1",
+    "cosmiconfig": "^8.0.0",
+    "cosmiconfig-typescript-loader": "^4.3.0",
     "jest-validate": "^26.5.2",
     "lodash.get": "^4.4.2"
   },
@@ -31,5 +31,8 @@
     "README.md",
     "index.js",
     "index.d.ts"
-  ]
+  ],
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
 }
