@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.17.0](https://github.com/lingui/js-lingui/compare/v3.16.1...v3.17.0) (2023-02-01)
+
+
+### Bug Fixes
+
+* **conf:** proper typescript cosmiconfig loader ([#1386](https://github.com/lingui/js-lingui/issues/1386)) ([8da122d](https://github.com/lingui/js-lingui/commit/8da122d7ee65846993a1f3b5f2091d194abef521))
+* **macro:** JS macros don't strip non-essential props in production ([#1389](https://github.com/lingui/js-lingui/issues/1389)) ([0ff55d6](https://github.com/lingui/js-lingui/commit/0ff55d606e4eba496548675e42c744d0d872d838))
+
+
+### Features
+
+* implement @lingui/vite-plugin ([#1306](https://github.com/lingui/js-lingui/issues/1306)) ([db5d3c3](https://github.com/lingui/js-lingui/commit/db5d3c309041202014d98b71894b473c587f643d))
+* **macro:** throw useful error message if macro used without a plugin ([#1355](https://github.com/lingui/js-lingui/issues/1355)) ([7d55904](https://github.com/lingui/js-lingui/commit/7d55904bb76fae384558945863423145978b9bd6))
+
+
+
+
+
 ## [3.16.1](https://github.com/lingui/js-lingui/compare/v3.16.0...v3.16.1) (2023-01-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.17.0](https://github.com/lingui/js-lingui/compare/v3.16.1...v3.17.0) (2023-02-01)
+
+
+### Bug Fixes
+
+* **conf:** proper typescript cosmiconfig loader ([#1386](https://github.com/lingui/js-lingui/issues/1386)) ([8da122d](https://github.com/lingui/js-lingui/commit/8da122d7ee65846993a1f3b5f2091d194abef521))
+
+
+
+
+
 ## [3.16.1](https://github.com/lingui/js-lingui/compare/v3.16.0...v3.16.1) (2023-01-24)
 
 **Note:** Version bump only for package @lingui/conf
