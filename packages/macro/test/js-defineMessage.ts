@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -77,6 +77,55 @@ const cases: TestCase[] = [
     `,
   },
   {
+    name: "Production - only essential props are kept, without id",
+    production: true,
+    input: `
+        import { defineMessage } from '@lingui/macro';
+        const msg = defineMessage({
+            message: \`Hello $\{name\}\`,
+            comment: 'description for translators',
+            context: 'My Context',
+        })
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const msg =
+          /*i18n*/
+          {
+            id: 'Hello {name}',
+            context: 'My Context',
+            values: {
+              name: name,
+            },
+         };
+    `,
+  },
+  {
+    name: "Production - only essential props are kept",
+    production: true,
+    input: `
+        import { defineMessage } from '@lingui/macro';
+        const msg = defineMessage({
+            message: \`Hello $\{name\}\`,
+            id: 'msgId',
+            comment: 'description for translators',
+            context: 'My Context',
+        })
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const msg =
+          /*i18n*/
+          {
+            id: 'msgId',
+            context: 'My Context',
+            values: {
+              name: name,
+            },
+         };
+    `,
+  },
+  {
     name: "should preserve values",
     input: `
         import { defineMessage } from '@lingui/macro';
@@ -98,4 +147,4 @@ const cases: TestCase[] = [
   },
 ]
 
-export default cases;
+export default cases
