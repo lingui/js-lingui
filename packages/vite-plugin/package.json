@@ -29,6 +29,11 @@
   "engines": {
     "node": ">=14.0.0"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build/"
+  ],
   "dependencies": {
     "@lingui/cli": "^3.16.1",
     "@lingui/conf": "^3.16.1"
