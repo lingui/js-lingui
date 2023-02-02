@@ -124,7 +124,7 @@ describe("js macro", () => {
         "t`Passing \\`${argSet}\\` is not supported.`"
       )
       const tokens = macro.tokenizeTemplateLiteral(exp)
-      expect(tokens).toEqual([
+      expect(tokens).toMatchObject([
         {
           type: "text",
           value: "Passing `",

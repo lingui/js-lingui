@@ -9,9 +9,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        const a =
-          /*i18n*/
-          i18n._("Expression assignment")
+        const a = /*i18n*/  i18n._("Expression assignment")
     `,
   },
   {
@@ -23,9 +21,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from './lingui';
-        const a =
-          /*i18n*/
-          i18n._("Expression assignment")
+        const a = /*i18n*/ i18n._("Expression assignment")
     `,
   },
   {
@@ -36,8 +32,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable {name}", {
+        /*i18n*/ i18n._("Variable {name}", {
           name: name
         })
     `,
@@ -50,8 +45,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable \`{name}\`", {
+        /*i18n*/ i18n._("Variable \`{name}\`", {
           name: name
         })
     `,
@@ -64,8 +58,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable \\"name\\"")
+        /*i18n*/ i18n._("Variable \\"name\\"")
     `,
   },
   {
@@ -76,8 +69,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("{duplicate} variable {duplicate}", {
+        /*i18n*/ i18n._("{duplicate} variable {duplicate}", {
           duplicate: duplicate
         })
     `,
@@ -98,8 +90,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._(
+        /*i18n*/ i18n._(
           "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}", {
             0: props.name,
             1: random(),
@@ -120,8 +111,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Multiline\\nstring")
+        /*i18n*/ i18n._("Multiline\\nstring")
       `,
   },
   {

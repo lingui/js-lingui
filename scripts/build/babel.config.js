@@ -17,8 +17,6 @@ module.exports = function(commonJs) {
   ]
 
   const plugins = [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-export-default-from",
     "@babel/plugin-transform-runtime"
   ]
 

@@ -321,17 +321,17 @@ describe("jsx macro", () => {
         />`
       )
       const tokens = macro.tokenizeNode(exp)
-      expect(tokens).toEqual({
+      expect(tokens).toMatchObject({
         format: "select",
         name: "gender",
-        options: expect.objectContaining({
+        options: {
           female: "she",
           male: "he",
           offset: undefined,
           other: "they"
-        }),
+        },
         type: "arg",
-        value: expect.objectContaining({
+        value: {
           "end": 31,
           "loc":  {
             "end": {
@@ -346,7 +346,7 @@ describe("jsx macro", () => {
           },
           name: "gender",
           type: "Identifier",
-        })
+        }
       })
     })
   })
