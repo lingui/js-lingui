@@ -17,11 +17,6 @@ describe("I18n", function () {
         Hello: "Hello",
       }
 
-      const localeData = {
-        plurals: jest.fn(),
-        code: "en_US",
-      }
-
       const i18n = setupI18n()
       i18n.load("en", messages)
       i18n.activate("en")
