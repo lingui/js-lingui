@@ -5,3 +5,4 @@
 website/*
 README.md
 **/npm/*
+/packages/*/build/**
