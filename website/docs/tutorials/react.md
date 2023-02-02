@@ -117,7 +117,7 @@ import { Trans } from '@lingui/macro'
 
 ### Macros vs. Components
 
-If you're wondering what Babel macros are and what's the difference between macros and components, this short paragraph is for you.
+If you're wondering what macros are and what's the difference between macros and components, this short paragraph is for you.
 
 In general, macros are executed at compile time and they transform source code in some way. We use this feature in [LinguiJS](https://github.com/lingui/js-lingui) to simplify writing messages.
 

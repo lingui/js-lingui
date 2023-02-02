@@ -91,6 +91,10 @@ export default function ImageWithCaption({ count }) {
 }
 ```
 
+:::tip
+It's a good practice to set explicit IDs for phrases to make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes *where* the phrase is used.
+:::
+
 ## Element attributes and string-only translations
 
 Sometimes you can't use [`Trans`](/docs/ref/macro.md#trans) component, for example when translating element attributes:
