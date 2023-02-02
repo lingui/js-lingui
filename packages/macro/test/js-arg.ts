@@ -14,4 +14,4 @@ const cases: TestCase[] = [
   },
 ]
 
-export default cases;
+export default cases

@@ -1,110 +1,117 @@
-import {Expression, isJSXEmptyExpression, JSXElement, Node} from "@babel/types"
+import {
+  Expression,
+  isJSXEmptyExpression,
+  JSXElement,
+  Node,
+} from "@babel/types"
 
 const metaOptions = ["id", "comment", "props"]
 
 const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
 
 export type ParsedResult = {
-  message: string,
-  values?: Record<string, Expression>,
-  jsxElements?:  Record<string, JSXElement>,
+  message: string
+  values?: Record<string, Expression>
+  jsxElements?: Record<string, JSXElement>
 }
 
 export type TextToken = {
-  type: "text",
-  value: string;
+  type: "text"
+  value: string
 }
 export type ArgToken = {
-  type: "arg",
-  value: Expression;
-  name?: string;
+  type: "arg"
+  value: Expression
+  name?: string
 
   /**
    * plural
    * select
    * selectordinal
    */
-  format?: string,
+  format?: string
   options?: {
-    offset: string,
-    [icuChoice: string]: string | Tokens,
-  },
+    offset: string
+    [icuChoice: string]: string | Tokens
+  }
 }
 export type ElementToken = {
-  type: "element",
-  value: JSXElement;
-  name?: string | number;
-  children?: Token[],
+  type: "element"
+  value: JSXElement
+  name?: string | number
+  children?: Token[]
 }
-export type Tokens = Token | Token[];
+export type Tokens = Token | Token[]
 export type Token = TextToken | ArgToken | ElementToken
 
 export default class ICUMessageFormat {
   public fromTokens(tokens: Tokens): ParsedResult {
     return (Array.isArray(tokens) ? tokens : [tokens])
-        .map((token) => this.processToken(token))
-        .filter(Boolean)
-        .reduce(
-            (props, message) => ({
-              ...message,
-              message: props.message + message.message,
-              values: { ...props.values, ...message.values },
-              jsxElements: { ...props.jsxElements, ...message.jsxElements },
-            }),
-            {
-              message: "",
-              values: {},
-              jsxElements: {},
-            }
-        )
+      .map((token) => this.processToken(token))
+      .filter(Boolean)
+      .reduce(
+        (props, message) => ({
+          ...message,
+          message: props.message + message.message,
+          values: { ...props.values, ...message.values },
+          jsxElements: { ...props.jsxElements, ...message.jsxElements },
+        }),
+        {
+          message: "",
+          values: {},
+          jsxElements: {},
+        }
+      )
   }
 
   public processToken(token: Token): ParsedResult {
-    const jsxElements: ParsedResult['jsxElements'] = {}
+    const jsxElements: ParsedResult["jsxElements"] = {}
 
     if (token.type === "text") {
       return {
         message: token.value as string,
       }
     } else if (token.type === "arg") {
-      if (token.value !== undefined && isJSXEmptyExpression(token.value as Node)) {
-        return null;
+      if (
+        token.value !== undefined &&
+        isJSXEmptyExpression(token.value as Node)
+      ) {
+        return null
       }
-      const values = token.value !== undefined
-        ? { [token.name]: token.value }
-        : {}
+      const values =
+        token.value !== undefined ? { [token.name]: token.value } : {}
 
       switch (token.format) {
         case "plural":
         case "select":
         case "selectordinal":
           const formatOptions = Object.keys(token.options)
-              .filter((key) => token.options[key] != null)
-              .map((key) => {
-                let value = token.options[key]
-                key = key.replace(escapedMetaOptionsRe, "$1")
+            .filter((key) => token.options[key] != null)
+            .map((key) => {
+              let value = token.options[key]
+              key = key.replace(escapedMetaOptionsRe, "$1")
 
-                if (key === "offset") {
-                  // offset has special syntax `offset:number`
-                  return `offset:${value}`
-                }
+              if (key === "offset") {
+                // offset has special syntax `offset:number`
+                return `offset:${value}`
+              }
 
-                if (typeof value !== "string") {
-                  // process tokens from nested formatters
-                  const {
-                    message,
-                    values: childValues,
-                    jsxElements: childJsxElements,
-                  } = this.fromTokens(value)
+              if (typeof value !== "string") {
+                // process tokens from nested formatters
+                const {
+                  message,
+                  values: childValues,
+                  jsxElements: childJsxElements,
+                } = this.fromTokens(value)
 
-                  Object.assign(values, childValues)
-                  Object.assign(jsxElements, childJsxElements)
-                  value = message
-                }
+                Object.assign(values, childValues)
+                Object.assign(jsxElements, childJsxElements)
+                value = message
+              }
 
-                return `${key} {${value}}`
-              })
-              .join(" ")
+              return `${key} {${value}}`
+            })
+            .join(" ")
 
           return {
             message: `{${token.name}, ${token.format}, ${formatOptions}}`,
@@ -119,7 +126,7 @@ export default class ICUMessageFormat {
       }
     } else if (token.type === "element") {
       let message = ""
-      let elementValues: ParsedResult['values'] = {}
+      let elementValues: ParsedResult["values"] = {}
       Object.assign(jsxElements, { [token.name]: token.value })
       token.children.forEach((child) => {
         const {
@@ -134,8 +141,8 @@ export default class ICUMessageFormat {
       })
       return {
         message: token.children.length
-            ? `<${token.name}>${message}</${token.name}>`
-            : `<${token.name}/>`,
+          ? `<${token.name}>${message}</${token.name}>`
+          : `<${token.name}/>`,
         values: elementValues,
         jsxElements,
       }

@@ -17,6 +17,8 @@
     "lint:types": "tsc",
     "lint:eslint": "eslint './packages/**/*.{ts,tsx,js,jsx}'",
     "lint:all": "yarn lint:eslint && yarn lint:types",
+    "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",
+    "prettier:check": "prettier --check '**/*.{ts,tsx,js,jsx}'",
     "release:build": "node -r @swc-node/register ./scripts/build/index.ts",
     "release:test": "node -r @swc-node/register  ./scripts/test.ts",
     "version:next": "lerna version --exact --force-publish --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",

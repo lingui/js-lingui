@@ -75,8 +75,7 @@ const cases: TestCase[] = [
     `,
   },
   {
-    name:
-      "Anything variables except simple identifiers are used as positional arguments",
+    name: "Anything variables except simple identifiers are used as positional arguments",
     input: `
         import { t } from '@lingui/macro';
         t\`
@@ -132,8 +131,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name:
-      "Support template strings in t macro message, with custom i18n instance",
+    name: "Support template strings in t macro message, with custom i18n instance",
     input: `
         import { t } from '@lingui/macro'
         import { i18n } from './lingui'
@@ -202,8 +200,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name:
-      "Production - only essential props are kept, with plural, with custom i18n instance",
+    name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `
       import { t } from '@lingui/macro';
@@ -228,8 +225,7 @@ const cases: TestCase[] = [
     `,
   },
   {
-    name:
-      "Production - only essential props are kept, with custom i18n instance",
+    name: "Production - only essential props are kept, with custom i18n instance",
     production: true,
     input: `
         import { t } from '@lingui/macro';

@@ -11,4 +11,7 @@ export function zip<A, B>(a: A[], b: B[]): [A, B][] {
   ])
 }
 
-export const makeCounter = (index = 0) => () => index++
+export const makeCounter =
+  (index = 0) =>
+  () =>
+    index++

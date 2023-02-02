@@ -1,14 +1,17 @@
-import {compileMessage as compile} from "./compileMessage"
+import { compileMessage as compile } from "./compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "../context"
-import {Locale, Locales} from "../i18n"
-import {PluralCategory} from "make-plural"
+import { Locale, Locales } from "../i18n"
+import { PluralCategory } from "make-plural"
 
 describe("compile", () => {
   const englishPlurals = {
     plurals(value: number, ordinal: boolean) {
       if (ordinal) {
-        return { "1": "one", "2": "two", "3": "few" }[value] as PluralCategory || "other"
+        return (
+          ({ "1": "one", "2": "two", "3": "few" }[value] as PluralCategory) ||
+          "other"
+        )
       } else {
         return value === 1 ? "one" : "other"
       }
@@ -16,40 +19,36 @@ describe("compile", () => {
   }
 
   const prepare = (translation: string, locale?: Locale, locales?: Locales) => {
-    const tokens = compile(translation);
+    const tokens = compile(translation)
     return interpolate(tokens, locale || "en", locales, englishPlurals)
   }
 
   it("should handle an error if message has syntax errors", () => {
     mockConsole((console) => {
       expect(compile("Invalid {message")).toEqual("Invalid {message")
-      expect(console.error).toBeCalledWith(expect.stringMatching('Unexpected message end at line'))
+      expect(console.error).toBeCalledWith(
+        expect.stringMatching("Unexpected message end at line")
+      )
     })
   })
 
   it("should process string chunks with provided map fn", () => {
-    const tokens = compile("Message {value, plural, one {{value} Book} other {# Books}}", (text) => `<${text}>`)
+    const tokens = compile(
+      "Message {value, plural, one {{value} Book} other {# Books}}",
+      (text) => `<${text}>`
+    )
     expect(tokens).toEqual([
       "<Message >",
       [
         "value",
         "plural",
         {
-          "one": [
-            [
-              "value"
-            ],
-            "< Book>"
-          ],
-          "other": [
-            "#",
-            "< Books>"
-          ]
-        }
-      ]
+          one: [["value"], "< Book>"],
+          other: ["#", "< Books>"],
+        },
+      ],
     ])
   })
-
 
   it("should compile static message", () => {
     const cache = compile("Static message")
@@ -71,9 +70,7 @@ describe("compile", () => {
   it("should not interpolate escaped placeholder", () => {
     const msg = prepare("Hey '{name}'!")
 
-    expect(msg({})).toEqual(
-      "Hey {name}!"
-    )
+    expect(msg({})).toEqual("Hey {name}!")
   })
 
   it("should compile plurals", () => {
@@ -109,7 +106,7 @@ describe("compile", () => {
     const testVector = [
       ["en", null, "0.1", "10%", "20%", "3/4/2017", "€0.10", "€1.00"],
       ["fr", null, "0,1", "10 %", "20 %", "04/03/2017", "0,10 €", "1,00 €"],
-      ["fr", "fr-CH", "0,1", "10%", "20%", "04.03.2017", "0.10 €", "1.00 €"]
+      ["fr", "fr-CH", "0,1", "10%", "20%", "04.03.2017", "0.10 €", "1.00 €"],
     ]
     testVector.forEach((tc) => {
       const [
@@ -123,33 +120,29 @@ describe("compile", () => {
         expectedCurrency2,
       ] = tc
 
-      it(
-        `should compile custom format for locale=${locale} and locales=${locales}`,
-        () => {
-          const number = prepare("{value, number}", locale, locales)
-          expect(number({ value: 0.1 })).toEqual(expectedNumber)
+      it(`should compile custom format for locale=${locale} and locales=${locales}`, () => {
+        const number = prepare("{value, number}", locale, locales)
+        expect(number({ value: 0.1 })).toEqual(expectedNumber)
 
-          const percent = prepare("{value, number, percent}", locale, locales)
-          expect(percent({ value: 0.1 })).toEqual(expectedPercent1)
-          expect(percent({ value: 0.2 })).toEqual(expectedPercent2)
+        const percent = prepare("{value, number, percent}", locale, locales)
+        expect(percent({ value: 0.1 })).toEqual(expectedPercent1)
+        expect(percent({ value: 0.2 })).toEqual(expectedPercent2)
 
-          const now = new Date("3/4/2017")
-          const date = prepare("{value, date}", locale, locales)
-          expect(date({ value: now })).toEqual(expectedDate)
+        const now = new Date("3/4/2017")
+        const date = prepare("{value, date}", locale, locales)
+        expect(date({ value: now })).toEqual(expectedDate)
 
-          const formats = {
-            currency: {
-              style: "currency",
-              currency: "EUR",
-              minimumFractionDigits: 2
-            } as Intl.NumberFormatOptions
-          }
-          const currency = prepare("{value, number, currency}", locale, locales)
-          expect(currency({value: 0.1}, formats)).toEqual(expectedCurrency1)
-          expect(currency({value: 1}, formats)).toEqual(expectedCurrency2)
+        const formats = {
+          currency: {
+            style: "currency",
+            currency: "EUR",
+            minimumFractionDigits: 2,
+          } as Intl.NumberFormatOptions,
         }
-      )
-
+        const currency = prepare("{value, number, currency}", locale, locales)
+        expect(currency({ value: 0.1 }, formats)).toEqual(expectedCurrency1)
+        expect(currency({ value: 1 }, formats)).toEqual(expectedCurrency2)
+      })
     })
   })
 })

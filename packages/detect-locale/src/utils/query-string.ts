@@ -1,4 +1,3 @@
-
 /**
  * Simple query string parser.
  *
@@ -6,13 +5,13 @@
  * @returns {Object}
  */
 export function parse(query) {
-  const parser = /([^=?#&]+)=?([^&]*)/g;
-  const result = {};
-  let part;
+  const parser = /([^=?#&]+)=?([^&]*)/g
+  const result = {}
+  let part
 
-  while (part = parser.exec(query)) {
-    const key = decode(part[1]);
-    const value = decode(part[2]);
+  while ((part = parser.exec(query))) {
+    const key = decode(part[1])
+    const value = decode(part[2])
 
     //
     // Prevent overriding of existing properties. This ensures that build-in
@@ -22,17 +21,17 @@ export function parse(query) {
     // In the case if failed decoding, we want to omit the key/value pairs
     // from the result.
     //
-    if (key === null || value === null || key in result) continue;
-    result[key] = value;
+    if (key === null || value === null || key in result) continue
+    result[key] = value
   }
 
-  return result;
+  return result
 }
 
 function decode(input) {
   try {
-    return decodeURIComponent(input.replace(/\+/g, ' '));
+    return decodeURIComponent(input.replace(/\+/g, " "))
   } catch (e) {
-    return null;
+    return null
   }
 }

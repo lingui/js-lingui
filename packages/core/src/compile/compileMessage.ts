@@ -1,16 +1,19 @@
-import {Content, parse, Token} from "@messageformat/parser"
-import {CompiledMessage, CompiledMessageToken} from "../i18n"
+import { Content, parse, Token } from "@messageformat/parser"
+import { CompiledMessage, CompiledMessageToken } from "../i18n"
 
-type MapTextFn =  (value: string) => string;
+type MapTextFn = (value: string) => string
 
 // [Tokens] -> (CTX -> String)
-function processTokens(tokens: Array<Token>, mapText?: MapTextFn): CompiledMessage {
+function processTokens(
+  tokens: Array<Token>,
+  mapText?: MapTextFn
+): CompiledMessage {
   if (!tokens.filter((token) => token.type !== "content").length) {
-    return tokens.map(token => mapText((token as Content).value)).join("")
+    return tokens.map((token) => mapText((token as Content).value)).join("")
   }
 
   return tokens.map<CompiledMessageToken>((token) => {
-    if (token.type === 'content') {
+    if (token.type === "content") {
       return mapText(token.value)
 
       // # in plural case
@@ -37,7 +40,10 @@ function processTokens(tokens: Array<Token>, mapText?: MapTextFn): CompiledMessa
     // complex argument with cases
     const formatProps = {}
     token.cases.forEach((item) => {
-      formatProps[item.key.replace(/^=(.)+/, "$1")] = processTokens(item.tokens, mapText)
+      formatProps[item.key.replace(/^=(.)+/, "$1")] = processTokens(
+        item.tokens,
+        mapText
+      )
     })
 
     return [
@@ -55,7 +61,7 @@ function processTokens(tokens: Array<Token>, mapText?: MapTextFn): CompiledMessa
 /** @internal */
 export function compileMessage(
   message: string,
-  mapText: MapTextFn = (v) => v,
+  mapText: MapTextFn = (v) => v
 ): CompiledMessage {
   try {
     return processTokens(parse(message), mapText)

@@ -21,9 +21,9 @@ describe("compile", () => {
 
     it("should not pseudolocalize arguments nor formats", () => {
       expect(getPSource("{name, number}")).toEqual([["name", "number"]])
-      expect(getPSource("{name, number, percent}")).toEqual(
-        [["name", "number", "percent"]]
-      )
+      expect(getPSource("{name, number, percent}")).toEqual([
+        ["name", "number", "percent"],
+      ])
     })
 
     it("should not pseudolocalize HTML tags", () => {
@@ -32,9 +32,7 @@ describe("compile", () => {
       )
       expect(
         getPSource("Martin Cerny  123a<span id='id'>Černý</span>")
-      ).toEqual(
-        "Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"
-      )
+      ).toEqual("Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>")
       expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual(
         "Màŕţĩń <a title='>>a'>à</a>"
       )
@@ -47,7 +45,9 @@ describe("compile", () => {
       it("with value", () => {
         expect(
           getPSource("{value, plural, one {# book} other {# books}}")
-        ).toEqual([["value","plural",{one:["#"," ƀōōķ"],other:["#"," ƀōōķś"]}]])
+        ).toEqual([
+          ["value", "plural", { one: ["#", " ƀōōķ"], other: ["#", " ƀōōķś"] }],
+        ])
       })
 
       it("with variable placeholder", () => {
@@ -55,9 +55,16 @@ describe("compile", () => {
           getPSource(
             "{count, plural, one {{countString} book} other {{countString} books}}"
           )
-        ).toEqual(
-          [["count","plural",{one:[["countString"]," ƀōōķ"],other:[["countString"]," ƀōōķś"]}]]
-        )
+        ).toEqual([
+          [
+            "count",
+            "plural",
+            {
+              one: [["countString"], " ƀōōķ"],
+              other: [["countString"], " ƀōōķś"],
+            },
+          ],
+        ])
       })
 
       it("with offset", () => {
@@ -65,9 +72,17 @@ describe("compile", () => {
           getPSource(
             "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}"
           )
-        ).toEqual(
-          [["count","plural",{offset:1,zero:"Ţĥēŕē àŕē ńō mēśśàĝēś",other:["Ţĥēŕē àŕē ","#"," mēśśàĝēś ĩń ŷōũŕ ĩńƀōx"]}]]
-        )
+        ).toEqual([
+          [
+            "count",
+            "plural",
+            {
+              offset: 1,
+              zero: "Ţĥēŕē àŕē ńō mēśśàĝēś",
+              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
+            },
+          ],
+        ])
       })
 
       it("with HTML tags", () => {
@@ -75,9 +90,16 @@ describe("compile", () => {
           getPSource(
             "{count, plural, zero {There's # <span>message</span>} other {There are # messages}}"
           )
-        ).toEqual(
-          [["count","plural",{zero:["Ţĥēŕē\'ś ","#"," <span>mēśśàĝē</span>"],other:["Ţĥēŕē àŕē ","#"," mēśśàĝēś"]}]]
-        )
+        ).toEqual([
+          [
+            "count",
+            "plural",
+            {
+              zero: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+            },
+          ],
+        ])
       })
 
       it("with exact number", () => {
@@ -85,9 +107,16 @@ describe("compile", () => {
           getPSource(
             "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}}"
           )
-        ).toEqual(
-          [["count","plural",{0:["Ţĥēŕē\'ś ","#"," <span>mēśśàĝē</span>"],other:["Ţĥēŕē àŕē ","#"," mēśśàĝēś"]}]]
-        )
+        ).toEqual([
+          [
+            "count",
+            "plural",
+            {
+              0: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+            },
+          ],
+        ])
       })
     })
 
@@ -96,9 +125,21 @@ describe("compile", () => {
         getPSource(
           "{count, selectordinal, offset:1 one {#st} two {#nd} few {#rd} =4 {4th} many {testMany} other {#th}}"
         )
-      ).toEqual(
-          [["count","selectordinal",{offset:1,one:["#","śţ"],two:["#","ńď"],few:["#","ŕď"],4:"4ţĥ",many:"ţēśţMàńŷ",other:["#","ţĥ"]}]]
-      )
+      ).toEqual([
+        [
+          "count",
+          "selectordinal",
+          {
+            offset: 1,
+            one: ["#", "śţ"],
+            two: ["#", "ńď"],
+            few: ["#", "ŕď"],
+            4: "4ţĥ",
+            many: "ţēśţMàńŷ",
+            other: ["#", "ţĥ"],
+          },
+        ],
+      ])
     })
 
     it("Select", () => {
@@ -106,14 +147,18 @@ describe("compile", () => {
         getPSource(
           "{gender, select, male {He} female {She} other {<span>Other</span>}}"
         )
-      ).toEqual(
-        [["gender","select",{male:"Ĥē",female:"Śĥē",other:"<span>Ōţĥēŕ</span>"}]]
-      )
+      ).toEqual([
+        [
+          "gender",
+          "select",
+          { male: "Ĥē", female: "Śĥē", other: "<span>Ōţĥēŕ</span>" },
+        ],
+      ])
     })
 
     it("should not pseudolocalize variables", () => {
-      expect(getPSource("replace {count}")).toEqual(["ŕēƥĺàćē ",["count"]])
-      expect(getPSource("replace { count }")).toEqual(["ŕēƥĺàćē ",["count"]])
+      expect(getPSource("replace {count}")).toEqual(["ŕēƥĺàćē ", ["count"]])
+      expect(getPSource("replace { count }")).toEqual(["ŕēƥĺàćē ", ["count"]])
     })
 
     it("Multiple Plurals", () => {
@@ -121,29 +166,31 @@ describe("compile", () => {
         getPSource(
           "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}"
         )
-      ).toEqual(
-        [["bcount","plural",{one:"ƀōŷ",other:["#"," ƀōŷś"]}]," ",["gcount","plural",{one:"ĝĩŕĺ",other:["#"," ĝĩŕĺś"]}]]
-      )
+      ).toEqual([
+        ["bcount", "plural", { one: "ƀōŷ", other: ["#", " ƀōŷś"] }],
+        " ",
+        ["gcount", "plural", { one: "ĝĩŕĺ", other: ["#", " ĝĩŕĺś"] }],
+      ])
     })
   })
 })
 
 describe("createCompiledCatalog", () => {
   it("nested message", () => {
-      expect(
-        createCompiledCatalog(
-          "cs",
-          {
-            nested: {
-              one: "Uno",
-              two: "Dos",
-              three: "Tres",
-              hello: "Hola {name}",
-            },
+    expect(
+      createCompiledCatalog(
+        "cs",
+        {
+          nested: {
+            one: "Uno",
+            two: "Dos",
+            three: "Tres",
+            hello: "Hola {name}",
           },
-          {}
-        )
-      ).toMatchSnapshot()
+        },
+        {}
+      )
+    ).toMatchSnapshot()
   })
 
   describe("options.namespace", () => {

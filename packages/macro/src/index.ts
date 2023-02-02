@@ -1,14 +1,20 @@
-import {createMacro, MacroParams} from "babel-plugin-macros"
+import { createMacro, MacroParams } from "babel-plugin-macros"
 import { getConfig } from "@lingui/conf"
 
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
-import {NodePath} from "@babel/traverse"
-import {ImportDeclaration, isImportSpecifier, isIdentifier} from "@babel/types"
+import { NodePath } from "@babel/traverse"
+import {
+  ImportDeclaration,
+  isImportSpecifier,
+  isIdentifier,
+} from "@babel/types"
 
 const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
 
-const getSymbolSource = (name: 'i18n' | 'Trans'): [source: string, identifier?: string] => {
+const getSymbolSource = (
+  name: "i18n" | "Trans"
+): [source: string, identifier?: string] => {
   if (Array.isArray(config.runtimeConfigModule)) {
     if (name === "i18n") {
       return config.runtimeConfigModule
@@ -28,20 +34,15 @@ const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
 const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
 const jsMacroTags = new Set([
-  'defineMessage',
-  'arg',
-  't',
-  'plural',
-  'select',
-  'selectOrdinal'
+  "defineMessage",
+  "arg",
+  "t",
+  "plural",
+  "select",
+  "selectOrdinal",
 ])
 
-const jsxMacroTags = new Set([
-  'Trans',
-  'Plural',
-  'Select',
-  'SelectOrdinal',
-])
+const jsxMacroTags = new Set(["Trans", "Plural", "Select", "SelectOrdinal"])
 
 function macro({ references, state, babel }: MacroParams) {
   const jsxNodes: NodePath[] = []
@@ -55,7 +56,7 @@ function macro({ references, state, babel }: MacroParams) {
       nodes.forEach((node) => {
         jsNodes.push(node.parentPath)
       })
-    } else if(jsxMacroTags.has(tagName)) {
+    } else if (jsxMacroTags.has(tagName)) {
       nodes.forEach((node) => {
         // identifier.openingElement.jsxElement
         jsxNodes.push(node.parentPath.parentPath)
@@ -92,7 +93,12 @@ function macro({ references, state, babel }: MacroParams) {
   }
 }
 
-function addImport(babel: MacroParams["babel"], state: MacroParams["state"], module: string, importName: string) {
+function addImport(
+  babel: MacroParams["babel"],
+  state: MacroParams["state"],
+  module: string,
+  importName: string
+) {
   const { types: t } = babel
 
   const linguiImport = state.file.path.node.body.find(
@@ -109,7 +115,8 @@ function addImport(babel: MacroParams["babel"], state: MacroParams["state"], mod
     if (
       linguiImport.specifiers.findIndex(
         (specifier) =>
-          isImportSpecifier(specifier) && isIdentifier(specifier.imported, {name: importName})
+          isImportSpecifier(specifier) &&
+          isIdentifier(specifier.imported, { name: importName })
       ) === -1
     ) {
       linguiImport.specifiers.push(t.importSpecifier(tIdentifier, tIdentifier))
@@ -145,14 +152,16 @@ const alreadyVisited = (path: NodePath) => {
   }
 }
 
-[...jsMacroTags, ...jsxMacroTags].forEach((name) => {
+;[...jsMacroTags, ...jsxMacroTags].forEach((name) => {
   Object.defineProperty(module.exports, name, {
     get() {
-      throw new Error(`The macro you imported from "@lingui/macro" is being executed outside the context of compilation with babel-plugin-macros. `
-        + `This indicates that you don't have the babel plugin "babel-plugin-macros" configured correctly. `
-        + `Please see the documentation for how to configure babel-plugin-macros properly: `
-        + 'https://github.com/kentcdodds/babel-plugin-macros/blob/main/other/docs/user.md');
-    }
+      throw new Error(
+        `The macro you imported from "@lingui/macro" is being executed outside the context of compilation with babel-plugin-macros. ` +
+          `This indicates that you don't have the babel plugin "babel-plugin-macros" configured correctly. ` +
+          `Please see the documentation for how to configure babel-plugin-macros properly: ` +
+          "https://github.com/kentcdodds/babel-plugin-macros/blob/main/other/docs/user.md"
+      )
+    },
   })
 })
 

@@ -285,10 +285,7 @@ describe("pofile format", () => {
       },
       withMultipleOrigins: {
         translation: "Message with multiple origin",
-        origin: [
-          ["src/App.js"],
-          ["src/Component.js"],
-        ],
+        origin: [["src/App.js"], ["src/Component.js"]],
       },
     }
     format.write(filename, catalog, {

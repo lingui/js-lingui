@@ -67,7 +67,7 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   if (render === null || component === null) {
     // Although `string` is a valid react element, types only allow `Element`
     // Upstream issue: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544
-    return (translation as unknown) as React.ReactElement<any, any>
+    return translation as unknown as React.ReactElement<any, any>
   }
 
   const FallbackComponent = (defaultComponent ||

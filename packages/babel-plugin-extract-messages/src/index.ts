@@ -35,53 +35,68 @@ function addMessage(
             "Different defaults for the same message ID."
           )
         }
-  
+
         if (newDefault) {
           message.message = newDefault
         }
 
         ;[].push.apply(message.origin, origin)
-        
+
         if (comment) {
           ;[].push.apply(message.extractedComments, [comment])
         }
       } else {
-        existingContext.set(id, { ...props, message: newDefault, origin, extractedComments })
+        existingContext.set(id, {
+          ...props,
+          message: newDefault,
+          origin,
+          extractedComments,
+        })
         messages.set(context, existingContext)
       }
     } else {
-      const newContext = new Map();
-      newContext.set(id, { ...props, message: newDefault, origin, extractedComments })
+      const newContext = new Map()
+      newContext.set(id, {
+        ...props,
+        message: newDefault,
+        origin,
+        extractedComments,
+      })
       messages.set(context, newContext)
     }
   } else {
     if (messages.has(id)) {
       const message = messages.get(id)
-  
+
       // only set/check default language when it's defined.
       if (message.message && newDefault && message.message !== newDefault) {
         throw path.buildCodeFrameError(
           "Different defaults for the same message ID."
         )
       }
-  
+
       if (newDefault) {
         message.message = newDefault
       }
-  
+
       ;[].push.apply(message.origin, origin)
       if (comment) {
         ;[].push.apply(message.extractedComments, [comment])
       }
     } else {
-      messages.set(id, { ...props, message: newDefault, origin, extractedComments })
+      messages.set(id, {
+        ...props,
+        message: newDefault,
+        origin,
+        extractedComments,
+      })
     }
   }
 }
 
 /**
  * An ES6 Map type is not possible to encode with JSON.stringify,
- * so we can instead use a replacer function as an argument to 
+ * so we can instead use a replacer function as an argument to
  * tell the JSON parser how to serialize / deserialize the Maps
  * it encounters.
  */
@@ -89,11 +104,11 @@ function mapReplacer(key, value) {
   if (value instanceof Map) {
     const object = {}
     value.forEach((v, k) => {
-      return object[k] = v;
-    });
-    return object;
+      return (object[k] = v)
+    })
+    return object
   }
-  return value;
+  return value
 }
 
 function extractStringContatentation(t, node, error): string {
@@ -112,7 +127,7 @@ function extractStringContatentation(t, node, error): string {
 function extractCommentString(t, path, valuePath, valueObj): string {
   if (t.isStringLiteral(valueObj)) {
     // Comment is a single line string
-    return valueObj.value;
+    return valueObj.value
   }
 
   // Comment is a multi-line string.
@@ -121,11 +136,7 @@ function extractCommentString(t, path, valuePath, valueObj): string {
     .buildCodeFrameError("Only strings are supported as comments.")
 
   if (t.isBinaryExpression(valueObj)) {
-    return extractStringContatentation(
-      t,
-      valueObj,
-      errorIfNotAString
-    )
+    return extractStringContatentation(t, valueObj, errorIfNotAString)
   } else {
     throw errorIfNotAString
   }
@@ -202,7 +213,12 @@ export default function ({ types: t }) {
 
         const props = attrs.reduce((acc, item) => {
           const key = item.name.name
-          if (key === "id" || key === "message" || key === "comment" || key === "context") {
+          if (
+            key === "id" ||
+            key === "message" ||
+            key === "comment" ||
+            key === "context"
+          ) {
             if (item.value.value) {
               acc[key] = item.value.value
             } else if (
@@ -242,29 +258,38 @@ export default function ({ types: t }) {
             )
           }
         )
-        
-        const isNonMacroI18n = isI18nMethod(path.node.callee) && !hasComment && path.node.arguments[0] && !path.node.arguments[0].leadingComments;
-        if (!hasComment && !isNonMacroI18n) return;
+
+        const isNonMacroI18n =
+          isI18nMethod(path.node.callee) &&
+          !hasComment &&
+          path.node.arguments[0] &&
+          !path.node.arguments[0].leadingComments
+        if (!hasComment && !isNonMacroI18n) return
         const props = {
-          id: path.node.arguments[0].value
-        };
+          id: path.node.arguments[0].value,
+        }
 
         if (!props.id) {
-          console.warn("Missing message ID, skipping.");
+          console.warn("Missing message ID, skipping.")
           console.warn(generate(path.node).code)
-          return;
+          return
         }
 
         const copyOptions = ["message", "comment", "context"]
 
         if (t.isObjectExpression(path.node.arguments[2])) {
-          path.node.arguments[2].properties.forEach(({key, value}, i) => {
+          path.node.arguments[2].properties.forEach(({ key, value }, i) => {
             if (!copyOptions.includes(key.name)) return
 
-            let valueToExtract = value.value;
+            let valueToExtract = value.value
 
             if (key.name === "comment") {
-              valueToExtract = extractCommentString(t, path, `arguments.2.properties.${i}.value`, value);
+              valueToExtract = extractCommentString(
+                t,
+                path,
+                `arguments.2.properties.${i}.value`,
+                value
+              )
             }
 
             props[key.name] = valueToExtract
@@ -325,17 +350,22 @@ export default function ({ types: t }) {
           .filter(({ key }) => copyProps.indexOf(key.name) !== -1)
           .forEach(({ key, value }, i) => {
             // By default, the value is just the string value of the object property.
-            let valueToExtract = value.value;
+            let valueToExtract = value.value
 
             if (key.name === "comment") {
-              valueToExtract = extractCommentString(t, path, `properties.${i}.value`, value);
+              valueToExtract = extractCommentString(
+                t,
+                path,
+                `properties.${i}.value`,
+                value
+              )
             } else if (key.name === "id") {
-                const isIdLiteral = !value.value && t.isTemplateLiteral(value)
-                if (isIdLiteral) {
-                    valueToExtract = value?.quasis[0]?.value?.cooked;
-                }
+              const isIdLiteral = !value.value && t.isTemplateLiteral(value)
+              if (isIdLiteral) {
+                valueToExtract = value?.quasis[0]?.value?.cooked
+              }
             }
-            props[key.name] = valueToExtract;
+            props[key.name] = valueToExtract
           })
 
         collectMessage(path, file, props)
@@ -349,7 +379,11 @@ export default function ({ types: t }) {
       // Config was already validated in CLI.
       file.set(
         CONFIG,
-        getConfig({ cwd: file.opts.filename, skipValidation: true, configPath: this.opts.configPath })
+        getConfig({
+          cwd: file.opts.filename,
+          skipValidation: true,
+          configPath: this.opts.configPath,
+        })
       )
 
       // Ignore else path for now. Collision is possible if other plugin is

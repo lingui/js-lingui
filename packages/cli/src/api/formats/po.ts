@@ -30,7 +30,7 @@ const serialize = (items: CatalogType, options) =>
       }
       if (options.origins !== false) {
         if (message.origin && options.lineNumbers === false) {
-          item.references = message.origin.map(([path]) => path);
+          item.references = message.origin.map(([path]) => path)
         } else {
           item.references = message.origin ? message.origin.map(joinOrigin) : []
         }
@@ -98,7 +98,7 @@ const po: CatalogFormatter & PoFormatter = {
       po = new PO()
       po.headers = getCreateHeaders(options.locale)
       if (options.locale === undefined) {
-        delete po.headers.Language;
+        delete po.headers.Language
       }
       po.headerOrder = R.keys(po.headers)
     }

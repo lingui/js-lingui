@@ -10,7 +10,7 @@ export async function asyncCopyTo(from: string, to: string) {
   await asyncMkDirP(path.dirname(to))
 
   return new Promise<void>((resolve, reject) => {
-    ncp(from, to, error => {
+    ncp(from, to, (error) => {
       if (error) {
         // Wrap to have a useful stack trace.
         reject(new Error(error))
@@ -23,13 +23,13 @@ export async function asyncCopyTo(from: string, to: string) {
 
 export function asyncMkDirP(filepath: string) {
   return fsPromises.mkdir(filepath, {
-    recursive: true
+    recursive: true,
   })
 }
 
 export function asyncRimRaf(filepath: string) {
   return new Promise<void>((resolve, reject) =>
-    rimraf(filepath, error => {
+    rimraf(filepath, (error) => {
       if (error) {
         reject(error)
         return
@@ -39,6 +39,9 @@ export function asyncRimRaf(filepath: string) {
   )
 }
 
-export function getPackageDir(packageName: string, ...segments: string[]): string {
-  return path.resolve(__dirname, "../../packages", packageName, ...segments);
+export function getPackageDir(
+  packageName: string,
+  ...segments: string[]
+): string {
+  return path.resolve(__dirname, "../../packages", packageName, ...segments)
 }

@@ -1,7 +1,7 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
 import MacroJs from "./macroJs"
-import {CallExpression} from "@babel/types"
+import { CallExpression } from "@babel/types"
 
 function createMacro() {
   return new MacroJs({ types }, { i18nImportName: "i18n" })

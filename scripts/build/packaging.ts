@@ -1,8 +1,6 @@
-import {existsSync, readdirSync} from "fs"
+import { existsSync, readdirSync } from "fs"
 
-import {
-  asyncCopyTo
-} from "./utils"
+import { asyncCopyTo } from "./utils"
 
 async function prepareNpmPackage(name: string) {
   if (!existsSync(`packages/${name}/build`)) {
@@ -12,13 +10,13 @@ async function prepareNpmPackage(name: string) {
 
   await Promise.all([
     asyncCopyTo("LICENSE", `packages/${name}/build/LICENSE`),
-    asyncCopyTo(`packages/${name}/npm`, `packages/${name}/build`)
+    asyncCopyTo(`packages/${name}/npm`, `packages/${name}/build`),
   ])
 }
 
 export async function prepareNpmPackages() {
   const builtPackageFolders = readdirSync("packages/").filter(
-    dir => dir.charAt(0) !== "."
+    (dir) => dir.charAt(0) !== "."
   )
 
   await Promise.all(builtPackageFolders.map(prepareNpmPackage))

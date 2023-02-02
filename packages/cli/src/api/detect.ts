@@ -1,7 +1,7 @@
 import fs from "fs"
 import nodePath from "path"
 import pkgUp from "pkg-up"
-import cliPackageJson from "../../package.json";
+import cliPackageJson from "../../package.json"
 
 export const projectType = {
   CRA: "CRA",
@@ -14,21 +14,19 @@ type PackageJson = {
   devDependencies: Record<string, string>
 }
 
-function getPackageJson(cwd?: string): {path: string, content: PackageJson} {
+function getPackageJson(cwd?: string): { path: string; content: PackageJson } {
   const packageJsonPath = pkgUp.sync({
-    cwd
+    cwd,
   })
 
   try {
     const json = fs.readFileSync(packageJsonPath, "utf8")
-    return {path: packageJsonPath, content: JSON.parse(json)}
+    return { path: packageJsonPath, content: JSON.parse(json) }
   } catch (e) {
     console.error(e)
     return null
   }
 }
-
-
 
 function hasDependency(pkg: PackageJson, name: string) {
   return (

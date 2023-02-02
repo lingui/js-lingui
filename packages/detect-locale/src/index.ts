@@ -12,7 +12,8 @@ export type DetectParamsFunctions = string
 
 function detect(...args): LocaleString | null {
   for (let i = 0; i < args.length; i++) {
-    const res: LocaleString = typeof args[i] === "function" ? args[i]() : args[i]
+    const res: LocaleString =
+      typeof args[i] === "function" ? args[i]() : args[i]
     if (res) return res
   }
 
@@ -22,7 +23,8 @@ function detect(...args): LocaleString | null {
 function multipleDetect(...args): LocaleString[] {
   const locales = []
   for (let i = 0; i < args.length; i++) {
-    const res: LocaleString = typeof args[i] === "function" ? args[i]() : args[i]
+    const res: LocaleString =
+      typeof args[i] === "function" ? args[i]() : args[i]
     if (res) locales.push(res)
   }
 

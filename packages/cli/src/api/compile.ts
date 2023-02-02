@@ -1,6 +1,6 @@
 import * as t from "@babel/types"
-import generate, {GeneratorOptions} from "@babel/generator"
-import {compileMessage} from "@lingui/core/compile"
+import generate, { GeneratorOptions } from "@babel/generator"
+import { compileMessage } from "@lingui/core/compile"
 import pseudoLocalize from "./pseudoLocalize"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
@@ -21,7 +21,12 @@ export function createCompiledCatalog(
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
 ): string {
-  const {strict = false, namespace = "cjs", pseudoLocale, compilerBabelOptions = {}} = options
+  const {
+    strict = false,
+    namespace = "cjs",
+    pseudoLocale,
+    compilerBabelOptions = {},
+  } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
   const compiledMessages = Object.keys(messages).reduce((obj, key: string) => {
@@ -48,9 +53,7 @@ export function createCompiledCatalog(
   const ast = buildExportStatement(
     //build JSON.parse(<compiledMessages>) statement
     t.callExpression(
-      t.memberExpression(
-        t.identifier('JSON'), t.identifier('parse')
-      ),
+      t.memberExpression(t.identifier("JSON"), t.identifier("parse")),
       [t.stringLiteral(JSON.stringify(compiledMessages))]
     ),
     namespace
@@ -59,12 +62,12 @@ export function createCompiledCatalog(
   const code = generate(ast, {
     minified: true,
     jsescOption: {
-      minimal: true
+      minimal: true,
     },
-    ...compilerBabelOptions
+    ...compilerBabelOptions,
   }).code
 
-  return "/*eslint-disable*/" + code;
+  return "/*eslint-disable*/" + code
 }
 
 function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
@@ -110,7 +113,10 @@ function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
  * Compile string message into AST tree. Message format is parsed/compiled into
  * JS arrays, which are handled in client.
  */
-export function compile(message: string, shouldPseudolocalize: boolean = false) {
+export function compile(
+  message: string,
+  shouldPseudolocalize: boolean = false
+) {
   return compileMessage(message, (value) =>
     shouldPseudolocalize ? pseudoLocalize(value) : value
   )

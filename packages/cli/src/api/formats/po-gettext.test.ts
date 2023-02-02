@@ -210,10 +210,11 @@ describe("po-gettext format", () => {
           "This is a comment by the developers about how the content must be localized.",
         ],
       },
-      "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}": {
-        translation:
-          "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
-      },
+      "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}":
+        {
+          translation:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+        },
       // Entry with developer-defined ID that generates empty msgstr[] lines
       message_with_id_but_without_translation: {
         message:
@@ -221,9 +222,10 @@ describe("po-gettext format", () => {
         translation: "",
       },
       // Entry with automatic ID that generates empty msgstr[] lines
-      "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}": {
-        translation: "",
-      },
+      "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}":
+        {
+          translation: "",
+        },
     }
 
     format.write(filename, catalog, {
@@ -370,12 +372,16 @@ msgstr[2] "# dní"
 
   describe("convertPluralsToIco handle correctly locales with 4-letter", () => {
     const pofile = fs
-    .readFileSync(
-      path.join(path.resolve(__dirname), "fixtures", "messages_plural-4-letter.po")
-    )
-    .toString()
+      .readFileSync(
+        path.join(
+          path.resolve(__dirname),
+          "fixtures",
+          "messages_plural-4-letter.po"
+        )
+      )
+      .toString()
 
-  const catalog = format.parse(pofile)
-  expect(catalog).toMatchSnapshot()
+    const catalog = format.parse(pofile)
+    expect(catalog).toMatchSnapshot()
   })
 })

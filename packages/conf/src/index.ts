@@ -49,8 +49,8 @@ export type LinguiConfig = {
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
   extractors?: ExtractorType[] | string[]
-  prevFormat?: CatalogFormat;
-  localeDir?: string;
+  prevFormat?: CatalogFormat
+  localeDir?: string
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -86,7 +86,7 @@ export const defaultConfig: LinguiConfig = {
     minified: true,
     jsescOption: {
       minimal: true,
-    }
+    },
   },
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
@@ -98,7 +98,7 @@ export const defaultConfig: LinguiConfig = {
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   sourceLocale: "",
-  service: { name: "", apiKey: "" }
+  service: { name: "", apiKey: "" },
 }
 
 function configExists(path) {
@@ -151,15 +151,21 @@ export function getConfig({
     : configExplorer.search(defaultRootDir)
   const userConfig = result ? result.config : {}
 
-  return makeConfig({
-    rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
-    ...userConfig,
-  }, {skipValidation})
+  return makeConfig(
+    {
+      rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
+      ...userConfig,
+    },
+    { skipValidation }
+  )
 }
 
-export function makeConfig(userConfig: Partial<LinguiConfig>, opts: {
-  skipValidation?: boolean
-} = {}): LinguiConfig {
+export function makeConfig(
+  userConfig: Partial<LinguiConfig>,
+  opts: {
+    skipValidation?: boolean
+  } = {}
+): LinguiConfig {
   const config: LinguiConfig = {
     ...defaultConfig,
     ...userConfig,
@@ -189,12 +195,17 @@ const exampleConfig = {
   extractors: multipleValidOptions(
     [],
     ["babel"],
-    [{
-      match: (fileName: string) => false,
-      extract: (filename: string, targetDir: string, options?: any) => {}
-    } as ExtractorType]
+    [
+      {
+        match: (fileName: string) => false,
+        extract: (filename: string, targetDir: string, options?: any) => {},
+      } as ExtractorType,
+    ]
   ),
-  runtimeConfigModule: multipleValidOptions({i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"]}, ["@lingui/core", "i18n"]),
+  runtimeConfigModule: multipleValidOptions(
+    { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
+    ["@lingui/core", "i18n"]
+  ),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },
@@ -207,10 +218,15 @@ const exampleConfig = {
     rootMode: "rootmode",
     plugins: ["plugin"],
     presets: ["preset"],
-    targets: multipleValidOptions({}, '> 0.5%', ['> 0.5%', 'not dead'], undefined),
+    targets: multipleValidOptions(
+      {},
+      "> 0.5%",
+      ["> 0.5%", "not dead"],
+      undefined
+    ),
     assumptions: multipleValidOptions({}, undefined),
     browserslistConfigFile: multipleValidOptions(true, undefined),
-    browserslistEnv: multipleValidOptions('.browserslistrc', undefined),
+    browserslistEnv: multipleValidOptions(".browserslistrc", undefined),
   },
 }
 
@@ -598,5 +614,7 @@ export function catalogMigration(
   return newConfig
 }
 
-const pipe = (...functions: Array<Function>) => (args: any): any =>
-  functions.reduce((arg, fn) => fn(arg), args)
+const pipe =
+  (...functions: Array<Function>) =>
+  (args: any): any =>
+    functions.reduce((arg, fn) => fn(arg), args)

@@ -112,14 +112,14 @@ export class Catalog {
     })
 
     // Map over all locales and post-process each catalog
-    const cleanAndSort = (R.map(
+    const cleanAndSort = R.map(
       R.pipe(
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
         order(options.orderBy)
       )
-    ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
+    ) as unknown as (catalog: AllCatalogsType) => AllCatalogsType
 
     const sortedCatalogs = cleanAndSort(catalogs)
 

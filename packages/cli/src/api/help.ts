@@ -19,15 +19,15 @@
 import { resolve, join } from "path"
 
 export function helpRun(command: string) {
-  let findRootPkgJson: Record<string, unknown>;
+  let findRootPkgJson: Record<string, unknown>
   try {
     findRootPkgJson = require(resolve(join(process.cwd(), "package.json")))
   } catch (error) {}
 
   if (findRootPkgJson?.scripts) {
-    const res = Object
-      .entries(findRootPkgJson.scripts)
-      .find(([_, value]) => value.includes(`lingui ${command}`))
+    const res = Object.entries(findRootPkgJson.scripts).find(([_, value]) =>
+      value.includes(`lingui ${command}`)
+    )
 
     if (res) {
       command = res[0]
@@ -40,4 +40,4 @@ export function helpRun(command: string) {
 const isYarn =
   process.env.npm_config_user_agent &&
   process.env.npm_config_user_agent.includes("yarn")
-const runCommand = isYarn ? "yarn": "npm run"
+const runCommand = isYarn ? "yarn" : "npm run"

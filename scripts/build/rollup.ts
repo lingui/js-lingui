@@ -1,18 +1,25 @@
-import {BundleDef} from "./bundles"
-import {getPackageDir} from "./utils"
+import { BundleDef } from "./bundles"
+import { getPackageDir } from "./utils"
 
 import * as fs from "fs"
 import * as path from "path"
-import dts from 'rollup-plugin-dts'
+import dts from "rollup-plugin-dts"
 
-import {ModuleFormat, rollup, RollupBuild, RollupError, RollupOptions, RollupWarning} from "rollup"
+import {
+  ModuleFormat,
+  rollup,
+  RollupBuild,
+  RollupError,
+  RollupOptions,
+  RollupWarning,
+} from "rollup"
 import babel from "@rollup/plugin-babel"
 import commonjs from "@rollup/plugin-commonjs"
 import resolve from "@rollup/plugin-node-resolve"
-import babelConfig from './babel.config';
+import babelConfig from "./babel.config"
 
-import ora from "ora";
-import chalk from "chalk";
+import ora from "ora"
+import chalk from "chalk"
 
 const codeFrame = require("@babel/code-frame")
 
@@ -29,7 +36,7 @@ process.on("unhandledRejection", (err) => {
 })
 
 function getFilename(bundle: BundleDef) {
-  const filename = bundle.label || 'index'
+  const filename = bundle.label || "index"
   return `${filename}.js`
 }
 
@@ -39,7 +46,7 @@ function handleRollupWarning(warning: RollupWarning, dts: boolean) {
     process.exit(1)
   }
   if (warning.code === "EMPTY_BUNDLE" && dts) {
-    return;
+    return
   }
 
   console.warn(warning.message || warning)
@@ -80,7 +87,7 @@ function handleRollupError(error: RollupError) {
 
 function getInput(bundle: BundleDef): string {
   const packageDir = path.join(getPackageDir(bundle.packageName))
-  return path.resolve(packageDir, bundle.entry || 'index.js')
+  return path.resolve(packageDir, bundle.entry || "index.js")
 }
 
 async function generateTypings(bundle: BundleDef) {
@@ -91,14 +98,18 @@ async function generateTypings(bundle: BundleDef) {
   const rollupConfig: RollupOptions = {
     input: getInput(bundle),
     onwarn: (warn) => handleRollupWarning(warn, true),
-    plugins: [dts({
-      compilerOptions: {
-        allowJs: true
-      }
-    })]
+    plugins: [
+      dts({
+        compilerOptions: {
+          allowJs: true,
+        },
+      }),
+    ],
   }
 
-  const logKey = `${chalk.white.bold(bundle.packageName)} ${chalk.white.dim('(typings)')}`
+  const logKey = `${chalk.white.bold(bundle.packageName)} ${chalk.white.dim(
+    "(typings)"
+  )}`
 
   const spinner = ora(logKey).start()
 
@@ -106,10 +117,10 @@ async function generateTypings(bundle: BundleDef) {
     const rollupBundle = await rollup(rollupConfig)
     await rollupBundle.write({
       file: `${buildDir}/${name}.d.ts`,
-      format: 'es',
-      validate: false
+      format: "es",
+      validate: false,
     })
-    await rollupBundle.close();
+    await rollupBundle.close()
   } catch (error) {
     spinner.fail()
     handleRollupError(error)
@@ -126,13 +137,16 @@ async function build(bundle: BundleDef) {
     input: getInput(bundle),
 
     external: (id: string) => {
-      return /node_modules/.test(id) || (bundle.externals || []).some((pkg) => id.includes(pkg))
+      return (
+        /node_modules/.test(id) ||
+        (bundle.externals || []).some((pkg) => id.includes(pkg))
+      )
     },
     onwarn: (warn) => handleRollupWarning(warn, false),
     plugins: [
       // Use Node resolution mechanism.
       resolve({
-        extensions
+        extensions,
       }),
 
       // Compile to ES5.
@@ -142,17 +156,18 @@ async function build(bundle: BundleDef) {
         configFile: false,
         exclude: "node_modules/**",
         extensions,
-        babelHelpers: "runtime"
+        babelHelpers: "runtime",
       }),
       // We still need CommonJS for external deps like object-assign.
-      commonjs()
-    ]
-  };
-
+      commonjs(),
+    ],
+  }
 
   let rollupBundle: RollupBuild
 
-  const logKey = chalk.white.bold([bundle.packageName, bundle.label].filter(Boolean).join("/"))
+  const logKey = chalk.white.bold(
+    [bundle.packageName, bundle.label].filter(Boolean).join("/")
+  )
   const spinner = ora(logKey).start()
 
   try {
@@ -163,13 +178,13 @@ async function build(bundle: BundleDef) {
     throw error
   }
 
-  const outputs: ModuleFormat[] = ['esm', 'cjs'];
+  const outputs: ModuleFormat[] = ["esm", "cjs"]
 
   for (const format of outputs) {
     await rollupBundle.write({
-      file: getPackageDir(bundle.packageName, 'build', format, filename),
+      file: getPackageDir(bundle.packageName, "build", format, filename),
       format,
-      sourcemap: true
+      sourcemap: true,
     })
   }
 
@@ -180,5 +195,5 @@ async function build(bundle: BundleDef) {
 
 export default async function (bundle: BundleDef) {
   await build(bundle)
-  await generateTypings(bundle);
+  await generateTypings(bundle)
 }
