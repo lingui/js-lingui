@@ -108,6 +108,23 @@ describe("Trans component", function () {
     expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
+  it("should render named component in components", function () {
+    const translation = html(
+      <Trans
+        id="Read <named>the docs</named>"
+        components={{ named: <a href="/docs" /> }}
+      />
+    )
+    expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
+  })
+
+  it("should render non-named component in components", function () {
+    const translation = html(
+      <Trans id="Read <0>the docs</0>" components={{ 0: <a href="/docs" /> }} />
+    )
+    expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
+  })
+
   it("should render translation inside custom component", function () {
     const Component = (props) => <p className="lead">{props.children}</p>
     const html1 = html(<Trans component={Component} id="Original" />)
