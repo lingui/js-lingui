@@ -133,16 +133,6 @@ const sidebar = [
       },
       {
         type: 'doc',
-        label: '@lingui/snowpack-plugin',
-        id: 'ref/snowpack-plugin',
-      },
-      {
-        type: 'doc',
-        label: '@lingui/vite-plugin',
-        id: 'ref/vite-plugin',
-      },
-      {
-        type: 'doc',
         label: 'Lingui Configuration',
         id: 'ref/conf',
       },
@@ -155,6 +145,27 @@ const sidebar = [
         type: 'doc',
         label: 'ICU MessageFormat',
         id: 'ref/message-format',
+      },
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Plugins',
+    items: [
+      {
+        type: 'doc',
+        label: '@lingui/swc-plugin',
+        id: 'ref/swc-plugin',
+      },
+      {
+        type: 'doc',
+        label: '@lingui/vite-plugin',
+        id: 'ref/vite-plugin',
+      },
+      {
+        type: 'doc',
+        label: '@lingui/snowpack-plugin',
+        id: 'ref/snowpack-plugin',
       },
     ],
   },
