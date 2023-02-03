@@ -15,7 +15,7 @@
     "watch": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c jest.config.js --watch",
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c jest.config.integration.js --watch",
     "lint:types": "tsc",
-    "lint:eslint": "eslint packages",
+    "lint:eslint": "eslint './packages/**/*.{ts,tsx,js,jsx}'",
     "lint:all": "yarn lint:eslint && yarn lint:types",
     "release:build": "node -r @swc-node/register ./scripts/build/index.ts",
     "release:test": "node -r @swc-node/register  ./scripts/test.ts",
@@ -24,7 +24,8 @@
     "release:latest": "lerna publish from-package --dist-tag latest --yes",
     "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
     "build:docs": "cd website && yarn install && yarn build",
-    "size-limit": "size-limit"
+    "size-limit": "size-limit",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -49,16 +50,15 @@
     "@types/ramda": "^0.27.23",
     "@types/react": "^16.9.51",
     "@types/rimraf": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.4.0",
-    "@typescript-eslint/parser": "^4.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.5.2",
     "babel-plugin-macros": "^2.8.0",
     "chalk": "^4.1.0",
     "codecov": "^3.8.1",
     "cross-env": "^7.0.2",
-    "eslint": "^7.11.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint": "^7.32.0",
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.1.1",
@@ -66,10 +66,12 @@
     "fs-extra": "^9.0.1",
     "full-icu": "^1.3.1",
     "glob": "^7.1.4",
+    "husky": "^8.0.3",
     "jest": "^26.5.2",
     "jest-junit": "^12.0.0",
     "jest-serializer-html": "^7.0.0",
     "lerna": "^3.22.1",
+    "lint-staged": "^13.1.0",
     "memory-fs": "^0.5.0",
     "minimist": "^1.2.5",
     "mock-fs": "^4.13.0",
@@ -77,7 +79,7 @@
     "ncp": "^2.0.0",
     "npm-cli-login": "^0.1.1",
     "ora": "^5.1.0",
-    "prettier": "^2.1.2",
+    "prettier": "2.8.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rimraf": "^3.0.2",
@@ -100,6 +102,12 @@
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write --ignore-unknown",
+      "eslint --fix"
+    ]
+  },
   "size-limit": [
     {
       "path": "./packages/core/build/esm/index.js",
@@ -121,6 +129,5 @@
       "path": "./packages/remote-loader/build/esm/index.js",
       "limit": "8 kB"
     }
-  ],
-  "dependencies": {}
+  ]
 }

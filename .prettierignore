@@ -4,3 +4,8 @@
 **/test/**/actual.js
 **/test/**/expected.js
 **/locale/*
+**/fixtures/*
+coverage/
+website/
+.github
+examples
