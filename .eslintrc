@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "jest/globals": true
   },
@@ -10,21 +11,10 @@
       "jsx": true
     }
   },
-  "extends": ["plugin:import/errors", "plugin:import/warnings"],
-  "plugins": ["promise", "import", "react", "jest", "@typescript-eslint"],
-  "settings": {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  },
+  "extends": [],
+  "plugins": ["promise", "react", "jest", "@typescript-eslint"],
+  "settings": {},
   "rules": {
-    "no-duplicate-imports": "off",
     "react/display-name": "off",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"]
   }
