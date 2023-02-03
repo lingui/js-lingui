@@ -27,8 +27,8 @@
     "build/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.11.2",
-    "@babel/types": "^7.11.5",
+    "@babel/runtime": "^7.20.13",
+    "@babel/types": "^7.20.7",
     "@lingui/conf": "3.17.0",
     "ramda": "^0.27.1"
   },

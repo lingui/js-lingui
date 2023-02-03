@@ -358,8 +358,7 @@ const cases: TestCase[] = [
         import { i18n } from "@lingui/core";
         <Trans id={"Read <0>more</0>"} components={{
           0: <a href="/more" title={
-            /*i18n*/
-            i18n._("Full content of {articleName}", {
+            /*i18n*/ i18n._("Full content of {articleName}", {
               articleName: articleName
             })
           } />
@@ -378,8 +377,7 @@ const cases: TestCase[] = [
     expected: `
         import { i18n } from "@lingui/core";
         <a href="/about" title={
-          /*i18n*/
-          i18n._("{count, plural, one {# book} other {# books}}", {
+          /*i18n*/ i18n._("{count, plural, one {# book} other {# books}}", {
             count: count
           })
         }>About</a>;
