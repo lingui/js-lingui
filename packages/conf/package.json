@@ -34,5 +34,17 @@
   ],
   "devDependencies": {
     "ts-node": "^10.9.1"
+  },
+  "peerDependencies": {
+    "ts-node": ">=10",
+    "typescript": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "ts-node": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
   }
 }
