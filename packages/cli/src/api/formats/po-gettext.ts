@@ -1,6 +1,6 @@
 import { format as formatDate } from "date-fns"
 import fs from "fs"
-import {parse as parseIcu, Select, SelectCase, Token} from "@messageformat/parser"
+import {parse as parseIcu, Select, SelectCase} from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 import * as R from "ramda"

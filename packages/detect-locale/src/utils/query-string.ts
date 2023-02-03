@@ -36,10 +36,3 @@ function decode(input) {
     return null;
   }
 }
-function encode(input) {
-  try {
-    return encodeURIComponent(input);
-  } catch (e) {
-    return null;
-  }
-}
