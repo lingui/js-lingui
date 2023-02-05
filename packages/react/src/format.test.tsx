@@ -38,6 +38,17 @@ describe("formatElements", function () {
     ).toEqual('<a href="/about">About</a>')
   })
 
+  it("should preserve nested named element props", function () {
+    expect(
+      html(
+        formatElements("<named>About <b>us</b></named>", {
+          named: <a href="/about" />,
+          b: <strong />,
+        })
+      )
+    ).toEqual('<a href="/about">About <strong>us</strong></a>')
+  })
+
   it("should format nested elements", function () {
     expect(
       html(
@@ -106,7 +117,7 @@ describe("formatElements", function () {
     }) as Array<React.ReactElement>
 
     expect(elements).toHaveLength(1)
-    const childElements = elements[0].props.children;
+    const childElements = elements[0].props.children
     const childKeys = childElements.map((el) => el?.key).filter(Boolean)
     expect(cleanPrefix(childKeys[0])).toBeLessThan(cleanPrefix(childKeys[1]))
   })

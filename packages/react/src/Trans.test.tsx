@@ -118,6 +118,16 @@ describe("Trans component", function () {
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
 
+  it("should render nested named components in components", function () {
+    const translation = html(
+      <Trans
+        id="Read <link>the <strong>docs</strong></link>"
+        components={{ link: <a href="/docs" />, strong: <strong /> }}
+      />
+    )
+    expect(translation).toEqual(`Read <a href="/docs">the <strong>docs</strong></a>`)
+  })
+
   it("should render non-named component in components", function () {
     const translation = html(
       <Trans id="Read <0>the docs</0>" components={{ 0: <a href="/docs" /> }} />
