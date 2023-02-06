@@ -1,5 +1,5 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
-const tsConfig = require( './tsconfig.json');
+const { pathsToModuleNameMapper } = require("ts-jest/utils")
+const tsConfig = require("./tsconfig.json")
 
 /**
  * @type {import('jest').Config}
@@ -12,6 +12,12 @@ module.exports = {
   testURL: "http://localhost",
 
   collectCoverage: true,
+  collectCoverageFrom: [
+    "**/*.{ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+    "!**/build/**",
+  ],
   coverageDirectory: "<rootDir>/coverage/",
   coveragePathIgnorePatterns: [
     "node_modules",
@@ -25,11 +31,11 @@ module.exports = {
   coverageReporters: ["html", "lcov", "text"],
   modulePathIgnorePatterns: ["/build"],
   moduleNameMapper: pathsToModuleNameMapper(tsConfig.compilerOptions.paths, {
-    prefix: '<rootDir>/',
+    prefix: "<rootDir>/",
   }),
 
   reporters: ["default", "jest-junit"],
-  setupFiles: ['set-tz/utc'],
+  setupFiles: ["set-tz/utc"],
   setupFilesAfterEnv: [require.resolve("./scripts/jest/env.js")],
   snapshotSerializers: [
     "jest-serializer-html",
