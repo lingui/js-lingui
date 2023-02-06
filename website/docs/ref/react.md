@@ -92,9 +92,9 @@ It's also possible to use `Trans` component directly without macros. In that cas
 
 // number of tag corresponds to index in `components` prop
 <Trans
-  id="Read <0>Description</0> below."
-  components={[<Link to="/docs" />]}
-/>;
+  id="Read <link>Description</link> below."
+  components={{ link: <a href="/docs" /> }}
+/>
 ```
 
 #### Plurals
