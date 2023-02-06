@@ -7,7 +7,7 @@ export function mockConfig(config: Partial<LinguiConfig> = {}) {
   }
 }
 
-export function getConsoleMockCalls({ mock }) {
+export function getConsoleMockCalls({ mock }: jest.MockInstance<any, any>) {
   if (!mock.calls.length) return
   return mock.calls.map((call) => call[0]).join("\n")
 }
