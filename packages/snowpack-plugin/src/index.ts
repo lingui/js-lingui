@@ -1,24 +1,31 @@
 import path from "path"
 import { getConfig } from "@lingui/conf"
-import { createCompiledCatalog, getCatalogs, getCatalogForFile } from "@lingui/cli/api"
+import {
+  createCompiledCatalog,
+  getCatalogs,
+  getCatalogForFile,
+} from "@lingui/cli/api"
 
 type LinguiConfigOpts = {
-  cwd?: string;
-  configPath?: string;
-  skipValidation?: boolean;
+  cwd?: string
+  configPath?: string
+  skipValidation?: boolean
 }
 type SnowpackLoadOpts = {
   filePath: string
 }
-function extractLinguiMessages(snowpackConfig?, linguiConfig: LinguiConfigOpts = {}) {
-  const strict = process.env.NODE_ENV !== 'production'
+function extractLinguiMessages(
+  snowpackConfig?,
+  linguiConfig: LinguiConfigOpts = {}
+) {
+  const strict = process.env.NODE_ENV !== "production"
   const config = getConfig(linguiConfig)
 
   return {
-    name: '@lingui/snowpack-plugin',
+    name: "@lingui/snowpack-plugin",
     resolve: {
-      input: ['.po', '.json'],
-      output: ['.js'],
+      input: [".po", ".json"],
+      output: [".js"],
     },
     async load({ filePath }: SnowpackLoadOpts) {
       const catalogRelativePath = path.relative(config.rootDir, filePath)
@@ -29,9 +36,13 @@ function extractLinguiMessages(snowpackConfig?, linguiConfig: LinguiConfigOpts =
         const formats = {
           minimal: ".json",
           po: ".po",
-          lingui: ".json"
+          lingui: ".json",
         }
-        throw new Error(`@lingui/snowpack-plugin: File extension is mandatory, for ex: import('./locales/en/messages${formats[config.format]}')`)
+        throw new Error(
+          `@lingui/snowpack-plugin: File extension is mandatory, for ex: import('./locales/en/messages${
+            formats[config.format]
+          }')`
+        )
       }
 
       const fileCatalog = getCatalogForFile(
@@ -58,7 +69,7 @@ function extractLinguiMessages(snowpackConfig?, linguiConfig: LinguiConfigOpts =
       })
 
       return compiled
-    }
+    },
   }
 }
 

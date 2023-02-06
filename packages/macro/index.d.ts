@@ -77,9 +77,7 @@ export function t(
  * const message = t(i18n)({ message: `Hello ${name}` });
  * ```
  */
-export function t(
-  i18n: I18n
-): {
+export function t(i18n: I18n): {
   (literals: TemplateStringsArray, ...placeholders: any[]): string
   (descriptor: MessageDescriptor): string
 }

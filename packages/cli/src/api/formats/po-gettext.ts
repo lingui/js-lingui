@@ -1,6 +1,6 @@
 import { format as formatDate } from "date-fns"
 import fs from "fs"
-import {parse as parseIcu, Select, SelectCase} from "@messageformat/parser"
+import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 import * as R from "ramda"
@@ -8,7 +8,7 @@ import gettextPlurals from "node-gettext/lib/plurals"
 
 import { CatalogType, MessageType } from "../catalog"
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
-import type {CatalogFormatOptionsInternal, CatalogFormatter} from "./"
+import type { CatalogFormatOptionsInternal, CatalogFormatter } from "./"
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItemType = InstanceType<typeof PO.Item>
@@ -51,7 +51,10 @@ const LINE_ENDINGS = /\r?\n/g
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
 const CTX_PREFIX = "js-lingui:"
 
-const serialize = (items: CatalogType, options: CatalogFormatOptionsInternal & {disableSelectWarning: boolean}) =>
+const serialize = (
+  items: CatalogType,
+  options: CatalogFormatOptionsInternal & { disableSelectWarning: boolean }
+) =>
   R.compose(
     R.values,
     R.mapObjIndexed((message: MessageType, key) => {
@@ -68,7 +71,7 @@ const serialize = (items: CatalogType, options: CatalogFormatOptionsInternal & {
       }
       if (options.origins !== false) {
         if (message.origin && options.lineNumbers === false) {
-          item.references = message.origin.map(([path]) => path);
+          item.references = message.origin.map(([path]) => path)
         } else {
           item.references = message.origin ? message.origin.map(joinOrigin) : []
         }

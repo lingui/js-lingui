@@ -106,6 +106,9 @@ function getElements(parts) {
   )
 }
 
-const makeCounter = (count = 0, prefix = "") => () => `${prefix}_${count++}`
+const makeCounter =
+  (count = 0, prefix = "") =>
+  () =>
+    `${prefix}_${count++}`
 
 export { formatElements }

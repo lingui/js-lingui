@@ -1,15 +1,17 @@
 export function getCookie(key: string): string {
   if (!key) {
-    return;
+    return
   }
 
   // To prevent the for loop in the first place assign an empty array
   // in case there are no cookies at all.
-  const cookies = globalThis.document.cookie ? globalThis.document.cookie.split('; ') : []
+  const cookies = globalThis.document.cookie
+    ? globalThis.document.cookie.split("; ")
+    : []
   const jar = {}
   for (let i = 0; i < cookies.length; i++) {
-    const parts = cookies[i].split('=')
-    let value = parts.slice(1).join('=')
+    const parts = cookies[i].split("=")
+    let value = parts.slice(1).join("=")
 
     if (value[0] === '"') {
       value = value.slice(1, -1)

@@ -125,7 +125,9 @@ describe("Trans component", function () {
         components={{ link: <a href="/docs" />, strong: <strong /> }}
       />
     )
-    expect(translation).toEqual(`Read <a href="/docs">the <strong>docs</strong></a>`)
+    expect(translation).toEqual(
+      `Read <a href="/docs">the <strong>docs</strong></a>`
+    )
   })
 
   it("should render non-named component in components", function () {

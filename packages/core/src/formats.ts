@@ -8,7 +8,7 @@ const dateFormats = new Map<string, Intl.DateTimeFormat>()
 export function date(
   locales: Locales,
   format: Intl.DateTimeFormatOptions = {},
-  memoize: boolean = true,
+  memoize: boolean = true
 ): (value: string | Date) => string {
   return (value) => {
     if (isString(value)) value = new Date(value)
@@ -32,7 +32,7 @@ export function date(
 export function number(
   locales: Locales,
   format: Intl.NumberFormatOptions = {},
-  memoize: boolean = true,
+  memoize: boolean = true
 ): (value: number) => string {
   return (value) => {
     if (memoize) {
@@ -53,10 +53,7 @@ export function number(
 }
 
 /** Memoize helpers */
-function cacheKey<T>(
-  locales?: string | string[],
-  options: T = {} as T,
-) {
-  const localeKey = Array.isArray(locales) ? locales.sort().join('-') : locales
+function cacheKey<T>(locales?: string | string[], options: T = {} as T) {
+  const localeKey = Array.isArray(locales) ? locales.sort().join("-") : locales
   return `${localeKey}-${JSON.stringify(options)}`
 }

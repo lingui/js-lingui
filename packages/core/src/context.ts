@@ -1,8 +1,8 @@
-import {CompiledMessage, Formats, LocaleData, Locales, Values} from "./i18n"
+import { CompiledMessage, Formats, LocaleData, Locales, Values } from "./i18n"
 import { date, number } from "./formats"
 import { isString, isFunction } from "./essentials"
 
-export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g;
+export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
 
 const defaultFormats = (
   locale: string,
@@ -13,45 +13,48 @@ const defaultFormats = (
   locales = locales || locale
   const { plurals } = localeData
   const style = <T>(format: string | T): T =>
-    isString(format)
-      ? formats[format] || { style: format }
-      : format as any
+    isString(format) ? formats[format] || { style: format } : (format as any)
   const replaceOctothorpe = (value: number, message) => {
     return (ctx) => {
       const msg = isFunction(message) ? message(ctx) : message
       const norm = Array.isArray(msg) ? msg : [msg]
-      const numberFormat = Object.keys(formats).length ? style('number') : {};
+      const numberFormat = Object.keys(formats).length ? style("number") : {}
       const valueStr = number(locales, numberFormat)(value)
       return norm.map((m) => (isString(m) ? m.replace("#", valueStr) : m))
     }
   }
 
   if (!plurals) {
-    console.error(`Plurals for locale ${locale} aren't loaded. Use i18n.loadLocaleData method to load plurals for specific locale. Using other plural rule as a fallback.`)
+    console.error(
+      `Plurals for locale ${locale} aren't loaded. Use i18n.loadLocaleData method to load plurals for specific locale. Using other plural rule as a fallback.`
+    )
   }
 
   return {
     plural: (value: number, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals?.(value - offset)] || rules.other
+      const message =
+        rules[value] || rules[plurals?.(value - offset)] || rules.other
 
       return replaceOctothorpe(value - offset, message)
     },
 
     selectordinal: (value: number, { offset = 0, ...rules }) => {
-      const message = rules[value] || rules[plurals?.(value - offset, true)] || rules.other
+      const message =
+        rules[value] || rules[plurals?.(value - offset, true)] || rules.other
       return replaceOctothorpe(value - offset, message)
     },
 
     select: (value: string, rules) => rules[value] || rules.other,
 
-    number: (value: number, format: string | Intl.NumberFormatOptions) => number(locales, style(format))(value),
+    number: (value: number, format: string | Intl.NumberFormatOptions) =>
+      number(locales, style(format))(value),
 
-    date: (value: string, format: string | Intl.DateTimeFormatOptions) => date(locales, style(format))(value),
+    date: (value: string, format: string | Intl.DateTimeFormatOptions) =>
+      date(locales, style(format))(value),
 
     undefined: (value: unknown) => value,
   }
 }
-
 
 // Params -> CTX
 /**
@@ -91,13 +94,7 @@ export function interpolate(
   localeData: LocaleData
 ) {
   return (values: Values, formats: Formats = {}): string => {
-    const ctx = context(
-      locale,
-      locales,
-      values,
-      formats,
-      localeData,
-    )
+    const ctx = context(locale, locales, values, formats, localeData)
 
     const formatMessage = (message: CompiledMessage): string => {
       if (!Array.isArray(message)) return message
@@ -124,7 +121,8 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    if (isString(result) && UNICODE_REGEX.test(result)) return JSON.parse(`"${result.trim()}"`)
+    if (isString(result) && UNICODE_REGEX.test(result))
+      return JSON.parse(`"${result.trim()}"`)
     if (isString(result)) return result.trim()
     return result
   }

@@ -13,7 +13,8 @@ pseudolocale.option.append = ""
  * It was taken from https://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx/
  * Example: https://regex101.com/r/bDHD9z/3
  */
-const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g
+const HTMLRegex =
+  /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/g
 
 /**
  * Regex should match js-lingui Plurals, Select and SelectOrdinal  components
@@ -22,7 +23,8 @@ const HTMLRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\
  * SelectOrdinal https://regex101.com/r/T7hSLU/2
  * Select https://regex101.com/r/9JnqB9/1
  */
-const MacroRegex = /({\w*,\s*(plural|selectordinal|select),(.|\n)*?{)|(}\s*\w*\s*{)/gi
+const MacroRegex =
+  /({\w*,\s*(plural|selectordinal|select),(.|\n)*?{)|(}\s*\w*\s*{)/gi
 
 /**
  * Regex should match js-lingui variables

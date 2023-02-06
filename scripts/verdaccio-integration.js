@@ -3,22 +3,25 @@ const { exec: _exec } = require("child_process")
 const ora = require("ora")
 
 const OPTS = {
-  cwd: path.resolve("examples/create-react-app")
+  cwd: path.resolve("examples/create-react-app"),
 }
 
 async function main() {
   const spinner = ora()
 
-  await exec('yarn', OPTS)
+  await exec("yarn", OPTS)
   spinner.start("Linking create-react-app")
-  await exec('npm i -g update-by-scope --registry https://registry.npmjs.org', OPTS)
-  await exec('npm config set registry http://0.0.0.0:4873/', OPTS)
-  await exec('update-by-scope @lingui', OPTS)
+  await exec(
+    "npm i -g update-by-scope --registry https://registry.npmjs.org",
+    OPTS
+  )
+  await exec("npm config set registry http://0.0.0.0:4873/", OPTS)
+  await exec("update-by-scope @lingui", OPTS)
   spinner.succeed("Updated @lingui packages")
 
   spinner.start("Running tests")
   try {
-    await exec('yarn test:ci', OPTS)
+    await exec("yarn test:ci", OPTS)
     spinner.succeed()
   } catch (error) {
     spinner.fail()

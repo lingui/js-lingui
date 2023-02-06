@@ -1,9 +1,9 @@
 const argv = require("minimist")(process.argv.slice(2))
 
-import {execSync} from "child_process"
-import chalk from "chalk";
+import { execSync } from "child_process"
+import chalk from "chalk"
 
-const logHeading = message => console.log(chalk.bold("\n" + message + "\n"))
+const logHeading = (message) => console.log(chalk.bold("\n" + message + "\n"))
 
 if (!argv["skip-build"]) {
   logHeading("Build packages")

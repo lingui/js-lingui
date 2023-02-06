@@ -1,7 +1,7 @@
 import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import MacroJSX, {normalizeWhitespace} from "./macroJsx"
-import {JSXElement} from "@babel/types"
+import MacroJSX, { normalizeWhitespace } from "./macroJsx"
+import { JSXElement } from "@babel/types"
 
 const parseExpression = (expression: string) =>
   _parseExpression(expression, {
@@ -13,42 +13,51 @@ function createMacro() {
 }
 
 describe("jsx macro", () => {
-  describe('normalizeWhitespace', () => {
-    it('should remove whitespace before/after expression', () => {
+  describe("normalizeWhitespace", () => {
+    it("should remove whitespace before/after expression", () => {
       const actual = normalizeWhitespace(
-          `You have
+        `You have
 
-          {count, plural, one {Message} other {Messages}}`)
+          {count, plural, one {Message} other {Messages}}`
+      )
 
-      expect(actual).toBe(`You have{count, plural, one {Message} other {Messages}}`)
+      expect(actual).toBe(
+        `You have{count, plural, one {Message} other {Messages}}`
+      )
     })
 
-    it('should remove whitespace before/after tag', () => {
+    it("should remove whitespace before/after tag", () => {
       const actual = normalizeWhitespace(
-          `    Hello <strong>World!</strong><br />
+        `    Hello <strong>World!</strong><br />
     <p>
      My name is <a href="/about">{{" "}}
       <em>{{name}}</em></a>
-    </p>`)
+    </p>`
+      )
 
-      expect(actual).toBe(`Hello <strong>World!</strong><br /><p>My name is <a href="/about">{{" "}}<em>{{name}}</em></a></p>`)
+      expect(actual).toBe(
+        `Hello <strong>World!</strong><br /><p>My name is <a href="/about">{{" "}}<em>{{name}}</em></a></p>`
+      )
     })
 
-    it('should remove whitespace before/after tag', () => {
+    it("should remove whitespace before/after tag", () => {
       const actual = normalizeWhitespace(
-          `Property {0},
+        `Property {0},
           function {1},
           array {2},
           constant {3},
           object {4},
-          everything {5}`)
+          everything {5}`
+      )
 
-      expect(actual).toBe(`Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}`)
+      expect(actual).toBe(
+        `Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}`
+      )
     })
 
-    it('should remove trailing whitespaces in icu expressions', () => {
+    it("should remove trailing whitespaces in icu expressions", () => {
       const actual = normalizeWhitespace(
-          `{count, plural, one {
+        `{count, plural, one {
 
               <0>#</0> slot added
 
@@ -57,11 +66,13 @@ describe("jsx macro", () => {
               <1>#</1> slots added
 
             }}
-`)
+`
+      )
 
-      expect(actual).toBe(`{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}`)
+      expect(actual).toBe(
+        `{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}`
+      )
     })
-
   })
 
   describe("tokenizeTrans", () => {
@@ -72,8 +83,8 @@ describe("jsx macro", () => {
       expect(tokens).toEqual([
         {
           type: "text",
-          value: "Message"
-        }
+          value: "Message",
+        },
       ])
     })
 
@@ -328,25 +339,25 @@ describe("jsx macro", () => {
           female: "she",
           male: "he",
           offset: undefined,
-          other: "they"
+          other: "they",
         },
         type: "arg",
         value: {
-          "end": 31,
-          "loc":  {
-            "end": {
-              "column": 23,
-              "line": 2,
+          end: 31,
+          loc: {
+            end: {
+              column: 23,
+              line: 2,
             },
-            "identifierName": "gender",
-            "start":  {
-              "column": 17,
-              "line": 2,
+            identifierName: "gender",
+            start: {
+              column: 17,
+              line: 2,
             },
           },
           name: "gender",
           type: "Identifier",
-        }
+        },
       })
     })
   })

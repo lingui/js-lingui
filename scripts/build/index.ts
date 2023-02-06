@@ -1,8 +1,8 @@
 const argv = require("minimist")(process.argv.slice(2))
 
-import {BundleType, bundles, BundleDef} from "./bundles"
-import {prepareNpmPackages} from "./packaging"
-import {asyncRimRaf} from "./utils"
+import { BundleType, bundles, BundleDef } from "./bundles"
+import { prepareNpmPackages } from "./packaging"
+import { asyncRimRaf } from "./utils"
 
 import rollup from "./rollup"
 import babel from "./babel"
@@ -13,17 +13,17 @@ const builders = {
   [BundleType.UNIVERSAL]: rollup,
   [BundleType.NODE]: babel,
   [BundleType.NOOP]: noop,
-  [BundleType.CUSTOM]: customBuilder
+  [BundleType.CUSTOM]: customBuilder,
 }
 
 const requestedEntries = (argv._[0] || "")
   .split(",")
-  .map(name => name.toLowerCase())
+  .map((name) => name.toLowerCase())
 
 function shouldSkipBundle(bundle: BundleDef) {
   if (requestedEntries.length > 0) {
     const isAskingForDifferentEntries = requestedEntries.every(
-      requestedName => !bundle.packageName.includes(requestedName)
+      (requestedName) => !bundle.packageName.includes(requestedName)
     )
     if (isAskingForDifferentEntries) {
       return true

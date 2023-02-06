@@ -16,24 +16,34 @@ const getCreateHeaders = (language) => ({
 
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default function syncProcess(config, options) {
-  if (config.format != 'po') {
-    console.error(`\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`)
+  if (config.format != "po") {
+    console.error(
+      `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
+    )
     process.exit(1)
   }
 
   const successCallback = (project) => {
-    console.log(`\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`)
+    console.log(
+      `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
+    )
   }
 
   const failCallback = (errors) => {
-    console.error(`\n----------\nSynchronization with Translation.io failed: ${errors.join(', ')}\n----------`)
+    console.error(
+      `\n----------\nSynchronization with Translation.io failed: ${errors.join(
+        ", "
+      )}\n----------`
+    )
   }
 
   init(config, options, successCallback, (errors) => {
-    if (errors.length && errors[0] === 'This project has already been initialized.') {
+    if (
+      errors.length &&
+      errors[0] === "This project has already been initialized."
+    ) {
       sync(config, options, successCallback, failCallback)
-    }
-    else {
+    } else {
       failCallback(errors)
     }
   })
@@ -42,10 +52,12 @@ export default function syncProcess(config, options) {
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
 function init(config, options, successCallback, failCallback) {
-  const sourceLocale  = config.sourceLocale || 'en'
-  const pseudoLocale  = config.pseudoLocale || 'pseudo'
-  const targetLocales = config.locales.filter((value) => value != sourceLocale && value != pseudoLocale)
-  const paths         = poPathsPerLocale(config)
+  const sourceLocale = config.sourceLocale || "en"
+  const pseudoLocale = config.pseudoLocale || "pseudo"
+  const targetLocales = config.locales.filter(
+    (value) => value != sourceLocale && value != pseudoLocale
+  )
+  const paths = poPathsPerLocale(config)
 
   let segments = {}
 
@@ -58,13 +70,15 @@ function init(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
-    po.items.filter((item) => !item['obsolete']).forEach((item) => {
-      targetLocales.forEach((targetLocale) => {
-        let newSegment = createSegmentFromPoItem(item)
+    po.items
+      .filter((item) => !item["obsolete"])
+      .forEach((item) => {
+        targetLocales.forEach((targetLocale) => {
+          let newSegment = createSegmentFromPoItem(item)
 
-        segments[targetLocale].push(newSegment)
+          segments[targetLocale].push(newSegment)
+        })
       })
-    })
   })
 
   // Add translations to segments from target locale PO items
@@ -73,39 +87,48 @@ function init(config, options, successCallback, failCallback) {
       let raw = fs.readFileSync(path).toString()
       let po = PO.parse(raw)
 
-      po.items.filter((item) => !item['obsolete']).forEach((item, index) => {
-        segments[targetLocale][index].target = item.msgstr[0]
-      })
+      po.items
+        .filter((item) => !item["obsolete"])
+        .forEach((item, index) => {
+          segments[targetLocale][index].target = item.msgstr[0]
+        })
     })
   })
 
   let request = {
-    "client": "lingui",
-    "version": require('@lingui/core/package.json').version,
-    "source_language": sourceLocale,
-    "target_languages": targetLocales,
-    "segments": segments
+    client: "lingui",
+    version: require("@lingui/core/package.json").version,
+    source_language: sourceLocale,
+    target_languages: targetLocales,
+    segments: segments,
   }
 
-  postTio("init", request, config.service.apiKey, (response) => {
-    if (response.errors) {
-      failCallback(response.errors)
+  postTio(
+    "init",
+    request,
+    config.service.apiKey,
+    (response) => {
+      if (response.errors) {
+        failCallback(response.errors)
+      } else {
+        saveSegmentsToTargetPos(config, paths, response.segments)
+        successCallback(response.project)
+      }
+    },
+    (error) => {
+      console.error(
+        `\n----------\nSynchronization with Translation.io failed: ${error}\n----------`
+      )
     }
-    else {
-      saveSegmentsToTargetPos(config, paths, response.segments)
-      successCallback(response.project)
-    }
-  }, (error) => {
-    console.error(`\n----------\nSynchronization with Translation.io failed: ${error}\n----------`)
-  })
+  )
 }
 
 // Send all source text from PO to Translation.io and create new PO based on received translations
 // Cf. https://translation.io/docs/create-library#synchronization
 function sync(config, options, successCallback, failCallback) {
-  const sourceLocale  = config.sourceLocale || 'en'
+  const sourceLocale = config.sourceLocale || "en"
   const targetLocales = config.locales.filter((value) => value != sourceLocale)
-  const paths         = poPathsPerLocale(config)
+  const paths = poPathsPerLocale(config)
 
   let segments = []
 
@@ -114,48 +137,57 @@ function sync(config, options, successCallback, failCallback) {
     let raw = fs.readFileSync(path).toString()
     let po = PO.parse(raw)
 
-    po.items.filter((item) => !item['obsolete']).forEach((item) => {
-      let newSegment = createSegmentFromPoItem(item)
+    po.items
+      .filter((item) => !item["obsolete"])
+      .forEach((item) => {
+        let newSegment = createSegmentFromPoItem(item)
 
-      segments.push(newSegment)
-    })
+        segments.push(newSegment)
+      })
   })
 
   let request = {
-    "client": "lingui",
-    "version": require('@lingui/core/package.json').version,
-    "source_language": sourceLocale,
-    "target_languages": targetLocales,
-    "segments": segments
+    client: "lingui",
+    version: require("@lingui/core/package.json").version,
+    source_language: sourceLocale,
+    target_languages: targetLocales,
+    segments: segments,
   }
 
   // Sync and then remove unused segments (not present in the local application) from Translation.io
   if (options.clean) {
-    request['purge'] = true
+    request["purge"] = true
   }
 
-  postTio("sync", request, config.service.apiKey, (response) => {
-    if (response.errors) {
-      failCallback(response.errors)
+  postTio(
+    "sync",
+    request,
+    config.service.apiKey,
+    (response) => {
+      if (response.errors) {
+        failCallback(response.errors)
+      } else {
+        saveSegmentsToTargetPos(config, paths, response.segments)
+        successCallback(response.project)
+      }
+    },
+    (error) => {
+      console.error(
+        `\n----------\nSynchronization with Translation.io failed: ${error}\n----------`
+      )
     }
-    else {
-      saveSegmentsToTargetPos(config, paths, response.segments)
-      successCallback(response.project)
-    }
-  }, (error) => {
-    console.error(`\n----------\nSynchronization with Translation.io failed: ${error}\n----------`)
-  })
+  )
 }
 
 function createSegmentFromPoItem(item) {
   let itemHasId = item.msgid != item.msgstr[0] && item.msgstr[0].length
 
   let segment = {
-    type: 'source',                                 // No way to edit text for source language (inside code), so not using "key" here
+    type: "source", // No way to edit text for source language (inside code), so not using "key" here
     source: itemHasId ? item.msgstr[0] : item.msgid, // msgstr may be empty if --overwrite is used and no ID is used
-    context: '',
+    context: "",
     references: [],
-    comment: ''
+    comment: "",
   }
 
   if (itemHasId) {
@@ -167,7 +199,7 @@ function createSegmentFromPoItem(item) {
   }
 
   if (item.extractedComments.length) {
-    segment.comment = item.extractedComments.join(' | ')
+    segment.comment = item.extractedComments.join(" | ")
   }
 
   return segment
@@ -176,10 +208,11 @@ function createSegmentFromPoItem(item) {
 function createPoItemFromSegment(segment) {
   let item = new PO.Item()
 
-  item.msgid             = segment.context ? segment.context : segment.source
-  item.msgstr            = [segment.target]
-  item.references        = (segment.references && segment.references.length) ? segment.references : []
-  item.extractedComments = segment.comment ? segment.comment.split(' | ') : []
+  item.msgid = segment.context ? segment.context : segment.source
+  item.msgstr = [segment.target]
+  item.references =
+    segment.references && segment.references.length ? segment.references : []
+  item.extractedComments = segment.comment ? segment.comment.split(" | ") : []
 
   return item
 }
@@ -188,13 +221,19 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
   Object.keys(segmentsPerLocale).forEach((targetLocale) => {
     // Remove existing target POs and JS for this target locale
     paths[targetLocale].forEach((path) => {
-      const jsPath  = path.replace(/\.po?$/, "") + ".js"
+      const jsPath = path.replace(/\.po?$/, "") + ".js"
       const dirPath = dirname(path)
 
       // Remove PO, JS and empty dir
-      if (fs.existsSync(path)) { fs.unlinkSync(path) }
-      if (fs.existsSync(jsPath)) { fs.unlinkSync(jsPath) }
-      if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) { fs.rmdirSync(dirPath) }
+      if (fs.existsSync(path)) {
+        fs.unlinkSync(path)
+      }
+      if (fs.existsSync(jsPath)) {
+        fs.unlinkSync(jsPath)
+      }
+      if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
+        fs.rmdirSync(dirPath)
+      }
     })
 
     // Find target path (ignoring {name})
@@ -218,16 +257,20 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
 
     // Sort items by messageId
     po.items = items.sort((a, b) => {
-      if (a.msgid < b.msgid) { return -1 }
-      if (a.msgid > b.msgid) { return 1 }
+      if (a.msgid < b.msgid) {
+        return -1
+      }
+      if (a.msgid > b.msgid) {
+        return 1
+      }
       return 0
     })
 
     // Check that localePath directory exists and save PO file
-    fs.promises.mkdir(dirname(localePath), {recursive: true}).then(() => {
+    fs.promises.mkdir(dirname(localePath), { recursive: true }).then(() => {
       po.save(localePath, (err) => {
         if (err) {
-          console.error('Error while saving target PO files:')
+          console.error("Error while saving target PO files:")
           console.error(err)
           process.exit(1)
         }
@@ -249,10 +292,9 @@ function poPathsPerLocale(config) {
       )
 
       // If {name} is present (replaced by *), list all the existing POs
-      if (path.includes('*')) {
+      if (path.includes("*")) {
         paths[locale] = paths[locale].concat(glob.sync(path))
-      }
-      else {
+      } else {
         paths[locale].push(path)
       }
     })
@@ -265,30 +307,30 @@ function postTio(action, request, apiKey, successCallback, failCallback) {
   let jsonRequest = JSON.stringify(request)
 
   let options = {
-    hostname: 'translation.io',
-    path: '/api/v1/segments/' + action + '.json?api_key=' + apiKey,
-    method: 'POST',
+    hostname: "translation.io",
+    path: "/api/v1/segments/" + action + ".json?api_key=" + apiKey,
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-    }
+      "Content-Type": "application/json",
+    },
   }
 
   let req = https.request(options, (res) => {
-    res.setEncoding('utf8')
+    res.setEncoding("utf8")
 
     let body = ""
 
-    res.on('data', (chunk) => {
+    res.on("data", (chunk) => {
       body = body.concat(chunk)
     })
 
-    res.on('end', () => {
+    res.on("end", () => {
       let response = JSON.parse(body)
       successCallback(response)
     })
   })
 
-  req.on('error', (e) => {
+  req.on("error", (e) => {
     failCallback(e)
   })
 

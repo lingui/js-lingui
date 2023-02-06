@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -57,7 +57,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: 'Should preserve reserved props: `comment`, `context`, `render`, `id`',
+    name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
     input: `
         import { Trans } from '@lingui/macro';
         <Trans
@@ -348,7 +348,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: 'Use a js macro inside a JSX Attribute of a component handled by JSX macro',
+    name: "Use a js macro inside a JSX Attribute of a component handled by JSX macro",
     input: `
         import { t, Trans } from '@lingui/macro';
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
@@ -366,7 +366,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: 'Use a js macro inside a JSX Attribute of a non macro JSX component',
+    name: "Use a js macro inside a JSX Attribute of a non macro JSX component",
     input: `
         import { plural } from '@lingui/macro';
         <a href="/about" title={plural(count, {
@@ -406,4 +406,4 @@ const cases: TestCase[] = [
       `,
   },
 ]
-export default cases;
+export default cases

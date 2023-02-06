@@ -20,10 +20,10 @@ const noMessages: (catalogs: Object[]) => boolean = R.pipe(
 
 export type CliCompileOptions = {
   verbose?: boolean
-  allowEmpty?: boolean,
-  typescript?: boolean,
+  allowEmpty?: boolean
+  typescript?: boolean
   watch?: boolean
-  namespace?: string,
+  namespace?: string
 }
 
 export function command(config: LinguiConfig, options: CliCompileOptions) {
@@ -61,7 +61,7 @@ export function command(config: LinguiConfig, options: CliCompileOptions) {
     for (const catalog of catalogs) {
       const messages = catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
-        sourceLocale: config.sourceLocale
+        sourceLocale: config.sourceLocale,
       })
 
       if (!options.allowEmpty) {
@@ -131,7 +131,7 @@ export function command(config: LinguiConfig, options: CliCompileOptions) {
         strict: false,
         namespace: namespace,
         pseudoLocale: config.pseudoLocale,
-        compilerBabelOptions: config.compilerBabelOptions
+        compilerBabelOptions: config.compilerBabelOptions,
       })
       const compiledPath = compileCatalog.writeCompiled(
         locale,
