@@ -2,9 +2,8 @@ import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import { cosmiconfigSync } from "cosmiconfig"
+import { cosmiconfigSync, type LoaderSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
-import { TypeScriptLoader } from "cosmiconfig-typescript-loader";
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -102,6 +101,19 @@ export const defaultConfig: LinguiConfig = {
 
 function configExists(path) {
   return path && fs.existsSync(path)
+}
+
+function TypeScriptLoader(): LoaderSync {
+  let loaderInstance: LoaderSync
+  return (filepath, content) => {
+    if (!loaderInstance) {
+      const { TypeScriptLoader } =
+        require("cosmiconfig-typescript-loader") as typeof import("cosmiconfig-typescript-loader")
+      loaderInstance = TypeScriptLoader()
+    }
+
+    return loaderInstance(filepath, content)
+  }
 }
 
 export function getConfig({
