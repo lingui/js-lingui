@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1](https://github.com/lingui/js-lingui/compare/v3.17.0...v3.17.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* **build:** undeclared dependencies ([#1391](https://github.com/lingui/js-lingui/issues/1391)) ([f390ca4](https://github.com/lingui/js-lingui/commit/f390ca4517144344fcbbbf9c73a42a1a17d0e519))
+* **compile:** remove verbose output when using flow with template ([#1388](https://github.com/lingui/js-lingui/issues/1388)) ([31316f9](https://github.com/lingui/js-lingui/commit/31316f938957dba8e908f9f60a452a2673a934ee))
+
+
+
+
+
 # [3.17.0](https://github.com/lingui/js-lingui/compare/v3.16.1...v3.17.0) (2023-02-01)
 
 
