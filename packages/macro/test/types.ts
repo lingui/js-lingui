@@ -1,5 +1,4 @@
 import { I18n, MessageDescriptor } from "@lingui/core"
-// eslint-disable-next-line import/named
 import { t, defineMessage, plural, select, selectOrdinal } from "../index"
 
 const i18n = new I18n({})

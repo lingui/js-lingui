@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -12,9 +12,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        const a = 
-          /*i18n*/
-          i18n._("{count, plural, one {# book} other {# books}}", {
+        const a = /*i18n*/ i18n._("{count, plural, one {# book} other {# books}}", {
             count: count
           });
       `,
@@ -32,11 +30,10 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}", {
+        /*i18n*/ i18n._("{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}", {
           0: users.length
         });
       `,
   },
 ]
-export default cases;
+export default cases

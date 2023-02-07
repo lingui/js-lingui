@@ -9,22 +9,19 @@ type NoOriginsCatalogType = {
   [P in keyof CatalogType]: Omit<CatalogType[P], "origin">
 }
 
-const removeOrigins = (R.map(
-  ({ origin, ...message }) => message
-) as unknown) as (catalog: CatalogType) => NoOriginsCatalogType
+const removeOrigins = R.map(({ origin, ...message }) => message) as unknown as (
+  catalog: CatalogType
+) => NoOriginsCatalogType
 
-const removeLineNumbers = (R.map(
-  (message: ExtractedMessageType) => {
-    if (message.origin) {
-      message.origin.map(originValue => {
-        originValue.pop()
-        return originValue
-      })
-    }
-    return message
+const removeLineNumbers = R.map((message: ExtractedMessageType) => {
+  if (message.origin) {
+    message.origin.map((originValue) => {
+      originValue.pop()
+      return originValue
+    })
   }
-) as unknown) as (catalog: ExtractedMessageType) => NoOriginsCatalogType
-
+  return message
+}) as unknown as (catalog: ExtractedMessageType) => NoOriginsCatalogType
 
 const lingui: CatalogFormatter = {
   catalogExtension: ".json",
@@ -52,7 +49,7 @@ const lingui: CatalogFormatter = {
 
   parse(content) {
     return content
-  }
+  },
 }
 
 export default lingui

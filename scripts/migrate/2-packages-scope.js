@@ -19,7 +19,7 @@ const packageMap = {
   "babel-plugin-lingui-extract-messages":
     "@lingui/babel-plugin-extract-messages",
   "babel-preset-lingui-js": "@lingui/babel-preset-js",
-  "babel-preset-lingui-react": "@lingui/babel-preset-react"
+  "babel-preset-lingui-react": "@lingui/babel-preset-react",
 }
 
 const packageJson = require(path.resolve(cwd, "package.json"))
@@ -30,7 +30,7 @@ const dependencies = [].concat(
 )
 
 const packagesToRemove = dependencies.filter(
-  name => packageMap[name] !== undefined
+  (name) => packageMap[name] !== undefined
 )
 
 if (!packagesToRemove.length) {
@@ -39,12 +39,12 @@ if (!packagesToRemove.length) {
 }
 
 const packagesToInstall = packagesToRemove
-  .filter(name => packageJson.dependencies[name] !== undefined)
-  .map(name => packageMap[name])
+  .filter((name) => packageJson.dependencies[name] !== undefined)
+  .map((name) => packageMap[name])
 
 const devPackagesToInstall = packagesToRemove
-  .filter(name => packageJson.devDependencies[name] !== undefined)
-  .map(name => packageMap[name])
+  .filter((name) => packageJson.devDependencies[name] !== undefined)
+  .map((name) => packageMap[name])
 
 exec(`yarn remove ${packagesToRemove.join(" ")}`)
 exec(`yarn add ${packagesToInstall.join(" ")}`)

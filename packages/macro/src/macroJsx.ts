@@ -9,13 +9,19 @@ import {
   JSXIdentifier,
   JSXSpreadAttribute,
   Node,
-  StringLiteral
+  StringLiteral,
 } from "@babel/types"
-import {NodePath} from "@babel/traverse"
+import { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {ArgToken, ElementToken, TextToken, Token, Tokens} from "./icu"
-import {makeCounter, zip} from "./utils"
-import {COMMENT, CONTEXT, ID, MESSAGE} from "./constants"
+import ICUMessageFormat, {
+  ArgToken,
+  ElementToken,
+  TextToken,
+  Token,
+  Tokens,
+} from "./icu"
+import { makeCounter, zip } from "./utils"
+import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -24,7 +30,8 @@ const jsx2icuExactChoice = (value: string) =>
 // replace whitespace before/after newline with single space
 const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
 // remove whitespace before/after tag or expression
-const stripAroundTagsRe = /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
+const stripAroundTagsRe =
+  /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
 function maybeNodeValue(node: Node): string {
   if (!node) return null
@@ -56,7 +63,7 @@ export default class MacroJSX {
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
 
-  constructor({ types }: {types: typeof babelTypes}) {
+  constructor({ types }: { types: typeof babelTypes }) {
     this.types = types
   }
 
@@ -79,7 +86,9 @@ export default class MacroJSX {
     } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
-    const { attributes, id, comment, context } = this.stripMacroAttributes(path.node as JSXElement)
+    const { attributes, id, comment, context } = this.stripMacroAttributes(
+      path.node as JSXElement
+    )
 
     if (!id && !message) {
       return
@@ -175,10 +184,9 @@ export default class MacroJSX {
   attrName = (names: string[], exclude = false) => {
     const namesRe = new RegExp("^(" + names.join("|") + ")$")
     return (attr: JSXAttribute | JSXSpreadAttribute) => {
-      const name = (((attr as JSXAttribute).name) as JSXIdentifier).name
+      const name = ((attr as JSXAttribute).name as JSXIdentifier).name
       return exclude ? !namesRe.test(name) : namesRe.test(name)
     }
-
   }
 
   stripMacroAttributes = (node: JSXElement) => {
@@ -236,7 +244,7 @@ export default class MacroJSX {
     )
   }
 
-  tokenizeChildren = (node: JSXElement['children'][number]): Tokens => {
+  tokenizeChildren = (node: JSXElement["children"][number]): Tokens => {
     if (this.types.isJSXExpressionContainer(node)) {
       const exp = node.expression
 
@@ -254,7 +262,11 @@ export default class MacroJSX {
               // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
               // This regex will detect if a string contains unicode chars, when they're we should interpolate them
               // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-              const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw) ? text.value.cooked : text.value.raw
+              const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
+                text.value.raw
+              )
+                ? text.value.cooked
+                : text.value.raw
               if (value === "") return null
 
               return this.tokenizeText(this.clearBackslashes(value))
@@ -291,17 +303,22 @@ export default class MacroJSX {
   tokenizeChoiceComponent = (node: JSXElement): Token => {
     const element = node.openingElement
     const format = this.getJsxTagName(node).toLowerCase()
-    const props = element.attributes.filter(this.attrName([
-      ID,
-      COMMENT,
-      MESSAGE,
-      CONTEXT,
-      "key",
-      // we remove <Trans /> react props that are not useful for translation
-      "render",
-      "component",
-      "components"
-    ], true))
+    const props = element.attributes.filter(
+      this.attrName(
+        [
+          ID,
+          COMMENT,
+          MESSAGE,
+          CONTEXT,
+          "key",
+          // we remove <Trans /> react props that are not useful for translation
+          "render",
+          "component",
+          "components",
+        ],
+        true
+      )
+    )
 
     const token: Token = {
       type: "arg",
@@ -315,11 +332,11 @@ export default class MacroJSX {
 
     for (const attr of props) {
       if (this.types.isJSXSpreadAttribute(attr)) {
-        continue;
+        continue
       }
 
       if (this.types.isJSXNamespacedName(attr.name)) {
-        continue;
+        continue
       }
 
       const name = attr.name.name
@@ -334,9 +351,10 @@ export default class MacroJSX {
         // offset is static parameter, so it must be either string or number
         token.options.offset = this.types.isStringLiteral(attr.value)
           ? attr.value.value
-          : ((attr.value as JSXExpressionContainer).expression as StringLiteral).value
+          : ((attr.value as JSXExpressionContainer).expression as StringLiteral)
+              .value
       } else {
-        let value: ArgToken['options'][number]
+        let value: ArgToken["options"][number]
 
         if (this.types.isStringLiteral(attr.value)) {
           value = (attr.value.extra.raw as string).replace(/(["'])(.*)\1/, "$2")
@@ -358,9 +376,9 @@ export default class MacroJSX {
     // !!! Important: Calculate element index before traversing children.
     // That way outside elements are numbered before inner elements. (...and it looks pretty).
     const name = this.elementIndex()
-    const children = R.flatten(node.children
-      .map((child) => this.tokenizeChildren(child))
-      .filter(Boolean))
+    const children = R.flatten(
+      node.children.map((child) => this.tokenizeChildren(child)).filter(Boolean)
+    )
 
     node.children = []
     node.openingElement.selfClosing = true
@@ -389,7 +407,9 @@ export default class MacroJSX {
   }
 
   expressionToArgument(exp: Expression | Node): string {
-    return this.types.isIdentifier(exp) ? exp.name : String(this.expressionIndex())
+    return this.types.isIdentifier(exp)
+      ? exp.name
+      : String(this.expressionIndex())
   }
 
   /**
@@ -425,8 +445,8 @@ export default class MacroJSX {
   }
 
   getJsxTagName = (node: JSXElement): string => {
-    if ( this.types.isJSXIdentifier(node.openingElement.name)) {
-      return node.openingElement.name.name;
+    if (this.types.isJSXIdentifier(node.openingElement.name)) {
+      return node.openingElement.name.name
     }
   }
 }

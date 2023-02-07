@@ -42,13 +42,16 @@ function testCase(testName, assertion) {
         configFile: false,
         plugins: [
           "@babel/plugin-syntax-jsx",
-          ["macros", {
-            // macro plugin uses package `resolve` to find a path of macro file
-            // this will not follow jest pathMapping and will resolve path from ./build
-            // instead of ./src which makes testing & developing hard.
-            // here we override resolve and provide correct path for testing
-            resolvePath: (source: string) => require.resolve(source)
-          }],
+          [
+            "macros",
+            {
+              // macro plugin uses package `resolve` to find a path of macro file
+              // this will not follow jest pathMapping and will resolve path from ./build
+              // instead of ./src which makes testing & developing hard.
+              // here we override resolve and provide correct path for testing
+              resolvePath: (source: string) => require.resolve(source),
+            },
+          ],
           [
             plugin,
             {
@@ -119,10 +122,7 @@ describe("@lingui/babel-plugin-extract-messages", function () {
     ).toBeFalsy()
   })
 
-  testCase(
-    "should handle duplicate ids",
-    "duplicate-id-valid.js"
-  )
+  testCase("should handle duplicate ids", "duplicate-id-valid.js")
 
   testCase(
     "should extract all messages from JSX files",

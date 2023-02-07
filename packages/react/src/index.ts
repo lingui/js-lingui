@@ -1,8 +1,4 @@
-export {
-  I18nProvider,
-  useLingui,
-  withI18n,
-} from "./I18nProvider"
+export { I18nProvider, useLingui, withI18n } from "./I18nProvider"
 
 export type {
   I18nProviderProps,

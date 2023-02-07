@@ -18,7 +18,11 @@ export type ExtractOptions = {
 
 export type ExtractorType = {
   match(filename: string): boolean
-  extract(filename: string, targetDir: string, options?: ExtractOptions): Promise<void> | void
+  extract(
+    filename: string,
+    targetDir: string,
+    options?: ExtractOptions
+  ): Promise<void> | void
 }
 
 export default async function extract(
@@ -29,7 +33,7 @@ export default async function extract(
   const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
 
   for (let e of extractorsToExtract) {
-    let ext: ExtractorType = e;
+    let ext: ExtractorType = e
     if (typeof e === "string") {
       // in case of the user using require.resolve in their extractors, we require that module
       ext = require(e)

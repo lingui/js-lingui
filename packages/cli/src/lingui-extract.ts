@@ -44,7 +44,7 @@ export default async function command(
   let commandSuccess = true
   for (let catalog of catalogs) {
     const catalogSuccess = await catalog.make({
-      ...options as CliExtractOptions,
+      ...(options as CliExtractOptions),
       orderBy: config.orderBy,
       extractors: config.extractors,
       projectType: detect(),
@@ -74,12 +74,19 @@ export default async function command(
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
-  if (typeof config.service === 'object' && config.service.name && config.service.name.length) {
-    const moduleName = config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1);
+  if (
+    typeof config.service === "object" &&
+    config.service.name &&
+    config.service.name.length
+  ) {
+    const moduleName =
+      config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
     import(`./services/${moduleName}`)
-      .then(module => module.default(config, options))
-      .catch(err => console.error(`Can't load service module ${moduleName}`, err))
+      .then((module) => module.default(config, options))
+      .catch((err) =>
+        console.error(`Can't load service module ${moduleName}`, err)
+      )
   }
 
   return commandSuccess
@@ -214,11 +221,11 @@ if (require.main === module) {
   } else if (program.args) {
     // this behaviour occurs when we extract files by his name
     // for ex: lingui extract src/app, this will extract only files included in src/app
-    extract(program.args).then(result => {
+    extract(program.args).then((result) => {
       if (!result) process.exit(1)
     })
   } else {
-    extract().then(result => {
+    extract().then((result) => {
       if (!result) process.exit(1)
     })
   }

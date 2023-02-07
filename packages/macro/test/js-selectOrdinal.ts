@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -12,11 +12,10 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat", {
+        /*i18n*/ i18n._("This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat", {
           count: count
         });
       `,
   },
 ]
-export default cases;
+export default cases

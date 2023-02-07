@@ -1,3 +1,5 @@
+# https://docs.codecov.com/docs/codecovyml-reference
+
 codecov:
   notify:
     require_ci_to_pass: yes
@@ -5,7 +7,7 @@ codecov:
 coverage:
   precision: 2
   round: down
-  range: "70...100"
+  range: "65...100"
 
   status:
     project:

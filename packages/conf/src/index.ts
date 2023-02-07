@@ -2,9 +2,8 @@ import type { GeneratorOptions } from "@babel/core"
 import path from "path"
 import fs from "fs"
 import chalk from "chalk"
-import { cosmiconfigSync } from "cosmiconfig"
+import { cosmiconfigSync, type LoaderSync } from "cosmiconfig"
 import { multipleValidOptions, validate } from "jest-validate"
-import { TypeScriptLoader } from "cosmiconfig-typescript-loader";
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv"
 
@@ -50,6 +49,8 @@ export type LinguiConfig = {
   compilerBabelOptions: GeneratorOptions
   fallbackLocales?: FallbackLocales
   extractors?: ExtractorType[] | string[]
+  prevFormat?: CatalogFormat
+  localeDir?: string
   format: CatalogFormat
   formatOptions: CatalogFormatOptions
   locales: string[]
@@ -85,7 +86,7 @@ export const defaultConfig: LinguiConfig = {
     minified: true,
     jsescOption: {
       minimal: true,
-    }
+    },
   },
   extractBabelOptions: { plugins: [], presets: [] },
   fallbackLocales: {},
@@ -97,11 +98,24 @@ export const defaultConfig: LinguiConfig = {
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   sourceLocale: "",
-  service: { name: "", apiKey: "" }
+  service: { name: "", apiKey: "" },
 }
 
 function configExists(path) {
   return path && fs.existsSync(path)
+}
+
+function TypeScriptLoader(): LoaderSync {
+  let loaderInstance: LoaderSync
+  return (filepath, content) => {
+    if (!loaderInstance) {
+      const { TypeScriptLoader } =
+        require("cosmiconfig-typescript-loader") as typeof import("cosmiconfig-typescript-loader")
+      loaderInstance = TypeScriptLoader()
+    }
+
+    return loaderInstance(filepath, content)
+  }
 }
 
 export function getConfig({
@@ -136,13 +150,28 @@ export function getConfig({
     ? configExplorer.load(configPath)
     : configExplorer.search(defaultRootDir)
   const userConfig = result ? result.config : {}
+
+  return makeConfig(
+    {
+      rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
+      ...userConfig,
+    },
+    { skipValidation }
+  )
+}
+
+export function makeConfig(
+  userConfig: Partial<LinguiConfig>,
+  opts: {
+    skipValidation?: boolean
+  } = {}
+): LinguiConfig {
   const config: LinguiConfig = {
     ...defaultConfig,
-    rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
     ...userConfig,
   }
 
-  if (!skipValidation) {
+  if (!opts.skipValidation) {
     validate(config, configValidation)
 
     return pipe(
@@ -166,12 +195,17 @@ const exampleConfig = {
   extractors: multipleValidOptions(
     [],
     ["babel"],
-    [{
-      match: (fileName: string) => false,
-      extract: (filename: string, targetDir: string, options?: any) => {}
-    } as ExtractorType]
+    [
+      {
+        match: (fileName: string) => false,
+        extract: (filename: string, targetDir: string, options?: any) => {},
+      } as ExtractorType,
+    ]
   ),
-  runtimeConfigModule: multipleValidOptions({i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"]}, ["@lingui/core", "i18n"]),
+  runtimeConfigModule: multipleValidOptions(
+    { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
+    ["@lingui/core", "i18n"]
+  ),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },
@@ -184,10 +218,15 @@ const exampleConfig = {
     rootMode: "rootmode",
     plugins: ["plugin"],
     presets: ["preset"],
-    targets: multipleValidOptions({}, '> 0.5%', ['> 0.5%', 'not dead'], undefined),
+    targets: multipleValidOptions(
+      {},
+      "> 0.5%",
+      ["> 0.5%", "not dead"],
+      undefined
+    ),
     assumptions: multipleValidOptions({}, undefined),
     browserslistConfigFile: multipleValidOptions(true, undefined),
-    browserslistEnv: multipleValidOptions('.browserslistrc', undefined),
+    browserslistEnv: multipleValidOptions(".browserslistrc", undefined),
   },
 }
 
@@ -575,5 +614,7 @@ export function catalogMigration(
   return newConfig
 }
 
-const pipe = (...functions: Array<Function>) => (args: any): any =>
-  functions.reduce((arg, fn) => fn(arg), args)
+const pipe =
+  (...functions: Array<Function>) =>
+  (args: any): any =>
+    functions.reduce((arg, fn) => fn(arg), args)

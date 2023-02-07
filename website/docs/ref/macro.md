@@ -1,23 +1,23 @@
 # Macros
 
-`@lingui/macro` package provides [babel macros](https://github.com/kentcdodds/babel-plugin-macros) which transforms JavaScript objects and JSX elements into messages in ICU MessageFormat.
+The `@lingui/macro` package transforms JavaScript objects and JSX elements into ICU MessageFormat messages. You can use [Babel macros](#babel) or [SWC plugin](#swc) for this transformation.
 
 ## Installation
 
-Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise install it as any other Babel plugin:
+Installing `@lingui/macro` can be done in two ways, depending on whether you use Babel or SWC as your compiler.
 
-1.  Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
+### Babel
+
+Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise, install it as any other Babel plugin:
+
+1. Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
 
   ```bash npm2yarn
   npm install --save-dev babel-plugin-macros
   npm install --save @lingui/macro
   ```
 
-  :::note
-  It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies`  errors in ESLint.
-  :::
-
-2.  Add `macros` to the top of plugins section in your Babel config:
+2. Add `macros` to the top of plugins section in your Babel config:
 
   ```json
   {
@@ -27,6 +27,23 @@ Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-p
   }
   ```
 
+### SWC
+
+For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.
+
+1. Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
+
+  ```bash npm2yarn
+  npm install --save-dev @lingui/swc-plugin
+  npm install --save @lingui/macro
+  ```
+
+2. [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+:::note
+It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies`  errors in ESLint.
+:::
+
 ## Overview
 
 The advantages of using macros are:
@@ -34,7 +51,7 @@ The advantages of using macros are:
 - You don't need to learn ICU MessageFormat syntax. You always use familiar JS and JSX code.
 - Components and functions are type checked.
 - Additional validation of plural rules is performed during transformation.
-- Non essentials data are removed from production build (e.g. comments and default messages) to shave few bytes.
+- Non-essential data are removed from the production build (e.g. comments and default messages) to shave a few bytes.
 
 **JSX macros** are transformed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md):
 

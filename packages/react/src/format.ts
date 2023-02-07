@@ -1,7 +1,7 @@
 import React from "react"
 
-// match <0>paired</0> and <1/> unpaired tags
-const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
+// match <tag>paired</tag> and <tag/> unpaired tags
+const tagRe = /<([a-zA-Z0-9]+)>(.*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
 // For HTML, certain tags should omit their close tag. We keep a whitelist for
@@ -22,13 +22,13 @@ const voidElementTags = {
   source: true,
   track: true,
   wbr: true,
-  menuitem: true
+  menuitem: true,
 }
 
 /**
  * `formatElements` - parse string and return tree of react elements
  *
- * `value` is string to be formatted with <0>Paired<0/> or <0/> (unpaired)
+ * `value` is string to be formatted with <tag>Paired<tag/> or <tag/> (unpaired)
  * placeholders. `elements` is a array of react elements which indexes
  * correspond to element indexes in formatted string
  */
@@ -36,7 +36,7 @@ function formatElements(
   value: string,
   elements: { [key: string]: React.ReactElement<any> } = {}
 ): string | Array<any> {
-  const uniqueId = makeCounter(0, '$lingui$')
+  const uniqueId = makeCounter(0, "$lingui$")
   const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return
@@ -101,11 +101,14 @@ function getElements(parts) {
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[parseInt(paired || unpaired), children || "", after]].concat(
+  return [[paired || unpaired, children || "", after]].concat(
     getElements(parts.slice(4, parts.length))
   )
 }
 
-const makeCounter = (count = 0, prefix = "") => () => `${prefix}_${count++}`
+const makeCounter =
+  (count = 0, prefix = "") =>
+  () =>
+    `${prefix}_${count++}`
 
 export { formatElements }

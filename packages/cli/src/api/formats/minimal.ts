@@ -6,16 +6,16 @@ import { CatalogFormatter } from "."
 
 type MinimalCatalogType = Record<string, string>
 
-const serialize = (R.map(
+const serialize = R.map(
   (message: MessageType) => message.translation || ""
-) as unknown) as (catalog: CatalogType) => MinimalCatalogType
+) as unknown as (catalog: CatalogType) => MinimalCatalogType
 
-const deserialize = (R.map((translation: string) => ({
+const deserialize = R.map((translation: string) => ({
   translation,
   obsolete: false,
   message: null,
   origin: [],
-})) as unknown) as (minimalCatalog: MinimalCatalogType) => CatalogType
+})) as unknown as (minimalCatalog: MinimalCatalogType) => CatalogType
 
 const minimal: CatalogFormatter = {
   catalogExtension: ".json",
@@ -24,7 +24,7 @@ const minimal: CatalogFormatter = {
     const messages = serialize(catalog)
     let file = null
     try {
-      file = fs.readFileSync(filename, 'utf8')
+      file = fs.readFileSync(filename, "utf8")
     } catch (error) {
       if (error.code !== "ENOENT") {
         throw error
@@ -32,7 +32,10 @@ const minimal: CatalogFormatter = {
     }
     const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
     const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-    fs.writeFileSync(filename, `${JSON.stringify(messages, null, 2)}${trailingNewLine}`)
+    fs.writeFileSync(
+      filename,
+      `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
+    )
   },
 
   read(filename) {
@@ -48,7 +51,7 @@ const minimal: CatalogFormatter = {
 
   parse(content: Record<string, any>) {
     return deserialize(content)
-  }
+  },
 }
 
 export default minimal

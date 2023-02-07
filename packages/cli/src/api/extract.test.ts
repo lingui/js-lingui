@@ -10,7 +10,6 @@ describe("extract", function () {
   let extract, babel, typescript
 
   beforeAll(() => {
-
     // References to the real match functions
     const babelMatch = require("./extractors/babel").default.match
     const tsMatch = require("./extractors/typescript").default.match
@@ -63,10 +62,7 @@ describe("extract", function () {
   it("should traverse directory and call extractors", async function () {
     await extract(["src"], "locale", {
       ignore: ["forbidden"],
-      extractors: [
-        babel,
-        typescript
-      ],
+      extractors: [babel, typescript],
       babelOptions: {},
     })
 
@@ -88,10 +84,8 @@ describe("extract", function () {
     expect(babel.match).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.mjs")
     )
-		
-    expect(babel.match).toHaveBeenCalledWith(
-			path.join("src", "index.html")
-    )
+
+    expect(babel.match).toHaveBeenCalledWith(path.join("src", "index.html"))
 
     // This file is ignored
     expect(babel.extract).not.toHaveBeenCalledWith(
@@ -100,7 +94,11 @@ describe("extract", function () {
 
     const extractArgs = [
       "locale",
-      { extractors: [babel, typescript], babelOptions: {}, ignore: ["forbidden"]}
+      {
+        extractors: [babel, typescript],
+        babelOptions: {},
+        ignore: ["forbidden"],
+      },
     ]
     expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
@@ -177,20 +175,15 @@ describe("extract", function () {
     expect(babel.match).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.mjs")
     )
-		
-    expect(babel.match).toHaveBeenCalledWith(
-			path.join("src", "index.html")
-    )
+
+    expect(babel.match).toHaveBeenCalledWith(path.join("src", "index.html"))
 
     // This file is ignored
     expect(babel.extract).not.toHaveBeenCalledWith(
       path.join("src", "index.html")
     )
 
-    const extractArgs = [
-      "locale",
-      { babelOptions: {}, ignore: ["forbidden"]}
-    ]
+    const extractArgs = ["locale", { babelOptions: {}, ignore: ["forbidden"] }]
     expect(babel.extract).toHaveBeenCalledWith(
       path.join("src", "components", "Babel.js"),
       ...extractArgs

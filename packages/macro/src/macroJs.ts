@@ -312,25 +312,23 @@ export default class MacroJs {
   tokenizeTemplateLiteral = (node: babelTypes.Expression): Tokens => {
     const tokenize = R.pipe(
       R.evolve({
-        quasis: R.map(
-          (text: babelTypes.TemplateElement): TextToken => {
-            // Don't output tokens without text.
-            // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-            // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-            // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-            const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
-              text.value.raw
-            )
-              ? text.value.cooked
-              : text.value.raw
-            if (value === "") return null
+        quasis: R.map((text: babelTypes.TemplateElement): TextToken => {
+          // Don't output tokens without text.
+          // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+          // This regex will detect if a string contains unicode chars, when they're we should interpolate them
+          // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
+            text.value.raw
+          )
+            ? text.value.cooked
+            : text.value.raw
+          if (value === "") return null
 
-            return {
-              type: "text",
-              value: this.clearBackslashes(value),
-            }
+          return {
+            type: "text",
+            value: this.clearBackslashes(value),
           }
-        ),
+        }),
         expressions: R.map((exp: babelTypes.Expression) =>
           this.types.isCallExpression(exp)
             ? this.tokenizeNode(exp)

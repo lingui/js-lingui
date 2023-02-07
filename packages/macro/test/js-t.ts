@@ -9,9 +9,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        const a =
-          /*i18n*/
-          i18n._("Expression assignment")
+        const a = /*i18n*/  i18n._("Expression assignment")
     `,
   },
   {
@@ -23,9 +21,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from './lingui';
-        const a =
-          /*i18n*/
-          i18n._("Expression assignment")
+        const a = /*i18n*/ i18n._("Expression assignment")
     `,
   },
   {
@@ -36,8 +32,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable {name}", {
+        /*i18n*/ i18n._("Variable {name}", {
           name: name
         })
     `,
@@ -50,8 +45,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable \`{name}\`", {
+        /*i18n*/ i18n._("Variable \`{name}\`", {
           name: name
         })
     `,
@@ -64,8 +58,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Variable \\"name\\"")
+        /*i18n*/ i18n._("Variable \\"name\\"")
     `,
   },
   {
@@ -76,15 +69,13 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("{duplicate} variable {duplicate}", {
+        /*i18n*/ i18n._("{duplicate} variable {duplicate}", {
           duplicate: duplicate
         })
     `,
   },
   {
-    name:
-      "Anything variables except simple identifiers are used as positional arguments",
+    name: "Anything variables except simple identifiers are used as positional arguments",
     input: `
         import { t } from '@lingui/macro';
         t\`
@@ -98,8 +89,7 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._(
+        /*i18n*/ i18n._(
           "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}", {
             0: props.name,
             1: random(),
@@ -120,8 +110,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("Multiline\\nstring")
+        /*i18n*/ i18n._("Multiline\\nstring")
       `,
   },
   {
@@ -142,8 +131,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name:
-      "Support template strings in t macro message, with custom i18n instance",
+    name: "Support template strings in t macro message, with custom i18n instance",
     input: `
         import { t } from '@lingui/macro'
         import { i18n } from './lingui'
@@ -212,8 +200,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name:
-      "Production - only essential props are kept, with plural, with custom i18n instance",
+    name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `
       import { t } from '@lingui/macro';
@@ -238,8 +225,7 @@ const cases: TestCase[] = [
     `,
   },
   {
-    name:
-      "Production - only essential props are kept, with custom i18n instance",
+    name: "Production - only essential props are kept, with custom i18n instance",
     production: true,
     input: `
         import { t } from '@lingui/macro';

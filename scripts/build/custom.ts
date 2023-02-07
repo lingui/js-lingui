@@ -1,5 +1,5 @@
-import {exec} from "child_process"
-import {BundleDef} from "./bundles"
+import { exec } from "child_process"
+import { BundleDef } from "./bundles"
 import chalk from "chalk"
 import ora from "ora"
 
@@ -10,24 +10,24 @@ function asyncExecuteCommand(command: string) {
       stderr = stderr.trim()
 
       if (error) {
-        reject({stdout, stderr})
+        reject({ stdout, stderr })
         return
       }
-      resolve({stdout, stderr})
+      resolve({ stdout, stderr })
     })
   )
 }
 
-export default async function(bundle: BundleDef) {
+export default async function (bundle: BundleDef) {
   const logKey = chalk.white.bold(bundle.packageName)
 
   const spinner = ora(logKey).start()
 
   try {
-    await asyncExecuteCommand(bundle.cmd);
+    await asyncExecuteCommand(bundle.cmd)
   } catch (error) {
     spinner.fail(error.stdout)
-    process.exit(1);
+    process.exit(1)
   }
 
   spinner.succeed()

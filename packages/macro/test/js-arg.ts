@@ -9,11 +9,9 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        const a = 
-          /*i18n*/
-          i18n._("Hello {name}")
+        const a = /*i18n*/ i18n._("Hello {name}")
     `,
   },
 ]
 
-export default cases;
+export default cases

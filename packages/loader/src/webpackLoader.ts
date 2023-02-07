@@ -7,7 +7,7 @@ import {
 } from "@lingui/cli/api"
 import loaderUtils from "loader-utils"
 // Check if webpack 5
-const isWebpack5 = parseInt(require("webpack").version) === 5;
+const isWebpack5 = parseInt(require("webpack").version) === 5
 
 // Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
 let JavascriptParser
@@ -21,7 +21,7 @@ try {
   }
 }
 
-const requiredType = "javascript/auto";
+const requiredType = "javascript/auto"
 
 export default function (source) {
   const options = loaderUtils.getOptions(this) || {}
@@ -50,10 +50,15 @@ export default function (source) {
     const formats = {
       minimal: ".json",
       po: ".po",
-      lingui: ".json"
+      lingui: ".json",
     }
     // we replace the .js, because webpack appends automatically the .js on imports without extension
-    throw new Error(`File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(".js", formats[config.format])}")`)
+    throw new Error(
+      `File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(
+        ".js",
+        formats[config.format]
+      )}")`
+    )
   }
 
   const { locale, catalog } = getCatalogForFile(

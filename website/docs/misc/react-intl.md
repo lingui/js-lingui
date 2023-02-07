@@ -55,14 +55,12 @@ In [react-intl](https://github.com/yahoo/react-intl), this would be translated a
 ``` jsx
 <Trans
     id='msg.docs'
-    message='Read the <0>documentation</0>.'
-    components={[
-        <a href="/docs" />
-    ]}
+    message='Read the <link>documentation</link>.'
+    components={{ link: <a href="/docs" />}}
 />
 ```
 
-and the translator gets the message in one piece: `Read the <0>documentation</0>`.
+and the translator gets the message in one piece: `Read the <link>documentation</link>`.
 
 However, let's go yet another level deeper.
 

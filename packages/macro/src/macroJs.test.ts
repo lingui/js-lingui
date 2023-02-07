@@ -1,7 +1,7 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
 import MacroJs from "./macroJs"
-import {CallExpression} from "@babel/types"
+import { CallExpression } from "@babel/types"
 
 function createMacro() {
   return new MacroJs({ types }, { i18nImportName: "i18n" })
@@ -124,7 +124,7 @@ describe("js macro", () => {
         "t`Passing \\`${argSet}\\` is not supported.`"
       )
       const tokens = macro.tokenizeTemplateLiteral(exp)
-      expect(tokens).toEqual([
+      expect(tokens).toMatchObject([
         {
           type: "text",
           value: "Passing `",

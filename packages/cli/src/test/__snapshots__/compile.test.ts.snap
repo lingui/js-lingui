@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CLI Command: Compile Locales Validation Should throw error for invalid locale 1`] = `
+Error: Invalid locale abra (missing plural rules)!
+
+`;
+
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog  if message doesnt have a translation (with template) 1`] = `
+Object {
+  en: /*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello World\\":\\"Hello World\\"}")};,
+  pl: undefined,
+}
+`;
+
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog  if message doesnt have a translation (with template) 2`] = `
+Error: Failed to compile catalog for locale pl!
+Missing 1 translation(s)
+
+`;
+
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (no template) 1`] = `
+Error: Failed to compile catalog for locale pl!
+Missing 1 translation(s)
+
+`;
+
+exports[`CLI Command: Compile allowEmpty = false Should show missing messages verbosely when verbose = true 1`] = `
+en ⇒ /test/en.js
+Error: Failed to compile catalog for locale pl!
+Missing translations:
+Hello World
+Test String
+
+`;

@@ -112,14 +112,14 @@ export class Catalog {
     })
 
     // Map over all locales and post-process each catalog
-    const cleanAndSort = (R.map(
+    const cleanAndSort = R.map(
       R.pipe(
         // Clean obsolete messages
         options.clean ? cleanObsolete : R.identity,
         // Sort messages
         order(options.orderBy)
       )
-    ) as unknown) as (catalog: AllCatalogsType) => AllCatalogsType
+    ) as unknown as (catalog: AllCatalogsType) => AllCatalogsType
 
     const sortedCatalogs = cleanAndSort(catalogs)
 
@@ -280,10 +280,6 @@ export class Catalog {
   ) {
     const catalog = catalogs[locale] || {}
 
-    if (!catalog.hasOwnProperty(key)) {
-      console.error(`Message with key ${key} is missing in locale ${locale}`)
-    }
-
     const getTranslation = (_locale: string) => {
       const configLocales = this.config.locales.join('", "')
       const localeCatalog = catalogs[_locale] || {}
@@ -299,7 +295,6 @@ export class Catalog {
         return null
       }
       if (!localeCatalog.hasOwnProperty(key)) {
-        console.error(`Message with key ${key} is missing in locale ${_locale}`)
         return null
       }
 

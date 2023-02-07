@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -25,7 +25,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: 'Should preserve reserved props: `comment`, `context`, `render`, `id`',
+    name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
     input: `
         import { Plural } from '@lingui/macro';
         <Plural
@@ -143,4 +143,4 @@ const cases: TestCase[] = [
     filename: `jsx-plural-select-nested.js`,
   },
 ]
-export default cases;
+export default cases

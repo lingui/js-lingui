@@ -1,4 +1,4 @@
-import {TestCase} from "./index"
+import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
@@ -16,8 +16,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}", {
+        /*i18n*/ i18n._("{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They is {gender}}}", {
           gender: gender,
           numOfGuests: numOfGuests
         });
@@ -34,11 +33,10 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { i18n } from "@lingui/core";
-        /*i18n*/
-        i18n._("{value, select, id {test escaped id} comment {test escaped comment}}", {
+        /*i18n*/ i18n._("{value, select, id {test escaped id} comment {test escaped comment}}", {
           value: value
         });
       `,
   },
 ]
-export default cases;
+export default cases

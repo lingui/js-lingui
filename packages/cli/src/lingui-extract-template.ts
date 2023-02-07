@@ -33,20 +33,19 @@ export default async function command(
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: Number } = {}
 
-  await Promise.all(catalogs.map(async (catalog) => {
-    await catalog.makeTemplate({
-      ...options as CliExtractTemplateOptions,
-      orderBy: config.orderBy,
-      projectType: detect(),
+  await Promise.all(
+    catalogs.map(async (catalog) => {
+      await catalog.makeTemplate({
+        ...(options as CliExtractTemplateOptions),
+        orderBy: config.orderBy,
+        projectType: detect(),
+      })
+      const catalogTemplate = catalog.readTemplate()
+      if (catalogTemplate !== null && catalogTemplate !== undefined) {
+        catalogStats[catalog.templateFile] = Object.keys(catalogTemplate).length
+      }
     })
-    const catalogTemplate = catalog.readTemplate()
-    if (
-      catalogTemplate !== null &&
-      catalogTemplate !== undefined
-    ) {
-      catalogStats[catalog.templateFile] = Object.keys(catalogTemplate).length
-    }
-  }))
+  )
 
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
@@ -65,7 +64,9 @@ if (require.main === module) {
     .option("--verbose", "Verbose output")
     .parse(process.argv)
 
-  const config = getConfig({ configPath: program.config || process.env.LINGUI_CONFIG })
+  const config = getConfig({
+    configPath: program.config || process.env.LINGUI_CONFIG,
+  })
 
   const result = command(config, {
     verbose: program.verbose || false,
@@ -73,5 +74,4 @@ if (require.main === module) {
   }).then(() => {
     if (!result) process.exit(1)
   })
-
 }

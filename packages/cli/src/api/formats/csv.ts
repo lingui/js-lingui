@@ -51,7 +51,7 @@ const csv: CatalogFormatter = {
 
   parse(content) {
     return deserialize(content)
-  }
+  },
 }
 
 export default csv

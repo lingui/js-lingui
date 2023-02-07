@@ -855,7 +855,9 @@ describe("getCatalogForFile", function () {
     )
     const catalogs = [catalog]
 
-    expect(getCatalogForFile("./src/locales/en/messages_en.po", catalogs)).toEqual({
+    expect(
+      getCatalogForFile("./src/locales/en/messages_en.po", catalogs)
+    ).toEqual({
       locale: "en",
       catalog,
     })

@@ -3,7 +3,7 @@ import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import { compileMessage } from "@lingui/core/compile"
 import { EventEmitter } from "./eventEmitter"
-import type {PluralCategory} from "make-plural"
+import type { PluralCategory } from "make-plural"
 
 export type MessageOptions = {
   message?: string
@@ -13,9 +13,12 @@ export type MessageOptions = {
 
 export type Locale = string
 export type Locales = Locale | Locale[]
-export type Formats = Record<string, Intl.DateTimeFormatOptions | Intl.NumberFormatOptions>
+export type Formats = Record<
+  string,
+  Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
+>
 
-export type Values = Record<string, unknown>;
+export type Values = Record<string, unknown>
 
 export type LocaleData = {
   plurals?: (n: number, ordinal?: boolean) => PluralCategory
@@ -23,8 +26,12 @@ export type LocaleData = {
 
 export type AllLocaleData = Record<Locale, LocaleData>
 
-export type CompiledIcuChoices = Record<string, CompiledMessage> & {offset: number};
-export type CompiledMessageToken = string | [name: string, type?: string, format?: null | string | CompiledIcuChoices];
+export type CompiledIcuChoices = Record<string, CompiledMessage> & {
+  offset: number
+}
+export type CompiledMessageToken =
+  | string
+  | [name: string, type?: string, format?: null | string | CompiledIcuChoices]
 
 export type CompiledMessage = string | CompiledMessageToken[]
 

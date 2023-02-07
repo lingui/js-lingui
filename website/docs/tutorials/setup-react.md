@@ -8,21 +8,21 @@ This setup guide is for any project which uses React.
 
 ## Install
 
-1.  Install `@lingui/cli`, `@lingui/macro`, *babel-plugin-macros* and Babel core packages as a development dependencies and `@lingui/react` as a runtime dependency.
+1.  Install `@lingui/cli`, `@lingui/macro`, *babel-plugin-macros* and Babel [^1] core packages as a development dependencies and `@lingui/react` as a runtime dependency.
 
     ```bash npm2yarn
     npm install --save-dev @lingui/cli @babel/core
-    npm install --save-dev @lingui/macro babel-plugin-macros  # required for macros
+    npm install --save-dev @lingui/macro babel-plugin-macros
     npm install --save @lingui/react
     ```
 
-    In case you get errors with `import/no-extraneous-dependencies` eslint rule feel free to add the dependencies as non-dev
+    :::tip
+    For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.
+    :::
 
-    ```bash npm2yarn
-    npm install --save-dev @lingui/cli @babel/core
-    npm install --save-dev babel-plugin-macros  # required for macros
-    npm install --save @lingui/macro @lingui/react
-    ```
+    :::note
+    It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies`  errors in ESLint.
+    :::
 
 2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
 
@@ -100,3 +100,5 @@ Checkout these reference guides for full documentation:
 -   [ICU Message Format](/docs/ref/message-format.md)
 -   [CLI reference](/docs/ref/cli.md)
 -   [Configuration reference](/docs/ref/conf.md)
+
+[^1]: For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.
