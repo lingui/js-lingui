@@ -58,7 +58,7 @@ type setupI18nProps = {
   locales?: Locales
   messages?: AllMessages
   localeData?: AllLocaleData
-  missing?: string | ((message: string, id: string, context: string) => string)
+  missing?: string | ((locale: string, id: string, context: string) => string)
 }
 
 type Events = {
