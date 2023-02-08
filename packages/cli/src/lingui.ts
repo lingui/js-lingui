@@ -1,15 +1,8 @@
 #!/usr/bin/env node
 
 import { helpMisspelledCommand } from "./api/utils"
-
-const program = require("commander")
-
-let version
-try {
-  version = require("./package.json").version
-} catch (e) {
-  version = "dev"
-}
+import program from "commander"
+import { version } from "../package.json"
 
 program
   .version(version)
