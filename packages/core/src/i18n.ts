@@ -71,7 +71,9 @@ export class I18n extends EventEmitter<Events> {
   private _locales: Locales
   private _localeData: AllLocaleData
   private _messages: AllMessages
-  private _missing: string | ((message, id, context) => string)
+  private _missing:
+    | string
+    | ((locale: string, id: string, context: string) => string)
 
   constructor(params: setupI18nProps) {
     super()
