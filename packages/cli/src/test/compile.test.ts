@@ -172,12 +172,12 @@ msgstr ""
 
           const actualFiles = readFsToJson("/test")
 
+          mockFs.restore()
+
           expect({
             pl: actualFiles["pl.js"],
             en: actualFiles["en.js"],
           }).toMatchSnapshot()
-
-          mockFs.restore()
 
           const log = getConsoleMockCalls(console.error)
           expect(log).toMatchSnapshot()
