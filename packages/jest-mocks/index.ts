@@ -1,12 +1,3 @@
-import { defaultConfig, LinguiConfig } from "@lingui/conf"
-
-export function mockConfig(config: Partial<LinguiConfig> = {}) {
-  return {
-    ...defaultConfig,
-    ...config,
-  }
-}
-
 export function getConsoleMockCalls({ mock }: jest.MockInstance<any, any>) {
   if (!mock.calls.length) return
   return mock.calls.map((call) => call[0]).join("\n")

@@ -5,7 +5,7 @@ import * as R from "ramda"
 import program from "commander"
 import * as plurals from "make-plural"
 
-import { getConfig, LinguiConfig } from "@lingui/conf"
+import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { getCatalogForMerge, getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
@@ -26,7 +26,10 @@ export type CliCompileOptions = {
   namespace?: string
 }
 
-export function command(config: LinguiConfig, options: CliCompileOptions) {
+export function command(
+  config: LinguiConfigNormalized,
+  options: CliCompileOptions
+) {
   const catalogs = getCatalogs(config)
 
   // fixme: this is definitely doesn't work

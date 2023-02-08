@@ -1,8 +1,8 @@
 import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
-import { mockConsole, mockConfig as _mockConfig } from "@lingui/jest-mocks"
-import { LinguiConfig } from "@lingui/conf"
+import { mockConsole } from "@lingui/jest-mocks"
+import { LinguiConfig, makeConfig } from "@lingui/conf"
 
 import {
   getCatalogs,
@@ -30,11 +30,15 @@ export const fixture = (...dirs: string[]) =>
   // preserve trailing slash
   (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
 
-function mockConfig(config: Partial<LinguiConfig> = {}): LinguiConfig {
-  return _mockConfig({
-    rootDir: path.join(__dirname, "fixtures"),
-    ...config,
-  })
+function mockConfig(config: Partial<LinguiConfig> = {}) {
+  return makeConfig(
+    {
+      rootDir: path.join(__dirname, "fixtures"),
+      locales: ["en", "pl"],
+      ...config,
+    },
+    { skipValidation: true }
+  )
 }
 
 describe("Catalog", () => {

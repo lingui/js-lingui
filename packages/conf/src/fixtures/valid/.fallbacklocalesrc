@@ -1,7 +1,0 @@
-{
-  locales: ["en-US", "es-MX"],
-  fallbackLocales: {
-    "en-US": ["en"],
-    "default": "en"
-  }
-}

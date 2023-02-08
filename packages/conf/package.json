@@ -15,8 +15,12 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "engines": {
     "node": ">=14.0.0"
+  },
+  "scripts": {
+    "build": "rimraf ./build && tsc"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
@@ -29,8 +33,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "index.d.ts"
+    "/build"
   ],
   "devDependencies": {
     "ts-node": "^10.9.1"
