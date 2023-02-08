@@ -53,12 +53,16 @@ export type MissingMessageEvent = {
   context?: string
 }
 
+type MissingHandler =
+  | string
+  | ((locale: string, id: string, context: string) => string)
+
 type setupI18nProps = {
   locale?: Locale
   locales?: Locales
   messages?: AllMessages
   localeData?: AllLocaleData
-  missing?: string | ((locale: string, id: string, context: string) => string)
+  missing?: MissingHandler
 }
 
 type Events = {
@@ -71,9 +75,7 @@ export class I18n extends EventEmitter<Events> {
   private _locales: Locales
   private _localeData: AllLocaleData
   private _messages: AllMessages
-  private _missing:
-    | string
-    | ((locale: string, id: string, context: string) => string)
+  private _missing: MissingHandler
 
   constructor(params: setupI18nProps) {
     super()
