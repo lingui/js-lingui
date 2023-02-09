@@ -1,20 +1,27 @@
-import os from "os"
-import fs from "fs-extra"
+import fs from "fs"
 import path from "path"
 import * as R from "ramda"
-import chalk from "chalk"
 import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
 
-import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
+import {
+  LinguiConfig,
+  OrderBy,
+  FallbackLocales,
+  LocaleObject,
+} from "@lingui/conf"
 
-import getFormat, { CatalogFormatter } from "./formats"
-import extract from "./extractors"
-import { prettyOrigin, removeDirectory } from "./utils"
+import getFormat, {
+  CatalogFormatOptionsInternal,
+  CatalogFormatter,
+} from "./formats"
+import extract, { ExtractedMessage } from "./extractors"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
+import { prettyOrigin } from "./utils"
+import chalk from "chalk"
 
 const NAME = "{name}"
 const NAME_REPLACE_RE = /{name}/g
@@ -23,17 +30,16 @@ const LOCALE_REPLACE_RE = /{locale}/g
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
 const PATHSEP = "/" // force posix everywhere
 
-type MessageOrigin = [string, number?]
+type MessageOrigin = [filename: string, line?: number]
 
 export type ExtractedMessageType = {
   message?: string
   origin?: MessageOrigin[]
-  extractedComments?: string[]
   comments?: string[]
+  extractedComments?: string[]
   obsolete?: boolean
   flags?: string[]
   context?: string
-  defaults?: string
 }
 
 export type MessageType = ExtractedMessageType & {
@@ -81,6 +87,18 @@ type CatalogProps = {
   exclude?: Array<string>
 }
 
+function mkdirp(dir: string) {
+  try {
+    fs.mkdirSync(dir, {
+      recursive: true,
+    })
+  } catch (err) {
+    if ((err as any).code != "EEXIST") {
+      throw err
+    }
+  }
+}
+
 export class Catalog {
   name?: string
   path: string
@@ -115,7 +133,7 @@ export class Catalog {
     const cleanAndSort = R.map(
       R.pipe(
         // Clean obsolete messages
-        options.clean ? cleanObsolete : R.identity,
+        (options.clean ? cleanObsolete : R.identity) as any,
         // Sort messages
         order(options.orderBy)
       )
@@ -134,7 +152,7 @@ export class Catalog {
   async makeTemplate(options: MakeTemplateOptions): Promise<boolean> {
     const catalog = await this.collect(options)
     if (!catalog) return false
-    const sort = order(options.orderBy) as (catalog: CatalogType) => CatalogType
+    const sort = order<CatalogType>(options.orderBy)
     this.writeTemplate(sort(catalog as CatalogType))
     return true
   }
@@ -142,68 +160,70 @@ export class Catalog {
   /**
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
-  async collect(options: CollectOptions): Promise<CatalogType | undefined> {
-    const tmpDir = path.join(os.tmpdir(), `lingui-${process.pid}`)
+  async collect(
+    options: CollectOptions
+  ): Promise<ExtractedCatalogType | undefined> {
+    const messages: ExtractedCatalogType = {}
 
-    if (fs.existsSync(tmpDir)) {
-      removeDirectory(tmpDir, true)
-    } else {
-      fs.mkdirSync(tmpDir)
+    let paths = this.sourcePaths
+    if (options.files) {
+      options.files = options.files.map((p) => normalize(p, false))
+      const regex = new RegExp(options.files.join("|"), "i")
+      paths = paths.filter((path: string) => regex.test(path))
     }
 
-    try {
-      let paths = this.sourcePaths
-      if (options.files) {
-        options.files = options.files.map((p) => normalize(p, false))
-        const regex = new RegExp(options.files.join("|"), "i")
-        paths = paths.filter((path: string) => regex.test(path))
-      }
+    let catalogSuccess = true
+    for (let filename of paths) {
+      const fileSuccess = await extract(
+        filename,
+        (next: ExtractedMessage) => {
+          if (!messages[next.id]) {
+            messages[next.id] = {
+              message: next.message,
+              extractedComments: [],
+              origin: [],
+            }
+          }
 
-      let catalogSuccess = true
-      for (let filename of paths) {
-        const fileSuccess = await extract(filename, tmpDir, {
+          const prev = messages[next.id]
+
+          const filename = path
+            .relative(this.config.rootDir, next.origin[0])
+            .replace(/\\/g, "/")
+
+          const origin: MessageOrigin = [filename, next.origin[1]]
+
+          if (prev.message && next.message && prev.message !== next.message) {
+            throw new Error(
+              `Encountered different default translations for message ${chalk.yellow(
+                next.id
+              )}` +
+                `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
+                `\n${chalk.yellow(prettyOrigin([origin]))} ${next.message}`
+            )
+          }
+
+          messages[next.id] = {
+            ...prev,
+            extractedComments: next.comment
+              ? [...prev.extractedComments, next.comment]
+              : prev.extractedComments,
+            origin: [...prev.origin, [filename, next.origin[1]]],
+          }
+        },
+        {
           verbose: options.verbose,
-          configPath: options.configPath,
           babelOptions: this.config.extractBabelOptions,
           extractors: options.extractors,
           projectType: options.projectType,
-        })
-        catalogSuccess &&= fileSuccess
-      }
-      if (!catalogSuccess) return undefined
-
-      return (function traverse(directory) {
-        return fs
-          .readdirSync(directory)
-          .map((filename) => {
-            const filepath = path.join(directory, filename)
-
-            if (fs.lstatSync(filepath).isDirectory()) {
-              return traverse(filepath)
-            }
-
-            if (!filename.endsWith(".json")) return
-
-            try {
-              return JSON.parse(fs.readFileSync(filepath).toString())
-            } catch (e) {}
-          })
-          .filter(Boolean)
-          .reduce(
-            (catalog, messages) =>
-              R.mergeWithKey(
-                mergeOriginsAndExtractedComments,
-                catalog,
-                messages
-              ),
-            {}
-          )
-      })(tmpDir)
-    } catch (e) {
-      throw e
-    } finally {
-      removeDirectory(tmpDir)
+        }
+      )
+      catalogSuccess &&= fileSuccess
     }
+
+    if (!catalogSuccess) return undefined
+
+    return messages
   }
 
   merge(
@@ -278,8 +298,6 @@ export class Catalog {
     key: string,
     { fallbackLocales, sourceLocale }: GetTranslationsOptions
   ) {
-    const catalog = catalogs[locale] || {}
-
     const getTranslation = (_locale: string) => {
       const configLocales = this.config.locales.join('", "')
       const localeCatalog = catalogs[_locale] || {}
@@ -306,7 +324,7 @@ export class Catalog {
     }
 
     const getMultipleFallbacks = (_locale: string) => {
-      const fL = fallbackLocales && fallbackLocales[_locale]
+      const fL = fallbackLocales && (fallbackLocales as LocaleObject)[_locale]
 
       // some probably the fallback will be undefined, so just search by locale
       if (!fL) return null
@@ -331,7 +349,6 @@ export class Catalog {
       (fallbackLocales?.default &&
         getTranslation(fallbackLocales.default as string)) ||
       // Get message default
-      catalog[key]?.defaults ||
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||
       (sourceLocale &&
@@ -343,16 +360,18 @@ export class Catalog {
     )
   }
 
-  write(locale: string, messages: CatalogType) {
+  write(
+    locale: string,
+    messages: CatalogType
+  ): [created: boolean, filename: string] {
     const filename =
       this.path.replace(LOCALE_REPLACE_RE, locale) +
       this.format.catalogExtension
 
     const created = !fs.existsSync(filename)
     const basedir = path.dirname(filename)
-    if (!fs.existsSync(basedir)) {
-      fs.mkdirpSync(basedir)
-    }
+
+    mkdirp(basedir)
 
     const options = { ...this.config.formatOptions, locale }
 
@@ -360,17 +379,18 @@ export class Catalog {
     return [created, filename]
   }
 
-  writeAll(catalogs: AllCatalogsType) {
+  writeAll(catalogs: AllCatalogsType): void {
     this.locales.forEach((locale) => this.write(locale, catalogs[locale]))
   }
 
   writeTemplate(messages: CatalogType) {
     const filename = this.templateFile
     const basedir = path.dirname(filename)
-    if (!fs.existsSync(basedir)) {
-      fs.mkdirpSync(basedir)
+    mkdirp(basedir)
+    const options: CatalogFormatOptionsInternal = {
+      ...this.config.formatOptions,
+      locale: undefined,
     }
-    const options = { ...this.config.formatOptions, locale: undefined }
     this.format.write(filename, messages, options)
   }
 
@@ -391,9 +411,7 @@ export class Catalog {
     const filename = `${this.path.replace(LOCALE_REPLACE_RE, locale)}.${ext}`
 
     const basedir = path.dirname(filename)
-    if (!fs.existsSync(basedir)) {
-      fs.mkdirpSync(basedir)
-    }
+    mkdirp(basedir)
     fs.writeFileSync(filename, compiledCatalog)
     return filename
   }
@@ -619,26 +637,6 @@ export function getCatalogForMerge(config: LinguiConfig) {
 }
 
 /**
- * Merge origins and extractedComments for messages found in different places. All other attributes
- * should be the same (raise an error if defaults are different).
- */
-function mergeOriginsAndExtractedComments(msgId, prev, next) {
-  if (prev.defaults !== next.defaults) {
-    throw new Error(
-      `Encountered different defaults for message ${chalk.yellow(msgId)}` +
-        `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.defaults}` +
-        `\n${chalk.yellow(prettyOrigin(next.origin))} ${next.defaults}`
-    )
-  }
-
-  return {
-    ...next,
-    extractedComments: R.concat(prev.extractedComments, next.extractedComments),
-    origin: R.concat(prev.origin, next.origin),
-  }
-}
-
-/**
  * Ensure that value is always array. If not, turn it into an array of one element.
  */
 const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
@@ -671,9 +669,9 @@ export const cleanObsolete = R.filter(
   (message: ExtractedMessageType) => !message.obsolete
 )
 
-export function order(
+export function order<T extends ExtractedCatalogType>(
   by: OrderBy
-): (catalog: ExtractedCatalogType) => ExtractedCatalogType {
+): (catalog: T) => T {
   return {
     messageId: orderByMessageId,
     origin: orderByOrigin,
@@ -684,19 +682,19 @@ export function order(
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
  */
-export function orderByMessageId(messages) {
-  const orderedMessages = {}
-  Object.keys(messages)
+export function orderByMessageId<T extends ExtractedCatalogType>(
+  messages: T
+): T {
+  return Object.keys(messages)
     .sort()
-    .forEach(function (key) {
-      orderedMessages[key] = messages[key]
-    })
-
-  return orderedMessages
+    .reduce((acc, key) => {
+      ;(acc as any)[key] = messages[key]
+      return acc
+    }, {} as T)
 }
 
-export function orderByOrigin(messages) {
-  function getFirstOrigin(messageKey) {
+export function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
+  function getFirstOrigin(messageKey: string) {
     const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
       if (a[0] < b[0]) return -1
       if (a[0] > b[0]) return 1
@@ -706,7 +704,7 @@ export function orderByOrigin(messages) {
   }
 
   return Object.keys(messages)
-    .sort(function (a, b) {
+    .sort((a, b) => {
       const [aFile, aLineNumber] = getFirstOrigin(a)
       const [bFile, bLineNumber] = getFirstOrigin(b)
 
@@ -719,7 +717,7 @@ export function orderByOrigin(messages) {
       return 0
     })
     .reduce((acc, key) => {
-      acc[key] = messages[key]
+      ;(acc as any)[key] = messages[key]
       return acc
-    }, {})
+    }, {} as T)
 }

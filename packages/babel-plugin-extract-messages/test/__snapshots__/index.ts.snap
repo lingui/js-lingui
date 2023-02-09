@@ -1,416 +1,381 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@lingui/babel-plugin-extract-messages should extract Plural messages from JSX files when there's no Trans tag (integration) 1`] = `
-Object {
-  Some context: Object {
-    {count, plural, one {# book} other {# books}}: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-without-trans.js,
-          4,
-        ],
-      ],
-    },
-  },
-  {count, plural, one {# book} other {# books}}: Object {
-    extractedComments: Array [],
+exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should extract messages from i18n._ call expressions 1`] = `
+Array [
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Message,
+    message: undefined,
     origin: Array [
-      Array [
-        jsx-without-trans.js,
-        3,
-      ],
+      js-call-expression.js,
+      1,
     ],
   },
-}
+  Object {
+    comment: description,
+    context: undefined,
+    id: Description,
+    message: undefined,
+    origin: Array [
+      js-call-expression.js,
+      3,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: ID,
+    message: Message with id,
+    origin: Array [
+      js-call-expression.js,
+      5,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Values {param},
+    message: undefined,
+    origin: Array [
+      js-call-expression.js,
+      7,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some id,
+    message: undefined,
+    origin: Array [
+      js-call-expression.js,
+      9,
+    ],
+  },
+]
+`;
+
+exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract messages from MessageDescriptors 1`] = `
+Array [
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Message,
+    message: undefined,
+    origin: Array [
+      js-message-descriptor.js,
+      1,
+    ],
+  },
+  Object {
+    comment: description,
+    context: undefined,
+    id: Description,
+    message: undefined,
+    origin: Array [
+      js-message-descriptor.js,
+      3,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: ID,
+    message: Message with id,
+    origin: Array [
+      js-message-descriptor.js,
+      5,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Values {param},
+    message: undefined,
+    origin: Array [
+      js-message-descriptor.js,
+      7,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some id,
+    message: undefined,
+    origin: Array [
+      js-message-descriptor.js,
+      9,
+    ],
+  },
+]
+`;
+
+exports[`@lingui/babel-plugin-extract-messages should extract Plural messages from JSX files when there's no Trans tag (integration) 1`] = `
+Array [
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: {count, plural, one {# book} other {# books}},
+    message: undefined,
+    origin: Array [
+      jsx-without-trans.js,
+      3,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: Some context,
+    id: {count, plural, one {# book} other {# books}},
+    message: undefined,
+    origin: Array [
+      jsx-without-trans.js,
+      4,
+    ],
+  },
+]
 `;
 
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files (macros) 1`] = `
-Object {
-  Backtick: Object {
-    extractedComments: Array [],
+Array [
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Message,
+    message: undefined,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        24,
-      ],
+      js-with-macros.js,
+      3,
     ],
   },
-  Context1: Object {
-    Some ID: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          js-with-macros.js,
-          34,
-        ],
-      ],
-    },
-    Some other ID: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          js-with-macros.js,
-          39,
-        ],
-      ],
-    },
-  },
-  Context2: Object {
-    Some ID: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          js-with-macros.js,
-          44,
-        ],
-      ],
-    },
-  },
-  Description: Object {
-    extractedComments: Array [
-      description,
-    ],
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Message,
+    message: undefined,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        7,
-      ],
+      js-with-macros.js,
+      5,
     ],
   },
-  ID: Object {
-    extractedComments: Array [],
+  Object {
+    comment: description,
+    context: undefined,
+    id: Description,
+    message: undefined,
+    origin: Array [
+      js-with-macros.js,
+      7,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: ID,
     message: Message with id,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        12,
-      ],
+      js-with-macros.js,
+      12,
     ],
   },
-  ID Some: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Values {param},
+    message: undefined,
+    origin: Array [
+      js-with-macros.js,
+      17,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: ID Some,
     message: Message with id some,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        19,
-      ],
+      js-with-macros.js,
+      19,
     ],
   },
-  Message: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Backtick,
+    message: undefined,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        3,
-      ],
-      Array [
-        js-with-macros.js,
-        5,
-      ],
+      js-with-macros.js,
+      24,
     ],
   },
-  Values {param}: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some ID,
+    message: undefined,
     origin: Array [
-      Array [
-        js-with-macros.js,
-        17,
-      ],
+      js-with-macros.js,
+      34,
     ],
   },
-}
-`;
-
-exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files (without macros or i18n comments) 1`] = `
-Object {
-  Context1: Object {
-    Some id: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          js-without-macros-or-comments.js,
-          11,
-        ],
-      ],
-    },
-  },
-  Description: Object {
-    extractedComments: Array [
-      description,
-    ],
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some other ID,
+    message: undefined,
     origin: Array [
-      Array [
-        js-without-macros-or-comments.js,
-        3,
-      ],
+      js-with-macros.js,
+      39,
     ],
   },
-  ID: Object {
-    extractedComments: Array [],
-    message: Message with id,
+  Object {
+    comment: undefined,
+    context: Context2,
+    id: Some ID,
+    message: undefined,
     origin: Array [
-      Array [
-        js-without-macros-or-comments.js,
-        7,
-      ],
+      js-with-macros.js,
+      44,
     ],
   },
-  Message: Object {
-    extractedComments: Array [],
-    origin: Array [
-      Array [
-        js-without-macros-or-comments.js,
-        1,
-      ],
-    ],
-  },
-  Multiline: Object {
-    extractedComments: Array [
-      this is 2 lines long,
-    ],
-    origin: Array [
-      Array [
-        js-without-macros-or-comments.js,
-        5,
-      ],
-    ],
-  },
-  Values {param}: Object {
-    extractedComments: Array [],
-    origin: Array [
-      Array [
-        js-without-macros-or-comments.js,
-        9,
-      ],
-    ],
-  },
-}
-`;
-
-exports[`@lingui/babel-plugin-extract-messages should extract all messages from JS files 1`] = `
-Object {
-  Context1: Object {
-    Some id: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          js-without-macros.js,
-          13,
-        ],
-      ],
-    },
-  },
-  Description: Object {
-    extractedComments: Array [
-      description,
-    ],
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        5,
-      ],
-    ],
-  },
-  ID: Object {
-    extractedComments: Array [],
-    message: Message with id,
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        9,
-      ],
-    ],
-  },
-  Message: Object {
-    extractedComments: Array [],
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        3,
-      ],
-    ],
-  },
-  Multiline: Object {
-    extractedComments: Array [
-      this is 2 lines long,
-    ],
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        7,
-      ],
-    ],
-  },
-  Values {param}: Object {
-    extractedComments: Array [],
-    origin: Array [
-      Array [
-        js-without-macros.js,
-        11,
-      ],
-    ],
-  },
-}
+]
 `;
 
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JSX files (macros) 1`] = `
-Object {
-  Context1: Object {
-    Some message: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-with-macros.js,
-          4,
-        ],
-      ],
-    },
-    Some other message: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-with-macros.js,
-          5,
-        ],
-      ],
-    },
-  },
-  Context2: Object {
-    Some message: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-with-macros.js,
-          6,
-        ],
-      ],
-    },
-  },
-  Hi, my name is {name}: Object {
-    extractedComments: Array [],
+Array [
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Hi, my name is {name},
+    message: undefined,
     origin: Array [
-      Array [
-        jsx-with-macros.js,
-        3,
-      ],
+      jsx-with-macros.js,
+      3,
     ],
   },
-  Title: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some message,
+    message: undefined,
     origin: Array [
-      Array [
-        jsx-with-macros.js,
-        7,
-      ],
+      jsx-with-macros.js,
+      4,
     ],
   },
-  {count, plural, one {# book} other {# books}}: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: Some other message,
+    message: undefined,
     origin: Array [
-      Array [
-        jsx-with-macros.js,
-        9,
-      ],
+      jsx-with-macros.js,
+      5,
     ],
   },
-}
+  Object {
+    comment: undefined,
+    context: Context2,
+    id: Some message,
+    message: undefined,
+    origin: Array [
+      jsx-with-macros.js,
+      6,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Title,
+    message: undefined,
+    origin: Array [
+      jsx-with-macros.js,
+      7,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: {count, plural, one {# book} other {# books}},
+    message: undefined,
+    origin: Array [
+      jsx-with-macros.js,
+      9,
+    ],
+  },
+]
 `;
 
 exports[`@lingui/babel-plugin-extract-messages should extract all messages from JSX files 1`] = `
-Object {
-  Context1: Object {
-    msg.context: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-without-macros.js,
-          7,
-        ],
-      ],
-    },
-    msg.notcontext: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-without-macros.js,
-          8,
-        ],
-      ],
-    },
-  },
-  Context2: Object {
-    msg.context: Object {
-      extractedComments: Array [],
-      origin: Array [
-        Array [
-          jsx-without-macros.js,
-          9,
-        ],
-      ],
-    },
-  },
-  Hi, my name is <0>{name}</0>: Object {
-    extractedComments: Array [],
+Array [
+  Object {
+    comment: Description,
+    context: undefined,
+    id: msg.hello,
+    message: undefined,
     origin: Array [
-      Array [
-        jsx-without-macros.js,
-        12,
-      ],
+      jsx-without-macros.js,
+      5,
     ],
   },
-  msg.default: Object {
-    extractedComments: Array [],
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: msg.context,
+    message: undefined,
+    origin: Array [
+      jsx-without-macros.js,
+      6,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: Context1,
+    id: msg.notcontext,
+    message: undefined,
+    origin: Array [
+      jsx-without-macros.js,
+      7,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: Context2,
+    id: msg.context,
+    message: undefined,
+    origin: Array [
+      jsx-without-macros.js,
+      8,
+    ],
+  },
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: msg.default,
     message: Hello World,
     origin: Array [
-      Array [
-        jsx-without-macros.js,
-        10,
-      ],
-      Array [
-        jsx-without-macros.js,
-        11,
-      ],
+      jsx-without-macros.js,
+      9,
     ],
   },
-  msg.hello: Object {
-    extractedComments: Array [
-      Description,
-    ],
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: msg.default,
+    message: Hello World,
     origin: Array [
-      Array [
-        jsx-without-macros.js,
-        6,
-      ],
+      jsx-without-macros.js,
+      10,
     ],
   },
-}
-`;
-
-exports[`@lingui/babel-plugin-extract-messages should handle duplicate ids 1`] = `
-Object {
-  msg: Object {
-    extractedComments: Array [],
-    message: Hello World!,
+  Object {
+    comment: undefined,
+    context: undefined,
+    id: Hi, my name is <0>{name}</0>,
+    message: undefined,
     origin: Array [
-      Array [
-        duplicate-id-valid.js,
-        5,
-      ],
-      Array [
-        duplicate-id-valid.js,
-        8,
-      ],
-      Array [
-        duplicate-id-valid.js,
-        11,
-      ],
-      Array [
-        duplicate-id-valid.js,
-        14,
-      ],
+      jsx-without-macros.js,
+      11,
     ],
   },
-}
+]
 `;

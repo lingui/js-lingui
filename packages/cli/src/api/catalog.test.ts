@@ -1,7 +1,8 @@
-import fs from "fs-extra"
+import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
-import { mockConsole, mockConfig } from "@lingui/jest-mocks"
+import { mockConsole, mockConfig as _mockConfig } from "@lingui/jest-mocks"
+import { LinguiConfig } from "@lingui/conf"
 
 import {
   getCatalogs,
@@ -24,18 +25,25 @@ import {
   makePrevMessage,
 } from "../tests"
 
-export const fixture = (...dirs) =>
+export const fixture = (...dirs: string[]) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs)) +
   // preserve trailing slash
   (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
 
-describe("Catalog", function () {
+function mockConfig(config: Partial<LinguiConfig> = {}): LinguiConfig {
+  return _mockConfig({
+    rootDir: path.join(__dirname, "fixtures"),
+    ...config,
+  })
+}
+
+describe("Catalog", () => {
   afterEach(() => {
     mockFs.restore()
   })
 
-  describe("make", function () {
-    it("should collect and write catalogs", async function () {
+  describe("make", () => {
+    it("should collect and write catalogs", async () => {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -59,7 +67,7 @@ describe("Catalog", function () {
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should only update the specified locale", async function () {
+    it("should only update the specified locale", async () => {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -83,7 +91,7 @@ describe("Catalog", function () {
       expect(catalog.readAll()).toMatchSnapshot()
     })
 
-    it("should merge with existing catalogs", async function () {
+    it("should merge with existing catalogs", async () => {
       const localeDir = copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
@@ -105,8 +113,8 @@ describe("Catalog", function () {
     })
   })
 
-  describe("makeTemplate", function () {
-    it("should collect and write a template", async function () {
+  describe("makeTemplate", () => {
+    it("should collect and write a template", async () => {
       const localeDir = copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
@@ -131,7 +139,7 @@ describe("Catalog", function () {
     })
   })
 
-  describe("POT Flow", function () {
+  describe("POT Flow", () => {
     it("Should merge source messages from template if provided", () => {
       const catalog = new Catalog(
         {
@@ -181,13 +189,12 @@ describe("Catalog", function () {
         },
       })
 
-      console.log(translations)
       expect(translations).toMatchSnapshot()
     })
   })
 
-  describe("collect", function () {
-    it("should extract messages from source files", async function () {
+  describe("collect", () => {
+    it("should extract messages from source files", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -202,7 +209,7 @@ describe("Catalog", function () {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should extract only files passed on options", async function () {
+    it("should extract only files passed on options", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -223,7 +230,32 @@ describe("Catalog", function () {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should handle errors", function () {
+    it("should throw an error when duplicate identifier with different defaults found", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("duplicate-id.js")],
+          exclude: [],
+        },
+        mockConfig()
+      )
+
+      mockConsole(async (console) => {
+        await catalog.collect({
+          ...defaultMakeOptions,
+          files: [fixture("duplicate-id.js")],
+        })
+
+        expect(console.error).toBeCalledWith(
+          expect.stringContaining(
+            `Encountered different default translations for message`
+          )
+        )
+      })
+    })
+
+    it("should handle errors", () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -244,7 +276,7 @@ describe("Catalog", function () {
     })
   })
 
-  describe("merge", function () {
+  describe("merge", () => {
     /*
     catalog.merge(prevCatalogs, nextCatalog, options)
 
@@ -267,7 +299,7 @@ describe("Catalog", function () {
     - all other languages: translation is kept empty
     */
 
-    it("should initialize catalog", function () {
+    it("should initialize catalog", () => {
       const prevCatalogs = { en: null, cs: null }
       const nextCatalog = {
         "custom.id": makeNextMessage({
@@ -306,7 +338,7 @@ describe("Catalog", function () {
       })
     })
 
-    it("should merge translations from existing catalogs", function () {
+    it("should merge translations from existing catalogs", () => {
       const prevCatalogs = {
         en: {
           "custom.id": makePrevMessage({
@@ -381,7 +413,7 @@ describe("Catalog", function () {
       })
     })
 
-    it("should force overwrite of defaults", function () {
+    it("should force overwrite of defaults", () => {
       const prevCatalogs = {
         en: {
           "custom.id": makePrevMessage({
@@ -467,7 +499,7 @@ describe("Catalog", function () {
       })
     })
 
-    it("should mark obsolete messages", function () {
+    it("should mark obsolete messages", () => {
       const prevCatalogs = {
         en: {
           "msg.hello": makePrevMessage({
@@ -489,8 +521,8 @@ describe("Catalog", function () {
     })
   })
 
-  describe("read", function () {
-    it("should return null if file does not exist", function () {
+  describe("read", () => {
+    it("should return null if file does not exist", () => {
       // mock empty filesystem
       mockFs()
 
@@ -508,7 +540,7 @@ describe("Catalog", function () {
       expect(messages).toBeNull()
     })
 
-    it("should read file in given format", function () {
+    it("should read file in given format", () => {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
@@ -531,7 +563,7 @@ describe("Catalog", function () {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should read file in previous format", function () {
+    it("should read file in previous format", () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(
@@ -555,8 +587,8 @@ describe("Catalog", function () {
     })
   })
 
-  describe("readAll", function () {
-    it("should read existing catalogs for all locales", function () {
+  describe("readAll", () => {
+    it("should read existing catalogs for all locales", () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -581,7 +613,7 @@ describe("Catalog", function () {
    * - Compare that original and converted JSON file are identical
    * - Check the content of PO file
    */
-  it.skip("should convert catalog format", function () {
+  it.skip("should convert catalog format", () => {
     mockFs({
       en: {
         "messages.json": fs.readFileSync(
@@ -631,12 +663,12 @@ describe("Catalog", function () {
   })
 })
 
-describe("getCatalogs", function () {
+describe("getCatalogs", () => {
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should get single catalog if catalogPath doesn't include {name} pattern", function () {
+  it("should get single catalog if catalogPath doesn't include {name} pattern", () => {
     const config = mockConfig({
       catalogs: [
         {
@@ -658,7 +690,7 @@ describe("getCatalogs", function () {
     ])
   })
 
-  it("should have catalog name and ignore patterns", function () {
+  it("should have catalog name and ignore patterns", () => {
     const config = mockConfig({
       catalogs: [
         {
@@ -681,7 +713,7 @@ describe("getCatalogs", function () {
     ])
   })
 
-  it("should expand {name} for matching directories", function () {
+  it("should expand {name} for matching directories", () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -721,7 +753,7 @@ describe("getCatalogs", function () {
     ])
   })
 
-  it("should expand {name} multiple times in path", function () {
+  it("should expand {name} multiple times in path", () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -749,7 +781,7 @@ describe("getCatalogs", function () {
     ])
   })
 
-  it("shouldn't expand {name} for ignored directories", function () {
+  it("shouldn't expand {name} for ignored directories", () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -781,7 +813,7 @@ describe("getCatalogs", function () {
     ])
   })
 
-  it("should warn if catalogPath is a directory", function () {
+  it("should warn if catalogPath is a directory", () => {
     expect(() =>
       getCatalogs(
         mockConfig({
@@ -812,7 +844,7 @@ describe("getCatalogs", function () {
     ).toThrowErrorMatchingSnapshot()
   })
 
-  it("should warn about missing {name} pattern in catalog path", function () {
+  it("should warn about missing {name} pattern in catalog path", () => {
     expect(() =>
       getCatalogs(
         mockConfig({
@@ -828,8 +860,8 @@ describe("getCatalogs", function () {
   })
 })
 
-describe("getCatalogForFile", function () {
-  it("should return null if catalog cannot be found", function () {
+describe("getCatalogForFile", () => {
+  it("should return null if catalog cannot be found", () => {
     const catalogs = [
       new Catalog(
         {
@@ -844,14 +876,14 @@ describe("getCatalogForFile", function () {
     expect(getCatalogForFile("./xyz/en.po", catalogs)).toBeNull()
   })
 
-  it("should return matching catalog and locale if {locale} is present multiple times in path", function () {
+  it("should return matching catalog and locale if {locale} is present multiple times in path", () => {
     const catalog = new Catalog(
       {
         name: null,
         path: "./src/locales/{locale}/messages_{locale}",
         include: ["./src/"],
       },
-      mockConfig({ format: "po" })
+      mockConfig({ format: "po", rootDir: "." })
     )
     const catalogs = [catalog]
 
@@ -863,14 +895,14 @@ describe("getCatalogForFile", function () {
     })
   })
 
-  it("should return matching catalog and locale", function () {
+  it("should return matching catalog and locale", () => {
     const catalog = new Catalog(
       {
         name: null,
         path: "./src/locales/{locale}",
         include: ["./src/"],
       },
-      mockConfig({ format: "po" })
+      mockConfig({ format: "po", rootDir: "." })
     )
     const catalogs = [catalog]
 
@@ -880,14 +912,14 @@ describe("getCatalogForFile", function () {
     })
   })
 
-  it("should work with Windows path delimiters", function () {
+  it("should work with Windows path delimiters", () => {
     const catalog = new Catalog(
       {
         name: null,
         path: ".\\src\\locales\\{locale}",
         include: ["./src/"],
       },
-      mockConfig({ format: "po" })
+      mockConfig({ format: "po", rootDir: "." })
     )
     const catalogs = [catalog]
 
@@ -898,12 +930,12 @@ describe("getCatalogForFile", function () {
   })
 })
 
-describe("getCatalogForMerge", function () {
+describe("getCatalogForMerge", () => {
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should return catalog for merged messages", function () {
+  it("should return catalog for merged messages", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}",
     })
@@ -920,7 +952,7 @@ describe("getCatalogForMerge", function () {
     )
   })
 
-  it("should return catalog with custom name for merged messages", function () {
+  it("should return catalog with custom name for merged messages", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/my/dir",
     })
@@ -937,7 +969,7 @@ describe("getCatalogForMerge", function () {
     )
   })
 
-  it("should throw error if catalogsMergePath ends with slash", function () {
+  it("should throw error if catalogsMergePath ends with slash", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/bad/path/",
     })
@@ -951,7 +983,7 @@ describe("getCatalogForMerge", function () {
     }
   })
 
-  it("should throw error if {locale} is omitted from catalogsMergePath", function () {
+  it("should throw error if {locale} is omitted from catalogsMergePath", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/bad/path",
     })
@@ -966,17 +998,17 @@ describe("getCatalogForMerge", function () {
   })
 })
 
-describe("normalizeRelativePath", function () {
+describe("normalizeRelativePath", () => {
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should preserve absolute paths - posix", function () {
+  it("should preserve absolute paths - posix", () => {
     const absolute = "/my/directory"
     expect(normalizeRelativePath(absolute)).toEqual(absolute)
   })
 
-  it("should preserve absolute paths - win32", function () {
+  it("should preserve absolute paths - win32", () => {
     const absolute = "C:\\my\\directory"
     // path remains the same, but separators are converted to posix
     expect(normalizeRelativePath(absolute)).toEqual(
@@ -984,7 +1016,7 @@ describe("normalizeRelativePath", function () {
     )
   })
 
-  it("directories without ending slash are correctly treaten as dirs", function () {
+  it("directories without ending slash are correctly treaten as dirs", () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -998,8 +1030,8 @@ describe("normalizeRelativePath", function () {
   })
 })
 
-describe("cleanObsolete", function () {
-  it("should remove obsolete messages from catalog", function () {
+describe("cleanObsolete", () => {
+  it("should remove obsolete messages from catalog", () => {
     const catalog = {
       Label: makeNextMessage({
         translation: "Label",
@@ -1013,8 +1045,8 @@ describe("cleanObsolete", function () {
   })
 })
 
-describe("order", function () {
-  it("should order messages alphabetically", function () {
+describe("order", () => {
+  it("should order messages alphabetically", () => {
     const catalog = {
       LabelB: makeNextMessage({
         translation: "B",
@@ -1039,7 +1071,7 @@ describe("order", function () {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
-  it("should order messages by origin", function () {
+  it("should order messages by origin", () => {
     const catalog = {
       LabelB: makeNextMessage({
         translation: "B",
@@ -1072,7 +1104,7 @@ describe("order", function () {
   })
 })
 
-describe("writeCompiled", function () {
+describe("writeCompiled", () => {
   const localeDir = copyFixture(fixture("locales", "initial/"))
   const catalog = new Catalog(
     {

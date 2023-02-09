@@ -1,6 +1,8 @@
 import fs from "fs"
 import { transform } from "@babel/core"
-import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
+import linguiExtractMessages, {
+  ExtractPluginOpts,
+} from "@lingui/babel-plugin-extract-messages"
 
 import { projectType } from "../detect"
 import { ExtractorType, BabelOptions } from "."
@@ -12,7 +14,11 @@ const extractor: ExtractorType = {
     return typescriptRe.test(filename)
   },
 
-  extract(filename, localeDir, options = {}) {
+  extract(
+    filename: string,
+    onMessageExtracted,
+    options = {}
+  ): Promise<void> | void {
     const ts = require("typescript")
 
     const content = fs.readFileSync(filename, "utf8")
@@ -36,10 +42,14 @@ const extractor: ExtractorType = {
       frameworkOptions.presets = ["react-app"]
     }
 
-    const { babelOptions = {}, configPath } = options
+    const pluginOpts: ExtractPluginOpts = {
+      onMessageExtracted,
+    }
+
+    const { babelOptions = {} } = options
     const plugins = [
       "macros",
-      [linguiExtractMessages, { localeDir, configPath }],
+      [linguiExtractMessages, pluginOpts],
       ...(babelOptions.plugins || []),
     ]
 

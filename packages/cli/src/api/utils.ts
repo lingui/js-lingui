@@ -3,30 +3,7 @@ import path from "path"
 import chalk from "chalk"
 import { score } from "fuzzaldrin"
 
-export function removeDirectory(dir, onlyContent = false) {
-  if (!fs.existsSync(dir)) return
-  const list = fs.readdirSync(dir)
-
-  for (let i = 0; i < list.length; i++) {
-    const filename = path.join(dir, list[i])
-    const stat = fs.statSync(filename)
-
-    if (filename === "." || filename === "..") {
-      // pass these files
-    } else if (stat.isDirectory()) {
-      // rmdir recursively
-      removeDirectory(filename)
-    } else {
-      fs.unlinkSync(filename)
-    }
-  }
-
-  if (!onlyContent) {
-    fs.rmdirSync(dir)
-  }
-}
-
-export function prettyOrigin(origins) {
+export function prettyOrigin(origins: [filename: string, line?: number][]) {
   try {
     return origins.map((origin) => origin.join(":")).join(", ")
   } catch (e) {

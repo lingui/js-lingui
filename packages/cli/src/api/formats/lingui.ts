@@ -43,12 +43,12 @@ const lingui: CatalogFormatter = {
     try {
       return JSON.parse(raw)
     } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${e.message}`)
+      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
     }
   },
 
   parse(content) {
-    return content
+    return content as CatalogType
   },
 }
 

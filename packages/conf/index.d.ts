@@ -1,5 +1,15 @@
 import type { GeneratorOptions } from "@babel/core"
 
+export type ExtractedMessage = {
+  id: string
+
+  message?: string
+  context?: string
+  origin?: [filename: string, line: number]
+
+  comment?: string
+}
+
 export declare type CatalogFormat =
   | "lingui"
   | "minimal"
@@ -35,7 +45,11 @@ declare type CatalogService = {
 
 declare type ExtractorType = {
   match(filename: string): boolean
-  extract(filename: string, targetDir: string, options?: any): void
+  extract(
+    filename: string,
+    onMessageExtracted: (msg: ExtractedMessage) => void,
+    options?: any
+  ): void
 }
 
 export declare type LinguiConfig = {

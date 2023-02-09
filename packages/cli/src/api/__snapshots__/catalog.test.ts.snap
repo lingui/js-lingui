@@ -18,6 +18,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
   Component A: Object {
     extractedComments: Array [],
+    message: undefined,
     origin: Array [
       Array [
         collect/componentA/componentA.js,
@@ -27,6 +28,7 @@ Object {
   },
   Component B: Object {
     extractedComments: Array [],
+    message: undefined,
     origin: Array [
       Array [
         collect/componentB.js,
@@ -40,6 +42,7 @@ Object {
       Comment A again,
       Hello comment,
     ],
+    message: undefined,
     origin: Array [
       Array [
         collect/componentA/componentA.js,
@@ -55,6 +58,16 @@ Object {
       ],
     ],
   },
+  custom.id: Object {
+    extractedComments: Array [],
+    message: Message with id,
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        4,
+      ],
+    ],
+  },
 }
 `;
 
@@ -62,6 +75,7 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
 Object {
   Component A: Object {
     extractedComments: Array [],
+    message: undefined,
     origin: Array [
       Array [
         collect/componentA/componentA.js,
@@ -75,6 +89,7 @@ Object {
       Comment A again,
       Hello comment,
     ],
+    message: undefined,
     origin: Array [
       Array [
         collect/componentA/componentA.js,
@@ -87,6 +102,16 @@ Object {
       Array [
         collect/componentA/index.js,
         1,
+      ],
+    ],
+  },
+  custom.id: Object {
+    extractedComments: Array [],
+    message: Message with id,
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        4,
       ],
     ],
   },
@@ -145,6 +170,20 @@ Object {
       ],
       translation: ,
     },
+    custom.id: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          4,
+        ],
+      ],
+      translation: ,
+    },
   },
   en: Object {
     Component A: Object {
@@ -183,6 +222,20 @@ Object {
         Array [
           collect/componentA/index.js,
           1,
+        ],
+      ],
+      translation: ,
+    },
+    custom.id: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          4,
         ],
       ],
       translation: ,
@@ -275,6 +328,20 @@ Object {
       ],
       translation: Ahoj Brno,
     },
+    custom.id: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          4,
+        ],
+      ],
+      translation: ,
+    },
   },
   en: Object {
     Component A: Object {
@@ -331,6 +398,20 @@ Object {
       ],
       translation: Ahoj Brno,
     },
+    custom.id: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          4,
+        ],
+      ],
+      translation: ,
+    },
   },
 }
 `;
@@ -386,6 +467,20 @@ Object {
       ],
       translation: ,
     },
+    custom.id: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect/componentA/componentA.js,
+          4,
+        ],
+      ],
+      translation: ,
+    },
   },
 }
 `;
@@ -430,6 +525,20 @@ Object {
       Array [
         collect/componentA/index.js,
         1,
+      ],
+    ],
+    translation: ,
+  },
+  custom.id: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect/componentA/componentA.js,
+        4,
       ],
     ],
     translation: ,

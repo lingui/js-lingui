@@ -30,7 +30,7 @@ export type CatalogFormatter = {
     options?: CatalogFormatOptionsInternal
   ): void
   read(filename: string): CatalogType | null
-  parse(content): any
+  parse(content: unknown): CatalogType | null
 }
 
 export default function getFormat(name: CatalogFormat): CatalogFormatter {
