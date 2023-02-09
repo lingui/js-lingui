@@ -25,17 +25,18 @@
     npm install --save @lingui/macro @lingui/react
     ```
 
-3.  Create `.linguirc` file with LinguiJS configuration in root of your project (next to `package.json`):
+3.  Create `lingui.config.js` file with LinguiJS configuration in root of your project (next to `package.json`):
 
-    ``` json title=".linguirc"
-    {
-       "locales": ["en", "cs", "fr"],
-       "sourceLocale": "en",
-       "catalogs": [{
-          "path": "src/locales/{locale}/messages",
-          "include": ["src"]
+    ```js title="lingui.config.js"
+    /** @type {import('@lingui/conf').LinguiConfig} */
+    module.exports = {
+       locales: ["en", "cs", "fr"],
+       sourceLocale: "en",
+       catalogs: [{
+          path: "src/locales/{locale}/messages",
+          include: ["src"]
        }],
-       "format": "po"
+       format: "po"
     }
     ```
 

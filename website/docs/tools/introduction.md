@@ -37,16 +37,18 @@ Instead of manually sending and receiving many emails and fixing the inconsisten
 
 ## Configure your project
 
-To synchronize your current application with an online tool, you just have to add these lines at the end of your `.linguirc` configuration file:
+To synchronize your current application with an online tool, you just have to add these lines at the end of your `lingui.config.js` configuration file:
 
-```js title=".linguirc"
-{
+```js title="lingui.config.js"
+/** @type {import('@lingui/conf').LinguiConfig} */
+module.exports = {
   [...]
-  "service": {
-    "name": "ToolName",
-    "apiKey": "abcdefghijklmnopqrstuvwxyz012345"
+  service: {
+    name: "ToolName",
+    apiKey: "abcdefghijklmnopqrstuvwxyz012345"
   }
 }
+
 ```
 
 The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
