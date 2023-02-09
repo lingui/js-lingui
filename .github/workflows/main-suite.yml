@@ -74,3 +74,5 @@ jobs:
 
       - name: Check coverage
         uses: codecov/codecov-action@v3
+        with:
+          verbose: true
