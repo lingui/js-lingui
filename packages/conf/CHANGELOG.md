@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1](https://github.com/lingui/js-lingui/compare/v3.17.0...v3.17.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* **compile:** remove verbose output when using flow with template ([#1388](https://github.com/lingui/js-lingui/issues/1388)) ([31316f9](https://github.com/lingui/js-lingui/commit/31316f938957dba8e908f9f60a452a2673a934ee))
+* **conf:** lazy load cosmiconfig's TypeScriptLoader ([#1403](https://github.com/lingui/js-lingui/issues/1403)) ([617a333](https://github.com/lingui/js-lingui/commit/617a3330f6eee5ffe5670a6b41f06d0a8116fc92))
+
+
+
+
+
 # [3.17.0](https://github.com/lingui/js-lingui/compare/v3.16.1...v3.17.0) (2023-02-01)
 
 

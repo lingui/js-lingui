@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.1](https://github.com/lingui/js-lingui/compare/v3.17.0...v3.17.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* Named components not working in Trans in @lingui/react ([#1402](https://github.com/lingui/js-lingui/issues/1402)) ([bf7f655](https://github.com/lingui/js-lingui/commit/bf7f655ccac3fc22fb7d36662ab0ec96595574e5))
+
+
+
+
+
 # [3.17.0](https://github.com/lingui/js-lingui/compare/v3.16.1...v3.17.0) (2023-02-01)
 
 **Note:** Version bump only for package @lingui/react
