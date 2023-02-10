@@ -1,5 +1,5 @@
 import fs from "fs"
-import { transform } from "@babel/core"
+import { transformSync } from "@babel/core"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import { projectType } from "../detect"
@@ -47,7 +47,7 @@ const extractor: ExtractorType = {
       plugins.unshift(require.resolve("@babel/plugin-syntax-jsx"))
     }
 
-    transform(stripped.outputText, {
+    transformSync(stripped.outputText, {
       ...babelOptions,
       ...frameworkOptions,
       filename,
