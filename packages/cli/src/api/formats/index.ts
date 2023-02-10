@@ -19,7 +19,7 @@ const formats: Record<CatalogFormat, CatalogFormatter> = {
  * @internal
  */
 export type CatalogFormatOptionsInternal = {
-  locale: string
+  locale?: string
 } & CatalogFormatOptions
 
 export type CatalogFormatter = {
