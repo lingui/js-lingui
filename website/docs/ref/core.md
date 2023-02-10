@@ -289,13 +289,13 @@ const i18n = setupI18n({ missing: "🚨" })
 i18n._('missing translation') === "🚨"
 ```
 
-This might be also a function which is called with active language and message ID:
+This might be also a function which is called with active locale and message ID:
 
 ``` jsx
 import { setupI18n } from "@lingui/core"
 
-function missing(language, id) {
-   alert(`Translation in ${language} for ${id} is missing!`)
+function missing(locale, id) {
+   alert(`Translation in ${locale} for ${id} is missing!`)
    return id
 }
 
