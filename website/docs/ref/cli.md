@@ -111,18 +111,17 @@ Debounce, when used with `--debounce <delay>`, delays extraction for `<delay>` m
 
 Flattens the ICU message in the following way:
 
-```
+``` none
 I have {value, plural, one {one book} other {# books}}
 ```
 
 is changed to
 
-```
+``` none
 {value, plural, one {I have one book} other {I have # books}}
 ```
 
 This provides translators with full sentences for all cases.
-
 
 ## `extract-template`
 
@@ -141,13 +140,13 @@ Prints additional information.
 
 Flattens the ICU message in the following way:
 
-```
+``` none
 I have {value, plural, one {one book} other {# books}}
 ```
 
 is changed to
 
-```
+``` none
 {value, plural, one {I have one book} other {I have # books}}
 ```
 
