@@ -20,6 +20,7 @@ import extract, { ExtractedMessage } from "./extractors"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
+import { flattenMessage } from "@lingui/core/flatten"
 import { prettyOrigin } from "./utils"
 import chalk from "chalk"
 
@@ -177,15 +178,20 @@ export class Catalog {
       const fileSuccess = await extract(
         filename,
         (next: ExtractedMessage) => {
-          if (!messages[next.id]) {
-            messages[next.id] = {
-              message: next.message,
+          const nextId = options.flatten ? flattenMessage(next.id) : next.id
+          const nextMessage = options.flatten
+            ? flattenMessage(next.message)
+            : next.message
+
+          if (!messages[nextId]) {
+            messages[nextId] = {
+              message: nextMessage,
               extractedComments: [],
               origin: [],
             }
           }
 
-          const prev = messages[next.id]
+          const prev = messages[nextId]
 
           const filename = path
             .relative(this.config.rootDir, next.origin[0])
@@ -193,17 +199,17 @@ export class Catalog {
 
           const origin: MessageOrigin = [filename, next.origin[1]]
 
-          if (prev.message && next.message && prev.message !== next.message) {
+          if (prev.message && nextMessage && prev.message !== nextMessage) {
             throw new Error(
               `Encountered different default translations for message ${chalk.yellow(
-                next.id
+                nextId
               )}` +
                 `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-                `\n${chalk.yellow(prettyOrigin([origin]))} ${next.message}`
+                `\n${chalk.yellow(prettyOrigin([origin]))} ${nextMessage}`
             )
           }
 
-          messages[next.id] = {
+          messages[nextId] = {
             ...prev,
             extractedComments: next.comment
               ? [...prev.extractedComments, next.comment]

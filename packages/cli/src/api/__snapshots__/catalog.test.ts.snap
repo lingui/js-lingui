@@ -244,6 +244,78 @@ Object {
 }
 `;
 
+exports[`Catalog make should collect and write catalogs with flatten ICU messages 1`] = `
+Object {
+  cs: null,
+  en: null,
+}
+`;
+
+exports[`Catalog make should collect and write catalogs with flatten ICU messages 2`] = `
+Object {
+  cs: Object {
+    {count, plural, one {This is my #st cat.} two {This is my #nd cat.} other {This is my #rd cat.}}: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect-flatten/component.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    {gender, select, female {She added a new image to the system.} male {He added a new image to the system.} other {They added a new image to the system.}}: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect-flatten/component.js,
+          2,
+        ],
+      ],
+      translation: ,
+    },
+  },
+  en: Object {
+    {count, plural, one {This is my #st cat.} two {This is my #nd cat.} other {This is my #rd cat.}}: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect-flatten/component.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    {gender, select, female {She added a new image to the system.} male {He added a new image to the system.} other {They added a new image to the system.}}: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [],
+      flags: Array [],
+      obsolete: false,
+      origin: Array [
+        Array [
+          collect-flatten/component.js,
+          2,
+        ],
+      ],
+      translation: ,
+    },
+  },
+}
+`;
+
 exports[`Catalog make should merge with existing catalogs 1`] = `
 Object {
   cs: Object {
@@ -539,6 +611,41 @@ Object {
       Array [
         collect/componentA/componentA.js,
         4,
+      ],
+    ],
+    translation: ,
+  },
+}
+`;
+
+exports[`Catalog makeTemplate should collect and write a template with flatten ICU messages 1`] = `null`;
+
+exports[`Catalog makeTemplate should collect and write a template with flatten ICU messages 2`] = `
+Object {
+  {count, plural, one {This is my #st cat.} two {This is my #nd cat.} other {This is my #rd cat.}}: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect-flatten/component.js,
+        1,
+      ],
+    ],
+    translation: ,
+  },
+  {gender, select, female {She added a new image to the system.} male {He added a new image to the system.} other {They added a new image to the system.}}: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [],
+    flags: Array [],
+    obsolete: false,
+    origin: Array [
+      Array [
+        collect-flatten/component.js,
+        2,
       ],
     ],
     translation: ,

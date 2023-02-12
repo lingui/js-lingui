@@ -40,6 +40,16 @@
         "default": "./build/esm/index.js"
       }
     },
+    "./flatten": {
+      "require": {
+        "types": "./build/flatten.d.ts",
+        "default": "./build/cjs/flatten.js"
+      },
+      "import": {
+        "types": "./build/flatten.d.ts",
+        "default": "./build/esm/flatten.js"
+      }
+    },
     "./compile": {
       "require": {
         "types": "./build/compile.d.ts",

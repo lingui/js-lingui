@@ -40,6 +40,7 @@ lingui extract [files...]
         [--convert-from <format>]
         [--verbose]
         [--watch [--debounce <delay>]]
+        [--flatten]
 ```
 
 This command extracts messages from source files and creates a message catalog for each language using the following steps:
@@ -106,10 +107,28 @@ Remember to use this only in development as this command do not clean obsolete t
 
 Debounce, when used with `--debounce <delay>`, delays extraction for `<delay>` milliseconds, bundling multiple file changes together.
 
+#### `--flatten` {#extract-flatten}
+
+Flattens the ICU message in the following way:
+
+```
+I have {value, plural, one {one book} other {# books}}
+```
+
+is changed to
+
+```
+{value, plural, one {I have one book} other {I have # books}}
+```
+
+This provides translators with full sentences for all cases.
+
+
 ## `extract-template`
 
 ``` shell
 lingui extract-template [--verbose]
+        [--flatten]
 ```
 
 This command extracts messages from source files and creates a `.pot` template file.
@@ -117,6 +136,22 @@ This command extracts messages from source files and creates a `.pot` template f
 #### `--verbose` {#extract-template-verbose}
 
 Prints additional information.
+
+#### `--flatten` {#extract-template-flatten}
+
+Flattens the ICU message in the following way:
+
+```
+I have {value, plural, one {one book} other {# books}}
+```
+
+is changed to
+
+```
+{value, plural, one {I have one book} other {I have # books}}
+```
+
+This provides translators with full sentences for all cases.
 
 ## `compile`
 

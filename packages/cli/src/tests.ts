@@ -30,6 +30,7 @@ export const defaultMakeOptions: MakeOptions = {
   prevFormat: null,
   configPath: null,
   orderBy: "messageId",
+  flatten: false,
 }
 
 export const defaultMakeTemplateOptions: MakeTemplateOptions = {

@@ -31,7 +31,13 @@ export const bundles: readonly BundleDef[] = [
   {
     type: BundleType.UNIVERSAL,
     packageName: "core",
-    externals: ["@lingui/core/compile"],
+    externals: ["@lingui/core/compile", "@lingui/core/flatten"],
+  },
+  {
+    type: BundleType.UNIVERSAL,
+    packageName: "core",
+    entry: "flatten.entry.ts",
+    label: "flatten",
   },
   {
     type: BundleType.UNIVERSAL,

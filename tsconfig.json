@@ -11,9 +11,12 @@
     "resolveJsonModule": true,
     "target": "es2017",
     "paths": {
-      "@lingui/babel-plugin-extract-messages": ["./packages/babel-plugin-extract-messages/src"],
+      "@lingui/babel-plugin-extract-messages": [
+        "./packages/babel-plugin-extract-messages/src"
+      ],
       "@lingui/core": ["./packages/core/src"],
       "@lingui/core/compile": ["./packages/core/src/compile/index.ts"],
+      "@lingui/core/flatten": ["./packages/core/src/flatten/index.ts"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
       "@lingui/conf": ["./packages/conf"],

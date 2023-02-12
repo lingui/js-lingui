@@ -8,8 +8,6 @@ module.exports = {
 
   roots: ["<rootDir>/packages/"],
   testPathIgnorePatterns: ["/node_modules/"],
-  // Redirect imports to the compiled bundles
-  moduleNameMapper: {},
   setupFiles: ["set-tz/utc"],
 
   // Exclude the build output from transforms

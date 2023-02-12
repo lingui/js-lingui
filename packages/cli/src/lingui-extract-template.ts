@@ -12,6 +12,7 @@ export type CliExtractTemplateOptions = {
   configPath: string
   extractors?: ExtractorType[]
   files?: string[]
+  flatten?: boolean
 }
 
 export default async function command(
@@ -61,6 +62,7 @@ export default async function command(
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
+    .option("--flatten", "Flattens ICU messages")
     .option("--verbose", "Verbose output")
     .parse(process.argv)
 
@@ -69,6 +71,7 @@ if (require.main === module) {
   })
 
   const result = command(config, {
+    flatten: program.flatten || false,
     verbose: program.verbose || false,
     configPath: program.config || process.env.LINGUI_CONFIG,
   }).then(() => {

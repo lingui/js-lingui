@@ -111,6 +111,27 @@ describe("Catalog", () => {
       await catalog.make(defaultMakeOptions)
       expect(catalog.readAll()).toMatchSnapshot()
     })
+
+    it("should collect and write catalogs with flatten ICU messages", async () => {
+      const localeDir = copyFixture(fixture("locales", "initial"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}", "messages"),
+          include: [fixture("collect-flatten/")],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readAll()).toMatchSnapshot()
+
+      await catalog.make({ ...defaultMakeOptions, flatten: true })
+      expect(catalog.readAll()).toMatchSnapshot()
+    })
   })
 
   describe("makeTemplate", () => {
@@ -135,6 +156,27 @@ describe("Catalog", () => {
       expect(catalog.readTemplate()).toMatchSnapshot()
 
       await catalog.makeTemplate(defaultMakeTemplateOptions)
+      expect(catalog.readTemplate()).toMatchSnapshot()
+    })
+
+    it("should collect and write a template with flatten ICU messages", async () => {
+      const localeDir = copyFixture(fixture("locales", "initial"))
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: path.join(localeDir, "{locale}", "messages"),
+          include: [fixture("collect-flatten/")],
+          exclude: [],
+        },
+        mockConfig({
+          locales: ["en", "cs"],
+        })
+      )
+
+      // Everything should be empty
+      expect(catalog.readTemplate()).toMatchSnapshot()
+
+      await catalog.makeTemplate({ ...defaultMakeOptions, flatten: true })
       expect(catalog.readTemplate()).toMatchSnapshot()
     })
   })
