@@ -37,7 +37,7 @@ export default async function command(
   // safer to introduce a new env variable. LINGUI_EXTRACT=1 during `lingui extract`
   process.env.LINGUI_EXTRACT = "1"
 
-  options.verbose && console.error("Extracting messages from source files…")
+  options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
@@ -61,12 +61,12 @@ export default async function command(
   })
 
   if (!options.watch) {
-    console.error(
+    console.log(
       `(use "${chalk.yellow(
         helpRun("extract")
       )}" to update catalogs with new messages)`
     )
-    console.error(
+    console.log(
       `(use "${chalk.yellow(
         helpRun("compile")
       )}" to compile catalogs for production)`
