@@ -11,6 +11,7 @@
     "test": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/unit.xml jest -c jest.config.js --no-cache",
     "test:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu JEST_JUNIT_OUTPUT=results/integration.xml jest -c jest.config.integration.js --no-cache",
     "test:e2e": "lerna run test:e2e",
+    "test:tsd": "lerna run test:tsd",
     "test:all": "yarn test && yarn test:integration && yarn test:e2e",
     "watch": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c jest.config.js --watch",
     "watch:integration": "cross-env TZ=UTC NODE_ICU_DATA=node_modules/full-icu jest -c jest.config.integration.js --watch",
