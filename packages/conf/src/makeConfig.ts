@@ -114,11 +114,25 @@ export const exampleConfig = {
   },
 }
 
+/**
+ * Introduced in v4, remove in v5
+ */
+const extractBabelOptionsDeprecations = {
+  extractBabelOptions: () =>
+    ` Option ${chalk.bold("extractBabelOptions")} was removed. 
+    
+    Please remove it from your config file. 
+
+    You can find more information here: https://lingui.dev/releases/migration-4.md
+    `,
+}
+
 const configValidation = {
   exampleConfig,
   deprecatedConfig: {
     ...catalogMigrationDeprecations,
     ...fallbackLanguageMigrationDeprecations,
+    ...extractBabelOptionsDeprecations,
   },
   comment: "Documentation: https://lingui.dev/ref/conf",
 }
