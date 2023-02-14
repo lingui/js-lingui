@@ -233,12 +233,8 @@ m = (
   </Trans>
 )
 
-// @ts-expect-error: children is required here
+// @ts-expect-error: children are required here
 m = <Trans id="custom.id" comment="comment" context="context" />
-
-// todo: write tests for
-//  render prop
-//  i18n
 
 ///////////////////
 //// JSX Plural
@@ -255,7 +251,7 @@ m = <Plural />
 
 m = <Plural value={5} offset={1} one={"..."} other={"..."} _0="" _1={"..."} />
 
-//  @ts-expect-error: offset could be string only
+//  @ts-expect-error: offset could be number only
 m = <Plural value={5} offset={"1"} one={"..."} other={"..."} />
 
 // @ts-expect-error: not allowed prop is passed
@@ -282,10 +278,6 @@ m = (
   />
 )
 
-// todo: write tests for
-//  render prop
-//  i18n
-
 ///////////////////
 //// JSX SelectOrdinal is the same s Plural, so just smoke test it
 ///////////////////
@@ -304,7 +296,7 @@ m = (
 //// JSX Select
 ///////////////////
 m = (
-  // @ts-expect-error: children is not allowed here
+  // @ts-expect-error: children are not allowed here
   <Select value={gender} other={"string"}>
     Message
   </Select>

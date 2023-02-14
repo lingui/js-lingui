@@ -210,6 +210,7 @@ type PluralChoiceProps = {
   offset?: number
   zero?: ReactNode
   one?: ReactNode
+  two?: ReactNode
   few?: ReactNode
   many?: ReactNode
 

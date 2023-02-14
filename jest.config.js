@@ -15,6 +15,7 @@ module.exports = {
   collectCoverageFrom: [
     "**/*.{ts,tsx}",
     "!**/*.d.ts",
+    "!**/*.test-d.{ts,tsx}",
     "!**/node_modules/**",
     "!**/build/**",
   ],
