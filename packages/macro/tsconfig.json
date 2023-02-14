@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "lib": [
+      "ES2019.Array"
+    ],
     "strict": true,
-    "strictNullChecks": false,
+    "strictNullChecks": false
   }
 }
