@@ -12,7 +12,7 @@ import {
 } from "./api/catalog"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
-export function copyFixture(fixtureDir) {
+export function copyFixture(fixtureDir: string) {
   const tmpDir = fs.mkdtempSync(
     path.join(os.tmpdir(), `lingui-test-${process.pid}`)
   )

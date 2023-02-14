@@ -1,4 +1,5 @@
 import {
+  ExtractedMessage,
   ExtractorType,
   FallbackLocales,
   LinguiConfig,
@@ -17,6 +18,7 @@ import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
+import type { ExtractorOptions } from "@lingui/cli/src/api/extractors"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -63,7 +65,10 @@ export const defaultConfig: LinguiConfig = {
       minimal: true,
     },
   },
-  extractBabelOptions: { plugins: [], presets: [] },
+  extractorParserOptions: {
+    flow: false,
+    decoratorsBeforeExport: false,
+  },
   fallbackLocales: {} as FallbackLocales,
   format: "po",
   formatOptions: { origins: true, lineNumbers: true },
@@ -83,7 +88,12 @@ export const exampleConfig = {
     [
       {
         match: (fileName: string) => false,
-        extract: (filename: string, onMessageExtracted, options?: any) => {},
+        extract: (
+          filename: string,
+          code: string,
+          onMessageExtracted: (msg: ExtractedMessage) => void,
+          options?: ExtractorOptions
+        ) => {},
       } as ExtractorType,
     ]
   ),
@@ -98,21 +108,23 @@ export const exampleConfig = {
     { default: "en" },
     false
   ),
-  extractBabelOptions: {
-    extends: "babelconfig.js",
-    rootMode: "rootmode",
-    plugins: ["plugin"],
-    presets: ["preset"],
-    targets: multipleValidOptions(
-      {},
-      "> 0.5%",
-      ["> 0.5%", "not dead"],
-      undefined
-    ),
-    assumptions: multipleValidOptions({}, undefined),
-    browserslistConfigFile: multipleValidOptions(true, undefined),
-    browserslistEnv: multipleValidOptions(".browserslistrc", undefined),
+  extractorParserOptions: {
+    flow: false,
+    decoratorsBeforeExport: false,
   },
+}
+
+/**
+ * Introduced in v4, remove in v5
+ */
+const extractBabelOptionsDeprecations = {
+  extractBabelOptions: () =>
+    ` Option ${chalk.bold("extractBabelOptions")} was removed. 
+    
+    Please remove it from your config file. 
+
+    You can find more information here: https://lingui.dev/releases/migration-4
+    `,
 }
 
 const configValidation = {
@@ -120,6 +132,7 @@ const configValidation = {
   deprecatedConfig: {
     ...catalogMigrationDeprecations,
     ...fallbackLanguageMigrationDeprecations,
+    ...extractBabelOptionsDeprecations,
   },
   comment: "Documentation: https://lingui.dev/ref/conf",
 }

@@ -25,6 +25,7 @@
     "examples/next-js",
     "examples/create-react-app",
     "build",
-    "website"
+    "website",
+    "**/fixtures/**"
   ]
 }

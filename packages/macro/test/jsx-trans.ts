@@ -271,6 +271,21 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "Production - all props kept if extract: true",
+    production: true,
+    macroOpts: {
+      extract: true,
+    },
+    input: `
+        import { Trans } from '@lingui/macro';
+        <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id="msg.hello" message={"Hello World"} comment="Hello World"/>;
+      `,
+  },
+  {
     name: "Production - import type doesn't interference on normal import",
     production: true,
     useTypescriptPreset: true,

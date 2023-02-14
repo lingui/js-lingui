@@ -10,6 +10,11 @@ import {
   isIdentifier,
 } from "@babel/types"
 
+export type LinguiMacroOpts = {
+  // explicitly set by CLI when running extraction process
+  extract?: boolean
+}
+
 const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
 
 const getSymbolSource = (
@@ -44,7 +49,9 @@ const jsMacroTags = new Set([
 
 const jsxMacroTags = new Set(["Trans", "Plural", "Select", "SelectOrdinal"])
 
-function macro({ references, state, babel }: MacroParams) {
+function macro({ references, state, babel, config }: MacroParams) {
+  const opts: LinguiMacroOpts = config as LinguiMacroOpts
+
   const jsxNodes: NodePath[] = []
   const jsNodes: NodePath[] = []
   let needsI18nImport = false
@@ -66,15 +73,18 @@ function macro({ references, state, babel }: MacroParams) {
     }
   })
 
+  const stripNonEssentialProps =
+    process.env.NODE_ENV == "production" && !opts.extract
+
   jsNodes.filter(isRootPath(jsNodes)).forEach((path) => {
     if (alreadyVisited(path)) return
-    const macro = new MacroJS(babel, { i18nImportName })
+    const macro = new MacroJS(babel, { i18nImportName, stripNonEssentialProps })
     if (macro.replacePath(path)) needsI18nImport = true
   })
 
   jsxNodes.filter(isRootPath(jsxNodes)).forEach((path) => {
     if (alreadyVisited(path)) return
-    const macro = new MacroJSX(babel)
+    const macro = new MacroJSX(babel, { stripNonEssentialProps })
     macro.replacePath(path)
   })
 
@@ -84,12 +94,6 @@ function macro({ references, state, babel }: MacroParams) {
 
   if (jsxNodes.length) {
     addImport(babel, state, TransImportModule, TransImportName)
-  }
-
-  if (process.env.LINGUI_EXTRACT === "1") {
-    return {
-      keepImports: true,
-    }
   }
 }
 
@@ -165,4 +169,6 @@ const alreadyVisited = (path: NodePath) => {
   })
 })
 
-export default createMacro(macro)
+export default createMacro(macro, {
+  configName: "lingui",
+})

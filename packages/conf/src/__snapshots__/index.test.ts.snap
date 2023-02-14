@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`@lingui/conf config file extractBabelOptions deprecation if deprecated extractBabelOptions is defined, we show deprecation message 1`] = `
+● Deprecation Warning:
+
+ Option extractBabelOptions was removed. 
+    
+    Please remove it from your config file. 
+
+    You can find more information here: https://lingui.dev/releases/migration-4
+    
+
+Documentation: https://lingui.dev/ref/conf
+`;
+
 exports[`@lingui/conf config file fallbackLocale deprecation if deprecated fallbackLocale is defined, we set fallbackLocales.default and show message 1`] = `
 ● Deprecation Warning:
 
@@ -41,9 +54,9 @@ Object {
     },
     minified: true,
   },
-  extractBabelOptions: Object {
-    plugins: Array [],
-    presets: Array [],
+  extractorParserOptions: Object {
+    decoratorsBeforeExport: false,
+    flow: false,
   },
   fallbackLocales: Object {
     en-gb: en,

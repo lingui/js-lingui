@@ -69,6 +69,21 @@ describe("@lingui/conf", () => {
       })
     })
 
+    describe("extractBabelOptions deprecation", () => {
+      it("if deprecated extractBabelOptions is defined, we show deprecation message", () => {
+        mockConsole((console) => {
+          makeConfig({
+            locales: ["en-US"],
+            extractBabelOptions: {
+              prop: "value",
+            },
+          } as LinguiConfig & { extractBabelOptions: any })
+
+          expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
+        })
+      })
+    })
+
     describe("Build parent cldr fallbackLocales", () => {
       it("if fallbackLocales.default is defined, we dont build the cldr", () => {
         const config = makeConfig({

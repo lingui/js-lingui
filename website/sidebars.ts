@@ -67,6 +67,10 @@ const sidebar = [
       },
       {
         type: 'doc',
+        id: 'guides/flow',
+      },
+      {
+        type: 'doc',
         label: 'Excluding build files',
         id: 'guides/excluding-build-files',
       },
@@ -94,6 +98,16 @@ const sidebar = [
         type: 'doc',
         label: 'Pseudolocalization',
         id: 'guides/pseudolocalization',
+      },
+      {
+        type: 'category',
+        label: 'Advanced',
+        items: [
+          {
+            type: 'doc',
+            id: 'guides/custom-extractor',
+          },
+        ],
       },
     ],
   },
@@ -182,7 +196,7 @@ const sidebar = [
   {
     type: 'category',
     label: 'Releases',
-    items: ['releases/migration-3'],
+    items: ['releases/migration-3', 'releases/migration-4'],
   },
 ];
 

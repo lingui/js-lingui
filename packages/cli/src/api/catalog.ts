@@ -11,7 +11,7 @@ import getFormat, {
   CatalogFormatOptionsInternal,
   CatalogFormatter,
 } from "./formats"
-import extract, { ExtractedMessage } from "./extractors"
+import extract, { ExtractedMessage, ExtractorType } from "./extractors"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -54,16 +54,12 @@ export type AllCatalogsType = {
 }
 
 export type MakeOptions = CliExtractOptions & {
-  projectType?: string
   orderBy?: OrderBy
 }
 
 export type MakeTemplateOptions = CliExtractTemplateOptions & {
-  projectType?: string
   orderBy?: OrderBy
 }
-
-type CollectOptions = MakeOptions | MakeTemplateOptions
 
 export type MergeOptions = {
   overwrite: boolean
@@ -115,7 +111,7 @@ export class Catalog {
   }
 
   async make(options: MakeOptions): Promise<boolean> {
-    const nextCatalog = await this.collect(options)
+    const nextCatalog = await this.collect({ files: options.files })
     if (!nextCatalog) return false
     const prevCatalogs = this.readAll()
 
@@ -145,7 +141,7 @@ export class Catalog {
   }
 
   async makeTemplate(options: MakeTemplateOptions): Promise<boolean> {
-    const catalog = await this.collect(options)
+    const catalog = await this.collect({ files: options.files })
     if (!catalog) return false
     const sort = order<CatalogType>(options.orderBy)
     this.writeTemplate(sort(catalog as CatalogType))
@@ -156,7 +152,7 @@ export class Catalog {
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
   async collect(
-    options: CollectOptions
+    options: { files?: string[] } = {}
   ): Promise<ExtractedCatalogType | undefined> {
     const messages: ExtractedCatalogType = {}
 
@@ -207,10 +203,8 @@ export class Catalog {
           }
         },
         {
-          verbose: options.verbose,
-          babelOptions: this.config.extractBabelOptions,
-          extractors: options.extractors,
-          projectType: options.projectType,
+          parserOptions: this.config.extractorParserOptions,
+          extractors: this.config.extractors as ExtractorType[],
         }
       )
       catalogSuccess &&= fileSuccess

@@ -58,13 +58,19 @@ export function normalizeWhitespace(text: string): string {
   )
 }
 
+export type MacroJsxOpts = {
+  stripNonEssentialProps: boolean
+}
+
 export default class MacroJSX {
   types: typeof babelTypes
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
+  stripNonEssentialProps: boolean
 
-  constructor({ types }: { types: typeof babelTypes }) {
+  constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
+    this.stripNonEssentialProps = opts.stripNonEssentialProps
   }
 
   safeJsxAttribute = (name: string, value: string) => {
@@ -102,24 +108,20 @@ export default class MacroJSX {
         )
       )
 
-      if (process.env.NODE_ENV !== "production") {
-        if (message) {
-          attributes.push(this.safeJsxAttribute(MESSAGE, message))
-        }
+      if (!this.stripNonEssentialProps && message) {
+        attributes.push(this.safeJsxAttribute(MESSAGE, message))
       }
     } else {
       attributes.push(this.safeJsxAttribute(ID, message))
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      if (comment) {
-        attributes.push(
-          this.types.jsxAttribute(
-            this.types.jsxIdentifier(COMMENT),
-            this.types.stringLiteral(comment)
-          )
+    if (!this.stripNonEssentialProps && comment) {
+      attributes.push(
+        this.types.jsxAttribute(
+          this.types.jsxIdentifier(COMMENT),
+          this.types.stringLiteral(comment)
         )
-      }
+      )
     }
 
     if (context) {

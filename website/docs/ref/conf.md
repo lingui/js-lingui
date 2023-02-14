@@ -21,7 +21,7 @@ Default config:
    "exclude": ["**/node_modules/**"]
  }],
  "compileNamespace": "cjs",
- "extractBabelOptions": {},
+ "extractorParserOptions": {},
  "compilerBabelOptions": {},
  "fallbackLocales": {},
  "format": "po",
@@ -207,17 +207,24 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 /* eslint-disable */window.i18n={messages: {"..."}}
 ```
 
-## extractBabelOptions
+## extractorParserOptions
 
 Default: `{}`
 
-Specify extra babel options used to parse source files when messages are being extracted. This is required when project doesn't use standard Babel config (e.g. Create React App).
+Specify extra options used to parse source files when messages are being extracted.
 
-``` json
-{
-  "extractBabelOptions": {
-    "plugins": ["@babel/plugin-syntax-dynamic-import"]
-  }
+```ts
+"extractorParserOptions": {
+  /**
+   * default true
+   * Use for Stage 3 decorators syntax.
+   */
+  decoratorsBeforeExport?: boolean
+  /**
+   * default false
+   * Enable if you use flow. This will apply Flow syntax to files with .js, cjs, .mjs extension.
+   */
+  flow?: boolean
 }
 ```
 
@@ -432,20 +439,13 @@ The difference between [`fallbackLocales`](#fallbacklocales) and `sourceLocale` 
 
 Default: `[babel]`
 
-Extractors it's the way to customize which extractor you want for your codebase, a long time ago Babel wasn't ready yet to work with Typescript, so we added two extractors as default `[babel, typescript]`, but right now Babel already works good with Typescript so isn't a requirement anymore to compile two times the same code.
-
-Anyway, if you want to use the typescript extractor in conjunction with babel you can do:
+Extractors it's the way to customize which extractor you want for your codebase.
 
 ``` js
 {
    "extractors": [
-      require.resolve("@lingui/cli/api/extractors/babel"),
-      require.resolve("@lingui/cli/api/extractors/typescript"),
+      myCustomExtractor,
    ]
 }
 ```
-
-Of course, you can build your own extractor, take a look to babel and typescript extractors to see how you should do it, but basically exports two methods:
-
-- match: regex to a filename extension, should return `true`|`false`
-- extract: is the responsible for transforming the code and using @lingui/babel-plugin-extract-messages
+Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn how to create custom extractor.

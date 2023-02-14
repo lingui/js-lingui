@@ -18,7 +18,6 @@ const transformCode = (
   filename = "test-case.js",
   rootDir = "."
 ) => {
-  process.env.LINGUI_EXTRACT = "1"
   process.env.LINGUI_CONFIG = path.join(
     __dirname,
     "fixtures",
@@ -45,6 +44,7 @@ const transformCode = (
         [
           "macros",
           {
+            lingui: { extract: true },
             // macro plugin uses package `resolve` to find a path of macro file
             // this will not follow jest pathMapping and will resolve path from ./build
             // instead of ./src which makes testing & developing hard.
@@ -56,7 +56,6 @@ const transformCode = (
       ],
     })
   } finally {
-    process.env.LINGUI_EXTRACT = null
     process.env.LINGUI_CONFIG = null
   }
 

@@ -1,63 +1,6 @@
 # Typescript
 
-Lingui supports typescript types out of the box since version `3.0.0`. Feel free to submit any query you find related to typescript on GitHub Issues.
-
-## Webpack setup
-
-The ability of lingui to support the intuitive syntax comes from the `@lingui/babel-preset-react` Babel transformation. The preset consist of 2 plugins, namely `@lingui/babel-plugin-transform-js` and `@lingui/babel-plugin-transform-react`.
-
-The plugins perform transformation only on the JSX and tagged template literals. Thus, the JSX and tagged template literals *must not* be transpiled before the 2 plugins get to do their magic to process the intuitive syntax.
-
-In order to preserve JSX and tagged template literals for the lingui plugins, you must set the following in your `tsconfig.json`.
-
-```json title="tsconfig.json"
-{
-  "compilerOptions": {
-    "jsx": "preserve",
-    "target": "es2016"
-  }
-}
-```
-
-For lingui 2.0+, install `babel-loader`, `babel-preset-react`, `babel-preset-env`, `@lingui/babel-preset-react`. Use the presets by changing your `.babelrc` to the following. The order of the preset is important.
-
-```json title=".babelrc"
-{
-  "presets": [
-    "babel-preset-env",
-    "babel-preset-react",
-    "@lingui/babel-preset-react"
-  ]
-}
-```
-
-In your `webpack.config.js`, use both `babel-loader` and `ts-loader` for Typescript files.
-
-```js title="webpack.config.js"
-{
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'ts-loader']
-      }
-    ]
-  }
-}
-```
-
-:::note
-If you are not using `.babelrc` file, keep in mind that by running [`lingui extract`](/docs/ref/cli.md#extract), the Webpack config is not used. To supply babel options for the extraction process use [`extractBabelOptions`](/docs/ref/conf.md#extractbabeloptions) configuration option.
-:::
-
-[`compileNamespace`](/docs/ref/conf.md#compilenamespace) must be set to `ts` (ES6 default export) in the Lingui config otherwise compiled catalogs can't be imported using ES `import`, but rather CommonJS `require`:
-
-``` js
-{
-  "compileNamespace": "ts"
-}
-```
+Lingui supports typescript types out of the box since version `3.0.0`.
 
 ## Macros types in non-React environments
 
@@ -79,21 +22,3 @@ Now you can modify your `tsconfig.json` in your root directory and reference the
   }
 }
 ```
-
-## Type definitions
-
-Since version `3.0.0` types are already inside `@lingui` modules, so you don't need to install any external dependency related to types.
-
-**For earlier versions**:
-
-[Jeow Li Huan](https://github.com/huan086) wrote type definition for `@lingui/core` and `@lingui/react`:
-
-The type definitions requires Typescript 2.8 or later.
-
-```bash npm2yarn
-npm install --save-dev @types/lingui__core   # types for @lingui/core
-npm install --save-dev @types/lingui__react  # types for @lingui/react
-npm install --save-dev @types/lingui__macro  # types for @lingui/macro
-```
-
-Please report any issues in [maintainers repo](https://github.com/huan086/lingui-typings).
