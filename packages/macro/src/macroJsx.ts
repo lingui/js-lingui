@@ -1,5 +1,6 @@
 import * as babelTypes from "@babel/types"
 import {
+  ConditionalExpression,
   Expression,
   JSXAttribute,
   JSXElement,
@@ -283,6 +284,10 @@ export default class MacroJSX {
           ]
         })
       }
+      if (exp.isConditionalExpression()) {
+        return [this.tokenizeConditionalExpression(exp)]
+      }
+
       if (exp.isJSXElement()) {
         return this.tokenizeNode(exp)
       }
@@ -407,6 +412,25 @@ export default class MacroJSX {
       type: "arg",
       name: this.expressionToArgument(path),
       value: path.node as Expression,
+    }
+  }
+
+  tokenizeConditionalExpression = (
+    exp: NodePath<ConditionalExpression>
+  ): ArgToken => {
+    exp.traverse({
+      JSXElement: (el) => {
+        if (this.isI18nComponent(el) || this.isChoiceComponent(el)) {
+          this.replacePath(el)
+          el.skip()
+        }
+      },
+    })
+
+    return {
+      type: "arg",
+      name: this.expressionToArgument(exp),
+      value: exp.node,
     }
   }
 
