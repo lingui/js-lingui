@@ -6,7 +6,7 @@ import path from "path"
 import PO from "pofile"
 
 import { CatalogType } from "../catalog"
-import format from "./po-gettext"
+import format, { serialize } from "./po-gettext"
 
 describe("po-gettext format", () => {
   const dateHeaders = {
@@ -274,7 +274,7 @@ describe("po-gettext format", () => {
     }
 
     mockConsole((console) => {
-      format.serialize(catalog, {})
+      serialize(catalog, {})
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Nested plurals"),
@@ -324,7 +324,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        format.serialize(catalog, {})
+        serialize(catalog, {})
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("select"),
@@ -335,7 +335,7 @@ msgstr[2] "# dní"
 
     it("should not warn when disabling the warning in config", () => {
       mockConsole((console) => {
-        format.serialize(catalog, { disableSelectWarning: true })
+        serialize(catalog, { disableSelectWarning: true })
 
         expect(console.warn).not.toHaveBeenCalled()
       })
@@ -352,7 +352,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        format.serialize(catalog, {})
+        serialize(catalog, {})
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("selectOrdinal"),
@@ -363,7 +363,7 @@ msgstr[2] "# dní"
 
     it("should not warn when disabling the warning in config", () => {
       mockConsole((console) => {
-        format.serialize(catalog, { disableSelectWarning: true })
+        serialize(catalog, { disableSelectWarning: true })
 
         expect(console.warn).not.toHaveBeenCalled()
       })

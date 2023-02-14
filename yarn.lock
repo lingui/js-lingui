@@ -9535,7 +9535,7 @@ plurals-cldr@^1.0.4:
   resolved "https://registry.yarnpkg.com/plurals-cldr/-/plurals-cldr-1.0.4.tgz#534e4784f80679d3b0b39b0fb6cc46645fcf5de8"
   integrity sha512-4nLXqtel7fsCgzi8dvRZvUjfL8SXpP982sKg7b2TgpnR8rDnes06iuQ83trQ/+XdtyMIQkBBbKzX6x97eLfsJQ==
 
-pofile@^1.1.0:
+pofile@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/pofile/-/pofile-1.1.4.tgz#eab7e29f5017589b2a61b2259dff608c0cad76a2"
   integrity sha512-r6Q21sKsY1AjTVVjOuU02VYKVNQGJNQHjTIvs4dEbeuuYfxgYk/DGD2mqqq4RDaVkwdSq0VEtmQUOPe/wH8X3g==

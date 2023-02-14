@@ -145,8 +145,9 @@ describe("pofile format", () => {
     mockConsole((console) => {
       const actual = format.read(filename)
       expect(console.warn).toHaveBeenCalledWith(
-        expect.stringContaining("Multiple translations"),
-        "withMultipleTranslation"
+        expect.stringContaining(
+          "Multiple translations for item with key withMultipleTranslation is not supported and it will be ignored."
+        )
       )
       mockFs.restore()
       expect(actual).toMatchSnapshot()

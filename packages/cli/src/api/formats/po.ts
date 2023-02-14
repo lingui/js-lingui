@@ -1,96 +1,98 @@
 import fs from "fs"
-import * as R from "ramda"
 import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
 import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
-import { MessageType, CatalogType } from "../catalog"
-import { CatalogFormatter } from "."
-
-const getCreateHeaders = (language = "no") => ({
-  "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
-  "MIME-Version": "1.0",
-  "Content-Type": "text/plain; charset=utf-8",
-  "Content-Transfer-Encoding": "8bit",
-  "X-Generator": "@lingui/cli",
-  Language: language,
-})
-
-const serialize = (items: CatalogType, options) =>
-  R.compose(
-    R.values,
-    R.mapObjIndexed((message: MessageType, key) => {
-      const item = new PO.Item()
-      item.msgid = key
-      item.msgstr = [message.translation]
-      item.comments = message.comments || []
-      item.extractedComments = message.extractedComments || []
-      if (message.context) {
-        item.msgctxt = message.context
-      }
-      if (options.origins !== false) {
-        if (message.origin && options.lineNumbers === false) {
-          item.references = message.origin.map(([path]) => path)
-        } else {
-          item.references = message.origin ? message.origin.map(joinOrigin) : []
-        }
-      }
-      // @ts-ignore: Figure out how to set this flag
-      item.obsolete = message.obsolete
-      item.flags = message.flags
-        ? R.fromPairs(message.flags.map((flag) => [flag, true]))
-        : {}
-      return item
-    })
-  )(items)
-
-const getMessageKey = R.prop<"msgid", string>("msgid")
-const getTranslations = R.prop("msgstr")
-const getExtractedComments = R.prop("extractedComments")
-const getTranslatorComments = R.prop("comments")
-const getMessageContext = R.prop("msgctxt")
-const getOrigins = R.prop("references")
-const getFlags = R.compose(
-  R.map(R.trim),
-  R.keys,
-  R.dissoc("obsolete"), // backward-compatibility, remove in 3.x
-  R.prop("flags")
-)
-const isObsolete = R.either(R.path(["flags", "obsolete"]), R.prop("obsolete"))
-
-const deserialize: (item: Object) => Object = R.map(
-  R.applySpec({
-    translation: R.compose(R.head, R.defaultTo([]), getTranslations),
-    extractedComments: R.compose(R.defaultTo([]), getExtractedComments),
-    comments: R.compose(R.defaultTo([]), getTranslatorComments),
-    context: R.compose(R.defaultTo(null), getMessageContext),
-    obsolete: isObsolete,
-    origin: R.compose(R.map(splitOrigin), R.defaultTo([]), getOrigins),
-    flags: getFlags,
-  })
-)
+import { CatalogType, MessageType } from "../catalog"
+import { CatalogFormatOptionsInternal, CatalogFormatter } from "."
 
 type POItem = InstanceType<typeof PO.Item>
-type PoFormatter = {
-  parse: (raw: string) => Object
+
+function getCreateHeaders(language = "no"): PO["headers"] {
+  return {
+    "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
+    "MIME-Version": "1.0",
+    "Content-Type": "text/plain; charset=utf-8",
+    "Content-Transfer-Encoding": "8bit",
+    "X-Generator": "@lingui/cli",
+    Language: language,
+  }
 }
 
-const validateItems = R.forEach<POItem>((item) => {
-  if (R.length(getTranslations(item)) > 1) {
+export const serialize = (
+  catalog: CatalogType,
+  options: CatalogFormatOptionsInternal,
+  postProcessItem?: (item: POItem, message: MessageType, id: string) => POItem
+) => {
+  return Object.keys(catalog).map((id) => {
+    const message = catalog[id]
+
+    const item = new PO.Item()
+    item.msgid = id
+    item.msgstr = [message.translation]
+    item.comments = message.comments || []
+
+    // The extractedComments array may be modified in this method, so create a new array with the message's elements.
+    // Destructuring `undefined` is forbidden, so fallback to `[]` if the message has no extracted comments.
+    item.extractedComments = [...(message.extractedComments ?? [])]
+
+    if (message.context) {
+      item.msgctxt = message.context
+    }
+    if (options.origins !== false) {
+      if (message.origin && options.lineNumbers === false) {
+        item.references = message.origin.map(([path]) => path)
+      } else {
+        item.references = message.origin ? message.origin.map(joinOrigin) : []
+      }
+    }
+    item.obsolete = message.obsolete
+    item.flags = message.flags
+      ? message.flags.reduce<Record<string, boolean>>((acc, flag) => {
+          acc[flag] = true
+          return acc
+        }, {})
+      : {}
+
+    return postProcessItem ? postProcessItem(item, message, id) : item
+  })
+}
+
+export function deserialize(
+  items: POItem[],
+  onItem: (item: POItem) => void
+): CatalogType {
+  return items.reduce<CatalogType>((catalog, item) => {
+    onItem(item)
+
+    catalog[item.msgid] = {
+      translation: item.msgstr[0],
+      extractedComments: item.extractedComments || [],
+      comments: item.comments || [],
+      context: item.msgctxt ?? null,
+      obsolete: item.flags.obsolete || item.obsolete,
+      origin: (item.references || []).map((ref) => splitOrigin(ref)),
+      flags: Object.keys(item.flags).map((flag) => flag.trim()),
+    }
+
+    return catalog
+  }, {})
+}
+
+function validateItem(item: POItem): void {
+  if (item.msgstr.length > 1) {
     console.warn(
-      "Multiple translations for item with key %s is not supported and it will be ignored.",
-      getMessageKey(item)
+      `Multiple translations for item with key ${item.msgid} is not supported and it will be ignored.`
     )
   }
-})
+}
 
-const indexItems = R.indexBy(getMessageKey)
-
-const po: CatalogFormatter & PoFormatter = {
+const po: CatalogFormatter = {
   catalogExtension: ".po",
 
   write(filename, catalog, options) {
-    let po
+    let po: PO
+
     if (fs.existsSync(filename)) {
       const raw = fs.readFileSync(filename).toString()
       po = PO.parse(raw)
@@ -100,7 +102,8 @@ const po: CatalogFormatter & PoFormatter = {
       if (options.locale === undefined) {
         delete po.headers.Language
       }
-      po.headerOrder = R.keys(po.headers)
+      // accessing private property
+      ;(po as any).headerOrder = Object.keys(po.headers)
     }
     po.items = serialize(catalog, options)
     writeFileIfChanged(filename, po.toString())
@@ -113,8 +116,7 @@ const po: CatalogFormatter & PoFormatter = {
 
   parse(raw: string) {
     const po = PO.parse(raw)
-    validateItems(po.items)
-    return deserialize(indexItems(po.items)) as CatalogType
+    return deserialize(po.items, validateItem)
   },
 }
 

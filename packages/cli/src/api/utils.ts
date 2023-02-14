@@ -19,7 +19,7 @@ export function prettyOrigin(origins: [filename: string, line?: number][]) {
  *    If unknown commands is passed to CLI, check it agains all available commands
  *    for possible misspelled letter. Output help with suggestions to console.
  */
-export function helpMisspelledCommand(command, availableCommands = []) {
+export function helpMisspelledCommand(command: string, availableCommands = []) {
   const commandNames = availableCommands.map((command) => command.name())
 
   // if no command is supplied, then commander.js shows help automatically
@@ -48,11 +48,15 @@ export function helpMisspelledCommand(command, availableCommands = []) {
   }
 }
 
-export const splitOrigin = (origin) => origin.split(":")
+export const splitOrigin = (origin: string) => {
+  const [file, line] = origin.split(":")
+  return [file, line ? Number(line) : null] as [file: string, line: number]
+}
 
-export const joinOrigin = (origin) => origin.join(":")
+export const joinOrigin = (origin: [file: string, line?: number]): string =>
+  origin.join(":")
 
-export function writeFileIfChanged(filename, newContent) {
+export function writeFileIfChanged(filename: string, newContent: string) {
   if (fs.existsSync(filename)) {
     const raw = fs.readFileSync(filename).toString()
     if (newContent !== raw) {
