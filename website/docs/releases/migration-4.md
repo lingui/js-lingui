@@ -8,7 +8,7 @@ Minimal required versions are:
 
 ### Extractor configuration changes
 
-The big change in the v4 changes in extractor internals. Now it is less fragile, and not depends on the host project settings.
+The big change in the v4 is in extractor internals. Now it is less fragile, and doesn't depend on the host project settings.
 
 For most projects, it should work without extra configuration as long as it is a valid ES code.
 
@@ -22,7 +22,7 @@ module.exports = {
 
 #### Flow Syntax supported in the Extractor with the flag
 
-If your project uses Flow, you need explicitly enable support in the extractor:
+If your project uses Flow, you need to explicitly enable support in the extractor:
 
 ```js title="lingui.config.js"
 module.exports = {
@@ -40,13 +40,13 @@ Extractor supports TypeScript out of the box. Please delete it from your configu
 If your extract command looks like:
 
 ```bash
- NODE_ENV=development lingui-extract
+NODE_ENV=development lingui-extract
 ```
 
 Now you can safely change it to just:
 
 ```bash
- lingui-extract
+lingui-extract
 ```
 
 ### Public interface of `ExtractorType` was changed
@@ -64,4 +64,4 @@ declare type ExtractorType = {
 }
 ```
 
-Read more about custom extractor on the [Custom Extractor Page](/guides/custom-extractor)
+Read more about custom extractor on the [Advanced: Custom Extractor](/guides/custom-extractor) page.

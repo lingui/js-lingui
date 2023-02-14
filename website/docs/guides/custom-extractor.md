@@ -1,6 +1,6 @@
 # Custom Extractor
 
-If your project is not playing well with Lingui's Extractor you can write your custom extractor implementation.
+If your project is not working well with Lingui's Extractor, you can write your custom extractor implementation.
 
 That might be the case if you use some experimental features (stage0 - stage2) or frameworks with custom syntax such as Vue.js or Svelte.
 
@@ -13,10 +13,10 @@ export const extractor: ExtractorType = {
   },
   extract(filename: string, code: string, onMessageExtracted) {
     // transform to plain JS + Sourcemaps
-     const {code, sourcemaps} = transformMyCustomFileToJs(filename, code);
+    const {code, sourcemaps} = transformMyCustomFileToJs(filename, code);
 
-     // reuse extractor from cli
-     return babel(filename, code, onMessageExtracted, {sourcemaps})
+    // reuse extractor from cli
+    return babel(filename, code, onMessageExtracted, {sourcemaps})
   }
 }
 ```
@@ -24,7 +24,7 @@ export const extractor: ExtractorType = {
 Then in your `lingui.config.ts`:
 
 ```ts title="lingui.config.ts"
-import {extractor} from './my-custom-extractor.ts'
+import { extractor } from './my-custom-extractor.ts'
 module.exports = {
   [...]
   extractors: [extractor]

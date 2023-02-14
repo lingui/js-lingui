@@ -123,7 +123,7 @@ const extractBabelOptionsDeprecations = {
     
     Please remove it from your config file. 
 
-    You can find more information here: https://lingui.dev/releases/migration-4.md
+    You can find more information here: https://lingui.dev/releases/migration-4
     `,
 }
 

@@ -217,12 +217,12 @@ Specify extra options used to parse source files when messages are being extract
 "extractorParserOptions": {
   /**
    * default true
-   * Use for Stage 3 decorators syntax
+   * Use for Stage 3 decorators syntax.
    */
   decoratorsBeforeExport?: boolean
   /**
-   * Enable if you use flow. Default false
-   * This will apply Flow syntax to files with .js, cjs, .mjs extension.
+   * default false
+   * Enable if you use flow. This will apply Flow syntax to files with .js, cjs, .mjs extension.
    */
   flow?: boolean
 }
@@ -448,4 +448,4 @@ Extractors it's the way to customize which extractor you want for your codebase.
    ]
 }
 ```
-Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn more how to create custom extractor.
+Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn how to create custom extractor.

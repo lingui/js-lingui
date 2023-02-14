@@ -7,7 +7,7 @@ exports[`@lingui/conf config file extractBabelOptions deprecation if deprecated 
     
     Please remove it from your config file. 
 
-    You can find more information here: https://lingui.dev/releases/migration-4.md
+    You can find more information here: https://lingui.dev/releases/migration-4
     
 
 Documentation: https://lingui.dev/ref/conf
