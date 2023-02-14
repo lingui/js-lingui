@@ -5,12 +5,7 @@ import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
 
-import {
-  LinguiConfig,
-  OrderBy,
-  FallbackLocales,
-  LocaleObject,
-} from "@lingui/conf"
+import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
 
 import getFormat, {
   CatalogFormatOptionsInternal,
@@ -324,7 +319,7 @@ export class Catalog {
     }
 
     const getMultipleFallbacks = (_locale: string) => {
-      const fL = fallbackLocales && (fallbackLocales as LocaleObject)[_locale]
+      const fL = fallbackLocales && fallbackLocales[_locale]
 
       // some probably the fallback will be undefined, so just search by locale
       if (!fL) return null
@@ -346,8 +341,7 @@ export class Catalog {
       // We search in fallbackLocales as dependent of each locale
       getMultipleFallbacks(locale) ||
       // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales?.default &&
-        getTranslation(fallbackLocales.default as string)) ||
+      (fallbackLocales?.default && getTranslation(fallbackLocales.default)) ||
       // Get message default
       // If sourceLocale is either target locale of fallback one, use key
       (sourceLocale && sourceLocale === locale && key) ||

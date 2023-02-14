@@ -1,15 +1,10 @@
-import mockFs from "mock-fs"
-import { mockConfig } from "@lingui/jest-mocks"
 import { printStats } from "./stats"
 import { defaultMergeOptions, makeCatalog, makeNextMessage } from "../tests"
+import { makeConfig } from "@lingui/conf"
 
 describe("PrintStats", () => {
-  afterEach(() => {
-    mockFs.restore()
-  })
-
   it("should print correct stats for a basic setup", () => {
-    const config = mockConfig({
+    const config = makeConfig({
       locales: ["en", "cs"],
     })
 

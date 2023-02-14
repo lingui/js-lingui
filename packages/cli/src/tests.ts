@@ -2,7 +2,6 @@ import os from "os"
 import fs from "fs-extra"
 import path from "path"
 
-import { mockConfig } from "@lingui/jest-mocks"
 import {
   Catalog,
   MakeOptions,
@@ -11,6 +10,7 @@ import {
   ExtractedMessageType,
   MessageType,
 } from "./api/catalog"
+import { LinguiConfig, makeConfig } from "@lingui/conf"
 
 export function copyFixture(fixtureDir) {
   const tmpDir = fs.mkdtempSync(
@@ -42,7 +42,7 @@ export const defaultMergeOptions: MergeOptions = {
   overwrite: false,
 }
 
-export const makeCatalog = (config = {}) => {
+export const makeCatalog = (config: Partial<LinguiConfig> = {}) => {
   return new Catalog(
     {
       name: "messages",
@@ -50,7 +50,7 @@ export const makeCatalog = (config = {}) => {
       include: [],
       exclude: [],
     },
-    mockConfig(config)
+    makeConfig(config, { skipValidation: true })
   )
 }
 

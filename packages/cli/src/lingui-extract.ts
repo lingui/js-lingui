@@ -2,7 +2,7 @@ import chalk from "chalk"
 import chokidar from "chokidar"
 import program from "commander"
 
-import { getConfig, LinguiConfig } from "@lingui/conf"
+import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { AllCatalogsType, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
@@ -23,7 +23,7 @@ export type CliExtractOptions = {
 }
 
 export default async function command(
-  config: LinguiConfig,
+  config: LinguiConfigNormalized,
   options: Partial<CliExtractOptions>
 ): Promise<boolean> {
   // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
@@ -46,7 +46,7 @@ export default async function command(
     const catalogSuccess = await catalog.make({
       ...(options as CliExtractOptions),
       orderBy: config.orderBy,
-      extractors: config.extractors,
+      extractors: config.extractors as ExtractorType[],
       projectType: detect(),
     })
 

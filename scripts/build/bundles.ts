@@ -70,8 +70,9 @@ export const bundles: readonly BundleDef[] = [
     packageName: "cli",
   },
   {
-    type: BundleType.NODE,
+    type: BundleType.CUSTOM,
     packageName: "conf",
+    cmd: "yarn workspace @lingui/conf build",
   },
   {
     type: BundleType.NODE,

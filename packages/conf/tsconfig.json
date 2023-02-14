@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2019",
+    "sourceMap": true,
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "files": [
+    "./src/index.ts"
+  ],
+}
