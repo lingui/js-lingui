@@ -91,6 +91,47 @@ const cases: TestCase[] = [
   },
   {
     input: `
+        import { Trans, Plural, t } from '@lingui/macro';
+        <Plural
+              one={
+                <Trans>
+                  Care Navigator{" "}
+                  <Badge
+                    aria-label={t\`You have unread message\`}
+                  >
+                    #
+                  </Badge>
+                </Trans>
+              }
+              other={
+                <Trans>
+                  Care Navigator{" "}
+                  <Badge
+                    aria-label={t\`You have unread message\`}
+                  >
+                    #
+                  </Badge>
+                </Trans>
+              }
+              value={count}
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        import { i18n } from "@lingui/core";
+        <Trans id={
+          "{count, plural, one {Care Navigator <0>#</0>} other {Care Navigator <1>#</1>}}"
+        }
+        values={{
+          count: count
+        }} components={{
+          0: <Badge aria-label={/*i18n*/ i18n._("You have unread message")} />,
+          1: <Badge aria-label={/*i18n*/ i18n._("You have unread message")} />
+        }} />;
+      `,
+  },
+  {
+    input: `
         import { Plural } from '@lingui/macro';
         <Plural
           id="msg.plural"

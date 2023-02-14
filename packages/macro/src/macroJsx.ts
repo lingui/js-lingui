@@ -54,6 +54,8 @@ export function normalizeWhitespace(text: string): string {
       .replace(/\\s/g, " ")
       // we remove trailing whitespace inside Plural
       .replace(/(\s+})/gm, "}")
+      // we remove leading whitespace inside Plural
+      .replace(/({\s+)/gm, "{")
       .trim()
   )
 }
