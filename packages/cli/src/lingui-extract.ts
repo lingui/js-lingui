@@ -176,9 +176,14 @@ if (require.main === module) {
 
   const changedPaths = new Set<string>()
   let debounceTimer: NodeJS.Timer
+  let previousExtract = Promise.resolve(true)
   const dispatchExtract = (filePath?: string[]) => {
-    // Skip debouncing if not enabled
-    if (!program.debounce) return extract(filePath)
+    // Skip debouncing if not enabled but still chain them so no racing issue
+    // on deleting the tmp folder.
+    if (!program.debounce) {
+      previousExtract = previousExtract.then(() => extract(filePath))
+      return previousExtract
+    }
 
     filePath?.forEach((path) => changedPaths.add(path))
 
