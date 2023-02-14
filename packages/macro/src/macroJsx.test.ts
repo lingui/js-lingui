@@ -73,6 +73,25 @@ describe("jsx macro", () => {
         `{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}`
       )
     })
+
+    it("should remove leading whitespaces in icu expressions", () => {
+      const actual = normalizeWhitespace(
+        `{count, plural, one {
+
+              One hello
+
+            } other {
+
+              Other hello
+
+            }}
+`
+      )
+
+      expect(actual).toBe(
+        `{count, plural, one {One hello} other {Other hello}}`
+      )
+    })
   })
 
   describe("tokenizeTrans", () => {

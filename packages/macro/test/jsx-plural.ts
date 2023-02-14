@@ -90,23 +90,18 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "Should return cases without leading or trailing spaces for nested Trans inside Plural",
     input: `
-        import { Trans, Plural} from '@lingui/macro';
+        import { Trans, Plural } from '@lingui/macro';
         <Plural
               one={
                 <Trans>
-                  Care Navigator{" "}
-                  <Badge>
-                    #
-                  </Badge>
+                  One hello
                 </Trans>
               }
               other={
                 <Trans>
-                  Care Navigator{" "}
-                  <Badge>
-                    #
-                  </Badge>
+                  Other hello
                 </Trans>
               }
               value={count}
@@ -115,14 +110,12 @@ const cases: TestCase[] = [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id={
-          "{count, plural, one {Care Navigator <0>#</0>} other {Care Navigator <1>#</1>}}"
+          "{count, plural, one {One hello} other {Other hello}}"
         }
         values={{
           count: count
-        }} components={{
-          0: <Badge />,
-          1: <Badge />
-        }} />;
+        }}
+        />;
       `,
   },
   {
