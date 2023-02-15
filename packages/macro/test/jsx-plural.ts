@@ -14,14 +14,18 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={
-          "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
-         }
-         values={{
-          count: count
-        }} components={{
-          0: <a href="/more" />
-        }} />;
+        <Trans 
+          id={"VGP+zE"}
+          message={
+            "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
+           }
+          values={{
+            count: count
+          }} 
+          components={{
+            0: <a href="/more" />
+          }} 
+        />;
       `,
   },
   {
@@ -60,6 +64,7 @@ const cases: TestCase[] = [
       `,
   },
   {
+    stripId: true,
     input: `
         import { Trans, Plural } from '@lingui/macro';
         <Plural
@@ -78,18 +83,23 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={
-          "{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}"
-        }
-        values={{
-          count: count
-        }} components={{
-          0: <strong />,
-          1: <strong />
-        }} />;
+        <Trans
+          id={"<stripped>"}
+          message={
+            "{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}"
+          }
+          values={{
+            count: count
+          }} 
+          components={{
+            0: <strong />,
+            1: <strong />
+          }} 
+        />;
       `,
   },
   {
+    stripId: true,
     name: "Should return cases without leading or trailing spaces for nested Trans inside Plural",
     input: `
         import { Trans, Plural } from '@lingui/macro';
@@ -109,12 +119,14 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={
-          "{count, plural, one {One hello} other {Other hello}}"
-        }
-        values={{
-          count: count
-        }}
+        <Trans 
+          id={"<stripped>"}
+          message={
+            "{count, plural, one {One hello} other {Other hello}}"
+          }
+          values={{
+            count: count
+          }}
         />;
       `,
   },

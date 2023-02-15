@@ -2,6 +2,7 @@ import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
+    stripId: true,
     input: `
         import { Select } from '@lingui/macro';
         <Select
@@ -13,11 +14,15 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={"{count, select, male {He} female {She} other {<0>Other</0>}}"} values={{
-          count: count
-        }} components={{
-          0: <strong />
-        }} />;
+        <Trans
+          id={"<stripped>"}
+          message={"{count, select, male {He} female {She} other {<0>Other</0>}}"} values={{
+            count: count
+          }} 
+          components={{
+            0: <strong />
+          }} 
+        />;
       `,
   },
   {
@@ -42,6 +47,7 @@ const cases: TestCase[] = [
       `,
   },
   {
+    stripId: true,
     name: "Select should support JSX elements in cases",
     input: `
         import { Select } from '@lingui/macro';
@@ -59,7 +65,8 @@ const cases: TestCase[] = [
     expected: `
       import { Trans } from "@lingui/react";
       <Trans
-        id={"{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}"}
+        id={"<stripped>"}
+        message={"{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}"}
         values={{
           0: "happy",
         }}

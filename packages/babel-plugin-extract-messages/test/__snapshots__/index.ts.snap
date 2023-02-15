@@ -115,8 +115,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: {count, plural, one {# book} other {# books}},
-    message: undefined,
+    id: CbxEcW,
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-without-trans.js,
       3,
@@ -125,8 +125,8 @@ Array [
   Object {
     comment: undefined,
     context: Some context,
-    id: {count, plural, one {# book} other {# books}},
-    message: undefined,
+    id: 8qNz+K,
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-without-trans.js,
       4,
@@ -245,8 +245,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Hi, my name is {name},
-    message: undefined,
+    id: stjtW+,
+    message: Hi, my name is {name},
     origin: Array [
       jsx-with-macros.js,
       3,
@@ -255,8 +255,8 @@ Array [
   Object {
     comment: undefined,
     context: Context1,
-    id: Some message,
-    message: undefined,
+    id: YikuIL,
+    message: Some message,
     origin: Array [
       jsx-with-macros.js,
       4,
@@ -265,8 +265,8 @@ Array [
   Object {
     comment: undefined,
     context: Context1,
-    id: Some other message,
-    message: undefined,
+    id: LBCs5C,
+    message: Some other message,
     origin: Array [
       jsx-with-macros.js,
       5,
@@ -275,8 +275,8 @@ Array [
   Object {
     comment: undefined,
     context: Context2,
-    id: Some message,
-    message: undefined,
+    id: ru2rzr,
+    message: Some message,
     origin: Array [
       jsx-with-macros.js,
       6,

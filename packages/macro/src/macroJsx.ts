@@ -10,6 +10,7 @@ import {
   Literal,
   Node,
   StringLiteral,
+  TemplateLiteral,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
@@ -21,6 +22,7 @@ import ICUMessageFormat, {
 } from "./icu"
 import { makeCounter } from "./utils"
 import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
+import { generateMessageId } from "./generateMessageId"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -76,7 +78,7 @@ export default class MacroJSX {
     this.stripNonEssentialProps = opts.stripNonEssentialProps
   }
 
-  safeJsxAttribute = (name: string, value: string) => {
+  createStringJsxAttribute = (name: string, value: string) => {
     // This handles quoted JSX attributes and html entities.
     return this.types.jsxAttribute(
       this.types.jsxIdentifier(name),
@@ -101,21 +103,23 @@ export default class MacroJSX {
 
     if (!id && !message) {
       return
-    } else if (id && id !== message) {
-      // If `id` prop already exists and generated ID is different,
-      // add it as a `default` prop
+    }
+
+    if (id) {
       attributes.push(
         this.types.jsxAttribute(
           this.types.jsxIdentifier(ID),
           this.types.stringLiteral(id)
         )
       )
-
-      if (!this.stripNonEssentialProps && message) {
-        attributes.push(this.safeJsxAttribute(MESSAGE, message))
-      }
     } else {
-      attributes.push(this.safeJsxAttribute(ID, message))
+      attributes.push(
+        this.createStringJsxAttribute(ID, generateMessageId(message, context))
+      )
+    }
+
+    if (!this.stripNonEssentialProps && message) {
+      attributes.push(this.createStringJsxAttribute(MESSAGE, message))
     }
 
     if (!this.stripNonEssentialProps && comment) {
@@ -127,7 +131,7 @@ export default class MacroJSX {
       )
     }
 
-    if (context) {
+    if (!this.stripNonEssentialProps && context) {
       attributes.push(
         this.types.jsxAttribute(
           this.types.jsxIdentifier(CONTEXT),
@@ -196,15 +200,14 @@ export default class MacroJSX {
 
   stripMacroAttributes = (path: NodePath<JSXElement>) => {
     const { attributes } = path.node.openingElement
-    const id = attributes.filter(this.attrName([ID]))[0]
-    const message = attributes.filter(this.attrName([MESSAGE]))[0]
-    const comment = attributes.filter(this.attrName([COMMENT]))[0]
-    const context = attributes.filter(this.attrName([CONTEXT]))[0]
+    const id = attributes.find(this.attrName([ID]))
+    const message = attributes.find(this.attrName([MESSAGE]))
+    const comment = attributes.find(this.attrName([COMMENT]))
+    const context = attributes.find(this.attrName([CONTEXT]))
 
     let reserved = [ID, MESSAGE, COMMENT, CONTEXT]
-    if (this.isI18nComponent(path)) {
-      // no reserved prop names
-    } else if (this.isChoiceComponent(path)) {
+
+    if (this.isChoiceComponent(path)) {
       reserved = [
         ...reserved,
         "_\\w+",
@@ -230,7 +233,7 @@ export default class MacroJSX {
   }
 
   tokenizeNode = (path: NodePath): Token[] => {
-    if (this.isI18nComponent(path)) {
+    if (this.isTransComponent(path)) {
       // t
       return this.tokenizeTrans(path)
     } else if (this.isChoiceComponent(path)) {
@@ -259,32 +262,7 @@ export default class MacroJSX {
         return [this.tokenizeText(exp.node.value.replace(/\n/g, "\\n"))]
       }
       if (exp.isTemplateLiteral()) {
-        const expressions = exp.get("expressions") as NodePath<Expression>[]
-
-        return exp.get("quasis").flatMap(({ node: text }, i) => {
-          // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-          // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-          // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
-            text.value.raw
-          )
-            ? text.value.cooked
-            : text.value.raw
-
-          let argTokens: Token[] = []
-          const currExp = expressions[i]
-
-          if (currExp) {
-            argTokens = currExp.isCallExpression()
-              ? this.tokenizeNode(currExp)
-              : [this.tokenizeExpression(currExp)]
-          }
-
-          return [
-            ...(value ? [this.tokenizeText(this.clearBackslashes(value))] : []),
-            ...argTokens,
-          ]
-        })
+        return this.tokenizeTemplateLiteral(exp)
       }
       if (exp.isConditionalExpression()) {
         return [this.tokenizeConditionalExpression(exp)]
@@ -304,6 +282,33 @@ export default class MacroJSX {
       // impossible path
       // return this.tokenizeText(node.value)
     }
+  }
+
+  tokenizeTemplateLiteral(exp: NodePath<TemplateLiteral>): Token[] {
+    const expressions = exp.get("expressions") as NodePath<Expression>[]
+
+    return exp.get("quasis").flatMap(({ node: text }, i) => {
+      // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+      // This regex will detect if a string contains unicode chars, when they're we should interpolate them
+      // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw)
+        ? text.value.cooked
+        : text.value.raw
+
+      let argTokens: Token[] = []
+      const currExp = expressions[i]
+
+      if (currExp) {
+        argTokens = currExp.isCallExpression()
+          ? this.tokenizeNode(currExp)
+          : [this.tokenizeExpression(currExp)]
+      }
+
+      return [
+        ...(value ? [this.tokenizeText(this.clearBackslashes(value))] : []),
+        ...argTokens,
+      ]
+    })
   }
 
   tokenizeChoiceComponent = (path: NodePath<JSXElement>): Token => {
@@ -422,7 +427,7 @@ export default class MacroJSX {
   ): ArgToken => {
     exp.traverse({
       JSXElement: (el) => {
-        if (this.isI18nComponent(el) || this.isChoiceComponent(el)) {
+        if (this.isTransComponent(el) || this.isChoiceComponent(el)) {
           this.replacePath(el)
           el.skip()
         }
@@ -455,7 +460,7 @@ export default class MacroJSX {
     return value.replace(/\\`/g, "`")
   }
 
-  isI18nComponent = (
+  isTransComponent = (
     path: NodePath,
     name = "Trans"
   ): path is NodePath<JSXElement> => {
@@ -469,9 +474,9 @@ export default class MacroJSX {
 
   isChoiceComponent = (path: NodePath): path is NodePath<JSXElement> => {
     return (
-      this.isI18nComponent(path, "Plural") ||
-      this.isI18nComponent(path, "Select") ||
-      this.isI18nComponent(path, "SelectOrdinal")
+      this.isTransComponent(path, "Plural") ||
+      this.isTransComponent(path, "Select") ||
+      this.isTransComponent(path, "SelectOrdinal")
     )
   }
 

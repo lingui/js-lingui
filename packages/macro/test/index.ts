@@ -1,8 +1,20 @@
 import fs from "fs"
 import path from "path"
-import { transformFileSync, TransformOptions, transformSync } from "@babel/core"
+import {
+  PluginObj,
+  transformFileSync,
+  TransformOptions,
+  transformSync,
+} from "@babel/core"
 import prettier from "prettier"
 import { LinguiMacroOpts } from "../src/index"
+import {
+  JSXAttribute,
+  jsxExpressionContainer,
+  JSXIdentifier,
+  stringLiteral,
+} from "@babel/types"
+import { NodePath } from "@babel/traverse"
 
 export type TestCase = {
   name?: string
@@ -12,6 +24,8 @@ export type TestCase = {
   production?: boolean
   useTypescriptPreset?: boolean
   macroOpts?: LinguiMacroOpts
+  /** Remove hash id from snapshot for more stable testing */
+  stripId?: boolean
   only?: boolean
   skip?: boolean
 }
@@ -29,11 +43,34 @@ const testCases: Record<string, TestCase[]> = {
   "js-defineMessage": require("./js-defineMessage").default,
 }
 
+function stripIdPlugin(): PluginObj {
+  return {
+    visitor: {
+      JSXOpeningElement: (path) => {
+        const idAttr = path
+          .get("attributes")
+          .find(
+            (attr) =>
+              attr.isJSXAttribute() &&
+              (attr.node.name as JSXIdentifier).name === "id"
+          ) as NodePath<JSXAttribute>
+
+        if (idAttr) {
+          idAttr
+            .get("value")
+            .replaceWith(jsxExpressionContainer(stringLiteral("<stripped>")))
+        }
+      },
+    },
+  }
+}
+
 describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const getDefaultBabelOptions = (
-    macroOpts: LinguiMacroOpts = {}
+    macroOpts: LinguiMacroOpts = {},
+    stripId = false
   ): TransformOptions => {
     return {
       filename: "<filename>",
@@ -52,6 +89,7 @@ describe("macro", function () {
             resolvePath: (source: string) => require.resolve(source),
           },
         ],
+        ...(stripId ? [stripIdPlugin] : []),
       ],
     }
   }
@@ -85,6 +123,7 @@ describe("macro", function () {
             only,
             skip,
             macroOpts,
+            stripId,
           },
           index
         ) => {
@@ -92,7 +131,7 @@ describe("macro", function () {
           if (only) run = it.only
           if (skip) run = it.skip
           run(name != null ? name : `${suiteName} #${index + 1}`, () => {
-            const babelOptions = getDefaultBabelOptions(macroOpts)
+            const babelOptions = getDefaultBabelOptions(macroOpts, stripId)
             expect(input || filename).toBeDefined()
 
             const originalEnv = process.env.NODE_ENV
