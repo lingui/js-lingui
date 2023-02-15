@@ -22,7 +22,7 @@ import ICUMessageFormat, {
 } from "./icu"
 import { makeCounter } from "./utils"
 import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
-import { generateMessageId } from "./generateMessageId"
+import { generateMessageId } from "@lingui/cli/api"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>

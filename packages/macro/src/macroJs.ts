@@ -21,7 +21,7 @@ import ICUMessageFormat, {
 } from "./icu"
 import { makeCounter } from "./utils"
 import { COMMENT, CONTEXT, EXTRACT_MARK, ID, MESSAGE } from "./constants"
-import { generateMessageId } from "./generateMessageId"
+import { generateMessageId } from "@lingui/cli/api"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
