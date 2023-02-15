@@ -2,14 +2,15 @@
 
 exports[`Catalog POT Flow Should get translations from template if locale file not presented 1`] = `
 Object {
-  Hello World: Hello World,
-  Test String: Test String,
+  Hp6Twa: Test String,
+  LwgA8O: Hello World,
 }
 `;
 
 exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
   Component A: Object {
+    context: undefined,
     extractedComments: Array [],
     message: undefined,
     origin: Array [
@@ -20,6 +21,7 @@ Object {
     ],
   },
   Component B: Object {
+    context: undefined,
     extractedComments: Array [],
     message: undefined,
     origin: Array [
@@ -30,6 +32,7 @@ Object {
     ],
   },
   Hello World: Object {
+    context: undefined,
     extractedComments: Array [
       Comment A,
       Comment A again,
@@ -52,6 +55,7 @@ Object {
     ],
   },
   custom.id: Object {
+    context: undefined,
     extractedComments: Array [],
     message: Message with id,
     origin: Array [
@@ -67,6 +71,7 @@ Object {
 exports[`Catalog collect should extract only files passed on options 1`] = `
 Object {
   Component A: Object {
+    context: undefined,
     extractedComments: Array [],
     message: undefined,
     origin: Array [
@@ -77,6 +82,7 @@ Object {
     ],
   },
   Hello World: Object {
+    context: undefined,
     extractedComments: Array [
       Comment A,
       Comment A again,
@@ -99,6 +105,7 @@ Object {
     ],
   },
   custom.id: Object {
+    context: undefined,
     extractedComments: Array [],
     message: Message with id,
     origin: Array [
@@ -115,29 +122,8 @@ exports[`Catalog collect should support Flow syntax if enabled 1`] = `Object {}`
 
 exports[`Catalog collect should support JSX and Typescript 1`] = `
 Object {
-  Description: Object {
-    extractedComments: Array [
-      description,
-    ],
-    message: undefined,
-    origin: Array [
-      Array [
-        collect-typescript-jsx/macro.tsx,
-        6,
-      ],
-    ],
-  },
-  Hi, my name is {name}: Object {
-    extractedComments: Array [],
-    message: undefined,
-    origin: Array [
-      Array [
-        collect-typescript-jsx/macro.tsx,
-        17,
-      ],
-    ],
-  },
   ID Some: Object {
+    context: undefined,
     extractedComments: Array [],
     message: Message with id some,
     origin: Array [
@@ -147,29 +133,10 @@ Object {
       ],
     ],
   },
-  Message: Object {
+  MHrjPM: Object {
+    context: undefined,
     extractedComments: Array [],
-    message: undefined,
-    origin: Array [
-      Array [
-        collect-typescript-jsx/macro.tsx,
-        4,
-      ],
-    ],
-  },
-  Some message: Object {
-    extractedComments: Array [],
-    message: undefined,
-    origin: Array [
-      Array [
-        collect-typescript-jsx/macro.tsx,
-        18,
-      ],
-    ],
-  },
-  Title: Object {
-    extractedComments: Array [],
-    message: undefined,
+    message: Title,
     origin: Array [
       Array [
         collect-typescript-jsx/macro.tsx,
@@ -177,13 +144,60 @@ Object {
       ],
     ],
   },
-  {count, plural, one {# book} other {# books}}: Object {
+  Nu4oKW: Object {
+    context: undefined,
+    extractedComments: Array [
+      description,
+    ],
+    message: Description,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        6,
+      ],
+    ],
+  },
+  YikuIL: Object {
+    context: Context1,
     extractedComments: Array [],
-    message: undefined,
+    message: Some message,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        18,
+      ],
+    ],
+  },
+  esnaQO: Object {
+    context: undefined,
+    extractedComments: Array [],
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       Array [
         collect-typescript-jsx/macro.tsx,
         21,
+      ],
+    ],
+  },
+  stjtW+: Object {
+    context: undefined,
+    extractedComments: Array [],
+    message: Hi, my name is {name},
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        17,
+      ],
+    ],
+  },
+  xDAtGP: Object {
+    context: undefined,
+    extractedComments: Array [],
+    message: Message,
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        4,
       ],
     ],
   },
@@ -204,7 +218,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -222,7 +238,9 @@ Object {
         Comment A again,
         Hello comment,
       ],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -244,7 +262,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -260,7 +280,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -278,7 +300,9 @@ Object {
         Comment A again,
         Hello comment,
       ],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -300,7 +324,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -317,22 +343,24 @@ Object {
 exports[`Catalog make should merge with existing catalogs 1`] = `
 Object {
   cs: Object {
-    Hello World: Object {
+    LwgA8O: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
       flags: Array [],
+      message: Hello World,
       obsolete: false,
       origin: Array [],
       translation: Ahoj Brno,
     },
   },
   en: Object {
-    Hello World: Object {
+    LwgA8O: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
       flags: Array [],
+      message: Hello World,
       obsolete: false,
       origin: Array [],
       translation: Ahoj Brno,
@@ -348,7 +376,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -362,7 +392,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -380,7 +412,9 @@ Object {
         Comment A again,
         Hello comment,
       ],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -396,13 +430,27 @@ Object {
           1,
         ],
       ],
+      translation: ,
+    },
+    LwgA8O: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [
+        js-lingui-id: LwgA8O,
+      ],
+      flags: Array [],
+      message: Hello World,
+      obsolete: true,
+      origin: Array [],
       translation: Ahoj Brno,
     },
     custom.id: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -418,7 +466,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -432,7 +482,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -450,7 +502,9 @@ Object {
         Comment A again,
         Hello comment,
       ],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -466,13 +520,27 @@ Object {
           1,
         ],
       ],
+      translation: ,
+    },
+    LwgA8O: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [
+        js-lingui-id: LwgA8O,
+      ],
+      flags: Array [],
+      message: Hello World,
+      obsolete: true,
+      origin: Array [],
       translation: Ahoj Brno,
     },
     custom.id: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -501,7 +569,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -519,7 +589,9 @@ Object {
         Comment A again,
         Hello comment,
       ],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -541,7 +613,9 @@ Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
-      flags: Array [],
+      flags: Array [
+        explicit-id,
+      ],
       obsolete: false,
       origin: Array [
         Array [
@@ -563,7 +637,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [
       Array [
@@ -581,7 +657,9 @@ Object {
       Comment A again,
       Hello comment,
     ],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [
       Array [
@@ -603,7 +681,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [
       Array [
@@ -618,11 +698,25 @@ Object {
 
 exports[`Catalog read should read file in given format 1`] = `
 Object {
+  ATNV5d: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [
+      js-lingui-id: pXy+hm,
+    ],
+    flags: Array [],
+    message: Message with default hash id,
+    obsolete: false,
+    origin: Array [],
+    translation: Translation for: Message with default-hash id,
+  },
   obsolete: Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: true,
     origin: Array [],
     translation: Is marked as obsolete,
@@ -631,7 +725,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [],
     translation: Static message,
@@ -640,7 +736,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
@@ -652,7 +750,9 @@ Object {
     ],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [],
     translation: Support translator comments separately,
@@ -663,7 +763,9 @@ Object {
     extractedComments: Array [
       Description is comment from developers to translators,
     ],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [],
     translation: Message with description,
@@ -675,6 +777,7 @@ Object {
     flags: Array [
       fuzzy,
       otherFlag,
+      explicit-id,
     ],
     obsolete: false,
     origin: Array [],
@@ -684,7 +787,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [
       Array [
@@ -702,7 +807,9 @@ Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
-    flags: Array [],
+    flags: Array [
+      explicit-id,
+    ],
     obsolete: false,
     origin: Array [
       Array [
@@ -720,22 +827,24 @@ exports[`Catalog read should read file in previous format 1`] = `null`;
 exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 Object {
   cs: Object {
-    Hello World: Object {
+    LwgA8O: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
       flags: Array [],
+      message: Hello World,
       obsolete: false,
       origin: Array [],
       translation: Ahoj Brno,
     },
   },
   en: Object {
-    Hello World: Object {
+    LwgA8O: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
       flags: Array [],
+      message: Hello World,
       obsolete: false,
       origin: Array [],
       translation: Hello World,

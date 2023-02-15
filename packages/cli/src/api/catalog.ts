@@ -173,6 +173,7 @@ export class Catalog {
           if (!messages[next.id]) {
             messages[next.id] = {
               message: next.message,
+              context: next.context,
               extractedComments: [],
               origin: [],
             }
