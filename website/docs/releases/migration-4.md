@@ -20,7 +20,42 @@ module.exports = {
 }
 ```
 
-#### Flow Syntax supported in the Extractor with the flag
+### Change in generated ICU messages for nested JSX Macros
+We have made a small change in how Lingui generates ICU messages for nested JSX Macros. We have removed leading spaces from the texts in all cases.
+
+The generated code from the following nested component:
+``` jsx
+<Plural
+  id="message.id"
+  one={
+    <Trans>
+      One hello
+    </Trans>
+  }
+  other={
+    <Trans>
+      Other hello
+    </Trans>
+  }
+  value={count}
+/>
+```
+
+was changed as follows:
+``` diff
+  <Trans
+    id="message.id"
+    message={
+-     "{count, plural, one { One hello} other { Other hello}}"
++     "{count, plural, one {One hello} other {Other hello}}"
+    }
+    values={{
+      count: count
+    }}
+  />
+```
+
+### Flow Syntax supported in the Extractor with the flag
 
 If your project uses Flow, you need to explicitly enable support in the extractor:
 
