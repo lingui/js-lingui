@@ -100,3 +100,13 @@ declare type ExtractorType = {
 ```
 
 Read more about custom extractor on the [Advanced: Custom Extractor](/guides/custom-extractor) page.
+
+### Configuration migrations for deprecated options were deleted.
+
+Migration for older
+ - `LinguiConfig.localeDir`,
+ - `LinguiConfig.srcPathDirs`,
+ - `LinguiConfig.srcPathIgnorePatterns`
+ - `LinguiConfig.fallbackLocale`
+
+Were deleted from source code. This should affect only users who migrate v2 -> v4 directly.

@@ -3,7 +3,6 @@ import { getConfig } from "./getConfig"
 import { makeConfig } from "./makeConfig"
 import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
 import { LinguiConfig } from "./types"
-import { DeprecatedFallbackLanguage } from "./migrations/fallbackLanguageMigration"
 
 describe("@lingui/conf", () => {
   it("should return default config", () => {
@@ -53,20 +52,6 @@ describe("@lingui/conf", () => {
         ),
       })
       expect(config.locales).toEqual(["pl"])
-    })
-
-    describe("fallbackLocale deprecation", () => {
-      it("if deprecated fallbackLocale is defined, we set fallbackLocales.default and show message", () => {
-        mockConsole((console) => {
-          const config = makeConfig({
-            locales: ["en-US"],
-            fallbackLocale: "en",
-          } as LinguiConfig & DeprecatedFallbackLanguage)
-
-          expect(config.fallbackLocales.default).toEqual("en")
-          expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
-        })
-      })
     })
 
     describe("extractBabelOptions deprecation", () => {

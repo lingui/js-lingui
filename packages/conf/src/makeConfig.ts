@@ -5,14 +5,6 @@ import {
   LinguiConfig,
   LinguiConfigNormalized,
 } from "./types"
-import {
-  fallbackLanguageMigration,
-  fallbackLanguageMigrationDeprecations,
-} from "./migrations/fallbackLanguageMigration"
-import {
-  catalogMigration,
-  catalogMigrationDeprecations,
-} from "./migrations/catalogMigration"
 import chalk from "chalk"
 import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
@@ -36,9 +28,7 @@ export function makeConfig(
 
     config = pipe(
       // List config migrations from oldest to newest
-      fallbackLanguageMigration,
       setCldrParentLocales,
-      catalogMigration,
 
       // Custom validation
       validateLocales
@@ -130,8 +120,6 @@ const extractBabelOptionsDeprecations = {
 const configValidation = {
   exampleConfig,
   deprecatedConfig: {
-    ...catalogMigrationDeprecations,
-    ...fallbackLanguageMigrationDeprecations,
     ...extractBabelOptionsDeprecations,
   },
   comment: "Documentation: https://lingui.dev/ref/conf",
