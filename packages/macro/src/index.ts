@@ -53,7 +53,7 @@ function macro({ references, state, babel, config }: MacroParams) {
   const opts: LinguiMacroOpts = config as LinguiMacroOpts
 
   const jsxNodes = new Set<NodePath>()
-  const jsNodes: NodePath[] = []
+  const jsNodes = new Set<NodePath>()
   let needsI18nImport = false
 
   Object.keys(references).forEach((tagName) => {
@@ -61,13 +61,12 @@ function macro({ references, state, babel, config }: MacroParams) {
 
     if (jsMacroTags.has(tagName)) {
       nodes.forEach((node) => {
-        jsNodes.push(node.parentPath)
+        jsNodes.add(node.parentPath)
       })
     } else if (jsxMacroTags.has(tagName)) {
       // babel-plugin-macros return JSXIdentifier nodes.
       // Which is for every JSX element would be presented twice (opening / close)
       // Here we're taking JSXElement and dedupe it.
-
       nodes.forEach((node) => {
         // identifier.openingElement.jsxElement
         jsxNodes.add(node.parentPath.parentPath)
@@ -80,8 +79,9 @@ function macro({ references, state, babel, config }: MacroParams) {
   const stripNonEssentialProps =
     process.env.NODE_ENV == "production" && !opts.extract
 
-  jsNodes.filter(isRootPath(jsNodes)).forEach((path) => {
-    if (alreadyVisited(path)) return
+  const jsNodesArray = Array.from(jsNodes)
+
+  jsNodesArray.filter(isRootPath(jsNodesArray)).forEach((path) => {
     const macro = new MacroJS(babel, { i18nImportName, stripNonEssentialProps })
     if (macro.replacePath(path)) needsI18nImport = true
   })
@@ -89,7 +89,6 @@ function macro({ references, state, babel, config }: MacroParams) {
   const jsxNodesArray = Array.from(jsxNodes)
 
   jsxNodesArray.filter(isRootPath(jsxNodesArray)).forEach((path) => {
-    if (alreadyVisited(path)) return
     const macro = new MacroJSX(babel, { stripNonEssentialProps })
     macro.replacePath(path)
   })
@@ -157,16 +156,6 @@ function isRootPath(allPath: NodePath[]) {
         return !allPath.includes(path.parentPath) && traverse(path.parentPath)
       }
     })(node)
-}
-
-const alreadyVisitedCache = new WeakSet()
-const alreadyVisited = (path: NodePath) => {
-  if (alreadyVisitedCache.has(path)) {
-    return true
-  } else {
-    alreadyVisitedCache.add(path)
-    return false
-  }
 }
 
 ;[...jsMacroTags, ...jsxMacroTags].forEach((name) => {
