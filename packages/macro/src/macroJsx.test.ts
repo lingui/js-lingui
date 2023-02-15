@@ -1,12 +1,28 @@
-import { parseExpression as _parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
 import MacroJSX, { normalizeWhitespace } from "./macroJsx"
-import { JSXElement } from "@babel/types"
+import { transformSync } from "@babel/core"
+import type { NodePath } from "@babel/traverse"
+import type { JSXElement } from "@babel/types"
 
-const parseExpression = (expression: string) =>
-  _parseExpression(expression, {
-    plugins: ["jsx"],
-  }) as JSXElement
+const parseExpression = (expression: string) => {
+  let path: NodePath<JSXElement>
+
+  transformSync(expression, {
+    filename: "unit-test.js",
+    plugins: [
+      {
+        visitor: {
+          JSXElement: (d) => {
+            path = d
+            d.stop()
+          },
+        },
+      },
+    ],
+  })
+
+  return path
+}
 
 function createMacro() {
   return new MacroJSX({ types }, { stripNonEssentialProps: false })
@@ -321,20 +337,22 @@ describe("jsx macro", () => {
         }),
         format: "plural",
         options: {
-          one: {
-            type: "arg",
-            name: "gender",
-            value: expect.objectContaining({
+          one: [
+            {
+              type: "arg",
               name: "gender",
-              type: "Identifier",
-            }),
-            format: "select",
-            options: {
-              male: "he",
-              female: "she",
-              other: "they",
+              value: expect.objectContaining({
+                name: "gender",
+                type: "Identifier",
+              }),
+              format: "select",
+              options: {
+                male: "he",
+                female: "she",
+                other: "they",
+              },
             },
-          },
+          ],
         },
       })
     })
@@ -351,7 +369,7 @@ describe("jsx macro", () => {
         />`
       )
       const tokens = macro.tokenizeNode(exp)
-      expect(tokens).toMatchObject({
+      expect(tokens[0]).toMatchObject({
         format: "select",
         name: "gender",
         options: {

@@ -52,8 +52,8 @@ const jsxMacroTags = new Set(["Trans", "Plural", "Select", "SelectOrdinal"])
 function macro({ references, state, babel, config }: MacroParams) {
   const opts: LinguiMacroOpts = config as LinguiMacroOpts
 
-  const jsxNodes: NodePath[] = []
-  const jsNodes: NodePath[] = []
+  const jsxNodes = new Set<NodePath>()
+  const jsNodes = new Set<NodePath>()
   let needsI18nImport = false
 
   Object.keys(references).forEach((tagName) => {
@@ -61,12 +61,15 @@ function macro({ references, state, babel, config }: MacroParams) {
 
     if (jsMacroTags.has(tagName)) {
       nodes.forEach((node) => {
-        jsNodes.push(node.parentPath)
+        jsNodes.add(node.parentPath)
       })
     } else if (jsxMacroTags.has(tagName)) {
+      // babel-plugin-macros return JSXIdentifier nodes.
+      // Which is for every JSX element would be presented twice (opening / close)
+      // Here we're taking JSXElement and dedupe it.
       nodes.forEach((node) => {
         // identifier.openingElement.jsxElement
-        jsxNodes.push(node.parentPath.parentPath)
+        jsxNodes.add(node.parentPath.parentPath)
       })
     } else {
       throw nodes[0].buildCodeFrameError(`Unknown macro ${tagName}`)
@@ -76,14 +79,16 @@ function macro({ references, state, babel, config }: MacroParams) {
   const stripNonEssentialProps =
     process.env.NODE_ENV == "production" && !opts.extract
 
-  jsNodes.filter(isRootPath(jsNodes)).forEach((path) => {
-    if (alreadyVisited(path)) return
+  const jsNodesArray = Array.from(jsNodes)
+
+  jsNodesArray.filter(isRootPath(jsNodesArray)).forEach((path) => {
     const macro = new MacroJS(babel, { i18nImportName, stripNonEssentialProps })
     if (macro.replacePath(path)) needsI18nImport = true
   })
 
-  jsxNodes.filter(isRootPath(jsxNodes)).forEach((path) => {
-    if (alreadyVisited(path)) return
+  const jsxNodesArray = Array.from(jsxNodes)
+
+  jsxNodesArray.filter(isRootPath(jsxNodesArray)).forEach((path) => {
     const macro = new MacroJSX(babel, { stripNonEssentialProps })
     macro.replacePath(path)
   })
@@ -92,7 +97,7 @@ function macro({ references, state, babel, config }: MacroParams) {
     addImport(babel, state, i18nImportModule, i18nImportName)
   }
 
-  if (jsxNodes.length) {
+  if (jsxNodes.size) {
     addImport(babel, state, TransImportModule, TransImportName)
   }
 }
@@ -135,6 +140,13 @@ function addImport(
   }
 }
 
+/**
+ * Filtering nested macro calls
+ *
+ * <Macro>
+ *   <Macro /> <-- this would be filtered out
+ * </Macro>
+ */
 function isRootPath(allPath: NodePath[]) {
   return (node: NodePath) =>
     (function traverse(path): boolean {
@@ -144,16 +156,6 @@ function isRootPath(allPath: NodePath[]) {
         return !allPath.includes(path.parentPath) && traverse(path.parentPath)
       }
     })(node)
-}
-
-const alreadyVisitedCache = new WeakSet()
-const alreadyVisited = (path: NodePath) => {
-  if (alreadyVisitedCache.has(path)) {
-    return true
-  } else {
-    alreadyVisitedCache.add(path)
-    return false
-  }
 }
 
 ;[...jsMacroTags, ...jsxMacroTags].forEach((name) => {

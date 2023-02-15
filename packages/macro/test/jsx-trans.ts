@@ -197,6 +197,50 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "JSX Macro inside JSX conditional expressions",
+    input: `
+       import { Trans } from '@lingui/macro'
+       ;<Trans>Hello, {props.world ? <Trans>world</Trans> : <Trans>guys</Trans>}</Trans>
+      `,
+    expected: `
+        import { Trans } from '@lingui/react'
+
+        ;<Trans
+            id={"Hello, {0}"}
+            values={{
+              0: props.world ? <Trans id={'world'} /> : <Trans id={'guys'} />
+            }}
+          />
+      `,
+  },
+  {
+    name: "JSX Macro inside JSX multiple nested conditional expressions",
+    input: `
+      import { Trans } from '@lingui/macro'
+        ;<Trans>Hello, {props.world ? <Trans>world</Trans> : (
+          props.b
+            ? <Trans>nested</Trans>
+            : <Trans>guys</Trans>
+        )
+      }</Trans>
+      `,
+    expected: `
+      import { Trans } from "@lingui/react";
+      <Trans
+        id={"Hello, {0}"}
+        values={{
+          0: props.world ? (
+            <Trans id={"world"} />
+          ) : props.b ? (
+            <Trans id={"nested"} />
+          ) : (
+            <Trans id={"guys"} />
+          ),
+        }}
+      />;
+      `,
+  },
+  {
     name: "Elements are replaced with placeholders",
     input: `
         import { Trans } from '@lingui/macro';

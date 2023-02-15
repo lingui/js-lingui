@@ -1,13 +1,13 @@
-import * as R from "ramda"
 import * as babelTypes from "@babel/types"
 import {
+  ConditionalExpression,
   Expression,
-  Identifier,
   JSXAttribute,
   JSXElement,
   JSXExpressionContainer,
   JSXIdentifier,
   JSXSpreadAttribute,
+  Literal,
   Node,
   StringLiteral,
 } from "@babel/types"
@@ -18,14 +18,15 @@ import ICUMessageFormat, {
   ElementToken,
   TextToken,
   Token,
-  Tokens,
 } from "./icu"
-import { makeCounter, zip } from "./utils"
+import { makeCounter } from "./utils"
 import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
+
+type JSXChildPath = NodePath<JSXElement["children"][number]>
 
 // replace whitespace before/after newline with single space
 const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
@@ -84,7 +85,7 @@ export default class MacroJSX {
   }
 
   replacePath = (path: NodePath) => {
-    const tokens = this.tokenizeNode(path.node)
+    const tokens = this.tokenizeNode(path)
 
     const messageFormat = new ICUMessageFormat()
     const {
@@ -95,7 +96,7 @@ export default class MacroJSX {
     const message = normalizeWhitespace(messageRaw)
 
     const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path.node as JSXElement
+      path as NodePath<JSXElement>
     )
 
     if (!id && !message) {
@@ -174,11 +175,11 @@ export default class MacroJSX {
       this.types.jsxOpeningElement(
         this.types.jsxIdentifier("Trans"),
         attributes,
-        /*selfClosing*/ true
+        true
       ),
-      /*closingElement*/ null,
-      /*children*/ [],
-      /*selfClosing*/ true
+      null,
+      [],
+      true
     )
     newNode.loc = path.node.loc
 
@@ -193,17 +194,17 @@ export default class MacroJSX {
     }
   }
 
-  stripMacroAttributes = (node: JSXElement) => {
-    const { attributes } = node.openingElement
+  stripMacroAttributes = (path: NodePath<JSXElement>) => {
+    const { attributes } = path.node.openingElement
     const id = attributes.filter(this.attrName([ID]))[0]
     const message = attributes.filter(this.attrName([MESSAGE]))[0]
     const comment = attributes.filter(this.attrName([COMMENT]))[0]
     const context = attributes.filter(this.attrName([CONTEXT]))[0]
 
     let reserved = [ID, MESSAGE, COMMENT, CONTEXT]
-    if (this.isI18nComponent(node)) {
+    if (this.isI18nComponent(path)) {
       // no reserved prop names
-    } else if (this.isChoiceComponent(node)) {
+    } else if (this.isChoiceComponent(path)) {
       reserved = [
         ...reserved,
         "_\\w+",
@@ -228,87 +229,88 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeNode = (node: Node): Tokens => {
-    if (this.isI18nComponent(node)) {
+  tokenizeNode = (path: NodePath): Token[] => {
+    if (this.isI18nComponent(path)) {
       // t
-      return this.tokenizeTrans(node)
-    } else if (this.isChoiceComponent(node)) {
+      return this.tokenizeTrans(path)
+    } else if (this.isChoiceComponent(path)) {
       // plural, select and selectOrdinal
-      return this.tokenizeChoiceComponent(node)
-    } else if (this.types.isJSXElement(node)) {
-      return this.tokenizeElement(node)
+      return [this.tokenizeChoiceComponent(path)]
+    } else if (path.isJSXElement()) {
+      return [this.tokenizeElement(path)]
     } else {
-      return this.tokenizeExpression(node)
+      return [this.tokenizeExpression(path)]
     }
   }
 
-  tokenizeTrans = (node: JSXElement): Token[] => {
-    return R.flatten(
-      node.children.map((child) => this.tokenizeChildren(child)).filter(Boolean)
-    )
+  tokenizeTrans = (path: NodePath<JSXElement>): Token[] => {
+    return path
+      .get("children")
+      .flatMap((child) => this.tokenizeChildren(child))
+      .filter(Boolean)
   }
 
-  tokenizeChildren = (node: JSXElement["children"][number]): Tokens => {
-    if (this.types.isJSXExpressionContainer(node)) {
-      const exp = node.expression
+  tokenizeChildren = (path: JSXChildPath): Token[] => {
+    if (path.isJSXExpressionContainer()) {
+      const exp = path.get("expression") as NodePath<Expression>
 
-      if (this.types.isStringLiteral(exp)) {
+      if (exp.isStringLiteral()) {
         // Escape forced newlines to keep them in message.
-        return {
-          type: "text",
-          value: exp.value.replace(/\n/g, "\\n"),
-        }
-      } else if (this.types.isTemplateLiteral(exp)) {
-        const tokenize = R.pipe(
-          // Don"t output tokens without text.
-          R.evolve({
-            quasis: R.map((text: babelTypes.TemplateElement) => {
-              // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-              // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-              // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-              const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
-                text.value.raw
-              )
-                ? text.value.cooked
-                : text.value.raw
-              if (value === "") return null
-
-              return this.tokenizeText(this.clearBackslashes(value))
-            }),
-            expressions: R.map((exp: babelTypes.Expression) =>
-              this.types.isCallExpression(exp)
-                ? this.tokenizeNode(exp)
-                : this.tokenizeExpression(exp)
-            ),
-          }),
-          (exp) => zip(exp.quasis, exp.expressions),
-          R.flatten,
-          R.filter(Boolean)
-        )
-
-        return tokenize(exp)
-      } else if (this.types.isJSXElement(exp)) {
-        return this.tokenizeNode(exp)
-      } else {
-        return this.tokenizeExpression(exp)
+        return [this.tokenizeText(exp.node.value.replace(/\n/g, "\\n"))]
       }
-    } else if (this.types.isJSXElement(node)) {
-      return this.tokenizeNode(node)
-    } else if (this.types.isJSXSpreadChild(node)) {
+      if (exp.isTemplateLiteral()) {
+        const expressions = exp.get("expressions") as NodePath<Expression>[]
+
+        return exp.get("quasis").flatMap(({ node: text }, i) => {
+          // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+          // This regex will detect if a string contains unicode chars, when they're we should interpolate them
+          // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
+            text.value.raw
+          )
+            ? text.value.cooked
+            : text.value.raw
+
+          let argTokens: Token[] = []
+          const currExp = expressions[i]
+
+          if (currExp) {
+            argTokens = currExp.isCallExpression()
+              ? this.tokenizeNode(currExp)
+              : [this.tokenizeExpression(currExp)]
+          }
+
+          return [
+            ...(value ? [this.tokenizeText(this.clearBackslashes(value))] : []),
+            ...argTokens,
+          ]
+        })
+      }
+      if (exp.isConditionalExpression()) {
+        return [this.tokenizeConditionalExpression(exp)]
+      }
+
+      if (exp.isJSXElement()) {
+        return this.tokenizeNode(exp)
+      }
+      return [this.tokenizeExpression(exp)]
+    } else if (path.isJSXElement()) {
+      return this.tokenizeNode(path)
+    } else if (path.isJSXSpreadChild()) {
       // just do nothing
-    } else if (this.types.isJSXText(node)) {
-      return this.tokenizeText(node.value)
+    } else if (path.isJSXText()) {
+      return [this.tokenizeText(path.node.value)]
     } else {
       // impossible path
       // return this.tokenizeText(node.value)
     }
   }
 
-  tokenizeChoiceComponent = (node: JSXElement): Token => {
-    const element = node.openingElement
-    const format = this.getJsxTagName(node).toLowerCase()
-    const props = element.attributes.filter(
-      this.attrName(
+  tokenizeChoiceComponent = (path: NodePath<JSXElement>): Token => {
+    const element = path.get("openingElement")
+    const format = this.getJsxTagName(path.node).toLowerCase()
+    const props = element.get("attributes").filter((attr) => {
+      return this.attrName(
         [
           ID,
           COMMENT,
@@ -321,8 +323,8 @@ export default class MacroJSX {
           "components",
         ],
         true
-      )
-    )
+      )(attr.node)
+    })
 
     const token: Token = {
       type: "arg",
@@ -334,41 +336,52 @@ export default class MacroJSX {
       },
     }
 
-    for (const attr of props) {
-      if (this.types.isJSXSpreadAttribute(attr)) {
+    for (const _attr of props) {
+      if (_attr.isJSXSpreadAttribute()) {
         continue
       }
 
-      if (this.types.isJSXNamespacedName(attr.name)) {
+      const attr = _attr as NodePath<JSXAttribute>
+
+      if (this.types.isJSXNamespacedName(attr.node.name)) {
         continue
       }
 
-      const name = attr.name.name
+      const name = attr.node.name.name
+      const value = attr.get("value") as
+        | NodePath<Literal>
+        | NodePath<JSXExpressionContainer>
 
       if (name === "value") {
-        const exp = this.types.isLiteral(attr.value)
-          ? attr.value
-          : (attr.value as JSXExpressionContainer).expression
+        const exp = value.isLiteral() ? value : value.get("expression")
+
         token.name = this.expressionToArgument(exp)
-        token.value = exp as Expression
+        token.value = exp.node as Expression
       } else if (format !== "select" && name === "offset") {
         // offset is static parameter, so it must be either string or number
-        token.options.offset = this.types.isStringLiteral(attr.value)
-          ? attr.value.value
-          : ((attr.value as JSXExpressionContainer).expression as StringLiteral)
-              .value
+        token.options.offset =
+          value.isStringLiteral() || value.isNumericLiteral()
+            ? (value.node.value as string)
+            : (
+                (value as NodePath<JSXExpressionContainer>).get(
+                  "expression"
+                ) as NodePath<StringLiteral>
+              ).node.value
       } else {
-        let value: ArgToken["options"][number]
+        let option: ArgToken["options"][number]
 
-        if (this.types.isStringLiteral(attr.value)) {
-          value = (attr.value.extra.raw as string).replace(/(["'])(.*)\1/, "$2")
+        if (value.isStringLiteral()) {
+          option = (value.node.extra.raw as string).replace(
+            /(["'])(.*)\1/,
+            "$2"
+          )
         } else {
-          value = this.tokenizeChildren(attr.value)
+          option = this.tokenizeChildren(value as JSXChildPath)
         }
         if (pluralRuleRe.test(name)) {
-          token.options[jsx2icuExactChoice(name)] = value
+          token.options[jsx2icuExactChoice(name)] = option
         } else {
-          token.options[name] = value
+          token.options[name] = option
         }
       }
     }
@@ -376,30 +389,50 @@ export default class MacroJSX {
     return token
   }
 
-  tokenizeElement = (node: JSXElement): ElementToken => {
+  tokenizeElement = (path: NodePath<JSXElement>): ElementToken => {
     // !!! Important: Calculate element index before traversing children.
     // That way outside elements are numbered before inner elements. (...and it looks pretty).
     const name = this.elementIndex()
-    const children = R.flatten(
-      node.children.map((child) => this.tokenizeChildren(child)).filter(Boolean)
-    )
-
-    node.children = []
-    node.openingElement.selfClosing = true
 
     return {
       type: "element",
       name,
-      value: node,
-      children,
+      value: {
+        ...path.node,
+        children: [],
+        openingElement: {
+          ...path.node.openingElement,
+          selfClosing: true,
+        },
+      },
+      children: this.tokenizeTrans(path),
     }
   }
 
-  tokenizeExpression = (node: Expression | Node): ArgToken => {
+  tokenizeExpression = (path: NodePath<Expression | Node>): ArgToken => {
     return {
       type: "arg",
-      name: this.expressionToArgument(node),
-      value: node as Expression,
+      name: this.expressionToArgument(path),
+      value: path.node as Expression,
+    }
+  }
+
+  tokenizeConditionalExpression = (
+    exp: NodePath<ConditionalExpression>
+  ): ArgToken => {
+    exp.traverse({
+      JSXElement: (el) => {
+        if (this.isI18nComponent(el) || this.isChoiceComponent(el)) {
+          this.replacePath(el)
+          el.skip()
+        }
+      },
+    })
+
+    return {
+      type: "arg",
+      name: this.expressionToArgument(exp),
+      value: exp.node,
     }
   }
 
@@ -410,10 +443,8 @@ export default class MacroJSX {
     }
   }
 
-  expressionToArgument(exp: Expression | Node): string {
-    return this.types.isIdentifier(exp)
-      ? exp.name
-      : String(this.expressionIndex())
+  expressionToArgument(path: NodePath<Expression | Node>): string {
+    return path.isIdentifier() ? path.node.name : String(this.expressionIndex())
   }
 
   /**
@@ -424,27 +455,23 @@ export default class MacroJSX {
     return value.replace(/\\`/g, "`")
   }
 
-  /**
-   * Custom matchers
-   */
-  isIdentifier = (node: Node, name: string): node is Identifier => {
-    return this.types.isIdentifier(node, { name })
-  }
-
-  isI18nComponent = (node: Node, name = "Trans"): node is JSXElement => {
+  isI18nComponent = (
+    path: NodePath,
+    name = "Trans"
+  ): path is NodePath<JSXElement> => {
     return (
-      this.types.isJSXElement(node) &&
-      this.types.isJSXIdentifier(node.openingElement.name, {
+      path.isJSXElement() &&
+      this.types.isJSXIdentifier(path.node.openingElement.name, {
         name,
       })
     )
   }
 
-  isChoiceComponent = (node: Node): node is JSXElement => {
+  isChoiceComponent = (path: NodePath): path is NodePath<JSXElement> => {
     return (
-      this.isI18nComponent(node, "Plural") ||
-      this.isI18nComponent(node, "Select") ||
-      this.isI18nComponent(node, "SelectOrdinal")
+      this.isI18nComponent(path, "Plural") ||
+      this.isI18nComponent(path, "Select") ||
+      this.isI18nComponent(path, "SelectOrdinal")
     )
   }
 
