@@ -34,8 +34,7 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "3.17.1",
-    "ramda": "^0.27.1"
+    "@lingui/conf": "3.17.1"
   },
   "peerDependencies": {
     "@lingui/core": "^3.13.0",

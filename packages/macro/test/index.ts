@@ -61,7 +61,7 @@ describe("macro", function () {
     try {
       return transformSync(code, getDefaultBabelOptions()).code.trim()
     } catch (e) {
-      e.message = e.message.replace(/([^:]*:){2}/, "")
+      ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
       throw e
     }
   }
@@ -125,7 +125,7 @@ describe("macro", function () {
                 const actual = transformFileSync(inputPath, _babelOptions)
                   .code.replace(/\r/g, "")
                   .trim()
-                expect(actual).toEqual(expected)
+                expect(clean(actual)).toEqual(clean(expected))
               } else {
                 const actual = transformSync(input, babelOptions).code.trim()
 

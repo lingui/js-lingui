@@ -9,7 +9,13 @@ const cases: TestCase[] = [
     `,
     expected: `
         import { i18n } from "@lingui/core";
-        const a = /*i18n*/ i18n._("Hello {name}")
+        const a = i18n._(
+          /*i18n*/
+          {
+            id: "OVaF9k",
+            message: "Hello {name}",
+          }
+        );
     `,
   },
 ]

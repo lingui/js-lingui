@@ -1,14 +1,15 @@
-import * as R from "ramda"
 import * as babelTypes from "@babel/types"
 import {
-  Expression,
-  Node,
   CallExpression,
-  ObjectExpression,
-  isObjectProperty,
-  ObjectProperty,
+  Expression,
   Identifier,
+  isObjectProperty,
+  Node,
+  ObjectExpression,
+  ObjectProperty,
+  SourceLocation,
   StringLiteral,
+  TemplateLiteral,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
@@ -16,10 +17,11 @@ import ICUMessageFormat, {
   ArgToken,
   ParsedResult,
   TextToken,
-  Tokens,
+  Token,
 } from "./icu"
-import { zip, makeCounter } from "./utils"
-import { COMMENT, ID, MESSAGE, EXTRACT_MARK } from "./constants"
+import { makeCounter } from "./utils"
+import { COMMENT, CONTEXT, EXTRACT_MARK, ID, MESSAGE } from "./constants"
+import { generateMessageId } from "./generateMessageId"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
 const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
@@ -58,30 +60,21 @@ export default class MacroJs {
     }: { message: ParsedResult["message"]; values: ParsedResult["values"] },
     linguiInstance?: babelTypes.Identifier
   ) => {
-    const args = []
+    const properties: ObjectProperty[] = [
+      this.createIdProperty(message),
+      this.createObjectProperty(MESSAGE, this.types.stringLiteral(message)),
+      this.createValuesProperty(values),
+    ]
 
-    args.push(isString(message) ? this.types.stringLiteral(message) : message)
-
-    if (Object.keys(values).length) {
-      const valuesObject = Object.keys(values).map((key) =>
-        this.types.objectProperty(this.types.identifier(key), values[key])
-      )
-
-      args.push(this.types.objectExpression(valuesObject))
-    }
-
-    const newNode = this.types.callExpression(
-      this.types.memberExpression(
-        linguiInstance ?? this.types.identifier(this.i18nImportName),
-        this.types.identifier("_")
+    const newNode = this.createI18nCall(
+      this.createMessageDescriptor(
+        properties,
+        // preserve line numbers for extractor
+        path.node.loc
       ),
-      args
+      linguiInstance
     )
 
-    // preserve line number
-    newNode.loc = path.node.loc
-
-    path.addComment("leading", EXTRACT_MARK)
     path.replaceWith(newNode)
   }
 
@@ -95,7 +88,7 @@ export default class MacroJs {
       return true
     }
 
-    // t(i18nInstance)`Message` -> i18nInstance._('Message')
+    // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
     if (
       this.types.isCallExpression(path.node) &&
       this.types.isTaggedTemplateExpression(path.parentPath.node) &&
@@ -190,16 +183,8 @@ export default class MacroJs {
     path: NodePath<CallExpression>,
     linguiInstance?: babelTypes.Identifier
   ) => {
-    let descriptor = this.processDescriptor(path.node.arguments[0])
-
-    const newNode = this.types.callExpression(
-      this.types.memberExpression(
-        linguiInstance ?? this.types.identifier(this.i18nImportName),
-        this.types.identifier("_")
-      ),
-      [descriptor]
-    )
-    path.replaceWith(newNode)
+    const descriptor = this.processDescriptor(path.node.arguments[0])
+    path.replaceWith(this.createI18nCall(descriptor, linguiInstance))
   }
 
   /**
@@ -222,78 +207,80 @@ export default class MacroJs {
   processDescriptor = (descriptor_: Node) => {
     const descriptor = descriptor_ as ObjectExpression
 
-    this.types.addComment(descriptor, "leading", EXTRACT_MARK)
-    const messageIndex = descriptor.properties.findIndex(
-      (property) =>
-        isObjectProperty(property) && this.isIdentifier(property.key, MESSAGE)
-    )
-    if (messageIndex === -1) {
-      return descriptor
+    const messageProperty = this.getObjectPropertyByKey(descriptor, MESSAGE)
+    const idProperty = this.getObjectPropertyByKey(descriptor, ID)
+    const contextProperty = this.getObjectPropertyByKey(descriptor, CONTEXT)
+
+    const properties: ObjectProperty[] = [idProperty]
+
+    if (!this.stripNonEssentialProps) {
+      properties.push(contextProperty)
     }
 
     // if there's `message` property, replace macros with formatted message
-    const node = descriptor.properties[messageIndex] as ObjectProperty
+    if (messageProperty) {
+      // Inside message descriptor the `t` macro in `message` prop is optional.
+      // Template strings are always processed as if they were wrapped by `t`.
+      const tokens = this.types.isTemplateLiteral(messageProperty.value)
+        ? this.tokenizeTemplateLiteral(messageProperty.value)
+        : this.tokenizeNode(messageProperty.value, true)
 
-    // Inside message descriptor the `t` macro in `message` prop is optional.
-    // Template strings are always processed as if they were wrapped by `t`.
-    const tokens = this.types.isTemplateLiteral(node.value)
-      ? this.tokenizeTemplateLiteral(node.value)
-      : this.tokenizeNode(node.value, true)
+      let messageNode = messageProperty.value as StringLiteral
 
-    let messageNode = node.value
-    if (tokens != null) {
-      const messageFormat = new ICUMessageFormat()
-      const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-      const message = normalizeWhitespace(messageRaw)
-      messageNode = this.types.stringLiteral(message)
+      if (tokens) {
+        const messageFormat = new ICUMessageFormat()
+        const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
+        const message = normalizeWhitespace(messageRaw)
+        messageNode = this.types.stringLiteral(message)
 
-      this.addValues(descriptor.properties, values)
+        properties.push(this.createValuesProperty(values))
+      }
+
+      if (!this.stripNonEssentialProps) {
+        properties.push(
+          this.createObjectProperty(MESSAGE, messageNode as Expression)
+        )
+      }
+
+      if (!idProperty && this.types.isStringLiteral(messageNode)) {
+        // todo: context could be different types, get implementation from extractor
+        const context =
+          contextProperty && this.types.isStringLiteral(contextProperty.value)
+            ? contextProperty.value.value
+            : undefined
+
+        properties.push(this.createIdProperty(messageNode.value, context))
+      }
     }
 
-    // Don't override custom ID
-    const hasId =
-      descriptor.properties.findIndex(
-        (property) =>
-          isObjectProperty(property) && this.isIdentifier(property.key, ID)
-      ) !== -1
-
-    descriptor.properties[messageIndex] = this.types.objectProperty(
-      this.types.identifier(hasId ? MESSAGE : ID),
-      messageNode
-    )
-
-    if (this.stripNonEssentialProps) {
-      descriptor.properties = descriptor.properties.filter(
-        (property) =>
-          isObjectProperty(property) &&
-          !this.isIdentifier(property.key, MESSAGE) &&
-          isObjectProperty(property) &&
-          !this.isIdentifier(property.key, COMMENT)
-      )
+    if (!this.stripNonEssentialProps) {
+      properties.push(this.getObjectPropertyByKey(descriptor, COMMENT))
     }
 
-    return descriptor
+    return this.createMessageDescriptor(properties, descriptor.loc)
   }
 
-  addValues = (
-    obj: ObjectExpression["properties"],
-    values: ParsedResult["values"]
-  ) => {
+  createIdProperty(message: string, context?: string) {
+    return this.createObjectProperty(
+      ID,
+      this.types.stringLiteral(generateMessageId(message, context))
+    )
+  }
+
+  createValuesProperty(values: ParsedResult["values"]) {
     const valuesObject = Object.keys(values).map((key) =>
       this.types.objectProperty(this.types.identifier(key), values[key])
     )
 
     if (!valuesObject.length) return
 
-    obj.push(
-      this.types.objectProperty(
-        this.types.identifier("values"),
-        this.types.objectExpression(valuesObject)
-      )
+    return this.types.objectProperty(
+      this.types.identifier("values"),
+      this.types.objectExpression(valuesObject)
     )
   }
 
-  tokenizeNode = (node: Node, ignoreExpression = false) => {
+  tokenizeNode(node: Node, ignoreExpression = false): Token[] {
     if (this.isI18nMethod(node)) {
       // t
       return this.tokenizeTemplateLiteral(node as Expression)
@@ -304,7 +291,7 @@ export default class MacroJs {
       //   // date, number
       //   return transformFormatMethod(node, file, props, root)
     } else if (!ignoreExpression) {
-      return this.tokenizeExpression(node)
+      return [this.tokenizeExpression(node)]
     }
   }
 
@@ -313,43 +300,45 @@ export default class MacroJs {
    * text chunks and node.expressions contains expressions.
    * Both arrays must be zipped together to get the final list of tokens.
    */
-  tokenizeTemplateLiteral = (node: babelTypes.Expression): Tokens => {
-    const tokenize = R.pipe(
-      R.evolve({
-        quasis: R.map((text: babelTypes.TemplateElement): TextToken => {
-          // Don't output tokens without text.
-          // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-          // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-          // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-          const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
-            text.value.raw
-          )
-            ? text.value.cooked
-            : text.value.raw
-          if (value === "") return null
+  tokenizeTemplateLiteral(node: babelTypes.Expression): Token[] {
+    const tpl = this.types.isTaggedTemplateExpression(node)
+      ? node.quasi
+      : (node as TemplateLiteral)
 
-          return {
-            type: "text",
-            value: this.clearBackslashes(value),
-          }
-        }),
-        expressions: R.map((exp: babelTypes.Expression) =>
-          this.types.isCallExpression(exp)
-            ? this.tokenizeNode(exp)
-            : this.tokenizeExpression(exp)
-        ),
-      }),
-      (exp) => zip(exp.quasis, exp.expressions),
-      R.flatten,
-      R.filter(Boolean)
-    )
+    const expressions = tpl.expressions as Expression[]
 
-    return tokenize(
-      this.types.isTaggedTemplateExpression(node) ? node.quasi : node
-    )
+    return tpl.quasis.flatMap((text, i) => {
+      // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
+      // This regex will detect if a string contains unicode chars, when they're we should interpolate them
+      // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
+      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw)
+        ? text.value.cooked
+        : text.value.raw
+
+      let argTokens: Token[] = []
+      const currExp = expressions[i]
+
+      if (currExp) {
+        argTokens = this.types.isCallExpression(currExp)
+          ? this.tokenizeNode(currExp)
+          : [this.tokenizeExpression(currExp)]
+      }
+
+      return [
+        ...(value
+          ? [
+              {
+                type: "text",
+                value: this.clearBackslashes(value),
+              } as TextToken,
+            ]
+          : []),
+        ...argTokens,
+      ]
+    })
   }
 
-  tokenizeChoiceComponent = (node: CallExpression): ArgToken => {
+  tokenizeChoiceComponent(node: CallExpression): ArgToken {
     const format = (node.callee as Identifier).name.toLowerCase()
 
     const token: ArgToken = {
@@ -392,7 +381,7 @@ export default class MacroJs {
     return token
   }
 
-  tokenizeExpression = (node: Node | Expression): ArgToken => {
+  tokenizeExpression(node: Node | Expression): ArgToken {
     if (this.isArg(node) && this.types.isCallExpression(node)) {
       return {
         type: "arg",
@@ -407,7 +396,7 @@ export default class MacroJs {
     }
   }
 
-  expressionToArgument = (exp: Expression): string => {
+  expressionToArgument(exp: Expression): string {
     if (this.types.isIdentifier(exp)) {
       return exp.name
     } else if (this.types.isStringLiteral(exp)) {
@@ -425,27 +414,69 @@ export default class MacroJs {
     return value.replace(/\\`/g, "`")
   }
 
+  createI18nCall(
+    messageDescriptor: ObjectExpression,
+    linguiInstance?: Identifier
+  ) {
+    return this.types.callExpression(
+      this.types.memberExpression(
+        linguiInstance ?? this.types.identifier(this.i18nImportName),
+        this.types.identifier("_")
+      ),
+      [messageDescriptor]
+    )
+  }
+
+  createMessageDescriptor(
+    properties: ObjectProperty[],
+    oldLoc?: SourceLocation
+  ): ObjectExpression {
+    const newDescriptor = this.types.objectExpression(
+      properties.filter(Boolean)
+    )
+    this.types.addComment(newDescriptor, "leading", EXTRACT_MARK)
+    if (oldLoc) {
+      newDescriptor.loc = oldLoc
+    }
+
+    return newDescriptor
+  }
+
+  createObjectProperty(key: string, value: Expression) {
+    return this.types.objectProperty(this.types.identifier(key), value)
+  }
+
+  getObjectPropertyByKey(
+    objectExp: ObjectExpression,
+    key: string
+  ): ObjectProperty {
+    return objectExp.properties.find(
+      (property) =>
+        isObjectProperty(property) && this.isIdentifier(property.key, key)
+    ) as ObjectProperty
+  }
+
   /**
    * Custom matchers
    */
-  isIdentifier = (node: Node | Expression, name: string) => {
+  isIdentifier(node: Node | Expression, name: string) {
     return this.types.isIdentifier(node, { name })
   }
 
-  isDefineMessage = (node: Node): boolean => {
+  isDefineMessage(node: Node): boolean {
     return (
       this.types.isCallExpression(node) &&
       this.isIdentifier(node.callee, "defineMessage")
     )
   }
 
-  isArg = (node: Node) => {
+  isArg(node: Node) {
     return (
       this.types.isCallExpression(node) && this.isIdentifier(node.callee, "arg")
     )
   }
 
-  isI18nMethod = (node: Node) => {
+  isI18nMethod(node: Node) {
     return (
       this.types.isTaggedTemplateExpression(node) &&
       (this.isIdentifier(node.tag, "t") ||
@@ -454,7 +485,7 @@ export default class MacroJs {
     )
   }
 
-  isChoiceMethod = (node: Node) => {
+  isChoiceMethod(node: Node) {
     return (
       this.types.isCallExpression(node) &&
       (this.isIdentifier(node.callee, "plural") ||
@@ -463,5 +494,3 @@ export default class MacroJs {
     )
   }
 }
-
-const isString = (s: unknown): s is string => typeof s === "string"

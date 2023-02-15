@@ -15,8 +15,9 @@ const cases: TestCase[] = [
         const message =
           /*i18n*/
           {
+            message: "{value, plural, one {book} other {books}}",
+            id: "SlmyxX",
             comment: "Description",
-            id: "{value, plural, one {book} other {books}}"
           };
     `,
   },
@@ -33,7 +34,8 @@ const cases: TestCase[] = [
         const message =
           /*i18n*/
           {
-            id: "Message"
+            message: "Message",
+            id: "xDAtGP",
           };
     `,
   },
@@ -50,10 +52,11 @@ const cases: TestCase[] = [
         const message =
           /*i18n*/
           {
-            id: "Message {name}",
             values: {
               name: name
-            }
+            },
+            message: "Message {name}",
+            id: "A2aVLF",
           };
     `,
   },
@@ -92,11 +95,10 @@ const cases: TestCase[] = [
         const msg =
           /*i18n*/
           {
-            id: 'Hello {name}',
-            context: 'My Context',
             values: {
               name: name,
             },
+            id: "oT92lS",
          };
     `,
   },
@@ -118,7 +120,6 @@ const cases: TestCase[] = [
           /*i18n*/
           {
             id: 'msgId',
-            context: 'My Context',
             values: {
               name: name,
             },
@@ -138,10 +139,11 @@ const cases: TestCase[] = [
         const message =
           /*i18n*/
           {
-            id: "Hello {name}",
             values: {
               name: name
-            }
+            },
+            message: "Hello {name}",
+            id: "OVaF9k",
           };
     `,
   },
