@@ -35,7 +35,6 @@ function remoteLoader<T>({
       `)
   }
 
-  // todo: that will not work with context
   const mapTranslationsToInterporlatedString = R.mapObjIndexed((_, key) => {
     // if there's fallback and translation is empty, return the fallback
     if (

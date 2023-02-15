@@ -2,11 +2,12 @@ import * as t from "@babel/types"
 import generate, { GeneratorOptions } from "@babel/generator"
 import { compileMessage } from "@lingui/core/compile"
 import pseudoLocalize from "./pseudoLocalize"
+import { CompiledMessage } from "@lingui/core/src/i18n"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
 
 type CompiledCatalogType = {
-  [msgId: string]: string | object
+  [msgId: string]: string
 }
 
 export type CreateCompileCatalogOptions = {
@@ -29,20 +30,9 @@ export function createCompiledCatalog(
   } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
-  const compiledMessages = Object.keys(messages).reduce((obj, key: string) => {
-    const value = messages[key]
-
-    // If the current ID's value is a context object, create a nested
-    // expression, and assign the current ID to that expression
-    if (typeof value === "object") {
-      obj[key] = Object.keys(value).reduce((obj, contextKey) => {
-        obj[contextKey] = compile(value[contextKey], shouldPseudolocalize)
-        return obj
-      }, {})
-
-      return obj
-    }
-
+  const compiledMessages = Object.keys(messages).reduce<{
+    [msgId: string]: CompiledMessage
+  }>((obj, key: string) => {
     // Don't use `key` as a fallback translation in strict mode.
     const translation = (messages[key] || (!strict ? key : "")) as string
 
@@ -70,7 +60,10 @@ export function createCompiledCatalog(
   return "/*eslint-disable*/" + code
 }
 
-function buildExportStatement(expression, namespace: CompiledCatalogNamespace) {
+function buildExportStatement(
+  expression: t.Expression,
+  namespace: CompiledCatalogNamespace
+) {
   if (namespace === "es" || namespace === "ts") {
     // export const messages = { message: "Translation" }
     return t.exportNamedDeclaration(

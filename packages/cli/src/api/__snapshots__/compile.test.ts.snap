@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createCompiledCatalog nested message 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"nested\\":{\\"one\\":\\"Uno\\",\\"two\\":\\"Dos\\",\\"three\\":\\"Tres\\",\\"hello\\":[\\"Hola \\",[\\"name\\"]]}}")};`;
-
 exports[`createCompiledCatalog options.compilerBabelOptions by default should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Alohà\\"}")};`;
 
 exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Aloh\\xE0\\"}")};`;
