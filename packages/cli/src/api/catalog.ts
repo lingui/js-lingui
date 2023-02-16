@@ -5,13 +5,19 @@ import glob from "glob"
 import micromatch from "micromatch"
 import normalize from "normalize-path"
 
-import { LinguiConfig, OrderBy, FallbackLocales } from "@lingui/conf"
+import {
+  OrderBy,
+  FallbackLocales,
+  LinguiConfigNormalized,
+  ExtractedMessage,
+  ExtractorType,
+} from "@lingui/conf"
 
 import getFormat, {
   CatalogFormatOptionsInternal,
   CatalogFormatter,
 } from "./formats"
-import extract, { ExtractedMessage, ExtractorType } from "./extractors"
+import extract from "./extractors"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -95,18 +101,16 @@ export class Catalog {
   path: string
   include: Array<string>
   exclude: Array<string>
-  config: LinguiConfig
   format: CatalogFormatter
 
   constructor(
     { name, path, include, exclude = [] }: CatalogProps,
-    config: LinguiConfig
+    public config: LinguiConfigNormalized
   ) {
     this.name = name
     this.path = normalizeRelativePath(path)
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
-    this.config = config
     this.format = getFormat(config.format)
   }
 
@@ -202,8 +206,8 @@ export class Catalog {
             origin: [...prev.origin, [filename, next.origin[1]]],
           }
         },
+        this.config,
         {
-          parserOptions: this.config.extractorParserOptions,
           extractors: this.config.extractors as ExtractorType[],
         }
       )
@@ -471,7 +475,7 @@ export class Catalog {
 /**
  * Parse `config.catalogs` and return a list of configured Catalog instances.
  */
-export function getCatalogs(config: LinguiConfig): Catalog[] {
+export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
   const catalogsConfig = config.catalogs
   const catalogs: Catalog[] = []
 
@@ -583,7 +587,7 @@ export function getCatalogForFile(file: string, catalogs: Array<Catalog>) {
 /**
  * Create catalog for merged messages.
  */
-export function getCatalogForMerge(config: LinguiConfig) {
+export function getCatalogForMerge(config: LinguiConfigNormalized) {
   const catalogConfig = config
 
   if (catalogConfig.catalogsMergePath.endsWith(PATHSEP)) {

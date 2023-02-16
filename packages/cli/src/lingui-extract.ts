@@ -13,7 +13,6 @@ export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
-  configPath: string
   overwrite: boolean
   locale: string
   prevFormat: string | null
@@ -144,7 +143,6 @@ if (require.main === module) {
       clean: program.watch ? false : program.clean || false,
       overwrite: program.watch || program.overwrite || false,
       locale: program.locale,
-      configPath: program.config || process.env.LINGUI_CONFIG,
       watch: program.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,

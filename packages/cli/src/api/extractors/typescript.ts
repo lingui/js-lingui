@@ -1,4 +1,4 @@
-import { ExtractorType } from "."
+import { ExtractorType } from "@lingui/conf"
 
 const extractor: ExtractorType = {
   match(filename) {

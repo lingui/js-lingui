@@ -7,7 +7,7 @@ export function setCldrParentLocales(
     return {
       ...config,
       fallbackLocales: {} as FallbackLocales,
-    }
+    } as unknown as LinguiConfigNormalized
   }
 
   if (!config.fallbackLocales.default) {
@@ -22,7 +22,7 @@ export function setCldrParentLocales(
     })
   }
 
-  return config as LinguiConfigNormalized
+  return config as unknown as LinguiConfigNormalized
 }
 
 export function getCldrParentLocale(sourceLocale: string) {

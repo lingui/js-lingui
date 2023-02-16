@@ -1,7 +1,21 @@
 import { GeneratorOptions } from "@babel/core"
-import type { ExtractorOptions } from "@lingui/cli/src/api/extractors"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
+
+export type ExtractorCtx = {
+  sourceMaps?: any
+}
+
+export type ExtractorType = {
+  match(filename: string): boolean
+  extract(
+    filename: string,
+    code: string,
+    onMessageExtracted: (msg: ExtractedMessage) => void,
+    linguiConfig: LinguiConfigNormalized,
+    ctx?: ExtractorCtx
+  ): Promise<void> | void
+}
 
 export type ExtractedMessage = {
   id: string
@@ -11,16 +25,6 @@ export type ExtractedMessage = {
   origin?: [filename: string, line: number]
 
   comment?: string
-}
-
-export type ExtractorType = {
-  match(filename: string): boolean
-  extract(
-    filename: string,
-    code: string,
-    onMessageExtracted: (msg: ExtractedMessage) => void,
-    options?: ExtractorOptions
-  ): Promise<void> | void
 }
 
 export type CatalogFormatOptions = {
@@ -82,6 +86,15 @@ export type LinguiConfig = {
   service: CatalogService
 }
 
-export type LinguiConfigNormalized = LinguiConfig & {
+export type LinguiConfigNormalized = Omit<
+  LinguiConfig,
+  "runtimeConfigModule"
+> & {
   fallbackLocales?: FallbackLocales
+  runtimeConfigModule: {
+    i18nImportModule: string
+    i18nImportName: string
+    TransImportModule: string
+    TransImportName: string
+  }
 }

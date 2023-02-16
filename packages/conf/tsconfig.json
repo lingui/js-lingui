@@ -12,4 +12,8 @@
   "files": [
     "./src/index.ts"
   ],
+  "exclude": [
+    "build",
+    "node_modules"
+  ]
 }
