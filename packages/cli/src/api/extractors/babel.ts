@@ -3,8 +3,9 @@ import { DEFAULT_EXTENSIONS, transformAsync } from "@babel/core"
 import type { ExtractPluginOpts } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import { ExtractorType } from "."
+import type { ExtractorType } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
+import { LinguiMacroOpts } from "@lingui/macro/src"
 
 const babelRe = new RegExp(
   "\\.(" +
@@ -20,14 +21,15 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  async extract(filename, code, onMessageExtracted, options = {}) {
+  async extract(filename, code, onMessageExtracted, linguiConfig, options) {
+    const parserOptions = linguiConfig.extractorParserOptions
+
     const parserPlugins: ParserPlugin[] = [
       // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
       [
         "decorators",
         {
-          decoratorsBeforeExport:
-            options?.parserOptions?.decoratorsBeforeExport || true,
+          decoratorsBeforeExport: parserOptions?.decoratorsBeforeExport || true,
         },
       ],
     ]
@@ -36,16 +38,12 @@ const extractor: ExtractorType = {
       [/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))
     ) {
       parserPlugins.push("typescript")
-    } else if (options?.parserOptions?.flow) {
+    } else if (parserOptions?.flow) {
       parserPlugins.push("flow")
     }
 
     if ([/\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
       parserPlugins.push("jsx")
-    }
-
-    const extractPluginOpts: ExtractPluginOpts = {
-      onMessageExtracted,
     }
 
     await transformAsync(code, {
@@ -57,7 +55,7 @@ const extractor: ExtractorType = {
 
       filename: filename,
 
-      sourceMaps: options.sourceMaps,
+      sourceMaps: options?.sourceMaps,
       parserOpts: {
         plugins: parserPlugins,
       },
@@ -66,10 +64,23 @@ const extractor: ExtractorType = {
         [
           "macros",
           {
-            lingui: { extract: true },
+            // macro plugin uses package `resolve` to find a path of macro file
+            // this will not follow jest pathMapping and will resolve path from ./build
+            // instead of ./src which makes testing & developing hard.
+            // here we override resolve and provide correct path for testing
+            resolvePath: (source: string) => require.resolve(source),
+            lingui: {
+              extract: true,
+              linguiConfig,
+            } satisfies LinguiMacroOpts,
           },
         ],
-        [linguiExtractMessages, extractPluginOpts],
+        [
+          linguiExtractMessages,
+          {
+            onMessageExtracted,
+          } satisfies ExtractPluginOpts,
+        ],
       ],
     })
   },

@@ -1,18 +1,17 @@
 import chalk from "chalk"
 import program from "commander"
 
-import { getConfig, LinguiConfig } from "@lingui/conf"
+import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
-  configPath: string
   files?: string[]
 }
 
 export default async function command(
-  config: LinguiConfig,
+  config: LinguiConfigNormalized,
   options: Partial<CliExtractTemplateOptions>
 ): Promise<boolean> {
   // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
@@ -61,7 +60,6 @@ if (require.main === module) {
 
   const result = command(config, {
     verbose: program.verbose || false,
-    configPath: program.config || process.env.LINGUI_CONFIG,
   }).then(() => {
     if (!result) process.exit(1)
   })

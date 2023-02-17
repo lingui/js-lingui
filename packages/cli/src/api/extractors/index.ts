@@ -1,46 +1,21 @@
 import fs from "fs/promises"
 import babel from "./babel"
+import {
+  ExtractedMessage,
+  ExtractorType,
+  LinguiConfigNormalized,
+} from "@lingui/conf"
 
 const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 
-export type ParserOptions = {
-  decoratorsBeforeExport?: boolean
-  flow?: boolean
-}
-
-export type ExtractedMessage = {
-  id: string
-
-  message?: string
-  context?: string
-  origin?: [filename: string, line: number]
-
-  comment?: string
-}
-
 type ExtractOptions = {
   extractors?: ExtractorType[]
-  parserOptions?: ParserOptions
-}
-
-export type ExtractorOptions = {
-  parserOptions?: ParserOptions
-  sourceMaps?: any
-}
-
-export type ExtractorType = {
-  match(filename: string): boolean
-  extract(
-    filename: string,
-    code: string,
-    onMessageExtracted: (msg: ExtractedMessage) => void,
-    options?: ExtractorOptions
-  ): Promise<void> | void
 }
 
 export default async function extract(
   filename: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
+  linguiConfig: LinguiConfigNormalized,
   options: ExtractOptions
 ): Promise<boolean> {
   const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
@@ -59,12 +34,15 @@ export default async function extract(
 
     try {
       const file = await fs.readFile(filename)
-      await ext.extract(filename, file.toString(), onMessageExtracted, {
-        parserOptions: options.parserOptions,
-      })
+      await ext.extract(
+        filename,
+        file.toString(),
+        onMessageExtracted,
+        linguiConfig
+      )
       return true
     } catch (e) {
-      console.error(`Cannot process file ${(e as Error).message}`)
+      console.error(`Cannot process file ${filename} ${(e as Error).message}`)
       console.error((e as Error).stack)
       return false
     }

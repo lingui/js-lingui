@@ -52,10 +52,12 @@ Object {
   orderBy: messageId,
   pseudoLocale: ,
   rootDir: .,
-  runtimeConfigModule: Array [
-    @lingui/core,
-    i18n,
-  ],
+  runtimeConfigModule: Object {
+    TransImportModule: @lingui/react,
+    TransImportName: Trans,
+    i18nImportModule: @lingui/core,
+    i18nImportName: i18n,
+  },
   service: Object {
     apiKey: ,
     name: ,

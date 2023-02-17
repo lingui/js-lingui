@@ -1,5 +1,5 @@
 import { createMacro, MacroParams } from "babel-plugin-macros"
-import { getConfig } from "@lingui/conf"
+import { getConfig as loadConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
@@ -13,30 +13,8 @@ import {
 export type LinguiMacroOpts = {
   // explicitly set by CLI when running extraction process
   extract?: boolean
+  linguiConfig?: LinguiConfigNormalized
 }
-
-const config = getConfig({ configPath: process.env.LINGUI_CONFIG })
-
-const getSymbolSource = (
-  name: "i18n" | "Trans"
-): [source: string, identifier?: string] => {
-  if (Array.isArray(config.runtimeConfigModule)) {
-    if (name === "i18n") {
-      return config.runtimeConfigModule
-    } else {
-      return ["@lingui/react", name]
-    }
-  } else {
-    if (config.runtimeConfigModule[name]) {
-      return config.runtimeConfigModule[name]
-    } else {
-      return ["@lingui/react", name]
-    }
-  }
-}
-
-const [i18nImportModule, i18nImportName = "i18n"] = getSymbolSource("i18n")
-const [TransImportModule, TransImportName = "Trans"] = getSymbolSource("Trans")
 
 const jsMacroTags = new Set([
   "defineMessage",
@@ -49,8 +27,27 @@ const jsMacroTags = new Set([
 
 const jsxMacroTags = new Set(["Trans", "Plural", "Select", "SelectOrdinal"])
 
+let config: LinguiConfigNormalized
+
+function getConfig(_config?: LinguiConfigNormalized) {
+  if (_config) {
+    config = _config
+  }
+  if (!config) {
+    config = loadConfig({ configPath: process.env.LINGUI_CONFIG })
+  }
+  return config
+}
+
 function macro({ references, state, babel, config }: MacroParams) {
   const opts: LinguiMacroOpts = config as LinguiMacroOpts
+
+  const {
+    i18nImportModule,
+    i18nImportName,
+    TransImportModule,
+    TransImportName,
+  } = getConfig(opts.linguiConfig).runtimeConfigModule
 
   const jsxNodes = new Set<NodePath>()
   const jsNodes = new Set<NodePath>()

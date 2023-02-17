@@ -1,5 +1,6 @@
 import {
   ExtractedMessage,
+  ExtractorCtx,
   ExtractorType,
   FallbackLocales,
   LinguiConfig,
@@ -10,7 +11,7 @@ import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
-import type { ExtractorOptions } from "@lingui/cli/src/api/extractors"
+import { normalizeRuntimeConfigModule } from "./migrations/normalizeRuntimeConfigModule"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -25,18 +26,20 @@ export function makeConfig(
 
   if (!opts.skipValidation) {
     validate(config, configValidation)
-
-    config = pipe(
-      // List config migrations from oldest to newest
-      setCldrParentLocales,
-
-      // Custom validation
-      validateLocales
-    )(config)
+    validateLocales(config)
   }
 
+  config = pipe(
+    // List config migrations from oldest to newest
+    setCldrParentLocales,
+    normalizeRuntimeConfigModule
+  )(config)
+
   // `replaceRootDir` should always be the last
-  return replaceRootDir(config, config.rootDir) as LinguiConfigNormalized
+  return replaceRootDir(
+    config,
+    config.rootDir
+  ) as unknown as LinguiConfigNormalized
 }
 
 export const defaultConfig: LinguiConfig = {
@@ -82,7 +85,7 @@ export const exampleConfig = {
           filename: string,
           code: string,
           onMessageExtracted: (msg: ExtractedMessage) => void,
-          options?: ExtractorOptions
+          ctx?: ExtractorCtx
         ) => {},
       } as ExtractorType,
     ]
@@ -136,8 +139,6 @@ function validateLocales(config: LinguiConfig) {
       )}`
     )
   }
-
-  return config
 }
 
 const pipe =

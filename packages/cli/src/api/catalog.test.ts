@@ -199,10 +199,6 @@ describe("Catalog", () => {
 
   describe("collect", () => {
     it("should support JSX and Typescript", async () => {
-      process.env.LINGUI_CONFIG = path.join(
-        __dirname,
-        "fixtures/collect-typescript-jsx/lingui.config.js"
-      )
       const catalog = new Catalog(
         {
           name: "messages",
