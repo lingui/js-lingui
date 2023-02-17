@@ -29,22 +29,6 @@ function readFsToJson(
 }
 
 describe("CLI Command: Compile", () => {
-  xit("Should return error if no messages", () => {
-    const config = makeConfig({
-      locales: ["en", "pl"],
-      rootDir: path.join(__dirname, "fixtures/compile"),
-      catalogs: [
-        {
-          path: "<rootDir>/{locale}",
-          include: ["<rootDir>"],
-        },
-      ],
-    })
-
-    const result = command(config, {})
-    expect(result).toBeFalsy()
-  })
-
   describe("Merge Catalogs", () => {
     // todo
   })

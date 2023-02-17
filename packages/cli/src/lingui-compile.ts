@@ -1,7 +1,6 @@
 import chalk from "chalk"
 import chokidar from "chokidar"
 import fs from "fs"
-import * as R from "ramda"
 import { program } from "commander"
 import * as plurals from "make-plural"
 
@@ -12,12 +11,6 @@ import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { getFormat } from "./api"
 import { TranslationMissingEvent } from "./api/getTranslationsForCatalog"
-
-const noMessages: (catalogs: Object[]) => boolean = R.pipe(
-  R.map(R.isEmpty),
-  R.values,
-  R.all(R.equals<any>(true))
-)
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -32,17 +25,6 @@ export function command(
   options: CliCompileOptions
 ) {
   const catalogs = getCatalogs(config)
-
-  // fixme: this is definitely doesn't work
-  if (noMessages(catalogs)) {
-    console.error("Nothing to compile, message catalogs are empty!\n")
-    console.error(
-      `(use "${chalk.yellow(
-        helpRun("extract")
-      )}" to extract messages from source files)`
-    )
-    return false
-  }
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
