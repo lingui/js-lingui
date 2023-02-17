@@ -9,7 +9,8 @@ function readFsToJson(
   directory: string,
   filter?: (filename: string) => boolean
 ) {
-  const out = {}
+  type Listing = { [filename: string]: string | Listing }
+  const out: Listing = {}
 
   fs.readdirSync(directory).map((filename) => {
     const filepath = path.join(directory, filename)
@@ -151,40 +152,36 @@ msgstr ""
       }
     )
 
-    it(
-      "Should show error and stop compilation of catalog " +
-        " if message doesnt have a translation (with template)",
-      () => {
-        mockFs({
-          "/test": {
-            "messages.pot": `
+    it("Should show error and stop compilation of catalog if message doesnt have a translation (with template)", () => {
+      mockFs({
+        "/test": {
+          "messages.pot": `
 msgid "Hello World"
 msgstr ""
         `,
-            "pl.po": ``,
-          },
+          "pl.po": ``,
+        },
+      })
+
+      mockConsole((console) => {
+        const result = command(config, {
+          allowEmpty: false,
         })
 
-        mockConsole((console) => {
-          const result = command(config, {
-            allowEmpty: false,
-          })
+        const actualFiles = readFsToJson("/test")
 
-          const actualFiles = readFsToJson("/test")
+        mockFs.restore()
 
-          mockFs.restore()
+        expect({
+          pl: actualFiles["pl.js"],
+          en: actualFiles["en.js"],
+        }).toMatchSnapshot()
 
-          expect({
-            pl: actualFiles["pl.js"],
-            en: actualFiles["en.js"],
-          }).toMatchSnapshot()
-
-          const log = getConsoleMockCalls(console.error)
-          expect(log).toMatchSnapshot()
-          expect(result).toBeFalsy()
-        })
-      }
-    )
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toMatchSnapshot()
+        expect(result).toBeFalsy()
+      })
+    })
 
     it("Should show missing messages verbosely when verbose = true", () => {
       mockFs({

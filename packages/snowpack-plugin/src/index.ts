@@ -51,16 +51,11 @@ function extractLinguiMessages(
       )
 
       const { locale, catalog } = fileCatalog
-      const catalogs = catalog.readAll()
 
-      const messages = Object.keys(catalogs[locale]).reduce((acc, key) => {
-        acc[key] = catalog.getTranslation(catalogs, locale, key, {
-          fallbackLocales: config.fallbackLocales,
-          sourceLocale: config.sourceLocale,
-        })
-
-        return acc
-      }, {})
+      const messages = catalog.getTranslations(locale, {
+        fallbackLocales: config.fallbackLocales,
+        sourceLocale: config.sourceLocale,
+      })
 
       const compiled = createCompiledCatalog(locale, messages, {
         strict,

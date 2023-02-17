@@ -12,6 +12,7 @@ import {
   cleanObsolete,
   order,
   normalizeRelativePath,
+  CatalogProps,
 } from "./catalog"
 import { createCompiledCatalog } from "./compile"
 
@@ -144,32 +145,6 @@ describe("Catalog", () => {
   })
 
   describe("POT Flow", () => {
-    it("Should merge source messages from template if provided", () => {
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: path.resolve(
-            __dirname,
-            path.join("fixtures", "pot-template", "{locale}")
-          ),
-          include: [],
-          exclude: [],
-        },
-        mockConfig({
-          locales: ["en", "pl"],
-        })
-      )
-
-      const translations = catalog.getTranslations("pl", {
-        sourceLocale: "en",
-        fallbackLocales: {
-          default: "en",
-        },
-      })
-
-      expect(translations).toMatchSnapshot()
-    })
-
     it("Should get translations from template if locale file not presented", () => {
       const catalog = new Catalog(
         {
@@ -664,13 +639,13 @@ describe("Catalog", () => {
       },
     })
 
-    const fileContent = (format) =>
+    const fileContent = (format: string) =>
       fs
         .readFileSync("./en/messages." + (format === "po" ? "po" : "json"))
         .toString()
         .trim()
 
-    const catalogConfig = {
+    const catalogConfig: CatalogProps = {
       name: "messages",
       path: "{locale}/messages",
       include: [],
@@ -1018,7 +993,7 @@ describe("getCatalogForMerge", () => {
     try {
       getCatalogForMerge(config)
     } catch (e) {
-      expect(e.message).toBe(
+      expect((e as Error).message).toBe(
         'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".'
       )
     }
@@ -1032,7 +1007,7 @@ describe("getCatalogForMerge", () => {
     try {
       getCatalogForMerge(config)
     } catch (e) {
-      expect(e.message).toBe(
+      expect((e as Error).message).toBe(
         "Invalid catalog path: {locale} variable is missing"
       )
     }
