@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import program from "commander"
+import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
@@ -14,12 +14,6 @@ export default async function command(
   config: LinguiConfigNormalized,
   options: Partial<CliExtractTemplateOptions>
 ): Promise<boolean> {
-  // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
-  // set. We're setting it here, because lingui macros are going to use them as well.
-  if (!process.env.BABEL_ENV && !process.env.NODE_ENV) {
-    process.env.BABEL_ENV = "development"
-  }
-
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: Number } = {}
@@ -48,18 +42,25 @@ export default async function command(
   return true
 }
 
+type CliOptions = {
+  config?: string
+  verbose?: boolean
+}
+
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
     .parse(process.argv)
 
+  const options = program.opts<CliOptions>()
+
   const config = getConfig({
-    configPath: program.config || process.env.LINGUI_CONFIG,
+    configPath: options.config || process.env.LINGUI_CONFIG,
   })
 
   const result = command(config, {
-    verbose: program.verbose || false,
+    verbose: options.verbose || false,
   }).then(() => {
     if (!result) process.exit(1)
   })
