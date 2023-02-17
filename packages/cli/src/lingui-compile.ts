@@ -11,6 +11,7 @@ import { getCatalogForMerge, getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { getFormat } from "./api"
+import { TranslationMissingEvent } from "./api/getTranslationsForCatalog"
 
 const noMessages: (catalogs: Object[]) => boolean = R.pipe(
   R.map(R.isEmpty),
@@ -52,7 +53,8 @@ export function command(
   for (const locale of config.locales) {
     const [language] = locale.split(/[_-]/)
     // todo: this validation should be in @lingui/conf
-    if (locale !== config.pseudoLocale && !plurals[language]) {
+    // todo: validate locales according bcp47, instead of plurals
+    if (locale !== config.pseudoLocale && !(plurals as any)[language]) {
       console.error(
         chalk.red(
           `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
@@ -62,34 +64,40 @@ export function command(
     }
 
     for (const catalog of catalogs) {
+      const missingMessages: TranslationMissingEvent[] = []
+
       const messages = catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
+        onMissing: (missing) => {
+          missingMessages.push(missing)
+        },
       })
 
-      if (!options.allowEmpty) {
-        const missingMsgIds = R.pipe(R.pickBy(R.isNil), R.keys)(messages)
-
-        if (missingMsgIds.length > 0) {
-          console.error(
-            chalk.red(
-              `Error: Failed to compile catalog for locale ${chalk.bold(
-                locale
-              )}!`
-            )
+      if (!options.allowEmpty && missingMessages.length > 0) {
+        console.error(
+          chalk.red(
+            `Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`
           )
+        )
 
-          if (options.verbose) {
-            console.error(chalk.red("Missing translations:"))
-            missingMsgIds.forEach((msgId) => console.error(msgId))
-          } else {
-            console.error(
-              chalk.red(`Missing ${missingMsgIds.length} translation(s)`)
-            )
-          }
-          console.error()
-          return false
+        if (options.verbose) {
+          console.error(chalk.red("Missing translations:"))
+          missingMessages.forEach((missing) => {
+            const source =
+              missing.source || missing.source === missing.id
+                ? `: (${missing.source})`
+                : ""
+
+            console.error(`${missing.id}${source}`)
+          })
+        } else {
+          console.error(
+            chalk.red(`Missing ${missingMessages.length} translation(s)`)
+          )
         }
+        console.error()
+        return false
       }
 
       if (doMerge) {
@@ -214,7 +222,7 @@ if (require.main === module) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
-    let paths = []
+    let paths: string[] = []
     const catalogExtension = getFormat(config.format).catalogExtension
 
     config.locales.forEach((locale) => {

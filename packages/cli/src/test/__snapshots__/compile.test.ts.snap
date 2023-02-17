@@ -5,21 +5,21 @@ Error: Invalid locale abra (missing plural rules)!
 
 `;
 
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog  if message doesnt have a translation (with template) 1`] = `
-Object {
-  en: /*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello World\\":\\"Hello World\\"}")};,
-  pl: undefined,
-}
-`;
-
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog  if message doesnt have a translation (with template) 2`] = `
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (no template) 1`] = `
 Error: Failed to compile catalog for locale pl!
 Missing 1 translation(s)
 
 `;
 
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (no template) 1`] = `
-Error: Failed to compile catalog for locale pl!
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (with template) 1`] = `
+Object {
+  en: undefined,
+  pl: undefined,
+}
+`;
+
+exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (with template) 2`] = `
+Error: Failed to compile catalog for locale en!
 Missing 1 translation(s)
 
 `;

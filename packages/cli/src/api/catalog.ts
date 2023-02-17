@@ -7,7 +7,6 @@ import normalize from "normalize-path"
 
 import {
   OrderBy,
-  FallbackLocales,
   LinguiConfigNormalized,
   ExtractedMessage,
   ExtractorType,
@@ -23,6 +22,10 @@ import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
 import { prettyOrigin } from "./utils"
 import chalk from "chalk"
+import {
+  getTranslationsForCatalog,
+  GetTranslationsOptions,
+} from "./getTranslationsForCatalog"
 
 const NAME = "{name}"
 const NAME_REPLACE_RE = /{name}/g
@@ -72,12 +75,7 @@ export type MergeOptions = {
   files?: string[]
 }
 
-export type GetTranslationsOptions = {
-  sourceLocale: string
-  fallbackLocales: FallbackLocales
-}
-
-type CatalogProps = {
+export type CatalogProps = {
   name?: string
   path: string
   include: Array<string>
@@ -276,80 +274,7 @@ export class Catalog {
   }
 
   getTranslations(locale: string, options: GetTranslationsOptions) {
-    const catalogs = this.readAll()
-    const template = this.readTemplate() || {}
-
-    return R.mapObjIndexed(
-      (_value, key) => this.getTranslation(catalogs, locale, key, options),
-      { ...template, ...catalogs[locale] }
-    )
-  }
-
-  getTranslation(
-    catalogs: AllCatalogsType,
-    locale: string,
-    key: string,
-    { fallbackLocales, sourceLocale }: GetTranslationsOptions
-  ) {
-    const getTranslation = (_locale: string) => {
-      const configLocales = this.config.locales.join('", "')
-      const localeCatalog = catalogs[_locale] || {}
-
-      if (!localeCatalog) {
-        console.warn(`
-        Catalog "${_locale}" isn't present in locales config parameter
-        Add "${_locale}" to your lingui.config.js:
-        {
-          locales: ["${configLocales}", "${_locale}"]
-        }
-      `)
-        return null
-      }
-      if (!localeCatalog.hasOwnProperty(key)) {
-        return null
-      }
-
-      if (catalogs[_locale]) {
-        return catalogs[_locale][key].translation
-      }
-
-      return null
-    }
-
-    const getMultipleFallbacks = (_locale: string) => {
-      const fL = fallbackLocales && fallbackLocales[_locale]
-
-      // some probably the fallback will be undefined, so just search by locale
-      if (!fL) return null
-
-      if (Array.isArray(fL)) {
-        for (const fallbackLocale of fL) {
-          if (catalogs[fallbackLocale]) {
-            return getTranslation(fallbackLocale)
-          }
-        }
-      } else {
-        return getTranslation(fL)
-      }
-    }
-
-    return (
-      // Get translation in target locale
-      getTranslation(locale) ||
-      // We search in fallbackLocales as dependent of each locale
-      getMultipleFallbacks(locale) ||
-      // Get translation in fallbackLocales.default (if any)
-      (fallbackLocales?.default && getTranslation(fallbackLocales.default)) ||
-      // Get message default
-      // If sourceLocale is either target locale of fallback one, use key
-      (sourceLocale && sourceLocale === locale && key) ||
-      (sourceLocale &&
-        fallbackLocales?.default &&
-        sourceLocale === fallbackLocales.default &&
-        key) ||
-      // Otherwise no translation is available
-      undefined
-    )
+    return getTranslationsForCatalog(this, locale, options)
   }
 
   write(

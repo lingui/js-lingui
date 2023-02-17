@@ -7,13 +7,6 @@ Object {
 }
 `;
 
-exports[`Catalog POT Flow Should merge source messages from template if provided 1`] = `
-Object {
-  Hello World: Cześć świat,
-  Test String: Test String,
-}
-`;
-
 exports[`Catalog collect should extract messages from source files 1`] = `
 Object {
   Component A: Object {

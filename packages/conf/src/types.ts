@@ -44,7 +44,7 @@ export type CatalogConfig = {
 
 type LocaleObject = {
   [locale: string]: string[] | string
-  default: string
+  default?: string
 }
 
 export type FallbackLocales = LocaleObject
