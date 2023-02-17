@@ -2,7 +2,7 @@ import chalk from "chalk"
 import chokidar from "chokidar"
 import fs from "fs"
 import * as R from "ramda"
-import program from "commander"
+import { program } from "commander"
 import * as plurals from "make-plural"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -155,6 +155,17 @@ export function command(
   return true
 }
 
+type CliOptions = {
+  verbose?: boolean
+  allowEmpty?: boolean
+  typescript?: boolean
+  watch?: boolean
+  namespace?: string
+  strict?: string
+  config?: string
+  debounce?: number
+}
+
 if (require.main === module) {
   program
     .description(
@@ -163,7 +174,6 @@ if (require.main === module) {
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
-    .option("--format <format>", "Format of message catalog")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--namespace <namespace>",
@@ -188,37 +198,31 @@ if (require.main === module) {
     })
     .parse(process.argv)
 
-  const config = getConfig({ configPath: program.config })
+  const options = program.opts<CliOptions>()
 
-  if (program.format) {
-    const msg =
-      "--format option is deprecated and will be removed in @lingui/cli@3.0.0." +
-      " Please set format in configuration https://lingui.dev/ref/conf#format"
-    console.warn(msg)
-    config.format = program.format
-  }
+  const config = getConfig({ configPath: options.config })
 
   const compile = () =>
     command(config, {
-      verbose: program.watch || program.verbose || false,
-      allowEmpty: !program.strict,
+      verbose: options.watch || options.verbose || false,
+      allowEmpty: !options.strict,
       typescript:
-        program.typescript || config.compileNamespace === "ts" || false,
-      namespace: program.namespace, // we want this to be undefined if user does not specify so default can be used
+        options.typescript || config.compileNamespace === "ts" || false,
+      namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
     })
 
   let debounceTimer: NodeJS.Timer
   const dispatchCompile = () => {
     // Skip debouncing if not enabled
-    if (!program.debounce) return compile()
+    if (!options.debounce) return compile()
 
     // CLear the previous timer if there is any, and schedule the next
     debounceTimer && clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => compile(), program.debounce)
+    debounceTimer = setTimeout(() => compile(), options.debounce)
   }
 
   // Check if Watch Mode is enabled
-  if (program.watch) {
+  if (options.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)

@@ -1,6 +1,6 @@
 import chalk from "chalk"
 import chokidar from "chokidar"
-import program from "commander"
+import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
@@ -23,12 +23,6 @@ export default async function command(
   config: LinguiConfigNormalized,
   options: Partial<CliExtractOptions>
 ): Promise<boolean> {
-  // `react-app` babel plugin used by CRA requires either BABEL_ENV or NODE_ENV to be
-  // set. We're setting it here, because lingui macros are going to use them as well.
-  if (!process.env.BABEL_ENV && !process.env.NODE_ENV) {
-    process.env.BABEL_ENV = "development"
-  }
-
   options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = getCatalogs(config)
@@ -91,6 +85,19 @@ export default async function command(
   return commandSuccess
 }
 
+type CliOptions = {
+  verbose: boolean
+  config: string
+  convertFrom: string
+  debounce: number
+  files?: string[]
+  clean: boolean
+  overwrite: boolean
+  locale: string
+  prevFormat: string | null
+  watch?: boolean
+}
+
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
@@ -109,13 +116,15 @@ if (require.main === module) {
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
+  const options = program.opts<CliOptions>()
+
   const config = getConfig({
-    configPath: program.config || process.env.LINGUI_CONFIG,
+    configPath: options.config || process.env.LINGUI_CONFIG,
   })
 
   let hasErrors = false
 
-  const prevFormat = program.convertFrom
+  const prevFormat = options.convertFrom
   if (prevFormat && config.format === prevFormat) {
     hasErrors = true
     console.error("Trying to migrate message catalog to the same format")
@@ -129,9 +138,9 @@ if (require.main === module) {
     process.exit(1)
   }
 
-  if (program.locale && !config.locales.includes(program.locale)) {
+  if (options.locale && !config.locales.includes(options.locale)) {
     hasErrors = true
-    console.error(`Locale ${chalk.bold(program.locale)} does not exist.`)
+    console.error(`Locale ${chalk.bold(options.locale)} does not exist.`)
     console.error()
   }
 
@@ -139,11 +148,11 @@ if (require.main === module) {
 
   const extract = (filePath?: string[]) => {
     return command(config, {
-      verbose: program.watch || program.verbose || false,
-      clean: program.watch ? false : program.clean || false,
-      overwrite: program.watch || program.overwrite || false,
-      locale: program.locale,
-      watch: program.watch || false,
+      verbose: options.watch || options.verbose || false,
+      clean: options.watch ? false : options.clean || false,
+      overwrite: options.watch || options.overwrite || false,
+      locale: options.locale,
+      watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,
     })
@@ -153,7 +162,7 @@ if (require.main === module) {
   let debounceTimer: NodeJS.Timer
   const dispatchExtract = (filePath?: string[]) => {
     // Skip debouncing if not enabled
-    if (!program.debounce) return extract(filePath)
+    if (!options.debounce) return extract(filePath)
 
     filePath?.forEach((path) => changedPaths.add(path))
 
@@ -164,11 +173,11 @@ if (require.main === module) {
       changedPaths.clear()
 
       await extract(filePath)
-    }, program.debounce)
+    }, options.debounce)
   }
 
   // Check if Watch Mode is enabled
-  if (program.watch) {
+  if (options.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
 
     const catalogs = getCatalogs(config)
