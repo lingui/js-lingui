@@ -8,6 +8,9 @@ import { mockConsole } from "@lingui/jest-mocks"
 import format from "./po"
 import { CatalogType } from "../catalog"
 
+// on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
+const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, "\r\n")
+
 describe("pofile format", () => {
   afterEach(() => {
     mockFs.restore()
@@ -210,12 +213,7 @@ describe("pofile format", () => {
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
 
-    expect(actual).toBe(pofile)
-    // on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
-    // we test that the content if the same inlined...
-    // expect(actual.replace(/(\r\n|\n|\r)/gm, "")).toEqual(
-    //   pofile.replace(/(\r\n|\n|\r)/gm, "")
-    // )
+    expect(normalizeLineEndings(actual)).toEqual(normalizeLineEndings(pofile))
   })
 
   it("should not include origins if origins option is false", () => {
