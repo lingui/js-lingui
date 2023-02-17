@@ -13,26 +13,6 @@ exports[`@lingui/conf config file extractBabelOptions deprecation if deprecated 
 Documentation: https://lingui.dev/ref/conf
 `;
 
-exports[`@lingui/conf config file fallbackLocale deprecation if deprecated fallbackLocale is defined, we set fallbackLocales.default and show message 1`] = `
-● Deprecation Warning:
-
- Option fallbackLocale was replaced by fallbackLocales
-
-    You can find more information here: https://github.com/lingui/js-lingui/issues/791
-
-    @lingui/cli now treats your current configuration as:
-    {
-      "fallbackLocales": {
-        default: "en"
-      }
-    }
-
-    Please update your configuration.
-    
-
-Documentation: https://lingui.dev/ref/conf
-`;
-
 exports[`@lingui/conf should return default config 1`] = `
 Object {
   catalogs: Array [

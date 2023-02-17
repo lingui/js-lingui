@@ -100,3 +100,13 @@ declare type ExtractorType = {
 ```
 
 Read more about custom extractor on the [Advanced: Custom Extractor](/guides/custom-extractor) page.
+
+### Configuration migrations for deprecated options were deleted
+
+Migration for the following older options:
+- `localeDir`,
+- `srcPathDirs`,
+- `srcPathIgnorePatterns`,
+- `fallbackLocale`
+
+were deleted from the source code. This should affect only users who are migrating from `v2` to `v4` directly.
