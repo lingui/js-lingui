@@ -2,17 +2,7 @@
 
 exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-letter 1`] = `
 Object {
-  Dxqdu3: Object {
-    comments: Array [],
-    context: null,
-    extractedComments: Array [],
-    flags: Array [],
-    message: {count, plural, one {Singular} other {Plural}},
-    obsolete: false,
-    origin: Array [],
-    translation: ,
-  },
-  S1EzSG: Object {
+  WGI12K: Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
@@ -21,6 +11,16 @@ Object {
     obsolete: false,
     origin: Array [],
     translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  jO/SBZ: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [],
+    flags: Array [],
+    message: {count, plural, one {Singular} other {Plural}},
+    obsolete: false,
+    origin: Array [],
+    translation: ,
   },
   message_with_id: Object {
     comments: Array [],
@@ -99,17 +99,7 @@ msgstr[1] ""
 
 exports[`po-gettext format should convert gettext plurals to ICU plural messages 1`] = `
 Object {
-  Dxqdu3: Object {
-    comments: Array [],
-    context: null,
-    extractedComments: Array [],
-    flags: Array [],
-    message: {count, plural, one {Singular} other {Plural}},
-    obsolete: false,
-    origin: Array [],
-    translation: ,
-  },
-  S1EzSG: Object {
+  WGI12K: Object {
     comments: Array [],
     context: null,
     extractedComments: Array [],
@@ -118,6 +108,16 @@ Object {
     obsolete: false,
     origin: Array [],
     translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  jO/SBZ: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [],
+    flags: Array [],
+    message: {count, plural, one {Singular} other {Plural}},
+    obsolete: false,
+    origin: Array [],
+    translation: ,
   },
   message_with_id: Object {
     comments: Array [],

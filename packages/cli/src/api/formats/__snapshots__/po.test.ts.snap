@@ -38,18 +38,6 @@ Object {
 
 exports[`pofile format should read catalog in pofile format 1`] = `
 Object {
-  ATNV5d: Object {
-    comments: Array [],
-    context: null,
-    extractedComments: Array [
-      js-lingui-id: pXy+hm,
-    ],
-    flags: Array [],
-    message: Message with default hash id,
-    obsolete: false,
-    origin: Array [],
-    translation: Translation for: Message with default-hash id,
-  },
   obsolete: Object {
     comments: Array [],
     context: null,
@@ -158,6 +146,18 @@ Object {
       ],
     ],
     translation: Message with origin,
+  },
+  xC8QeX: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [
+      js-lingui-id: pXy+hm,
+    ],
+    flags: Array [],
+    message: Message with default hash id,
+    obsolete: false,
+    origin: Array [],
+    translation: Translation for: Message with default-hash id,
   },
 }
 `;

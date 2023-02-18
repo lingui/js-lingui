@@ -115,7 +115,7 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: CbxEcW,
+    id: esnaQO,
     message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-without-trans.js,
@@ -245,7 +245,7 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: stjtW+,
+    id: d1Kdl3,
     message: Hi, my name is {name},
     origin: Array [
       jsx-with-macros.js,

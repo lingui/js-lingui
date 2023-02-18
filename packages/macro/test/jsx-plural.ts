@@ -15,7 +15,7 @@ const cases: TestCase[] = [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans 
-          id={"VGP+zE"}
+          id={"tYX0sm"}
           message={
             "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
            }

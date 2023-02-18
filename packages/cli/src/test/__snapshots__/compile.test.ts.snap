@@ -28,7 +28,7 @@ exports[`CLI Command: Compile allowEmpty = false Should show missing messages ve
 en ⇒ /test/en.js
 Error: Failed to compile catalog for locale pl!
 Missing translations:
-LwgA8O: (Hello World)
-Hp6Twa: (Test String)
+mY42CM: (Hello World)
+2ZeN02: (Test String)
 
 `;

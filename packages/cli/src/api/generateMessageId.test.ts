@@ -21,4 +21,12 @@ describe("generateMessageId", () => {
     expect(withContext != withSuffix).toBeTruthy()
     expect(withContext != withPrefix).toBeTruthy()
   })
+
+  it("All kind of falsy context should give the same result", () => {
+    const expected = `vQhkQx`
+    expect(generateMessageId("my message")).toBe(expected)
+    expect(generateMessageId("my message", "")).toBe(expected)
+    expect(generateMessageId("my message", undefined)).toBe(expected)
+    expect(generateMessageId("my message", null)).toBe(expected)
+  })
 })

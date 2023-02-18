@@ -131,7 +131,7 @@ msgstr[2] "# dní"
     const parsed = format.parse(po)
 
     expect(parsed).toEqual({
-      qKyBiT: {
+      Y8Xw2Y: {
         // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
         translation: "{#, plural, one {# den} few {# dny} other {# dní}}",
         message: "{#, plural, one {day} other {days}}",

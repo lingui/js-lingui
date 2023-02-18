@@ -2,8 +2,8 @@
 
 exports[`Catalog POT Flow Should get translations from template if locale file not presented 1`] = `
 Object {
-  Hp6Twa: Test String,
-  LwgA8O: Hello World,
+  2ZeN02: Test String,
+  mY42CM: Hello World,
 }
 `;
 
@@ -168,6 +168,17 @@ Object {
       ],
     ],
   },
+  d1Kdl3: Object {
+    context: undefined,
+    extractedComments: Array [],
+    message: Hi, my name is {name},
+    origin: Array [
+      Array [
+        collect-typescript-jsx/macro.tsx,
+        17,
+      ],
+    ],
+  },
   esnaQO: Object {
     context: undefined,
     extractedComments: Array [],
@@ -176,17 +187,6 @@ Object {
       Array [
         collect-typescript-jsx/macro.tsx,
         21,
-      ],
-    ],
-  },
-  stjtW+: Object {
-    context: undefined,
-    extractedComments: Array [],
-    message: Hi, my name is {name},
-    origin: Array [
-      Array [
-        collect-typescript-jsx/macro.tsx,
-        17,
       ],
     ],
   },
@@ -343,7 +343,7 @@ Object {
 exports[`Catalog make should merge with existing catalogs 1`] = `
 Object {
   cs: Object {
-    LwgA8O: Object {
+    mY42CM: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
@@ -355,7 +355,7 @@ Object {
     },
   },
   en: Object {
-    LwgA8O: Object {
+    mY42CM: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
@@ -432,18 +432,6 @@ Object {
       ],
       translation: ,
     },
-    LwgA8O: Object {
-      comments: Array [],
-      context: null,
-      extractedComments: Array [
-        js-lingui-id: LwgA8O,
-      ],
-      flags: Array [],
-      message: Hello World,
-      obsolete: true,
-      origin: Array [],
-      translation: Ahoj Brno,
-    },
     custom.id: Object {
       comments: Array [],
       context: null,
@@ -459,6 +447,18 @@ Object {
         ],
       ],
       translation: ,
+    },
+    mY42CM: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [
+        js-lingui-id: mY42CM,
+      ],
+      flags: Array [],
+      message: Hello World,
+      obsolete: true,
+      origin: Array [],
+      translation: Ahoj Brno,
     },
   },
   en: Object {
@@ -522,18 +522,6 @@ Object {
       ],
       translation: ,
     },
-    LwgA8O: Object {
-      comments: Array [],
-      context: null,
-      extractedComments: Array [
-        js-lingui-id: LwgA8O,
-      ],
-      flags: Array [],
-      message: Hello World,
-      obsolete: true,
-      origin: Array [],
-      translation: Ahoj Brno,
-    },
     custom.id: Object {
       comments: Array [],
       context: null,
@@ -549,6 +537,18 @@ Object {
         ],
       ],
       translation: ,
+    },
+    mY42CM: Object {
+      comments: Array [],
+      context: null,
+      extractedComments: Array [
+        js-lingui-id: mY42CM,
+      ],
+      flags: Array [],
+      message: Hello World,
+      obsolete: true,
+      origin: Array [],
+      translation: Ahoj Brno,
     },
   },
 }
@@ -698,18 +698,6 @@ Object {
 
 exports[`Catalog read should read file in given format 1`] = `
 Object {
-  ATNV5d: Object {
-    comments: Array [],
-    context: null,
-    extractedComments: Array [
-      js-lingui-id: pXy+hm,
-    ],
-    flags: Array [],
-    message: Message with default hash id,
-    obsolete: false,
-    origin: Array [],
-    translation: Translation for: Message with default-hash id,
-  },
   obsolete: Object {
     comments: Array [],
     context: null,
@@ -819,6 +807,18 @@ Object {
     ],
     translation: Message with origin,
   },
+  xC8QeX: Object {
+    comments: Array [],
+    context: null,
+    extractedComments: Array [
+      js-lingui-id: pXy+hm,
+    ],
+    flags: Array [],
+    message: Message with default hash id,
+    obsolete: false,
+    origin: Array [],
+    translation: Translation for: Message with default-hash id,
+  },
 }
 `;
 
@@ -827,7 +827,7 @@ exports[`Catalog read should read file in previous format 1`] = `null`;
 exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 Object {
   cs: Object {
-    LwgA8O: Object {
+    mY42CM: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],
@@ -839,7 +839,7 @@ Object {
     },
   },
   en: Object {
-    LwgA8O: Object {
+    mY42CM: Object {
       comments: Array [],
       context: null,
       extractedComments: Array [],

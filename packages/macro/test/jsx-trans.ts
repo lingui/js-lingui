@@ -9,7 +9,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={"LwgA8O"} message={"Hello World"} />;
+        <Trans id={"mY42CM"} message={"Hello World"} />;
       `,
   },
   {
@@ -21,7 +21,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={"LwgA8O"} message={"Hello World"} />;
+        <Trans id={"mY42CM"} message={"Hello World"} />;
         <Trans id={"SO/WB8"} message={"Hello World"} context="my context" />;
       `,
   },
@@ -137,7 +137,7 @@ const cases: TestCase[] = [
       `,
     expected: `
         import { Trans } from "@lingui/react";
-        <Trans id={"kyoGeg"} message={'Speak "friend"!'} />;
+        <Trans id={"NWmRwM"} message={'Speak "friend"!'} />;
         <Trans id="custom-id" message={'Speak "friend"!'} />;
       `,
   },
