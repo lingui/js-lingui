@@ -7,9 +7,7 @@ import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
 import { CatalogType } from "../catalog"
-
-// on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
-const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, "\r\n")
+import { normalizeLineEndings } from "../../tests"
 
 describe("pofile format", () => {
   afterEach(() => {

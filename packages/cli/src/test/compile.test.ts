@@ -1,32 +1,8 @@
 import { command } from "../lingui-compile"
 import { makeConfig } from "@lingui/conf"
-import path from "path"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import mockFs from "mock-fs"
-import fs from "fs"
-
-function readFsToJson(
-  directory: string,
-  filter?: (filename: string) => boolean
-) {
-  type Listing = { [filename: string]: string | Listing }
-  const out: Listing = {}
-
-  fs.readdirSync(directory).map((filename) => {
-    const filepath = path.join(directory, filename)
-
-    if (fs.lstatSync(filepath).isDirectory()) {
-      out[filename] = readFsToJson(filepath)
-      return out
-    }
-
-    if (!filter || filter(filename)) {
-      out[filename] = fs.readFileSync(filepath).toString()
-    }
-  })
-
-  return out
-}
+import { readFsToJson } from "../tests"
 
 describe("CLI Command: Compile", () => {
   describe("Merge Catalogs", () => {
@@ -136,36 +112,40 @@ msgstr ""
       }
     )
 
-    it("Should show error and stop compilation of catalog if message doesnt have a translation (with template)", () => {
-      mockFs({
-        "/test": {
-          "messages.pot": `
+    it(
+      "Should show error and stop compilation of catalog " +
+        "if message doesnt have a translation (with template)",
+      () => {
+        mockFs({
+          "/test": {
+            "messages.pot": `
 msgid "Hello World"
 msgstr ""
         `,
-          "pl.po": ``,
-        },
-      })
-
-      mockConsole((console) => {
-        const result = command(config, {
-          allowEmpty: false,
+            "pl.po": ``,
+          },
         })
 
-        const actualFiles = readFsToJson("/test")
+        mockConsole((console) => {
+          const result = command(config, {
+            allowEmpty: false,
+          })
 
-        mockFs.restore()
+          const actualFiles = readFsToJson("/test")
 
-        expect({
-          pl: actualFiles["pl.js"],
-          en: actualFiles["en.js"],
-        }).toMatchSnapshot()
+          mockFs.restore()
 
-        const log = getConsoleMockCalls(console.error)
-        expect(log).toMatchSnapshot()
-        expect(result).toBeFalsy()
-      })
-    })
+          expect({
+            pl: actualFiles["pl.js"],
+            en: actualFiles["en.js"],
+          }).toMatchSnapshot()
+
+          const log = getConsoleMockCalls(console.error)
+          expect(log).toMatchSnapshot()
+          expect(result).toBeFalsy()
+        })
+      }
+    )
 
     it("Should show missing messages verbosely when verbose = true", () => {
       mockFs({
