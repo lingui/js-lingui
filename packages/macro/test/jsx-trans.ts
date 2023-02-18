@@ -491,7 +491,6 @@ const cases: TestCase[] = [
   },
   {
     name: "Use a js macro inside a JSX Attribute of a non macro JSX component",
-    stripId: true,
     input: `
         import { plural } from '@lingui/macro';
         <a href="/about" title={plural(count, {

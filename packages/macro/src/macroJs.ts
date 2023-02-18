@@ -243,11 +243,9 @@ export default class MacroJs {
       }
 
       if (!idProperty && this.types.isStringLiteral(messageNode)) {
-        // todo: context could be different types, get implementation from extractor
         const context =
-          contextProperty && this.types.isStringLiteral(contextProperty.value)
-            ? contextProperty.value.value
-            : undefined
+          contextProperty &&
+          this.getTextFromExpression(contextProperty.value as Expression)
 
         properties.push(this.createIdProperty(messageNode.value, context))
       }
@@ -492,5 +490,17 @@ export default class MacroJs {
         this.isIdentifier(node.callee, "select") ||
         this.isIdentifier(node.callee, "selectOrdinal"))
     )
+  }
+
+  getTextFromExpression(exp: Expression): string {
+    if (this.types.isStringLiteral(exp)) {
+      return exp.value
+    }
+
+    if (this.types.isTemplateLiteral(exp)) {
+      if (exp?.quasis.length === 1) {
+        return exp.quasis[0]?.value?.cooked
+      }
+    }
   }
 }

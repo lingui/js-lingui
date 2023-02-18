@@ -118,26 +118,28 @@ export default class MacroJSX {
       )
     }
 
-    if (!this.stripNonEssentialProps && message) {
-      attributes.push(this.createStringJsxAttribute(MESSAGE, message))
-    }
+    if (!this.stripNonEssentialProps) {
+      if (message) {
+        attributes.push(this.createStringJsxAttribute(MESSAGE, message))
+      }
 
-    if (!this.stripNonEssentialProps && comment) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier(COMMENT),
-          this.types.stringLiteral(comment)
+      if (comment) {
+        attributes.push(
+          this.types.jsxAttribute(
+            this.types.jsxIdentifier(COMMENT),
+            this.types.stringLiteral(comment)
+          )
         )
-      )
-    }
+      }
 
-    if (!this.stripNonEssentialProps && context) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier(CONTEXT),
-          this.types.stringLiteral(context)
+      if (context) {
+        attributes.push(
+          this.types.jsxAttribute(
+            this.types.jsxIdentifier(CONTEXT),
+            this.types.stringLiteral(context)
+          )
         )
-      )
+      }
     }
 
     // Parameters for variable substitution

@@ -21,7 +21,7 @@ describe("po-gettext format", () => {
     })
     mockDate.set("2018-08-27T10:00Z")
 
-    const filename = path.join("locale", "en", "1messages.po")
+    const filename = path.join("locale", "en", "messages.po")
 
     const catalog: CatalogType = {
       message_with_id_and_octothorpe: {

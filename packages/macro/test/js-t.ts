@@ -231,6 +231,33 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "Context might be passed as template literal",
+    input: `
+        import { t } from '@lingui/macro'
+        t({ message: "Hello", context: "my custom" })
+        t({ message: "Hello", context: \`my custom\` })
+      `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        i18n._(
+          /*i18n*/
+          {
+            context: "my custom",
+            message: "Hello",
+            id: "BYqAaU",
+          }
+        );
+        i18n._(
+          /*i18n*/
+          {
+            context: \`my custom\`,
+            message: "Hello",
+            id: "BYqAaU",
+          }
+        );
+      `,
+  },
+  {
     name: "Support id and comment in t macro as callExpression",
     input: `
         import { t } from '@lingui/macro'
