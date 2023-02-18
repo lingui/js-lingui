@@ -36,7 +36,6 @@ module.exports = {
   }),
 
   reporters: ["default", "jest-junit"],
-  setupFiles: ["set-tz/utc"],
   setupFilesAfterEnv: [require.resolve("./scripts/jest/env.js")],
   snapshotSerializers: [
     "jest-serializer-html",

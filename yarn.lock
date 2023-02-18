@@ -10411,13 +10411,6 @@ set-blocking@^2.0.0, set-blocking@~2.0.0:
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
   integrity sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==
 
-set-tz@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/set-tz/-/set-tz-0.2.0.tgz#6b76a710aebda6808bc2ca39c4d4f243f597d21d"
-  integrity sha512-LDEBBYjFt57i83bqWN5MFpff++56Q7VfY/m0/GpSfF9BgmjqnLO3Izaf44PDC5dsUDPy4kx1ZV2QDtuBq7MP+g==
-  dependencies:
-    windows-iana "^3.0.0"
-
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/set-value/-/set-value-2.0.1.tgz#a18d40530e6f07de4228c7defe4227af8cad005b"
@@ -11939,11 +11932,6 @@ wide-align@^1.1.0:
   integrity sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==
   dependencies:
     string-width "^1.0.2 || 2 || 3 || 4"
-
-windows-iana@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/windows-iana/-/windows-iana-3.1.0.tgz#156b1d7faef085068383827ac2884f1656cff217"
-  integrity sha512-rCPf3AakAAgvapnbYVvG2bQyI3g6EDbPpjDJ72fdAu+XTzB1qvX4ZC6OnZ0I2+thaspjTb+8KwdyhdBl8Lt/QA==
 
 windows-release@^3.1.0:
   version "3.3.3"
