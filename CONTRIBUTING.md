@@ -71,7 +71,6 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    > **Note**
    > If you are using an IDE to run test make sure to use the right Jest config.
    > For unit tests use `-c jest.config.js`. Integration tests use build packages (created using `yarn release:build`) and config `-c jest.config.integration.js`. See [package.json](./package.json) for more info.
-   > If you run tests manually instead of using `yarn watch` or `yarn test` commands and your tests fail due to missing locale data (typically you'll get wrong number and currency formatting) make sure you have `NODE_ICU_DATA` variable set: `NODE_ICU_DATA=node_modules/full-icu`.
 
 ### Using development version in your project
 
