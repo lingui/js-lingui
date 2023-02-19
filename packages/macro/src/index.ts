@@ -34,7 +34,7 @@ function getConfig(_config?: LinguiConfigNormalized) {
     config = _config
   }
   if (!config) {
-    config = loadConfig({ configPath: process.env.LINGUI_CONFIG })
+    config = loadConfig()
   }
   return config
 }

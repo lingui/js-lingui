@@ -119,7 +119,7 @@ if (require.main === module) {
   const options = program.opts<CliOptions>()
 
   const config = getConfig({
-    configPath: options.config || process.env.LINGUI_CONFIG,
+    configPath: options.config,
   })
 
   let hasErrors = false

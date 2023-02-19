@@ -49,6 +49,8 @@ export function getConfig({
     },
   })
 
+  configPath = configPath || process.env.LINGUI_CONFIG
+
   const result = configExists(configPath)
     ? configExplorer.load(configPath)
     : configExplorer.search(defaultRootDir)
