@@ -48,7 +48,7 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: "Preserve custom ID  (template expression)",
+    name: "Preserve custom ID (template expression)",
     input: `
         import { Trans } from '@lingui/macro';
         <Trans id={\`msg.hello\`}>Hello World</Trans>;

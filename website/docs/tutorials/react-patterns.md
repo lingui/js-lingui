@@ -23,15 +23,15 @@ function render() {
 
 You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react.md#i18nprovider)).
 
-## Choosing between Generated and Explicit ID
+## Choosing between generated and explicit ID
 
-The both approaches has they pros and cons. We recommend using generated ids as it scales and gives better developer experience.
+Both approaches have their pros and cons. We recommend using generated IDs as it scales and gives better developer experience.
 
 ### Using ID generated from message
 
 #### With [`Trans`](/docs/ref/macro.md#trans)
 
-In the examples above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into message in MessageFormat syntax. By default, this message is used for generating ID. Considering the example above, catalog would be fulfilled by these entries:
+In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into message in MessageFormat syntax. By default, this message is used for generating ID. Considering the example above, catalog would be fulfilled by these entries:
 
 ```js
 const catalog = [
@@ -72,6 +72,7 @@ import { Trans } from "@lingui/macro";
 <Trans context="correctness">right</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { Trans } from "@lingui/react";
 <Trans id={"d1wX4r"} message="right" />;
 <Trans id={"16eaSK"} message="right" />;

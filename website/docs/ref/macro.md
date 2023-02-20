@@ -230,7 +230,8 @@ const msg = /*i18n*/{
 ```jsx
 <Trans>Attachment {name} saved</Trans>
 
-// ↓ ↓ ↓ ↓ ↓ ↓,
+// ↓ ↓ ↓ ↓ ↓ ↓
+
 <Trans
    id={"nwR43V"}
    message="Attachment {name} saved"
@@ -623,7 +624,7 @@ type MessageDescriptor = {
 defineMessage(message: MessageDescriptor)
 ```
 
-Either `id` or `message` property is required. `id` is a custom message id. If it isn't set, the `message` is used for generating an id.
+Either `id` or `message` property is required. `id` is a custom message ID. If it isn't set, the `message` (and `context` if provided) are used for generating an ID.
 
 ```js
 import { defineMessage } from "@lingui/macro"
@@ -724,13 +725,14 @@ const message = /*i18n*/{
 
 Each message in catalog is identified by **message ID**.
 
-While macro use message to generate ID, it's possible to override it.
+While macro uses message (and `context` property if provided) to generate ID, it's possible to override it.
 
 ```jsx
 import { Trans } from "@lingui/macro";
 <Trans id="message.attachment_saved">Attachment {name} saved.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { Trans } from "@lingui/react";
 <Trans id="message.attachment_saved" message="Attachment {name} saved." />;
 ```
@@ -757,6 +759,7 @@ import { Trans } from "@lingui/macro";
 <Trans>Refresh inbox</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { Trans } from "@lingui/react";
 <Trans id={"EsCV2T"} message="Refresh inbox" />;
 ```
@@ -769,6 +772,7 @@ import { Trans } from "@lingui/macro";
 <Trans context="correctness">right</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { Trans } from "@lingui/react";
 <Trans id={"d1wX4r"} message="right" />;
 <Trans id={"16eaSK"} message="right" />;
@@ -829,6 +833,7 @@ import { Plural } from "@lingui/macro";
 <Plural value={numBooks} one="Book" other="Books" />;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { Trans } from "@lingui/react";
 <Trans id={"is7n96"} message="{numBooks, plural, one {Book} other {Books}}" values={{ numBooks }} />;
 ```
