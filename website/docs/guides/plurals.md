@@ -21,7 +21,7 @@ Good thing is that **as developers, we have to know only plural forms for the so
 
 If we use English in the source code, then we'll use only *one* and *other*:
 
-``` js
+```js
 plural(numBooks, {
   one: "# book",
   other: "# books"
@@ -34,8 +34,13 @@ When `numBooks == 1`, this will render as *1 book* and for `numBook == 2` it wil
 
 Under the hood, [`plural`](/docs/ref/macro.md#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
 
-``` js
-i18n._('{numBooks, plural, one {# book} other {# books}}', { numBooks })
+```js
+i18n._({
+  id: 'd1wX4r',
+  // stripped on production
+  // message: '{numBooks, plural, one {# book} other {# books}}',
+  values:  { numBooks }
+})
 ```
 
 When we extract messages from source code using [`lingui-cli`](/docs/tutorials/cli.md), we get:
@@ -54,20 +59,22 @@ The important thing is that *we don't need to change our code to support languag
 
 1.  In source code, we have:
 
-    ``` js
+    ```js
     plural(numBooks, {
        one: "# book",
        other: "# books"
     })
     ```
 
-2.  Code is compiled to (using `lingui-js` or `lingui-react` babel preset):
+2.  Code is compiled to:
 
-    ``` js
-    i18n._(
-       '{numBooks, plural, one {# book} other {# books}}',
-       { numBooks }
-    )
+    ```js
+    i18n._({
+      id: 'd1wX4r',
+      // stripped on production
+      // message: '{numBooks, plural, one {# book} other {# books}}',
+      values:  { numBooks }
+    })
     ```
 
 3.  Message `{numBooks, plural, one {# book} other {# books}}` is translated to:
@@ -82,7 +89,7 @@ The important thing is that *we don't need to change our code to support languag
 
 That works perfectly fine! Just learn what [plural forms](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) your languages has and then you can use them. Here's the example in Czech:
 
-``` js
+```js
 plural(numBooks, {
   one: '# kniha',
   few: '# knihy',
