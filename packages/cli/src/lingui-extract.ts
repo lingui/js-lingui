@@ -164,7 +164,7 @@ if (require.main === module) {
   const dispatchExtract = (filePath?: string[]) => {
     // Skip debouncing if not enabled but still chain them so no racing issue
     // on deleting the tmp folder.
-    if (!program.debounce) {
+    if (!options.debounce) {
       previousExtract = previousExtract.then(() => extract(filePath))
       return previousExtract
     }
