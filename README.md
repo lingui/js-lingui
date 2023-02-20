@@ -41,8 +41,8 @@ Lingui is an easy yet powerful internationalization framework for global project
   message keys as well as auto-generated messages. Translations are stored either in
   JSON or standard PO files, which are supported in almost all translation tools.
 
-- **Lightweight and optimized** - Core library is only [1.9 kB gzipped][BundleCore],
-  React components are an additional [3.1 kBs gzipped][BundleReact]. That's less than Redux
+- **Lightweight and optimized** - Core library is only [1.7 kB gzipped][BundleCore],
+  React components are an additional [1.6 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
 
 - **Active community** - Join us on [Discord][Discord] to discuss the latest development.

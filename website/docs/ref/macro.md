@@ -792,6 +792,10 @@ import { SelectOrdinal } from "@lingui/macro"
 
  > MessageFormat: `{arg, select, ...forms}`
 
+:::note
+The select cases except `other` should be prefixed with underscore: `_male` or `_female`.
+:::
+
 Props of `Select` macro are transformed into [`select`](/docs/ref/message-format.md) format:
 
 ``` jsx
@@ -799,11 +803,11 @@ import { Select } from "@lingui/macro"
 
 // gender == "female"      -> Her book
 // gender == "male"        -> His book
-// gender == "unspecified" -> Their book
+// gender == "non-binary"  -> Their book
 <Select
     value={gender}
-    male="His book"
-    female="Her book"
+    _male="His book"
+    _female="Her book"
     other="Their book"
 />
 ```

@@ -60,6 +60,12 @@
   font-weight: 700;
 }
 
+@media only screen and (max-width: 600px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+}
+
 .heroBannerLogo {
   max-width: 170px;
   max-height: 170px;

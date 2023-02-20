@@ -156,14 +156,15 @@ No locales defined!
 Add 'locales' to your configuration. See https://lingui.dev/ref/conf#locales
 ```
 
-We need here to fix the configuration. Create a `.linguirc` file:
+We need here to fix the configuration. Create a `lingui.config.js` file:
 
-```json title=".linguirc"
-{
-  "locales": ["cs", "en"],
-  "catalogs": [{
-    "path": "src/locales/{locale}/messages",
-    "include": ["src"]
+```js title="lingui.config.js"
+/** @type {import('@lingui/conf').LinguiConfig} */
+module.exports = {
+  locales: ["cs", "en"],
+  catalogs: [{
+    path: "src/locales/{locale}/messages",
+    include: ["src"]
   }]
 }
 ```

@@ -21,18 +21,22 @@ Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configura
   "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {
     "experimental": {
-      "plugins": ["@lingui/swc-plugin", {
-
-        // Optional
-        // Unlike the JS version this option must be passed as object only.
-        // Docs https://lingui.js.org/ref/conf.html#std-config-runtimeConfigModule
-        // "runtimeModules": {
-        //   "i18n": ["@lingui/core", "i18n"],
-        //   "trans": ["@lingui/react", "Trans"]
-        // }
-      }]
-    }
-  }
+      "plugins": [
+        [
+          "@lingui/swc-plugin",
+          {
+            // Optional
+            // Unlike the JS version this option must be passed as object only.
+            // Docs https://lingui.dev/ref/conf#runtimeconfigmodule
+            // "runtimeModules": {
+            //   "i18n": ["@lingui/core", "i18n"],
+            //   "trans": ["@lingui/react", "Trans"]
+            // }
+          },
+        ],
+      ],
+    },
+  },
 }
 ```
 
