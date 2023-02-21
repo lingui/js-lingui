@@ -33,7 +33,10 @@ export function mockConsole(
   }
 
   if (result && typeof result.then === "function") {
-    return result.then(restoreConsole).catch(restoreConsole)
+    return result.then(restoreConsole).catch((e) => {
+      restoreConsole()
+      throw e
+    })
   } else {
     restoreConsole()
     return result

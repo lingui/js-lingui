@@ -3,13 +3,17 @@ import snowpackPlugin from "../src"
 
 describe("snowpack-plugin", () => {
   it("to match snapshot", () => {
-    const p = snowpackPlugin()
+    const p = snowpackPlugin(null, {
+      configPath: path.resolve(__dirname, ".linguirc"),
+    })
     expect(p).toMatchSnapshot()
   })
 
   it("should return error if import doesn't contain extension", async () => {
-    const p = snowpackPlugin()
-    expect(async () =>
+    const p = snowpackPlugin(null, {
+      configPath: path.resolve(__dirname, ".linguirc"),
+    })
+    await expect(async () =>
       p.load({ filePath: "./fixtures/locale/en/messages" })
     ).rejects.toThrowErrorMatchingSnapshot()
   })

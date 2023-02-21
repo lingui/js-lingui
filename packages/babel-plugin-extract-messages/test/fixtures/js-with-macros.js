@@ -25,12 +25,6 @@ const withTIdBacktick = t({
   id: `Backtick`
 })
 
-const id = 'message id'
-
-const withUnknownId = t({
-  id: id
-})
-
 const tWithContextA = t({
   id: "Some ID",
   context: "Context1"
