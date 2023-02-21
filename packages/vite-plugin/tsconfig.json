@@ -5,6 +5,7 @@
     "sourceMap": true,
     "noEmit": false,
     "declaration": true,
+    "moduleResolution": "Node",
     "outDir": "./build",
     "esModuleInterop": true,
     "resolveJsonModule": true
