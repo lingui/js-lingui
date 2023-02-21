@@ -50,7 +50,7 @@ The advantages of using macros are:
 
 - You don't need to learn ICU MessageFormat syntax. You always use familiar JS and JSX code.
 - Components and functions are type checked.
-- Short id generated for your messages
+- Short ID generated for your messages
 - Additional validation of plural rules is performed during transformation.
 - Non-essential data are removed from the production build (e.g. comments and default messages) to shave a few bytes.
 
@@ -287,7 +287,7 @@ type MessageDescriptor = {
 
 `id` is message ID and the only required parameter. `id` and `message` are extracted to message catalog. Only `id` and `values` are used at runtime, all other attributes are removed from production code for size optimization.
 
-You don't need to provide ID manually. Macro will automatically create a short id from your message.
+You don't need to provide ID manually. Macro will automatically create a short ID from your message.
 
 #### `context`
 
@@ -705,7 +705,7 @@ const message = /*i18n*/{
 
 `message` and `comment` are used in message catalogs only.
 
-`context` is used only for id generation and stripped from output.
+`context` is used only for generating ID and is stripped from the output.
 
 :::
 
@@ -764,7 +764,7 @@ import { Trans } from "@lingui/react";
 <Trans id={"EsCV2T"} message="Refresh inbox" />;
 ```
 
-Generates different ID when `context` is provided:
+Lingui generates different IDs when `context` is provided:
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -872,7 +872,7 @@ import { Plural } from "@lingui/macro";
 */
 ```
 
-Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`
+Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
 
 ```jsx
 <Trans context={"my context"}>
@@ -915,7 +915,7 @@ import { SelectOrdinal } from "@lingui/macro";
 />
 ```
 
-Use `<SelectOrdinal>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`
+Use `<SelectOrdinal>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
 
 ```jsx
 <Trans context={"my context"}>
@@ -958,7 +958,7 @@ import { Select } from "@lingui/macro";
 />
 ```
 
-Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`
+Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
 
 ```jsx
 <Trans context={"my context"}>
