@@ -25,13 +25,13 @@ You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) insid
 
 ## Choosing between generated and explicit ID
 
-Both approaches have their pros and cons. We recommend using generated IDs as it scales and gives better developer experience.
+Using generated IDs provides more scalability and gives a better developer experience. On the other hand, explicit IDs for phrases make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes *where* the phrase is used.
 
 ### Using ID generated from message
 
 #### With [`Trans`](/docs/ref/macro.md#trans)
 
-In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into message in MessageFormat syntax. By default, this message is used for generating ID. Considering the example above, catalog would be fulfilled by these entries:
+In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would be fulfilled by these entries:
 
 ```js
 const catalog = [
@@ -48,7 +48,7 @@ const catalog = [
 
 #### With [`t`](/docs/ref/macro.md#t)
 
-In the following example, message `Image caption` will be extracted and used to create ID.
+In the following example, the message `Image caption` will be extracted and used to create an ID.
 
 ```jsx
 import { t } from "@lingui/macro"
@@ -59,7 +59,7 @@ export default function ImageWithCaption() {
 ```
 
 #### Providing a context for a message
-The same text elements with different context are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
 
 - correct as in "you are right"
 - direction as in "turn right"

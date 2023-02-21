@@ -101,13 +101,13 @@ const cases: TestCase[] = [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans 
-            id={"<stripped>"}
-            message={"Hi {yourName}, my name is {myName}"}
-            values={{
-              yourName: yourName,
-              myName: myName,
-            }} 
-         />;
+          id={"<stripped>"}
+          message={"Hi {yourName}, my name is {myName}"}
+          values={{
+            yourName: yourName,
+            myName: myName,
+          }} 
+        />;
       `,
   },
   {

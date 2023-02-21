@@ -50,7 +50,7 @@ The advantages of using macros are:
 
 - You don't need to learn ICU MessageFormat syntax. You always use familiar JS and JSX code.
 - Components and functions are type checked.
-- Short ID generated for your messages
+- Short ID generated for your messages.
 - Additional validation of plural rules is performed during transformation.
 - Non-essential data are removed from the production build (e.g. comments and default messages) to shave a few bytes.
 
@@ -285,13 +285,13 @@ type MessageDescriptor = {
 }
 ```
 
-`id` is message ID and the only required parameter. `id` and `message` are extracted to message catalog. Only `id` and `values` are used at runtime, all other attributes are removed from production code for size optimization.
+`id` is the message ID and the only required parameter. `id` and `message` are extracted to the message catalog. Only `id` and `values` are used at runtime, all other attributes are removed from production code for size optimization.
 
-You don't need to provide ID manually. Macro will automatically create a short ID from your message.
+You don't need to provide your ID manually. Macro will automatically create a short ID from your message.
 
 #### `context`
 
-The same text elements with different context are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
 
 - correct as in "you are right"
 - direction as in "turn right"
@@ -508,12 +508,12 @@ Use `plural` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you 
 
 ```js
 const message = t({
-   id: "my.custom.id",
-   comment: "My Comment",
-   message: plural(count, {
-     one: "# Book",
-     other: "# Books"
-   })
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: plural(count, {
+    one: "# Book",
+    other: "# Books"
+  })
 })
 ```
 :::
@@ -551,14 +551,14 @@ Use `selectOrdinal` inside [`t`](#t) or [`defineMessage`](#definemessage) macro 
 
 ```js
 const message = t({
-   id: "my.custom.id",
-   comment: "My Comment",
-   message: selectOrdinal(count, {
-     one: "#st",
-     two: "#nd",
-     few: "#rd",
-     other: "#th",
-   })
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: selectOrdinal(count, {
+    one: "#st",
+    two: "#nd",
+    few: "#rd",
+    other: "#th",
+  })
 })
 ```
 :::
@@ -596,13 +596,13 @@ Use `select` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you 
 
 ```js
 const message = t({
-   id: "my.custom.id",
-   comment: "My Comment",
-   message: select(gender, {
-     male: "he",
-     female: "she",
-     other: "they"
-   })
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: select(gender, {
+    male: "he",
+    female: "she",
+    other: "they"
+  })
 })
 ```
 :::

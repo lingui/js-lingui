@@ -81,25 +81,25 @@ describe("po-gettext format", () => {
     const catalog = {
       nested_plural_message: {
         message: `{count, plural,
-            one {{numArticles, plural,
-              one {1 book and 1 article}
-              other {1 book and {numArticles} articles}
-            }}
-            other {{numArticles, plural,
-              one {{numBooks} books and 1 article}
-              other {{numBooks} books and {numArticles} articles}
-            }}
-          }`,
+          one {{numArticles, plural,
+            one {1 book and 1 article}
+            other {1 book and {numArticles} articles}
+          }}
+          other {{numArticles, plural,
+            one {{numBooks} books and 1 article}
+            other {{numBooks} books and {numArticles} articles}
+          }}
+        }`,
         translation: `{count, plural,
-            one {{numArticles, plural,
-              one {1 book and 1 article}
-              other {1 book and {numArticles} articles}
-            }}
-            other {{numArticles, plural,
-              one {{numBooks} books and 1 article}
-              other {{numBooks} books and {numArticles} articles}
-            }}
-          }`,
+          one {{numArticles, plural,
+            one {1 book and 1 article}
+            other {1 book and {numArticles} articles}
+          }}
+          other {{numArticles, plural,
+            one {{numBooks} books and 1 article}
+            other {{numBooks} books and {numArticles} articles}
+          }}
+        }`,
       },
     }
 
