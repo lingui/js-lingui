@@ -4,8 +4,9 @@ import PO from "pofile"
 import https from "https"
 import glob from "glob"
 import { format as formatDate } from "date-fns"
+import { LinguiConfig } from "@lingui/conf"
 
-const getCreateHeaders = (language) => ({
+const getCreateHeaders = (language: string) => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
   "MIME-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
@@ -14,8 +15,16 @@ const getCreateHeaders = (language) => ({
   Language: language,
 })
 
+const getTargetLocales = (config: LinguiConfig) => {
+  const sourceLocale = config.sourceLocale || "en"
+  const pseudoLocale = config.pseudoLocale || "pseudo"
+  return config.locales.filter(
+    (value) => value != sourceLocale && value != pseudoLocale
+  )
+}
+
 // Main sync method, call "Init" or "Sync" depending on the project context
-export default function syncProcess(config, options) {
+export default function syncProcess(config: LinguiConfig, options) {
   if (config.format != "po") {
     console.error(
       `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
@@ -51,12 +60,9 @@ export default function syncProcess(config, options) {
 
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
-function init(config, options, successCallback, failCallback) {
+function init(config: LinguiConfig, options, successCallback, failCallback) {
   const sourceLocale = config.sourceLocale || "en"
-  const pseudoLocale = config.pseudoLocale || "pseudo"
-  const targetLocales = config.locales.filter(
-    (value) => value != sourceLocale && value != pseudoLocale
-  )
+  const targetLocales = getTargetLocales(config)
   const paths = poPathsPerLocale(config)
 
   let segments = {}
@@ -125,9 +131,9 @@ function init(config, options, successCallback, failCallback) {
 
 // Send all source text from PO to Translation.io and create new PO based on received translations
 // Cf. https://translation.io/docs/create-library#synchronization
-function sync(config, options, successCallback, failCallback) {
+function sync(config: LinguiConfig, options, successCallback, failCallback) {
   const sourceLocale = config.sourceLocale || "en"
-  const targetLocales = config.locales.filter((value) => value != sourceLocale)
+  const targetLocales = getTargetLocales(config)
   const paths = poPathsPerLocale(config)
 
   let segments = []
@@ -217,7 +223,11 @@ function createPoItemFromSegment(segment) {
   return item
 }
 
-function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
+function saveSegmentsToTargetPos(
+  config: LinguiConfig,
+  paths,
+  segmentsPerLocale
+) {
   Object.keys(segmentsPerLocale).forEach((targetLocale) => {
     // Remove existing target POs and JS for this target locale
     paths[targetLocale].forEach((path) => {
@@ -279,7 +289,7 @@ function saveSegmentsToTargetPos(config, paths, segmentsPerLocale) {
   })
 }
 
-function poPathsPerLocale(config) {
+function poPathsPerLocale(config: LinguiConfig) {
   const paths = []
 
   config.locales.forEach((locale) => {
