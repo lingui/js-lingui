@@ -4,7 +4,7 @@ import PO from "pofile"
 import https from "https"
 import glob from "glob"
 import { format as formatDate } from "date-fns"
-import { LinguiConfig } from "@lingui/conf"
+import { LinguiConfigNormalized } from "@lingui/conf"
 
 const getCreateHeaders = (language: string) => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -15,7 +15,7 @@ const getCreateHeaders = (language: string) => ({
   Language: language,
 })
 
-const getTargetLocales = (config: LinguiConfig) => {
+const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
   const pseudoLocale = config.pseudoLocale || "pseudo"
   return config.locales.filter(
@@ -24,7 +24,7 @@ const getTargetLocales = (config: LinguiConfig) => {
 }
 
 // Main sync method, call "Init" or "Sync" depending on the project context
-export default function syncProcess(config: LinguiConfig, options) {
+export default function syncProcess(config: LinguiConfigNormalized, options) {
   if (config.format != "po") {
     console.error(
       `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
@@ -60,7 +60,12 @@ export default function syncProcess(config: LinguiConfig, options) {
 
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
-function init(config: LinguiConfig, options, successCallback, failCallback) {
+function init(
+  config: LinguiConfigNormalized,
+  options,
+  successCallback,
+  failCallback
+) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
   const paths = poPathsPerLocale(config)
@@ -131,7 +136,12 @@ function init(config: LinguiConfig, options, successCallback, failCallback) {
 
 // Send all source text from PO to Translation.io and create new PO based on received translations
 // Cf. https://translation.io/docs/create-library#synchronization
-function sync(config: LinguiConfig, options, successCallback, failCallback) {
+function sync(
+  config: LinguiConfigNormalized,
+  options,
+  successCallback,
+  failCallback
+) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
   const paths = poPathsPerLocale(config)
@@ -224,7 +234,7 @@ function createPoItemFromSegment(segment) {
 }
 
 function saveSegmentsToTargetPos(
-  config: LinguiConfig,
+  config: LinguiConfigNormalized,
   paths,
   segmentsPerLocale
 ) {
@@ -289,7 +299,7 @@ function saveSegmentsToTargetPos(
   })
 }
 
-function poPathsPerLocale(config: LinguiConfig) {
+function poPathsPerLocale(config: LinguiConfigNormalized) {
   const paths = []
 
   config.locales.forEach((locale) => {
