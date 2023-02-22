@@ -1,16 +1,17 @@
 # Catalog formats
 
-Catalog format (configured by [`format`](/docs/ref/conf.md#format) option) refers to file format of offline catalog. This format is never used in production, because it's compiled into JS module. The reason behind this build step is that choice of catalog format depends on individual internationalization workflow. On the other hand runtime catalog should be as simple as possible so it parsed quickly without additional overhead.
+Catalog format (configured by the [`format`](/docs/ref/conf.md#format) option) refers to the offline catalog file format. This format is never used in production, because it's compiled into a JS module. The reason behind this build step is that the choice of catalog format depends on the individual internationalization workflow. On the other hand, runtime catalog should be as simple as possible, so it can be parsed quickly without additional overhead.
 
 ## PO File (recommended)
 
-PO files are translation files used by [gettext](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) internationalization system. This format is recommended and in LinguiJS v3 it'll be the default catalog format.
+PO files are translation files used by [gettext](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) internationalization system. This is the recommended and the default catalog format.
 
 The advantages of this format are:
 
 - readable even for large messages
 - supports comments for translators
 - supports metadata (origin, flags)
+- supports contexts
 - standard format supported by many localization tools
 
 ``` po
@@ -24,6 +25,15 @@ msgstr "Translated Message"
 msgid "obsoleteId"
 msgstr "Obsolete Message"
 ```
+
+Messages with context are exported in the following way:
+
+  ```po
+  #: src/Inbox.js:12
+  msgctxt "my context"
+  msgid "msg.inbox"
+  msgstr "Message Inbox"
+  ```
 
 ## PO File with gettext Plurals {#po-gettext}
 

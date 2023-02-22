@@ -289,15 +289,6 @@ type MessageDescriptor = {
 
 You don't need to provide your ID manually. Macro will automatically create a short ID from your message.
 
-#### `context`
-
-The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
-
-- correct as in "you are right"
-- direction as in "turn right"
-
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
-
 :::info Note
 i18n comment
 
@@ -665,7 +656,7 @@ const message = /*i18n*/{
 }
 ```
 
-`comment` is a comment for translators. It's extracted to the message catalog and it gives extra context for translators. It's removed from production code:
+`comment` is a comment for translators. It's extracted to the message catalog and it gives translators extra information about the message. It's removed from the production code:
 
 ```js
 import { defineMessage } from "@lingui/macro"
@@ -703,9 +694,7 @@ const message = /*i18n*/{
 }
 ```
 
-`message` and `comment` are used in message catalogs only.
-
-`context` is used only for generating ID and is stripped from the output.
+`message` and `comment` are used in message catalogs only. `context` is used only for generating ID and is stripped from the output.
 
 :::
 
@@ -713,11 +702,11 @@ const message = /*i18n*/{
 
 ### `Trans`
 
-| Prop name | Type   | Description                                        |
-|-----------| ------ |----------------------------------------------------|
-| `id`      | string | Custom message ID                                  |
-| `comment` | string | Comment for translators                            |
-| `context` | string | Provide different translation for the same message |
+| Prop name | Type   | Description                                                                                     |
+|-----------|--------|-------------------------------------------------------------------------------------------------|
+| `id`      | string | Custom message ID                                                                               |
+| `comment` | string | Comment for translators                                                                         |
+| `context` | string | Allows to extract the same messages with different IDs. See [Context](#context) for more detail |
 
 [`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
 
@@ -739,20 +728,15 @@ import { Trans } from "@lingui/react";
 
 #### `comment`
 
-Comment for translators to give them additional context about the message. It's removed from production code.
+Comment for translators to give them additional information about the message. It's removed from the production code.
 
 #### `render`
 
 Render prop function used to render translation. This prop is directly passed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md). See [rendering of translations](/docs/ref/react.md#rendering-translations) for more info.
 
-#### `context`
+#### `context` {#context-prop}
 
-The same text elements with different context are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
-
-- correct as in "you are right"
-- direction as in "turn right"
-
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+Contextual information for the message. Allows to extract the same messages with different IDs. See [Context](#context) for more detail.
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -970,3 +954,14 @@ Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or 
   />
 </Trans>
 ```
+
+## Context
+
+The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+
+- correct as in "you are right"
+- direction as in "turn right"
+
+If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+
+Context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve.
