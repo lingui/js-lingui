@@ -23,15 +23,32 @@ function render() {
 
 You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react.md#i18nprovider)).
 
+## Choosing between generated and explicit ID
+
+Using generated IDs provides more scalability and gives a better developer experience. On the other hand, explicit IDs for phrases make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes *where* the phrase is used.
+
 ### Using ID generated from message
 
 #### With [`Trans`](/docs/ref/macro.md#trans)
 
-In the examples above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into message in MessageFormat syntax. By default, this message is used as the message ID. Considering the example above, messages `LinguiJS example` and `Hello <0>{name}</0>.` are extracted and used as IDs.
+In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would be fulfilled by these entries:
+
+```js
+const catalog = [
+  {
+    id: "uxV9Xq",
+    message: "LinguiJS example",
+  },
+  {
+    id: "9/omjw",
+    message: "Hello <0>{name}</0>.",
+  },
+]
+```
 
 #### With [`t`](/docs/ref/macro.md#t)
 
-In the following example, message `Image caption` will be extracted and used as ID.
+In the following example, the message `Image caption` will be extracted and used to create an ID.
 
 ```jsx
 import { t } from "@lingui/macro"
@@ -39,6 +56,26 @@ import { t } from "@lingui/macro"
 export default function ImageWithCaption() {
    return <img src="..." alt={t`Image caption`} />
 }
+```
+
+#### Providing a context for a message
+The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+
+- correct as in "you are right"
+- direction as in "turn right"
+
+If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+
+```jsx
+import { Trans } from "@lingui/macro";
+<Trans context="direction">right</Trans>;
+<Trans context="correctness">right</Trans>;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans } from "@lingui/react";
+<Trans id={"d1wX4r"} message="right" />;
+<Trans id={"16eaSK"} message="right" />;
 ```
 
 ### Using custom ID
@@ -90,10 +127,6 @@ export default function ImageWithCaption({ count }) {
    )
 }
 ```
-
-:::tip
-It's a good practice to set explicit IDs for phrases to make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes *where* the phrase is used.
-:::
 
 ## Element attributes and string-only translations
 
@@ -214,21 +247,17 @@ Sometimes you need to pick between different messages to display, depending on t
 A simple way to do this, is to make an object that maps the possible values of "status" to message descriptors (tagged with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro), and render them as needed with lazy translation:
 
 ```jsx
-import { defineMessage, Trans } from "@lingui/macro";
-
-const STATUS_OPEN = 1,
-      STATUS_CLOSED = 2,
-      STATUS_CANCELLED = 4,
-      STATUS_COMPLETED = 8
+import { defineMessage } from "@lingui/macro";
+import { i18n } from "@lingui/core";
 
 const statusMessages = {
-   [STATUS_OPEN]: defineMessage({message: "Open"}),
-   [STATUS_CLOSED]: defineMessage({message: "Closed"}),
-   [STATUS_CANCELLED]: defineMessage({message: "Cancelled"}),
-   [STATUS_COMPLETED]: defineMessage({message: "Completed"}),
+   ['STATUS_OPEN']: defineMessage({message: "Open"}),
+   ['STATUS_CLOSED']: defineMessage({message: "Closed"}),
+   ['STATUS_CANCELLED']: defineMessage({message: "Cancelled"}),
+   ['STATUS_COMPLETED']: defineMessage({message: "Completed"}),
 }
 
 export default function StatusDisplay({ statusCode }) {
-   return <div><Trans id={statusMessages[statusCode].id} /></div>
+   return <div>{i18n._(statusMessages[statusCode])}</div>
 }
 ```

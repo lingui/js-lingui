@@ -4,6 +4,8 @@ import { program } from "commander"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { getCatalogs } from "./api/catalog"
+import nodepath from "path"
+import { normalizeSlashes } from "./api/utils"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -18,16 +20,23 @@ export default async function command(
   const catalogs = getCatalogs(config)
   const catalogStats: { [path: string]: Number } = {}
 
+  let commandSuccess = true
+
   await Promise.all(
     catalogs.map(async (catalog) => {
-      await catalog.makeTemplate({
+      const result = await catalog.makeTemplate({
         ...(options as CliExtractTemplateOptions),
         orderBy: config.orderBy,
       })
-      const catalogTemplate = catalog.readTemplate()
-      if (catalogTemplate !== null && catalogTemplate !== undefined) {
-        catalogStats[catalog.templateFile] = Object.keys(catalogTemplate).length
+
+      if (result) {
+        catalogStats[
+          normalizeSlashes(
+            nodepath.relative(config.rootDir, catalog.templateFile)
+          )
+        ] = Object.keys(result).length
       }
+      commandSuccess &&= Boolean(result)
     })
   )
 
@@ -39,7 +48,8 @@ export default async function command(
     )
     console.log()
   })
-  return true
+
+  return commandSuccess
 }
 
 type CliOptions = {

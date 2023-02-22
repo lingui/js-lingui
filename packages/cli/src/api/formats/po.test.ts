@@ -4,10 +4,10 @@ import mockFs from "mock-fs"
 import mockDate from "mockdate"
 import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
-import { format as formatDate } from "date-fns"
 
 import format from "./po"
 import { CatalogType } from "../catalog"
+import { normalizeLineEndings } from "../../tests"
 
 describe("pofile format", () => {
   afterEach(() => {
@@ -31,6 +31,15 @@ describe("pofile format", () => {
       withOrigin: {
         translation: "Message with origin",
         origin: [["src/App.js", 4]],
+      },
+      withContext: {
+        translation: "Message with context",
+        context: "my context",
+      },
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
       },
       withMultipleOrigins: {
         translation: "Message with multiple origin",
@@ -97,17 +106,43 @@ describe("pofile format", () => {
     expect(actual).toMatchSnapshot()
   })
 
+  it("should serialize and deserialize messages with generated id", () => {
+    mockFs({
+      locale: {
+        en: mockFs.directory(),
+      },
+    })
+
+    const catalog: CatalogType = {
+      // with generated id
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+      },
+    }
+
+    const filename = path.join("locale", "en", "messages.po")
+    format.write(filename, catalog, { origins: true, locale: "en" })
+
+    const actual = format.read(filename)
+    mockFs.restore()
+    expect(actual).toMatchObject(catalog)
+  })
+
   it("should correct badly used comments", () => {
     const po = PO.parse(`
       #. First description
       #. Second comment
       #. Third comment
+      #, explicit-id
       msgid "withMultipleDescriptions"
       msgstr "Extra comments are separated from the first description line"
 
       # Translator comment
       #. Single description only
       #. Second description?
+      #, explicit-id
       msgid "withDescriptionAndComments"
       msgstr "Second description joins translator comments"
     `)
@@ -128,6 +163,7 @@ describe("pofile format", () => {
 
   it("should throw away additional msgstr if present", () => {
     const po = PO.parse(`
+      #, explicit-id
       msgid "withMultipleTranslation"
       msgstr[0] "This is just fine"
       msgstr[1] "Throw away that one"
@@ -174,11 +210,8 @@ describe("pofile format", () => {
     format.write(filename, catalog, { origins: true, locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
-    // on windows mockFs adds ··· to multiline string, so this strictly equal comparison can't be done
-    // we test that the content if the same inlined...
-    expect(actual.replace(/(\r\n|\n|\r)/gm, "")).toEqual(
-      pofile.replace(/(\r\n|\n|\r)/gm, "")
-    )
+
+    expect(normalizeLineEndings(actual)).toEqual(normalizeLineEndings(pofile))
   })
 
   it("should not include origins if origins option is false", () => {
@@ -213,6 +246,8 @@ describe("pofile format", () => {
   })
 
   it("should not include lineNumbers if lineNumbers option is false", () => {
+    mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -246,22 +281,25 @@ describe("pofile format", () => {
     expect(pofile).toMatchInlineSnapshot(`
       msgid ""
       msgstr ""
-      "POT-Creation-Date: ${formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx")}\\n"
+      "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
       "MIME-Version: 1.0\\n"
       "Content-Type: text/plain; charset=utf-8\\n"
       "Content-Transfer-Encoding: 8bit\\n"
       "X-Generator: @lingui/cli\\n"
       "Language: en\\n"
 
+      #, explicit-id
       msgid "static"
       msgstr "Static message"
 
       #: src/App.js
+      #, explicit-id
       msgid "withOrigin"
       msgstr "Message with origin"
 
       #: src/App.js
       #: src/Component.js
+      #, explicit-id
       msgid "withMultipleOrigins"
       msgstr "Message with multiple origin"
 
@@ -269,6 +307,8 @@ describe("pofile format", () => {
   })
 
   it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
+    mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -299,22 +339,25 @@ describe("pofile format", () => {
     expect(pofile).toMatchInlineSnapshot(`
       msgid ""
       msgstr ""
-      "POT-Creation-Date: ${formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx")}\\n"
+      "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
       "MIME-Version: 1.0\\n"
       "Content-Type: text/plain; charset=utf-8\\n"
       "Content-Transfer-Encoding: 8bit\\n"
       "X-Generator: @lingui/cli\\n"
       "Language: en\\n"
 
+      #, explicit-id
       msgid "static"
       msgstr "Static message"
 
       #: src/App.js
+      #, explicit-id
       msgid "withOrigin"
       msgstr "Message with origin"
 
       #: src/App.js
       #: src/Component.js
+      #, explicit-id
       msgid "withMultipleOrigins"
       msgstr "Message with multiple origin"
 

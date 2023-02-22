@@ -115,8 +115,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: {count, plural, one {# book} other {# books}},
-    message: undefined,
+    id: esnaQO,
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-without-trans.js,
       3,
@@ -125,8 +125,8 @@ Array [
   Object {
     comment: undefined,
     context: Some context,
-    id: {count, plural, one {# book} other {# books}},
-    message: undefined,
+    id: 8qNz+K,
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-without-trans.js,
       4,
@@ -140,8 +140,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Message,
-    message: undefined,
+    id: xDAtGP,
+    message: Message,
     origin: Array [
       js-with-macros.js,
       3,
@@ -150,8 +150,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Message,
-    message: undefined,
+    id: xDAtGP,
+    message: Message,
     origin: Array [
       js-with-macros.js,
       5,
@@ -160,8 +160,8 @@ Array [
   Object {
     comment: description,
     context: undefined,
-    id: Description,
-    message: undefined,
+    id: Nu4oKW,
+    message: Description,
     origin: Array [
       js-with-macros.js,
       7,
@@ -180,8 +180,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Values {param},
-    message: undefined,
+    id: QCVtWw,
+    message: Values {param},
     origin: Array [
       js-with-macros.js,
       17,
@@ -245,8 +245,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Hi, my name is {name},
-    message: undefined,
+    id: d1Kdl3,
+    message: Hi, my name is {name},
     origin: Array [
       jsx-with-macros.js,
       3,
@@ -255,8 +255,8 @@ Array [
   Object {
     comment: undefined,
     context: Context1,
-    id: Some message,
-    message: undefined,
+    id: YikuIL,
+    message: Some message,
     origin: Array [
       jsx-with-macros.js,
       4,
@@ -265,8 +265,8 @@ Array [
   Object {
     comment: undefined,
     context: Context1,
-    id: Some other message,
-    message: undefined,
+    id: LBCs5C,
+    message: Some other message,
     origin: Array [
       jsx-with-macros.js,
       5,
@@ -275,8 +275,8 @@ Array [
   Object {
     comment: undefined,
     context: Context2,
-    id: Some message,
-    message: undefined,
+    id: ru2rzr,
+    message: Some message,
     origin: Array [
       jsx-with-macros.js,
       6,
@@ -285,8 +285,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: Title,
-    message: undefined,
+    id: MHrjPM,
+    message: Title,
     origin: Array [
       jsx-with-macros.js,
       7,
@@ -295,8 +295,8 @@ Array [
   Object {
     comment: undefined,
     context: undefined,
-    id: {count, plural, one {# book} other {# books}},
-    message: undefined,
+    id: esnaQO,
+    message: {count, plural, one {# book} other {# books}},
     origin: Array [
       jsx-with-macros.js,
       9,

@@ -15,7 +15,6 @@ export type TransProps = {
   id: string
   message?: string
   values: Record<string, unknown>
-  context?: string
   components: { [key: string]: React.ElementType | any }
   formats?: Record<string, unknown>
   children?: React.ReactNode

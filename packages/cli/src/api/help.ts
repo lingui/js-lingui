@@ -34,10 +34,10 @@ export function helpRun(command: string) {
     }
   }
 
+  const isYarn =
+    process.env.npm_config_user_agent &&
+    process.env.npm_config_user_agent.includes("yarn")
+  const runCommand = isYarn ? "yarn" : "npm run"
+
   return `${runCommand} ${command}`
 }
-
-const isYarn =
-  process.env.npm_config_user_agent &&
-  process.env.npm_config_user_agent.includes("yarn")
-const runCommand = isYarn ? "yarn" : "npm run"

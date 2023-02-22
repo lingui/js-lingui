@@ -11,10 +11,17 @@ const cases: TestCase[] = [
         })} cat\`
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        /*i18n*/ i18n._("This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat", {
-          count: count
-        });
+         import { i18n } from "@lingui/core";
+         i18n._(
+          /*i18n*/
+          {
+            id: "dJXd3T",
+            message: "This is my {count, selectordinal, one {#st} two {#nd} other {#rd}} cat",
+            values: {
+              count: count,
+            },
+          }
+        );
       `,
   },
 ]

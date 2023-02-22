@@ -1,6 +1,7 @@
 import chalk from "chalk"
 import chokidar from "chokidar"
 import { program } from "commander"
+import nodepath from "path"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
@@ -8,6 +9,7 @@ import { AllCatalogsType, getCatalogs } from "./api/catalog"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
+import { normalizeSlashes } from "./api/utils"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -32,13 +34,16 @@ export default async function command(
   const spinner = ora().start()
 
   for (let catalog of catalogs) {
-    const catalogSuccess = await catalog.make({
+    const result = await catalog.make({
       ...(options as CliExtractOptions),
       orderBy: config.orderBy,
     })
 
-    catalogStats[catalog.path] = catalog.readAll()
-    commandSuccess &&= catalogSuccess
+    catalogStats[
+      normalizeSlashes(nodepath.relative(config.rootDir, catalog.path))
+    ] = result || {}
+
+    commandSuccess &&= Boolean(result)
   }
 
   if (commandSuccess) {

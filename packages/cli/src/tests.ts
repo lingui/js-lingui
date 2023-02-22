@@ -1,6 +1,7 @@
 import os from "os"
-import fs from "fs-extra"
+import fsExtra from "fs-extra"
 import path from "path"
+import fs from "fs"
 
 import {
   Catalog,
@@ -13,11 +14,11 @@ import {
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
 export function copyFixture(fixtureDir: string) {
-  const tmpDir = fs.mkdtempSync(
+  const tmpDir = fsExtra.mkdtempSync(
     path.join(os.tmpdir(), `lingui-test-${process.pid}`)
   )
-  if (fs.existsSync(fixtureDir)) {
-    fs.copySync(fixtureDir, tmpDir)
+  if (fsExtra.existsSync(fixtureDir)) {
+    fsExtra.copySync(fixtureDir, tmpDir)
   }
   return tmpDir
 }
@@ -39,6 +40,11 @@ export const defaultMakeTemplateOptions: MakeTemplateOptions = {
 export const defaultMergeOptions: MergeOptions = {
   overwrite: false,
 }
+
+// on windows line endings are different,
+// so direct comparison to snapshot would file if not normalized
+export const normalizeLineEndings = (str: string) =>
+  str.replace(/\r?\n/g, "\r\n")
 
 export const makeCatalog = (config: Partial<LinguiConfig> = {}) => {
   return new Catalog(
@@ -65,4 +71,46 @@ export function makeNextMessage(message = {}): ExtractedMessageType {
     obsolete: false,
     ...message,
   }
+}
+
+type Listing = { [filename: string]: string | Listing }
+
+export function listingToHumanReadable(listing: Listing): string {
+  const output: string[] = []
+  Object.entries(listing).forEach(([filename, value]) => {
+    if (typeof value === "string") {
+      output.push("#######################")
+      output.push(`Filename: ${filename}`)
+      output.push("#######################")
+      output.push("")
+      output.push(normalizeLineEndings(value))
+      output.push("")
+    } else {
+      output.push(...listingToHumanReadable(value))
+    }
+  })
+
+  return output.join("\n")
+}
+
+export function readFsToJson(
+  directory: string,
+  filter?: (filename: string) => boolean
+): Listing {
+  const out: Listing = {}
+
+  fs.readdirSync(directory).map((filename) => {
+    const filepath = path.join(directory, filename)
+
+    if (fs.lstatSync(filepath).isDirectory()) {
+      out[filename] = readFsToJson(filepath)
+      return out
+    }
+
+    if (!filter || filter(filename)) {
+      out[filename] = fs.readFileSync(filepath).toString()
+    }
+  })
+
+  return out
 }

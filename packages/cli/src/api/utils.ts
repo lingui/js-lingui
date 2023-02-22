@@ -40,3 +40,10 @@ export function makeInstall() {
       ? `yarn add ${dev ? "--dev " : ""}${packageName}`
       : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
+
+/**
+ * Normalize Windows backslashes in path so they look always as posix
+ */
+export function normalizeSlashes(path: string) {
+  return path.replace("\\", "/")
+}

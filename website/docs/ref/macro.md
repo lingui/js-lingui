@@ -50,6 +50,7 @@ The advantages of using macros are:
 
 - You don't need to learn ICU MessageFormat syntax. You always use familiar JS and JSX code.
 - Components and functions are type checked.
+- Short ID generated for your messages.
 - Additional validation of plural rules is performed during transformation.
 - Non-essential data are removed from the production build (e.g. comments and default messages) to shave a few bytes.
 
@@ -62,20 +63,24 @@ import { Trans } from "@lingui/macro"
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans } from "@lingui/react"
-<Trans id="Attachment {name} saved" values={{ name }} />
+<Trans id={"nwR43V"} message="Attachment {name} saved" values={{ name }} />
 ```
 
 **JS macros** (i.e. macros that looks like a simple JavaScript functions) are transformed into [`i18n._`](/docs/ref/core.md#i18n._) call.
 
-``` jsx
+```jsx
 import { t } from "@lingui/macro"
 t`Attachment ${name} saved`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 import { i18n } from "@lingui/core"
-/*i18n*/
-i18n._("Attachment {name} saved", { name })
+
+i18n._(/*i18n*/ {
+   id: "nwR43V",
+   message: "Attachment {name} saved",
+   values: { name }
+})
 ```
 
 :::note
@@ -84,7 +89,7 @@ By default, the `i18n` object is imported from `@lingui/core`. If you use a cust
 
 The only exception is [`defineMessage`](/docs/ref/macro.md#definemessage) which is transformed into message descriptor. In other words, the message isn't translated directly and can be used anytime later:
 
-``` jsx
+```jsx
 import { i18n } from "@lingui/core"
 import { defineMessage } from "@lingui/macro"
 
@@ -99,7 +104,7 @@ i18n._(message)
 import { i18n } from "@lingui/core"
 
 // define message
-const message = /*i18n*/{ id: "Attachment {name} saved", values: { name }})
+const message = /*i18n*/{ id: "nwR43V", message: "Attachment {name} saved", values: { name }})
 
 // translate it
 i18n._(message)
@@ -107,52 +112,63 @@ i18n._(message)
 
 ### Examples of JS macros
 
-``` js
+```js
 t`Refresh inbox`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/
-i18n._("Refresh inbox")
+i18n._(/*i18n*/ {
+  id: "EsCV2T",
+  message: "Refresh inbox",
+})
 ```
-``` js
+```js
 t`Attachment ${name} saved`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/
-i18n._("Attachment {name} saved", { name })
+i18n._(/*i18n*/ {
+  id: "nwR43V",
+  message: "Attachment {name} saved",
+  values: { name }
+})
 ```
-``` js
+```js
 t(customI18n)`Refresh inbox`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/
-customI18n._("Refresh inbox")
+customI18n._(/*i18n*/ {
+  id: "EsCV2T",
+  message: "Refresh inbox",
+})
 ```
-``` js
+```js
 t(customI18n)`Attachment ${name} saved`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/
-customI18n._("Attachment {name} saved", { name })
+customI18n._(/*i18n*/ {
+  id: "nwR43V",
+  message: "Attachment {name} saved",
+  values: { name }
+})
 ```
-``` js
+```js
 plural(count, {
-  one: "Message",
-  other: "Messages"
+  one: "# Message",
+  other: "# Messages"
 })
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/
-i18n._("{count, plural, one {Message} other {Messages}}", {
-  count
+i18n._(/*i18n*/ {
+  id: "4w2nim",
+  message: "{count, plural, one {# Message} other {# Messages}}",
+  values: { count }
 })
 ```
-``` js
+```js
 t({
   id: "msg.refresh",
   message: "Refresh inbox"
@@ -165,7 +181,7 @@ i18n._(/*i18n*/{
   message: "Refresh inbox"
 })
 ```
-``` js
+```js
 t(customI18n)({
   id: "msg.refresh",
   message: "Refresh inbox"
@@ -178,47 +194,66 @@ customI18n._(/*i18n*/{
   message: "Refresh inbox"
 })
 ```
-``` js
-defineMessage({
+```js
+const msg = defineMessage({
   id: "msg.refresh",
   message: "Refresh inbox"
 })
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-/*i18n*/{
+const msg = /*i18n*/{
   id: "msg.refresh",
   message: "Refresh inbox"
+}
+```
+```js
+const msg = defineMessage({
+  id: "msg.plural",
+  message: plural(count, {
+    one: "# Message",
+    other: "# Messages"
+  })
+})
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+const msg = /*i18n*/{
+  id: "msg.plural",
+  message: "{count, plural, one {# Message} other {# Messages}}",
+  values: { count }
 }
 ```
 
 ### Examples of JSX macros
 
-``` js
+```jsx
 <Trans>Attachment {name} saved</Trans>
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 <Trans
-   id="Attachment {name} saved"
+   id={"nwR43V"}
+   message="Attachment {name} saved"
    values={{ name }}
 />
 ```
-``` js
+```jsx
 <Plural
    value={count}
-   one="Message"
-   other="Messages"
+   one="# Message"
+   other="# Messages"
 />
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 <Trans
-   id="{count, plural, one { Message} other {Messages}}"
+   id={"4w2nim"}
+   message="{count, plural, one {# Message} other {# Messages}}"
    values={{ count }}
 />
 ```
-``` js
+```jsx
 <Trans id="msg.refresh">
    Refresh inbox
 </Trans>
@@ -241,29 +276,39 @@ By default, the `i18n` object is imported from `@lingui/core`. If you use a cust
 
 *Message Descriptor* is an object with message ID, default message and other parameters. [`i18n._`](/docs/ref/core.md#i18n._) accepts message descriptors and performs translation and formatting:
 
-``` jsx
+```ts
 type MessageDescriptor = {
-   id: String,
-   message?: String,
-   values?: Object,
-   formats?: Object,
+   id: string,
+   message?: string,
+   values?: Record<string, any>,
    comment?: string
 }
 ```
 
-`id` is message ID and the only required parameter. `id` and `message` are extracted to message catalog. Only `id`, `values`, and `formats` are used at runtime, all other attributes are removed from production code for size optimization.
+`id` is the message ID and the only required parameter. `id` and `message` are extracted to the message catalog. Only `id` and `values` are used at runtime, all other attributes are removed from production code for size optimization.
+
+You don't need to provide your ID manually. Macro will automatically create a short ID from your message.
+
+#### `context`
+
+The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+
+- correct as in "you are right"
+- direction as in "turn right"
+
+If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
 
 :::info Note
 i18n comment
 
-In the examples below you might notice `/*i18n*/` comment in macro output. This comment tells the extract plugin that following object or string should be collected to message catalog.
+In the examples below you might notice `/*i18n*/` comment in macro output. This comment tells the extract plugin that following object should be collected to message catalog.
 :::
 
 ### `t`
 
 The most common macro for messages. It transforms tagged template literal into message in ICU MessageFormat:
 
-``` jsx
+```js
 import { t } from "@lingui/macro"
 const message = t`Hello World`
 
@@ -271,13 +316,16 @@ const message = t`Hello World`
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._("Hello World")
+  i18n._(/*i18n*/ {
+    id: "mY42CM",
+    message: "Hello World",
+    values: { name }
+  })
 ```
 
 Message variables are supported:
 
-``` jsx
+```js
 import { t } from "@lingui/macro"
 const message = t`My name is ${name}`
 
@@ -285,15 +333,16 @@ const message = t`My name is ${name}`
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._("My name is {name}", {
-  name
-})
+  i18n._(/*i18n*/ {
+    id: "mVmaLu",
+    message: "My name is {name}",
+    values: { name }
+  })
 ```
 
 In fact, any expression can be used inside template literal. However, only simple variables are referenced by name in a transformed message. All other expressions are referenced by numeric index:
 
-``` jsx
+```js
 import { t } from "@lingui/macro"
 const message = t`Today is ${new Date()}`
 
@@ -302,30 +351,35 @@ const message = t`Today is ${new Date()}`
 import { i18n } from "@lingui/core";
 
 const message =
-/*i18n*/
-i18n._("Today is {0}", {
-  0: new Date()
-});
+  i18n._(/*i18n*/ {
+    id: "2aJT27",
+    message: "Today is {0}",
+    values: { 0: new Date() }
+  })
 ```
 
 Optionally, a custom `i18n` instance can be passed that can be used instead of the global instance:
 
-``` jsx
+```jsx
 import { t } from "@lingui/macro"
-import { i18n } from "./lingui"
-const message = t(i18n)`Hello World`
+import { i18nCustom } from "./lingui"
+const message = t(i18nCustom)`Hello World`
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-import { i18n } from "./lingui"
+import { i18nCustom } from "./lingui"
+
+import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._("Hello World")
+  i18nCustom._(/*i18n*/ {
+    id: "mY42CM",
+    message: "Hello World",
+  })
 ```
 
 It's also possible to pass custom `id` and `comment` for translators by calling `t` macro with a message descriptor:
 
-``` jsx
+```jsx
 import { t } from "@lingui/macro"
 const message = t({
    id: 'msg.hello',
@@ -346,7 +400,7 @@ const message = i18n._(/*i18n*/{
 
 In this case the `message` is used as a default message and it's transformed as if it were wrapped in `t` macro. `message` also accepts any other macros:
 
-``` jsx
+```js
 import { t } from "@lingui/macro"
 const message = t({
    id: 'msg.plural',
@@ -365,13 +419,13 @@ const message = i18n._(/*i18n*/{
 
 ### `plural`
 
-``` jsx
+```ts
 plural(value: string | number, options: Object)
 ```
 
 `plural` macro is used for pluralization, e.g: messages which has different form based on counter. The first argument `value` determines the plural form. The second argument is an object with available plural forms. Plural form used in the source code depends on your source locale (e.g. English has only `one` and `other`).
 
-``` jsx
+```js
 import { plural } from "@lingui/macro"
 const message = plural(count, {
    one: "# Book",
@@ -382,15 +436,16 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._('{count, plural, one {# Book} other {# Books}}', {
-  count
-})
+  i18n._(/*i18n*/ {
+    id: "V/M0Vc",
+    message: "{count, plural, one {# Book} other {# Books}}",
+    values: { count }
+  })
 ```
 
 If you need to add variables to plural form, you can use template string literals. This time [`t`](/docs/ref/macro.md#t) macro isn't required as template strings are transformed automatically:
 
-``` jsx
+```js
 import { plural } from "@lingui/macro"
 const message = plural(count, {
    one: `${name} has # friend`,
@@ -401,15 +456,16 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._('{count, plural, one {{name} has # friend} other {{name} has # friends}}', {
-  count, name
-})
+  i18n._(/*i18n*/ {
+    id: "CvuUwE",
+    message: "{count, plural, one {{name} has # friend} other {{name} has # friends}}",
+    values: { count, name }
+  })
 ```
 
 Plurals can also be nested to form complex messages. Here's an example using two counters:
 
-``` jsx
+```js
 import { plural } from "@lingui/macro"
 const message = plural(numBooks, {
    one: plural(numArticles, {
@@ -427,8 +483,9 @@ const message = plural(numBooks, {
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._(`{numBooks, plural,
+  i18n._(/*i18n*/ {
+    id: "XnUh4j",
+    message: `{numBooks, plural,
          one {{numArticles, plural,
             one {1 book and 1 article}
             other {1 book and {numArticles} articles}
@@ -438,27 +495,38 @@ i18n._(`{numBooks, plural,
             other {{numBooks} books and {numArticles} articles}
          }}
       }`,
-  { numBooks, numArticles }
-)
+    values: { numBooks, numArticles }
+  })
 ```
 
 :::tip
 This is just an example how macros can be combined to create a complex messages. However, simple is better because in the end it's the translator who's gonna have to translate these long and complex strings.
 :::
 
-:::caution
-Use `plural` inside [`t`](#t) macro if you want to add custom `id` or `comment` for translators.
+:::tip
+Use `plural` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you want to add custom `id`, `context` or `comment` for translators.
+
+```js
+const message = t({
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: plural(count, {
+    one: "# Book",
+    other: "# Books"
+  })
+})
+```
 :::
 
 ### `selectOrdinal`
 
-``` jsx
+```ts
 selectOrdinal(value: string | number, options: Object)
 ```
 
 `selectOrdinal` macro is similar to [`plural`](#plural) but instead of using cardinal plural forms it uses ordinal forms:
 
-``` jsx
+```js
 import { selectOrdinal } from "@lingui/macro"
 const message = selectOrdinal(count, {
    one: "#st",
@@ -471,25 +539,39 @@ const message = selectOrdinal(count, {
 
 import { i18n } from "@lingui/core"
 const message =
-/*i18n*/
-i18n._('{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}', {
-  count
-})
+  i18n._(/*i18n*/ {
+    id: "V8xI3w",
+    message: "{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}",
+    values: { count }
+  })
 ```
 
-:::caution
-Use `selectOrdinal` inside [`t`](#t) macro if you want to add custom `id` or `comment` for translators.
+:::tip
+Use `selectOrdinal` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you want to add custom `id`, `context` or `comment` for translators.
+
+```js
+const message = t({
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: selectOrdinal(count, {
+    one: "#st",
+    two: "#nd",
+    few: "#rd",
+    other: "#th",
+  })
+})
+```
 :::
 
 ### `select`
 
-``` jsx
+```ts
 select(value: string | number, options: Object)
 ```
 
 `select` macro works as a switch statement — it select one of the forms provided in `options` object which key matches exactly `value`:
 
-``` jsx
+```js
 import { select } from "@lingui/macro"
 const message = select(gender, {
    male: "he",
@@ -500,15 +582,29 @@ const message = select(gender, {
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 import { i18n } from "@lingui/core"
+
 const message =
-/*i18n*/
-i18n._('{gender, select, male {he} female {she} other {they}}', {
-  gender
-})
+  i18n._(/*i18n*/ {
+    id: "VRptzI",
+    message: "{gender, select, male {he} female {she} other {they}}",
+    values: { gender }
+  })
 ```
 
-:::caution
-Use `select` inside [`t`](#t) macro if you want to add custom `id` or `comment` for translators.
+:::tip
+Use `select` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you want to add custom `id`, `context` or `comment` for translators.
+
+```js
+const message = t({
+  id: "my.custom.id",
+  comment: "My Comment",
+  message: select(gender, {
+    male: "he",
+    female: "she",
+    other: "they"
+  })
+})
+```
 :::
 
 ### `defineMessage`
@@ -517,19 +613,20 @@ Use `select` inside [`t`](#t) macro if you want to add custom `id` or `comment` 
 
 Unlike the other JS macros, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core.md#i18n._) call.
 
-``` ts
+```ts
 type MessageDescriptor = {
   id?: string,
   message?: string,
-  comment?: string
+  comment?: string,
+  context?: string,
 }
 
 defineMessage(message: MessageDescriptor)
 ```
 
-Either `id` or `message` property is required. `id` is a custom message id. If it isn't set, the `message` is used instead.
+Either `id` or `message` property is required. `id` is a custom message ID. If it isn't set, the `message` (and `context` if provided) are used for generating an ID.
 
-``` jsx
+```js
 import { defineMessage } from "@lingui/macro"
 const message = defineMessage({
    id: "Navigation / About",
@@ -546,7 +643,7 @@ const message = /*i18n*/{
 
 `message` is the default message. Any JS macro can be used here. Template string literals don't need to be tagged with [`t`](#t).
 
-``` jsx
+```js
 import { defineMessage, t } from "@lingui/macro"
 
 const name = "Joe"
@@ -559,6 +656,7 @@ const message = defineMessage({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 const message = /*i18n*/{
+   id: "dgJjNB",
    comment: "Greetings on the welcome page",
    message: "Welcome, {name}",
    values: {
@@ -569,7 +667,7 @@ const message = /*i18n*/{
 
 `comment` is a comment for translators. It's extracted to the message catalog and it gives extra context for translators. It's removed from production code:
 
-``` jsx
+```js
 import { defineMessage } from "@lingui/macro"
 const message = defineMessage({
    comment: "Link in navigation pointing to About page",
@@ -579,15 +677,16 @@ const message = defineMessage({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 const message = /*i18n*/{
+  id: "+mNwru",
   comment: "Link in navigation pointing to About page",
-  id: "About us"
+  message: "About us"
 }
 ```
 
 :::caution Note
-In production build, the macro is stripped of `message` and `comment` properties:
+In production build, the macro is stripped of `message`, `comment` and `context` properties:
 
-``` jsx
+```js
 import { defineMessage } from "@lingui/macro"
 const message = defineMessage({
    id: "msg.navigation.about",
@@ -600,33 +699,42 @@ const message = defineMessage({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 const message = /*i18n*/{
-  context: "Context about the link",
   id: "msg.navigation.about"
 }
 ```
 
 `message` and `comment` are used in message catalogs only.
+
+`context` is used only for generating ID and is stripped from the output.
+
 :::
 
 ## JSX Macros
 
-### Common props
+### `Trans`
 
-All macros share following props:
+| Prop name | Type   | Description                                        |
+|-----------| ------ |----------------------------------------------------|
+| `id`      | string | Custom message ID                                  |
+| `comment` | string | Comment for translators                            |
+| `context` | string | Provide different translation for the same message |
+
+[`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
 
 #### `id`
 
 Each message in catalog is identified by **message ID**.
 
-While all macros use generated message as the ID, it's possible to override it. In such case, generated message is used as a default translation.
+While macro uses message (and `context` property if provided) to generate ID, it's possible to override it.
 
-``` jsx
-import { Trans } from "@lingui/macro"
-<Trans id="message.attachment_saved">Attachment {name} saved.</Trans>
+```jsx
+import { Trans } from "@lingui/macro";
+<Trans id="message.attachment_saved">Attachment {name} saved.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
-import { Trans } from "@lingui/react"
-<Trans id="message.attachment_saved" message="Attachment {name} saved." />
+
+import { Trans } from "@lingui/react";
+<Trans id="message.attachment_saved" message="Attachment {name} saved." />;
 ```
 
 #### `comment`
@@ -637,47 +745,62 @@ Comment for translators to give them additional context about the message. It's 
 
 Render prop function used to render translation. This prop is directly passed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md). See [rendering of translations](/docs/ref/react.md#rendering-translations) for more info.
 
-### `Trans`
+#### `context`
 
-| Prop name | Type   | Description             |
-| --------- | ------ | ----------------------- |
-| `id`      | string | Custom message ID       |
-| `comment` | string | Comment for translators |
+The same text elements with different context are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
 
-[`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
+- correct as in "you are right"
+- direction as in "turn right"
 
-``` jsx
-import { Trans } from "@lingui/macro"
+If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+
+```jsx
+import { Trans } from "@lingui/macro";
 <Trans>Refresh inbox</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
-import { Trans } from "@lingui/react"
-<Trans id="Refresh inbox" />
+
+import { Trans } from "@lingui/react";
+<Trans id={"EsCV2T"} message="Refresh inbox" />;
+```
+
+Lingui generates different IDs when `context` is provided:
+
+```jsx
+import { Trans } from "@lingui/macro";
+<Trans context="direction">right</Trans>;
+<Trans context="correctness">right</Trans>;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans } from "@lingui/react";
+<Trans id={"d1wX4r"} message="right" />;
+<Trans id={"16eaSK"} message="right" />;
 ```
 
 Custom `id` is preserved:
 
-``` jsx
-import { Trans } from "@lingui/macro"
-<Trans id="message.attachment_saved">Attachment {name} saved.</Trans>
+```jsx
+import { Trans } from "@lingui/macro";
+<Trans id="message.attachment_saved">Attachment {name} saved.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-import { Trans } from "@lingui/react"
-<Trans id="message.attachment_saved" message="Attachment {name} saved." />
+import { Trans } from "@lingui/react";
+<Trans id="message.attachment_saved" message="Attachment {name} saved." />;
 ```
 
 This macro is especially useful when message contains inline markup.
 
-``` jsx
-import { Trans } from "@lingui/macro"
+```jsx
+import { Trans } from "@lingui/macro";
 
 <Trans>Read the <a href="/docs">docs</a>.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-import { Trans } from "@lingui/macro"
-<Trans id="Read the <0>docs</0>." components={{0: <a href="/docs" />}} />
+import { Trans } from "@lingui/macro";
+<Trans id={"mk8bSG"} message="Read the <0>docs</0>." components={{0: <a href="/docs" />}} />;
 ```
 
 Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which has several advantages:
@@ -705,21 +828,22 @@ Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which 
 
 Props of [`Plural`](/docs/ref/macro.md#plural-1) macro are transformed into [`plural`](/docs/ref/message-format.md) format.
 
-``` jsx
-import { Plural } from "@lingui/macro"
-<Plural value={numBooks} one="Book" other="Books" />
+```jsx
+import { Plural } from "@lingui/macro";
+<Plural value={numBooks} one="Book" other="Books" />;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
-import { Trans } from "@lingui/react"
-<Trans id="{numBooks, plural, one {Book} other {Books}}" values={{ numBooks }} />
+
+import { Trans } from "@lingui/react";
+<Trans id={"is7n96"} message="{numBooks, plural, one {Book} other {Books}}" values={{ numBooks }} />;
 ```
 
 `#` are formatted using `number` format. `format` prop is passed to this formatter.
 
 Exact matches in MessageFormat syntax are expressed as `=int` (e.g. `=0`), but in React this isn't a valid prop name. Therefore, exact matches are expressed as `_int` prop (e.g. `_0`). This is commonly used in combination with `offset` prop. `offset` affects only plural forms, not exact matches.
 
-``` jsx
-import { Plural } from "@lingui/macro"
+```jsx
+import { Plural } from "@lingui/macro";
 
 <Plural
     value={count}
@@ -748,6 +872,14 @@ import { Plural } from "@lingui/macro"
 */
 ```
 
+Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
+
+```jsx
+<Trans context={"my context"}>
+  <Plural value={numBooks} one="Book" other="Books" />;
+</Trans>
+```
+
 ### `SelectOrdinal`
 
 | Prop name   | Type           | Description                                                                                                                                           |
@@ -767,8 +899,8 @@ import { Plural } from "@lingui/macro"
 
 Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/ref/message-format.md) format:
 
-``` jsx
-import { SelectOrdinal } from "@lingui/macro"
+```jsx
+import { SelectOrdinal } from "@lingui/macro";
 
 // count == 1 -> 1st
 // count == 2 -> 2nd
@@ -781,6 +913,20 @@ import { SelectOrdinal } from "@lingui/macro"
     few="#rd"
     other="#th"
 />
+```
+
+Use `<SelectOrdinal>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
+
+```jsx
+<Trans context={"my context"}>
+  <SelectOrdinal
+    value={count}
+    one="#st"
+    two="#nd"
+    few="#rd"
+    other="#th"
+  />
+</Trans>
 ```
 
 ### `Select`
@@ -798,8 +944,8 @@ The select cases except `other` should be prefixed with underscore: `_male` or `
 
 Props of `Select` macro are transformed into [`select`](/docs/ref/message-format.md) format:
 
-``` jsx
-import { Select } from "@lingui/macro"
+```jsx
+import { Select } from "@lingui/macro";
 
 // gender == "female"      -> Her book
 // gender == "male"        -> His book
@@ -810,4 +956,17 @@ import { Select } from "@lingui/macro"
     _female="Her book"
     other="Their book"
 />
+```
+
+Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
+
+```jsx
+<Trans context={"my context"}>
+  <Select
+    value={gender}
+    _male="His book"
+    _female="Her book"
+    other="Their book"
+  />
+</Trans>
 ```

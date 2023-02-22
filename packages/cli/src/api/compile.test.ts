@@ -1,4 +1,8 @@
-import { compile, createCompiledCatalog } from "./compile"
+import {
+  compile,
+  CompiledCatalogNamespace,
+  createCompiledCatalog,
+} from "./compile"
 
 describe("compile", () => {
   describe("with pseudo-localization", () => {
@@ -176,25 +180,8 @@ describe("compile", () => {
 })
 
 describe("createCompiledCatalog", () => {
-  it("nested message", () => {
-    expect(
-      createCompiledCatalog(
-        "cs",
-        {
-          nested: {
-            one: "Uno",
-            two: "Dos",
-            three: "Tres",
-            hello: "Hola {name}",
-          },
-        },
-        {}
-      )
-    ).toMatchSnapshot()
-  })
-
   describe("options.namespace", () => {
-    const getCompiledCatalog = (namespace) =>
+    const getCompiledCatalog = (namespace: CompiledCatalogNamespace) =>
       createCompiledCatalog(
         "fr",
         {},
@@ -225,7 +212,7 @@ describe("createCompiledCatalog", () => {
   })
 
   describe("options.strict", () => {
-    const getCompiledCatalog = (strict) =>
+    const getCompiledCatalog = (strict: boolean) =>
       createCompiledCatalog(
         "cs",
         {
@@ -248,7 +235,7 @@ describe("createCompiledCatalog", () => {
   })
 
   describe("options.pseudoLocale", () => {
-    const getCompiledCatalog = (pseudoLocale) =>
+    const getCompiledCatalog = (pseudoLocale: string) =>
       createCompiledCatalog(
         "ps",
         {

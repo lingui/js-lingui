@@ -55,11 +55,16 @@ function serializePlurals(
   item: POItem,
   message: MessageType,
   id: string,
+  isGeneratedId: boolean,
   options: CatalogFormatOptionsInternal
 ): POItem {
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
-  const icuMessage = message.message || id
+  const icuMessage = message.message
+
+  if (!icuMessage) {
+    return
+  }
 
   const _simplifiedMessage = icuMessage.replace(LINE_ENDINGS, " ")
 
@@ -86,7 +91,7 @@ function serializePlurals(
         pluralize_on: messageAst.arg,
       })
 
-      if (message.message == null) {
+      if (isGeneratedId) {
         // For messages without developer-set ID, use first case as `msgid` and the last case as `msgid_plural`.
         // This does not necessarily make sense for development languages with more than two numbers, but gettext
         // only supports exactly two plural forms.
@@ -96,7 +101,7 @@ function serializePlurals(
         )
 
         // Since the original msgid is overwritten, store ICU message to allow restoring that ID later.
-        ctx.set("icu", id)
+        ctx.set("icu", icuMessage)
       } else {
         // For messages with developer-set ID, append `_plural` to the key to generate `msgid_plural`.
         item.msgid_plural = id + "_plural"
@@ -146,8 +151,8 @@ export const serialize = (
   catalog: CatalogType,
   options: CatalogFormatOptionsInternal
 ) => {
-  return serializePo(catalog, options, (item, message, id) =>
-    serializePlurals(item, message, id, options)
+  return serializePo(catalog, options, (item, message, id, isGeneratedId) =>
+    serializePlurals(item, message, id, isGeneratedId, options)
   )
 }
 

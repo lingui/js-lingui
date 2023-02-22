@@ -7,7 +7,6 @@ import type { PluralCategory } from "make-plural"
 
 export type MessageOptions = {
   message?: string
-  context?: string
   formats?: Formats
 }
 
@@ -43,19 +42,15 @@ export type MessageDescriptor = {
   id?: string
   comment?: string
   message?: string
-  context?: string
   values?: Record<string, unknown>
 }
 
 export type MissingMessageEvent = {
   locale: Locale
   id: string
-  context?: string
 }
 
-type MissingHandler =
-  | string
-  | ((locale: string, id: string, context: string) => string)
+type MissingHandler = string | ((locale: string, id: string) => string)
 
 type setupI18nProps = {
   locale?: Locale
@@ -183,37 +178,27 @@ export class I18n extends EventEmitter<Events> {
   _(
     id: MessageDescriptor | string,
     values: Values | undefined = {},
-    { message, formats, context }: MessageOptions | undefined = {}
+    { message, formats }: MessageOptions | undefined = {}
   ) {
     if (!isString(id)) {
       values = id.values || values
       message = id.message
-      context = id.context
       id = id.id
     }
 
-    const messageMissing = !context && !this.messages[id]
-    const contextualMessageMissing = context && !this.messages[context][id]
-    const messageUnreachable = contextualMessageMissing || messageMissing
+    const messageMissing = !this.messages[id]
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
-    if (missing && messageUnreachable) {
-      return isFunction(missing) ? missing(this._locale, id, context) : missing
+    if (missing && messageMissing) {
+      return isFunction(missing) ? missing(this._locale, id) : missing
     }
 
-    if (messageUnreachable) {
-      this.emit("missing", { id, context, locale: this._locale })
+    if (messageMissing) {
+      this.emit("missing", { id, locale: this._locale })
     }
 
-    let translation
-
-    if (context && !contextualMessageMissing) {
-      // context is like a subdirectory of other keys
-      translation = this.messages[context][id] || message || id
-    } else {
-      translation = this.messages[id] || message || id
-    }
+    let translation = this.messages[id] || message || id
 
     if (process.env.NODE_ENV !== "production") {
       translation = isString(translation)

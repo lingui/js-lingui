@@ -250,7 +250,7 @@ describe("I18n", function () {
         missing,
       })
       expect(i18n._("missing")).toEqual("gnissim")
-      expect(missing).toHaveBeenCalledWith("en", "missing", undefined)
+      expect(missing).toHaveBeenCalledWith("en", "missing")
     })
   })
 })

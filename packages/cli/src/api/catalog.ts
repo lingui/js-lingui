@@ -112,7 +112,7 @@ export class Catalog {
     this.format = getFormat(config.format)
   }
 
-  async make(options: MakeOptions): Promise<boolean> {
+  async make(options: MakeOptions): Promise<AllCatalogsType | false> {
     const nextCatalog = await this.collect({ files: options.files })
     if (!nextCatalog) return false
     const prevCatalogs = this.readAll()
@@ -139,15 +139,19 @@ export class Catalog {
     } else {
       this.writeAll(sortedCatalogs)
     }
-    return true
+
+    return sortedCatalogs
   }
 
-  async makeTemplate(options: MakeTemplateOptions): Promise<boolean> {
+  async makeTemplate(
+    options: MakeTemplateOptions
+  ): Promise<CatalogType | false> {
     const catalog = await this.collect({ files: options.files })
     if (!catalog) return false
-    const sort = order<CatalogType>(options.orderBy)
-    this.writeTemplate(sort(catalog as CatalogType))
-    return true
+    const sorted = order<CatalogType>(options.orderBy)(catalog as CatalogType)
+
+    this.writeTemplate(sorted)
+    return sorted
   }
 
   /**
@@ -173,6 +177,7 @@ export class Catalog {
           if (!messages[next.id]) {
             messages[next.id] = {
               message: next.message,
+              context: next.context,
               extractedComments: [],
               origin: [],
             }
