@@ -13,6 +13,7 @@ import {
   order,
   normalizeRelativePath,
   CatalogProps,
+  AllCatalogsType,
 } from "./catalog"
 import { createCompiledCatalog } from "./compile"
 
@@ -257,8 +258,8 @@ describe("Catalog", () => {
         },
         mockConfig()
       )
-
-      mockConsole(async (console) => {
+      expect.assertions(1)
+      await mockConsole(async (console) => {
         await catalog.collect({
           files: [fixture("duplicate-id.js")],
         })
@@ -271,7 +272,7 @@ describe("Catalog", () => {
       })
     })
 
-    it("should handle errors", () => {
+    it("should handle syntax errors", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -282,12 +283,13 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      mockConsole(async (console) => {
+      expect.assertions(2)
+      await mockConsole(async (console) => {
         const messages = await catalog.collect()
         expect(console.error).toBeCalledWith(
           expect.stringContaining(`Cannot process file`)
         )
-        expect(messages).toMatchSnapshot()
+        expect(messages).toBeFalsy()
       })
     })
   })
@@ -316,7 +318,7 @@ describe("Catalog", () => {
     */
 
     it("should initialize catalog", () => {
-      const prevCatalogs = { en: null, cs: null }
+      const prevCatalogs: AllCatalogsType = { en: null, cs: null }
       const nextCatalog = {
         "custom.id": makeNextMessage({
           message: "Message with custom ID",
@@ -843,7 +845,7 @@ describe("getCatalogs", () => {
       )
     ).toThrowErrorMatchingSnapshot()
 
-    // Use valus from config in error message
+    // Use values from config in error message
     expect(() =>
       getCatalogs(
         mockConfig({
@@ -1032,7 +1034,7 @@ describe("normalizeRelativePath", () => {
     )
   })
 
-  it("directories without ending slash are correctly treaten as dirs", () => {
+  it("directories without ending slash are correctly treated as dirs", () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),

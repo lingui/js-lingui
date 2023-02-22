@@ -14,7 +14,7 @@ type LinguiConfigOpts = {
 type SnowpackLoadOpts = {
   filePath: string
 }
-function extractLinguiMessages(
+export default function compileLinguiMessages(
   snowpackConfig?,
   linguiConfig: LinguiConfigOpts = {}
 ) {
@@ -67,5 +67,3 @@ function extractLinguiMessages(
     },
   }
 }
-
-export default extractLinguiMessages

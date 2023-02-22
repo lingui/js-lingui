@@ -62,43 +62,56 @@ const transformCode = (
   return messages
 }
 
+function expectNoConsole(cb: () => void) {
+  return mockConsole((console) => {
+    cb()
+
+    expect(console.warn).not.toBeCalled()
+    expect(console.error).not.toBeCalled()
+  })
+}
+
 describe("@lingui/babel-plugin-extract-messages", function () {
   it("should ignore files without lingui import", () => {
-    const messages = transform("without-lingui.js")
-    expect(messages.length).toBe(0)
+    expectNoConsole(() => {
+      const messages = transform("without-lingui.js")
+      expect(messages.length).toBe(0)
+    })
   })
 
   it("should extract all messages from JSX files", () => {
-    const messages = transform("jsx-without-macros.js")
-    expect(messages).toMatchSnapshot()
+    expectNoConsole(() => {
+      const messages = transform("jsx-without-macros.js")
+      expect(messages).toMatchSnapshot()
+    })
   })
 
   describe("JSX", () => {
     it("Should not rise warning when translation from variable", () => {
       const code = `
-import { Trans } from "@lingui/react"
+import { Trans } from "@lingui/react";
 
-;<Trans id={message} />
+<Trans id={message} />;
       `
-      mockConsole((console) => {
+      expectNoConsole(() => {
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
-        expect(console.warn).not.toBeCalled()
       })
     })
 
     it("Should log error when no ID provided", () => {
       const code = `
-import { Trans } from "@lingui/react"
+import { Trans } from "@lingui/react";
 
-;<Trans />
-;<Trans message="Missing ID" />
+<Trans />;
+<Trans message="Missing ID" />;
       `
       mockConsole((console) => {
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(`Missing message ID`)
         )
@@ -108,8 +121,10 @@ import { Trans } from "@lingui/react"
 
   describe("CallExpression i18n._()", () => {
     it("should extract messages from i18n._ call expressions", () => {
-      const messages = transform("js-call-expression.js")
-      expect(messages).toMatchSnapshot()
+      expectNoConsole(() => {
+        const messages = transform("js-call-expression.js")
+        expect(messages).toMatchSnapshot()
+      })
     })
 
     it("Should log error when no ID provided", () => {
@@ -119,6 +134,7 @@ import { Trans } from "@lingui/react"
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(`Missing message ID`)
         )
@@ -128,11 +144,9 @@ import { Trans } from "@lingui/react"
     it("Should not rise warning when translation from variable", () => {
       const code = `i18n._(message)`
 
-      mockConsole((console) => {
+      expectNoConsole(() => {
         const messages = transformCode(code)
-
         expect(messages.length).toBe(0)
-        expect(console.warn).not.toBeCalled()
       })
     })
 
@@ -142,6 +156,7 @@ import { Trans } from "@lingui/react"
       return mockConsole((console) => {
         transformCode(code)
 
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
             "Only strings or template literals could be extracted."
@@ -152,10 +167,12 @@ import { Trans } from "@lingui/react"
 
     it("Should support string concatenation", () => {
       const code = `const msg = i18n._('message.id', {}, {comment: "first " + "second " + "third"})`
-      const messages = transformCode(code)
 
-      expect(messages[0]).toMatchObject({
-        comment: "first second third",
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages[0]).toMatchObject({
+          comment: "first second third",
+        })
       })
     })
 
@@ -170,11 +187,9 @@ import { Trans } from "@lingui/react"
           },
         });
       `
-
-      return mockConsole((console) => {
+      expectNoConsole(() => {
         const messages = transformCode(code)
         expect(messages.length).toBe(1)
-        expect(console.warn).not.toBeCalled()
       })
     })
   })
@@ -182,10 +197,13 @@ import { Trans } from "@lingui/react"
   describe("StringLiteral", () => {
     it("Should extract from marked StringLiteral", () => {
       const code = `const t = /*i18n*/'Message'`
-      const messages = transformCode(code)
 
-      expect(messages[0]).toMatchObject({
-        id: "Message",
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+
+        expect(messages[0]).toMatchObject({
+          id: "Message",
+        })
       })
     })
 
@@ -196,6 +214,7 @@ import { Trans } from "@lingui/react"
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(`Empty StringLiteral`)
         )
@@ -205,16 +224,21 @@ import { Trans } from "@lingui/react"
 
   describe("MessageDescriptor", () => {
     it("should extract messages from MessageDescriptors", () => {
-      const messages = transform("js-message-descriptor.js")
-      expect(messages).toMatchSnapshot()
+      expectNoConsole(() => {
+        const messages = transform("js-message-descriptor.js")
+        expect(messages).toMatchSnapshot()
+      })
     })
 
     it("Should extract id from TemplateLiteral", () => {
       const code = "const msg = /*i18n*/{id: `Message`}"
-      const messages = transformCode(code)
 
-      expect(messages[0]).toMatchObject({
-        id: "Message",
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+
+        expect(messages[0]).toMatchObject({
+          id: "Message",
+        })
       })
     })
 
@@ -225,6 +249,8 @@ import { Trans } from "@lingui/react"
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
+
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
             `Could not extract from template literal with expressions.`
@@ -240,8 +266,25 @@ import { Trans } from "@lingui/react"
         const messages = transformCode(code)
 
         expect(messages.length).toBe(0)
+        expect(console.error).not.toBeCalled()
+
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(`Missing message ID`)
+        )
+      })
+    })
+
+    it("Should log error when not a string provided as ID", () => {
+      const code = "const msg = /*i18n*/ {id: id}"
+
+      return mockConsole((console) => {
+        transformCode(code)
+
+        expect(console.error).not.toBeCalled()
+        expect(console.warn).toBeCalledWith(
+          expect.stringContaining(
+            "Only strings or template literals could be extracted."
+          )
         )
       })
     })
@@ -252,6 +295,7 @@ import { Trans } from "@lingui/react"
       return mockConsole((console) => {
         transformCode(code)
 
+        expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
             "Only strings or template literals could be extracted."
@@ -262,26 +306,34 @@ import { Trans } from "@lingui/react"
 
     it("Should support string concatenation in comment", () => {
       const code = `const msg =  /*i18n*/ {id: "msg.id", comment: "first " + "second " + "third"}`
-      const messages = transformCode(code)
 
-      expect(messages[0]).toMatchObject({
-        comment: "first second third",
+      return expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages[0]).toMatchObject({
+          comment: "first second third",
+        })
       })
     })
   })
 
   it("should extract all messages from JSX files (macros)", () => {
-    const messages = transform("jsx-with-macros.js")
-    expect(messages).toMatchSnapshot()
+    return expectNoConsole(() => {
+      const messages = transform("jsx-with-macros.js")
+      expect(messages).toMatchSnapshot()
+    })
   })
 
   it("should extract Plural messages from JSX files when there's no Trans tag (integration)", () => {
-    const messages = transform("jsx-without-trans.js")
-    expect(messages).toMatchSnapshot()
+    return expectNoConsole(() => {
+      const messages = transform("jsx-without-trans.js")
+      expect(messages).toMatchSnapshot()
+    })
   })
 
   it("should extract all messages from JS files (macros)", () => {
-    const messages = transform("js-with-macros.js")
-    expect(messages).toMatchSnapshot()
+    return expectNoConsole(() => {
+      const messages = transform("js-with-macros.js")
+      expect(messages).toMatchSnapshot()
+    })
   })
 })

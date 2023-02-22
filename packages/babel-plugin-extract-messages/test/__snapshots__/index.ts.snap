@@ -214,7 +214,7 @@ Array [
     message: undefined,
     origin: Array [
       js-with-macros.js,
-      34,
+      28,
     ],
   },
   Object {
@@ -224,7 +224,7 @@ Array [
     message: undefined,
     origin: Array [
       js-with-macros.js,
-      39,
+      33,
     ],
   },
   Object {
@@ -234,7 +234,7 @@ Array [
     message: undefined,
     origin: Array [
       js-with-macros.js,
-      44,
+      38,
     ],
   },
 ]
