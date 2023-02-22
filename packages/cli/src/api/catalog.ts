@@ -185,9 +185,12 @@ export class Catalog {
 
           const prev = messages[next.id]
 
-          const filename = path
-            .relative(this.config.rootDir, next.origin[0])
-            .replace(/\\/g, "/")
+          // there might be a case when filename was not mapped from sourcemaps
+          const filename = next.origin[0]
+            ? path
+                .relative(this.config.rootDir, next.origin[0])
+                .replace(/\\/g, "/")
+            : ""
 
           const origin: MessageOrigin = [filename, next.origin[1]]
 
