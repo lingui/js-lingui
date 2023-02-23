@@ -1,9 +1,5 @@
-import {
-  Expression,
-  isJSXEmptyExpression,
-  JSXElement,
-  Node,
-} from "@babel/types"
+import type { Expression, JSXElement, Node } from "@babel/types"
+import type * as babelTypes from "@babel/types"
 
 const metaOptions = ["id", "comment", "props"]
 
@@ -44,7 +40,8 @@ export type ElementToken = {
 export type Tokens = Token | Token[]
 export type Token = TextToken | ArgToken | ElementToken
 
-export default class ICUMessageFormat {
+export class ICUMessageFormat {
+  constructor(private t: typeof babelTypes) {}
   public fromTokens(tokens: Tokens): ParsedResult {
     return (Array.isArray(tokens) ? tokens : [tokens])
       .map((token) => this.processToken(token))
@@ -74,7 +71,7 @@ export default class ICUMessageFormat {
     } else if (token.type === "arg") {
       if (
         token.value !== undefined &&
-        isJSXEmptyExpression(token.value as Node)
+        this.t.isJSXEmptyExpression(token.value as Node)
       ) {
         return null
       }

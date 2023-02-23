@@ -7,7 +7,7 @@ import {
   transformSync,
 } from "@babel/core"
 import prettier from "prettier"
-import { LinguiMacroOpts } from "../src/index"
+import type { LinguiMacroOpts } from "@lingui/macro-lib"
 import {
   JSXAttribute,
   jsxExpressionContainer,
@@ -182,8 +182,8 @@ describe("macro", function () {
 
   it("Should throw error if used without babel-macro-plugin", async () => {
     await expect(async () => {
-      const mod = await import("../src/index")
-      return (mod as unknown as typeof import("@lingui/macro")).Trans
+      const mod = await import("@lingui/macro")
+      return mod.Trans
     }).rejects.toThrow('The macro you imported from "@lingui/macro"')
   })
 

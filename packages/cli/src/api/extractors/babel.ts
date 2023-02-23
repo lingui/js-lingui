@@ -4,9 +4,8 @@ import type { ExtractPluginOpts } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import type { ExtractorType } from "@lingui/conf"
-import { ParserPlugin } from "@babel/parser"
-// eslint-disable-next-line import/no-extraneous-dependencies
-import type { LinguiMacroOpts } from "@lingui/macro/src"
+import type { ParserPlugin } from "@babel/parser"
+import type { LinguiMacroOpts } from "@lingui/macro-lib"
 import { SourceMapConsumer } from "source-map"
 
 const babelRe = new RegExp(

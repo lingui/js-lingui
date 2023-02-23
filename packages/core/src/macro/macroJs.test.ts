@@ -1,6 +1,6 @@
 import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
-import MacroJs from "./macroJs"
+import { MacroJs } from "./macroJs"
 import { CallExpression } from "@babel/types"
 
 function createMacro() {

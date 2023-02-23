@@ -61,9 +61,24 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@messageformat/parser": "^5.0.0",
-    "make-plural": "^6.2.2"
+    "make-plural": "^6.2.2",
+    "@lingui/conf": "3.17.1",
+    "@lingui/macro-lib": "3.17.1",
+    "@lingui/cli": "3.17.1"
+  },
+  "peerDependencies": {
+    "babel-plugin-macros": "2 || 3"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-macros": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "*"
+    "@lingui/jest-mocks": "*",
+    "@types/babel-plugin-macros": "^2.8.5",
+    "@babel/traverse":"^7.20.13",
+    "@babel/types": "^7.20.7",
+    "babel-plugin-macros": "^3.1.0"
   }
 }

@@ -1,5 +1,5 @@
 import * as types from "@babel/types"
-import MacroJSX, { normalizeWhitespace } from "./macroJsx"
+import { normalizeWhitespace, MacroJSX } from "./macroJsx"
 import { transformSync } from "@babel/core"
 import type { NodePath } from "@babel/traverse"
 import type { JSXElement } from "@babel/types"

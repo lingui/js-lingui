@@ -33,14 +33,20 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
+    "@lingui/macro-lib": "^3.17.1",
     "@babel/types": "^7.20.7",
     "@lingui/cli": "3.17.1",
     "@lingui/conf": "3.17.1"
   },
   "peerDependencies": {
-    "@lingui/core": "^3.13.0",
-    "@lingui/react": "^3.13.0",
+    "@lingui/core": "^3.17.1",
+    "@lingui/react": "^3.17.1",
     "babel-plugin-macros": "2 || 3"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-macros": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

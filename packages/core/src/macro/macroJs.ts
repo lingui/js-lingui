@@ -1,9 +1,8 @@
-import * as babelTypes from "@babel/types"
-import {
+import type * as babelTypes from "@babel/types"
+import type {
   CallExpression,
   Expression,
   Identifier,
-  isObjectProperty,
   Node,
   ObjectExpression,
   ObjectProperty,
@@ -11,16 +10,22 @@ import {
   StringLiteral,
   TemplateLiteral,
 } from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import type { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {
+import {
+  COMMENT,
+  CONTEXT,
+  EXTRACT_MARK,
+  ID,
+  MESSAGE,
+  ICUMessageFormat,
   ArgToken,
   ParsedResult,
   TextToken,
   Token,
-} from "./icu"
-import { makeCounter } from "./utils"
-import { COMMENT, CONTEXT, EXTRACT_MARK, ID, MESSAGE } from "./constants"
+  makeCounter,
+} from "@lingui/macro-lib"
+
 import { generateMessageId } from "@lingui/cli/api"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
@@ -36,7 +41,7 @@ export type MacroJsOpts = {
   nameMap: Map<string, string>
 }
 
-export default class MacroJs {
+export class MacroJs {
   // Babel Types
   types: typeof babelTypes
 
@@ -107,7 +112,7 @@ export default class MacroJs {
       const i18nInstance = path.node.arguments[0]
       const tokens = this.tokenizeNode(path.parentPath.node)
 
-      const messageFormat = new ICUMessageFormat()
+      const messageFormat = new ICUMessageFormat(this.types)
       const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
       const message = normalizeWhitespace(messageRaw)
 
@@ -144,7 +149,7 @@ export default class MacroJs {
 
     const tokens = this.tokenizeNode(path.node)
 
-    const messageFormat = new ICUMessageFormat()
+    const messageFormat = new ICUMessageFormat(this.types)
     const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
     const message = normalizeWhitespace(messageRaw)
 
@@ -236,7 +241,7 @@ export default class MacroJs {
       let messageNode = messageProperty.value as StringLiteral
 
       if (tokens) {
-        const messageFormat = new ICUMessageFormat()
+        const messageFormat = new ICUMessageFormat(this.types)
         const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
         const message = normalizeWhitespace(messageRaw)
         messageNode = this.types.stringLiteral(message)
@@ -459,7 +464,8 @@ export default class MacroJs {
   ): ObjectProperty {
     return objectExp.properties.find(
       (property) =>
-        isObjectProperty(property) && this.isLinguiIdentifier(property.key, key)
+        this.types.isObjectProperty(property) &&
+        this.isLinguiIdentifier(property.key, key)
     ) as ObjectProperty
   }
 

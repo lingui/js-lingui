@@ -42,6 +42,16 @@
         "default": "./build/esm/index.js"
       }
     },
+    "./macro": {
+      "require": {
+        "types": "./build/index.d.ts",
+        "default": "./build/cjs/index.js"
+      },
+      "import": {
+        "types": "./build/index.d.ts",
+        "default": "./build/esm/index.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -50,13 +60,26 @@
     "build/"
   ],
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "babel-plugin-macros": "2 || 3"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-macros": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "3.17.1"
+    "@lingui/core": "3.17.1",
+    "@lingui/conf": "3.17.1",
+    "@lingui/macro-lib": "3.17.1",
+    "@lingui/cli": "3.17.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^11.0.4"
+    "@testing-library/react": "^11.0.4",
+    "@types/babel-plugin-macros": "^2.8.5",
+    "@babel/traverse":"^7.20.13",
+    "@babel/types": "^7.20.7",
+    "babel-plugin-macros": "^3.1.0"
   }
 }

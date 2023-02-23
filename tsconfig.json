@@ -14,10 +14,13 @@
       "@lingui/babel-plugin-extract-messages": ["./packages/babel-plugin-extract-messages/src"],
       "@lingui/core": ["./packages/core/src"],
       "@lingui/core/compile": ["./packages/core/src/compile/index.ts"],
+      "@lingui/core/macro": ["./packages/core/src/macro/index.ts"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
+      "@lingui/react/macro": ["./packages/react/src/macro/index.ts"],
       "@lingui/conf": ["./packages/conf/src"],
-      "@lingui/macro": ["./packages/macro/src"]
+      "@lingui/macro": ["./packages/macro/src"],
+      "@lingui/macro-lib": ["./packages/macro-lib/src"]
     }
   },
   "exclude": [

@@ -1,5 +1,5 @@
-import * as babelTypes from "@babel/types"
-import {
+import type * as babelTypes from "@babel/types"
+import type {
   ConditionalExpression,
   Expression,
   JSXAttribute,
@@ -12,16 +12,20 @@ import {
   StringLiteral,
   TemplateLiteral,
 } from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import type { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {
+import {
+  makeCounter,
+  COMMENT,
+  CONTEXT,
+  ID,
+  MESSAGE,
+  ICUMessageFormat,
   ArgToken,
   ElementToken,
   TextToken,
   Token,
-} from "./icu"
-import { makeCounter } from "./utils"
-import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
+} from "@lingui/macro-lib"
 import { generateMessageId } from "@lingui/cli/api"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
@@ -68,7 +72,7 @@ export type MacroJsxOpts = {
   nameMap: Map<string, string>
 }
 
-export default class MacroJSX {
+export class MacroJSX {
   types: typeof babelTypes
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
@@ -97,7 +101,7 @@ export default class MacroJSX {
   replacePath = (path: NodePath) => {
     const tokens = this.tokenizeNode(path)
 
-    const messageFormat = new ICUMessageFormat()
+    const messageFormat = new ICUMessageFormat(this.types)
     const {
       message: messageRaw,
       values,
