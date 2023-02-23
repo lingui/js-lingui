@@ -36,6 +36,9 @@
     "@babel/runtime": "^7.20.13"
   },
   "devDependencies": {
-    "@babel/types": "^7.20.7"
+    "@babel/core": "^7.21.0",
+    "@babel/types": "^7.20.7",
+    "@lingui/jest-mocks": "*",
+    "@babel/traverse": "7.20.12"
   }
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import type { ReactElement, ReactNode, VFC, FC } from "react"
 import type { I18n, MessageDescriptor } from "@lingui/core"
 import type { TransRenderProps } from "@lingui/react"

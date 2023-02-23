@@ -34,8 +34,8 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "3.17.1",
-    "@lingui/cli": "3.17.1"
+    "@lingui/cli": "3.17.1",
+    "@lingui/conf": "3.17.1"
   },
   "peerDependencies": {
     "@lingui/core": "^3.13.0",
@@ -43,7 +43,11 @@
     "babel-plugin-macros": "2 || 3"
   },
   "devDependencies": {
+    "@babel/core": "7.20.12",
+    "@babel/parser": "7.20.15",
+    "@babel/traverse": "7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
+    "prettier": "2.8.3",
     "tsd": "^0.25.0"
   },
   "tsd": {

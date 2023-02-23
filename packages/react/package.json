@@ -57,6 +57,6 @@
     "@lingui/core": "3.17.1"
   },
   "devDependencies": {
-    "react-testing-library": "^8.0.1"
+    "@testing-library/react": "^11.0.4"
   }
 }
