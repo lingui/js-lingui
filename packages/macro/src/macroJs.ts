@@ -33,6 +33,7 @@ function normalizeWhitespace(text: string): string {
 export type MacroJsOpts = {
   i18nImportName: string
   stripNonEssentialProps: boolean
+  nameMap: Map<string, string>
 }
 
 export default class MacroJs {
@@ -42,6 +43,8 @@ export default class MacroJs {
   // Identifier of i18n object
   i18nImportName: string
   stripNonEssentialProps: boolean
+  nameMap: Map<string, string>
+  nameMapReversed: Map<string, string>
 
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   _expressionIndex = makeCounter()
@@ -50,6 +53,11 @@ export default class MacroJs {
     this.types = types
     this.i18nImportName = opts.i18nImportName
     this.stripNonEssentialProps = opts.stripNonEssentialProps
+    this.nameMap = opts.nameMap
+    this.nameMapReversed = Array.from(opts.nameMap.entries()).reduce(
+      (map, [key, value]) => map.set(value, key),
+      new Map()
+    )
   }
 
   replacePathWithMessage = (
@@ -93,7 +101,7 @@ export default class MacroJs {
       this.types.isCallExpression(path.node) &&
       this.types.isTaggedTemplateExpression(path.parentPath.node) &&
       this.types.isIdentifier(path.node.arguments[0]) &&
-      this.isIdentifier(path.node.callee, "t")
+      this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       // Use the first argument as i18n instance instead of the default i18n instance
       const i18nInstance = path.node.arguments[0]
@@ -116,7 +124,7 @@ export default class MacroJs {
       this.types.isCallExpression(path.node) &&
       this.types.isCallExpression(path.parentPath.node) &&
       this.types.isIdentifier(path.node.arguments[0]) &&
-      this.isIdentifier(path.node.callee, "t")
+      this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       const i18nInstance = path.node.arguments[0]
       this.replaceTAsFunction(
@@ -128,7 +136,7 @@ export default class MacroJs {
 
     if (
       this.types.isCallExpression(path.node) &&
-      this.isIdentifier(path.node.callee, "t")
+      this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       this.replaceTAsFunction(path as NodePath<CallExpression>)
       return true
@@ -337,7 +345,8 @@ export default class MacroJs {
   }
 
   tokenizeChoiceComponent(node: CallExpression): ArgToken {
-    const format = (node.callee as Identifier).name.toLowerCase()
+    const name = (node.callee as Identifier).name
+    const format = (this.nameMapReversed.get(name) || name).toLowerCase()
 
     const token: ArgToken = {
       ...this.tokenizeExpression(node.arguments[0]),
@@ -450,45 +459,48 @@ export default class MacroJs {
   ): ObjectProperty {
     return objectExp.properties.find(
       (property) =>
-        isObjectProperty(property) && this.isIdentifier(property.key, key)
+        isObjectProperty(property) && this.isLinguiIdentifier(property.key, key)
     ) as ObjectProperty
   }
 
   /**
    * Custom matchers
    */
-  isIdentifier(node: Node | Expression, name: string) {
-    return this.types.isIdentifier(node, { name })
+  isLinguiIdentifier(node: Node | Expression, name: string) {
+    return this.types.isIdentifier(node, {
+      name: this.nameMap.get(name) || name,
+    })
   }
 
   isDefineMessage(node: Node): boolean {
     return (
       this.types.isCallExpression(node) &&
-      this.isIdentifier(node.callee, "defineMessage")
+      this.isLinguiIdentifier(node.callee, "defineMessage")
     )
   }
 
   isArg(node: Node) {
     return (
-      this.types.isCallExpression(node) && this.isIdentifier(node.callee, "arg")
+      this.types.isCallExpression(node) &&
+      this.isLinguiIdentifier(node.callee, "arg")
     )
   }
 
   isI18nMethod(node: Node) {
     return (
       this.types.isTaggedTemplateExpression(node) &&
-      (this.isIdentifier(node.tag, "t") ||
+      (this.isLinguiIdentifier(node.tag, "t") ||
         (this.types.isCallExpression(node.tag) &&
-          this.isIdentifier(node.tag.callee, "t")))
+          this.isLinguiIdentifier(node.tag.callee, "t")))
     )
   }
 
   isChoiceMethod(node: Node) {
     return (
       this.types.isCallExpression(node) &&
-      (this.isIdentifier(node.callee, "plural") ||
-        this.isIdentifier(node.callee, "select") ||
-        this.isIdentifier(node.callee, "selectOrdinal"))
+      (this.isLinguiIdentifier(node.callee, "plural") ||
+        this.isLinguiIdentifier(node.callee, "select") ||
+        this.isLinguiIdentifier(node.callee, "selectOrdinal"))
     )
   }
 

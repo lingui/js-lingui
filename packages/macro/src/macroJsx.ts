@@ -65,6 +65,7 @@ export function normalizeWhitespace(text: string): string {
 
 export type MacroJsxOpts = {
   stripNonEssentialProps: boolean
+  nameMap: Map<string, string>
 }
 
 export default class MacroJSX {
@@ -72,10 +73,17 @@ export default class MacroJSX {
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
   stripNonEssentialProps: boolean
+  nameMap: Map<string, string>
+  nameMapReversed: Map<string, string>
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
     this.stripNonEssentialProps = opts.stripNonEssentialProps
+    this.nameMap = opts.nameMap
+    this.nameMapReversed = Array.from(opts.nameMap.entries()).reduce(
+      (map, [key, value]) => map.set(value, key),
+      new Map()
+    )
   }
 
   createStringJsxAttribute = (name: string, value: string) => {
@@ -315,7 +323,9 @@ export default class MacroJSX {
 
   tokenizeChoiceComponent = (path: NodePath<JSXElement>): Token => {
     const element = path.get("openingElement")
-    const format = this.getJsxTagName(path.node).toLowerCase()
+    const name = this.getJsxTagName(path.node)
+
+    const format = (this.nameMapReversed.get(name) || name).toLowerCase()
     const props = element.get("attributes").filter((attr) => {
       return this.attrName(
         [
@@ -462,23 +472,27 @@ export default class MacroJSX {
     return value.replace(/\\`/g, "`")
   }
 
-  isTransComponent = (
+  isLinguiComponent = (
     path: NodePath,
-    name = "Trans"
+    name: string
   ): path is NodePath<JSXElement> => {
     return (
       path.isJSXElement() &&
       this.types.isJSXIdentifier(path.node.openingElement.name, {
-        name,
+        name: this.nameMap.get(name) || name,
       })
     )
   }
 
+  isTransComponent = (path: NodePath): path is NodePath<JSXElement> => {
+    return this.isLinguiComponent(path, "Trans")
+  }
+
   isChoiceComponent = (path: NodePath): path is NodePath<JSXElement> => {
     return (
-      this.isTransComponent(path, "Plural") ||
-      this.isTransComponent(path, "Select") ||
-      this.isTransComponent(path, "SelectOrdinal")
+      this.isLinguiComponent(path, "Plural") ||
+      this.isLinguiComponent(path, "Select") ||
+      this.isLinguiComponent(path, "SelectOrdinal")
     )
   }
 

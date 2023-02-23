@@ -19,6 +19,23 @@ const cases: TestCase[] = [
     `,
   },
   {
+    name: "t`` macro could be renamed",
+    input: `
+        import { t as t2 } from '@lingui/macro';
+        const a = t2\`Expression assignment\`;
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const a = i18n._(
+          /*i18n*/
+          {
+            id: "mjnlP0",
+            message: "Expression assignment",
+          }
+        );
+    `,
+  },
+  {
     name: "Macro is used in expression assignment, with custom lingui instance",
     input: `
         import { t } from '@lingui/macro';

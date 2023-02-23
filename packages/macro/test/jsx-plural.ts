@@ -29,6 +29,28 @@ const cases: TestCase[] = [
       `,
   },
   {
+    stripId: true,
+    name: "Plural macro could be renamed",
+    input: `
+        import { Plural as Plural2 } from '@lingui/macro';
+        <Plural2
+          value={count}
+          one={"..."}
+          other={"..."}
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans
+          id={"<stripped>"}
+          message={"{count, plural, one {...} other {...}}"}
+          values={{
+            count: count,
+          }}
+        />;
+      `,
+  },
+  {
     name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
     input: `
         import { Plural } from '@lingui/macro';

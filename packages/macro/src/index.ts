@@ -6,8 +6,10 @@ import MacroJSX from "./macroJsx"
 import { NodePath } from "@babel/traverse"
 import {
   ImportDeclaration,
+  Identifier,
   isImportSpecifier,
   isIdentifier,
+  JSXIdentifier,
 } from "@babel/types"
 
 export type LinguiMacroOpts = {
@@ -53,20 +55,24 @@ function macro({ references, state, babel, config }: MacroParams) {
   const jsNodes = new Set<NodePath>()
   let needsI18nImport = false
 
+  let nameMap = new Map<string, string>()
   Object.keys(references).forEach((tagName) => {
     const nodes = references[tagName]
 
     if (jsMacroTags.has(tagName)) {
-      nodes.forEach((node) => {
-        jsNodes.add(node.parentPath)
+      nodes.forEach((path) => {
+        nameMap.set(tagName, (path.node as Identifier).name)
+        jsNodes.add(path.parentPath)
       })
     } else if (jsxMacroTags.has(tagName)) {
       // babel-plugin-macros return JSXIdentifier nodes.
       // Which is for every JSX element would be presented twice (opening / close)
       // Here we're taking JSXElement and dedupe it.
-      nodes.forEach((node) => {
+      nodes.forEach((path) => {
+        nameMap.set(tagName, (path.node as JSXIdentifier).name)
+
         // identifier.openingElement.jsxElement
-        jsxNodes.add(node.parentPath.parentPath)
+        jsxNodes.add(path.parentPath.parentPath)
       })
     } else {
       throw nodes[0].buildCodeFrameError(`Unknown macro ${tagName}`)
@@ -79,14 +85,18 @@ function macro({ references, state, babel, config }: MacroParams) {
   const jsNodesArray = Array.from(jsNodes)
 
   jsNodesArray.filter(isRootPath(jsNodesArray)).forEach((path) => {
-    const macro = new MacroJS(babel, { i18nImportName, stripNonEssentialProps })
+    const macro = new MacroJS(babel, {
+      i18nImportName,
+      stripNonEssentialProps,
+      nameMap,
+    })
     if (macro.replacePath(path)) needsI18nImport = true
   })
 
   const jsxNodesArray = Array.from(jsxNodes)
 
   jsxNodesArray.filter(isRootPath(jsxNodesArray)).forEach((path) => {
-    const macro = new MacroJSX(babel, { stripNonEssentialProps })
+    const macro = new MacroJSX(babel, { stripNonEssentialProps, nameMap })
     macro.replacePath(path)
   })
 

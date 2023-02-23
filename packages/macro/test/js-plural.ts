@@ -26,6 +26,30 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "plural macro could be renamed",
+    input: `
+        import { plural as plural2 } from '@lingui/macro'
+        const a = plural2(count, {
+          "one": \`# book\`,
+          other: "# books"
+        });
+      `,
+    expected: `
+        import { i18n } from "@lingui/core";
+       const a = i18n._(
+          /*i18n*/
+          {
+            id: "esnaQO",
+            message: "{count, plural, one {# book} other {# books}}",
+            values: {
+              count: count,
+            },
+          }
+        );
+
+      `,
+  },
+  {
     name: "Macro with offset and exact matches",
     input: `
         import { plural } from '@lingui/macro'
