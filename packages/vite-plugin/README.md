@@ -21,7 +21,7 @@ npm install --save-dev @lingui/vite-plugin
 
 ```ts
 import { UserConfig } from 'vite';
-import lingui from '@lingui/vite-plugin'
+import { lingui } from '@lingui/vite-plugin'
 
 const config: UserConfig = {
   plugins: [lingui()]

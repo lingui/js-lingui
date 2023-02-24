@@ -18,7 +18,7 @@ Simply add `@lingui/vite-plugin` inside your `vite.config.ts`:
 
 ```ts title="vite.config.ts"
 import { UserConfig } from 'vite';
-import lingui from '@lingui/vite-plugin'
+import { lingui } from '@lingui/vite-plugin'
 
 const config: UserConfig = {
   plugins: [lingui()]

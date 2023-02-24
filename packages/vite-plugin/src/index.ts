@@ -15,7 +15,7 @@ type LinguiConfigOpts = {
   skipValidation?: boolean
 }
 
-export default function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
+export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
   const config = getConfig(linguiConfig)
 
   return {
@@ -56,3 +56,5 @@ export default function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
     },
   }
 }
+
+export default lingui
