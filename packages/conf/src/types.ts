@@ -3,6 +3,10 @@ import { GeneratorOptions } from "@babel/core"
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
 
 export type ExtractorCtx = {
+  /**
+   * Raw Sourcemaps object to mapping from.
+   * Check the https://github.com/mozilla/source-map#new-sourcemapconsumerrawsourcemap
+   */
   sourceMaps?: any
 }
 
@@ -22,7 +26,7 @@ export type ExtractedMessage = {
 
   message?: string
   context?: string
-  origin?: [filename: string, line: number]
+  origin?: [filename: string, line: number, column?: number]
 
   comment?: string
 }

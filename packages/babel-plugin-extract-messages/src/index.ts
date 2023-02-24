@@ -36,7 +36,7 @@ type RawMessage = {
   context?: string
 }
 
-export type Origin = [filename: string, line: number]
+export type Origin = [filename: string, line: number, column?: number]
 
 function collectMessage(
   path: NodePath<any>,
@@ -46,14 +46,17 @@ function collectMessage(
   // prevent from adding undefined msgid
   if (props.id === undefined) return
 
-  const line = path.node.loc ? path.node.loc.start.line : null
+  const node: Node = path.node
+
+  const line = node.loc ? node.loc.start.line : null
+  const column = node.loc ? node.loc.start.column : null
 
   ;(ctx.opts as ExtractPluginOpts).onMessageExtracted({
     id: props.id,
     message: props.message,
     context: props.context,
     comment: props.comment,
-    origin: [ctx.file.opts.filename, line],
+    origin: [ctx.file.opts.filename, line, column],
   })
 }
 

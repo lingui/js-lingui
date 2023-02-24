@@ -228,6 +228,23 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
+    it("should respect inline sourcemaps", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect-inline-sourcemaps/")],
+          exclude: [],
+        },
+        mockConfig()
+      )
+
+      const messages = await catalog.collect()
+      expect(messages[Object.keys(messages)[0]].origin).toStrictEqual([
+        ["../../../../../input.tsx", 5],
+      ])
+    })
+
     it("should extract only files passed on options", async () => {
       const catalog = new Catalog(
         {

@@ -6,6 +6,7 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import type { ExtractorType } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 import { LinguiMacroOpts } from "@lingui/macro/src"
+import { SourceMapConsumer } from "source-map"
 
 const babelRe = new RegExp(
   "\\.(" +
@@ -16,12 +17,16 @@ const babelRe = new RegExp(
   "i"
 )
 
+const inlineSourceMapsRE = new RegExp(
+  /\/[\/\*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+)
+
 const extractor: ExtractorType = {
   match(filename) {
     return babelRe.test(filename)
   },
 
-  async extract(filename, code, onMessageExtracted, linguiConfig, options) {
+  async extract(filename, code, onMessageExtracted, linguiConfig, ctx) {
     const parserOptions = linguiConfig.extractorParserOptions
 
     const parserPlugins: ParserPlugin[] = [
@@ -46,6 +51,17 @@ const extractor: ExtractorType = {
       parserPlugins.push("jsx")
     }
 
+    let sourceMapsConsumer: SourceMapConsumer
+
+    if (ctx?.sourceMaps) {
+      sourceMapsConsumer = await new SourceMapConsumer(ctx?.sourceMaps)
+    } else if (code.search(inlineSourceMapsRE) != -1) {
+      const { fromSource } = await import("convert-source-map")
+      sourceMapsConsumer = await new SourceMapConsumer(
+        fromSource(code).toObject()
+      )
+    }
+
     await transformAsync(code, {
       // don't generate code
       code: false,
@@ -55,7 +71,7 @@ const extractor: ExtractorType = {
 
       filename: filename,
 
-      sourceMaps: options?.sourceMaps,
+      inputSourceMap: ctx?.sourceMaps,
       parserOpts: {
         plugins: parserPlugins,
       },
@@ -78,11 +94,35 @@ const extractor: ExtractorType = {
         [
           linguiExtractMessages,
           {
-            onMessageExtracted,
+            onMessageExtracted: (msg) => {
+              if (!sourceMapsConsumer) {
+                return onMessageExtracted(msg)
+              }
+
+              const [_, line, column] = msg.origin
+
+              const mappedPosition = sourceMapsConsumer.originalPositionFor({
+                line,
+                column,
+              })
+
+              return onMessageExtracted({
+                ...msg,
+                origin: [
+                  mappedPosition.source,
+                  mappedPosition.line,
+                  mappedPosition.column,
+                ],
+              })
+            },
           } satisfies ExtractPluginOpts,
         ],
       ],
     })
+
+    if (sourceMapsConsumer) {
+      sourceMapsConsumer.destroy()
+    }
   },
 }
 
