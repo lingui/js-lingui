@@ -15,11 +15,17 @@ type LinguiConfigOpts = {
   skipValidation?: boolean
 }
 
-export default function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
+export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
   const config = getConfig(linguiConfig)
 
   return {
     name: "vite-plugin-lingui",
+
+    config: (config) => {
+      // https://github.com/lingui/js-lingui/issues/1464
+      config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
+      config.optimizeDeps.exclude.push("@lingui/macro")
+    },
 
     transform(src, id) {
       if (fileRegex.test(id)) {
@@ -51,3 +57,5 @@ export default function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
     },
   }
 }
+
+export default lingui

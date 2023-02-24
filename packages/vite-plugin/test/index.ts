@@ -1,9 +1,9 @@
 import path from "path"
-import vitePlugin from "../src"
+import { lingui } from "../src"
 
 describe("vite-plugin", () => {
   it("should return compiled catalog", async () => {
-    const p = vitePlugin({
+    const p = lingui({
       configPath: path.resolve(__dirname, ".linguirc"),
     })
     const result = await (p.transform as any)(
