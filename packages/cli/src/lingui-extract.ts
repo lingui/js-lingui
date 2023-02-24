@@ -5,7 +5,7 @@ import nodepath from "path"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { AllCatalogsType, getCatalogs } from "./api/catalog"
+import { getCatalogs, AllCatalogsType } from "./api"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"

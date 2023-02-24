@@ -3,7 +3,7 @@ import chalk from "chalk"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
 
-import { CatalogType, AllCatalogsType } from "./catalog"
+import { AllCatalogsType, CatalogType } from "./types"
 
 type CatalogStats = [number, number]
 

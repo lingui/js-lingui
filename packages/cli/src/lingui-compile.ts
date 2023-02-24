@@ -6,11 +6,11 @@ import * as plurals from "make-plural"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogForMerge, getCatalogs } from "./api/catalog"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
-import { getFormat } from "./api"
-import { TranslationMissingEvent } from "./api/getTranslationsForCatalog"
+import { getCatalogs, getFormat } from "./api"
+import { TranslationMissingEvent } from "./api/catalog/getTranslationsForCatalog"
+import { getCatalogForMerge } from "./api/catalog/getCatalogs"
 
 export type CliCompileOptions = {
   verbose?: boolean

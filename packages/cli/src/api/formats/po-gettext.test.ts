@@ -4,13 +4,38 @@ import mockFs from "mock-fs"
 import mockDate from "mockdate"
 import path from "path"
 
-import { CatalogType } from "../catalog"
+import { CatalogType } from "../types"
 import format, { serialize } from "./po-gettext"
 
 describe("po-gettext format", () => {
   afterEach(() => {
     mockFs.restore()
     mockDate.reset()
+  })
+
+  it("should not throw if directory not exists", function () {
+    mockFs({})
+    const filename = path.join("locale", "en", "messages.po")
+    const catalog = {
+      static: {
+        message: "Static message",
+        translation: "Static message",
+      },
+    }
+
+    format.write(filename, catalog, { locale: "en" })
+    const content = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(content).toBeTruthy()
+  })
+
+  it("should not throw if file not exists", () => {
+    mockFs({})
+
+    const filename = path.join("locale", "en", "messages.po")
+    const actual = format.read(filename)
+    mockFs.restore()
+    expect(actual).toBeNull()
   })
 
   it("should convert ICU plural messages to gettext plurals", function () {

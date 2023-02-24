@@ -1,6 +1,6 @@
 import { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
 
-import { CatalogType } from "../catalog"
+import { CatalogType } from "../types"
 import csv from "./csv"
 import lingui from "./lingui"
 import minimal from "./minimal"
@@ -38,7 +38,7 @@ export type CatalogFormatter = {
   parse(content: unknown): CatalogType | null
 }
 
-export default function getFormat(name: CatalogFormat): CatalogFormatter {
+export function getFormat(name: CatalogFormat): CatalogFormatter {
   const format = formats[name]
 
   if (!format) {

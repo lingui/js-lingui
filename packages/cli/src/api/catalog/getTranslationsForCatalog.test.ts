@@ -1,5 +1,6 @@
 import { getTranslationsForCatalog } from "./getTranslationsForCatalog"
-import { AllCatalogsType, Catalog, CatalogType } from "./catalog"
+import { Catalog } from "../catalog"
+import type { AllCatalogsType, CatalogType } from "../types"
 
 function getCatalogStub(
   catalogs: AllCatalogsType,

@@ -1,8 +1,8 @@
-import fs from "fs"
 import * as R from "ramda"
 
-import { MessageType, CatalogType } from "../catalog"
 import { CatalogFormatter } from "."
+import type { CatalogType, MessageType } from "../types"
+import { readFile, writeFile } from "../utils"
 
 type MinimalCatalogType = Record<string, string>
 
@@ -22,24 +22,22 @@ const minimal: CatalogFormatter = {
 
   write(filename, catalog) {
     const messages = serialize(catalog)
-    let file = null
-    try {
-      file = fs.readFileSync(filename, "utf8")
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-        throw error
-      }
-    }
+    let file = readFile(filename)
+
     const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
     const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-    fs.writeFileSync(
+    writeFile(
       filename,
       `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
     )
   },
 
   read(filename) {
-    const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+
+    if (!raw) {
+      return null
+    }
 
     try {
       const rawCatalog: Record<string, string> = JSON.parse(raw)

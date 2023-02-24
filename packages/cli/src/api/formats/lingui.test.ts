@@ -4,15 +4,15 @@ import mockFs from "mock-fs"
 import mockDate from "mockdate"
 
 import format from "./lingui"
-import { CatalogType } from "../catalog"
+import { CatalogType } from "../types"
 
-describe("lingui format", function () {
+describe("lingui format", () => {
   afterEach(() => {
     mockFs.restore()
     mockDate.reset()
   })
 
-  it("should write catalog in lingui format", function () {
+  it("should write catalog in lingui format", () => {
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -73,7 +73,22 @@ describe("lingui format", function () {
     expect(lingui).toMatchSnapshot()
   })
 
-  it("should read catalog in lingui format", function () {
+  it("should not throw if directory not exists", () => {
+    mockFs({})
+    const filename = path.join("locale", "en", "messages.json")
+    const catalog = {
+      static: {
+        translation: "Static message",
+      },
+    }
+
+    format.write(filename, catalog, {})
+    const content = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(content).toBeTruthy()
+  })
+
+  it("should read catalog in lingui format", () => {
     const lingui = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.json")
@@ -94,7 +109,16 @@ describe("lingui format", function () {
     expect(actual).toMatchSnapshot()
   })
 
-  it("should not include origins if origins option is false", function () {
+  it("should not throw if file not exists", () => {
+    mockFs({})
+
+    const filename = path.join("locale", "en", "messages.json")
+    const actual = format.read(filename)
+    mockFs.restore()
+    expect(actual).toBeNull()
+  })
+
+  it("should not include origins if origins option is false", () => {
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -125,7 +149,7 @@ describe("lingui format", function () {
     expect(lingui).toEqual(expect.not.stringContaining(linguiOriginProperty))
   })
 
-  it("should not include lineNumbers if lineNumbers option is false", function () {
+  it("should not include lineNumbers if lineNumbers option is false", () => {
     mockFs({
       locale: {
         en: mockFs.directory(),

@@ -1,5 +1,6 @@
-import { AllCatalogsType, Catalog, CatalogType, MessageType } from "./catalog"
+import { Catalog } from "../catalog"
 import { FallbackLocales } from "@lingui/conf"
+import type { AllCatalogsType, CatalogType, MessageType } from "../types"
 
 export type TranslationMissingEvent = {
   source: string
