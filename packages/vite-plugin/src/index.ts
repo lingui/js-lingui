@@ -21,6 +21,12 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
   return {
     name: "vite-plugin-lingui",
 
+    config: (config) => {
+      // https://github.com/lingui/js-lingui/issues/1464
+      config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
+      config.optimizeDeps.exclude.push("@lingui/macro")
+    },
+
     transform(src, id) {
       if (fileRegex.test(id)) {
         const catalogRelativePath = path.relative(config.rootDir, id)
