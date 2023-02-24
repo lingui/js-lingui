@@ -20,7 +20,47 @@ module.exports = {
 }
 ```
 
+### Hash-based message ID generation and Context feature
+
+The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.
+
+For the line "Hello world" it'll exist in the source code as ID in i18n call, then as a key in the message catalog, and then as a translation itself. Strings could be very long, not just a couple of words, so this may bring more kB to the bundle.
+
+A much better option is generating a "stable" ID based on the msg + context as a hash with a fixed length.
+
+Hash would be calculated at build time by macros. So macros instead of:
+
+```js
+const message = t({
+   context: 'My context',
+   message: `Hello`
+})
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "@lingui/core"
+const message = i18n._(/*i18n*/{
+   context: 'My context',
+   id: `Hello`
+})
+```
+
+now generates:
+
+```js
+import { i18n } from "@lingui/core"
+const message = i18n._(/*i18n*/{
+   id: "<hash(message + context)>",
+   message: `Hello`,
+})
+```
+
+Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/docs/tutorials/react-patterns.md#providing-a-context-for-a-message).
+
+The context feature affects the message ID generation and adds the `msgctxt` parameter in case of the PO catalog format extraction.
+
 ### Change in generated ICU messages for nested JSX Macros
+
 We have made a small change in how Lingui generates ICU messages for nested JSX Macros. We have removed leading spaces from the texts in all cases.
 
 The generated code from the following nested component:
@@ -68,6 +108,7 @@ module.exports = {
 ```
 
 ### `@lingui/cli/api/extractors/typescript` was deleted
+
 Extractor supports TypeScript out of the box. Please delete it from your configuration file.
 
 ### No need to have `NODE_ENV=development` before `lingui-extract`
