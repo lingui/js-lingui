@@ -24,7 +24,7 @@ module.exports = {
 
 The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.
 
-For the line "Hello world" it'll exist in the source code as ID in i18n call, then as a key in the message catalog, and then as a translation itself. Strings could be very long, not just a couple of words, so this may bring more kb to the bundle.
+For the line "Hello world" it'll exist in the source code as ID in i18n call, then as a key in the message catalog, and then as a translation itself. Strings could be very long, not just a couple of words, so this may bring more kB to the bundle.
 
 A much better option is generating a "stable" ID based on the msg + context as a hash with a fixed length.
 
