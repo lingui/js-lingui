@@ -25,7 +25,10 @@ const parseExpression = (expression: string) => {
 }
 
 function createMacro() {
-  return new MacroJSX({ types }, { stripNonEssentialProps: false })
+  return new MacroJSX(
+    { types },
+    { stripNonEssentialProps: false, nameMap: new Map() }
+  )
 }
 
 describe("jsx macro", () => {

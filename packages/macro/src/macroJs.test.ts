@@ -6,7 +6,11 @@ import { CallExpression } from "@babel/types"
 function createMacro() {
   return new MacroJs(
     { types },
-    { i18nImportName: "i18n", stripNonEssentialProps: false }
+    {
+      i18nImportName: "i18n",
+      stripNonEssentialProps: false,
+      nameMap: new Map<string, string>(),
+    }
   )
 }
 

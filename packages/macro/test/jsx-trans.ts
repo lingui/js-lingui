@@ -81,6 +81,18 @@ const cases: TestCase[] = [
       `,
   },
   {
+    stripId: true,
+    name: "Trans macro could be renamed",
+    input: `
+        import { Trans as Trans2 } from '@lingui/macro';
+        <Trans2>Hello World</Trans2>;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans id={"<stripped>"} message={"Hello World"} />;
+      `,
+  },
+  {
     name: "Macro without children is noop",
     input: `
         import { Trans } from '@lingui/macro';

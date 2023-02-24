@@ -22,6 +22,29 @@ const cases: TestCase[] = [
     `,
   },
   {
+    name: "defineMessage macro could be renamed",
+    input: `
+        import { defineMessage as defineMessage2, plural as plural2 } from '@lingui/macro';
+        const message = defineMessage2({
+          comment: "Description",
+          message: plural2(value, { one: "book", other: "books" })
+        })
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const message =
+          /*i18n*/
+          {
+            values: {
+              value: value,
+            },
+            message: "{value, plural, one {book} other {books}}",
+            id: "SlmyxX",
+            comment: "Description",
+          };
+    `,
+  },
+  {
     name: "should left string message intact",
     input: `
         import { defineMessage } from '@lingui/macro';
