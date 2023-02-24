@@ -2,9 +2,8 @@
   "name": "@lingui/vite-plugin",
   "version": "3.17.1",
   "description": "Vite plugin for Lingui message catalogs",
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/esm/index.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "license": "MIT",
   "keywords": [
     "vite-plugin",
@@ -18,10 +17,7 @@
     "translation"
   ],
   "scripts": {
-    "clean": "rimraf ./build",
-    "build:esm": "tsc --module esnext --outDir ./build/esm",
-    "build:cjs": "tsc --module commonjs --outDir ./build/cjs",
-    "build": "yarn clean && yarn build:esm && yarn build:cjs"
+    "build": "rimraf ./build && tsc"
   },
   "repository": {
     "type": "git",
@@ -29,18 +25,6 @@
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
-  },
-  "exports": {
-    ".": {
-      "require": {
-        "types": "./build/cjs/index.d.ts",
-        "default": "./build/cjs/index.js"
-      },
-      "import": {
-        "types": "./build/esm/index.d.ts",
-        "default": "./build/esm/index.js"
-      }
-    }
   },
   "engines": {
     "node": ">=14.0.0"
