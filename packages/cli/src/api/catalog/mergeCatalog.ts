@@ -7,7 +7,7 @@ export function mergeCatalog(
   nextCatalog: ExtractedCatalogType,
   forSourceLocale: boolean,
   options: MergeOptions
-) {
+): CatalogType {
   const nextKeys = Object.keys(nextCatalog)
 
   const prevKeys = R.keys(prevCatalog).map(String)

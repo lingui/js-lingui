@@ -1,5 +1,6 @@
 import extractTemplateCommand from "../src/lingui-extract-template"
 import extractCommand from "../src/lingui-extract"
+import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import fs from "fs/promises"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
@@ -114,5 +115,164 @@ describe("E2E Extractor Test", () => {
     })
 
     compareFolders(actualPath, expectedPath)
+  })
+
+  describe("extractor-experimental", () => {
+    it("should extract to template when --template passed", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-template"
+      )
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(
+          makeConfig(
+            {
+              rootDir: rootDir,
+              locales: ["en", "pl"],
+              sourceLocale: "en",
+              format: "po",
+              catalogs: [],
+              experimental: {
+                extractor: {
+                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                  output: "<rootDir>/actual/{entryName}.{locale}",
+                },
+              },
+            },
+            { skipValidation: true }
+          ),
+          {
+            template: true,
+          }
+        )
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          Catalog statistics for fixtures/pages/about.page.tsx:
+          4 message(s) extracted
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          1 message(s) extracted
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+
+    it("should extract to catalogs and merge with existing", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental"
+      )
+
+      await fs.cp(
+        nodepath.join(rootDir, "existing"),
+        nodepath.join(rootDir, "actual"),
+        { recursive: true }
+      )
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(
+          makeConfig(
+            {
+              rootDir: rootDir,
+              locales: ["en", "pl"],
+              sourceLocale: "en",
+              format: "po",
+              catalogs: [],
+              experimental: {
+                extractor: {
+                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                  output: "<rootDir>/actual/{entryName}.{locale}",
+                },
+              },
+            },
+            { skipValidation: true }
+          ),
+          {}
+        )
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      1      │    -    │
+          │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+    it("should extract and clean obsolete", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-clean"
+      )
+
+      await fs.cp(
+        nodepath.join(rootDir, "existing"),
+        nodepath.join(rootDir, "actual"),
+        { recursive: true }
+      )
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(
+          makeConfig(
+            {
+              rootDir: rootDir,
+              locales: ["en", "pl"],
+              sourceLocale: "en",
+              format: "po",
+              catalogs: [],
+              experimental: {
+                extractor: {
+                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                  output: "<rootDir>/actual/{entryName}.{locale}",
+                },
+              },
+            },
+            { skipValidation: true }
+          ),
+          {
+            clean: true,
+          }
+        )
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      1      │    -    │
+          │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
   })
 })

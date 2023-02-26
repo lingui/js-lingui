@@ -60,6 +60,67 @@ type CatalogService = {
   apiKey: string
 }
 
+export type ExperimentalExtractorOptions = {
+  /**
+   * Entries to start extracting from.
+   * Each separate resolved entry would create a separate catalog.
+   *
+   * Example for MPA application like Next.js
+   * ```
+   * <rootDir>/pages/**\/*.ts
+   * <rootDir>/pages/**\/*.page.ts
+   * ```
+   *
+   * With this config you would have a separate
+   * catalog for every page file in your app.
+   */
+  entries: string[]
+
+  /**
+   * Explicitly include some dependency for extraction.
+   * For example, you can include all monorepo's packages as
+   * ["@mycompany/"]
+   */
+  includeDeps?: string[]
+
+  /**
+   * By default all dependencies from package.json would be ecxluded from analyzing.
+   * If something was not properly discovered you can add it here.
+   *
+   * Note: it automatically matches also sub imports
+   *
+   * "next" would match "next" and "next/head"
+   */
+  excludeDeps?: string[]
+
+  /**
+   * svg, jpg and other files which might be imported in application should be exluded from analysis.
+   * By default extractor provides a comprehensive list of extensions. If you feel like somthing is missing in this list please fill an issue on GitHub
+   *
+   * NOTE: changing this param will override default list of extensions.
+   */
+  excludeExtensions?: string[]
+
+  /**
+   * output path for extracted catalogs.
+   *
+   * Supported placeholders for entry: /pages/about/index.page.ts
+   *  - {entryName} = index.page
+   *  - {locale} = en
+   *  - {entryDir} = pages/about/
+   *
+   * Examples:
+   *
+   * ```
+   * <rootDir>/locales/{entryName}.{locale} -> /locales/index.page/en.po
+   * <rootDir>/{entryDir}/locales/{locale} -> /pages/about/locales/en.po
+   * ```
+   */
+  output: string
+
+  resolveEsbuildOptions?: (options: any) => any
+}
+
 export type LinguiConfig = {
   catalogs?: CatalogConfig[]
   compileNamespace?: "es" | "ts" | "cjs" | string
@@ -88,6 +149,9 @@ export type LinguiConfig = {
   runtimeConfigModule?: ModuleSource | { [symbolName: string]: ModuleSource }
   sourceLocale?: string
   service?: CatalogService
+  experimental?: {
+    extractor?: ExperimentalExtractorOptions
+  }
 }
 
 export type LinguiConfigNormalized = Omit<
