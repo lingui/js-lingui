@@ -258,6 +258,7 @@ const convertPluralsToICU = (
 
 const poGettext: CatalogFormatter = {
   catalogExtension: ".po",
+  templateExtension: ".pot",
 
   write(filename, catalog: CatalogType, options) {
     let po: PO

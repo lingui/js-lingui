@@ -389,7 +389,8 @@ export class Catalog {
   }
 
   get templateFile() {
-    return this.path.replace(LOCALE_SUFFIX_RE, "messages.pot")
+    const ext = this.format.templateExtension || this.format.catalogExtension
+    return this.path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
   }
 
   get localeDir() {

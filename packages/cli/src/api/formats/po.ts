@@ -126,6 +126,7 @@ function validateItem(item: POItem): void {
 
 const po: CatalogFormatter = {
   catalogExtension: ".po",
+  templateExtension: ".pot",
 
   write(filename, catalog, options) {
     let po: PO
