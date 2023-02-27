@@ -80,6 +80,7 @@ export type CatalogProps = {
   path: string
   include: Array<string>
   exclude?: Array<string>
+  templatePath?: string
 }
 
 function mkdirp(dir: string) {
@@ -100,9 +101,10 @@ export class Catalog {
   include: Array<string>
   exclude: Array<string>
   format: CatalogFormatter
+  templateFile?: string
 
   constructor(
-    { name, path, include, exclude = [] }: CatalogProps,
+    { name, path, include, templatePath, exclude = [] }: CatalogProps,
     public config: LinguiConfigNormalized
   ) {
     this.name = name
@@ -110,6 +112,7 @@ export class Catalog {
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
     this.format = getFormat(config.format)
+    this.templateFile = templatePath || getTemplatePath(this.format, this.path)
   }
 
   async make(options: MakeOptions): Promise<AllCatalogsType | false> {
@@ -388,10 +391,6 @@ export class Catalog {
     return glob.sync(patterns, { ignore: this.exclude, mark: true })
   }
 
-  get templateFile() {
-    return this.path.replace(LOCALE_SUFFIX_RE, "messages.pot")
-  }
-
   get localeDir() {
     const localePatternIndex = this.path.indexOf(LOCALE)
     if (localePatternIndex === -1) {
@@ -403,6 +402,11 @@ export class Catalog {
   get locales() {
     return this.config.locales
   }
+}
+
+function getTemplatePath(format: CatalogFormatter, path: string) {
+  const ext = format.templateExtension || format.catalogExtension
+  return path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
 }
 
 /**

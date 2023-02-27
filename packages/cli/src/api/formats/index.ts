@@ -24,6 +24,11 @@ export type CatalogFormatOptionsInternal = {
 
 export type CatalogFormatter = {
   catalogExtension: string
+  /**
+   * Set extension used when extract to template
+   * Omit if the extension is the same as catalogExtension
+   */
+  templateExtension?: string
   write(
     filename: string,
     catalog: CatalogType,
