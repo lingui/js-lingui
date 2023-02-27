@@ -5,6 +5,7 @@ import { Catalog } from "../catalog"
 import { normalizeRelativePath, PATHSEP, replacePlaceholders } from "../utils"
 import micromatch from "micromatch"
 import { getFormat } from "../formats"
+import { getExperimentalCatalogs } from "../../extract-experimental/getExperimentalCatalogs"
 
 const NAME_PH = "{name}"
 const LOCALE_PH = "{locale}"
@@ -77,6 +78,10 @@ export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
       )
     })
   })
+
+  if (config.experimental?.extractor?.entries.length) {
+    catalogs.push(...getExperimentalCatalogs(config))
+  }
 
   return catalogs
 }

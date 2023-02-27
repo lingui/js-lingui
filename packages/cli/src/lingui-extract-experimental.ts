@@ -2,7 +2,6 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
-import glob from "glob"
 import os from "os"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
@@ -13,6 +12,7 @@ import {
   writeCatalogs,
   writeTemplate,
 } from "./extract-experimental/writeCatalogs"
+import { getEntryPoints } from "./extract-experimental/getEntryPoints"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -37,19 +37,12 @@ export default async function command(
     )
   }
 
-  const patterns =
-    config.entries.length > 1
-      ? `{${config.entries.join(",")}}`
-      : config.entries[0]
-
-  const entryPoints = glob.sync(patterns, { mark: true })
-
   const tempDir = nodepath.join(os.tmpdir(), "js-lingui-extract")
   await fs.rm(tempDir, { recursive: true, force: true })
 
   const bundleResult = await bundleSource(
     config,
-    entryPoints,
+    getEntryPoints(config.entries),
     tempDir,
     linguiConfig.rootDir
   )

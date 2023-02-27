@@ -1,6 +1,7 @@
 import extractTemplateCommand from "../src/lingui-extract-template"
 import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"
+import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
@@ -124,27 +125,31 @@ describe("E2E Extractor Test", () => {
       )
 
       await mockConsole(async (console) => {
-        const result = await extractExperimentalCommand(
-          makeConfig(
-            {
-              rootDir: rootDir,
-              locales: ["en", "pl"],
-              sourceLocale: "en",
-              format: "po",
-              catalogs: [],
-              experimental: {
-                extractor: {
-                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-                  output: "<rootDir>/actual/{entryName}.{locale}",
-                },
+        const config = makeConfig(
+          {
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+            format: "po",
+            catalogs: [],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
               },
             },
-            { skipValidation: true }
-          ),
-          {
-            template: true,
-          }
+          },
+          { skipValidation: true }
         )
+
+        const result = await extractExperimentalCommand(config, {
+          template: true,
+        })
+
+        await compileCommand(config, {
+          allowEmpty: true,
+        })
+
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
         expect(result).toBeTruthy()
         expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
@@ -154,6 +159,7 @@ describe("E2E Extractor Test", () => {
           Catalog statistics for fixtures/pages/index.page.ts:
           1 message(s) extracted
 
+          Compiling message catalogs…
         `)
       })
 
@@ -172,25 +178,28 @@ describe("E2E Extractor Test", () => {
       )
 
       await mockConsole(async (console) => {
-        const result = await extractExperimentalCommand(
-          makeConfig(
-            {
-              rootDir: rootDir,
-              locales: ["en", "pl"],
-              sourceLocale: "en",
-              format: "po",
-              catalogs: [],
-              experimental: {
-                extractor: {
-                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-                  output: "<rootDir>/actual/{entryName}.{locale}",
-                },
+        const config = makeConfig(
+          {
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+            format: "po",
+            catalogs: [],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
               },
             },
-            { skipValidation: true }
-          ),
-          {}
+          },
+          { skipValidation: true }
         )
+
+        const result = await extractExperimentalCommand(config, {})
+
+        await compileCommand(config, {
+          allowEmpty: true,
+        })
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
         expect(result).toBeTruthy()
@@ -211,6 +220,7 @@ describe("E2E Extractor Test", () => {
           │ pl          │      1      │    1    │
           └─────────────┴─────────────┴─────────┘
 
+          Compiling message catalogs…
         `)
       })
 
