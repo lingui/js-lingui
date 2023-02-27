@@ -10,8 +10,8 @@ import {
   StringLiteral,
 } from "@babel/types"
 import type { PluginObj, PluginPass } from "@babel/core"
-import { NodePath } from "@babel/core"
-import { Hub } from "@babel/traverse"
+import type { NodePath } from "@babel/core"
+import type { Hub } from "@babel/traverse"
 
 type BabelTypes = typeof BabelTypesNamespace
 

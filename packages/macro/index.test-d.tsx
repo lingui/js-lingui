@@ -12,6 +12,7 @@ import {
   Select,
   SelectOrdinal,
 } from "."
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React from "react"
 
 const name = "Jack"
