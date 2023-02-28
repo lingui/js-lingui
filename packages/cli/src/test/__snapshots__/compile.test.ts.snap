@@ -12,7 +12,7 @@ Missing 1 translation(s)
 `;
 
 exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (with template) 1`] = `
-Object {
+{
   en: undefined,
   pl: undefined,
 }

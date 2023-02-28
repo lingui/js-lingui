@@ -32,7 +32,7 @@ jobs:
         run: yarn install --frozen-lockfile --pure-lockfile
 
       - name: Unit Testing
-        run: yarn test
+        run: yarn test:ci
 
   validate:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         run: yarn install --frozen-lockfile --pure-lockfile
 
       - name: Unit Testing
-        run: yarn test
+        run: yarn test:ci:coverage
 
       - name: Linting & Types
         run: yarn lint:all

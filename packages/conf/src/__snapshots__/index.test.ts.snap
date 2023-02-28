@@ -14,13 +14,13 @@ Documentation: https://lingui.dev/ref/conf
 `;
 
 exports[`@lingui/conf should return default config 1`] = `
-Object {
-  catalogs: Array [
-    Object {
-      exclude: Array [
+{
+  catalogs: [
+    {
+      exclude: [
         */node_modules/*,
       ],
-      include: Array [
+      include: [
         .,
       ],
       path: ./locale/{locale}/messages,
@@ -28,37 +28,37 @@ Object {
   ],
   catalogsMergePath: ,
   compileNamespace: cjs,
-  compilerBabelOptions: Object {
-    jsescOption: Object {
+  compilerBabelOptions: {
+    jsescOption: {
       minimal: true,
     },
     minified: true,
   },
-  extractorParserOptions: Object {
+  extractorParserOptions: {
     decoratorsBeforeExport: false,
     flow: false,
   },
-  fallbackLocales: Object {
+  fallbackLocales: {
     en-gb: en,
   },
   format: po,
-  formatOptions: Object {
+  formatOptions: {
     lineNumbers: true,
     origins: true,
   },
-  locales: Array [
+  locales: [
     en-gb,
   ],
   orderBy: messageId,
   pseudoLocale: ,
   rootDir: .,
-  runtimeConfigModule: Object {
+  runtimeConfigModule: {
     TransImportModule: @lingui/react,
     TransImportName: Trans,
     i18nImportModule: @lingui/core,
     i18nImportName: i18n,
   },
-  service: Object {
+  service: {
     apiKey: ,
     name: ,
   },
