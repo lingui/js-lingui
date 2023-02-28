@@ -1,8 +1,7 @@
-import fs from "fs"
 import * as R from "ramda"
 
-import { writeFileIfChanged } from "../utils"
-import { ExtractedMessageType, CatalogType } from "../catalog"
+import { readFile, writeFileIfChanged } from "../utils"
+import { CatalogType, ExtractedMessageType } from "../types"
 import { CatalogFormatter } from "."
 
 type NoOriginsCatalogType = {
@@ -38,7 +37,11 @@ const lingui: CatalogFormatter = {
   },
 
   read(filename) {
-    const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+
+    if (!raw) {
+      return null
+    }
 
     try {
       return JSON.parse(raw)

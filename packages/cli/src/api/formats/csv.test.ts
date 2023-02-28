@@ -34,6 +34,21 @@ describe("csv format", function () {
     expect(csv).toMatchSnapshot()
   })
 
+  it("should not throw if directory not exists", function () {
+    mockFs({})
+    const filename = path.join("locale", "en", "messages.csv")
+    const catalog = {
+      static: {
+        translation: "Static message",
+      },
+    }
+
+    format.write(filename, catalog)
+    const content = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(content).toBeTruthy()
+  })
+
   it("should read catalog in csv format", function () {
     const csv = fs
       .readFileSync(
@@ -53,6 +68,15 @@ describe("csv format", function () {
     const actual = format.read(filename)
     mockFs.restore()
     expect(actual).toMatchSnapshot()
+  })
+
+  it("should not throw if file not exists", () => {
+    mockFs({})
+
+    const filename = path.join("locale", "en", "messages.csv")
+    const actual = format.read(filename)
+    mockFs.restore()
+    expect(actual).toBeNull()
   })
 
   it("should write the same catalog as it was read", function () {

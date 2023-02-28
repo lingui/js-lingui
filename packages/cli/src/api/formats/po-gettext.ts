@@ -1,12 +1,12 @@
 import { format as formatDate } from "date-fns"
-import fs from "fs"
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
+// @ts-ignore
 import gettextPlurals from "node-gettext/lib/plurals"
 
-import { CatalogType, MessageType } from "../catalog"
-import { writeFileIfChanged } from "../utils"
+import { CatalogType, MessageType } from "../types"
+import { readFile, writeFileIfChanged } from "../utils"
 import type { CatalogFormatOptionsInternal, CatalogFormatter } from "./"
 import { deserialize, serialize as serializePo } from "./po"
 
@@ -263,8 +263,8 @@ const poGettext: CatalogFormatter = {
   write(filename, catalog: CatalogType, options) {
     let po: PO
 
-    if (fs.existsSync(filename)) {
-      const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+    if (raw) {
       po = PO.parse(raw)
     } else {
       po = new PO()
@@ -280,7 +280,11 @@ const poGettext: CatalogFormatter = {
   },
 
   read(filename) {
-    const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+    if (!raw) {
+      return null
+    }
+
     return this.parse(raw)
   },
 

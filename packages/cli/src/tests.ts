@@ -8,10 +8,9 @@ import {
   MakeOptions,
   MakeTemplateOptions,
   MergeOptions,
-  ExtractedMessageType,
-  MessageType,
 } from "./api/catalog"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
+import { ExtractedMessageType, MessageType } from "./api"
 
 export function copyFixture(fixtureDir: string) {
   const tmpDir = fsExtra.mkdtempSync(

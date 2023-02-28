@@ -1,11 +1,10 @@
-import fs from "fs"
 import Papa from "papaparse"
 
-import { writeFileIfChanged } from "../utils"
-import { MessageType } from "../catalog"
-import { CatalogFormatter } from "."
+import { readFile, writeFileIfChanged } from "../utils"
+import type { CatalogFormatter } from "."
+import { CatalogType, MessageType } from "../types"
 
-const serialize = (catalog) => {
+const serialize = (catalog: CatalogType) => {
   const rawArr = Object.keys(catalog).map((key) => [
     key,
     catalog[key].translation,
@@ -14,8 +13,8 @@ const serialize = (catalog) => {
 }
 
 const deserialize = (raw: string): { [key: string]: MessageType } => {
-  const rawCatalog = Papa.parse(raw)
-  const messages = {}
+  const rawCatalog = Papa.parse<[string, string]>(raw)
+  const messages: CatalogType = {}
   if (rawCatalog.errors.length) {
     throw new Error(
       rawCatalog.errors.map((err) => JSON.stringify(err)).join(";")
@@ -41,7 +40,12 @@ const csv: CatalogFormatter = {
   },
 
   read(filename) {
-    const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+
+    if (!raw) {
+      return null
+    }
+
     try {
       return deserialize(raw)
     } catch (e) {

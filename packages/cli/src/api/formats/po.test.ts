@@ -6,7 +6,7 @@ import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
 import format from "./po"
-import { CatalogType } from "../catalog"
+import { CatalogType } from "../types"
 import { normalizeLineEndings } from "../../tests"
 
 describe("pofile format", () => {
@@ -85,6 +85,21 @@ describe("pofile format", () => {
     expect(pofile).toMatchSnapshot()
   })
 
+  it("should not throw if directory not exists", function () {
+    mockFs({})
+    const filename = path.join("locale", "en", "messages.po")
+    const catalog = {
+      static: {
+        translation: "Static message",
+      },
+    }
+
+    format.write(filename, catalog, {})
+    const content = fs.readFileSync(filename).toString()
+    mockFs.restore()
+    expect(content).toBeTruthy()
+  })
+
   it("should read catalog in pofile format", () => {
     const pofile = fs
       .readFileSync(
@@ -104,6 +119,15 @@ describe("pofile format", () => {
     const actual = format.read(filename)
     mockFs.restore()
     expect(actual).toMatchSnapshot()
+  })
+
+  it("should not throw if file not exists", () => {
+    mockFs({})
+
+    const filename = path.join("locale", "en", "messages.po")
+    const actual = format.read(filename)
+    mockFs.restore()
+    expect(actual).toBeNull()
   })
 
   it("should serialize and deserialize messages with generated id", () => {

@@ -1,9 +1,8 @@
-import fs from "fs"
 import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
-import { joinOrigin, splitOrigin, writeFileIfChanged } from "../utils"
-import { CatalogType, MessageType } from "../catalog"
+import { joinOrigin, readFile, splitOrigin, writeFileIfChanged } from "../utils"
+import { CatalogType, MessageType } from "../types"
 import { CatalogFormatOptionsInternal, CatalogFormatter } from "."
 import { generateMessageId } from "../generateMessageId"
 
@@ -131,8 +130,8 @@ const po: CatalogFormatter = {
   write(filename, catalog, options) {
     let po: PO
 
-    if (fs.existsSync(filename)) {
-      const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+    if (raw) {
       po = PO.parse(raw)
     } else {
       po = new PO()
@@ -148,7 +147,10 @@ const po: CatalogFormatter = {
   },
 
   read(filename) {
-    const raw = fs.readFileSync(filename).toString()
+    const raw = readFile(filename)
+    if (!raw) {
+      return null
+    }
     return this.parse(raw)
   },
 

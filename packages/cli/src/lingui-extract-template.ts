@@ -3,7 +3,7 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs } from "./api/catalog"
+import { getCatalogs } from "./api"
 import nodepath from "path"
 import { normalizeSlashes } from "./api/utils"
 
