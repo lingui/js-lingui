@@ -66,7 +66,7 @@ export default class MacroJs {
       message,
       values,
     }: { message: ParsedResult["message"]; values: ParsedResult["values"] },
-    linguiInstance?: babelTypes.Identifier
+    linguiInstance?: babelTypes.Expression
   ) => {
     const properties: ObjectProperty[] = [
       this.createIdProperty(message),
@@ -100,7 +100,7 @@ export default class MacroJs {
     if (
       this.types.isCallExpression(path.node) &&
       this.types.isTaggedTemplateExpression(path.parentPath.node) &&
-      this.types.isIdentifier(path.node.arguments[0]) &&
+      this.types.isExpression(path.node.arguments[0]) &&
       this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       // Use the first argument as i18n instance instead of the default i18n instance
@@ -123,7 +123,7 @@ export default class MacroJs {
     if (
       this.types.isCallExpression(path.node) &&
       this.types.isCallExpression(path.parentPath.node) &&
-      this.types.isIdentifier(path.node.arguments[0]) &&
+      this.types.isExpression(path.node.arguments[0]) &&
       this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       const i18nInstance = path.node.arguments[0]
@@ -189,7 +189,7 @@ export default class MacroJs {
    */
   replaceTAsFunction = (
     path: NodePath<CallExpression>,
-    linguiInstance?: babelTypes.Identifier
+    linguiInstance?: babelTypes.Expression
   ) => {
     const descriptor = this.processDescriptor(path.node.arguments[0])
     path.replaceWith(this.createI18nCall(descriptor, linguiInstance))
@@ -423,7 +423,7 @@ export default class MacroJs {
 
   createI18nCall(
     messageDescriptor: ObjectExpression,
-    linguiInstance?: Identifier
+    linguiInstance?: Expression
   ) {
     return this.types.callExpression(
       this.types.memberExpression(

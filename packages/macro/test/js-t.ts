@@ -222,6 +222,24 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "Support template strings in t macro message, with custom i18n instance object property",
+    input: `
+        import { t } from '@lingui/macro'
+        const msg = t(global.i18n)({ message: \`Hello \${name}\` })
+      `,
+    expected: `const msg = global.i18n._(
+        /*i18n*/
+        {
+          values: {
+            name: name,
+          },
+          message: "Hello {name}",
+          id: "OVaF9k",
+        }
+      );
+    `,
+  },
+  {
     name: "Should generate different id when context provided",
     input: `
         import { t } from '@lingui/macro'
