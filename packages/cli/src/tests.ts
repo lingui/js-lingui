@@ -1,5 +1,4 @@
 import os from "os"
-import fsExtra from "fs-extra"
 import path from "path"
 import fs from "fs"
 
@@ -12,12 +11,17 @@ import {
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 import { ExtractedMessageType, MessageType } from "./api"
 
-export function copyFixture(fixtureDir: string) {
-  const tmpDir = fsExtra.mkdtempSync(
+export async function copyFixture(fixtureDir: string) {
+  const tmpDir = await fs.promises.mkdtemp(
     path.join(os.tmpdir(), `lingui-test-${process.pid}`)
   )
-  if (fsExtra.existsSync(fixtureDir)) {
-    fsExtra.copySync(fixtureDir, tmpDir)
+
+  try {
+    await fs.promises.cp(fixtureDir, tmpDir, { recursive: true })
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code != "ENOENT") {
+      throw err
+    }
   }
   return tmpDir
 }
