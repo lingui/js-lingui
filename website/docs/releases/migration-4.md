@@ -5,6 +5,7 @@
 Minimal required versions are:
 
 - TypeScript (if used on the project): 4.1
+- Node: v16.x
 
 ### Extractor configuration changes
 
