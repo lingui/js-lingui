@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ["14", "16", "18"]
+        node: ["16", "18", "19"]
         os: [ubuntu-latest, windows-latest]
 
     steps:
