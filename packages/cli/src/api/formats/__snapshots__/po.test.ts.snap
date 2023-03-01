@@ -1,178 +1,178 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`pofile format should correct badly used comments 1`] = `
-Object {
-  withDescriptionAndComments: Object {
-    comments: Array [
+{
+  withDescriptionAndComments: {
+    comments: [
       Translator comment,
     ],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       Single description only,
       Second description?,
     ],
-    flags: Array [
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Second description joins translator comments,
   },
-  withMultipleDescriptions: Object {
-    comments: Array [],
+  withMultipleDescriptions: {
+    comments: [],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       First description,
       Second comment,
       Third comment,
     ],
-    flags: Array [
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Extra comments are separated from the first description line,
   },
 }
 `;
 
 exports[`pofile format should read catalog in pofile format 1`] = `
-Object {
-  obsolete: Object {
-    comments: Array [],
+{
+  obsolete: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: true,
-    origin: Array [],
+    origin: [],
     translation: Is marked as obsolete,
   },
-  static: Object {
-    comments: Array [],
+  static: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Static message,
   },
-  veryLongString: Object {
-    comments: Array [],
+  veryLongString: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
-  withComments: Object {
-    comments: Array [
+  withComments: {
+    comments: [
       Translator comment,
       This one might come from developer,
     ],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Support translator comments separately,
   },
-  withDescription: Object {
-    comments: Array [],
+  withDescription: {
+    comments: [],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       Description is comment from developers to translators,
     ],
-    flags: Array [
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Message with description,
   },
-  withFlags: Object {
-    comments: Array [],
+  withFlags: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       fuzzy,
       otherFlag,
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Keeps any flags that are defined,
   },
-  withMultipleOrigins: Object {
-    comments: Array [],
+  withMultipleOrigins: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [
-      Array [
+    origin: [
+      [
         src/App.js,
         4,
       ],
-      Array [
+      [
         src/Component.js,
         2,
       ],
     ],
     translation: Message with multiple origin,
   },
-  withOrigin: Object {
-    comments: Array [],
+  withOrigin: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [
-      Array [
+    origin: [
+      [
         src/App.js,
         4,
       ],
     ],
     translation: Message with origin,
   },
-  xC8QeX: Object {
-    comments: Array [],
+  xC8QeX: {
+    comments: [],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       js-lingui-id: pXy+hm,
     ],
-    flags: Array [],
+    flags: [],
     message: Message with default hash id,
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: Translation for: Message with default-hash id,
   },
 }
 `;
 
 exports[`pofile format should throw away additional msgstr if present 1`] = `
-Object {
-  withMultipleTranslation: Object {
-    comments: Array [],
+{
+  withMultipleTranslation: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: This is just fine,
   },
 }

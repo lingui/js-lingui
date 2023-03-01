@@ -5,19 +5,12 @@ const sourceConfig = require("./jest.config")
  */
 module.exports = {
   ...sourceConfig,
-
-  roots: ["<rootDir>/packages/"],
-  testPathIgnorePatterns: ["/node_modules/"],
-  // Redirect imports to the compiled bundles
-  moduleNameMapper: {},
+  projects: sourceConfig.projects.map((project) => ({
+    ...project,
+    // Redirect imports to the compiled bundles
+    moduleNameMapper: {},
+  })),
 
   // Exclude the build output from transforms
   transformIgnorePatterns: ["/node_modules/", "<rootDir>/packages/*/build/"],
-  modulePathIgnorePatterns: [".yalc/", "/build"],
-
-  collectCoverage: false,
-
-  haste: {
-    throwOnModuleCollision: false,
-  },
 }

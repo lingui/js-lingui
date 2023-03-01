@@ -5,15 +5,15 @@ exports[`snowpack-plugin should return compiled catalog 1`] = `/*eslint-disable*
 exports[`snowpack-plugin should return error if import doesn't contain extension 1`] = `@lingui/snowpack-plugin: File extension is mandatory, for ex: import('./locales/en/messages.po')`;
 
 exports[`snowpack-plugin to match snapshot 1`] = `
-Object {
+{
   load: [Function],
   name: @lingui/snowpack-plugin,
-  resolve: Object {
-    input: Array [
+  resolve: {
+    input: [
       .po,
       .json,
     ],
-    output: Array [
+    output: [
       .js,
     ],
   },

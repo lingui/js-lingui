@@ -1,49 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-letter 1`] = `
-Object {
-  WGI12K: Object {
-    comments: Array [],
+{
+  WGI12K: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [],
+    extractedComments: [],
+    flags: [],
     message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
   },
-  jO/SBZ: Object {
-    comments: Array [],
+  jO/SBZ: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [],
+    extractedComments: [],
+    flags: [],
     message: {count, plural, one {Singular} other {Plural}},
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: ,
   },
-  message_with_id: Object {
-    comments: Array [],
+  message_with_id: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
   },
-  message_with_id_but_without_translation: Object {
-    comments: Array [],
+  message_with_id_but_without_translation: {
+    comments: [],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       Comment made by the developers.,
     ],
-    flags: Array [
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: ,
   },
 }
@@ -98,49 +98,49 @@ msgstr[1] ""
 `;
 
 exports[`po-gettext format should convert gettext plurals to ICU plural messages 1`] = `
-Object {
-  WGI12K: Object {
-    comments: Array [],
+{
+  WGI12K: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [],
+    extractedComments: [],
+    flags: [],
     message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
   },
-  jO/SBZ: Object {
-    comments: Array [],
+  jO/SBZ: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [],
+    extractedComments: [],
+    flags: [],
     message: {count, plural, one {Singular} other {Plural}},
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: ,
   },
-  message_with_id: Object {
-    comments: Array [],
+  message_with_id: {
+    comments: [],
     context: null,
-    extractedComments: Array [],
-    flags: Array [
+    extractedComments: [],
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
   },
-  message_with_id_but_without_translation: Object {
-    comments: Array [],
+  message_with_id_but_without_translation: {
+    comments: [],
     context: null,
-    extractedComments: Array [
+    extractedComments: [
       Comment made by the developers.,
     ],
-    flags: Array [
+    flags: [
       explicit-id,
     ],
     obsolete: false,
-    origin: Array [],
+    origin: [],
     translation: ,
   },
 }

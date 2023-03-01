@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`vite-plugin should return compiled catalog 1`] = `
-Object {
+{
   code: /*eslint-disable*/export const messages=JSON.parse("{\\"mY42CM\\":\\"Hello World\\",\\"mVmaLu\\":[\\"My name is \\",[\\"name\\"]]}");,
   map: null,
 }

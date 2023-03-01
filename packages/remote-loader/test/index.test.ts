@@ -7,30 +7,30 @@ describe("remote-loader", () => {
     const messages = await simulatedJsonResponse()
     const remoteMessages = remoteLoader({ format: "minimal", messages })
     expect(remoteMessages).toMatchInlineSnapshot(`
-      Object {
-        customKey: Array [
-          Array [
-            someVariable,
-            select,
-            Object {
-              offset: undefined,
-              other: SomeOtherText,
-              someVarValue: SomeTextHere,
+      {
+        "customKey": [
+          [
+            "someVariable",
+            "select",
+            {
+              "offset": undefined,
+              "other": "SomeOtherText",
+              "someVarValue": "SomeTextHere",
             },
           ],
         ],
-        property.key: value,
-        {0} Deposited: Array [
-          Array [
-            0,
+        "property.key": "value",
+        "{0} Deposited": [
+          [
+            "0",
           ],
-           Deposited,
+          " Deposited",
         ],
-        {0} Strategy: Array [
-          Array [
-            0,
+        "{0} Strategy": [
+          [
+            "0",
           ],
-           Strategy,
+          " Strategy",
         ],
       }
     `)
@@ -46,30 +46,30 @@ describe("remote-loader", () => {
 
       expect(remoteLoader({ format: "minimal", messages, fallbackMessages }))
         .toMatchInlineSnapshot(`
-        Object {
-          customKey: Array [
-            Array [
-              someVariable,
-              select,
-              Object {
-                offset: undefined,
-                other: SomeOtherText,
-                someVarValue: SomeTextHere,
+        {
+          "customKey": [
+            [
+              "someVariable",
+              "select",
+              {
+                "offset": undefined,
+                "other": "SomeOtherText",
+                "someVarValue": "SomeTextHere",
               },
             ],
           ],
-          property.key: value,
-          {0} Deposited: Array [
-            Array [
-              0,
+          "property.key": "value",
+          "{0} Deposited": [
+            [
+              "0",
             ],
-             Deposited,
+            " Deposited",
           ],
-          {0} Strategy: Array [
-            Array [
-              0,
+          "{0} Strategy": [
+            [
+              "0",
             ],
-             Strategy,
+            " Strategy",
           ],
         }
       `)
