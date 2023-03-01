@@ -125,22 +125,19 @@ describe("E2E Extractor Test", () => {
       )
 
       await mockConsole(async (console) => {
-        const config = makeConfig(
-          {
-            rootDir: rootDir,
-            locales: ["en", "pl"],
-            sourceLocale: "en",
-            format: "po",
-            catalogs: [],
-            experimental: {
-              extractor: {
-                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-                output: "<rootDir>/actual/{entryName}.{locale}",
-              },
+        const config = makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [],
+          experimental: {
+            extractor: {
+              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+              output: "<rootDir>/actual/{entryName}.{locale}",
             },
           },
-          { skipValidation: true }
-        )
+        })
 
         const result = await extractExperimentalCommand(config, {
           template: true,
@@ -153,6 +150,9 @@ describe("E2E Extractor Test", () => {
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
         expect(result).toBeTruthy()
         expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
           Catalog statistics for fixtures/pages/about.page.tsx:
           4 message(s) extracted
 
@@ -178,22 +178,19 @@ describe("E2E Extractor Test", () => {
       )
 
       await mockConsole(async (console) => {
-        const config = makeConfig(
-          {
-            rootDir: rootDir,
-            locales: ["en", "pl"],
-            sourceLocale: "en",
-            format: "po",
-            catalogs: [],
-            experimental: {
-              extractor: {
-                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-                output: "<rootDir>/actual/{entryName}.{locale}",
-              },
+        const config = makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [],
+          experimental: {
+            extractor: {
+              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+              output: "<rootDir>/actual/{entryName}.{locale}",
             },
           },
-          { skipValidation: true }
-        )
+        })
 
         const result = await extractExperimentalCommand(config, {})
 
@@ -204,6 +201,9 @@ describe("E2E Extractor Test", () => {
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
         expect(result).toBeTruthy()
         expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
           Catalog statistics for fixtures/pages/about.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
@@ -239,22 +239,19 @@ describe("E2E Extractor Test", () => {
 
       await mockConsole(async (console) => {
         const result = await extractExperimentalCommand(
-          makeConfig(
-            {
-              rootDir: rootDir,
-              locales: ["en", "pl"],
-              sourceLocale: "en",
-              format: "po",
-              catalogs: [],
-              experimental: {
-                extractor: {
-                  entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-                  output: "<rootDir>/actual/{entryName}.{locale}",
-                },
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+            format: "po",
+            catalogs: [],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
               },
             },
-            { skipValidation: true }
-          ),
+          }),
           {
             clean: true,
           }
@@ -263,6 +260,9 @@ describe("E2E Extractor Test", () => {
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
         expect(result).toBeTruthy()
         expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
           Catalog statistics for fixtures/pages/about.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │

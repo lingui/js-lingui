@@ -13,6 +13,7 @@ import {
   writeTemplate,
 } from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
+import chalk from "chalk"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -37,7 +38,20 @@ export default async function command(
     )
   }
 
-  const tempDir = nodepath.join(os.tmpdir(), "js-lingui-extract")
+  console.log(
+    chalk.yellow(
+      [
+        "You have using an experimental feature",
+        "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +
+          " Use at your own risk.",
+        "",
+      ].join("\n")
+    )
+  )
+
+  const tempDir = await fs.mkdtemp(
+    nodepath.join(os.tmpdir(), "js-lingui-extract-")
+  )
   await fs.rm(tempDir, { recursive: true, force: true })
 
   const bundleResult = await bundleSource(
