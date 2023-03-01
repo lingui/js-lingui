@@ -40,7 +40,7 @@ describe("Catalog", () => {
 
   describe("make", () => {
     it("should collect and write catalogs", async () => {
-      const localeDir = copyFixture(fixture("locales", "initial"))
+      const localeDir = await copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
           name: "messages",
@@ -64,7 +64,7 @@ describe("Catalog", () => {
     })
 
     it("should only update the specified locale", async () => {
-      const localeDir = copyFixture(fixture("locales", "initial"))
+      const localeDir = await copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
           name: "messages",
@@ -88,7 +88,7 @@ describe("Catalog", () => {
     })
 
     it("should merge with existing catalogs", async () => {
-      const localeDir = copyFixture(fixture("locales", "existing"))
+      const localeDir = await copyFixture(fixture("locales", "existing"))
       const catalog = new Catalog(
         {
           name: "messages",
@@ -111,7 +111,7 @@ describe("Catalog", () => {
 
   describe("makeTemplate", () => {
     it("should collect and write a template", async () => {
-      const localeDir = copyFixture(fixture("locales", "initial"))
+      const localeDir = await copyFixture(fixture("locales", "initial"))
       const catalog = new Catalog(
         {
           name: "messages",
@@ -556,16 +556,20 @@ describe("order", () => {
 })
 
 describe("writeCompiled", () => {
-  const localeDir = copyFixture(fixture("locales", "initial/"))
-  const catalog = new Catalog(
-    {
-      name: "messages",
-      path: path.join(localeDir, "{locale}", "messages"),
-      include: [],
-      exclude: [],
-    },
-    mockConfig()
-  )
+  let catalog: Catalog
+
+  beforeAll(async () => {
+    const localeDir = await copyFixture(fixture("locales", "initial/"))
+    catalog = new Catalog(
+      {
+        name: "messages",
+        path: path.join(localeDir, "{locale}", "messages"),
+        include: [],
+        exclude: [],
+      },
+      mockConfig()
+    )
+  })
 
   it.each([
     { namespace: "es", extension: /\.mjs$/ },
