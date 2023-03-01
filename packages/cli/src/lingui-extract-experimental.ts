@@ -73,6 +73,11 @@ export default async function command(
 
     let output: string
 
+    if (!messages) {
+      commandSuccess = false
+      continue
+    }
+
     if (options.template) {
       output = (
         await writeTemplate({

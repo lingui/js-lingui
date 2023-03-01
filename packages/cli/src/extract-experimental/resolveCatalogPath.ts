@@ -11,7 +11,7 @@ export function resolveCatalogPath(
   const entryName = getEntryName(entryPath)
   const entryDir = nodepath.relative(rootDir, nodepath.dirname(entryPath))
 
-  return (
+  return nodepath.normalize(
     replacePlaceholders(configOutput, {
       entryName,
       entryDir,

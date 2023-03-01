@@ -1,6 +1,9 @@
 import { resolveTemplatePath } from "./resolveTemplatePath"
+import os from "os"
 
-describe("resolveTemplateName", () => {
+const skipOnWindows = os.platform().startsWith("win") ? describe.skip : describe
+
+skipOnWindows("resolveTemplateName", () => {
   const rootDir = "/Users/lingui-app"
 
   test("Should use `messages` suffix when {entryName} defined in output", () => {

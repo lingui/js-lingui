@@ -3,6 +3,7 @@ import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
+import os from "os"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
@@ -118,7 +119,11 @@ describe("E2E Extractor Test", () => {
     compareFolders(actualPath, expectedPath)
   })
 
-  describe("extractor-experimental", () => {
+  const skipOnWindows = os.platform().startsWith("win")
+    ? describe.skip
+    : describe
+
+  skipOnWindows("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental-template"

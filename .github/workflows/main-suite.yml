@@ -29,7 +29,7 @@ jobs:
           scope: '@lingui'
 
       - name: Install dependencies if needed
-        run: yarn install
+        run: yarn install --network-timeout 1000000
 
       - name: Unit Testing
         run: yarn test:ci
