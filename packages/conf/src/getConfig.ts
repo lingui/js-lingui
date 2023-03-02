@@ -3,21 +3,19 @@ import { LinguiConfigNormalized } from "./types"
 import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
+import type { JITIOptions } from "jiti/dist/types"
 
 function configExists(path: string) {
   return path && fs.existsSync(path)
 }
 
-function TypeScriptLoader(): LoaderSync {
-  let loaderInstance: LoaderSync
+function JitiLoader(): LoaderSync {
   return (filepath, content) => {
-    if (!loaderInstance) {
-      const { TypeScriptLoader } =
-        require("cosmiconfig-typescript-loader") as typeof import("cosmiconfig-typescript-loader")
-      loaderInstance = TypeScriptLoader()
+    const opts: JITIOptions = {
+      interopDefault: true,
     }
-
-    return loaderInstance(filepath, content)
+    const jiti = require("jiti")(__filename, opts)
+    return jiti(filepath)
   }
 }
 
@@ -32,8 +30,12 @@ export function getConfig({
 } = {}): LinguiConfigNormalized {
   const defaultRootDir = cwd || process.cwd()
   const moduleName = "lingui"
+
   const configExplorer = cosmiconfigSync(moduleName, {
     searchPlaces: [
+      `${moduleName}.config.js`,
+      `${moduleName}.config.ts`,
+      `${moduleName}.config.mjs`,
       "package.json",
       `.${moduleName}rc`,
       `.${moduleName}rc.json`,
@@ -41,11 +43,10 @@ export function getConfig({
       `.${moduleName}rc.yml`,
       `.${moduleName}rc.ts`,
       `.${moduleName}rc.js`,
-      `${moduleName}.config.ts`,
-      `${moduleName}.config.js`,
     ],
     loaders: {
-      ".ts": TypeScriptLoader(),
+      ".ts": JitiLoader(),
+      ".mjs": JitiLoader(),
     },
   })
 
