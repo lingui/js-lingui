@@ -30,7 +30,7 @@ jobs:
           scope: '@lingui'
 
       - name: Install dependencies if needed
-        run: yarn install --frozen-lockfile --pure-lockfile
+        run: yarn install
 
       - name: Unit Testing
         run: yarn test

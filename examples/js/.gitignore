@@ -1,2 +1,10 @@
 src/locale/_build/
 src/locale/*/*.js
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -27,7 +27,7 @@ jobs:
           scope: '@lingui'
 
       - name: Install dependencies if needed
-        run: yarn install --frozen-lockfile --pure-lockfile
+        run: yarn install
 
       - name: Publish with Verdaccio
         run: |

@@ -6,8 +6,8 @@
     "test:e2e": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@lingui/core": "*",
-    "@lingui/react": "*"
+    "@lingui/core": "workspace:*",
+    "@lingui/react": "workspace:*"
   },
   "devDependencies": {
     "typescript": "4.9.5"
