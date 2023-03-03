@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.2](https://github.com/lingui/js-lingui/compare/v3.17.1...v3.17.2) (2023-02-24)
+
+
+### Bug Fixes
+
+* param name for `missing` in `setupI18nProps` ([#1411](https://github.com/lingui/js-lingui/issues/1411)) ([6459f02](https://github.com/lingui/js-lingui/commit/6459f024fa74370f95a77738b7d72f114a53c9db))
+
+
+
+
+
 ## [3.17.1](https://github.com/lingui/js-lingui/compare/v3.17.0...v3.17.1) (2023-02-07)
 
 **Note:** Version bump only for package @lingui/core

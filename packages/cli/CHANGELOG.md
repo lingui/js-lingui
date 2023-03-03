@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.17.2](https://github.com/lingui/js-lingui/compare/v3.17.1...v3.17.2) (2023-02-24)
+
+
+### Bug Fixes
+
+* chain extract on watched file changes ([#1435](https://github.com/lingui/js-lingui/issues/1435)) ([5dd50d3](https://github.com/lingui/js-lingui/commit/5dd50d34152e7eb393437e5de3d35b3baf09e861))
+* **cli:** fix version command ([#1413](https://github.com/lingui/js-lingui/issues/1413)) ([8bc212d](https://github.com/lingui/js-lingui/commit/8bc212d2846af5609d89f51efed952b089244e4e))
+
+
+
+
+
 ## [3.17.1](https://github.com/lingui/js-lingui/compare/v3.17.0...v3.17.1) (2023-02-07)
 
 
