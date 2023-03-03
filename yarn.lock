@@ -1615,6 +1615,83 @@
     validate-npm-package-name "^4.0.0"
     yargs-parser "20.2.4"
 
+"@lingui/babel-plugin-extract-messages@3.17.2":
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-3.17.2.tgz#0df680b3721e7c931d037f2435277da316219e45"
+  integrity sha512-Ovhf8a6dBlIZJFOqk6/+LRgQvSlVMol6hxvnVGLsCr/0xNcKlpGUAJ+bvY6NrmxZubpTvZqNkH23u5nEAdXtfg==
+  dependencies:
+    "@babel/generator" "^7.20.14"
+    "@babel/runtime" "^7.20.13"
+    "@lingui/conf" "3.17.2"
+    mkdirp "^1.0.4"
+
+"@lingui/cli@*", "@lingui/cli@^3.11.0":
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-3.17.2.tgz#1d1d48228842ac4c5be5a31babb21f59d87f8014"
+  integrity sha512-8hPZOfwB7KZolZ01diUqtprKva1RNAUUNdzISN9pmAUGw9zCPRY/dlOvM6obZi8v0VC/JKrcadOs4Z8krIS2QQ==
+  dependencies:
+    "@babel/generator" "^7.20.14"
+    "@babel/parser" "^7.20.15"
+    "@babel/plugin-syntax-jsx" "^7.18.6"
+    "@babel/runtime" "^7.20.13"
+    "@babel/types" "^7.20.7"
+    "@lingui/babel-plugin-extract-messages" "3.17.2"
+    "@lingui/conf" "3.17.2"
+    "@lingui/core" "3.17.2"
+    "@messageformat/parser" "^5.0.0"
+    babel-plugin-macros "^3.0.1"
+    bcp-47 "^1.0.7"
+    chalk "^4.1.0"
+    chokidar "3.5.1"
+    cli-table "0.3.6"
+    commander "^6.1.0"
+    date-fns "^2.16.1"
+    fs-extra "^9.0.1"
+    fuzzaldrin "^2.1.0"
+    glob "^7.1.4"
+    inquirer "^7.3.3"
+    make-plural "^6.2.2"
+    micromatch "4.0.2"
+    mkdirp "^1.0.4"
+    node-gettext "^3.0.0"
+    normalize-path "^3.0.0"
+    ora "^5.1.0"
+    papaparse "^5.3.0"
+    pkg-up "^3.1.0"
+    plurals-cldr "^1.0.4"
+    pofile "^1.1.0"
+    pseudolocale "^1.1.0"
+    ramda "^0.27.1"
+
+"@lingui/conf@3.17.2", "@lingui/conf@^3.11.0":
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-3.17.2.tgz#0a26343e2fdb20ad2e7b0f23b008b86416bcd792"
+  integrity sha512-q3ADfpMYCYMgiu/lrYOOvE3ptxXIqYhA1ozyAq6ynguL8ppqfyaTluLoHfVJVWxnTMI/es9s2W9Kg81QH+nuXQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    chalk "^4.1.0"
+    cosmiconfig "^8.0.0"
+    cosmiconfig-typescript-loader "^4.3.0"
+    jest-validate "^26.5.2"
+    lodash.get "^4.4.2"
+
+"@lingui/core@*", "@lingui/core@3.17.2", "@lingui/core@^3.15.0":
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.17.2.tgz#275aa19520477910ddf41a838ef91a8204bea7eb"
+  integrity sha512-YOd068NanznN8lLQqOKPlAY0ill3rrgmiAvPRKuYkrxzJMIHqlIFO/2Kcc/RH5vClOmLfg+wgR4rsHK/kLKelQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@messageformat/parser" "^5.0.0"
+    make-plural "^6.2.2"
+
+"@lingui/react@*":
+  version "3.17.2"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.17.2.tgz#b795f3a90aa4d199ad2dd1bf42cd208285420578"
+  integrity sha512-+PECPknIiQn/zdXgrXVTCbcJUSjPFZTtPOuIO72huGNh/QA+iRVsGTvef0/Q+pWkiPEOU6CmaGHkwdtgFMtJ8g==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@lingui/core" "3.17.2"
+
 "@messageformat/parser@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@messageformat/parser/-/parser-5.0.0.tgz#5737e69d7d4a469998b527710f1891174fc1b262"
@@ -3743,7 +3820,7 @@ camelcase@^5.3.1:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
-camelcase@^6.2.0:
+camelcase@^6.0.0, camelcase@^6.2.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
@@ -4077,6 +4154,11 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
+commander@^6.1.0:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
+  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+
 commander@^9.4.1:
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
@@ -4283,6 +4365,11 @@ core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
+
+cosmiconfig-typescript-loader@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.3.0.tgz#c4259ce474c9df0f32274ed162c0447c951ef073"
+  integrity sha512-NTxV1MFfZDLPiBMjxbHRwSh5LaLcPMwNdCutmnHJCKoVnlvldPWlllonKwrsRJ5pYZBIBGRWWU2tfvzxgeSW5Q==
 
 cosmiconfig@7.0.0:
   version "7.0.0"
@@ -5739,7 +5826,7 @@ fs-constants@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs-constants/-/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
   integrity sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==
 
-fs-extra@9.1.0, fs-extra@^9.1.0:
+fs-extra@9.1.0, fs-extra@^9.0.1, fs-extra@^9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
@@ -5826,6 +5913,11 @@ functions-have-names@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
+
+fuzzaldrin@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fuzzaldrin/-/fuzzaldrin-2.1.0.tgz#90204c3e2fdaa6941bb28d16645d418063a90e9b"
+  integrity sha512-zgllBYwfHR5P3CncJiGbGVPpa3iFYW1yuPaIv8DiTVRrcg5/6uETNL5zvIoKflG1aifXVUZTlIroDehw4WygGA==
 
 gauge@^4.0.3:
   version "4.0.4"
@@ -7122,6 +7214,11 @@ jest-environment-node@^29.4.3:
     jest-mock "^29.4.3"
     jest-util "^29.4.3"
 
+jest-get-type@^26.3.0:
+  version "26.3.0"
+  resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-26.3.0.tgz#e97dc3c3f53c2b406ca7afaed4493b1d099199e0"
+  integrity sha512-TpfaviN1R2pQWkIihlfEanwOXK0zcxrKEE4MlU6Tn7keoXdN6/3gK/xl0yEh8DOunn5pOVGKf8hB4R9gVh04ig==
+
 jest-get-type@^29.4.3:
   version "29.4.3"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-29.4.3.tgz#1ab7a5207c995161100b5187159ca82dd48b3dd5"
@@ -7317,6 +7414,18 @@ jest-util@^29.0.0, jest-util@^29.4.3:
     ci-info "^3.2.0"
     graceful-fs "^4.2.9"
     picomatch "^2.2.3"
+
+jest-validate@^26.5.2:
+  version "26.6.2"
+  resolved "https://registry.yarnpkg.com/jest-validate/-/jest-validate-26.6.2.tgz#23d380971587150467342911c3d7b4ac57ab20ec"
+  integrity sha512-NEYZ9Aeyj0i5rQqbq+tpIOom0YS1u2MVu6+euBsvpgIme+FOfRmoC4R5p0JiAUpaFvFy24xgrpMknarR/93XjQ==
+  dependencies:
+    "@jest/types" "^26.6.2"
+    camelcase "^6.0.0"
+    chalk "^4.0.0"
+    jest-get-type "^26.3.0"
+    leven "^3.1.0"
+    pretty-format "^26.6.2"
 
 jest-validate@^29.4.3:
   version "29.4.3"
@@ -9375,6 +9484,13 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
+pkg-up@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-3.1.0.tgz#100ec235cc150e4fd42519412596a28512a0def5"
+  integrity sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==
+  dependencies:
+    find-up "^3.0.0"
+
 plur@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/plur/-/plur-4.0.0.tgz#729aedb08f452645fe8c58ef115bf16b0a73ef84"
@@ -9387,7 +9503,7 @@ plurals-cldr@^1.0.4:
   resolved "https://registry.yarnpkg.com/plurals-cldr/-/plurals-cldr-1.0.4.tgz#534e4784f80679d3b0b39b0fb6cc46645fcf5de8"
   integrity sha512-4nLXqtel7fsCgzi8dvRZvUjfL8SXpP982sKg7b2TgpnR8rDnes06iuQ83trQ/+XdtyMIQkBBbKzX6x97eLfsJQ==
 
-pofile@^1.1.4:
+pofile@^1.1.0, pofile@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/pofile/-/pofile-1.1.4.tgz#eab7e29f5017589b2a61b2259dff608c0cad76a2"
   integrity sha512-r6Q21sKsY1AjTVVjOuU02VYKVNQGJNQHjTIvs4dEbeuuYfxgYk/DGD2mqqq4RDaVkwdSq0VEtmQUOPe/wH8X3g==

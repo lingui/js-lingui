@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "3.17.2",
+  "version": "4.0.0-next.0",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -51,9 +51,9 @@
     "@babel/plugin-syntax-jsx": "^7.18.6",
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/babel-plugin-extract-messages": "3.17.2",
-    "@lingui/conf": "3.17.2",
-    "@lingui/core": "3.17.2",
+    "@lingui/babel-plugin-extract-messages": "4.0.0-next.0",
+    "@lingui/conf": "4.0.0-next.0",
+    "@lingui/core": "4.0.0-next.0",
     "@messageformat/parser": "^5.0.0",
     "babel-plugin-macros": "^3.0.1",
     "bcp-47": "^1.0.7",

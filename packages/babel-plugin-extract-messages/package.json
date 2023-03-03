@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "3.17.2",
+  "version": "4.0.0-next.0",
   "description": "Babel plugin for collecting messages from source code for internationalization",
   "main": "./build/index.js",
   "author": {
@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
+    "@babel/traverse": "7.20.12",
     "@babel/types": "^7.20.7",
-    "@lingui/jest-mocks": "*",
-    "@babel/traverse": "7.20.12"
+    "@lingui/jest-mocks": "*"
   }
 }
