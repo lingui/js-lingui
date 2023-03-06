@@ -17,7 +17,7 @@ For most projects, it should work without extra configuration as long as it is a
 
 ```diff title="lingui.config.js"
 module.exports = {
--  extractorBabelOptions: { [...] }
+-  extractBabelOptions: { [...] }
 }
 ```
 
