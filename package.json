@@ -129,5 +129,6 @@
       "path": "./packages/remote-loader/build/esm/index.js",
       "limit": "8 kB"
     }
-  ]
+  ],
+  "packageManager": "yarn@3.4.1"
 }

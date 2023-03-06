@@ -18,3 +18,11 @@ __pycache__/
 .vscode
 .idea
 *.iml
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

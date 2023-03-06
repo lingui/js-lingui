@@ -6,7 +6,7 @@
     "test:e2e": "node index.js"
   },
   "dependencies": {
-    "@lingui/core": "*",
-    "@lingui/cli": "*"
+    "@lingui/cli": "workspace:*",
+    "@lingui/core": "workspace:*"
   }
 }
