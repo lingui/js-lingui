@@ -19,6 +19,25 @@ const cases: TestCase[] = [
     `,
   },
   {
+    name: "Macro is used in call expression",
+    input: `
+        import { t } from '@lingui/macro';
+        const msg = message.error(t({message: "dasd"}))
+    `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        const msg = message.error(
+          i18n._(
+            /*i18n*/
+            {
+              message: "dasd",
+              id: "9ZMZjU",
+            }
+          )
+        );
+    `,
+  },
+  {
     name: "t`` macro could be renamed",
     input: `
         import { t as t2 } from '@lingui/macro';

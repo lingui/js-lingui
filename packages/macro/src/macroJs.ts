@@ -124,6 +124,7 @@ export default class MacroJs {
       this.types.isCallExpression(path.node) &&
       this.types.isCallExpression(path.parentPath.node) &&
       this.types.isExpression(path.node.arguments[0]) &&
+      path.parentPath.node.callee === path.node &&
       this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       const i18nInstance = path.node.arguments[0]
