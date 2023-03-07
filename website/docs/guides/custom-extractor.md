@@ -11,12 +11,13 @@ export const extractor: ExtractorType = {
   match(filename: string) {
       return filename.endsWith(".custom");
   },
-  extract(filename: string, code: string, onMessageExtracted) {
+  extract(filename: string, code: string, onMessageExtracted, ctx: ExtractorCtx) {
     // transform to plain JS + Sourcemaps
     const {code, sourcemaps} = transformMyCustomFileToJs(filename, code);
 
+    // you can acess lingui config from using `ctx.linguiConfig`
     // reuse extractor from cli
-    return babel(filename, code, onMessageExtracted, {sourcemaps})
+    return babel(filename, code, onMessageExtracted, {sourcemaps, ...ctx})
   }
 }
 ```

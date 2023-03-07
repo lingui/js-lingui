@@ -136,7 +136,7 @@ declare type ExtractorType = {
 +    filename: string,
 +    code: string,
 +    onMessageExtracted: (msg: ExtractedMessage) => void,
-+    options?: ExtractorOptions
++    ctx?: ExtractorCtx
 +  ): Promise<void> | void
 }
 ```

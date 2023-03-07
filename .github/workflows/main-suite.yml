@@ -60,14 +60,14 @@ jobs:
       - name: Linting & Types
         run: yarn lint:all
 
-      - name: Test Public Typings
-        run: yarn test:tsd
-
       - name: Check Prettier Formatting
         run: yarn prettier:check
 
       - name: Build packages
         run: yarn release:build
+
+      - name: Test Public Typings
+        run: yarn test:tsd
 
       - name: Integration Testing
         run: yarn test:integration

@@ -1,11 +1,4 @@
-import {
-  ExtractedMessage,
-  ExtractorCtx,
-  ExtractorType,
-  FallbackLocales,
-  LinguiConfig,
-  LinguiConfigNormalized,
-} from "./types"
+import { FallbackLocales, LinguiConfig, LinguiConfigNormalized } from "./types"
 import chalk from "chalk"
 import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
@@ -75,21 +68,7 @@ export const defaultConfig: LinguiConfig = {
 }
 export const exampleConfig = {
   ...defaultConfig,
-  extractors: multipleValidOptions(
-    [],
-    ["babel"],
-    [
-      {
-        match: (fileName: string) => false,
-        extract: (
-          filename: string,
-          code: string,
-          onMessageExtracted: (msg: ExtractedMessage) => void,
-          ctx?: ExtractorCtx
-        ) => {},
-      } as ExtractorType,
-    ]
-  ),
+  extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
     ["@lingui/core", "i18n"]
