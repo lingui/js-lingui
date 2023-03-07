@@ -2,7 +2,6 @@ import chalk from "chalk"
 import chokidar from "chokidar"
 import fs from "fs"
 import { program } from "commander"
-import * as plurals from "make-plural"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
@@ -33,18 +32,6 @@ export function command(
   console.log("Compiling message catalogs…")
 
   for (const locale of config.locales) {
-    const [language] = locale.split(/[_-]/)
-    // todo: this validation should be in @lingui/conf
-    // todo: validate locales according bcp47, instead of plurals
-    if (locale !== config.pseudoLocale && !(plurals as any)[language]) {
-      console.error(
-        chalk.red(
-          `Error: Invalid locale ${chalk.bold(locale)} (missing plural rules)!`
-        )
-      )
-      console.error()
-    }
-
     for (const catalog of catalogs) {
       const missingMessages: TranslationMissingEvent[] = []
 

@@ -2198,7 +2198,6 @@ __metadata:
     "@types/papaparse": ^5.2.3
     "@types/plurals-cldr": ^1.0.1
     babel-plugin-macros: ^3.0.1
-    bcp-47: ^1.0.7
     chalk: ^4.1.0
     chokidar: 3.5.1
     cli-table: 0.3.6
@@ -2207,7 +2206,6 @@ __metadata:
     date-fns: ^2.16.1
     glob: ^7.1.4
     inquirer: ^7.3.3
-    make-plural: ^6.2.2
     micromatch: 4.0.2
     mkdirp: ^1.0.4
     mock-fs: ^5.2.0
@@ -2249,7 +2247,6 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
     "@messageformat/parser": ^5.0.0
-    make-plural: ^6.2.2
   languageName: unknown
   linkType: soft
 
@@ -4698,17 +4695,6 @@ __metadata:
     mixin-deep: ^1.2.0
     pascalcase: ^0.1.1
   checksum: a4a146b912e27eea8f66d09cb0c9eab666f32ce27859a7dfd50f38cd069a2557b39f16dba1bc2aecb3b44bf096738dd207b7970d99b0318423285ab1b1994edd
-  languageName: node
-  linkType: hard
-
-"bcp-47@npm:^1.0.7":
-  version: 1.0.8
-  resolution: "bcp-47@npm:1.0.8"
-  dependencies:
-    is-alphabetical: ^1.0.0
-    is-alphanumerical: ^1.0.0
-    is-decimal: ^1.0.0
-  checksum: 5cfd810288472a3634d0758535c77b54d399f31277411763be2095f17c9a6d5a7130fed8dbd6c36867515d62c727a991323b93f9747a403945118f5d937a7f71
   languageName: node
   linkType: hard
 
@@ -8909,23 +8895,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-alphabetical@npm:^1.0.0":
-  version: 1.0.4
-  resolution: "is-alphabetical@npm:1.0.4"
-  checksum: 6508cce44fd348f06705d377b260974f4ce68c74000e7da4045f0d919e568226dc3ce9685c5a2af272195384df6930f748ce9213fc9f399b5d31b362c66312cb
-  languageName: node
-  linkType: hard
-
-"is-alphanumerical@npm:^1.0.0":
-  version: 1.0.4
-  resolution: "is-alphanumerical@npm:1.0.4"
-  dependencies:
-    is-alphabetical: ^1.0.0
-    is-decimal: ^1.0.0
-  checksum: e2e491acc16fcf5b363f7c726f666a9538dba0a043665740feb45bba1652457a73441e7c5179c6768a638ed396db3437e9905f403644ec7c468fb41f4813d03f
-  languageName: node
-  linkType: hard
-
 "is-array-buffer@npm:^3.0.1":
   version: 3.0.1
   resolution: "is-array-buffer@npm:3.0.1"
@@ -9048,13 +9017,6 @@ __metadata:
   dependencies:
     has-tostringtag: ^1.0.0
   checksum: baa9077cdf15eb7b58c79398604ca57379b2fc4cf9aa7a9b9e295278648f628c9b201400c01c5e0f7afae56507d741185730307cbe7cad3b9f90a77e5ee342fc
-  languageName: node
-  linkType: hard
-
-"is-decimal@npm:^1.0.0":
-  version: 1.0.4
-  resolution: "is-decimal@npm:1.0.4"
-  checksum: ed483a387517856dc395c68403a10201fddcc1b63dc56513fbe2fe86ab38766120090ecdbfed89223d84ca8b1cd28b0641b93cb6597b6e8f4c097a7c24e3fb96
   languageName: node
   linkType: hard
 
@@ -10865,13 +10827,6 @@ __metadata:
     socks-proxy-agent: ^7.0.0
     ssri: ^9.0.0
   checksum: 2332eb9a8ec96f1ffeeea56ccefabcb4193693597b132cd110734d50f2928842e22b84cfa1508e921b8385cdfd06dda9ad68645fed62b50fff629a580f5fb72c
-  languageName: node
-  linkType: hard
-
-"make-plural@npm:^6.2.2":
-  version: 6.2.2
-  resolution: "make-plural@npm:6.2.2"
-  checksum: 3358330c113e4586f8874a37f3ad613cd7c898ff9a0ae61d029dfbdce042ad0f76e88909464c5514be81166b842005913e58341e77f7b6378a2020630dcfc613
   languageName: node
   linkType: hard
 

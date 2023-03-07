@@ -9,58 +9,6 @@ describe("CLI Command: Compile", () => {
     // todo
   })
 
-  describe("Locales Validation", () => {
-    // todo: should be moved to @lingui/conf
-    it("Should throw error for invalid locale", () => {
-      const config = makeConfig({
-        locales: ["abra"],
-        rootDir: "/test",
-        catalogs: [
-          {
-            path: "<rootDir>/{locale}",
-            include: ["<rootDir>"],
-            exclude: [],
-          },
-        ],
-      })
-
-      mockFs()
-
-      mockConsole((console) => {
-        const result = command(config, {})
-        mockFs.restore()
-        const log = getConsoleMockCalls(console.error)
-        expect(log).toMatchSnapshot()
-
-        expect(result).toBeTruthy()
-      })
-    })
-
-    it("Should not throw error for pseudolocale", () => {
-      const config = makeConfig({
-        locales: ["abracadabra"],
-        rootDir: "/test",
-        pseudoLocale: "abracadabra",
-        catalogs: [
-          {
-            path: "<rootDir>/{locale}",
-            include: ["<rootDir>"],
-            exclude: [],
-          },
-        ],
-      })
-
-      mockFs()
-
-      mockConsole((console) => {
-        const result = command(config, {})
-        mockFs.restore()
-        expect(console.error).not.toBeCalled()
-        expect(result).toBeTruthy()
-      })
-    })
-  })
-
   describe("allowEmpty = false", () => {
     const config = makeConfig({
       locales: ["en", "pl"],

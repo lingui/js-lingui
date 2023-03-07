@@ -12,14 +12,8 @@ npm install --save @lingui/core
 
 `@lingui/core` package exports the global instance of `i18n` object. Simply import it and use it:
 
-``` jsx
+```tsx
 import { i18n } from "@lingui/core"
-
-// import plural rules for all locales
-import { en, cs } from "make-plural/plurals"
-
-i18n.loadLocaleData("en", { plurals: en })
-i18n.loadLocaleData("cs", { plurals: cs })
 
 /**
  * Load messages for requested locale and activate it.

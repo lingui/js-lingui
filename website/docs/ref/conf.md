@@ -359,9 +359,7 @@ Object for configuring message catalog output. See individual formats for option
 
 Default: `[]`
 
-Locale tags which are used in the project. [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html). If you use a string that is not a BCP-47, make sure to use a BCP-47 when defining plurals in 18n.loadLocaleData.
-
-For example for `pt-br`: `i18n.loadLocaleData('pt-br', { plurals: pt })`
+Locale tags which are used in the project. [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
 
 ## orderBy
 

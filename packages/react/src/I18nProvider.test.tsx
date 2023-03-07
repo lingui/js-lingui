@@ -3,11 +3,16 @@ import { act, render } from "@testing-library/react"
 
 import { withI18n, I18nProvider } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { mockConsole } from "@lingui/jest-mocks"
 
 describe("I18nProvider", () => {
   it("should pass i18n context to wrapped component", () => {
     const i18n = setupI18n({
       locale: "cs",
+      messages: {
+        cs: {},
+      },
     })
 
     const WithoutHoc = (props) => {
@@ -33,7 +38,12 @@ describe("I18nProvider", () => {
   })
 
   it("should subscribe for locale changes", () => {
-    const i18n = setupI18n()
+    const i18n = setupI18n({
+      locale: "cs",
+      messages: {
+        cs: {},
+      },
+    })
     i18n.on = jest.fn(() => jest.fn())
 
     expect(i18n.on).not.toBeCalled()
@@ -47,7 +57,12 @@ describe("I18nProvider", () => {
 
   it("should unsubscribe for locale changes on unmount", () => {
     const unsubscribe = jest.fn()
-    const i18n = setupI18n()
+    const i18n = setupI18n({
+      locale: "cs",
+      messages: {
+        cs: {},
+      },
+    })
     i18n.on = jest.fn(() => unsubscribe)
 
     const { unmount } = render(
@@ -61,19 +76,31 @@ describe("I18nProvider", () => {
   })
 
   it("should re-render on locale changes", async () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
-    const i18n = setupI18n()
+    const i18n = setupI18n({
+      messages: { en: {} },
+    })
 
     const CurrentLocale = () => {
       return <span>{i18n.locale}</span>
     }
 
-    const { container } = render(
-      <I18nProvider i18n={i18n}>
-        <CurrentLocale />
-      </I18nProvider>
-    )
+    let container: HTMLElement
+
+    mockConsole((console) => {
+      const res = render(
+        <I18nProvider i18n={i18n}>
+          <CurrentLocale />
+        </I18nProvider>
+      )
+
+      container = res.container
+      expect(console.log.mock.calls[0][0]).toMatchInlineSnapshot(
+        `"I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false."`
+      )
+    })
+
     // First render — no output, because locale isn't activated
     expect(container.textContent).toEqual("")
 
@@ -95,6 +122,7 @@ describe("I18nProvider", () => {
   it("should render children", () => {
     const i18n = setupI18n({
       locale: "en",
+      messages: { en: {} },
     })
 
     const child = <div data-testid="child" />

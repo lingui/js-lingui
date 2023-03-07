@@ -53,7 +53,7 @@ function formatElements(
     if (!element || (voidElementTags[element.type as string] && children)) {
       if (!element) {
         console.error(
-          `Can use element at index '${index}' as it is not declared in the original translation`
+          `Can't use element at index '${index}' as it is not declared in the original translation`
         )
       } else {
         console.error(
