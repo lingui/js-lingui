@@ -13,7 +13,7 @@ The big change in the v4 is in extractor internals. Now it is less fragile, and 
 
 For most projects, it should work without extra configuration as long as it is a valid ES code.
 
-`extractorBabelOptions` is not useful anymore, please delete it from your config.
+`extractBabelOptions` is not useful anymore, please delete it from your config.
 
 ```diff title="lingui.config.js"
 module.exports = {
