@@ -27,8 +27,8 @@ const extractor: ExtractorType = {
     return babelRe.test(filename)
   },
 
-  async extract(filename, code, onMessageExtracted, linguiConfig, ctx) {
-    const parserOptions = linguiConfig.extractorParserOptions
+  async extract(filename, code, onMessageExtracted, ctx) {
+    const parserOptions = ctx.linguiConfig.extractorParserOptions
 
     const parserPlugins: ParserPlugin[] = [
       // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
@@ -88,7 +88,7 @@ const extractor: ExtractorType = {
             resolvePath: (source: string) => require.resolve(source),
             lingui: {
               extract: true,
-              linguiConfig,
+              linguiConfig: ctx.linguiConfig,
             } satisfies LinguiMacroOpts,
           },
         ],

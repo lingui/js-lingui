@@ -26,6 +26,7 @@
     "examples/create-react-app",
     "build",
     "website",
-    "**/fixtures/**"
+    "**/fixtures/**",
+    "**/__typetests__/**"
   ]
 }

@@ -11,7 +11,7 @@ import {
   Plural,
   Select,
   SelectOrdinal,
-} from "."
+} from "../index"
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React from "react"
 
@@ -220,7 +220,6 @@ expectType<string>(
   })
 )
 
-// @ts-expect-error: is never read
 let m: any
 
 ///////////////////

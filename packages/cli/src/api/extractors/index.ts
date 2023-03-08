@@ -34,12 +34,9 @@ export default async function extract(
 
     try {
       const file = await fs.readFile(filename)
-      await ext.extract(
-        filename,
-        file.toString(),
-        onMessageExtracted,
-        linguiConfig
-      )
+      await ext.extract(filename, file.toString(), onMessageExtracted, {
+        linguiConfig,
+      })
       return true
     } catch (e) {
       console.error(`Cannot process file ${filename} ${(e as Error).message}`)

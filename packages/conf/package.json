@@ -37,6 +37,7 @@
     "/build"
   ],
   "devDependencies": {
-    "@lingui/jest-mocks": "*"
+    "@lingui/jest-mocks": "*",
+    "tsd": "^0.26.1"
   }
 }

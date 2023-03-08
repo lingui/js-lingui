@@ -8,6 +8,7 @@ export type ExtractorCtx = {
    * Check the https://github.com/mozilla/source-map#new-sourcemapconsumerrawsourcemap
    */
   sourceMaps?: any
+  linguiConfig: LinguiConfigNormalized
 }
 
 export type ExtractorType = {
@@ -16,7 +17,6 @@ export type ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    linguiConfig: LinguiConfigNormalized,
     ctx?: ExtractorCtx
   ): Promise<void> | void
 }
@@ -61,9 +61,9 @@ type CatalogService = {
 }
 
 export type LinguiConfig = {
-  catalogs: CatalogConfig[]
-  compileNamespace: "es" | "ts" | "cjs" | string
-  extractorParserOptions: {
+  catalogs?: CatalogConfig[]
+  compileNamespace?: "es" | "ts" | "cjs" | string
+  extractorParserOptions?: {
     /**
      * default true
      */
@@ -73,21 +73,21 @@ export type LinguiConfig = {
      */
     flow?: boolean
   }
-  compilerBabelOptions: GeneratorOptions
+  compilerBabelOptions?: GeneratorOptions
   fallbackLocales?: FallbackLocales | false
-  extractors?: ExtractorType[] | string[]
+  extractors?: (string | ExtractorType)[]
   prevFormat?: CatalogFormat
   localeDir?: string
-  format: CatalogFormat
-  formatOptions: CatalogFormatOptions
+  format?: CatalogFormat
+  formatOptions?: CatalogFormatOptions
   locales: string[]
-  catalogsMergePath: string
-  orderBy: OrderBy
-  pseudoLocale: string
-  rootDir: string
-  runtimeConfigModule: ModuleSource | { [symbolName: string]: ModuleSource }
-  sourceLocale: string
-  service: CatalogService
+  catalogsMergePath?: string
+  orderBy?: OrderBy
+  pseudoLocale?: string
+  rootDir?: string
+  runtimeConfigModule?: ModuleSource | { [symbolName: string]: ModuleSource }
+  sourceLocale?: string
+  service?: CatalogService
 }
 
 export type LinguiConfigNormalized = Omit<
