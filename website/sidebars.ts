@@ -18,6 +18,11 @@ const sidebar = [
         label: 'React project',
         id: 'tutorials/setup-react',
       },
+      {
+        type: 'doc',
+        label: 'Vite project',
+        id: 'tutorials/setup-vite',
+      },
     ],
   },
   {

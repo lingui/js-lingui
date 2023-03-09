@@ -8,7 +8,7 @@ This setup guide is for any project which uses React.
 
 ## Install
 
-1.  Install `@lingui/cli`, `@lingui/macro`, *babel-plugin-macros* and Babel [^1] core packages as a development dependencies and `@lingui/react` as a runtime dependency.
+1.  Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel [^1] core packages as a development dependencies and `@lingui/react` as a runtime dependency.
 
     ```bash npm2yarn
     npm install --save-dev @lingui/cli @babel/core

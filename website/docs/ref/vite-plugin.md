@@ -1,8 +1,10 @@
 # Vite Plugin
 
-It's a good practice to use compiled message catalogs during development. However, running [`compile`](/docs/ref/cli.md#compile) everytime messages are changed soon becomes tedious.
+`@lingui/vite-plugin` is a Vite plugin, which compiles `.po` catalogs on the fly and provides additional required configuration for Vite.
 
-`@lingui/vite-plugin` is a Vite plugin, which compiles `.po` catalogs on the fly:
+:::note
+Refer to [Setup with Vite](/docs/tutorials/setup-vite.md) for a full installation guide.
+:::
 
 ## Installation
 
