@@ -152,3 +152,16 @@ Migration for the following older options:
 - `fallbackLocale`
 
 were deleted from the source code. This should affect only users who are migrating from `v2` to `v4` directly.
+
+### Plural Rules works out of the box without manual configuration
+
+You can safely remove `i18n.loadLocaleData` calls because since v4 Lingui uses `Intl.PluralRules` internally.
+
+```diff
+- import { en, cs } from "make-plural/plurals"
+
+- i18n.loadLocaleData("en", { plurals: en })
+- i18n.loadLocaleData("cs", { plurals: cs })
+```
+
+Don't forget to delete `make-plural` from your `package.json`.
