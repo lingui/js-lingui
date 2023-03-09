@@ -92,10 +92,10 @@ describe("@lingui/babel-plugin-extract-messages", function () {
 import { Trans } from "@lingui/react";
 
 <Trans id={message} />;
+<Trans id={message.field} />;
       `
       expectNoConsole(() => {
         const messages = transformCode(code)
-
         expect(messages.length).toBe(0)
       })
     })
@@ -127,22 +127,14 @@ import { Trans } from "@lingui/react";
       })
     })
 
-    it("Should log error when no ID provided", () => {
-      const code = `const msg = i18n._('', {}, {message: "My Message"})`
-
-      return mockConsole((console) => {
-        const messages = transformCode(code)
-
-        expect(messages.length).toBe(0)
-        expect(console.error).not.toBeCalled()
-        expect(console.warn).toBeCalledWith(
-          expect.stringContaining(`Missing message ID`)
-        )
-      })
-    })
-
     it("Should not rise warning when translation from variable", () => {
-      const code = `i18n._(message)`
+      const code = `
+      i18n._(message);
+      // member expression
+      i18n._(foo.bar);
+      // function call
+      i18n._(getMessage());
+      `
 
       expectNoConsole(() => {
         const messages = transformCode(code)
@@ -162,6 +154,23 @@ import { Trans } from "@lingui/react";
             "Only strings or template literals could be extracted."
           )
         )
+      })
+    })
+
+    it("Should support extract id from TplLiteral and Concatenation", () => {
+      const code = `
+      const msg = i18n._(\`message.id\`);
+      const msg2 = i18n._("second" + '.' + "id")
+      `
+
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages[0]).toMatchObject({
+          id: "message.id",
+        })
+        expect(messages[1]).toMatchObject({
+          id: "second.id",
+        })
       })
     })
 
