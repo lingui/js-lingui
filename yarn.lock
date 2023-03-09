@@ -2165,7 +2165,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@4.0.0-next.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@4.0.0-next.1, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -2177,7 +2177,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@4.0.0-next.0, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@4.0.0-next.1, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -2187,9 +2187,9 @@ __metadata:
     "@babel/plugin-syntax-jsx": ^7.18.6
     "@babel/runtime": ^7.20.13
     "@babel/types": ^7.20.7
-    "@lingui/babel-plugin-extract-messages": 4.0.0-next.0
-    "@lingui/conf": 4.0.0-next.0
-    "@lingui/core": 4.0.0-next.0
+    "@lingui/babel-plugin-extract-messages": 4.0.0-next.1
+    "@lingui/conf": 4.0.0-next.1
+    "@lingui/core": 4.0.0-next.1
     "@lingui/jest-mocks": "*"
     "@messageformat/parser": ^5.0.0
     "@types/convert-source-map": ^2.0.0
@@ -2224,7 +2224,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@4.0.0-next.0, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@4.0.0-next.1, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -2240,7 +2240,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@4.0.0-next.0, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
+"@lingui/core@4.0.0-next.1, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
@@ -2269,8 +2269,8 @@ __metadata:
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 4.0.0-next.0
-    "@lingui/conf": 4.0.0-next.0
+    "@lingui/cli": 4.0.0-next.1
+    "@lingui/conf": 4.0.0-next.1
     loader-utils: ^2.0.0
     memory-fs: ^0.5.0
     webpack: ^4.44.2
@@ -2288,14 +2288,14 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/cli": 4.0.0-next.0
-    "@lingui/conf": 4.0.0-next.0
+    "@lingui/cli": 4.0.0-next.1
+    "@lingui/conf": 4.0.0-next.1
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     tsd: ^0.26.1
   peerDependencies:
-    "@lingui/core": 4.0.0-next.0
-    "@lingui/react": 4.0.0-next.0
+    "@lingui/core": 4.0.0-next.1
+    "@lingui/react": 4.0.0-next.1
     babel-plugin-macros: 2 || 3
   languageName: unknown
   linkType: soft
@@ -2305,7 +2305,7 @@ __metadata:
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 4.0.0-next.0
+    "@lingui/core": 4.0.0-next.1
     "@testing-library/react": ^11.0.4
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -2316,7 +2316,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/remote-loader@workspace:packages/remote-loader"
   dependencies:
-    "@lingui/core": 4.0.0-next.0
+    "@lingui/core": 4.0.0-next.1
     ramda: ^0.27.1
   languageName: unknown
   linkType: soft
@@ -2326,8 +2326,8 @@ __metadata:
   resolution: "@lingui/snowpack-plugin@workspace:packages/snowpack-plugin"
   dependencies:
     "@babel/runtime": ^7
-    "@lingui/cli": 4.0.0-next.0
-    "@lingui/conf": 4.0.0-next.0
+    "@lingui/cli": 4.0.0-next.1
+    "@lingui/conf": 4.0.0-next.1
   languageName: unknown
   linkType: soft
 
@@ -2335,8 +2335,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 4.0.0-next.0
-    "@lingui/conf": 4.0.0-next.0
+    "@lingui/cli": 4.0.0-next.1
+    "@lingui/conf": 4.0.0-next.1
     vite: 3.2.4
   languageName: unknown
   linkType: soft

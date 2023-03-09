@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7",
-    "@lingui/cli": "4.0.0-next.0",
-    "@lingui/conf": "4.0.0-next.0"
+    "@lingui/cli": "4.0.0-next.1",
+    "@lingui/conf": "4.0.0-next.1"
   }
 }

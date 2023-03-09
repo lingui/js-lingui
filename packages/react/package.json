@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "4.0.0-next.0",
+  "version": "4.0.0-next.1",
   "sideEffects": false,
   "description": "React components for translations",
   "main": "./build/cjs/index.js",
@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "4.0.0-next.0"
+    "@lingui/core": "4.0.0-next.1"
   },
   "devDependencies": {
     "@testing-library/react": "^11.0.4"
