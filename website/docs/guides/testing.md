@@ -4,12 +4,11 @@ Components using [`Trans`](/docs/ref/react.md#trans), [`withI18n`](/docs/ref/rea
 
 Here is a working example with [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/), using the [wrapper-property](https://testing-library.com/docs/react-testing-library/api#wrapper):
 
-``` jsx title="index.js"
+```tsx title="index.js"
  import React from 'react'
  import { getByText, render, act } from '@testing-library/react'
  import { i18n } from '@lingui/core'
  import { I18nProvider } from '@lingui/react'
- import { en, cs } from 'make-plural/plurals'
 
  import { messages } from './locales/en/messages'
  import { messages as csMessages } from './locales/cs/messages'
@@ -19,10 +18,6 @@ Here is a working example with [react-testing-library](https://testing-library.c
    en: messages,
    cs: csMessages
  })
- i18n.loadLocaleData({
-   en: { plurals: en },
-   cs: { plurals: cs }
- });
 
  const TestingProvider = ({ children }: any) => (
    <I18nProvider i18n={i18n}>

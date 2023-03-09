@@ -1,7 +1,7 @@
 import { setupI18n } from "@lingui/core"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
-describe("I18n", function () {
+describe("I18n", () => {
   describe("I18n.load", () => {
     it("should emit event", () => {
       const i18n = setupI18n()
@@ -56,9 +56,6 @@ describe("I18n", function () {
         messages: {
           en: {},
         },
-        localeData: {
-          en: {},
-        },
       })
 
       const cbChange = jest.fn()
@@ -69,7 +66,6 @@ describe("I18n", function () {
 
     it("should activate instantly", () => {
       const i18n = setupI18n({
-        locales: ["en", "es"],
         messages: {
           en: {
             Hello: "Hello",
@@ -77,10 +73,6 @@ describe("I18n", function () {
           es: {
             Hello: "Hola",
           },
-        },
-        localeData: {
-          en: {},
-          es: {},
         },
       })
 
@@ -119,9 +111,6 @@ describe("I18n", function () {
         expect(console.warn).toBeCalledWith(
           'Messages for locale "xyz" not loaded.'
         )
-        expect(console.warn).toBeCalledWith(
-          'Locale data for locale "xyz" not loaded. Plurals won\'t work correctly.'
-        )
       })
 
       mockEnv("production", () => {
@@ -136,7 +125,7 @@ describe("I18n", function () {
     })
   })
 
-  it("._ should format message from catalog", function () {
+  it("._ should format message from catalog", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
@@ -169,7 +158,7 @@ describe("I18n", function () {
     ).toEqual("Missing Fred")
   })
 
-  it("._ should translate message from variable", function () {
+  it("._ should translate message from variable", () => {
     const messages = {
       Hello: "Salut",
     }
@@ -195,7 +184,7 @@ describe("I18n", function () {
     expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", function () {
+  it("._ shouldn't compile messages in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
@@ -232,8 +221,8 @@ describe("I18n", function () {
     })
   })
 
-  describe("params.missing - handling missing translations", function () {
-    it("._ should return custom string for missing translations", function () {
+  describe("params.missing - handling missing translations", () => {
+    it("._ should return custom string for missing translations", () => {
       const i18n = setupI18n({
         missing: "xxx",
         locale: "en",
@@ -243,10 +232,13 @@ describe("I18n", function () {
       expect(i18n._("missing")).toEqual("xxx")
     })
 
-    it("._ should call a function with message ID of missing translation", function () {
+    it("._ should call a function with message ID of missing translation", () => {
       const missing = jest.fn((locale, id) => id.split("").reverse().join(""))
       const i18n = setupI18n({
         locale: "en",
+        messages: {
+          en: {},
+        },
         missing,
       })
       expect(i18n._("missing")).toEqual("gnissim")

@@ -1,30 +1,52 @@
 import { date, number } from "./formats"
 
 describe("@lingui/core/formats", () => {
-  it("number formatter is memoized", async () => {
-    const firstRunt0 = performance.now()
-    number("es", {})(10000)
-    const firstRunt1 = performance.now()
-    const firstRunResult = firstRunt1 - firstRunt0
+  describe("date", () => {
+    it("should support Date as input", () => {
+      expect(date(["en"], new Date(2023, 2, 5))).toMatchInlineSnapshot(
+        `"3/5/2023"`
+      )
+    })
+    it("should support iso string as input", () => {
+      expect(
+        date(["en"], new Date(2023, 2, 5).toISOString())
+      ).toMatchInlineSnapshot(`"3/5/2023"`)
+    })
 
-    const seconddRunt0 = performance.now()
-    number("es", {}, false)(10000)
-    const seconddRunt1 = performance.now()
-    const secondRunResult = seconddRunt1 - seconddRunt0
+    it("should pass format options", () => {
+      expect(
+        date(["en"], new Date(2023, 2, 5).toISOString(), { dateStyle: "full" })
+      ).toMatchInlineSnapshot(`"Sunday, March 5, 2023"`)
 
-    expect(secondRunResult).toBeLessThan(firstRunResult)
+      expect(
+        date(["en"], new Date(2023, 2, 5).toISOString(), {
+          dateStyle: "medium",
+        })
+      ).toMatchInlineSnapshot(`"Mar 5, 2023"`)
+    })
+
+    it("should respect passed locale", () => {
+      expect(
+        date(["pl"], new Date(2023, 2, 5).toISOString(), { dateStyle: "full" })
+      ).toMatchInlineSnapshot(`"niedziela, 5 marca 2023"`)
+    })
   })
-  it("date formatter is memoized", async () => {
-    const firstRunt0 = performance.now()
-    date("es", {})(new Date())
-    const firstRunt1 = performance.now()
-    const firstRunResult = firstRunt1 - firstRunt0
 
-    const seconddRunt0 = performance.now()
-    date("es", {}, false)(new Date())
-    const seconddRunt1 = performance.now()
-    const secondRunResult = seconddRunt1 - seconddRunt0
+  describe("number", () => {
+    it("should pass format options", () => {
+      expect(
+        number(["en"], 1000, { style: "currency", currency: "EUR" })
+      ).toMatchInlineSnapshot(`"€1,000.00"`)
 
-    expect(secondRunResult).toBeLessThan(firstRunResult)
+      expect(
+        number(["en"], 1000, { maximumSignificantDigits: 3 })
+      ).toMatchInlineSnapshot(`"1,000"`)
+    })
+
+    it("should respect passed locale", () => {
+      expect(
+        number(["pl"], 1000, { style: "currency", currency: "EUR" })
+      ).toMatchInlineSnapshot(`"1000,00 €"`)
+    })
   })
 })

@@ -3,7 +3,6 @@ import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import { compileMessage } from "@lingui/core/compile"
 import { EventEmitter } from "./eventEmitter"
-import type { PluralCategory } from "make-plural"
 
 export type MessageOptions = {
   message?: string
@@ -19,10 +18,19 @@ export type Formats = Record<
 
 export type Values = Record<string, unknown>
 
+/**
+ * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+ */
 export type LocaleData = {
-  plurals?: (n: number, ordinal?: boolean) => PluralCategory
+  plurals?: (
+    n: number,
+    ordinal?: boolean
+  ) => ReturnType<Intl.PluralRules["select"]>
 }
 
+/**
+ * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+ */
 export type AllLocaleData = Record<Locale, LocaleData>
 
 export type CompiledIcuChoices = Record<string, CompiledMessage> & {
@@ -56,6 +64,9 @@ type setupI18nProps = {
   locale?: Locale
   locales?: Locales
   messages?: AllMessages
+  /**
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   */
   localeData?: AllLocaleData
   missing?: MissingHandler
 }
@@ -98,6 +109,9 @@ export class I18n extends EventEmitter<Events> {
     return this._messages[this._locale] ?? {}
   }
 
+  /**
+   * @deprecated this has no effect. Please remove this from the code. Introduced in v4
+   */
   get localeData(): LocaleData {
     return this._localeData[this._locale] ?? {}
   }
@@ -110,9 +124,17 @@ export class I18n extends EventEmitter<Events> {
     }
   }
 
+  /**
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   */
   public loadLocaleData(allLocaleData: AllLocaleData): void
+  /**
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   */
   public loadLocaleData(locale: Locale, localeData: LocaleData): void
-
+  /**
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   */
   loadLocaleData(localeOrAllData, localeData?) {
     if (localeData != null) {
       // loadLocaleData('en', enLocaleData)
@@ -161,12 +183,6 @@ export class I18n extends EventEmitter<Events> {
       if (!this._messages[locale]) {
         console.warn(`Messages for locale "${locale}" not loaded.`)
       }
-
-      if (!this._localeData[locale]) {
-        console.warn(
-          `Locale data for locale "${locale}" not loaded. Plurals won't work correctly.`
-        )
-      }
     }
 
     this._locale = locale
@@ -214,17 +230,16 @@ export class I18n extends EventEmitter<Events> {
     return interpolate(
       translation,
       this._locale,
-      this._locales,
-      this.localeData
+      this._locales
     )(values, formats)
   }
 
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
-    return date(this._locales || this._locale, format)(value)
+    return date(this._locales || this._locale, value, format)
   }
 
   number(value: number, format?: Intl.NumberFormatOptions): string {
-    return number(this._locales || this._locale, format)(value)
+    return number(this._locales || this._locale, value, format)
   }
 }
 

@@ -1,9 +1,5 @@
 import { i18n } from "@lingui/core"
 import { t, plural, defineMessage } from "@lingui/macro"
-import { en, cs } from "make-plural/plurals"
-
-i18n.loadLocaleData("en", { plurals: en })
-i18n.loadLocaleData("cs", { plurals: cs })
 
 i18n.load({
   en: require("./locale/en/messages").messages,

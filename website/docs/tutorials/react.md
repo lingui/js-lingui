@@ -445,42 +445,8 @@ This message is a bit special, because it depends on the value of the `messagesC
 What's tricky is that different languages use different number of plural forms. For example, English has only two forms - singular and plural - as we can see in the example above. However, Czech language has three plural forms. Some languages have up to 6 plural forms and some don't have plurals at all!
 
 :::tip
-Plural forms for all languages can be found in the [CLDR repository](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
+Lingui uses `Intl.PluralRules` which is supported in [every modern browser](https://caniuse.com/intl-pluralrules) and can be polyfilled for older. So you don't need to setup anything special.
 :::
-
-Let's load plural data into our app:
-
-```jsx title="src/index.js" {6,11-14}
-import React from 'react'
-import { render } from 'react-dom'
-
-import { i18n } from '@lingui/core'
-import { I18nProvider } from '@lingui/react'
-import { en, cs } from 'make-plural/plurals'
-import { messages as enMessages } from './locales/en/messages'
-import { messages as csMessages } from './locales/cs/messages'
-import Inbox from './Inbox'
-
-i18n.loadLocaleData({
-  en: { plurals: en },
-  cs: { plurals: cs },
-})
-
-i18n.load({
-  en: enMessages,
-  cs: csMessages,
-})
-
-i18n.activate('cs')
-
-const App = () => (
-  <I18nProvider i18n={i18n}>
-    <Inbox />
-  </I18nProvider>
-)
-
-render(<App />, document.getElementById('root'))
-```
 
 ### English plural rules
 
@@ -496,8 +462,8 @@ How do we know which plural form we should use? It's very simple: we, as develop
 
 We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.md#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
-``` jsx
-import { Trans, Plural } from '@lingui/macro'
+```jsx
+import { Trans, Plural } from '@lingui/macro';
 
 <p>
    <Plural

@@ -78,15 +78,13 @@ Let's use the [`Trans`](/docs/ref/macro.md#trans) macro first. Don't forget that
 
 Let's translate the screen heading:
 
-``` jsx
+```jsx
 import { I18nProvider } from '@lingui/react'
 import { Trans } from '@lingui/macro'
 import { i18n } from "@lingui/core"
-import { en } from 'make-plural/plurals'
 
-i18n.loadLocaleData('en', { plurals: en })
-i18n.load('en', messages)
-i18n.activate('en')
+i18n.load('en', messages);
+i18n.activate('en');
 
 <I18nProvider i18n={i18n}>
  <YourRootComponent someProp="someValue" />

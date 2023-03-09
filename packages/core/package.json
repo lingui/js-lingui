@@ -60,8 +60,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@messageformat/parser": "^5.0.0",
-    "make-plural": "^6.2.2"
+    "@messageformat/parser": "^5.0.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*"

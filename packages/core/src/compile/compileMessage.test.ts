@@ -2,25 +2,11 @@ import { compileMessage as compile } from "./compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "../context"
 import { Locale, Locales } from "../i18n"
-import { PluralCategory } from "make-plural"
 
 describe("compile", () => {
-  const englishPlurals = {
-    plurals(value: number, ordinal: boolean) {
-      if (ordinal) {
-        return (
-          ({ "1": "one", "2": "two", "3": "few" }[value] as PluralCategory) ||
-          "other"
-        )
-      } else {
-        return value === 1 ? "one" : "other"
-      }
-    },
-  }
-
   const prepare = (translation: string, locale?: Locale, locales?: Locales) => {
     const tokens = compile(translation)
-    return interpolate(tokens, locale || "en", locales, englishPlurals)
+    return interpolate(tokens, locale || "en", locales)
   }
 
   it("should handle an error if message has syntax errors", () => {
@@ -62,9 +48,7 @@ describe("compile", () => {
 
   it("should compile message with variable", () => {
     const cache = compile("Hey {name}!")
-    expect(interpolate(cache, "en", [], {})({ name: "Joe" })).toEqual(
-      "Hey Joe!"
-    )
+    expect(interpolate(cache, "en", [])({ name: "Joe" })).toEqual("Hey Joe!")
   })
 
   it("should not interpolate escaped placeholder", () => {
@@ -94,6 +78,32 @@ describe("compile", () => {
     )
     expect(cache({ value: 1 })).toEqual("1st Book")
     expect(cache({ value: 2 })).toEqual("2nd Book")
+  })
+
+  it("should support nested choice components", () => {
+    const cache = prepare(
+      `{
+      gender, select, 
+      male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} 
+      female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}} 
+      other {They is {gender}}}`
+    )
+
+    expect(cache({ numOfGuests: 1, gender: "male" })).toEqual(
+      "He invites one guest"
+    )
+    expect(cache({ numOfGuests: 3, gender: "male" })).toEqual(
+      "He invites 3 guests"
+    )
+    expect(cache({ numOfGuests: 1, gender: "female" })).toEqual(
+      "She invites one guest"
+    )
+    expect(cache({ numOfGuests: 3, gender: "female" })).toEqual(
+      "She invites 3 guests"
+    )
+    expect(cache({ numOfGuests: 3, gender: "unknown" })).toEqual(
+      "They is unknown"
+    )
   })
 
   it("should compile select", () => {
@@ -137,7 +147,7 @@ describe("compile", () => {
             style: "currency",
             currency: "EUR",
             minimumFractionDigits: 2,
-          } as Intl.NumberFormatOptions,
+          } satisfies Intl.NumberFormatOptions,
         }
         const currency = prepare("{value, number, currency}", locale, locales)
         expect(currency({ value: 0.1 }, formats)).toEqual(expectedCurrency1)

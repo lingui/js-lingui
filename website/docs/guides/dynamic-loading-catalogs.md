@@ -4,59 +4,18 @@
 
 Here's an example of a basic setup with a dynamic load of catalogs.
 
-## Setup
-
-:::caution
-You don't have to install following Babel plugins if you're using *Create React App* or similar framework which already has it.
-:::
-
-We are using the [Dynamic Import() Proposal](https://github.com/tc39/proposal-dynamic-import) to ECMAScript. We need to install `@babel/plugin-syntax-dynamic-import` and `babel-plugin-dynamic-import-node` to make it work. Also, the code examples given here make use of `@babel/plugin-proposal-class-properties`.
-
-```bash npm2yarn
-npm install --save-dev \
-  @babel/plugin-syntax-dynamic-import \
-  babel-plugin-dynamic-import-node \
-  @babel/plugin-proposal-class-properties
-```
-
-:::caution
-`babel-plugin-dynamic-import-node` is required when running tests in Jest.
-:::
-
-``` js title=".babelrc"
-{
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-proposal-class-properties"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        "dynamic-import-node"
-      ]
-    }
-  }
-}
-```
-
 ## Final I18n loader helper
 
 Here's the full source of `i18n.ts` logic:
 
-``` jsx title="i18n.ts"
+```tsx title="i18n.ts"
 import { i18n } from '@lingui/core';
-import { en, cs } from 'make-plural/plurals'
 
 export const locales = {
   en: "English",
   cs: "Česky",
 };
 export const defaultLocale = "en";
-
-i18n.loadLocaleData({
-  en: { plurals: en },
-  cs: { plurals: cs },
-})
 
 /**
 * We do a dynamic import of just the catalog that we need
@@ -71,7 +30,7 @@ export async function dynamicActivate(locale: string) {
 
 **How should I use the dynamicActivate in our application?**
 
-``` jsx
+```jsx
 import React, { useEffect } from 'react';
 import App from './App';
 
