@@ -4,6 +4,7 @@ import type { MessageDescriptor, I18n } from "@lingui/core"
 import {
   t,
   defineMessage,
+  msg,
   plural,
   selectOrdinal,
   select,
@@ -76,6 +77,16 @@ expectType<MessageDescriptor>(
     message: "Hello world",
   })
 )
+expectType<MessageDescriptor>(
+  msg({
+    id: "custom.id",
+    comment: "Hello",
+    context: "context",
+    message: "Hello world",
+  })
+)
+expectType<MessageDescriptor>(defineMessage`Message`)
+expectType<MessageDescriptor>(msg`Message`)
 
 // @ts-expect-error id or message should be presented
 expectType<MessageDescriptor>(defineMessage({}))

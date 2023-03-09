@@ -20,6 +20,7 @@ export type LinguiMacroOpts = {
 
 const jsMacroTags = new Set([
   "defineMessage",
+  "msg",
   "arg",
   "t",
   "plural",

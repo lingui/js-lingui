@@ -368,6 +368,21 @@ const cases: TestCase[] = [
       `,
   },
   {
+    name: "Production - only essential props are kept",
+    production: true,
+    input: `
+      import { t } from '@lingui/macro';
+      const msg = t\`Message\`
+    `,
+    expected: `
+      import { i18n } from "@lingui/core";
+      const msg = i18n._(/*i18n*/
+      {
+        id: "xDAtGP",
+      });
+    `,
+  },
+  {
     name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `

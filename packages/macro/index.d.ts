@@ -193,6 +193,29 @@ export function defineMessage(
   descriptor: MacroMessageDescriptor
 ): MessageDescriptor
 
+/**
+ * Define a message for later use
+ *
+ * @example
+ * ```
+ * import { defineMessage, msg } from "@lingui/macro";
+ * const message = defineMessage`Hello ${name}`;
+ *
+ * // or using shorter version
+ * const message = msg`Hello ${name}`;
+ * ```
+ */
+export function defineMessage(
+  literals: TemplateStringsArray,
+  ...placeholders: any[]
+): MessageDescriptor
+
+/**
+ * Define a message for later use
+ * Alias for {@see defineMessage}
+ */
+export const msg: typeof defineMessage
+
 type CommonProps = {
   id?: string
   comment?: string

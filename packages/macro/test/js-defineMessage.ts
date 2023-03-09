@@ -2,6 +2,43 @@ import { TestCase } from "./index"
 
 const cases: TestCase[] = [
   {
+    name: "defineMessage should support template literal",
+    input: `
+        import { defineMessage } from '@lingui/macro';
+        const message = defineMessage\`Message\`
+    `,
+    expected: `
+        const message =
+          /*i18n*/
+          {
+            id: "xDAtGP",
+            message: "Message",
+          };
+    `,
+  },
+  {
+    name: "defineMessage can be called by alias `msg`",
+    input: `
+        import { msg } from '@lingui/macro';
+        const message1 = msg\`Message\`
+        const message2 = msg({message: "Message"})
+    `,
+    expected: `
+        const message1 =
+          /*i18n*/
+          {
+            id: "xDAtGP",
+            message: "Message",
+          };
+        const message2 =
+          /*i18n*/
+          {
+            message: "Message",
+            id: "xDAtGP",
+          };
+    `,
+  },
+  {
     name: "should expand macros in message property",
     input: `
         import { defineMessage, plural, arg } from '@lingui/macro';
@@ -11,7 +48,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
@@ -31,7 +67,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
@@ -53,7 +88,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
@@ -71,7 +105,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
@@ -93,7 +126,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
@@ -114,7 +146,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const msg =
           /*i18n*/
           {
@@ -138,7 +169,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const msg =
           /*i18n*/
           {
@@ -158,7 +188,6 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
         const message =
           /*i18n*/
           {
