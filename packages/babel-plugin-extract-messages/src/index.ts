@@ -7,7 +7,6 @@ import {
   Node,
   ObjectExpression,
   ObjectProperty,
-  StringLiteral,
 } from "@babel/types"
 import type { PluginObj, PluginPass } from "@babel/core"
 import type { NodePath } from "@babel/core"
@@ -63,7 +62,8 @@ function collectMessage(
 function getTextFromExpression(
   t: BabelTypes,
   exp: Expression,
-  hub: Hub
+  hub: Hub,
+  emitErrorOnVariable = true
 ): string {
   if (t.isStringLiteral(exp)) {
     return exp.value
@@ -71,8 +71,18 @@ function getTextFromExpression(
 
   if (t.isBinaryExpression(exp)) {
     return (
-      getTextFromExpression(t, exp.left as Expression, hub) +
-      getTextFromExpression(t, exp.right as Expression, hub)
+      getTextFromExpression(
+        t,
+        exp.left as Expression,
+        hub,
+        emitErrorOnVariable
+      ) +
+      getTextFromExpression(
+        t,
+        exp.right as Expression,
+        hub,
+        emitErrorOnVariable
+      )
     )
   }
 
@@ -91,13 +101,15 @@ function getTextFromExpression(
     return exp.quasis[0]?.value?.cooked
   }
 
-  console.warn(
-    hub.buildError(
-      exp,
-      "Only strings or template literals could be extracted.",
-      SyntaxError
-    ).message
-  )
+  if (emitErrorOnVariable) {
+    console.warn(
+      hub.buildError(
+        exp,
+        "Only strings or template literals could be extracted.",
+        SyntaxError
+      ).message
+    )
+  }
 }
 
 function extractFromObjectExpression(
@@ -120,11 +132,6 @@ function extractFromObjectExpression(
 
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
   let localTransComponentName: string
-
-  // We need to remember all processed nodes. When JSX expressions are
-  // replaced with CallExpressions, all children are traversed for each CallExpression.
-  // Then, i18n._ methods are visited multiple times for each parent CallExpression.
-  const visitedNodes = new WeakSet<Node>()
 
   function isTransComponent(node: Node) {
     return (
@@ -213,8 +220,6 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       },
 
       CallExpression(path, ctx) {
-        if (visitedNodes.has(path.node)) return
-
         const hasComment = [path.node, path.parent].some((node) =>
           hasI18nComment(node)
         )
@@ -230,16 +235,15 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         if (!hasComment && !isNonMacroI18n) return
 
         let props: Record<string, unknown> = {
-          id: (firstArgument as StringLiteral).value,
+          id: getTextFromExpression(
+            t,
+            firstArgument as Expression,
+            ctx.file.hub,
+            false
+          ),
         }
 
         if (!props.id) {
-          // don't rise warning when translating from variables
-          if (!t.isIdentifier(firstArgument)) {
-            console.warn(
-              path.buildCodeFrameError("Missing message ID, skipping.").message
-            )
-          }
           return
         }
 
@@ -256,16 +260,13 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
           }
         }
 
-        visitedNodes.add(path.node)
         collectMessage(path, props, ctx)
       },
 
       StringLiteral(path, ctx) {
-        if (!hasI18nComment(path.node) || visitedNodes.has(path.node)) {
+        if (!hasI18nComment(path.node)) {
           return
         }
-
-        visitedNodes.add(path.node)
 
         const props = {
           id: path.node.value,
@@ -283,11 +284,9 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
       // Extract message descriptors
       ObjectExpression(path, ctx) {
-        if (!hasI18nComment(path.node) || visitedNodes.has(path.node)) {
+        if (!hasI18nComment(path.node)) {
           return
         }
-
-        visitedNodes.add(path.node)
 
         const props = extractFromObjectExpression(t, path.node, ctx.file.hub, [
           "id",
