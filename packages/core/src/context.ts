@@ -22,14 +22,14 @@ const getDefaultFormats = (
   return {
     plural: (value: number, cases) => {
       const { offset = 0 } = cases
-      const message = plural(locale, false, value, cases)
+      const message = plural(locales, false, value, cases)
 
       return replaceOctothorpe(value - offset, message)
     },
 
     selectordinal: (value: number, cases) => {
       const { offset = 0 } = cases
-      const message = plural(locale, true, value, cases)
+      const message = plural(locales, true, value, cases)
 
       return replaceOctothorpe(value - offset, message)
     },

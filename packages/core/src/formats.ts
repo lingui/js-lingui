@@ -4,14 +4,21 @@ import { Locales } from "./i18n"
 /** Memoized cache */
 const cache = new Map<string, unknown>()
 
+function normalizeLocales(locales: Locales): string[] {
+  const out = Array.isArray(locales) ? locales : [locales]
+  return [...out, "en"]
+}
+
 export function date(
   locales: Locales,
   value: string | Date,
   format: Intl.DateTimeFormatOptions = {}
 ): string {
+  const _locales = normalizeLocales(locales)
+
   const formatter = getMemoized(
-    () => cacheKey("date", locales, format),
-    () => new Intl.DateTimeFormat(locales, format)
+    () => cacheKey("date", _locales, format),
+    () => new Intl.DateTimeFormat(_locales, format)
   )
 
   return formatter.format(isString(value) ? new Date(value) : value)
@@ -22,28 +29,32 @@ export function number(
   value: number,
   format: Intl.NumberFormatOptions = {}
 ): string {
+  const _locales = normalizeLocales(locales)
+
   const formatter = getMemoized(
-    () => cacheKey("number", locales, format),
-    () => new Intl.NumberFormat(locales, format)
+    () => cacheKey("number", _locales, format),
+    () => new Intl.NumberFormat(_locales, format)
   )
 
   return formatter.format(value)
 }
 
 export function plural(
-  locale: string,
+  locales: Locales,
   ordinal: boolean,
   value: number,
   { offset = 0, ...rules }
 ): string {
+  const _locales = normalizeLocales(locales)
+
   const plurals = ordinal
     ? getMemoized(
-        () => cacheKey("plural-ordinal", locale, {}),
-        () => new Intl.PluralRules([locale, "en"], { type: "ordinal" })
+        () => cacheKey("plural-ordinal", _locales, {}),
+        () => new Intl.PluralRules(_locales, { type: "ordinal" })
       )
     : getMemoized(
-        () => cacheKey("plural-cardinal", locale, {}),
-        () => new Intl.PluralRules([locale, "en"], { type: "cardinal" })
+        () => cacheKey("plural-cardinal", _locales, {}),
+        () => new Intl.PluralRules(_locales, { type: "cardinal" })
       )
 
   return rules[value] || rules[plurals.select(value - offset)] || rules.other
@@ -64,9 +75,9 @@ function getMemoized<T>(getKey: () => string, construct: () => T) {
 
 function cacheKey(
   type: string,
-  locales?: string | string[],
+  locales?: readonly string[],
   options: unknown = {}
 ) {
-  const localeKey = Array.isArray(locales) ? locales.sort().join("-") : locales
+  const localeKey = [...locales].sort().join("-")
   return `${type}-${localeKey}-${JSON.stringify(options)}`
 }
