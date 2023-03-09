@@ -1,9 +1,9 @@
 # Vite Plugin
 
-`@lingui/vite-plugin` is a Vite plugin, which compiles `.po` catalogs on the fly and provide additional required configuration for Vite.
+`@lingui/vite-plugin` is a Vite plugin, which compiles `.po` catalogs on the fly and provides additional required configuration for Vite.
 
 :::note
-Refer to [Setup with Vite](/tutorials/setup-vite) for full installation guide.
+Refer to [Setup with Vite](/docs/tutorials/setup-vite.md) for a full installation guide.
 :::
 
 ## Installation
