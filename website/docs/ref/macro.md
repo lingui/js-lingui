@@ -56,7 +56,7 @@ The advantages of using macros are:
 
 **JSX macros** are transformed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md):
 
-``` jsx
+```jsx
 import { Trans } from "@lingui/macro"
 <Trans>Attachment {name} saved</Trans>
 
@@ -195,6 +195,16 @@ customI18n._(/*i18n*/{
 })
 ```
 ```js
+const msg = defineMessage`Refresh inbox`
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+const msg = /*i18n*/{
+  id: "EsCV2T",
+  message: "Refresh inbox"
+}
+```
+```js
 const msg = defineMessage({
   id: "msg.refresh",
   message: "Refresh inbox"
@@ -310,7 +320,6 @@ const message =
   i18n._(/*i18n*/ {
     id: "mY42CM",
     message: "Hello World",
-    values: { name }
   })
 ```
 
@@ -598,21 +607,45 @@ const message = t({
 ```
 :::
 
-### `defineMessage`
+### `defineMessage` alias: `msg` {#definemessage}
 
-`defineMessage` macro is a wrapper around macros above which allows you to add comments for translators or override the message ID.
-
-Unlike the other JS macros, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core.md#i18n._) call.
+`defineMessage` macro allows to define message for later use. It has the same signature as `t` macro, but unlike it, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core.md#i18n._) call.
 
 ```ts
-type MessageDescriptor = {
+import { defineMessage } from "@lingui/macro"
+const message = defineMessage`Hello World`
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+const message = /*i18n*/ {
+  id: "mY42CM",
+  message: "Hello World",
+}
+```
+
+You also can use shorter alias of `defineMessage` macro:
+
+```ts
+import { msg } from "@lingui/macro"
+const message = msg`Hello World`
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+const message = /*i18n*/ {
+  id: "mY42CM",
+  message: "Hello World",
+}
+```
+
+`defineMessage` macro also supports `MacroMessageDescriptor` object as input. That can be used to provide additional information for message such as comment or context.
+
+```ts
+type MacroMessageDescriptor = {
   id?: string,
   message?: string,
   comment?: string,
   context?: string,
 }
-
-defineMessage(message: MessageDescriptor)
 ```
 
 Either `id` or `message` property is required. `id` is a custom message ID. If it isn't set, the `message` (and `context` if provided) are used for generating an ID.
@@ -635,7 +668,7 @@ const message = /*i18n*/{
 `message` is the default message. Any JS macro can be used here. Template string literals don't need to be tagged with [`t`](#t).
 
 ```js
-import { defineMessage, t } from "@lingui/macro"
+import { defineMessage } from "@lingui/macro"
 
 const name = "Joe"
 

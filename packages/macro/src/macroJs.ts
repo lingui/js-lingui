@@ -18,6 +18,7 @@ import ICUMessageFormat, {
   ParsedResult,
   TextToken,
   Token,
+  Tokens,
 } from "./icu"
 import { makeCounter } from "./utils"
 import { COMMENT, CONTEXT, EXTRACT_MARK, ID, MESSAGE } from "./constants"
@@ -28,6 +29,13 @@ const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
 
 function normalizeWhitespace(text: string): string {
   return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
+}
+
+function buildICUFromTokens(tokens: Tokens) {
+  const messageFormat = new ICUMessageFormat()
+  const { message, values } = messageFormat.fromTokens(tokens)
+
+  return { message: normalizeWhitespace(message), values }
 }
 
 export type MacroJsOpts = {
@@ -62,24 +70,11 @@ export default class MacroJs {
 
   replacePathWithMessage = (
     path: NodePath,
-    {
-      message,
-      values,
-    }: { message: ParsedResult["message"]; values: ParsedResult["values"] },
+    tokens: Tokens,
     linguiInstance?: babelTypes.Expression
   ) => {
-    const properties: ObjectProperty[] = [
-      this.createIdProperty(message),
-      this.createObjectProperty(MESSAGE, this.types.stringLiteral(message)),
-      this.createValuesProperty(values),
-    ]
-
     const newNode = this.createI18nCall(
-      this.createMessageDescriptor(
-        properties,
-        // preserve line numbers for extractor
-        path.node.loc
-      ),
+      this.createMessageDescriptorFromTokens(tokens, path.node.loc),
       linguiInstance
     )
 
@@ -91,9 +86,29 @@ export default class MacroJs {
     // reset the expression counter
     this._expressionIndex = makeCounter()
 
-    if (this.isDefineMessage(path.node)) {
-      this.replaceDefineMessage(path as NodePath<CallExpression>)
-      return true
+    // defineMessage({ message: "Message", context: "My" }) -> {id: <hash + context>, message: "Message"}
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.isDefineMessage(path.node.callee)
+    ) {
+      let descriptor = this.processDescriptor(path.node.arguments[0])
+      path.replaceWith(descriptor)
+      return false
+    }
+
+    // defineMessage`Message` -> {id: <hash>, message: "Message"}
+    if (
+      this.types.isTaggedTemplateExpression(path.node) &&
+      this.isDefineMessage(path.node.tag)
+    ) {
+      const tokens = this.tokenizeTemplateLiteral(path.node.quasi)
+      const descriptor = this.createMessageDescriptorFromTokens(
+        tokens,
+        path.node.loc
+      )
+
+      path.replaceWith(descriptor)
+      return false
     }
 
     // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
@@ -107,15 +122,7 @@ export default class MacroJs {
       const i18nInstance = path.node.arguments[0]
       const tokens = this.tokenizeNode(path.parentPath.node)
 
-      const messageFormat = new ICUMessageFormat()
-      const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-      const message = normalizeWhitespace(messageRaw)
-
-      this.replacePathWithMessage(
-        path.parentPath,
-        { message, values },
-        i18nInstance
-      )
+      this.replacePathWithMessage(path.parentPath, tokens, i18nInstance)
       return false
     }
 
@@ -135,6 +142,7 @@ export default class MacroJs {
       return false
     }
 
+    // t({...})
     if (
       this.types.isCallExpression(path.node) &&
       this.isLinguiIdentifier(path.node.callee, "t")
@@ -145,43 +153,9 @@ export default class MacroJs {
 
     const tokens = this.tokenizeNode(path.node)
 
-    const messageFormat = new ICUMessageFormat()
-    const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-    const message = normalizeWhitespace(messageRaw)
-
-    this.replacePathWithMessage(path, { message, values })
+    this.replacePathWithMessage(path, tokens)
 
     return true
-  }
-
-  /**
-   * macro `defineMessage` is called with MessageDescriptor. The only
-   * thing that happens is that any macros used in `message` property
-   * are replaced with formatted message.
-   *
-   * import { defineMessage, plural } from '@lingui/macro';
-   * const message = defineMessage({
-   *   id: "msg.id",
-   *   comment: "Description",
-   *   message: plural(value, { one: "book", other: "books" })
-   * })
-   *
-   * ↓ ↓ ↓ ↓ ↓ ↓
-   *
-   * const message = {
-   *   id: "msg.id",
-   *   comment: "Description",
-   *   message: "{value, plural, one {book} other {books}}"
-   * }
-   *
-   */
-  replaceDefineMessage = (path: NodePath<CallExpression>) => {
-    // reset the expression counter
-    this._expressionIndex = makeCounter()
-
-    let descriptor = this.processDescriptor(path.node.arguments[0])
-
-    path.replaceWith(descriptor)
   }
 
   /**
@@ -209,7 +183,8 @@ export default class MacroJs {
    *
    * {
    *   comment: "Description",
-   *   id: "{value, plural, one {book} other {books}}"
+   *   id: <hash>
+   *   message: "{value, plural, one {book} other {books}}"
    * }
    *
    */
@@ -237,9 +212,7 @@ export default class MacroJs {
       let messageNode = messageProperty.value as StringLiteral
 
       if (tokens) {
-        const messageFormat = new ICUMessageFormat()
-        const { message: messageRaw, values } = messageFormat.fromTokens(tokens)
-        const message = normalizeWhitespace(messageRaw)
+        const { message, values } = buildICUFromTokens(tokens)
         messageNode = this.types.stringLiteral(message)
 
         properties.push(this.createValuesProperty(values))
@@ -435,6 +408,26 @@ export default class MacroJs {
     )
   }
 
+  createMessageDescriptorFromTokens(tokens: Tokens, oldLoc?: SourceLocation) {
+    const { message, values } = buildICUFromTokens(tokens)
+
+    const properties: ObjectProperty[] = [
+      this.createIdProperty(message),
+
+      !this.stripNonEssentialProps
+        ? this.createObjectProperty(MESSAGE, this.types.stringLiteral(message))
+        : null,
+
+      this.createValuesProperty(values),
+    ]
+
+    return this.createMessageDescriptor(
+      properties,
+      // preserve line numbers for extractor
+      oldLoc
+    )
+  }
+
   createMessageDescriptor(
     properties: ObjectProperty[],
     oldLoc?: SourceLocation
@@ -473,10 +466,10 @@ export default class MacroJs {
     })
   }
 
-  isDefineMessage(node: Node): boolean {
+  isDefineMessage(node: Node | Expression): boolean {
     return (
-      this.types.isCallExpression(node) &&
-      this.isLinguiIdentifier(node.callee, "defineMessage")
+      this.isLinguiIdentifier(node, "defineMessage") ||
+      this.isLinguiIdentifier(node, "msg")
     )
   }
 

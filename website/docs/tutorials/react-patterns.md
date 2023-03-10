@@ -164,13 +164,13 @@ export function alert() {
 Messages don't have to be declared at the same code location where they're displayed. Tag a string with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
 
 ```jsx
-import { defineMessage, Trans } from "@lingui/macro"
+import { msg, Trans } from "@lingui/macro"
 
 const favoriteColors = [
-   defineMessage({message: "Red"}),
-   defineMessage({message: "Orange"}),
-   defineMessage({message: "Yellow"}),
-   defineMessage({message: "Green"}),
+   msg`Red`,
+   msg`Orange`,
+   msg`Yellow`,
+   msg`Green`,
 ]
 
 export default function ColorList() {
@@ -188,13 +188,13 @@ Or to render the message descriptor as a string-only translation, just pass it t
 
 ```jsx
 import { i18n } from "@lingui/core"
-import { defineMessage } from "@lingui/macro"
+import { msg } from "@lingui/macro"
 
 const favoriteColors = [
-   defineMessage({message: "Red"}),
-   defineMessage({message: "Orange"}),
-   defineMessage({message: "Yellow"}),
-   defineMessage({message: "Green"}),
+  msg`Red`,
+  msg`Orange`,
+  msg`Yellow`,
+  msg`Green`,
 ]
 
 export function getTranslatedColorNames() {
@@ -251,10 +251,10 @@ import { defineMessage } from "@lingui/macro";
 import { i18n } from "@lingui/core";
 
 const statusMessages = {
-   ['STATUS_OPEN']: defineMessage({message: "Open"}),
-   ['STATUS_CLOSED']: defineMessage({message: "Closed"}),
-   ['STATUS_CANCELLED']: defineMessage({message: "Cancelled"}),
-   ['STATUS_COMPLETED']: defineMessage({message: "Completed"}),
+   ['STATUS_OPEN']: msg`Open`,
+   ['STATUS_CLOSED']: msg`Closed`,
+   ['STATUS_CANCELLED']: msg`Cancelled`,
+   ['STATUS_COMPLETED']: msg`Completed`,
 }
 
 export default function StatusDisplay({ statusCode }) {
