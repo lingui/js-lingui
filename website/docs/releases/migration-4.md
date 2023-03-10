@@ -9,9 +9,9 @@ Minimal required versions are:
 
 ### Extractor configuration changes
 
-The big change in the v4 is in extractor internals. Now it is less fragile, and doesn't depend on the host project settings.
+The big change in v4 is in extractor internals. Now it is less fragile, and doesn't depend on the host project settings.
 
-For most projects, it should work without extra configuration as long as it is a valid ES code.
+For most projects, it should work without extra configuration as long as it is valid ES code.
 
 `extractBabelOptions` is not useful anymore, please delete it from your config.
 
@@ -141,7 +141,7 @@ declare type ExtractorType = {
 }
 ```
 
-Read more about custom extractor on the [Advanced: Custom Extractor](/guides/custom-extractor) page.
+Read more about custom extractors on the [Advanced: Custom Extractor](/guides/custom-extractor) page.
 
 ### Configuration migrations for deprecated options were deleted
 
@@ -151,11 +151,11 @@ Migration for the following older options:
 - `srcPathIgnorePatterns`,
 - `fallbackLocale`
 
-were deleted from the source code. This should affect only users who are migrating from `v2` to `v4` directly.
+were deleted from the source code. This should only affect users who are migrating from `v2` to `v4` directly.
 
-### Plural Rules works out of the box without manual configuration
+### Plural Rules now work out of the box without manual configuration
 
-You can safely remove `i18n.loadLocaleData` calls because since v4 Lingui uses `Intl.PluralRules` internally.
+You can safely remove `i18n.loadLocaleData` calls because Lingui v4 uses `Intl.PluralRules` internally.
 
 ```diff
 - import { en, cs } from "make-plural/plurals"
