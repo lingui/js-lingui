@@ -3,8 +3,6 @@ import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { mockConsole } from "@lingui/jest-mocks"
 
 describe("I18nProvider", () => {
   it("should pass i18n context to wrapped component", () => {
@@ -78,49 +76,120 @@ describe("I18nProvider", () => {
     expect(unsubscribe).toBeCalled()
   })
 
-  it("should re-render on locale changes", async () => {
-    expect.assertions(4)
+  test.each([
+    {
+      forceRenderOnLocaleChange: false,
+      expectedTextContent: "",
+      expectedRenderCount: 1,
+    },
+    {
+      forceRenderOnLocaleChange: true,
+      expectedTextContent: "cs",
+      expectedRenderCount: 3, // initial render, load messages, activate locale
+    },
+  ])(
+    "A component that is not consuming i18n context will not re-render on locale change." +
+      "A component that consumes i18n context will re-render on locale change, only if forceRenderOnLocaleChange is true.",
+    ({
+      forceRenderOnLocaleChange,
+      expectedTextContent,
+      expectedRenderCount,
+    }) => {
+      expect.assertions(6)
 
-    const i18n = setupI18n({
-      messages: { en: {} },
-    })
+      const i18n = setupI18n()
+      let staticRenderCount = 0,
+        dynamicRenderCount = 0
 
-    const CurrentLocale = () => {
-      return <span>{i18n.locale}</span>
+      const CurrentLocaleStatic = () => {
+        staticRenderCount++
+        return <span data-testid="static">{i18n.locale}</span>
+      }
+      const CurrentLocaleContextConsumer = () => {
+        const { i18n } = useLingui()
+        dynamicRenderCount++
+        return <span data-testid="dynamic">{i18n.locale}</span>
+      }
+
+      const { container, getByTestId } = render(
+        <I18nProvider
+          i18n={i18n}
+          forceRenderOnLocaleChange={forceRenderOnLocaleChange}
+        >
+          <>
+            <CurrentLocaleStatic />
+            <CurrentLocaleContextConsumer />
+          </>
+        </I18nProvider>
+      )
+      // First render — no output, because locale isn't activated
+      expect(container.textContent).toEqual("")
+
+      act(() => {
+        i18n.load("en", {})
+      })
+      // Again, no output. Catalog is loaded, but locale
+      // still isn't activated.
+      expect(container.textContent).toEqual("")
+
+      act(() => {
+        i18n.load("cs", {})
+        i18n.activate("cs")
+      })
+      // After loading and activating locale, only CurrentLocaleContextConsumer re-rendered.
+      expect(getByTestId("static").textContent).toBe("")
+      expect(getByTestId("dynamic").textContent).toBe(expectedTextContent)
+      expect(staticRenderCount).toBe(1)
+      expect(dynamicRenderCount).toBe(expectedRenderCount)
     }
+  )
 
-    let container: HTMLElement
+  it(
+    "given 'en' locale, if activate('cs') call happens before i18n.on-change subscription in useEffect(), " +
+      "I18nProvider detects that it's stale and re-renders with the 'cs' locale value",
+    () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {} },
+      })
+      let renderCount = 0
 
-    mockConsole((console) => {
-      const res = render(
+      const CurrentLocaleContextConsumer = () => {
+        const { i18n } = useLingui()
+        renderCount++
+        return <span data-testid="child">{i18n.locale}</span>
+      }
+      /**
+       * Note that we're doing exactly what the description says:
+       * but to simulate the equivalent situation, we pass our own mock subscriber
+       * to i18n.on("change", ...) and then we call i18n.activate("cs") ourselves
+       * so that the condition in useEffect() is met and the component re-renders
+       * */
+
+      const mockSubscriber = jest.fn(() => {
+        i18n.load("cs", {})
+        i18n.activate("cs")
+        return () => {
+          // unsubscriber - noop to make TS happy
+        }
+      })
+      jest.spyOn(i18n, "on").mockImplementation(mockSubscriber)
+
+      const { getByTestId } = render(
         <I18nProvider i18n={i18n}>
-          <CurrentLocale />
+          <CurrentLocaleContextConsumer />
         </I18nProvider>
       )
 
-      container = res.container
-      expect(console.log.mock.calls[0][0]).toMatchInlineSnapshot(
-        `"I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false."`
+      expect(mockSubscriber).toHaveBeenCalledWith(
+        "change",
+        expect.any(Function)
       )
-    })
 
-    // First render — no output, because locale isn't activated
-    expect(container.textContent).toEqual("")
-
-    act(() => {
-      i18n.load("en", {})
-    })
-    // Again, no output. Catalog is loaded, but locale
-    // still isn't activated.
-    expect(container.textContent).toEqual("")
-
-    act(() => {
-      i18n.load("cs", {})
-      i18n.activate("cs")
-    })
-    // After loading and activating locale, it's finally rendered.
-    expect(container.textContent).toEqual("cs")
-  })
+      expect(getByTestId("child").textContent).toBe("cs")
+      expect(renderCount).toBe(2)
+    }
+  )
 
   it("should render children", () => {
     const i18n = setupI18n({
