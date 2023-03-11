@@ -78,7 +78,7 @@ describe("compile", () => {
     )
     expect(plural({ value: 0 })).toEqual("")
     expect(plural({ value: 1 })).toEqual("1% discount")
-    expect(plural({ value: 20 })).toEqual("20% discount")
+    expect(plural({ value: 30 })).toEqual("30% discount")
   })
 
   it("should compile selectordinal", () => {
