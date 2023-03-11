@@ -72,6 +72,15 @@ describe("compile", () => {
     expect(offset({ value: 3 })).toEqual("2 Books")
   })
 
+  it("when a value is defined (even when empty) plural will return it", () => {
+    const plural = prepare(
+      "{value, plural, =0 {} one {{value}% discount} other {#% discount}}"
+    )
+    expect(plural({ value: 0 })).toEqual("")
+    expect(plural({ value: 1 })).toEqual("1% discount")
+    expect(plural({ value: 20 })).toEqual("20% discount")
+  })
+
   it("should compile selectordinal", () => {
     const cache = prepare(
       "{value, selectordinal, one {#st Book} two {#nd Book}}"
@@ -83,9 +92,9 @@ describe("compile", () => {
   it("should support nested choice components", () => {
     const cache = prepare(
       `{
-      gender, select, 
-      male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} 
-      female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}} 
+      gender, select,
+      male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}}
+      female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}}
       other {They is {gender}}}`
     )
 
