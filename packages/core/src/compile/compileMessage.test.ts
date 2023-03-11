@@ -72,10 +72,8 @@ describe("compile", () => {
     expect(offset({ value: 3 })).toEqual("2 Books")
   })
 
-  it("when a value is defined (even when empty) plural will return it", () => {
-    const plural = prepare(
-      "{value, plural, =0 {} one {{value}% discount} other {#% discount}}"
-    )
+  it("when a value is defined (even when empty) plural will return it. Conversely, if a value is not defined, plural defaults to 'other'", () => {
+    const plural = prepare("{value, plural, =0 {} other {#% discount}}")
     expect(plural({ value: 0 })).toEqual("")
     expect(plural({ value: 1 })).toEqual("1% discount")
     expect(plural({ value: 30 })).toEqual("30% discount")
