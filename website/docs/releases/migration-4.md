@@ -165,3 +165,9 @@ You can safely remove `i18n.loadLocaleData` calls because Lingui v4 uses `Intl.P
 ```
 
 Don't forget to delete `make-plural` from your `package.json`.
+
+### withI18n HOC was removed
+
+`withI18n` HOC was removed in favor of `useLingui` hook. Please use `useLingui` instead.
+
+If you need to use `withI18n` in your project, you can copy [the original implementation](https://github.com/lingui/js-lingui/blob/31dcab5a9a8f88bfa8b3a2c7cd12aa2d908a1d80/packages/react/src/I18nProvider.tsx#L33).
