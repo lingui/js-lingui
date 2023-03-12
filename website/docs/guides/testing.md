@@ -1,6 +1,6 @@
 # Testing
 
-Components using [`Trans`](/docs/ref/react.md#trans), [`withI18n`](/docs/ref/react.md#withi18n) or [`useLingui`](/docs/ref/react.md#uselingui) require access to the context of [`I18nProvider`](/docs/ref/react.md#i18nprovider). How you can wrap your component with the I18nProvider depends on the test library you use.
+Components using [`Trans`](/docs/ref/react.md#trans) or [`useLingui`](/docs/ref/react.md#uselingui) require access to the context of [`I18nProvider`](/docs/ref/react.md#i18nprovider). How you can wrap your component with the I18nProvider depends on the test library you use.
 
 Here is a working example with [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/), using the [wrapper-property](https://testing-library.com/docs/react-testing-library/api#wrapper):
 
