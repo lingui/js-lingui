@@ -32,7 +32,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   forceRenderOnLocaleChange = true,
   children,
 }) => {
-  const firstKnownLocale = React.useRef<string>(i18n.locale)
+  const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -44,10 +44,13 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  const makeContext = () => ({
-    i18n,
-    defaultComponent,
-  })
+  const makeContext = React.useCallback(
+    () => ({
+      i18n,
+      defaultComponent,
+    }),
+    [i18n, defaultComponent]
+  )
 
   const [context, setContext] = React.useState<I18nContext>(makeContext())
 
@@ -62,19 +65,23 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     if (!forceRenderOnLocaleChange) {
       return
     }
-    const unsubscribe = i18n.on("change", () => {
+    const updateContext = () => {
+      latestKnownLocale.current = i18n.locale
       setContext(makeContext())
-    })
+    }
+    const unsubscribe = i18n.on("change", updateContext)
 
     /**
      * unlikely, but if the locale changes before the onChange listener
      * was added, we need to trigger a rerender
      * */
-    if (firstKnownLocale.current !== i18n.locale) {
-      setContext(makeContext())
+    if (latestKnownLocale.current !== i18n.locale) {
+      updateContext()
     }
     return unsubscribe
-  }, [])
+  }, [makeContext, forceRenderOnLocaleChange])
+
+  if (forceRenderOnLocaleChange && !latestKnownLocale.current) return null
 
   return (
     <LinguiContext.Provider value={context}>{children}</LinguiContext.Provider>

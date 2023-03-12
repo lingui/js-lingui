@@ -76,24 +76,27 @@ describe("I18nProvider", () => {
     expect(unsubscribe).toBeCalled()
   })
 
-  test.each([
+  it.each([
     {
       forceRenderOnLocaleChange: false,
-      expectedTextContent: "",
-      expectedRenderCount: 1,
+      textContentBeforeActivate: "1_2_",
+      textContentStaticAfterActivate: "1_",
+      textContentDynamicAfterActivate: "2_",
     },
     {
       forceRenderOnLocaleChange: true,
-      expectedTextContent: "cs",
-      expectedRenderCount: 3, // initial render, load messages, activate locale
+      textContentBeforeActivate: "",
+      textContentStaticAfterActivate: "1_cs",
+      textContentDynamicAfterActivate: "2_cs",
     },
   ])(
-    "A component that is not consuming i18n context will not re-render on locale change." +
-      "A component that consumes i18n context will re-render on locale change, only if forceRenderOnLocaleChange is true.",
+    "A component that is not consuming i18n context will not re-render on locale change.",
+    // "A component that consumes i18n context will re-render on locale change, only if forceRenderOnLocaleChange is true.",
     ({
       forceRenderOnLocaleChange,
-      expectedTextContent,
-      expectedRenderCount,
+      textContentBeforeActivate,
+      textContentStaticAfterActivate,
+      textContentDynamicAfterActivate,
     }) => {
       expect.assertions(6)
 
@@ -103,15 +106,15 @@ describe("I18nProvider", () => {
 
       const CurrentLocaleStatic = () => {
         staticRenderCount++
-        return <span data-testid="static">{i18n.locale}</span>
+        return <span data-testid="static">1_{i18n.locale}</span>
       }
       const CurrentLocaleContextConsumer = () => {
         const { i18n } = useLingui()
         dynamicRenderCount++
-        return <span data-testid="dynamic">{i18n.locale}</span>
+        return <span data-testid="dynamic">2_{i18n.locale}</span>
       }
 
-      const { container, getByTestId } = render(
+      const { container, getByTestId, debug } = render(
         <I18nProvider
           i18n={i18n}
           forceRenderOnLocaleChange={forceRenderOnLocaleChange}
@@ -122,25 +125,36 @@ describe("I18nProvider", () => {
           </>
         </I18nProvider>
       )
-      // First render — no output, because locale isn't activated
-      expect(container.textContent).toEqual("")
+      debug()
+      // First render — locale isn't activated
+      expect(container.textContent).toEqual(textContentBeforeActivate)
 
       act(() => {
         i18n.load("en", {})
       })
-      // Again, no output. Catalog is loaded, but locale
-      // still isn't activated.
-      expect(container.textContent).toEqual("")
+      // Catalog is loaded, but locale still isn't activated.
+      expect(container.textContent).toEqual(textContentBeforeActivate)
 
       act(() => {
         i18n.load("cs", {})
         i18n.activate("cs")
       })
+
       // After loading and activating locale, only CurrentLocaleContextConsumer re-rendered.
-      expect(getByTestId("static").textContent).toBe("")
-      expect(getByTestId("dynamic").textContent).toBe(expectedTextContent)
+      expect(getByTestId("static").textContent).toBe(
+        textContentStaticAfterActivate
+      )
+      expect(getByTestId("dynamic").textContent).toBe(
+        textContentDynamicAfterActivate
+      )
       expect(staticRenderCount).toBe(1)
-      expect(dynamicRenderCount).toBe(expectedRenderCount)
+
+      /*
+       * when forceRenderOnLocaleChange is false, components are rendered only once and then do not re-rendered
+       * when forceRenderOnLocaleChange is true, initial render skips rendering children because no locale is active.
+       * Later, loading messages & locale activation are batched into 1 render.
+       * */
+      expect(dynamicRenderCount).toBe(1)
     }
   )
 
