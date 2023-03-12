@@ -73,5 +73,7 @@ if (require.main === module) {
     configPath: program.config || process.env.LINGUI_CONFIG,
   }).then(() => {
     if (!result) process.exit(1)
+
+    process.exit(0)
   })
 }

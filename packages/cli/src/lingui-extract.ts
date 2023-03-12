@@ -228,10 +228,14 @@ if (require.main === module) {
     // for ex: lingui extract src/app, this will extract only files included in src/app
     extract(program.args).then((result) => {
       if (!result) process.exit(1)
+
+      process.exit(0)
     })
   } else {
     extract().then((result) => {
       if (!result) process.exit(1)
+
+      process.exit(0)
     })
   }
 }

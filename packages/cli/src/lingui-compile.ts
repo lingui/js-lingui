@@ -244,5 +244,7 @@ if (require.main === module) {
     }
 
     console.log("Done!")
+
+    process.exit(0)
   }
 }
