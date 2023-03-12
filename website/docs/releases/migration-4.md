@@ -21,6 +21,16 @@ module.exports = {
 }
 ```
 
+### I18nProvider no longer remounts its children on locale change
+
+Previously, the `I18nProvider` remounted its children on locale change. This ensured that the whole app was re-rendered with the new locale and all strings were rendered correctly translated.
+Apart from not being very performant, this approach had the drawback that the state of the app was lost - all components were re-mounted and their state was reset. This is not a standard behavior of React Context providers and could cause some confusion.
+
+In v4, the `I18nProvider` no longer remounts its children on locale change. Instead, when locale changes, the context value provided by `I18nProvider` is updated and all components that consume the provided React Context are re-rendered with the new locale.
+This includes components provided by Lingui, such as `Trans` or `Plural` and also custom components that use the `useLingui` hook.
+
+This is the default behavior, but you can disable it by setting `forceRenderOnLocaleChange={false}`.
+
 ### Hash-based message ID generation and Context feature
 
 The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.
