@@ -1,6 +1,6 @@
 # React API Reference
 
-Components from `@lingui/react` wrap the vanilla JS API from `lingui-i18n`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when wrapped inside pure components.
+Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when locale or messages change.
 
 ## General Concepts
 
@@ -15,21 +15,19 @@ All i18n components render translation as a text without a wrapping tag. This ca
 
 Default rendering component can be set using `defaultComponent` prop in [`I18nProvider`](#i18nprovider). The main use case for this is rendering translations in `<Text>` component in React Native.
 
-~~It's possible to pass in either a string for built-in elements (`span`, `h1`)~~, React elements or React classes. This prop has the same type as `render` and `component` prop on i18n components described below.
-
 #### Local Configuration
 
-| Prop name   | Type                                      | Description                                  |
-|-------------| ----------------------------------------- | -------------------------------------------- |
-| `className` | string                                    | Class name to be added to `<span>` element   |
-| `render`    | *Function(props) -> Element \| Component* | Custom wrapper rendered as function          |
-| `component` | Component, `null`                         | Custom wrapper element to render translation |
+| Prop name   | Type                                      | Description                                    |
+|-------------| ----------------------------------------- |------------------------------------------------|
+| `className` | string                                    | Class name to be added to `<span>` element     |
+| `render`    | *Function(props) -> Element \| Component*                                     | Custom wrapper rendered as function          |
+| `component` | Component, `null`                         | Custom wrapper component to render translation |
 
 `className` is used only for built-in components (when *render* is string).
 
 `Function(props)` props returns the translation, an id, and a message.
 
-When `component` is **React.Element** ~~or **string** (built-in tags)~~, it is rendered with the `translation` passed in as its child:
+`component` is rendered with the `translation` passed in as its child:
 
 ``` jsx
 import { Text } from "react-native";
@@ -48,7 +46,7 @@ To get more control over the rendering of translation, use instead the `render` 
 // renders as <Icon label="Sign in" />
 ```
 
-`render` or `component` also accepts `null` value to render string without wrapping component. This can be used to override custom `defaultComponent` config.
+`render` or `component` also accepts `null` value to render string without a wrapping component. This can be used to override custom `defaultComponent` config.
 
 ``` jsx
 <Trans render={null}>Heading</Trans>;
@@ -99,7 +97,7 @@ It's also possible to use `Trans` component directly without macros. In that cas
 
 #### Plurals
 
-If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason(maybe you compile your code using just TS instead of babel), you can render plurals using the plain Trans component like this:
+If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason, you can render plurals using the plain Trans component like this:
 
 ``` jsx
 import React from 'react';
@@ -154,10 +152,8 @@ const App = () => {
 
 `forceRenderOnLocaleChange` is true by default and it ensures that:
 
-> -   Children of `I18nProvider` aren't rendered before locales are
->     loaded.
-> -   When locale changes, the whole element tree below `I18nProvider`
->     is re-rendered.
+> -   Children of `I18nProvider` aren't rendered before locales are loaded.
+> -   When locale changes, the components consuming `i18n` context are re-rendered.
 
 Disable `forceRenderOnLocaleChange` when you have specific needs to handle initial state before locales are loaded and when locale changes.
 
