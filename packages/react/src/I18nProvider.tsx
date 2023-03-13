@@ -7,10 +7,6 @@ export type I18nContext = {
   defaultComponent?: ComponentType<TransRenderProps>
 }
 
-export type withI18nProps = {
-  i18n: I18n
-}
-
 export type I18nProviderProps = I18nContext & {
   forceRenderOnLocaleChange?: boolean
   children?: React.ReactNode
@@ -28,31 +24,6 @@ export function useLingui(): I18nContext {
   }
 
   return context
-}
-
-export function withI18n(
-  o?: object
-): <P extends withI18nProps>(
-  Component: ComponentType<P>
-) => React.ComponentType<Omit<P, "i18n">> {
-  return <P extends withI18nProps>(
-    WrappedComponent: ComponentType<P>
-  ): ComponentType<P> => {
-    return (props) => {
-      if (process.env.NODE_ENV !== "production") {
-        if (typeof o === "function" || React.isValidElement(o)) {
-          throw new Error(
-            "withI18n([options]) takes options as a first argument, " +
-              "but received React component itself. Without options, the Component " +
-              "should be wrapped as withI18n()(Component), not withI18n(Component)."
-          )
-        }
-      }
-
-      const { i18n } = useLingui()
-      return <WrappedComponent {...props} i18n={i18n} />
-    }
-  }
 }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({

@@ -113,7 +113,7 @@ import { Trans } from '@lingui/react';
 
 ## Providers
 
-Message catalogs and the active locale are passed to the context in [`I18nProvider`](#i18nprovider). Use [`useLingui`](#uselingui) hook or [`withI18n`](#withi18n) high-order component to access Lingui context.
+Message catalogs and the active locale are passed to the context in [`I18nProvider`](#i18nprovider). Use [`useLingui`](#uselingui) hook to access Lingui context.
 
 ### I18nProvider
 
@@ -194,17 +194,4 @@ const CurrentLocale = () => {
 
    return <span>Current locale: {i18n.locale}</span>
 }
-```
-
-### withI18n
-
-`withI18n` is a higher-order component which injects `i18n` object to wrapped component. `i18n` object is needed when you have to access the i18n data:
-
-``` jsx
-import React from "react"
-import { withI18n } from "@lingui/react"
-
-const CurrentLocale = withI18n()(({ i18n }) => (
-   <span>Current locale: {i18n.locale}</span>
-))
 ```

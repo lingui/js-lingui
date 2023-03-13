@@ -1,7 +1,7 @@
 import * as React from "react"
 import { act, render } from "@testing-library/react"
 
-import { withI18n, I18nProvider } from "./I18nProvider"
+import { I18nProvider, useLingui } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mockConsole } from "@lingui/jest-mocks"
@@ -15,16 +15,19 @@ describe("I18nProvider", () => {
       },
     })
 
-    const WithoutHoc = (props) => {
+    const WithoutLingui = (props) => {
       return <div {...props}>{props?.i18n?.locale}</div>
     }
 
-    const WithHoc = withI18n()(WithoutHoc)
+    const WithLingui = (props) => {
+      const { i18n } = useLingui()
+      return <WithoutLingui i18n={i18n} {...props} />
+    }
 
     const { getByTestId } = render(
       <I18nProvider i18n={i18n}>
-        <WithoutHoc data-testid="not-composed" />
-        <WithHoc data-testid="composed" />
+        <WithoutLingui data-testid="not-composed" />
+        <WithLingui data-testid="composed" />
       </I18nProvider>
     )
 

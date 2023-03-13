@@ -191,7 +191,7 @@ Custom IDs are supported as well:
 ```
 
 :::note
-To inject `i18n` object into props, you need to use HOC [`withI18n`](/docs/ref/react.md#withi18n). It's very similar to `injectIntl` from [react-intl](https://github.com/yahoo/react-intl). Alternatively, you can also use `I18n` render prop component.
+To inject `i18n` object into props, you need to use [`useLingui`](/docs/ref/react.md#useLingui) hook. It's very similar to `useIntl` from [react-intl](https://formatjs.io/docs/react-intl/api/#useintl-hook).
 :::
 
 ## External message catalog

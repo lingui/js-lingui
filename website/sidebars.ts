@@ -86,11 +86,6 @@ const sidebar = [
       },
       {
         type: 'doc',
-        label: 'Optimized components',
-        id: 'guides/optimized-components',
-      },
-      {
-        type: 'doc',
         label: 'Pluralization',
         id: 'guides/plurals',
       },
