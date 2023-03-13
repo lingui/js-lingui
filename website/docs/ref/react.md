@@ -18,7 +18,7 @@ Default rendering component can be set using `defaultComponent` prop in [`I18nPr
 | Prop name   | Type                                      | Description                                    |
 |-------------| ----------------------------------------- |------------------------------------------------|
 | `className` | string                                    | Class name to be added to `<span>` element     |
-| `render`    | *Function(props) -> Element \| Component*                                     | Custom wrapper rendered as function          |
+| `render`    | *Function(props) -> Element \| Component* | Custom wrapper rendered as function          |
 | `component` | Component, `null`                         | Custom wrapper component to render translation |
 
 `className` is used only for built-in components (when *render* is string).
