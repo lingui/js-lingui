@@ -209,6 +209,18 @@ The extracted string for translation will look like this:
 
 The important point here is that the sentence isn't broken into pieces but remains together - that will allow the translator to deliver a quality result.
 
+## Styling the translations
+
+There are several ways to style the text rendered with `Trans`:
+// TODO
+The first is to wrap `Trans` by Text
+
+```tsx
+<Text style={{ fontSize: 20 }}>
+  <Trans>This is a big font</Trans>
+</Text>
+```
+
 ## Further reading
 
 -   [`@lingui/react` reference documentation](/docs/ref/react.md)
