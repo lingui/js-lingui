@@ -1,7 +1,10 @@
-import type { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
-import type { CatalogType } from "../types"
+import type { CatalogFormat, CatalogFormatter } from "@lingui/conf"
+import { CatalogFormatOptions } from "@lingui/conf"
 
-const formats: Record<CatalogFormat, () => CatalogFormatter> = {
+const formats: Record<
+  CatalogFormat,
+  () => (options: CatalogFormatOptions) => CatalogFormatter
+> = {
   lingui: () => require("./lingui").default,
   minimal: () => require("./minimal").default,
   po: () => require("./po").default,
@@ -9,39 +12,23 @@ const formats: Record<CatalogFormat, () => CatalogFormatter> = {
   "po-gettext": () => require("./po-gettext").default,
 }
 
-/**
- * @internal
- */
-export type CatalogFormatOptionsInternal = {
-  locale?: string
-} & CatalogFormatOptions
+export function getFormat(
+  _format: CatalogFormat | CatalogFormatter,
+  options: CatalogFormatOptions
+): CatalogFormatter {
+  if (typeof _format !== "string") {
+    return _format
+  }
 
-export type CatalogFormatter = {
-  catalogExtension: string
-  /**
-   * Set extension used when extract to template
-   * Omit if the extension is the same as catalogExtension
-   */
-  templateExtension?: string
-  write(
-    filename: string,
-    catalog: CatalogType,
-    options?: CatalogFormatOptionsInternal
-  ): void
-  read(filename: string): CatalogType | null
-  parse(content: unknown): CatalogType | null
-}
-
-export function getFormat(name: CatalogFormat): CatalogFormatter {
-  const format = formats[name]
+  const format = formats[_format]
 
   if (!format) {
     throw new Error(
-      `Unknown format "${name}". Use one of following: ${Object.keys(
+      `Unknown format "${_format}". Use one of following: ${Object.keys(
         formats
       ).join(", ")}`
     )
   }
 
-  return format()
+  return format()(options)
 }

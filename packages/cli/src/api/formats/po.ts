@@ -3,10 +3,15 @@ import PO from "pofile"
 
 import { joinOrigin, readFile, splitOrigin, writeFileIfChanged } from "../utils"
 import { CatalogType, MessageType } from "../types"
-import { CatalogFormatOptionsInternal, CatalogFormatter } from "."
+import { CatalogFormatter } from "@lingui/conf"
 import { generateMessageId } from "../generateMessageId"
 
 type POItem = InstanceType<typeof PO.Item>
+
+export type PoFormatterOptions = {
+  origins?: boolean
+  lineNumbers?: boolean
+}
 
 function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message, message.context)
@@ -26,7 +31,7 @@ const EXPLICIT_ID_FLAG = "explicit-id"
 
 export const serialize = (
   catalog: CatalogType,
-  options: CatalogFormatOptionsInternal,
+  options: PoFormatterOptions,
   postProcessItem?: (
     item: POItem,
     message: MessageType,
@@ -123,41 +128,47 @@ function validateItem(item: POItem): void {
   }
 }
 
-const po: CatalogFormatter = {
-  catalogExtension: ".po",
-  templateExtension: ".pot",
+export default function (options: PoFormatterOptions = {}): CatalogFormatter {
+  options = {
+    origins: true,
+    lineNumbers: true,
+    ...options,
+  }
 
-  write(filename, catalog, options) {
-    let po: PO
+  return {
+    catalogExtension: ".po",
+    templateExtension: ".pot",
 
-    const raw = readFile(filename)
-    if (raw) {
-      po = PO.parse(raw)
-    } else {
-      po = new PO()
-      po.headers = getCreateHeaders(options.locale)
-      if (options.locale === undefined) {
-        delete po.headers.Language
+    write(filename, catalog, ctx) {
+      let po: PO
+
+      const raw = readFile(filename)
+      if (raw) {
+        po = PO.parse(raw)
+      } else {
+        po = new PO()
+        po.headers = getCreateHeaders(ctx.locale)
+        if (ctx.locale === undefined) {
+          delete po.headers.Language
+        }
+        // accessing private property
+        ;(po as any).headerOrder = Object.keys(po.headers)
       }
-      // accessing private property
-      ;(po as any).headerOrder = Object.keys(po.headers)
-    }
-    po.items = serialize(catalog, options)
-    writeFileIfChanged(filename, po.toString())
-  },
+      po.items = serialize(catalog, options)
+      writeFileIfChanged(filename, po.toString())
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
-    if (!raw) {
-      return null
-    }
-    return this.parse(raw)
-  },
+    read(filename) {
+      const raw = readFile(filename)
+      if (!raw) {
+        return null
+      }
+      return this.parse(raw)
+    },
 
-  parse(raw: string) {
-    const po = PO.parse(raw)
-    return deserialize(po.items, validateItem)
-  },
+    parse(raw: string) {
+      const po = PO.parse(raw)
+      return deserialize(po.items, validateItem)
+    },
+  }
 }
-
-export default po

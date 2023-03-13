@@ -7,11 +7,17 @@ import gettextPlurals from "node-gettext/lib/plurals"
 
 import { CatalogType, MessageType } from "../types"
 import { readFile, writeFileIfChanged } from "../utils"
-import type { CatalogFormatOptionsInternal, CatalogFormatter } from "./"
+import type { CatalogFormatter } from "@lingui/conf"
 import { deserialize, serialize as serializePo } from "./po"
 
 // Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItem = InstanceType<typeof PO.Item>
+
+export type PoGetTextFormatterOptions = {
+  origins?: boolean
+  lineNumbers?: boolean
+  disableSelectWarning?: boolean
+}
 
 function getCreateHeaders(language = "no"): PO["headers"] {
   return {
@@ -56,7 +62,7 @@ function serializePlurals(
   message: MessageType,
   id: string,
   isGeneratedId: boolean,
-  options: CatalogFormatOptionsInternal
+  options: PoGetTextFormatterOptions
 ): POItem {
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
@@ -149,7 +155,7 @@ function serializePlurals(
 
 export const serialize = (
   catalog: CatalogType,
-  options: CatalogFormatOptionsInternal
+  options: PoGetTextFormatterOptions
 ) => {
   return serializePo(catalog, options, (item, message, id, isGeneratedId) =>
     serializePlurals(item, message, id, isGeneratedId, options)
@@ -256,50 +262,58 @@ const convertPluralsToICU = (
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
 }
 
-const poGettext: CatalogFormatter = {
-  catalogExtension: ".po",
-  templateExtension: ".pot",
+export default function (
+  options: PoGetTextFormatterOptions = {}
+): CatalogFormatter {
+  options = {
+    origins: true,
+    lineNumbers: true,
+    ...options,
+  }
 
-  write(filename, catalog: CatalogType, options) {
-    let po: PO
+  return {
+    catalogExtension: ".po",
+    templateExtension: ".pot",
 
-    const raw = readFile(filename)
-    if (raw) {
-      po = PO.parse(raw)
-    } else {
-      po = new PO()
-      po.headers = getCreateHeaders(options.locale)
-      if (options.locale === undefined) {
-        delete po.headers.Language
+    write(filename, catalog: CatalogType, ctx) {
+      let po: PO
+
+      const raw = readFile(filename)
+      if (raw) {
+        po = PO.parse(raw)
+      } else {
+        po = new PO()
+        po.headers = getCreateHeaders(ctx.locale)
+        if (ctx.locale === undefined) {
+          delete po.headers.Language
+        }
+        // accessing private property
+        ;(po as any).headerOrder = Object.keys(po.headers)
       }
-      // accessing private property
-      ;(po as any).headerOrder = Object.keys(po.headers)
-    }
-    po.items = serialize(catalog, options)
-    writeFileIfChanged(filename, po.toString())
-  },
+      po.items = serialize(catalog, options)
+      writeFileIfChanged(filename, po.toString())
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
-    if (!raw) {
-      return null
-    }
+    read(filename) {
+      const raw = readFile(filename)
+      if (!raw) {
+        return null
+      }
 
-    return this.parse(raw)
-  },
+      return this.parse(raw)
+    },
 
-  parse(raw: string) {
-    const po = PO.parse(raw)
+    parse(raw: string) {
+      const po = PO.parse(raw)
 
-    // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
-    // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
-    // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-    let pluralForms = getPluralCases(po.headers.Language)
+      // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
+      // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
+      // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
+      let pluralForms = getPluralCases(po.headers.Language)
 
-    return deserialize(po.items, (item) => {
-      convertPluralsToICU(item, pluralForms, po.headers.Language)
-    })
-  },
+      return deserialize(po.items, (item) => {
+        convertPluralsToICU(item, pluralForms, po.headers.Language)
+      })
+    },
+  }
 }
-
-export default poGettext

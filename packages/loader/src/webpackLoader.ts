@@ -1,5 +1,5 @@
 import path from "path"
-import { getConfig } from "@lingui/conf"
+import { CatalogFormat, getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -56,7 +56,7 @@ export default function (source) {
     throw new Error(
       `File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(
         ".js",
-        formats[config.format]
+        formats[config.format as CatalogFormat]
       )}")`
     )
   }

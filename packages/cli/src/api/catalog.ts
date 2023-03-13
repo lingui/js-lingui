@@ -6,11 +6,8 @@ import normalize from "normalize-path"
 
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 
-import {
-  getFormat,
-  CatalogFormatOptionsInternal,
-  CatalogFormatter,
-} from "./formats"
+import { getFormat } from "./formats"
+import { CatalogFormatter } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -73,7 +70,7 @@ export class Catalog {
     this.path = normalizeRelativePath(path)
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
-    this.format = getFormat(config.format)
+    this.format = getFormat(config.format, config.formatOptions)
     this.templateFile = templatePath || getTemplatePath(this.format, this.path)
   }
 
@@ -179,19 +176,14 @@ export class Catalog {
       replacePlaceholders(this.path, { locale }) + this.format.catalogExtension
 
     const created = !fs.existsSync(filename)
-    const options = { ...this.config.formatOptions, locale }
 
-    this.format.write(filename, messages, options)
+    this.format.write(filename, messages, { locale })
     return [created, filename]
   }
 
   writeTemplate(messages: CatalogType) {
     const filename = this.templateFile
-    const options: CatalogFormatOptionsInternal = {
-      ...this.config.formatOptions,
-      locale: undefined,
-    }
-    this.format.write(filename, messages, options)
+    this.format.write(filename, messages, { locale: undefined })
   }
 
   writeCompiled(

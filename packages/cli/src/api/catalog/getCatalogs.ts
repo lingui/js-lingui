@@ -139,7 +139,10 @@ function validateCatalogPath(path: string, config: LinguiConfigNormalized) {
     return
   }
 
-  const extension = getFormat(config.format).catalogExtension
+  const extension = getFormat(
+    config.format,
+    config.formatOptions
+  ).catalogExtension
   const correctPath = path.slice(0, -1)
   const examplePath =
     replacePlaceholders(correctPath, {

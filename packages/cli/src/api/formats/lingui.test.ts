@@ -3,7 +3,7 @@ import path from "path"
 import mockFs from "mock-fs"
 import mockDate from "mockdate"
 
-import format from "./lingui"
+import createFormat from "./lingui"
 import { CatalogType } from "../types"
 
 describe("lingui format", () => {
@@ -13,6 +13,8 @@ describe("lingui format", () => {
   })
 
   it("should write catalog in lingui format", () => {
+    const format = createFormat({ origins: true })
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -67,13 +69,15 @@ describe("lingui format", () => {
       },
     }
 
-    format.write(filename, catalog, { origins: true, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(lingui).toMatchSnapshot()
   })
 
   it("should not throw if directory not exists", () => {
+    const format = createFormat()
+
     mockFs({})
     const filename = path.join("locale", "en", "messages.json")
     const catalog = {
@@ -82,13 +86,15 @@ describe("lingui format", () => {
       },
     }
 
-    format.write(filename, catalog, {})
+    format.write(filename, catalog)
     const content = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(content).toBeTruthy()
   })
 
   it("should read catalog in lingui format", () => {
+    const format = createFormat()
+
     const lingui = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.json")
@@ -110,6 +116,7 @@ describe("lingui format", () => {
   })
 
   it("should not throw if file not exists", () => {
+    const format = createFormat()
     mockFs({})
 
     const filename = path.join("locale", "en", "messages.json")
@@ -119,6 +126,8 @@ describe("lingui format", () => {
   })
 
   it("should not include origins if origins option is false", () => {
+    const format = createFormat({ origins: false })
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -142,7 +151,7 @@ describe("lingui format", () => {
         ],
       },
     }
-    format.write(filename, catalog, { origins: false, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
     const linguiOriginProperty = '"origin"'
@@ -150,6 +159,8 @@ describe("lingui format", () => {
   })
 
   it("should not include lineNumbers if lineNumbers option is false", () => {
+    const format = createFormat({ lineNumbers: false })
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -173,7 +184,7 @@ describe("lingui format", () => {
         ],
       },
     }
-    format.write(filename, catalog, { lineNumbers: false, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const lingui = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(lingui).toMatchInlineSnapshot(`

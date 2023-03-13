@@ -5,7 +5,7 @@ import mockDate from "mockdate"
 import path from "path"
 
 import { CatalogType } from "../types"
-import format, { serialize } from "./po-gettext"
+import createFormat, { serialize } from "./po-gettext"
 
 describe("po-gettext format", () => {
   afterEach(() => {
@@ -13,7 +13,9 @@ describe("po-gettext format", () => {
     mockDate.reset()
   })
 
-  it("should not throw if directory not exists", function () {
+  it("should not throw if directory not exists", () => {
+    const format = createFormat()
+
     mockFs({})
     const filename = path.join("locale", "en", "messages.po")
     const catalog = {
@@ -30,6 +32,8 @@ describe("po-gettext format", () => {
   })
 
   it("should not throw if file not exists", () => {
+    const format = createFormat()
+
     mockFs({})
 
     const filename = path.join("locale", "en", "messages.po")
@@ -38,7 +42,9 @@ describe("po-gettext format", () => {
     expect(actual).toBeNull()
   })
 
-  it("should convert ICU plural messages to gettext plurals", function () {
+  it("should convert ICU plural messages to gettext plurals", () => {
+    const format = createFormat()
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -91,7 +97,9 @@ describe("po-gettext format", () => {
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should convert gettext plurals to ICU plural messages", function () {
+  it("should convert gettext plurals to ICU plural messages", () => {
+    const format = createFormat()
+
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages_plural.po")
@@ -139,6 +147,8 @@ describe("po-gettext format", () => {
   })
 
   it("should use correct ICU plural cases for languages having an additional plural case for fractions", () => {
+    const format = createFormat()
+
     // This tests the edge case described in https://github.com/lingui/js-lingui/pull/677#issuecomment-737152022
     const po = `
 msgid ""
@@ -227,6 +237,8 @@ msgstr[2] "# dní"
   })
 
   it("convertPluralsToIco handle correctly locales with 4-letter", () => {
+    const format = createFormat()
+
     const pofile = fs
       .readFileSync(
         path.join(

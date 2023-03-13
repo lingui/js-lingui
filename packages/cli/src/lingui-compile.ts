@@ -207,7 +207,10 @@ if (require.main === module) {
 
     const catalogs = getCatalogs(config)
     let paths: string[] = []
-    const catalogExtension = getFormat(config.format).catalogExtension
+    const catalogExtension = getFormat(
+      config.format,
+      config.formatOptions
+    ).catalogExtension
 
     config.locales.forEach((locale) => {
       catalogs.forEach((catalog) => {

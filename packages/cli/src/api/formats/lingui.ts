@@ -2,7 +2,12 @@ import * as R from "ramda"
 
 import { readFile, writeFileIfChanged } from "../utils"
 import { CatalogType, ExtractedMessageType } from "../types"
-import { CatalogFormatter } from "."
+import { CatalogFormatter } from "@lingui/conf"
+
+export type LinguiFormatterOptions = {
+  origins?: boolean
+  lineNumbers?: boolean
+}
 
 type NoOriginsCatalogType = {
   [P in keyof CatalogType]: Omit<CatalogType[P], "origin">
@@ -22,37 +27,44 @@ const removeLineNumbers = R.map((message: ExtractedMessageType) => {
   return message
 }) as unknown as (catalog: ExtractedMessageType) => NoOriginsCatalogType
 
-const lingui: CatalogFormatter = {
-  catalogExtension: ".json",
+export default function (
+  options: LinguiFormatterOptions = {}
+): CatalogFormatter {
+  options = {
+    origins: true,
+    lineNumbers: true,
+    ...options,
+  }
+  return {
+    catalogExtension: ".json",
 
-  write(filename, catalog, options) {
-    let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
-    if (options.origins === false) {
-      outputCatalog = removeOrigins(catalog)
-    }
-    if (options.origins !== false && options.lineNumbers === false) {
-      outputCatalog = removeLineNumbers(outputCatalog)
-    }
-    writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
-  },
+    write(filename, catalog) {
+      let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
+      if (options.origins === false) {
+        outputCatalog = removeOrigins(catalog)
+      }
+      if (options.origins !== false && options.lineNumbers === false) {
+        outputCatalog = removeLineNumbers(outputCatalog)
+      }
+      writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
+    read(filename) {
+      const raw = readFile(filename)
 
-    if (!raw) {
-      return null
-    }
+      if (!raw) {
+        return null
+      }
 
-    try {
-      return JSON.parse(raw)
-    } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-    }
-  },
+      try {
+        return JSON.parse(raw)
+      } catch (e) {
+        throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
+      }
+    },
 
-  parse(content) {
-    return content as CatalogType
-  },
+    parse(content) {
+      return content as CatalogType
+    },
+  }
 }
-
-export default lingui

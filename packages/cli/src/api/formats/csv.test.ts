@@ -2,14 +2,16 @@ import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
 
-import format from "./csv"
+import createFormatter from "./csv"
 
-describe("csv format", function () {
+describe("csv format", () => {
+  const format = createFormatter()
+
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should write catalog in csv format", function () {
+  it("should write catalog in csv format", () => {
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -34,7 +36,7 @@ describe("csv format", function () {
     expect(csv).toMatchSnapshot()
   })
 
-  it("should not throw if directory not exists", function () {
+  it("should not throw if directory not exists", () => {
     mockFs({})
     const filename = path.join("locale", "en", "messages.csv")
     const catalog = {
@@ -49,7 +51,7 @@ describe("csv format", function () {
     expect(content).toBeTruthy()
   })
 
-  it("should read catalog in csv format", function () {
+  it("should read catalog in csv format", () => {
     const csv = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.csv")
@@ -79,7 +81,7 @@ describe("csv format", function () {
     expect(actual).toBeNull()
   })
 
-  it("should write the same catalog as it was read", function () {
+  it("should write the same catalog as it was read", () => {
     const csv = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.csv")

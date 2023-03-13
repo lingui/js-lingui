@@ -1,7 +1,7 @@
 import Papa from "papaparse"
 
 import { readFile, writeFileIfChanged } from "../utils"
-import type { CatalogFormatter } from "."
+import type { CatalogFormatter } from "@lingui/conf"
 import { CatalogType, MessageType } from "../types"
 
 const serialize = (catalog: CatalogType) => {
@@ -31,31 +31,31 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
   return messages
 }
 
-const csv: CatalogFormatter = {
-  catalogExtension: ".csv",
+export default function (): CatalogFormatter {
+  return {
+    catalogExtension: ".csv",
 
-  write(filename, catalog) {
-    const messages = serialize(catalog)
-    writeFileIfChanged(filename, messages)
-  },
+    write(filename: string, catalog: CatalogType) {
+      const messages = serialize(catalog)
+      writeFileIfChanged(filename, messages)
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
+    read(filename: string) {
+      const raw = readFile(filename)
 
-    if (!raw) {
-      return null
-    }
+      if (!raw) {
+        return null
+      }
 
-    try {
-      return deserialize(raw)
-    } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-    }
-  },
+      try {
+        return deserialize(raw)
+      } catch (e) {
+        throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
+      }
+    },
 
-  parse(content: string) {
-    return deserialize(content)
-  },
+    parse(content: string) {
+      return deserialize(content)
+    },
+  }
 }
-
-export default csv

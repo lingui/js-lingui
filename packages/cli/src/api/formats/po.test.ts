@@ -5,7 +5,7 @@ import mockDate from "mockdate"
 import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
-import format from "./po"
+import createFormatter from "./po"
 import { CatalogType } from "../types"
 import { normalizeLineEndings } from "../../tests"
 
@@ -16,6 +16,7 @@ describe("pofile format", () => {
   })
 
   it("should write catalog in pofile format", () => {
+    const format = createFormatter({ origins: true })
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -79,13 +80,15 @@ describe("pofile format", () => {
       },
     }
 
-    format.write(filename, catalog, { origins: true, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should not throw if directory not exists", function () {
+  it("should not throw if directory not exists", () => {
+    const format = createFormatter()
+
     mockFs({})
     const filename = path.join("locale", "en", "messages.po")
     const catalog = {
@@ -94,13 +97,15 @@ describe("pofile format", () => {
       },
     }
 
-    format.write(filename, catalog, {})
+    format.write(filename, catalog, { locale: "en" })
     const content = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(content).toBeTruthy()
   })
 
   it("should read catalog in pofile format", () => {
+    const format = createFormatter()
+
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.po")
@@ -122,6 +127,8 @@ describe("pofile format", () => {
   })
 
   it("should not throw if file not exists", () => {
+    const format = createFormatter()
+
     mockFs({})
 
     const filename = path.join("locale", "en", "messages.po")
@@ -131,6 +138,8 @@ describe("pofile format", () => {
   })
 
   it("should serialize and deserialize messages with generated id", () => {
+    const format = createFormatter({ origins: true })
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -147,7 +156,7 @@ describe("pofile format", () => {
     }
 
     const filename = path.join("locale", "en", "messages.po")
-    format.write(filename, catalog, { origins: true, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
 
     const actual = format.read(filename)
     mockFs.restore()
@@ -155,6 +164,8 @@ describe("pofile format", () => {
   })
 
   it("should correct badly used comments", () => {
+    const format = createFormatter()
+
     const po = PO.parse(`
       #. First description
       #. Second comment
@@ -186,6 +197,8 @@ describe("pofile format", () => {
   })
 
   it("should throw away additional msgstr if present", () => {
+    const format = createFormatter()
+
     const po = PO.parse(`
       #, explicit-id
       msgid "withMultipleTranslation"
@@ -215,6 +228,8 @@ describe("pofile format", () => {
   })
 
   it("should write the same catalog as it was read", () => {
+    const format = createFormatter({ origins: true })
+
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages.po")
@@ -231,7 +246,7 @@ describe("pofile format", () => {
 
     const filename = path.join("locale", "en", "messages.po")
     const catalog = format.read(filename)
-    format.write(filename, catalog, { origins: true, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
 
@@ -239,6 +254,8 @@ describe("pofile format", () => {
   })
 
   it("should not include origins if origins option is false", () => {
+    const format = createFormatter({ origins: false })
+
     mockFs({
       locale: {
         en: mockFs.directory(),
@@ -262,7 +279,7 @@ describe("pofile format", () => {
         ],
       },
     }
-    format.write(filename, catalog, { origins: false, locale: "en" })
+    format.write(filename, catalog, { locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     const pofileOriginPrefix = "#:"
@@ -270,6 +287,8 @@ describe("pofile format", () => {
   })
 
   it("should not include lineNumbers if lineNumbers option is false", () => {
+    const format = createFormatter({ origins: true, lineNumbers: false })
+
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
 
     mockFs({
@@ -296,8 +315,6 @@ describe("pofile format", () => {
       },
     }
     format.write(filename, catalog, {
-      origins: true,
-      lineNumbers: false,
       locale: "en",
     })
     const pofile = fs.readFileSync(filename).toString()
@@ -331,6 +348,8 @@ describe("pofile format", () => {
   })
 
   it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
+    const format = createFormatter({ origins: true, lineNumbers: false })
+
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
 
     mockFs({
@@ -354,8 +373,6 @@ describe("pofile format", () => {
       },
     }
     format.write(filename, catalog, {
-      origins: true,
-      lineNumbers: false,
       locale: "en",
     })
     const pofile = fs.readFileSync(filename).toString()

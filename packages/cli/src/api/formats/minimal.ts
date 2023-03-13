@@ -1,6 +1,6 @@
 import * as R from "ramda"
 
-import { CatalogFormatter } from "."
+import { CatalogFormatter } from "@lingui/conf"
 import type { CatalogType, MessageType } from "../types"
 import { readFile, writeFile } from "../utils"
 
@@ -17,39 +17,39 @@ const deserialize = R.map((translation: string) => ({
   origin: [],
 })) as unknown as (minimalCatalog: MinimalCatalogType) => CatalogType
 
-const minimal: CatalogFormatter = {
-  catalogExtension: ".json",
+export default function (): CatalogFormatter {
+  return {
+    catalogExtension: ".json",
 
-  write(filename, catalog) {
-    const messages = serialize(catalog)
-    let file = readFile(filename)
+    write(filename: string, catalog: CatalogType) {
+      const messages = serialize(catalog)
+      let file = readFile(filename)
 
-    const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
-    const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-    writeFile(
-      filename,
-      `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
-    )
-  },
+      const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
+      const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
+      writeFile(
+        filename,
+        `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
+      )
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
+    read(filename: string) {
+      const raw = readFile(filename)
 
-    if (!raw) {
-      return null
-    }
+      if (!raw) {
+        return null
+      }
 
-    try {
-      const rawCatalog: Record<string, string> = JSON.parse(raw)
-      return deserialize(rawCatalog)
-    } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-    }
-  },
+      try {
+        const rawCatalog: Record<string, string> = JSON.parse(raw)
+        return deserialize(rawCatalog)
+      } catch (e) {
+        throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
+      }
+    },
 
-  parse(content: Record<string, any>) {
-    return deserialize(content)
-  },
+    parse(content: Record<string, any>) {
+      return deserialize(content)
+    },
+  }
 }
-
-export default minimal
