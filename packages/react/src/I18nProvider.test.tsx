@@ -140,20 +140,20 @@ describe("I18nProvider", () => {
         i18n.activate("cs")
       })
 
-      // After loading and activating locale, only CurrentLocaleContextConsumer re-rendered.
+      // After loading and activating locale, components are re-rendered if forceRenderOnLocaleChange is true
       expect(getByTestId("static").textContent).toBe(
         textContentStaticAfterActivate
       )
       expect(getByTestId("dynamic").textContent).toBe(
         textContentDynamicAfterActivate
       )
-      expect(staticRenderCount).toBe(1)
 
       /*
-       * when forceRenderOnLocaleChange is false, components are rendered only once and then do not re-rendered
+       * when forceRenderOnLocaleChange is false, components are rendered only once and then do not re-render
        * when forceRenderOnLocaleChange is true, initial render skips rendering children because no locale is active.
        * Later, loading messages & locale activation are batched into 1 render.
        * */
+      expect(staticRenderCount).toBe(1)
       expect(dynamicRenderCount).toBe(1)
     }
   )
@@ -173,13 +173,13 @@ describe("I18nProvider", () => {
         renderCount++
         return <span data-testid="child">{i18n.locale}</span>
       }
+
       /**
        * Note that we're doing exactly what the description says:
        * but to simulate the equivalent situation, we pass our own mock subscriber
-       * to i18n.on("change", ...) and then we call i18n.activate("cs") ourselves
+       * to i18n.on("change", ...) and in it we call i18n.activate("cs") ourselves
        * so that the condition in useEffect() is met and the component re-renders
        * */
-
       const mockSubscriber = jest.fn(() => {
         i18n.load("cs", {})
         i18n.activate("cs")
