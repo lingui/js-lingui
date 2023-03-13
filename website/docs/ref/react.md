@@ -2,13 +2,11 @@
 
 Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when locale or messages change.
 
-## General Concepts
+## Rendering of Translations {#rendering-translations}
 
-### Rendering of Translations {#rendering-translations}
+All i18n components render translation as text without a wrapping tag. This can be customized in two different ways:
 
-All i18n components render translation as a text without a wrapping tag. This can be customized in three different ways:
-
--   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component;
+-   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component
 -   locally: using `render` prop or `component` on i18 components
 
 #### Global Configuration
@@ -36,7 +34,7 @@ import { Text } from "react-native";
 // renders as <Text>Link to docs</Text>
 ```
 
-To get more control over the rendering of translation, use instead the `render` method with **React.Component** (or stateless component). Component passed to `render` will receive the translation value as a `translation` prop:
+To get more control over the rendering of translation, use instead the `render` prop with a render callback. Function passed to `render` will receive the translation value as a `translation` parameter:
 
 ``` jsx
 // custom component
@@ -46,7 +44,7 @@ To get more control over the rendering of translation, use instead the `render` 
 // renders as <Icon label="Sign in" />
 ```
 
-`render` or `component` also accepts `null` value to render string without a wrapping component. This can be used to override custom `defaultComponent` config.
+`render` and `component` also accept `null` value to render string without a wrapping component. This can be used to override custom `defaultComponent` config.
 
 ``` jsx
 <Trans render={null}>Heading</Trans>;
@@ -56,7 +54,98 @@ To get more control over the rendering of translation, use instead the `render` 
 // renders as "Heading"
 ```
 
+## Lingui Context
+
+Message catalogs and the active locale are passed to the context in [`I18nProvider`](#i18nprovider). Use [`useLingui`](#uselingui) hook to access Lingui context.
+
+### I18nProvider
+
+| Prop name                   | Type                  | Description                                                               |
+| --------------------------- | --------------------- |---------------------------------------------------------------------------|
+| `I18n`                      | `i18n`                | The i18n instance (usually the one imported from `@lingui/core`)          |
+| `children`                  | `React.ReactNode`     | React Children node                                                       |
+| `defaultComponent`          | `React.ComponentType` | A React component for rendering <Trans\> within this component (optional) |
+| `forceRenderOnLocaleChange` | `boolean`             | Force re-render when locale changes (default: true)                       |
+
+`defaultComponent` has the same meaning as `component` in other i18n components. [`Rendering of translations`](#rendering-translations) is explained at the beginning of this document.
+
+``` jsx
+import React from 'react';
+import { I18nProvider } from '@lingui/react';
+import { i18n } from '@lingui/core';
+import { messages as messagesEn } from './locales/en/messages.js';
+
+i18n.load({
+   en: messagesEn,
+});
+i18n.activate('en');
+
+const DefaultI18n = ({ isTranslated, children }) => (
+   <span style={{ color: isTranslated ? undefined : 'red' }}>
+      {children}
+   </span>
+)
+
+const App = () => {
+   return (
+      <I18nProvider i18n={i18n} defaultComponent={DefaultI18n}>
+         // rest of the app
+      </I18nProvider>
+   );
+}
+```
+
+`forceRenderOnLocaleChange` is true by default and it ensures that:
+
+> -   Children of `I18nProvider` aren't rendered before locales are loaded.
+> -   When locale changes, the components consuming `i18n` context are re-rendered.
+
+Disable `forceRenderOnLocaleChange` when you have specific needs to handle initial state before locales are loaded and when locale changes.
+
+`I18nProvider` should live above all other i18n components. A good place is as a top-level application component. However, if the `locale` is stored in a `redux` store, this component should be inserted below `react-redux/Provider`:
+
+``` jsx
+import React from 'react';
+import { I18nProvider } from '@lingui/react';
+import { i18n } from '@lingui/core';
+import { messages as messagesEn } from './locales/en/messages.js';
+
+i18n.load({
+   en: messagesEn,
+});
+i18n.activate('en');
+
+const App = () => {
+   return (
+      <I18nProvider i18n={i18n}>
+         // rest of the app
+      </I18nProvider>
+   );
+}
+```
+
+### useLingui
+
+This hook allows access to the Lingui context. It returns an object with the same values that were passed to the `I18nProvider` component.
+
+Components that use `useLingui` hook will re-render when locale and / or catalogs change, ensuring that the translations are always up-to-date.
+
+``` jsx
+import React from "react"
+import { useLingui } from "@lingui/react"
+
+const CurrentLocale = () => {
+   const { i18n } = useLingui()
+
+   return <span>Current locale: {i18n.locale}</span>
+}
+```
+
 ## Components
+
+The `@lingui/react` package provides `Trans` component to render translations. However, you're more likely to use [macros](/docs/ref/macro.md) instead because they are more convenient and easier to use.
+
+This section is intended for reference purposes.
 
 ### Trans
 
@@ -66,7 +155,7 @@ To get more control over the rendering of translation, use instead the `render` 
 
 :::important
 
-Import [`Trans`](/docs/ref/macro.md#jsxmacro-Trans) macro instead of [`Trans`](#trans) if you use macros:
+Import [`Trans`](/docs/ref/macro.md#jsxmacro-Trans) macro instead of [`Trans`](#trans) component if you use macros:
 
 ``` jsx
 import { Trans } from "@lingui/macro"
@@ -107,87 +196,4 @@ import { Trans } from '@lingui/react';
    id="{count, plural, =1 {car} other {cars}}"
    values={{ count: cars.length }}
 ></Trans>
-```
-
-## Providers
-
-Message catalogs and the active locale are passed to the context in [`I18nProvider`](#i18nprovider). Use [`useLingui`](#uselingui) hook to access Lingui context.
-
-### I18nProvider
-
-| Prop name                   | Type                  | Description                                                                   |
-| --------------------------- | --------------------- | ----------------------------------------------------------------------------- |
-| `I18n`                      | `i18n`                | The i18n instance (usually the one imported from `@lingui/core`)              |
-| `children`                  | `React.ReactNode`     | React Children node                                                           |
-| `defaultComponent`          | `React.ComponentType` | A React component for rendering <Trans\> within this component (Not required) |
-| `forceRenderOnLocaleChange` | `boolean`             | Force re-render when locale changes (default: true)                           |
-
-`defaultComponent` has the same meaning as `component` in other i18n components. [`Rendering of translations`](#rendering-translations) is explained at the beginning of this document.
-
-``` jsx
-import React from 'react';
-import { I18nProvider } from '@lingui/react';
-import { i18n } from '@lingui/core';
-import { messages as messagesEn } from './locales/en/messages.js';
-
-i18n.load({
-   en: messagesEn,
-});
-i18n.activate('en');
-
-const DefaultI18n = ({ isTranslated, children }) => (
-   <span style={{ color: isTranslated ? undefined : 'red' }}>
-      {children}
-   </span>
-)
-
-const App = () => {
-   return (
-      <I18nProvider i18n={i18n} defaultComponent={DefaultI18n}>
-         // rest of the app
-      </I18nProvider>
-   );
-}
-```
-
-`forceRenderOnLocaleChange` is true by default and it ensures that:
-
-> -   Children of `I18nProvider` aren't rendered before locales are loaded.
-> -   When locale changes, the components consuming `i18n` context are re-rendered.
-
-Disable `forceRenderOnLocaleChange` when you have specific needs to handle initial state before locales are loaded and when locale changes.
-
-This component should live above all i18n components. A good place is as a top-level application component. However, if the `locale` is stored in a `redux` store, this component should be inserted below `react-redux/Provider`:
-
-``` jsx
-import React from 'react';
-import { I18nProvider } from '@lingui/react';
-import { i18n } from '@lingui/core';
-import { messages as messagesEn } from './locales/en/messages.js';
-
-i18n.load({
-   en: messagesEn,
-});
-i18n.activate('en');
-
-const App = () => {
-   return (
-      <I18nProvider i18n={i18n}>
-         // rest of the app
-      </I18nProvider>
-   );
-}
-```
-
-### useLingui
-
-``` jsx
-import React from "react"
-import { useLingui } from "@lingui/react"
-
-const CurrentLocale = () => {
-   const { i18n } = useLingui()
-
-   return <span>Current locale: {i18n.locale}</span>
-}
 ```

@@ -90,8 +90,8 @@ describe("I18nProvider", () => {
       textContentDynamicAfterActivate: "2_cs",
     },
   ])(
-    "A component that is not consuming i18n context will not re-render on locale change.",
-    // "A component that consumes i18n context will re-render on locale change, only if forceRenderOnLocaleChange is true.",
+    "A component that is not consuming i18n context will not re-render on locale change." +
+      "A component that consumes i18n context will re-render on locale change, only if forceRenderOnLocaleChange is true.",
     ({
       forceRenderOnLocaleChange,
       textContentBeforeActivate,
