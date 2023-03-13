@@ -5,40 +5,51 @@ import { I18nProvider, useLingui } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
 
 describe("I18nProvider", () => {
-  it("should pass i18n context to wrapped component", () => {
-    const i18n = setupI18n({
-      locale: "cs",
-      messages: {
-        cs: {},
-      },
-    })
+  it(
+    "should pass i18n context to wrapped components, " +
+      "and re-render components that consume the context through useLingui()",
+    () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {},
+          cs: {},
+        },
+      })
 
-    const WithoutLingui = (props) => {
-      return <div {...props}>{props?.i18n?.locale}</div>
+      const WithoutLinguiHook = (props) => {
+        return <div {...props}>{props.i18n.locale}</div>
+      }
+
+      const WithLinguiHook = (props) => {
+        const { i18n } = useLingui()
+        return <WithoutLinguiHook i18n={i18n} {...props} />
+      }
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <WithoutLinguiHook i18n={i18n} data-testid="static" />
+          <WithLinguiHook data-testid="dynamic" />
+        </I18nProvider>
+      )
+
+      act(() => {
+        i18n.activate("cs")
+      })
+
+      expect(getByTestId("static").textContent).toEqual("en")
+      expect(getByTestId("dynamic").textContent).toEqual("cs")
+
+      act(() => {
+        i18n.activate("en")
+      })
+
+      expect(getByTestId("static").textContent).toEqual("en")
+      expect(getByTestId("dynamic").textContent).toEqual("en")
     }
+  )
 
-    const WithLingui = (props) => {
-      const { i18n } = useLingui()
-      return <WithoutLingui i18n={i18n} {...props} />
-    }
-
-    const { getByTestId } = render(
-      <I18nProvider i18n={i18n}>
-        <WithoutLingui data-testid="not-composed" />
-        <WithLingui data-testid="composed" />
-      </I18nProvider>
-    )
-
-    act(() => {
-      i18n.load("cs", {})
-      i18n.activate("cs")
-    })
-
-    expect(getByTestId("not-composed").textContent).toEqual("")
-    expect(getByTestId("composed").textContent).toEqual("cs")
-  })
-
-  it("should subscribe for locale changes", () => {
+  it("should subscribe for locale changes upon mount", () => {
     const i18n = setupI18n({
       locale: "cs",
       messages: {
@@ -53,7 +64,7 @@ describe("I18nProvider", () => {
         <div />
       </I18nProvider>
     )
-    expect(i18n.on).toBeCalledWith("change", expect.anything())
+    expect(i18n.on).toBeCalledWith("change", expect.any(Function))
   })
 
   it("should unsubscribe for locale changes on unmount", () => {
@@ -80,14 +91,12 @@ describe("I18nProvider", () => {
     {
       forceRenderOnLocaleChange: false,
       textContentBeforeActivate: "1_2_",
-      textContentStaticAfterActivate: "1_",
-      textContentDynamicAfterActivate: "2_",
+      textContentAfterActivate: "1_2_",
     },
     {
       forceRenderOnLocaleChange: true,
-      textContentBeforeActivate: "",
-      textContentStaticAfterActivate: "1_cs",
-      textContentDynamicAfterActivate: "2_cs",
+      textContentBeforeActivate: "", // I18nProvider won't render anything until locale is activated
+      textContentAfterActivate: "1_cs2_cs",
     },
   ])(
     "A component that is not consuming i18n context will not re-render on locale change." +
@@ -95,10 +104,9 @@ describe("I18nProvider", () => {
     ({
       forceRenderOnLocaleChange,
       textContentBeforeActivate,
-      textContentStaticAfterActivate,
-      textContentDynamicAfterActivate,
+      textContentAfterActivate,
     }) => {
-      expect.assertions(6)
+      expect.assertions(5)
 
       const i18n = setupI18n()
       let staticRenderCount = 0,
@@ -114,7 +122,7 @@ describe("I18nProvider", () => {
         return <span data-testid="dynamic">2_{i18n.locale}</span>
       }
 
-      const { container, getByTestId, debug } = render(
+      const { container, debug } = render(
         <I18nProvider
           i18n={i18n}
           forceRenderOnLocaleChange={forceRenderOnLocaleChange}
@@ -141,12 +149,7 @@ describe("I18nProvider", () => {
       })
 
       // After loading and activating locale, components are re-rendered if forceRenderOnLocaleChange is true
-      expect(getByTestId("static").textContent).toBe(
-        textContentStaticAfterActivate
-      )
-      expect(getByTestId("dynamic").textContent).toBe(
-        textContentDynamicAfterActivate
-      )
+      expect(container.textContent).toEqual(textContentAfterActivate)
 
       /*
        * when forceRenderOnLocaleChange is false, components are rendered only once and then do not re-render
