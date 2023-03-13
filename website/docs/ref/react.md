@@ -193,7 +193,8 @@ import React from 'react';
 import { Trans } from '@lingui/react';
 
 <Trans
-   id="{count, plural, =1 {car} other {cars}}"
+   id="my.plural.msg"
+   message="{count, plural, =1 {car} other {cars}}"
    values={{ count: cars.length }}
 ></Trans>
 ```
