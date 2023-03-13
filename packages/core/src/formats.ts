@@ -57,7 +57,7 @@ export function plural(
         () => new Intl.PluralRules(_locales, { type: "cardinal" })
       )
 
-  return rules[value] || rules[plurals.select(value - offset)] || rules.other
+  return rules[value] ?? rules[plurals.select(value - offset)] ?? rules.other
 }
 
 function getMemoized<T>(getKey: () => string, construct: () => T) {
