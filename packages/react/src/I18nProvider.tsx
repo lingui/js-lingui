@@ -81,7 +81,12 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     return unsubscribe
   }, [makeContext, forceRenderOnLocaleChange])
 
-  if (forceRenderOnLocaleChange && !latestKnownLocale.current) return null
+  if (forceRenderOnLocaleChange && !latestKnownLocale.current) {
+    console.log(
+      "I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false."
+    )
+    return null
+  }
 
   return (
     <LinguiContext.Provider value={context}>{children}</LinguiContext.Provider>

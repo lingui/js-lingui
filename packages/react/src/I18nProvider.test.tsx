@@ -122,7 +122,7 @@ describe("I18nProvider", () => {
         return <span data-testid="dynamic">2_{i18n.locale}</span>
       }
 
-      const { container, debug } = render(
+      const { container } = render(
         <I18nProvider
           i18n={i18n}
           forceRenderOnLocaleChange={forceRenderOnLocaleChange}
@@ -133,7 +133,7 @@ describe("I18nProvider", () => {
           </>
         </I18nProvider>
       )
-      debug()
+
       // First render — locale isn't activated
       expect(container.textContent).toEqual(textContentBeforeActivate)
 

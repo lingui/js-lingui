@@ -167,19 +167,21 @@ import { Trans } from "@lingui/macro"
 ```
 :::
 
-It's also possible to use `Trans` component directly without macros. In that case, `id` is the message being translated. `values` and `components` are arguments and components used for formatting translation:
+It's also possible to use `Trans` component directly without macros. In that case, `id` identifies the message being translated. `values` and `components` are arguments and components used for formatting translation:
 
 ``` jsx
-<Trans id="Hello World" />;
+<Trans id="my.message" message="Hello World"/>
 
 <Trans
-  id="Hello {name}"
+  id="greeting"
+  message="Hello {name}"
   values={{ name: 'Arthur' }}
-/>;
+/>
 
 // number of tag corresponds to index in `components` prop
 <Trans
-  id="Read <link>Description</link> below."
+  id="link"
+  message="Read <link>Description</link> below."
   components={{ link: <a href="/docs" /> }}
 />
 ```
