@@ -1,18 +1,12 @@
-import { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
+import type { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
+import type { CatalogType } from "../types"
 
-import { CatalogType } from "../types"
-import csv from "./csv"
-import lingui from "./lingui"
-import minimal from "./minimal"
-import po from "./po"
-import poGettext from "./po-gettext"
-
-const formats: Record<CatalogFormat, CatalogFormatter> = {
-  lingui,
-  minimal,
-  po,
-  csv,
-  "po-gettext": poGettext,
+const formats: Record<CatalogFormat, () => CatalogFormatter> = {
+  lingui: () => require("./lingui").default,
+  minimal: () => require("./minimal").default,
+  po: () => require("./po").default,
+  csv: () => require("./csv").default,
+  "po-gettext": () => require("./po-gettext").default,
 }
 
 /**
@@ -49,5 +43,5 @@ export function getFormat(name: CatalogFormat): CatalogFormatter {
     )
   }
 
-  return format
+  return format()
 }
