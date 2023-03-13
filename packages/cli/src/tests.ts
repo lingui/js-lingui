@@ -96,6 +96,30 @@ export function listingToHumanReadable(listing: Listing): string {
   return output.join("\n")
 }
 
+/**
+ * Create fixtures from provided listing in temp folder
+ * Alternative for mock-fs which is also mocking nodejs require calls
+ * @param listing
+ */
+export async function createFixtures(listing: Listing) {
+  const tmpDir = await fs.promises.mkdtemp(
+    path.join(os.tmpdir(), `lingui-test-${process.pid}`)
+  )
+
+  async function create(listing: Listing) {
+    for (const [filename, value] of Object.entries(listing)) {
+      if (typeof value === "string") {
+        await fs.promises.writeFile(path.join(tmpDir, filename), value)
+      } else {
+        await create(value)
+      }
+    }
+  }
+
+  await create(listing)
+  return tmpDir
+}
+
 export function readFsToJson(
   directory: string,
   filter?: (filename: string) => boolean

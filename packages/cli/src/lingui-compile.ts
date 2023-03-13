@@ -10,6 +10,8 @@ import { helpRun } from "./api/help"
 import { getCatalogs, getFormat } from "./api"
 import { TranslationMissingEvent } from "./api/catalog/getTranslationsForCatalog"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
+import { normalizeSlashes } from "./api/utils"
+import nodepath from "path"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -82,7 +84,7 @@ export function command(
           compilerBabelOptions: config.compilerBabelOptions,
         })
 
-        const compiledPath = catalog.writeCompiled(
+        let compiledPath = catalog.writeCompiled(
           locale,
           compiledCatalog,
           namespace
@@ -99,6 +101,10 @@ export function command(
           )
         }
 
+        compiledPath = normalizeSlashes(
+          nodepath.relative(config.rootDir, compiledPath)
+        )
+
         options.verbose &&
           console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
@@ -113,11 +119,16 @@ export function command(
         pseudoLocale: config.pseudoLocale,
         compilerBabelOptions: config.compilerBabelOptions,
       })
-      const compiledPath = compileCatalog.writeCompiled(
+      let compiledPath = compileCatalog.writeCompiled(
         locale,
         compiledCatalog,
         namespace
       )
+
+      compiledPath = normalizeSlashes(
+        nodepath.relative(config.rootDir, compiledPath)
+      )
+
       options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     }
   }

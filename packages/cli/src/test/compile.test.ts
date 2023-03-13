@@ -1,19 +1,18 @@
 import { command } from "../lingui-compile"
 import { makeConfig } from "@lingui/conf"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
-import mockFs from "mock-fs"
-import { readFsToJson } from "../tests"
+import { createFixtures, readFsToJson } from "../tests"
 
 describe("CLI Command: Compile", () => {
   describe("Merge Catalogs", () => {
     // todo
   })
 
-  describe("allowEmpty = false", () => {
-    const config = makeConfig({
+  function getConfig(rootDir: string) {
+    return makeConfig({
       locales: ["en", "pl"],
       sourceLocale: "en",
-      rootDir: "/test",
+      rootDir: rootDir,
       catalogs: [
         {
           path: "<rootDir>/{locale}",
@@ -22,12 +21,14 @@ describe("CLI Command: Compile", () => {
         },
       ],
     })
+  }
 
+  describe("allowEmpty = false", () => {
     it(
       "Should show error and stop compilation of catalog " +
         "if message doesnt have a translation (no template)",
-      () => {
-        mockFs({
+      async () => {
+        const rootDir = await createFixtures({
           "/test": {
             "en.po": `
 msgid "Hello World"
@@ -43,15 +44,16 @@ msgstr ""
           },
         })
 
+        const config = getConfig(rootDir)
+
         mockConsole((console) => {
           const result = command(config, {
             allowEmpty: false,
           })
-          const actualFiles = readFsToJson("/test")
+          const actualFiles = readFsToJson(config.rootDir)
 
           expect(actualFiles["pl.js"]).toBeFalsy()
           expect(actualFiles["en.js"]).toBeTruthy()
-          mockFs.restore()
 
           const log = getConsoleMockCalls(console.error)
           expect(log).toMatchSnapshot()
@@ -63,8 +65,8 @@ msgstr ""
     it(
       "Should show error and stop compilation of catalog " +
         "if message doesnt have a translation (with template)",
-      () => {
-        mockFs({
+      async () => {
+        const rootDir = await createFixtures({
           "/test": {
             "messages.pot": `
 msgid "Hello World"
@@ -74,14 +76,14 @@ msgstr ""
           },
         })
 
+        const config = getConfig(rootDir)
+
         mockConsole((console) => {
           const result = command(config, {
             allowEmpty: false,
           })
 
-          const actualFiles = readFsToJson("/test")
-
-          mockFs.restore()
+          const actualFiles = readFsToJson(rootDir)
 
           expect({
             pl: actualFiles["pl.js"],
@@ -95,8 +97,8 @@ msgstr ""
       }
     )
 
-    it("Should show missing messages verbosely when verbose = true", () => {
-      mockFs({
+    it("Should show missing messages verbosely when verbose = true", async () => {
+      const rootDir = await createFixtures({
         "/test": {
           "pl.po": `
 msgid "Hello World"
@@ -108,13 +110,13 @@ msgstr ""
         },
       })
 
+      const config = getConfig(rootDir)
+
       mockConsole((console) => {
         const result = command(config, {
           allowEmpty: false,
           verbose: true,
         })
-
-        mockFs.restore()
 
         const log = getConsoleMockCalls(console.error)
         expect(log).toMatchSnapshot()
