@@ -14,8 +14,8 @@ export type TransRenderProps = {
 export type TransProps = {
   id: string
   message?: string
-  values: Record<string, unknown>
-  components: { [key: string]: React.ElementType | any }
+  values?: Record<string, unknown>
+  components?: { [key: string]: React.ElementType | any }
   formats?: Record<string, unknown>
   children?: React.ReactNode
   component?: React.ComponentType<TransRenderProps>
@@ -26,8 +26,8 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   const { i18n, defaultComponent } = useLingui()
   const { render, component, id, message, formats } = props
 
-  const values = { ...props.values }
-  const components = { ...props.components }
+  const values = { ...(props.values || {}) }
+  const components = { ...(props.components || {}) }
 
   if (values) {
     /*
@@ -112,9 +112,4 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   ) : (
     <Component>{translation}</Component>
   )
-}
-
-Trans.defaultProps = {
-  values: {},
-  components: {},
 }
