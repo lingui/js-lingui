@@ -943,7 +943,6 @@ exports[`order should order messages alphabetically 2`] = `
 ]
 `;
 
-
 exports[`order should order messages by origin 1`] = `
 {
   LabelA: {
