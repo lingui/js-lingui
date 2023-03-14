@@ -13,7 +13,7 @@ describe("po-gettext format", () => {
     mockDate.reset()
   })
 
-  it("should not throw if directory not exists", () => {
+  it("should not throw if directory not exists", async () => {
     const format = createFormat()
 
     mockFs({})
@@ -25,24 +25,24 @@ describe("po-gettext format", () => {
       },
     }
 
-    format.write(filename, catalog, { locale: "en" })
+    await format.write(filename, catalog, { locale: "en" })
     const content = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(content).toBeTruthy()
   })
 
-  it("should not throw if file not exists", () => {
+  it("should not throw if file not exists", async () => {
     const format = createFormat()
 
     mockFs({})
 
     const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
+    const actual = await format.read(filename)
     mockFs.restore()
     expect(actual).toBeNull()
   })
 
-  it("should convert ICU plural messages to gettext plurals", () => {
+  it("should convert ICU plural messages to gettext plurals", async () => {
     const format = createFormat()
 
     mockFs({
@@ -89,7 +89,7 @@ describe("po-gettext format", () => {
       },
     }
 
-    format.write(filename, catalog, {
+    await format.write(filename, catalog, {
       locale: "en",
     })
     const pofile = fs.readFileSync(filename).toString()
@@ -97,7 +97,7 @@ describe("po-gettext format", () => {
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should convert gettext plurals to ICU plural messages", () => {
+  it("should convert gettext plurals to ICU plural messages", async () => {
     const format = createFormat()
 
     const pofile = fs
@@ -106,11 +106,11 @@ describe("po-gettext format", () => {
       )
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = await format.parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 
-  it("should warn when using nested plurals that cannot be represented with gettext plurals", () => {
+  it("should warn when using nested plurals that cannot be represented with gettext plurals", async () => {
     const catalog = {
       nested_plural_message: {
         message: `{count, plural,
@@ -146,7 +146,7 @@ describe("po-gettext format", () => {
     })
   })
 
-  it("should use correct ICU plural cases for languages having an additional plural case for fractions", () => {
+  it("should use correct ICU plural cases for languages having an additional plural case for fractions", async () => {
     const format = createFormat()
 
     // This tests the edge case described in https://github.com/lingui/js-lingui/pull/677#issuecomment-737152022
@@ -163,7 +163,7 @@ msgstr[1] "# dny"
 msgstr[2] "# dní"
   `
 
-    const parsed = format.parse(po)
+    const parsed = await format.parse(po)
 
     expect(parsed).toEqual({
       Y8Xw2Y: {
@@ -236,7 +236,7 @@ msgstr[2] "# dní"
     })
   })
 
-  it("convertPluralsToIco handle correctly locales with 4-letter", () => {
+  it("convertPluralsToIco handle correctly locales with 4-letter", async () => {
     const format = createFormat()
 
     const pofile = fs
@@ -249,7 +249,7 @@ msgstr[2] "# dní"
       )
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = await format.parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 })

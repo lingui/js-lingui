@@ -15,7 +15,7 @@ describe("pofile format", () => {
     mockDate.reset()
   })
 
-  it("should write catalog in pofile format", () => {
+  it("should write catalog in pofile format", async () => {
     const format = createFormatter({ origins: true })
     mockFs({
       locale: {
@@ -80,13 +80,13 @@ describe("pofile format", () => {
       },
     }
 
-    format.write(filename, catalog, { locale: "en" })
+    await format.write(filename, catalog, { locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should not throw if directory not exists", () => {
+  it("should not throw if directory not exists", async () => {
     const format = createFormatter()
 
     mockFs({})
@@ -97,13 +97,13 @@ describe("pofile format", () => {
       },
     }
 
-    format.write(filename, catalog, { locale: "en" })
+    await format.write(filename, catalog, { locale: "en" })
     const content = fs.readFileSync(filename).toString()
     mockFs.restore()
     expect(content).toBeTruthy()
   })
 
-  it("should read catalog in pofile format", () => {
+  it("should read catalog in pofile format", async () => {
     const format = createFormatter()
 
     const pofile = fs
@@ -121,23 +121,23 @@ describe("pofile format", () => {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
+    const actual = await format.read(filename)
     mockFs.restore()
     expect(actual).toMatchSnapshot()
   })
 
-  it("should not throw if file not exists", () => {
+  it("should not throw if file not exists", async () => {
     const format = createFormatter()
 
     mockFs({})
 
     const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
+    const actual = await format.read(filename)
     mockFs.restore()
     expect(actual).toBeNull()
   })
 
-  it("should serialize and deserialize messages with generated id", () => {
+  it("should serialize and deserialize messages with generated id", async () => {
     const format = createFormatter({ origins: true })
 
     mockFs({
@@ -156,14 +156,14 @@ describe("pofile format", () => {
     }
 
     const filename = path.join("locale", "en", "messages.po")
-    format.write(filename, catalog, { locale: "en" })
+    await format.write(filename, catalog, { locale: "en" })
 
-    const actual = format.read(filename)
+    const actual = await format.read(filename)
     mockFs.restore()
     expect(actual).toMatchObject(catalog)
   })
 
-  it("should correct badly used comments", () => {
+  it("should correct badly used comments", async () => {
     const format = createFormatter()
 
     const po = PO.parse(`
@@ -191,12 +191,12 @@ describe("pofile format", () => {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
+    const actual = await format.read(filename)
     mockFs.restore()
     expect(actual).toMatchSnapshot()
   })
 
-  it("should throw away additional msgstr if present", () => {
+  it("should throw away additional msgstr if present", async () => {
     const format = createFormatter()
 
     const po = PO.parse(`
@@ -215,8 +215,8 @@ describe("pofile format", () => {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    mockConsole((console) => {
-      const actual = format.read(filename)
+    await mockConsole(async (console) => {
+      const actual = await format.read(filename)
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining(
           "Multiple translations for item with key withMultipleTranslation is not supported and it will be ignored."
@@ -227,7 +227,7 @@ describe("pofile format", () => {
     })
   })
 
-  it("should write the same catalog as it was read", () => {
+  it("should write the same catalog as it was read", async () => {
     const format = createFormatter({ origins: true })
 
     const pofile = fs
@@ -245,15 +245,15 @@ describe("pofile format", () => {
     })
 
     const filename = path.join("locale", "en", "messages.po")
-    const catalog = format.read(filename)
-    format.write(filename, catalog, { locale: "en" })
+    const catalog = await format.read(filename)
+    await format.write(filename, catalog, { locale: "en" })
     const actual = fs.readFileSync(filename).toString()
     mockFs.restore()
 
     expect(normalizeLineEndings(actual)).toEqual(normalizeLineEndings(pofile))
   })
 
-  it("should not include origins if origins option is false", () => {
+  it("should not include origins if origins option is false", async () => {
     const format = createFormatter({ origins: false })
 
     mockFs({
@@ -279,14 +279,14 @@ describe("pofile format", () => {
         ],
       },
     }
-    format.write(filename, catalog, { locale: "en" })
+    await format.write(filename, catalog, { locale: "en" })
     const pofile = fs.readFileSync(filename).toString()
     mockFs.restore()
     const pofileOriginPrefix = "#:"
     expect(pofile).toEqual(expect.not.stringContaining(pofileOriginPrefix))
   })
 
-  it("should not include lineNumbers if lineNumbers option is false", () => {
+  it("should not include lineNumbers if lineNumbers option is false", async () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
 
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
@@ -314,7 +314,7 @@ describe("pofile format", () => {
         ],
       },
     }
-    format.write(filename, catalog, {
+    await format.write(filename, catalog, {
       locale: "en",
     })
     const pofile = fs.readFileSync(filename).toString()
@@ -347,7 +347,7 @@ describe("pofile format", () => {
     `)
   })
 
-  it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
+  it("should not include lineNumbers if lineNumbers option is false and already excluded", async () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
 
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
@@ -372,7 +372,7 @@ describe("pofile format", () => {
         origin: [["src/App.js"], ["src/Component.js"]],
       },
     }
-    format.write(filename, catalog, {
+    await format.write(filename, catalog, {
       locale: "en",
     })
     const pofile = fs.readFileSync(filename).toString()

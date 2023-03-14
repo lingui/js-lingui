@@ -38,7 +38,7 @@ export default function (
   return {
     catalogExtension: ".json",
 
-    write(filename, catalog) {
+    async write(filename, catalog) {
       let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
       if (options.origins === false) {
         outputCatalog = removeOrigins(catalog)
@@ -46,11 +46,11 @@ export default function (
       if (options.origins !== false && options.lineNumbers === false) {
         outputCatalog = removeLineNumbers(outputCatalog)
       }
-      writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
+      await writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
     },
 
-    read(filename) {
-      const raw = readFile(filename)
+    async read(filename) {
+      const raw = await readFile(filename)
 
       if (!raw) {
         return null
@@ -63,7 +63,7 @@ export default function (
       }
     },
 
-    parse(content) {
+    async parse(content) {
       return content as CatalogType
     },
   }

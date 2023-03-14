@@ -35,13 +35,13 @@ export default function (): CatalogFormatter {
   return {
     catalogExtension: ".csv",
 
-    write(filename: string, catalog: CatalogType) {
+    async write(filename: string, catalog: CatalogType) {
       const messages = serialize(catalog)
-      writeFileIfChanged(filename, messages)
+      await writeFileIfChanged(filename, messages)
     },
 
-    read(filename: string) {
-      const raw = readFile(filename)
+    async read(filename: string) {
+      const raw = await readFile(filename)
 
       if (!raw) {
         return null
@@ -54,7 +54,7 @@ export default function (): CatalogFormatter {
       }
     },
 
-    parse(content: string) {
+    async parse(content: string) {
       return deserialize(content)
     },
   }

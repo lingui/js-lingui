@@ -52,7 +52,7 @@ export default function compileLinguiMessages(
 
       const { locale, catalog } = fileCatalog
 
-      const messages = catalog.getTranslations(locale, {
+      const messages = await catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
       })

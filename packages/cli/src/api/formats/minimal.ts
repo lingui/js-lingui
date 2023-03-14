@@ -21,20 +21,20 @@ export default function (): CatalogFormatter {
   return {
     catalogExtension: ".json",
 
-    write(filename: string, catalog: CatalogType) {
+    async write(filename: string, catalog: CatalogType) {
       const messages = serialize(catalog)
-      let file = readFile(filename)
+      let file = await readFile(filename)
 
       const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
       const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-      writeFile(
+      await writeFile(
         filename,
         `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
       )
     },
 
-    read(filename: string) {
-      const raw = readFile(filename)
+    async read(filename: string) {
+      const raw = await readFile(filename)
 
       if (!raw) {
         return null
@@ -48,7 +48,7 @@ export default function (): CatalogFormatter {
       }
     },
 
-    parse(content: Record<string, any>) {
+    async parse(content: Record<string, any>) {
       return deserialize(content)
     },
   }

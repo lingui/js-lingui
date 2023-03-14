@@ -139,10 +139,10 @@ export default function (options: PoFormatterOptions = {}): CatalogFormatter {
     catalogExtension: ".po",
     templateExtension: ".pot",
 
-    write(filename, catalog, ctx) {
+    async write(filename, catalog, ctx) {
       let po: PO
 
-      const raw = readFile(filename)
+      const raw = await readFile(filename)
       if (raw) {
         po = PO.parse(raw)
       } else {
@@ -155,18 +155,18 @@ export default function (options: PoFormatterOptions = {}): CatalogFormatter {
         ;(po as any).headerOrder = Object.keys(po.headers)
       }
       po.items = serialize(catalog, options)
-      writeFileIfChanged(filename, po.toString())
+      await writeFileIfChanged(filename, po.toString())
     },
 
-    read(filename) {
-      const raw = readFile(filename)
+    async read(filename) {
+      const raw = await readFile(filename)
       if (!raw) {
         return null
       }
       return this.parse(raw)
     },
 
-    parse(raw: string) {
+    async parse(raw: string) {
       const po = PO.parse(raw)
       return deserialize(po.items, validateItem)
     },

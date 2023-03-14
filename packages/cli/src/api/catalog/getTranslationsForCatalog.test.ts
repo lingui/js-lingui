@@ -7,11 +7,11 @@ function getCatalogStub(
   template: CatalogType = {}
 ): Catalog {
   const catalogStub: Partial<Catalog> = {
-    readAll(): AllCatalogsType {
+    async readAll(): Promise<AllCatalogsType> {
       return catalogs
     },
 
-    readTemplate(): CatalogType {
+    async readTemplate(): Promise<CatalogType> {
       return template
     },
   }
@@ -43,7 +43,7 @@ function message(id: string, source: string, noTranslation = false) {
 }
 
 describe("getTranslationsForCatalog", () => {
-  it("Should return translated catalog if all translation exists", () => {
+  it("Should return translated catalog if all translation exists", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("pl", [
@@ -52,7 +52,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
       onMissing: missingSpy,
@@ -64,7 +64,7 @@ describe("getTranslationsForCatalog", () => {
     })
   })
 
-  it("Should fallback to fallbackLocales.default", () => {
+  it("Should fallback to fallbackLocales.default", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("pl", [
@@ -78,7 +78,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "ru", {
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         default: "pl",
@@ -94,7 +94,7 @@ describe("getTranslationsForCatalog", () => {
     })
   })
 
-  it("Should fallback to single fallbackLocales", () => {
+  it("Should fallback to single fallbackLocales", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("pl", [
@@ -108,7 +108,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "ru", {
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: "pl",
@@ -124,7 +124,7 @@ describe("getTranslationsForCatalog", () => {
     })
   })
 
-  it("Should fallback to multiple fallbacks and then to default", () => {
+  it("Should fallback to multiple fallbacks and then to default", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("pl", [
@@ -154,7 +154,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "ru", {
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: ["de", "es"],
@@ -179,7 +179,7 @@ describe("getTranslationsForCatalog", () => {
   it(
     "Should fallback to source messages and don't call onMissing" +
       " when target locale == sourceLocale",
-    () => {
+    async () => {
       // prettier-ignore
       const catalogStub = getCatalogStub({
       ...lang("en", [
@@ -189,7 +189,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
       const missingSpy = jest.fn()
-      const actual = getTranslationsForCatalog(catalogStub, "en", {
+      const actual = await getTranslationsForCatalog(catalogStub, "en", {
         sourceLocale: "en",
         fallbackLocales: {},
         onMissing: missingSpy,
@@ -203,7 +203,7 @@ describe("getTranslationsForCatalog", () => {
     }
   )
 
-  it("Should fallback to source locale if no other fallbacks and report missing", () => {
+  it("Should fallback to source locale if no other fallbacks and report missing", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("en", [
@@ -216,7 +216,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
       onMissing: missingSpy,
@@ -231,7 +231,7 @@ describe("getTranslationsForCatalog", () => {
     })
   })
 
-  it("Should add keys from source locale", () => {
+  it("Should add keys from source locale", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("en", [
@@ -247,7 +247,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
       onMissing: missingSpy,
@@ -262,7 +262,7 @@ describe("getTranslationsForCatalog", () => {
     expect(missingSpy).toBeCalledTimes(2)
   })
 
-  it("Should not fail if sourceLocale is not set", () => {
+  it("Should not fail if sourceLocale is not set", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("en", [
@@ -278,7 +278,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: null,
       fallbackLocales: {},
       onMissing: missingSpy,
@@ -291,7 +291,7 @@ describe("getTranslationsForCatalog", () => {
     expect(missingSpy).toBeCalledTimes(0)
   })
 
-  it("Should add keys from template", () => {
+  it("Should add keys from template", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({
       ...lang("pl", [
@@ -306,7 +306,7 @@ describe("getTranslationsForCatalog", () => {
     ]).tpl)
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
       onMissing: missingSpy,
@@ -321,14 +321,14 @@ describe("getTranslationsForCatalog", () => {
     expect(missingSpy).toBeCalledTimes(2)
   })
 
-  it("Should not fail if catalog for requested locale does not exists", () => {
+  it("Should not fail if catalog for requested locale does not exists", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({}, lang("tpl", [
       message("hashid1", "Lorem", true),
     ]).tpl)
 
     const missingSpy = jest.fn()
-    const actual = getTranslationsForCatalog(catalogStub, "pl", {
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
       onMissing: missingSpy,

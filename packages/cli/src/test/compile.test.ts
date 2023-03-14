@@ -28,6 +28,8 @@ describe("CLI Command: Compile", () => {
       "Should show error and stop compilation of catalog " +
         "if message doesnt have a translation (no template)",
       async () => {
+        expect.assertions(4)
+
         const rootDir = await createFixtures({
           "/test": {
             "en.po": `
@@ -46,8 +48,8 @@ msgstr ""
 
         const config = getConfig(rootDir)
 
-        mockConsole((console) => {
-          const result = command(config, {
+        await mockConsole(async (console) => {
+          const result = await command(config, {
             allowEmpty: false,
           })
           const actualFiles = readFsToJson(config.rootDir)
@@ -66,6 +68,7 @@ msgstr ""
       "Should show error and stop compilation of catalog " +
         "if message doesnt have a translation (with template)",
       async () => {
+        expect.assertions(3)
         const rootDir = await createFixtures({
           "/test": {
             "messages.pot": `
@@ -78,8 +81,8 @@ msgstr ""
 
         const config = getConfig(rootDir)
 
-        mockConsole((console) => {
-          const result = command(config, {
+        await mockConsole(async (console) => {
+          const result = await command(config, {
             allowEmpty: false,
           })
 
@@ -98,6 +101,7 @@ msgstr ""
     )
 
     it("Should show missing messages verbosely when verbose = true", async () => {
+      expect.assertions(2)
       const rootDir = await createFixtures({
         "/test": {
           "pl.po": `
@@ -112,8 +116,8 @@ msgstr ""
 
       const config = getConfig(rootDir)
 
-      mockConsole((console) => {
-        const result = command(config, {
+      await mockConsole(async (console) => {
+        const result = await command(config, {
           allowEmpty: false,
           verbose: true,
         })

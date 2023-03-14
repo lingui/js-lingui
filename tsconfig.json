@@ -9,6 +9,7 @@
     "stripInternal": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "target": "es2017",
     "paths": {
       "@lingui/babel-plugin-extract-messages": ["./packages/babel-plugin-extract-messages/src"],

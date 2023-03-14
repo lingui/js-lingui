@@ -48,9 +48,13 @@ export type CatalogFormatter = {
    * Omit if the extension is the same as catalogExtension
    */
   templateExtension?: string
-  write(filename: string, catalog: CatalogType, ctx?: { locale: string }): void
-  read(filename: string): CatalogType | null
-  parse(content: unknown): CatalogType | null
+  write(
+    filename: string,
+    catalog: CatalogType,
+    ctx?: { locale: string }
+  ): Promise<void>
+  read(filename: string): Promise<CatalogType | null>
+  parse(content: unknown): Promise<CatalogType | null>
 }
 
 export type ExtractedMessage = {

@@ -1,7 +1,7 @@
 {
   "locales": ["en"],
   "catalogs": [{
-    "path": "locale/{locale}/messages"
+    "path": "<rootDir>/locale/{locale}/messages"
   }],
   "format": "po"
 }
