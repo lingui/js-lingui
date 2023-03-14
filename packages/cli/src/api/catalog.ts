@@ -290,6 +290,7 @@ export function order<T extends ExtractedCatalogType>(
 ): (catalog: T) => T {
   return {
     messageId: orderByMessageId,
+    message: orderByMessage,
     origin: orderByOrigin,
   }[by]
 }
@@ -331,6 +332,19 @@ export function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
       if (aLineNumber > bLineNumber) return 1
 
       return 0
+    })
+    .reduce((acc, key) => {
+      ;(acc as any)[key] = messages[key]
+      return acc
+    }, {} as T)
+}
+
+export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
+  return Object.keys(messages)
+    .sort((a, b) => {
+      const aMsg = messages[a].message || ""
+      const bMsg = messages[b].message || ""
+      return aMsg.localeCompare(bMsg)
     })
     .reduce((acc, key) => {
       ;(acc as any)[key] = messages[key]

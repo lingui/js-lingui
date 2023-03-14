@@ -37,7 +37,7 @@ export type CatalogFormatOptions = {
   disableSelectWarning?: boolean
 }
 
-export type OrderBy = "messageId" | "origin"
+export type OrderBy = "messageId" | "message" | "origin"
 
 export type CatalogConfig = {
   name?: string

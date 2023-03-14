@@ -369,7 +369,11 @@ Order of messages in catalog:
 
 #### messageId
 
-Sort by the message ID.
+Sort by the message ID, `js-lingui-id` will be used if no custom id provided.
+
+#### message
+
+Sort by source message.
 
 #### origin
 
