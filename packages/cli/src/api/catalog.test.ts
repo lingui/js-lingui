@@ -16,6 +16,7 @@ import {
   makeCatalog,
 } from "../tests"
 import { AllCatalogsType } from "./types"
+import { extractFromFiles } from "./catalog/extractFromFiles"
 
 export const fixture = (...dirs: string[]) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs)) +
@@ -165,26 +166,47 @@ describe("Catalog", () => {
 
   describe("collect", () => {
     it("should support JSX and Typescript", async () => {
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "locales/{locale}",
-          include: [fixture("collect-typescript-jsx/")],
-          exclude: [],
-        },
+      const messages = await extractFromFiles(
+        [
+          fixture("collect-typescript-jsx/jsx-syntax.jsx"),
+          fixture("collect-typescript-jsx/tsx-syntax.tsx"),
+          fixture("collect-typescript-jsx/macro.tsx"),
+        ],
         mockConfig()
       )
 
-      const messages = await catalog.collect()
-      expect(messages).toBeTruthy()
       expect(messages).toMatchSnapshot()
     })
 
-    it("should support Flow syntax if enabled", async () => {
-      process.env.LINGUI_CONFIG = path.join(
-        __dirname,
-        "fixtures/collect-syntax-flow/lingui.config.js"
+    it("should support experimental typescript decorators under a flag", async () => {
+      const messages = await extractFromFiles(
+        [fixture("collect-typescript-jsx/tsx-experimental-decorators.tsx")],
+        mockConfig({
+          extractorParserOptions: {
+            tsExperimentalDecorators: true,
+          },
+        })
       )
+
+      expect(messages).toBeTruthy()
+      expect(messages).toMatchInlineSnapshot(`
+        {
+          xDAtGP: {
+            context: undefined,
+            extractedComments: [],
+            message: Message,
+            origin: [
+              [
+                collect-typescript-jsx/tsx-experimental-decorators.tsx,
+                15,
+              ],
+            ],
+          },
+        }
+      `)
+    })
+
+    it("should support Flow syntax if enabled", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -200,7 +222,6 @@ describe("Catalog", () => {
       )
 
       const messages = await catalog.collect()
-      expect(messages).toBeTruthy()
       expect(messages).toMatchSnapshot()
     })
     it("should extract messages from source files", async () => {

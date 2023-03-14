@@ -30,22 +30,24 @@ const extractor: ExtractorType = {
   async extract(filename, code, onMessageExtracted, ctx) {
     const parserOptions = ctx.linguiConfig.extractorParserOptions
 
-    const parserPlugins: ParserPlugin[] = [
-      // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
-      [
-        "decorators",
-        {
-          decoratorsBeforeExport: parserOptions?.decoratorsBeforeExport || true,
-        },
-      ],
-    ]
+    // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
+    const parserPlugins: ParserPlugin[] = []
 
     if (
       [/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))
     ) {
       parserPlugins.push("typescript")
-    } else if (parserOptions?.flow) {
-      parserPlugins.push("flow")
+      if (parserOptions.tsExperimentalDecorators) {
+        parserPlugins.push("decorators-legacy")
+      } else {
+        parserPlugins.push("decorators")
+      }
+    } else {
+      parserPlugins.push("decorators")
+
+      if (parserOptions?.flow) {
+        parserPlugins.push("flow")
+      }
     }
 
     if ([/\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {

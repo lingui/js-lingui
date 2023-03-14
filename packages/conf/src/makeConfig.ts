@@ -53,7 +53,7 @@ export const defaultConfig: LinguiConfig = {
   },
   extractorParserOptions: {
     flow: false,
-    decoratorsBeforeExport: false,
+    tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
   format: "po",
@@ -82,7 +82,7 @@ export const exampleConfig = {
   ),
   extractorParserOptions: {
     flow: false,
-    decoratorsBeforeExport: false,
+    tsExperimentalDecorators: false,
   },
 }
 

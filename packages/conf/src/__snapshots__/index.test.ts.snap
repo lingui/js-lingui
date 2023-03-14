@@ -35,8 +35,8 @@ exports[`@lingui/conf should return default config 1`] = `
     minified: true,
   },
   extractorParserOptions: {
-    decoratorsBeforeExport: false,
     flow: false,
+    tsExperimentalDecorators: false,
   },
   fallbackLocales: {
     en-gb: en,

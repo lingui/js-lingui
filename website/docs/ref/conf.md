@@ -216,10 +216,11 @@ Specify extra options used to parse source files when messages are being extract
 ```ts
 "extractorParserOptions": {
   /**
-   * default true
-   * Use for Stage 3 decorators syntax.
+   * default false
+   * By default, standard decorators (Stage3) are applied for TS files
+   * Enable this if you want to use TypesScript's experimental decorators.
    */
-  decoratorsBeforeExport?: boolean
+  tsExperimentalDecorators?: boolean
   /**
    * default false
    * Enable if you use flow. This will apply Flow syntax to files with .js, cjs, .mjs extension.
