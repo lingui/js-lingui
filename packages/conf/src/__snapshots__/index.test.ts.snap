@@ -49,7 +49,7 @@ exports[`@lingui/conf should return default config 1`] = `
   locales: [
     en-gb,
   ],
-  orderBy: messageId,
+  orderBy: message,
   pseudoLocale: ,
   rootDir: .,
   runtimeConfigModule: {

@@ -59,7 +59,7 @@ export const defaultConfig: LinguiConfig = {
   format: "po",
   formatOptions: { origins: true, lineNumbers: true },
   locales: [],
-  orderBy: "messageId",
+  orderBy: "message",
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],

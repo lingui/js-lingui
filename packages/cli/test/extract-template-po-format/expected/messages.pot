@@ -6,6 +6,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 
+#. this is a comment
+#. js-lingui-id: f9Atdk
+#: fixtures/file-b.tsx:6
+msgid "Hello this is JSX Translation"
+msgstr ""
+
+#. js-lingui-id: 6qYmGe
+#: fixtures/file-b.tsx:11
+msgctxt "my context"
+msgid "Hello this is JSX Translation"
+msgstr ""
+
 #. js-lingui-id: 1nGWAC
 #: fixtures/file-a.ts:4
 msgid "Hello world"
@@ -17,29 +29,17 @@ msgctxt "custom context"
 msgid "Hello world"
 msgstr ""
 
-#. js-lingui-id: 6qYmGe
-#: fixtures/file-b.tsx:11
-msgctxt "my context"
-msgid "Hello this is JSX Translation"
-msgstr ""
-
 #. js-lingui-id: BcXPt3
 #: fixtures/file-a.ts:16
 msgid "Message in descriptor"
 msgstr ""
 
-#: fixtures/file-a.ts:11
-#, explicit-id
-msgid "custom.id"
-msgstr ""
-
-#. this is a comment
-#. js-lingui-id: f9Atdk
-#: fixtures/file-b.tsx:6
-msgid "Hello this is JSX Translation"
-msgstr ""
-
 #: fixtures/file-b.tsx:15
 #, explicit-id
 msgid "jsx.custom.id"
+msgstr ""
+
+#: fixtures/file-a.ts:11
+#, explicit-id
+msgid "custom.id"
 msgstr ""
