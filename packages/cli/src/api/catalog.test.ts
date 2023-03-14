@@ -565,7 +565,7 @@ describe("order", () => {
         ],
       }),
       msg2: makeNextMessage({
-        message: "A",
+        // message is optional.
         translation: "A",
         origin: [["file2.js", 3]],
       }),
@@ -583,11 +583,15 @@ describe("order", () => {
 
     const orderedCatalogs = order("message")(catalog)
 
-    // Test that the message content is the same as before
-    expect(orderedCatalogs).toMatchSnapshot()
-
     // Jest snapshot order the keys automatically, so test that the key order explicitly
-    expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
+    expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`
+      [
+        msg2,
+        msg1,
+        msg4,
+        msg3,
+      ]
+    `)
   })
 })
 
