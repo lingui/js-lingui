@@ -60,6 +60,8 @@ Also, we've added a possibility to provide a context for the message. For more d
 
 The context feature affects the message ID generation and adds the `msgctxt` parameter in case of the PO catalog format extraction.
 
+This also affects the `orderBy` with `messageId` as now the generated id is used when custom id is absent. To avoid confusion, we switched the default `orderBy` to use the source message (`message`) instead.
+
 ### Change in generated ICU messages for nested JSX Macros
 
 We have made a small change in how Lingui generates ICU messages for nested JSX Macros. We have removed leading spaces from the texts in all cases.
