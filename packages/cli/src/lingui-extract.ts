@@ -80,7 +80,7 @@ export default async function command(
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
-    import(`./services/${moduleName}`)
+    await import(`./services/${moduleName}`)
       .then((module) => module.default(config, options))
       .catch((err) =>
         console.error(`Can't load service module ${moduleName}`, err)
