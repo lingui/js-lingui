@@ -553,6 +553,42 @@ describe("order", () => {
     // Jest snapshot order the keys automatically, so test that the key order explicitly
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
+
+  it("should order messages by message", () => {
+    const catalog = {
+      msg1: makeNextMessage({
+        message: "B",
+        translation: "B",
+        origin: [
+          ["file2.js", 2],
+          ["file1.js", 2],
+        ],
+      }),
+      msg2: makeNextMessage({
+        message: "A",
+        translation: "A",
+        origin: [["file2.js", 3]],
+      }),
+      msg3: makeNextMessage({
+        message: "D",
+        translation: "D",
+        origin: [["file2.js", 100]],
+      }),
+      msg4: makeNextMessage({
+        message: "C",
+        translation: "C",
+        origin: [["file1.js", 1]],
+      }),
+    }
+
+    const orderedCatalogs = order("message")(catalog)
+
+    // Test that the message content is the same as before
+    expect(orderedCatalogs).toMatchSnapshot()
+
+    // Jest snapshot order the keys automatically, so test that the key order explicitly
+    expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
+  })
 })
 
 describe("writeCompiled", () => {

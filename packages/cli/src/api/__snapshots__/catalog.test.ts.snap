@@ -943,6 +943,68 @@ exports[`order should order messages alphabetically 2`] = `
 ]
 `;
 
+exports[`order should order messages by message 1`] = `
+{
+  msg1: {
+    message: B,
+    obsolete: false,
+    origin: [
+      [
+        file2.js,
+        2,
+      ],
+      [
+        file1.js,
+        2,
+      ],
+    ],
+    translation: B,
+  },
+  msg2: {
+    message: A,
+    obsolete: false,
+    origin: [
+      [
+        file2.js,
+        3,
+      ],
+    ],
+    translation: A,
+  },
+  msg3: {
+    message: D,
+    obsolete: false,
+    origin: [
+      [
+        file2.js,
+        100,
+      ],
+    ],
+    translation: D,
+  },
+  msg4: {
+    message: C,
+    obsolete: false,
+    origin: [
+      [
+        file1.js,
+        1,
+      ],
+    ],
+    translation: C,
+  },
+}
+`;
+
+exports[`order should order messages by message 2`] = `
+[
+  msg2,
+  msg1,
+  msg4,
+  msg3,
+]
+`;
+
 exports[`order should order messages by origin 1`] = `
 {
   LabelA: {
