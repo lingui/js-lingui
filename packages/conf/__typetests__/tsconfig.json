@@ -1,4 +1,6 @@
 {
-  "compilerOptions": {},
-  "paths": {},
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "paths": {}
 }
