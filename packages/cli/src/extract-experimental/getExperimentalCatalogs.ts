@@ -18,7 +18,7 @@ export function getExperimentalCatalogs(linguiConfig: LinguiConfigNormalized) {
       ""
     )
 
-    const format = getFormat(linguiConfig.format)
+    const format = getFormat(linguiConfig.format, linguiConfig.formatOptions)
     const templatePath = resolveTemplatePath(
       entryPoint,
       config.output,
