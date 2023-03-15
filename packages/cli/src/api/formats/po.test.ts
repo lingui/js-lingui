@@ -1,30 +1,21 @@
 import fs from "fs"
 import path from "path"
-import mockFs from "mock-fs"
 import mockDate from "mockdate"
-import PO from "pofile"
 import { mockConsole } from "@lingui/jest-mocks"
 
 import createFormatter from "./po"
 import { CatalogType } from "../types"
-import { normalizeLineEndings } from "../../tests"
 
 describe("pofile format", () => {
   afterEach(() => {
-    mockFs.restore()
     mockDate.reset()
   })
 
-  it("should write catalog in pofile format", async () => {
+  it("should write catalog in pofile format", () => {
     const format = createFormatter({ origins: true })
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-    mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
 
-    const filename = path.join("locale", "en", "messages.po")
+    mockDate.set("2018-08-27T10:00Z")
+
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -80,71 +71,26 @@ describe("pofile format", () => {
       },
     }
 
-    await format.write(filename, catalog, { locale: "en" })
-    const pofile = fs.readFileSync(filename).toString()
-    mockFs.restore()
+    const pofile = format.serialize(catalog, {
+      locale: "en",
+      existing: null,
+    })
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should not throw if directory not exists", async () => {
-    const format = createFormatter()
-
-    mockFs({})
-    const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
-      static: {
-        translation: "Static message",
-      },
-    }
-
-    await format.write(filename, catalog, { locale: "en" })
-    const content = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(content).toBeTruthy()
-  })
-
-  it("should read catalog in pofile format", async () => {
+  it("should read catalog in pofile format", () => {
     const format = createFormatter()
 
     const pofile = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.po")
-      )
+      .readFileSync(path.join(__dirname, "fixtures/messages.po"))
       .toString()
 
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": pofile,
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    const actual = await format.read(filename)
-    mockFs.restore()
+    const actual = format.parse(pofile)
     expect(actual).toMatchSnapshot()
   })
 
-  it("should not throw if file not exists", async () => {
-    const format = createFormatter()
-
-    mockFs({})
-
-    const filename = path.join("locale", "en", "messages.po")
-    const actual = await format.read(filename)
-    mockFs.restore()
-    expect(actual).toBeNull()
-  })
-
-  it("should serialize and deserialize messages with generated id", async () => {
+  it("should serialize and deserialize messages with generated id", () => {
     const format = createFormatter({ origins: true })
-
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
 
     const catalog: CatalogType = {
       // with generated id
@@ -155,18 +101,19 @@ describe("pofile format", () => {
       },
     }
 
-    const filename = path.join("locale", "en", "messages.po")
-    await format.write(filename, catalog, { locale: "en" })
+    const serialized = format.serialize(catalog, {
+      locale: "en",
+      existing: null,
+    })
 
-    const actual = await format.read(filename)
-    mockFs.restore()
+    const actual = format.parse(serialized)
     expect(actual).toMatchObject(catalog)
   })
 
-  it("should correct badly used comments", async () => {
+  it("should correct badly used comments", () => {
     const format = createFormatter()
 
-    const po = PO.parse(`
+    const po = `
       #. First description
       #. Second comment
       #. Third comment
@@ -180,89 +127,36 @@ describe("pofile format", () => {
       #, explicit-id
       msgid "withDescriptionAndComments"
       msgstr "Second description joins translator comments"
-    `)
+    `
 
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": po.toString(),
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    const actual = await format.read(filename)
-    mockFs.restore()
+    const actual = format.parse(po)
     expect(actual).toMatchSnapshot()
   })
 
-  it("should throw away additional msgstr if present", async () => {
+  it("should throw away additional msgstr if present", () => {
     const format = createFormatter()
 
-    const po = PO.parse(`
+    const po = `
       #, explicit-id
       msgid "withMultipleTranslation"
       msgstr[0] "This is just fine"
       msgstr[1] "Throw away that one"
-    `)
+    `
 
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": po.toString(),
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    await mockConsole(async (console) => {
-      const actual = await format.read(filename)
+    mockConsole((console) => {
+      const actual = format.parse(po)
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining(
           "Multiple translations for item with key withMultipleTranslation is not supported and it will be ignored."
         )
       )
-      mockFs.restore()
       expect(actual).toMatchSnapshot()
     })
   })
 
-  it("should write the same catalog as it was read", async () => {
-    const format = createFormatter({ origins: true })
-
-    const pofile = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.po")
-      )
-      .toString()
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.po": pofile,
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
-    const catalog = await format.read(filename)
-    await format.write(filename, catalog, { locale: "en" })
-    const actual = fs.readFileSync(filename).toString()
-    mockFs.restore()
-
-    expect(normalizeLineEndings(actual)).toEqual(normalizeLineEndings(pofile))
-  })
-
-  it("should not include origins if origins option is false", async () => {
+  it("should not include origins if origins option is false", () => {
     const format = createFormatter({ origins: false })
 
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -279,25 +173,17 @@ describe("pofile format", () => {
         ],
       },
     }
-    await format.write(filename, catalog, { locale: "en" })
-    const pofile = fs.readFileSync(filename).toString()
-    mockFs.restore()
+
+    const actual = format.serialize(catalog, { locale: "en", existing: null })
     const pofileOriginPrefix = "#:"
-    expect(pofile).toEqual(expect.not.stringContaining(pofileOriginPrefix))
+    expect(actual).toEqual(expect.not.stringContaining(pofileOriginPrefix))
   })
 
-  it("should not include lineNumbers if lineNumbers option is false", async () => {
+  it("should not include lineNumbers if lineNumbers option is false", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
 
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
 
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -314,12 +200,12 @@ describe("pofile format", () => {
         ],
       },
     }
-    await format.write(filename, catalog, {
+    const actual = format.serialize(catalog, {
       locale: "en",
+      existing: null,
     })
-    const pofile = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(pofile).toMatchInlineSnapshot(`
+
+    expect(actual).toMatchInlineSnapshot(`
       msgid ""
       msgstr ""
       "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
@@ -347,18 +233,11 @@ describe("pofile format", () => {
     `)
   })
 
-  it("should not include lineNumbers if lineNumbers option is false and already excluded", async () => {
+  it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
 
     mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
 
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.po")
     const catalog: CatalogType = {
       static: {
         translation: "Static message",
@@ -372,12 +251,13 @@ describe("pofile format", () => {
         origin: [["src/App.js"], ["src/Component.js"]],
       },
     }
-    await format.write(filename, catalog, {
+
+    const actual = format.serialize(catalog, {
       locale: "en",
+      existing: null,
     })
-    const pofile = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(pofile).toMatchInlineSnapshot(`
+
+    expect(actual).toMatchInlineSnapshot(`
       msgid ""
       msgstr ""
       "POT-Creation-Date: 2018-08-27 10:00+0000\\n"

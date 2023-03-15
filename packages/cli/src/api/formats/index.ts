@@ -1,5 +1,6 @@
 import type { CatalogFormat, CatalogFormatter } from "@lingui/conf"
 import { CatalogFormatOptions } from "@lingui/conf"
+import { FormatterWrapper } from "./api/formatterWrapper"
 
 const formats: Record<
   CatalogFormat,
@@ -12,12 +13,14 @@ const formats: Record<
   "po-gettext": () => require("./po-gettext").default,
 }
 
+export { FormatterWrapper }
+
 export function getFormat(
   _format: CatalogFormat | CatalogFormatter,
   options: CatalogFormatOptions
-): CatalogFormatter {
+): FormatterWrapper {
   if (typeof _format !== "string") {
-    return _format
+    return new FormatterWrapper(_format)
   }
 
   const format = formats[_format]
@@ -30,5 +33,5 @@ export function getFormat(
     )
   }
 
-  return format()(options)
+  return new FormatterWrapper(format()(options))
 }

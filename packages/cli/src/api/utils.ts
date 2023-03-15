@@ -29,7 +29,7 @@ export const splitOrigin = (origin: string) => {
 export const joinOrigin = (origin: [file: string, line?: number]): string =>
   origin.join(":")
 
-export async function readFile(fileName: string): Promise<string> {
+export async function readFile(fileName: string): Promise<string | undefined> {
   try {
     return (await fs.promises.readFile(fileName)).toString()
   } catch (err) {

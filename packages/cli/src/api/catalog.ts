@@ -6,8 +6,7 @@ import normalize from "normalize-path"
 
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 
-import { getFormat } from "./formats"
-import { CatalogFormatter } from "@lingui/conf"
+import { FormatterWrapper, getFormat } from "./formats"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -59,7 +58,7 @@ export class Catalog {
   path: string
   include: Array<string>
   exclude: Array<string>
-  format: CatalogFormatter
+  format: FormatterWrapper
   templateFile?: string
 
   constructor(
@@ -71,7 +70,9 @@ export class Catalog {
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
     this.format = getFormat(config.format, config.formatOptions)
-    this.templateFile = templatePath || getTemplatePath(this.format, this.path)
+    this.templateFile =
+      templatePath ||
+      getTemplatePath(this.format.getTemplateExtension(), this.path)
   }
 
   async make(options: MakeOptions): Promise<AllCatalogsType | false> {
@@ -175,17 +176,18 @@ export class Catalog {
     messages: CatalogType
   ): Promise<[created: boolean, filename: string]> {
     const filename =
-      replacePlaceholders(this.path, { locale }) + this.format.catalogExtension
+      replacePlaceholders(this.path, { locale }) +
+      this.format.getCatalogExtension()
 
     const created = !fs.existsSync(filename)
 
-    await this.format.write(filename, messages, { locale })
+    await this.format.write(filename, messages, locale)
     return [created, filename]
   }
 
   async writeTemplate(messages: CatalogType): Promise<void> {
     const filename = this.templateFile
-    await this.format.write(filename, messages, { locale: undefined })
+    await this.format.write(filename, messages, undefined)
   }
 
   async writeCompiled(
@@ -209,9 +211,10 @@ export class Catalog {
 
   async read(locale: string): Promise<CatalogType> {
     const filename =
-      replacePlaceholders(this.path, { locale }) + this.format.catalogExtension
+      replacePlaceholders(this.path, { locale }) +
+      this.format.getCatalogExtension()
 
-    return await this.format.read(filename)
+    return await this.format.read(filename, locale)
   }
 
   async readAll(): Promise<AllCatalogsType> {
@@ -228,7 +231,7 @@ export class Catalog {
 
   async readTemplate(): Promise<CatalogType> {
     const filename = this.templateFile
-    return await this.format.read(filename)
+    return await this.format.read(filename, undefined)
   }
 
   get sourcePaths() {
@@ -267,8 +270,7 @@ export class Catalog {
   }
 }
 
-function getTemplatePath(format: CatalogFormatter, path: string) {
-  const ext = format.templateExtension || format.catalogExtension
+function getTemplatePath(ext: string, path: string) {
   return path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
 }
 

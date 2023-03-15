@@ -1,26 +1,12 @@
 import fs from "fs"
 import path from "path"
-import mockFs from "mock-fs"
-import mockDate from "mockdate"
 
 import createFormat from "./lingui"
 import { CatalogType } from "../types"
 
 describe("lingui format", () => {
-  afterEach(() => {
-    mockFs.restore()
-    mockDate.reset()
-  })
-
   it("should write catalog in lingui format", async () => {
     const format = createFormat({ origins: true })
-
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-    mockDate.set("2018-08-27T10:00Z")
 
     const filename = path.join("locale", "en", "messages.json")
     const catalog: CatalogType = {
@@ -69,71 +55,29 @@ describe("lingui format", () => {
       },
     }
 
-    await format.write(filename, catalog, { locale: "en" })
-    const lingui = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(lingui).toMatchSnapshot()
-  })
-
-  it("should not throw if directory not exists", async () => {
-    const format = createFormat()
-
-    mockFs({})
-    const filename = path.join("locale", "en", "messages.json")
-    const catalog = {
-      static: {
-        translation: "Static message",
-      },
-    }
-
-    await format.write(filename, catalog)
-    const content = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(content).toBeTruthy()
-  })
-
-  it("should read catalog in lingui format", async () => {
-    const format = createFormat()
-
-    const lingui = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.json")
-      )
-      .toString()
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.json": lingui,
-        },
-      },
+    const actual = await format.serialize(catalog, {
+      locale: "en",
+      filename,
+      existing: null,
     })
-
-    const filename = path.join("locale", "en", "messages.json")
-    const actual = await format.read(filename)
-    mockFs.restore()
     expect(actual).toMatchSnapshot()
   })
 
-  it("should not throw if file not exists", async () => {
+  it("should read catalog in lingui format", () => {
     const format = createFormat()
-    mockFs({})
+
+    const lingui = fs
+      .readFileSync(path.join(__dirname, "fixtures/messages.json"))
+      .toString()
 
     const filename = path.join("locale", "en", "messages.json")
-    const actual = await format.read(filename)
-    mockFs.restore()
-    expect(actual).toBeNull()
+    const actual = format.parse(lingui, { locale: "en", filename })
+    expect(actual).toMatchSnapshot()
   })
 
   it("should not include origins if origins option is false", async () => {
     const format = createFormat({ origins: false })
 
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-
     const filename = path.join("locale", "en", "messages.json")
     const catalog: CatalogType = {
       static: {
@@ -151,22 +95,19 @@ describe("lingui format", () => {
         ],
       },
     }
-    await format.write(filename, catalog, { locale: "en" })
-    const lingui = fs.readFileSync(filename).toString()
-    mockFs.restore()
+
+    const actual = await format.serialize(catalog, {
+      locale: "en",
+      filename,
+      existing: null,
+    })
     const linguiOriginProperty = '"origin"'
-    expect(lingui).toEqual(expect.not.stringContaining(linguiOriginProperty))
+    expect(actual).toEqual(expect.not.stringContaining(linguiOriginProperty))
   })
 
   it("should not include lineNumbers if lineNumbers option is false", async () => {
     const format = createFormat({ lineNumbers: false })
 
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-
     const filename = path.join("locale", "en", "messages.json")
     const catalog: CatalogType = {
       static: {
@@ -184,10 +125,12 @@ describe("lingui format", () => {
         ],
       },
     }
-    await format.write(filename, catalog, { locale: "en" })
-    const lingui = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(lingui).toMatchInlineSnapshot(`
+    const actual = await format.serialize(catalog, {
+      locale: "en",
+      filename,
+      existing: null,
+    })
+    expect(actual).toMatchInlineSnapshot(`
       {
         "static": {
           "translation": "Static message"
@@ -212,6 +155,7 @@ describe("lingui format", () => {
           ]
         }
       }
+
     `)
   })
 })

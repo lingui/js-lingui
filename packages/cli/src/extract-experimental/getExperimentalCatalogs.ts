@@ -23,7 +23,7 @@ export function getExperimentalCatalogs(linguiConfig: LinguiConfigNormalized) {
       entryPoint,
       config.output,
       linguiConfig.rootDir,
-      format.templateExtension || format.catalogExtension
+      format.getTemplateExtension()
     )
 
     return new Catalog(

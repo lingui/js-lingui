@@ -6,11 +6,9 @@ import PO from "pofile"
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import { CatalogType, MessageType } from "../types"
-import { readFile, writeFileIfChanged } from "../utils"
 import type { CatalogFormatter } from "@lingui/conf"
 import { deserialize, serialize as serializePo } from "./po"
 
-// Workaround because pofile doesn't support es6 modules, see https://github.com/rubenv/pofile/pull/38#issuecomment-623119284
 type POItem = InstanceType<typeof PO.Item>
 
 export type PoGetTextFormatterOptions = {
@@ -19,14 +17,14 @@ export type PoGetTextFormatterOptions = {
   disableSelectWarning?: boolean
 }
 
-function getCreateHeaders(language = "no"): PO["headers"] {
+function getCreateHeaders(language: string): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
     "MIME-Version": "1.0",
     "Content-Type": "text/plain; charset=utf-8",
     "Content-Transfer-Encoding": "8bit",
     "X-Generator": "@lingui/cli",
-    Language: language,
+    ...(language ? { Language: language } : {}),
   }
 }
 
@@ -275,9 +273,7 @@ export function parse(raw: string) {
   })
 }
 
-export default function (
-  options: PoGetTextFormatterOptions = {}
-): CatalogFormatter {
+export default function (options: PoGetTextFormatterOptions = {}) {
   options = {
     origins: true,
     lineNumbers: true,
@@ -288,32 +284,26 @@ export default function (
     catalogExtension: ".po",
     templateExtension: ".pot",
 
-    async write(filename, catalog: CatalogType, ctx) {
+    parse(content): CatalogType {
+      return parse(content)
+    },
+
+    serialize(
+      catalog: CatalogType,
+      ctx: { locale: string; existing: string }
+    ): string {
       let po: PO
 
-      const raw = await readFile(filename)
-      if (raw) {
-        po = PO.parse(raw)
+      if (ctx.existing) {
+        po = PO.parse(ctx.existing)
       } else {
         po = new PO()
         po.headers = getCreateHeaders(ctx.locale)
-        if (ctx.locale === undefined) {
-          delete po.headers.Language
-        }
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)
       }
       po.items = serialize(catalog, options)
-      await writeFileIfChanged(filename, po.toString())
+      return po.toString()
     },
-
-    async read(filename) {
-      const raw = await readFile(filename)
-      if (!raw) {
-        return null
-      }
-
-      return parse(raw)
-    },
-  }
+  } satisfies CatalogFormatter
 }

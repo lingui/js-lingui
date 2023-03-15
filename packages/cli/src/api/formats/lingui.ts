@@ -1,8 +1,10 @@
 import * as R from "ramda"
 
-import { readFile, writeFileIfChanged } from "../utils"
-import { CatalogType, ExtractedMessageType } from "../types"
-import { CatalogFormatter } from "@lingui/conf"
+import {
+  CatalogFormatter,
+  CatalogType,
+  ExtractedMessageType,
+} from "@lingui/conf"
 
 export type LinguiFormatterOptions = {
   origins?: boolean
@@ -19,10 +21,7 @@ const removeOrigins = R.map(({ origin, ...message }) => message) as unknown as (
 
 const removeLineNumbers = R.map((message: ExtractedMessageType) => {
   if (message.origin) {
-    message.origin.map((originValue) => {
-      originValue.pop()
-      return originValue
-    })
+    message.origin = message.origin.map(([file]) => [file])
   }
   return message
 }) as unknown as (catalog: ExtractedMessageType) => NoOriginsCatalogType
@@ -38,29 +37,25 @@ export default function (
   return {
     catalogExtension: ".json",
 
-    async write(filename, catalog) {
+    serialize(catalog, { existing }) {
       let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
+
       if (options.origins === false) {
-        outputCatalog = removeOrigins(catalog)
+        outputCatalog = removeOrigins(outputCatalog)
       }
       if (options.origins !== false && options.lineNumbers === false) {
         outputCatalog = removeLineNumbers(outputCatalog)
       }
-      await writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
+
+      const shouldUseTrailingNewline =
+        existing === null || existing?.endsWith("\n")
+      const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
+
+      return JSON.stringify(outputCatalog, null, 2) + trailingNewLine
     },
 
-    async read(filename) {
-      const raw = await readFile(filename)
-
-      if (!raw) {
-        return null
-      }
-
-      try {
-        return JSON.parse(raw)
-      } catch (e) {
-        throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-      }
+    parse(content) {
+      return JSON.parse(content)
     },
   }
 }

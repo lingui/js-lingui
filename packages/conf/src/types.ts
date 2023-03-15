@@ -48,12 +48,14 @@ export type CatalogFormatter = {
    * Omit if the extension is the same as catalogExtension
    */
   templateExtension?: string
-  write(
-    filename: string,
+  parse(
+    content: string,
+    ctx: { locale: string | null; filename: string }
+  ): Promise<CatalogType> | CatalogType
+  serialize(
     catalog: CatalogType,
-    ctx?: { locale: string }
-  ): Promise<void>
-  read(filename: string): Promise<CatalogType | null>
+    ctx: { locale: string | null; filename: string; existing: string | null }
+  ): Promise<string> | string
 }
 
 export type ExtractedMessage = {

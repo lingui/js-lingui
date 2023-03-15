@@ -1,8 +1,6 @@
 import * as R from "ramda"
 
-import { CatalogFormatter } from "@lingui/conf"
-import type { CatalogType, MessageType } from "../types"
-import { readFile, writeFile } from "../utils"
+import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 
 type MinimalCatalogType = Record<string, string>
 
@@ -21,31 +19,16 @@ export default function (): CatalogFormatter {
   return {
     catalogExtension: ".json",
 
-    async write(filename: string, catalog: CatalogType) {
-      const messages = serialize(catalog)
-      let file = await readFile(filename)
-
-      const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
+    serialize(catalog: CatalogType, { existing }) {
+      const shouldUseTrailingNewline =
+        existing === null || existing?.endsWith("\n")
       const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-      await writeFile(
-        filename,
-        `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
-      )
+
+      return JSON.stringify(serialize(catalog), null, 2) + trailingNewLine
     },
 
-    async read(filename: string) {
-      const raw = await readFile(filename)
-
-      if (!raw) {
-        return null
-      }
-
-      try {
-        const rawCatalog: Record<string, string> = JSON.parse(raw)
-        return deserialize(rawCatalog)
-      } catch (e) {
-        throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-      }
+    parse(content) {
+      return deserialize(JSON.parse(content))
     },
   }
 }

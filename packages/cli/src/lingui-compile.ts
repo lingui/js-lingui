@@ -218,7 +218,7 @@ if (require.main === module) {
     const catalogExtension = getFormat(
       config.format,
       config.formatOptions
-    ).catalogExtension
+    ).getCatalogExtension()
 
     config.locales.forEach((locale) => {
       catalogs.forEach((catalog) => {

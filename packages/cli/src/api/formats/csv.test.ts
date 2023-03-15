@@ -1,23 +1,12 @@
 import fs from "fs"
 import path from "path"
-import mockFs from "mock-fs"
 
 import createFormatter from "./csv"
 
 describe("csv format", () => {
   const format = createFormatter()
 
-  afterEach(() => {
-    mockFs.restore()
-  })
-
   it("should write catalog in csv format", async () => {
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
-    const filename = path.join("locale", "en", "messages.csv")
     const catalog = {
       static: {
         translation: "Static message",
@@ -30,79 +19,16 @@ describe("csv format", () => {
       },
     }
 
-    await format.write(filename, catalog)
-    const csv = fs.readFileSync(filename).toString()
-    mockFs.restore()
+    const csv = await format.serialize(catalog, {} as any)
     expect(csv).toMatchSnapshot()
-  })
-
-  it("should not throw if directory not exists", async () => {
-    mockFs({})
-    const filename = path.join("locale", "en", "messages.csv")
-    const catalog = {
-      static: {
-        translation: "Static message",
-      },
-    }
-
-    await format.write(filename, catalog)
-    const content = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(content).toBeTruthy()
   })
 
   it("should read catalog in csv format", async () => {
     const csv = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.csv")
-      )
+      .readFileSync(path.join(__dirname, "fixtures/messages.csv"))
       .toString()
 
-    mockFs({
-      locale: {
-        en: {
-          "messages.csv": csv,
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.csv")
-    const actual = await format.read(filename)
-    mockFs.restore()
+    const actual = await format.parse(csv, {} as any)
     expect(actual).toMatchSnapshot()
-  })
-
-  it("should not throw if file not exists", async () => {
-    mockFs({})
-
-    const filename = path.join("locale", "en", "messages.csv")
-    const actual = await format.read(filename)
-    mockFs.restore()
-    expect(actual).toBeNull()
-  })
-
-  it("should write the same catalog as it was read", async () => {
-    const csv = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages.csv")
-      )
-      .toString()
-
-    mockFs({
-      locale: {
-        en: {
-          "messages.csv": csv,
-        },
-      },
-    })
-
-    const filename = path.join("locale", "en", "messages.csv")
-    const catalog = await format.read(filename)
-    await format.write(filename, catalog)
-    const actual = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(actual.replace(/(\r\n|\n|\r)/gm, "")).toEqual(
-      csv.replace(/(\r\n|\n|\r)/gm, "")
-    )
   })
 })
