@@ -6,14 +6,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 
+#. js-lingui-id: u5PTM8
+#: fixtures/pages/about.page.tsx:15
+msgid "about page message"
+msgstr ""
+
 #. js-lingui-id: 1TzdHc
 #: fixtures/components/aliased-module.ts:3
 msgid "aliased module message"
-msgstr ""
-
-#. js-lingui-id: 8Pj7KC
-#: fixtures/pages/about.page.tsx:18
-msgid "JSX: about page message"
 msgstr ""
 
 #. js-lingui-id: LGGfGX
@@ -21,7 +21,7 @@ msgstr ""
 msgid "header message"
 msgstr ""
 
-#. js-lingui-id: u5PTM8
-#: fixtures/pages/about.page.tsx:15
-msgid "about page message"
+#. js-lingui-id: 8Pj7KC
+#: fixtures/pages/about.page.tsx:18
+msgid "JSX: about page message"
 msgstr ""
