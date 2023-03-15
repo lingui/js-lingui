@@ -54,7 +54,6 @@ export type CatalogFormatter = {
     ctx?: { locale: string }
   ): Promise<void>
   read(filename: string): Promise<CatalogType | null>
-  parse(content: unknown): Promise<CatalogType | null>
 }
 
 export type ExtractedMessage = {

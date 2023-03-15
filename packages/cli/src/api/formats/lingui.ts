@@ -62,9 +62,5 @@ export default function (
         throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
       }
     },
-
-    async parse(content) {
-      return content as CatalogType
-    },
   }
 }

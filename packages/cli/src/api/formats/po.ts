@@ -163,10 +163,7 @@ export default function (options: PoFormatterOptions = {}): CatalogFormatter {
       if (!raw) {
         return null
       }
-      return this.parse(raw)
-    },
 
-    async parse(raw: string) {
       const po = PO.parse(raw)
       return deserialize(po.items, validateItem)
     },

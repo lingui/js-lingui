@@ -5,7 +5,7 @@ import mockDate from "mockdate"
 import path from "path"
 
 import { CatalogType } from "../types"
-import createFormat, { serialize } from "./po-gettext"
+import createFormat, { serialize, parse } from "./po-gettext"
 
 describe("po-gettext format", () => {
   afterEach(() => {
@@ -98,15 +98,13 @@ describe("po-gettext format", () => {
   })
 
   it("should convert gettext plurals to ICU plural messages", async () => {
-    const format = createFormat()
-
     const pofile = fs
       .readFileSync(
         path.join(path.resolve(__dirname), "fixtures", "messages_plural.po")
       )
       .toString()
 
-    const catalog = await format.parse(pofile)
+    const catalog = await parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 
@@ -147,8 +145,6 @@ describe("po-gettext format", () => {
   })
 
   it("should use correct ICU plural cases for languages having an additional plural case for fractions", async () => {
-    const format = createFormat()
-
     // This tests the edge case described in https://github.com/lingui/js-lingui/pull/677#issuecomment-737152022
     const po = `
 msgid ""
@@ -163,7 +159,7 @@ msgstr[1] "# dny"
 msgstr[2] "# dní"
   `
 
-    const parsed = await format.parse(po)
+    const parsed = await parse(po)
 
     expect(parsed).toEqual({
       Y8Xw2Y: {
@@ -237,8 +233,6 @@ msgstr[2] "# dní"
   })
 
   it("convertPluralsToIco handle correctly locales with 4-letter", async () => {
-    const format = createFormat()
-
     const pofile = fs
       .readFileSync(
         path.join(
@@ -249,7 +243,7 @@ msgstr[2] "# dní"
       )
       .toString()
 
-    const catalog = await format.parse(pofile)
+    const catalog = await parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 })

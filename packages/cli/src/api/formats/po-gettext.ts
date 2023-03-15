@@ -262,6 +262,19 @@ const convertPluralsToICU = (
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
 }
 
+export function parse(raw: string) {
+  const po = PO.parse(raw)
+
+  // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
+  // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
+  // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
+  let pluralForms = getPluralCases(po.headers.Language)
+
+  return deserialize(po.items, (item) => {
+    convertPluralsToICU(item, pluralForms, po.headers.Language)
+  })
+}
+
 export default function (
   options: PoGetTextFormatterOptions = {}
 ): CatalogFormatter {
@@ -300,20 +313,7 @@ export default function (
         return null
       }
 
-      return this.parse(raw)
-    },
-
-    async parse(raw: string) {
-      const po = PO.parse(raw)
-
-      // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
-      // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
-      // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-      let pluralForms = getPluralCases(po.headers.Language)
-
-      return deserialize(po.items, (item) => {
-        convertPluralsToICU(item, pluralForms, po.headers.Language)
-      })
+      return parse(raw)
     },
   }
 }

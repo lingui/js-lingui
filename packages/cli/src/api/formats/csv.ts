@@ -53,9 +53,5 @@ export default function (): CatalogFormatter {
         throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
       }
     },
-
-    async parse(content: string) {
-      return deserialize(content)
-    },
   }
 }
