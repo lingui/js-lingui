@@ -17,7 +17,7 @@ export function replacePlaceholders(
   values: Record<string, string>
 ): string {
   return input.replace(/\{([^}]+)}/g, (m, placeholder) => {
-    return values[placeholder] || m
+    return values[placeholder] ?? m
   })
 }
 

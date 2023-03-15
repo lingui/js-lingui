@@ -1,6 +1,9 @@
 import extractTemplateCommand from "../src/lingui-extract-template"
 import extractCommand from "../src/lingui-extract"
+import extractExperimentalCommand from "../src/lingui-extract-experimental"
+import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
+import os from "os"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
@@ -114,5 +117,177 @@ describe("E2E Extractor Test", () => {
     })
 
     compareFolders(actualPath, expectedPath)
+  })
+
+  const skipOnWindows = os.platform().startsWith("win")
+    ? describe.skip
+    : describe
+
+  skipOnWindows("extractor-experimental", () => {
+    it("should extract to template when --template passed", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-template"
+      )
+
+      await mockConsole(async (console) => {
+        const config = makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [],
+          experimental: {
+            extractor: {
+              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+              output: "<rootDir>/actual/{entryName}.{locale}",
+            },
+          },
+        })
+
+        const result = await extractExperimentalCommand(config, {
+          template: true,
+        })
+
+        await compileCommand(config, {
+          allowEmpty: true,
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+          Catalog statistics for fixtures/pages/about.page.tsx:
+          4 message(s) extracted
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          1 message(s) extracted
+
+          Compiling message catalogs…
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+
+    it("should extract to catalogs and merge with existing", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental"
+      )
+
+      await fs.cp(
+        nodepath.join(rootDir, "existing"),
+        nodepath.join(rootDir, "actual"),
+        { recursive: true }
+      )
+
+      await mockConsole(async (console) => {
+        const config = makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [],
+          experimental: {
+            extractor: {
+              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+              output: "<rootDir>/actual/{entryName}.{locale}",
+            },
+          },
+        })
+
+        const result = await extractExperimentalCommand(config, {})
+
+        await compileCommand(config, {
+          allowEmpty: true,
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      1      │    -    │
+          │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+          Compiling message catalogs…
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+    it("should extract and clean obsolete", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-clean"
+      )
+
+      await fs.cp(
+        nodepath.join(rootDir, "existing"),
+        nodepath.join(rootDir, "actual"),
+        { recursive: true }
+      )
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+            format: "po",
+            catalogs: [],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
+              },
+            },
+          }),
+          {
+            clean: true,
+          }
+        )
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      1      │    -    │
+          │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
   })
 })

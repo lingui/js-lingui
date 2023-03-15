@@ -84,6 +84,17 @@ export const exampleConfig = {
     flow: false,
     decoratorsBeforeExport: false,
   },
+
+  experimental: {
+    extractor: {
+      entries: [],
+      includeDeps: [],
+      excludeDeps: [],
+      excludeExtensions: [],
+      output: "",
+      resolveEsbuildOptions: Function,
+    },
+  },
 }
 
 /**

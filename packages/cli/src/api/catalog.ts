@@ -99,11 +99,8 @@ export class Catalog {
 
     const sortedCatalogs = cleanAndSort(catalogs)
 
-    if (options.locale) {
-      this.write(options.locale, sortedCatalogs[options.locale])
-    } else {
-      this.writeAll(sortedCatalogs)
-    }
+    const locales = options.locale ? [options.locale] : this.locales
+    locales.forEach((locale) => this.write(locale, sortedCatalogs[locale]))
 
     return sortedCatalogs
   }
@@ -186,10 +183,6 @@ export class Catalog {
 
     this.format.write(filename, messages, options)
     return [created, filename]
-  }
-
-  writeAll(catalogs: AllCatalogsType): void {
-    this.locales.forEach((locale) => this.write(locale, catalogs[locale]))
   }
 
   writeTemplate(messages: CatalogType) {
@@ -299,9 +292,7 @@ export function order<T extends ExtractedCatalogType>(
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
  */
-export function orderByMessageId<T extends ExtractedCatalogType>(
-  messages: T
-): T {
+function orderByMessageId<T extends ExtractedCatalogType>(messages: T): T {
   return Object.keys(messages)
     .sort()
     .reduce((acc, key) => {
@@ -310,7 +301,7 @@ export function orderByMessageId<T extends ExtractedCatalogType>(
     }, {} as T)
 }
 
-export function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
+function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
   function getFirstOrigin(messageKey: string) {
     const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
       if (a[0] < b[0]) return -1

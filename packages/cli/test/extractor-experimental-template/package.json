@@ -1,0 +1,9 @@
+{
+  "name": "extractor-experimental",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@lingui/macro": "*",
+    "some-package": "*"
+  }
+}

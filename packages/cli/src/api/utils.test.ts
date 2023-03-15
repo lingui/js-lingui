@@ -22,6 +22,14 @@ describe("replacePlaceholders", () => {
 
     expect(actual).toBe("/foo/bar/{a}/b-value/{a}")
   })
+
+  it("should replace to empty string", () => {
+    const actual = replacePlaceholders("/foo/bar/{a}.file", {
+      a: "",
+    })
+
+    expect(actual).toBe("/foo/bar/.file")
+  })
 })
 
 describe("normalizeRelativePath", () => {
