@@ -262,6 +262,47 @@ describe("js macro", () => {
       })
     })
 
+    it("plural with variable only cases", () => {
+      const macro = createMacro()
+      const exp = parseExpression(
+        "plural(count, { one: `# glass of ${drink}`, other: drink})"
+      )
+      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+      expect(tokens).toEqual({
+        type: "arg",
+        name: "count",
+        value: expect.objectContaining({
+          name: "count",
+          type: "Identifier",
+        }),
+        format: "plural",
+        options: {
+          one: [
+            {
+              type: "text",
+              value: "# glass of ",
+            },
+            {
+              type: "arg",
+              name: "drink",
+              value: expect.objectContaining({
+                name: "drink",
+                type: "Identifier",
+              }),
+            },
+          ],
+          other: {
+            type: "arg",
+            name: "drink",
+            value: expect.objectContaining({
+              name: "drink",
+              type: "Identifier",
+            }),
+          },
+        },
+      })
+    })
+
     it("plural with select", () => {
       const macro = createMacro()
       const exp = parseExpression(
@@ -341,6 +382,49 @@ describe("js macro", () => {
           type: "Identifier",
         },
       })
+    })
+  })
+
+  it("select with expression", () => {
+    const macro = createMacro()
+    const exp = parseExpression(
+      "select(gender, {male: hePronoun, female: 'she', other: 'they'})"
+    )
+    const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+    expect(tokens).toEqual({
+      format: "select",
+      name: "gender",
+      options: expect.objectContaining({
+        female: "she",
+        male: expect.objectContaining({
+          type: "arg",
+          name: "hePronoun",
+          value: expect.objectContaining({
+            name: "hePronoun",
+            type: "Identifier",
+          }),
+        }),
+        offset: undefined,
+        other: "they",
+      }),
+      type: "arg",
+      value: {
+        end: 13,
+        loc: {
+          end: expect.objectContaining({
+            column: 13,
+            line: 1,
+          }),
+          identifierName: "gender",
+          start: expect.objectContaining({
+            column: 7,
+            line: 1,
+          }),
+        },
+        name: "gender",
+        start: 7,
+        type: "Identifier",
+      },
     })
   })
 })

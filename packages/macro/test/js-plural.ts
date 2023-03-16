@@ -74,5 +74,31 @@ const cases: TestCase[] = [
         );
       `,
   },
+  {
+    name: "Macro with expression only choice",
+    input: `
+        import { plural } from '@lingui/macro'
+        plural(users.length, {
+          offset: 1,
+          0: "No books",
+          1: "1 book",
+          other: someOtherExp
+        });
+      `,
+    expected: `
+        import { i18n } from "@lingui/core";
+        i18n._(
+          /*i18n*/
+          {
+            id: "0mcXIe",
+            message: "{0, plural, offset:1 =0 {No books} =1 {1 book} other {{someOtherExp}}}",
+            values: {
+              0: users.length,
+              someOtherExp: someOtherExp,
+            },
+          }
+        );
+      `,
+  },
 ]
 export default cases
