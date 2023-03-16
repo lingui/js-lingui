@@ -126,9 +126,12 @@ export type LinguiConfig = {
   compileNamespace?: "es" | "ts" | "cjs" | string
   extractorParserOptions?: {
     /**
-     * default true
+     * default false
+     *
+     * By default, standard decorators (Stage3) are applied for TS files
+     * Enable this if you want to use TypesScript's experimental decorators.
      */
-    decoratorsBeforeExport?: boolean
+    tsExperimentalDecorators?: boolean
     /**
      * Enable if you use flow. This will apply Flow syntax to js files
      */

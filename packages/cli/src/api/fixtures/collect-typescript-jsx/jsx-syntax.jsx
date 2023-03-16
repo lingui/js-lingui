@@ -5,34 +5,38 @@ const jsx = <div>Hello!</div>
 @Decorator()
 export class TestDecorator {
   @Decorator()
-  prop;
+  prop
 
   @Decorator()
-  method() {};
+  method() {}
 }
+
+export
+@Decorator()
+class TestDecoratorAfterExport {}
 
 class A {
   // classProperties
-  b = 1;
+  b = 1
 
   // classPrivateProperties
-  #b = 1;
+  #b = 1
 }
 
 // dynamicImport
-import('./guy').then(a)
+import("./guy").then(a)
 
 // exportNamespaceFrom
 export * as ns from "mod"
 
 // nullishCoalescingOperator
-const a = a ?? b;
+const a = a ?? b
 
 // objectRestSpread
-const b = { b, ...c };
+const b = { b, ...c }
 
 // optionalChaining
-const c = a?.b;
+const c = a?.b
 
 // topLevelAwait
-await promise;
+await promise

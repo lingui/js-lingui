@@ -30,7 +30,7 @@ expectAssignable<LinguiConfig>({
   },
   extractorParserOptions: {
     flow: false,
-    decoratorsBeforeExport: false,
+    tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
   format: "po",
