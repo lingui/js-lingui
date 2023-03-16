@@ -267,10 +267,11 @@ describe("js macro", () => {
       const exp = parseExpression(
         `plural(count, {
           one: select(gender, {
-            male: "he",
+            male: hePronoun,
             female: "she",
             other: "they"
-          })
+          }),
+          other: otherText
         })`
       )
       const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
@@ -293,12 +294,27 @@ describe("js macro", () => {
               }),
               format: "select",
               options: {
-                male: "he",
+                male: expect.objectContaining({
+                  type: "arg",
+                  name: "hePronoun",
+                  value: expect.objectContaining({
+                    name: "hePronoun",
+                    type: "Identifier",
+                  }),
+                }),
                 female: "she",
                 other: "they",
               },
             },
           ],
+          other: expect.objectContaining({
+            type: "arg",
+            name: "otherText",
+            value: expect.objectContaining({
+              name: "otherText",
+              type: "Identifier",
+            }),
+          }),
         },
       })
     })
