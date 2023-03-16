@@ -226,7 +226,12 @@ export class Catalog {
       )
     )
 
-    return res
+    // statement above will save locales in object in undetermined order
+    // resort here to have keys order the same as in locales definition
+    return this.locales.reduce<AllCatalogsType>((acc, locale: string) => {
+      acc[locale] = res[locale]
+      return acc
+    }, {})
   }
 
   async readTemplate(): Promise<CatalogType> {
