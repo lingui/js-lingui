@@ -77,5 +77,25 @@ const cases: TestCase[] = [
       />;
       `,
   },
+  {
+    input: `
+        import { Select } from '@lingui/macro';
+        <Select
+          id="msg.select"
+          render="strong"
+          value={user.gender}
+          _male="He"
+          _female={\`She\`}
+          other={otherText}
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans render="strong" id="msg.select" message={"{0, select, male {He} female {She} other {{otherText}}}"} values={{
+          0: user.gender,
+          otherText: otherText
+        }} />;
+      `,
+  },
 ]
 export default cases

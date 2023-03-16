@@ -203,6 +203,33 @@ const cases: TestCase[] = [
       `,
   },
   {
+    input: `
+        import { Plural } from '@lingui/macro';
+        <Plural
+          value={count}
+          _0="Zero items"
+          one={oneText}
+          other={<a href="/more">A lot of them</a>}
+        />;
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        <Trans 
+          id={"EQvNfC"}
+          message={
+            "{count, plural, =0 {Zero items} one {{oneText}} other {<0>A lot of them</0>}}"
+           }
+          values={{
+            count: count,
+            oneText: oneText,
+          }} 
+          components={{
+            0: <a href="/more" />
+          }} 
+        />;
+      `,
+  },
+  {
     filename: `jsx-plural-select-nested.js`,
   },
 ]
