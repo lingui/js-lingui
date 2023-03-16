@@ -8,11 +8,10 @@ export type I18nContext = {
 }
 
 export type I18nProviderProps = I18nContext & {
-  forceRenderOnLocaleChange?: boolean
   children?: React.ReactNode
 }
 
-const LinguiContext = React.createContext<I18nContext>(null)
+export const LinguiContext = React.createContext<I18nContext>(null)
 
 export function useLingui(): I18nContext {
   const context = React.useContext<I18nContext>(LinguiContext)
@@ -29,7 +28,6 @@ export function useLingui(): I18nContext {
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   i18n,
   defaultComponent,
-  forceRenderOnLocaleChange = true,
   children,
 }) => {
   const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
@@ -62,9 +60,6 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
   React.useEffect(() => {
-    if (!forceRenderOnLocaleChange) {
-      return
-    }
     const updateContext = () => {
       latestKnownLocale.current = i18n.locale
       setContext(makeContext())
@@ -79,12 +74,14 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
       updateContext()
     }
     return unsubscribe
-  }, [makeContext, forceRenderOnLocaleChange])
+  }, [makeContext])
 
-  if (forceRenderOnLocaleChange && !latestKnownLocale.current) {
-    console.log(
-      "I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false."
-    )
+  if (!latestKnownLocale.current) {
+    process.env.NODE_ENV === "development" &&
+      console.log(
+        "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
+          "This is not an error but an informational message logged only in development."
+      )
     return null
   }
 
