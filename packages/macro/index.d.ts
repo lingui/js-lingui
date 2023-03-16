@@ -13,7 +13,7 @@ export type ChoiceOptions = {
   many?: string
 
   /** Catch-all option */
-  other?: string
+  other: string
   /** Exact match form, corresponds to =N rule */
   [digit: `${number}`]: string
 }
