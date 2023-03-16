@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lingui-loader should compile catalog 1`] = `
+{
+  mVmaLu: [
+    My name is ,
+    [
+      name,
+    ],
+  ],
+  mY42CM: Hello World,
+}
+`;

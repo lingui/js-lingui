@@ -4,7 +4,7 @@ import mockFs from "mock-fs"
 import { mockConsole } from "@lingui/jest-mocks"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
-import { Catalog, cleanObsolete, order, CatalogProps } from "./catalog"
+import { Catalog, cleanObsolete, order } from "./catalog"
 import { createCompiledCatalog } from "./compile"
 
 import {
@@ -58,10 +58,10 @@ describe("Catalog", () => {
       )
 
       // Everything should be empty
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
 
       await catalog.make(defaultMakeOptions)
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
     })
 
     it("should only update the specified locale", async () => {
@@ -82,10 +82,10 @@ describe("Catalog", () => {
       )
 
       // Everything should be empty
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
 
       await catalog.make({ ...defaultMakeOptions, locale: "en" })
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
     })
 
     it("should merge with existing catalogs", async () => {
@@ -103,10 +103,10 @@ describe("Catalog", () => {
       )
 
       // Everything should be empty
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
 
       await catalog.make(defaultMakeOptions)
-      expect(catalog.readAll()).toMatchSnapshot()
+      expect(await catalog.readAll()).toMatchSnapshot()
     })
   })
 
@@ -129,15 +129,15 @@ describe("Catalog", () => {
       )
 
       // Everything should be empty
-      expect(catalog.readTemplate()).toMatchSnapshot()
+      expect(await catalog.readTemplate()).toMatchSnapshot()
 
       await catalog.makeTemplate(defaultMakeTemplateOptions)
-      expect(catalog.readTemplate()).toMatchSnapshot()
+      expect(await catalog.readTemplate()).toMatchSnapshot()
     })
   })
 
   describe("POT Flow", () => {
-    it("Should get translations from template if locale file not presented", () => {
+    it("Should get translations from template if locale file not presented", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -153,7 +153,7 @@ describe("Catalog", () => {
         })
       )
 
-      const translations = catalog.getTranslations("en", {
+      const translations = await catalog.getTranslations("en", {
         sourceLocale: "en",
         fallbackLocales: {
           default: "en",
@@ -361,7 +361,7 @@ describe("Catalog", () => {
   })
 
   describe("read", () => {
-    it("should return null if file does not exist", () => {
+    it("should return null if file does not exist", async () => {
       // mock empty filesystem
       mockFs()
 
@@ -375,11 +375,11 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      const messages = catalog.read("en")
+      const messages = await catalog.read("en")
       expect(messages).toBeNull()
     })
 
-    it("should read file in given format", () => {
+    it("should read file in given format", async () => {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
@@ -396,13 +396,13 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      const messages = catalog.read("en")
+      const messages = await catalog.read("en")
 
       mockFs.restore()
       expect(messages).toMatchSnapshot()
     })
 
-    it("should read file in previous format", () => {
+    it("should read file in previous format", async () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(
@@ -419,7 +419,7 @@ describe("Catalog", () => {
         mockConfig({ prevFormat: "minimal" })
       )
 
-      const messages = catalog.read("en")
+      const messages = await catalog.read("en")
 
       mockFs.restore()
       expect(messages).toMatchSnapshot()
@@ -427,7 +427,7 @@ describe("Catalog", () => {
   })
 
   describe("readAll", () => {
-    it("should read existing catalogs for all locales", () => {
+    it("should read existing catalogs for all locales", async () => {
       const catalog = new Catalog(
         {
           name: "messages",
@@ -442,63 +442,9 @@ describe("Catalog", () => {
         })
       )
 
-      const messages = catalog.readAll()
+      const messages = await catalog.readAll()
       expect(messages).toMatchSnapshot()
     })
-  })
-
-  /**
-   * Convert JSON format to PO and then back to JSON.
-   * - Compare that original and converted JSON file are identical
-   * - Check the content of PO file
-   */
-  it.skip("should convert catalog format", () => {
-    mockFs({
-      en: {
-        "messages.json": fs.readFileSync(
-          path.resolve(__dirname, "formats/fixtures/messages.json")
-        ),
-        "messages.po": mockFs.file(),
-      },
-    })
-
-    const fileContent = (format: string) =>
-      fs
-        .readFileSync("./en/messages." + (format === "po" ? "po" : "json"))
-        .toString()
-        .trim()
-
-    const catalogConfig: CatalogProps = {
-      name: "messages",
-      path: "{locale}/messages",
-      include: [],
-    }
-
-    const originalJson = fileContent("json")
-    const po2json = new Catalog(
-      catalogConfig,
-      mockConfig({
-        format: "po",
-        prevFormat: "minimal",
-      })
-    )
-    po2json.write("en", po2json.read("en"))
-    const convertedPo = fileContent("po")
-
-    const json2po = new Catalog(
-      catalogConfig,
-      mockConfig({
-        format: "minimal",
-        prevFormat: "po",
-        localeDir: ".",
-      })
-    )
-    json2po.write("en", json2po.read("en"))
-    const convertedJson = fileContent("json")
-
-    mockFs.restore()
-    expect(originalJson).toEqual(convertedJson)
-    expect(convertedPo).toMatchSnapshot()
   })
 })
 
@@ -641,12 +587,12 @@ describe("writeCompiled", () => {
     { namespace: "global.test", extension: /\.js$/ },
   ])(
     "Should save namespace $namespace in $extension extension",
-    ({ namespace, extension }) => {
+    async ({ namespace, extension }) => {
       const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
-      expect(catalog.writeCompiled("en", compiledCatalog, namespace)).toMatch(
-        extension
-      )
+      expect(
+        await catalog.writeCompiled("en", compiledCatalog, namespace)
+      ).toMatch(extension)
     }
   )
 })

@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`minimal format should read catalog in minimal format 1`] = `
+{
+  obsolete: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Obsolete message,
+  },
+  static: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Static message,
+  },
+  withComments: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Support translator comments separately,
+  },
+  withDescription: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Message with description,
+  },
+  withFlags: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Keeps any flags that are defined,
+  },
+  withMultipleOrigins: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Message with multiple origin,
+  },
+  withOrigin: {
+    message: null,
+    obsolete: false,
+    origin: [],
+    translation: Message with origin,
+  },
+}
+`;
+
+exports[`minimal format should write catalog in minimal format 1`] = `
+{
+  "static": "Static message",
+  "withOrigin": "Message with origin",
+  "withDescription": "Message with description",
+  "withComments": "Support translator comments separately",
+  "obsolete": "Obsolete message",
+  "withFlags": "Keeps any flags that are defined"
+}
+
+`;

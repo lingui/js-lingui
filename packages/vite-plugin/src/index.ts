@@ -27,7 +27,7 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
       config.optimizeDeps.exclude.push("@lingui/macro")
     },
 
-    transform(src, id) {
+    async transform(src, id) {
       if (fileRegex.test(id)) {
         const catalogRelativePath = path.relative(config.rootDir, id)
 
@@ -38,7 +38,7 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
 
         const { locale, catalog } = fileCatalog
 
-        const messages = catalog.getTranslations(locale, {
+        const messages = await catalog.getTranslations(locale, {
           fallbackLocales: config.fallbackLocales,
           sourceLocale: config.sourceLocale,
         })

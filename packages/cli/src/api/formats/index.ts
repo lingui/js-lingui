@@ -1,53 +1,37 @@
-import { CatalogFormat, CatalogFormatOptions } from "@lingui/conf"
+import type { CatalogFormat, CatalogFormatter } from "@lingui/conf"
+import { CatalogFormatOptions } from "@lingui/conf"
+import { FormatterWrapper } from "./api/formatterWrapper"
 
-import { CatalogType } from "../types"
-import csv from "./csv"
-import lingui from "./lingui"
-import minimal from "./minimal"
-import po from "./po"
-import poGettext from "./po-gettext"
-
-const formats: Record<CatalogFormat, CatalogFormatter> = {
-  lingui,
-  minimal,
-  po,
-  csv,
-  "po-gettext": poGettext,
+const formats: Record<
+  CatalogFormat,
+  () => (options: CatalogFormatOptions) => CatalogFormatter
+> = {
+  lingui: () => require("./lingui").default,
+  minimal: () => require("./minimal").default,
+  po: () => require("./po").default,
+  csv: () => require("./csv").default,
+  "po-gettext": () => require("./po-gettext").default,
 }
 
-/**
- * @internal
- */
-export type CatalogFormatOptionsInternal = {
-  locale?: string
-} & CatalogFormatOptions
+export { FormatterWrapper }
 
-export type CatalogFormatter = {
-  catalogExtension: string
-  /**
-   * Set extension used when extract to template
-   * Omit if the extension is the same as catalogExtension
-   */
-  templateExtension?: string
-  write(
-    filename: string,
-    catalog: CatalogType,
-    options?: CatalogFormatOptionsInternal
-  ): void
-  read(filename: string): CatalogType | null
-  parse(content: unknown): CatalogType | null
-}
+export function getFormat(
+  _format: CatalogFormat | CatalogFormatter,
+  options: CatalogFormatOptions
+): FormatterWrapper {
+  if (typeof _format !== "string") {
+    return new FormatterWrapper(_format)
+  }
 
-export function getFormat(name: CatalogFormat): CatalogFormatter {
-  const format = formats[name]
+  const format = formats[_format]
 
   if (!format) {
     throw new Error(
-      `Unknown format "${name}". Use one of following: ${Object.keys(
+      `Unknown format "${_format}". Use one of following: ${Object.keys(
         formats
       ).join(", ")}`
     )
   }
 
-  return format
+  return new FormatterWrapper(format()(options))
 }

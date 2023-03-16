@@ -1,8 +1,15 @@
 import * as R from "ramda"
 
-import { readFile, writeFileIfChanged } from "../utils"
-import { CatalogType, ExtractedMessageType } from "../types"
-import { CatalogFormatter } from "."
+import {
+  CatalogFormatter,
+  CatalogType,
+  ExtractedMessageType,
+} from "@lingui/conf"
+
+export type LinguiFormatterOptions = {
+  origins?: boolean
+  lineNumbers?: boolean
+}
 
 type NoOriginsCatalogType = {
   [P in keyof CatalogType]: Omit<CatalogType[P], "origin">
@@ -14,45 +21,41 @@ const removeOrigins = R.map(({ origin, ...message }) => message) as unknown as (
 
 const removeLineNumbers = R.map((message: ExtractedMessageType) => {
   if (message.origin) {
-    message.origin.map((originValue) => {
-      originValue.pop()
-      return originValue
-    })
+    message.origin = message.origin.map(([file]) => [file])
   }
   return message
 }) as unknown as (catalog: ExtractedMessageType) => NoOriginsCatalogType
 
-const lingui: CatalogFormatter = {
-  catalogExtension: ".json",
+export default function (
+  options: LinguiFormatterOptions = {}
+): CatalogFormatter {
+  options = {
+    origins: true,
+    lineNumbers: true,
+    ...options,
+  }
+  return {
+    catalogExtension: ".json",
 
-  write(filename, catalog, options) {
-    let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
-    if (options.origins === false) {
-      outputCatalog = removeOrigins(catalog)
-    }
-    if (options.origins !== false && options.lineNumbers === false) {
-      outputCatalog = removeLineNumbers(outputCatalog)
-    }
-    writeFileIfChanged(filename, JSON.stringify(outputCatalog, null, 2))
-  },
+    serialize(catalog, { existing }) {
+      let outputCatalog: CatalogType | NoOriginsCatalogType = catalog
 
-  read(filename) {
-    const raw = readFile(filename)
+      if (options.origins === false) {
+        outputCatalog = removeOrigins(outputCatalog)
+      }
+      if (options.origins !== false && options.lineNumbers === false) {
+        outputCatalog = removeLineNumbers(outputCatalog)
+      }
 
-    if (!raw) {
-      return null
-    }
+      const shouldUseTrailingNewline =
+        existing === null || existing?.endsWith("\n")
+      const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
 
-    try {
-      return JSON.parse(raw)
-    } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-    }
-  },
+      return JSON.stringify(outputCatalog, null, 2) + trailingNewLine
+    },
 
-  parse(content) {
-    return content as CatalogType
-  },
+    parse(content) {
+      return JSON.parse(content)
+    },
+  }
 }
-
-export default lingui

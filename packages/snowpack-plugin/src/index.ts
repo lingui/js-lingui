@@ -1,5 +1,5 @@
 import path from "path"
-import { getConfig } from "@lingui/conf"
+import { CatalogFormat, getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -40,7 +40,7 @@ export default function compileLinguiMessages(
         }
         throw new Error(
           `@lingui/snowpack-plugin: File extension is mandatory, for ex: import('./locales/en/messages${
-            formats[config.format]
+            formats[config.format as CatalogFormat]
           }')`
         )
       }
@@ -52,7 +52,7 @@ export default function compileLinguiMessages(
 
       const { locale, catalog } = fileCatalog
 
-      const messages = catalog.getTranslations(locale, {
+      const messages = await catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
       })

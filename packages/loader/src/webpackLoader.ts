@@ -1,5 +1,5 @@
 import path from "path"
-import { getConfig } from "@lingui/conf"
+import { CatalogFormat, getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -23,7 +23,9 @@ try {
 
 const requiredType = "javascript/auto"
 
-export default function (source) {
+export default async function (source) {
+  const callback = this.async()
+
   const options = loaderUtils.getOptions(this) || {}
 
   if (!isWebpack5 && JavascriptParser && JavascriptGenerator) {
@@ -56,7 +58,7 @@ export default function (source) {
     throw new Error(
       `File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(
         ".js",
-        formats[config.format]
+        formats[config.format as CatalogFormat]
       )}")`
     )
   }
@@ -66,7 +68,7 @@ export default function (source) {
     getCatalogs(config)
   )
 
-  const messages = catalog.getTranslations(locale, {
+  const messages = await catalog.getTranslations(locale, {
     fallbackLocales: config.fallbackLocales,
     sourceLocale: config.sourceLocale,
   })
@@ -77,9 +79,11 @@ export default function (source) {
   // of I18nProvider (React) or setupI18n (core) and therefore we need to get
   // empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
-  return createCompiledCatalog(locale, messages, {
+  const compiled = createCompiledCatalog(locale, messages, {
     strict,
     namespace: config.compileNamespace,
     pseudoLocale: config.pseudoLocale,
   })
+
+  callback(null, compiled)
 }

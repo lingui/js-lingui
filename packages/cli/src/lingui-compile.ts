@@ -10,6 +10,8 @@ import { helpRun } from "./api/help"
 import { getCatalogs, getFormat } from "./api"
 import { TranslationMissingEvent } from "./api/catalog/getTranslationsForCatalog"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
+import { normalizeSlashes } from "./api/utils"
+import nodepath from "path"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -19,7 +21,7 @@ export type CliCompileOptions = {
   namespace?: string
 }
 
-export function command(
+export async function command(
   config: LinguiConfigNormalized,
   options: CliCompileOptions
 ) {
@@ -35,7 +37,7 @@ export function command(
     for (const catalog of catalogs) {
       const missingMessages: TranslationMissingEvent[] = []
 
-      const messages = catalog.getTranslations(locale, {
+      const messages = await catalog.getTranslations(locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
         onMissing: (missing) => {
@@ -82,7 +84,7 @@ export function command(
           compilerBabelOptions: config.compilerBabelOptions,
         })
 
-        const compiledPath = catalog.writeCompiled(
+        let compiledPath = await catalog.writeCompiled(
           locale,
           compiledCatalog,
           namespace
@@ -99,6 +101,10 @@ export function command(
           )
         }
 
+        compiledPath = normalizeSlashes(
+          nodepath.relative(config.rootDir, compiledPath)
+        )
+
         options.verbose &&
           console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
@@ -113,11 +119,16 @@ export function command(
         pseudoLocale: config.pseudoLocale,
         compilerBabelOptions: config.compilerBabelOptions,
       })
-      const compiledPath = compileCatalog.writeCompiled(
+      let compiledPath = await compileCatalog.writeCompiled(
         locale,
         compiledCatalog,
         namespace
       )
+
+      compiledPath = normalizeSlashes(
+        nodepath.relative(config.rootDir, compiledPath)
+      )
+
       options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     }
   }
@@ -171,19 +182,27 @@ if (require.main === module) {
 
   const config = getConfig({ configPath: options.config })
 
-  const compile = () =>
-    command(config, {
-      verbose: options.watch || options.verbose || false,
-      allowEmpty: !options.strict,
-      typescript:
-        options.typescript || config.compileNamespace === "ts" || false,
-      namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
-    })
+  let previousRun = Promise.resolve(true)
+
+  const compile = () => {
+    previousRun = previousRun.then(() =>
+      command(config, {
+        verbose: options.watch || options.verbose || false,
+        allowEmpty: !options.strict,
+        typescript:
+          options.typescript || config.compileNamespace === "ts" || false,
+        namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
+      })
+    )
+
+    return previousRun
+  }
 
   let debounceTimer: NodeJS.Timer
+
   const dispatchCompile = () => {
     // Skip debouncing if not enabled
-    if (!options.debounce) return compile()
+    if (!options.debounce) compile()
 
     // CLear the previous timer if there is any, and schedule the next
     debounceTimer && clearTimeout(debounceTimer)
@@ -196,7 +215,10 @@ if (require.main === module) {
 
     const catalogs = getCatalogs(config)
     let paths: string[] = []
-    const catalogExtension = getFormat(config.format).catalogExtension
+    const catalogExtension = getFormat(
+      config.format,
+      config.formatOptions
+    ).getCatalogExtension()
 
     config.locales.forEach((locale) => {
       catalogs.forEach((catalog) => {
@@ -221,12 +243,12 @@ if (require.main === module) {
 
     watcher.on("ready", () => onReady())
   } else {
-    const results = compile()
+    compile().then((results) => {
+      if (!results) {
+        process.exit(1)
+      }
 
-    if (!results) {
-      process.exit(1)
-    }
-
-    console.log("Done!")
+      console.log("Done!")
+    })
   }
 }

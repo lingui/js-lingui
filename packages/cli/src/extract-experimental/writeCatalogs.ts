@@ -6,10 +6,10 @@ import { mergeCatalog } from "../api/catalog/mergeCatalog"
 import { printStats } from "../api/stats"
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 import { cleanObsolete, order } from "../api/catalog"
-import { CatalogFormatter } from "../api/formats"
+import { FormatterWrapper } from "../api/formats"
 
 type ExtractTemplateParams = {
-  format: CatalogFormatter
+  format: FormatterWrapper
   clean: boolean
   entryPoint: string
   outputPattern: string
@@ -55,22 +55,20 @@ export async function writeCatalogs(
       entryPoint,
       linguiConfig.rootDir,
       locale,
-      format.catalogExtension
+      format.getCatalogExtension()
     )
 
     const catalog = mergeCatalog(
-      format.read(catalogOutput),
+      await format.read(catalogOutput, locale),
       messages,
       locale === linguiConfig.sourceLocale,
       { overwrite }
     )
 
-    format.write(
+    await format.write(
       catalogOutput,
       cleanAndSort(catalog, clean, linguiConfig.orderBy),
-      {
-        locale,
-      }
+      locale
     )
 
     stat[locale] = catalog
@@ -91,15 +89,13 @@ export async function writeTemplate(
     entryPoint,
     outputPattern,
     linguiConfig.rootDir,
-    format.templateExtension || format.catalogExtension
+    format.getTemplateExtension()
   )
 
-  format.write(
+  await format.write(
     catalogOutput,
     cleanAndSort(messages as CatalogType, clean, linguiConfig.orderBy),
-    {
-      locale: undefined,
-    }
+    undefined
   )
 
   return {

@@ -20,7 +20,7 @@ Missing 1 translation(s)
 `;
 
 exports[`CLI Command: Compile allowEmpty = false Should show missing messages verbosely when verbose = true 1`] = `
-en ⇒ /test/en.js
+en ⇒ en.js
 Error: Failed to compile catalog for locale pl!
 Missing translations:
 mY42CM: (Hello World)

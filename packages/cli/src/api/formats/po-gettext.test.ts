@@ -1,52 +1,20 @@
 import { mockConsole } from "@lingui/jest-mocks"
 import fs from "fs"
-import mockFs from "mock-fs"
 import mockDate from "mockdate"
 import path from "path"
 
 import { CatalogType } from "../types"
-import format, { serialize } from "./po-gettext"
+import createFormat, { serialize, parse } from "./po-gettext"
 
 describe("po-gettext format", () => {
   afterEach(() => {
-    mockFs.restore()
     mockDate.reset()
   })
 
-  it("should not throw if directory not exists", function () {
-    mockFs({})
-    const filename = path.join("locale", "en", "messages.po")
-    const catalog = {
-      static: {
-        message: "Static message",
-        translation: "Static message",
-      },
-    }
+  it("should convert ICU plural messages to gettext plurals", () => {
+    const format = createFormat()
 
-    format.write(filename, catalog, { locale: "en" })
-    const content = fs.readFileSync(filename).toString()
-    mockFs.restore()
-    expect(content).toBeTruthy()
-  })
-
-  it("should not throw if file not exists", () => {
-    mockFs({})
-
-    const filename = path.join("locale", "en", "messages.po")
-    const actual = format.read(filename)
-    mockFs.restore()
-    expect(actual).toBeNull()
-  })
-
-  it("should convert ICU plural messages to gettext plurals", function () {
-    mockFs({
-      locale: {
-        en: mockFs.directory(),
-      },
-    })
     mockDate.set("2018-08-27T10:00Z")
-
-    const filename = path.join("locale", "en", "messages.po")
 
     const catalog: CatalogType = {
       message_with_id_and_octothorpe: {
@@ -83,22 +51,20 @@ describe("po-gettext format", () => {
       },
     }
 
-    format.write(filename, catalog, {
+    const pofile = format.serialize(catalog, {
       locale: "en",
+      existing: null,
     })
-    const pofile = fs.readFileSync(filename).toString()
-    mockFs.restore()
+
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should convert gettext plurals to ICU plural messages", function () {
+  it("should convert gettext plurals to ICU plural messages", () => {
     const pofile = fs
-      .readFileSync(
-        path.join(path.resolve(__dirname), "fixtures", "messages_plural.po")
-      )
+      .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 
@@ -153,7 +119,7 @@ msgstr[1] "# dny"
 msgstr[2] "# dní"
   `
 
-    const parsed = format.parse(po)
+    const parsed = parse(po)
 
     expect(parsed).toEqual({
       Y8Xw2Y: {
@@ -229,15 +195,11 @@ msgstr[2] "# dní"
   it("convertPluralsToIco handle correctly locales with 4-letter", () => {
     const pofile = fs
       .readFileSync(
-        path.join(
-          path.resolve(__dirname),
-          "fixtures",
-          "messages_plural-4-letter.po"
-        )
+        path.join(__dirname, "fixtures/messages_plural-4-letter.po")
       )
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 })

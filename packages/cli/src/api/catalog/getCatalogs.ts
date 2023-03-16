@@ -114,7 +114,7 @@ export function getCatalogForMerge(config: LinguiConfigNormalized) {
 
 export function getCatalogForFile(file: string, catalogs: Catalog[]) {
   for (const catalog of catalogs) {
-    const catalogFile = `${catalog.path}${catalog.format.catalogExtension}`
+    const catalogFile = `${catalog.path}${catalog.format.getCatalogExtension()}`
     const catalogGlob = replacePlaceholders(catalogFile, { locale: "*" })
     const match = micromatch.capture(
       normalizeRelativePath(path.relative(catalog.config.rootDir, catalogGlob)),
@@ -139,7 +139,10 @@ function validateCatalogPath(path: string, config: LinguiConfigNormalized) {
     return
   }
 
-  const extension = getFormat(config.format).catalogExtension
+  const extension = getFormat(
+    config.format,
+    config.formatOptions
+  ).getCatalogExtension()
   const correctPath = path.slice(0, -1)
   const examplePath =
     replacePlaceholders(correctPath, {

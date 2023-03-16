@@ -6,11 +6,7 @@ import normalize from "normalize-path"
 
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 
-import {
-  getFormat,
-  CatalogFormatOptionsInternal,
-  CatalogFormatter,
-} from "./formats"
+import { FormatterWrapper, getFormat } from "./formats"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -62,7 +58,7 @@ export class Catalog {
   path: string
   include: Array<string>
   exclude: Array<string>
-  format: CatalogFormatter
+  format: FormatterWrapper
   templateFile?: string
 
   constructor(
@@ -73,14 +69,16 @@ export class Catalog {
     this.path = normalizeRelativePath(path)
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
-    this.format = getFormat(config.format)
-    this.templateFile = templatePath || getTemplatePath(this.format, this.path)
+    this.format = getFormat(config.format, config.formatOptions)
+    this.templateFile =
+      templatePath ||
+      getTemplatePath(this.format.getTemplateExtension(), this.path)
   }
 
   async make(options: MakeOptions): Promise<AllCatalogsType | false> {
     const nextCatalog = await this.collect({ files: options.files })
     if (!nextCatalog) return false
-    const prevCatalogs = this.readAll()
+    const prevCatalogs = await this.readAll()
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
       overwrite: options.overwrite,
@@ -100,7 +98,9 @@ export class Catalog {
     const sortedCatalogs = cleanAndSort(catalogs)
 
     const locales = options.locale ? [options.locale] : this.locales
-    locales.forEach((locale) => this.write(locale, sortedCatalogs[locale]))
+    await Promise.all(
+      locales.map((locale) => this.write(locale, sortedCatalogs[locale]))
+    )
 
     return sortedCatalogs
   }
@@ -112,7 +112,7 @@ export class Catalog {
     if (!catalog) return false
     const sorted = order<CatalogType>(options.orderBy)(catalog as CatalogType)
 
-    this.writeTemplate(sorted)
+    await this.writeTemplate(sorted)
     return sorted
   }
 
@@ -167,34 +167,30 @@ export class Catalog {
     }, prevCatalogs)
   }
 
-  getTranslations(locale: string, options: GetTranslationsOptions) {
-    return getTranslationsForCatalog(this, locale, options)
+  async getTranslations(locale: string, options: GetTranslationsOptions) {
+    return await getTranslationsForCatalog(this, locale, options)
   }
 
-  write(
+  async write(
     locale: string,
     messages: CatalogType
-  ): [created: boolean, filename: string] {
+  ): Promise<[created: boolean, filename: string]> {
     const filename =
-      replacePlaceholders(this.path, { locale }) + this.format.catalogExtension
+      replacePlaceholders(this.path, { locale }) +
+      this.format.getCatalogExtension()
 
     const created = !fs.existsSync(filename)
-    const options = { ...this.config.formatOptions, locale }
 
-    this.format.write(filename, messages, options)
+    await this.format.write(filename, messages, locale)
     return [created, filename]
   }
 
-  writeTemplate(messages: CatalogType) {
+  async writeTemplate(messages: CatalogType): Promise<void> {
     const filename = this.templateFile
-    const options: CatalogFormatOptionsInternal = {
-      ...this.config.formatOptions,
-      locale: undefined,
-    }
-    this.format.write(filename, messages, options)
+    await this.format.write(filename, messages, undefined)
   }
 
-  writeCompiled(
+  async writeCompiled(
     locale: string,
     compiledCatalog: string,
     namespace?: CompiledCatalogNamespace
@@ -209,28 +205,38 @@ export class Catalog {
     }
 
     const filename = `${replacePlaceholders(this.path, { locale })}.${ext}`
-    writeFile(filename, compiledCatalog)
+    await writeFile(filename, compiledCatalog)
     return filename
   }
 
-  read(locale: string) {
+  async read(locale: string): Promise<CatalogType> {
     const filename =
-      replacePlaceholders(this.path, { locale }) + this.format.catalogExtension
+      replacePlaceholders(this.path, { locale }) +
+      this.format.getCatalogExtension()
 
-    return this.format.read(filename)
+    return await this.format.read(filename, locale)
   }
 
-  readAll(): AllCatalogsType {
-    return R.mergeAll(
-      this.locales.map((locale) => ({
-        [locale]: this.read(locale),
-      }))
-    ) as AllCatalogsType
+  async readAll(): Promise<AllCatalogsType> {
+    const res: AllCatalogsType = {}
+
+    await Promise.all(
+      this.locales.map(
+        async (locale) => (res[locale] = await this.read(locale))
+      )
+    )
+
+    // statement above will save locales in object in undetermined order
+    // resort here to have keys order the same as in locales definition
+    return this.locales.reduce<AllCatalogsType>((acc, locale: string) => {
+      acc[locale] = res[locale]
+      return acc
+    }, {})
   }
 
-  readTemplate(): CatalogType {
+  async readTemplate(): Promise<CatalogType> {
     const filename = this.templateFile
-    return this.format.read(filename)
+    return await this.format.read(filename, undefined)
   }
 
   get sourcePaths() {
@@ -269,8 +275,7 @@ export class Catalog {
   }
 }
 
-function getTemplatePath(format: CatalogFormatter, path: string) {
-  const ext = format.templateExtension || format.catalogExtension
+function getTemplatePath(ext: string, path: string) {
   return path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
 }
 

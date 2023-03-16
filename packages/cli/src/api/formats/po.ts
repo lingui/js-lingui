@@ -1,24 +1,29 @@
 import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
-import { joinOrigin, readFile, splitOrigin, writeFileIfChanged } from "../utils"
+import { joinOrigin, splitOrigin } from "../utils"
 import { CatalogType, MessageType } from "../types"
-import { CatalogFormatOptionsInternal, CatalogFormatter } from "."
+import { CatalogFormatter } from "@lingui/conf"
 import { generateMessageId } from "../generateMessageId"
 
 type POItem = InstanceType<typeof PO.Item>
 
+export type PoFormatterOptions = {
+  origins?: boolean
+  lineNumbers?: boolean
+}
+
 function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message, message.context)
 }
-function getCreateHeaders(language = "no"): PO["headers"] {
+function getCreateHeaders(language: string): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
     "MIME-Version": "1.0",
     "Content-Type": "text/plain; charset=utf-8",
     "Content-Transfer-Encoding": "8bit",
     "X-Generator": "@lingui/cli",
-    Language: language,
+    ...(language ? { Language: language } : {}),
   }
 }
 
@@ -26,7 +31,7 @@ const EXPLICIT_ID_FLAG = "explicit-id"
 
 export const serialize = (
   catalog: CatalogType,
-  options: CatalogFormatOptionsInternal,
+  options: PoFormatterOptions,
   postProcessItem?: (
     item: POItem,
     message: MessageType,
@@ -123,41 +128,39 @@ function validateItem(item: POItem): void {
   }
 }
 
-const po: CatalogFormatter = {
-  catalogExtension: ".po",
-  templateExtension: ".pot",
+export default function (options: PoFormatterOptions = {}) {
+  options = {
+    origins: true,
+    lineNumbers: true,
+    ...options,
+  }
 
-  write(filename, catalog, options) {
-    let po: PO
+  return {
+    catalogExtension: ".po",
+    templateExtension: ".pot",
 
-    const raw = readFile(filename)
-    if (raw) {
-      po = PO.parse(raw)
-    } else {
-      po = new PO()
-      po.headers = getCreateHeaders(options.locale)
-      if (options.locale === undefined) {
-        delete po.headers.Language
+    parse(content: string): CatalogType {
+      const po = PO.parse(content)
+      return deserialize(po.items, validateItem)
+    },
+
+    serialize(
+      catalog: CatalogType,
+      ctx: { locale: string; existing: string }
+    ): string {
+      let po: PO
+
+      if (ctx.existing) {
+        po = PO.parse(ctx.existing)
+      } else {
+        po = new PO()
+        po.headers = getCreateHeaders(ctx.locale)
+        // accessing private property
+        ;(po as any).headerOrder = Object.keys(po.headers)
       }
-      // accessing private property
-      ;(po as any).headerOrder = Object.keys(po.headers)
-    }
-    po.items = serialize(catalog, options)
-    writeFileIfChanged(filename, po.toString())
-  },
 
-  read(filename) {
-    const raw = readFile(filename)
-    if (!raw) {
-      return null
-    }
-    return this.parse(raw)
-  },
-
-  parse(raw: string) {
-    const po = PO.parse(raw)
-    return deserialize(po.items, validateItem)
-  },
+      po.items = serialize(catalog, options)
+      return po.toString()
+    },
+  } satisfies CatalogFormatter
 }
-
-export default po

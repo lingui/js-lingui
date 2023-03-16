@@ -12,13 +12,13 @@ export type GetTranslationsOptions = {
   onMissing?: (message: TranslationMissingEvent) => void
 }
 
-export function getTranslationsForCatalog(
+export async function getTranslationsForCatalog(
   catalog: Catalog,
   locale: string,
   options: GetTranslationsOptions
 ) {
-  const catalogs = catalog.readAll()
-  const template = catalog.readTemplate() || {}
+  const catalogs = await catalog.readAll()
+  const template = (await catalog.readTemplate()) || {}
 
   const sourceLocaleCatalog = catalogs[options.sourceLocale] || {}
 

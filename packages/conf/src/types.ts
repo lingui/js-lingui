@@ -1,4 +1,4 @@
-import { GeneratorOptions } from "@babel/core"
+import type { GeneratorOptions } from "@babel/core"
 
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
 
@@ -11,6 +11,26 @@ export type ExtractorCtx = {
   linguiConfig: LinguiConfigNormalized
 }
 
+export type MessageOrigin = [filename: string, line?: number]
+export type ExtractedMessageType = {
+  message?: string
+  origin?: MessageOrigin[]
+  comments?: string[]
+  extractedComments?: string[]
+  obsolete?: boolean
+  flags?: string[]
+  context?: string
+}
+export type MessageType = ExtractedMessageType & {
+  translation: string
+}
+export type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
+}
+export type CatalogType = {
+  [msgId: string]: MessageType
+}
+
 export type ExtractorType = {
   match(filename: string): boolean
   extract(
@@ -19,6 +39,23 @@ export type ExtractorType = {
     onMessageExtracted: (msg: ExtractedMessage) => void,
     ctx?: ExtractorCtx
   ): Promise<void> | void
+}
+
+export type CatalogFormatter = {
+  catalogExtension: string
+  /**
+   * Set extension used when extract to template
+   * Omit if the extension is the same as catalogExtension
+   */
+  templateExtension?: string
+  parse(
+    content: string,
+    ctx: { locale: string | null; filename: string }
+  ): Promise<CatalogType> | CatalogType
+  serialize(
+    catalog: CatalogType,
+    ctx: { locale: string | null; filename: string; existing: string | null }
+  ): Promise<string> | string
 }
 
 export type ExtractedMessage = {
@@ -142,7 +179,7 @@ export type LinguiConfig = {
   extractors?: (string | ExtractorType)[]
   prevFormat?: CatalogFormat
   localeDir?: string
-  format?: CatalogFormat
+  format?: CatalogFormat | CatalogFormatter
   formatOptions?: CatalogFormatOptions
   locales: string[]
   catalogsMergePath?: string

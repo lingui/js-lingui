@@ -1,8 +1,6 @@
 import * as R from "ramda"
 
-import { CatalogFormatter } from "."
-import type { CatalogType, MessageType } from "../types"
-import { readFile, writeFile } from "../utils"
+import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 
 type MinimalCatalogType = Record<string, string>
 
@@ -17,39 +15,20 @@ const deserialize = R.map((translation: string) => ({
   origin: [],
 })) as unknown as (minimalCatalog: MinimalCatalogType) => CatalogType
 
-const minimal: CatalogFormatter = {
-  catalogExtension: ".json",
+export default function (): CatalogFormatter {
+  return {
+    catalogExtension: ".json",
 
-  write(filename, catalog) {
-    const messages = serialize(catalog)
-    let file = readFile(filename)
+    serialize(catalog: CatalogType, { existing }) {
+      const shouldUseTrailingNewline =
+        existing === null || existing?.endsWith("\n")
+      const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
 
-    const shouldUseTrailingNewline = file === null || file?.endsWith("\n")
-    const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
-    writeFile(
-      filename,
-      `${JSON.stringify(messages, null, 2)}${trailingNewLine}`
-    )
-  },
+      return JSON.stringify(serialize(catalog), null, 2) + trailingNewLine
+    },
 
-  read(filename) {
-    const raw = readFile(filename)
-
-    if (!raw) {
-      return null
-    }
-
-    try {
-      const rawCatalog: Record<string, string> = JSON.parse(raw)
-      return deserialize(rawCatalog)
-    } catch (e) {
-      throw new Error(`Cannot read ${filename}: ${(e as Error).message}`)
-    }
-  },
-
-  parse(content: Record<string, any>) {
-    return deserialize(content)
-  },
+    parse(content) {
+      return deserialize(JSON.parse(content))
+    },
+  }
 }
-
-export default minimal

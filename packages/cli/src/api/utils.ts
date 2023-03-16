@@ -29,9 +29,9 @@ export const splitOrigin = (origin: string) => {
 export const joinOrigin = (origin: [file: string, line?: number]): string =>
   origin.join(":")
 
-export function readFile(fileName: string): string {
+export async function readFile(fileName: string): Promise<string | undefined> {
   try {
-    return fs.readFileSync(fileName).toString()
+    return (await fs.promises.readFile(fileName)).toString()
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code != "ENOENT") {
       throw err
@@ -39,9 +39,9 @@ export function readFile(fileName: string): string {
   }
 }
 
-function mkdirp(dir: string): void {
+async function mkdirp(dir: string): Promise<void> {
   try {
-    fs.mkdirSync(dir, {
+    await fs.promises.mkdir(dir, {
       recursive: true,
     })
   } catch (err) {
@@ -61,20 +61,26 @@ export function isDirectory(filePath: string) {
   }
 }
 
-export function writeFile(fileName: string, content: string): void {
-  mkdirp(path.dirname(fileName))
-  fs.writeFileSync(fileName, content)
+export async function writeFile(
+  fileName: string,
+  content: string
+): Promise<void> {
+  await mkdirp(path.dirname(fileName))
+  await fs.promises.writeFile(fileName, content)
 }
 
-export function writeFileIfChanged(filename: string, newContent: string) {
-  const raw = readFile(filename)
+export async function writeFileIfChanged(
+  filename: string,
+  newContent: string
+): Promise<void> {
+  const raw = await readFile(filename)
 
   if (raw) {
     if (newContent !== raw) {
-      writeFile(filename, newContent)
+      await writeFile(filename, newContent)
     }
   } else {
-    writeFile(filename, newContent)
+    await writeFile(filename, newContent)
   }
 }
 

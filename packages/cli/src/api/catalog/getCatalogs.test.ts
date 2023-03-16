@@ -33,17 +33,19 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(getCatalogs(config)).toEqual([
-      new Catalog(
-        {
-          name: null,
-          path: "src/locales/{locale}",
-          include: ["src/"],
-          exclude: [],
-        },
-        config
-      ),
-    ])
+    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: null,
+            path: "src/locales/{locale}",
+            include: ["src/"],
+            exclude: [],
+          },
+          config
+        )
+      )
+    )
   })
 
   it("should have catalog name and ignore patterns", () => {
@@ -56,17 +58,19 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(getCatalogs(config)).toEqual([
-      new Catalog(
-        {
-          name: "all",
-          path: "src/locales/{locale}/all",
-          include: ["src/", "/absolute/path/"],
-          exclude: ["node_modules/"],
-        },
-        config
-      ),
-    ])
+    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "all",
+            path: "src/locales/{locale}/all",
+            include: ["src/", "/absolute/path/"],
+            exclude: ["node_modules/"],
+          },
+          config
+        )
+      )
+    )
   })
 
   it("should expand {name} for matching directories", () => {
@@ -87,24 +91,31 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(getCatalogs(config)).toEqual([
-      new Catalog(
-        {
-          name: "componentA",
-          path: "componentA/locales/{locale}",
-          include: ["componentA/"],
-          exclude: [],
-        },
-        config
+    expect([
+      cleanCatalog(getCatalogs(config)[0]),
+      cleanCatalog(getCatalogs(config)[1]),
+    ]).toEqual([
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "componentA",
+            path: "componentA/locales/{locale}",
+            include: ["componentA/"],
+            exclude: [],
+          },
+          config
+        )
       ),
-      new Catalog(
-        {
-          name: "componentB",
-          path: "componentB/locales/{locale}",
-          include: ["componentB/"],
-          exclude: [],
-        },
-        config
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "componentB",
+            path: "componentB/locales/{locale}",
+            include: ["componentB/"],
+            exclude: [],
+          },
+          config
+        )
       ),
     ])
   })
@@ -124,17 +135,19 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(getCatalogs(config)).toEqual([
-      new Catalog(
-        {
-          name: "componentA",
-          path: "componentA/locales/{locale}/componentA_messages_{locale}",
-          include: ["componentA/"],
-          exclude: [],
-        },
-        config
-      ),
-    ])
+    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "componentA",
+            path: "componentA/locales/{locale}/componentA_messages_{locale}",
+            include: ["componentA/"],
+            exclude: [],
+          },
+          config
+        )
+      )
+    )
   })
 
   it("shouldn't expand {name} for ignored directories", () => {
@@ -156,17 +169,19 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(getCatalogs(config)).toEqual([
-      new Catalog(
-        {
-          name: "componentA",
-          path: "componentA/locales/{locale}",
-          include: ["componentA/"],
-          exclude: ["componentB/"],
-        },
-        config
-      ),
-    ])
+    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "componentA",
+            path: "componentA/locales/{locale}",
+            include: ["componentA/"],
+            exclude: ["componentB/"],
+          },
+          config
+        )
+      )
+    )
   })
 
   it("should warn if catalogPath is a directory", () => {
@@ -216,6 +231,12 @@ describe("getCatalogs", () => {
   })
 })
 
+// remove non-serializable properties, which are not subject of a test
+function cleanCatalog(catalog: Catalog) {
+  delete catalog.config
+  delete catalog.format
+  return catalog
+}
 describe("getCatalogForMerge", () => {
   afterEach(() => {
     mockFs.restore()
@@ -225,15 +246,17 @@ describe("getCatalogForMerge", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}",
     })
-    expect(getCatalogForMerge(config)).toEqual(
-      new Catalog(
-        {
-          name: null,
-          path: "locales/{locale}",
-          include: [],
-          exclude: [],
-        },
-        config
+    expect(cleanCatalog(getCatalogForMerge(config))).toEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: null,
+            path: "locales/{locale}",
+            include: [],
+            exclude: [],
+          },
+          config
+        )
       )
     )
   })
@@ -242,15 +265,17 @@ describe("getCatalogForMerge", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/my/dir",
     })
-    expect(getCatalogForMerge(config)).toEqual(
-      new Catalog(
-        {
-          name: "dir",
-          path: "locales/{locale}/my/dir",
-          include: [],
-          exclude: [],
-        },
-        config
+    expect(cleanCatalog(getCatalogForMerge(config))).toStrictEqual(
+      cleanCatalog(
+        new Catalog(
+          {
+            name: "dir",
+            path: "locales/{locale}/my/dir",
+            include: [],
+            exclude: [],
+          },
+          config
+        )
       )
     )
   })
