@@ -116,6 +116,7 @@ export function normalizeRelativePath(sourcePath: string): string {
     return normalize(sourcePath, false)
   }
 
+  // https://github.com/lingui/js-lingui/issues/809
   const isDir = isDirectory(sourcePath)
 
   return (

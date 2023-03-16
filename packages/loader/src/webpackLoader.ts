@@ -1,67 +1,27 @@
 import path from "path"
-import { CatalogFormat, getConfig } from "@lingui/conf"
+import { getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
   getCatalogForFile,
 } from "@lingui/cli/api"
-import loaderUtils from "loader-utils"
-// Check if webpack 5
-const isWebpack5 = parseInt(require("webpack").version) === 5
+import { LoaderDefinitionFunction } from "webpack"
 
-// Check if JavascriptParser and JavascriptGenerator exists -> Webpack 4
-let JavascriptParser
-let JavascriptGenerator
-try {
-  JavascriptParser = require("webpack/lib/Parser")
-  JavascriptGenerator = require("webpack/lib/JavascriptGenerator")
-} catch (error) {
-  if (error.code !== "MODULE_NOT_FOUND") {
-    throw error
-  }
+type LinguiLoaderOptions = {
+  config?: string
 }
 
-const requiredType = "javascript/auto"
-
-export default async function (source) {
-  const callback = this.async()
-
-  const options = loaderUtils.getOptions(this) || {}
-
-  if (!isWebpack5 && JavascriptParser && JavascriptGenerator) {
-    // Webpack 4 uses json-loader automatically, which breaks this loader because it
-    // doesn't return JSON, but JS module. This is a temporary workaround before
-    // official API is added (https://github.com/webpack/webpack/issues/7057#issuecomment-381883220)
-    // See https://github.com/webpack/webpack/issues/7057
-    this._module.type = requiredType
-    this._module.parser = new JavascriptParser()
-    this._module.generator = new JavascriptGenerator()
-  }
+const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
+  source
+) {
+  const options = this.getOptions() || {}
 
   const config = getConfig({
     configPath: options.config,
     cwd: path.dirname(this.resourcePath),
   })
 
-  const EMPTY_EXT = /\.[0-9a-z]+$/.test(this.resourcePath)
-  const JS_EXT = /\.js+$/.test(this.resourcePath)
-
   const catalogRelativePath = path.relative(config.rootDir, this.resourcePath)
-
-  if (!EMPTY_EXT || JS_EXT) {
-    const formats = {
-      minimal: ".json",
-      po: ".po",
-      lingui: ".json",
-    }
-    // we replace the .js, because webpack appends automatically the .js on imports without extension
-    throw new Error(
-      `File extension is mandatory, for ex: import("@lingui/loader!./${catalogRelativePath.replace(
-        ".js",
-        formats[config.format as CatalogFormat]
-      )}")`
-    )
-  }
 
   const { locale, catalog } = getCatalogForFile(
     catalogRelativePath,
@@ -79,11 +39,12 @@ export default async function (source) {
   // of I18nProvider (React) or setupI18n (core) and therefore we need to get
   // empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
-  const compiled = createCompiledCatalog(locale, messages, {
+
+  return createCompiledCatalog(locale, messages, {
     strict,
-    namespace: config.compileNamespace,
+    namespace: this._module.type === "json" ? "json" : "es",
     pseudoLocale: config.pseudoLocale,
   })
-
-  callback(null, compiled)
 }
+
+export default loader

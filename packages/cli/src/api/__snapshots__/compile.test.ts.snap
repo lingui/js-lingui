@@ -4,13 +4,15 @@ exports[`createCompiledCatalog options.compilerBabelOptions by default should re
 
 exports[`createCompiledCatalog options.compilerBabelOptions should return catalog without ASCII chars 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Hello\\":\\"Aloh\\xE0\\"}")};`;
 
-exports[`createCompiledCatalog options.namespace should compile with es 1`] = `/*eslint-disable*/export const messages=JSON.parse("{}");`;
+exports[`createCompiledCatalog options.namespace should compile with es 1`] = `/*eslint-disable*/export const messages=JSON.parse("{\\"key\\":[\\"Hello \\",[\\"name\\"]]}");`;
 
-exports[`createCompiledCatalog options.namespace should compile with global 1`] = `/*eslint-disable*/global.test={messages:JSON.parse("{}")};`;
+exports[`createCompiledCatalog options.namespace should compile with global 1`] = `/*eslint-disable*/global.test={messages:JSON.parse("{\\"key\\":[\\"Hello \\",[\\"name\\"]]}")};`;
 
-exports[`createCompiledCatalog options.namespace should compile with ts 1`] = `/*eslint-disable*/export const messages=JSON.parse("{}");`;
+exports[`createCompiledCatalog options.namespace should compile with json 1`] = `{"messages":{"key":["Hello ",["name"]]}}`;
 
-exports[`createCompiledCatalog options.namespace should compile with window 1`] = `/*eslint-disable*/window.test={messages:JSON.parse("{}")};`;
+exports[`createCompiledCatalog options.namespace should compile with ts 1`] = `/*eslint-disable*/export const messages=JSON.parse("{\\"key\\":[\\"Hello \\",[\\"name\\"]]}");`;
+
+exports[`createCompiledCatalog options.namespace should compile with window 1`] = `/*eslint-disable*/window.test={messages:JSON.parse("{\\"key\\":[\\"Hello \\",[\\"name\\"]]}")};`;
 
 exports[`createCompiledCatalog options.namespace should error with invalid value 1`] = `Invalid namespace param: "global"`;
 

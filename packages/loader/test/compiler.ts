@@ -11,21 +11,15 @@ export default async (
     mode: "development",
     target: "node",
     entry: entryPoint,
+    resolveLoader: {
+      alias: {
+        "@lingui/loader": path.resolve(__dirname, "../src/webpackLoader.ts"),
+      },
+    },
     output: {
       path: mkdtempSync(path.join(os.tmpdir(), `lingui-test-${process.pid}`)),
       filename: "bundle.js",
       libraryTarget: "commonjs",
-    },
-    module: {
-      rules: [
-        {
-          test: /\.po$/,
-          use: {
-            loader: path.resolve(__dirname, "../src/webpackLoader.ts"),
-            options,
-          },
-        },
-      ],
     },
   })
 
