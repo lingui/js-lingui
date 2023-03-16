@@ -11,7 +11,7 @@ import { deserialize, serialize as serializePo } from "./po"
 
 type POItem = InstanceType<typeof PO.Item>
 
-export type PoGetTextFormatterOptions = {
+export type PoGettextFormatterOptions = {
   origins?: boolean
   lineNumbers?: boolean
   disableSelectWarning?: boolean
@@ -60,7 +60,7 @@ function serializePlurals(
   message: MessageType,
   id: string,
   isGeneratedId: boolean,
-  options: PoGetTextFormatterOptions
+  options: PoGettextFormatterOptions
 ): POItem {
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
@@ -153,7 +153,7 @@ function serializePlurals(
 
 export const serialize = (
   catalog: CatalogType,
-  options: PoGetTextFormatterOptions
+  options: PoGettextFormatterOptions
 ) => {
   return serializePo(catalog, options, (item, message, id, isGeneratedId) =>
     serializePlurals(item, message, id, isGeneratedId, options)
@@ -273,7 +273,7 @@ export function parse(raw: string) {
   })
 }
 
-export default function (options: PoGetTextFormatterOptions = {}) {
+export default function (options: PoGettextFormatterOptions = {}) {
   options = {
     origins: true,
     lineNumbers: true,
