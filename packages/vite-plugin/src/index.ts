@@ -7,7 +7,7 @@ import {
 import path from "path"
 import type { Plugin } from "vite"
 
-const fileRegex = /\.(po)$/
+const fileRegex = /(\.po|\?lingui)$/
 
 type LinguiConfigOpts = {
   cwd?: string
@@ -29,12 +29,26 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
 
     async transform(src, id) {
       if (fileRegex.test(id)) {
+        id = id.split("?")[0]
+
         const catalogRelativePath = path.relative(config.rootDir, id)
 
         const fileCatalog = getCatalogForFile(
           catalogRelativePath,
           getCatalogs(config)
         )
+
+        if (!fileCatalog) {
+          throw new Error(
+            `Requested resource ${catalogRelativePath} is not matched to any of your catalogs paths specified in "lingui.config".
+
+Resource: ${id}
+
+Your catalogs:
+${config.catalogs.map((c) => c.path).join("\n")}
+Please check that catalogs.path is filled properly.\n`
+          )
+        }
 
         const { locale, catalog } = fileCatalog
 

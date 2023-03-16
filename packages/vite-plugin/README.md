@@ -4,7 +4,7 @@
 
 # @lingui/vite-plugin
 
-> Vite plugin which compiles on the fly the .po files for auto-refreshing. In summary, `lingui compile` command isn't required when using this plugin
+> Vite plugin which compiles on the fly lingui catalogs. In summary, `lingui compile` command isn't required when using this plugin
 
 `@lingui/vite-plugin` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
@@ -31,7 +31,11 @@ const config: UserConfig = {
 ### Then in Vite-processed code: 
 
 ```ts
+// *.po files assigned to this loader by default
 const { messages } = await import(`./locales/${language}.po`);
+
+// for other extension you have to use `?lingui` suffix
+const { messages } = await import(`./locales/${language}.json?lingui`);
 ```
 > See Vite's official documentation for more info about Vite dynamic imports 
 > https://vitejs.dev/guide/features.html#dynamic-import
