@@ -61,7 +61,6 @@ module.exports = {
         "<rootDir>/packages/conf",
         "<rootDir>/packages/loader",
         "<rootDir>/packages/macro",
-        "<rootDir>/packages/snowpack-plugin",
         "<rootDir>/packages/vite-plugin",
       ],
     },

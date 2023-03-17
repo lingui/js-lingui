@@ -53,10 +53,6 @@ export const bundles: readonly BundleDef[] = [
     packageName: "babel-plugin-extract-messages",
   },
   {
-    type: BundleType.NODE,
-    packageName: "snowpack-plugin",
-  },
-  {
     type: BundleType.CUSTOM,
     packageName: "vite-plugin",
     cmd: "yarn workspace @lingui/vite-plugin build",
