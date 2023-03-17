@@ -143,6 +143,9 @@ expectType<string>(
   })
 )
 
+// @ts-expect-error: other is required
+expectType<string>(plural(5, { one: "test" }))
+
 ///////////////////
 //// Select Ordinal
 ///////////////////
