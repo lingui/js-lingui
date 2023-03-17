@@ -45,7 +45,7 @@
     "build/"
   ],
   "dependencies": {
-    "@lingui/core": "4.0.0-next.1",
+    "@lingui/core": "4.0.0-next.2",
     "ramda": "^0.27.1"
   }
 }
