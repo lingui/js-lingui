@@ -176,11 +176,6 @@ const sidebar = [
         label: '@lingui/vite-plugin',
         id: 'ref/vite-plugin',
       },
-      {
-        type: 'doc',
-        label: '@lingui/snowpack-plugin',
-        id: 'ref/snowpack-plugin',
-      },
     ],
   },
   {

@@ -1466,7 +1466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
   version: 7.20.13
   resolution: "@babel/runtime@npm:7.20.13"
   dependencies:
@@ -2480,16 +2480,6 @@ __metadata:
   dependencies:
     "@lingui/core": 4.0.0-next.1
     ramda: ^0.27.1
-  languageName: unknown
-  linkType: soft
-
-"@lingui/snowpack-plugin@workspace:packages/snowpack-plugin":
-  version: 0.0.0-use.local
-  resolution: "@lingui/snowpack-plugin@workspace:packages/snowpack-plugin"
-  dependencies:
-    "@babel/runtime": ^7
-    "@lingui/cli": 4.0.0-next.1
-    "@lingui/conf": 4.0.0-next.1
   languageName: unknown
   linkType: soft
 
