@@ -107,10 +107,8 @@ describe("I18nProvider", () => {
 
     const { container } = render(
       <I18nProvider i18n={i18n}>
-        <>
-          <CurrentLocaleStatic />
-          <CurrentLocaleContextConsumer />
-        </>
+        <CurrentLocaleStatic />
+        <CurrentLocaleContextConsumer />
       </I18nProvider>
     )
 
