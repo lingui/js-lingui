@@ -5,9 +5,16 @@ import { Catalog } from "../api/catalog"
 import { resolveTemplatePath } from "./resolveTemplatePath"
 import { getFormat } from "@lingui/cli/api"
 
-export function getExperimentalCatalogs(linguiConfig: LinguiConfigNormalized) {
+export async function getExperimentalCatalogs(
+  linguiConfig: LinguiConfigNormalized
+) {
   const config = linguiConfig.experimental.extractor
   const entryPoints = getEntryPoints(config.entries)
+
+  const format = await getFormat(
+    linguiConfig.format,
+    linguiConfig.formatOptions
+  )
 
   return entryPoints.map((entryPoint) => {
     const catalogPath = resolveCatalogPath(
@@ -18,7 +25,6 @@ export function getExperimentalCatalogs(linguiConfig: LinguiConfigNormalized) {
       ""
     )
 
-    const format = getFormat(linguiConfig.format, linguiConfig.formatOptions)
     const templatePath = resolveTemplatePath(
       entryPoint,
       config.output,
@@ -33,6 +39,7 @@ export function getExperimentalCatalogs(linguiConfig: LinguiConfigNormalized) {
         templatePath,
         include: [],
         exclude: [],
+        format,
       },
       linguiConfig
     )

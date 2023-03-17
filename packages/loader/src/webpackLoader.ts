@@ -25,7 +25,7 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
 
   const { locale, catalog } = getCatalogForFile(
     catalogRelativePath,
-    getCatalogs(config)
+    await getCatalogs(config)
   )
 
   const messages = await catalog.getTranslations(locale, {

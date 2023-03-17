@@ -13,12 +13,16 @@ const LOCALE_PH = "{locale}"
 /**
  * Parse `config.catalogs` and return a list of configured Catalog instances.
  */
-export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
+export async function getCatalogs(
+  config: LinguiConfigNormalized
+): Promise<Catalog[]> {
   const catalogsConfig = config.catalogs
   const catalogs: Catalog[] = []
 
+  const format = await getFormat(config.format, config.formatOptions)
+
   catalogsConfig.forEach((catalog) => {
-    validateCatalogPath(catalog.path, config)
+    validateCatalogPath(catalog.path, format.getCatalogExtension())
 
     const include = ensureArray(catalog.include).map(normalizeRelativePath)
     const exclude = ensureArray(catalog.exclude).map(normalizeRelativePath)
@@ -43,6 +47,7 @@ export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
             path: normalizeRelativePath(catalog.path),
             include,
             exclude,
+            format,
           },
           config
         )
@@ -72,6 +77,7 @@ export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
             ),
             include: include.map((path) => replacePlaceholders(path, { name })),
             exclude: exclude.map((path) => replacePlaceholders(path, { name })),
+            format,
           },
           config
         )
@@ -80,7 +86,7 @@ export function getCatalogs(config: LinguiConfigNormalized): Catalog[] {
   })
 
   if (config.experimental?.extractor?.entries.length) {
-    catalogs.push(...getExperimentalCatalogs(config))
+    catalogs.push(...(await getExperimentalCatalogs(config)))
   }
 
   return catalogs
@@ -98,8 +104,9 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
 /**
  * Create catalog for merged messages.
  */
-export function getCatalogForMerge(config: LinguiConfigNormalized) {
-  validateCatalogPath(config.catalogsMergePath, config)
+export async function getCatalogForMerge(config: LinguiConfigNormalized) {
+  const format = await getFormat(config.format, config.formatOptions)
+  validateCatalogPath(config.catalogsMergePath, format.getCatalogExtension())
 
   return new Catalog(
     {
@@ -107,6 +114,7 @@ export function getCatalogForMerge(config: LinguiConfigNormalized) {
       path: normalizeRelativePath(config.catalogsMergePath),
       include: [],
       exclude: [],
+      format,
     },
     config
   )
@@ -134,19 +142,15 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
 /**
  *  Validate that `catalogPath` doesn't end with trailing slash
  */
-function validateCatalogPath(path: string, config: LinguiConfigNormalized) {
+function validateCatalogPath(path: string, extension: string) {
   if (!path.endsWith(PATHSEP)) {
     return
   }
 
-  const extension = getFormat(
-    config.format,
-    config.formatOptions
-  ).getCatalogExtension()
   const correctPath = path.slice(0, -1)
   const examplePath =
     replacePlaceholders(correctPath, {
-      locale: (config.locales || [])[0] || "en",
+      locale: "en",
     }) + extension
   throw new Error(
     // prettier-ignore

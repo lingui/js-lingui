@@ -2,23 +2,23 @@ import type { CatalogFormat, CatalogFormatter } from "@lingui/conf"
 import { CatalogFormatOptions } from "@lingui/conf"
 import { FormatterWrapper } from "./api/formatterWrapper"
 
-const formats: Record<
-  CatalogFormat,
-  () => (options: CatalogFormatOptions) => CatalogFormatter
-> = {
-  lingui: () => require("./lingui").default,
-  minimal: () => require("./minimal").default,
-  po: () => require("./po").default,
-  csv: () => require("./csv").default,
-  "po-gettext": () => require("./po-gettext").default,
-}
+type CatalogFormatterFactoryFn = (options: any) => CatalogFormatter
+
+const formats: Record<CatalogFormat, () => Promise<CatalogFormatterFactoryFn>> =
+  {
+    lingui: async () => (await import("./lingui")).default,
+    minimal: async () => (await import("./minimal")).default,
+    po: async () => (await import("./po")).default,
+    csv: async () => (await import("./csv")).default,
+    "po-gettext": async () => (await import("./po-gettext")).default,
+  }
 
 export { FormatterWrapper }
 
-export function getFormat(
+export async function getFormat(
   _format: CatalogFormat | CatalogFormatter,
   options: CatalogFormatOptions
-): FormatterWrapper {
+): Promise<FormatterWrapper> {
   if (typeof _format !== "string") {
     return new FormatterWrapper(_format)
   }
@@ -33,5 +33,5 @@ export function getFormat(
     )
   }
 
-  return new FormatterWrapper(format()(options))
+  return new FormatterWrapper((await format())(options))
 }

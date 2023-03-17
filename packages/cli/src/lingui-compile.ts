@@ -25,7 +25,7 @@ export async function command(
   config: LinguiConfigNormalized,
   options: CliCompileOptions
 ) {
-  const catalogs = getCatalogs(config)
+  const catalogs = await getCatalogs(config)
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
@@ -111,7 +111,7 @@ export async function command(
     }
 
     if (doMerge) {
-      const compileCatalog = getCatalogForMerge(config)
+      const compileCatalog = await getCatalogForMerge(config)
       const namespace = options.namespace || config.compileNamespace
       const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
         strict: false,
@@ -212,36 +212,35 @@ if (require.main === module) {
   // Check if Watch Mode is enabled
   if (options.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
+    ;(async function initWatch() {
+      const format = await getFormat(config.format, config.formatOptions)
+      const catalogs = await getCatalogs(config)
 
-    const catalogs = getCatalogs(config)
-    let paths: string[] = []
-    const catalogExtension = getFormat(
-      config.format,
-      config.formatOptions
-    ).getCatalogExtension()
+      const paths: string[] = []
 
-    config.locales.forEach((locale) => {
-      catalogs.forEach((catalog) => {
-        paths.push(
-          `${catalog.path
-            .replace(/{locale}/g, locale)
-            .replace(/{name}/g, "*")}${catalogExtension}`
-        )
+      config.locales.forEach((locale) => {
+        catalogs.forEach((catalog) => {
+          paths.push(
+            `${catalog.path
+              .replace(/{locale}/g, locale)
+              .replace(/{name}/g, "*")}${format.getCatalogExtension()}`
+          )
+        })
       })
-    })
 
-    const watcher = chokidar.watch(paths, {
-      persistent: true,
-    })
+      const watcher = chokidar.watch(paths, {
+        persistent: true,
+      })
 
-    const onReady = () => {
-      console.info(chalk.green.bold("Watcher is ready!"))
-      watcher
-        .on("add", () => dispatchCompile())
-        .on("change", () => dispatchCompile())
-    }
+      const onReady = () => {
+        console.info(chalk.green.bold("Watcher is ready!"))
+        watcher
+          .on("add", () => dispatchCompile())
+          .on("change", () => dispatchCompile())
+      }
 
-    watcher.on("ready", () => onReady())
+      watcher.on("ready", () => onReady())
+    })()
   } else {
     compile().then((results) => {
       if (!results) {

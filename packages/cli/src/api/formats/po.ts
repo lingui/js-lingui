@@ -48,13 +48,12 @@ export const serialize = (
     // so create a new array with the message's elements.
     item.extractedComments = [...(message.extractedComments || [])]
 
-    item.flags = (message.flags || []).reduce<Record<string, boolean>>(
-      (acc, flag) => {
-        acc[flag] = true
-        return acc
-      },
-      {}
-    )
+    item.flags = ((message.flags || []) as string[]).reduce<
+      Record<string, boolean>
+    >((acc, flag) => {
+      acc[flag] = true
+      return acc
+    }, {})
 
     const _isGeneratedId = isGeneratedId(id, message)
 

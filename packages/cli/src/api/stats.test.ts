@@ -1,14 +1,15 @@
 import { printStats } from "./stats"
 import { defaultMergeOptions, makeCatalog, makeNextMessage } from "../tests"
 import { makeConfig } from "@lingui/conf"
+import { AllCatalogsType } from "./types"
 
 describe("PrintStats", () => {
-  it("should print correct stats for a basic setup", () => {
+  it("should print correct stats for a basic setup", async () => {
     const config = makeConfig({
       locales: ["en", "cs"],
     })
 
-    const prevCatalogs = { en: null, cs: null }
+    const prevCatalogs: AllCatalogsType = { en: null, cs: null }
     const nextCatalog = {
       "custom.id": makeNextMessage({
         message: "Message with custom ID",
@@ -16,7 +17,7 @@ describe("PrintStats", () => {
       "Message with <0>auto-generated</0> ID": makeNextMessage(),
     }
 
-    const catalogs = makeCatalog({ sourceLocale: "en" }).merge(
+    const catalogs = (await makeCatalog({ sourceLocale: "en" })).merge(
       prevCatalogs,
       nextCatalog,
       defaultMergeOptions

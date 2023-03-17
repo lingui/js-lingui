@@ -6,7 +6,7 @@ import normalize from "normalize-path"
 
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 
-import { FormatterWrapper, getFormat } from "./formats"
+import { FormatterWrapper } from "./formats"
 import { CliExtractOptions } from "../lingui-extract"
 import { CliExtractTemplateOptions } from "../lingui-extract-template"
 import { CompiledCatalogNamespace } from "./compile"
@@ -51,6 +51,7 @@ export type CatalogProps = {
   include: Array<string>
   exclude?: Array<string>
   templatePath?: string
+  format: FormatterWrapper
 }
 
 export class Catalog {
@@ -62,14 +63,14 @@ export class Catalog {
   templateFile?: string
 
   constructor(
-    { name, path, include, templatePath, exclude = [] }: CatalogProps,
+    { name, path, include, templatePath, format, exclude = [] }: CatalogProps,
     public config: LinguiConfigNormalized
   ) {
     this.name = name
     this.path = normalizeRelativePath(path)
     this.include = include.map(normalizeRelativePath)
     this.exclude = [this.localeDir, ...exclude.map(normalizeRelativePath)]
-    this.format = getFormat(config.format, config.formatOptions)
+    this.format = format
     this.templateFile =
       templatePath ||
       getTemplatePath(this.format.getTemplateExtension(), this.path)

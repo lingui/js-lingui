@@ -35,7 +35,7 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin {
 
         const fileCatalog = getCatalogForFile(
           catalogRelativePath,
-          getCatalogs(config)
+          await getCatalogs(config)
         )
 
         if (!fileCatalog) {

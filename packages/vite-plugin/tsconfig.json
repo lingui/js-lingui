@@ -8,7 +8,7 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "types": []
   },
   "include": [
     "src"

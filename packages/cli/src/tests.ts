@@ -9,7 +9,7 @@ import {
   MergeOptions,
 } from "./api/catalog"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
-import { ExtractedMessageType, MessageType } from "./api"
+import { ExtractedMessageType, getFormat, MessageType } from "./api"
 
 export async function copyFixture(fixtureDir: string) {
   const tmpDir = await fs.promises.mkdtemp(
@@ -49,15 +49,18 @@ export const defaultMergeOptions: MergeOptions = {
 export const normalizeLineEndings = (str: string) =>
   str.replace(/\r?\n/g, "\r\n")
 
-export const makeCatalog = (config: Partial<LinguiConfig> = {}) => {
+export const makeCatalog = async (_config: Partial<LinguiConfig> = {}) => {
+  const config = makeConfig(_config, { skipValidation: true })
+
   return new Catalog(
     {
       name: "messages",
       path: "{locale}/messages",
       include: [],
       exclude: [],
+      format: await getFormat(config.format, config.formatOptions),
     },
-    makeConfig(config, { skipValidation: true })
+    config
   )
 }
 
