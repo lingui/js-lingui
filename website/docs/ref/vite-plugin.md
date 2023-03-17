@@ -1,6 +1,6 @@
 # Vite Plugin
 
-`@lingui/vite-plugin` is a Vite plugin, which compiles `.po` catalogs on the fly and provides additional required configuration for Vite.
+`@lingui/vite-plugin` is a Vite plugin, which compiles Lingui catalogs on the fly and provides additional required configuration for Vite.
 
 :::note
 Refer to [Setup with Vite](/docs/tutorials/setup-vite.md) for a full installation guide.
@@ -37,6 +37,14 @@ export async function dynamicActivate(locale: string) {
    i18n.activate(locale)
 }
 ```
+
+:::note
+If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
+
+```ts
+const { messages } = await import(`./locales/${language}.json?lingui`);
+```
+:::
 
 See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
 

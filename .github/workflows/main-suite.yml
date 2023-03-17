@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies if needed
         run: yarn install --network-timeout 1000000
 
+      - name: Build packages
+        run: yarn release:build
+
       - name: Unit Testing
         run: yarn test:ci
 
@@ -54,17 +57,17 @@ jobs:
       - name: Install dependencies if needed
         run: yarn install
 
-      - name: Unit Testing
-        run: yarn test:ci:coverage
+      - name: Check Prettier Formatting
+        run: yarn prettier:check
 
       - name: Linting & Types
         run: yarn lint:all
 
-      - name: Check Prettier Formatting
-        run: yarn prettier:check
-
       - name: Build packages
         run: yarn release:build
+
+      - name: Unit Testing
+        run: yarn test:ci:coverage
 
       - name: Test Public Typings
         run: yarn test:tsd

@@ -2,7 +2,24 @@
 
 exports[`vite-plugin should return compiled catalog 1`] = `
 {
-  code: /*eslint-disable*/export const messages=JSON.parse("{\\"mY42CM\\":\\"Hello World\\",\\"mVmaLu\\":[\\"My name is \\",[\\"name\\"]]}");,
-  map: null,
+  mVmaLu: [
+    My name is ,
+    [
+      name,
+    ],
+  ],
+  mY42CM: Hello World,
+}
+`;
+
+exports[`vite-plugin should return compiled catalog json 1`] = `
+{
+  key: Message,
+  key2: [
+    Hello ,
+    [
+      name,
+    ],
+  ],
 }
 `;
