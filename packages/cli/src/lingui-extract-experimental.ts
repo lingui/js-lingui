@@ -64,7 +64,10 @@ export default async function command(
 
   let commandSuccess = true
 
-  const format = getFormat(linguiConfig.format, linguiConfig.formatOptions)
+  const format = await getFormat(
+    linguiConfig.format,
+    linguiConfig.formatOptions
+  )
 
   for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
     const messages = await extractFromFiles([outFile], linguiConfig)

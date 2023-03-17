@@ -17,6 +17,7 @@ import {
 } from "../tests"
 import { AllCatalogsType } from "./types"
 import { extractFromFiles } from "./catalog/extractFromFiles"
+import { FormatterWrapper, getFormat } from "./formats"
 
 export const fixture = (...dirs: string[]) =>
   path.resolve(__dirname, path.join("fixtures", ...dirs)) +
@@ -35,6 +36,12 @@ function mockConfig(config: Partial<LinguiConfig> = {}) {
 }
 
 describe("Catalog", () => {
+  let format: FormatterWrapper
+
+  beforeAll(async () => {
+    format = await getFormat("po", {})
+  })
+
   afterEach(() => {
     mockFs.restore()
   })
@@ -51,6 +58,7 @@ describe("Catalog", () => {
             fixture("collect/componentB"),
           ],
           exclude: [],
+          format,
         },
         mockConfig({
           locales: ["en", "cs"],
@@ -75,6 +83,7 @@ describe("Catalog", () => {
             fixture("collect/componentB"),
           ],
           exclude: [],
+          format,
         },
         mockConfig({
           locales: ["en", "cs"],
@@ -96,6 +105,7 @@ describe("Catalog", () => {
           path: path.join(localeDir, "{locale}"),
           include: [fixture("collect/")],
           exclude: [],
+          format,
         },
         mockConfig({
           locales: ["en", "cs"],
@@ -122,6 +132,7 @@ describe("Catalog", () => {
             fixture("collect/componentB"),
           ],
           exclude: [],
+          format,
         },
         mockConfig({
           locales: ["en", "cs"],
@@ -147,6 +158,7 @@ describe("Catalog", () => {
           ),
           include: [],
           exclude: [],
+          format,
         },
         mockConfig({
           locales: ["en", "pl"],
@@ -213,6 +225,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [fixture("collect-syntax-flow/")],
           exclude: [],
+          format,
         },
         mockConfig({
           extractorParserOptions: {
@@ -231,6 +244,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [fixture("collect/")],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -246,6 +260,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [fixture("collect-inline-sourcemaps/")],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -266,6 +281,7 @@ describe("Catalog", () => {
             fixture("collect/componentB.js"),
           ],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -283,6 +299,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [fixture("duplicate-id.js")],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -307,6 +324,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [fixture("collect-invalid/")],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -321,7 +339,7 @@ describe("Catalog", () => {
       })
     })
   })
-  it("Catalog.merge should initialize catalogs", () => {
+  it("Catalog.merge should initialize catalogs", async () => {
     const prevCatalogs: AllCatalogsType = { en: null, cs: null }
     const nextCatalog = {
       "custom.id": makeNextMessage({
@@ -331,7 +349,7 @@ describe("Catalog", () => {
     }
 
     expect(
-      makeCatalog({ sourceLocale: "en" }).merge(
+      (await makeCatalog({ sourceLocale: "en" })).merge(
         prevCatalogs,
         nextCatalog,
         defaultMergeOptions
@@ -371,6 +389,7 @@ describe("Catalog", () => {
           path: "locales/{locale}",
           include: [],
           exclude: [],
+          format,
         },
         mockConfig()
       )
@@ -392,6 +411,7 @@ describe("Catalog", () => {
           name: "messages",
           path: "{locale}/messages",
           include: [],
+          format,
         },
         mockConfig()
       )
@@ -415,6 +435,7 @@ describe("Catalog", () => {
           name: "messages",
           path: "{locale}/messages",
           include: [],
+          format,
         },
         mockConfig({ prevFormat: "minimal" })
       )
@@ -436,6 +457,7 @@ describe("Catalog", () => {
             path.join("fixtures", "readAll", "{locale}", "messages")
           ),
           include: [],
+          format,
         },
         mockConfig({
           locales: ["en", "cs"],
@@ -573,6 +595,7 @@ describe("writeCompiled", () => {
         path: path.join(localeDir, "{locale}", "messages"),
         include: [],
         exclude: [],
+        format: await getFormat("po", {}),
       },
       mockConfig()
     )

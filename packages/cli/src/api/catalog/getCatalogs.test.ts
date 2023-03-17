@@ -7,6 +7,8 @@ import {
 import { Catalog } from "../catalog"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 import path from "path"
+import { getFormat } from "@lingui/cli/api"
+import { FormatterWrapper } from "../formats"
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -20,11 +22,17 @@ function mockConfig(config: Partial<LinguiConfig> = {}) {
 }
 
 describe("getCatalogs", () => {
+  let format: FormatterWrapper
+
+  beforeAll(async () => {
+    format = await getFormat("po", {})
+  })
+
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should get single catalog if catalogPath doesn't include {name} pattern", () => {
+  it("should get single catalog if catalogPath doesn't include {name} pattern", async () => {
     const config = mockConfig({
       catalogs: [
         {
@@ -33,7 +41,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -41,6 +49,7 @@ describe("getCatalogs", () => {
             path: "src/locales/{locale}",
             include: ["src/"],
             exclude: [],
+            format,
           },
           config
         )
@@ -48,7 +57,7 @@ describe("getCatalogs", () => {
     )
   })
 
-  it("should have catalog name and ignore patterns", () => {
+  it("should have catalog name and ignore patterns", async () => {
     const config = mockConfig({
       catalogs: [
         {
@@ -58,7 +67,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -66,6 +75,7 @@ describe("getCatalogs", () => {
             path: "src/locales/{locale}/all",
             include: ["src/", "/absolute/path/"],
             exclude: ["node_modules/"],
+            format,
           },
           config
         )
@@ -73,7 +83,7 @@ describe("getCatalogs", () => {
     )
   })
 
-  it("should expand {name} for matching directories", () => {
+  it("should expand {name} for matching directories", async () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -91,10 +101,10 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect([
-      cleanCatalog(getCatalogs(config)[0]),
-      cleanCatalog(getCatalogs(config)[1]),
-    ]).toEqual([
+
+    const catalogs = await getCatalogs(config)
+
+    expect([cleanCatalog(catalogs[0]), cleanCatalog(catalogs[1])]).toEqual([
       cleanCatalog(
         new Catalog(
           {
@@ -102,6 +112,7 @@ describe("getCatalogs", () => {
             path: "componentA/locales/{locale}",
             include: ["componentA/"],
             exclude: [],
+            format,
           },
           config
         )
@@ -113,6 +124,7 @@ describe("getCatalogs", () => {
             path: "componentB/locales/{locale}",
             include: ["componentB/"],
             exclude: [],
+            format,
           },
           config
         )
@@ -120,7 +132,7 @@ describe("getCatalogs", () => {
     ])
   })
 
-  it("should expand {name} multiple times in path", () => {
+  it("should expand {name} multiple times in path", async () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -135,7 +147,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -143,6 +155,7 @@ describe("getCatalogs", () => {
             path: "componentA/locales/{locale}/componentA_messages_{locale}",
             include: ["componentA/"],
             exclude: [],
+            format,
           },
           config
         )
@@ -150,7 +163,7 @@ describe("getCatalogs", () => {
     )
   })
 
-  it("shouldn't expand {name} for ignored directories", () => {
+  it("shouldn't expand {name} for ignored directories", async () => {
     mockFs({
       componentA: {
         "index.js": mockFs.file(),
@@ -169,7 +182,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog(getCatalogs(config)[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -177,6 +190,7 @@ describe("getCatalogs", () => {
             path: "componentA/locales/{locale}",
             include: ["componentA/"],
             exclude: ["componentB/"],
+            format,
           },
           config
         )
@@ -184,8 +198,8 @@ describe("getCatalogs", () => {
     )
   })
 
-  it("should warn if catalogPath is a directory", () => {
-    expect(() =>
+  it("should warn if catalogPath is a directory", async () => {
+    await expect(
       getCatalogs(
         mockConfig({
           catalogs: [
@@ -196,10 +210,10 @@ describe("getCatalogs", () => {
           ],
         })
       )
-    ).toThrowErrorMatchingSnapshot()
+    ).rejects.toMatchSnapshot()
 
     // Use values from config in error message
-    expect(() =>
+    await expect(
       getCatalogs(
         mockConfig({
           locales: ["cs"],
@@ -212,11 +226,11 @@ describe("getCatalogs", () => {
           ],
         })
       )
-    ).toThrowErrorMatchingSnapshot()
+    ).rejects.toMatchSnapshot()
   })
 
-  it("should warn about missing {name} pattern in catalog path", () => {
-    expect(() =>
+  it("should warn about missing {name} pattern in catalog path", async () => {
+    await expect(
       getCatalogs(
         mockConfig({
           catalogs: [
@@ -227,7 +241,7 @@ describe("getCatalogs", () => {
           ],
         })
       )
-    ).toThrowErrorMatchingSnapshot()
+    ).rejects.toMatchSnapshot()
   })
 })
 
@@ -238,15 +252,21 @@ function cleanCatalog(catalog: Catalog) {
   return catalog
 }
 describe("getCatalogForMerge", () => {
+  let format: FormatterWrapper
+
+  beforeAll(async () => {
+    format = await getFormat("po", {})
+  })
+
   afterEach(() => {
     mockFs.restore()
   })
 
-  it("should return catalog for merged messages", () => {
+  it("should return catalog for merged messages", async () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}",
     })
-    expect(cleanCatalog(getCatalogForMerge(config))).toEqual(
+    expect(cleanCatalog(await getCatalogForMerge(config))).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -254,6 +274,7 @@ describe("getCatalogForMerge", () => {
             path: "locales/{locale}",
             include: [],
             exclude: [],
+            format,
           },
           config
         )
@@ -261,11 +282,11 @@ describe("getCatalogForMerge", () => {
     )
   })
 
-  it("should return catalog with custom name for merged messages", () => {
+  it("should return catalog with custom name for merged messages", async () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/my/dir",
     })
-    expect(cleanCatalog(getCatalogForMerge(config))).toStrictEqual(
+    expect(cleanCatalog(await getCatalogForMerge(config))).toStrictEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -273,6 +294,7 @@ describe("getCatalogForMerge", () => {
             path: "locales/{locale}/my/dir",
             include: [],
             exclude: [],
+            format,
           },
           config
         )
@@ -280,13 +302,13 @@ describe("getCatalogForMerge", () => {
     )
   })
 
-  it("should throw error if catalogsMergePath ends with slash", () => {
+  it("should throw error if catalogsMergePath ends with slash", async () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/bad/path/",
     })
     expect.assertions(1)
     try {
-      getCatalogForMerge(config)
+      await getCatalogForMerge(config)
     } catch (e) {
       expect((e as Error).message).toBe(
         'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".'
@@ -294,13 +316,13 @@ describe("getCatalogForMerge", () => {
     }
   })
 
-  it("should throw error if {locale} is omitted from catalogsMergePath", () => {
+  it("should throw error if {locale} is omitted from catalogsMergePath", async () => {
     const config = mockConfig({
       catalogsMergePath: "locales/bad/path",
     })
     expect.assertions(1)
     try {
-      getCatalogForMerge(config)
+      await getCatalogForMerge(config)
     } catch (e) {
       expect((e as Error).message).toBe(
         "Invalid catalog path: {locale} variable is missing"
@@ -309,6 +331,12 @@ describe("getCatalogForMerge", () => {
   })
 })
 describe("getCatalogForFile", () => {
+  let format: FormatterWrapper
+
+  beforeAll(async () => {
+    format = await getFormat("po", {})
+  })
+
   it("should return null if catalog cannot be found", () => {
     const catalogs = [
       new Catalog(
@@ -316,6 +344,7 @@ describe("getCatalogForFile", () => {
           name: null,
           path: "./src/locales/{locale}",
           include: ["./src/"],
+          format,
         },
         mockConfig()
       ),
@@ -330,6 +359,7 @@ describe("getCatalogForFile", () => {
         name: null,
         path: "./src/locales/{locale}/messages_{locale}",
         include: ["./src/"],
+        format,
       },
       mockConfig({ format: "po", rootDir: "." })
     )
@@ -349,6 +379,7 @@ describe("getCatalogForFile", () => {
         name: null,
         path: "./src/locales/{locale}",
         include: ["./src/"],
+        format,
       },
       mockConfig({ format: "po", rootDir: "." })
     )
@@ -366,6 +397,7 @@ describe("getCatalogForFile", () => {
         name: null,
         path: ".\\src\\locales\\{locale}",
         include: ["./src/"],
+        format,
       },
       mockConfig({ format: "po", rootDir: "." })
     )

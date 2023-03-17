@@ -17,7 +17,7 @@ export default async function command(
   options: Partial<CliExtractTemplateOptions>
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
-  const catalogs = getCatalogs(config)
+  const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: Number } = {}
 
   let commandSuccess = true

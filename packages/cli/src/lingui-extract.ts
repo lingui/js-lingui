@@ -27,7 +27,7 @@ export default async function command(
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
 
-  const catalogs = getCatalogs(config)
+  const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
@@ -189,29 +189,30 @@ if (require.main === module) {
   // Check if Watch Mode is enabled
   if (options.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
+    ;(async function initWatch() {
+      const catalogs = await getCatalogs(config)
+      let paths: string[] = []
+      let ignored: string[] = []
 
-    const catalogs = getCatalogs(config)
-    let paths: string[] = []
-    let ignored: string[] = []
+      catalogs.forEach((catalog) => {
+        paths.push(...catalog.include)
+        ignored.push(...catalog.exclude)
+      })
 
-    catalogs.forEach((catalog) => {
-      paths.push(...catalog.include)
-      ignored.push(...catalog.exclude)
-    })
+      const watcher = chokidar.watch(paths, {
+        ignored: ["/(^|[/\\])../", ...ignored],
+        persistent: true,
+      })
 
-    const watcher = chokidar.watch(paths, {
-      ignored: ["/(^|[/\\])../", ...ignored],
-      persistent: true,
-    })
+      const onReady = () => {
+        console.info(chalk.green.bold("Watcher is ready!"))
+        watcher
+          .on("add", (path) => dispatchExtract([path]))
+          .on("change", (path) => dispatchExtract([path]))
+      }
 
-    const onReady = () => {
-      console.info(chalk.green.bold("Watcher is ready!"))
-      watcher
-        .on("add", (path) => dispatchExtract([path]))
-        .on("change", (path) => dispatchExtract([path]))
-    }
-
-    watcher.on("ready", () => onReady())
+      watcher.on("ready", () => onReady())
+    })()
   } else if (program.args) {
     // this behaviour occurs when we extract files by his name
     // for ex: lingui extract src/app, this will extract only files included in src/app
