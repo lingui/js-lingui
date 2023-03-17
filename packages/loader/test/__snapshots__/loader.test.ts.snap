@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`lingui-loader should compile catalog 1`] = `
+exports[`lingui-loader should compile catalog in json format 1`] = `
+{
+  key: Message,
+  key2: [
+    Hello ,
+    [
+      name,
+    ],
+  ],
+}
+`;
+
+exports[`lingui-loader should compile catalog in po format 1`] = `
 {
   mVmaLu: [
     My name is ,

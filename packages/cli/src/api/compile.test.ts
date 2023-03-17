@@ -184,11 +184,17 @@ describe("createCompiledCatalog", () => {
     const getCompiledCatalog = (namespace: CompiledCatalogNamespace) =>
       createCompiledCatalog(
         "fr",
-        {},
+        {
+          key: "Hello {name}",
+        },
         {
           namespace,
         }
       )
+
+    it("should compile with json", () => {
+      expect(getCompiledCatalog("json")).toMatchSnapshot()
+    })
 
     it("should compile with es", () => {
       expect(getCompiledCatalog("es")).toMatchSnapshot()

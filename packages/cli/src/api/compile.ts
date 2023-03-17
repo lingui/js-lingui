@@ -4,7 +4,7 @@ import { compileMessage } from "@lingui/core/compile"
 import pseudoLocalize from "./pseudoLocalize"
 import { CompiledMessage } from "@lingui/core/src/i18n"
 
-export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | string
+export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string
 
 type CompiledCatalogType = {
   [msgId: string]: string
@@ -39,6 +39,10 @@ export function createCompiledCatalog(
     obj[key] = compile(translation, shouldPseudolocalize)
     return obj
   }, {})
+
+  if (namespace === "json") {
+    return JSON.stringify({ messages: compiledMessages })
+  }
 
   const ast = buildExportStatement(
     //build JSON.parse(<compiledMessages>) statement

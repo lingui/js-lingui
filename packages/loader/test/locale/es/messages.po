@@ -1,5 +1,0 @@
-msgid "Hello World"
-msgstr ""
-
-msgid "My name is {name}"
-msgstr "My name is {name}"
