@@ -18,7 +18,7 @@ module.exports = {
     announcementBar: {
       id: 'new_release',
       content:
-        'The v4.0.0 Pre-Release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases/tag/v4.0.0-next.0">discover its new capabilities!</a>',
+        'The v4.0.0 Pre-release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=v4.0.0">discover its new capabilities!</a>',
       backgroundColor: '#ef4242',
       textColor: '#FFFFFF',
       isCloseable: true,
