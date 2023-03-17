@@ -4,7 +4,7 @@
 
 # @lingui/vite-plugin
 
-> Vite plugin which compiles on the fly lingui catalogs. In summary, `lingui compile` command isn't required when using this plugin
+> Vite plugin that compiles Lingui catalogs on the fly. In summary, the `lingui compile` command isn't needed when using this plugin.
 
 `@lingui/vite-plugin` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 

@@ -39,7 +39,7 @@ export async function dynamicActivate(locale: string) {
 ```
 
 :::note
-If you use format which has different extension then `*.po` you need to specify `?lingui` suffix
+If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
 
 ```ts
 const { messages } = await import(`./locales/${language}.json?lingui`);
