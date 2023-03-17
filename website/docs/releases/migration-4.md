@@ -33,7 +33,6 @@ If the changes to the `I18nProvider` pose a problem to you, please open an issue
 
 No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/ref/react#uselingui).
 
-
 ### Hash-based message ID generation and Context feature
 
 The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.
