@@ -31,7 +31,7 @@ This includes components provided by Lingui, such as `Trans` or `Plural` and als
 
 If the changes to the `I18nProvider` pose a problem to you, please open an issue and explain what the problem is. Additionally, you can keep using the [v3 implementation](https://github.com/lingui/js-lingui/blob/31dcab5a9a8f88bfa8b3a2c7cd12aa2d908a1d80/packages/react/src/I18nProvider.tsx#L58) by copying it into your code base and using that instead.
 
-No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/ref/react#uselingui).
+No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/docs/ref/react.md#uselingui).
 
 ### Hash-based message ID generation and Context feature
 
