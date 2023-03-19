@@ -9,11 +9,11 @@ All i18n components render translation as text without a wrapping tag. This can 
 -   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component
 -   locally: using `render` prop or `component` on i18n components
 
-#### Global Configuration
+### Global Configuration
 
 Default rendering component can be set using `defaultComponent` prop in [`I18nProvider`](#i18nprovider). The main use case for this is rendering translations in `<Text>` component in React Native.
 
-#### Local Configuration
+### Local Configuration
 
 | Prop name   | Type                                      | Description                                    |
 |-------------| ----------------------------------------- |------------------------------------------------|
@@ -163,7 +163,7 @@ It's also possible to use `Trans` component directly without macros. In that cas
 />
 ```
 
-#### Plurals
+### Plurals
 
 If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason, you can render plurals using the plain Trans component like this:
 
