@@ -1,35 +1,31 @@
 # React API Reference
 
-Components from `@lingui/react` wrap the vanilla JS API from `lingui-i18n`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when wrapped inside pure components.
+Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when locale or messages change.
 
-## General Concepts
+## Rendering of Translations {#rendering-translations}
 
-### Rendering of Translations {#rendering-translations}
+All i18n components render translation as text without a wrapping tag. This can be customized in two different ways:
 
-All i18n components render translation as a text without a wrapping tag. This can be customized in three different ways:
+-   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component
+-   locally: using `render` prop or `component` on i18n components
 
--   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component;
--   locally: using `render` prop or `component` on i18 components
-
-#### Global Configuration
+### Global Configuration
 
 Default rendering component can be set using `defaultComponent` prop in [`I18nProvider`](#i18nprovider). The main use case for this is rendering translations in `<Text>` component in React Native.
 
-~~It's possible to pass in either a string for built-in elements (`span`, `h1`)~~, React elements or React classes. This prop has the same type as `render` and `component` prop on i18n components described below.
+### Local Configuration
 
-#### Local Configuration
-
-| Prop name   | Type                                      | Description                                  |
-|-------------| ----------------------------------------- | -------------------------------------------- |
-| `className` | string                                    | Class name to be added to `<span>` element   |
+| Prop name   | Type                                      | Description                                    |
+|-------------| ----------------------------------------- |------------------------------------------------|
+| `className` | string                                    | Class name to be added to `<span>` element     |
 | `render`    | *Function(props) -> Element \| Component* | Custom wrapper rendered as function          |
-| `component` | Component, `null`                         | Custom wrapper element to render translation |
+| `component` | Component, `null`                         | Custom wrapper component to render translation |
 
 `className` is used only for built-in components (when *render* is string).
 
 `Function(props)` props returns the translation, an id, and a message.
 
-When `component` is **React.Element** ~~or **string** (built-in tags)~~, it is rendered with the `translation` passed in as its child:
+`component` is rendered with the `translation` passed in as its child:
 
 ``` jsx
 import { Text } from "react-native";
@@ -38,7 +34,7 @@ import { Text } from "react-native";
 // renders as <Text>Link to docs</Text>
 ```
 
-To get more control over the rendering of translation, use instead the `render` method with **React.Component** (or stateless component). Component passed to `render` will receive the translation value as a `translation` prop:
+To get more control over the rendering of translation, use instead the `render` prop with a render callback. Function passed to `render` will receive the translation value as a `translation` parameter:
 
 ``` jsx
 // custom component
@@ -48,7 +44,7 @@ To get more control over the rendering of translation, use instead the `render` 
 // renders as <Icon label="Sign in" />
 ```
 
-`render` or `component` also accepts `null` value to render string without wrapping component. This can be used to override custom `defaultComponent` config.
+`render` and `component` also accept `null` value to render string without a wrapping component. This can be used to override custom `defaultComponent` config.
 
 ``` jsx
 <Trans render={null}>Heading</Trans>;
@@ -58,71 +54,24 @@ To get more control over the rendering of translation, use instead the `render` 
 // renders as "Heading"
 ```
 
-## Components
+## Lingui Context
 
-### Trans
+Message catalogs and the active locale are passed via context in [`I18nProvider`](#i18nprovider). Use the [`useLingui`](#uselingui) hook to access the Lingui context.
 
-| Prop name | Type     | Description         |
-| --------- | -------- | ------------------- |
-| `id`      | `string` | Key, the message ID |
-
-:::important
-
-Import [`Trans`](/docs/ref/macro.md#jsxmacro-Trans) macro instead of [`Trans`](#trans) if you use macros:
-
-``` jsx
-import { Trans } from "@lingui/macro"
-
-// Trans from @lingui/react won't work in this case
-// import { Trans } from "@lingui/react"
-
-<Trans>Hello, my name is {name}</Trans>
-```
-:::
-
-It's also possible to use `Trans` component directly without macros. In that case, `id` is the message being translated. `values` and `components` are arguments and components used for formatting translation:
-
-``` jsx
-<Trans id="Hello World" />;
-
-<Trans
-  id="Hello {name}"
-  values={{ name: 'Arthur' }}
-/>;
-
-// number of tag corresponds to index in `components` prop
-<Trans
-  id="Read <link>Description</link> below."
-  components={{ link: <a href="/docs" /> }}
-/>
-```
-
-#### Plurals
-
-If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason(maybe you compile your code using just TS instead of babel), you can render plurals using the plain Trans component like this:
-
-``` jsx
-import React from 'react';
-import { Trans } from '@lingui/react';
-
-<Trans
-   id="{count, plural, =1 {car} other {cars}}"
-   values={{ count: cars.length }}
-></Trans>
-```
-
-## Providers
-
-Message catalogs and the active locale are passed to the context in [`I18nProvider`](#i18nprovider). Use [`useLingui`](#uselingui) hook to access Lingui context.
+Lingui context object is exported from the package (`import { LinguiContext } from '@lingui/react'`). It is not expected that you would need it, but it enables advanced scenarios if the behavior of `I18nProvider` doesn't fit your needs.
 
 ### I18nProvider
 
-| Prop name                   | Type                  | Description                                                                   |
-| --------------------------- | --------------------- | ----------------------------------------------------------------------------- |
-| `I18n`                      | `i18n`                | The i18n instance (usually the one imported from `@lingui/core`)              |
-| `children`                  | `React.ReactNode`     | React Children node                                                           |
-| `defaultComponent`          | `React.ComponentType` | A React component for rendering <Trans\> within this component (Not required) |
-| `forceRenderOnLocaleChange` | `boolean`             | Force re-render when locale changes (default: true)                           |
+`I18nProvider` provides Lingui context to all components in the subtree. It should be rendered as top-level component of your application.
+
+`I18nProvider` renders its children only after a locale is activated. This ensures that the components consuming `i18n` have access to the translations.
+Additionally, it subscribes to change events emitted by the `i18n` object and re-renders all components consuming the Lingui context when messages are updated or when a new locale is activated.
+
+| Prop name          | Type                  | Description                                                               |
+|--------------------|-----------------------|---------------------------------------------------------------------------|
+| `i18n`             | `I18n`                | The i18n instance (usually the one imported from `@lingui/core`)          |
+| `children`         | `React.ReactNode`     | React Children node                                                       |
+| `defaultComponent` | `React.ComponentType` | A React component within which translation strings will be rendered (optional) |
 
 `defaultComponent` has the same meaning as `component` in other i18n components. [`Rendering of translations`](#rendering-translations) is explained at the beginning of this document.
 
@@ -152,38 +101,11 @@ const App = () => {
 }
 ```
 
-`forceRenderOnLocaleChange` is true by default and it ensures that:
-
-> -   Children of `I18nProvider` aren't rendered before locales are
->     loaded.
-> -   When locale changes, the whole element tree below `I18nProvider`
->     is re-rendered.
-
-Disable `forceRenderOnLocaleChange` when you have specific needs to handle initial state before locales are loaded and when locale changes.
-
-This component should live above all i18n components. A good place is as a top-level application component. However, if the `locale` is stored in a `redux` store, this component should be inserted below `react-redux/Provider`:
-
-``` jsx
-import React from 'react';
-import { I18nProvider } from '@lingui/react';
-import { i18n } from '@lingui/core';
-import { messages as messagesEn } from './locales/en/messages.js';
-
-i18n.load({
-   en: messagesEn,
-});
-i18n.activate('en');
-
-const App = () => {
-   return (
-      <I18nProvider i18n={i18n}>
-         // rest of the app
-      </I18nProvider>
-   );
-}
-```
-
 ### useLingui
+
+This hook allows access to the Lingui context. It returns an object with the same values that were passed to the `I18nProvider` component.
+
+Components that use `useLingui` hook will re-render when locale and / or catalogs change, ensuring that the translations are always up-to-date.
 
 ``` jsx
 import React from "react"
@@ -194,4 +116,64 @@ const CurrentLocale = () => {
 
    return <span>Current locale: {i18n.locale}</span>
 }
+```
+
+## Components
+
+The `@lingui/react` package provides `Trans` component to render translations. However, you're more likely to use [macros](/docs/ref/macro.md) instead because they are more convenient and easier to use.
+
+This section is intended for reference purposes.
+
+### Trans
+
+| Prop name | Type     | Description         |
+| --------- | -------- | ------------------- |
+| `id`      | `string` | Key, the message ID |
+
+:::important
+
+Import [`Trans`](/docs/ref/macro.md#trans) macro instead of [`Trans`](#trans) component if you use macros:
+
+``` jsx
+import { Trans } from "@lingui/macro"
+
+// Trans from @lingui/react won't work in this case
+// import { Trans } from "@lingui/react"
+
+<Trans>Hello, my name is {name}</Trans>
+```
+:::
+
+It's also possible to use `Trans` component directly without macros. In that case, `id` identifies the message being translated. `values` and `components` are arguments and components used for formatting translation:
+
+``` jsx
+<Trans id="my.message" message="Hello World"/>
+
+<Trans
+  id="greeting"
+  message="Hello {name}"
+  values={{ name: 'Arthur' }}
+/>
+
+// number of tag corresponds to index in `components` prop
+<Trans
+  id="link"
+  message="Read <link>Description</link> below."
+  components={{ link: <a href="/docs" /> }}
+/>
+```
+
+### Plurals
+
+If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason, you can render plurals using the plain Trans component like this:
+
+``` jsx
+import React from 'react';
+import { Trans } from '@lingui/react';
+
+<Trans
+   id="my.plural.msg"
+   message="{count, plural, =1 {car} other {cars}}"
+   values={{ count: cars.length }}
+/>
 ```

@@ -21,6 +21,18 @@ module.exports = {
 }
 ```
 
+### I18nProvider no longer remounts its children on locale change
+
+Previously, the `I18nProvider` remounted its children on locale change. This had the effect that the whole app was re-rendered with the new locale and all strings were rendered correctly translated.
+Apart from not being very performant, this approach had the drawback that the state of the app was lost - all components were re-mounted and their state was reset. This is not a standard behavior for React Context providers and could cause some confusion.
+
+In v4, the `I18nProvider` no longer remounts its children on locale change. Instead, when locale changes, the context value provided by `I18nProvider` is updated and all components that consume the provided React Context are re-rendered with the new locale.
+This includes components provided by Lingui, such as `Trans` or `Plural` and also custom components that use the `useLingui` hook. This should result in a more predictable behavior.
+
+If the changes to the `I18nProvider` pose a problem to you, please open an issue and explain what the problem is. Additionally, you can keep using the [v3 implementation](https://github.com/lingui/js-lingui/blob/31dcab5a9a8f88bfa8b3a2c7cd12aa2d908a1d80/packages/react/src/I18nProvider.tsx#L58) by copying it into your code base and using that instead.
+
+No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/docs/ref/react.md#uselingui).
+
 ### Hash-based message ID generation and Context feature
 
 The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.

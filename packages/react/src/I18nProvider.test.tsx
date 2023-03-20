@@ -3,44 +3,58 @@ import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { mockConsole } from "@lingui/jest-mocks"
 
 describe("I18nProvider", () => {
-  it("should pass i18n context to wrapped component", () => {
-    const i18n = setupI18n({
-      locale: "cs",
-      messages: {
-        cs: {},
-      },
-    })
+  it(
+    "should pass i18n context to wrapped components, " +
+      "and re-render components that consume the context through useLingui()",
+    () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {},
+          cs: {},
+        },
+      })
+      let staticRenderCount = 0,
+        dynamicRenderCount = 0
+      const WithoutLinguiHook = (props) => {
+        staticRenderCount++
+        return <div {...props}>{props.i18n.locale}</div>
+      }
 
-    const WithoutLingui = (props) => {
-      return <div {...props}>{props?.i18n?.locale}</div>
+      const WithLinguiHook = (props) => {
+        const { i18n } = useLingui()
+        dynamicRenderCount++
+        return <div {...props}>{i18n.locale}</div>
+      }
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <WithoutLinguiHook i18n={i18n} data-testid="static" />
+          <WithLinguiHook data-testid="dynamic" />
+        </I18nProvider>
+      )
+
+      act(() => {
+        i18n.activate("cs")
+      })
+
+      expect(getByTestId("static").textContent).toEqual("en")
+      expect(getByTestId("dynamic").textContent).toEqual("cs")
+
+      act(() => {
+        i18n.activate("en")
+      })
+
+      expect(getByTestId("static").textContent).toEqual("en")
+      expect(getByTestId("dynamic").textContent).toEqual("en")
+      expect(staticRenderCount).toEqual(1)
+      expect(dynamicRenderCount).toEqual(3) // initial, cs, en
     }
+  )
 
-    const WithLingui = (props) => {
-      const { i18n } = useLingui()
-      return <WithoutLingui i18n={i18n} {...props} />
-    }
-
-    const { getByTestId } = render(
-      <I18nProvider i18n={i18n}>
-        <WithoutLingui data-testid="not-composed" />
-        <WithLingui data-testid="composed" />
-      </I18nProvider>
-    )
-
-    act(() => {
-      i18n.load("cs", {})
-      i18n.activate("cs")
-    })
-
-    expect(getByTestId("not-composed").textContent).toEqual("")
-    expect(getByTestId("composed").textContent).toEqual("cs")
-  })
-
-  it("should subscribe for locale changes", () => {
+  it("should subscribe for locale changes upon mount", () => {
     const i18n = setupI18n({
       locale: "cs",
       messages: {
@@ -55,7 +69,7 @@ describe("I18nProvider", () => {
         <div />
       </I18nProvider>
     )
-    expect(i18n.on).toBeCalledWith("change", expect.anything())
+    expect(i18n.on).toBeCalledWith("change", expect.any(Function))
   })
 
   it("should unsubscribe for locale changes on unmount", () => {
@@ -78,49 +92,89 @@ describe("I18nProvider", () => {
     expect(unsubscribe).toBeCalled()
   })
 
-  it("should re-render on locale changes", async () => {
-    expect.assertions(4)
+  it("I18nProvider renders `null` until locale is activated. Children are rendered after activation.", () => {
+    expect.assertions(3)
 
-    const i18n = setupI18n({
-      messages: { en: {} },
-    })
+    const i18n = setupI18n()
 
-    const CurrentLocale = () => {
-      return <span>{i18n.locale}</span>
+    const CurrentLocaleStatic = () => {
+      return <span data-testid="static">1_{i18n.locale}</span>
+    }
+    const CurrentLocaleContextConsumer = () => {
+      const { i18n } = useLingui()
+      return <span data-testid="dynamic">2_{i18n.locale}</span>
     }
 
-    let container: HTMLElement
+    const { container } = render(
+      <I18nProvider i18n={i18n}>
+        <CurrentLocaleStatic />
+        <CurrentLocaleContextConsumer />
+      </I18nProvider>
+    )
 
-    mockConsole((console) => {
-      const res = render(
-        <I18nProvider i18n={i18n}>
-          <CurrentLocale />
-        </I18nProvider>
-      )
-
-      container = res.container
-      expect(console.log.mock.calls[0][0]).toMatchInlineSnapshot(
-        `"I18nProvider did not render. A call to i18n.activate still needs to happen or forceRenderOnLocaleChange must be set to false."`
-      )
-    })
-
-    // First render — no output, because locale isn't activated
-    expect(container.textContent).toEqual("")
-
-    act(() => {
-      i18n.load("en", {})
-    })
-    // Again, no output. Catalog is loaded, but locale
-    // still isn't activated.
+    // First render — locale isn't activated
     expect(container.textContent).toEqual("")
 
     act(() => {
       i18n.load("cs", {})
+    })
+    // Catalog is loaded, but locale still isn't activated.
+    expect(container.textContent).toEqual("")
+
+    act(() => {
       i18n.activate("cs")
     })
-    // After loading and activating locale, it's finally rendered.
-    expect(container.textContent).toEqual("cs")
+
+    // After loading and activating locale, components are rendered for the first time
+    expect(container.textContent).toEqual("1_cs2_cs")
   })
+
+  it(
+    "given 'en' locale, if activate('cs') call happens before i18n.on-change subscription in useEffect(), " +
+      "I18nProvider detects that it's stale and re-renders with the 'cs' locale value",
+    () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {} },
+      })
+      let renderCount = 0
+
+      const CurrentLocaleContextConsumer = () => {
+        const { i18n } = useLingui()
+        renderCount++
+        return <span data-testid="child">{i18n.locale}</span>
+      }
+
+      /**
+       * Note that we're doing exactly what the description says:
+       * but to simulate the equivalent situation, we pass our own mock subscriber
+       * to i18n.on("change", ...) and in it we call i18n.activate("cs") ourselves
+       * so that the condition in useEffect() is met and the component re-renders
+       * */
+      const mockSubscriber = jest.fn(() => {
+        i18n.load("cs", {})
+        i18n.activate("cs")
+        return () => {
+          // unsubscriber - noop to make TS happy
+        }
+      })
+      jest.spyOn(i18n, "on").mockImplementation(mockSubscriber)
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <CurrentLocaleContextConsumer />
+        </I18nProvider>
+      )
+
+      expect(mockSubscriber).toHaveBeenCalledWith(
+        "change",
+        expect.any(Function)
+      )
+
+      expect(getByTestId("child").textContent).toBe("cs")
+      expect(renderCount).toBe(2)
+    }
+  )
 
   it("should render children", () => {
     const i18n = setupI18n({
