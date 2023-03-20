@@ -1,6 +1,6 @@
 import * as React from "react"
 import { render } from "@testing-library/react"
-import { Trans, I18nProvider } from "@lingui/react"
+import { Trans, I18nProvider, TransRenderProps } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 
 describe("Trans component", function () {
@@ -54,7 +54,7 @@ describe("Trans component", function () {
     console.error = originalConsole
   })
 
-  it("should throw a console.error if using twice props", function () {
+  it("should throw a console.error if using `render` and `component` props at the same time", function () {
     const originalConsole = console.error
     console.error = jest.fn()
 
@@ -184,7 +184,7 @@ describe("Trans component", function () {
       expect(element).toEqual(`<h1 id="Headline">Headline</h1>`)
     })
 
-    it("should render function", function () {
+    it("supports render callback function", function () {
       const spy = jest.fn()
       text(
         <Trans
@@ -201,14 +201,15 @@ describe("Trans component", function () {
         id: "ID",
         message: "Default",
         translation: "Translation",
+        children: "Translation",
         isTranslated: true,
       })
     })
 
     it("should take defaultComponent prop with a custom component", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const span = render(
@@ -220,9 +221,9 @@ describe("Trans component", function () {
     })
 
     it("should ignore defaultComponent when render is null", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const translation = render(
@@ -234,9 +235,9 @@ describe("Trans component", function () {
     })
 
     it("should ignore defaultComponent when component is null", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const translation = render(
@@ -250,7 +251,7 @@ describe("Trans component", function () {
 
   describe("component prop rendering", function () {
     it("should render class component as simple prop", function () {
-      class ClassComponent extends React.Component {
+      class ClassComponent extends React.Component<TransRenderProps> {
         render() {
           return <div>Headline</div>
         }
@@ -259,27 +260,32 @@ describe("Trans component", function () {
       expect(element).toEqual("<div>Headline</div>")
     })
 
-    it("should render functional component as simple prop", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        id: any
-        children?: React.ReactNode
-      }) => {
+    it("should render function component as simple prop", function () {
+      const propsSpy = jest.fn()
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
+        propsSpy(props)
         const [state] = React.useState("value")
         return <div id={props.id}>{state}</div>
       }
+
       const element = html(<Trans component={ComponentFC} id="Headline" />)
-      expect(element).toEqual(`<div>value</div>`)
+      expect(element).toEqual(`<div id="Headline">value</div>`)
+      expect(propsSpy).toHaveBeenCalledWith({
+        id: "Headline",
+        isTranslated: false,
+        message: undefined,
+        translation: "Headline",
+        children: "Headline",
+      })
     })
   })
 
-  describe("I18nProvider defaulComponent accepts render-like props", function () {
-    const DefaultComponent: React.FunctionComponent = (props: {
-      children?: React.ReactNode
-      id: string
-      translation: string
-      message: string
-      isTranslated: boolean
-    }) => (
+  describe("I18nProvider defaultComponent accepts render-like props", function () {
+    const DefaultComponent: React.FunctionComponent<TransRenderProps> = (
+      props
+    ) => (
       <>
         <div data-testid="children">{props.children}</div>
         {props.id && <div data-testid="id">{props.id}</div>}

@@ -4,11 +4,11 @@ import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 
 export type TransRenderProps = {
-  id?: string
-  translation?: React.ReactNode
-  children?: React.ReactNode
+  id: string
+  translation: React.ReactNode
+  children: React.ReactNode
   message?: string | null
-  isTranslated?: boolean
+  isTranslated: boolean
 }
 
 export type TransProps = {
@@ -69,14 +69,15 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
     return translation as unknown as React.ReactElement<any, any>
   }
 
-  const FallbackComponent = (defaultComponent ||
-    React.Fragment) as React.ComponentType<any>
+  const FallbackComponent: React.ComponentType<TransRenderProps> =
+    defaultComponent || RenderFragment
 
-  const i18nProps = {
+  const i18nProps: TransRenderProps = {
     id,
     message,
     translation,
     isTranslated: id !== translation && message !== translation,
+    children: translation, // for type-compatibility with `component` prop
   }
 
   // Validation of `render` and `component` props
@@ -94,7 +95,7 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
     console.error(
       `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
     )
-    return <FallbackComponent {...i18nProps}>{translation}</FallbackComponent>
+    return React.createElement(FallbackComponent, i18nProps, translation)
   }
 
   // Rendering using a render prop
@@ -104,12 +105,14 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   }
 
   // `component` prop has a higher precedence over `defaultComponent`
-  const Component = (component || FallbackComponent) as React.ComponentType<any>
-  const DefaultComponent = defaultComponent
+  const Component = component || FallbackComponent
 
-  return DefaultComponent && !component ? (
-    <DefaultComponent {...i18nProps}>{translation}</DefaultComponent>
-  ) : (
-    <Component>{translation}</Component>
-  )
+  const RenderedComponent =
+    defaultComponent && !component ? defaultComponent : Component
+  return React.createElement(RenderedComponent, i18nProps, translation)
+}
+
+const RenderFragment = ({ children }: TransRenderProps) => {
+  // cannot use React.Fragment directly because we're passing in props that it doesn't support
+  return <React.Fragment>{children}</React.Fragment>
 }
