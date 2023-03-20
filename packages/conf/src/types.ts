@@ -186,9 +186,6 @@ export type LinguiConfig = {
      */
     flow?: boolean
   }
-  /**
-   * @see type GeneratorOptions from "@babel/core"
-   */
   compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
   extractors?: (string | ExtractorType)[]

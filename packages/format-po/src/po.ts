@@ -15,7 +15,18 @@ const joinOrigin = (origin: [file: string, line?: number]): string =>
   origin.join(":")
 
 export type PoFormatterOptions = {
+  /**
+   * Print places where message is used
+   *
+   * @default true
+   */
   origins?: boolean
+
+  /**
+   * Print line numbers in origins
+   *
+   * @default true
+   */
   lineNumbers?: boolean
 }
 

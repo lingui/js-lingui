@@ -13,7 +13,7 @@ In the case of TypeScript based config you can use ESM format and *export defaul
 
 Default config:
 
-``` json
+```json
 {
  "catalogs": [{
    "path": "<rootDir>/locale/{locale}/messages",
@@ -39,7 +39,7 @@ Default config:
 
 Default:
 
-``` js
+```js
 [{
    path: "<rootDir>/locale/{locale}/messages",
    include: ["<rootDir>"],
@@ -58,7 +58,7 @@ Patterns in `include` and `exclude` are passed to [minimatch](https://github.com
 
 `{name}` token in `path` is replaced with a catalog name. Source path must include `{name}` pattern as well and it works as a `*` glob pattern:
 
-``` js
+```json
 {
    catalogs: [{
       path: "./components/{name}/locale/{locale}",
@@ -73,7 +73,7 @@ Let's assume we use `locales: ["en", "cs"]` and `format: "po"` in all examples.
 
 #### All catalogs in one directory
 
-``` js
+```json
 {
    catalogs: [{
       path: "locales/{locale}",
@@ -89,7 +89,7 @@ locales/
 
 #### Catalogs in separate directories
 
-``` js
+```js
 {
    catalogs: [{
       path: "locales/{locale}/messages",
@@ -107,7 +107,7 @@ locales
 
 #### Separate catalogs per component, placed inside component dir
 
-``` js
+```json
 {
    catalogs: [{
       path: "components/{name}/locale/{locale}",
@@ -134,7 +134,7 @@ components/
 
 #### Separate catalogs per component, placed inside shared directory
 
-``` js
+```json
 {
    catalogs: [{
       path: "locale/{locale}/{name}",
@@ -171,7 +171,7 @@ Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli
 
 Use CommonJS exports:
 
-``` js
+```js
 /* eslint-disable */module.exports={messages: {"..."}}
 ```
 
@@ -179,7 +179,7 @@ Use CommonJS exports:
 
 Use ES6 named export:
 
-``` js
+```js
 /* eslint-disable */export const messages = {"..."}
 ```
 
@@ -187,11 +187,11 @@ Use ES6 named export:
 
 Use ES6 named export + .ts file with an additional `{compiledFile}.d.ts` file:
 
-``` js
+```js
 /* eslint-disable */export const messages = {"..."}
 ```
 
-``` js
+```js
 import { Messages } from '@lingui/core';
 declare const messages: Messages;
 export { messages };
@@ -203,7 +203,7 @@ Assign compiled messages to `window` or `global` object. Specify an identifier a
 
 For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` creates file similar to this:
 
-``` js
+```js
 /* eslint-disable */window.i18n={messages: {"..."}}
 ```
 
@@ -233,7 +233,7 @@ Specify extra options used to parse source files when messages are being extract
 
 Default:
 
-``` json
+```json
 {
    "minified": true,
    "jsescOption": {
@@ -244,7 +244,7 @@ Default:
 
 Specify extra babel options used to generate files when messages are being compiled. We use internally `@babel/generator` that accepts some configuration for generating code with/out ASCII characters. These are all the options available: [jsesc](https://github.com/mathiasbynens/jsesc).
 
-``` json
+```json
 {
   "compilerBabelOptions": {
     "jsescOption": {
@@ -262,7 +262,7 @@ Default: `{}`
 
 `fallbackLocales` by default is using [CLDR Parent Locales](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json), unless you disable it with a `false`:
 
-``` json
+```json
 {
   "fallbackLocales": false
 }
@@ -270,7 +270,7 @@ Default: `{}`
 
 `fallbackLocales` object lets us configure fallback locales to each locale instance.
 
-``` json
+```json
 {
   "fallbackLocales": {
       "en-US": ["en-GB", "en"],
@@ -283,7 +283,7 @@ On this example if any translation isn't found on `en-US` then will search on `e
 
 Also, we can configure a default one for everything:
 
-``` json
+```json
 {
   "fallbackLocales": {
       "en-US": ["en-GB", "en"],
@@ -301,60 +301,28 @@ If `fallbackLocales` is `false` default message or message ID is used instead.
 
 Default: `po`
 
-Format of message catalogs. Possible values are:
+Format of message catalogs. By default `po` formatter is used. Other formats available as separate packages.
 
-- ### po
+```js
+// lingui.config.{js,ts}
+import { formatter } from "@lingui/format-po"
 
-  Gettext PO file:
+export default {
+  [...]
+  format: formatter({ lineNumbers: false })
+}
+```
 
-  ``` po
-  #, Comment for translators
-  #: src/App.js:4, src/Component.js:2
-  msgid "MessageID"
-  msgstr "Translated Message"
-  ```
+Official LinguiJS format packages:
 
-- ### po-gettext
+- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po) Default used in LinguiJS
+- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext) Gettext PO format with gettext-style plurals
+- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) Different JSON format
+- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) CSV format
 
-  Uses PO files but with gettext-style plurals, see `po-gettext`.
+Please see individual packages readme for configuration parameters.
 
-- ### minimal
-
-  Simple JSON with message ID -> translation mapping. All metadata (default message, comments for translators, message origin, etc) are stripped:
-
-  ``` json
-  {
-    "MessageID": "Translated Message"
-  }
-  ```
-
-- ### lingui
-
-  Raw catalog data serialized to JSON:
-
-  ``` json
-  {
-    "MessageID": {
-      "translation": "Translated Message",
-      "message": "Default string (from source code)",
-      "origin": [
-        ["path/to/src.js", 42]
-      ]
-    }
-  }
-  ```
-
-  Origin is filename and line number from where the message was extracted.
-
-  Note that origins may produce a large amount of merge conflicts. Origins can be disabled by setting `origins: false` in [`formatOptions`](#formatoptions).
-
-  Also, you can disable just `lineNumbers` but keep `origins`.
-
-## formatOptions
-
-Default: `{ origins: true, lineNumbers: true }`
-
-Object for configuring message catalog output. See individual formats for options.
+Visit [Advanced: Custom Formatter](/guides/custom-formatter.md) to learn how to create custom formatter.
 
 ## locales
 
@@ -402,7 +370,7 @@ Module path with exported i18n object. The first value in array is module path, 
 
 You only need to set this value if you use custom object created using [`setupI18n`](/docs/ref/core.md#setupi18n):
 
-``` jsx
+```jsx
 // If you import `i18n` object from custom module like this:
 import { i18n } from "./custom-i18n-config"
 
@@ -412,14 +380,14 @@ import { i18n } from "./custom-i18n-config"
 
 You may use a different named export:
 
-``` jsx
+```jsx
 import { myI18n } from "./custom-i18n-config"
 // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
 In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro.md#trans) is imported. To do that, pass an object to `runtimeConfigModule`:
 
-``` jsx
+```jsx
 // If you import `i18n` object from custom module like this:
 import { Trans, i18n } from "./custom-config"
 
@@ -444,7 +412,7 @@ Default: `[babel]`
 
 Extractors it's the way to customize which extractor you want for your codebase.
 
-``` js
+```js
 {
    "extractors": [
       myCustomExtractor,

@@ -8,8 +8,24 @@ import {
 } from "@lingui/conf"
 
 export type JsonFormatterOptions = {
+  /**
+   * Print places where message is used
+   *
+   * @default true
+   */
   origins?: boolean
+
+  /**
+   * Print line numbers in origins
+   *
+   * @default true
+   */
   lineNumbers?: boolean
+  /**
+   * Different styles how information could be printed.
+   *
+   * @default "lingui"
+   */
   style?: "lingui" | "minimal"
 }
 
