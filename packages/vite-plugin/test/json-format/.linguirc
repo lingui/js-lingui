@@ -1,7 +1,0 @@
-{
-  "locales": ["en"],
-  "catalogs": [{
-    "path": "<rootDir>/locale/{locale}"
-  }],
-  "format": "minimal"
-}

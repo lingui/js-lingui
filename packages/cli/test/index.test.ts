@@ -7,7 +7,6 @@ import os from "os"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
-import mockDate from "mockdate"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 
 export function compareFolders(pathA: string, pathB: string) {
@@ -33,11 +32,11 @@ async function prepare(caseFolderName: string) {
 
 describe("E2E Extractor Test", () => {
   beforeEach(async () => {
-    mockDate.set(new Date(2023, 2, 15, 10, 0, 0).toUTCString())
+    jest.useFakeTimers().setSystemTime(new Date("2023-03-15T10:00Z").getTime())
   })
 
   afterEach(() => {
-    mockDate.reset()
+    jest.useRealTimers()
   })
 
   it("Should collect messages from files and write catalog in PO format", async () => {

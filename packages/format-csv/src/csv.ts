@@ -29,7 +29,7 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
   return messages
 }
 
-export default function (): CatalogFormatter {
+export function formatter(): CatalogFormatter {
   return {
     catalogExtension: ".csv",
 

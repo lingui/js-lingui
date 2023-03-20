@@ -53,7 +53,7 @@
     "@lingui/babel-plugin-extract-messages": "4.0.0-next.2",
     "@lingui/conf": "4.0.0-next.2",
     "@lingui/core": "4.0.0-next.2",
-    "@messageformat/parser": "^5.0.0",
+    "@lingui/format-po": "4.0.0-next.2",
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
     "chokidar": "3.5.1",
@@ -65,13 +65,9 @@
     "glob": "^7.1.4",
     "inquirer": "^7.3.3",
     "micromatch": "4.0.2",
-    "mkdirp": "^1.0.4",
-    "node-gettext": "^3.0.0",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
-    "papaparse": "^5.3.0",
     "pkg-up": "^3.1.0",
-    "plurals-cldr": "^1.0.4",
     "pofile": "^1.1.4",
     "pseudolocale": "^1.1.0",
     "ramda": "^0.27.1",
@@ -82,9 +78,6 @@
     "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
-    "@types/papaparse": "^5.2.3",
-    "@types/plurals-cldr": "^1.0.1",
-    "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.2"
+    "mock-fs": "^5.2.0"
   }
 }

@@ -1,20 +1,18 @@
 import fs from "fs"
 import path from "path"
-import mockDate from "mockdate"
-import { mockConsole } from "@lingui/jest-mocks"
 
-import createFormatter from "./po"
-import { CatalogType } from "../types"
+import { formatter as createFormatter } from "./po"
+import { CatalogType } from "@lingui/conf"
 
 describe("pofile format", () => {
   afterEach(() => {
-    mockDate.reset()
+    jest.useRealTimers()
   })
 
   it("should write catalog in pofile format", () => {
     const format = createFormatter({ origins: true })
 
-    mockDate.set("2018-08-27T10:00Z")
+    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {
@@ -133,27 +131,6 @@ describe("pofile format", () => {
     expect(actual).toMatchSnapshot()
   })
 
-  it("should throw away additional msgstr if present", () => {
-    const format = createFormatter()
-
-    const po = `
-      #, explicit-id
-      msgid "withMultipleTranslation"
-      msgstr[0] "This is just fine"
-      msgstr[1] "Throw away that one"
-    `
-
-    mockConsole((console) => {
-      const actual = format.parse(po)
-      expect(console.warn).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "Multiple translations for item with key withMultipleTranslation is not supported and it will be ignored."
-        )
-      )
-      expect(actual).toMatchSnapshot()
-    })
-  })
-
   it("should not include origins if origins option is false", () => {
     const format = createFormatter({ origins: false })
 
@@ -181,8 +158,7 @@ describe("pofile format", () => {
 
   it("should not include lineNumbers if lineNumbers option is false", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
-
-    mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
+    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {
@@ -235,8 +211,7 @@ describe("pofile format", () => {
 
   it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
-
-    mockDate.set(new Date(2018, 7, 27, 10, 0, 0).toUTCString())
+    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {

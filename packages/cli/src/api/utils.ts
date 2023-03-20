@@ -88,13 +88,12 @@ export function hasYarn() {
   return fs.existsSync(path.resolve("yarn.lock"))
 }
 
-export function makeInstall() {
+export function makeInstall(packageName: string, dev: boolean = false) {
   const withYarn = hasYarn()
 
-  return (packageName: string, dev: boolean = false) =>
-    withYarn
-      ? `yarn add ${dev ? "--dev " : ""}${packageName}`
-      : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
+  return withYarn
+    ? `yarn add ${dev ? "--dev " : ""}${packageName}`
+    : `npm install ${dev ? "--save-dev" : "--save"} ${packageName}`
 }
 
 /**

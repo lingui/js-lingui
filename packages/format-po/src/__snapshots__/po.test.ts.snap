@@ -162,22 +162,6 @@ exports[`pofile format should read catalog in pofile format 1`] = `
 }
 `;
 
-exports[`pofile format should throw away additional msgstr if present 1`] = `
-{
-  withMultipleTranslation: {
-    comments: [],
-    context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
-    obsolete: false,
-    origin: [],
-    translation: This is just fine,
-  },
-}
-`;
-
 exports[`pofile format should write catalog in pofile format 1`] = `
 msgid ""
 msgstr ""

@@ -1,4 +1,8 @@
-import { FallbackLocales, LinguiConfig, LinguiConfigNormalized } from "./types"
+import type {
+  FallbackLocales,
+  LinguiConfig,
+  LinguiConfigNormalized,
+} from "./types"
 import chalk from "chalk"
 import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
@@ -68,6 +72,7 @@ export const defaultConfig: LinguiConfig = {
 }
 export const exampleConfig = {
   ...defaultConfig,
+  format: multipleValidOptions({}, "po"),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },

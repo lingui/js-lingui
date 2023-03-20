@@ -1,12 +1,18 @@
 import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
-import { joinOrigin, splitOrigin } from "../utils"
-import { CatalogType, MessageType } from "../types"
-import { CatalogFormatter } from "@lingui/conf"
-import { generateMessageId } from "../generateMessageId"
+import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
+import { generateMessageId } from "@lingui/cli/api"
 
 type POItem = InstanceType<typeof PO.Item>
+
+const splitOrigin = (origin: string) => {
+  const [file, line] = origin.split(":")
+  return [file, line ? Number(line) : null] as [file: string, line: number]
+}
+
+const joinOrigin = (origin: [file: string, line?: number]): string =>
+  origin.join(":")
 
 export type PoFormatterOptions = {
   origins?: boolean
@@ -16,6 +22,7 @@ export type PoFormatterOptions = {
 function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message, message.context)
 }
+
 function getCreateHeaders(language: string): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -29,16 +36,7 @@ function getCreateHeaders(language: string): PO["headers"] {
 
 const EXPLICIT_ID_FLAG = "explicit-id"
 
-export const serialize = (
-  catalog: CatalogType,
-  options: PoFormatterOptions,
-  postProcessItem?: (
-    item: POItem,
-    message: MessageType,
-    id: string,
-    isGeneratedId: boolean
-  ) => POItem
-) => {
+const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   return Object.keys(catalog).map((id) => {
     const message = catalog[id]
 
@@ -83,19 +81,12 @@ export const serialize = (
     }
     item.obsolete = message.obsolete
 
-    return postProcessItem
-      ? postProcessItem(item, message, id, _isGeneratedId)
-      : item
+    return item
   })
 }
 
-export function deserialize(
-  items: POItem[],
-  onItem: (item: POItem) => void
-): CatalogType {
+function deserialize(items: POItem[]): CatalogType {
   return items.reduce<CatalogType>((catalog, item) => {
-    onItem(item)
-
     const message: MessageType = {
       translation: item.msgstr[0],
       extractedComments: item.extractedComments || [],
@@ -119,15 +110,7 @@ export function deserialize(
   }, {})
 }
 
-function validateItem(item: POItem): void {
-  if (item.msgstr.length > 1) {
-    console.warn(
-      `Multiple translations for item with key ${item.msgid} is not supported and it will be ignored.`
-    )
-  }
-}
-
-export default function (options: PoFormatterOptions = {}) {
+export function formatter(options: PoFormatterOptions = {}) {
   options = {
     origins: true,
     lineNumbers: true,
@@ -140,7 +123,7 @@ export default function (options: PoFormatterOptions = {}) {
 
     parse(content: string): CatalogType {
       const po = PO.parse(content)
-      return deserialize(po.items, validateItem)
+      return deserialize(po.items)
     },
 
     serialize(

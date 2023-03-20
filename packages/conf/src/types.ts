@@ -1,5 +1,17 @@
-import type { GeneratorOptions } from "@babel/core"
-
+/**
+ * @deprecated please pass formatter directly to `format`
+ *
+ * @example
+ * ```js
+ * // lingui.config.{js,ts}
+ * import {formatter} from "@lingui/format-po"
+ *
+ * export default {
+ *   [...]
+ *   format: formatter({lineNumbers: false}),
+ * }
+ * ```
+ */
 export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
 
 export type ExtractorCtx = {
@@ -174,7 +186,10 @@ export type LinguiConfig = {
      */
     flow?: boolean
   }
-  compilerBabelOptions?: GeneratorOptions
+  /**
+   * @see type GeneratorOptions from "@babel/core"
+   */
+  compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
   extractors?: (string | ExtractorType)[]
   prevFormat?: CatalogFormat

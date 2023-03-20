@@ -1,31 +1,18 @@
-import { format as formatDate } from "date-fns"
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
 // @ts-ignore
 import gettextPlurals from "node-gettext/lib/plurals"
 
-import { CatalogType, MessageType } from "../types"
-import type { CatalogFormatter } from "@lingui/conf"
-import { deserialize, serialize as serializePo } from "./po"
+import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
+import { generateMessageId } from "@lingui/cli/api"
+import { formatter as poFormatter } from "@lingui/format-po"
+import type { PoFormatterOptions } from "@lingui/format-po"
 
 type POItem = InstanceType<typeof PO.Item>
 
-export type PoGettextFormatterOptions = {
-  origins?: boolean
-  lineNumbers?: boolean
+export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
-}
-
-function getCreateHeaders(language: string): PO["headers"] {
-  return {
-    "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
-    "MIME-Version": "1.0",
-    "Content-Type": "text/plain; charset=utf-8",
-    "Content-Transfer-Encoding": "8bit",
-    "X-Generator": "@lingui/cli",
-    ...(language ? { Language: language } : {}),
-  }
 }
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
@@ -151,15 +138,6 @@ function serializePlurals(
   return item
 }
 
-export const serialize = (
-  catalog: CatalogType,
-  options: PoGettextFormatterOptions
-) => {
-  return serializePo(catalog, options, (item, message, id, isGeneratedId) =>
-    serializePlurals(item, message, id, isGeneratedId, options)
-  )
-}
-
 /**
  * Returns ICU case labels in the order that gettext lists localized messages, e.g. 0,1,2 => `["one", "two", "other"]`.
  *
@@ -260,49 +238,49 @@ const convertPluralsToICU = (
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
 }
 
-export function parse(raw: string) {
-  const po = PO.parse(raw)
-
-  // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
-  // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
-  // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-  let pluralForms = getPluralCases(po.headers.Language)
-
-  return deserialize(po.items, (item) => {
-    convertPluralsToICU(item, pluralForms, po.headers.Language)
-  })
-}
-
-export default function (options: PoGettextFormatterOptions = {}) {
+export function formatter(options: PoGettextFormatterOptions = {}) {
   options = {
     origins: true,
     lineNumbers: true,
     ...options,
   }
 
+  const formatter = poFormatter(options)
+
   return {
     catalogExtension: ".po",
     templateExtension: ".pot",
 
     parse(content): CatalogType {
-      return parse(content)
+      const po = PO.parse(content)
+
+      // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
+      // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
+      // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
+      let pluralForms = getPluralCases(po.headers.Language)
+
+      po.items.forEach((item) => {
+        convertPluralsToICU(item, pluralForms, po.headers.Language)
+      })
+
+      return formatter.parse(po.toString())
     },
 
     serialize(
       catalog: CatalogType,
       ctx: { locale: string; existing: string }
     ): string {
-      let po: PO
+      const po = PO.parse(formatter.serialize(catalog, ctx))
 
-      if (ctx.existing) {
-        po = PO.parse(ctx.existing)
-      } else {
-        po = new PO()
-        po.headers = getCreateHeaders(ctx.locale)
-        // accessing private property
-        ;(po as any).headerOrder = Object.keys(po.headers)
-      }
-      po.items = serialize(catalog, options)
+      po.items = po.items.map((item) => {
+        const isGeneratedId = !item.flags["explicit-id"]
+        const id = isGeneratedId
+          ? generateMessageId(item.msgid, item.msgctxt)
+          : item.msgid
+        const message = catalog[id]
+        return serializePlurals(item, message, id, isGeneratedId, options)
+      })
+
       return po.toString()
     },
   } satisfies CatalogFormatter

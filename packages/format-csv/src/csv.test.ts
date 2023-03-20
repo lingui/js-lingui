@@ -1,12 +1,12 @@
 import fs from "fs"
 import path from "path"
 
-import createFormatter from "./csv"
+import { formatter as createFormatter } from "./csv"
 
 describe("csv format", () => {
   const format = createFormatter()
 
-  it("should write catalog in csv format", async () => {
+  it("should write catalog in csv format", () => {
     const catalog = {
       static: {
         translation: "Static message",
@@ -19,16 +19,16 @@ describe("csv format", () => {
       },
     }
 
-    const csv = await format.serialize(catalog, {} as any)
+    const csv = format.serialize(catalog, {} as any)
     expect(csv).toMatchSnapshot()
   })
 
-  it("should read catalog in csv format", async () => {
+  it("should read catalog in csv format", () => {
     const csv = fs
       .readFileSync(path.join(__dirname, "fixtures/messages.csv"))
       .toString()
 
-    const actual = await format.parse(csv, {} as any)
+    const actual = format.parse(csv, {} as any)
     expect(actual).toMatchSnapshot()
   })
 })

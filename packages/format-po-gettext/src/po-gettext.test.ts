@@ -1,20 +1,19 @@
 import { mockConsole } from "@lingui/jest-mocks"
 import fs from "fs"
-import mockDate from "mockdate"
 import path from "path"
 
-import { CatalogType } from "../types"
-import createFormat, { serialize, parse } from "./po-gettext"
+import { CatalogType } from "@lingui/conf"
+import { formatter as createFormat } from "./po-gettext"
 
 describe("po-gettext format", () => {
+  let format = createFormat()
+
   afterEach(() => {
-    mockDate.reset()
+    jest.useRealTimers()
   })
 
   it("should convert ICU plural messages to gettext plurals", () => {
-    const format = createFormat()
-
-    mockDate.set("2018-08-27T10:00Z")
+    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       message_with_id_and_octothorpe: {
@@ -64,7 +63,7 @@ describe("po-gettext format", () => {
       .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
       .toString()
 
-    const catalog = parse(pofile)
+    const catalog = format.parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 
@@ -95,7 +94,7 @@ describe("po-gettext format", () => {
     }
 
     mockConsole((console) => {
-      serialize(catalog, {})
+      format.serialize(catalog, { existing: null, locale: "en" })
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Nested plurals"),
@@ -119,7 +118,7 @@ msgstr[1] "# dny"
 msgstr[2] "# dní"
   `
 
-    const parsed = parse(po)
+    const parsed = format.parse(po)
 
     expect(parsed).toEqual({
       Y8Xw2Y: {
@@ -146,7 +145,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        serialize(catalog, {})
+        format.serialize(catalog, { locale: "en", existing: null })
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("select"),
@@ -156,8 +155,10 @@ msgstr[2] "# dní"
     })
 
     it("should not warn when disabling the warning in config", () => {
+      const format = createFormat({ disableSelectWarning: true })
+
       mockConsole((console) => {
-        serialize(catalog, { disableSelectWarning: true })
+        format.serialize(catalog, { locale: "en", existing: null })
 
         expect(console.warn).not.toHaveBeenCalled()
       })
@@ -174,7 +175,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        serialize(catalog, {})
+        format.serialize(catalog, { locale: "en", existing: null })
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("selectOrdinal"),
@@ -184,8 +185,10 @@ msgstr[2] "# dní"
     })
 
     it("should not warn when disabling the warning in config", () => {
+      const format = createFormat({ disableSelectWarning: true })
+
       mockConsole((console) => {
-        serialize(catalog, { disableSelectWarning: true })
+        format.serialize(catalog, { locale: "en", existing: null })
 
         expect(console.warn).not.toHaveBeenCalled()
       })
@@ -199,7 +202,7 @@ msgstr[2] "# dní"
       )
       .toString()
 
-    const catalog = parse(pofile)
+    const catalog = format.parse(pofile)
     expect(catalog).toMatchSnapshot()
   })
 })

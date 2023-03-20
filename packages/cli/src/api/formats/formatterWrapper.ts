@@ -1,6 +1,6 @@
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
-import { readFile, writeFileIfChanged } from "../../utils"
-import { RethrownError } from "../../rethrownError"
+import { readFile, writeFileIfChanged } from "../utils"
+import { RethrownError } from "../rethrownError"
 
 export class FormatterWrapper {
   constructor(private f: CatalogFormatter) {}
