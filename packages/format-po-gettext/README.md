@@ -61,10 +61,6 @@ export type PoGettextFormatterOptions = {
 }
 ```
 
-## Usage
-
-See the [reference][reference] documentation.
-
 ## License
 
 This package is licensed under [MIT][license] license.

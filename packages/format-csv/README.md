@@ -18,7 +18,17 @@ npm install --save-dev @lingui/format-csv
 
 ## Usage
 
-See the [reference][reference] documentation.
+```js
+// lingui.config.{js,ts}
+import {formatter} from "@lingui/format-csv"
+
+export default {
+  [...]
+  format: formatter(),
+}
+```
+
+This formatter has no options.
 
 ## License
 
@@ -27,7 +37,6 @@ This package is licensed under [MIT][license] license.
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
-[reference]: https://lingui.dev/ref/loader
 [package]: https://www.npmjs.com/package/@lingui/format-csv
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/format-csv.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/format-csv.svg

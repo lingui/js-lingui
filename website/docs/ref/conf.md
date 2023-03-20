@@ -301,10 +301,9 @@ If `fallbackLocales` is `false` default message or message ID is used instead.
 
 Default: `po`
 
-Format of message catalogs. By default `po` formatter is used. Other formats available as separate packages.
+Message catalog format. The `po` formatter is used by default. Other formats are available as separate packages.
 
-```js
-// lingui.config.{js,ts}
+```js title="lingui.config.{js,ts}"
 import { formatter } from "@lingui/format-po"
 
 export default {
@@ -320,9 +319,9 @@ Official LinguiJS format packages:
 - [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) Different JSON format
 - [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) CSV format
 
-Please see individual packages readme for configuration parameters.
+See the individual packages README for configuration parameters.
 
-Visit [Advanced: Custom Formatter](/guides/custom-formatter.md) to learn how to create custom formatter.
+Visit [Advanced: Custom Formatter](/docs/guides/custom-formatter.md) to learn how to create custom formatter.
 
 ## locales
 

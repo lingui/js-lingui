@@ -21,8 +21,9 @@ export type JsonFormatterOptions = {
    * @default true
    */
   lineNumbers?: boolean
+
   /**
-   * Different styles how information could be printed.
+   * Different styles of how information could be printed
    *
    * @default "lingui"
    */
