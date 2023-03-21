@@ -5,9 +5,22 @@
 # @lingui/format-po-gettext
 
 > Read and write message catalogs in Gettext PO format with gettext-style plurals
+>
+> Converts ICU Plural expressions into native gettext plurals
 
 `@lingui/format-po-gettext` is part of [LinguiJS][linguijs]. See the
 [documentation][documentation] for all information, tutorials and examples.
+
+> **Warning**
+> This formatter is made for compatibility with TMS, which does not support ICU expressions in PO files.
+> 
+> It does not support all features of LinguiJS and should be carefully considered over other formats.
+>
+> Not supported features (native gettext doesn't support this):
+> - SelectOrdinal
+> - Select
+> - Nested ICU Expressions
+> - Signed digits and fractions (-5, and 0.15) in plurals
 
 ## Catalog example
 
@@ -56,7 +69,12 @@ export type PoGettextFormatterOptions = {
    * @default true
    */
   lineNumbers?: boolean
-  
+
+  /**
+   * Disable warning about unsupported `Select` feature encountered in catalogs
+   * 
+   * @default false
+   */
   disableSelectWarning?: boolean
 }
 ```

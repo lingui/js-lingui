@@ -1,7 +1,7 @@
 {
   "name": "@lingui/format-po-gettext",
   "version": "4.0.0-next.2",
-  "description": "Gettext PO format for Lingui Catalogs",
+  "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
   "main": "./dist/po-gettext.cjs",
   "module": "./dist/po-gettext.mjs",
   "types": "./dist/po-gettext.d.ts",
