@@ -86,7 +86,7 @@ export const bundles: readonly BundleDef[] = [
   },
   {
     type: BundleType.CUSTOM,
-    packageName: "format-csv",
+    packageName: "format-json",
     cmd: "yarn workspace @lingui/format-json build",
   },
   {
