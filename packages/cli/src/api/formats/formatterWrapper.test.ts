@@ -4,23 +4,29 @@ import fs from "fs"
 
 describe("FormatterWrapper", () => {
   it("should return template and catalog extension", () => {
-    const wrapper = new FormatterWrapper({
-      serialize: () => "",
-      parse: () => ({}),
-      catalogExtension: ".po",
-      templateExtension: ".pot",
-    })
+    const wrapper = new FormatterWrapper(
+      {
+        serialize: () => "",
+        parse: () => ({}),
+        catalogExtension: ".po",
+        templateExtension: ".pot",
+      },
+      "en"
+    )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
     expect(wrapper.getTemplateExtension()).toBe(".pot")
   })
   it("should return catalog extension for templateExtension if not defined", () => {
-    const wrapper = new FormatterWrapper({
-      serialize: () => "",
-      parse: () => ({}),
-      catalogExtension: ".po",
-      templateExtension: null,
-    })
+    const wrapper = new FormatterWrapper(
+      {
+        serialize: () => "",
+        parse: () => ({}),
+        catalogExtension: ".po",
+        templateExtension: null,
+      },
+      "en"
+    )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
     expect(wrapper.getTemplateExtension()).toBe(".po")
@@ -28,12 +34,15 @@ describe("FormatterWrapper", () => {
 
   describe("read", () => {
     it("should not throw if file not exists", async () => {
-      const format = new FormatterWrapper({
-        serialize: () => "",
-        parse: () => ({}),
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+      const format = new FormatterWrapper(
+        {
+          serialize: () => "",
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en"
+      )
 
       mockFs({})
 
@@ -46,12 +55,15 @@ describe("FormatterWrapper", () => {
       const parseMock = jest
         .fn()
         .mockImplementation((content: string) => content.split(",") as any)
-      const format = new FormatterWrapper({
-        serialize: () => "",
-        parse: parseMock,
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+      const format = new FormatterWrapper(
+        {
+          serialize: () => "",
+          parse: parseMock,
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en"
+      )
 
       mockFs({
         "test.file": "red,green,blue",
@@ -65,6 +77,7 @@ describe("FormatterWrapper", () => {
           {
             filename: test.file,
             locale: en,
+            sourceLocale: en,
           },
         ]
       `)
@@ -72,14 +85,17 @@ describe("FormatterWrapper", () => {
     })
 
     it("should rethrow error with filename if failed to parse file", async () => {
-      const format = new FormatterWrapper({
-        serialize: () => "",
-        parse: () => {
-          throw new Error("Unable to parse")
+      const format = new FormatterWrapper(
+        {
+          serialize: () => "",
+          parse: () => {
+            throw new Error("Unable to parse")
+          },
+          catalogExtension: ".po",
+          templateExtension: ".pot",
         },
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+        "en"
+      )
 
       mockFs({
         "test.file": "blabla",
@@ -97,12 +113,15 @@ describe("FormatterWrapper", () => {
 
   describe("write", () => {
     it("should write to FS and serialize catalog using provided formatter", async () => {
-      const format = new FormatterWrapper({
-        serialize: (catalog) => JSON.stringify(catalog),
-        parse: () => ({}),
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+      const format = new FormatterWrapper(
+        {
+          serialize: (catalog) => JSON.stringify(catalog),
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en"
+      )
 
       mockFs({})
 
@@ -126,12 +145,15 @@ describe("FormatterWrapper", () => {
         .fn()
         .mockImplementation((catalog) => JSON.stringify(catalog))
 
-      const format = new FormatterWrapper({
-        serialize: serializeMock,
-        parse: () => ({}),
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+      const format = new FormatterWrapper(
+        {
+          serialize: serializeMock,
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en"
+      )
 
       mockFs({
         "messages.json": `{"existing":{"translation":"Existing message"}}`,
@@ -159,6 +181,7 @@ describe("FormatterWrapper", () => {
             existing: {"existing":{"translation":"Existing message"}},
             filename: messages.json,
             locale: en,
+            sourceLocale: en,
           },
         ]
       `)
@@ -168,12 +191,15 @@ describe("FormatterWrapper", () => {
     })
 
     it("should write only if file was changed", async () => {
-      const format = new FormatterWrapper({
-        serialize: (catalog) => JSON.stringify(catalog),
-        parse: () => ({}),
-        catalogExtension: ".po",
-        templateExtension: ".pot",
-      })
+      const format = new FormatterWrapper(
+        {
+          serialize: (catalog) => JSON.stringify(catalog),
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en"
+      )
 
       const catalog = {
         static: {

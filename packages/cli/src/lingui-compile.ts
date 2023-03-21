@@ -213,7 +213,11 @@ if (require.main === module) {
   if (options.watch) {
     console.info(chalk.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const format = await getFormat(config.format, config.formatOptions)
+      const format = await getFormat(
+        config.format,
+        config.formatOptions,
+        config.sourceLocale
+      )
       const catalogs = await getCatalogs(config)
 
       const paths: string[] = []

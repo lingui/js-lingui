@@ -63,6 +63,7 @@ describe("json format", () => {
         locale: "en",
         filename,
         existing: null,
+        sourceLocale: "en",
       })
       expect(actual).toMatchSnapshot()
     })
@@ -75,7 +76,11 @@ describe("json format", () => {
         .toString()
 
       const filename = path.join("locale", "en", "messages.json")
-      const actual = format.parse(lingui, { locale: "en", filename })
+      const actual = format.parse(lingui, {
+        locale: "en",
+        filename,
+        sourceLocale: "en",
+      })
       expect(actual).toMatchSnapshot()
     })
 
@@ -104,6 +109,7 @@ describe("json format", () => {
         locale: "en",
         filename,
         existing: null,
+        sourceLocale: "en",
       })
       const linguiOriginProperty = '"origin"'
       expect(actual).toEqual(expect.not.stringContaining(linguiOriginProperty))
@@ -133,6 +139,7 @@ describe("json format", () => {
         locale: "en",
         filename,
         existing: null,
+        sourceLocale: "en",
       })
       expect(actual).toMatchInlineSnapshot(`
       {
@@ -204,6 +211,7 @@ describe("json format", () => {
         locale: "en",
         filename,
         existing: null,
+        sourceLocale: "en",
       })
       expect(actual).toMatchSnapshot()
     })
@@ -220,7 +228,11 @@ describe("json format", () => {
 }`
 
       const filename = path.join("locale", "en", "messages.json")
-      const actual = format.parse(content, { locale: "en", filename })
+      const actual = format.parse(content, {
+        locale: "en",
+        filename,
+        sourceLocale: "en",
+      })
       expect(actual).toMatchSnapshot()
     })
   })

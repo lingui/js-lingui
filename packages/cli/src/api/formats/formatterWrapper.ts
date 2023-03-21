@@ -3,7 +3,7 @@ import { readFile, writeFileIfChanged } from "../utils"
 import { RethrownError } from "../rethrownError"
 
 export class FormatterWrapper {
-  constructor(private f: CatalogFormatter) {}
+  constructor(private f: CatalogFormatter, private sourceLocale: string) {}
 
   getCatalogExtension() {
     return this.f.catalogExtension
@@ -20,6 +20,7 @@ export class FormatterWrapper {
   ): Promise<void> {
     const content = await this.f.serialize(catalog, {
       locale,
+      sourceLocale: this.sourceLocale,
       existing: await readFile(filename),
       filename,
     })
@@ -37,6 +38,7 @@ export class FormatterWrapper {
     try {
       return this.f.parse(content, {
         locale,
+        sourceLocale: this.sourceLocale,
         filename,
       })
     } catch (e) {

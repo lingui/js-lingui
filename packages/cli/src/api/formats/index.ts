@@ -67,10 +67,11 @@ export { FormatterWrapper }
 
 export async function getFormat(
   _format: CatalogFormat | CatalogFormatter,
-  options: CatalogFormatOptions
+  options: CatalogFormatOptions,
+  sourceLocale: string
 ): Promise<FormatterWrapper> {
   if (typeof _format !== "string") {
-    return new FormatterWrapper(_format)
+    return new FormatterWrapper(_format, sourceLocale)
   }
 
   const format = formats[_format]
@@ -83,5 +84,5 @@ export async function getFormat(
     )
   }
 
-  return new FormatterWrapper((await format())(options))
+  return new FormatterWrapper((await format())(options), sourceLocale)
 }

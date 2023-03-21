@@ -39,7 +39,7 @@ describe("Catalog", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {})
+    format = await getFormat("po", {}, "en")
   })
 
   afterEach(() => {
@@ -595,7 +595,7 @@ describe("writeCompiled", () => {
         path: path.join(localeDir, "{locale}", "messages"),
         include: [],
         exclude: [],
-        format: await getFormat("po", {}),
+        format: await getFormat("po", {}, "en"),
       },
       mockConfig()
     )
