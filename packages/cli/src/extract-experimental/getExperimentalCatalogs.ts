@@ -13,7 +13,8 @@ export async function getExperimentalCatalogs(
 
   const format = await getFormat(
     linguiConfig.format,
-    linguiConfig.formatOptions
+    linguiConfig.formatOptions,
+    linguiConfig.sourceLocale
   )
 
   return entryPoints.map((entryPoint) => {

@@ -58,7 +58,11 @@ export const makeCatalog = async (_config: Partial<LinguiConfig> = {}) => {
       path: "{locale}/messages",
       include: [],
       exclude: [],
-      format: await getFormat(config.format, config.formatOptions),
+      format: await getFormat(
+        config.format,
+        config.formatOptions,
+        config.sourceLocale
+      ),
     },
     config
   )

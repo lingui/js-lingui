@@ -66,7 +66,8 @@ export default async function command(
 
   const format = await getFormat(
     linguiConfig.format,
-    linguiConfig.formatOptions
+    linguiConfig.formatOptions,
+    linguiConfig.sourceLocale
   )
 
   for (const outFile of Object.keys(bundleResult.metafile.outputs)) {

@@ -25,7 +25,7 @@ describe("getCatalogs", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {})
+    format = await getFormat("po", {}, "en")
   })
 
   afterEach(() => {
@@ -254,7 +254,7 @@ describe("getCatalogForMerge", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {})
+    format = await getFormat("po", {}, "en")
   })
 
   afterEach(() => {
@@ -333,7 +333,7 @@ describe("getCatalogForFile", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {})
+    format = await getFormat("po", {}, "en")
   })
 
   it("should return null if catalog cannot be found", () => {
