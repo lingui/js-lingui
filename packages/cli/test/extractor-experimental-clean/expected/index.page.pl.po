@@ -13,7 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-id: D+XV65
 #: fixtures/pages/index.page.ts:3
 msgid "index page message"
 msgstr ""

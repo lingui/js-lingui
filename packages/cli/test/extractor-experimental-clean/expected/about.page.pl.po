@@ -13,12 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-id: u5PTM8
 #: fixtures/pages/about.page.ts:4
 msgid "about page message"
 msgstr ""
 
-#. js-lingui-id: LGGfGX
 #: fixtures/components/header.ts:3
 msgid "header message"
 msgstr "translation: header message"

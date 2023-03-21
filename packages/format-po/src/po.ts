@@ -28,6 +28,13 @@ export type PoFormatterOptions = {
    * @default true
    */
   lineNumbers?: boolean
+
+  /**
+   * Print `js-lingui-id: Xs4as` statement in extracted comments section
+   *
+   * @default false
+   */
+  printLinguiId?: boolean
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -68,8 +75,11 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
 
     if (_isGeneratedId) {
       item.msgid = message.message
-      if (!item.extractedComments.find((c) => c.includes("js-lingui-id"))) {
-        item.extractedComments.push(`js-lingui-id: ${id}`)
+
+      if (options.printLinguiId) {
+        if (!item.extractedComments.find((c) => c.includes("js-lingui-id"))) {
+          item.extractedComments.push(`js-lingui-id: ${id}`)
+        }
       }
     } else {
       item.flags[EXPLICIT_ID_FLAG] = true
