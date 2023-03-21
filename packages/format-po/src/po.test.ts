@@ -3,6 +3,7 @@ import path from "path"
 
 import { formatter as createFormatter, POCatalogExtra } from "./po"
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
+import MockDate from "mockdate"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -18,8 +19,13 @@ const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
 }
 
 describe("pofile format", () => {
-  jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
+  beforeAll(() => {
+    MockDate.set(new Date("2018-08-27T10:00Z"))
+  })
 
+  afterAll(() => {
+    MockDate.reset()
+  })
   it("should write catalog in pofile format", () => {
     const format = createFormatter({ origins: true })
 

@@ -78,6 +78,7 @@
     "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
-    "mock-fs": "^5.2.0"
+    "mock-fs": "^5.2.0",
+    "mockdate": "^3.0.5"
   }
 }

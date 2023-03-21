@@ -4,9 +4,9 @@
   "sideEffects": false,
   "private": true,
   "description": "Load remotely your translations",
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "author": {
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
@@ -22,6 +22,10 @@
     "icu",
     "messageformat"
   ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"
@@ -34,18 +38,21 @@
   },
   "exports": {
     ".": {
-      "require": "./build/cjs/index.js",
-      "import": "./build/esm/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "build/"
+    "dist/"
   ],
   "dependencies": {
     "@lingui/core": "4.0.0-next.3",
     "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "unbuild": "^1.1.2"
   }
 }

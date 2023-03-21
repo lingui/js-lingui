@@ -11,6 +11,7 @@ on:
 
 jobs:
   test:
+    timeout-minutes: 20
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -38,6 +39,7 @@ jobs:
         run: yarn test:ci
 
   validate:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     needs: test
     name: validate (16, ubuntu-latest)

@@ -1,5 +1,3 @@
-// we import the polyfill on the test because on the lib is already imported on index.ts
-import "./globalThis.polyfill.js"
 import { getCookie } from "./cookie-getter"
 
 describe("getCookie", () => {
