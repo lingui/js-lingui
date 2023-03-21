@@ -8,29 +8,24 @@ msgstr ""
 "Language: en\n"
 
 #. this is a comment
-#. js-lingui-id: f9Atdk
 #: fixtures/file-b.tsx:6
 msgid "Hello this is JSX Translation"
 msgstr "Hello this is JSX Translation"
 
-#. js-lingui-id: 6qYmGe
 #: fixtures/file-b.tsx:11
 msgctxt "my context"
 msgid "Hello this is JSX Translation"
 msgstr "Hello this is JSX Translation"
 
-#. js-lingui-id: 1nGWAC
 #: fixtures/file-a.ts:4
 msgid "Hello world"
 msgstr "Hello world"
 
-#. js-lingui-id: 2Ps/YQ
 #: fixtures/file-a.ts:6
 msgctxt "custom context"
 msgid "Hello world"
 msgstr "Hello world"
 
-#. js-lingui-id: BcXPt3
 #: fixtures/file-a.ts:16
 msgid "Message in descriptor"
 msgstr "Message in descriptor"

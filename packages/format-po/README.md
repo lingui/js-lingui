@@ -54,6 +54,13 @@ export type PoFormatterOptions = {
    * @default true
    */
   lineNumbers?: boolean
+  
+  /**
+   * Print `js-lingui-id: Xs4as` statement in extracted comments section
+   *
+   * @default false
+   */
+  printLinguiId?: boolean
 }
 ```
 

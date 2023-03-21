@@ -5,14 +5,10 @@ import { formatter as createFormatter } from "./po"
 import { CatalogType } from "@lingui/conf"
 
 describe("pofile format", () => {
-  afterEach(() => {
-    jest.useRealTimers()
-  })
+  jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
   it("should write catalog in pofile format", () => {
     const format = createFormatter({ origins: true })
-
-    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {
@@ -108,6 +104,47 @@ describe("pofile format", () => {
     expect(actual).toMatchObject(catalog)
   })
 
+  it("should print lingui id if printLinguiId = true", () => {
+    const format = createFormatter({ origins: true, printLinguiId: true })
+
+    const catalog: CatalogType = {
+      // with generated id
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+      },
+    }
+
+    const serialized = format.serialize(catalog, {
+      locale: "en",
+      existing: null,
+    })
+
+    expect(serialized).toMatchSnapshot()
+  })
+
+  it("should not add lingui id more than one time", () => {
+    const format = createFormatter({ origins: true, printLinguiId: true })
+
+    const catalog: CatalogType = {
+      // with generated id
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+        extractedComments: ["js-lingui-id: Dgzql1"],
+      },
+    }
+
+    const serialized = format.serialize(catalog, {
+      locale: "en",
+      existing: null,
+    })
+
+    expect(serialized).toMatchSnapshot()
+  })
+
   it("should correct badly used comments", () => {
     const format = createFormatter()
 
@@ -158,7 +195,6 @@ describe("pofile format", () => {
 
   it("should not include lineNumbers if lineNumbers option is false", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
-    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {
@@ -211,7 +247,6 @@ describe("pofile format", () => {
 
   it("should not include lineNumbers if lineNumbers option is false and already excluded", () => {
     const format = createFormatter({ origins: true, lineNumbers: false })
-    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
 
     const catalog: CatalogType = {
       static: {

@@ -451,9 +451,7 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [
-        js-lingui-id: mY42CM,
-      ],
+      extractedComments: [],
       flags: [],
       message: Hello World,
       obsolete: true,
@@ -541,9 +539,7 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [
-        js-lingui-id: mY42CM,
-      ],
+      extractedComments: [],
       flags: [],
       message: Hello World,
       obsolete: true,
