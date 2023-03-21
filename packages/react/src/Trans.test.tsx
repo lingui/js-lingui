@@ -54,13 +54,27 @@ describe("Trans component", function () {
     console.error = originalConsole
   })
 
-  it("should throw a console.error if using `render` and `component` props at the same time", function () {
+  it("should log a console.error if using `render` and `component` props at the same time", function () {
+    const RenderChildrenInSpan = ({ children }: TransRenderProps) => (
+      <span>{children}</span>
+    )
+
     const originalConsole = console.error
     console.error = jest.fn()
 
-    // @ts-expect-error testing the error
-    renderWithI18n(<Trans render="div" component="span" id="Some text" />)
-    expect(console.error).toHaveBeenCalled()
+    renderWithI18n(
+      // @ts-expect-error TS won't allow passing both `render` and `component` props
+      <Trans
+        render={RenderChildrenInSpan}
+        component={RenderChildrenInSpan}
+        id="Some text"
+      />
+    )
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "You can't use both `component` and `render` prop at the same time."
+      )
+    )
     console.error = originalConsole
   })
 
