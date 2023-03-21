@@ -14,16 +14,17 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@babel/core": "7.20.12",
     "@babel/runtime": "^7.20.13",
     "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
@@ -34,10 +35,11 @@
   "files": [
     "LICENSE",
     "README.md",
-    "/build"
+    "/dist"
   ],
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "tsd": "^0.26.1"
+    "tsd": "^0.26.1",
+    "unbuild": "^1.1.2"
   }
 }

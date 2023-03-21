@@ -217,7 +217,6 @@ describe("getCatalogs", () => {
       getCatalogs(
         mockConfig({
           locales: ["cs"],
-          format: "minimal",
           catalogs: [
             {
               path: "./locales/{locale}/",

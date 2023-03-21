@@ -107,6 +107,10 @@ const sidebar = [
             type: 'doc',
             id: 'guides/custom-extractor',
           },
+          {
+            type: 'doc',
+            id: 'guides/custom-formatter',
+          },
         ],
       },
     ],

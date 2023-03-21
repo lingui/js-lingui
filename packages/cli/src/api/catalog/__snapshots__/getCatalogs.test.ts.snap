@@ -4,4 +4,4 @@ exports[`getCatalogs should warn about missing {name} pattern in catalog path 1`
 
 exports[`getCatalogs should warn if catalogPath is a directory 1`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;
 
-exports[`getCatalogs should warn if catalogPath is a directory 2`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.json".]`;
+exports[`getCatalogs should warn if catalogPath is a directory 2`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;

@@ -3,6 +3,7 @@ build/packages/
 .yalc/
 yalc.lock
 packages/**/build
+dist
 
 npm-debug.log
 yarn-error.log

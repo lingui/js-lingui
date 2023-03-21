@@ -28,7 +28,9 @@
     "release:next": "lerna publish from-package --canary --preid next --pre-dist-tag next --yes",
     "build:docs": "cd website && yarn install && yarn build",
     "size-limit": "size-limit",
-    "prepare": "husky install"
+    "stub:all": "lerna run stub",
+    "prepare": "husky install",
+    "postinstall": "yarn stub:all"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -78,7 +80,6 @@
     "memory-fs": "^0.5.0",
     "minimist": "^1.2.5",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.2",
     "ncp": "^2.0.0",
     "npm-cli-login": "^0.1.1",
     "ora": "^5.1.0",

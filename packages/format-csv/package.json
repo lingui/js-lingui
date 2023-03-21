@@ -1,15 +1,16 @@
 {
-  "name": "@lingui/vite-plugin",
+  "name": "@lingui/format-csv",
   "version": "4.0.0-next.2",
-  "description": "Vite plugin for Lingui message catalogs",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "description": "CSV format for Lingui Catalogs",
+  "main": "./dist/csv.cjs",
+  "module": "./dist/csv.mjs",
+  "types": "./dist/csv.d.ts",
   "license": "MIT",
   "keywords": [
-    "vite-plugin",
     "i18n",
-    "vite",
-    "linguijs",
+    "lingui-format",
+    "lingui-formatter",
+    "csv",
     "internationalization",
     "i10n",
     "localization",
@@ -17,7 +18,8 @@
     "translation"
   ],
   "scripts": {
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
   },
   "repository": {
     "type": "git",
@@ -32,14 +34,13 @@
   "files": [
     "LICENSE",
     "README.md",
-    "build/"
+    "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "4.0.0-next.2",
-    "@lingui/conf": "4.0.0-next.2"
+    "@lingui/conf": "4.0.0-next.2",
+    "papaparse": "^5.4.0"
   },
   "devDependencies": {
-    "@lingui/format-json": "workspace:^",
-    "vite": "4.1.4"
+    "unbuild": "^1.1.2"
   }
 }

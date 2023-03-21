@@ -74,10 +74,29 @@ export const bundles: readonly BundleDef[] = [
     type: BundleType.NODE,
     packageName: "loader",
   },
-
   {
     type: BundleType.UNIVERSAL,
     packageName: "remote-loader",
     externals: ["@lingui/core/compile"],
+  },
+  {
+    type: BundleType.CUSTOM,
+    packageName: "format-csv",
+    cmd: "yarn workspace @lingui/format-csv build",
+  },
+  {
+    type: BundleType.CUSTOM,
+    packageName: "format-csv",
+    cmd: "yarn workspace @lingui/format-json build",
+  },
+  {
+    type: BundleType.CUSTOM,
+    packageName: "format-po",
+    cmd: "yarn workspace @lingui/format-po build",
+  },
+  {
+    type: BundleType.CUSTOM,
+    packageName: "format-po-gettext",
+    cmd: "yarn workspace @lingui/format-po-gettext build",
   },
 ]

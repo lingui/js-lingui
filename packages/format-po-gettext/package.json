@@ -1,0 +1,54 @@
+{
+  "name": "@lingui/format-po-gettext",
+  "version": "4.0.0-next.2",
+  "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
+  "main": "./dist/po-gettext.cjs",
+  "module": "./dist/po-gettext.mjs",
+  "types": "./dist/po-gettext.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "i18n",
+    "lingui-formatter",
+    "lingui-format",
+    "gettext",
+    "po",
+    "pot",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "dependencies": {
+    "@lingui/cli": "4.0.0-next.2",
+    "@lingui/conf": "4.0.0-next.2",
+    "@lingui/format-po": "4.0.0-next.2",
+    "@messageformat/parser": "^5.0.0",
+    "node-gettext": "^3.0.0",
+    "plurals-cldr": "^2.0.1",
+    "pofile": "^1.1.4"
+  },
+  "devDependencies": {
+    "@lingui/jest-mocks": "workspace:^",
+    "unbuild": "^1.1.2"
+  }
+}
