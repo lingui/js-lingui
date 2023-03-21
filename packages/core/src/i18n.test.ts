@@ -125,6 +125,71 @@ describe("I18n", () => {
     })
   })
 
+  describe("I18n.loadAndActivate", () => {
+    it("should set locale and messages", () => {
+      const i18n = setupI18n()
+
+      const cbChange = jest.fn()
+      i18n.on("change", cbChange)
+
+      i18n.loadAndActivate("en", {
+        message: "My Message",
+      })
+
+      expect(i18n.locale).toEqual("en")
+      expect(i18n.locales).toBeNull()
+
+      expect(cbChange).toBeCalled()
+    })
+
+    it("should don't emit event if notify = false", () => {
+      const i18n = setupI18n()
+
+      const cbChange = jest.fn()
+      i18n.on("change", cbChange)
+
+      i18n.loadAndActivate(
+        "en",
+        {
+          message: "My Message",
+        },
+        false
+      )
+
+      expect(cbChange).not.toBeCalled()
+    })
+
+    it("should support locales as array", () => {
+      const i18n = setupI18n()
+
+      i18n.loadAndActivate(["en-GB", "en"], {
+        message: "My Message",
+      })
+
+      expect(i18n.locale).toEqual("en-GB")
+      expect(i18n.locales).toEqual(["en-GB", "en"])
+    })
+
+    it("should override existing data", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        locales: ["en-GB", "en"],
+        messages: {
+          en: {
+            message: "My Message",
+          },
+        },
+      })
+
+      i18n.loadAndActivate("ru", {
+        message: "My Message",
+      })
+
+      expect(i18n.locale).toEqual("ru")
+      expect(i18n.locales).toBeNull()
+    })
+  })
+
   it("._ should format message from catalog", () => {
     const messages = {
       Hello: "Salut",
