@@ -24,7 +24,7 @@ The Lingui Vite integration:
    ```ts title="vite.config.ts"
    import { defineConfig } from "vite";
    import react from "@vitejs/plugin-react";
-   import lingui from "@lingui/vite-plugin";
+   import { lingui } from "@lingui/vite-plugin";
 
    export default defineConfig({
      plugins: [
@@ -54,7 +54,7 @@ The Lingui Vite integration:
    ```ts title="vite.config.ts"
    import { defineConfig } from "vite";
    import react from "@vitejs/plugin-react-swc";
-   import lingui from "@lingui/vite-plugin";
+   import { lingui } from "@lingui/vite-plugin";
 
    export default defineConfig({
      plugins: [
