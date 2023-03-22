@@ -5,6 +5,7 @@ import {
   LinguiConfig,
 } from "@lingui/conf"
 import { expectAssignable } from "tsd"
+import { formatter } from "@lingui/format-po"
 
 // only required props
 expectAssignable<LinguiConfig>({
@@ -59,6 +60,12 @@ expectAssignable<LinguiConfig>({
       ) => {},
     },
   ],
+})
+
+// formatter
+expectAssignable<LinguiConfig>({
+  locales: ["en", "pl"],
+  format: formatter({ printLinguiId: true }),
 })
 
 // runtimeConfigModule
