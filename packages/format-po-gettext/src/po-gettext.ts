@@ -238,7 +238,9 @@ const convertPluralsToICU = (
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
 }
 
-export function formatter(options: PoGettextFormatterOptions = {}) {
+export function formatter(
+  options: PoGettextFormatterOptions = {}
+): CatalogFormatter {
   options = {
     origins: true,
     lineNumbers: true,
@@ -251,7 +253,7 @@ export function formatter(options: PoGettextFormatterOptions = {}) {
     catalogExtension: ".po",
     templateExtension: ".pot",
 
-    parse(content): CatalogType {
+    parse(content, ctx): CatalogType {
       const po = PO.parse(content)
 
       // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
@@ -263,14 +265,11 @@ export function formatter(options: PoGettextFormatterOptions = {}) {
         convertPluralsToICU(item, pluralForms, po.headers.Language)
       })
 
-      return formatter.parse(po.toString())
+      return formatter.parse(po.toString(), ctx) as CatalogType
     },
 
-    serialize(
-      catalog: CatalogType,
-      ctx: { locale: string; existing: string }
-    ): string {
-      const po = PO.parse(formatter.serialize(catalog, ctx))
+    serialize(catalog, ctx): string {
+      const po = PO.parse(formatter.serialize(catalog, ctx) as string)
 
       po.items = po.items.map((item) => {
         const isGeneratedId = !item.flags["explicit-id"]
@@ -283,5 +282,5 @@ export function formatter(options: PoGettextFormatterOptions = {}) {
 
       return po.toString()
     },
-  } satisfies CatalogFormatter
+  }
 }

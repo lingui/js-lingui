@@ -2,7 +2,20 @@ import fs from "fs"
 import path from "path"
 
 import { formatter as createFormatter } from "./po"
-import { CatalogType } from "@lingui/conf"
+import { CatalogFormatter, CatalogType } from "@lingui/conf"
+
+const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
+  locale: "en",
+  sourceLocale: "en",
+  filename: "file.po",
+}
+
+const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
+  locale: "en",
+  existing: null,
+  filename: "file.po",
+  sourceLocale: "en",
+}
 
 describe("pofile format", () => {
   jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
@@ -65,10 +78,7 @@ describe("pofile format", () => {
       },
     }
 
-    const pofile = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const pofile = format.serialize(catalog, defaultSerializeCtx)
     expect(pofile).toMatchSnapshot()
   })
 
@@ -79,7 +89,7 @@ describe("pofile format", () => {
       .readFileSync(path.join(__dirname, "fixtures/messages.po"))
       .toString()
 
-    const actual = format.parse(pofile)
+    const actual = format.parse(pofile, defaultParseCtx)
     expect(actual).toMatchSnapshot()
   })
 
@@ -95,12 +105,9 @@ describe("pofile format", () => {
       },
     }
 
-    const serialized = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const serialized = format.serialize(catalog, defaultSerializeCtx) as string
 
-    const actual = format.parse(serialized)
+    const actual = format.parse(serialized, defaultParseCtx)
     expect(actual).toMatchObject(catalog)
   })
 
@@ -116,10 +123,7 @@ describe("pofile format", () => {
       },
     }
 
-    const serialized = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const serialized = format.serialize(catalog, defaultSerializeCtx)
 
     expect(serialized).toMatchSnapshot()
   })
@@ -137,10 +141,7 @@ describe("pofile format", () => {
       },
     }
 
-    const serialized = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const serialized = format.serialize(catalog, defaultSerializeCtx)
 
     expect(serialized).toMatchSnapshot()
   })
@@ -164,7 +165,7 @@ describe("pofile format", () => {
       msgstr "Second description joins translator comments"
     `
 
-    const actual = format.parse(po)
+    const actual = format.parse(po, defaultParseCtx)
     expect(actual).toMatchSnapshot()
   })
 
@@ -188,7 +189,7 @@ describe("pofile format", () => {
       },
     }
 
-    const actual = format.serialize(catalog, { locale: "en", existing: null })
+    const actual = format.serialize(catalog, defaultSerializeCtx)
     const pofileOriginPrefix = "#:"
     expect(actual).toEqual(expect.not.stringContaining(pofileOriginPrefix))
   })
@@ -212,10 +213,7 @@ describe("pofile format", () => {
         ],
       },
     }
-    const actual = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const actual = format.serialize(catalog, defaultSerializeCtx)
 
     expect(actual).toMatchInlineSnapshot(`
       msgid ""
@@ -262,10 +260,7 @@ describe("pofile format", () => {
       },
     }
 
-    const actual = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const actual = format.serialize(catalog, defaultSerializeCtx)
 
     expect(actual).toMatchInlineSnapshot(`
       msgid ""

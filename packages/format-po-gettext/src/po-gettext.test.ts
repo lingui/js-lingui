@@ -2,11 +2,24 @@ import { mockConsole } from "@lingui/jest-mocks"
 import fs from "fs"
 import path from "path"
 
-import { CatalogType } from "@lingui/conf"
+import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import { formatter as createFormat } from "./po-gettext"
 
+const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
+  locale: "en",
+  sourceLocale: "en",
+  filename: "file.po",
+}
+
+const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
+  locale: "en",
+  existing: null,
+  filename: "file.po",
+  sourceLocale: "en",
+}
+
 describe("po-gettext format", () => {
-  let format = createFormat()
+  const format = createFormat()
 
   afterEach(() => {
     jest.useRealTimers()
@@ -50,10 +63,7 @@ describe("po-gettext format", () => {
       },
     }
 
-    const pofile = format.serialize(catalog, {
-      locale: "en",
-      existing: null,
-    })
+    const pofile = format.serialize(catalog, defaultSerializeCtx)
 
     expect(pofile).toMatchSnapshot()
   })
@@ -63,7 +73,8 @@ describe("po-gettext format", () => {
       .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = format.parse(pofile, defaultParseCtx)
+
     expect(catalog).toMatchSnapshot()
   })
 
@@ -94,7 +105,7 @@ describe("po-gettext format", () => {
     }
 
     mockConsole((console) => {
-      format.serialize(catalog, { existing: null, locale: "en" })
+      format.serialize(catalog, defaultSerializeCtx)
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Nested plurals"),
@@ -118,7 +129,7 @@ msgstr[1] "# dny"
 msgstr[2] "# dní"
   `
 
-    const parsed = format.parse(po)
+    const parsed = format.parse(po, defaultParseCtx)
 
     expect(parsed).toEqual({
       Y8Xw2Y: {
@@ -145,7 +156,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        format.serialize(catalog, { locale: "en", existing: null })
+        format.serialize(catalog, defaultSerializeCtx)
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("select"),
@@ -158,7 +169,7 @@ msgstr[2] "# dní"
       const format = createFormat({ disableSelectWarning: true })
 
       mockConsole((console) => {
-        format.serialize(catalog, { locale: "en", existing: null })
+        format.serialize(catalog, defaultSerializeCtx)
 
         expect(console.warn).not.toHaveBeenCalled()
       })
@@ -175,7 +186,7 @@ msgstr[2] "# dní"
 
     it("should warn", () => {
       mockConsole((console) => {
-        format.serialize(catalog, { locale: "en", existing: null })
+        format.serialize(catalog, defaultSerializeCtx)
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("selectOrdinal"),
@@ -188,7 +199,7 @@ msgstr[2] "# dní"
       const format = createFormat({ disableSelectWarning: true })
 
       mockConsole((console) => {
-        format.serialize(catalog, { locale: "en", existing: null })
+        format.serialize(catalog, defaultSerializeCtx)
 
         expect(console.warn).not.toHaveBeenCalled()
       })
@@ -202,7 +213,8 @@ msgstr[2] "# dní"
       )
       .toString()
 
-    const catalog = format.parse(pofile)
+    const catalog = format.parse(pofile, defaultParseCtx)
+
     expect(catalog).toMatchSnapshot()
   })
 })
