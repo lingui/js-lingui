@@ -41,6 +41,7 @@
     "ramda": "^0.28.0"
   },
   "devDependencies": {
+    "tsd": "^0.28.0",
     "unbuild": "^1.1.2"
   }
 }

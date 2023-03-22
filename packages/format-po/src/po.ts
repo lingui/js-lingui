@@ -131,7 +131,7 @@ function deserialize(items: POItem[]): CatalogType {
   }, {})
 }
 
-export function formatter(options: PoFormatterOptions = {}) {
+export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
   options = {
     origins: true,
     lineNumbers: true,
@@ -142,15 +142,12 @@ export function formatter(options: PoFormatterOptions = {}) {
     catalogExtension: ".po",
     templateExtension: ".pot",
 
-    parse(content: string): CatalogType {
+    parse(content): CatalogType {
       const po = PO.parse(content)
       return deserialize(po.items)
     },
 
-    serialize(
-      catalog: CatalogType,
-      ctx: { locale: string; existing: string }
-    ): string {
+    serialize(catalog, ctx): string {
       let po: PO
 
       if (ctx.existing) {
@@ -165,5 +162,5 @@ export function formatter(options: PoFormatterOptions = {}) {
       po.items = serialize(catalog, options)
       return po.toString()
     },
-  } satisfies CatalogFormatter
+  }
 }
