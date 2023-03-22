@@ -62,12 +62,12 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLocale: string; filename: string }
+    ctx: { locale: string; sourceLocale: string; filename: string }
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
     ctx: {
-      locale: string | null
+      locale: string
       sourceLocale: string
       filename: string
       existing: string | null

@@ -149,7 +149,7 @@ export function formatter(options: PoFormatterOptions = {}) {
 
     serialize(
       catalog: CatalogType,
-      ctx: { locale: string; existing: string }
+      ctx: { locale: string; existing: string | null }
     ): string {
       let po: PO
 
