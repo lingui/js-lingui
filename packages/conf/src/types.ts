@@ -23,24 +23,28 @@ export type ExtractorCtx = {
   linguiConfig: LinguiConfigNormalized
 }
 
+type CatalogExtra = Record<string, unknown>
 export type MessageOrigin = [filename: string, line?: number]
-export type ExtractedMessageType = {
+export type ExtractedMessageType<Extra = CatalogExtra> = {
   message?: string
   origin?: MessageOrigin[]
   comments?: string[]
-  extractedComments?: string[]
   obsolete?: boolean
-  flags?: string[]
   context?: string
+  /**
+   * the generic field where
+   * formatters can store additional data
+   */
+  extra?: Extra
 }
-export type MessageType = ExtractedMessageType & {
+export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
   translation: string
 }
-export type ExtractedCatalogType = {
-  [msgId: string]: ExtractedMessageType
+export type ExtractedCatalogType<Extra = CatalogExtra> = {
+  [msgId: string]: ExtractedMessageType<Extra>
 }
-export type CatalogType = {
-  [msgId: string]: MessageType
+export type CatalogType<Extra = CatalogExtra> = {
+  [msgId: string]: MessageType<Extra>
 }
 
 export type ExtractorType = {

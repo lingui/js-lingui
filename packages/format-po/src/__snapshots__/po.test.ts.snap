@@ -4,31 +4,35 @@ exports[`pofile format should correct badly used comments 1`] = `
 {
   withDescriptionAndComments: {
     comments: [
-      Translator comment,
-    ],
-    context: null,
-    extractedComments: [
       Single description only,
       Second description?,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [
+        Translator comment,
+      ],
+    },
     obsolete: false,
     origin: [],
     translation: Second description joins translator comments,
   },
   withMultipleDescriptions: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       First description,
       Second comment,
       Third comment,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Extra comments are separated from the first description line,
@@ -75,10 +79,12 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   obsolete: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: true,
     origin: [],
     translation: Is marked as obsolete,
@@ -86,10 +92,12 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   static: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Static message,
@@ -97,37 +105,43 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   veryLongString: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
   withComments: {
-    comments: [
-      Translator comment,
-      This one might come from developer,
-    ],
+    comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [
+        Translator comment,
+        This one might come from developer,
+      ],
+    },
     obsolete: false,
     origin: [],
     translation: Support translator comments separately,
   },
   withDescription: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       Description is comment from developers to translators,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Message with description,
@@ -135,12 +149,14 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   withFlags: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      fuzzy,
-      otherFlag,
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        fuzzy,
+        otherFlag,
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Keeps any flags that are defined,
@@ -148,10 +164,12 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   withMultipleOrigins: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -168,10 +186,12 @@ exports[`pofile format should read catalog in pofile format 1`] = `
   withOrigin: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -182,12 +202,14 @@ exports[`pofile format should read catalog in pofile format 1`] = `
     translation: Message with origin,
   },
   xC8QeX: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       js-lingui-id: pXy+hm,
     ],
-    flags: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: Message with default hash id,
     obsolete: false,
     origin: [],

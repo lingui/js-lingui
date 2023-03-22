@@ -5,8 +5,10 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
   WGI12K: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [],
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
     obsolete: false,
     origin: [],
@@ -15,8 +17,10 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
   jO/SBZ: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [],
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: {count, plural, one {Singular} other {Plural}},
     obsolete: false,
     origin: [],
@@ -25,23 +29,27 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
   message_with_id: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
   },
   message_with_id_but_without_translation: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       Comment made by the developers.,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: ,
@@ -106,8 +114,10 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
   WGI12K: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [],
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
     obsolete: false,
     origin: [],
@@ -116,8 +126,10 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
   jO/SBZ: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [],
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: {count, plural, one {Singular} other {Plural}},
     obsolete: false,
     origin: [],
@@ -126,23 +138,27 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
   message_with_id: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
   },
   message_with_id_but_without_translation: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       Comment made by the developers.,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: ,

@@ -11,6 +11,14 @@ const splitOrigin = (origin: string) => {
   return [file, line ? Number(line) : null] as [file: string, line: number]
 }
 
+/**
+ * @internal
+ */
+export type POCatalogExtra = {
+  translatorComments?: string[]
+  flags?: string[]
+}
+
 const joinOrigin = (origin: [file: string, line?: number]): string =>
   origin.join(":")
 
@@ -56,15 +64,15 @@ const EXPLICIT_ID_FLAG = "explicit-id"
 
 const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   return Object.keys(catalog).map((id) => {
-    const message = catalog[id]
+    const message: MessageType<POCatalogExtra> = catalog[id]
 
     const item = new PO.Item()
 
     // The extractedComments array may be modified in this method,
     // so create a new array with the message's elements.
-    item.extractedComments = [...(message.extractedComments || [])]
+    item.extractedComments = [...(message.comments || [])]
 
-    item.flags = ((message.flags || []) as string[]).reduce<
+    item.flags = ((message.extra?.flags || []) as string[]).reduce<
       Record<string, boolean>
     >((acc, flag) => {
       acc[flag] = true
@@ -91,7 +99,7 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
     }
 
     item.msgstr = [message.translation]
-    item.comments = message.comments || []
+    item.comments = message.extra?.translatorComments || []
 
     if (options.origins !== false) {
       if (message.origin && options.lineNumbers === false) {
@@ -107,15 +115,17 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
 }
 
 function deserialize(items: POItem[]): CatalogType {
-  return items.reduce<CatalogType>((catalog, item) => {
-    const message: MessageType = {
+  return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
+    const message: MessageType<POCatalogExtra> = {
       translation: item.msgstr[0],
-      extractedComments: item.extractedComments || [],
-      comments: item.comments || [],
+      comments: item.extractedComments || [],
       context: item.msgctxt ?? null,
       obsolete: item.flags.obsolete || item.obsolete,
       origin: (item.references || []).map((ref) => splitOrigin(ref)),
-      flags: Object.keys(item.flags).map((flag) => flag.trim()),
+      extra: {
+        translatorComments: item.comments || [],
+        flags: Object.keys(item.flags).map((flag) => flag.trim()),
+      },
     }
 
     let id = item.msgid

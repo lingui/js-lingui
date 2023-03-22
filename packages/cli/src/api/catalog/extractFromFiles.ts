@@ -24,7 +24,7 @@ export async function extractFromFiles(
           messages[next.id] = {
             message: next.message,
             context: next.context,
-            extractedComments: [],
+            comments: [],
             origin: [],
           }
         }
@@ -50,9 +50,9 @@ export async function extractFromFiles(
 
         messages[next.id] = {
           ...prev,
-          extractedComments: next.comment
-            ? [...prev.extractedComments, next.comment]
-            : prev.extractedComments,
+          comments: next.comment
+            ? [...prev.comments, next.comment]
+            : prev.comments,
           origin: [...prev.origin, [filename, next.origin[1]]],
         }
       },

@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 
-import { formatter as createFormatter } from "./po"
+import { formatter as createFormatter, POCatalogExtra } from "./po"
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
@@ -23,7 +23,7 @@ describe("pofile format", () => {
   it("should write catalog in pofile format", () => {
     const format = createFormatter({ origins: true })
 
-    const catalog: CatalogType = {
+    const catalog: CatalogType<POCatalogExtra> = {
       static: {
         translation: "Static message",
       },
@@ -49,12 +49,15 @@ describe("pofile format", () => {
       },
       withDescription: {
         translation: "Message with description",
-        extractedComments: [
-          "Description is comment from developers to translators",
-        ],
+        comments: ["Description is comment from developers to translators"],
       },
       withComments: {
-        comments: ["Translator comment", "This one might come from developer"],
+        extra: {
+          translatorComments: [
+            "Translator comment",
+            "This one might come from developer",
+          ],
+        },
         translation: "Support translator comments separately",
       },
       obsolete: {
@@ -62,7 +65,9 @@ describe("pofile format", () => {
         obsolete: true,
       },
       withFlags: {
-        flags: ["fuzzy", "otherFlag"],
+        extra: {
+          flags: ["fuzzy", "otherFlag"],
+        },
         translation: "Keeps any flags that are defined",
       },
       veryLongString: {
@@ -137,7 +142,7 @@ describe("pofile format", () => {
         message: "with generated id",
         translation: "",
         context: "my context",
-        extractedComments: ["js-lingui-id: Dgzql1"],
+        comments: ["js-lingui-id: Dgzql1"],
       },
     }
 

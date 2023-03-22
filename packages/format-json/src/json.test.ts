@@ -27,15 +27,9 @@ describe("json format", () => {
         },
         withDescription: {
           translation: "Message with description",
-          extractedComments: [
-            "Description is comment from developers to translators",
-          ],
+          comments: ["Description is comment from developers to translators"],
         },
         withComments: {
-          comments: [
-            "Translator comment",
-            "This one might come from developer",
-          ],
           translation: "Support translator comments separately",
         },
         obsolete: {
@@ -43,7 +37,6 @@ describe("json format", () => {
           obsolete: true,
         },
         withFlags: {
-          flags: ["fuzzy", "otherFlag"],
           translation: "Keeps any flags that are defined",
         },
         veryLongString: {
@@ -186,15 +179,9 @@ describe("json format", () => {
         },
         withDescription: {
           translation: "Message with description",
-          extractedComments: [
-            "Description is comment from developers to translators",
-          ],
+          comments: ["Description is comment from developers to translators"],
         },
         withComments: {
-          comments: [
-            "Translator comment",
-            "This one might come from developer",
-          ],
           translation: "Support translator comments separately",
         },
         obsolete: {
@@ -202,7 +189,6 @@ describe("json format", () => {
           obsolete: true,
         },
         withFlags: {
-          flags: ["fuzzy", "otherFlag"],
           translation: "Keeps any flags that are defined",
         },
       }
