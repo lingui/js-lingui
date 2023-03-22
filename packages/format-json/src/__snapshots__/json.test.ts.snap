@@ -36,15 +36,11 @@ exports[`json format style: lingui should write catalog in lingui format 1`] = `
   },
   "withDescription": {
     "translation": "Message with description",
-    "extractedComments": [
+    "comments": [
       "Description is comment from developers to translators"
     ]
   },
   "withComments": {
-    "comments": [
-      "Translator comment",
-      "This one might come from developer"
-    ],
     "translation": "Support translator comments separately"
   },
   "obsolete": {
@@ -52,10 +48,6 @@ exports[`json format style: lingui should write catalog in lingui format 1`] = `
     "obsolete": true
   },
   "withFlags": {
-    "flags": [
-      "fuzzy",
-      "otherFlag"
-    ],
     "translation": "Keeps any flags that are defined"
   },
   "veryLongString": {

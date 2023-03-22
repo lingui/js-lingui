@@ -39,7 +39,7 @@ describe("po-gettext format", () => {
           and linebreak} other {Case number {someCount} with id}}",
         translation:
           "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
-        extractedComments: [
+        comments: [
           "This is a comment by the developers about how the content must be localized.",
         ],
       },
@@ -131,19 +131,23 @@ msgstr[2] "# dní"
 
     const parsed = format.parse(po, defaultParseCtx)
 
-    expect(parsed).toEqual({
-      Y8Xw2Y: {
-        // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
-        translation: "{#, plural, one {# den} few {# dny} other {# dní}}",
-        message: "{#, plural, one {day} other {days}}",
-        extractedComments: [],
-        context: null,
-        comments: [],
-        obsolete: false,
-        origin: [],
-        flags: [],
-      },
-    })
+    // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        Y8Xw2Y: {
+          comments: [],
+          context: null,
+          extra: {
+            flags: [],
+            translatorComments: [],
+          },
+          message: {#, plural, one {day} other {days}},
+          obsolete: false,
+          origin: [],
+          translation: {#, plural, one {# den} few {# dny} other {# dní}},
+        },
+      }
+    `)
   })
 
   describe("when using 'select' format", () => {

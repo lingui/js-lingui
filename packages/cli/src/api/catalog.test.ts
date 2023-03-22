@@ -204,8 +204,8 @@ describe("Catalog", () => {
       expect(messages).toMatchInlineSnapshot(`
         {
           xDAtGP: {
+            comments: [],
             context: undefined,
-            extractedComments: [],
             message: Message,
             origin: [
               [

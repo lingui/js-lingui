@@ -10,8 +10,8 @@ exports[`Catalog POT Flow Should get translations from template if locale file n
 exports[`Catalog collect should extract messages from source files 1`] = `
 {
   Component A: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: undefined,
     origin: [
       [
@@ -21,8 +21,8 @@ exports[`Catalog collect should extract messages from source files 1`] = `
     ],
   },
   Component B: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: undefined,
     origin: [
       [
@@ -32,12 +32,12 @@ exports[`Catalog collect should extract messages from source files 1`] = `
     ],
   },
   Hello World: {
-    context: undefined,
-    extractedComments: [
+    comments: [
       Comment A,
       Comment A again,
       Hello comment,
     ],
+    context: undefined,
     message: undefined,
     origin: [
       [
@@ -55,8 +55,8 @@ exports[`Catalog collect should extract messages from source files 1`] = `
     ],
   },
   custom.id: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Message with id,
     origin: [
       [
@@ -71,8 +71,8 @@ exports[`Catalog collect should extract messages from source files 1`] = `
 exports[`Catalog collect should extract only files passed on options 1`] = `
 {
   Component A: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: undefined,
     origin: [
       [
@@ -82,12 +82,12 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
     ],
   },
   Hello World: {
-    context: undefined,
-    extractedComments: [
+    comments: [
       Comment A,
       Comment A again,
       Hello comment,
     ],
+    context: undefined,
     message: undefined,
     origin: [
       [
@@ -105,8 +105,8 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
     ],
   },
   custom.id: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Message with id,
     origin: [
       [
@@ -123,8 +123,8 @@ exports[`Catalog collect should support Flow syntax if enabled 1`] = `{}`;
 exports[`Catalog collect should support JSX and Typescript 1`] = `
 {
   ID Some: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Message with id some,
     origin: [
       [
@@ -134,8 +134,8 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   MHrjPM: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Title,
     origin: [
       [
@@ -145,10 +145,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   Nu4oKW: {
-    context: undefined,
-    extractedComments: [
+    comments: [
       description,
     ],
+    context: undefined,
     message: Description,
     origin: [
       [
@@ -158,8 +158,8 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   YikuIL: {
+    comments: [],
     context: Context1,
-    extractedComments: [],
     message: Some message,
     origin: [
       [
@@ -169,8 +169,8 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   d1Kdl3: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Hi, my name is {name},
     origin: [
       [
@@ -180,8 +180,8 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   esnaQO: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: {count, plural, one {# book} other {# books}},
     origin: [
       [
@@ -191,8 +191,8 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     ],
   },
   xDAtGP: {
+    comments: [],
     context: undefined,
-    extractedComments: [],
     message: Message,
     origin: [
       [
@@ -217,10 +217,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     Component A: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -231,16 +233,18 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       translation: ,
     },
     Hello World: {
-      comments: [],
-      context: null,
-      extractedComments: [
+      comments: [
         Comment A,
         Comment A again,
         Hello comment,
       ],
-      flags: [
-        explicit-id,
-      ],
+      context: null,
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -261,10 +265,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     custom.id: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -279,10 +285,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     Component A: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -293,16 +301,18 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       translation: ,
     },
     Hello World: {
-      comments: [],
-      context: null,
-      extractedComments: [
+      comments: [
         Comment A,
         Comment A again,
         Hello comment,
       ],
-      flags: [
-        explicit-id,
-      ],
+      context: null,
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -323,10 +333,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     custom.id: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -346,8 +358,10 @@ exports[`Catalog make should merge with existing catalogs 1`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: false,
       origin: [],
@@ -358,8 +372,10 @@ exports[`Catalog make should merge with existing catalogs 1`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: false,
       origin: [],
@@ -375,10 +391,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     Component A: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -391,10 +409,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     Component B: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -405,16 +425,18 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     Hello World: {
-      comments: [],
-      context: null,
-      extractedComments: [
+      comments: [
         Comment A,
         Comment A again,
         Hello comment,
       ],
-      flags: [
-        explicit-id,
-      ],
+      context: null,
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -435,10 +457,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     custom.id: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -451,8 +475,10 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: true,
       origin: [],
@@ -463,10 +489,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     Component A: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -479,10 +507,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     Component B: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -493,16 +523,18 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     Hello World: {
-      comments: [],
-      context: null,
-      extractedComments: [
+      comments: [
         Comment A,
         Comment A again,
         Hello comment,
       ],
-      flags: [
-        explicit-id,
-      ],
+      context: null,
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -523,10 +555,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     custom.id: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -539,8 +573,10 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: true,
       origin: [],
@@ -564,10 +600,12 @@ exports[`Catalog make should only update the specified locale 2`] = `
     Component A: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -578,16 +616,18 @@ exports[`Catalog make should only update the specified locale 2`] = `
       translation: ,
     },
     Hello World: {
-      comments: [],
-      context: null,
-      extractedComments: [
+      comments: [
         Comment A,
         Comment A again,
         Hello comment,
       ],
-      flags: [
-        explicit-id,
-      ],
+      context: null,
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -608,10 +648,12 @@ exports[`Catalog make should only update the specified locale 2`] = `
     custom.id: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [
-        explicit-id,
-      ],
+      extra: {
+        flags: [
+          explicit-id,
+        ],
+        translatorComments: [],
+      },
       obsolete: false,
       origin: [
         [
@@ -632,10 +674,12 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
   Component A: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -646,16 +690,18 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
     translation: ,
   },
   Hello World: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       Comment A,
       Comment A again,
       Hello comment,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -676,10 +722,12 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
   custom.id: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -697,10 +745,12 @@ exports[`Catalog read should read file in given format 1`] = `
   obsolete: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: true,
     origin: [],
     translation: Is marked as obsolete,
@@ -708,10 +758,12 @@ exports[`Catalog read should read file in given format 1`] = `
   static: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Static message,
@@ -719,37 +771,43 @@ exports[`Catalog read should read file in given format 1`] = `
   veryLongString: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
   withComments: {
-    comments: [
-      Translator comment,
-      This one might come from developer,
-    ],
+    comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [
+        Translator comment,
+        This one might come from developer,
+      ],
+    },
     obsolete: false,
     origin: [],
     translation: Support translator comments separately,
   },
   withDescription: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       Description is comment from developers to translators,
     ],
-    flags: [
-      explicit-id,
-    ],
+    context: null,
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Message with description,
@@ -757,12 +815,14 @@ exports[`Catalog read should read file in given format 1`] = `
   withFlags: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      fuzzy,
-      otherFlag,
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        fuzzy,
+        otherFlag,
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [],
     translation: Keeps any flags that are defined,
@@ -770,10 +830,12 @@ exports[`Catalog read should read file in given format 1`] = `
   withMultipleOrigins: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -790,10 +852,12 @@ exports[`Catalog read should read file in given format 1`] = `
   withOrigin: {
     comments: [],
     context: null,
-    extractedComments: [],
-    flags: [
-      explicit-id,
-    ],
+    extra: {
+      flags: [
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
     obsolete: false,
     origin: [
       [
@@ -804,12 +868,14 @@ exports[`Catalog read should read file in given format 1`] = `
     translation: Message with origin,
   },
   xC8QeX: {
-    comments: [],
-    context: null,
-    extractedComments: [
+    comments: [
       js-lingui-id: pXy+hm,
     ],
-    flags: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
     message: Message with default hash id,
     obsolete: false,
     origin: [],
@@ -826,8 +892,10 @@ exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: false,
       origin: [],
@@ -838,8 +906,10 @@ exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
     mY42CM: {
       comments: [],
       context: null,
-      extractedComments: [],
-      flags: [],
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
       message: Hello World,
       obsolete: false,
       origin: [],
