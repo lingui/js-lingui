@@ -301,7 +301,7 @@ If `fallbackLocales` is `false` default message or message ID is used instead.
 
 Default: `po`
 
-Message catalog format. The `po` formatter is used by default. Other formats are available as separate packages.
+Message catalog format. The `po` formatter is used by default. Other formatters are available as separate packages.
 
 ```js title="lingui.config.{js,ts}"
 import { formatter } from "@lingui/format-po"
@@ -312,16 +312,16 @@ export default {
 }
 ```
 
-Official LinguiJS format packages:
+Official Lingui format packages:
 
-- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po) Default used in LinguiJS
-- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext) Gettext PO format with gettext-style plurals
-- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) Different JSON format
-- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) CSV format
+- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po) - Gettext PO used by default in Lingui
+- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext) - Gettext PO format with gettext-style plurals
+- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) - JSON format (`minimal` and `lingui`)
+- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) - CSV format
 
-See the individual packages README for configuration parameters.
+See the README of each package for configuration parameters.
 
-Visit [Advanced: Custom Formatter](/docs/guides/custom-formatter.md) to learn how to create custom formatter.
+Visit [Advanced: Custom Formatter](/docs/guides/custom-formatter.md) to learn how to create a custom formatter.
 
 ## locales
 

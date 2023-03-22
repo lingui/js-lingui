@@ -1,10 +1,10 @@
 # Custom Formatter
 
-If your project requires some special format or handling logic you can write your own format implementation.
+If your project requires some special format or handling logic, you can write your own format implementation.
 
-Formatter is simple object with 2 main functions `parse` and `serialize` which should take LinguiJS catalog and serialize it into string and vice-versa.
+Formatter is a simple object with 2 main functions `parse` and `serialize`, which should take Lingui catalog and serialize it to string and vice versa.
 
-You don't need to create a separate package for formatter, you can write it directly in `lingui.config.{ts,js}`
+You don't need to create a separate package for formatter, you can write it directly in `lingui.config.{ts,js}`.
 
 ```ts title="lingui.config.{ts,js}"
 import { extractor } from './my-custom-extractor.ts'
@@ -18,7 +18,7 @@ module.exports = {
 }
 ```
 
-The shape for formatter is following:
+The shape of formatter is the following:
 
 ```ts
 export type CatalogFormatter = {
@@ -30,16 +30,16 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLang: string, filename: string }
+    ctx: { locale: string | null; sourceLocale: string, filename: string }
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
-    ctx: { locale: string | null; sourceLang: string, filename: string; existing: string | null }
+    ctx: { locale: string | null; sourceLocale: string, filename: string; existing: string | null }
   ): Promise<string> | string
 }
 ```
 
-Lingui Catalog is an object with following structure:
+Lingui Catalog is an object with the following structure:
 
 ```ts
 export type CatalogType = {
@@ -59,5 +59,5 @@ export type MessageType = {
 ```
 
 :::caution Important
-If you use TypeScript to create your formatter, you should use the `ts` extension for your Lingui configuration file.
+If you are using TypeScript to build your formatter, you should use the `ts` extension for your Lingui configuration file.
 :::

@@ -14,7 +14,7 @@ The advantages of this format are:
 - supports contexts
 - standard format supported by many localization tools
 
-``` po
+```po
 #: src/App.js:3
 #. Comment for translators
 msgid "messageId"
@@ -41,7 +41,7 @@ When using localization backends that don't understand the ICU plural syntax exp
 
 This is how the regular PO format exports plurals:
 
-``` po
+```po
 msgid "{count, plural, one {Message} other {Messages}}"
 msgstr "{count, plural, one {Message} other {Messages}}"
 ```
@@ -81,13 +81,13 @@ Note that this format comes with several caveats and should therefore only be us
 - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used, as gettext cannot have more than two plurals cases identifying an item (`msgid` and `msgid_plural`).
 - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules for these cases.
 
-## JSON
+## JSON (minimal) {#json}
 
-Simple JSON file where each key is message ID and value is translation. The JSON is flat and there's no reason to use nested keys. The usual motivation behind nested JSON is to save filespace, but this file format is used offline only.
+Simple JSON file where each key is a message ID and the value is the translation. The JSON is flat, and there's no reason to use nested keys. The usual motivation behind nested JSON is to save file space, but this file format is only used offline.
 
-The drawback of this format is that all metadata about message are lost. That includes default message, origin of message and any message flags (obsolete, fuzzy, etc).
+The downside of this format is that all metadata about the message is lost. This includes the default message, the origin of the message, and any message flags (obsolete, fuzzy, etc.).
 
-``` json
+```json
 {
    "messageId": "translation"
 }
@@ -95,9 +95,9 @@ The drawback of this format is that all metadata about message are lost. That in
 
 ## Lingui (raw)
 
-This file format simply outputs all internal data in JSON format. It's the original file format used by LinguiJS library before support for other catalog formats were added. It might be useful for tools build on top of Lingui CLI which needs to further process catalog data.
+This file format simply outputs all internal data in JSON format. It's the original file format used by Lingui before support for other catalog formats was added. It might be useful for tools build on top of Lingui CLI which needs to further process catalog data.
 
-``` json
+```json
 {
    "messageId": {
       "translation": "Translated message",
@@ -112,3 +112,19 @@ This file format simply outputs all internal data in JSON format. It's the origi
    }
 }
 ```
+
+## CSV
+
+The CSV file with two columns - message ID and message (source or translation):
+
+```csv
+messageId,Message
+msg.common,String for translation
+```
+
+## References
+
+- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po)
+- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext)
+- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json)
+- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv)
