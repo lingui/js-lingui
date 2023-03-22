@@ -1,0 +1,73 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-22 13:03+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: pseudo\n"
+
+#: src/pages/examples.tsx:36
+#: src/pages/examples.tsx:48
+msgid "{value, plural, one {There's one book} other {There are # books}}"
+msgstr ""
+
+#: src/pages/examples.tsx:18
+msgid "Black"
+msgstr ""
+
+#: src/pages/index.tsx:50
+msgid "Checkout LinguiJS examples and usecases."
+msgstr ""
+
+#: src/pages/examples.tsx:18
+msgid "Cyan"
+msgstr ""
+
+#: src/pages/index.tsx:36
+msgid "Documentation →"
+msgstr ""
+
+#: src/components/Layout.tsx:23
+msgid "Example project using LinguiJS"
+msgstr ""
+
+#: src/pages/examples.tsx:26
+msgid "Examples"
+msgstr ""
+
+#: src/pages/index.tsx:47
+msgid "Examples →"
+msgstr ""
+
+#: src/pages/index.tsx:39
+msgid "Find in-depth information about LinguiJS features and API."
+msgstr ""
+
+#: src/pages/index.tsx:28
+msgid "Get started by editing <0>locales/en.po</0>"
+msgstr ""
+
+#: src/pages/examples.tsx:18
+msgid "Magenta"
+msgstr ""
+
+#: src/pages/examples.tsx:30
+msgid "Plurals"
+msgstr ""
+
+#: src/components/Layout.tsx:41
+msgid "Powered by <0/>"
+msgstr ""
+
+#: src/pages/examples.tsx:57
+msgid "Translation outside of React components"
+msgstr ""
+
+#: src/pages/index.tsx:23
+msgid "Welcome to <0>LinguiJS!</0>"
+msgstr ""
+
+#: src/pages/examples.tsx:18
+msgid "Yellow"
+msgstr ""

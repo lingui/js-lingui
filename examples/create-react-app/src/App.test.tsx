@@ -3,13 +3,15 @@ import { getByText, render, act } from "@testing-library/react"
 import { i18n } from "@lingui/core"
 import { I18nProvider } from "@lingui/react"
 
-import { messages } from "./locales/en/messages"
-import { messages as csMessages } from "./locales/cs/messages"
 import App from "./App"
 
 i18n.load({
-  en: messages,
-  cs: csMessages,
+  en: {
+    ZXBDaP: "Language switcher example:",
+  },
+  cs: {
+    ZXBDaP: "Příklad přepínače jazyků:",
+  },
 })
 
 const TestingProvider = ({ children }: any) => (

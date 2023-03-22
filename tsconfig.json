@@ -25,7 +25,7 @@
   },
   "exclude": [
     "examples/js",
-    "examples/next-js",
+    "examples/nextjs-babel",
     "examples/create-react-app",
     "build",
     "website",
