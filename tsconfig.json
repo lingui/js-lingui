@@ -24,9 +24,7 @@
     }
   },
   "exclude": [
-    "examples/js",
-    "examples/nextjs-babel",
-    "examples/create-react-app",
+    "examples/**",
     "build",
     "website",
     "**/fixtures/**",
