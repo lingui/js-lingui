@@ -114,23 +114,23 @@
   },
   "size-limit": [
     {
-      "path": "./packages/core/build/esm/index.js",
+      "path": "./packages/core/dist/index.mjs",
       "import": "{ i18n }",
-      "limit": "3 kB"
+      "limit": "2 kB"
     },
     {
-      "path": "./packages/detect-locale/build/esm/index.js",
+      "path": "./packages/detect-locale/dist/index.mjs",
       "limit": "1 kB"
     },
     {
-      "path": "./packages/react/build/esm/index.js",
-      "limit": "3 kB",
+      "path": "./packages/react/dist/index.mjs",
+      "limit": "2 kB",
       "ignore": [
         "react"
       ]
     },
     {
-      "path": "./packages/remote-loader/build/esm/index.js",
+      "path": "./packages/remote-loader/dist/index.mjs",
       "limit": "8 kB"
     }
   ],
