@@ -14,59 +14,61 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. Title of example
-#: src/messages.js:32
+#: src/ids.js:24
+#, explicit-id
+msgid "static"
+msgstr "@lingui/core example"
+
+#. Title of example
+#: src/messages.js:28
 msgid "@lingui/core example"
 msgstr ""
 
-#: src/messages.js:63
+#: src/ids.js:57
+#, explicit-id
+msgid "lazy"
+msgstr "Do you want to proceed? {yes}/{no}"
+
+#: src/messages.js:59
 msgid "Do you want to proceed? {yes}/{no}"
 msgstr ""
 
-#: src/messages.js:43
+#: src/ids.js:34
+#, explicit-id
+msgid "variables"
+msgstr "Hello {name}"
+
+#: src/messages.js:39
 msgid "Hello {name}"
 msgstr ""
 
 #. Disagreement
-#: src/messages.js:21
+#: src/ids.js:15
+#, explicit-id
+msgid "common.no"
+msgstr "No"
+
+#. Disagreement
+#: src/messages.js:17
 msgid "No"
 msgstr ""
 
-#: src/messages.js:50
+#: src/ids.js:43
+#, explicit-id
+msgid "plural"
+msgstr "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
+
+#: src/messages.js:46
 msgid "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
 msgstr ""
 
 #. Agreement
-#: src/messages.js:17
-msgid "Yes"
-msgstr ""
-
-#. Disagreement
-#: src/ids.js:19
-msgid "common.no"
-msgstr "No"
-
-#. Agreement
-#: src/ids.js:14
+#: src/ids.js:10
+#, explicit-id
 msgid "common.yes"
 msgstr "Yes"
 
-#: src/ids.js:61
-msgid "lazy"
-msgstr "Do you want to proceed? {yes}/{no}"
-
-#: src/ids.js:47
-msgid "plural"
-msgstr "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
-
-#. Title of example
-#: src/ids.js:28
-msgid "static"
-msgstr "@lingui/core example"
-
-#: src/ids.js:25
-#~ msgid "undefined"
-#~ msgstr "undefined"
-
-#: src/ids.js:38
-msgid "variables"
-msgstr "Hello {name}"
+#. Agreement
+#: src/messages.js:13
+msgid "Yes"
+msgstr ""

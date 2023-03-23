@@ -3,6 +3,7 @@
 **/fixtures/*
 **/locale/*
 website/*
+examples/*
 README.md
 **/npm/*
 /packages/*/build/**
