@@ -34,6 +34,7 @@ export function getConfig({
   const configExplorer = cosmiconfigSync(moduleName, {
     searchPlaces: [
       `${moduleName}.config.js`,
+      `${moduleName}.config.cjs`,
       `${moduleName}.config.ts`,
       `${moduleName}.config.mjs`,
       "package.json",
@@ -45,6 +46,7 @@ export function getConfig({
       `.${moduleName}rc.js`,
     ],
     loaders: {
+      ".js": JitiLoader(),
       ".ts": JitiLoader(),
       ".mjs": JitiLoader(),
     },
