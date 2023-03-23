@@ -59,8 +59,7 @@ describe("Trans component", () => {
       <span>{children}</span>
     )
 
-    const originalConsole = console.error
-    console.error = jest.fn()
+    const consoleErrorSpy = jest.spyOn(console, "error")
 
     renderWithI18n(
       // @ts-expect-error TS won't allow passing both `render` and `component` props
@@ -70,12 +69,11 @@ describe("Trans component", () => {
         id="Some text"
       />
     )
-    expect(console.error).toHaveBeenCalledWith(
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
       expect.stringContaining(
         "You can't use both `component` and `render` prop at the same time."
       )
     )
-    console.error = originalConsole
   })
 
   it("should render default string", () => {
