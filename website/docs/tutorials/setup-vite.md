@@ -11,7 +11,7 @@ The Lingui Vite integration:
 1.  Install `@lingui/cli`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
-    npm install --save-dev @lingui/cli babel-plugin-macros
+    npm install --save-dev @lingui/cli @lingui/vite-plugin babel-plugin-macros
     npm install --save @lingui/react @lingui/macro
     ```
 
@@ -45,7 +45,7 @@ The Lingui Vite integration:
 1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
-    npm install --save-dev @lingui/cli @lingui/swc-plugin
+    npm install --save-dev @lingui/cli @lingui/vite-plugin @lingui/swc-plugin
     npm install --save @lingui/react @lingui/macro
     ```
 
@@ -67,18 +67,20 @@ The Lingui Vite integration:
    ```
 ## Further Setup
 
-1. Create a `lingui.config.js` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with a directory name where you have source files:
+1. Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with a directory name where you have source files:
 
-  ```js title="lingui.config.js"
-  /** @type {import('@lingui/conf').LinguiConfig} */
-  module.exports = {
-     locales: ["en", "cs", "fr"],
-     catalogs: [{
-        path: "src/locales/{locale}",
-        include: ["src"]
-     }],
-     format: "po"
+  ```ts title="lingui.config.ts"
+  import type { LinguiConfig } from "@lingui/conf"
+
+  const config: LinguiConfig = {
+    locales: ["en", "cs", "fr"],
+    catalogs: [{
+      path: "src/locales/{locale}",
+      include: ["src"]
+    }],
   }
+
+  export default config
   ```
 
   PO format is recommended for message catalogs, and could be compiled on the fly thanks to `@lingui/vite-plugin`.
