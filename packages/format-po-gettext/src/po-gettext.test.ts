@@ -4,6 +4,7 @@ import path from "path"
 
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import { formatter as createFormat } from "./po-gettext"
+import MockDate from "mockdate"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -21,13 +22,15 @@ const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
 describe("po-gettext format", () => {
   const format = createFormat()
 
-  afterEach(() => {
-    jest.useRealTimers()
+  beforeAll(() => {
+    MockDate.set(new Date("2018-08-27T10:00Z"))
+  })
+
+  afterAll(() => {
+    MockDate.reset()
   })
 
   it("should convert ICU plural messages to gettext plurals", () => {
-    jest.useFakeTimers().setSystemTime(new Date("2018-08-27T10:00Z").getTime())
-
     const catalog: CatalogType = {
       message_with_id_and_octothorpe: {
         message: "{count, plural, one {Singular} other {Number is #}}",

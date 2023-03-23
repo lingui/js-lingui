@@ -1,5 +1,5 @@
 import { Content, parse, Token } from "@messageformat/parser"
-import { CompiledMessage, CompiledMessageToken } from "../i18n"
+import { CompiledMessage, CompiledMessageToken } from "./i18n"
 
 type MapTextFn = (value: string) => string
 

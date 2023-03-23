@@ -1,4 +1,4 @@
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 
 describe("I18n", () => {

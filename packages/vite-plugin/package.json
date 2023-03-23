@@ -2,8 +2,9 @@
   "name": "@lingui/vite-plugin",
   "version": "4.0.0-next.3",
   "description": "Vite plugin for Lingui message catalogs",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
   "keywords": [
     "vite-plugin",
@@ -17,7 +18,8 @@
     "translation"
   ],
   "scripts": {
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
   },
   "repository": {
     "type": "git",
@@ -32,14 +34,18 @@
   "files": [
     "LICENSE",
     "README.md",
-    "build/"
+    "dist/"
   ],
   "dependencies": {
     "@lingui/cli": "4.0.0-next.3",
     "@lingui/conf": "4.0.0-next.3"
   },
+  "peerDependencies": {
+    "vite": "3 - 4"
+  },
   "devDependencies": {
     "@lingui/format-json": "workspace:^",
+    "unbuild": "^1.1.2",
     "vite": "4.1.4"
   }
 }

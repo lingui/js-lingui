@@ -1,4 +1,3 @@
-import "./utils/globalThis.polyfill.js"
 import fromCookie from "./detectors/fromCookie"
 import fromPath from "./detectors/fromPath"
 import fromStorage from "./detectors/fromStorage"

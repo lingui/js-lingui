@@ -40,15 +40,18 @@ module.exports = {
       testEnvironment: "jsdom",
       testMatch,
       moduleNameMapper: tsConfigPathMapping,
-      roots: [
-        "<rootDir>/packages/core",
-        "<rootDir>/packages/react",
-        "<rootDir>/packages/remote-loader",
-      ],
+      roots: ["<rootDir>/packages/react"],
+    },
+    {
+      displayName: "universal",
+      testEnvironment: "jest-environment-node-single-context",
+      testMatch,
+      moduleNameMapper: tsConfigPathMapping,
+      roots: ["<rootDir>/packages/core", "<rootDir>/packages/remote-loader"],
     },
     {
       displayName: "node",
-      testEnvironment: "node",
+      testEnvironment: "jest-environment-node-single-context",
       testMatch,
       moduleNameMapper: tsConfigPathMapping,
       snapshotSerializers: [
