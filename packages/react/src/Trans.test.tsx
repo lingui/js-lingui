@@ -2,6 +2,7 @@ import * as React from "react"
 import { render } from "@testing-library/react"
 import { Trans, I18nProvider, TransRenderProps } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
+import { mockConsole } from "@lingui/jest-mocks"
 
 describe("Trans component", () => {
   /*
@@ -59,21 +60,21 @@ describe("Trans component", () => {
       <span>{children}</span>
     )
 
-    const consoleErrorSpy = jest.spyOn(console, "error")
-
-    renderWithI18n(
-      // @ts-expect-error TS won't allow passing both `render` and `component` props
-      <Trans
-        render={RenderChildrenInSpan}
-        component={RenderChildrenInSpan}
-        id="Some text"
-      />
-    )
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "You can't use both `component` and `render` prop at the same time."
+    mockConsole((console) => {
+      renderWithI18n(
+        // @ts-expect-error TS won't allow passing both `render` and `component` props
+        <Trans
+          render={RenderChildrenInSpan}
+          component={RenderChildrenInSpan}
+          id="Some text"
+        />
       )
-    )
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "You can't use both `component` and `render` prop at the same time."
+        )
+      )
+    })
   })
 
   it("should render default string", () => {
