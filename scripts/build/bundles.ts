@@ -27,9 +27,4 @@ export type BundleDef = {
   label?: string
 }
 
-export const bundles: readonly BundleDef[] = [
-  {
-    type: BundleType.NODE,
-    packageName: "cli",
-  },
-]
+export const bundles: readonly BundleDef[] = []

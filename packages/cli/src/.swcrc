@@ -1,0 +1,16 @@
+{
+  "exclude": [".*test\\.ts$", ".*/fixtures/.*"],
+  "env": {
+    "targets": {
+      "node": "16"
+    },
+  },
+  "module": {
+    "type": "commonjs",
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+    }
+  }
+}
