@@ -295,14 +295,16 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
           "context",
         ])
 
-        if (!props.id) {
+        if (!props.id && !props.message) {
           console.warn(
-            path.buildCodeFrameError("Missing message ID, skipping.").message
+            path.buildCodeFrameError("Missing message ID and MESSAGE, skipping.").message
           )
           return
         }
 
-        collectMessage(path, props, ctx)
+        const propsUseDefault = props.id ? props : { ...props, id: props.message }
+
+        collectMessage(path, propsUseDefault, ctx)
       },
     },
   }

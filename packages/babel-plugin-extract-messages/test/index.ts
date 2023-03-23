@@ -268,8 +268,8 @@ import { Trans } from "@lingui/react";
       })
     })
 
-    it("Should log error when no ID provided", () => {
-      const code = "const msg = /*i18n*/ {message: `Hello ${name}`}"
+    it("Should log error when no ID or MESSAGE provided", () => {
+      const code = "const msg = /*i18n*/ {noIdNorMessage: `foobar`}"
 
       return mockConsole((console) => {
         const messages = transformCode(code)
@@ -278,8 +278,19 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
 
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining(`Missing message ID`)
+          expect.stringContaining(`Missing message ID and MESSAGE`)
         )
+      })
+    })
+
+    it("Should use MESSAGE as default for ID", () => {
+      const code = "const msg = /*i18n*/ {message: `Hello {name}`}"
+
+      return mockConsole((console) => {
+        const messages = transformCode(code)
+        expect(messages[0]).toMatchObject({
+          id: "Hello {name}",
+        })
       })
     })
 
