@@ -1,6 +1,6 @@
-const { exec: _exec } = require("child_process")
-const chalk = require("chalk")
-const ora = require("ora")
+import { exec as _exec, ExecOptions } from "child_process"
+import ora from "ora"
+import chalk from "chalk"
 
 async function releaseInVerdaccio() {
   const spinner = ora()
@@ -32,15 +32,18 @@ async function releaseInVerdaccio() {
   )
 }
 
-function exec(cmd, options) {
+function exec(
+  cmd,
+  options: ExecOptions = {}
+): Promise<{ stdout: string; stderr: string }> {
   const _options = {
     env: {
       ...process.env,
     },
     ...options,
   }
-  return new Promise(function (resolve, reject) {
-    _exec(cmd, _options, function (error, stdout, stderr) {
+  return new Promise((resolve, reject) => {
+    _exec(cmd, _options, (error, stdout, stderr) => {
       stdout = stdout.trim()
       stderr = stderr.trim()
 

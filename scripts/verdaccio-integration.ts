@@ -1,8 +1,8 @@
-const path = require("path")
-const { exec: _exec } = require("child_process")
-const ora = require("ora")
+import path from "path"
+import { exec as _exec, ExecOptions } from "child_process"
+import ora from "ora"
 
-const OPTS = {
+const OPTS: ExecOptions = {
   cwd: path.resolve("examples/create-react-app"),
 }
 
@@ -29,15 +29,15 @@ async function main() {
   }
 }
 
-function exec(cmd, options) {
+function exec(cmd: string, options: ExecOptions) {
   const _options = {
     env: {
       ...process.env,
     },
     ...options,
   }
-  return new Promise(function (resolve, reject) {
-    _exec(cmd, _options, function (error, stdout, stderr) {
+  return new Promise((resolve, reject) => {
+    _exec(cmd, _options, (error, stdout, stderr) => {
       stdout = stdout.trim()
       stderr = stderr.trim()
 
