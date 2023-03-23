@@ -1,14 +1,16 @@
-import { interpolate, UNICODE_REGEX } from "./context"
+import { interpolate, UNICODE_REGEX } from "./interpolate"
 import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
-import { compileMessage } from "@lingui/core/compile"
 import { EventEmitter } from "./eventEmitter"
+import { compileMessage } from "@lingui/message-utils"
+import type { CompiledMessage } from "@lingui/message-utils"
 
 export type MessageOptions = {
   message?: string
   formats?: Formats
 }
 
+export type { CompiledMessage }
 export type Locale = string
 export type Locales = Locale | Locale[]
 export type Formats = Record<
@@ -32,15 +34,6 @@ export type LocaleData = {
  * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
  */
 export type AllLocaleData = Record<Locale, LocaleData>
-
-export type CompiledIcuChoices = Record<string, CompiledMessage> & {
-  offset: number
-}
-export type CompiledMessageToken =
-  | string
-  | [name: string, type?: string, format?: null | string | CompiledIcuChoices]
-
-export type CompiledMessage = string | CompiledMessageToken[]
 
 export type Messages = Record<string, CompiledMessage>
 

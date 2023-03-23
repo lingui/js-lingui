@@ -39,8 +39,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "4.0.0-next.4",
     "@lingui/conf": "4.0.0-next.4",
+    "@lingui/message-utils": "4.0.0-next.4",
     "date-fns": "^2.29.3",
     "pofile": "^1.1.4"
   },

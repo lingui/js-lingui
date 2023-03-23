@@ -39,9 +39,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "4.0.0-next.4",
     "@lingui/conf": "4.0.0-next.4",
     "@lingui/format-po": "4.0.0-next.4",
+    "@lingui/message-utils": "4.0.0-next.4",
     "@messageformat/parser": "^5.0.0",
     "node-gettext": "^3.0.0",
     "plurals-cldr": "^2.0.1",

@@ -5,7 +5,7 @@ import PO from "pofile"
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
-import { generateMessageId } from "@lingui/cli/api"
+import { generateMessageId } from "@lingui/message-utils"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
 

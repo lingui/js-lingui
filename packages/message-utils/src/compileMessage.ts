@@ -1,13 +1,18 @@
 import { Content, parse, Token } from "@messageformat/parser"
-import { CompiledMessage, CompiledMessageToken } from "./i18n"
+
+export type CompiledIcuChoices = Record<string, CompiledMessage> & {
+  offset: number
+}
+
+export type CompiledMessageToken =
+  | string
+  | [name: string, type?: string, format?: null | string | CompiledIcuChoices]
+
+export type CompiledMessage = string | CompiledMessageToken[]
 
 type MapTextFn = (value: string) => string
 
-// [Tokens] -> (CTX -> String)
-function processTokens(
-  tokens: Array<Token>,
-  mapText?: MapTextFn
-): CompiledMessage {
+function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
   if (!tokens.filter((token) => token.type !== "content").length) {
     return tokens.map((token) => mapText((token as Content).value)).join("")
   }
@@ -57,8 +62,6 @@ function processTokens(
   })
 }
 
-// Message -> (Params -> String)
-/** @internal */
 export function compileMessage(
   message: string,
   mapText: MapTextFn = (v) => v

@@ -2664,6 +2664,7 @@ __metadata:
     "@lingui/core": 4.0.0-next.4
     "@lingui/format-po": 4.0.0-next.4
     "@lingui/jest-mocks": "*"
+    "@lingui/message-utils": 4.0.0-next.4
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.42
     "@types/convert-source-map": ^2.0.0
@@ -2716,7 +2717,7 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
-    "@messageformat/parser": ^5.0.0
+    "@lingui/message-utils": 4.0.0-next.4
     unbuild: ^1.1.2
   languageName: unknown
   linkType: soft
@@ -2756,10 +2757,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/cli": 4.0.0-next.4
     "@lingui/conf": 4.0.0-next.4
     "@lingui/format-po": 4.0.0-next.4
     "@lingui/jest-mocks": "workspace:^"
+    "@lingui/message-utils": 4.0.0-next.4
     "@messageformat/parser": ^5.0.0
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
@@ -2774,9 +2775,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/cli": 4.0.0-next.4
     "@lingui/conf": 4.0.0-next.4
     "@lingui/jest-mocks": "workspace:^"
+    "@lingui/message-utils": 4.0.0-next.4
     date-fns: ^2.29.3
     mockdate: ^3.0.5
     pofile: ^1.1.4
@@ -2815,16 +2816,26 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/cli": 4.0.0-next.4
     "@lingui/conf": 4.0.0-next.4
+    "@lingui/core": 4.0.0-next.4
+    "@lingui/message-utils": 4.0.0-next.4
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     tsd: ^0.26.1
     unbuild: ^1.1.2
   peerDependencies:
-    "@lingui/core": 4.0.0-next.4
     "@lingui/react": 4.0.0-next.4
     babel-plugin-macros: 2 || 3
+  languageName: unknown
+  linkType: soft
+
+"@lingui/message-utils@4.0.0-next.4, @lingui/message-utils@workspace:packages/message-utils":
+  version: 0.0.0-use.local
+  resolution: "@lingui/message-utils@workspace:packages/message-utils"
+  dependencies:
+    "@lingui/jest-mocks": "workspace:^"
+    "@messageformat/parser": ^5.0.0
+    unbuild: ^1.1.2
   languageName: unknown
   linkType: soft
 
@@ -2848,6 +2859,7 @@ __metadata:
   resolution: "@lingui/remote-loader@workspace:packages/remote-loader"
   dependencies:
     "@lingui/core": 4.0.0-next.4
+    "@lingui/message-utils": 4.0.0-next.4
     ramda: ^0.27.1
     unbuild: ^1.1.2
   languageName: unknown
