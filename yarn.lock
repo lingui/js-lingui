@@ -2654,7 +2654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@4.0.0-next.3, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@4.0.0-next.4, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -2666,7 +2666,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@4.0.0-next.3, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@4.0.0-next.4, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -2675,10 +2675,10 @@ __metadata:
     "@babel/parser": ^7.21.2
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
-    "@lingui/core": 4.0.0-next.3
-    "@lingui/format-po": 4.0.0-next.3
+    "@lingui/babel-plugin-extract-messages": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
+    "@lingui/core": 4.0.0-next.4
+    "@lingui/format-po": 4.0.0-next.4
     "@lingui/jest-mocks": "*"
     "@types/convert-source-map": ^2.0.0
     "@types/micromatch": ^4.0.1
@@ -2708,7 +2708,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@4.0.0-next.3, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@4.0.0-next.4, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -2724,7 +2724,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@4.0.0-next.3, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
+"@lingui/core@4.0.0-next.4, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
@@ -2748,18 +2748,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
-    "@lingui/conf": 4.0.0-next.3
+    "@lingui/conf": 4.0.0-next.4
     papaparse: ^5.4.0
     tsd: ^0.28.0
     unbuild: ^1.1.2
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@4.0.0-next.3, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
+"@lingui/format-json@4.0.0-next.4, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 4.0.0-next.3
+    "@lingui/conf": 4.0.0-next.4
     ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^1.1.2
@@ -2770,9 +2770,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/cli": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
-    "@lingui/format-po": 4.0.0-next.3
+    "@lingui/cli": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
+    "@lingui/format-po": 4.0.0-next.4
     "@lingui/jest-mocks": "workspace:^"
     "@messageformat/parser": ^5.0.0
     mockdate: ^3.0.5
@@ -2784,12 +2784,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@4.0.0-next.3, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@4.0.0-next.4, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/cli": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
+    "@lingui/cli": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
     "@lingui/jest-mocks": "workspace:^"
     date-fns: ^2.29.3
     mockdate: ^3.0.5
@@ -2810,9 +2810,9 @@ __metadata:
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
-    "@lingui/format-json": 4.0.0-next.3
+    "@lingui/cli": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
+    "@lingui/format-json": 4.0.0-next.4
     unbuild: ^1.1.2
     webpack: ^5.76.1
   peerDependencies:
@@ -2829,15 +2829,15 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/cli": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
+    "@lingui/cli": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     tsd: ^0.26.1
     unbuild: ^1.1.2
   peerDependencies:
-    "@lingui/core": 4.0.0-next.3
-    "@lingui/react": 4.0.0-next.3
+    "@lingui/core": 4.0.0-next.4
+    "@lingui/react": 4.0.0-next.4
     babel-plugin-macros: 2 || 3
   languageName: unknown
   linkType: soft
@@ -2847,7 +2847,7 @@ __metadata:
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 4.0.0-next.3
+    "@lingui/core": 4.0.0-next.4
     "@testing-library/react": ^11.0.4
     unbuild: ^1.1.2
   peerDependencies:
@@ -2859,7 +2859,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/remote-loader@workspace:packages/remote-loader"
   dependencies:
-    "@lingui/core": 4.0.0-next.3
+    "@lingui/core": 4.0.0-next.4
     ramda: ^0.27.1
     unbuild: ^1.1.2
   languageName: unknown
@@ -2869,8 +2869,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 4.0.0-next.3
-    "@lingui/conf": 4.0.0-next.3
+    "@lingui/cli": 4.0.0-next.4
+    "@lingui/conf": 4.0.0-next.4
     "@lingui/format-json": "workspace:^"
     unbuild: ^1.1.2
     vite: 4.1.4
