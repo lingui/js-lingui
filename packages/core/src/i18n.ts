@@ -255,6 +255,12 @@ export class I18n extends EventEmitter<Events> {
     )(values, formats)
   }
 
+  // Alternative to _. Can be used in node/js without macros
+  // uses message descriptor only
+  t(descriptor: MessageDescriptor) {
+    return this._(descriptor)
+  }
+
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
     return date(this._locales || this._locale, value, format)
   }

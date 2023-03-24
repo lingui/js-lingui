@@ -127,6 +127,13 @@ import { Trans } from "@lingui/react";
       })
     })
 
+    it("should extract messages from i18n.t aliased expression", () => {
+      expectNoConsole(() => {
+        const messages = transform("node-call-expression-aliased.js")
+        expect(messages).toMatchSnapshot()
+      })
+    })
+
     it("Should not rise warning when translation from variable", () => {
       const code = `
       i18n._(message);
