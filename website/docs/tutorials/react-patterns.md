@@ -164,7 +164,8 @@ export function alert() {
 Messages don't have to be declared at the same code location where they're displayed. Tag a string with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
 
 ```jsx
-import { msg, Trans } from "@lingui/macro"
+import { msg } from "@lingui/macro"
+import { Trans } from "@lingui/react"
 
 const favoriteColors = [
    msg`Red`,
@@ -247,8 +248,8 @@ Sometimes you need to pick between different messages to display, depending on t
 A simple way to do this, is to make an object that maps the possible values of "status" to message descriptors (tagged with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro), and render them as needed with lazy translation:
 
 ```jsx
-import { defineMessage } from "@lingui/macro";
-import { i18n } from "@lingui/core";
+import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 const statusMessages = {
    ['STATUS_OPEN']: msg`Open`,
@@ -258,6 +259,7 @@ const statusMessages = {
 }
 
 export default function StatusDisplay({ statusCode }) {
+   const { i18n } = useLingui();
    return <div>{i18n._(statusMessages[statusCode])}</div>
 }
 ```
