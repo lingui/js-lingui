@@ -1,9 +1,9 @@
-import { compileMessage as compile } from "./compileMessage"
+import { compileMessage as compile } from "@lingui/message-utils"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
-import { interpolate } from "./context"
+import { interpolate } from "./interpolate"
 import { Locale, Locales } from "./i18n"
 
-describe("compile", () => {
+describe("interpolate", () => {
   const prepare = (translation: string, locale?: Locale, locales?: Locales) => {
     const tokens = compile(translation)
     return interpolate(tokens, locale || "en", locales)

@@ -44,27 +44,16 @@
         "default": "./dist/index.mjs"
       }
     },
-    "./compile": {
-      "require": {
-        "types": "./dist/compile.d.ts",
-        "default": "./dist/compile.cjs"
-      },
-      "import": {
-        "types": "./dist/compile.d.ts",
-        "default": "./dist/compile.mjs"
-      }
-    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "dist/",
-    "compile.js"
+    "dist/"
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@messageformat/parser": "^5.0.0"
+    "@lingui/message-utils": "4.0.0-next.4"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",

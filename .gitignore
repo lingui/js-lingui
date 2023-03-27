@@ -1,8 +1,6 @@
 node_modules/
-build/packages/
 .yalc/
 yalc.lock
-packages/**/build
 dist
 
 npm-debug.log
@@ -11,9 +9,6 @@ yarn-error.log
 coverage/
 results/
 junit.xml
-
-__pycache__/
-.rpt2_cache/
 
 .DS_Store
 .vscode

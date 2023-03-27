@@ -1,3 +1,15 @@
-const babelConfig = require("./scripts/build/babel.config")
-
-module.exports = babelConfig(true)
+module.exports = {
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          node: 16,
+        },
+        modules: "commonjs",
+      },
+    ],
+    "@babel/preset-typescript",
+    "@babel/preset-react",
+  ],
+}

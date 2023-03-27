@@ -89,7 +89,7 @@ After you successfully fix a bug or add a new feature, you most probably want to
 2. Publish local build of packages to registry. Run local release script:
 
     ```sh
-    node ./scripts/verdaccio-release.js
+    yarn verdaccio:release
     ```
 
 3. If you enter inside http://0.0.0.0:4873 (verdaccio instance), you will see your packages published, so you're ready to install them.
@@ -128,9 +128,6 @@ Please make sure that all tests pass and linter doesn't report any error before 
 - `yarn release:test` - Full test suite (recommended)
 
 `yarn release:test` builds all packages, simulates creating packages for NPM, runs unit tests and finally runs integration tests using production build.
-
-> **Note**
-> Don't commit `scripts/build/results.json` created by `yarn release:test`.
 
 Now you can create PR and let CI service do their work!
 

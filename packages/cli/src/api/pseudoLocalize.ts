@@ -1,4 +1,6 @@
 import R from "ramda"
+// https://github.com/MartinCerny-awin/pseudolocale/pull/18
+// @ts-ignore
 import pseudolocale from "pseudolocale"
 
 const delimiter = "%&&&%"
@@ -32,19 +34,19 @@ const MacroRegex =
  */
 const VariableRegex = /({\s*[a-zA-Z_$][a-zA-Z_$0-9]*\s*})/g
 
-function addDelimitersHTMLTags(message) {
+function addDelimitersHTMLTags(message: string) {
   return message.replace(HTMLRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
-function addDelimitersMacro(message) {
+function addDelimitersMacro(message: string) {
   return message.replace(MacroRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
 }
 
-function addDelimitersVariables(message) {
+function addDelimitersVariables(message: string) {
   return message.replace(VariableRegex, (matchedString) => {
     return `${delimiter}${matchedString}${delimiter}`
   })
@@ -56,7 +58,7 @@ const addDelimiters = R.compose(
   addDelimitersHTMLTags
 )
 
-function removeDelimiters(message) {
+function removeDelimiters(message: string) {
   return message.replace(new RegExp(delimiter, "g"), "")
 }
 

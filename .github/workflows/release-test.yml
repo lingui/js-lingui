@@ -36,5 +36,5 @@ jobs:
           mkdir -p $HOME/.config/verdaccio
           cp --verbose .github/verdaccio/config.yaml $HOME/.config/verdaccio/config.yaml
           nohup verdaccio --config $HOME/.config/verdaccio/config.yaml &>mktemp &
-          node ./scripts/verdaccio-release.js
-          node ./scripts/verdaccio-integration.js
+          yarn verdaccio:release
+          yarn verdaccio:integration

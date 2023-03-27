@@ -69,6 +69,7 @@ module.exports = {
         "<rootDir>/packages/format-po-gettext",
         "<rootDir>/packages/format-json",
         "<rootDir>/packages/format-csv",
+        "<rootDir>/packages/message-utils",
       ],
     },
   ],
