@@ -1,9 +1,10 @@
 import * as React from "react"
 import { render } from "@testing-library/react"
-import { Trans, I18nProvider } from "@lingui/react"
+import { Trans, I18nProvider, TransRenderProps } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
+import { mockConsole } from "@lingui/jest-mocks"
 
-describe("Trans component", function () {
+describe("Trans component", () => {
   /*
    * Setup context, define helpers
    */
@@ -31,7 +32,7 @@ describe("Trans component", function () {
    * Tests
    */
 
-  it("should throw error without i18n context", function () {
+  it("should throw error without i18n context", () => {
     const originalConsole = console.error
     console.error = jest.fn()
 
@@ -40,7 +41,7 @@ describe("Trans component", function () {
     console.error = originalConsole
   })
 
-  it("should throw a console.error about deprecated usage of string built-in", function () {
+  it("should throw a console.error about deprecated usage of string built-in", () => {
     const originalConsole = console.error
     console.error = jest.fn()
 
@@ -54,17 +55,29 @@ describe("Trans component", function () {
     console.error = originalConsole
   })
 
-  it("should throw a console.error if using twice props", function () {
-    const originalConsole = console.error
-    console.error = jest.fn()
+  it("should log a console.error if using `render` and `component` props at the same time", () => {
+    const RenderChildrenInSpan = ({ children }: TransRenderProps) => (
+      <span>{children}</span>
+    )
 
-    // @ts-expect-error testing the error
-    renderWithI18n(<Trans render="div" component="span" id="Some text" />)
-    expect(console.error).toHaveBeenCalled()
-    console.error = originalConsole
+    mockConsole((console) => {
+      renderWithI18n(
+        // @ts-expect-error TS won't allow passing both `render` and `component` props
+        <Trans
+          render={RenderChildrenInSpan}
+          component={RenderChildrenInSpan}
+          id="Some text"
+        />
+      )
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "You can't use both `component` and `render` prop at the same time."
+        )
+      )
+    })
   })
 
-  it("should render default string", function () {
+  it("should render default string", () => {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
     expect(text(<Trans id="unknown" message="Not translated yet" />)).toEqual(
@@ -82,7 +95,7 @@ describe("Trans component", function () {
     ).toEqual("Not translated yet, Dave")
   })
 
-  it("should render translation", function () {
+  it("should render translation", () => {
     const translation = text(
       <Trans id="All human beings are born free and equal in dignity and rights." />
     )
@@ -92,7 +105,7 @@ describe("Trans component", function () {
     )
   })
 
-  it("should render translation from variable", function () {
+  it("should render translation from variable", () => {
     const msg =
       "All human beings are born free and equal in dignity and rights."
     const translation = text(<Trans id={msg} />)
@@ -101,14 +114,14 @@ describe("Trans component", function () {
     )
   })
 
-  it("should render component in variables", function () {
+  it("should render component in variables", () => {
     const translation = html(
       <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
     )
     expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
-  it("should render named component in components", function () {
+  it("should render named component in components", () => {
     const translation = html(
       <Trans
         id="Read <named>the docs</named>"
@@ -118,7 +131,7 @@ describe("Trans component", function () {
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
 
-  it("should render nested named components in components", function () {
+  it("should render nested named components in components", () => {
     const translation = html(
       <Trans
         id="Read <link>the <strong>docs</strong></link>"
@@ -130,14 +143,14 @@ describe("Trans component", function () {
     )
   })
 
-  it("should render non-named component in components", function () {
+  it("should render non-named component in components", () => {
     const translation = html(
       <Trans id="Read <0>the docs</0>" components={{ 0: <a href="/docs" /> }} />
     )
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
 
-  it("should render translation inside custom component", function () {
+  it("should render translation inside custom component", () => {
     const Component = (props) => <p className="lead">{props.children}</p>
     const html1 = html(<Trans component={Component} id="Original" />)
     const html2 = html(
@@ -151,7 +164,7 @@ describe("Trans component", function () {
     expect(html2).toEqual('<p class="lead">Původní</p>')
   })
 
-  it("should render custom format", function () {
+  it("should render custom format", () => {
     const translation = text(
       <Trans
         id="msg.currency"
@@ -168,13 +181,13 @@ describe("Trans component", function () {
     expect(translation).toEqual("1,00 €")
   })
 
-  describe("rendering", function () {
-    it("should render a text node with no wrapper element", function () {
+  describe("rendering", () => {
+    it("should render a text node with no wrapper element", () => {
       const txt = html(<Trans id="Some text" />)
       expect(txt).toEqual("Some text")
     })
 
-    it("should render custom element", function () {
+    it("should render custom element", () => {
       const element = html(
         <Trans
           render={({ id, translation }) => <h1 id={id}>{translation}</h1>}
@@ -184,7 +197,7 @@ describe("Trans component", function () {
       expect(element).toEqual(`<h1 id="Headline">Headline</h1>`)
     })
 
-    it("should render function", function () {
+    it("supports render callback function", () => {
       const spy = jest.fn()
       text(
         <Trans
@@ -201,14 +214,15 @@ describe("Trans component", function () {
         id: "ID",
         message: "Default",
         translation: "Translation",
+        children: "Translation",
         isTranslated: true,
       })
     })
 
-    it("should take defaultComponent prop with a custom component", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+    it("should take defaultComponent prop with a custom component", () => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const span = render(
@@ -219,10 +233,10 @@ describe("Trans component", function () {
       expect(span).toEqual(`<div>Some text</div>`)
     })
 
-    it("should ignore defaultComponent when render is null", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+    it("should ignore defaultComponent when render is null", () => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const translation = render(
@@ -233,10 +247,10 @@ describe("Trans component", function () {
       expect(translation).toEqual("Some text")
     })
 
-    it("should ignore defaultComponent when component is null", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        children?: React.ReactNode
-      }) => {
+    it("should ignore defaultComponent when component is null", () => {
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
         return <div>{props.children}</div>
       }
       const translation = render(
@@ -248,9 +262,9 @@ describe("Trans component", function () {
     })
   })
 
-  describe("component prop rendering", function () {
-    it("should render class component as simple prop", function () {
-      class ClassComponent extends React.Component {
+  describe("component prop rendering", () => {
+    it("should render class component as simple prop", () => {
+      class ClassComponent extends React.Component<TransRenderProps> {
         render() {
           return <div>Headline</div>
         }
@@ -259,27 +273,32 @@ describe("Trans component", function () {
       expect(element).toEqual("<div>Headline</div>")
     })
 
-    it("should render functional component as simple prop", function () {
-      const ComponentFC: React.FunctionComponent = (props: {
-        id: any
-        children?: React.ReactNode
-      }) => {
+    it("should render function component as simple prop", () => {
+      const propsSpy = jest.fn()
+      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+        props
+      ) => {
+        propsSpy(props)
         const [state] = React.useState("value")
         return <div id={props.id}>{state}</div>
       }
+
       const element = html(<Trans component={ComponentFC} id="Headline" />)
-      expect(element).toEqual(`<div>value</div>`)
+      expect(element).toEqual(`<div id="Headline">value</div>`)
+      expect(propsSpy).toHaveBeenCalledWith({
+        id: "Headline",
+        isTranslated: false,
+        message: undefined,
+        translation: "Headline",
+        children: "Headline",
+      })
     })
   })
 
-  describe("I18nProvider defaulComponent accepts render-like props", function () {
-    const DefaultComponent: React.FunctionComponent = (props: {
-      children?: React.ReactNode
-      id: string
-      translation: string
-      message: string
-      isTranslated: boolean
-    }) => (
+  describe("I18nProvider defaultComponent accepts render-like props", () => {
+    const DefaultComponent: React.FunctionComponent<TransRenderProps> = (
+      props
+    ) => (
       <>
         <div data-testid="children">{props.children}</div>
         {props.id && <div data-testid="id">{props.id}</div>}
@@ -292,7 +311,7 @@ describe("Trans component", function () {
       </>
     )
 
-    it("should render defaultComponent with Trans props", function () {
+    it("should render defaultComponent with Trans props", () => {
       const markup = render(
         <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
           <Trans id="ID" message="Some message" />
@@ -307,7 +326,7 @@ describe("Trans component", function () {
       expect(markup.queryByTestId("is-translated").innerHTML).toEqual("true")
     })
 
-    it("should pass isTranslated: false if no translation", function () {
+    it("should pass isTranslated: false if no translation", () => {
       const markup = render(
         <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
           <Trans id="NO_ID" message="Some message" />

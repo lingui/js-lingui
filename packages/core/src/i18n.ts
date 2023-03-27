@@ -19,7 +19,7 @@ export type Formats = Record<
 export type Values = Record<string, unknown>
 
 /**
- * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+ * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
  */
 export type LocaleData = {
   plurals?: (
@@ -29,7 +29,7 @@ export type LocaleData = {
 }
 
 /**
- * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+ * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
  */
 export type AllLocaleData = Record<Locale, LocaleData>
 
@@ -65,7 +65,7 @@ type setupI18nProps = {
   locales?: Locales
   messages?: AllMessages
   /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
   localeData?: AllLocaleData
   missing?: MissingHandler
@@ -110,7 +110,7 @@ export class I18n extends EventEmitter<Events> {
   }
 
   /**
-   * @deprecated this has no effect. Please remove this from the code. Introduced in v4
+   * @deprecated this has no effect. Please remove this from the code. Deprecated in v4
    */
   get localeData(): LocaleData {
     return this._localeData[this._locale] ?? {}
@@ -125,15 +125,15 @@ export class I18n extends EventEmitter<Events> {
   }
 
   /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
   public loadLocaleData(allLocaleData: AllLocaleData): void
   /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
   public loadLocaleData(locale: Locale, localeData: LocaleData): void
   /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Introduced in v4
+   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
   loadLocaleData(localeOrAllData, localeData?) {
     if (localeData != null) {

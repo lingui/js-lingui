@@ -2848,6 +2848,7 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/core": 4.0.0-next.4
+    "@lingui/jest-mocks": "*"
     "@testing-library/react": ^11.0.4
     unbuild: ^1.1.2
   peerDependencies:
