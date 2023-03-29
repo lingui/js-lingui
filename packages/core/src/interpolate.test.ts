@@ -1,4 +1,4 @@
-import { compileMessage as compile } from "@lingui/message-utils"
+import { compileMessage as compile } from "@lingui/message-utils/compileMessage"
 import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "./interpolate"
 import { Locale, Locales } from "./i18n"

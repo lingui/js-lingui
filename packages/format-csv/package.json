@@ -5,6 +5,7 @@
   "main": "./dist/csv.cjs",
   "module": "./dist/csv.mjs",
   "types": "./dist/csv.d.ts",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": [
     "i18n",

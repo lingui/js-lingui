@@ -14,7 +14,7 @@
     "paths": {
       "@lingui/babel-plugin-extract-messages": ["./packages/babel-plugin-extract-messages/src"],
       "@lingui/core": ["./packages/core/src"],
-      "@lingui/message-utils": ["./packages/message-utils/src/index.ts"],
+      "@lingui/message-utils/*": ["./packages/message-utils/src/*"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
       "@lingui/conf": ["./packages/conf/src"],
