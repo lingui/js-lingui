@@ -4,6 +4,20 @@
 declare module "@lingui/macro" {
   import type { MessageDescriptor, I18n } from "@lingui/core"
 
+  type MacroMessageDescriptor = (
+    | {
+        id: string
+        message?: string
+      }
+    | {
+        id?: string
+        message: string
+      }
+  ) & {
+    comment?: string
+    context?: string
+  }
+
   export type BasicType = {
     id?: string
     comment?: string
@@ -33,7 +47,7 @@ declare module "@lingui/macro" {
    *
    * @param descriptor The message descriptor to translate
    */
-  export function t(descriptor: MessageDescriptor): string
+  export function t(descriptor: MacroMessageDescriptor): string
 
   /**
    * Translates a template string using the global I18n instance
@@ -76,7 +90,7 @@ declare module "@lingui/macro" {
    */
   export function t(i18n: I18n): {
     (literals: TemplateStringsArray, ...placeholders: any[]): string
-    (descriptor: MessageDescriptor): string
+    (descriptor: MacroMessageDescriptor): string
   }
 
   export type UnderscoreDigit<T = string> = { [digit: string]: T }
@@ -177,7 +191,7 @@ declare module "@lingui/macro" {
    * @param descriptor The message descriptor
    */
   export function defineMessage(
-    descriptor: MessageDescriptor
+    descriptor: MacroMessageDescriptor
   ): MessageDescriptor
 
   export type ChoiceProps = {
