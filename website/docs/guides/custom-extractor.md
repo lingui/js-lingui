@@ -17,7 +17,7 @@ export const extractor: ExtractorType = {
 
     // you can acess lingui config from using `ctx.linguiConfig`
     // reuse extractor from cli
-    return babel(filename, code, onMessageExtracted, {sourcemaps, ...ctx})
+    return babel.extract(filename, code, onMessageExtracted, {sourcemaps, ...ctx})
   }
 }
 ```
