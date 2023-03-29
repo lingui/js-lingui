@@ -5,6 +5,7 @@
   "main": "./dist/po-gettext.cjs",
   "module": "./dist/po-gettext.mjs",
   "types": "./dist/po-gettext.d.ts",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": [
     "i18n",

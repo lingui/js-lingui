@@ -1,6 +1,9 @@
 import * as t from "@babel/types"
 import generate, { GeneratorOptions } from "@babel/generator"
-import { compileMessage, CompiledMessage } from "@lingui/message-utils"
+import {
+  compileMessage,
+  CompiledMessage,
+} from "@lingui/message-utils/compileMessage"
 import pseudoLocalize from "./pseudoLocalize"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string

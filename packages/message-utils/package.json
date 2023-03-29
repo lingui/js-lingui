@@ -1,11 +1,21 @@
 {
   "name": "@lingui/message-utils",
   "version": "4.0.0-next.4",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "license": "MIT",
   "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    "./generateMessageId": {
+      "import": "./dist/generateMessageId.mjs",
+      "require": "./dist/generateMessageId.cjs",
+      "types": "./dist/generateMessageId.d.ts"
+    },
+    "./compileMessage": {
+      "import": "./dist/compileMessage.mjs",
+      "require": "./dist/compileMessage.cjs",
+      "types": "./dist/compileMessage.d.ts"
+    }
+  },
   "scripts": {
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"

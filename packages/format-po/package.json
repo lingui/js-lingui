@@ -5,6 +5,7 @@
   "main": "./dist/po.cjs",
   "module": "./dist/po.mjs",
   "types": "./dist/po.d.ts",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": [
     "i18n",

@@ -2,8 +2,8 @@ import { interpolate, UNICODE_REGEX } from "./interpolate"
 import { isString, isFunction } from "./essentials"
 import { date, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
-import { compileMessage } from "@lingui/message-utils"
-import type { CompiledMessage } from "@lingui/message-utils"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
+import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
 
 export type MessageOptions = {
   message?: string

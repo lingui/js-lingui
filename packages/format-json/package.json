@@ -5,6 +5,7 @@
   "main": "./dist/json.cjs",
   "module": "./dist/json.mjs",
   "types": "./dist/json.d.ts",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": [
     "i18n",

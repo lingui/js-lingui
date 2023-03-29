@@ -2,7 +2,7 @@ import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
-import { generateMessageId } from "@lingui/message-utils"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 type POItem = InstanceType<typeof PO.Item>
 
