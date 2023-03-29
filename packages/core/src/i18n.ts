@@ -40,7 +40,7 @@ export type Messages = Record<string, CompiledMessage>
 export type AllMessages = Record<Locale, Messages>
 
 export type MessageDescriptor = {
-  id?: string
+  id: string
   comment?: string
   message?: string
   values?: Record<string, unknown>
