@@ -272,7 +272,9 @@ export function formatter(
       const po = PO.parse(formatter.serialize(catalog, ctx) as string)
 
       po.items = po.items.map((item) => {
-        const isGeneratedId = !item.flags["explicit-id"]
+        const isGeneratedId = !item.extractedComments.includes(
+          "js-lingui-explicit-id"
+        )
         const id = isGeneratedId
           ? generateMessageId(item.msgid, item.msgctxt)
           : item.msgid

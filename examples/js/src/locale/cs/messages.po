@@ -15,7 +15,7 @@ msgstr ""
 
 #. Title of example
 #: src/ids.js:24
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "static"
 msgstr "Ukázka @lingui/core"
 
@@ -25,7 +25,7 @@ msgid "@lingui/core example"
 msgstr "Ukázka @lingui/core"
 
 #: src/ids.js:57
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "lazy"
 msgstr "Chcete pokračovat? {yes}/{no}"
 
@@ -34,7 +34,7 @@ msgid "Do you want to proceed? {yes}/{no}"
 msgstr "Chcete pokračovat? {yes}/{no}"
 
 #: src/ids.js:34
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "variables"
 msgstr "Ahoj {name}"
 
@@ -44,7 +44,7 @@ msgstr "Ahoj {name}"
 
 #. Disagreement
 #: src/ids.js:15
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "common.no"
 msgstr "Ne"
 
@@ -54,7 +54,7 @@ msgid "No"
 msgstr "Ne"
 
 #: src/ids.js:43
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "plural"
 msgstr "{value, plural, one {# láhev} few {# láhve} other {# láhví}} visí na stěně"
 
@@ -64,7 +64,7 @@ msgstr "{value, plural, one {# láhev} few {# láhve} other {# láhví}} visí n
 
 #. Agreement
 #: src/ids.js:10
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "common.yes"
 msgstr "Ano"
 

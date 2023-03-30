@@ -27,12 +27,12 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
     translation: ,
   },
   message_with_id: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -42,12 +42,11 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
   message_with_id_but_without_translation: {
     comments: [
       Comment made by the developers.,
+      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -73,16 +72,16 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
+#. js-lingui-explicit-id
 #. js-lingui:pluralize_on=count
-#, explicit-id
 msgid "message_with_id_and_octothorpe"
 msgid_plural "message_with_id_and_octothorpe_plural"
 msgstr[0] "Singular"
 msgstr[1] "Number is #"
 
 #. This is a comment by the developers about how the content must be localized.
+#. js-lingui-explicit-id
 #. js-lingui:pluralize_on=someCount
-#, explicit-id
 msgid "message_with_id"
 msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case with id"
@@ -94,8 +93,8 @@ msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"
 msgstr[1] "Case number {anotherCount}"
 
+#. js-lingui-explicit-id
 #. js-lingui:pluralize_on=count
-#, explicit-id
 msgid "message_with_id_but_without_translation"
 msgid_plural "message_with_id_but_without_translation_plural"
 msgstr[0] ""
@@ -136,12 +135,12 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
     translation: ,
   },
   message_with_id: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -151,12 +150,11 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
   message_with_id_but_without_translation: {
     comments: [
       Comment made by the developers.,
+      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,

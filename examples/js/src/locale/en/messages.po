@@ -15,7 +15,7 @@ msgstr ""
 
 #. Title of example
 #: src/ids.js:24
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "static"
 msgstr "@lingui/core example"
 
@@ -25,7 +25,7 @@ msgid "@lingui/core example"
 msgstr ""
 
 #: src/ids.js:57
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "lazy"
 msgstr "Do you want to proceed? {yes}/{no}"
 
@@ -34,7 +34,7 @@ msgid "Do you want to proceed? {yes}/{no}"
 msgstr ""
 
 #: src/ids.js:34
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "variables"
 msgstr "Hello {name}"
 
@@ -44,7 +44,7 @@ msgstr ""
 
 #. Disagreement
 #: src/ids.js:15
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "common.no"
 msgstr "No"
 
@@ -54,7 +54,7 @@ msgid "No"
 msgstr ""
 
 #: src/ids.js:43
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "plural"
 msgstr "There are {value, plural, one {# bottle} other {# bottles}} hanging on the wall"
 
@@ -64,7 +64,7 @@ msgstr ""
 
 #. Agreement
 #: src/ids.js:10
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "common.yes"
 msgstr "Yes"
 

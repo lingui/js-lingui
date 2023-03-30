@@ -164,14 +164,14 @@ describe("pofile format", () => {
       #. First description
       #. Second comment
       #. Third comment
-      #, explicit-id
+      #. js-lingui-explicit-id
       msgid "withMultipleDescriptions"
       msgstr "Extra comments are separated from the first description line"
 
       # Translator comment
       #. Single description only
       #. Second description?
-      #, explicit-id
+      #. js-lingui-explicit-id
       msgid "withDescriptionAndComments"
       msgstr "Second description joins translator comments"
     `
@@ -236,18 +236,18 @@ describe("pofile format", () => {
       "X-Generator: @lingui/cli\\n"
       "Language: en\\n"
 
-      #, explicit-id
+      #. js-lingui-explicit-id
       msgid "static"
       msgstr "Static message"
 
+      #. js-lingui-explicit-id
       #: src/App.js
-      #, explicit-id
       msgid "withOrigin"
       msgstr "Message with origin"
 
+      #. js-lingui-explicit-id
       #: src/App.js
       #: src/Component.js
-      #, explicit-id
       msgid "withMultipleOrigins"
       msgstr "Message with multiple origin"
 
@@ -283,18 +283,18 @@ describe("pofile format", () => {
       "X-Generator: @lingui/cli\\n"
       "Language: en\\n"
 
-      #, explicit-id
+      #. js-lingui-explicit-id
       msgid "static"
       msgstr "Static message"
 
+      #. js-lingui-explicit-id
       #: src/App.js
-      #, explicit-id
       msgid "withOrigin"
       msgstr "Message with origin"
 
+      #. js-lingui-explicit-id
       #: src/App.js
       #: src/Component.js
-      #, explicit-id
       msgid "withMultipleOrigins"
       msgstr "Message with multiple origin"
 

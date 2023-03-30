@@ -215,12 +215,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
 {
   cs: {
     Component A: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -237,12 +237,11 @@ exports[`Catalog make should collect and write catalogs 2`] = `
         Comment A,
         Comment A again,
         Hello comment,
+        js-lingui-explicit-id,
       ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -263,12 +262,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       translation: ,
     },
     custom.id: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -283,12 +282,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
   },
   en: {
     Component A: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -305,12 +304,11 @@ exports[`Catalog make should collect and write catalogs 2`] = `
         Comment A,
         Comment A again,
         Hello comment,
+        js-lingui-explicit-id,
       ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -331,12 +329,12 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       translation: ,
     },
     custom.id: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -389,12 +387,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
 {
   cs: {
     Component A: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -407,12 +405,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     Component B: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -429,12 +427,11 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
         Comment A,
         Comment A again,
         Hello comment,
+        js-lingui-explicit-id,
       ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -455,12 +452,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     custom.id: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -487,12 +484,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
   },
   en: {
     Component A: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -505,12 +502,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     Component B: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -527,12 +524,11 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
         Comment A,
         Comment A again,
         Hello comment,
+        js-lingui-explicit-id,
       ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -553,12 +549,12 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       translation: ,
     },
     custom.id: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -598,12 +594,12 @@ exports[`Catalog make should only update the specified locale 2`] = `
   cs: null,
   en: {
     Component A: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -620,12 +616,11 @@ exports[`Catalog make should only update the specified locale 2`] = `
         Comment A,
         Comment A again,
         Hello comment,
+        js-lingui-explicit-id,
       ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -646,12 +641,12 @@ exports[`Catalog make should only update the specified locale 2`] = `
       translation: ,
     },
     custom.id: {
-      comments: [],
+      comments: [
+        js-lingui-explicit-id,
+      ],
       context: null,
       extra: {
-        flags: [
-          explicit-id,
-        ],
+        flags: [],
         translatorComments: [],
       },
       obsolete: false,
@@ -672,12 +667,12 @@ exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
 exports[`Catalog makeTemplate should collect and write a template 2`] = `
 {
   Component A: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -694,12 +689,11 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
       Comment A,
       Comment A again,
       Hello comment,
+      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -720,12 +714,12 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
     translation: ,
   },
   custom.id: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -743,12 +737,12 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
 exports[`Catalog read should read file in given format 1`] = `
 {
   obsolete: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: true,
@@ -756,12 +750,12 @@ exports[`Catalog read should read file in given format 1`] = `
     translation: Is marked as obsolete,
   },
   static: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -769,12 +763,12 @@ exports[`Catalog read should read file in given format 1`] = `
     translation: Static message,
   },
   veryLongString: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -782,12 +776,12 @@ exports[`Catalog read should read file in given format 1`] = `
     translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
   },
   withComments: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [
         Translator comment,
         This one might come from developer,
@@ -800,40 +794,24 @@ exports[`Catalog read should read file in given format 1`] = `
   withDescription: {
     comments: [
       Description is comment from developers to translators,
+      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
     origin: [],
     translation: Message with description,
   },
-  withFlags: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [
-        fuzzy,
-        otherFlag,
-        explicit-id,
-      ],
-      translatorComments: [],
-    },
-    obsolete: false,
-    origin: [],
-    translation: Keeps any flags that are defined,
-  },
   withMultipleOrigins: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -850,12 +828,12 @@ exports[`Catalog read should read file in given format 1`] = `
     translation: Message with multiple origin,
   },
   withOrigin: {
-    comments: [],
+    comments: [
+      js-lingui-explicit-id,
+    ],
     context: null,
     extra: {
-      flags: [
-        explicit-id,
-      ],
+      flags: [],
       translatorComments: [],
     },
     obsolete: false,
@@ -880,6 +858,22 @@ exports[`Catalog read should read file in given format 1`] = `
     obsolete: false,
     origin: [],
     translation: Translation for: Message with default-hash id,
+  },
+  xLTujh: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [
+        fuzzy,
+        otherFlag,
+        explicit-id,
+      ],
+      translatorComments: [],
+    },
+    message: withFlags,
+    obsolete: false,
+    origin: [],
+    translation: Keeps any flags that are defined,
   },
 }
 `;
