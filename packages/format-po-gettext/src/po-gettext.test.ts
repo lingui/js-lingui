@@ -35,6 +35,7 @@ describe("po-gettext format", () => {
       message_with_id_and_octothorpe: {
         message: "{count, plural, one {Singular} other {Number is #}}",
         translation: "{count, plural, one {Singular} other {Number is #}}",
+        comments: ["js-lingui-explicit-id"],
       },
       message_with_id: {
         message:
@@ -44,6 +45,7 @@ describe("po-gettext format", () => {
           "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
         comments: [
           "This is a comment by the developers about how the content must be localized.",
+          "js-lingui-explicit-id",
         ],
       },
       WGI12K: {
@@ -57,6 +59,7 @@ describe("po-gettext format", () => {
         message:
           "{count, plural, one {Singular with id but no translation} other {Plural {count} with empty id but no translation}}",
         translation: "",
+        comments: ["js-lingui-explicit-id"],
       },
       // Entry with automatic ID that generates empty msgstr[] lines
       xZCXAV: {

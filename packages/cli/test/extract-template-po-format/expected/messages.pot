@@ -29,12 +29,12 @@ msgstr ""
 msgid "Message in descriptor"
 msgstr ""
 
+#. js-lingui-explicit-id
 #: fixtures/file-b.tsx:15
-#, explicit-id
 msgid "jsx.custom.id"
 msgstr ""
 
+#. js-lingui-explicit-id
 #: fixtures/file-a.ts:11
-#, explicit-id
 msgid "custom.id"
 msgstr ""

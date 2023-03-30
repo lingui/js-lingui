@@ -60,7 +60,7 @@ function getCreateHeaders(language: string): PO["headers"] {
   }
 }
 
-const EXPLICIT_ID_FLAG = "explicit-id"
+const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 
 const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   return Object.keys(catalog).map((id) => {
@@ -90,7 +90,9 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
         }
       }
     } else {
-      item.flags[EXPLICIT_ID_FLAG] = true
+      if (!item.extractedComments.includes(EXPLICIT_ID_FLAG)) {
+        item.extractedComments.push(EXPLICIT_ID_FLAG)
+      }
       item.msgid = id
     }
 
@@ -131,7 +133,7 @@ function deserialize(items: POItem[]): CatalogType {
     let id = item.msgid
 
     // if generated id, recreate it
-    if (!item.flags[EXPLICIT_ID_FLAG]) {
+    if (!item.extractedComments.includes(EXPLICIT_ID_FLAG)) {
       id = generateMessageId(item.msgid, item.msgctxt)
       message.message = item.msgid
     }

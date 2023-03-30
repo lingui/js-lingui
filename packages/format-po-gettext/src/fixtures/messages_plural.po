@@ -8,7 +8,7 @@ msgstr ""
 "Language: en\n"
 
 #. js-lingui:pluralize_on=someCount
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "message_with_id"
 msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case"
@@ -22,7 +22,7 @@ msgstr[1] "Case number {anotherCount}"
 
 #. Comment made by the developers.
 #. js-lingui:pluralize_on=count
-#, explicit-id
+#. js-lingui-explicit-id
 msgid "message_with_id_but_without_translation"
 msgid_plural "message_with_id_but_without_translation_plural"
 msgstr[0] ""
