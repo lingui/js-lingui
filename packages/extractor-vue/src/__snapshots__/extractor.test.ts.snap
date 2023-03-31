@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vue extractor should extract message from vue file 1`] = `
+[
+  {
+    comment: undefined,
+    context: undefined,
+    id: Setup message,
+    message: undefined,
+    origin: [
+      test.vue.ts,
+      5,
+      0,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: Script message,
+    message: undefined,
+    origin: [
+      test.vue,
+      16,
+      20,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: custom.id,
+    message: My message,
+    origin: [
+      test.vue,
+      23,
+      11,
+    ],
+  },
+  {
+    comment: Message comment,
+    context: undefined,
+    id: my.message,
+    message: My descriptor message,
+    origin: [
+      ,
+      null,
+      null,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: id used as message,
+    message: undefined,
+    origin: [
+      test.vue,
+      33,
+      11,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: My message without ID and context,
+    message: undefined,
+    origin: [
+      test.vue,
+      34,
+      11,
+    ],
+  },
+]
+`;
