@@ -35,7 +35,7 @@
   },
   "exports": {
     ".": {
-      "require": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
