@@ -32,14 +32,14 @@ jobs:
       - name: Install dependencies if needed
         run: yarn install
 
+      - name: Build packages
+        run: yarn release:build
+
       - name: Unit Testing
-        run: yarn test
+        run: yarn test:ci
 
       - name: Linting & Types
         run: yarn lint:all
-
-      - name: Build packages
-        run: yarn release:build
 
       - name: Integration Testing
         run: yarn test:integration
