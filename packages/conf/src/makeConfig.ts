@@ -9,6 +9,7 @@ import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
 import { normalizeRuntimeConfigModule } from "./migrations/normalizeRuntimeConfigModule"
+import { ExperimentalExtractorOptions } from "./types"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -99,7 +100,7 @@ export const exampleConfig = {
       output: "",
       resolveEsbuildOptions: Function,
     },
-  },
+  } as { extractor: ExperimentalExtractorOptions },
 }
 
 /**

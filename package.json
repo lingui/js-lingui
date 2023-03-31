@@ -22,7 +22,7 @@
     "prettier:check": "prettier --check '**/*.{ts,tsx,js,jsx}'",
     "verdaccio:release": "node -r @swc-node/register ./scripts/verdaccio-release.ts",
     "verdaccio:integration": "node -r @swc-node/register ./scripts/verdaccio-integration.ts",
-    "release:build": "yarn workspaces foreach -ptv run build",
+    "release:build": "yarn workspaces foreach --topological-dev -pv run build",
     "release:test": "yarn release:build && yarn test:all",
     "version:next": "lerna version --exact --force-publish --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
     "version:latest": "lerna version --exact --force-publish --no-private --create-release github --conventional-commits --yes",

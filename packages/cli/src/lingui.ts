@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import { program } from "commander"
-import { version } from "../package.json"
+import { readFileSync } from "node:fs"
+
+const packageJson = JSON.parse(readFileSync("../package.json", "utf8"))
 
 program
-  .version(version)
+  .version(packageJson.version)
   .command("extract [files...]", "Extracts messages from source files")
   .command(
     "extract-experimental",

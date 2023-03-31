@@ -1,3 +1,4 @@
+// @ts-ignore
 import Table from "cli-table"
 import chalk from "chalk"
 

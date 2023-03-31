@@ -13,7 +13,7 @@ export function setCldrParentLocales(
   if (!config.fallbackLocales.default) {
     config.locales.forEach((locale) => {
       const fl = getCldrParentLocale(locale.toLowerCase())
-      if (fl && !config.fallbackLocales[locale]) {
+      if (fl && !(config.fallbackLocales as FallbackLocales)[locale]) {
         config.fallbackLocales = {
           ...config.fallbackLocales,
           [locale]: fl,

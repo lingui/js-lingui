@@ -27,17 +27,26 @@
       "require": "./dist/lingui.js"
     },
     "./api": {
-      "require": "./dist/api/index.js"
+      "require": {
+        "types": "./dist/api/index.d.ts",
+        "default": "./dist/api/index.js"
+      }
     },
     "./api/extractors/babel": {
-      "require": "./dist/api/extractors/babel.js"
+      "require": {
+        "types": "./dist/api/extractors/babel.d.ts",
+        "default": "./dist/api/extractors/babel.js"
+      }
     },
     "./api/extractors/typescript": {
-      "require": "./dist/api/extractors/typescript.js"
+      "require": {
+        "types": "./dist/api/extractors/typescript.d.ts",
+        "default": "./dist/api/extractors/typescript.js"
+      }
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && swc ./src -d dist"
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -79,9 +88,9 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.42",
+    "@lingui/macro": "^4.0.0-next.4",
     "@types/convert-source-map": "^2.0.0",
+    "@types/glob": "^8.1.0",
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
