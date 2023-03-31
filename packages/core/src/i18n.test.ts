@@ -286,6 +286,91 @@ describe("I18n", () => {
     })
   })
 
+  it(".t should format message from catalog", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: messages },
+    })
+
+    expect(i18n.t({ id: "Hello" })).toEqual("Salut")
+    expect(
+      i18n.t({ id: "My name is {name}", values: { name: "Fred" } })
+    ).toEqual("Je m'appelle Fred")
+
+    // missing { name }
+    expect(i18n.t({ id: "My name is {name}" })).toEqual("Je m'appelle")
+
+    // Untranslated message
+    expect(i18n.t({ id: "Missing message" })).toEqual("Missing message")
+    expect(i18n.t({ id: "Missing {name}", values: { name: "Fred" } })).toEqual(
+      "Missing Fred"
+    )
+    expect(
+      i18n.t({
+        id: "Missing with default",
+        message: "Missing {name}",
+        values: { name: "Fred" },
+      })
+    ).toEqual("Missing Fred")
+  })
+
+  it(".t allow escaping syntax characters", () => {
+    const messages = {
+      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'",
+    }
+
+    const i18n = setupI18n({
+      locale: "es",
+      messages: { es: messages },
+    })
+
+    expect(i18n.t({ id: "My ''name'' is '{name}'" })).toEqual(
+      "Mi 'nombre' es {name}"
+    )
+  })
+
+  it(".t shouldn't compile messages in production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      expect(i18n.t({ id: "My name is {name}" }, { name: "Fred" })).toEqual(
+        "Je m'appelle {name}"
+      )
+    })
+  })
+
+  it(".t should emit missing event for missing translation", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: { exists: "exists" } },
+    })
+
+    const handler = jest.fn()
+    i18n.on("missing", handler)
+    i18n.t({ id: "exists" })
+    expect(handler).toHaveBeenCalledTimes(0)
+    i18n.t({ id: "missing" })
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith({
+      id: "missing",
+      locale: "en",
+    })
+  })
+
   describe("params.missing - handling missing translations", () => {
     it("._ should return custom string for missing translations", () => {
       const i18n = setupI18n({

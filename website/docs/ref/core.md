@@ -153,6 +153,28 @@ i18n._("My name is {name}", { name: "Tom" })
 i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" })
 ```
 
+### `i18n.t(messageDescriptor) (experimental)` {#i18n.t}
+
+A small wrapper on the core translation meant for NodeJS/JS usage without macros. It uses the core `_` method, but currently only accepts message descriptor. This API is prone to breaking changes.
+
+`messageDescriptor` is an object of message parameters.
+
+```ts
+import { i18n } from "@lingui/core"
+
+// Simple message
+i18n.t({ id: "Hello" })
+
+// Simple message using custom ID
+i18n.t({ id: "msg.hello", message: "Hello"})
+
+// Message with variable
+i18n.t({ id: "My name is {name}", values: { name: "Tom" } });
+
+// Message with comment, custom ID and variable
+i18n.t({ id: "msg.name", message: "My name is {name}", comment: "Message showing the passed in name", values: { name: "Tom" } });
+```
+
 ### `i18n.date(value: string | Date[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
 
 > **Returns**: Formatted date string Format a date using the conventional format for the active language.
