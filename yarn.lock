@@ -2687,7 +2687,7 @@ __metadata:
     ora: ^5.1.0
     pkg-up: ^3.1.0
     pofile: ^1.1.4
-    pseudolocale: ^1.1.0
+    pseudolocale: ^1.3.0
     ramda: ^0.27.1
     source-map: ^0.8.0-beta.0
   bin:
@@ -5986,7 +5986,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:*, commander@npm:^10.0.0":
+"commander@npm:^10.0.0":
   version: 10.0.0
   resolution: "commander@npm:10.0.0"
   checksum: 9f6495651f878213005ac744dd87a85fa3d9f2b8b90d1c19d0866d666bda7f735adfd7c2f10dfff345782e2f80ea258f98bb4efcef58e4e502f25f883940acfd
@@ -12687,12 +12687,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudolocale@npm:^1.1.0":
-  version: 1.2.0
-  resolution: "pseudolocale@npm:1.2.0"
+"pseudolocale@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "pseudolocale@npm:1.3.0"
   dependencies:
-    commander: "*"
-  checksum: c504de65478454e0a64248df62422889893a4609f52d37452ecb3d0abf2a122163cbeb883709a6f23574f21cfe0fadcb06107f0834d079bf806521880e4b91fc
+    commander: ^10.0.0
+  bin:
+    pseudolocale: dist/cli.mjs
+  checksum: 035ca8b6e3ec8c3f3ad35c5a51d9173f40156f5e443ede1cd72e8072678e2edeab3acd51e93ba80c3c59f5f76e782f25e171dcea486157eddb5ff67d8cbc0076
   languageName: node
   linkType: hard
 

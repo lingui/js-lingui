@@ -1,14 +1,7 @@
 import R from "ramda"
-// https://github.com/MartinCerny-awin/pseudolocale/pull/18
-// @ts-ignore
 import pseudolocale from "pseudolocale"
 
 const delimiter = "%&&&%"
-
-pseudolocale.option.delimiter = delimiter
-// We do not want prepending and appending because of Plurals structure
-pseudolocale.option.prepend = ""
-pseudolocale.option.append = ""
 
 /**
  * Regex should match HTML tags
@@ -64,7 +57,11 @@ function removeDelimiters(message: string) {
 
 export default function (message: string) {
   message = addDelimiters(message)
-  message = pseudolocale.str(message)
+  message = pseudolocale(message, {
+    delimiter,
+    prepend: "",
+    append: "",
+  })
 
   return removeDelimiters(message)
 }
