@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": false,
+    "declaration": true,
+    "paths": {},
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "moduleResolution": "Node16"
+  },
+  "include": ["./src"],
+  "exclude": [
+    "**/test/**",
+    "src/tests.ts",
+    "**/*.test.ts",
+    "dist",
+    "**/fixtures/**"
+  ]
+}

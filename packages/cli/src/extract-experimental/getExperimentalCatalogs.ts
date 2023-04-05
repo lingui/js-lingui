@@ -3,7 +3,7 @@ import { getEntryPoints } from "./getEntryPoints"
 import { resolveCatalogPath } from "./resolveCatalogPath"
 import { Catalog } from "../api/catalog"
 import { resolveTemplatePath } from "./resolveTemplatePath"
-import { getFormat } from "@lingui/cli/api"
+import { getFormat } from "../api/formats"
 
 export async function getExperimentalCatalogs(
   linguiConfig: LinguiConfigNormalized

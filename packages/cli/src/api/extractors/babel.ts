@@ -6,6 +6,7 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import type { ExtractorType } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 import { SourceMapConsumer } from "source-map"
+import { LinguiMacroOpts } from "@lingui/macro/node"
 
 const babelRe = new RegExp(
   "\\.(" +
@@ -89,7 +90,7 @@ const extractor: ExtractorType = {
             lingui: {
               extract: true,
               linguiConfig: ctx.linguiConfig,
-            } satisfies import("../../../../macro/src").LinguiMacroOpts,
+            } satisfies LinguiMacroOpts,
           },
         ],
         [

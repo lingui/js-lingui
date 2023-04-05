@@ -8,7 +8,9 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": false
   },
   "files": [
     "./src/index.ts"

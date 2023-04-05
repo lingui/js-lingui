@@ -18,6 +18,7 @@
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
       "@lingui/conf": ["./packages/conf/src"],
+      "@lingui/macro/node": ["./packages/macro/src/index.ts"],
       "@lingui/macro": ["./packages/macro/src"],
       "@lingui/format-po": ["./packages/format-po/src/po.ts"],
       "@lingui/format-json": ["./packages/format-json/src/json.ts"]
