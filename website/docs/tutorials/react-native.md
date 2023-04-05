@@ -9,7 +9,7 @@ If you're looking for a working solution, check out the [sources available here]
 :::
 
 :::caution Note
-This tutorial assumes you use Lingui >=4.0 and React Native >=0.70 or Expo >=47, with the Hermes JavaScript Engine.
+This tutorial assumes you use Lingui 4.x and React Native >=0.70 or Expo >=47, with the Hermes JavaScript Engine.
 
 `@lingui/core` depends on several apis exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](https://formatjs.io/docs/polyfills).
