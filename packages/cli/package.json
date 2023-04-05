@@ -75,7 +75,7 @@
     "pkg-up": "^3.1.0",
     "plurals-cldr": "^1.0.4",
     "pofile": "^1.1.0",
-    "pseudolocale": "^1.1.0",
+    "pseudolocale": "1.1.0",
     "ramda": "^0.27.1"
   },
   "devDependencies": {
