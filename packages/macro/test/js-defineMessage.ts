@@ -44,13 +44,16 @@ const cases: TestCase[] = [
         import { defineMessage, plural, arg } from '@lingui/macro';
         const message = defineMessage({
           comment: "Description",
-          message: plural(arg("value"), { one: "book", other: "books" })
+          message: plural(value, { one: "book", other: "books" })
         })
     `,
     expected: `
         const message =
           /*i18n*/
           {
+            values: {
+              value: value,
+            },
             message: "{value, plural, one {book} other {books}}",
             id: "SlmyxX",
             comment: "Description",

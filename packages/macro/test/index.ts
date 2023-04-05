@@ -31,7 +31,6 @@ export type TestCase = {
 }
 
 const testCases: Record<string, TestCase[]> = {
-  "js-arg": require("./js-arg").default,
   "js-t": require("./js-t").default,
   "js-plural": require("./js-plural").default,
   "js-select": require("./js-select").default,

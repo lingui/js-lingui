@@ -367,13 +367,6 @@ export default class MacroJs {
   }
 
   tokenizeExpression(node: Node | Expression): ArgToken {
-    if (this.isArg(node) && this.types.isCallExpression(node)) {
-      return {
-        type: "arg",
-        name: (node.arguments[0] as StringLiteral).value,
-        value: undefined,
-      }
-    }
     return {
       type: "arg",
       name: this.expressionToArgument(node as Expression),
@@ -474,13 +467,6 @@ export default class MacroJs {
     return (
       this.isLinguiIdentifier(node, "defineMessage") ||
       this.isLinguiIdentifier(node, "msg")
-    )
-  }
-
-  isArg(node: Node) {
-    return (
-      this.types.isCallExpression(node) &&
-      this.isLinguiIdentifier(node.callee, "arg")
     )
   }
 
