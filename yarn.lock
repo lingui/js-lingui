@@ -2687,7 +2687,7 @@ __metadata:
     ora: ^5.1.0
     pkg-up: ^3.1.0
     pofile: ^1.1.4
-    pseudolocale: ^1.3.0
+    pseudolocale: ^2.0.0
     ramda: ^0.27.1
     source-map: ^0.8.0-beta.0
   bin:
@@ -12150,14 +12150,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudolocale@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "pseudolocale@npm:1.3.0"
+"pseudolocale@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pseudolocale@npm:2.0.0"
   dependencies:
     commander: ^10.0.0
   bin:
     pseudolocale: dist/cli.mjs
-  checksum: 035ca8b6e3ec8c3f3ad35c5a51d9173f40156f5e443ede1cd72e8072678e2edeab3acd51e93ba80c3c59f5f76e782f25e171dcea486157eddb5ff67d8cbc0076
+  checksum: 971f79536becac26b4224ecfee6485a48143073820bb22f6a0a590867cf9d794955fd9d4bf13cf7f28b577dc82d41c976e7512cde2d57eb587522f152332165b
   languageName: node
   linkType: hard
 
