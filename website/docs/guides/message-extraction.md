@@ -6,11 +6,11 @@ To extract messages from your application with the lingui functions, use the `li
 
 ## Supported patterns
 
-The extractor tool is simple and analyzes your code without executing it. Therefore, complicated patterns and dynamic code are not supported.
+The extractor operates on a static level and doesn't execute your code. As a result, complex patterns and dynamic code are not supported.
 
 ### Macro usages
 
-The tool supports all macro usages, such as the following examples:
+Extractor supports all macro usages, such as the following examples:
 
 ```tsx
 t`Message`
@@ -26,10 +26,10 @@ For more usage examples, refer to the [macro documentation](/docs/ref/conf.md).
 
 ### Non-Macro usages
 
-The tool matches `i18n._` or `i18n.t` function calls. It also matches when these functions are called from other member expressions, such as `ctx.i18n.t()`.
+Extractor matches `i18n._` or `i18n.t` function calls. It also matches when these functions are called from other member expressions, such as `ctx.i18n.t()`.
 
 :::note
-The tool matches call expressions only by name. It doesn't check whether they were really imported from Lingui packages.
+Extractor matches calls only by name. It doesn't check whether they were really imported from Lingui packages.
 :::
 
 ```ts
@@ -43,8 +43,7 @@ ctx.request.i18n.t("message.id")
 
 // and so on
 ```
-
-You can ignore a call expression from exraction using `lingui-extract-ignore` comment
+You can ignore a specific call expression by adding a `lingui-extract-ignore` comment.
 
 ```ts
 /* lingui-extract-ignore */
@@ -81,3 +80,107 @@ Instead, you should define the message directly in the function arguments:
 ```ts
 i18n._('Message')
 ```
+
+## Defining sources for analyzing
+
+The lingui extract command can discover source files in two ways: by using a glob pattern or by crawling the dependency tree.
+
+### Glob Pattern
+
+By default, `lingui extract` uses a glob pattern to search for source files that contain messages.
+
+The pattern is defined in the `catalogs` property in the `lingui.config.js` file, which is located in the root directory of your project.
+
+<img src="https://user-images.githubusercontent.com/1586852/220613463-9d710a1e-2ee2-4af1-970e-b7b916be3263.jpg" />
+
+### Dependency tree crawling (experimental)
+
+:::caution
+This is experimental feature. Experimental features not covered by semver and might be subject of a change.
+:::
+
+Although the glob-based extraction process is effective for most projects, however, multipage (MPA) frameworks such as NextJS pose a problem because the glob-based approach creates a catalog consisting of all messages from all pages.
+
+This means that the entire catalog must be loaded for each page/navigation, which results in loading messages that are not used on that page.
+
+To address this issue, a new `experimental-extractor` has been introduced in version 4.
+
+This extractor uses the dependency tree of files, rather than just a glob pattern, to crawl imports and discover files more accurately.
+
+By doing so, it creates a more optimized catalog that only contains the messages needed for each page.
+
+The catalogs would still contain duplicating messages for common components, but it would be much better than the current approach.
+
+<img src="https://user-images.githubusercontent.com/1586852/221664457-24f1e9a5-5916-4a09-bdf1-2530831dafc4.jpg" />
+
+To start using `experimental-extractor`, you need to add the following section to lingui config:
+```ts
+/**
+ *
+ * @type {import('@lingui/conf').LinguiConfig}
+ */
+module.exports = {
+  // remove everethying from `catalogs` property
+  catalogs: [],
+  // highlight-start
+  experimental: {
+    extractor: {
+      // glob pattern of entrypoints
+      // this will find all nextjs pages
+      entries: [
+        "<rootDir>/src/pages/**/*.tsx"
+      ],
+      // output pattern, this instruct extractor where to store catalogs
+      // src/pages/faq.tsx -> src/pages/locales/faq/en.po
+      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}"
+    }
+  },
+  // highlight-end
+}
+```
+
+And then call in the terminal:
+
+```bash
+lingui extract-experimental
+```
+
+#### Notes
+It's important to note that the dependency tree crawling heavily relies on tree-shaking, which is a technique used by modern bundlers to eliminate unused code from the final bundle.
+
+While tree-shaking is generally effective, it might work differently than what the user expects.
+
+For example, consider the following code:
+
+```ts
+import { msg } from "@lingui/macro"
+
+export const species = {
+  Cardano: [
+    {
+      startsAt: 0,
+      name: msg`Ghost`,
+      icon: "Ghost",
+    },
+    {
+      startsAt: 0.000001,
+      name: msg`Plankton`,
+      icon: "Plankton",
+    }
+  ]
+}
+```
+
+On the surface, it may appear that this code can be safely removed from the final bundle if it's not used. However, the `msg` function call can potentially produce a side effect, preventing the bundler from removing the entire `species` object from the final bundle. As a result, messages defined in this snippet may be included in more catalogs than expected.
+
+To avoid this issue, one solution is to wrap the `species` object inside an Immediately Invoked Function Expression (IIFE) and add the `/* @__PURE__ */` annotation.
+
+By adding this annotation to the IIFE, we are telling the bundler that the entire `species` object can be safely removed if it is not used or exported elsewhere in the code.
+
+## Supported source types
+
+The extractor supports TypeScript, Flow and JavaScript (Stage 3) out of the box.
+
+f you use some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your custom extractor.
+
+Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn how to create custom extractor.
