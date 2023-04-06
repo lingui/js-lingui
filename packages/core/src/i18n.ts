@@ -8,6 +8,7 @@ import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
 export type MessageOptions = {
   message?: string
   formats?: Formats
+  comment?: string
 }
 
 export type { CompiledMessage }
@@ -212,6 +213,8 @@ export class I18n extends EventEmitter<Events> {
   }
 
   // method for translation and formatting
+  _(descriptor: MessageDescriptor): string
+  _(id: string, values?: Values, options?: MessageOptions): string
   _(
     id: MessageDescriptor | string,
     values: Values | undefined = {},
@@ -255,11 +258,10 @@ export class I18n extends EventEmitter<Events> {
     )(values, formats)
   }
 
-  // Alternative to _. Can be used in node/js without macros
-  // uses message descriptor only
-  t(descriptor: MessageDescriptor) {
-    return this._(descriptor)
-  }
+  /**
+   * Alias for {@see I18n._}
+   */
+  t: I18n["_"] = this._.bind(this)
 
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
     return date(this._locales || this._locale, value, format)

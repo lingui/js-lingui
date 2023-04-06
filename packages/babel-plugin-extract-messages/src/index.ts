@@ -130,9 +130,25 @@ function extractFromObjectExpression(
   return props
 }
 
+const I18N_OBJECT = "i18n"
+
+function hasComment(node: Node, comment: string): boolean {
+  return (
+    node.leadingComments &&
+    node.leadingComments.some((comm) => comm.value.trim() === comment)
+  )
+}
+
+function hasIgnoreComment(node: Node): boolean {
+  return hasComment(node, "lingui-extract-ignore")
+}
+
+function hasI18nComment(node: Node): boolean {
+  return hasComment(node, "i18n")
+}
+
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
   let localTransComponentName: string
-  let localCoreI18nName: string
 
   function isTransComponent(node: Node) {
     return (
@@ -145,20 +161,33 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
   const isI18nMethod = (node: Node) =>
     t.isMemberExpression(node) &&
-    t.isIdentifier(node.object, { name: "i18n" }) &&
-    t.isIdentifier(node.property, { name: "_" })
+    (t.isIdentifier(node.object, { name: I18N_OBJECT }) ||
+      (t.isMemberExpression(node.object) &&
+        t.isIdentifier(node.object.property, { name: I18N_OBJECT }) &&
+        (t.isIdentifier(node.property, { name: "_" }) ||
+          t.isIdentifier(node.property, { name: "t" }))))
 
-  const isI18nTMethod = (node: Node) =>
-    t.isMemberExpression(node) &&
-    t.isIdentifier(node.object, { name: localCoreI18nName }) &&
-    t.isIdentifier(node.property, { name: "t" })
+  const extractFromMessageDescriptor = (
+    path: NodePath<ObjectExpression>,
+    ctx: PluginPass
+  ) => {
+    const props = extractFromObjectExpression(t, path.node, ctx.file.hub, [
+      "id",
+      "message",
+      "comment",
+      "context",
+    ])
 
-  function hasI18nComment(node: Node): boolean {
-    return (
-      node.leadingComments &&
-      node.leadingComments.some((comm) => comm.value.match(/^\s*i18n/))
-    )
+    if (!props.id) {
+      console.warn(
+        path.buildCodeFrameError("Missing message ID, skipping.").message
+      )
+      return
+    }
+
+    collectMessage(path, props, ctx)
   }
+
   return {
     visitor: {
       // Get the local name of Trans component. Usually it's just `Trans`, but
@@ -181,17 +210,6 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
           // Trans import might be missing if there's just Plural or similar macro.
           // If there's no alias, consider it was imported as Trans.
           localTransComponentName = importDeclarations["Trans"] || "Trans"
-        }
-
-        const coreImportDeclarations: Record<string, string> = {}
-        if (moduleName === "@lingui/core") {
-          node.specifiers.forEach((specifier) => {
-            specifier = specifier as ImportSpecifier
-            coreImportDeclarations[(specifier.imported as Identifier).name] =
-              specifier.local.name
-          })
-
-          localCoreI18nName = coreImportDeclarations["i18n"] || "i18n"
         }
       },
 
@@ -237,66 +255,59 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       },
 
       CallExpression(path, ctx) {
-        const hasComment = [path.node, path.parent].some((node) =>
-          hasI18nComment(node)
-        )
+        if ([path.node, path.parent].some((node) => hasIgnoreComment(node))) {
+          return
+        }
 
-        const firstArgument = path.node.arguments[0]
+        const firstArgument = path.get("arguments")[0]
 
-        let props: Record<string, unknown> = {}
+        // i18n._(...)
+        if (!isI18nMethod(path.node.callee)) {
+          return
+        }
 
-        if (
-          isI18nTMethod(path.node.callee) &&
-          t.isObjectExpression(firstArgument)
-        ) {
-          props = {
-            ...extractFromObjectExpression(t, firstArgument, ctx.file.hub, [
-              "id",
-              "message",
-              "comment",
-              "context",
-            ]),
+        // call with explicit annotation
+        // i18n._(/*i18n*/ {descriptor})
+        // skipping this as it is processed
+        // by ObjectExpression visitor
+        if (hasI18nComment(firstArgument.node)) {
+          return
+        }
+
+        if (firstArgument.isObjectExpression()) {
+          // i8n._({message, id, context})
+          extractFromMessageDescriptor(firstArgument, ctx)
+          return
+        } else {
+          // i18n._(id, variables, descriptor)
+          let props = {
+            id: getTextFromExpression(
+              t,
+              firstArgument.node as Expression,
+              ctx.file.hub,
+              false
+            ),
+          }
+
+          if (!props.id) {
+            return
+          }
+
+          const msgDescArg = path.node.arguments[2]
+
+          if (t.isObjectExpression(msgDescArg)) {
+            props = {
+              ...props,
+              ...extractFromObjectExpression(t, msgDescArg, ctx.file.hub, [
+                "message",
+                "comment",
+                "context",
+              ]),
+            }
           }
 
           collectMessage(path, props, ctx)
-          return
         }
-
-        // support `i18n._` calls written by users in form i18n._(id, variables, descriptor)
-        // without explicit annotation with comment
-        // calls generated by macro has a form i18n._(/*i18n*/ {descriptor}) and
-        // processed by ObjectExpression visitor
-        const isNonMacroI18n =
-          isI18nMethod(path.node.callee) && !firstArgument?.leadingComments
-        if (!hasComment && !isNonMacroI18n) return
-
-        props = {
-          id: getTextFromExpression(
-            t,
-            firstArgument as Expression,
-            ctx.file.hub,
-            false
-          ),
-        }
-
-        if (!props.id) {
-          return
-        }
-
-        const msgDescArg = path.node.arguments[2]
-
-        if (t.isObjectExpression(msgDescArg)) {
-          props = {
-            ...props,
-            ...extractFromObjectExpression(t, msgDescArg, ctx.file.hub, [
-              "message",
-              "comment",
-              "context",
-            ]),
-          }
-        }
-
-        collectMessage(path, props, ctx)
       },
 
       StringLiteral(path, ctx) {
@@ -322,21 +333,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       ObjectExpression(path, ctx) {
         if (!hasI18nComment(path.node)) return
 
-        const props = extractFromObjectExpression(t, path.node, ctx.file.hub, [
-          "id",
-          "message",
-          "comment",
-          "context",
-        ])
-
-        if (!props.id) {
-          console.warn(
-            path.buildCodeFrameError("Missing message ID, skipping.").message
-          )
-          return
-        }
-
-        collectMessage(path, props, ctx)
+        extractFromMessageDescriptor(path, ctx)
       },
     },
   }

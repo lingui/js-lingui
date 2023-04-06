@@ -9,7 +9,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
     message: undefined,
     origin: [
       js-call-expression.js,
-      2,
+      1,
     ],
   },
   {
@@ -19,7 +19,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
     message: undefined,
     origin: [
       js-call-expression.js,
-      4,
+      3,
     ],
   },
   {
@@ -29,7 +29,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
     message: Message with id,
     origin: [
       js-call-expression.js,
-      6,
+      5,
     ],
   },
   {
@@ -39,7 +39,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
     message: undefined,
     origin: [
       js-call-expression.js,
-      8,
+      7,
     ],
   },
   {
@@ -49,22 +49,37 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
     message: undefined,
     origin: [
       js-call-expression.js,
-      10,
+      9,
     ],
   },
-]
-`;
-
-exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should extract messages from i18n.t aliased expression 1`] = `
-[
   {
-    comment: Your comment,
+    comment: My comment,
     context: undefined,
-    id: your.id,
-    message: Your Id Message,
+    id: my.id,
+    message: My Id Message,
     origin: [
-      node-call-expression-aliased.js,
-      3,
+      js-call-expression.js,
+      12,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: Aliased Message,
+    message: undefined,
+    origin: [
+      js-call-expression.js,
+      19,
+    ],
+  },
+  {
+    comment: My comment,
+    context: undefined,
+    id: my.id,
+    message: My Id Message,
+    origin: [
+      js-call-expression.js,
+      22,
     ],
   },
 ]
