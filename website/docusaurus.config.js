@@ -46,7 +46,15 @@ module.exports = {
           href: 'https://github.com/lingui/js-lingui',
           position: 'right',
           className: 'header-github-link',
+          title: 'GitHub repository',
           'aria-label': 'GitHub repository',
+        },
+        {
+          href: 'https://discord.gg/gFWwAYnMtA',
+          position: 'right',
+          className: 'header-discord-link',
+          title: 'Discord',
+          'aria-label': 'Discord',
         },
       ],
     },
@@ -113,9 +121,7 @@ module.exports = {
       indexName: 'lingui',
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      darkTheme: require('prism-react-renderer/themes/palenight'),
-      additionalLanguages: ['bash', 'docker', 'gettext', 'icu-message-format', 'ignore'],
+      additionalLanguages: ['bash', 'gettext', 'icu-message-format', 'ignore'],
     },
   },
   presets: [
