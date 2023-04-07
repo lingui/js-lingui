@@ -113,6 +113,20 @@ export default function ImageWithCaption() {
 }
 ```
 
+:::tip
+In order for the translation to update on language change where the `t` macro is used, call `useLingui()` in your component:
+
+```jsx
+import { useLingui } from "@lingui/react"
+import { t } from "@lingui/macro"
+
+export default function ImageWithCaption() {
+   useLingui()
+   return <img src="..." alt={t`Image caption`} />
+}
+```
+:::
+
 ## Translations outside React components
 
 Another common pattern is when you need to access translations outside React components, for example inside `redux-saga`. You can use [`t`](/docs/ref/macro.md#t) macro outside React context as usual:
