@@ -91,7 +91,8 @@ By default, `lingui extract` uses a glob pattern to search for source files that
 
 The pattern is defined in the `catalogs` property in the `lingui.config.js` file, which is located in the root directory of your project.
 
-<img src="https://user-images.githubusercontent.com/1586852/220613463-9d710a1e-2ee2-4af1-970e-b7b916be3263.jpg" />
+![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme.jpg#gh-light-mode-only)
+![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme-dark.jpg#gh-dark-mode-only)
 
 ### Dependency tree crawling (experimental)
 
@@ -111,7 +112,8 @@ By doing so, it creates a more optimized catalog that only contains the messages
 
 The catalogs would still contain duplicating messages for common components, but it would be much better than the current approach.
 
-<img src="https://user-images.githubusercontent.com/1586852/221664457-24f1e9a5-5916-4a09-bdf1-2530831dafc4.jpg" />
+![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.jpg#gh-light-mode-only)
+![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme-dark.jpg#gh-dark-mode-only)
 
 To start using `experimental-extractor`, you need to add the following section to lingui config:
 ```ts
