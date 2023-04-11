@@ -181,6 +181,6 @@ By adding this annotation to the IIFE, we are telling the bundler that the entir
 
 The extractor supports TypeScript, Flow and JavaScript (Stage 3) out of the box.
 
-f you use some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your custom extractor.
+If you use some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your custom extractor.
 
-Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn how to create custom extractor.
+Visit [Advanced: Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.
