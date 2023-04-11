@@ -2647,7 +2647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@4.0.0-next.7, @lingui/babel-plugin-extract-messages@^4.0.0-next.5, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@4.0.0-next.7, @lingui/babel-plugin-extract-messages@^4.0.0-next.7, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -2659,7 +2659,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@4.0.0-next.7, @lingui/cli@^4.0.0-next.5, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@4.0.0-next.7, @lingui/cli@^4.0.0-next.7, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -2704,7 +2704,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@4.0.0-next.7, @lingui/conf@^4.0.0-next.5, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@4.0.0-next.7, @lingui/conf@^4.0.0-next.7, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -2744,9 +2744,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/extractor-vue@workspace:packages/extractor-vue"
   dependencies:
-    "@lingui/babel-plugin-extract-messages": ^4.0.0-next.5
-    "@lingui/cli": ^4.0.0-next.5
-    "@lingui/conf": ^4.0.0-next.5
+    "@lingui/babel-plugin-extract-messages": ^4.0.0-next.7
+    "@lingui/cli": ^4.0.0-next.7
+    "@lingui/conf": ^4.0.0-next.7
     "@vue/compiler-sfc": ^3.2.47
     unbuild: ^1.1.2
   languageName: unknown

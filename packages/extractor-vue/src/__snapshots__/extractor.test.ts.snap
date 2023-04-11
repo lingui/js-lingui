@@ -31,7 +31,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: My message,
     origin: [
       test.vue,
-      28,
+      27,
       11,
     ],
   },
@@ -41,9 +41,9 @@ exports[`vue extractor should extract message from vue file 1`] = `
     id: my.message,
     message: My descriptor message,
     origin: [
-      ,
-      null,
-      null,
+      test.vue,
+      29,
+      10,
     ],
   },
   {
@@ -53,8 +53,8 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue,
-      38,
-      11,
+      35,
+      5,
     ],
   },
   {
@@ -64,7 +64,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue,
-      39,
+      36,
       11,
     ],
   },

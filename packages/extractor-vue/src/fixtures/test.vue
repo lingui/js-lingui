@@ -16,7 +16,7 @@ export default defineComponent({
   data() {
     return {
       i18n,
-      scriptString: i18n._("Script message"),
+      scriptString: i18n.t("Script message"),
     }
   },
 })
@@ -24,17 +24,14 @@ export default defineComponent({
 
 <template>
   {{ (x as number).toFixed(2) }}
-
-  {{ i18n.t(/*i18n*/ { id: "custom.id", message: "My message" }) }}
+  {{ i18n.t({ id: "custom.id", message: "My message" }) }}
   {{
-    i18n.t(
-      /*i18n*/ {
+    i18n.t({
         message: "My descriptor message",
         id: "my.message",
         comment: "Message comment",
-      }
-    )
+      })
   }}
-  {{ i18n._(/*i18n*/ "id used as message") }}
-  {{ i18n.t(/*i18n*/ { id: "My message without ID and context" }) }}
+  {{ i18n._("id used as message") }}
+  {{ i18n.t({ id: "My message without ID and context" }) }}
 </template>

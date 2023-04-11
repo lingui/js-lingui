@@ -1,18 +1,24 @@
-# Vue extractor
+[![License][badge-license]][license]
+[![Version][badge-version]][package]
+[![Downloads][badge-downloads]][package]
 
-This package contains a set of custom extractors that handles Vue files. It supports extracting messages from script and setup scripts as well as limited support for extracting messages from templates.
+# @lingui/vue-extractor
+
+This package contains a custom extractor that handles Vue.js files. It supports extracting messages from script and setup scripts as well as Vue templates.
+
+`@lingui/vue-extractor` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation
 
 ```sh
-npm install @lingui/extractor-vue
+npm install --save-dev @lingui/extractor-vue
 ```
 
 ## Usage
 
-This custom extractor requires that you use typescript for your lingui configuration.
+This custom extractor requires that you use JavaScript for your Lingui configuration.
 
-```ts
+```js
 import { vueExtractor } from "@lingui/extractor-vue"
 import babel from "@lingui/cli/api/extractors/babel"
 
@@ -27,21 +33,14 @@ const linguiConfig = {
   ],
   extractors: [babel, vueExtractor],
 }
+
 export default linguiConfig
 ```
 
-## Vue template limitations
+## License
 
-This extractor assumes annotated `i18n` calls in Vue templates.
+This package is licensed under [MIT][license] license.
 
-The following examples will be extracted:
-
-- `i18n._(/*i18n*/ "Message")`
-- `i18n.t(/*i18n*/ { id: "Message" })`
-- `i18n.t(/*i18n*/ { message: "Message", id: "my.message", comment: "Comment" })`
-
-While the following examples wont:
-
-- `i18n._("Message")`
-- `i18n.t({ id: "Message" })`
-- `i18n.t({ message: "Message", id: "my.message", comment: "Comment" })`
+[license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
+[linguijs]: https://github.com/lingui/js-lingui
+[documentation]: https://lingui.dev/tutorials/extractor-vue
