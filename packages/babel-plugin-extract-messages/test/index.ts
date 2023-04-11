@@ -127,10 +127,34 @@ import { Trans } from "@lingui/react";
       })
     })
 
-    it("should extract messages from i18n.t aliased expression", () => {
+    it("should extract from member access expressions", () => {
+      const code = `
+      // member access
+      ctx.i18n._("Message")
+      
+      // member access any depth
+      ctx.req.i18n._("Message")
+      `
       expectNoConsole(() => {
-        const messages = transform("node-call-expression-aliased.js")
-        expect(messages).toMatchSnapshot()
+        const messages = transformCode(code)
+        expect(messages.length).toBe(2)
+      })
+    })
+
+    it("should not extract if disabled via annotation", () => {
+      const code = `
+      /* lingui-extract-ignore */
+      i18n._("Message")
+            
+      /* lingui-extract-ignore */
+      ctx.i18n._("Message")
+      
+       /* lingui-extract-ignore */
+      ctx.req.i18n._("Message")
+      `
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages.length).toBe(0)
       })
     })
 

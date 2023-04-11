@@ -418,4 +418,4 @@ Extractors it's the way to customize which extractor you want for your codebase.
    ]
 }
 ```
-Visit [Advanced: Custom Extractor](/guides/custom-extractor.md) to learn how to create custom extractor.
+Visit [Advanced: Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.

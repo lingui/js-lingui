@@ -62,6 +62,10 @@ const sidebar = [
     items: [
       {
         type: 'doc',
+        id: 'guides/message-extraction',
+      },
+      {
+        type: 'doc',
         label: 'Testing',
         id: 'guides/testing',
       },
