@@ -19,12 +19,13 @@ export const vueExtractor: ExtractorType = {
     })
 
     const compiledTemplate = compileTemplate({
-      source: code,
+      source: descriptor.template.content,
       filename,
+      inMap: descriptor.template.map,
       id: filename,
     })
 
-    const isTsBlock = (block: SFCBlock) => block?.attrs?.lang === "ts"
+    const isTsBlock = (block: SFCBlock) => block?.lang === "ts"
 
     const targets = [
       [
@@ -35,12 +36,12 @@ export const vueExtractor: ExtractorType = {
       [
         descriptor.scriptSetup?.content,
         descriptor.scriptSetup?.map,
-        isTsBlock(descriptor.script),
+        isTsBlock(descriptor.scriptSetup),
       ],
       [
         compiledTemplate?.code,
         compiledTemplate?.map,
-        isTsBlock(descriptor.script),
+        isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
       ],
     ] as const
 

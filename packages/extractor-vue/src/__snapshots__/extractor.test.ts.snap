@@ -9,7 +9,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue.ts,
-      5,
+      4,
       0,
     ],
   },
@@ -20,7 +20,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue,
-      16,
+      19,
       20,
     ],
   },
@@ -31,7 +31,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: My message,
     origin: [
       test.vue,
-      23,
+      28,
       11,
     ],
   },
@@ -53,7 +53,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue,
-      33,
+      38,
       11,
     ],
   },
@@ -64,7 +64,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
     message: undefined,
     origin: [
       test.vue,
-      34,
+      39,
       11,
     ],
   },

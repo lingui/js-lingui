@@ -1,11 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { i18n } from "@lingui/core"
-import { defineComponent } from "vue"
 
 i18n._("Setup message")
+let x: string | number = 1
 </script>
 
 <script lang="ts">
+import { defineComponent } from "vue"
+import { i18n } from "@lingui/core"
+
 // @ts-ignore only used to check if extractor doesn't crash with Typescript
 const foo: number = 5
 
@@ -20,6 +23,8 @@ export default defineComponent({
 </script>
 
 <template>
+  {{ (x as number).toFixed(2) }}
+
   {{ i18n.t(/*i18n*/ { id: "custom.id", message: "My message" }) }}
   {{
     i18n.t(
