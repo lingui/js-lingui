@@ -22,7 +22,7 @@ t({
 
 const jsx = <Trans>Hi, my name is {name}</Trans>
 ```
-For more usage examples, refer to the [macro documentation](/docs/ref/conf.md).
+For more usage examples, refer to the [macro documentation](/docs/ref/macro.md).
 
 ### Non-Macro usages
 
@@ -148,11 +148,13 @@ lingui extract-experimental
 ```
 
 #### Notes
-It's important to note that the dependency tree crawling heavily relies on tree-shaking, which is a technique used by modern bundlers to eliminate unused code from the final bundle.
+It's worth noting that the accuracy of the catalog heavily relies on tree-shaking, a technique used by modern bundlers to eliminate unused code from the final bundle.
 
-While tree-shaking is generally effective, it might work differently than what the user expects.
+If the code passed to the extractor is written in a tree-shakeable way, the user will receive a highly accurate catalogs.
 
-For example, consider the following code:
+While you might think that your code is tree-shakeable, in practice tree-shaking might work differently than what you expect and some unwanted strings may be included in the catalogs.
+
+To illustrate, let's consider the following code:
 
 ```ts
 import { msg } from "@lingui/macro"
