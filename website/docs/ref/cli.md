@@ -164,3 +164,7 @@ Watches only for changes in locale files in your defined locale catalogs. For ex
 #### `--debounce <delay>` {#compile-debounce}
 
 Debounce, when used with `--debounce <delay>`, delays compilation for `<delay>` milliseconds, to avoid compiling multiple times for subsequent file changes.
+
+## Further reading
+
+- [Message Extraction](/docs/guides/message-extraction.md)
