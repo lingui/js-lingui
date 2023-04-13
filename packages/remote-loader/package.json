@@ -49,8 +49,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "4.0.0-next.5",
-    "@lingui/message-utils": "4.0.0-next.5",
+    "@lingui/core": "4.0.0-next.6",
+    "@lingui/message-utils": "4.0.0-next.6",
     "ramda": "^0.27.1"
   },
   "devDependencies": {

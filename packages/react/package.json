@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "4.0.0-next.5",
+  "version": "4.0.0-next.6",
   "sideEffects": false,
   "description": "React components for translations",
   "main": "./dist/index.cjs",
@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "4.0.0-next.5"
+    "@lingui/core": "4.0.0-next.6"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
