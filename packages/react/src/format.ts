@@ -65,6 +65,10 @@ function formatElements(
       element = React.createElement(React.Fragment)
     }
 
+    if (Array.isArray(element)) {
+      element = React.createElement(React.Fragment, {}, element)
+    }
+
     tree.push(
       React.cloneElement(
         element,
