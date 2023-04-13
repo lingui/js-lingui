@@ -125,7 +125,9 @@ describe("Trans component", () => {
     const translation = html(
       <Trans
         id="Hello {name}"
-        values={{ name: [<strong>John</strong>, <strong>!</strong>] }}
+        values={{
+          name: [<strong key="1">John</strong>, <strong key="2">!</strong>],
+        }}
       />
     )
     expect(translation).toEqual("Hello <strong>John</strong><strong>!</strong>")
@@ -158,7 +160,9 @@ describe("Trans component", () => {
       <Trans
         id="Read <link>the <strong>docs</strong></link>, {name}"
         components={{ link: <a href="/docs" />, strong: <strong /> }}
-        values={{ name: [<strong>John</strong>, <strong>!</strong>] }}
+        values={{
+          name: [<strong key="1">John</strong>, <strong key="2">!</strong>],
+        }}
       />
     )
     expect(translation).toEqual(
