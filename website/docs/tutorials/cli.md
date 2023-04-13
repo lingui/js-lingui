@@ -71,6 +71,10 @@ Messages extracted!
 
 [`extract`](/docs/ref/cli.md#extract) merges all translations with new messages, so you can run this command any time without worrying about losing any translations.
 
+:::tip
+Visit the [Message Extraction](/docs/guides/message-extraction.md) guide to read more about how it works.
+:::
+
 ## Preparing catalogs for production
 
 Once we have all catalogs ready and translated, we can compile the JSON into a minified JS file with the [`compile`](/docs/ref/cli.md#compile) command. This command parses the messages in MessageFormat and compiles them into simple functions. It also adds plural rules to a production ready catalog:
@@ -164,4 +168,6 @@ If you're using a CI, it is a good idea to add the `yarn extract` and `yarn comp
 
 ## Further reading
 
-That's it! Checkout [CLI Reference](/docs/ref/cli.md) documentation for more info about `lingui` commands or [configuration reference](/docs/ref/conf.md) for info about configuration parameters.
+- [CLI Reference](/docs/ref/cli.md)
+- [Configuration Reference](/docs/ref/conf.md)
+- [Message Extraction](/docs/guides/message-extraction.md)
