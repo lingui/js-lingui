@@ -153,6 +153,19 @@ describe("Trans component", () => {
     )
   })
 
+  it("should render components and array components with variable", () => {
+    const translation = html(
+      <Trans
+        id="Read <link>the <strong>docs</strong></link>, {name}"
+        components={{ link: <a href="/docs" />, strong: <strong /> }}
+        values={{ name: [<strong>John</strong>, <strong>!</strong>] }}
+      />
+    )
+    expect(translation).toEqual(
+      `Read <a href="/docs">the <strong>docs</strong></a>, <strong>John</strong><strong>!</strong>`
+    )
+  })
+
   it("should render non-named component in components", () => {
     const translation = html(
       <Trans id="Read <0>the docs</0>" components={{ 0: <a href="/docs" /> }} />
