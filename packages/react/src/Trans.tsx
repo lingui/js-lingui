@@ -49,7 +49,10 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
 
     Object.keys(values).forEach((key) => {
       const value = values[key]
-      if (!React.isValidElement(value)) return
+      const valueIsReactEl =
+        React.isValidElement(value) ||
+        (Array.isArray(value) && value.every((el) => React.isValidElement(el)))
+      if (!valueIsReactEl) return
 
       const index = Object.keys(components).length
 

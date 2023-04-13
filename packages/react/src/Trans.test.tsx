@@ -121,6 +121,16 @@ describe("Trans component", () => {
     expect(translation).toEqual("Hello <strong>John</strong>")
   })
 
+  it("should render array of components in variables", () => {
+    const translation = html(
+      <Trans
+        id="Hello {name}"
+        values={{ name: [<strong>John</strong>, <strong>!</strong>] }}
+      />
+    )
+    expect(translation).toEqual("Hello <strong>John</strong><strong>!</strong>")
+  })
+
   it("should render named component in components", () => {
     const translation = html(
       <Trans
