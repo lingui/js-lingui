@@ -2,8 +2,11 @@
 
 import { program } from "commander"
 import { readFileSync } from "node:fs"
+import path from "node:path"
 
-const packageJson = JSON.parse(readFileSync("../package.json", "utf8"))
+const packageJson = JSON.parse(
+  readFileSync(path.resolve(__dirname, "../package.json"), "utf8")
+)
 
 program
   .version(packageJson.version)
