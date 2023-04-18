@@ -141,6 +141,16 @@ import { Trans } from "@lingui/react";
       })
     })
 
+    it("should not extract from random i18n members", () => {
+      const code = `
+      i18n.load("Message")
+      `
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages.length).toBe(0)
+      })
+    })
+
     it("should not extract if disabled via annotation", () => {
       const code = `
       /* lingui-extract-ignore */
