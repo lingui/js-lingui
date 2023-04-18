@@ -163,9 +163,9 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
     t.isMemberExpression(node) &&
     (t.isIdentifier(node.object, { name: I18N_OBJECT }) ||
       (t.isMemberExpression(node.object) &&
-        t.isIdentifier(node.object.property, { name: I18N_OBJECT }) &&
-        (t.isIdentifier(node.property, { name: "_" }) ||
-          t.isIdentifier(node.property, { name: "t" }))))
+        t.isIdentifier(node.object.property, { name: I18N_OBJECT }))) &&
+    (t.isIdentifier(node.property, { name: "_" }) ||
+      t.isIdentifier(node.property, { name: "t" }))
 
   const extractFromMessageDescriptor = (
     path: NodePath<ObjectExpression>,
