@@ -1,6 +1,6 @@
 {
   "name": "@lingui/macro",
-  "version": "4.0.0-next.6",
+  "version": "4.0.0-next.7",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -58,12 +58,12 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.0.0-next.6",
-    "@lingui/core": "4.0.0-next.6",
-    "@lingui/message-utils": "4.0.0-next.6"
+    "@lingui/conf": "4.0.0-next.7",
+    "@lingui/core": "4.0.0-next.7",
+    "@lingui/message-utils": "4.0.0-next.7"
   },
   "peerDependencies": {
-    "@lingui/react": "4.0.0-next.6",
+    "@lingui/react": "4.0.0-next.7",
     "babel-plugin-macros": "2 || 3"
   },
   "devDependencies": {
