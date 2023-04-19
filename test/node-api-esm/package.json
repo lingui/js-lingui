@@ -1,0 +1,13 @@
+{
+  "name": "node-api-esm",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test:e2e": "node index.js"
+  },
+  "dependencies": {
+    "@lingui/cli": "workspace:*",
+    "@lingui/core": "workspace:*"
+  }
+}

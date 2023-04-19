@@ -1,0 +1,14 @@
+{
+  "name": "cli-version",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "node index.js"
+  },
+  "dependencies": {
+    "@lingui/cli": "workspace:*",
+    "@lingui/core": "workspace:*",
+    "execa": "^7.1.1"
+  }
+}
