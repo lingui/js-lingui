@@ -16,6 +16,20 @@ describe("@lingui/conf", () => {
     })
   })
 
+  it("should throw error if config is not discovered", () => {
+    mockConsole((console) => {
+      const exec = () =>
+        getConfig({
+          cwd: path.resolve(__dirname, path.join("fixtures")),
+        })
+
+      expect(exec).toThrow()
+      expect(getConsoleMockCalls(console.error)).toMatchSnapshot()
+
+      expect(console.warn).not.toBeCalled()
+    })
+  })
+
   it("should validate `locale`", () => {
     mockConsole((console) => {
       makeConfig({})

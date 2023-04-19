@@ -151,9 +151,9 @@ We're going to use [CLI](/docs/ref/cli.md) again. Run [`extract`](/docs/ref/cli.
 ```bash
 > lingui extract
 
-No locales defined!
+Lingui was unable to find a config!
 
-Add 'locales' to your configuration. See https://lingui.dev/ref/conf#locales
+Create 'lingui.config.js' file with LinguiJS configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf
 ```
 
 We need here to fix the configuration. Create a `lingui.config.js` file:
