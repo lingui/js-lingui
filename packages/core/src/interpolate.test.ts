@@ -79,6 +79,13 @@ describe("interpolate", () => {
     expect(plural({ value: 30 })).toEqual("30% discount")
   })
 
+  it("does not use message for positive value 'one' when negative value (-1) is provided", () => {
+    const plural = prepare("{value, plural, one {one item} other {some items}}")
+    expect(plural({ value: 1 })).toEqual("one item")
+    // should not pass!
+    expect(plural({ value: -1 })).toEqual("one item")
+  })
+
   it("should compile selectordinal", () => {
     const cache = prepare(
       "{value, selectordinal, one {#st Book} two {#nd Book}}"
