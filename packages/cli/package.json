@@ -18,31 +18,21 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "./dist/lingui.js",
   "bin": {
     "lingui": "./dist/lingui.js"
   },
   "exports": {
-    ".": {
-      "require": "./dist/lingui.js"
-    },
     "./api": {
-      "require": {
-        "types": "./dist/api/index.d.ts",
-        "default": "./dist/api/index.js"
-      }
+      "types": "./dist/api/index.d.ts",
+      "default": "./dist/api/index.js"
     },
     "./api/extractors/babel": {
-      "require": {
-        "types": "./dist/api/extractors/babel.d.ts",
-        "default": "./dist/api/extractors/babel.js"
-      }
+      "types": "./dist/api/extractors/babel.d.ts",
+      "default": "./dist/api/extractors/babel.js"
     },
     "./api/extractors/typescript": {
-      "require": {
-        "types": "./dist/api/extractors/typescript.d.ts",
-        "default": "./dist/api/extractors/typescript.js"
-      }
+      "types": "./dist/api/extractors/typescript.d.ts",
+      "default": "./dist/api/extractors/typescript.js"
     }
   },
   "scripts": {
