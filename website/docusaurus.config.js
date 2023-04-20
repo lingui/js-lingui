@@ -15,14 +15,6 @@ module.exports = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: 'new_release',
-      content:
-        'The v4.0.0 Pre-release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=v4.0.0">discover its new capabilities!</a>',
-      backgroundColor: '#ef4242',
-      textColor: '#FFFFFF',
-      isCloseable: true,
-    },
     navbar: {
       title: '',
       logo: {
