@@ -44,3 +44,7 @@ This package is licensed under [MIT][license] license.
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev/tutorials/extractor-vue
+[package]: https://www.npmjs.com/package/@lingui/extractor-vue
+[badge-downloads]: https://img.shields.io/npm/dw/@lingui/extractor-vue.svg
+[badge-version]: https://img.shields.io/npm/v/@lingui/extractor-vue.svg
+[badge-license]: https://img.shields.io/npm/l/@lingui/extractor-vue.svg
