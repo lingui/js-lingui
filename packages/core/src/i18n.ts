@@ -177,14 +177,8 @@ export class I18n extends EventEmitter<Events> {
    *   If array of locales is passed they would be used as fallback
    *   locales for date and number formatting
    * @param messages compiled message catalog
-   * @param notify Should emit `change` event for all subscribers.
-   *    This is useful for integration with frameworks as NextJS to avoid race-conditions during initialization.
    */
-  loadAndActivate(
-    locales: Locale | Locales,
-    messages: Messages,
-    notify = true
-  ) {
+  loadAndActivate(locales: Locale | Locales, messages: Messages) {
     if (Array.isArray(locales)) {
       this._locale = locales[0]
       this._locales = locales
@@ -195,9 +189,7 @@ export class I18n extends EventEmitter<Events> {
 
     this._messages[this._locale] = messages
 
-    if (notify) {
-      this.emit("change")
-    }
+    this.emit("change")
   }
 
   activate(locale: Locale, locales?: Locales) {

@@ -142,23 +142,6 @@ describe("I18n", () => {
       expect(cbChange).toBeCalled()
     })
 
-    it("should don't emit event if notify = false", () => {
-      const i18n = setupI18n()
-
-      const cbChange = jest.fn()
-      i18n.on("change", cbChange)
-
-      i18n.loadAndActivate(
-        "en",
-        {
-          message: "My Message",
-        },
-        false
-      )
-
-      expect(cbChange).not.toBeCalled()
-    })
-
     it("should support locales as array", () => {
       const i18n = setupI18n()
 
