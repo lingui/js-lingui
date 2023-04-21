@@ -32,7 +32,6 @@ module.exports = {
     ".*.js.snap$",
   ],
   coverageReporters: ["lcov", "text"],
-
   globalSetup: "./scripts/jest/setupTimezone.js",
   projects: [
     {
@@ -70,6 +69,7 @@ module.exports = {
         "<rootDir>/packages/format-json",
         "<rootDir>/packages/format-csv",
         "<rootDir>/packages/message-utils",
+        "<rootDir>/packages/extractor-vue",
       ],
     },
   ],

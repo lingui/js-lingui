@@ -54,6 +54,11 @@ const sidebar = [
         label: 'CLI',
         id: 'tutorials/cli',
       },
+      {
+        type: 'doc',
+        label: 'Extracting Vue.js messages',
+        id: 'tutorials/extractor-vue',
+      },
     ],
   },
   {
