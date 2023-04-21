@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "4.0.0-next.7",
+  "version": "4.0.0-next.8",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -52,11 +52,11 @@
     "@babel/parser": "^7.21.2",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
-    "@lingui/babel-plugin-extract-messages": "4.0.0-next.7",
-    "@lingui/conf": "4.0.0-next.7",
-    "@lingui/core": "4.0.0-next.7",
-    "@lingui/format-po": "4.0.0-next.7",
-    "@lingui/message-utils": "4.0.0-next.7",
+    "@lingui/babel-plugin-extract-messages": "4.0.0-next.8",
+    "@lingui/conf": "4.0.0-next.8",
+    "@lingui/core": "4.0.0-next.8",
+    "@lingui/format-po": "4.0.0-next.8",
+    "@lingui/message-utils": "4.0.0-next.8",
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
     "chokidar": "3.5.1",
@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "@lingui/macro": "4.0.0-next.7",
+    "@lingui/macro": "4.0.0-next.8",
     "@types/convert-source-map": "^2.0.0",
     "@types/glob": "^8.1.0",
     "@types/micromatch": "^4.0.1",
