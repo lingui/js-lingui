@@ -173,19 +173,21 @@ export class I18n extends EventEmitter<Events> {
   }
 
   /**
-   * @param locales one locale or array of locales.
-   *   If array of locales is passed they would be used as fallback
-   *   locales for date and number formatting
+   * @param locale initial active locale.
+   * @param locales list of alternative locales (BCP 47 language tags) which are used for number and date formatting.
    * @param messages compiled message catalog
    */
-  loadAndActivate(locales: Locale | Locales, messages: Messages) {
-    if (Array.isArray(locales)) {
-      this._locale = locales[0]
-      this._locales = locales
-    } else {
-      this._locale = locales
-      this._locales = null
-    }
+  loadAndActivate({
+    locale,
+    locales,
+    messages,
+  }: {
+    locale: Locale
+    locales?: Locales
+    messages: Messages
+  }) {
+    this._locale = locale
+    this._locales = locales || undefined
 
     this._messages[this._locale] = messages
 

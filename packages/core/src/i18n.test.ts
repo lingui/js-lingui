@@ -132,12 +132,13 @@ describe("I18n", () => {
       const cbChange = jest.fn()
       i18n.on("change", cbChange)
 
-      i18n.loadAndActivate("en", {
-        message: "My Message",
+      i18n.loadAndActivate({
+        locale: "en",
+        messages: { message: "My Message" },
       })
 
       expect(i18n.locale).toEqual("en")
-      expect(i18n.locales).toBeNull()
+      expect(i18n.locales).toBeUndefined()
 
       expect(cbChange).toBeCalled()
     })
@@ -145,12 +146,14 @@ describe("I18n", () => {
     it("should support locales as array", () => {
       const i18n = setupI18n()
 
-      i18n.loadAndActivate(["en-GB", "en"], {
-        message: "My Message",
+      i18n.loadAndActivate({
+        locale: "ar",
+        locales: ["en-UK", "ar-AS"],
+        messages: { message: "My Message" },
       })
 
-      expect(i18n.locale).toEqual("en-GB")
-      expect(i18n.locales).toEqual(["en-GB", "en"])
+      expect(i18n.locale).toEqual("ar")
+      expect(i18n.locales).toEqual(["en-UK", "ar-AS"])
     })
 
     it("should override existing data", () => {
@@ -164,12 +167,15 @@ describe("I18n", () => {
         },
       })
 
-      i18n.loadAndActivate("ru", {
-        message: "My Message",
+      i18n.loadAndActivate({
+        locale: "ru",
+        messages: {
+          message: "My Message",
+        },
       })
 
       expect(i18n.locale).toEqual("ru")
-      expect(i18n.locales).toBeNull()
+      expect(i18n.locales).toBeUndefined()
     })
   })
 
