@@ -120,7 +120,7 @@ i18n.load('en', messagesEn)
 
 ### `i18n.activate(locale[, locales])` {#i18n.activate}
 
-Activate a locale and locales. From now, calling `i18n._` on will return messages in given locale.
+Activate a locale and locales. From now on, calling `i18n._` will return messages in given locale.
 
 ```ts
 import { i18n } from "@lingui/core"
