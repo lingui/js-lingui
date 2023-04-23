@@ -19,9 +19,9 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 
 ## Polyfilling Intl apis
 
-React Native does not support all Intl features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules).
+React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that installing the `Intl` polyfills can significantly increase your bundle size.
 
-Follow their installation instructions and then import the polyfills at the top of your application entry file.
+Follow the polyfill installation instructions and then import them at the top of your application entry file.
 
 
 ## Example component
@@ -33,7 +33,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Alert, SafeAreaView, Button } from 'react-native';
 
 export const AppRoot = () => {
-    const [messages, setMessages] = useState<string[]>([]);
+   const [messages, setMessages] = useState<string[]>([]);
 
    const markAllAsRead = () => {
     Alert.alert("", "Do you want to set all your messages as read?", [
@@ -88,8 +88,8 @@ As you can see, it's a simple mailbox application with only one screen.
 
 ## Internationalization in React (Native)
 
-:::caution Note
-TL;DR: There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#withi18n) hook together with the `t` macro. When you change the active locale or load new messages, all the components that consume the Context provided by `I18nProvider` will re-render, making sure the UI shows the correct translations.
+:::tip TL;DR
+There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#withi18n) hook together with the [`t`](/docs/ref/macro.md#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all the components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
 :::
 
 Not surprisingly, this part isn't too different from the [React tutorial](/docs/tutorials/react.md).
@@ -128,9 +128,9 @@ const { i18n } = useLingui()
 <Button title={t(i18n)`this will be translated and rerendered with locale changes`}/>
 ```
 
-Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes an instance of the `i18n` object and passes it to [`Trans`](/docs/ref/react.md#trans) components through React Context. `I18nProvider` will also update the Context value (which rerenders components that consume the provided Context value) when locale or message catalogs are updated.
+Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes an instance of the `i18n` object and passes it to `Trans` components through React Context. `I18nProvider` will also update the Context value (which rerenders components that consume the provided Context value) when locale or message catalogs are updated.
 
-The [`Trans`](/docs/ref/react.md#trans) component uses the `I18n` instance to get the translations from it. If we cannot use [`Trans`](/docs/ref/react.md#trans), we can use the `useLingui` hook to get hold of the `i18n` instance ourselves and get the translations from there.
+The `Trans` component uses the `I18n` instance to get the translations from it. If we cannot use `Trans`, we can use the `useLingui` hook to get hold of the `i18n` instance ourselves and get the translations from there.
 
 The interplay of `I18nProvider` and `useLingui` is shown in the following simplified example:
 
@@ -160,20 +160,26 @@ const Inbox = (({ markAsRead }) => {
 
 ## Internationalization outside of React
 
-Until now, we have covered the [`Trans`](/docs/ref/react.md#trans) macro and the `useLingui` hook. Using them will make sure our components are always in sync with the currently active locale and message catalog.
+Until now, we have covered the [`Trans`](/docs/ref/react.md#trans) macro and the [`useLingui`](ref/react#uselingui) hook. Using them will make sure our components are always in sync with the currently active locale and message catalog.
 
 However, often you'll need to show localized strings outside of React, for example when you want to show an Alert from some business logic code.
 
 In that case you'll also need access to the `i18n` object, but you don't want to pass it around from some React component.
 Lingui uses a default i18n object instance that you can import as follows:
 
-```
+```ts
 import { i18n } from '@lingui/core';
 ```
 
-This instance is the source of truth for the active locale and the `t` macro implicitly uses this instance, unless you pass custom instance like this `` t(i18n)`some message` ``.
+This instance is the source of truth for the active locale. For string constants that will be translated at runtime, the correct approach is to use the `msg` macro as follows:
 
-What that means is that in non-react code you can just call `` t`this will be translated` `` which will render the translation for currently active locale.
+```ts
+const deleteTitle = msg`Are you sure to delete this?`
+...
+const showDeleteConfirmation = () => {
+  Alert.alert(i18n._(deleteTitle))
+}
+```
 
 ## Changing the active locale
 
@@ -183,9 +189,9 @@ The last remaining piece of the puzzle is changing the active locale. The `i18n`
 
 Lingui does not ship with functionality that would allow you to determine the best locale you should activate by default.
 
-Instead, please refer to [Expo localization](https://docs.expo.dev/versions/latest/sdk/localization/) or [react-native-localize](). Both packages will provide you with information about the locales that the user prefers.
+Instead, please refer to [Expo localization](https://docs.expo.dev/versions/latest/sdk/localization/#localizationgetlocales) or [react-native-localize](https://github.com/zoontek/react-native-localize#getlocales). Both packages will provide you with information about the locales that the user prefers. Combining that information with the locales that your app supports will give you the locale you should use by default.
 
-## Rendering of translations
+## Rendering and styling of translations
 
 As described in the [reference](/docs/ref/react.md#rendering-translations), by default, translation components render translation as a text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/docs/ref/react.md#trans) component like this:
 
@@ -199,7 +205,7 @@ You'll surely agree the `Text` component looks a little redundant. That's why th
 <Trans>Message Inbox</Trans>
 ```
 
-Alternatively, you may override the default locally on the i18n components, using the `render` prop. This is also documented in the [reference](/docs/ref/react.md#rendering-translations).
+Alternatively, you may override the default locally on the i18n components, using the `render` or `component` prop, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use these to apply styling to the rendered string. 
 
 ## Nesting components
 
@@ -225,17 +231,6 @@ The extracted string for translation will look like this:
 
 The important point here is that the sentence isn't broken into pieces but remains together - that will allow the translator to deliver a quality result.
 
-## Styling the translations
-
-There are several ways to style the text rendered with `Trans`:
-// TODO
-The first is to wrap `Trans` by Text
-
-```tsx
-<Text style={{ fontSize: 20 }}>
-  <Trans>This is a big font</Trans>
-</Text>
-```
 
 ## Further reading
 
