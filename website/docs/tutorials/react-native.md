@@ -2,7 +2,7 @@
 
 In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](tutorials/setup-react.md) for installation and setup instructions.
 
-The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) but here we will cover parts that are relevant for React Native and hopefully answer all questions you may have.
+The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
 :::tip Hint
 If you're looking for a working solution, check out the [sources available here](https://github.com/vonovak/js-lingui-demo) and the [demo app on Expo](https://exp.host/@vonovak/js-lingui-demo).

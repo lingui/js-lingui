@@ -9,3 +9,4 @@
 
 - [Let React speak your language](https://www.youtube.com/watch?v=soAEB7ltQPk) - by Tomáš Ehrlich
 - [Internationalization is a piece of cake](https://www.youtube.com/watch?v=vhUiL_wUAjo) - by Eli Schutze
+- [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
