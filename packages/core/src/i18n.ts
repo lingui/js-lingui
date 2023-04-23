@@ -70,6 +70,15 @@ type Events = {
   missing: (event: MissingMessageEvent) => void
 }
 
+type LoadAndActivateOptions = {
+  /** initial active locale */
+  locale: Locale
+  /** list of alternative locales (BCP 47 language tags) which are used for number and date formatting */
+  locales?: Locales
+  /** compiled message catalog */
+  messages: Messages
+}
+
 export class I18n extends EventEmitter<Events> {
   private _locale: Locale
   private _locales: Locales
@@ -173,19 +182,9 @@ export class I18n extends EventEmitter<Events> {
   }
 
   /**
-   * @param locale initial active locale.
-   * @param locales list of alternative locales (BCP 47 language tags) which are used for number and date formatting.
-   * @param messages compiled message catalog
+   * @param options {@link LoadAndActivateOptions}
    */
-  loadAndActivate({
-    locale,
-    locales,
-    messages,
-  }: {
-    locale: Locale
-    locales?: Locales
-    messages: Messages
-  }) {
+  loadAndActivate({ locale, locales, messages }: LoadAndActivateOptions) {
     this._locale = locale
     this._locales = locales || undefined
 
