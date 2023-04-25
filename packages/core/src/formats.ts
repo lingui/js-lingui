@@ -12,7 +12,7 @@ function normalizeLocales(locales: Locales): string[] {
 export function date(
   locales: Locales,
   value: string | Date,
-  format: Intl.DateTimeFormatOptions = {}
+  format?: Intl.DateTimeFormatOptions
 ): string {
   const _locales = normalizeLocales(locales)
 
@@ -27,7 +27,7 @@ export function date(
 export function number(
   locales: Locales,
   value: number,
-  format: Intl.NumberFormatOptions = {}
+  format?: Intl.NumberFormatOptions
 ): string {
   const _locales = normalizeLocales(locales)
 
@@ -49,11 +49,11 @@ export function plural(
 
   const plurals = ordinal
     ? getMemoized(
-        () => cacheKey("plural-ordinal", _locales, {}),
+        () => cacheKey("plural-ordinal", _locales),
         () => new Intl.PluralRules(_locales, { type: "ordinal" })
       )
     : getMemoized(
-        () => cacheKey("plural-cardinal", _locales, {}),
+        () => cacheKey("plural-cardinal", _locales),
         () => new Intl.PluralRules(_locales, { type: "cardinal" })
       )
 
@@ -75,8 +75,8 @@ function getMemoized<T>(getKey: () => string, construct: () => T) {
 
 function cacheKey(
   type: string,
-  locales?: readonly string[],
-  options: unknown = {}
+  locales: readonly string[],
+  options?: Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 ) {
   const localeKey = locales.join("-")
   return `${type}-${localeKey}-${JSON.stringify(options)}`
