@@ -78,6 +78,6 @@ function cacheKey(
   locales?: readonly string[],
   options: unknown = {}
 ) {
-  const localeKey = [...locales].sort().join("-")
+  const localeKey = locales.join("-")
   return `${type}-${localeKey}-${JSON.stringify(options)}`
 }

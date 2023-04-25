@@ -43,10 +43,17 @@ describe("@lingui/core/formats", () => {
       ).toMatchInlineSnapshot(`"1,000"`)
     })
 
-    it("should respect passed locale", () => {
+    it("should respect passed locale(s)", () => {
       expect(
         number(["pl"], 1000, { style: "currency", currency: "EUR" })
       ).toMatchInlineSnapshot(`"1000,00 €"`)
+
+      expect(
+        number(["pl", "en-US"], 1000, { style: "currency", currency: "EUR" })
+      ).toMatchInlineSnapshot(`"1000,00 €"`)
+      expect(
+        number(["en-US", "pl"], 1000, { style: "currency", currency: "EUR" })
+      ).toMatchInlineSnapshot(`"€1,000.00"`)
     })
   })
 })
