@@ -69,10 +69,11 @@ describe("macro", function () {
 
   const getDefaultBabelOptions = (
     macroOpts: LinguiMacroOpts = {},
+    isTs: boolean = false,
     stripId = false
   ): TransformOptions => {
     return {
-      filename: "<filename>",
+      filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
       configFile: false,
       presets: [],
       plugins: [
@@ -108,7 +109,7 @@ describe("macro", function () {
       const cases = testCases[suiteName]
 
       const clean = (value: string) =>
-        prettier.format(value, { parser: "babel" }).replace(/\n+/, "\n")
+        prettier.format(value, { parser: "babel-ts" }).replace(/\n+/, "\n")
 
       cases.forEach(
         (
@@ -130,7 +131,11 @@ describe("macro", function () {
           if (only) run = it.only
           if (skip) run = it.skip
           run(name != null ? name : `${suiteName} #${index + 1}`, () => {
-            const babelOptions = getDefaultBabelOptions(macroOpts, stripId)
+            const babelOptions = getDefaultBabelOptions(
+              macroOpts,
+              useTypescriptPreset,
+              stripId
+            )
             expect(input || filename).toBeDefined()
 
             const originalEnv = process.env.NODE_ENV
