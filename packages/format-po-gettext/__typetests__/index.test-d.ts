@@ -1,5 +1,5 @@
 import { CatalogFormatter } from "@lingui/conf"
-import { expectAssignable } from "tsd"
+import { expectAssignable } from "tsd-lite"
 import { formatter } from "@lingui/format-po-gettext"
 
 expectAssignable<CatalogFormatter>(formatter())

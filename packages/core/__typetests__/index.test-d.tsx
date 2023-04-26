@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { expectType } from "tsd"
+import { expectType } from "tsd-lite"
 import { i18n } from "@lingui/core"
 
 expectType<string>(i18n._("message.id"))

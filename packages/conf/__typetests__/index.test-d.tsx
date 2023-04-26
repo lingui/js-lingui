@@ -4,7 +4,7 @@ import {
   FallbackLocales,
   LinguiConfig,
 } from "@lingui/conf"
-import { expectAssignable } from "tsd"
+import { expectAssignable } from "tsd-lite"
 
 // only required props
 expectAssignable<LinguiConfig>({
@@ -33,13 +33,13 @@ expectAssignable<LinguiConfig>({
     tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
-  format: "po",
+  format: "po" as const,
   formatOptions: { origins: true, lineNumbers: true },
   locales: [],
-  orderBy: "messageId",
+  orderBy: "messageId" as const,
   pseudoLocale: "",
   rootDir: ".",
-  runtimeConfigModule: ["@lingui/core", "i18n"],
+  runtimeConfigModule: ["@lingui/core", "i18n"] as [string, string],
   sourceLocale: "",
   service: { name: "", apiKey: "" },
 })
@@ -64,13 +64,13 @@ expectAssignable<LinguiConfig>({
 // runtimeConfigModule
 expectAssignable<LinguiConfig>({
   locales: ["en", "pl"],
-  runtimeConfigModule: ["./custom-i18n-config", "i18n"],
+  runtimeConfigModule: ["./custom-i18n-config", "i18n"] as [string, string],
 })
 
 expectAssignable<LinguiConfig>({
   locales: ["en", "pl"],
   runtimeConfigModule: {
-    i18n: ["./custom-config", "i18n"],
-    Trans: ["./custom-config", "Trans"],
+    i18n: ["./custom-config", "i18n"] as [string, string],
+    Trans: ["./custom-config", "Trans"] as [string, string],
   },
 })

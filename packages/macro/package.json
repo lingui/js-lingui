@@ -72,7 +72,7 @@
     "@babel/traverse": "7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
     "prettier": "2.8.3",
-    "tsd": "^0.26.1",
+    "tsd-lite": "^0.7.0",
     "unbuild": "^1.1.2"
   }
 }

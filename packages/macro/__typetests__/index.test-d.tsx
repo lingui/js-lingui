@@ -1,4 +1,4 @@
-import { expectType } from "tsd"
+import { expectType } from "tsd-lite"
 import type { MessageDescriptor, I18n } from "@lingui/core"
 
 import {
