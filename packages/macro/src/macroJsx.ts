@@ -95,6 +95,10 @@ export default class MacroJSX {
   }
 
   replacePath = (path: NodePath) => {
+    if (!path.isJSXElement()) {
+      return path
+    }
+
     const tokens = this.tokenizeNode(path)
 
     const messageFormat = new ICUMessageFormat()
