@@ -35,7 +35,7 @@ const catalogs: Record<string, () => Promise<Messages>> = {
  */
 export async function dynamicActivate(locale: string) {
   const messages = await catalogs[locale as any]()
-  i18n.loadAndActivate(locale, messages)
+  i18n.loadAndActivate({ locale, messages })
 }
 
 // If not we can just load all the catalogs and do a simple i18n.active(localeToActive)
