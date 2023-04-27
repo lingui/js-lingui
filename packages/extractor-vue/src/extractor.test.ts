@@ -61,4 +61,26 @@ describe("vue extractor", () => {
 
     expect(messages).toMatchSnapshot()
   })
+
+  it("should extract message from functional component", async () => {
+    const filePath = path.resolve(__dirname, "fixtures/functional.vue")
+    const code = fs.readFileSync(filePath, "utf-8")
+
+    let messages: ExtractedMessage[] = []
+
+    await vueExtractor.extract(
+      "functional.vue",
+      code,
+      (res) => {
+        messages.push(res)
+      },
+      {
+        linguiConfig,
+      }
+    )
+
+    messages = normalizePath(messages)
+
+    expect(messages).toMatchSnapshot()
+  })
 })
