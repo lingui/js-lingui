@@ -7,6 +7,12 @@ Minimal required versions are:
 - TypeScript (if used on the project): 4.1
 - Node: v16.x
 
+:::info
+
+If you encounter any difficulties during the migration process, don't hesitate to ask for assistance on the Lingui [Discord server](https://discord.gg/gFWwAYnMtA).
+
+:::
+
 ### Extractor configuration changes
 
 The big change in v4 is in extractor internals. Now it is less fragile, and doesn't depend on the host project settings.
