@@ -30,6 +30,11 @@ module.exports = {
           position: 'left',
         },
         {
+          to: '/blog',
+          label: 'Blog',
+          position: 'left',
+        },
+        {
           to: '/misc/community',
           label: 'Community',
           position: 'left',
@@ -84,6 +89,10 @@ module.exports = {
           title: 'More',
           items: [
             {
+              label: 'Blog',
+              to: '/blog',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/lingui/js-lingui',
             },
@@ -121,6 +130,10 @@ module.exports = {
           routeBasePath: '/',
           editUrl: 'https://github.com/lingui/js-lingui/tree/main/website',
           remarkPlugins: [[require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]],
+        },
+        blog: {
+          showReadingTime: true,
+          editUrl: 'https://github.com/lingui/js-lingui/tree/main/website/',
         },
         sitemap: {
           changefreq: 'weekly',
