@@ -18,12 +18,14 @@ export const vueExtractor: ExtractorType = {
       ignoreEmpty: true,
     })
 
-    const compiledTemplate = compileTemplate({
-      source: descriptor.template.content,
-      filename,
-      inMap: descriptor.template.map,
-      id: filename,
-    })
+    const compiledTemplate =
+      descriptor.template &&
+      compileTemplate({
+        source: descriptor.template.content,
+        filename,
+        inMap: descriptor.template.map,
+        id: filename,
+      })
 
     const isTsBlock = (block: SFCBlock) => block?.lang === "ts"
 

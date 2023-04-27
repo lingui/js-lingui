@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`vue extractor should extract message from functional component 1`] = `
+[
+  {
+    comment: undefined,
+    context: undefined,
+    id: Render function message,
+    message: undefined,
+    origin: [
+      functional.vue,
+      10,
+      33,
+    ],
+  },
+]
+`;
+
 exports[`vue extractor should extract message from vue file 1`] = `
 [
   {
