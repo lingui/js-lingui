@@ -7,15 +7,31 @@ image: ./img/social-card.png
 
 Today we are happy to finally announce Lingui 4.0! 🥳️
 
-Lingui is a powerful and flexible **internationalization** (i18n) and **localization** (l10n) library for JavaScript projects, including React, Vue, Node.js, and Angular.
-
-This version is packed with tons of new features, improvements and fixes that will make internationalizing your JavaScript projects much easier! The codebase has also been significantly refactored and updated. As a result, Lingui has become much more stable, reliable and less fragile.
-
 ---
 
 ![social-card image](./img/social-card.png)
 
+## What is Lingui exactly?
+
+Lingui is a powerful and flexible **internationalization** (i18n) and **localization** (l10n) library for JavaScript projects, including React, Vue.js, Node.js, Next.js, Angular, and more. It provides a set of tools and APIs that make it easy for developers to create multilingual applications.
+
+One of the key benefits of Lingui is that it simplifies the process of managing translations by providing a centralized way to store and manage translation files.
+
+### Key features
+
+- **Clean and readable** - keep your code clean and readable, while the library uses the battle-tested and powerful ICU MessageFormat under the hood.
+- **Universal** - use it everywhere: Vanilla JS, React, Vue.js, Next.js, Node.js, etc.
+- **Full rich-text support** - use React components within localized messages without restriction. Writing rich-text messages is as easy as writing JSX.
+- **Powerful tooling** - manage the entire intl workflow with [Lingui CLI](https://lingui.dev/tutorials/cli). It extracts messages from source code, validates messages coming from translators, and verifies that all messages are translated before shipping to production.
+- **Unopinionated** - integrate Lingui with your existing workflow. It supports both message keys and auto-generated messages. Translations can be stored in a [variety of file formats](https://lingui.dev/ref/catalog-formats) including PO, JSON, and CSV.
+- **Lightweight and optimized** - core library is only [1.5 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+- [Active community](https://lingui.dev/misc/community).
+
 ## What's new in 4.0?
+
+This version is packed with tons of new features, improvements and fixes that will make internationalizing your JavaScript projects much easier!
+
+The codebase has also been significantly refactored and updated. As a result, Lingui has become much more stable, lightweight, reliable, and less fragile.
 
 ### Extractors
 

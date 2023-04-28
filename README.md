@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Lingui<sub>js</sub></h1>
 
-🌍📖 A readable, automated, and optimized (5 kb) internationalization for JavaScript
+🌍📖 A readable, automated, and optimized (3 kb) internationalization for JavaScript
 
 <hr />
 
@@ -41,8 +41,8 @@ Lingui is an easy yet powerful internationalization framework for global project
   message keys as well as auto-generated messages. Translations are stored either in
   JSON or standard PO files, which are supported in almost all translation tools.
 
-- **Lightweight and optimized** - Core library is only [1.7 kB gzipped][BundleCore],
-  React components are an additional [1.6 kBs gzipped][BundleReact]. That's less than Redux
+- **Lightweight and optimized** - Core library is only [1.5 kB gzipped][BundleCore],
+  React components are an additional [1.3 kBs gzipped][BundleReact]. That's less than Redux
   for a full-featured intl library.
 
 - **Active community** - Join us on [Discord][Discord] to discuss the latest development.
@@ -57,13 +57,20 @@ Lingui is an easy yet powerful internationalization framework for global project
 
 - [Create React App][TutorialSetupCRA]
 - [React projects][TutorialSetupReact]
+- [Vite project][SetupVite]
 
 ### Tutorials
 
 - [React][TutorialReact]
+- [Vue.js][TutorialVue]
 - [React Native][TutorialReactNative]
 - [Plain JavaScript][TutorialJavaScript]
 - [Working with Command Line Tool][TutorialCLI]
+
+### Plugins
+
+- [SWC Plugin][SWCPlugin]
+- [Vite Plugin][VitePlugin]
 
 If you're a react-intl user, check out [a comparison of react-intl and Lingui](https://lingui.dev/misc/react-intl).
 
@@ -91,7 +98,7 @@ msgid "msg.docs"
 msgstr "Read the <0>documentation</0> for more info."
 ```
 
-For more example see the [React tutorial][TutorialReact].
+For more example see the [Examples][Examples] directory.
 
 ## Support
 
@@ -148,7 +155,13 @@ The project is licensed under the [MIT][License] license.
 [TutorialCLI]: https://lingui.dev/tutorials/cli
 [TutorialSetupCRA]: https://lingui.dev/tutorials/setup-cra
 [TutorialSetupReact]: https://lingui.dev/tutorials/setup-react
+[TutorialVue]: https://lingui.dev/tutorials/extractor-vue
+[SetupVite]: https://lingui.dev/tutorials/setup-vite
 [RefCLI]: https://lingui.dev/ref/cli
+[Examples]: https://github.com/lingui/js-lingui/tree/main/examples
+
+[SWCPlugin]: https://lingui.dev/ref/swc-plugin
+[VitePlugin]: https://lingui.dev/ref/vite-plugin
 
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
