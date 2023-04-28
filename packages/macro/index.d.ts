@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import type { ReactElement, ReactNode, VFC, FC } from "react"
+import type { ReactNode, VFC, FC } from "react"
 import type { I18n, MessageDescriptor } from "@lingui/core"
-import type { TransRenderProps } from "@lingui/react"
+import type { TransRenderCallbackOrComponent } from "@lingui/react"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -216,12 +216,10 @@ export function defineMessage(
  */
 export const msg: typeof defineMessage
 
-type CommonProps = {
+type CommonProps = TransRenderCallbackOrComponent & {
   id?: string
   comment?: string
   context?: string
-  render?: (props: TransRenderProps) => ReactElement<any, any> | null
-  i18n?: I18n
 }
 
 type TransProps = {
