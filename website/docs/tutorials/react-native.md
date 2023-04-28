@@ -9,7 +9,7 @@ If you're looking for a working solution, check out the [sources available here]
 :::
 
 :::caution Note
-This tutorial assumes you use Lingui 4.x and React Native >=0.70 or Expo >=47, with the Hermes JavaScript Engine.
+This tutorial assumes you use Lingui 4.x and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
 
 `@lingui/core` depends on several apis exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](https://formatjs.io/docs/polyfills).
@@ -17,12 +17,15 @@ If some `Intl` feature is not supported by your runtime, you can [polyfill it](h
 See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl` support in the Hermes engine.
 :::
 
+## Metro bundler support
+
+Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer and (2) that `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/vonovak/js-lingui-demo/blob/main/metro.config.js).
+
 ## Polyfilling Intl apis
 
 React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that installing the `Intl` polyfills can significantly increase your bundle size.
 
 Follow the polyfill installation instructions and then import them at the top of your application entry file.
-
 
 ## Example component
 
@@ -102,8 +105,7 @@ import { Trans } from '@lingui/macro'
 import { i18n } from "@lingui/core"
 import { Text } from "react-native";
 
-i18n.load('en', messages);
-i18n.activate('en');
+i18n.loadAndActivate({ locale: "en", messages });
 
 <I18nProvider i18n={i18n} defaultComponent={Text}>
  <AppRoot />
