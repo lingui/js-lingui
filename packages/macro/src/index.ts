@@ -122,7 +122,7 @@ function macro({ references, state, babel, config }: MacroParams) {
 function reportUnsupportedSyntax(path: NodePath, e: Error) {
   throw path.buildCodeFrameError(
     `Unsupported macro usage. Please check examples at https://lingui.dev/ref/macro#examples-of-js-macros. 
- If you think this is bug, fill an issue at https://github.com/lingui/js-lingui/issues
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
  
  Error: ${e.message}`
   )
