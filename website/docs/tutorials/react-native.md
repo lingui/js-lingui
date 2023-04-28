@@ -1,6 +1,6 @@
 # Internationalization of React Native apps
 
-In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](tutorials/setup-react.md) for installation and setup instructions.
+In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.md) for installation and setup instructions.
 
 The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
@@ -26,7 +26,6 @@ Follow the polyfill installation instructions and then import them at the top of
 ## Metro bundler support
 
 Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/vonovak/js-lingui-demo/blob/main/metro.config.js).
-
 
 ## Example component
 
@@ -110,7 +109,6 @@ i18n.loadAndActivate({ locale: "en", messages });
 <Text style={styles.heading}><Trans>Message Inbox</Trans></Text>
 ```
 
-
 :::tip Hint
 We're importing the default `i18n` object from `@lingui/core`. The `i18n` object is covered in greater detail in the [JavaScript tutorial](/docs/tutorials/javascript.md).
 :::
@@ -155,7 +153,7 @@ const Inbox = (({ markAsRead }) => {
 
 ## Internationalization outside of React
 
-Until now, we have covered the [`Trans`](/docs/ref/react.md#trans) macro and the [`useLingui`](ref/react#uselingui) hook. Using them will make sure our components are always in sync with the currently active locale and message catalog.
+Until now, we have covered the [`Trans`](/ref/react#trans) macro and the [`useLingui`](/ref/react#uselingui) hook. Using them will make sure our components are always in sync with the currently active locale and message catalog.
 
 However, often you'll need to show localized strings outside of React, for example when you want to show an Alert from some business logic code.
 
@@ -200,7 +198,7 @@ You'll surely agree the `Text` component looks a little redundant. That's why th
 <Trans>Message Inbox</Trans>
 ```
 
-Alternatively, you may override the default locally on the i18n components, using the `render` or `component` prop, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use them to apply styling to the rendered string. 
+Alternatively, you may override the default locally on the i18n components, using the `render` or `component` prop, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use them to apply styling to the rendered string.
 
 ## Nesting components
 
@@ -226,7 +224,6 @@ The extracted string for translation will look like this:
 
 The important point here is that the sentence isn't broken into pieces but remains together - that will allow the translator to deliver a quality result.
 
-
 ## Further reading
 
 -   [`@lingui/react` reference documentation](/docs/ref/react.md)
@@ -235,4 +232,3 @@ The important point here is that the sentence isn't broken into pieces but remai
 -   [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
 
 This guide originally authored and contributed in full by [Vojtech Novak](https://twitter.com/vonovak).
-
