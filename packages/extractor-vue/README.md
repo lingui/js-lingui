@@ -16,12 +16,13 @@ npm install --save-dev @lingui/extractor-vue
 
 ## Usage
 
-This custom extractor requires that you use JavaScript for your Lingui configuration.
+This custom extractor requires that you use JavaScript or TypeScript for your Lingui configuration.
 
 ```js
 import { vueExtractor } from "@lingui/extractor-vue"
-import babel from "@lingui/cli/api/extractors/babel"
+import { extractor as defaultExtractor } from "@lingui/cli/api"
 
+/** @type {import('@lingui/conf').LinguiConfig} */
 const linguiConfig = {
   locales: ["en", "nb"],
   sourceLocale: "en",
@@ -31,7 +32,7 @@ const linguiConfig = {
       include: ["<rootDir>/src"],
     },
   ],
-  extractors: [babel, vueExtractor],
+  extractors: [defaultExtractor, vueExtractor],
 }
 
 export default linguiConfig
