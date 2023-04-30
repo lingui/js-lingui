@@ -19,9 +19,9 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 
 ## Polyfilling Intl apis
 
-React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that installing the `Intl` polyfills can significantly increase your bundle size.
+React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase your bundle size.
 
-Follow the polyfill installation instructions and then import them at the top of your application entry file.
+Follow the polyfill installation instructions before proceeding further.
 
 ## Metro bundler support
 
@@ -75,6 +75,7 @@ const Inbox = ({ messages, markAsRead }) => {
            ? `There's {messagesCount} message in your inbox.`
            : `There are ${messagesCount} messages in your inbox.`}
        </Text>
+       {/* additional code for adding messages, etc.*/}
      </View>
    </SafeAreaView>
  );
@@ -110,7 +111,7 @@ i18n.loadAndActivate({ locale: "en", messages });
 ```
 
 :::tip Hint
-We're importing the default `i18n` object from `@lingui/core`. The `i18n` object is covered in greater detail in the [JavaScript tutorial](/docs/tutorials/javascript.md).
+We're importing the default `i18n` object from `@lingui/core`. Read more about the `i18n` object in the [reference](/ref/core).
 :::
 
 Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.md#trans) macro here!
@@ -123,9 +124,9 @@ const { i18n } = useLingui()
 <Button title={t(i18n)`this will be translated and rerendered with locale changes`}/>
 ```
 
-Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes an instance of the `i18n` object and passes it to `Trans` components through React Context. `I18nProvider` will update the Context value (which rerenders components that consume the provided Context value) when locale or message catalogs are updated.
+Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes the instance of the `i18n` object and passes it to `Trans` components through React context. `I18nProvider` will update the context value (which then rerenders components that consume the provided context value) when locale or message catalogs are updated.
 
-The `Trans` component uses the `I18n` instance to get the translations from it. If we cannot use `Trans`, we can use the `useLingui` hook to get hold of the `i18n` instance ourselves and get the translations from there.
+The `Trans` component uses the `i18n` instance to get the translations from it. If we cannot use `Trans`, we can use the `useLingui` hook to get hold of the `i18n` instance ourselves and get the translations from there.
 
 The interplay of `I18nProvider` and `useLingui` is shown in the following simplified example:
 
@@ -155,16 +156,16 @@ const Inbox = (({ markAsRead }) => {
 
 Until now, we have covered the [`Trans`](/ref/react#trans) macro and the [`useLingui`](/ref/react#uselingui) hook. Using them will make sure our components are always in sync with the currently active locale and message catalog.
 
-However, often you'll need to show localized strings outside of React, for example when you want to show an Alert from some business logic code.
+However, you may want to show localized strings outside of React, for example when you want to show an Alert from some business logic code.
 
 In that case you'll also need access to the `i18n` object, but you don't need to pass it around from some React component.
-By default, Lingui uses an `I18n` object instance that you can import as follows:
+By default, Lingui uses an `i18n` object instance that you can import as follows:
 
 ```ts
 import { i18n } from '@lingui/core';
 ```
 
-This instance is the source of truth for the active locale. For string constants that will be translated at runtime, the correct approach is to use the [`msg`](/ref/macro#definemessage) macro as follows:
+This instance is the source of truth for the active locale. For string constants that will be translated at runtime, use the [`msg`](/ref/macro#definemessage) macro as follows:
 
 ```ts
 const deleteTitle = msg`Are you sure to delete this?`
@@ -186,7 +187,7 @@ Instead, please refer to [Expo localization](https://docs.expo.dev/versions/late
 
 ## Rendering and styling of translations
 
-As described in the [reference](/docs/ref/react.md#rendering-translations), by default, translation components render translation as a text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/docs/ref/react.md#trans) component like this:
+As described in the [reference](/docs/ref/react.md#rendering-translations), by default, translation components render translation as text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/docs/ref/react.md#trans) component like this:
 
 ```tsx
 <Text><Trans>Message Inbox</Trans></Text>
@@ -198,11 +199,11 @@ You'll surely agree the `Text` component looks a little redundant. That's why th
 <Trans>Message Inbox</Trans>
 ```
 
-Alternatively, you may override the default locally on the i18n components, using the `render` or `component` prop, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use them to apply styling to the rendered string.
+Alternatively, you may override the default locally on the i18n components, using the `render` or `component` props, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use them to apply styling to the rendered string.
 
 ## Nesting components
 
-It is worth mentioning that the [`Trans`](/docs/ref/react.md#trans) macro and `Text` component may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native [handles nested text](https://facebook.github.io/react-native/docs/text#nested-text).
+The [`Trans`](/docs/ref/react.md#trans) macro and `Text` component may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native [handles nested text](https://facebook.github.io/react-native/docs/text#nested-text).
 
 ![image](/img/docs/rn-component-nesting.png)
 
@@ -228,7 +229,6 @@ The important point here is that the sentence isn't broken into pieces but remai
 
 -   [`@lingui/react` reference documentation](/docs/ref/react.md)
 -   [`@lingui/cli` reference documentation](/docs/ref/cli.md)
--   [Pluralization Guide](/docs/guides/plurals.md)
 -   [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
 
 This guide originally authored and contributed in full by [Vojtech Novak](https://twitter.com/vonovak).
