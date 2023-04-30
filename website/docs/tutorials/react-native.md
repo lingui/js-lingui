@@ -25,7 +25,7 @@ Follow the polyfill installation instructions before proceeding further.
 
 ## Metro bundler support
 
-Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer (using yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/vonovak/js-lingui-demo/blob/main/metro.config.js).
+Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/vonovak/js-lingui-demo/blob/main/metro.config.js).
 
 ## Example component
 
