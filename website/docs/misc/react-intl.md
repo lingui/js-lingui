@@ -1,10 +1,10 @@
 # Comparison with react-intl
 
-[react-intl](https://github.com/yahoo/react-intl) is definitely the most popular and widely-used i18n library for React. [LinguiJS](https://github.com/lingui/js-lingui) is in many ways very similar: both libraries use the same syntax for messages (ICU MessageFormat) and they also have very similar API.
+[react-intl](https://github.com/formatjs/formatjs) (Format.js) is popular and widely-used i18n library for React. [Lingui](https://github.com/lingui/js-lingui) is in many ways very similar: both libraries use the same syntax for messages (ICU MessageFormat) and they also have very similar API.
 
-Here's an example from [react-intl](https://github.com/yahoo/react-intl) docs:
+Here's an example from [react-intl](https://github.com/formatjs/formatjs) docs:
 
-``` jsx
+```jsx
 <FormattedMessage
    id="welcome"
    defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
@@ -15,9 +15,9 @@ Here's an example from [react-intl](https://github.com/yahoo/react-intl) docs:
  />
 ```
 
-Looking at the low-level API of [LinguiJS](https://github.com/lingui/js-lingui), there isn't much difference:
+Looking at the low-level API of [Lingui](https://github.com/lingui/js-lingui), there isn't much difference:
 
-``` jsx
+```jsx
 <Trans
    id="welcome"
    message={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
@@ -34,13 +34,13 @@ There's really no reason to reinvent the wheel when both libs are build on top o
 
 Suppose we have the following text:
 
-``` html
+```html
 <p>Read the <a href="/docs">documentation</a>.</p>
 ```
 
-In [react-intl](https://github.com/yahoo/react-intl), this would be translated as:
+In react-intl, this would be translated as:
 
-``` jsx
+```jsx
 <FormattedMessage
     id='msg.docs'
     defaultMessage='Read the <link>documentation</link>.'
@@ -50,9 +50,9 @@ In [react-intl](https://github.com/yahoo/react-intl), this would be translated a
 />
 ```
 
-[LinguiJS](https://github.com/lingui/js-lingui) extends ICU MessageFormat with tags. The example above would be:
+[Lingui](https://github.com/lingui/js-lingui) extends ICU MessageFormat with tags. The example above would be:
 
-``` jsx
+```jsx
 <Trans
     id='msg.docs'
     message='Read the <link>documentation</link>.'
@@ -66,11 +66,11 @@ However, let's go yet another level deeper.
 
 ## Macros for component-based message syntax
 
-[LinguiJS](https://github.com/lingui/js-lingui) provides macros `@lingui/macro` which automatically generates a message syntax.
+[Lingui](https://github.com/lingui/js-lingui) provides macros [`@lingui/macro`](/docs/ref/macro.md) which automatically generates a message syntax.
 
 Let's go back to the previous example:
 
-``` html
+```html
 <p>
    Read the <a href="/docs">documentation</a>.
 </p>
@@ -78,7 +78,7 @@ Let's go back to the previous example:
 
 All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans) macro:
 
-``` html
+```html
 <p>
    <Trans id="msg.docs">Read the <a href="/docs">documentation</a>.</Trans>
 </p>
@@ -88,9 +88,9 @@ The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and
 
 This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.md#trans) macro.
 
-Let's compare it with [react-intl](https://github.com/yahoo/react-intl) solution to see the difference:
+Let's compare it with react-intl solution to see the difference:
 
-``` jsx
+```jsx
 <p>
    <FormattedMessage
        id='msg.docs'
@@ -103,9 +103,9 @@ Let's compare it with [react-intl](https://github.com/yahoo/react-intl) solution
 ```
 
 :::note
-It' also worth mentioning that the message IDs are completely optional. [LinguiJS](https://github.com/lingui/js-lingui) is unopinionated in this way and perfectly works with messages as IDs as well:
+It' also worth mentioning that the message IDs are completely optional. [Lingui](https://github.com/lingui/js-lingui) is unopinionated in this way and perfectly works with messages as IDs as well:
 
-``` html
+```html
 <p>
    <Trans>Read the <a href="/docs">documentation</a>.</Trans>
 </p>
@@ -118,9 +118,9 @@ The message ID is `Read the <0>documentation</0>.` instead of `msg.docs`. Both s
 
 Another very common linguistic feature is pluralization.
 
-Let's take a look at the original example from [react-intl](https://github.com/yahoo/react-intl) docs:
+Let's take a look at the original example from react-intl docs:
 
-``` jsx
+```jsx
 <FormattedMessage
    id="welcome"
    defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
@@ -131,9 +131,9 @@ Let's take a look at the original example from [react-intl](https://github.com/y
  />
 ```
 
-Using [LinguiJS](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
+Using [Lingui](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
 
-``` jsx
+```jsx
 <Trans id="welcome">
    Hello <b>{name}</b>, you have {i18n.number(undreadCount)} <Plural
       one="message"
@@ -144,7 +144,7 @@ Using [LinguiJS](https://github.com/lingui/js-lingui) macros, we could combine [
 
 and the final message would be very similar:
 
-``` jsx
+```jsx
 <Trans
    id="welcome"
    message={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
@@ -160,7 +160,7 @@ The only difference is the [<0>] tag included in the message, as [LinguiJS](http
 :::note
 It's good to mention here that this isn't the best example of using plurals. Make your translators happy and move plurals to the top of the message:
 
-``` jsx
+```jsx
 <Plural
    id="welcome"
    value={number}
@@ -174,18 +174,18 @@ Even though both variants are syntactically valid in ICU MessageFormat, the seco
 
 ## Text attributes
 
-Components can't be used in some contexts, e.g. to translate text attributes. Whereas [react-intl](https://github.com/yahoo/react-intl) provides JS methods (e.g: `formatMessage`) which return plain strings, [LinguiJS](https://github.com/lingui/js-lingui) offers its core library for such translations. And it also provides macros for these use-cases!
+Components can't be used in some contexts, e.g. to translate text attributes. Whereas react-intl provides JS methods (e.g: `formatMessage`) which return plain strings, [Lingui](https://github.com/lingui/js-lingui) offers its core library for such translations. And it also provides macros for these use-cases!
 
 Here are a few short examples:
 
-``` jsx
+```jsx
 <a title={i18n._(t`The title of ${name}`)}>{name}</a>
 <img alt={i18n._(plural({ value: count, one: "flag", other: "flags" }))} src="..." />
 ```
 
 Custom IDs are supported as well:
 
-``` jsx
+```jsx
 <a title={i18n._(t("link.title")`The title of ${name}`}>{name}</a>
 <img alt={i18n._(plural("img.alt", { value: count, one: "flag", other: "flags" }))} src="..." />
 ```
@@ -198,42 +198,33 @@ To inject `i18n` object into props, you need to use [`useLingui`](/docs/ref/reac
 
 Let's say our app has been internationalized and we now want to send the messages to the translator.
 
-[react-intl](https://github.com/yahoo/react-intl) comes with the Babel plugin which extracts messages from individual files, but it's up to you to merge them into one file which you can send to translators.
+[react-intl](https://github.com/formatjs/formatjs) comes with the Babel plugin which extracts messages from individual files, but it's up to you to merge them into one file which you can send to translators.
 
-[LinguiJS](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/tutorials/cli.md) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
+[Lingui](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/tutorials/cli.md) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
 
 ## Compiling messages
 
-The biggest and slowest part of i18n libraries are message parsers and formatters. [LinguiJS](https://github.com/lingui/js-lingui) compiles messages from MessageFormat syntax into JS functions which only accept values for interpolation (e.g. components, variables, etc). This makes the final bundle smaller and makes the library faster. The compiled catalogs are also bundled with locale data like plurals, so it's not necessary to load them manually.
-
-## Disadvantages of LinguiJS
-
-[react-intl](https://github.com/yahoo/react-intl) has been around for some time and it's definitely more popular, more used and a lot of production sites are running it. The community is larger and it's much easier to find help on StackOverflow and other sites.
-
-[LinguiJS](https://github.com/lingui/js-lingui) is a very new library and the community is very small at the moment. It's not tested on many production sites. On the other hand, [LinguiJS](https://github.com/lingui/js-lingui)'s testing suite is very large and all examples are incorporated into the integration testing suite to make sure everything is working fine.
-
-Last but not least, [LinguiJS](https://github.com/lingui/js-lingui) is actively maintained. Bugs are fixed regularly and new features are constantly coming in. Work is currently progressing on webpack code splitting, so that only messages related to the code in the chunk are loaded.
+The biggest and slowest part of i18n libraries are message parsers and formatters. [Lingui](https://github.com/lingui/js-lingui) compiles messages from MessageFormat syntax into JS functions which only accept values for interpolation (e.g. components, variables, etc). This makes the final bundle smaller and makes the library faster. The compiled catalogs are also bundled with locale data like plurals, so it's not necessary to load them manually.
 
 ## Summary
 
--   both libraries use the same MessageFormat syntax
--   similar API (easy to port from one to the other)
+- both libraries use the same MessageFormat syntax
+- similar API (easy to port from one to the other)
 
-On top of that, [LinguiJS](https://github.com/lingui/js-lingui):
+On top of that, [Lingui](https://github.com/lingui/js-lingui):
 
--   supports rich-text messages
--   provides macros to simplify writing messages using MessageFormat
-    syntax
--   provides a CLI for extracting and compiling messages
--   is very small (<5kb gzipped) and fast
--   works also in vanilla JS (without React)
--   is actively maintained
+- supports rich-text messages
+- provides macros to simplify writing messages using MessageFormat syntax
+- provides a CLI for extracting and compiling messages
+- is very small (**3kb** gzipped), fast, flexible, and stable
+- works for vanilla JS, Next.js, Vue.js, Node.js etc.
+- is actively maintained
 
-On the other hand, [react-intl](https://github.com/yahoo/react-intl):
+On the other hand, [react-intl](https://github.com/formatjs/formatjs):
 
--   is the most popular and used i18n lib in React
--   is used in many production websites (stability)
--   has lots of resources available online
+- is the most popular and used i18n lib in React
+- is used in many production websites (stability)
+- has lots of resources available online
 
 ## Discussion
 
