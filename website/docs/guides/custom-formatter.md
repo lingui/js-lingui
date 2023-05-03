@@ -46,15 +46,21 @@ export type CatalogType = {
   [msgId: string]: MessageType
 }
 
-export type MessageType = {
+type CatalogExtra = Record<string, unknown>
+
+export type MessageType<Extra = CatalogExtra> = {
   message?: string
   origin?: MessageOrigin[]
   comments?: string[]
-  extractedComments?: string[]
   obsolete?: boolean
-  flags?: string[]
   context?: string
   translation?: string
+
+  /**
+   * the generic field where
+   * formatters can store additional data
+   */
+  extra?: Extra
 }
 ```
 

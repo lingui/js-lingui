@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/lingui/js-lingui/compare/v3.17.2...v4.0.0) (2023-04-xx)
+
+### Features
+
+- Hash-based message ID + Context ([#1440](https://github.com/lingui/js-lingui/issues/1440))
+- [Custom Formatters](https://lingui.dev/guides/custom-formatter)
+- [Custom Extractors](https://lingui.dev/guides/custom-extractor)
+- [Message Extraction guide, experimental dependency tree crawling](https://lingui.dev/guides/message-extraction)
+- [Vue.js Extractor](https://lingui.dev/tutorials/extractor-vue)
+- **macro**: support JSX macro inside conditional expressions ([#1436](https://github.com/lingui/js-lingui/issues/1436))
+- **macro**: support renamed identifiers in macro ([#1463](https://github.com/lingui/js-lingui/issues/1463))
+- **extractor**: (*Experimental*): Deps extractor ([#1469](https://github.com/lingui/js-lingui/issues/1469))
+- **core** (*Experimental*): add new core API for Node/JS usage without macros ([#1564](https://github.com/lingui/js-lingui/issues/1564))
+- **core**: support extracting from all forms of `i18n._` / `i18n.t` calls ([#1586](https://github.com/lingui/js-lingui/issues/1586))
+- **extractor**: add new package with vue extractor ([#1578](https://github.com/lingui/js-lingui/issues/1578))
+- **extractor**: support TS experimental decorators ([#1517](https://github.com/lingui/js-lingui/issues/1517))
+- **webpack-loader**: support JSON catalogs ([#1525](https://github.com/lingui/js-lingui/issues/1525))
+- **formats**: extract formats into separate packages ([#1536](https://github.com/lingui/js-lingui/issues/1536))
+- **macro**: support tagged templates in `defineMessage` + short alias ([#1495](https://github.com/lingui/js-lingui/issues/1495))
+- **conf**: clarify the order by `messageId` and support order by `message` ([#1515](https://github.com/lingui/js-lingui/issues/1515))
+- **extractor**: allow `i18._(foo.bar)` without warning ([#1492](https://github.com/lingui/js-lingui/issues/1492))
+- **core**: add `i18n.setCatalogAndActivate` for easier nextjs integration ([#1541](https://github.com/lingui/js-lingui/issues/1541))
+- **macro**: allow passing any expression as custom i18n instance ([#1475](https://github.com/lingui/js-lingui/issues/1475))
+- **extractor**: respect sourcemaps ([#1459](https://github.com/lingui/js-lingui/issues/1459))
+- **examples**: update examples (_nextjs-babel_, _nextjs-swc_, _js_, _create-react-app_) ([#1550](https://github.com/lingui/js-lingui/issues/1550))
+- **examples**: add _vite-react-babel_ example ([#1558](https://github.com/lingui/js-lingui/issues/1558))
+
+### Fixes and refactoring
+
+- always honor `process.env.LINGUI_CONFIG` ([#1447](https://github.com/lingui/js-lingui/issues/1447))
+- **core**: use `Intl.PluralRules` instead of `i18n.loadLocaleData` ([#1486](https://github.com/lingui/js-lingui/issues/1486))
+- **core**: do not ignore empty plural values ([#1504](https://github.com/lingui/js-lingui/issues/1504))
+- **macro**: expression only choices / select options ([#1523](https://github.com/lingui/js-lingui/issues/1523))
+- **macro**: mark `other` as required for `ChoiceOptions` ([#1527](https://github.com/lingui/js-lingui/issues/1527))
+- **react**: remove deprecated `defaultProps` from Trans component ([#1494](https://github.com/lingui/js-lingui/issues/1494))
+- **cli**: exclude pseudo locale during sync ([#1455](https://github.com/lingui/js-lingui/issues/1455))
+- **react**: do not remount children of `I18nProvider` ([#1501](https://github.com/lingui/js-lingui/issues/1501))
+- **react**: support array of react components in values ([#1593](https://github.com/lingui/js-lingui/issues/1593))
+- **build**: migrate to unbuild ([#1545](https://github.com/lingui/js-lingui/issues/1545))
+
+### Breaking Changes
+
+- **extractor/babel**: non-fragile babel extractor options ([#1367](https://github.com/lingui/js-lingui/issues/1367))
+- **extractor**: don't use intermediate catalogs ([#1358](https://github.com/lingui/js-lingui/issues/1358))
+- **macro**: Trans inside Plural has leading whitespace ([#1437](https://github.com/lingui/js-lingui/issues/1437))
+- **react**: remove `withI18n` ([#1503](https://github.com/lingui/js-lingui/issues/1503))
+- **macro**: remove `arg` macro ([#1581](https://github.com/lingui/js-lingui/issues/1581))
+- delete Snowpack plugin ([#1532](https://github.com/lingui/js-lingui/issues/1532))
+
+### Links
+
+- [Migration Guide](https://lingui.dev/releases/migration-4)
+- Full changelog: [v3.17.2...v4.0.0](https://github.com/lingui/js-lingui/compare/v3.17.2...v4.0.0)
+
 ## [3.17.2](https://github.com/lingui/js-lingui/compare/v3.17.1...v3.17.2) (2023-02-24)
 
 

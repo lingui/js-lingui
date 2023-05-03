@@ -5,7 +5,7 @@ If your project is not working well with Lingui's Extractor, you can write your 
 That might be the case if you use some experimental features (stage0 - stage2) or frameworks with custom syntax such as Vue.js or Svelte.
 
 ```ts title="./my-custom-extractor.ts"
-import babel from "@lingui/cli/api/extractors/babel"
+import { extractor as defaultExtractor } from "@lingui/cli/api"
 
 export const extractor: ExtractorType = {
   match(filename: string) {
@@ -17,7 +17,7 @@ export const extractor: ExtractorType = {
 
     // you can acess lingui config from using `ctx.linguiConfig`
     // reuse extractor from cli
-    return babel.extract(filename, code, onMessageExtracted, {sourcemaps, ...ctx})
+    return defaultExtractor.extract(filename, code, onMessageExtracted, {sourcemaps, ...ctx})
   }
 }
 ```

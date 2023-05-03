@@ -91,14 +91,23 @@ function macro({ references, state, babel, config }: MacroParams) {
       stripNonEssentialProps,
       nameMap,
     })
-    if (macro.replacePath(path)) needsI18nImport = true
+    try {
+      if (macro.replacePath(path)) needsI18nImport = true
+    } catch (e) {
+      reportUnsupportedSyntax(path, e as Error)
+    }
   })
 
   const jsxNodesArray = Array.from(jsxNodes)
 
   jsxNodesArray.filter(isRootPath(jsxNodesArray)).forEach((path) => {
     const macro = new MacroJSX(babel, { stripNonEssentialProps, nameMap })
-    macro.replacePath(path)
+
+    try {
+      macro.replacePath(path)
+    } catch (e) {
+      reportUnsupportedSyntax(path, e as Error)
+    }
   })
 
   if (needsI18nImport) {
@@ -108,6 +117,15 @@ function macro({ references, state, babel, config }: MacroParams) {
   if (jsxNodes.size) {
     addImport(babel, state, TransImportModule, TransImportName)
   }
+}
+
+function reportUnsupportedSyntax(path: NodePath, e: Error) {
+  throw path.buildCodeFrameError(
+    `Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros. 
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+ 
+ Error: ${e.message}`
+  )
 }
 
 function addImport(

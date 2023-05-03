@@ -391,13 +391,14 @@ const cases: TestCase[] = [
     production: true,
     useTypescriptPreset: true,
     input: `
-        import { withI18nProps } from '@lingui/react'
+        import type { withI18nProps } from '@lingui/react'
         import { Trans } from '@lingui/macro';
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
-        import { withI18nProps, Trans } from "@lingui/react";
+        import { Trans } from "@lingui/react";
         <Trans id="msg.hello" />;
+        export {};
       `,
   },
   {
@@ -551,6 +552,21 @@ const cases: TestCase[] = [
     expected: `
         import { Trans } from "@lingui/react";
         <Trans id={"<stripped>"} message={"&"} />;
+      `,
+  },
+  {
+    name: "Should not process non JSXElement nodes",
+    useTypescriptPreset: true,
+    stripId: true,
+    input: `
+        import { Trans } from "@lingui/macro";
+        type X = typeof Trans;
+        const cmp = <Trans>Hello</Trans>
+      `,
+    expected: `
+        import { Trans } from "@lingui/react";
+        const cmp = <Trans id={"<stripped>"} message={"Hello"} />;
+        export {};
       `,
   },
 ]

@@ -1,5 +1,5 @@
 import { parse, compileTemplate, SFCBlock } from "@vue/compiler-sfc"
-import babel from "@lingui/cli/api/extractors/babel"
+import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
 
 export const vueExtractor: ExtractorType = {
@@ -18,14 +18,20 @@ export const vueExtractor: ExtractorType = {
       ignoreEmpty: true,
     })
 
-    const compiledTemplate = compileTemplate({
-      source: descriptor.template.content,
-      filename,
-      inMap: descriptor.template.map,
-      id: filename,
-    })
-
     const isTsBlock = (block: SFCBlock) => block?.lang === "ts"
+
+    const compiledTemplate =
+      descriptor.template &&
+      compileTemplate({
+        source: descriptor.template.content,
+        filename,
+        inMap: descriptor.template.map,
+        id: filename,
+        compilerOptions: {
+          isTS:
+            isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
+        },
+      })
 
     const targets = [
       [
@@ -49,7 +55,7 @@ export const vueExtractor: ExtractorType = {
       targets
         .filter(([source]) => Boolean(source))
         .map(([source, map, isTs]) =>
-          babel.extract(
+          extractor.extract(
             filename + (isTs ? ".ts" : ""),
             source,
             onMessageExtracted,

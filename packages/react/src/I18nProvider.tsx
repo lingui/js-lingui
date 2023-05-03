@@ -74,7 +74,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
       updateContext()
     }
     return unsubscribe
-  }, [makeContext])
+  }, [i18n, makeContext])
 
   if (!latestKnownLocale.current) {
     process.env.NODE_ENV === "development" &&

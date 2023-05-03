@@ -15,14 +15,6 @@ module.exports = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: 'new_release',
-      content:
-        'The v4.0.0 Pre-release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=v4.0.0">discover its new capabilities!</a>',
-      backgroundColor: '#ef4242',
-      textColor: '#FFFFFF',
-      isCloseable: true,
-    },
     navbar: {
       title: '',
       logo: {
@@ -35,6 +27,11 @@ module.exports = {
         {
           to: '/introduction',
           label: 'Docs',
+          position: 'left',
+        },
+        {
+          to: '/blog',
+          label: 'Blog',
           position: 'left',
         },
         {
@@ -92,6 +89,10 @@ module.exports = {
           title: 'More',
           items: [
             {
+              label: 'Blog',
+              to: '/blog',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/lingui/js-lingui',
             },
@@ -129,6 +130,10 @@ module.exports = {
           routeBasePath: '/',
           editUrl: 'https://github.com/lingui/js-lingui/tree/main/website',
           remarkPlugins: [[require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]],
+        },
+        blog: {
+          showReadingTime: true,
+          editUrl: 'https://github.com/lingui/js-lingui/tree/main/website/',
         },
         sitemap: {
           changefreq: 'weekly',

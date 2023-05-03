@@ -45,10 +45,29 @@ import { i18n } from "./custom-i18n-config"
 
 ### Class `i18n()` {#i18n}
 
-### `i18n.load(catalogs: Catalogs)` {#i18n.load(catalogs)}
-### `i18n.load(locale: string, catalog: Catalog)` {#i18n.load}
+### `i18n.loadAndActivate(options)` {#i18n.loadAndActivate}
 
-Load catalog for given locale or load multiple catalogs at once.
+`options` is an object with following properties:
+
+- `locale`: initial active locale
+- `locales`: list of alternative locales (BCP 47 language tags) which are used for number and date formatting
+- `messages`: **compiled** message catalog
+
+Sets (overwrites) the catalog for given locale and activates the locale.
+
+```ts
+import { i18n } from "@lingui/core"
+
+const { messages } = await import(`${locale}/messages.js`)
+i18n.loadAndActivate({ locale, messages })
+```
+
+### `i18n.load(allMessages: AllMessages)` {#i18n.load(allMessages)}
+### `i18n.load(locale: string, messages: Messages)` {#i18n.load}
+
+Load messages for given locale or load multiple message catalogs at once.
+
+When some messages for the provided locale are already loaded, calling `i18n.load` will merge the new messages with the existing ones using `Object.assign`.
 
 ```ts
 import { i18n } from "@lingui/core"
@@ -101,7 +120,7 @@ i18n.load('en', messagesEn)
 
 ### `i18n.activate(locale[, locales])` {#i18n.activate}
 
-Activate a locale and locales. `_` from now on will return messages in given locale.
+Activate a locale and locales. From now on, calling `i18n._` will return messages in given locale.
 
 ```ts
 import { i18n } from "@lingui/core"
@@ -111,23 +130,6 @@ i18n._("Hello")           // Return "Hello" in English
 
 i18n.activate("cs")
 i18n._("Hello")           // Return "Hello" in Czech
-```
-
-### `i18n.loadAndActivate(locales: Locale | Locales, messages: Messages, notify = true)` {#i18n.loadAndActivate}
-
-Load catalog and activate given locale. This method is `i18n.load()` + `i18n.activate()` in one pass.
-
-`locales` Could be one locale or array of locales. If array of locales is passed they would be used as fallback locales for date and number formatting.
-
-`messages` **compiled** message catalog.
-
-`notify` Should emit `change` event for all subscribers. This is useful for integration with frameworks as NextJS to avoid race-conditions during initialization.
-
-```ts
-import { i18n } from "@lingui/core"
-
-const { messages } = await import(`${locale}/messages.js`)
-i18n.loadAndActivate(locale, messages)
 ```
 
 ### `i18n._(messageId[, values[, options]])` {#i18n._}
@@ -299,7 +301,7 @@ const i18n = setupI18n({
 
 // This is a shortcut for:
 // const i18n = setupI18n()
-// i18n.activate("en", ["en-UK", "ar-AS"])
+// i18n.activate("ar", ["en-UK", "ar-AS"])
 ```
 
 ### `options.messages`
@@ -347,7 +349,7 @@ i18n._('missing translation') // raises alert
 
 ### Catalogs
 
-Type of `catalogs` parameters in [`I18n.load`](#i18n.load(catalogs)) method:
+Type of `catalogs` parameters in [`I18n.load`](#i18n.load) method:
 
 ```ts
 type Catalogs = {[locale: string]: Catalog}
