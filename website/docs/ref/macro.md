@@ -609,7 +609,9 @@ const message = t({
 
 ### `defineMessage` alias: `msg` {#definemessage}
 
-`defineMessage` macro allows to define message for later use. It has the same signature as `t` macro, but unlike it, it doesn't wrap generated *MessageDescription* into [`i18n._`](/docs/ref/core.md#i18n._) call.
+`defineMessage` macro allows to define message for later use. It has the same signature as `t` and returns a `MessageDescriptor` that you can pass to `i18n._` to get a translated string at any time later.
+
+In other words, `t` returns a translated string at the time when it's called, while `msg` returns a ``MessageDescriptor` that can produce translated strings later.
 
 ```ts
 import { defineMessage } from "@lingui/macro"
