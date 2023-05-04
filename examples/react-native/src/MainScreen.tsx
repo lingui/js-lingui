@@ -71,7 +71,6 @@ const Inbox = ({
     <View style={styles.container}>
       <View style={styles.container2}>
         <Trans render={Heading}>Message Inbox</Trans>
-        {/*<MessageInboxWithT />*/}
 
         <Button onPress={markAsRead} title={t`Mark messages as read`} />
         <Button onPress={addMessage} title={t`Add a message to your inbox`} />
