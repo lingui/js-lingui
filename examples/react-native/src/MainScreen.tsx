@@ -120,14 +120,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-// const MessageInboxWithT = React.memo(() => {
-//   const { i18n } = useLingui();
-//
-//   return (
-//     <>
-//       <Text>{t(i18n)`Message Inbox`}</Text>
-//       <Text>{i18n._(t`Message Inbox`)}</Text>
-//     </>
-//   );
-// });
