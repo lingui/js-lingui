@@ -5,7 +5,7 @@ In this tutorial, we'll learn how to add internationalization to an existing app
 The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
 :::tip Hint
-If you're looking for a working solution, check out the [sources available here](https://github.com/vonovak/js-lingui-demo) and the [demo app on Expo](https://exp.host/@vonovak/js-lingui-demo). It showcases more functionality than this guide.
+If you're looking for a working solution, check out the [sources available here](https://github.com/lingui/js-lingui/tree/main/examples/react-native) and the [demo app on Expo](https://exp.host/@vonovak/js-lingui-demo). It showcases more functionality than this guide.
 :::
 
 :::caution Note
@@ -25,7 +25,7 @@ Follow the polyfill installation instructions before proceeding further.
 
 ## Metro bundler support
 
-Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/vonovak/js-lingui-demo/blob/main/metro.config.js).
+Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions before 0.76.2 (before React Native 0.72) do not support this feature. You need to make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/lingui/js-lingui/tree/main/examples/react-native/metro.config.js).
 
 ## Example component
 
@@ -177,7 +177,7 @@ const showDeleteConfirmation = () => {
 
 ## Changing the active locale
 
-The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/vonovak/js-lingui-demo/blob/7b1e54e9ee90a5ad87637564507144edea08dec4/src/MainScreen.tsx#L29).
+The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
 
 ## Choosing the default locale
 
