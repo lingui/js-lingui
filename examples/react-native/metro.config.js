@@ -8,6 +8,7 @@ module.exports = (() => {
 
   config.resolver = {
     ...resolver,
+    // NOTE: in future, this will be enabled by default
     unstable_enablePackageExports: true,
   };
 
