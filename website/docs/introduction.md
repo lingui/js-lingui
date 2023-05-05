@@ -44,7 +44,7 @@ Join us on [GitHub Discussions](https://github.com/lingui/js-lingui/discussions)
 
 ### Compatible with react-intl
 
-Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate existing project.
+Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate an existing project.
 
 ## Quick overview
 

@@ -19,13 +19,17 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 
 ## Polyfilling Intl apis
 
-React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase your bundle size.
+React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase your bundle size. At the same time, modern i18n libraries rely on its presence.
 
 Follow the polyfill installation instructions before proceeding further.
 
 ## Metro bundler support
 
-Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions < 0.76.2 (before React Native 0.72) do not support this feature. There are two ways to make Metro understand the exports. With the first approach, make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/lingui/js-lingui/tree/main/examples/react-native/metro.config.js). Note that future versions of metro will have this option enabled by default so there will be no need to configure this. Alternatively, you can [configure the resolver](https://github.com/lingui/js-lingui/issues/1633#issuecomment-1532243227).
+Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions < 0.76.2 (before React Native 0.72) do not support this feature.
+
+There are two ways to make Metro understand the exports. With the first approach, make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/lingui/js-lingui/tree/main/examples/react-native/metro.config.js). Note that future versions of metro will have this option enabled by default so there will be no need to configure this.
+
+Alternatively, you can [configure the resolver](https://github.com/lingui/js-lingui/issues/1633#issuecomment-1532243227).
 
 ## Example component
 
