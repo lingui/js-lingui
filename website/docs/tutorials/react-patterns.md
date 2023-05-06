@@ -283,7 +283,7 @@ export function Welcome() {
   const buggyWelcome = useMemo(() => {
     return i18n._(welcomeMessage);
   }, []);
-  
+
   return <div>{buggyWelcome}</div>;
 }
 ```

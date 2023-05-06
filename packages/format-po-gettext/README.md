@@ -12,7 +12,7 @@
 [documentation][documentation] for all information, tutorials and examples.
 
 > **Warning**
-> This formatter is made for compatibility with TMS, which does not support ICU expressions in PO files.
+> This formatter is made for compatibility with translation management systems, which do not support ICU expressions in PO files.
 > 
 > It does not support all features of LinguiJS and should be carefully considered over other formats.
 >
