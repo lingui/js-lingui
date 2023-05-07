@@ -761,17 +761,21 @@ import { Trans } from "@lingui/react";
 <Trans id="message.attachment_saved" message="Attachment {name} saved." />;
 ```
 
-#### `comment`
-
-Comment for translators to give them additional information about the message. It's removed from the production code.
-
 #### `render`
 
 Render prop function used to render translation. This prop is directly passed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md). See [rendering of translations](/docs/ref/react.md#rendering-translations) for more info.
 
+#### `comment`
+
+Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
+
+It's removed from the production code.
+
 #### `context` {#context-prop}
 
-Contextual information for the message. Allows to extract the same messages with different IDs. See [Context](#context) for more detail.
+Contextual information for the message. Allows to extract the same messages with different IDs. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
+
+It's removed from the production code. See [Context](#context) for more detail.
 
 ```jsx
 import { Trans } from "@lingui/macro";
