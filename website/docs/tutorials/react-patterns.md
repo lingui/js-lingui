@@ -60,14 +60,9 @@ export default function ImageWithCaption() {
 
 #### Providing context for a message
 
-When using generated IDs, the same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entry.
+Use `context` to add more contextual information for translators. It also influences the ID generation: the same text elements with different contexts are extracted with different IDs.
 
-- correctness as in "you are right"
-- direction as in "turn right"
-
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
-
-TODO conditions?
+See [Context](/ref/macro#context) for more details.
 
 ```jsx
 import { Trans } from "@lingui/macro";

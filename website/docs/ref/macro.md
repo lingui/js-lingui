@@ -773,9 +773,9 @@ It's removed from the production code.
 
 #### `context` {#context-prop}
 
-Contextual information for the message. Allows to extract the same messages with different IDs. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
+Contextual information for translators. Similar to [`comment`](#comment) but also allows to extract the same messages with different IDs. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
 
-It's removed from the production code. See [Context](#context) for more detail.
+It's removed from the production code. See [Context](#context) for more details.
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -996,11 +996,11 @@ Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or 
 
 ## Context
 
-The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+By default, when using generated IDs, the same text elements are extracted with the same ID, and then translated once. This, however, may not always be desired because the same text can have different meaning and translation: For example, consider the word "right" and its two possible meanings:
 
 - correct as in "you are right"
 - direction as in "turn right"
 
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+To distinguish these two cases, you can add `context` to messages. The same text elements with different contexts are extracted with different IDs. Then, they can be translated differently and merged back into the application as different translation entries.
 
-Context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve.
+Regardless of whether you use generated IDs or not, adding context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve.
