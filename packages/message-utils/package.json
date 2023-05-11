@@ -32,7 +32,9 @@
   },
   "files": [
     "README.md",
-    "dist/"
+    "dist/",
+    "compileMessage.js",
+    "generateMessageId.js"
   ],
   "dependencies": {
     "@messageformat/parser": "^5.0.0"
