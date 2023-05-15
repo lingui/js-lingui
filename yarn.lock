@@ -2845,7 +2845,7 @@ __metadata:
     tsd: ^0.26.1
     unbuild: ^1.1.2
   peerDependencies:
-    "@lingui/react": 4.0.0
+    "@lingui/react": ^4.0.0
     babel-plugin-macros: 2 || 3
   languageName: unknown
   linkType: soft
