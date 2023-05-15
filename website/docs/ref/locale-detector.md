@@ -31,7 +31,7 @@ Practically all detectors accepts a custom document, location, or window object 
 
 ### Usage with `detect`
 
-``` jsx
+```jsx
 import { detect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
 
 // can be a function with custom logic or just a string, `detect` method will handle it
@@ -49,7 +49,7 @@ console.log(result) // "en"
 
 ### Usage with `multipleDetect`
 
-``` jsx
+```jsx
 import { multipleDetect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
 
 // can be a function with custom logic or just a string, `detect` method will handle it

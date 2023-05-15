@@ -103,13 +103,13 @@ From now on, *internationalization* will be shortened to a common numeronym *i18
 
 Let's start with the basics - static messages. These messages don't have any variables, HTML or components inside. Just some text:
 
-``` jsx
+```jsx
 <h1>Message Inbox</h1>
 ```
 
 All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.md#trans) macro:
 
-``` jsx
+```jsx
 import { Trans } from '@lingui/macro'
 
 <h1><Trans>Message Inbox</Trans></h1>
@@ -123,7 +123,7 @@ In general, macros are executed at compile time and they transform source code i
 
 Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
-``` jsx
+```jsx
 import { Trans } from '@lingui/macro'
 
 <Trans>Hello {name}</Trans>
@@ -131,7 +131,7 @@ import { Trans } from '@lingui/macro'
 
 And this is how the code is transformed:
 
-``` jsx
+```jsx
 import { Trans } from '@lingui/react'
 
 <Trans id="Hello {name}" values={{ name }} />
@@ -312,7 +312,7 @@ Although it looks complex, there's really nothing special here. Just wrap the co
 
 Spooky, right? Let's see how this message actually looks in the message catalog. Run [`extract`](/docs/ref/cli.md#extract) command and take a look at the message:
 
-``` jsx
+```jsx
 See all <0>unread messages</0> or <1>mark them</1> as read.
 ```
 
@@ -635,7 +635,7 @@ This will format the date using the conventional format for the active language.
 
 After all modifications, the final component with i18n looks like this:
 
-``` jsx title="src/Inbox.js"
+```jsx title="src/Inbox.js"
 import React from 'react'
 import { Trans, Plural } from '@lingui/macro'
 import { useLingui } from '@lingui/react'

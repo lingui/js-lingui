@@ -26,7 +26,7 @@ This setup guide is for any project which uses React.
 
 2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
 
-    ``` json
+    ```json
     {
       "plugins": [
         "macros"

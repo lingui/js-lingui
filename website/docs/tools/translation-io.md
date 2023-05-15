@@ -52,7 +52,7 @@ Sometimes you have no choice but to confront your translators with HTML or inter
 
 Lingui allows to write plurals using the [ICU MessageFormat](/docs/ref/message-format.md) syntax that looks like this:
 
-``` none
+```icu-message-format
 {count, plural, =0 {No messages}
                 one {# message}
                 other {# messages}}
