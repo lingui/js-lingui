@@ -22,7 +22,7 @@ import { i18n } from "@lingui/core"
  */
 async function activate(locale: string) {
   const { messages } = await import(`${locale}/messages.js`)
-  i18n.loadAndActivate(locale, messages)
+  i18n.loadAndActivate({ locale, messages })
 }
 
 activate("cs")

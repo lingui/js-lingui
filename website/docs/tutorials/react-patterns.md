@@ -58,13 +58,11 @@ export default function ImageWithCaption() {
 }
 ```
 
-#### Providing a context for a message
-The same text elements with different contexts are extracted with different IDs. For example, if the word "right" uses the following two definitions in two different locations, the word is translated differently and merged back into the application as different translation entries.
+#### Providing context for a message
 
-- correct as in "you are right"
-- direction as in "turn right"
+Use `context` to add more contextual information for translators. It also influences the ID generation: the same text elements with different contexts are extracted with different IDs.
 
-If the same text elements meet the following conditions, the text elements are extracted only once and use the same ID.
+See [Context](/ref/macro#context) for more details.
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -185,7 +183,7 @@ export default function ColorList() {
 }
 ```
 
-Or to render the message descriptor as a string-only translation, just pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
+Or to render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
 
 ```jsx
 import { i18n } from "@lingui/core"
@@ -245,7 +243,7 @@ export function HappySad(props) {
 
 Sometimes you need to pick between different messages to display, depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message representing the current status.
 
-A simple way to do this, is to make an object that maps the possible values of "status" to message descriptors (tagged with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro), and render them as needed with lazy translation:
+A simple way to do this, is to make an object that maps the possible values of "status" to message descriptors (tagged with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro), and render them as needed with deferred translation:
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -261,5 +259,26 @@ const statusMessages = {
 export default function StatusDisplay({ statusCode }) {
    const { i18n } = useLingui();
    return <div>{i18n._(statusMessages[statusCode])}</div>
+}
+```
+
+## Memoization pitfall
+
+In the following contrived example, the welcome message will not be updated when locale changes.
+
+This is expected behavior, because the `useMemo` has no dependencies. In order for this to work as expected, the `useMemo` needs to depend on an `i18n` instance. Specifically, it needs to depend on `i18n` from the `useLingui` hook, as the reference to the `i18n` object from `@lingui/core` does not change throughout your app's lifetime.
+
+```jsx
+import { msg } from "@lingui/macro";
+import { i18n } from "@lingui/core"
+
+const welcomeMessage = msg`Open`;
+
+export function Welcome() {
+  const buggyWelcome = useMemo(() => {
+    return i18n._(welcomeMessage);
+  }, []);
+
+  return <div>{buggyWelcome}</div>;
 }
 ```

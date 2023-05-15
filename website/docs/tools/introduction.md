@@ -1,5 +1,7 @@
 # Introduction
 
+This guide covers tools that will help managing of your localization process. You may come across abbreviations TMS (translation management system) or CAT (computer-aided translation) that are sometimes used to describe these tools.
+
 ## Why use Sync & Collaboration Tools?
 
 The easiest way to translate your application is to translate the `.po` files directly in a text editor, or with a tool like [Poedit](https://poedit.net).
