@@ -80,11 +80,16 @@ export default async function command(
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
-    await import(`./services/${moduleName}`)
-      .then((module) => module.default(config, options))
-      .catch((err) =>
-        console.error(`Can't load service module ${moduleName}`, err)
-      )
+    try {
+      const module = require(`./services/${moduleName}`)
+
+      await module
+        .default(config, options)
+        .then(console.log)
+        .catch(console.error)
+    } catch (err) {
+      console.error(`Can't load service module ${moduleName}`, err)
+    }
   }
 
   return commandSuccess

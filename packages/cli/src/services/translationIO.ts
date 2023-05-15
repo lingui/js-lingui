@@ -41,7 +41,7 @@ const getTargetLocales = (config: LinguiConfigNormalized) => {
 }
 
 // Main sync method, call "Init" or "Sync" depending on the project context
-export default function syncProcess(
+export default async function syncProcess(
   config: LinguiConfigNormalized,
   options: CliExtractOptions
 ) {
@@ -52,29 +52,31 @@ export default function syncProcess(
     process.exit(1)
   }
 
-  const successCallback = (project: TranslationIoProject) => {
-    console.log(
-      `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
-    )
-  }
-
-  const failCallback = (errors: string[]) => {
-    console.error(
-      `\n----------\nSynchronization with Translation.io failed: ${errors.join(
-        ", "
-      )}\n----------`
-    )
-  }
-
-  init(config, options, successCallback, (errors) => {
-    if (
-      errors.length &&
-      errors[0] === "This project has already been initialized."
-    ) {
-      sync(config, options, successCallback, failCallback)
-    } else {
-      failCallback(errors)
+  return await new Promise<string>((resolve, reject) => {
+    const successCallback = (project: TranslationIoProject) => {
+      resolve(
+        `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
+      )
     }
+
+    const failCallback = (errors: string[]) => {
+      reject(
+        `\n----------\nSynchronization with Translation.io failed: ${errors.join(
+          ", "
+        )}\n----------`
+      )
+    }
+
+    init(config, options, successCallback, (errors) => {
+      if (
+        errors.length &&
+        errors[0] === "This project has already been initialized."
+      ) {
+        sync(config, options, successCallback, failCallback)
+      } else {
+        failCallback(errors)
+      }
+    })
   })
 }
 
