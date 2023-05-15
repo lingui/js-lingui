@@ -17,7 +17,7 @@ export type TransRenderCallbackOrComponent =
       render?: (props: TransRenderProps) => React.ReactElement<any, any> | null
     }
   | {
-      component?: React.ComponentType<TransRenderProps>
+      component?: React.ComponentType<TransRenderProps> | null
       render?: undefined
     }
 
@@ -116,11 +116,10 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   }
 
   // `component` prop has a higher precedence over `defaultComponent`
-  const Component = component || FallbackComponent
+  const Component: React.ComponentType<TransRenderProps> =
+    component || FallbackComponent
 
-  const RenderedComponent =
-    defaultComponent && !component ? defaultComponent : Component
-  return React.createElement(RenderedComponent, i18nProps, translation)
+  return React.createElement(Component, i18nProps, translation)
 }
 
 const RenderFragment = ({ children }: TransRenderProps) => {

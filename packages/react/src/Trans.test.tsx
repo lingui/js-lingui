@@ -1,6 +1,11 @@
 import * as React from "react"
 import { render } from "@testing-library/react"
-import { Trans, I18nProvider, TransRenderProps } from "@lingui/react"
+import {
+  Trans,
+  I18nProvider,
+  TransRenderProps,
+  TransRenderCallbackOrComponent,
+} from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 
@@ -32,48 +37,90 @@ describe("Trans component", () => {
    * Tests
    */
 
-  it("should throw error without i18n context", () => {
-    const originalConsole = console.error
-    console.error = jest.fn()
-
-    expect(() => render(<Trans id="unknown" />)).toThrow()
-
-    console.error = originalConsole
-  })
-
-  it("should throw a console.error about deprecated usage of string built-in", () => {
-    const originalConsole = console.error
-    console.error = jest.fn()
-
-    // @ts-expect-error testing the error
-    renderWithI18n(<Trans render="span" id="Some text" />)
-    expect(console.error).toHaveBeenCalled()
-
-    // @ts-expect-error testing the error
-    renderWithI18n(<Trans render="span" id="Some text" />)
-    expect(console.error).toHaveBeenCalledTimes(2)
-    console.error = originalConsole
-  })
-
-  it("should log a console.error if using `render` and `component` props at the same time", () => {
-    const RenderChildrenInSpan = ({ children }: TransRenderProps) => (
-      <span>{children}</span>
+  describe("should log console.error", () => {
+    const renderProp = ({ children }: TransRenderProps) => (
+      <span>render_{children}</span>
     )
-
-    mockConsole((console) => {
-      renderWithI18n(
-        // @ts-expect-error TS won't allow passing both `render` and `component` props
-        <Trans
-          render={RenderChildrenInSpan}
-          component={RenderChildrenInSpan}
-          id="Some text"
-        />
-      )
-      expect(console.error).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "You can't use both `component` and `render` prop at the same time."
+    const component = ({ children }: TransRenderProps) => (
+      <span>component_{children}</span>
+    )
+    test.each<{
+      description: string
+      props: any
+      expectedLog: string
+      expectedTextContent: string
+    }>([
+      {
+        description:
+          "both `render` and `component` are used, and return `render`",
+        props: {
+          render: renderProp,
+          component,
+        },
+        expectedLog:
+          "You can't use both `component` and `render` prop at the same time.",
+        expectedTextContent: "render_Some text",
+      },
+      {
+        description:
+          "`render` is not of type function, and return `defaultComponent`",
+        props: {
+          render: "invalid",
+        },
+        expectedLog:
+          "Invalid value supplied to prop `render`. It must be a function, provided invalid",
+        expectedTextContent: "default_Some text",
+      },
+      {
+        description: "`component` is not of type function, and return ",
+        props: {
+          component: "invalid",
+        },
+        expectedLog:
+          "Invalid value supplied to prop `component`. It must be a React component, provided invalid",
+        expectedTextContent: "default_Some text",
+      },
+    ])("when $description", ({ expectedLog, props, expectedTextContent }) => {
+      mockConsole((console) => {
+        const { container } = render(
+          <I18nProvider
+            i18n={i18n}
+            defaultComponent={({ translation }) => {
+              return <>default_{translation}</>
+            }}
+          >
+            <Trans {...props} id="Some text" />
+          </I18nProvider>
         )
-      )
+
+        expect(console.error).toHaveBeenCalledWith(
+          expect.stringContaining(expectedLog)
+        )
+        expect(container.textContent).toBe(expectedTextContent)
+      })
+    })
+
+    it("when there's no i18n context", () => {
+      const originalConsole = console.error
+      console.error = jest.fn()
+
+      expect(() => render(<Trans id="unknown" />)).toThrow()
+
+      console.error = originalConsole
+    })
+
+    it("when deprecated string built-ins are used", () => {
+      const originalConsole = console.error
+      console.error = jest.fn()
+
+      // @ts-expect-error testing the error
+      renderWithI18n(<Trans render="span" id="Some text" />)
+      expect(console.error).toHaveBeenCalled()
+
+      // @ts-expect-error testing the error
+      renderWithI18n(<Trans render="span" id="Some text" />)
+      expect(console.error).toHaveBeenCalledTimes(2)
+      console.error = originalConsole
     })
   })
 
@@ -260,33 +307,25 @@ describe("Trans component", () => {
       expect(span).toEqual(`<div>Some text</div>`)
     })
 
-    it("should ignore defaultComponent when render is null", () => {
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
-        return <div>{props.children}</div>
+    test.each<TransRenderCallbackOrComponent>([
+      { component: null },
+      { render: null },
+    ])(
+      "should ignore defaultComponent when `component` or `render` is null",
+      (props) => {
+        const ComponentFC: React.FunctionComponent<TransRenderProps> = (
+          props
+        ) => {
+          return <div>{props.children}</div>
+        }
+        const translation = render(
+          <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
+            <Trans id="Some text" {...props} />
+          </I18nProvider>
+        ).container.innerHTML
+        expect(translation).toEqual("Some text")
       }
-      const translation = render(
-        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
-          <Trans id="Some text" render={null} />
-        </I18nProvider>
-      ).container.innerHTML
-      expect(translation).toEqual("Some text")
-    })
-
-    it("should ignore defaultComponent when component is null", () => {
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
-        return <div>{props.children}</div>
-      }
-      const translation = render(
-        <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
-          <Trans id="Some text" component={null} />
-        </I18nProvider>
-      ).container.innerHTML
-      expect(translation).toEqual("Some text")
-    })
+    )
   })
 
   describe("component prop rendering", () => {

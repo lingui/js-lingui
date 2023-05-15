@@ -18,26 +18,35 @@ Default rendering component can be set using `defaultComponent` prop in [`I18nPr
 | Prop name   | Type                                      | Description                                    |
 |-------------| ----------------------------------------- |------------------------------------------------|
 | `className` | string                                    | Class name to be added to `<span>` element     |
-| `render`    | *Function(props) -> Element \| Component* | Custom wrapper rendered as function          |
-| `component` | Component, `null`                         | Custom wrapper component to render translation |
+| `render`    | Function(props) -> Element \| `null`   | Custom render callback to render translation        |
+| `component` | Component \| `null`                         | Custom component to render translation |
 
 `className` is used only for built-in components (when *render* is string).
 
-`Function(props)` props returns the translation, an id, and a message.
+When you use the `render` callback, it obtains an object of type `TransRenderProps` as an argument. If you use `component` prop, you will get the same object as props.
 
-`component` is rendered with the `translation` passed in as its child:
+`TransRenderProps` contains
 
-``` jsx
+- `translation`: the translated message
+- `children`: same as `translation` (for compatibility with React components that expect `children` prop)
+- `id`: the message id
+- `message`: the default message; you probably don't need this
+
+```ts
+type TransRenderProps = {
+  id: string
+  translation: React.ReactNode
+  children: React.ReactNode
+  message?: string | null
+}
+```
+
+```jsx
 import { Text } from "react-native";
 
 <Trans component={Text}>Link to docs</Trans>;
 // renders as <Text>Link to docs</Text>
-```
 
-To get more control over the rendering of translation, use instead the `render` prop with a render callback. Function passed to `render` will receive the translation value as a `translation` parameter:
-
-``` jsx
-// custom component
 <Trans render={({ translation }) => <Icon label={translation} />}>
    Sign in
 </Trans>;
@@ -46,7 +55,7 @@ To get more control over the rendering of translation, use instead the `render` 
 
 `render` and `component` also accept `null` value to render string without a wrapping component. This can be used to override custom `defaultComponent` config.
 
-``` jsx
+```jsx
 <Trans render={null}>Heading</Trans>;
 // renders as "Heading"
 
@@ -75,7 +84,7 @@ Additionally, it subscribes to change events emitted by the `i18n` object and re
 
 `defaultComponent` has the same meaning as `component` in other i18n components. [`Rendering of translations`](#rendering-translations) is explained at the beginning of this document.
 
-``` jsx
+```jsx
 import React from 'react';
 import { I18nProvider } from '@lingui/react';
 import { i18n } from '@lingui/core';
@@ -107,7 +116,7 @@ This hook allows access to the Lingui context. It returns an object with the sam
 
 Components that use `useLingui` hook will re-render when locale and / or catalogs change, ensuring that the translations are always up-to-date.
 
-``` jsx
+```jsx
 import React from "react"
 import { useLingui } from "@lingui/react"
 
@@ -134,7 +143,7 @@ This section is intended for reference purposes.
 
 Import [`Trans`](/docs/ref/macro.md#trans) macro instead of [`Trans`](#trans) component if you use macros:
 
-``` jsx
+```jsx
 import { Trans } from "@lingui/macro"
 
 // Trans from @lingui/react won't work in this case
@@ -146,7 +155,7 @@ import { Trans } from "@lingui/macro"
 
 It's also possible to use `Trans` component directly without macros. In that case, `id` identifies the message being translated. `values` and `components` are arguments and components used for formatting translation:
 
-``` jsx
+```jsx
 <Trans id="my.message" message="Hello World"/>
 
 <Trans
@@ -167,7 +176,7 @@ It's also possible to use `Trans` component directly without macros. In that cas
 
 If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason, you can render plurals using the plain Trans component like this:
 
-``` jsx
+```jsx
 import React from 'react';
 import { Trans } from '@lingui/react';
 
