@@ -76,6 +76,13 @@ export class Catalog {
       getTemplatePath(this.format.getTemplateExtension(), this.path)
   }
 
+  getFilename(locale: string): string {
+    return (
+      replacePlaceholders(this.path, { locale }) +
+      this.format.getCatalogExtension()
+    )
+  }
+
   async make(options: MakeOptions): Promise<AllCatalogsType | false> {
     const nextCatalog = await this.collect({ files: options.files })
     if (!nextCatalog) return false
@@ -176,9 +183,7 @@ export class Catalog {
     locale: string,
     messages: CatalogType
   ): Promise<[created: boolean, filename: string]> {
-    const filename =
-      replacePlaceholders(this.path, { locale }) +
-      this.format.getCatalogExtension()
+    const filename = this.getFilename(locale)
 
     const created = !fs.existsSync(filename)
 
@@ -211,11 +216,7 @@ export class Catalog {
   }
 
   async read(locale: string): Promise<CatalogType> {
-    const filename =
-      replacePlaceholders(this.path, { locale }) +
-      this.format.getCatalogExtension()
-
-    return await this.format.read(filename, locale)
+    return await this.format.read(this.getFilename(locale), locale)
   }
 
   async readAll(): Promise<AllCatalogsType> {
