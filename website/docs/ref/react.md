@@ -30,7 +30,7 @@ When you use the `render` callback, it obtains an object of type `TransRenderPro
 - `translation`: the translated message
 - `children`: same as `translation` (for compatibility with React components that expect `children` prop)
 - `id`: the message id
-- `message`: the default message; you probably don't need this
+- `message`: the compiled message; you probably don't need this
 
 ```ts
 type TransRenderProps = {

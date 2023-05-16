@@ -15,13 +15,13 @@ Example: `Attachment {name} saved`
 ### Plurals
 > Using language specific plural forms (`one`, `other`):
 
-``` icu-message-format
+```icu-message-format
 {count, plural, one {Message} other {Messages}}
 ```
 
 > Using exact matches (`=0`):
 
-``` icu-message-format
+```icu-message-format
 {count, plural, =0 {No messages}
                 one {# message}
                 other {# messages}}
@@ -29,7 +29,7 @@ Example: `Attachment {name} saved`
 
 > Offsetting plural form:
 
-``` icu-message-format
+```icu-message-format
 {count, plural, offset:1
                 =0 {Nobody read this message}
                 =1 {Only you read this message}
@@ -39,7 +39,7 @@ Example: `Attachment {name} saved`
 
 ### Select
 
-``` icu-message-format
+```icu-message-format
 {gender, select, male {He replied to your message}
                  female {She replied to your message}
                  other {They replied to your message}}
@@ -47,7 +47,7 @@ Example: `Attachment {name} saved`
 
 ### Ordinals
 
-``` icu-message-format
+```icu-message-format
 {count, selectOrdinal, one {#st message}
                        two {#nd message}
                        few {#rd message}

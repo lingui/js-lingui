@@ -45,13 +45,13 @@ i18n._({
 
 When we extract messages from source code using [`lingui-cli`](/docs/tutorials/cli.md), we get:
 
-``` icu-message-format
+```icu-message-format
 {numBooks, plural, one {# book} other {# books}}
 ```
 
 Now, we give it to our Czech translator, and they'll translate it as:
 
-``` icu-message-format
+```icu-message-format
 {numBooks, plural, one {# kniha} few {# knihy} many {# knihy} other {# knih}}
 ```
 
@@ -79,7 +79,7 @@ The important thing is that *we don't need to change our code to support languag
 
 3.  Message `{numBooks, plural, one {# book} other {# books}}` is translated to:
 
-    ``` icu-message-format
+    ```icu-message-format
     {numBooks, plural, one {# kniha} few {# knihy} many {# knihy} other {# knih}}
     ```
 

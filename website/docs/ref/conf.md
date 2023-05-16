@@ -116,7 +116,7 @@ locales
 }
 ```
 
-``` shell
+```shell
 components/
 ├── RegistrationForm/
 │   ├── locale/
@@ -143,7 +143,7 @@ components/
 }
 ```
 
-``` shell
+```shell
 .
 ├── locale/
 │   ├── en/

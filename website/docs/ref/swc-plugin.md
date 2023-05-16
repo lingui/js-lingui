@@ -16,7 +16,7 @@ npm install --save-dev @lingui/swc-plugin
 
 Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configuration/swcrc) file:
 
-``` json title=".swcrc"
+```json title=".swcrc"
 {
   "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {

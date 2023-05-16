@@ -12,7 +12,7 @@
 
 2.  Add following scripts to your `package.json`:
 
-    ``` json title="package.json"
+    ```json title="package.json"
     {
        "scripts": {
           "extract": "lingui extract",
@@ -31,7 +31,7 @@ Path to LinguiJS configuration file. If not set, the default file is loaded as d
 
 ## `extract`
 
-``` shell
+```shell
 lingui extract [files...]
         [--clean]
         [--overwrite]
@@ -52,7 +52,7 @@ This command extracts messages from source files and creates a message catalog f
 
 Filters source paths to only extract messages from passed files. For ex:
 
-``` shell
+```shell
 lingui extract src/components
 ```
 
@@ -60,7 +60,7 @@ Will extract only messages from `src/components/**/*` files, you can also pass m
 
 It's useful if you want to run extract command on files that are staged, using for example `husky`, before commiting will extract messages from staged files:
 
-``` json title="package.json"
+```json title="package.json"
 {
   "husky": {
      "hooks": {
@@ -108,7 +108,7 @@ Debounce, when used with `--debounce <delay>`, delays extraction for `<delay>` m
 
 ## `extract-template`
 
-``` shell
+```shell
 lingui extract-template [--verbose]
 ```
 
@@ -120,7 +120,7 @@ Prints additional information.
 
 ## `compile`
 
-``` shell
+```shell
 lingui compile
     [--strict]
     [--format <format>]

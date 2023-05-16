@@ -21,7 +21,7 @@ Minimal required versions are:
 - In [`Trans`](/docs/ref/react.md#Trans), new prop `component` accepts React component which is used to render translation.
 - In [`Trans`](/docs/ref/react.md#Trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
 
-  ``` jsx
+  ```jsx
   <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
   ```
 
@@ -33,7 +33,7 @@ LinguiJS started as a React library. After `@lingui/core` package was introduced
 
 In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/docs/ref/react.md#i18nprovider) is simplified and accepts `i18n` manager, which must be created manually:
 
-``` diff
+```diff
   import { I18nProvider } from '@lingui/react'
   import { i18n } from "@lingui/core"
 + import { en } from 'make-plural/plurals'
@@ -57,7 +57,7 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 
 - Package now exports default `i18n` instance. It's recommended to use it unless you need customized instance.
 
-  ``` diff
+  ```diff
   + import { i18n } from "@lingui/core"
   - import { setupI18n } from "@lingui/core"
 
@@ -75,14 +75,14 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 
 - Signature of [`i18n._`](/docs/ref/core.md#i18n._) method has changed. The third parameter now accepts default message in `message` prop, instead of `defaults`:
 
-  ``` diff
+  ```diff
   - i18n._('Welcome / Greetings', { name: 'Joe' }, { defaults: "Hello {name}" })
   + i18n._('Welcome / Greetings', { name: 'Joe' }, { message: "Hello {name}" })
   ```
 
 - [`i18n._`](/docs/ref/core.md#i18n._) also accepts a message descriptor as a first parameter:
 
-  ``` diff
+  ```diff
   i18n._({
     id: string,
     message?: string,
@@ -94,7 +94,7 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 
 `i18n` manager is the single source of truth and there's no need to keep all catalogs loaded outside this object. To make loading easier, [`i18n.load`](/docs/ref/core.md#i18n.load) now accepts catalog for a single locale or multiple catalogs at once.
 
-``` diff
+```diff
   import { i18n } from "@lingui/core"
   import catalogEn from './locale/en/messages.js'
 
@@ -105,7 +105,7 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 :::caution Note
 You can still use [`i18n.load`](/docs/ref/core.md#i18n.load(catalogs)) to load all catalogs at once:
 
-``` jsx
+```jsx
 // i18n.js
 import { i18n } from "@lingui/core"
 import catalogEn from './locale/en/messages.js'
@@ -122,7 +122,7 @@ i18n.load({
 
 - [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select) and [`selectOrdinal`](/docs/ref/macro.md#selectordinal) accepts value as a first parameter:
 
-  ``` diff
+  ```diff
   - plural({ value, one: "# book", other: "# books" })
   + plural(value, { one: "# book", other: "# books" })
   ```
@@ -138,7 +138,7 @@ Whitespace handling in plugins had few bugs. By fixing them, there might be few 
 
 1. Spaces before `{variables}` in JSX aren't preserved. This is how React handles whitespaces in JSX. Leading whitespace is always removed:
 
-  ``` jsx
+  ```jsx
   <Trans>
      &quot;
      {variable}
@@ -150,7 +150,7 @@ Whitespace handling in plugins had few bugs. By fixing them, there might be few 
 
 2. Forced newlines are preserved. Sometimes it's useful to keep newlines in JSX. If that's your case, you need to force it in the same was as spaces are forced before variables or elements:
 
-  ``` jsx
+  ```jsx
   <Trans>
      1. Item{"\n"}
      2. Item
@@ -203,7 +203,7 @@ Plugins are replaced with macros. Presets are removed completely because they ar
 
   These macros automatically binds message to default `i18n` object:
 
-    ``` diff
+    ```diff
       import { i18n } from "@lingui/core"
     + import { t } from "@lingui/macro"
 
