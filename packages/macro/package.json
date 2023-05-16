@@ -17,7 +17,14 @@
   },
   "license": "MIT",
   "keywords": [
-    "babel-plugin-macros"
+    "babel-plugin-macros",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation",
+    "multilingual"
   ],
   "repository": {
     "type": "git",
