@@ -12,11 +12,9 @@ async function main() {
   await exec("yarn", OPTS)
   spinner.start("Linking create-react-app")
   await exec(
-    "npm i -g update-by-scope --registry https://registry.npmjs.org",
+    'YARN_NPM_REGISTRY_SERVER=http://0.0.0.0:4873/ yarn up "@lingui/*" ',
     OPTS
   )
-  await exec("npm config set registry http://0.0.0.0:4873/", OPTS)
-  await exec("update-by-scope @lingui", OPTS)
   spinner.succeed("Updated @lingui packages")
 
   spinner.start("Running tests")
