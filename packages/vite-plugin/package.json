@@ -16,7 +16,8 @@
     "i10n",
     "localization",
     "i9n",
-    "translation"
+    "translation",
+    "multilingual"
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",

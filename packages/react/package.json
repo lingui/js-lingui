@@ -14,12 +14,17 @@
   "keywords": [
     "react",
     "component",
+    "react-component",
+    "react-native",
     "i18n",
     "internationalization",
     "i9n",
     "translation",
     "icu",
-    "messageformat"
+    "messageformat",
+    "multilingual",
+    "localization",
+    "l10n"
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",

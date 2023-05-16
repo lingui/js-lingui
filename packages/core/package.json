@@ -17,7 +17,8 @@
     "i9n",
     "internationalization",
     "localization",
-    "translation"
+    "translation",
+    "multilingual"
   ],
   "scripts": {
     "build": "unbuild",

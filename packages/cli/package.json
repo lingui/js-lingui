@@ -9,7 +9,8 @@
     "i10n",
     "localization",
     "i9n",
-    "translation"
+    "translation",
+    "multilingual"
   ],
   "repository": "lingui/js-lingui",
   "bugs": "https://github.com/lingui/js-lingui/issues",

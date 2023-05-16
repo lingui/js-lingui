@@ -13,7 +13,10 @@
     "localization",
     "i9n",
     "translation",
-    "vue"
+    "vue",
+    "vue.js",
+    "multilingual",
+    "lingui-extractor"
   ],
   "repository": "lingui/js-lingui",
   "bugs": "https://github.com/lingui/js-lingui/issues",
