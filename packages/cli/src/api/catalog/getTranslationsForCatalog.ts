@@ -1,6 +1,7 @@
 import { Catalog } from "../catalog"
 import { FallbackLocales } from "@lingui/conf"
 import type { AllCatalogsType, CatalogType, MessageType } from "../types"
+import { getFallbackListForLocale } from "./getFallbackListForLocale"
 
 export type TranslationMissingEvent = {
   source: string
@@ -53,19 +54,14 @@ function getTranslation(
   }
 
   const getMultipleFallbacks = (_locale: string) => {
-    const fL = fallbackLocales && fallbackLocales?.[_locale]
+    const fL = getFallbackListForLocale(fallbackLocales, _locale)
 
-    // some probably the fallback will be undefined, so just search by locale
-    if (!fL) return null
+    if (!fL.length) return null
 
-    if (Array.isArray(fL)) {
-      for (const fallbackLocale of fL) {
-        if (catalogs[fallbackLocale] && getTranslation(fallbackLocale)) {
-          return getTranslation(fallbackLocale)
-        }
+    for (const fallbackLocale of fL) {
+      if (catalogs[fallbackLocale] && getTranslation(fallbackLocale)) {
+        return getTranslation(fallbackLocale)
       }
-    } else {
-      return getTranslation(fL)
     }
   }
 
@@ -75,14 +71,11 @@ function getTranslation(
   // -> template message
   // ** last resort **
   // -> id
-
   let translation =
     // Get translation in target locale
     getTranslation(locale) ||
     // We search in fallbackLocales as dependent of each locale
     getMultipleFallbacks(locale) ||
-    // Get translation in fallbackLocales.default (if any)
-    (fallbackLocales?.default && getTranslation(fallbackLocales.default)) ||
     (sourceLocale &&
       sourceLocale === locale &&
       sourceLocaleFallback(catalogs[sourceLocale], key))

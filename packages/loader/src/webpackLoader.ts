@@ -4,6 +4,7 @@ import {
   createCompiledCatalog,
   getCatalogs,
   getCatalogForFile,
+  getCatalogDependentFiles,
 } from "@lingui/cli/api"
 import { LoaderDefinitionFunction } from "webpack"
 
@@ -27,6 +28,10 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
     catalogRelativePath,
     await getCatalogs(config)
   )
+
+  getCatalogDependentFiles(catalog, locale).forEach((locale) => {
+    this.addDependency(catalog.getFilename(locale))
+  })
 
   const messages = await catalog.getTranslations(locale, {
     fallbackLocales: config.fallbackLocales,
