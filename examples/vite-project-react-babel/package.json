@@ -10,14 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lingui/macro": "^4.0.0-next.3",
-    "@lingui/react": "^4.0.0-next.3",
+    "@lingui/macro": "^4.1.2",
+    "@lingui/react": "^4.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@lingui/cli": "^4.0.0-next.3",
-    "@lingui/vite-plugin": "^4.0.0-next.3",
+    "@lingui/cli": "^4.1.2",
+    "@lingui/vite-plugin": "^4.1.2",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
