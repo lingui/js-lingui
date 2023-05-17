@@ -3,5 +3,8 @@
   "catalogs": [{
     "path": "<rootDir>/locale/{locale}"
   }],
+  "fallbackLocales": {
+    "default": "en"
+  },
   "format": "po"
 }
