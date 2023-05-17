@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/lingui/js-lingui/compare/v4.1.1...v4.1.2) (2023-05-17)
+
+### Bug Fixes
+
+- **webpack + vite:** fix dependency watching in loader ([#1662](https://github.com/lingui/js-lingui/issues/1662)) ([ce660d7](https://github.com/lingui/js-lingui/commit/ce660d7a3e37defda5f5708be5f14f1cd1bcb816))
+
 ## [4.1.1](https://github.com/lingui/js-lingui/compare/v4.1.0...v4.1.1) (2023-05-17)
 
 **Note:** Version bump only for package @lingui/cli
