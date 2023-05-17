@@ -53,9 +53,8 @@ Please check that catalogs.path is filled properly.\n`
 
         const { locale, catalog } = fileCatalog
 
-        getCatalogDependentFiles(catalog, locale).forEach((locale) => {
-          this.addWatchFile(catalog.getFilename(locale))
-        })
+        const dependency = await getCatalogDependentFiles(catalog, locale)
+        dependency.forEach((file) => this.addWatchFile(file))
 
         const messages = await catalog.getTranslations(locale, {
           fallbackLocales: config.fallbackLocales,

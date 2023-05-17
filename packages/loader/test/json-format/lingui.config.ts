@@ -7,5 +7,8 @@ export default {
       path: "<rootDir>/locale/{locale}",
     },
   ],
+  fallbackLocales: {
+    default: "en",
+  },
   format: formatter({ style: "minimal" }),
 }

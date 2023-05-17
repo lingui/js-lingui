@@ -29,9 +29,8 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
     await getCatalogs(config)
   )
 
-  getCatalogDependentFiles(catalog, locale).forEach((locale) => {
-    this.addDependency(catalog.getFilename(locale))
-  })
+  const dependency = await getCatalogDependentFiles(catalog, locale)
+  dependency.forEach((file) => this.addDependency(file))
 
   const messages = await catalog.getTranslations(locale, {
     fallbackLocales: config.fallbackLocales,
