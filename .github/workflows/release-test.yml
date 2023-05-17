@@ -33,7 +33,6 @@ jobs:
         run: |
           git switch -c "pull-request"
           npm i -g {verdaccio,verdaccio-auth-memory,verdaccio-memory}
-          mkdir -p $HOME/.config/verdaccio
-          nohup verdaccio --config .github/verdaccio/config.yaml
+          nohup verdaccio --config .github/verdaccio/config.yaml &>mktemp &
           yarn verdaccio:release
           yarn verdaccio:integration
