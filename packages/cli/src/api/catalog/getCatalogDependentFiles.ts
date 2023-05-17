@@ -1,6 +1,6 @@
 import { Catalog } from "../catalog"
 import { getFallbackListForLocale } from "./getFallbackListForLocale"
-import path from "node:path"
+import path from "pathe"
 import fs from "node:fs/promises"
 
 const fileExists = async (path: string) =>

@@ -71,6 +71,7 @@
     "micromatch": "4.0.2",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
+    "pathe": "^1.1.0",
     "pkg-up": "^3.1.0",
     "pofile": "^1.1.4",
     "pseudolocale": "^2.0.0",
