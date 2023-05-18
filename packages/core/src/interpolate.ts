@@ -34,7 +34,7 @@ const getDefaultFormats = (
       return replaceOctothorpe(value - offset, message)
     },
 
-    select: (value: string, rules) => rules[value] || rules.other,
+    select: (value: string, rules) => rules[value] ?? rules.other,
 
     number: (
       value: number,

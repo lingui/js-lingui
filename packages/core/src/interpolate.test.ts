@@ -72,6 +72,12 @@ describe("interpolate", () => {
     expect(offset({ value: 3 })).toEqual("2 Books")
   })
 
+  it("should compile plurals with falsy value choice", () => {
+    const plural = prepare("{value, plural, one {} other {# Books}}")
+    expect(plural({ value: 1 })).toEqual("")
+    expect(plural({ value: 2 })).toEqual("2 Books")
+  })
+
   it("when a value is defined (even when empty) plural will return it. Conversely, if a value is not defined, plural defaults to 'other'", () => {
     const plural = prepare("{value, plural, =0 {} other {#% discount}}")
     expect(plural({ value: 0 })).toEqual("")
@@ -117,6 +123,15 @@ describe("interpolate", () => {
     const cache = prepare("{value, select, female {She} other {They}}")
     expect(cache({ value: "female" })).toEqual("She")
     expect(cache({ value: "n/a" })).toEqual("They")
+  })
+
+  it("should support select with empty string choice", () => {
+    const cache = prepare("{value, select, female {} other {They}}")
+    expect(cache({ value: "female" })).toEqual("")
+    expect(cache({ value: "n/a" })).toEqual("They")
+    const cache2 = prepare("{value, select, female {0} other {They}}")
+    expect(cache2({ value: "female" })).toEqual("0")
+    expect(cache2({ value: "n/a" })).toEqual("They")
   })
 
   describe("Custom format", () => {
