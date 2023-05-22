@@ -30,6 +30,11 @@ module.exports = {
           position: 'left',
         },
         {
+          to: '/misc/examples',
+          label: 'Examples',
+          position: 'left',
+        },
+        {
           to: '/blog',
           label: 'Blog',
           position: 'left',
