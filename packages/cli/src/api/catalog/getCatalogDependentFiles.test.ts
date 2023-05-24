@@ -16,7 +16,7 @@ describe("getCatalogDependentFiles", () => {
 
   it("Should return list template + fallbacks + sourceLocale", async () => {
     mockFs({
-      "src/locales": {
+      "/src/locales": {
         "messages.pot": "bla",
         "en.po": "bla",
         "pl.po": "bla",
@@ -41,7 +41,7 @@ describe("getCatalogDependentFiles", () => {
     const catalog = new Catalog(
       {
         name: null,
-        path: "src/locales/{locale}",
+        path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
@@ -49,21 +49,22 @@ describe("getCatalogDependentFiles", () => {
       config
     )
 
+    console.log(catalog.path)
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
     mockFs.restore()
 
     expect(actual).toMatchInlineSnapshot(`
       [
-        src/locales/messages.pot,
-        src/locales/pt-BR.po,
-        src/locales/en.po,
+        /src/locales/messages.pot,
+        /src/locales/pt-BR.po,
+        /src/locales/en.po,
       ]
     `)
   })
 
   it("Should not return itself", async () => {
     mockFs({
-      "src/locales": {
+      "/src/locales": {
         "messages.pot": "bla",
         "en.po": "bla",
         "pl.po": "bla",
@@ -88,7 +89,7 @@ describe("getCatalogDependentFiles", () => {
     const catalog = new Catalog(
       {
         name: null,
-        path: "src/locales/{locale}",
+        path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
@@ -101,14 +102,14 @@ describe("getCatalogDependentFiles", () => {
 
     expect(actual).toMatchInlineSnapshot(`
       [
-        src/locales/messages.pot,
+        /src/locales/messages.pot,
       ]
     `)
   })
 
   it("Should not return non-existing files", async () => {
     mockFs({
-      "src/locales": {
+      "/src/locales": {
         // "messages.pot": "bla",
         "en.po": "bla",
         "pl.po": "bla",
@@ -133,7 +134,7 @@ describe("getCatalogDependentFiles", () => {
     const catalog = new Catalog(
       {
         name: null,
-        path: "src/locales/{locale}",
+        path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
@@ -146,8 +147,8 @@ describe("getCatalogDependentFiles", () => {
 
     expect(actual).toMatchInlineSnapshot(`
       [
-        src/locales/pt-BR.po,
-        src/locales/en.po,
+        /src/locales/pt-BR.po,
+        /src/locales/en.po,
       ]
     `)
   })

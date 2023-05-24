@@ -14,6 +14,7 @@ exports[`lingui-loader should compile catalog in json format 1`] = `
 
 exports[`lingui-loader should compile catalog in po format 1`] = `
 {
+  ED2Xk0: String from template,
   mVmaLu: [
     My name is ,
     [
