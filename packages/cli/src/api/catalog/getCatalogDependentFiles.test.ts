@@ -49,7 +49,6 @@ describe("getCatalogDependentFiles", () => {
       config
     )
 
-    console.log(catalog.path)
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
     mockFs.restore()
 
