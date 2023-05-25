@@ -41,38 +41,47 @@ No migration steps are necessary for components provided by Lingui, such as `Tra
 
 ### Hash-based message ID generation and Context feature
 
-The previous implementation had a flaw: there is an original message in the bundle at least 2 times + 1 translation.
+Starting from Lingui v4, hash-based IDs are used internally for message lookups.
 
-For the line "Hello world" it'll exist in the source code as ID in i18n call, then as a key in the message catalog, and then as a translation itself. Strings could be very long, not just a couple of words, so this may bring more kB to the bundle.
+If you use natural language as an ID in your project, for example:
+```ts
+const message = t`My Message`
+```
+you will benefit significantly from this change. Your bundles will become smaller because the source message will be removed from the bundle in favor of a short generated ID.
 
-A much better option is generating a "stable" ID based on the msg + context as a hash with a fixed length.
+If you use natural language as an ID, you don't need to do anything special to migrate.
 
-Hash would be calculated at build time by macros. So macros instead of:
+However, if you use explicit IDs, like this:
 
-```js
-const message = t({
-   context: 'My context',
-   message: `Hello`
-})
-
-// ↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n } from "@lingui/core"
-const message = i18n._(/*i18n*/{
-   context: 'My context',
-   id: `Hello`
-})
+```ts
+const message = t({id: "my.message", message: `My Message`})
 ```
 
-now generates:
+there are some changes you need to make to your catalogs to migrate properly. In order to distinguish between generated IDs and explicit IDs in the PO format, Lingui adds a special comment for messages with explicit IDs called `js-lingui-explicit-id`.
 
-```js
-import { i18n } from "@lingui/core"
-const message = i18n._(/*i18n*/{
-   id: "<hash(message + context)>",
-   message: `Hello`,
-})
+Here's an example of the comment in a PO file:
+```gettext
+#. js-lingui-explicit-id
+msgid "custom.id"
+msgstr ""
 ```
+
+You need to add this comment manually to all your messages with explicit IDs.
+
+If you exclusively use explicit IDs in your project, you may consider enabling a different processing mode for the PO formatter. This can be done in your Lingui config file:
+```ts title="lingui.config.ts"
+import { formatter } from '@lingui/po-format'
+import { LinguiConfig } from '@lingui/config'
+
+const config: LinguiConfig = {
+  // ...
+  format: formatter({ explicitIdAsDefault: true }),
+}
+```
+
+Enabling this mode will swap the logic, and the formatter will treat all messages as having explicit IDs without the need for the explicit flag comment.
+
+You can read more about the motivation behind this change in the [original RFC](https://github.com/lingui/js-lingui/issues/1360)
 
 Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/docs/tutorials/react-patterns.md#providing-a-context-for-a-message).
 
@@ -137,13 +146,13 @@ Extractor supports TypeScript out of the box. Please delete it from your configu
 If your extract command looks like:
 
 ```bash
-NODE_ENV=development lingui-extract
+NODE_ENV=development lingui extract
 ```
 
 Now you can safely change it to just:
 
 ```bash
-lingui-extract
+lingui extract
 ```
 
 ### Public interface of `ExtractorType` was changed

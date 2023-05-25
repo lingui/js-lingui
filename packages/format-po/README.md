@@ -61,6 +61,21 @@ export type PoFormatterOptions = {
    * @default false
    */
   printLinguiId?: boolean
+  
+  /**
+   * By default, the po-formatter treats the pair `msgid` + `msgctx` as the source
+   * for generating an ID by hashing its value.
+   *
+   * For messages with explicit IDs, the formatter adds a special comment `js-lingui-explicit-id` as a flag.
+   * When this flag is present, the formatter will use the `msgid` as-is without any additional processing.
+   *
+   * Set this option to true if you exclusively use explicit-ids in your project.
+   *
+   * https://lingui.dev/tutorials/react-patterns#using-custom-id
+   *
+   * @default false
+   */
+  explicitIdAsDefault?: boolean
 }
 ```
 

@@ -43,6 +43,21 @@ export type PoFormatterOptions = {
    * @default false
    */
   printLinguiId?: boolean
+
+  /**
+   * By default, the po-formatter treats the pair `msgid` + `msgctx` as the source
+   * for generating an ID by hashing its value.
+   *
+   * For messages with explicit IDs, the formatter adds a special comment `js-lingui-explicit-id` as a flag.
+   * When this flag is present, the formatter will use the `msgid` as-is without any additional processing.
+   *
+   * Set this option to true if you exclusively use explicit-ids in your project.
+   *
+   * https://lingui.dev/tutorials/react-patterns#using-custom-id
+   *
+   * @default false
+   */
+  explicitIdAsDefault?: boolean
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -61,6 +76,7 @@ function getCreateHeaders(language: string): PO["headers"] {
 }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
+const GENERATED_ID_FLAG = "js-lingui-generated-id"
 
 const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   return Object.keys(catalog).map((id) => {
@@ -84,15 +100,24 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
     if (_isGeneratedId) {
       item.msgid = message.message
 
+      if (options.explicitIdAsDefault) {
+        if (!item.extractedComments.includes(GENERATED_ID_FLAG)) {
+          item.extractedComments.push(GENERATED_ID_FLAG)
+        }
+      }
+
       if (options.printLinguiId) {
         if (!item.extractedComments.find((c) => c.includes("js-lingui-id"))) {
           item.extractedComments.push(`js-lingui-id: ${id}`)
         }
       }
     } else {
-      if (!item.extractedComments.includes(EXPLICIT_ID_FLAG)) {
-        item.extractedComments.push(EXPLICIT_ID_FLAG)
+      if (!options.explicitIdAsDefault) {
+        if (!item.extractedComments.includes(EXPLICIT_ID_FLAG)) {
+          item.extractedComments.push(EXPLICIT_ID_FLAG)
+        }
       }
+
       item.msgid = id
     }
 
@@ -116,7 +141,10 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   })
 }
 
-function deserialize(items: POItem[]): CatalogType {
+function deserialize(
+  items: POItem[],
+  options: PoFormatterOptions
+): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
     const message: MessageType<POCatalogExtra> = {
       translation: item.msgstr[0],
@@ -133,7 +161,11 @@ function deserialize(items: POItem[]): CatalogType {
     let id = item.msgid
 
     // if generated id, recreate it
-    if (!item.extractedComments.includes(EXPLICIT_ID_FLAG)) {
+    if (
+      options.explicitIdAsDefault
+        ? item.extractedComments.includes(GENERATED_ID_FLAG)
+        : !item.extractedComments.includes(EXPLICIT_ID_FLAG)
+    ) {
       id = generateMessageId(item.msgid, item.msgctxt)
       message.message = item.msgid
     }
@@ -156,7 +188,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
 
     parse(content): CatalogType {
       const po = PO.parse(content)
-      return deserialize(po.items)
+      return deserialize(po.items, options)
     },
 
     serialize(catalog, ctx): string {
