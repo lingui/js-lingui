@@ -110,7 +110,7 @@ Let's start with the basics - static messages. These messages don't have any var
 All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.md#trans) macro:
 
 ```jsx
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro';
 
 <h1><Trans>Message Inbox</Trans></h1>
 ```
@@ -124,7 +124,7 @@ In general, macros are executed at compile time and they transform source code i
 Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
 ```jsx
-import { Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro';
 
 <Trans>Hello {name}</Trans>
 ```
@@ -132,13 +132,22 @@ import { Trans } from '@lingui/macro'
 And this is how the code is transformed:
 
 ```jsx
-import { Trans } from '@lingui/react'
+import { Trans } from '@lingui/react';
 
-<Trans id="Hello {name}" values={{ name }} />
+<Trans id="OVaF9k" message="Hello {name}" values={{ name }} />
 ```
 
-See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` prop with a message in ICU MessageFormat syntax.
+See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` and `message` props with a message in ICU MessageFormat syntax.
 We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros to generate message for ourselves.
+
+Another advantage of using macros is that all non-essential properties are dropped in the production build. This results in a significant reduction in the size footprint for internationalization.
+
+```jsx
+// NODE_ENV=production
+import { Trans } from '@lingui/react';
+
+<Trans id="OVaF9k" values={{ name }} />
+```
 
 ### Extracting messages
 

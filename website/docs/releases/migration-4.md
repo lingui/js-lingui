@@ -89,6 +89,37 @@ The context feature affects the message ID generation and adds the `msgctxt` par
 
 This also affects the `orderBy` with `messageId` as now the generated id is used when custom id is absent. To avoid confusion, we switched the default `orderBy` to use the source message (`message`) instead.
 
+### Translation outside React components migration
+
+If you have been using the following pattern in your code:
+
+```tsx
+import { t } from "@lingui/macro"
+
+const myMsg = t`Hello world!`
+
+export function Greeting(props: {}) {
+  return <h1>{t(myMsg)}</h1>
+}
+```
+You will need to make some changes as this is a misuse of the library that actually worked in v3.
+
+Due to the changes caused by hash-based message ID feature described earlier, this approach will no longer work.
+
+Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
+```tsx
+import { t } from "@lingui/macro"
+import { useLingui } from "@lingui/react"
+
+const myMsg = msg`Hello world!`
+
+export function Greeting(props: {}) {
+  const { i18n } = useLingui()
+
+  return <h1>{i18n._(myMsg)}</h1>
+}
+```
+
 ### Change in generated ICU messages for nested JSX Macros
 
 We have made a small change in how Lingui generates ICU messages for nested JSX Macros. We have removed leading spaces from the texts in all cases.

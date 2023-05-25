@@ -135,12 +135,16 @@ Sometimes you can't use [`Trans`](/docs/ref/macro.md#trans) component, for examp
 ```
 
 In such case you need to use [`t`](/docs/ref/macro.md#t) macro to wrap message. [`t`](/docs/ref/macro.md#t) is equivalent for [`Trans`](/docs/ref/macro.md#trans), [`plural`](/docs/ref/macro.md#plural) is equivalent to [`Plural`](/docs/ref/macro.md#plural-1).
+You also need to use `useLingui` hook to subscribe your component for locale updates.
 
 ```jsx
 import { t } from "@lingui/macro"
+import { useLingui } from "@lingui/react"
 
 export default function ImageWithCaption() {
-   return <img src="..." alt={t`Image caption`} />
+  useLingui()
+
+  return <img src="..." alt={t`Image caption`} />
 }
 ```
 
@@ -156,8 +160,38 @@ export function alert() {
     alert(t`...`)
 }
 ```
+:::note
+The [`t`](/docs/ref/macro.md#t) macro can only be used in a reactive or re-executable context.
 
-## Lazy translations
+```jsx
+import { t } from "@lingui/macro"
+
+// ❌ Bad! This won't work because the `t` macro is used at the module level.
+// The `t` macro returns a string, and once this string is assigned, it won't react to changes.
+const alertProps = {
+  header: t`Alert`,
+  subHeader: t`Important message`,
+  message: t`This is an alert!`,
+  buttons: [t`OK`]
+};
+
+// ✅ Good! Every time the function is executed, the `t` macro will be re-executed as well,
+// and the actual result will be returned.
+function getAlertProps() {
+  return {
+    header: t`Alert`,
+    subHeader: t`Important message`,
+    message: t`This is an alert!`,
+    buttons: [t`OK`]
+  }
+}
+```
+
+Another option would be to use the Lazy Translations pattern described in the following paragraph.
+
+:::
+
+## Lazy Translations
 
 Messages don't have to be declared at the same code location where they're displayed. Tag a string with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
 
@@ -226,12 +260,15 @@ If you need the prop to be displayed as a string-only translation, you can pass 
 
 ```jsx
 import { t } from "@lingui/macro"
+import { useLingui } from "@lingui/react"
 
 export default function ImageWithCaption(props) {
    return <img src="..." alt={props.caption} />
 }
 
 export function HappySad(props) {
+   useLingui()
+
    return <div>
       <ImageWithCaption caption={t`I'm so happy!`} />
       <ImageWithCaption caption={t`I'm so sad.`} />
@@ -274,11 +311,23 @@ import { i18n } from "@lingui/core"
 
 const welcomeMessage = msg`Open`;
 
+// ❌ Bad! This code won't work
 export function Welcome() {
   const buggyWelcome = useMemo(() => {
     return i18n._(welcomeMessage);
   }, []);
 
   return <div>{buggyWelcome}</div>;
+}
+
+// ✅ Good! `useMemo` has i18n object in the dependency
+export function Welcome() {
+  const { i18n } = useLingui();
+
+  const welcome = useMemo(() => {
+    return i18n._(welcomeMessage);
+  }, [i18n]);
+
+  return <div>{welcome}</div>;
 }
 ```
