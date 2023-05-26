@@ -13,34 +13,35 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/Switcher.tsx:14
+#: src/components/Developers.tsx:20
+msgid "{selected, plural, one {Developer} other {Developers}}"
+msgstr "{selected, plural, one {Programador} other {Programadores}}"
+
+#: src/components/Switcher.tsx:10
 msgid "English"
 msgstr "Inglés"
+
+#. js-lingui-explicit-id
+#: src/components/AboutText.tsx:6
+msgid "next-explanation"
+msgstr "Next.js es un marco de trabajo web de desarrollo front-end de React de código abierto que permite funciones como la representación del lado del servidor y la generación de sitios web estáticos para aplicaciones web basadas en React. Es un marco listo para producción que permite a los desarrolladores crear rápidamente sitios web JAMstack estáticos y dinámicos y es ampliamente utilizado por muchas grandes empresas."
 
 #: src/components/Developers.tsx:9
 msgid "Plural Test: How many developers?"
 msgstr "Prueba Plural: Cuantos programadores?"
 
-#: src/components/Switcher.tsx:15
+#: src/components/Switcher.tsx:11
 msgid "Serbian"
 msgstr "Serbio"
 
-#: src/components/Switcher.tsx:16
+#: src/components/Switcher.tsx:12
 msgid "Spanish"
 msgstr "Español"
 
-#: src/pages/index.tsx:25
+#: src/pages/index.tsx:28
 msgid "Translation Demo"
 msgstr "Demostración de Traducción"
 
-#: src/pages/index.tsx:32
+#: src/pages/index.tsx:35
 msgid "Welcome to <0>Next.js!</0>"
 msgstr "Bienvenido a <0>Next.js!</0>"
-
-#: src/components/AboutText.tsx:6
-msgid "next-explanation"
-msgstr "Next.js es un marco de trabajo web de desarrollo front-end de React de código abierto que permite funciones como la representación del lado del servidor y la generación de sitios web estáticos para aplicaciones web basadas en React. Es un marco listo para producción que permite a los desarrolladores crear rápidamente sitios web JAMstack estáticos y dinámicos y es ampliamente utilizado por muchas grandes empresas."
-
-#: src/components/Developers.tsx:20
-msgid "{selected, plural, one {Developer} other {Developers}}"
-msgstr "{selected, plural, one {Programador} other {Programadores}}"
