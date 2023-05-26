@@ -122,6 +122,148 @@ describe("pofile format", () => {
     expect(actual).toMatchObject(catalog)
   })
 
+  describe("explicitIdAsDefault", () => {
+    const catalog: CatalogType = {
+      // with generated id
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+      },
+
+      "custom.id": {
+        message: "with explicit id",
+        translation: "",
+      },
+    }
+
+    it("should set `js-lingui-generated-id` for messages with generated id when [explicitIdAsDefault: true]", () => {
+      const format = createFormatter({
+        origins: true,
+        explicitIdAsDefault: true,
+      })
+
+      const serialized = format.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
+
+      expect(serialized).toMatchInlineSnapshot(`
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #. js-lingui-generated-id
+        msgctxt "my context"
+        msgid "with generated id"
+        msgstr ""
+
+        msgid "custom.id"
+        msgstr ""
+
+      `)
+
+      const actual = format.parse(serialized, defaultParseCtx)
+      expect(actual).toMatchInlineSnapshot(`
+        {
+          Dgzql1: {
+            comments: [
+              js-lingui-generated-id,
+            ],
+            context: my context,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            message: with generated id,
+            obsolete: false,
+            origin: [],
+            translation: ,
+          },
+          custom.id: {
+            comments: [],
+            context: null,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            obsolete: false,
+            origin: [],
+            translation: ,
+          },
+        }
+      `)
+    })
+
+    it("should set `js-explicit-id` for messages with explicit id when [explicitIdAsDefault: false]", () => {
+      const format = createFormatter({
+        origins: true,
+        explicitIdAsDefault: false,
+      })
+
+      const serialized = format.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
+
+      expect(serialized).toMatchInlineSnapshot(`
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        msgctxt "my context"
+        msgid "with generated id"
+        msgstr ""
+
+        #. js-lingui-explicit-id
+        msgid "custom.id"
+        msgstr ""
+
+      `)
+
+      const actual = format.parse(serialized, defaultParseCtx)
+      expect(actual).toMatchInlineSnapshot(`
+        {
+          Dgzql1: {
+            comments: [],
+            context: my context,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            message: with generated id,
+            obsolete: false,
+            origin: [],
+            translation: ,
+          },
+          custom.id: {
+            comments: [
+              js-lingui-explicit-id,
+            ],
+            context: null,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            obsolete: false,
+            origin: [],
+            translation: ,
+          },
+        }
+      `)
+    })
+  })
+
   it("should print lingui id if printLinguiId = true", () => {
     const format = createFormatter({ origins: true, printLinguiId: true })
 
