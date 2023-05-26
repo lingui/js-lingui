@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "4.1.2",
+  "version": "4.2.0",
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
@@ -43,11 +43,11 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "4.1.2",
-    "@lingui/conf": "4.1.2"
+    "@lingui/cli": "4.2.0",
+    "@lingui/conf": "4.2.0"
   },
   "devDependencies": {
-    "@lingui/format-json": "4.1.2",
+    "@lingui/format-json": "4.2.0",
     "unbuild": "^1.1.2",
     "webpack": "^5.76.1"
   },

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/lingui/js-lingui/compare/v4.1.2...v4.2.0) (2023-05-26)
+
+### Bug Fixes
+
+- fallback to `other` only when undefined ([#1665](https://github.com/lingui/js-lingui/issues/1665)) ([a79de75](https://github.com/lingui/js-lingui/commit/a79de757df14249f76945da9fd9ce529129f2269))
+- **webpack + vite:** fix dependency watching in loader ([#1671](https://github.com/lingui/js-lingui/issues/1671)) ([f06cdf5](https://github.com/lingui/js-lingui/commit/f06cdf51cee400903b7f8c84dbbaac0499c3e5c7))
+
+### Features
+
+- **po-format:** add `explicitIdAsDefault` for po-format for easier migration ([#1672](https://github.com/lingui/js-lingui/issues/1672)) ([3303228](https://github.com/lingui/js-lingui/commit/3303228c16b490e55801bf182ca5898b84f651fd))
+
 ## [4.1.2](https://github.com/lingui/js-lingui/compare/v4.1.1...v4.1.2) (2023-05-17)
 
 ### Bug Fixes

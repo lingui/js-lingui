@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/lingui/js-lingui/compare/v4.1.2...v4.2.0) (2023-05-26)
+
+### Bug Fixes
+
+- fallback to `other` only when undefined ([#1665](https://github.com/lingui/js-lingui/issues/1665)) ([a79de75](https://github.com/lingui/js-lingui/commit/a79de757df14249f76945da9fd9ce529129f2269))
+
 ## [4.1.2](https://github.com/lingui/js-lingui/compare/v4.1.1...v4.1.2) (2023-05-17)
 
 **Note:** Version bump only for package @lingui/core

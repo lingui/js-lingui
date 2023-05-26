@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po",
-  "version": "4.1.2",
+  "version": "4.2.0",
   "description": "Gettext PO format for Lingui Catalogs",
   "main": "./dist/po.cjs",
   "module": "./dist/po.mjs",
@@ -41,8 +41,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "4.1.2",
-    "@lingui/message-utils": "4.1.2",
+    "@lingui/conf": "4.2.0",
+    "@lingui/message-utils": "4.2.0",
     "date-fns": "^2.29.3",
     "pofile": "^1.1.4"
   },
