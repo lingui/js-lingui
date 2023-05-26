@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Trans, plural } from '@lingui/macro'
+import { Trans, Plural } from '@lingui/macro'
 
 export default function Developers() {
   const [selected, setSelected] = useState('1')
@@ -17,10 +17,7 @@ export default function Developers() {
           <option value={'2'}>2</option>
         </select>
         <p>
-          {plural(selected, {
-            one: 'Developer',
-            other: `Developers`
-          })}
+          <Plural value={selected} one={'Developer'} other={`Developers`} />
         </p>
       </div>
     </div>

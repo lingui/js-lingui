@@ -7,13 +7,13 @@
     "debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "yarn lang:extract && next build",
     "start": "next start",
-    "lang:extract": "lingui extract --clean",
+    "lingui:extract": "lingui extract --clean",
     "test": "yarn build"
   },
   "dependencies": {
     "@lingui/core": "^4.1.2",
     "@lingui/react": "^4.1.2",
-    "next": "13.2.3",
+    "next": "13.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

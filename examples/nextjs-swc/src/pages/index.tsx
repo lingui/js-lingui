@@ -6,6 +6,7 @@ import Developers from '../components/Developers'
 import { Switcher } from '../components/Switcher'
 import styles from '../styles/Index.module.css'
 import { loadCatalog } from '../utils'
+import { useLingui } from '@lingui/react'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const translation = await loadCatalog(ctx.locale!)
@@ -17,9 +18,20 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 }
 
 const Index: NextPage = () => {
+  /**
+   * This hook is needed to subscribe your
+   * component for changes if you use t`` macro
+   */
+  useLingui()
+
   return (
     <div className={styles.container}>
       <Head>
+        {/*
+         The Next Head component is not being rendered in the React
+         component tree and React Context is not being passed down to the components placed in the <Head>.
+         That means we cannot use the <Trans> component here and instead have to use `t` macro.
+        */}
         <title>{t`Translation Demo`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>

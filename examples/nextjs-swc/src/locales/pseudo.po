@@ -13,34 +13,35 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/Switcher.tsx:14
+#: src/components/Developers.tsx:20
+msgid "{selected, plural, one {Developer} other {Developers}}"
+msgstr ""
+
+#: src/components/Switcher.tsx:10
 msgid "English"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/AboutText.tsx:6
+msgid "next-explanation"
 msgstr ""
 
 #: src/components/Developers.tsx:9
 msgid "Plural Test: How many developers?"
 msgstr ""
 
-#: src/components/Switcher.tsx:15
+#: src/components/Switcher.tsx:11
 msgid "Serbian"
 msgstr ""
 
-#: src/components/Switcher.tsx:16
+#: src/components/Switcher.tsx:12
 msgid "Spanish"
 msgstr ""
 
-#: src/pages/index.tsx:25
+#: src/pages/index.tsx:28
 msgid "Translation Demo"
 msgstr ""
 
-#: src/pages/index.tsx:32
+#: src/pages/index.tsx:35
 msgid "Welcome to <0>Next.js!</0>"
-msgstr ""
-
-#: src/components/AboutText.tsx:6
-msgid "next-explanation"
-msgstr ""
-
-#: src/components/Developers.tsx:20
-msgid "{selected, plural, one {Developer} other {Developers}}"
 msgstr ""

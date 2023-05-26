@@ -2,6 +2,13 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## SWC Compatibility
+SWC Plugin support is still experimental. Semver backwards compatibility between different `next-swc` versions is not guaranteed.
+
+Therefore, you need to select an appropriate version of the Lingui plugin to match compatible `NextJs` version.
+
+For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+
 ## Getting Started
 
 First, run the development server:
