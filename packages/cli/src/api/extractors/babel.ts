@@ -49,7 +49,7 @@ const extractor: ExtractorType = {
       }
     }
 
-    if ([/\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
+    if ([/\.js$/, /\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
       parserPlugins.push("jsx")
     }
 

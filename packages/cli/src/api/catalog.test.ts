@@ -180,6 +180,7 @@ describe("Catalog", () => {
     it("should support JSX and Typescript", async () => {
       const messages = await extractFromFiles(
         [
+          fixture("collect-typescript-jsx/jsx-in-js.js"),
           fixture("collect-typescript-jsx/jsx-syntax.jsx"),
           fixture("collect-typescript-jsx/tsx-syntax.tsx"),
           fixture("collect-typescript-jsx/macro.tsx"),
