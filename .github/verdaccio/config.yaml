@@ -7,8 +7,9 @@ auth:
 store:
   memory:
     limit: 1000
-## we don't need any remote request
 uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
 packages:
   '@*/*':
     access: $all
