@@ -70,7 +70,7 @@ You need to add this comment manually to all your messages with explicit IDs.
 
 If you exclusively use explicit IDs in your project, you may consider enabling a different processing mode for the PO formatter. This can be done in your Lingui config file:
 ```ts title="lingui.config.ts"
-import { formatter } from '@lingui/po-format'
+import { formatter } from '@lingui/format-po'
 import { LinguiConfig } from '@lingui/config'
 
 const config: LinguiConfig = {
