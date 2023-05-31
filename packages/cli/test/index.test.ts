@@ -9,6 +9,7 @@ import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import MockDate from "mockdate"
+import migrateCommand from "../src/lingui-migrate"
 
 export function compareFolders(pathA: string, pathB: string) {
   const listingA = listingToHumanReadable(readFsToJson(pathA))
@@ -289,5 +290,40 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+  })
+
+  it("migrate should 'js-lingui-explicit-id' to translations created with v3", async () => {
+    const rootDir = nodepath.join(__dirname, "migrate-catalog-v4")
+
+    const actualPath = nodepath.join(rootDir, "actual")
+    const expectedPath = nodepath.join(rootDir, "expected")
+
+    await fs.rm(actualPath, {
+      recursive: true,
+      force: true,
+    })
+
+    await fs.cp(nodepath.join(rootDir, "fixtures/locales"), actualPath, {
+      recursive: true,
+    })
+
+    const result = await migrateCommand(
+      makeConfig({
+        rootDir: rootDir,
+        locales: ["en", "pl"],
+        sourceLocale: "en",
+        format: "po",
+        catalogs: [
+          {
+            path: "<rootDir>/actual/{locale}",
+            include: ["<rootDir>/fixtures"],
+          },
+        ],
+      })
+    )
+
+    expect(result).toBeTruthy()
+
+    compareFolders(actualPath, expectedPath)
   })
 })
