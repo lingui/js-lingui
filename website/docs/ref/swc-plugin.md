@@ -4,6 +4,14 @@
 
 If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [LinguiJS Macro](/docs/ref/macro.md).
 
+## SWC Compatibility
+
+SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed.
+
+Therefore, you need to select an appropriate version of the `@lingui/swc-plugin` to match compatible `@swc/core` version.
+
+For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+
 ## Installation
 
 Install `@lingui/swc-plugin` as a development dependency:
@@ -58,8 +66,12 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-## Further reading
+## Examples
 
-- [NextJS 13 Example](https://github.com/lingui/swc-plugin/tree/main/examples/nextjs-13)
+- [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
+- [Next.js with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
+
+## Links
+
 - [GitHub Repository](https://github.com/lingui/swc-plugin)
 - [NPM Package](https://www.npmjs.com/package/@lingui/swc-plugin)
