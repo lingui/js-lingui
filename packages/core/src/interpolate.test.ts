@@ -177,4 +177,11 @@ describe("interpolate", () => {
       })
     })
   })
+
+  it("should not crash on a unicode sequences", () => {
+    const cache = compile("Hey {name}!")
+    expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
+      "Hey Joeª!"
+    )
+  })
 })

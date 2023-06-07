@@ -1,6 +1,7 @@
 import { CompiledMessage, Formats, Locales, Values } from "./i18n"
 import { date, number, plural } from "./formats"
 import { isString } from "./essentials"
+import unraw from "unraw"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
 
@@ -92,8 +93,12 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    if (isString(result) && UNICODE_REGEX.test(result))
-      return JSON.parse(`"${result.trim()}"`)
+    if (isString(result) && UNICODE_REGEX.test(result)) {
+      // convert raw unicode sequences back to normal strings
+      // note JSON.parse hack is not working as you might expect https://stackoverflow.com/a/57560631/2210610
+      // that's why special library for that purpose is used
+      return unraw(result.trim())
+    }
     if (isString(result)) return result.trim()
     return result
   }

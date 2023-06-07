@@ -54,7 +54,8 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "4.2.0"
+    "@lingui/message-utils": "4.2.0",
+    "unraw": "^2.0.1"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
