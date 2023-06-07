@@ -24,7 +24,6 @@ jobs:
           always-auth: true
           node-version: 16
           cache: 'yarn'
-          scope: '@lingui'
 
       - name: Install dependencies if needed
         run: yarn install
@@ -33,6 +32,16 @@ jobs:
         run: |
           git switch -c "pull-request"
           npm i -g {verdaccio,verdaccio-auth-memory,verdaccio-memory}
-          nohup verdaccio --config .github/verdaccio/config.yaml &>mktemp &
+          nohup verdaccio --config .github/verdaccio/config.yaml &>verdaccio.log &
           yarn verdaccio:release
-          yarn verdaccio:integration
+
+      - name: Run tests in create-react-app
+        run: |
+          cp ./.github/verdaccio/.yarnrc.yml ./examples/create-react-app/.yarnrc.yml
+          cd ./examples/create-react-app
+          yarn up "@lingui/*"
+          yarn test:ci
+
+      - name: Print Verdaccio Log
+        if: ${{ failure() }}
+        run: cat ./verdaccio.log
