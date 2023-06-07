@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/lingui/js-lingui/compare/v4.2.0...v4.2.1) (2023-06-07)
+
+### Bug Fixes
+
+- **core:** don't crash on escaped unicode symbols in messages ([#1692](https://github.com/lingui/js-lingui/issues/1692)) ([461c2fc](https://github.com/lingui/js-lingui/commit/461c2fc533647a877ea3a9b14e81544049e4e2b2))
+
 # [4.2.0](https://github.com/lingui/js-lingui/compare/v4.1.2...v4.2.0) (2023-05-26)
 
 ### Bug Fixes
