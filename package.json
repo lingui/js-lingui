@@ -99,7 +99,7 @@
     {
       "path": "./packages/core/dist/index.mjs",
       "import": "{ i18n }",
-      "limit": "2 kB"
+      "limit": "3 kB"
     },
     {
       "path": "./packages/detect-locale/dist/index.mjs",

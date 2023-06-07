@@ -2729,6 +2729,7 @@ __metadata:
     "@lingui/jest-mocks": "*"
     "@lingui/message-utils": 4.2.0
     unbuild: ^1.1.2
+    unraw: ^2.0.1
   languageName: unknown
   linkType: soft
 
@@ -14360,6 +14361,13 @@ __metadata:
   version: 2.0.0
   resolution: "universalify@npm:2.0.0"
   checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
+  languageName: node
+  linkType: hard
+
+"unraw@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "unraw@npm:2.0.1"
+  checksum: af9a9d2f6e420cb4f52fe2f1f5982e6b0be95da640d6ae8d6d9ff631d864771793cb9fe7e2a16ef1ce631b94065f4438e7bd7f1701076fc69296edc4e704d42f
   languageName: node
   linkType: hard
 
