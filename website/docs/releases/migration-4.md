@@ -108,7 +108,7 @@ Due to the changes caused by hash-based message ID feature described earlier, th
 
 Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
 ```tsx
-import { t } from "@lingui/macro"
+import { msg } from "@lingui/macro"
 import { useLingui } from "@lingui/react"
 
 const myMsg = msg`Hello world!`
