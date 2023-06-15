@@ -327,7 +327,7 @@ export function Welcome() {
 // ❌ Bad! This code won't work either because the reference to i18n does not change
 export function Welcome() {
   const { i18n } = useLingui();
-  
+
   const buggyWelcome = useMemo(() => {
     return i18n._(welcomeMessage);
   }, [i18n]);
