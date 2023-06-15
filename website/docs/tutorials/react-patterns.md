@@ -301,15 +301,19 @@ export default function StatusDisplay({ statusCode }) {
 
 ## Memoization pitfall
 
-In the following contrived example, the welcome message will not be updated when locale changes.
+In the following contrived example, we document how welcome message will or will not be updated when locale changes.
 
-This is expected behavior, because the `useMemo` has no dependencies. In order for this to work as expected, the `useMemo` needs to depend on an `i18n` instance. Specifically, it needs to depend on `i18n` from the `useLingui` hook, as the reference to the `i18n` object from `@lingui/core` does not change throughout your app's lifetime.
+The documented behavior is expected, because of how `useMemo` dependencies work. In order for translations to update, the `useMemo` needs to depend on the i18n context.
+
+We acknowledge that this is not intuitive, and we're open to accepting a solution to make this easier.
+
+Please also note that `useMemo` is meant as a performance optimization in React and you probably don't need to memoize your translations.
 
 ```jsx
 import { msg } from "@lingui/macro";
 import { i18n } from "@lingui/core"
 
-const welcomeMessage = msg`Open`;
+const welcomeMessage = msg`Welcome!`;
 
 // ❌ Bad! This code won't work
 export function Welcome() {
@@ -320,13 +324,24 @@ export function Welcome() {
   return <div>{buggyWelcome}</div>;
 }
 
-// ✅ Good! `useMemo` has i18n object in the dependency
+// ❌ Bad! This code won't work either because the reference to i18n does not change
 export function Welcome() {
   const { i18n } = useLingui();
-
-  const welcome = useMemo(() => {
+  
+  const buggyWelcome = useMemo(() => {
     return i18n._(welcomeMessage);
   }, [i18n]);
+
+  return <div>{buggyWelcome}</div>;
+}
+
+// ✅ Good! `useMemo` has i18n context in the dependency
+export function Welcome() {
+  const linguiCtx = useLingui();
+
+  const welcome = useMemo(() => {
+    return linguiCtx.i18n._(welcomeMessage);
+  }, [linguiCtx]);
 
   return <div>{welcome}</div>;
 }
