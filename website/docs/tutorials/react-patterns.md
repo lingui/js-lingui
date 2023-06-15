@@ -307,7 +307,7 @@ The documented behavior is expected, because of how `useMemo` dependencies work.
 
 We acknowledge that this is not intuitive, and we're open to accepting a solution to make this easier.
 
-Please also note that `useMemo` is meant as a performance optimization in React and you probably don't need to memoize your translations.
+Please also note that `useMemo` is meant as a performance optimization in React and you probably don't need to memoize your translations. Additionally, this issue is not present when using the `Trans` component which we recommend to use when possible.
 
 ```jsx
 import { msg } from "@lingui/macro";
