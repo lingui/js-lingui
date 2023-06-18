@@ -1,3 +1,4 @@
+import { isDate } from "util/types"
 import { isString } from "./essentials"
 import { Locales } from "./i18n"
 
@@ -22,6 +23,23 @@ export function date(
   )
 
   return formatter.format(isString(value) ? new Date(value) : value)
+}
+
+export function relative(
+  locales: Locales,
+  value: number,
+  unit: Intl.RelativeTimeFormatUnit,
+  format?: Intl.RelativeTimeFormatOptions
+): string {
+  if ((isDate(value) || isString(value)) && unit) throw new Error('with units you should use numbers as values')
+  
+  const _locales = normalizeLocales(locales)
+  const formatter = getMemoized(
+    () => cacheKey("relative", _locales, format),
+    () => new Intl.RelativeTimeFormat(_locales, format)
+  )
+
+  return formatter.format(value, unit)
 }
 
 export function number(
