@@ -7,6 +7,10 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
 
+#. js-lingui-explicit-id
+msgid "static"
+msgstr "Static message"
+
 #. js-lingui:pluralize_on=someCount
 #. js-lingui-explicit-id
 msgid "message_with_id"
