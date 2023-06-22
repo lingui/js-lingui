@@ -9,7 +9,7 @@ If you're looking for a working solution, check out the [sources available here]
 :::
 
 :::caution Note
-This tutorial assumes you use Lingui 4.x and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
+This tutorial assumes you use Lingui >= 4.2 and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
 
 `@lingui/core` depends on several apis exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](https://formatjs.io/docs/polyfills).
@@ -22,14 +22,6 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase your bundle size. At the same time, modern i18n libraries rely on its presence.
 
 Follow the polyfill installation instructions before proceeding further.
-
-## Metro bundler support
-
-Lingui packages make use of the `exports` keyword in `package.json`. Metro bundler versions < 0.76.2 (before React Native 0.72) do not support this feature.
-
-There are two ways to make Metro understand the exports. With the first approach, make sure that (1) you're running metro 0.76.2 or newer (if necessary, use yarn resolutions or npm overrides) and (2) `unstable_enablePackageExports` is enabled in your `metro.config.js` file. See the [example](https://github.com/lingui/js-lingui/tree/main/examples/react-native/metro.config.js). Note that future versions of metro will have this option enabled by default so there will be no need to configure this.
-
-Alternatively, you can [configure the resolver](https://github.com/lingui/js-lingui/issues/1633#issuecomment-1532243227).
 
 ## Example component
 
@@ -183,6 +175,8 @@ const showDeleteConfirmation = () => {
 
 The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
 
+However, we don't recommend that you change the locale like this, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
+
 ## Choosing the default locale
 
 Lingui does not ship with functionality that would allow you to determine the best locale you should activate by default.
@@ -231,6 +225,7 @@ The important point here is that the sentence isn't broken into pieces but remai
 
 ## Further reading
 
+-   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
 -   [`@lingui/react` reference documentation](/docs/ref/react.md)
 -   [`@lingui/cli` reference documentation](/docs/ref/cli.md)
 -   [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
