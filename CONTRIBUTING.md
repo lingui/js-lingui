@@ -52,7 +52,7 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    cd js-lingui
    ```
 
-2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) instead of Lerna, so running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
+2. Install development packages. This project uses [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/), so running `yarn` installs all development packages and also dependencies for all workspaces (inside `packages/*`).
 
    ```sh
    yarn
@@ -74,7 +74,11 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
 
 ### Using development version in your project
 
-After you successfully fix a bug or add a new feature, you most probably want to test it in your project as soon as possible.
+After you successfully fix a bug or add a new feature, you most probably want to test it in a real-world project as soon as possible.
+
+There are currently two ways to do this: first is a generic way described in the next paragraph, second uses the [React Native example](./examples/react-native).
+
+#### Testing changes using Verdaccio
 
 `jsLingui` uses [verdaccio](https://verdaccio.org/), a lightweight local NPM registry, to install local build of packages in examples. You can do the same in your project:
 
@@ -118,6 +122,12 @@ After you successfully fix a bug or add a new feature, you most probably want to
     ```sh
     npm config set registry https://registry.npmjs.org/
     ```
+
+#### Testing changes using the React Native example
+
+As an alternative to Verdaccio, you can use the example app for React Native included in the repo and test out the changes on iOS or Android.
+
+The process is fairly straightforward, and is described in the [React Native example](./examples/react-native) readme.
 
 ### Finalize changes
 

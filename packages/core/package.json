@@ -5,6 +5,7 @@
   "description": "I18n tools for javascript",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
+  "react-native": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "author": {
     "name": "Tomáš Ehrlich",
