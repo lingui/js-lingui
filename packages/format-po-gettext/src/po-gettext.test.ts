@@ -32,6 +32,9 @@ describe("po-gettext format", () => {
 
   it("should convert ICU plural messages to gettext plurals", () => {
     const catalog: CatalogType = {
+      static: {
+        translation: "Static message",
+      },
       message_with_id_and_octothorpe: {
         message: "{count, plural, one {Singular} other {Number is #}}",
         translation: "{count, plural, one {Singular} other {Number is #}}",
