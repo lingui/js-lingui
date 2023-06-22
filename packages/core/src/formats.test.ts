@@ -1,4 +1,4 @@
-import { date, number } from "./formats"
+import { date, number, relative } from "./formats"
 
 describe("@lingui/core/formats", () => {
   describe("date", () => {
@@ -27,6 +27,35 @@ describe("@lingui/core/formats", () => {
       ).toBe("niedziela, 5 marca 2023")
     })
   })
+
+  describe("relative", () => {
+    it("should support number as input", () => {
+      expect(relative(["en"], 0, "day")).toBe("in 0 days");
+      expect(relative(["en"], 1, "day")).toBe("in 1 day");
+      expect(relative(["en"], -1, "day")).toBe("1 day ago");
+    });
+  
+    it("should pass format options", () => {
+      expect(
+        relative(["en"], 0, "day", { numeric: "auto" })
+      ).toBe("today");
+      expect(
+        relative(["en"], 1, "day", { numeric: "auto" })
+      ).toBe("tomorrow");
+      expect(
+        relative(["en"], 1, "day", { numeric: "always" })
+      ).toBe("in 1 day");
+      expect(
+        relative(["en"], -1, "day", { numeric: "always" })
+      ).toBe("1 day ago");
+    });
+  
+    it("should respect passed locale", () => {
+      expect(
+        relative(["pl"], 1, "day", { numeric: "always" })
+      ).toBe("za 1 dzień");
+    });
+  });
 
   describe("number", () => {
     it("should pass format options", () => {
