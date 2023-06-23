@@ -30,43 +30,21 @@ Instead of manually sending and receiving many emails and fixing the inconsisten
 
 ## Benefits of these tools
 
--   **Synchronization**: unique `yarn sync` or `npm run sync` command to synchronize your project with all your translators and update your local `.po` and `.js` files with the latest translations.
--   **Translation Interface**: provide a professional and flexible interface to translators.
--   **Translation Memory**: assist translators by suggesting previously translated sentences that are similar.
--   **Machine Translation**: auto-translate with Google Translate, DeepL, etc. and human-proofread later.
--   **Smart Plural Management**: allows to translate `Message` and `Messages` instead of `{count, plural, one {Message} other {Messages}}`.
--   **Consistency**: assist translators with `{variable}` interpolation and HTML formatting.
-
-## Configure your project
-
-To synchronize your current application with an online tool, you just have to add these lines at the end of your `lingui.config.js` configuration file:
-
-```js title="lingui.config.js"
-/** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
-  [...]
-  service: {
-    name: "ToolName",
-    apiKey: "abcdefghijklmnopqrstuvwxyz012345"
-  }
-}
-
-```
-
-The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
+- **Synchronization**: unique `yarn sync` or `npm run sync` command to synchronize your project with all your translators and update your local `.po` and `.js` files with the latest translations.
+- **Translation Interface**: provide a professional and flexible interface to translators.
+- **Translation Memory**: assist translators by suggesting previously translated sentences that are similar.
+- **Machine Translation**: auto-translate with Google Translate, DeepL, etc. and human-proofread later.
+- **Smart Plural Management**: allows to translate `Message` and `Messages` instead of `{count, plural, one {Message} other {Messages}}`.
+- **Consistency**: assist translators with `{variable}` interpolation and HTML formatting.
 
 ## List of available tools
 
 ### [Crowdin](https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev)
 
--   Documentation: [Crowdin](/docs/tools/crowdin.md)
--   GitHub: <https://github.com/crowdin>
+- Documentation: [Crowdin](/docs/tools/crowdin.md)
+- GitHub: <https://github.com/crowdin>
 
 ### [Translation.io](https://translation.io/lingui)
 
--   Documentation: [translation-io](/docs/tools/translation-io.md)
--   GitHub: <https://github.com/translation/lingui>
-
-## Adding a new tool to Lingui
-
-If you want to integrate a new tool with Lingui, you have to add your synchronization workflow in a new file located in [this directory](https://github.com/lingui/js-lingui/tree/main/packages/cli/src/services) and then create a pull request on the main Lingui project.
+- Documentation: [translation-io](/docs/tools/translation-io.md)
+- GitHub: <https://github.com/translation/lingui>
