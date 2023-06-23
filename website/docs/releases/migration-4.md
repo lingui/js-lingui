@@ -49,7 +49,7 @@ const message = t`My Message`
 ```
 you will benefit significantly from this change. Your bundles will become smaller because the source message will be removed from the bundle in favor of a short generated ID.
 
-If you use natural language as an ID, you don't need to do anything special to migrate.
+If you use natural language as an ID and PO file catalog format, you don't need to do anything special to migrate.
 
 However, if you use explicit IDs, like this:
 
@@ -67,7 +67,7 @@ msgid "custom.id"
 msgstr ""
 ```
 
-You need to add this comment manually to all your messages with explicit IDs.
+You need to add this comment manually to all your messages with explicit IDs or you can try a [migration script](https://gist.github.com/thekip/7ef13a5f6bae83f5550166a51a1e426e) that will convert explicit IDs from v3 catalogs to v4.
 
 If you exclusively use explicit IDs in your project, you may consider enabling a different processing mode for the PO formatter. This can be done in your Lingui config file:
 
