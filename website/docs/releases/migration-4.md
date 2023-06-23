@@ -49,7 +49,7 @@ const message = t`My Message`
 ```
 you will benefit significantly from this change. Your bundles will become smaller because the source message will be removed from the bundle in favor of a short generated ID.
 
-If you use natural language as an ID, you don't need to do anything special to migrate.
+If you use natural language as an ID and PO file catalog format, you don't need to do anything special to migrate.
 
 However, if you use explicit IDs, like this:
 
@@ -60,15 +60,17 @@ const message = t({id: "my.message", message: `My Message`})
 there are some changes you need to make to your catalogs to migrate properly. In order to distinguish between generated IDs and explicit IDs in the PO format, Lingui adds a special comment for messages with explicit IDs called `js-lingui-explicit-id`.
 
 Here's an example of the comment in a PO file:
+
 ```gettext
 #. js-lingui-explicit-id
 msgid "custom.id"
 msgstr ""
 ```
 
-You need to add this comment manually to all your messages with explicit IDs.
+You need to add this comment manually to all your messages with explicit IDs or you can try a [migration script](https://gist.github.com/thekip/7ef13a5f6bae83f5550166a51a1e426e) that will convert explicit IDs from v3 catalogs to v4.
 
 If you exclusively use explicit IDs in your project, you may consider enabling a different processing mode for the PO formatter. This can be done in your Lingui config file:
+
 ```ts title="lingui.config.ts"
 import { formatter } from '@lingui/format-po'
 import { LinguiConfig } from '@lingui/config'
@@ -88,6 +90,12 @@ Also, we've added a possibility to provide a context for the message. For more d
 The context feature affects the message ID generation and adds the `msgctxt` parameter in case of the PO catalog format extraction.
 
 This also affects the `orderBy` with `messageId` as now the generated id is used when custom id is absent. To avoid confusion, we switched the default `orderBy` to use the source message (`message`) instead.
+
+#### Message IDs in JSON [minimal](https://lingui.dev/ref/catalog-formats#json) and [raw](https://lingui.dev/ref/catalog-formats#lingui-raw) catalog formats
+
+Prior to v4, these formats used the source message as the message ID. Now they use the generated ID instead. So if you use these formats, you'll need to update the message IDs in your catalogs to the new hash-based IDs.
+
+[Here](https://gist.github.com/andrii-bodnar/a4ae6c45b6d332c8201ab9e1fd25716e) is a script that can help to automate this process. See [#1700](https://github.com/lingui/js-lingui/issues/1700) for more details.
 
 ### Translation outside React components migration
 
