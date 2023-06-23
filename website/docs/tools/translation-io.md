@@ -110,6 +110,8 @@ The configuration file looks like this:
 }
 ```
 
+The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
+
 ### 3. Add the following scripts
 
 Add these lines to your `package.json` to make your life easier.

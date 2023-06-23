@@ -82,7 +82,7 @@ npm install @crowdin/cli@3
 
 Add these lines to your `package.json` to make your life easier.
 
-```js title="package.json"
+```json title="package.json"
 {
   "scripts": {
     "crowdin": "crowdin",
