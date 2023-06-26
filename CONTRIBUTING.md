@@ -76,7 +76,7 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
 
 After you successfully fix a bug or add a new feature, you most probably want to test it in a real-world project as soon as possible.
 
-There are currently two ways to do this: first is a generic way described in the next paragraph, second uses the [React Native example](./examples/react-native).
+There are two documented ways to do this: first is a generic way described in the next paragraph, second uses the [React Native example](./examples/react-native).
 
 #### Testing changes using Verdaccio
 
@@ -127,7 +127,7 @@ There are currently two ways to do this: first is a generic way described in the
 
 As an alternative to Verdaccio, you can use the example app for React Native included in the repo and test out the changes on iOS or Android.
 
-The process is fairly straightforward, and is described in the [React Native example](./examples/react-native) readme.
+The process is described in the [React Native example](./examples/react-native) readme.
 
 ### Finalize changes
 
