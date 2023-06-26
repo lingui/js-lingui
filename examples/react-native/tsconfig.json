@@ -1,9 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
-    "paths": {
-      "@lingui/react": ["../../packages/react/src/index"]
-    }
+    "strict": true
   }
 }
