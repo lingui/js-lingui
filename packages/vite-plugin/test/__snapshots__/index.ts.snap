@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`vite-plugin should not report error when macro correctly used 1`] = `Ola`;
+
 exports[`vite-plugin should return compiled catalog 1`] = `
 {
   mVmaLu: [

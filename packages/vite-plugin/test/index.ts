@@ -16,6 +16,27 @@ describe("vite-plugin", () => {
 
     expect((await mod.load()).messages).toMatchSnapshot()
   })
+
+  skipOnWindows(
+    "should report error when macro used without a plugin",
+    async () => {
+      expect.assertions(1)
+      try {
+        await runVite(`no-macro-error/vite.config.ts`)
+      } catch (e) {
+        expect(e.stderr).toContain(
+          'The macro you imported from "@lingui/macro" is being executed outside the context of compilation.'
+        )
+      }
+    }
+  )
+  skipOnWindows(
+    "should not report error when macro correctly used",
+    async () => {
+      const mod = await runVite(`macro-usage/vite.config.ts`)
+      expect(await mod.load()).toMatchSnapshot()
+    }
+  )
 })
 
 async function runVite(configPath: string) {
@@ -36,27 +57,29 @@ async function runVite(configPath: string) {
     ` build -c ` +
     path.resolve(__dirname, configPath) +
     ` --emptyOutDir --outDir ${outDir}`
-  await exec(command)
+  await exec(command, path.dirname(path.resolve(__dirname, configPath)))
 
   return await import(path.resolve(outDir, "bundle.js"))
 }
 
-function exec(cmd: string) {
-  const _options = {
-    env: process.env,
-  }
+function exec(cmd: string, cwd: string) {
   return new Promise((resolve, reject) => {
-    _exec(cmd, _options, (error, stdout, stderr) => {
-      stdout = stdout.trim()
-      stderr = stderr.trim()
+    _exec(
+      cmd,
+      {
+        env: process.env,
+        cwd,
+      },
+      (error, stdout, stderr) => {
+        stdout = stdout.trim()
+        stderr = stderr.trim()
 
-      if (error === null) {
-        resolve({ stdout, stderr })
-      } else {
-        reject({ error, stdout, stderr })
-        console.error(stdout)
-        console.error(stderr)
+        if (error === null) {
+          resolve({ stdout, stderr })
+        } else {
+          reject({ error, stdout, stderr })
+        }
       }
-    })
+    )
   })
 }
