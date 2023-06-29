@@ -18,8 +18,9 @@ Default rendering component can be set using `defaultComponent` prop in [`I18nPr
 | Prop name   | Type                                      | Description                                    |
 |-------------| ----------------------------------------- |------------------------------------------------|
 | `className` | string                                    | Class name to be added to `<span>` element     |
-| `render`    | Function(props) -> Element \| `null`   | Custom render callback to render translation        |
-| `component` | Component \| `null`                         | Custom component to render translation |
+| `render`    | Function(props) -> Element \| `null`      | Custom render callback to render translation   |
+| `component` | Component \| `null`                       | Custom component to render translation         |
+| `comment`   | string                                    | Comment picked up by extractor to provide translation context |
 
 `className` is used only for built-in components (when *render* is string).
 
@@ -153,7 +154,7 @@ import { Trans } from "@lingui/macro"
 ```
 :::
 
-It's also possible to use `Trans` component directly without macros. In that case, `id` identifies the message being translated. `values` and `components` are arguments and components used for formatting translation:
+It's also possible to use `Trans` component directly without macros. In that case, `id` identifies the message being translated. `values` and `components` are arguments and components used for formatting translation. `comment` helps add context for translators:
 
 ```jsx
 <Trans id="my.message" message="Hello World"/>
@@ -162,6 +163,12 @@ It's also possible to use `Trans` component directly without macros. In that cas
   id="greeting"
   message="Hello {name}"
   values={{ name: 'Arthur' }}
+/>
+
+<Trans
+  id="hello.world"
+  message="Hello world"
+  comment="a message that says hi to the world"
 />
 
 // number of tag corresponds to index in `components` prop

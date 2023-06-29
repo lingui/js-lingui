@@ -27,6 +27,7 @@ export type TransProps = {
   values?: Record<string, unknown>
   components?: { [key: string]: React.ElementType | any }
   formats?: Record<string, unknown>
+  comment?: string
   children?: React.ReactNode
 } & TransRenderCallbackOrComponent
 
