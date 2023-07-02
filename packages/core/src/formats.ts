@@ -1,4 +1,3 @@
-import { isDate } from "util/types"
 import { isString } from "./essentials"
 import { Locales } from "./i18n"
 
