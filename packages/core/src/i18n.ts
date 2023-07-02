@@ -1,6 +1,6 @@
 import { interpolate, UNICODE_REGEX } from "./interpolate"
 import { isString, isFunction } from "./essentials"
-import { date, number } from "./formats"
+import { date, number, relative } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
@@ -258,6 +258,10 @@ export class I18n extends EventEmitter<Events> {
 
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
     return date(this._locales || this._locale, value, format)
+  }
+
+  relative(value: number, unit: Intl.RelativeTimeFormatUnit, format?: Intl.RelativeTimeFormatOptions): string {
+    return relative(this._locales || this._locale, value, unit, format)
   }
 
   number(value: number, format?: Intl.NumberFormatOptions): string {
