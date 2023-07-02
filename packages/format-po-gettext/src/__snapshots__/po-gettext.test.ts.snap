@@ -73,6 +73,10 @@ msgstr ""
 "Plural-Forms: \\n"
 
 #. js-lingui-explicit-id
+msgid "static"
+msgstr "Static message"
+
+#. js-lingui-explicit-id
 #. js-lingui:pluralize_on=count
 msgid "message_with_id_and_octothorpe"
 msgid_plural "message_with_id_and_octothorpe_plural"
@@ -160,6 +164,19 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
     obsolete: false,
     origin: [],
     translation: ,
+  },
+  static: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: Static message,
   },
 }
 `;

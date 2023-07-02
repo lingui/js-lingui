@@ -54,7 +54,7 @@ function serializePlurals(
   const icuMessage = message.message
 
   if (!icuMessage) {
-    return
+    return item
   }
 
   const _simplifiedMessage = icuMessage.replace(LINE_ENDINGS, " ")

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/lingui/js-lingui/compare/v4.2.1...v4.3.0) (2023-06-29)
+
+### Features
+
+- **vite-plugin:** report user-friendly error when macro used without transformation ([#1720](https://github.com/lingui/js-lingui/issues/1720)) ([53f6a7c](https://github.com/lingui/js-lingui/commit/53f6a7c8adccb78536c3283bad2d9c7752d58ca9))
+
 ## [4.2.1](https://github.com/lingui/js-lingui/compare/v4.2.0...v4.2.1) (2023-06-07)
 
 **Note:** Version bump only for package @lingui/vite-plugin

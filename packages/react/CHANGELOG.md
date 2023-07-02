@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/lingui/js-lingui/compare/v4.2.1...v4.3.0) (2023-06-29)
+
+### Features
+
+- allow comment prop on react Trans component ([#1718](https://github.com/lingui/js-lingui/issues/1718)) ([3477c32](https://github.com/lingui/js-lingui/commit/3477c321b05d164f86e00bbd5dfafe8cc48e0c6c))
+
 ## [4.2.1](https://github.com/lingui/js-lingui/compare/v4.2.0...v4.2.1) (2023-06-07)
 
 **Note:** Version bump only for package @lingui/react

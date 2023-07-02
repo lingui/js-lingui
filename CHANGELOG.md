@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/lingui/js-lingui/compare/v4.2.1...v4.3.0) (2023-06-29)
+
+### Bug Fixes
+
+- **format-po-gettext:** bad return during mapping with `serializePlurals` ([#1707](https://github.com/lingui/js-lingui/issues/1707)) ([993bd2a](https://github.com/lingui/js-lingui/commit/993bd2ad5c864fc2fde89986feb7fe55ef55af92))
+
+### Features
+
+- allow comment prop on react Trans component ([#1718](https://github.com/lingui/js-lingui/issues/1718)) ([3477c32](https://github.com/lingui/js-lingui/commit/3477c321b05d164f86e00bbd5dfafe8cc48e0c6c))
+- **extractor:** expose extractFromFileWithBabel function for better flexibility ([#1719](https://github.com/lingui/js-lingui/issues/1719)) ([43486dc](https://github.com/lingui/js-lingui/commit/43486dc2bfa834bbe4d197f9e8cc3145c50d9d97))
+- **vite-plugin:** report user-friendly error when macro used without transformation ([#1720](https://github.com/lingui/js-lingui/issues/1720)) ([53f6a7c](https://github.com/lingui/js-lingui/commit/53f6a7c8adccb78536c3283bad2d9c7752d58ca9))
+
 ## [4.2.1](https://github.com/lingui/js-lingui/compare/v4.2.0...v4.2.1) (2023-06-07)
 
 ### Bug Fixes
