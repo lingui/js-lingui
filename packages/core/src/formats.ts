@@ -31,8 +31,6 @@ export function relative(
   unit: Intl.RelativeTimeFormatUnit,
   format?: Intl.RelativeTimeFormatOptions
 ): string {
-  if ((isDate(value) || isString(value)) && unit) throw new Error('with units you should use numbers as values')
-  
   const _locales = normalizeLocales(locales)
   const formatter = getMemoized(
     () => cacheKey("relative", _locales, format),
