@@ -3,6 +3,7 @@ import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
 import { setupI18n } from "@lingui/core"
+import { useMemo } from "react"
 
 describe("I18nProvider", () => {
   it(
@@ -187,5 +188,40 @@ describe("I18nProvider", () => {
       <I18nProvider i18n={i18n}>{child}</I18nProvider>
     )
     expect(getByTestId("child")).toBeTruthy()
+  })
+
+  it("using the _ function from useLingui renders fresh translations even when memoized", () => {
+    const greetingId = "greeting"
+    const i18n = setupI18n({
+      locale: "en",
+      messages: {
+        en: {
+          [greetingId]: "Hello World",
+        },
+        cs: {
+          [greetingId]: "Ahoj světe",
+        },
+      },
+    })
+
+    const ComponentWithMemo = () => {
+      const { _ } = useLingui()
+      const message = useMemo(() => _(greetingId), [_])
+      return <div>{message}</div>
+    }
+
+    const { getByText } = render(
+      <I18nProvider i18n={i18n}>
+        <ComponentWithMemo />
+      </I18nProvider>
+    )
+
+    expect(getByText("Hello World")).toBeTruthy()
+
+    act(() => {
+      i18n.activate("cs")
+    })
+
+    expect(getByText("Ahoj světe")).toBeTruthy()
   })
 })
