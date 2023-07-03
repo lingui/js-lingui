@@ -13,7 +13,7 @@ In general, there are 6 plural forms (taken from [CLDR Plurals](https://cldr.uni
 
 Only the last one, *other*, is required because it's the only common plural form used in all languages.
 
-All other plural forms depends on language. For example English has only two: *one* and *other* (1 book vs. 2 books). In Czech, we have four: *one*, *few*, *many* and *other* (1 kniha, 2 knihy, 1,5 knihy, 5 knih). Some languages have even more, like Arabic.
+All other plural forms depends on language. For example, English has only two: *one* and *other* (1 book vs. 2 books). In Czech, we have four: *one*, *few*, *many* and *other* (1 kniha, 2 knihy, 1,5 knihy, 5 knih). Some languages have even more, like Arabic.
 
 ## Using plural forms
 
@@ -29,6 +29,9 @@ plural(numBooks, {
 ```
 
 When `numBooks == 1`, this will render as *1 book* and for `numBook == 2` it will be *2 books*.
+
+Interestingly, for `numBooks == -1`, it will be *-1 book*. This is because the "one" plural form also applies to -1. It is therefore important to remember that the plural forms (such as "one" or "two") do not represent the numbers themselves, but rather *categories* of numbers.
+If you want to specify a message for an exact number, use [`exact matches`](/ref/message-format#plurals).
 
 > Funny fact for non-English speakers: In English, 0 uses plural form too, *0 books*.
 
@@ -85,9 +88,9 @@ The important thing is that *we don't need to change our code to support languag
 
 4.  Finally, message is formatted using Czech plural rules.
 
-## Using other language than English
+## Source code in language other than English
 
-That works perfectly fine! Just learn what [plural forms](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) your languages has and then you can use them. Here's the example in Czech:
+As mentioned above, as developers, we have to know and use only plural forms for the source language. Go see what [plural forms](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) your languages has and then you can use them. Here's the example in Czech:
 
 ```js
 plural(numBooks, {
