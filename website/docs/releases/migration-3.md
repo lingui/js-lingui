@@ -103,7 +103,7 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 ```
 
 :::caution Note
-You can still use [`i18n.load`](</docs/ref/core.md#i18n.load(catalogs)>) to load all catalogs at once:
+You can still use [`i18n.load`](/docs/ref/core.md#i18n.load(catalogs)) to load all catalogs at once:
 
 ```jsx
 // i18n.js
