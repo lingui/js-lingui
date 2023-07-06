@@ -8,6 +8,7 @@ export type {
   LocaleData,
   Locale,
   Locales,
+  MessageOptions,
 } from "./i18n"
 
 // Default i18n object

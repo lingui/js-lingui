@@ -8,6 +8,7 @@ import {
 } from "@lingui/react"
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
+import { PropsWithChildren } from "react"
 
 describe("Trans component", () => {
   /*
@@ -28,10 +29,12 @@ describe("Trans component", () => {
     },
   })
 
-  const renderWithI18n = (node) =>
+  const renderWithI18n = (node: React.ReactNode) =>
     render(<I18nProvider i18n={i18n}>{node}</I18nProvider>)
-  const text = (node) => renderWithI18n(node).container.textContent
-  const html = (node) => renderWithI18n(node).container.innerHTML
+  const text = (node: React.ReactNode) =>
+    renderWithI18n(node).container.textContent
+  const html = (node: React.ReactNode) =>
+    renderWithI18n(node).container.innerHTML
 
   /*
    * Tests
@@ -225,7 +228,9 @@ describe("Trans component", () => {
   })
 
   it("should render translation inside custom component", () => {
-    const Component = (props) => <p className="lead">{props.children}</p>
+    const Component = (props: PropsWithChildren) => (
+      <p className="lead">{props.children}</p>
+    )
     const html1 = html(<Trans component={Component} id="Original" />)
     const html2 = html(
       <Trans
@@ -279,7 +284,7 @@ describe("Trans component", () => {
           message="Default"
           render={(props) => {
             spy(props)
-            return null
+            return <></>
           }}
         />
       )
@@ -384,12 +389,12 @@ describe("Trans component", () => {
         </I18nProvider>
       )
 
-      expect(markup.queryByTestId("id").innerHTML).toEqual("ID")
-      expect(markup.queryByTestId("message").innerHTML).toEqual("Some message")
-      expect(markup.queryByTestId("translation").innerHTML).toEqual(
+      expect(markup.queryByTestId("id")?.innerHTML).toEqual("ID")
+      expect(markup.queryByTestId("message")?.innerHTML).toEqual("Some message")
+      expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
         "Translation"
       )
-      expect(markup.queryByTestId("is-translated").innerHTML).toEqual("true")
+      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("true")
     })
 
     it("should pass isTranslated: false if no translation", () => {
@@ -399,11 +404,11 @@ describe("Trans component", () => {
         </I18nProvider>
       )
 
-      expect(markup.queryByTestId("id").innerHTML).toEqual("NO_ID")
-      expect(markup.queryByTestId("translation").innerHTML).toEqual(
+      expect(markup.queryByTestId("id")?.innerHTML).toEqual("NO_ID")
+      expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
         "Some message"
       )
-      expect(markup.queryByTestId("is-translated").innerHTML).toEqual("false")
+      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("false")
     })
   })
 })
