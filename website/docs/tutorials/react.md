@@ -7,46 +7,45 @@ Through this tutorial, we'll learn how to add internationalization (i18n) to an 
 We're going to translate the following app:
 
 ```jsx title="src/index.js"
-import React from 'react'
-import { render } from 'react-dom'
-import Inbox from './Inbox'
+import React from "react";
+import { render } from "react-dom";
+import Inbox from "./Inbox";
 
-const App = () => <Inbox />
+const App = () => <Inbox />;
 
-render(<App />, document.getElementById('root'))
+render(<App />, document.getElementById("root"));
 ```
 
 ```jsx title="src/Inbox.js"
-import React from 'react'
+import React from "react";
 
 export default function Inbox() {
-   const messages = [{}, {}]
-   const messagesCount = messages.length
-   const lastLogin = new Date()
-   const markAsRead = () => { alert('Marked as read.') }
+  const messages = [{}, {}];
+  const messagesCount = messages.length;
+  const lastLogin = new Date();
+  const markAsRead = () => {
+    alert("Marked as read.");
+  };
 
-   return (
-      <div>
-        <h1>Message Inbox</h1>
+  return (
+    <div>
+      <h1>Message Inbox</h1>
 
-        <p>
-          See all <a href="/unread">unread messages</a>{" or "}
-          <a onClick={markAsRead}>mark them</a> as read.
-        </p>
+      <p>
+        See all <a href="/unread">unread messages</a>
+        {" or "}
+        <a onClick={markAsRead}>mark them</a> as read.
+      </p>
 
-        <p>
-          {
-            messagesCount === 1
-              ? `There's ${messagesCount} message in your inbox.`
-              : `There are ${messagesCount} messages in your inbox.`
-          }
-        </p>
+      <p>
+        {messagesCount === 1
+          ? `There's ${messagesCount} message in your inbox.`
+          : `There are ${messagesCount} messages in your inbox.`}
+      </p>
 
-        <footer>
-          Last login on {lastLogin.toLocaleDateString()}.
-        </footer>
-      </div>
-   )
+      <footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
+    </div>
+  );
 }
 ```
 
@@ -67,24 +66,24 @@ In order to pass `i18n` around the I18nProvider wraps around React Context.
 Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/ref/react.md#i18nprovider):
 
 ```jsx title="src/index.js"
-import React from 'react'
-import { render } from 'react-dom'
+import React from "react";
+import { render } from "react-dom";
 
-import { i18n } from '@lingui/core'
-import { I18nProvider } from '@lingui/react'
-import { messages } from './locales/en/messages'
-import Inbox from './Inbox'
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import { messages } from "./locales/en/messages";
+import Inbox from "./Inbox";
 
-i18n.load('en', messages)
-i18n.activate('en')
+i18n.load("en", messages);
+i18n.activate("en");
 
 const App = () => (
   <I18nProvider i18n={i18n}>
     <Inbox />
   </I18nProvider>
-)
+);
 
-render(<App />, document.getElementById('root'))
+render(<App />, document.getElementById("root"));
 ```
 
 :::tip
@@ -95,10 +94,10 @@ Let's deal with language switching later... but if you're still curious, take a 
 
 ## Introducing internationalization
 
-Now we're finally going to *translate* our app. Actually, we aren't going to *translate* from one language to another right now. Instead, we're going to *prepare* our app for translation. This process is called *internationalization* and you should practice saying this word aloud until you're able to say it three times very quickly.
+Now we're finally going to _translate_ our app. Actually, we aren't going to _translate_ from one language to another right now. Instead, we're going to _prepare_ our app for translation. This process is called _internationalization_ and you should practice saying this word aloud until you're able to say it three times very quickly.
 
 :::note
-From now on, *internationalization* will be shortened to a common numeronym *i18n*.
+From now on, _internationalization_ will be shortened to a common numeronym _i18n_.
 :::
 
 Let's start with the basics - static messages. These messages don't have any variables, HTML or components inside. Just some text:
@@ -110,9 +109,11 @@ Let's start with the basics - static messages. These messages don't have any var
 All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.md#trans) macro:
 
 ```jsx
-import { Trans } from '@lingui/macro';
+import { Trans } from "@lingui/macro";
 
-<h1><Trans>Message Inbox</Trans></h1>
+<h1>
+  <Trans>Message Inbox</Trans>
+</h1>;
 ```
 
 ### Macros vs. Components
@@ -124,17 +125,17 @@ In general, macros are executed at compile time and they transform source code i
 Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
 ```jsx
-import { Trans } from '@lingui/macro';
+import { Trans } from "@lingui/macro";
 
-<Trans>Hello {name}</Trans>
+<Trans>Hello {name}</Trans>;
 ```
 
 And this is how the code is transformed:
 
 ```jsx
-import { Trans } from '@lingui/react';
+import { Trans } from "@lingui/react";
 
-<Trans id="OVaF9k" message="Hello {name}" values={{ name }} />
+<Trans id="OVaF9k" message="Hello {name}" values={{ name }} />;
 ```
 
 See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` and `message` props with a message in ICU MessageFormat syntax.
@@ -144,9 +145,9 @@ Another advantage of using macros is that all non-essential properties are dropp
 
 ```jsx
 // NODE_ENV=production
-import { Trans } from '@lingui/react';
+import { Trans } from "@lingui/react";
 
-<Trans id="OVaF9k" values={{ name }} />
+<Trans id="OVaF9k" values={{ name }} />;
 ```
 
 ### Extracting messages
@@ -171,11 +172,13 @@ We need here to fix the configuration. Create a `lingui.config.js` file:
 /** @type {import('@lingui/conf').LinguiConfig} */
 module.exports = {
   locales: ["cs", "en"],
-  catalogs: [{
-    path: "src/locales/{locale}/messages",
-    include: ["src"]
-  }]
-}
+  catalogs: [
+    {
+      path: "src/locales/{locale}/messages",
+      include: ["src"],
+    },
+  ],
+};
 ```
 
 After fixing configuration, let's run [`extract`](/docs/ref/cli.md#extract) command again:
@@ -253,28 +256,28 @@ What just happened? If you look inside `locales/<locale>` directory, you'll see 
 Let's load this file into our app and set active language to `cs`:
 
 ```jsx title="src/index.js" {6-7,10-14}
-import React from 'react'
-import { render } from 'react-dom'
+import React from "react";
+import { render } from "react-dom";
 
-import { i18n } from '@lingui/core'
-import { I18nProvider } from '@lingui/react'
-import { messages as enMessages } from './locales/en/messages'
-import { messages as csMessages } from './locales/cs/messages'
-import Inbox from './Inbox'
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import { messages as enMessages } from "./locales/en/messages";
+import { messages as csMessages } from "./locales/cs/messages";
+import Inbox from "./Inbox";
 
 i18n.load({
   en: enMessages,
   cs: csMessages,
-})
-i18n.activate('cs')
+});
+i18n.activate("cs");
 
 const App = () => (
   <I18nProvider i18n={i18n}>
     <Inbox />
   </I18nProvider>
-)
+);
 
-render(<App />, document.getElementById('root'))
+render(<App />, document.getElementById("root"));
 ```
 
 When we run the app, we see the inbox header is translated into Czech.
@@ -303,8 +306,9 @@ Let's move on to another paragraph in our project. This paragraph has some varia
 
 ```jsx
 <p>
-   See all <a href="/unread">unread messages</a>{" or "}
-   <a onClick={markAsRead}>mark them</a> as read.
+  See all <a href="/unread">unread messages</a>
+  {" or "}
+  <a onClick={markAsRead}>mark them</a> as read.
 </p>
 ```
 
@@ -312,10 +316,11 @@ Although it looks complex, there's really nothing special here. Just wrap the co
 
 ```jsx
 <p>
-   <Trans>
-      See all <a href="/unread">unread messages</a>{" or "}
-      <a onClick={markAsRead}>mark them</a> as read.
-   </Trans>
+  <Trans>
+    See all <a href="/unread">unread messages</a>
+    {" or "}
+    <a onClick={markAsRead}>mark them</a> as read.
+  </Trans>
 </p>
 ```
 
@@ -325,17 +330,19 @@ Spooky, right? Let's see how this message actually looks in the message catalog.
 See all <0>unread messages</0> or <1>mark them</1> as read.
 ```
 
-You may notice that components and html tags are replaced with indexed tags (*<0>*, *<1>*). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: they are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
+You may notice that components and html tags are replaced with indexed tags (_<0>_, _<1>_). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: they are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
 
 ### JSX to MessageFormat transformations
 
-It may look a bit *hackish* at first sight, but these transformations are actually very easy, intuitive and feel very *Reactish*. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.md#trans) macro.
+It may look a bit _hackish_ at first sight, but these transformations are actually very easy, intuitive and feel very _Reactish_. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.md#trans) macro.
 
 Let's see some examples with MessageFormat equivalents:
 
 ```jsx
 // Expressions
-<p><Trans>Hello {name}</Trans></p>
+<p>
+  <Trans>Hello {name}</Trans>
+</p>
 // Hello {name}
 ```
 
@@ -344,46 +351,53 @@ Any expressions are allowed, not just simple variables. The only difference is, 
 - Simple variable -> named argument:
 
   ```jsx
-  <p><Trans>Hello {name}</Trans></p>
+  <p>
+    <Trans>Hello {name}</Trans>
+  </p>
   // Hello {name}
   ```
 
 - Any expression -> positional argument:
 
   ```jsx
-  <p><Trans>Hello {user.name}</Trans></p>
+  <p>
+    <Trans>Hello {user.name}</Trans>
+  </p>
   // Hello {0}
   ```
 
 - Object, arrays, function calls -> positional argument:
 
   ```jsx
-  <p><Trans>The random number is {Math.rand()}</Trans></p>
+  <p>
+    <Trans>The random number is {Math.rand()}</Trans>
+  </p>
   // The random number is {0}
   ```
 
 - Components might get tricky, but like we saw, it's really easy:
 
   ```jsx
-  <Trans>Read <a href="/more">more</a>.</Trans>
+  <Trans>
+    Read <a href="/more">more</a>.
+  </Trans>
   // Read <0>more</0>.
   ```
 
   ```jsx
   <Trans>
-    Dear Watson,<br />
+    Dear Watson,
+    <br />
     it's not exactly what I had in my mind.
   </Trans>
   // Dear Watson,<0/>it's not exactly what I had in my mind.
   ```
 
-Obviously, you can also shoot yourself in the foot. Some expressions are *valid* and won't throw any error, yet it doesn't make any sense to write:
+Obviously, you can also shoot yourself in the foot. Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
 
 ```jsx
 // Oh, seriously?
-<Trans>
-   {isOpen && <Modal />}
-</Trans>
+<Trans>{isOpen && <Modal />}</Trans>
 ```
 
 If in doubt, imagine how the final message should look like.
@@ -392,12 +406,12 @@ If in doubt, imagine how the final message should look like.
 
 At this point we're going to explain what message ID is and how to set it manually.
 
-Translators work with the *message catalogs* we saw above. No matter what format we use (gettext, xliff, json), it's just a mapping of a message ID to the translation.
+Translators work with the _message catalogs_ we saw above. No matter what format we use (gettext, xliff, json), it's just a mapping of a message ID to the translation.
 
 Here's an example of a simple message catalog in **Czech** language:
 
 | Message ID | Translation |
-|------------|-------------|
+| ---------- | ----------- |
 | Monday     | Pondělí     |
 | Tuesday    | Úterý       |
 | Wednesday  | Středa      |
@@ -405,12 +419,12 @@ Here's an example of a simple message catalog in **Czech** language:
 ... and the same catalog in **French** language:
 
 | Message ID | Translation |
-|------------|-------------|
+| ---------- | ----------- |
 | Monday     | Lundi       |
 | Tuesday    | Mardi       |
 | Wednesday  | Mercredi    |
 
-The message ID is *what all catalogs have in common* – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.md#trans) macro.
+The message ID is _what all catalogs have in common_ – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.md#trans) macro.
 
 There are two approaches to how a message ID can be created:
 
@@ -422,13 +436,17 @@ Both approaches have their pros and cons and it's not in the scope of this tutor
 By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.md#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
 
 ```jsx
-<h1><Trans id="inbox.title">Message Inbox</Trans></h1>
+<h1>
+  <Trans id="inbox.title">Message Inbox</Trans>
+</h1>
 ```
 
 This will generate:
 
 ```jsx
-<h1><Trans id="inbox.title" message="Message Inbox" /></h1>
+<h1>
+  <Trans id="inbox.title" message="Message Inbox" />
+</h1>
 ```
 
 In our message catalog, we'll see `inbox.title` as message ID, but we also get `Message Inbox` as default translation for English.
@@ -441,11 +459,9 @@ Let's move on and add i18n to another text in our component:
 
 ```jsx
 <p>
-   {
-      messagesCount === 1
-         ? `There's ${messagesCount} message in your inbox.`
-         : `There are ${messagesCount} messages in your inbox.`
-   }
+  {messagesCount === 1
+    ? `There's ${messagesCount} message in your inbox.`
+    : `There are ${messagesCount} messages in your inbox.`}
 </p>
 ```
 
@@ -472,15 +488,11 @@ How do we know which plural form we should use? It's very simple: we, as develop
 We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.md#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
 ```jsx
-import { Trans, Plural } from '@lingui/macro';
+import { Trans, Plural } from "@lingui/macro";
 
 <p>
-   <Plural
-      value={messagesCount}
-      one="There's # message in your inbox"
-      other="There are # messages in your inbox"
-   />
-</p>
+  <Plural value={messagesCount} one="There's # message in your inbox" other="There are # messages in your inbox" />
+</p>;
 ```
 
 This component will render `There's 1 message in your inbox` when `messageCount = 1` and `There are # messages in your inbox` for any other values of `messageCount`. `#` is a placeholder, which is replaced with `value`.
@@ -507,10 +519,10 @@ You may wonder why the following code doesn't work as expected:
 
 ```jsx
 <Plural
-   value={messagesCount}
-   zero="There are no messages"
-   one="There's # message in your inbox"
-   other="There are # messages in your inbox"
+  value={messagesCount}
+  zero="There are no messages"
+  one="There's # message in your inbox"
+  other="There are # messages in your inbox"
 />
 ```
 
@@ -519,14 +531,14 @@ This component will render `There are 0 messages in your inbox` for `messagesCou
 Looking at [English plural rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en), it's:
 
 | N   | Form                  |
-|-----|-----------------------|
+| --- | --------------------- |
 | 0   | other                 |
 | 1   | one                   |
 | n   | other (anything else) |
 
 However, decimal numbers (even `1.0`) use `other` form every time:
 
-``` default
+```default
 There are 0.0 messages in your inbox.
 ```
 
@@ -538,10 +550,10 @@ Alright, back to our example. What if we really want to render `There are no mes
 
 ```jsx
 <Plural
-   value={messagesCount}
-   _0="There are no messages"
-   one="There's # message in your inbox"
-   other="There are # messages in your inbox"
+  value={messagesCount}
+  _0="There are no messages"
+  one="There's # message in your inbox"
+  other="There are # messages in your inbox"
 />
 ```
 
@@ -551,11 +563,11 @@ It works with any number, so we can go wild and customize it this way:
 
 ```jsx
 <Plural
-   value={messagesCount}
-   _0="There are no messages"
-   _1="There's one message in your inbox"
-   _2="There are two messages in your inbox, that's not much!"
-   other="There are # messages in your inbox"
+  value={messagesCount}
+  _0="There are no messages"
+  _1="There's one message in your inbox"
+  _2="There are two messages in your inbox, that's not much!"
+  other="There are # messages in your inbox"
 />
 ```
 
@@ -567,11 +579,7 @@ Let's go back to our original pluralized message:
 
 ```jsx
 <p>
-   <Plural
-      value={messagesCount}
-      one="There's # message in your inbox"
-      other="There are # messages in your inbox"
-   />
+  <Plural value={messagesCount} one="There's # message in your inbox" other="There are # messages in your inbox" />
 </p>
 ```
 
@@ -579,11 +587,15 @@ What if we want to use variables or components inside messages? Easy! Either wra
 
 ```jsx
 <p>
-   <Plural
-      value={messagesCount}
-      one={`There's # message in your inbox, ${name}`}
-      other={<Trans>There are <strong>#</strong> messages in your inbox, {name}</Trans>}
-   />
+  <Plural
+    value={messagesCount}
+    one={`There's # message in your inbox, ${name}`}
+    other={
+      <Trans>
+        There are <strong>#</strong> messages in your inbox, {name}
+      </Trans>
+    }
+  />
 </p>
 ```
 
@@ -597,12 +609,12 @@ Let's finish this with a short example of plurals with custom ID. We can pass an
 
 ```jsx
 <p>
-   <Plural
-      id="Inbox.messagesCount"
-      value={messagesCount}
-      one="There's # message in your inbox"
-      other="There are # messages in your inbox"
-   />
+  <Plural
+    id="Inbox.messagesCount"
+    value={messagesCount}
+    one="There's # message in your inbox"
+    other="There are # messages in your inbox"
+  />
 </p>
 ```
 
@@ -611,30 +623,26 @@ Let's finish this with a short example of plurals with custom ID. We can pass an
 The last message in our component is again a bit specific:
 
 ```jsx
-<footer>
-   Last login on {lastLogin.toLocaleDateString()}.
-</footer>
+<footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
 ```
 
 `lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core.md#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react.md#uselingui) hook:
 
 ```jsx title="src/Inbox.js"
-import { useLingui } from '@lingui/react'
+import { useLingui } from "@lingui/react";
 
 export default function Inbox() {
-  const { i18n } = useLingui()
+  const { i18n } = useLingui();
   // ...
 
   return (
     <div>
       {/* ... */}
       <footer>
-        <Trans>
-          Last login on {i18n.date(lastLogin)}.
-        </Trans>
+        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
       </footer>
     </div>
-  )
+  );
 }
 ```
 
@@ -645,43 +653,46 @@ This will format the date using the conventional format for the active language.
 After all modifications, the final component with i18n looks like this:
 
 ```jsx title="src/Inbox.js"
-import React from 'react'
-import { Trans, Plural } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
+import React from "react";
+import { Trans, Plural } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function Inbox() {
-  const { i18n } = useLingui()
-  const messages = [{}, {}]
-  const messagesCount = messages.length
-  const lastLogin = new Date()
-  const markAsRead = () => { alert('Marked as read.') }
+  const { i18n } = useLingui();
+  const messages = [{}, {}];
+  const messagesCount = messages.length;
+  const lastLogin = new Date();
+  const markAsRead = () => {
+    alert("Marked as read.");
+  };
 
   return (
     <div>
-      <h1><Trans>Message Inbox</Trans></h1>
+      <h1>
+        <Trans>Message Inbox</Trans>
+      </h1>
 
       <p>
         <Trans>
-           See all <a href="/unread">unread messages</a>{" or "}
-           <a onClick={markAsRead}>mark them</a> as read.
+          See all <a href="/unread">unread messages</a>
+          {" or "}
+          <a onClick={markAsRead}>mark them</a> as read.
         </Trans>
       </p>
 
       <p>
         <Plural
-           value={messagesCount}
-           one="There's # message in your inbox"
-           other="There are # messages in your inbox"
+          value={messagesCount}
+          one="There's # message in your inbox"
+          other="There are # messages in your inbox"
         />
       </p>
 
       <footer>
-        <Trans>
-          Last login on {i18n.date(lastLogin)}.
-        </Trans>
+        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
       </footer>
     </div>
-  )
+  );
 }
 ```
 
@@ -689,7 +700,7 @@ That's all for this tutorial! Checkout the reference documentation or various gu
 
 ## Further reading
 
--   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
--   [`@lingui/react` reference documentation](/docs/ref/react.md)
--   [`@lingui/cli` reference documentation](/docs/ref/cli.md)
--   [Pluralization Guide](/docs/guides/plurals.md)
+- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` reference documentation](/docs/ref/react.md)
+- [`@lingui/cli` reference documentation](/docs/ref/cli.md)
+- [Pluralization Guide](/docs/guides/plurals.md)

@@ -7,8 +7,8 @@
 
 Links:
 
--   Website: <https://translation.io/lingui>
--   GitHub: <https://github.com/translation/lingui>
+- Website: <https://translation.io/lingui>
+- GitHub: <https://github.com/translation/lingui>
 
 ## Features
 
@@ -20,8 +20,8 @@ Invite your collaborators using their email or username, and assign them a role 
 
 Learn more:
 
--   [Fine-Grained Authorizations](https://translation.io/blog/fine-grained-authorization-and-role-management?default_stack=lingui)
--   [Activity Digests](https://translation.io/blog/better-history-and-activity-email-digests?default_stack=lingui)
+- [Fine-Grained Authorizations](https://translation.io/blog/fine-grained-authorization-and-role-management?default_stack=lingui)
+- [Activity Digests](https://translation.io/blog/better-history-and-activity-email-digests?default_stack=lingui)
 
 ### Elegant Translation Process
 
@@ -33,8 +33,8 @@ Keyboard shortcuts allow translators to stay focused on their work, visual hints
 
 Learn more:
 
--   [Keyboard Shortcuts](https://translation.io/blog/shortcuts-and-translation?default_stack=lingui)
--   [History and Activity Digests](https://translation.io/blog/better-history-and-activity-email-digests?default_stack=lingui)
+- [Keyboard Shortcuts](https://translation.io/blog/shortcuts-and-translation?default_stack=lingui)
+- [History and Activity Digests](https://translation.io/blog/better-history-and-activity-email-digests?default_stack=lingui)
 
 ### Syntax Highlighting
 
@@ -74,7 +74,7 @@ Our powerful search helps translators to maintain consistency of terms throughou
 
 Learn more:
 
--   [Smart URLs](https://translation.io/blog/smart-urls-in-translation-interface?default_stack=lingui)
+- [Smart URLs](https://translation.io/blog/smart-urls-in-translation-interface?default_stack=lingui)
 
 ### Adaptive Workflows using Tags
 
@@ -84,8 +84,8 @@ Our interface is flexible enough to adapt to your own translation workflows. Add
 
 Learn more:
 
--   [How to Use Tags](https://translation.io/blog/tags-work-better-as-a-team?default_stack=lingui)
--   [Project Statistics](https://translation.io/blog/translation-project-statistics?default_stack=lingui)
+- [How to Use Tags](https://translation.io/blog/tags-work-better-as-a-team?default_stack=lingui)
+- [Project Statistics](https://translation.io/blog/translation-project-statistics?default_stack=lingui)
 
 ## Installation
 

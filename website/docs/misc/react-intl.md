@@ -6,26 +6,26 @@ Here's an example from [react-intl](https://github.com/formatjs/formatjs) docs:
 
 ```jsx
 <FormattedMessage
-   id="welcome"
-   defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+  id="welcome"
+  defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
-   values={{name: <b>{name}</b>, unreadCount}}
- />
+  values={{ name: <b>{name}</b>, unreadCount }}
+/>
 ```
 
 Looking at the low-level API of [Lingui](https://github.com/lingui/js-lingui), there isn't much difference:
 
 ```jsx
 <Trans
-   id="welcome"
-   message={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+  id="welcome"
+  message={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
-   values={{name: <b>{name}</b>, unreadCount}}
- />
+  values={{ name: <b>{name}</b>, unreadCount }}
+/>
 ```
 
 There's really no reason to reinvent the wheel when both libs are build on top of the same message syntax. The story doesn't end here, though.
@@ -42,22 +42,18 @@ In react-intl, this would be translated as:
 
 ```jsx
 <FormattedMessage
-    id='msg.docs'
-    defaultMessage='Read the <link>documentation</link>.'
-    values={{
-        link: (...chunks) => <a href="/docs">{chunks}</a>
-    }}
+  id="msg.docs"
+  defaultMessage="Read the <link>documentation</link>."
+  values={{
+    link: (...chunks) => <a href="/docs">{chunks}</a>,
+  }}
 />
 ```
 
 [Lingui](https://github.com/lingui/js-lingui) extends ICU MessageFormat with tags. The example above would be:
 
 ```jsx
-<Trans
-    id='msg.docs'
-    message='Read the <link>documentation</link>.'
-    components={{ link: <a href="/docs" />}}
-/>
+<Trans id="msg.docs" message="Read the <link>documentation</link>." components={{ link: <a href="/docs" /> }} />
 ```
 
 and the translator gets the message in one piece: `Read the <link>documentation</link>`.
@@ -71,20 +67,18 @@ However, let's go yet another level deeper.
 Let's go back to the previous example:
 
 ```html
-<p>
-   Read the <a href="/docs">documentation</a>.
-</p>
+<p>Read the <a href="/docs">documentation</a>.</p>
 ```
 
 All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans) macro:
 
 ```html
 <p>
-   <Trans id="msg.docs">Read the <a href="/docs">documentation</a>.</Trans>
+  <Trans id="msg.docs">Read the <a href="/docs">documentation</a>.</Trans>
 </p>
 ```
 
-The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `message` and `components` props  automatically in the form described in the previous section.
+The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `message` and `components` props automatically in the form described in the previous section.
 
 This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.md#trans) macro.
 
@@ -92,13 +86,13 @@ Let's compare it with react-intl solution to see the difference:
 
 ```jsx
 <p>
-   <FormattedMessage
-       id='msg.docs'
-       defaultMessage='Read the <link>documentation</link>.'
-       values={{
-           link: (...chunks) => <a href="/docs">{chunks}</a>
-       }}
-   />
+  <FormattedMessage
+    id="msg.docs"
+    defaultMessage="Read the <link>documentation</link>."
+    values={{
+      link: (...chunks) => <a href="/docs">{chunks}</a>,
+    }}
+  />
 </p>
 ```
 
@@ -107,7 +101,7 @@ It' also worth mentioning that the message IDs are completely optional. [Lingui]
 
 ```html
 <p>
-   <Trans>Read the <a href="/docs">documentation</a>.</Trans>
+  <Trans>Read the <a href="/docs">documentation</a>.</Trans>
 </p>
 ```
 
@@ -122,23 +116,20 @@ Let's take a look at the original example from react-intl docs:
 
 ```jsx
 <FormattedMessage
-   id="welcome"
-   defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+  id="welcome"
+  defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
-   values={{name: <b>{name}</b>, unreadCount}}
- />
+  values={{ name: <b>{name}</b>, unreadCount }}
+/>
 ```
 
 Using [Lingui](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
 
 ```jsx
 <Trans id="welcome">
-   Hello <b>{name}</b>, you have {i18n.number(undreadCount)} <Plural
-      one="message"
-      other="messages"
-   />
+  Hello <b>{name}</b>, you have {i18n.number(undreadCount)} <Plural one="message" other="messages" />
 </Trans>
 ```
 
@@ -146,26 +137,34 @@ and the final message would be very similar:
 
 ```jsx
 <Trans
-   id="welcome"
-   message={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
+  id="welcome"
+  message={`Hello <0>{name}</0>, you have {unreadCount, number} {unreadCount, plural,
      one {message}
      other {messages}
    }`}
-   values={{name, unreadCount}}
- />
+  values={{ name, unreadCount }}
+/>
 ```
 
-The only difference is the [<0>] tag included in the message, as [LinguiJS](https://github.com/lingui/js-lingui) can handle  components in both variables and the message itself.
+The only difference is the [<0>] tag included in the message, as [LinguiJS](https://github.com/lingui/js-lingui) can handle components in both variables and the message itself.
 
 :::note
 It's good to mention here that this isn't the best example of using plurals. Make your translators happy and move plurals to the top of the message:
 
 ```jsx
 <Plural
-   id="welcome"
-   value={number}
-   one={<>Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} message.</>}
-   other={<>Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} messages.</>}
+  id="welcome"
+  value={number}
+  one={
+    <>
+      Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} message.
+    </>
+  }
+  other={
+    <>
+      Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} messages.
+    </>
+  }
 />
 ```
 

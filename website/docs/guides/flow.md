@@ -4,8 +4,8 @@ Lingui already supports [Flow](https://flow.org/) by default. All you need to do
 
 ```js title="lingui.config.js"
 module.export = {
-   extractorParserOptions: {
-     flow: true
-   }
-}
+  extractorParserOptions: {
+    flow: true,
+  },
+};
 ```

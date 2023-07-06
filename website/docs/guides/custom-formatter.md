@@ -22,46 +22,46 @@ The shape of formatter is the following:
 
 ```ts
 export type CatalogFormatter = {
-  catalogExtension: string
+  catalogExtension: string;
   /**
    * Set extension used when extract to template
    * Omit if the extension is the same as catalogExtension
    */
-  templateExtension?: string
+  templateExtension?: string;
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLocale: string, filename: string }
-  ): Promise<CatalogType> | CatalogType
+    ctx: { locale: string | null; sourceLocale: string; filename: string }
+  ): Promise<CatalogType> | CatalogType;
   serialize(
     catalog: CatalogType,
-    ctx: { locale: string | null; sourceLocale: string, filename: string; existing: string | null }
-  ): Promise<string> | string
-}
+    ctx: { locale: string | null; sourceLocale: string; filename: string; existing: string | null }
+  ): Promise<string> | string;
+};
 ```
 
 Lingui Catalog is an object with the following structure:
 
 ```ts
 export type CatalogType = {
-  [msgId: string]: MessageType
-}
+  [msgId: string]: MessageType;
+};
 
-type CatalogExtra = Record<string, unknown>
+type CatalogExtra = Record<string, unknown>;
 
 export type MessageType<Extra = CatalogExtra> = {
-  message?: string
-  origin?: MessageOrigin[]
-  comments?: string[]
-  obsolete?: boolean
-  context?: string
-  translation?: string
+  message?: string;
+  origin?: MessageOrigin[];
+  comments?: string[];
+  obsolete?: boolean;
+  context?: string;
+  translation?: string;
 
   /**
    * the generic field where
    * formatters can store additional data
    */
-  extra?: Extra
-}
+  extra?: Extra;
+};
 ```
 
 :::caution Important

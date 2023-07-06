@@ -49,8 +49,8 @@ Low-level React API is very similar to react-intl and the message format is the 
 ## Quick overview
 
 ```jsx
-import React from "react"
-import { t, Trans, Plural } from "@lingui/macro"
+import React from "react";
+import { t, Trans, Plural } from "@lingui/macro";
 
 export default function Lingui({ numUsers, name = "You" }) {
   return (
@@ -66,8 +66,7 @@ export default function Lingui({ numUsers, name = "You" }) {
       <p className="lead">
         {/* Variables are passed to messages in the same way as in JSX */}
         <Trans id="msg.lead">
-          Hello {name}, LinguiJS is a readable, automated, and optimized (5 kb)
-          internationalization for JavaScript.
+          Hello {name}, LinguiJS is a readable, automated, and optimized (5 kb) internationalization for JavaScript.
         </Trans>
       </p>
 
@@ -100,6 +99,6 @@ export default function Lingui({ numUsers, name = "You" }) {
         }
       />
     </div>
-  )
+  );
 }
 ```

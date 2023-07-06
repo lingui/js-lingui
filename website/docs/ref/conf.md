@@ -5,33 +5,35 @@ Configuration is read from 4 different sources (the first found wins):
 - from `lingui` section in `package.json`
 - from `.linguirc`
 - from `lingui.config.js`
-- from `lingui.config.ts` *(since 3.4.0)*
+- from `lingui.config.ts` _(since 3.4.0)_
 
 You can also define environment variable `LINGUI_CONFIG` with path to your config file.
 
-In the case of TypeScript based config you can use ESM format and *export default*.
+In the case of TypeScript based config you can use ESM format and _export default_.
 
 Default config:
 
 ```json
 {
- "catalogs": [{
-   "path": "<rootDir>/locale/{locale}/messages",
-   "include": ["<rootDir>"],
-   "exclude": ["**/node_modules/**"]
- }],
- "compileNamespace": "cjs",
- "extractorParserOptions": {},
- "compilerBabelOptions": {},
- "fallbackLocales": {},
- "format": "po",
- "locales": [],
- "extractors": ["babel"],
- "orderBy": "messageId",
- "pseudoLocale": "",
- "rootDir": ".",
- "runtimeConfigModule": ["@lingui/core", "i18n"],
- "sourceLocale": "",
+  "catalogs": [
+    {
+      "path": "<rootDir>/locale/{locale}/messages",
+      "include": ["<rootDir>"],
+      "exclude": ["**/node_modules/**"]
+    }
+  ],
+  "compileNamespace": "cjs",
+  "extractorParserOptions": {},
+  "compilerBabelOptions": {},
+  "fallbackLocales": {},
+  "format": "po",
+  "locales": [],
+  "extractors": ["babel"],
+  "orderBy": "messageId",
+  "pseudoLocale": "",
+  "rootDir": ".",
+  "runtimeConfigModule": ["@lingui/core", "i18n"],
+  "sourceLocale": ""
 }
 ```
 
@@ -40,11 +42,13 @@ Default config:
 Default:
 
 ```js
-[{
-   path: "<rootDir>/locale/{locale}/messages",
-   include: ["<rootDir>"],
-   exclude: ["**/node_modules/**"]
-}]
+[
+  {
+    path: "<rootDir>/locale/{locale}/messages",
+    include: ["<rootDir>"],
+    exclude: ["**/node_modules/**"],
+  },
+];
 ```
 
 Defines location of message catalogs and what files are included when [`extract`](/docs/ref/cli.md#extract) is scanning for messages.
@@ -60,10 +64,12 @@ Patterns in `include` and `exclude` are passed to [minimatch](https://github.com
 
 ```json
 {
-   catalogs: [{
-      path: "./components/{name}/locale/{locale}",
-      include: ["./components/{name}/"],
-   }]
+  "catalogs": [
+    {
+      "path": "./components/{name}/locale/{locale}",
+      "include": ["./components/{name}/"]
+    }
+  ]
 }
 ```
 
@@ -75,9 +81,11 @@ Let's assume we use `locales: ["en", "cs"]` and `format: "po"` in all examples.
 
 ```json
 {
-   catalogs: [{
-      path: "locales/{locale}",
-   }]
+  "catalogs": [
+    {
+      "path": "locales/{locale}"
+    }
+  ]
 }
 ```
 
@@ -91,9 +99,11 @@ locales/
 
 ```js
 {
-   catalogs: [{
+  catalogs: [
+    {
       path: "locales/{locale}/messages",
-   }]
+    },
+  ];
 }
 ```
 
@@ -109,10 +119,12 @@ locales
 
 ```json
 {
-   catalogs: [{
-      path: "components/{name}/locale/{locale}",
-      include: "components/{name}/"
-   }]
+  "catalogs": [
+    {
+      "path": "components/{name}/locale/{locale}",
+      "include": "components/{name}/"
+    }
+  ]
 }
 ```
 
@@ -136,10 +148,12 @@ components/
 
 ```json
 {
-   catalogs: [{
-      path: "locale/{locale}/{name}",
-      include: "components/{name}/"
-   }]
+  "catalogs": [
+    {
+      "path": "locale/{locale}/{name}",
+      "include": "components/{name}/"
+    }
+  ]
 }
 ```
 
@@ -235,10 +249,10 @@ Default:
 
 ```json
 {
-   "minified": true,
-   "jsescOption": {
-      "minimal": true
-   }
+  "minified": true,
+  "jsescOption": {
+    "minimal": true
+  }
 }
 ```
 
@@ -249,7 +263,7 @@ Specify extra babel options used to generate files when messages are being compi
   "compilerBabelOptions": {
     "jsescOption": {
       "minimal": false
-   }
+    }
   }
 }
 ```
@@ -273,8 +287,8 @@ Default: `{}`
 ```json
 {
   "fallbackLocales": {
-      "en-US": ["en-GB", "en"],
-      "es-MX": "es"
+    "en-US": ["en-GB", "en"],
+    "es-MX": "es"
   }
 }
 ```
@@ -286,9 +300,9 @@ Also, we can configure a default one for everything:
 ```json
 {
   "fallbackLocales": {
-      "en-US": ["en-GB", "en"],
-      "es-MX": "es",
-      "default": "en"
+    "en-US": ["en-GB", "en"],
+    "es-MX": "es",
+    "default": "en"
   }
 }
 ```
@@ -371,7 +385,7 @@ You only need to set this value if you use custom object created using [`setupI1
 
 ```jsx
 // If you import `i18n` object from custom module like this:
-import { i18n } from "./custom-i18n-config"
+import { i18n } from "./custom-i18n-config";
 
 // ... then add following line to Lingui configuration:
 // "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
@@ -380,7 +394,7 @@ import { i18n } from "./custom-i18n-config"
 You may use a different named export:
 
 ```jsx
-import { myI18n } from "./custom-i18n-config"
+import { myI18n } from "./custom-i18n-config";
 // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
@@ -388,7 +402,7 @@ In some advanced cases you may also need to change the module from which [Trans]
 
 ```jsx
 // If you import `i18n` object from custom module like this:
-import { Trans, i18n } from "./custom-config"
+import { Trans, i18n } from "./custom-config";
 
 // ... then add following line to Lingui configuration:
 // "runtimeConfigModule": {
@@ -418,4 +432,5 @@ Extractors it's the way to customize which extractor you want for your codebase.
    ]
 }
 ```
+
 Visit [Advanced: Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.

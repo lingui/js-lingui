@@ -13,15 +13,16 @@ The extractor operates on a static level and doesn't execute your code. As a res
 Extractor supports all macro usages, such as the following examples:
 
 ```tsx
-t`Message`
+t`Message`;
 
 t({
   id: "ID Some",
   message: "Message with id some",
-})
+});
 
-const jsx = <Trans>Hi, my name is {name}</Trans>
+const jsx = <Trans>Hi, my name is {name}</Trans>;
 ```
+
 For more usage examples, refer to the [macro documentation](/docs/ref/macro.md).
 
 ### Non-Macro usages
@@ -33,21 +34,22 @@ Extractor matches calls only by name. It doesn't check whether they were really 
 :::
 
 ```ts
-i18n._("message.id")
-i18n._({id: "message.id"})
+i18n._("message.id");
+i18n._({ id: "message.id" });
 
-ctx.i18n._("message.id")
-ctx.i18n.t("message.id")
+ctx.i18n._("message.id");
+ctx.i18n.t("message.id");
 
-ctx.request.i18n.t("message.id")
+ctx.request.i18n.t("message.id");
 
 // and so on
 ```
+
 You can ignore a specific call expression by adding a `lingui-extract-ignore` comment.
 
 ```ts
 /* lingui-extract-ignore */
-ctx.i18n._("Message")
+ctx.i18n._("Message");
 ```
 
 This message would not be extracted.
@@ -59,8 +61,8 @@ Apart from call expressions, which are the most commonly used method, the extrac
 To do this, simply prefix your expression with the `/*i18n*/` comment, like so:
 
 ```ts
-const messageDescriptor: MessageDescriptor = /*i18n*/ { id: 'Description', comment: "description" }
-const stringLiteral = /*i18n*/ 'Message'
+const messageDescriptor: MessageDescriptor = /*i18n*/ { id: "Description", comment: "description" };
+const stringLiteral = /*i18n*/ "Message";
 ```
 
 ## Unsupported Patterns
@@ -70,15 +72,16 @@ The extractor is limited to extracting messages from code that is written in a c
 This means that in order for a message to be extracted, it must be defined directly in the function call.
 
 For example, the following code cannot be extracted:
+
 ```ts
-const message = 'Message'
-i18n._(message)
+const message = "Message";
+i18n._(message);
 ```
 
 Instead, you should define the message directly in the function arguments:
 
 ```ts
-i18n._('Message')
+i18n._("Message");
 ```
 
 ## Defining sources for analyzing
@@ -116,6 +119,7 @@ The catalogs would still contain duplicating messages for common components, but
 ![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme-dark.jpg#gh-dark-mode-only)
 
 To start using `experimental-extractor`, you need to add the following section to lingui config:
+
 ```ts
 /**
  *
@@ -129,16 +133,14 @@ module.exports = {
     extractor: {
       // glob pattern of entrypoints
       // this will find all nextjs pages
-      entries: [
-        "<rootDir>/src/pages/**/*.tsx"
-      ],
+      entries: ["<rootDir>/src/pages/**/*.tsx"],
       // output pattern, this instruct extractor where to store catalogs
       // src/pages/faq.tsx -> src/pages/locales/faq/en.po
-      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}"
-    }
+      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}",
+    },
   },
   // highlight-end
-}
+};
 ```
 
 And then call in the terminal:
@@ -148,6 +150,7 @@ lingui extract-experimental
 ```
 
 #### Notes
+
 It's worth noting that the accuracy of the catalog heavily relies on tree-shaking, a technique used by modern bundlers to eliminate unused code from the final bundle.
 
 If the code passed to the extractor is written in a tree-shakeable way, the user will receive a highly accurate catalogs.
@@ -157,7 +160,7 @@ While you might think that your code is tree-shakeable, in practice tree-shaking
 To illustrate, let's consider the following code:
 
 ```ts
-import { msg } from "@lingui/macro"
+import { msg } from "@lingui/macro";
 
 export const species = {
   Cardano: [
@@ -170,9 +173,9 @@ export const species = {
       startsAt: 0.000001,
       name: msg`Plankton`,
       icon: "Plankton",
-    }
-  ]
-}
+    },
+  ],
+};
 ```
 
 On the surface, it may appear that this code can be safely removed from the final bundle if it's not used. However, the `msg` function call can potentially produce a side effect, preventing the bundler from removing the entire `species` object from the final bundle. As a result, messages defined in this snippet may be included in more catalogs than expected.

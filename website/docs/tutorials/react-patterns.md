@@ -9,13 +9,19 @@ Using jsx macros is the most straightforward way how to translate your React com
 [`Trans`](/docs/ref/macro.md#trans) handles translations of messages including variables and other React components:
 
 ```jsx
-import { Trans } from "@lingui/macro"
+import { Trans } from "@lingui/macro";
 
 function render() {
   return (
     <>
-      <h1><Trans>LinguiJS example</Trans></h1>
-      <p><Trans>Hello <a href="/profile">{name}</a>.</Trans></p>
+      <h1>
+        <Trans>LinguiJS example</Trans>
+      </h1>
+      <p>
+        <Trans>
+          Hello <a href="/profile">{name}</a>.
+        </Trans>
+      </p>
     </>
   );
 }
@@ -25,7 +31,7 @@ You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) insid
 
 ## Choosing between generated and explicit ID
 
-Using generated IDs provides more scalability and gives a better developer experience. On the other hand, explicit IDs for phrases make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes *where* the phrase is used.
+Using generated IDs provides more scalability and gives a better developer experience. On the other hand, explicit IDs for phrases make it easier to identify phrases out of context and to track where they're used. IDs usually follow a naming scheme that includes _where_ the phrase is used.
 
 ### Using ID generated from message
 
@@ -43,7 +49,7 @@ const catalog = [
     id: "9/omjw",
     message: "Hello <0>{name}</0>.",
   },
-]
+];
 ```
 
 #### With [`t`](/docs/ref/macro.md#t)
@@ -51,10 +57,10 @@ const catalog = [
 In the following example, the message `Image caption` will be extracted and used to create an ID.
 
 ```jsx
-import { t } from "@lingui/macro"
+import { t } from "@lingui/macro";
 
 export default function ImageWithCaption() {
-   return <img src="..." alt={t`Image caption`} />
+  return <img src="..." alt={t`Image caption`} />;
 }
 ```
 
@@ -83,13 +89,19 @@ import { Trans } from "@lingui/react";
 If you're using custom IDs in your project, add `id` prop to i18n components:
 
 ```jsx
-import { Trans } from "@lingui/macro"
+import { Trans } from "@lingui/macro";
 
 function render() {
   return (
     <>
-      <h1><Trans id="msg.header">LinguiJS example</Trans></h1>
-      <p><Trans id="msg.hello">Hello <a href="/profile">{name}</a>.</Trans></p>
+      <h1>
+        <Trans id="msg.header">LinguiJS example</Trans>
+      </h1>
+      <p>
+        <Trans id="msg.hello">
+          Hello <a href="/profile">{name}</a>.
+        </Trans>
+      </p>
     </>
   );
 }
@@ -102,10 +114,10 @@ Messages `msg.header` and `msg.hello` will be extracted with default values `Lin
 If you're using custom IDs in your project, call [`t`](/docs/ref/macro.md#t) with a message descriptor object and pass ID as `id` prop:
 
 ```jsx
-import { t } from "@lingui/macro"
+import { t } from "@lingui/macro";
 
 export default function ImageWithCaption() {
-   return <img src="..." alt={t({id: 'msg.caption', message: `Image caption`})} />
+  return <img src="..." alt={t({ id: "msg.caption", message: `Image caption` })} />;
 }
 ```
 
@@ -114,15 +126,21 @@ Message `msg.caption` will be extracted with default value `Image caption`.
 For all other js macros ([`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select), [`selectOrdinal`](/docs/ref/macro.md#selectordinal), use them inside [`t`](/docs/ref/macro.md#t) macro to pass ID (in this case, `'msg.caption'`).
 
 ```jsx
-import { t, plural } from "@lingui/macro"
+import { t, plural } from "@lingui/macro";
 
 export default function ImageWithCaption({ count }) {
-   return (
-      <img src="..." alt={t({id: 'msg.caption', message: plural(count, {
-         one: "# image caption",
-         other: "# image captions",
-      })})} />
-   )
+  return (
+    <img
+      src="..."
+      alt={t({
+        id: "msg.caption",
+        message: plural(count, {
+          one: "# image caption",
+          other: "# image captions",
+        }),
+      })}
+    />
+  );
 }
 ```
 
@@ -138,13 +156,13 @@ In such case you need to use [`t`](/docs/ref/macro.md#t) macro to wrap message. 
 You also need to use `useLingui` hook to subscribe your component for locale updates.
 
 ```jsx
-import { t } from "@lingui/macro"
-import { useLingui } from "@lingui/react"
+import { t } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function ImageWithCaption() {
-  useLingui()
+  useLingui();
 
-  return <img src="..." alt={t`Image caption`} />
+  return <img src="..." alt={t`Image caption`} />;
 }
 ```
 
@@ -153,18 +171,19 @@ export default function ImageWithCaption() {
 Another common pattern is when you need to access translations outside React components, for example inside `redux-saga`. You can use [`t`](/docs/ref/macro.md#t) macro outside React context as usual:
 
 ```jsx
-import { t } from "@lingui/macro"
+import { t } from "@lingui/macro";
 
 export function alert() {
-    // use t as if you were inside a React component
-    alert(t`...`)
+  // use t as if you were inside a React component
+  alert(t`...`);
 }
 ```
+
 :::note
 The [`t`](/docs/ref/macro.md#t) macro can only be used in a reactive or re-executable context.
 
 ```jsx
-import { t } from "@lingui/macro"
+import { t } from "@lingui/macro";
 
 // ❌ Bad! This won't work because the `t` macro is used at the module level.
 // The `t` macro returns a string, and once this string is assigned, it won't react to changes.
@@ -172,7 +191,7 @@ const alertProps = {
   header: t`Alert`,
   subHeader: t`Important message`,
   message: t`This is an alert!`,
-  buttons: [t`OK`]
+  buttons: [t`OK`],
 };
 
 // ✅ Good! Every time the function is executed, the `t` macro will be re-executed as well,
@@ -182,8 +201,8 @@ function getAlertProps() {
     header: t`Alert`,
     subHeader: t`Important message`,
     message: t`This is an alert!`,
-    buttons: [t`OK`]
-  }
+    buttons: [t`OK`],
+  };
 }
 ```
 
@@ -196,44 +215,34 @@ Another option would be to use the Lazy Translations pattern described in the fo
 Messages don't have to be declared at the same code location where they're displayed. Tag a string with the [`defineMessage`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
 
 ```jsx
-import { msg } from "@lingui/macro"
-import { Trans } from "@lingui/react"
+import { msg } from "@lingui/macro";
+import { Trans } from "@lingui/react";
 
-const favoriteColors = [
-   msg`Red`,
-   msg`Orange`,
-   msg`Yellow`,
-   msg`Green`,
-]
+const favoriteColors = [msg`Red`, msg`Orange`, msg`Yellow`, msg`Green`];
 
 export default function ColorList() {
-   return (
-      <ul>
-         {favoriteColors.map(color => (
-            <li><Trans id={color.id}/></li>
-         ))}
-      </ul>
-   )
+  return (
+    <ul>
+      {favoriteColors.map((color) => (
+        <li>
+          <Trans id={color.id} />
+        </li>
+      ))}
+    </ul>
+  );
 }
 ```
 
 Or to render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
 
 ```jsx
-import { i18n } from "@lingui/core"
-import { msg } from "@lingui/macro"
+import { i18n } from "@lingui/core";
+import { msg } from "@lingui/macro";
 
-const favoriteColors = [
-  msg`Red`,
-  msg`Orange`,
-  msg`Yellow`,
-  msg`Green`,
-]
+const favoriteColors = [msg`Red`, msg`Orange`, msg`Yellow`, msg`Green`];
 
 export function getTranslatedColorNames() {
-   return favoriteColors.map(
-      color => i18n._(color)
-   )
+  return favoriteColors.map((color) => i18n._(color));
 }
 ```
 
@@ -242,37 +251,41 @@ export function getTranslatedColorNames() {
 It's often convenient to pass messages around as component props, for example as a "label" prop on a button. The easiest way to do this is to pass a [`Trans`](/docs/ref/macro.md#trans) element as the prop:
 
 ```jsx
-import { Trans } from "@lingui/macro"
+import { Trans } from "@lingui/macro";
 
 export default function FancyButton(props) {
-   return <button>{props.label}</button>
+  return <button>{props.label}</button>;
 }
 
 export function LoginLogoutButtons(props) {
-   return <div>
+  return (
+    <div>
       <FancyButton label={<Trans>Log in</Trans>} />
       <FancyButton label={<Trans>Log out</Trans>} />
-   </div>
+    </div>
+  );
 }
 ```
 
 If you need the prop to be displayed as a string-only translation, you can pass a message tagged with the [`t`](/docs/ref/macro.md#t) macro:
 
 ```jsx
-import { t } from "@lingui/macro"
-import { useLingui } from "@lingui/react"
+import { t } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function ImageWithCaption(props) {
-   return <img src="..." alt={props.caption} />
+  return <img src="..." alt={props.caption} />;
 }
 
 export function HappySad(props) {
-   useLingui()
+  useLingui();
 
-   return <div>
+  return (
+    <div>
       <ImageWithCaption caption={t`I'm so happy!`} />
       <ImageWithCaption caption={t`I'm so sad.`} />
-   </div>
+    </div>
+  );
 }
 ```
 
@@ -287,15 +300,15 @@ import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 
 const statusMessages = {
-   ['STATUS_OPEN']: msg`Open`,
-   ['STATUS_CLOSED']: msg`Closed`,
-   ['STATUS_CANCELLED']: msg`Cancelled`,
-   ['STATUS_COMPLETED']: msg`Completed`,
-}
+  ["STATUS_OPEN"]: msg`Open`,
+  ["STATUS_CLOSED"]: msg`Closed`,
+  ["STATUS_CANCELLED"]: msg`Cancelled`,
+  ["STATUS_COMPLETED"]: msg`Completed`,
+};
 
 export default function StatusDisplay({ statusCode }) {
-   const { i18n } = useLingui();
-   return <div>{i18n._(statusMessages[statusCode])}</div>
+  const { i18n } = useLingui();
+  return <div>{i18n._(statusMessages[statusCode])}</div>;
 }
 ```
 
@@ -311,7 +324,7 @@ Please also note that `useMemo` is meant as a performance optimization in React 
 
 ```jsx
 import { msg } from "@lingui/macro";
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 const welcomeMessage = msg`Welcome!`;
 

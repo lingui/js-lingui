@@ -1,10 +1,10 @@
-import React from 'react';
-import Layout from '@theme/Layout';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Features from '../components/Features';
-import Header from '../components/Header';
-import Users from '../components/Users';
-import Code from '../components/Code';
+import React from "react";
+import Layout from "@theme/Layout";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Features from "../components/Features";
+import Header from "../components/Header";
+import Users from "../components/Users";
+import Code from "../components/Code";
 
 function Home() {
   const { siteConfig } = useDocusaurusContext();
@@ -12,7 +12,7 @@ function Home() {
   return (
     <Layout title={siteConfig.tagline}>
       <Header />
-      <main className={'main-page-content'}>
+      <main className={"main-page-content"}>
         <Features />
         <Code />
         <Users />

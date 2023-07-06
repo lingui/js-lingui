@@ -14,10 +14,10 @@
 
     ```json title="package.json"
     {
-       "scripts": {
-          "extract": "lingui extract",
-          "compile": "lingui compile",
-       }
+      "scripts": {
+        "extract": "lingui extract",
+        "compile": "lingui compile"
+      }
     }
     ```
 
@@ -63,9 +63,9 @@ It's useful if you want to run extract command on files that are staged, using f
 ```json title="package.json"
 {
   "husky": {
-     "hooks": {
-        "pre-commit": "lingui extract $(git diff --name-only --staged)"
-     }
+    "hooks": {
+      "pre-commit": "lingui extract $(git diff --name-only --staged)"
+    }
   }
 }
 ```

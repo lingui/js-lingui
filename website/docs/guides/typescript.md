@@ -16,9 +16,7 @@ Now you can modify your `tsconfig.json` in your root directory and reference the
 ```json title="tsconfig.json"
 {
   "compilerOptions": {
-    "types": [
-      "./node_modules/@lingui/macro/global",
-    ]
+    "types": ["./node_modules/@lingui/macro/global"]
   }
 }
 ```

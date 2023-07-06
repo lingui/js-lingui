@@ -13,7 +13,7 @@ npm install --save @lingui/core
 `@lingui/core` package exports the global instance of `i18n` object. Simply import it and use it:
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 /**
  * Load messages for requested locale and activate it.
@@ -21,21 +21,21 @@ import { i18n } from "@lingui/core"
  * many ways how to load messages — from REST API, from file, from cache, etc.
  */
 async function activate(locale: string) {
-  const { messages } = await import(`${locale}/messages.js`)
-  i18n.loadAndActivate({ locale, messages })
+  const { messages } = await import(`${locale}/messages.js`);
+  i18n.loadAndActivate({ locale, messages });
 }
 
-activate("cs")
+activate("cs");
 
 // returns the Czech translation of "Hello World"
-const translation = i18n._("Hello World")
+const translation = i18n._("Hello World");
 ```
 
 If you don't want to use the global `i18n` instance and you want to setup your own, you can use [`setupI18n`](#setupi18n) method. You also need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) for macros to work correctly:
 
 ```ts
 // If you import `i18n` object from custom module like this:
-import { i18n } from "./custom-i18n-config"
+import { i18n } from "./custom-i18n-config";
 
 // ... then add following line to your Lingui configuration:
 // "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
@@ -56,13 +56,14 @@ import { i18n } from "./custom-i18n-config"
 Sets (overwrites) the catalog for given locale and activates the locale.
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-const { messages } = await import(`${locale}/messages.js`)
-i18n.loadAndActivate({ locale, messages })
+const { messages } = await import(`${locale}/messages.js`);
+i18n.loadAndActivate({ locale, messages });
 ```
 
 ### `i18n.load(allMessages: AllMessages)` {#i18n.load(allMessages)}
+
 ### `i18n.load(locale: string, messages: Messages)` {#i18n.load}
 
 Load messages for given locale or load multiple message catalogs at once.
@@ -70,28 +71,28 @@ Load messages for given locale or load multiple message catalogs at once.
 When some messages for the provided locale are already loaded, calling `i18n.load` will merge the new messages with the existing ones using `Object.assign`.
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-const messages =  {
-  "Hello": "Hello",
+const messages = {
+  Hello: "Hello",
   "Good bye": "Good bye",
 
   // Just an example how catalog looks internally.
   // Formatting of string messages works in development only.
   // See note below.
-  "My name is {name}": "My name is {name}"
-}
+  "My name is {name}": "My name is {name}",
+};
 
 const messagesCs = {
-  "Hello": "Ahoj",
+  Hello: "Ahoj",
   "Good bye": "Nashledanou",
-  "My name is {name}": "Jmenuji se {name}"
-}
+  "My name is {name}": "Jmenuji se {name}",
+};
 
 i18n.load({
   en: messagesEn,
-  cs: messagesCs
-})
+  cs: messagesCs,
+});
 
 // This is the same as loading message catalogs separately per language:
 // i18n.load('en', messagesEn)
@@ -116,6 +117,7 @@ import { messages: messagesEn } from "./locale/en/messages.js"
 
 i18n.load('en', messagesEn)
 ```
+
 :::
 
 ### `i18n.activate(locale[, locales])` {#i18n.activate}
@@ -123,16 +125,16 @@ i18n.load('en', messagesEn)
 Activate a locale and locales. From now on, calling `i18n._` will return messages in given locale.
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-i18n.activate("en")
-i18n._("Hello")           // Return "Hello" in English
+i18n.activate("en");
+i18n._("Hello"); // Return "Hello" in English
 
-i18n.activate("cs")
-i18n._("Hello")           // Return "Hello" in Czech
+i18n.activate("cs");
+i18n._("Hello"); // Return "Hello" in Czech
 ```
 
-### `i18n._(messageId[, values[, options]])` {#i18n._}
+### `i18n._(messageId[, values[, options]])` {#i18n.\_}
 
 The core method for translating and formatting messages.
 
@@ -143,16 +145,16 @@ The core method for translating and formatting messages.
 `options.message` is the default translation (optional). This is mostly used when application doesn't use message IDs in natural language (e.g.: `msg.id` or `Component.title`).
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 // Simple message
-i18n._("Hello")
+i18n._("Hello");
 
 // Message with variables
-i18n._("My name is {name}", { name: "Tom" })
+i18n._("My name is {name}", { name: "Tom" });
 
 // Message with custom messageId
-i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" })
+i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" });
 ```
 
 ### `i18n._(messageDescriptor)`
@@ -160,19 +162,24 @@ i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" })
 `messageDescriptor` is an object of message parameters.
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 // Simple message
-i18n._({ id: "Hello" })
+i18n._({ id: "Hello" });
 
 // Simple message using custom ID
-i18n._({ id: "msg.hello", message: "Hello"})
+i18n._({ id: "msg.hello", message: "Hello" });
 
 // Message with variable
 i18n._({ id: "My name is {name}", values: { name: "Tom" } });
 
 // Message with comment, custom ID and variable
-i18n._({ id: "msg.name", message: "My name is {name}", comment: "Message showing the passed in name", values: { name: "Tom" } });
+i18n._({
+  id: "msg.name",
+  message: "My name is {name}",
+  comment: "Message showing the passed in name",
+  values: { name: "Tom" },
+});
 ```
 
 ### `i18n.t(...)` {#i18n.t}
@@ -180,11 +187,16 @@ i18n._({ id: "msg.name", message: "My name is {name}", comment: "Message showing
 Alias for [`i18n._`](#i18n._)
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-i18n.t({ id: "msg.name", message: "My name is {name}", comment: "Message showing the passed in name", values: { name: "Tom" } });
+i18n.t({
+  id: "msg.name",
+  message: "My name is {name}",
+  comment: "Message showing the passed in name",
+  values: { name: "Tom" },
+});
 
-i18n.t("msg.id", { name: "Tom" }, { message: "My name is {name}" })
+i18n.t("msg.id", { name: "Tom" }, { message: "My name is {name}" });
 ```
 
 ### `i18n.date(value: string | Date[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
@@ -196,22 +208,22 @@ i18n.t("msg.id", { name: "Tom" }, { message: "My name is {name}" })
 `format` is an object passed to the `options` argument of the [Intl.DateTimeFormat constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) (optional).
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-const d = new Date("2021-07-23T16:23:00")
+const d = new Date("2021-07-23T16:23:00");
 
-i18n.activate("en")
-i18n.date(d)
+i18n.activate("en");
+i18n.date(d);
 // Returns "7/23/2021"
 
-i18n.date(d, { timeStyle: "medium"})
+i18n.date(d, { timeStyle: "medium" });
 // Returns "4:23:00 PM"
 
-i18n.date(d, { dateStyle: "medium", timeStyle: "medium"})
+i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
 // Returns "Jul 23, 2021, 4:23:00 PM"
 
-i18n.activate("cs")
-i18n.date(d)
+i18n.activate("cs");
+i18n.date(d);
 // Returns "23. 7. 2021"
 ```
 
@@ -226,24 +238,24 @@ Format a number using the conventional format for the active language.
 `format` is an object passed to the `options` argument of the [Intl.NumberFormat constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) (optional).
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-i18n.activate("en")
-i18n.number(12345.678)
+i18n.activate("en");
+i18n.number(12345.678);
 // Returns "12,345.678"
 
-i18n.number(12345.678, { style: "currency", currency: "USD"})
+i18n.number(12345.678, { style: "currency", currency: "USD" });
 // Returns "$12,345.68"
 
-i18n.activate("cs")
-i18n.number(12345.678)
+i18n.activate("cs");
+i18n.number(12345.678);
 // Returns "12 345,678"
 
-i18n.number(12345.678, { style: "currency", currency: "CZK"})
+i18n.number(12345.678, { style: "currency", currency: "CZK" });
 // Returns "12 345,68 Kč"
 ```
 
-### `setupI18n([options])`  {#setupi18n}
+### `setupI18n([options])` {#setupi18n}
 
 > **Returns**: Instance of I18n
 
@@ -258,17 +270,18 @@ However, if you do need to setup your own `i18n` instance, remember to also set 
 
 ```ts
 // If you import `i18n` object from custom module like this:
-import { i18n } from "./custom-i18n-config"
+import { i18n } from "./custom-i18n-config";
 
 // ... then add following line to your Lingui configuration:
 // "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
 ```
+
 :::
 
 ```ts
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
-const i18n = setupI18n()
+const i18n = setupI18n();
 ```
 
 The factory function accepts one optional parameter, `options`:
@@ -278,9 +291,9 @@ The factory function accepts one optional parameter, `options`:
 Initial active locale.
 
 ```tsx
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
-const i18n = setupI18n({ locale: "en" })
+const i18n = setupI18n({ locale: "en" });
 
 // This is a shortcut for:
 // const i18n = setupI18n()
@@ -292,12 +305,12 @@ const i18n = setupI18n({ locale: "en" })
 List of alternative locales (BCP 47 language tags) which are used for number and date formatting (some countries use more than one number/date format). If not set, active locale is used instead.
 
 ```tsx
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
 const i18n = setupI18n({
-   locale: "ar",
-   locales: ["en-UK", "ar-AS"]
-})
+  locale: "ar",
+  locales: ["en-UK", "ar-AS"],
+});
 
 // This is a shortcut for:
 // const i18n = setupI18n()
@@ -309,13 +322,13 @@ const i18n = setupI18n({
 Initial [`Messages`](#messages).
 
 ```tsx
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
 const messages = {
   en: require("./locale/en/messages").messages, // your path to compiled messages here
-  cs: require("./locale/cs/messages").messages  // your path to compiled messages here
-}
-const i18n = setupI18n({ messages })
+  cs: require("./locale/cs/messages").messages, // your path to compiled messages here
+};
+const i18n = setupI18n({ messages });
 
 // This is a shortcut for:
 // const i18n = setupI18n()
@@ -327,24 +340,24 @@ const i18n = setupI18n({ messages })
 Custom message to be returned when translation is missing. This is useful for debugging:
 
 ```tsx
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
-const i18n = setupI18n({ missing: "🚨" })
-i18n._('missing translation') === "🚨"
+const i18n = setupI18n({ missing: "🚨" });
+i18n._("missing translation") === "🚨";
 ```
 
 This might be also a function which is called with active locale and message ID:
 
 ```tsx
-import { setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core";
 
 function missing(locale, id) {
-   alert(`Translation in ${locale} for ${id} is missing!`)
-   return id
+  alert(`Translation in ${locale} for ${id} is missing!`);
+  return id;
 }
 
-const i18n = setupI18n({ missing })
-i18n._('missing translation') // raises alert
+const i18n = setupI18n({ missing });
+i18n._("missing translation"); // raises alert
 ```
 
 ### Catalogs
@@ -352,23 +365,23 @@ i18n._('missing translation') // raises alert
 Type of `catalogs` parameters in [`I18n.load`](#i18n.load) method:
 
 ```ts
-type Catalogs = {[locale: string]: Catalog}
+type Catalogs = { [locale: string]: Catalog };
 
 // Example:
-const catalogs: Catalogs =  {
-   en: {
-      messages: {
-         "Hello": "Hello",
-         "Good bye": "Good bye"
-      }
-   },
-   cs: {
-      messages: {
-         "Hello": "Ahoj",
-         "Good bye": "Nashledanou"
-      }
-   }
-}
+const catalogs: Catalogs = {
+  en: {
+    messages: {
+      Hello: "Hello",
+      "Good bye": "Good bye",
+    },
+  },
+  cs: {
+    messages: {
+      Hello: "Ahoj",
+      "Good bye": "Nashledanou",
+    },
+  },
+};
 ```
 
 ### Catalog
@@ -377,11 +390,11 @@ Message catalog contains messages and language data (plurals). This object is us
 
 ```ts
 type Catalog = {
-   languageData: {
-      plurals: Function
-   },
-   messages: Messages
-}
+  languageData: {
+    plurals: Function;
+  };
+  messages: Messages;
+};
 ```
 
 ### Messages
@@ -389,13 +402,13 @@ type Catalog = {
 Type of messages in [`Catalogs`](#catalogs). It's a mapping of a **messageId** to a translation in given language. This may be a function if messages are compiled.
 
 ```ts
-type Messages = {[messageId: string]: string | Function}
+type Messages = { [messageId: string]: string | Function };
 
 // Example
-const messagesEn: Messages =  {
-   "Hello": "Hello",
-   "Good bye": "Good bye"
-}
+const messagesEn: Messages = {
+  Hello: "Hello",
+  "Good bye": "Good bye",
+};
 ```
 
 ## Events

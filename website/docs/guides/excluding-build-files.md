@@ -6,8 +6,8 @@ Can be safely ignored because these files must be created every time you deploy 
 
 Replace `locales` in paths below with your custom `localeDir` from configuration.
 
--   `locales/_build/`
--   `locales/**/*.js`
+- `locales/_build/`
+- `locales/**/*.js`
 
 ## Git
 

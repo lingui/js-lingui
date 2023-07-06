@@ -13,12 +13,12 @@ Crowdin is a localization management platform that helps translate your LinguiJS
 
 Connect with your content, marketing, and translation teams in one collaborative space:
 
--   Screenshots for additional context.
--   Highlight HTML, placeholders, plurals, and more.
--   Describe the context and set character limits to ensure the translation fits the UI.
--   All translations are done online or can be uploaded to the platform.
--   Jira integration to notify you about source string issues.
--   Tips for translators to ensure there is no extra space or broken code.
+- Screenshots for additional context.
+- Highlight HTML, placeholders, plurals, and more.
+- Describe the context and set character limits to ensure the translation fits the UI.
+- All translations are done online or can be uploaded to the platform.
+- Jira integration to notify you about source string issues.
+- Tips for translators to ensure there is no extra space or broken code.
 
 ### Ship faster with localization running in parallel
 
@@ -28,11 +28,11 @@ Keep developing new features and improvements while translators receive new text
 
 Help users from different regions use the latest version of your product in their language:
 
--   Get feature branches translated independently from the master branch.
--   Translators work together in one place to boost productivity.
--   Never deal with translations in spreadsheets or email attachments.
--   Source texts are updated for translators automatically and in real-time.
--   Automatically pull completed translations that are ready to be merged.
+- Get feature branches translated independently from the master branch.
+- Translators work together in one place to boost productivity.
+- Never deal with translations in spreadsheets or email attachments.
+- Source texts are updated for translators automatically and in real-time.
+- Automatically pull completed translations that are ready to be merged.
 
 ### Seamlessly integrate localization during any phase of your development cycle
 
@@ -42,10 +42,10 @@ Automate the integration of source texts and translations between Crowdin and yo
 
 Decide who will translate your content:
 
--   Invite your team of translators (in-house translators, freelancers, or translation agencies you already work with).
--   Order professional translations from a vendor (translation agency) from Crowdin Vendors Marketplace.
--   Configure machine translation engines.
--   Engage your community.
+- Invite your team of translators (in-house translators, freelancers, or translation agencies you already work with).
+- Order professional translations from a vendor (translation agency) from Crowdin Vendors Marketplace.
+- Configure machine translation engines.
+- Engage your community.
 
 ### VCS: GitHub, GitLab, Bitbucket
 
@@ -62,7 +62,7 @@ Easily integrate Crowdin with your CI server, GIT, SVN, Mercurial, etc. Connect 
 ### 1. Create the `crowdin.yml` configuration file
 
 ```yaml title="crowdin.yml"
-project_id: '123456' # Your Crowdin project ID
+project_id: "123456" # Your Crowdin project ID
 api_token_env: CROWDIN_PERSONAL_TOKEN
 
 preserve_hierarchy: true

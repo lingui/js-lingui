@@ -1,6 +1,7 @@
 # Setup with Vite
 
 The Lingui Vite integration:
+
 - Supports both [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) and [@vitejs/plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc)
 - Compiles `.po` catalogs on the fly
 
@@ -15,28 +16,28 @@ The Lingui Vite integration:
     npm install --save @lingui/react @lingui/macro
     ```
 
-2. Setup Lingui in `vite.config.ts`:
+2.  Setup Lingui in `vite.config.ts`:
 
-   :::info
-   `@vitejs/plugin-react` does not use babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify babel options directly in `vite.config.ts`
-   :::
+    :::info
+    `@vitejs/plugin-react` does not use babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify babel options directly in `vite.config.ts`
+    :::
 
-   ```ts title="vite.config.ts"
-   import { defineConfig } from "vite";
-   import react from "@vitejs/plugin-react";
-   import { lingui } from "@lingui/vite-plugin";
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
+    import { lingui } from "@lingui/vite-plugin";
 
-   export default defineConfig({
-     plugins: [
-       react({
-         babel: {
-           plugins: ["macros"]
-         }
-       }),
-       lingui()
-     ]
-   });
-   ```
+    export default defineConfig({
+      plugins: [
+        react({
+          babel: {
+            plugins: ["macros"],
+          },
+        }),
+        lingui(),
+      ],
+    });
+    ```
 
 ## Setup with [@vitejs/plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc) {#setup-with-vitejs-plugin-react-swc}
 
@@ -49,53 +50,56 @@ The Lingui Vite integration:
     npm install --save @lingui/react @lingui/macro
     ```
 
-2. Setup Lingui in `vite.config.ts`:
+2.  Setup Lingui in `vite.config.ts`:
 
-   ```ts title="vite.config.ts"
-   import { defineConfig } from "vite";
-   import react from "@vitejs/plugin-react-swc";
-   import { lingui } from "@lingui/vite-plugin";
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react-swc";
+    import { lingui } from "@lingui/vite-plugin";
 
-   export default defineConfig({
-     plugins: [
-       react({
-         plugins: [["@lingui/swc-plugin", {}]]
-       }),
-       lingui(),
-     ]
-   });
-   ```
+    export default defineConfig({
+      plugins: [
+        react({
+          plugins: [["@lingui/swc-plugin", {}]],
+        }),
+        lingui(),
+      ],
+    });
+    ```
+
 ## Further Setup
 
 1. Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with a directory name where you have source files:
 
-  ```ts title="lingui.config.ts"
-  import type { LinguiConfig } from "@lingui/conf"
+```ts title="lingui.config.ts"
+import type { LinguiConfig } from "@lingui/conf";
 
-  const config: LinguiConfig = {
-    locales: ["en", "cs", "fr"],
-    catalogs: [{
+const config: LinguiConfig = {
+  locales: ["en", "cs", "fr"],
+  catalogs: [
+    {
       path: "src/locales/{locale}",
-      include: ["src"]
-    }],
-  }
+      include: ["src"],
+    },
+  ],
+};
 
-  export default config
-  ```
+export default config;
+```
 
-  PO format is recommended for message catalogs, and could be compiled on the fly thanks to `@lingui/vite-plugin`.
+PO format is recommended for message catalogs, and could be compiled on the fly thanks to `@lingui/vite-plugin`.
 
-  See [`format`](/docs/ref/catalog-formats.md) documentation for other available formats.
+See [`format`](/docs/ref/catalog-formats.md) documentation for other available formats.
 
 2. Add the following scripts to your `package.json`:
 
-  ```json title="package.json"
-  {
-     "scripts": {
-        "messages:extract": "lingui extract"
-     }
+```json title="package.json"
+{
+  "scripts": {
+    "messages:extract": "lingui extract"
   }
-  ```
+}
+```
 
 3. Check the installation by running:
 
@@ -135,10 +139,10 @@ The Lingui Vite integration:
 
    ```ts
    export async function dynamicActivate(locale: string) {
-      const { messages } = await import(`./locales/${locale}.po`);
+     const { messages } = await import(`./locales/${locale}.po`);
 
-      i18n.load(locale, messages)
-      i18n.activate(locale)
+     i18n.load(locale, messages);
+     i18n.activate(locale);
    }
    ```
 
