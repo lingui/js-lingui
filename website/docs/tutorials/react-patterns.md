@@ -301,11 +301,11 @@ export default function StatusDisplay({ statusCode }) {
 
 ## Memoization pitfall
 
-In the following contrived example, we document how welcome message will or will not be updated when locale changes.
+In the following contrived example, we document how a welcome message will or will not be updated when locale changes.
 
-The documented behavior is expected, because of how `useMemo` dependencies work. In order for translations to update, the `useMemo` needs to depend on the i18n context.
+The documented behavior may not be intuitive at first, but it is expected, because of how `useMemo` dependencies work.
 
-We acknowledge that this is not intuitive, and we're open to accepting a solution to make this easier.
+To avoid bugs with stale translations, use the `_` function returned from [`useLingui`](/ref/react#uselingui): it is safe to use with memoization because its reference changes whenever the Lingui context updates. We are open to accepting solutions to make working with the Lingui context easier.
 
 Please also note that `useMemo` is meant as a performance optimization in React and you probably don't need to memoize your translations. Additionally, this issue is not present when using the `Trans` component which we recommend to use when possible.
 
@@ -342,6 +342,17 @@ export function Welcome() {
   const welcome = useMemo(() => {
     return linguiCtx.i18n._(welcomeMessage);
   }, [linguiCtx]);
+
+  return <div>{welcome}</div>;
+}
+
+// 🤩 Better! `useMemo` consumes the `_` function from the Lingui context
+export function Welcome() {
+  const { _ } = useLingui();
+
+  const welcome = useMemo(() => {
+    return _(welcomeMessage);
+  }, [_]);
 
   return <div>{welcome}</div>;
 }

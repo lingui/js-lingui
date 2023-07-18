@@ -4,10 +4,11 @@ import { TransRenderProps } from "./Trans"
 
 export type I18nContext = {
   i18n: I18n
+  _: I18n["_"]
   defaultComponent?: ComponentType<TransRenderProps>
 }
 
-export type I18nProviderProps = I18nContext & {
+export type I18nProviderProps = Omit<I18nContext, "_"> & {
   children?: React.ReactNode
 }
 
@@ -46,6 +47,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     () => ({
       i18n,
       defaultComponent,
+      _: i18n.t.bind(i18n),
     }),
     [i18n, defaultComponent]
   )

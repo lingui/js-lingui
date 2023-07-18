@@ -6,8 +6,8 @@ Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. Rea
 
 All i18n components render translation as text without a wrapping tag. This can be customized in two different ways:
 
--   globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component
--   locally: using `render` prop or `component` on i18n components
+- globally: using `defaultComponent` prop on [`I18nProvider`](#i18nprovider) component
+- locally: using `render` prop or `component` on i18n components
 
 ### Global Configuration
 
@@ -15,12 +15,12 @@ Default rendering component can be set using `defaultComponent` prop in [`I18nPr
 
 ### Local Configuration
 
-| Prop name   | Type                                      | Description                                    |
-|-------------| ----------------------------------------- |------------------------------------------------|
-| `className` | string                                    | Class name to be added to `<span>` element     |
-| `render`    | Function(props) -> Element \| `null`      | Custom render callback to render translation   |
-| `component` | Component \| `null`                       | Custom component to render translation         |
-| `comment`   | string                                    | Comment picked up by extractor to provide translation context |
+| Prop name   | Type                                 | Description                                                   |
+| ----------- | ------------------------------------ | ------------------------------------------------------------- |
+| `className` | string                               | Class name to be added to `<span>` element                    |
+| `render`    | Function(props) -> Element \| `null` | Custom render callback to render translation                  |
+| `component` | Component \| `null`                  | Custom component to render translation                        |
+| `comment`   | string                               | Comment picked up by extractor to provide translation context |
 
 `className` is used only for built-in components (when *render* is string).
 
@@ -77,10 +77,10 @@ Lingui context object is exported from the package (`import { LinguiContext } fr
 `I18nProvider` renders its children only after a locale is activated. This ensures that the components consuming `i18n` have access to the translations.
 Additionally, it subscribes to change events emitted by the `i18n` object and re-renders all components consuming the Lingui context when messages are updated or when a new locale is activated.
 
-| Prop name          | Type                  | Description                                                               |
-|--------------------|-----------------------|---------------------------------------------------------------------------|
-| `i18n`             | `I18n`                | The i18n instance (usually the one imported from `@lingui/core`)          |
-| `children`         | `React.ReactNode`     | React Children node                                                       |
+| Prop name          | Type                  | Description                                                                    |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
+| `i18n`             | `I18n`                | The i18n instance (usually the one imported from `@lingui/core`)               |
+| `children`         | `React.ReactNode`     | React Children node                                                            |
 | `defaultComponent` | `React.ComponentType` | A React component within which translation strings will be rendered (optional) |
 
 `defaultComponent` has the same meaning as `component` in other i18n components. [`Rendering of translations`](#rendering-translations) is explained at the beginning of this document.
@@ -113,9 +113,17 @@ const App = () => {
 
 ### useLingui
 
-This hook allows access to the Lingui context. It returns an object with the same values that were passed to the `I18nProvider` component.
+This hook allows access to the Lingui context. It returns an object with the following content:
 
-Components that use `useLingui` hook will re-render when locale and / or catalogs change, ensuring that the translations are always up-to-date.
+| Key                | Type                  | Description                                                            |
+| ------------------ | --------------------- | ---------------------------------------------------------------------- |
+| `i18n`             | `I18n`                | the `I18` object instance that you passed to `I18nProvider`            |
+| `_`                | `I18n[_]`             | reference to the [`i18n._`](/ref/core#i18n._) function, explained below |
+| `defaultComponent` | `React.ComponentType` | the same `defaultComponent` you passed to `I18nProvider`, if provided  |
+
+Components that use `useLingui` hook will re-render when locale and / or catalogs change. However, the reference to the `i18n` object is stable and doesn't change between re-renders. This can lead to unexpected behavior with memoization (see [memoization pitfall](/tutorials/react-patterns#memoization-pitfall)).
+
+To alleviate the issue, `useLingui` provides the `_` function, which is the same as [`i18n._`](/ref/core#i18n._) but *its reference changes* with each update of the Lingui context. Thanks to that, you can safely use this `_` function as a hook dependency.
 
 ```jsx
 import React from "react"
