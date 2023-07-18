@@ -17,11 +17,13 @@ export const LinguiContext = React.createContext<I18nContext | null>(null)
 export function useLingui(): I18nContext {
   const context = React.useContext(LinguiContext)
 
-  if (context == null) {
-    throw new Error("useLingui hook was used without I18nProvider.")
+  if (process.env.NODE_ENV !== "production") {
+    if (context == null) {
+      throw new Error("useLingui hook was used without I18nProvider.")
+    }
   }
 
-  return context
+  return context as I18nContext
 }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
