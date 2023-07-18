@@ -7,20 +7,20 @@
 Here is a basic example of the i18next usage:
 
 ```js
-import i18next from "i18next"
+import i18next from "i18next";
 
 i18next.init({
   lng: "en",
   resources: {
     en: {
       translation: {
-        "key": "Hello world"
-      }
-    }
-  }
-})
+        key: "Hello world",
+      },
+    },
+  },
+});
 // ...
-document.getElementById("output").innerHTML = i18next.t("key")
+document.getElementById("output").innerHTML = i18next.t("key");
 ```
 
 Since the Lingui v4 release, there is a core function [i18n.t(...)](/docs/ref/core.md#i18n.t) that allows doing pretty much the same thing. The following example shows how this works with Lingui:
@@ -30,17 +30,19 @@ Since the Lingui v4 release, there is a core function [i18n.t(...)](/docs/ref/co
 module.exports = {
   sourceLocale: "en",
   locales: ["en", "cs", "fr"],
-  catalogs: [{
-    path: "src/locales/{locale}/messages",
-    include: ["src"]
-  }]
-}
+  catalogs: [
+    {
+      path: "src/locales/{locale}/messages",
+      include: ["src"],
+    },
+  ],
+};
 ```
 
 ```js
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-document.getElementById("output").innerHTML = i18n.t({ id: "key", message: "Hello world"})
+document.getElementById("output").innerHTML = i18n.t({ id: "key", message: "Hello world" });
 ```
 
 :::note
@@ -54,13 +56,13 @@ Interpolation is one of the most used functionalities in I18N. It allows integra
 i18next sample:
 
 ```js
-i18next.t("msg.name", { name: "Tom" })
+i18next.t("msg.name", { name: "Tom" });
 ```
 
 Lingui sample:
 
 ```js
-i18n._({ id: "msg.name", message: "My name is {name}", values: { name: "Tom" } })
+i18n._({ id: "msg.name", message: "My name is {name}", values: { name: "Tom" } });
 ```
 
 ## Formatting
@@ -72,35 +74,35 @@ Both the Lingui and i18next formatting functions are based on the [Intl API](htt
 i18next sample:
 
 ```js
-i18next.t("intlNumber", { val: 1000 })
+i18next.t("intlNumber", { val: 1000 });
 // --> Some 1,000
-i18next.t("intlNumber", { val: 1000.1, minimumFractionDigits: 3 })
+i18next.t("intlNumber", { val: 1000.1, minimumFractionDigits: 3 });
 // --> Some 1,000.100
-i18next.t("intlNumber", { val: 1000.1, formatParams: { val: { minimumFractionDigits: 3 } } })
+i18next.t("intlNumber", { val: 1000.1, formatParams: { val: { minimumFractionDigits: 3 } } });
 // --> Some 1,000.100
-i18next.t("intlNumberWithOptions", { val: 2000 })
+i18next.t("intlNumberWithOptions", { val: 2000 });
 // --> Some 2,000.00
-i18next.t("intlNumberWithOptions", { val: 2000, minimumFractionDigits: 3 })
+i18next.t("intlNumberWithOptions", { val: 2000, minimumFractionDigits: 3 });
 // --> Some 2,000.000
 ```
 
 Lingui sample:
 
 ```js
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-i18n.activate("en")
-i18n.number(12345.678)
+i18n.activate("en");
+i18n.number(12345.678);
 // Returns "12,345.678"
 
-i18n.number(12345.678, { style: "currency", currency: "USD"})
+i18n.number(12345.678, { style: "currency", currency: "USD" });
 // Returns "$12,345.68"
 
-i18n.activate("cs")
-i18n.number(12345.678)
+i18n.activate("cs");
+i18n.number(12345.678);
 // Returns "12 345,678"
 
-i18n.number(12345.678, { style: "currency", currency: "CZK"})
+i18n.number(12345.678, { style: "currency", currency: "CZK" });
 // Returns "12 345,68 Kč"
 ```
 
@@ -109,33 +111,32 @@ i18n.number(12345.678, { style: "currency", currency: "CZK"})
 i18next sample:
 
 ```js
-i18next.t("intlDateTime", { val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) })
+i18next.t("intlDateTime", { val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) });
 // --> On the 12/20/2012
-i18next.t("intlDateTime",
-  {
-    val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)),
-    formatParams: {
-      val: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
-    },
-  })
+i18next.t("intlDateTime", {
+  val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)),
+  formatParams: {
+    val: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
+  },
+});
 // --> On the Thursday, December 20, 2012
 ```
 
 Lingui sample:
 
 ```js
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
-const d = new Date("2021-07-23T16:23:00")
+const d = new Date("2021-07-23T16:23:00");
 
-i18n.activate("en")
-i18n.date(d)
+i18n.activate("en");
+i18n.date(d);
 // Returns "7/23/2021"
 
-i18n.date(d, { timeStyle: "medium"})
+i18n.date(d, { timeStyle: "medium" });
 // Returns "4:23:00 PM"
 
-i18n.date(d, { dateStyle: "medium", timeStyle: "medium"})
+i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
 // Returns "Jul 23, 2021, 4:23:00 PM"
 ```
 
@@ -148,19 +149,19 @@ For example:
 ```js
 plural(numBooks, {
   one: "# book",
-  other: "# books"
-})
+  other: "# books",
+});
 ```
 
 Under the hood, plural is replaced with low-level `i18n._`. For production, the above example will become:
 
 ```js
 i18n._({
-  id: 'd1wX4r',
+  id: "d1wX4r",
   // stripped on production
   // message: '{numBooks, plural, one {# book} other {# books}}',
-  values:  { numBooks }
-})
+  values: { numBooks },
+});
 ```
 
 When we extract messages from source code using Lingui CLI, we get:
@@ -179,9 +180,9 @@ i18next handles plurals differently. It requires a separate key to be defined fo
 ```
 
 ```js
-i18next.t('key', {count: 0}) // -> "items"
-i18next.t('key', {count: 1}) // -> "item"
-i18next.t('key', {count: 5}) // -> "items"
+i18next.t("key", { count: 0 }); // -> "items"
+i18next.t("key", { count: 1 }); // -> "item"
+i18next.t("key", { count: 5 }); // -> "items"
 ```
 
 ## Context

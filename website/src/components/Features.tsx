@@ -1,9 +1,9 @@
-import React from 'react';
-import { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
+import React from "react";
+import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
 
-import styles from './Features.module.scss';
-import Button from './Button';
-import clsx from 'clsx';
+import styles from "./Features.module.scss";
+import Button from "./Button";
+import clsx from "clsx";
 
 interface FeatureDetails {
   title: string;
@@ -14,44 +14,44 @@ interface FeatureDetails {
 
 const FEATURES: FeatureDetails[] = [
   {
-    title: 'Universal',
+    title: "Universal",
     description: (
       <p>
         Use it everywhere. <code>@lingui/core</code> provides the essential intl functionality which works in any
         JavaScript project, while <code>@lingui/react</code> offers components for leveraging React rendering.
       </p>
     ),
-    image: 'universal.svg',
-    additionalClass: '',
+    image: "universal.svg",
+    additionalClass: "",
   },
   {
-    title: 'Powerful Tooling',
+    title: "Powerful Tooling",
     description: (
       <p>
         Manage the whole intl workflow using Lingui CLI. It extracts messages from source code, validates messages from
         translators and checks that all messages are translated before shipping to production.
       </p>
     ),
-    image: 'tooling.png',
-    additionalClass: '',
+    image: "tooling.png",
+    additionalClass: "",
   },
   {
-    title: 'Full Rich-Text Support',
+    title: "Full Rich-Text Support",
     description: (
       <p>
         Use React components inside localized messages without any limitations. Writing rich-text messages is as easy as
         writing JSX.
       </p>
     ),
-    image: 'rich-text.svg',
-    additionalClass: '',
+    image: "rich-text.svg",
+    additionalClass: "",
   },
   {
-    title: 'Headache-Free Professional Localization',
+    title: "Headache-Free Professional Localization",
     description: (
       <div>
-        <div className={'margin-bottom--sm'}>
-          <code>Candidate knows 1 language</code>, but{' '}
+        <div className={"margin-bottom--sm"}>
+          <code>Candidate knows 1 language</code>, but{" "}
           <code>
             Candidate knows 10 language<strong>s</strong>
           </code>
@@ -63,33 +63,33 @@ const FEATURES: FeatureDetails[] = [
         </p>
       </div>
     ),
-    image: 'clean-and-readable.png',
+    image: "clean-and-readable.png",
     additionalClass: styles.featureCardCellWide,
   },
   {
-    title: 'Suitable for All Localization Platforms',
+    title: "Suitable for All Localization Platforms",
     description: (
       <p>
         Integrate Lingui into your existing workflow. It supports message keys as well as auto-generated messages.
         Translations are stored in JSON or standard PO file, which is supported in almost all translation tools.
       </p>
     ),
-    image: 'all-platforms.svg',
-    additionalClass: '',
+    image: "all-platforms.svg",
+    additionalClass: "",
   },
   {
-    title: 'Verified by Thousands of People',
+    title: "Verified by Thousands of People",
     description: (
       <p>
         Lingui has been used and tested by thousands of satisfied users and has been proven to provide accurate and
         efficient i18n and l10n results. Join the thousands of satisfied customers.
       </p>
     ),
-    image: 'verified.svg',
-    additionalClass: '',
+    image: "verified.svg",
+    additionalClass: "",
   },
   {
-    title: 'Battle-Proven & Future Proof',
+    title: "Battle-Proven & Future Proof",
     description: (
       <p>
         During the last 7 years, we&apos;ve seen a lot of localization projects and developed a tool to handle them all.
@@ -98,11 +98,11 @@ const FEATURES: FeatureDetails[] = [
         most recent translations directly to your customers – we&apos;ve got you covered.
       </p>
     ),
-    image: 'time.svg',
+    image: "time.svg",
     additionalClass: styles.featureCardCellWide,
   },
   {
-    title: 'Fully Fledged',
+    title: "Fully Fledged",
     description: (
       <p>
         Lingui is a general-purpose framework with bindings for React. Use it on a server in Node.js or Vanilla
@@ -110,19 +110,19 @@ const FEATURES: FeatureDetails[] = [
         <br />A set of optional modules would implement lazy loading of language packs, user locale detection, and more.
       </p>
     ),
-    image: 'fledged.svg',
+    image: "fledged.svg",
     additionalClass: styles.featureCardCellWide,
   },
   {
-    title: 'Free and Fully Supported',
+    title: "Free and Fully Supported",
     description: (
       <p>
         With Lingui, you have access to a powerful i18n tool at no cost and our team is always available to assist you
         with any questions.
       </p>
     ),
-    image: 'free.svg',
-    additionalClass: '',
+    image: "free.svg",
+    additionalClass: "",
   },
 ];
 
@@ -143,11 +143,11 @@ const Features = (): React.ReactElement => {
     <section>
       <div className="container">
         <div className="row">
-          <div className={'col col--8 col--offset-2'}>
-            <h2 className={'text--center margin-bottom--lg'}>Why Choose Lingui for Your Localization Projects?</h2>
+          <div className={"col col--8 col--offset-2"}>
+            <h2 className={"text--center margin-bottom--lg"}>Why Choose Lingui for Your Localization Projects?</h2>
           </div>
           <div className="col col--offset-1 col--10">
-            <div className={styles['features--wrap']}>
+            <div className={styles["features--wrap"]}>
               {FEATURES.slice(0, 4).map((feature: FeatureDetails, idx) => (
                 <FeatureCard
                   key={idx}
@@ -157,8 +157,8 @@ const Features = (): React.ReactElement => {
                   additionalClass={feature.additionalClass}
                 />
               ))}
-              <div className={styles['features--left-img']}>
-                <img src={'./img/features/pattern-left-big.svg'} width="900" height="680" alt="Features Background" />
+              <div className={styles["features--left-img"]}>
+                <img src={"./img/features/pattern-left-big.svg"} width="900" height="680" alt="Features Background" />
               </div>
               {FEATURES.slice(4, 6).map((feature: FeatureDetails, idx) => (
                 <FeatureCard
@@ -169,8 +169,8 @@ const Features = (): React.ReactElement => {
                   additionalClass={feature.additionalClass}
                 />
               ))}
-              <div className={styles['features--right-img']}>
-                <img src={'./img/features/pattern-right-big.svg'} width="900" height="680" alt="Features Background" />
+              <div className={styles["features--right-img"]}>
+                <img src={"./img/features/pattern-right-big.svg"} width="900" height="680" alt="Features Background" />
               </div>
               {FEATURES.slice(6).map((feature: FeatureDetails, idx) => (
                 <FeatureCard
@@ -186,7 +186,7 @@ const Features = (): React.ReactElement => {
         </div>
       </div>
       <div className={styles.linkFeatures}>
-        <Button href={withBaseUrl('/introduction/#key-features')} isOutline={true}>
+        <Button href={withBaseUrl("/introduction/#key-features")} isOutline={true}>
           More Features
         </Button>
       </div>

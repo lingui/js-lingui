@@ -19,22 +19,22 @@ npm install --save-dev @lingui/vite-plugin
 Simply add `@lingui/vite-plugin` inside your `vite.config.ts`:
 
 ```ts title="vite.config.ts"
-import { UserConfig } from 'vite';
-import { lingui } from '@lingui/vite-plugin'
+import { UserConfig } from "vite";
+import { lingui } from "@lingui/vite-plugin";
 
 const config: UserConfig = {
-  plugins: [lingui()]
-}
+  plugins: [lingui()],
+};
 ```
 
 Then in your code all you need is to use [dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports) to load only necessary catalog. Extension is mandatory.
 
 ```ts
 export async function dynamicActivate(locale: string) {
-   const { messages } = await import(`./locales/${locale}.po`);
+  const { messages } = await import(`./locales/${locale}.po`);
 
-   i18n.load(locale, messages)
-   i18n.activate(locale)
+  i18n.load(locale, messages);
+  i18n.activate(locale);
 }
 ```
 
@@ -44,6 +44,7 @@ If you are using a format that has a different extension than `*.po`, you need t
 ```ts
 const { messages } = await import(`./locales/${language}.json?lingui`);
 ```
+
 :::
 
 See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.

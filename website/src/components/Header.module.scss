@@ -17,7 +17,7 @@
 
     &:before,
     &:after {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       width: 562px;
@@ -34,12 +34,12 @@
 
     &:before {
       left: 0;
-      background-image: url('/img/header/left-bg.svg');
+      background-image: url("/img/header/left-bg.svg");
     }
 
     &:after {
       right: 0;
-      background-image: url('/img/header/right-bg.svg');
+      background-image: url("/img/header/right-bg.svg");
     }
   }
 

@@ -1,2 +1,2 @@
-declare module '*.module.scss';
-declare module '@docusaurus/*';
+declare module "*.module.scss";
+declare module "@docusaurus/*";

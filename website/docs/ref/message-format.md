@@ -13,6 +13,7 @@ Example: `Refresh inbox`
 Example: `Attachment {name} saved`
 
 ### Plurals
+
 > Using language specific plural forms (`one`, `other`):
 
 ```icu-message-format

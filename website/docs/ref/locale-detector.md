@@ -1,6 +1,6 @@
 # Locale Detection
 
-`@lingui/detect-locale` is little package *just (1 kB Gzip)* with some helper functions that will help you detect the locale of the user:
+`@lingui/detect-locale` is little package _just (1 kB Gzip)_ with some helper functions that will help you detect the locale of the user:
 
 ## Installation
 
@@ -32,35 +32,25 @@ Practically all detectors accepts a custom document, location, or window object 
 ### Usage with `detect`
 
 ```jsx
-import { detect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
+import { detect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale";
 
 // can be a function with custom logic or just a string, `detect` method will handle it
-const DEFAULT_FALLBACK = () => "en"
+const DEFAULT_FALLBACK = () => "en";
 
-const result = detect(
-  fromUrl("lang"),
-  fromStorage("lang"),
-  fromNavigator(),
-  DEFAULT_FALLBACK
-)
+const result = detect(fromUrl("lang"), fromStorage("lang"), fromNavigator(), DEFAULT_FALLBACK);
 
-console.log(result) // "en"
+console.log(result); // "en"
 ```
 
 ### Usage with `multipleDetect`
 
 ```jsx
-import { multipleDetect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale"
+import { multipleDetect, fromUrl, fromStorage, fromNavigator } from "@lingui/detect-locale";
 
 // can be a function with custom logic or just a string, `detect` method will handle it
-const DEFAULT_FALLBACK = () => "en"
+const DEFAULT_FALLBACK = () => "en";
 
-const result = multipleDetect(
-  fromUrl("lang"),
-  fromStorage("lang"),
-  fromNavigator(),
-  DEFAULT_FALLBACK
-)
+const result = multipleDetect(fromUrl("lang"), fromStorage("lang"), fromNavigator(), DEFAULT_FALLBACK);
 
-console.log(result) // ["en", "es"]
+console.log(result); // ["en", "es"]
 ```

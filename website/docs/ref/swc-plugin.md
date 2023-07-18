@@ -40,11 +40,11 @@ Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configura
             //   "i18n": ["@lingui/core", "i18n"],
             //   "trans": ["@lingui/react", "Trans"]
             // }
-          },
-        ],
-      ],
-    },
-  },
+          }
+        ]
+      ]
+    }
+  }
 }
 ```
 
@@ -56,9 +56,12 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     swcPlugins: [
-      ['@lingui/swc-plugin', {
-       // the same options as in .swcrc
-      }],
+      [
+        "@lingui/swc-plugin",
+        {
+          // the same options as in .swcrc
+        },
+      ],
     ],
   },
 };

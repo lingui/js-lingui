@@ -21,16 +21,14 @@ This setup guide is for any project which uses React.
     :::
 
     :::note
-    It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies`  errors in ESLint.
+    It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies` errors in ESLint.
     :::
 
 2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
 
     ```json
     {
-      "plugins": [
-        "macros"
-      ]
+      "plugins": ["macros"]
     }
     ```
 
@@ -43,13 +41,15 @@ This setup guide is for any project which uses React.
     ```js title="lingui.config.js"
     /** @type {import('@lingui/conf').LinguiConfig} */
     module.exports = {
-       locales: ["en", "cs", "fr"],
-       catalogs: [{
+      locales: ["en", "cs", "fr"],
+      catalogs: [
+        {
           path: "src/locales/{locale}/messages",
-          include: ["src"]
-       }],
-       format: "po"
-    }
+          include: ["src"],
+        },
+      ],
+      format: "po",
+    };
     ```
 
     PO format is recommended for message catalogs. See [`format`](/docs/ref/catalog-formats.md) documentation for other available formats.
@@ -58,10 +58,10 @@ This setup guide is for any project which uses React.
 
     ```json title="package.json"
     {
-       "scripts": {
-          "extract": "lingui extract",
-          "compile": "lingui compile",
-       }
+      "scripts": {
+        "extract": "lingui extract",
+        "compile": "lingui compile"
+      }
     }
     ```
 
@@ -95,11 +95,11 @@ Congratulations! You've successfully set up project with LinguiJS. Now it's good
 
 Checkout these reference guides for full documentation:
 
--   [Internationalization of React apps](/docs/tutorials/react.md)
--   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
--   [`@lingui/react` reference documentation](/docs/ref/react.md)
--   [ICU Message Format](/docs/ref/message-format.md)
--   [CLI reference](/docs/ref/cli.md)
--   [Configuration reference](/docs/ref/conf.md)
+- [Internationalization of React apps](/docs/tutorials/react.md)
+- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` reference documentation](/docs/ref/react.md)
+- [ICU Message Format](/docs/ref/message-format.md)
+- [CLI reference](/docs/ref/cli.md)
+- [Configuration reference](/docs/ref/conf.md)
 
 [^1]: For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.

@@ -28,13 +28,13 @@ Follow the polyfill installation instructions before proceeding further.
 We're going to translate the following contrived example:
 
 ```tsx
-import React from 'react';
-import { StyleSheet, Text, View, Alert, SafeAreaView, Button } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, Alert, SafeAreaView, Button } from "react-native";
 
 export const AppRoot = () => {
-   const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>([]);
 
-   const markAllAsRead = () => {
+  const markAllAsRead = () => {
     Alert.alert("", "Do you want to set all your messages as read?", [
       {
         text: "OK",
@@ -54,27 +54,27 @@ export const AppRoot = () => {
       }}
     />
   );
-}
+};
 
 const Inbox = ({ messages, markAsRead }) => {
- const messagesCount = messages.length;
+  const messagesCount = messages.length;
 
- return (
-   <SafeAreaView style={styles.container}>
-     <View style={styles.container2}>
-       <Text style={styles.heading}>Message Inbox</Text>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container2}>
+        <Text style={styles.heading}>Message Inbox</Text>
 
-       <Button onPress={markAsRead} title="Mark all messages as read" />
+        <Button onPress={markAsRead} title="Mark all messages as read" />
 
-       <Text>
-         {messagesCount === 1
-           ? `There's {messagesCount} message in your inbox.`
-           : `There are ${messagesCount} messages in your inbox.`}
-       </Text>
-       {/* additional code for adding messages, etc.*/}
-     </View>
-   </SafeAreaView>
- );
+        <Text>
+          {messagesCount === 1
+            ? `There's {messagesCount} message in your inbox.`
+            : `There are ${messagesCount} messages in your inbox.`}
+        </Text>
+        {/* additional code for adding messages, etc.*/}
+      </View>
+    </SafeAreaView>
+  );
 };
 ```
 
@@ -127,25 +127,25 @@ The `Trans` component uses the `i18n` instance to get the translations from it. 
 The interplay of `I18nProvider` and `useLingui` is shown in the following simplified example:
 
 ```tsx
-import { I18nProvider } from '@lingui/react'
-import { t, Trans } from '@lingui/macro'
+import { I18nProvider } from "@lingui/react";
+import { t, Trans } from "@lingui/macro";
 import { i18n } from "@lingui/core";
 
 <I18nProvider i18n={i18n}>
   <AppRoot />
-</I18nProvider>
+</I18nProvider>;
 //...
-const Inbox = (({ markAsRead }) => {
-  const { i18n } = useLingui()
+const Inbox = ({ markAsRead }) => {
+  const { i18n } = useLingui();
   return (
     <View>
       <Text style={styles.heading}>
         <Trans>Message Inbox</Trans>
       </Text>
-      <Button onPress={markAsRead} title={t(i18n)`Mark messages as read`}/>
+      <Button onPress={markAsRead} title={t(i18n)`Mark messages as read`} />
     </View>
   );
-});
+};
 ```
 
 ## Internationalization outside of React
@@ -158,7 +158,7 @@ In that case you'll also need access to the `i18n` object, but you don't need to
 By default, Lingui uses an `i18n` object instance that you can import as follows:
 
 ```ts
-import { i18n } from '@lingui/core';
+import { i18n } from "@lingui/core";
 ```
 
 This instance is the source of truth for the active locale. For string constants that will be translated at runtime, use the [`msg`](/ref/macro#definemessage) macro as follows:
@@ -188,7 +188,9 @@ Instead, please refer to [Expo localization](https://docs.expo.dev/versions/late
 As described in the [reference](/docs/ref/react.md#rendering-translations), by default, translation components render translation as text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/docs/ref/react.md#trans) component like this:
 
 ```tsx
-<Text><Trans>Message Inbox</Trans></Text>
+<Text>
+  <Trans>Message Inbox</Trans>
+</Text>
 ```
 
 You'll surely agree the `Text` component looks a little redundant. That's why the [`I18nProvider`](/docs/ref/react.md#i18nprovider) component accepts a `defaultComponent` prop. Just supply the `Text` component as the `defaultComponent` prop and the previous example can be simplified to:
@@ -211,8 +213,8 @@ This can be achieved by the following code:
 <Trans>
   <Text style={{ fontSize: 20 }}>
     <Text>Concert of </Text>
-    <Text style={{ color: 'green' }}>Green Day</Text>
-    <Text style={{ fontWeight: 'bold' }}> tonight!</Text>
+    <Text style={{ color: "green" }}>Green Day</Text>
+    <Text style={{ fontWeight: "bold" }}> tonight!</Text>
   </Text>
 </Trans>
 ```
@@ -225,9 +227,9 @@ The important point here is that the sentence isn't broken into pieces but remai
 
 ## Further reading
 
--   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
--   [`@lingui/react` reference documentation](/docs/ref/react.md)
--   [`@lingui/cli` reference documentation](/docs/ref/cli.md)
--   [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
+- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` reference documentation](/docs/ref/react.md)
+- [`@lingui/cli` reference documentation](/docs/ref/cli.md)
+- [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
 
 This guide originally authored and contributed in full by [Vojtech Novak](https://twitter.com/vonovak).

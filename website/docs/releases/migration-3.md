@@ -22,7 +22,7 @@ Minimal required versions are:
 - In [`Trans`](/docs/ref/react.md#Trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
 
   ```jsx
-  <Trans id="Read <a>the docs</a>!" components={{a: <a href="/docs" />}} />
+  <Trans id="Read <a>the docs</a>!" components={{ a: <a href="/docs" /> }} />
   ```
 
 - `NumberFormat` and `DateFormat` components were removed. Import `i18n` from `@lingui/core` package and use [`i18n.date()`](/docs/ref/core.md#i18n.date) and [`i18n.number()`](/docs/ref/core.md#i18n.number) instead.
@@ -103,19 +103,20 @@ In the same spirit as `@apollo/react` and `react-redux`, the [`I18nProvider`](/d
 ```
 
 :::caution Note
-You can still use [`i18n.load`](/docs/ref/core.md#i18n.load(catalogs)) to load all catalogs at once:
+You can still use [`i18n.load`](/docs/ref/core.md#i18n.load) to load all catalogs at once:
 
 ```jsx
 // i18n.js
-import { i18n } from "@lingui/core"
-import catalogEn from './locale/en/messages.js'
-import catalogFr from './locale/fr/messages.js'
+import { i18n } from "@lingui/core";
+import catalogEn from "./locale/en/messages.js";
+import catalogFr from "./locale/fr/messages.js";
 
 i18n.load({
-   en: catalogEn.messages,
-   fr: catalogFr.messages
-})
+  en: catalogEn.messages,
+  fr: catalogFr.messages,
+});
 ```
+
 :::
 
 ### `@lingui/macro`
@@ -138,26 +139,26 @@ Whitespace handling in plugins had few bugs. By fixing them, there might be few 
 
 1. Spaces before `{variables}` in JSX aren't preserved. This is how React handles whitespaces in JSX. Leading whitespace is always removed:
 
-  ```jsx
-  <Trans>
-     &quot;
-     {variable}
-     &quot;
-  </Trans>
+```jsx
+<Trans>
+  &quot;
+  {variable}
+  &quot;
+</Trans>
 
-  // Becomes: &quot;{variable}&quot;
-  ```
+// Becomes: &quot;{variable}&quot;
+```
 
 2. Forced newlines are preserved. Sometimes it's useful to keep newlines in JSX. If that's your case, you need to force it in the same was as spaces are forced before variables or elements:
 
-  ```jsx
-  <Trans>
-     1. Item{"\n"}
-     2. Item
-  </Trans>
+```jsx
+<Trans>
+  1. Item{"\n"}
+  2. Item
+</Trans>
 
-  // Becomes: 1. Item\n2. Item
-  ```
+// Becomes: 1. Item\n2. Item
+```
 
 ### Plugins/Presets
 
@@ -165,10 +166,10 @@ Plugins are replaced with macros. Presets are removed completely because they ar
 
 1. Uninstall plugins/presets, remove them from Babel config and replace them with `macros`:
 
-  ```bash npm2yarn
-  npm uninstall @lingui/babel-preset-react
-  npm install --dev @lingui/macro babel-plugin-macros
-  ```
+```bash npm2yarn
+npm uninstall @lingui/babel-preset-react
+npm install --dev @lingui/macro babel-plugin-macros
+```
 
     ```diff
     {
@@ -183,25 +184,26 @@ Plugins are replaced with macros. Presets are removed completely because they ar
 
 2. Import [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1), [`Select`](/docs/ref/macro.md#select-1) and [`SelectOrdinal`](/docs/ref/macro.md#selectordinal-1) from `@lingui/macro`:
 
-    ```diff
-    - import { Trans } from "@lingui/react"
-    + import { Trans } from "@lingui/macro"
-    ```
+   ```diff
+   - import { Trans } from "@lingui/react"
+   + import { Trans } from "@lingui/macro"
+   ```
 
-    :::caution Note
-    If you used [`Trans`](/docs/ref/macro.md#trans) component without children, then keep the import from `@lingui/react`:
+   :::caution Note
+   If you used [`Trans`](/docs/ref/macro.md#trans) component without children, then keep the import from `@lingui/react`:
 
-    ```jsx
-    import { Trans } from "@lingui/react"
+   ```jsx
+   import { Trans } from "@lingui/react";
 
-    const CustomID = () => <Trans id="msg.id" />
-    const DynamicID = () => <Trans id={msgId} />
-    ```
-    :::
+   const CustomID = () => <Trans id="msg.id" />;
+   const DynamicID = () => <Trans id={msgId} />;
+   ```
+
+   :::
 
 3. `i18n.t`, `i18n.plural`, `i18n.select` and `i18n.selectOrdinal` methods are removed and replaced with macros.
 
-  These macros automatically binds message to default `i18n` object:
+These macros automatically binds message to default `i18n` object:
 
     ```diff
       import { i18n } from "@lingui/core"
@@ -218,17 +220,17 @@ Plugins are replaced with macros. Presets are removed completely because they ar
 [`i18n.load`](/docs/ref/core.md#i18n.load) can now accept one catalog for specific locale. Useful for incremental loading of catalogs.
 
 ```jsx
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 // Lingui v2 and v3
 i18n.load({
   en: require("./locale/en/messages"),
-  cs: require("./locale/cs/messages")
-})
+  cs: require("./locale/cs/messages"),
+});
 
 // Lingui v3 only
-i18n.load('en', require("./locale/en/messages"))
-i18n.load('cs', require("./locale/cs/messages"))
+i18n.load("en", require("./locale/en/messages"));
+i18n.load("cs", require("./locale/cs/messages"));
 ```
 
 ### `i18n.on('change', callback)`

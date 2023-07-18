@@ -44,9 +44,11 @@ No migration steps are necessary for components provided by Lingui, such as `Tra
 Starting from Lingui v4, hash-based IDs are used internally for message lookups.
 
 If you use natural language as an ID in your project, for example:
+
 ```ts
-const message = t`My Message`
+const message = t`My Message`;
 ```
+
 you will benefit significantly from this change. Your bundles will become smaller because the source message will be removed from the bundle in favor of a short generated ID.
 
 If you use natural language as an ID and PO file catalog format, you don't need to do anything special to migrate.
@@ -54,7 +56,7 @@ If you use natural language as an ID and PO file catalog format, you don't need 
 However, if you use explicit IDs, like this:
 
 ```ts
-const message = t({id: "my.message", message: `My Message`})
+const message = t({ id: "my.message", message: `My Message` });
 ```
 
 there are some changes you need to make to your catalogs to migrate properly. In order to distinguish between generated IDs and explicit IDs in the PO format, Lingui adds a special comment for messages with explicit IDs called `js-lingui-explicit-id`.
@@ -72,13 +74,13 @@ You need to add this comment manually to all your messages with explicit IDs or 
 If you exclusively use explicit IDs in your project, you may consider enabling a different processing mode for the PO formatter. This can be done in your Lingui config file:
 
 ```ts title="lingui.config.ts"
-import { formatter } from '@lingui/format-po'
-import { LinguiConfig } from '@lingui/config'
+import { formatter } from "@lingui/format-po";
+import { LinguiConfig } from "@lingui/config";
 
 const config: LinguiConfig = {
   // ...
   format: formatter({ explicitIdAsDefault: true }),
-}
+};
 ```
 
 Enabling this mode will swap the logic, and the formatter will treat all messages as having explicit IDs without the need for the explicit flag comment.
@@ -102,29 +104,31 @@ Prior to v4, these formats used the source message as the message ID. Now they u
 If you have been using the following pattern in your code:
 
 ```tsx
-import { t } from "@lingui/macro"
+import { t } from "@lingui/macro";
 
-const myMsg = t`Hello world!`
+const myMsg = t`Hello world!`;
 
 export function Greeting(props: {}) {
-  return <h1>{t(myMsg)}</h1>
+  return <h1>{t(myMsg)}</h1>;
 }
 ```
+
 You will need to make some changes as this is a misuse of the library that actually worked in v3.
 
 Due to the changes caused by hash-based message ID feature described earlier, this approach will no longer work.
 
 Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
-```tsx
-import { msg } from "@lingui/macro"
-import { useLingui } from "@lingui/react"
 
-const myMsg = msg`Hello world!`
+```tsx
+import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+
+const myMsg = msg`Hello world!`;
 
 export function Greeting(props: {}) {
-  const { i18n } = useLingui()
+  const { i18n } = useLingui();
 
-  return <h1>{i18n._(myMsg)}</h1>
+  return <h1>{i18n._(myMsg)}</h1>;
 }
 ```
 
@@ -133,24 +137,13 @@ export function Greeting(props: {}) {
 We have made a small change in how Lingui generates ICU messages for nested JSX Macros. We have removed leading spaces from the texts in all cases.
 
 The generated code from the following nested component:
+
 ```jsx
-<Plural
-  id="message.id"
-  one={
-    <Trans>
-      One hello
-    </Trans>
-  }
-  other={
-    <Trans>
-      Other hello
-    </Trans>
-  }
-  value={count}
-/>
+<Plural id="message.id" one={<Trans>One hello</Trans>} other={<Trans>Other hello</Trans>} value={count} />
 ```
 
 was changed as follows:
+
 ```diff
   <Trans
     id="message.id"
@@ -171,9 +164,9 @@ If your project uses Flow, you need to explicitly enable support in the extracto
 ```js title="lingui.config.js"
 module.exports = {
   extractorParserOptions: {
-    flow: true
-  }
-}
+    flow: true,
+  },
+};
 ```
 
 ### `@lingui/cli/api/extractors/typescript` was deleted
@@ -214,6 +207,7 @@ Read more about custom extractors on the [Advanced: Custom Extractor](/guides/cu
 ### Configuration migrations for deprecated options were deleted
 
 Migration for the following older options:
+
 - `localeDir`,
 - `srcPathDirs`,
 - `srcPathIgnorePatterns`,

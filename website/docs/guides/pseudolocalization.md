@@ -1,6 +1,6 @@
 # Pseudolocalization
 
-There is built in support for [pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization). Pseudolocalization is a method for testing the internationalization aspects of your application by replacing your strings with altered versions and maintaining string readability. It also makes hard coded strings and improperly concatenated strings easy to spot so that they  can be properly localized.
+There is built in support for [pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization). Pseudolocalization is a method for testing the internationalization aspects of your application by replacing your strings with altered versions and maintaining string readability. It also makes hard coded strings and improperly concatenated strings easy to spot so that they can be properly localized.
 
 > Example: Ţĥĩś ţēxţ ĩś ƥśēũďōĺōćàĺĩźēď
 
@@ -10,13 +10,13 @@ To setup pseudolocalization add [`pseudoLocale`](/docs/ref/conf.md#pseudolocale)
 
 ```json
 {
-   "lingui": {
-      "locale": ["en", "pseudo-LOCALE"],
-      "pseudoLocale": "pseudo-LOCALE",
-      "fallbackLocales": {
-         "pseudo-LOCALE": "en"
-      }
-   }
+  "lingui": {
+    "locale": ["en", "pseudo-LOCALE"],
+    "pseudoLocale": "pseudo-LOCALE",
+    "fallbackLocales": {
+      "pseudo-LOCALE": "en"
+    }
+  }
 }
 ```
 
@@ -33,9 +33,11 @@ Examples: `en-PL`, `pseudo-LOCALE`, `pseudolocalization` or `en-UK`
 We can use browsers settings or extensions. Extensions allow to use any locale. Browsers are usually limited into valid language tags (BCP 47). In that case, the locale for pseudolocalization has to be standard locale, which is not used in your application for example `zu_ZA` Zulu - SOUTH AFRICA
 
 Chrome:
-- With extension  (valid locale) - [Locale Switcher](https://chrome.google.com/webstore/detail/locale-switcher/kngfjpghaokedippaapkfihdlmmlafcc)
+
+- With extension (valid locale) - [Locale Switcher](https://chrome.google.com/webstore/detail/locale-switcher/kngfjpghaokedippaapkfihdlmmlafcc)
 - Without extension (valid locale) - [chrome://settings/?search=languages](chrome://settings/?search=languages)
 
 Firefox:
+
 - With extension (any string) - [Quick Accept-Language Switcher](https://addons.mozilla.org/en-GB/firefox/addon/quick-accept-language-switc/?src=search)
-- Without extension (valid locale) - [about:preferences#general](about:preferences#general) > *Language*
+- Without extension (valid locale) - [about:preferences#general](about:preferences#general) > _Language_

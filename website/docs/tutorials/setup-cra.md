@@ -30,14 +30,16 @@
     ```js title="lingui.config.js"
     /** @type {import('@lingui/conf').LinguiConfig} */
     module.exports = {
-       locales: ["en", "cs", "fr"],
-       sourceLocale: "en",
-       catalogs: [{
+      locales: ["en", "cs", "fr"],
+      sourceLocale: "en",
+      catalogs: [
+        {
           path: "src/locales/{locale}/messages",
-          include: ["src"]
-       }],
-       format: "po"
-    }
+          include: ["src"],
+        },
+      ],
+      format: "po",
+    };
     ```
 
     This configuration will extract messages from source files inside `src` directory and write them into message catalogs in `src/locales` (English catalog would be in e.g: `src/locales/en/messages.po`). Finally, PO format is recommended.
@@ -47,10 +49,10 @@
 
     ```json title="package.json"
     {
-       "scripts": {
-          "extract": "lingui extract",
-          "compile": "lingui compile"
-       }
+      "scripts": {
+        "extract": "lingui extract",
+        "compile": "lingui compile"
+      }
     }
     ```
 
@@ -68,9 +70,9 @@ Congratulations! You've successfully set up project with LinguiJS. Now it's good
 
 Checkout these reference guides for full documentation:
 
--   [Internationalization of React apps](/docs/tutorials/react.md)
--   [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
--   [`@lingui/react` reference documentation](/docs/ref/react.md)
--   [ICU Message Format](/docs/ref/message-format.md)
--   [CLI reference](/docs/ref/cli.md)
--   [Configuration reference](/docs/ref/conf.md)
+- [Internationalization of React apps](/docs/tutorials/react.md)
+- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` reference documentation](/docs/ref/react.md)
+- [ICU Message Format](/docs/ref/message-format.md)
+- [CLI reference](/docs/ref/cli.md)
+- [Configuration reference](/docs/ref/conf.md)
