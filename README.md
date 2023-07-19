@@ -9,8 +9,6 @@
 ![Release Workflow Testing][Badge-ReleaseWorkflowTesting-GithubCI]
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![Backers on Open Collective][Badge-ocbackers]][ocbackers-local]
-[![Sponsors on Open Collective][Badge-ocsponsors]][ocsponsors-local]
 [![Join the community on Discord][Badge-Discord]][Discord]
 
 [**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
@@ -119,30 +117,7 @@ Contribution to open-source project is everything from spreading the word, writi
 
 ### Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-
-[![Contributors][Img-Contributors]][Contributors]
-
-### Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/js-lingui#backer)]
-
-[![Backers][Img-Backers]][Backers]
-
-### Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/js-lingui#sponsor)]
-
-<a href="https://opencollective.com/js-lingui/sponsor/0/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/1/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/2/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/3/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/4/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/5/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/6/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/7/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/8/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/js-lingui/sponsor/9/website" target="_blank"><img src="https://opencollective.com/js-lingui/sponsor/9/avatar.svg"></a>
+This project exists thanks to [all the people][Contributors] who contribute. [[Contribute](CONTRIBUTING.md)].
 
 ## License
 
@@ -167,21 +142,14 @@ The project is licensed under the [MIT][License] license.
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[Badge-ocbackers]: https://opencollective.com/js-lingui/backers/badge.svg
 [Badge-Discord]: https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square
-[Badge-ocsponsors]: https://opencollective.com/js-lingui/sponsors/badge.svg
-[Img-Contributors]: https://opencollective.com/js-lingui/contributors.svg?width=890&button=false
 [Contributors]: https://github.com/lingui/js-lingui/graphs/contributors
-[Img-Backers]: https://opencollective.com/js-lingui/backers.svg?width=890
-[Backers]: https://opencollective.com/js-lingui#backers
 
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
-[ocbackers-local]: #backers
-[ocsponsors-local]: #sponsors
 [BundleReact]: https://bundlephobia.com/result?p=@lingui/react
 [BundleCore]: https://bundlephobia.com/result?p=@lingui/core
 [Discord]: https://discord.gg/gFWwAYnMtA
