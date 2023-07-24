@@ -5,7 +5,8 @@ import { formatElements } from "./format"
 import { mockConsole } from "@lingui/jest-mocks"
 
 describe("formatElements", function () {
-  const html = (elements) => render(elements).container.innerHTML
+  const html = (elements: React.ReactNode) =>
+    render(elements as React.ReactElement).container.innerHTML
 
   it("should return string when there are no elements", function () {
     expect(formatElements("")).toEqual("")
@@ -140,8 +141,10 @@ describe("formatElements", function () {
     }) as Array<React.ReactElement>
 
     expect(elements).toHaveLength(1)
-    const childElements = elements[0].props.children
-    const childKeys = childElements.map((el) => el?.key).filter(Boolean)
+    const childElements = elements[0]!.props.children
+    const childKeys = childElements
+      .map((el: React.ReactElement) => el?.key)
+      .filter(Boolean)
     expect(cleanPrefix(childKeys[0])).toBeLessThan(cleanPrefix(childKeys[1]))
   })
 })

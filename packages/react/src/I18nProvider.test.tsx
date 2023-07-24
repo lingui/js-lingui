@@ -2,7 +2,7 @@ import * as React from "react"
 import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
-import { setupI18n } from "@lingui/core"
+import { I18n, setupI18n } from "@lingui/core"
 import { useMemo } from "react"
 
 describe("I18nProvider", () => {
@@ -19,12 +19,14 @@ describe("I18nProvider", () => {
       })
       let staticRenderCount = 0,
         dynamicRenderCount = 0
-      const WithoutLinguiHook = (props) => {
+      const WithoutLinguiHook = (
+        props: React.HTMLAttributes<HTMLDivElement> & { i18n: I18n }
+      ) => {
         staticRenderCount++
         return <div {...props}>{props.i18n.locale}</div>
       }
 
-      const WithLinguiHook = (props) => {
+      const WithLinguiHook = (props: React.HTMLAttributes<HTMLDivElement>) => {
         const { i18n } = useLingui()
         dynamicRenderCount++
         return <div {...props}>{i18n.locale}</div>

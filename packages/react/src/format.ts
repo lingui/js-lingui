@@ -34,23 +34,27 @@ const voidElementTags = {
  */
 function formatElements(
   value: string,
-  elements: { [key: string]: React.ReactElement<any> } = {}
-): string | Array<any> {
+  elements: { [key: string]: React.ReactElement } = {}
+): string | Array<React.ReactElement | string> {
   const uniqueId = makeCounter(0, "$lingui$")
   const parts = value.replace(nlRe, "").split(tagRe)
 
   // no inline elements, return
   if (parts.length === 1) return value
 
-  const tree = []
+  const tree: Array<React.ReactElement | string> = []
 
   const before = parts.shift()
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
-    let element = elements[index]
+    let element = typeof index !== "undefined" ? elements[index] : undefined
 
-    if (!element || (voidElementTags[element.type as string] && children)) {
+    if (
+      !element ||
+      (voidElementTags[element.type as keyof typeof voidElementTags] &&
+        children)
+    ) {
       if (!element) {
         console.error(
           `Can't use element at index '${index}' as it is not declared in the original translation`
@@ -87,7 +91,7 @@ function formatElements(
 }
 
 /*
- * `getElements` - return array of element indexes and element childrens
+ * `getElements` - return array of element indices and element children
  *
  * `parts` is array of [pairedIndex, children, unpairedIndex, textAfter, ...]
  * where:
@@ -96,18 +100,19 @@ function formatElements(
  * - `unpairedIndex` is index of unpaired element (undef for paired)
  * - `textAfter` is string after all elements (empty string, if there's nothing)
  *
- * `parts` length is always multiply of 4
+ * `parts` length is always a multiple of 4
  *
  * Returns: Array<[elementIndex, children, after]>
  */
-function getElements(parts) {
+function getElements(
+  parts: string[]
+): Array<readonly [string | undefined, string, string | undefined]> {
   if (!parts.length) return []
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[paired || unpaired, children || "", after]].concat(
-    getElements(parts.slice(4, parts.length))
-  )
+  const triple = [paired || unpaired, children || "", after] as const
+  return [triple].concat(getElements(parts.slice(4, parts.length)))
 }
 
 const makeCounter =

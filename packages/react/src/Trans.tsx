@@ -2,6 +2,7 @@ import React from "react"
 
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
+import type { MessageOptions } from "@lingui/core"
 
 export type TransRenderProps = {
   id: string
@@ -14,7 +15,9 @@ export type TransRenderProps = {
 export type TransRenderCallbackOrComponent =
   | {
       component?: undefined
-      render?: (props: TransRenderProps) => React.ReactElement<any, any> | null
+      render?:
+        | ((props: TransRenderProps) => React.ReactElement<any, any>)
+        | null
     }
   | {
       component?: React.ComponentType<TransRenderProps> | null
@@ -26,7 +29,7 @@ export type TransProps = {
   message?: string
   values?: Record<string, unknown>
   components?: { [key: string]: React.ElementType | any }
-  formats?: Record<string, unknown>
+  formats?: MessageOptions["formats"]
   comment?: string
   children?: React.ReactNode
 } & TransRenderCallbackOrComponent
@@ -56,7 +59,7 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
       const value = values[key]
       const valueIsReactEl =
         React.isValidElement(value) ||
-        (Array.isArray(value) && value.every((el) => React.isValidElement(el)))
+        (Array.isArray(value) && value.every(React.isValidElement))
       if (!valueIsReactEl) return
 
       const index = Object.keys(components).length
