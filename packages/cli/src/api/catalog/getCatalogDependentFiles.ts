@@ -2,6 +2,9 @@ import { Catalog } from "../catalog"
 import { getFallbackListForLocale } from "./getFallbackListForLocale"
 import fs from "node:fs/promises"
 
+import path from "node:path"
+import * as process from "process"
+
 const fileExists = async (path: string) =>
   !!(await fs.stat(path).catch(() => false))
 
@@ -25,7 +28,9 @@ export async function getCatalogDependentFiles(
 
   const out: string[] = []
 
-  for (const file of files) {
+  for (let file of files) {
+    file = path.isAbsolute(file) ? file : path.join(process.cwd(), file)
+
     if (await fileExists(file)) {
       out.push(file)
     }

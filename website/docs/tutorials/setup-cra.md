@@ -34,7 +34,7 @@
       sourceLocale: "en",
       catalogs: [
         {
-          path: "src/locales/{locale}/messages",
+          path: "<rootDir>/src/locales/{locale}/messages",
           include: ["src"],
         },
       ],

@@ -78,7 +78,7 @@ const config: LinguiConfig = {
   locales: ["en", "cs", "fr"],
   catalogs: [
     {
-      path: "src/locales/{locale}",
+      path: "<rootDir>/src/locales/{locale}",
       include: ["src"],
     },
   ],

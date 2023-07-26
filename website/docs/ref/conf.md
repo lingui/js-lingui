@@ -58,7 +58,7 @@ Defines location of message catalogs and what files are included when [`extract`
 
 Patterns in `include` and `exclude` are passed to [minimatch](https://github.com/isaacs/minimatch).
 
-`path`, `include` and `exclude` patterns might include `<rootDir>` token, which is replaced by value of [`rootDir`](#rootdir).
+`path`, `include`, and `exclude` are interpreted from the current process CWD. If you want to make these paths relative to the configuration file, you can prefix them with a [`rootDir`](#rootdir) token. By default, [`rootDir`](#rootdir) represents the configuration file's location.
 
 `{name}` token in `path` is replaced with a catalog name. Source path must include `{name}` pattern as well and it works as a `*` glob pattern:
 
@@ -66,8 +66,8 @@ Patterns in `include` and `exclude` are passed to [minimatch](https://github.com
 {
   "catalogs": [
     {
-      "path": "./components/{name}/locale/{locale}",
-      "include": ["./components/{name}/"]
+      "path": "<rootDir>/components/{name}/locale/{locale}",
+      "include": ["<rootDir>/components/{name}/"]
     }
   ]
 }

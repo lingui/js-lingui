@@ -1,0 +1,10 @@
+{
+  "locales": ["en"],
+  "catalogs": [{
+    "path": "./locale/{locale}"
+  }],
+  "fallbackLocales": {
+    "default": "en"
+  },
+  "format": "po"
+}

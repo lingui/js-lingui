@@ -44,7 +44,7 @@ This setup guide is for any project which uses React.
       locales: ["en", "cs", "fr"],
       catalogs: [
         {
-          path: "src/locales/{locale}/messages",
+          path: "<rootDir>/src/locales/{locale}/messages",
           include: ["src"],
         },
       ],

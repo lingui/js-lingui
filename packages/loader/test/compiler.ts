@@ -9,17 +9,21 @@ export type BuildResult = {
 }
 
 export async function build(entryPoint: string): Promise<BuildResult> {
+  // set cwd() to working path
+  process.chdir(path.dirname(entryPoint))
+
   const compiler = getCompiler(entryPoint)
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) reject(err)
-      if (stats.hasErrors()) reject(stats.toJson().errors)
-
       const jsonStats = stats.toJson()
-      resolve({
-        loadBundle: () => import(path.join(jsonStats.outputPath, "bundle.js")),
-        stats: jsonStats,
+      compiler.close(() => {
+        resolve({
+          loadBundle: () =>
+            import(path.join(jsonStats.outputPath, "bundle.js")),
+          stats: jsonStats,
+        })
       })
     })
   })

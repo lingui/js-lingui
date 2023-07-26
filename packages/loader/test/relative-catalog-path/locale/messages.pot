@@ -1,0 +1,8 @@
+msgid "Hello World"
+msgstr ""
+
+msgid "My name is {name}"
+msgstr ""
+
+msgid "String from template"
+msgstr ""
