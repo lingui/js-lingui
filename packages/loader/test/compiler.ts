@@ -10,13 +10,20 @@ export type BuildResult = {
 
 export async function build(entryPoint: string): Promise<BuildResult> {
   // set cwd() to working path
+  const oldCwd = process.cwd()
+
   process.chdir(path.dirname(entryPoint))
 
   const compiler = getCompiler(entryPoint)
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
-      if (err) reject(err)
+      process.chdir(oldCwd)
+
+      if (err) {
+        return reject(err)
+      }
+
       const jsonStats = stats.toJson()
       compiler.close(() => {
         resolve({
