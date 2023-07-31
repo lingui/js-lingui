@@ -18,7 +18,7 @@ Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list
 - [prePO](https://prepo.io/) ([source](https://github.com/prepo-io/prepo-monorepo))
 - [Laf](https://www.lafyun.com/) ([source](https://github.com/labring/laf))
 - [Caliopen](https://www.caliopen.org/) ([source](https://github.com/CaliOpen/Caliopen/tree/master/src/frontend/web_application))
-- [Palgakalkulaator](https://www.palgakalkulaator.ee/) ([source](https://github.com/madisvain/palgakalkulaator)
+- [Palgakalkulaator](https://www.palgakalkulaator.ee/) ([source](https://github.com/madisvain/palgakalkulaator))
 - [ledgy.com](https://www.ledgy.com/)
 - [MyMusicTaste](https://www.mymusictaste.com/)
 - [Staycation](https://www.staycation.co/)
