@@ -1,8 +1,9 @@
-import React from "react"
+import React, { ComponentType } from "react"
 
 import { useLingui } from "./I18nProvider"
 import { formatElements } from "./format"
 import type { MessageOptions } from "@lingui/core"
+import { I18n } from "@lingui/core"
 
 export type TransRenderProps = {
   id: string
@@ -35,8 +36,23 @@ export type TransProps = {
 } & TransRenderCallbackOrComponent
 
 export function Trans(props: TransProps): React.ReactElement<any, any> | null {
-  const { i18n, defaultComponent } = useLingui()
-  const { render, component, id, message, formats } = props
+  const lingui = useLingui()
+  return React.createElement(TransNoContext, { ...props, lingui })
+}
+
+export function TransNoContext(
+  props: TransProps & {
+    lingui: { i18n: I18n; defaultComponent?: ComponentType<TransRenderProps> }
+  }
+): React.ReactElement<any, any> | null {
+  const {
+    render,
+    component,
+    id,
+    message,
+    formats,
+    lingui: { i18n, defaultComponent },
+  } = props
 
   const values = { ...props.values }
   const components = { ...props.components }

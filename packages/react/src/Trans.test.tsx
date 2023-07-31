@@ -9,6 +9,7 @@ import {
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { PropsWithChildren } from "react"
+import { TransNoContext } from "./Trans"
 
 describe("Trans component", () => {
   /*
@@ -409,6 +410,21 @@ describe("Trans component", () => {
         "Some message"
       )
       expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("false")
+    })
+
+    describe("TransNoContext", () => {
+      it("Should render without provider/context", () => {
+        const translation = render(
+          <TransNoContext
+            id="All human beings are born free and equal in dignity and rights."
+            lingui={{ i18n: i18n }}
+          />
+        ).container.textContent
+
+        expect(translation).toEqual(
+          "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv."
+        )
+      })
     })
   })
 })
