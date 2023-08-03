@@ -4,45 +4,63 @@ import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
 
-const skipOnWindows = os.platform() === "win32" ? it.skip : it
+const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
 
-describe("lingui-loader", () => {
+skipOnWindows("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
-    expect.assertions(2)
-
     const built = await build(path.join(__dirname, "po-format/entrypoint.js"))
 
     const data = await built.loadBundle()
     expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
+
     expect((await data.load()).messages).toMatchSnapshot()
   })
 
   it("should compile catalog in json format", async () => {
-    expect.assertions(2)
-
     const built = await build(
       path.join(__dirname, "./json-format/entrypoint.js")
     )
 
     expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
 
     const data = await built.loadBundle()
     expect((await data.load()).messages).toMatchSnapshot()
   })
 
-  skipOnWindows(
-    "should trigger webpack recompile on catalog dependency change",
-    async () => {
-      const fixtureTempPath = await copyFixture(
-        path.join(__dirname, "po-format")
-      )
+  it("should compile catalog with relative path with no warnings", async () => {
+    const built = await build(
+      path.join(__dirname, "./relative-catalog-path/entrypoint.js")
+    )
 
-      const watching = watch(path.join(fixtureTempPath, "/entrypoint.js"))
+    expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
 
-      const res = await watching.build()
+    const data = await built.loadBundle()
+    expect((await data.load()).messages).toMatchSnapshot()
+  })
 
-      expect((await res.loadBundle().then((m) => m.load())).messages)
-        .toMatchInlineSnapshot(`
+  it("should throw an error when requested catalog don't belong to lingui config", async () => {
+    const built = await build(
+      path.join(__dirname, "./not-known-catalog/entrypoint.js")
+    )
+
+    expect(built.stats.errors[0].message).toContain(
+      "is not matched to any of your catalogs paths"
+    )
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it("should trigger webpack recompile on catalog dependency change", async () => {
+    const fixtureTempPath = await copyFixture(path.join(__dirname, "po-format"))
+
+    const watching = watch(path.join(fixtureTempPath, "/entrypoint.js"))
+
+    const res = await watching.build()
+
+    expect((await res.loadBundle().then((m) => m.load())).messages)
+      .toMatchInlineSnapshot(`
       {
         ED2Xk0: String from template,
         mVmaLu: [
@@ -55,10 +73,10 @@ describe("lingui-loader", () => {
       }
     `)
 
-      // change the dependency
-      await fs.writeFile(
-        path.join(fixtureTempPath, "/locale/messages.pot"),
-        `msgid "Hello World"
+    // change the dependency
+    await fs.writeFile(
+      path.join(fixtureTempPath, "/locale/messages.pot"),
+      `msgid "Hello World"
 msgstr ""
 
 msgid "My name is {name}"
@@ -67,13 +85,13 @@ msgstr ""
 msgid "String from template changes!"
 msgstr ""
 `
-      )
+    )
 
-      const stats2 = await watching.build()
-      jest.resetModules()
+    const stats2 = await watching.build()
+    jest.resetModules()
 
-      expect((await stats2.loadBundle().then((m) => m.load())).messages)
-        .toMatchInlineSnapshot(`
+    expect((await stats2.loadBundle().then((m) => m.load())).messages)
+      .toMatchInlineSnapshot(`
       {
         mVmaLu: [
           My name is ,
@@ -86,9 +104,8 @@ msgstr ""
       }
     `)
 
-      await watching.stop()
-    }
-  )
+    await watching.stop()
+  })
 })
 
 async function copyFixture(srcPath: string) {

@@ -24,11 +24,28 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
 
   const catalogRelativePath = path.relative(config.rootDir, this.resourcePath)
 
-  const { locale, catalog } = getCatalogForFile(
+  const fileCatalog = getCatalogForFile(
     catalogRelativePath,
     await getCatalogs(config)
   )
 
+  if (!fileCatalog) {
+    throw new Error(
+      `Requested resource ${catalogRelativePath} is not matched to any of your catalogs paths specified in "lingui.config".
+
+Resource: ${this.resourcePath}
+
+Your catalogs:
+${config.catalogs.map((c) => c.path).join("\n")}
+
+Working dir is: 
+${process.cwd()}
+
+Please check that \`catalogs.path\` is filled properly.\n`
+    )
+  }
+
+  const { locale, catalog } = fileCatalog
   const dependency = await getCatalogDependentFiles(catalog, locale)
   dependency.forEach((file) => this.addDependency(file))
 
