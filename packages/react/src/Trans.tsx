@@ -40,6 +40,12 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
   return React.createElement(TransNoContext, { ...props, lingui })
 }
 
+/**
+ * Version of `<Trans>` component without using a Provider/Context React feature.
+ * Primarily made for support React Server Components (RSC)
+ *
+ * @experimental the api of this component is not stabilized yet.
+ */
 export function TransNoContext(
   props: TransProps & {
     lingui: { i18n: I18n; defaultComponent?: ComponentType<TransRenderProps> }
