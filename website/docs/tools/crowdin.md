@@ -1,7 +1,9 @@
 # Crowdin
 
-<img src="https://support.crowdin.com/assets/logos/crowdin-logo-small-example@2x.png" alt="Crowdin agile localization for developers" width="300"/>
-<br />
+<p align="center">
+  <img src="https://support.crowdin.com/assets/logos/crowdin-dark-symbol.png#gh-light-mode-only" alt="Crowdin agile localization for developers" width="150"/>
+  <img src="https://support.crowdin.com/assets/logos/symbol/png/crowdin-symbol-cWhite.png#gh-dark-mode-only" alt="Crowdin agile localization for developers" width="150"/>
+</p>
 
 Crowdin is a localization management platform that helps translate your LinguiJS-based product. Automate localization, release several multilingual versions of your app simultaneously, and provide an enhanced experience for your global customers.
 
