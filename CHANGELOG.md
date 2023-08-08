@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/lingui/js-lingui/compare/v4.3.0...v4.4.0) (2023-08-08)
+
+### Bug Fixes
+
+- **webpack-loader:** fix invalid dependencies have been reported by p… ([#1735](https://github.com/lingui/js-lingui/issues/1735)) ([1521ae7](https://github.com/lingui/js-lingui/commit/1521ae719dad110ffeb6b2f9c8fae6e522b27bfd))
+
+### Features
+
+- memoizable react translations ([#1721](https://github.com/lingui/js-lingui/issues/1721)) ([96e7def](https://github.com/lingui/js-lingui/commit/96e7defbb408998593936de473b146cb3886ec38))
+
 # [4.3.0](https://github.com/lingui/js-lingui/compare/v4.2.1...v4.3.0) (2023-06-29)
 
 ### Bug Fixes
