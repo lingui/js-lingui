@@ -9,7 +9,7 @@ import {
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { PropsWithChildren } from "react"
-import { TransNoContext } from "./Trans"
+import { TransNoContext } from "./TransNoContext"
 
 describe("Trans component", () => {
   /*
