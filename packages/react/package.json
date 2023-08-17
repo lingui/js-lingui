@@ -63,12 +63,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "4.4.0"
+    "@lingui/core": "4.4.0",
+    "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.13",
+    "@types/use-sync-external-store": "^0.0.3",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",

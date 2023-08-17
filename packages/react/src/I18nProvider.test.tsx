@@ -132,53 +132,6 @@ describe("I18nProvider", () => {
     expect(container.textContent).toEqual("1_cs2_cs")
   })
 
-  it(
-    "given 'en' locale, if activate('cs') call happens before i18n.on-change subscription in useEffect(), " +
-      "I18nProvider detects that it's stale and re-renders with the 'cs' locale value",
-    () => {
-      const i18n = setupI18n({
-        locale: "en",
-        messages: { en: {} },
-      })
-      let renderCount = 0
-
-      const CurrentLocaleContextConsumer = () => {
-        const { i18n } = useLingui()
-        renderCount++
-        return <span data-testid="child">{i18n.locale}</span>
-      }
-
-      /**
-       * Note that we're doing exactly what the description says:
-       * but to simulate the equivalent situation, we pass our own mock subscriber
-       * to i18n.on("change", ...) and in it we call i18n.activate("cs") ourselves
-       * so that the condition in useEffect() is met and the component re-renders
-       * */
-      const mockSubscriber = jest.fn(() => {
-        i18n.load("cs", {})
-        i18n.activate("cs")
-        return () => {
-          // unsubscriber - noop to make TS happy
-        }
-      })
-      jest.spyOn(i18n, "on").mockImplementation(mockSubscriber)
-
-      const { getByTestId } = render(
-        <I18nProvider i18n={i18n}>
-          <CurrentLocaleContextConsumer />
-        </I18nProvider>
-      )
-
-      expect(mockSubscriber).toHaveBeenCalledWith(
-        "change",
-        expect.any(Function)
-      )
-
-      expect(getByTestId("child").textContent).toBe("cs")
-      expect(renderCount).toBe(2)
-    }
-  )
-
   it("should render children", () => {
     const i18n = setupI18n({
       locale: "en",
@@ -225,5 +178,37 @@ describe("I18nProvider", () => {
     })
 
     expect(getByText("Ahoj světe")).toBeTruthy()
+  })
+
+  it("when re-rendered with new i18n instance, it will forward it to children", () => {
+    const i18nCs = setupI18n({
+      locale: "cs",
+      messages: { cs: {} },
+    })
+
+    const i18nEn = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    const CurrentLocaleContextConsumer = () => {
+      const { i18n } = useLingui()
+      return <span data-testid="dynamic">{i18n.locale}</span>
+    }
+
+    const { container, rerender } = render(
+      <I18nProvider i18n={i18nCs}>
+        <CurrentLocaleContextConsumer />
+      </I18nProvider>
+    )
+
+    expect(container.textContent).toEqual("cs")
+
+    rerender(
+      <I18nProvider i18n={i18nEn}>
+        <CurrentLocaleContextConsumer />
+      </I18nProvider>
+    )
+    expect(container.textContent).toEqual("en")
   })
 })
