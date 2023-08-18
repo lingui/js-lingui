@@ -1,6 +1,6 @@
 import React, { ComponentType, FunctionComponent } from "react"
 import type { I18n } from "@lingui/core"
-import type { TransRenderProps } from "./Trans"
+import type { TransRenderProps } from "./TransNoContext"
 
 export type I18nContext = {
   i18n: I18n
