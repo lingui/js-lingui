@@ -1,4 +1,11 @@
-import React, { ComponentType, FunctionComponent } from "react"
+import React, {
+  ComponentType,
+  FunctionComponent,
+  useCallback,
+  useRef,
+} from "react"
+import { useSyncExternalStore } from "use-sync-external-store/shim"
+
 import type { I18n } from "@lingui/core"
 import type { TransRenderProps } from "./TransNoContext"
 
@@ -31,7 +38,6 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   defaultComponent,
   children,
 }) => {
-  const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -43,7 +49,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  const makeContext = React.useCallback(
+  const makeContext = useCallback(
     () => ({
       i18n,
       defaultComponent,
@@ -51,34 +57,43 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     }),
     [i18n, defaultComponent]
   )
+  const context = useRef<I18nContext>(makeContext())
 
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      const renderWithFreshContext = () => {
+        context.current = makeContext()
+        onStoreChange()
+      }
+      const propsChanged =
+        context.current.i18n !== i18n ||
+        context.current.defaultComponent !== defaultComponent
+      if (propsChanged) {
+        renderWithFreshContext()
+      }
+      return i18n.on("change", renderWithFreshContext)
+    },
+    [makeContext, i18n, defaultComponent]
+  )
+
+  const getSnapshot = useCallback(() => {
+    return context.current
+  }, [])
 
   /**
    * Subscribe for locale/message changes
    *
-   * I18n object from `@lingui/core` is the single source of truth for all i18n related
+   * the I18n object passed via props is the single source of truth for all i18n related
    * data (active locale, catalogs). When new messages are loaded or locale is changed
-   * we need to trigger re-rendering of LinguiContext.Consumers.
+   * we need to trigger re-rendering of LinguiContext consumers.
    */
-  React.useEffect(() => {
-    const updateContext = () => {
-      latestKnownLocale.current = i18n.locale
-      setContext(makeContext())
-    }
-    const unsubscribe = i18n.on("change", updateContext)
+  const contextObject = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getSnapshot
+  )
 
-    /**
-     * unlikely, but if the locale changes before the onChange listener
-     * was added, we need to trigger a rerender
-     * */
-    if (latestKnownLocale.current !== i18n.locale) {
-      updateContext()
-    }
-    return unsubscribe
-  }, [i18n, makeContext])
-
-  if (!latestKnownLocale.current) {
+  if (!contextObject.i18n.locale) {
     process.env.NODE_ENV === "development" &&
       console.log(
         "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
@@ -88,6 +103,8 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
   }
 
   return (
-    <LinguiContext.Provider value={context}>{children}</LinguiContext.Provider>
+    <LinguiContext.Provider value={contextObject}>
+      {children}
+    </LinguiContext.Provider>
   )
 }
