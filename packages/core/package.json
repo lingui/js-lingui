@@ -37,11 +37,11 @@
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       },
       "import": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.mts",
         "default": "./dist/index.mjs"
       }
     },
@@ -59,6 +59,6 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "unbuild": "^1.1.2"
+    "unbuild": "2.0.0"
   }
 }

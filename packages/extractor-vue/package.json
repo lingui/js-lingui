@@ -44,6 +44,6 @@
   },
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "4.4.2",
-    "unbuild": "^1.1.2"
+    "unbuild": "2.0.0"
   }
 }

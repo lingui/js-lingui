@@ -6,14 +6,24 @@
   "sideEffects": false,
   "exports": {
     "./generateMessageId": {
-      "import": "./dist/generateMessageId.mjs",
-      "require": "./dist/generateMessageId.cjs",
-      "types": "./dist/generateMessageId.d.ts"
+      "require": {
+        "types": "./dist/generateMessageId.d.cts",
+        "default": "./dist/generateMessageId.cjs"
+      },
+      "import": {
+        "types": "./dist/generateMessageId.d.mts",
+        "default": "./dist/generateMessageId.mjs"
+      }
     },
     "./compileMessage": {
-      "import": "./dist/compileMessage.mjs",
-      "require": "./dist/compileMessage.cjs",
-      "types": "./dist/compileMessage.d.ts"
+      "require": {
+        "types": "./dist/compileMessage.d.cts",
+        "default": "./dist/compileMessage.cjs"
+      },
+      "import": {
+        "types": "./dist/compileMessage.d.mts",
+        "default": "./dist/compileMessage.mjs"
+      }
     }
   },
   "scripts": {
@@ -41,6 +51,6 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
-    "unbuild": "^1.1.2"
+    "unbuild": "2.0.0"
   }
 }
