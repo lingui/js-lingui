@@ -12,4 +12,3 @@ Check out the example projects below:
 - [React with Vite and Babel](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-babel)
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
 - [Rspack with Babel](https://github.com/lingui/js-lingui/tree/main/examples/rspack)
- 
