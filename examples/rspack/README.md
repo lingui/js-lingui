@@ -6,7 +6,7 @@ This project shows how to use the [Rspack JavaScript bundler](https://www.rspack
 
 ## Setup Instructions
 
-1. `cd rspack-project && npm install .`
+1. `cd rspack-project && npm install`
 2. `npm run dev` to run the development server.
 3. `npm run build` to build the application.
 
