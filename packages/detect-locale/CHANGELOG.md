@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/lingui/js-lingui/compare/v4.4.0...v4.4.1) (2023-08-30)
+
+### Bug Fixes
+
+- export ts types from detect-locale ([#1742](https://github.com/lingui/js-lingui/issues/1742)) ([4af4448](https://github.com/lingui/js-lingui/commit/4af4448b001cee17240ec1c4e27d86d515c4db1e))
+
 # [4.4.0](https://github.com/lingui/js-lingui/compare/v4.3.0...v4.4.0) (2023-08-08)
 
 **Note:** Version bump only for package @lingui/detect-locale
