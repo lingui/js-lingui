@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.2](https://github.com/lingui/js-lingui/compare/v4.4.1...v4.4.2) (2023-08-31)
+
+### Reverts
+
+- Revert "refactor: use useSyncExternalStore to subscribe for context updates (#1746)" (#1755) ([4164893](https://github.com/lingui/js-lingui/commit/416489351bc7e9ce6d0712064528e44dbd512d06)), closes [#1746](https://github.com/lingui/js-lingui/issues/1746) [#1755](https://github.com/lingui/js-lingui/issues/1755)
+
 ## [4.4.1](https://github.com/lingui/js-lingui/compare/v4.4.0...v4.4.1) (2023-08-30)
 
 ### Bug Fixes
