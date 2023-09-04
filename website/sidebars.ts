@@ -189,6 +189,11 @@ const sidebar = [
         label: "@lingui/vite-plugin",
         id: "ref/vite-plugin",
       },
+      {
+        type: "doc",
+        label: "ESLint Plugin",
+        id: "ref/eslint-plugin",
+      },
     ],
   },
   {
