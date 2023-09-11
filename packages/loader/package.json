@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@lingui/format-json": "4.4.2",
-    "unbuild": "^1.1.2",
+    "unbuild": "2.0.0",
     "webpack": "^5.76.1"
   },
   "peerDependencies": {

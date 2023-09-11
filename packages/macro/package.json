@@ -80,6 +80,6 @@
     "@types/babel-plugin-macros": "^2.8.5",
     "prettier": "2.8.3",
     "tsd": "^0.26.1",
-    "unbuild": "^1.1.2"
+    "unbuild": "2.0.0"
   }
 }
