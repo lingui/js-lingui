@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/lingui/js-lingui/compare/v4.4.2...v4.5.0) (2023-09-14)
+
+### Features
+
+- **react:** export react server sub-entry ([#1762](https://github.com/lingui/js-lingui/issues/1762)) ([fa77d82](https://github.com/lingui/js-lingui/commit/fa77d82fb6595b7785aacb492558a7c69fad0d1b))
+
 ## [4.4.2](https://github.com/lingui/js-lingui/compare/v4.4.1...v4.4.2) (2023-08-31)
 
 ### Reverts
