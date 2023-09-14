@@ -209,10 +209,12 @@ export class I18n extends EventEmitter<Events> {
   }
 
   // method for translation and formatting
+  _(descriptor: MessageDescriptor): string
+  _(id: string, values?: Values, options?: MessageOptions): string
   _(
     id: MessageDescriptor | string,
-    values?: Values | undefined,
-    options?: MessageOptions | undefined
+    values?: Values,
+    options?: MessageOptions
   ): string {
     let message = options?.message
     if (!isString(id)) {
