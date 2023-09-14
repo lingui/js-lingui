@@ -146,6 +146,10 @@ See [`format`](/docs/ref/catalog-formats.md) documentation for other available f
    }
    ```
 
+:::tip
+Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
+:::
+
 See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
 
 See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.

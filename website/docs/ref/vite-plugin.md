@@ -6,6 +6,9 @@
 Refer to [Setup with Vite](/docs/tutorials/setup-vite.md) for a full installation guide.
 :::
 
+[![npm-version](https://img.shields.io/npm/v/@lingui/vite-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/vite-plugin)
+[![npm-downloads](https://img.shields.io/npm/dt/@lingui/vite-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/vite-plugin)
+
 ## Installation
 
 Install `@lingui/vite-plugin` as a development dependency:
