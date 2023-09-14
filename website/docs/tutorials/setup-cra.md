@@ -64,6 +64,10 @@
 
     There should be no error and you can find extracted messages in `src/locales`.
 
+:::tip
+Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
+:::
+
 Congratulations! You've successfully set up project with LinguiJS. Now it's good time to follow [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/ref/message-format.md) which is used in messages.
 
 ## Further reading

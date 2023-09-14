@@ -4,6 +4,11 @@
 
 If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [LinguiJS Macro](/docs/ref/macro.md).
 
+[![npm-version](https://img.shields.io/npm/v/@lingui/swc-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/swc-plugin)
+[![npm-downloads](https://img.shields.io/npm/dt/@lingui/swc-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/swc-plugin)
+[![CI](https://github.com/lingui/swc-plugin/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/lingui/swc-plugin/actions/workflows/ci.yml)
+[![GitHub contributors](https://img.shields.io/github/contributors/lingui/swc-plugin?cacheSeconds=1000)](https://github.com/lingui/swc-plugin/graphs/contributors)
+
 ## SWC Compatibility
 
 SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed.
@@ -48,7 +53,7 @@ Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configura
 }
 ```
 
-If you use NextJS, add the following to your `next.config.js`:
+If you use Next.js, add the following to your `next.config.js`:
 
 ```javascript title="next.config.js"
 /** @type {import('next').NextConfig} */
