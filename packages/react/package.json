@@ -51,6 +51,16 @@
         "default": "./dist/index.mjs"
       }
     },
+    "./server": {
+      "require": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.cjs"
+      },
+      "import": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.mjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
