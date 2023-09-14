@@ -69,7 +69,7 @@ export default class ICUMessageFormat {
 
     if (token.type === "text") {
       return {
-        message: token.value as string,
+        message: token.value,
       }
     } else if (token.type === "arg") {
       if (

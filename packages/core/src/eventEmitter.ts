@@ -6,26 +6,31 @@ export class EventEmitter<
   } = {}
 
   on(event: keyof Events, listener: Events[typeof event]): () => void {
-    if (!this._hasEvent(event)) this._events[event] = []
+    this._events[event] ??= []
+    this._events[event]!.push(listener)
 
-    this._events[event].push(listener)
     return () => this.removeListener(event, listener)
   }
 
   removeListener(event: keyof Events, listener: Events[typeof event]): void {
-    if (!this._hasEvent(event)) return
+    const maybeListeners = this._getListeners(event)
+    if (!maybeListeners) return
 
-    const index = this._events[event].indexOf(listener)
-    if (~index) this._events[event].splice(index, 1)
+    const index = maybeListeners.indexOf(listener)
+    if (~index) maybeListeners.splice(index, 1)
   }
 
   emit(event: keyof Events, ...args: Parameters<Events[typeof event]>): void {
-    if (!this._hasEvent(event)) return
+    const maybeListeners = this._getListeners(event)
+    if (!maybeListeners) return
 
-    this._events[event].map((listener) => listener.apply(this, args))
+    maybeListeners.map((listener) => listener.apply(this, args))
   }
 
-  private _hasEvent(event: keyof Events) {
-    return Array.isArray(this._events[event])
+  private _getListeners(
+    event: keyof Events
+  ): Array<Events[keyof Events]> | false {
+    const maybeListeners = this._events[event]
+    return Array.isArray(maybeListeners) ? maybeListeners : false
   }
 }

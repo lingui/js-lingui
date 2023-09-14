@@ -1,5 +1,5 @@
 import { CompiledMessage, Formats, Locales, Values } from "./i18n"
-import { date, number, plural } from "./formats"
+import { date, number, plural, type PluralOptions } from "./formats"
 import { isString } from "./essentials"
 import unraw from "unraw"
 
@@ -7,35 +7,40 @@ export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
 
 const getDefaultFormats = (
   locale: string,
-  locales: Locales,
+  passedLocales?: Locales,
   formats: Formats = {}
 ) => {
-  locales = locales || locale
-  const style = <T>(format: string | T): T =>
-    isString(format) ? formats[format] || { style: format } : (format as any)
+  const locales = passedLocales || locale
 
+  const style = <T extends object>(format: string | T): T => {
+    return typeof format === "object"
+      ? (format as any)
+      : formats[format] || { style: format }
+  }
   const replaceOctothorpe = (value: number, message: string): string => {
-    const numberFormat = Object.keys(formats).length ? style("number") : {}
+    const numberFormat = Object.keys(formats).length
+      ? style("number")
+      : undefined
     const valueStr = number(locales, value, numberFormat)
     return message.replace("#", valueStr)
   }
 
   return {
-    plural: (value: number, cases) => {
+    plural: (value: number, cases: PluralOptions) => {
       const { offset = 0 } = cases
       const message = plural(locales, false, value, cases)
 
       return replaceOctothorpe(value - offset, message)
     },
 
-    selectordinal: (value: number, cases) => {
+    selectordinal: (value: number, cases: PluralOptions) => {
       const { offset = 0 } = cases
       const message = plural(locales, true, value, cases)
 
       return replaceOctothorpe(value - offset, message)
     },
 
-    select: (value: string, rules) => rules[value] ?? rules.other,
+    select: selectFormatter,
 
     number: (
       value: number,
@@ -47,9 +52,14 @@ const getDefaultFormats = (
       format: string | Intl.DateTimeFormatOptions
     ): string => date(locales, value, style(format)),
 
-    undefined: (value: unknown) => value,
-  }
+    undefined: undefinedFormatter,
+  } as const
 }
+
+const selectFormatter = (value: string, rules: Record<string, any>) =>
+  rules[value] ?? rules.other
+
+const undefinedFormatter = (value: unknown) => value
 
 /**
  * @param translation compiled message
@@ -59,16 +69,16 @@ const getDefaultFormats = (
 export function interpolate(
   translation: CompiledMessage,
   locale: string,
-  locales: Locales
+  locales?: Locales
 ) {
   /**
    * @param values  - Parameters for variable interpolation
    * @param formats - Custom format styles
    */
-  return (values: Values, formats: Formats = {}): string => {
+  return (values: Values = {}, formats?: Formats): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
 
-    const formatMessage = (message: CompiledMessage): string => {
+    const formatMessage = (message: CompiledMessage | number | undefined) => {
       if (!Array.isArray(message)) return message
 
       return message.reduce<string>((message, token) => {
@@ -76,16 +86,17 @@ export function interpolate(
 
         const [name, type, format] = token
 
-        let interpolatedFormat = {}
-        if (format != null && !isString(format)) {
-          Object.keys(format).forEach((key) => {
-            interpolatedFormat[key] = formatMessage(format[key])
+        let interpolatedFormat: any = {}
+        if (format != null && typeof format === "object") {
+          Object.entries(format).forEach(([key, value]) => {
+            interpolatedFormat[key] = formatMessage(value)
           })
         } else {
           interpolatedFormat = format
         }
-
-        const value = formatters[type](values[name], interpolatedFormat)
+        // @ts-ignore TS2538: Type undefined cannot be used as an index type.
+        const formatter = formatters[type]
+        const value = formatter(values[name], interpolatedFormat)
         if (value == null) return message
 
         return message + value
@@ -100,6 +111,6 @@ export function interpolate(
       return unraw(result.trim())
     }
     if (isString(result)) return result.trim()
-    return result
+    return result ? String(result) : ""
   }
 }
