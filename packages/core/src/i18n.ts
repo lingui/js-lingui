@@ -162,23 +162,19 @@ export class I18n extends EventEmitter<Events> {
     }
   }
 
-  load(localeOrMessages: Locale | AllMessages, messages?: Messages) {
+  load(allMessages: AllMessages): void
+  load(locale: Locale, messages: Messages): void
+  load(localeOrMessages: AllMessages | Locale, messages?: Messages): void {
     if (typeof localeOrMessages == "string" && typeof messages === "object") {
       // load('en', catalog)
       // Loading a catalog for a single locale.
       this._load(localeOrMessages, messages)
-    } else if (typeof localeOrMessages === "object") {
+    } else {
       // load(catalogs)
       // Loading several locales at once.
       Object.entries(localeOrMessages).forEach(([locale, messages]) =>
         this._load(locale, messages)
       )
-    } else {
-      if (process.env.NODE_ENV !== "production") {
-        console.warn(
-          `Invalid arguments passed to "load". localeOrMessages: ${localeOrMessages} messages: ${messages}`
-        )
-      }
     }
 
     this.emit("change")

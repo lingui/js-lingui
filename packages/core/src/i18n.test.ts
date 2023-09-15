@@ -54,18 +54,6 @@ describe("I18n", () => {
       i18n.activate("fr")
       expect(i18n.messages).toEqual(frMessages)
     })
-
-    it("should warn when invalid params are passed to load()", () => {
-      const i18n = setupI18n()
-
-      mockConsole((console) => {
-        // @ts-expect-error testing invalid params
-        i18n.load("xyz", "invalid")
-        expect(console.warn).toBeCalledWith(
-          'Invalid arguments passed to "load". localeOrMessages: xyz messages: invalid'
-        )
-      })
-    })
   })
 
   describe("I18n.activate", () => {
