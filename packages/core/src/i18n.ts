@@ -1,6 +1,6 @@
 import { interpolate, UNICODE_REGEX } from "./interpolate"
 import { isString, isFunction } from "./essentials"
-import { date, number } from "./formats"
+import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
@@ -80,23 +80,20 @@ type LoadAndActivateOptions = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  private _locale: Locale
-  private _locales: Locales
-  private _localeData: AllLocaleData
-  private _messages: AllMessages
-  private _missing: MissingHandler
+  private _locale: Locale = ""
+  private _locales?: Locales
+  private _localeData: AllLocaleData = {}
+  private _messages: AllMessages = {}
+  private _missing?: MissingHandler
 
   constructor(params: setupI18nProps) {
     super()
 
-    this._messages = {}
-    this._localeData = {}
-
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
     if (params.localeData != null) this.loadLocaleData(params.localeData)
-    if (params.locale != null || params.locales != null) {
-      this.activate(params.locale, params.locales)
+    if (typeof params.locale === "string" || params.locales) {
+      this.activate(params.locale ?? defaultLocale, params.locales)
     }
   }
 
@@ -120,10 +117,11 @@ export class I18n extends EventEmitter<Events> {
   }
 
   private _loadLocaleData(locale: Locale, localeData: LocaleData) {
-    if (this._localeData[locale] == null) {
+    const maybeLocaleData = this._localeData[locale]
+    if (!maybeLocaleData) {
       this._localeData[locale] = localeData
     } else {
-      Object.assign(this._localeData[locale], localeData)
+      Object.assign(maybeLocaleData, localeData)
     }
   }
 
@@ -138,6 +136,7 @@ export class I18n extends EventEmitter<Events> {
   /**
    * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
+  // @ts-ignore deprecated, so ignore the reported error
   loadLocaleData(localeOrAllData, localeData?) {
     if (localeData != null) {
       // loadLocaleData('en', enLocaleData)
@@ -155,26 +154,26 @@ export class I18n extends EventEmitter<Events> {
   }
 
   private _load(locale: Locale, messages: Messages) {
-    if (this._messages[locale] == null) {
+    const maybeMessages = this._messages[locale]
+    if (!maybeMessages) {
       this._messages[locale] = messages
     } else {
-      Object.assign(this._messages[locale], messages)
+      Object.assign(maybeMessages, messages)
     }
   }
 
-  public load(allMessages: AllMessages): void
-  public load(locale: Locale, messages: Messages): void
-
-  load(localeOrMessages, messages?) {
-    if (messages != null) {
+  load(allMessages: AllMessages): void
+  load(locale: Locale, messages: Messages): void
+  load(localeOrMessages: AllMessages | Locale, messages?: Messages): void {
+    if (typeof localeOrMessages == "string" && typeof messages === "object") {
       // load('en', catalog)
       // Loading a catalog for a single locale.
       this._load(localeOrMessages, messages)
     } else {
       // load(catalogs)
       // Loading several locales at once.
-      Object.keys(localeOrMessages).forEach((locale) =>
-        this._load(locale, localeOrMessages[locale])
+      Object.entries(localeOrMessages).forEach(([locale, messages]) =>
+        this._load(locale, messages)
       )
     }
 
@@ -210,16 +209,18 @@ export class I18n extends EventEmitter<Events> {
   _(id: string, values?: Values, options?: MessageOptions): string
   _(
     id: MessageDescriptor | string,
-    values: Values | undefined = {},
-    { message, formats }: MessageOptions | undefined = {}
-  ) {
+    values?: Values,
+    options?: MessageOptions
+  ): string {
+    let message = options?.message
     if (!isString(id)) {
       values = id.values || values
       message = id.message
       id = id.id
     }
 
-    const messageMissing = !this.messages[id]
+    const messageForId = this.messages[id]
+    const messageMissing = messageForId === undefined
 
     // replace missing messages with custom message for debugging
     const missing = this._missing
@@ -231,7 +232,7 @@ export class I18n extends EventEmitter<Events> {
       this.emit("missing", { id, locale: this._locale })
     }
 
-    let translation = this.messages[id] || message || id
+    let translation = messageForId || message || id
 
     if (process.env.NODE_ENV !== "production") {
       translation = isString(translation)
@@ -248,7 +249,7 @@ export class I18n extends EventEmitter<Events> {
       translation,
       this._locale,
       this._locales
-    )(values, formats)
+    )(values, options?.formats)
   }
 
   /**

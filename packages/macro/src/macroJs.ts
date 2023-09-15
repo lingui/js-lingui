@@ -303,18 +303,11 @@ export default class MacroJs {
           ? this.tokenizeNode(currExp)
           : [this.tokenizeExpression(currExp)]
       }
-
-      return [
-        ...(value
-          ? [
-              {
-                type: "text",
-                value: this.clearBackslashes(value),
-              } as TextToken,
-            ]
-          : []),
-        ...argTokens,
-      ]
+      const textToken: TextToken = {
+        type: "text",
+        value: this.clearBackslashes(value),
+      }
+      return [...(value ? [textToken] : []), ...argTokens]
     })
   }
 
@@ -388,7 +381,7 @@ export default class MacroJs {
    * We clean '//\` ' to just '`'
    */
   clearBackslashes(value: string) {
-    // if not we replace the extra scaped literals
+    // if not we replace the extra escaped literals
     return value.replace(/\\`/g, "`")
   }
 

@@ -4,9 +4,11 @@ import { Locales } from "./i18n"
 /** Memoized cache */
 const cache = new Map<string, unknown>()
 
+export const defaultLocale = "en"
+
 function normalizeLocales(locales: Locales): string[] {
   const out = Array.isArray(locales) ? locales : [locales]
-  return [...out, "en"]
+  return [...out, defaultLocale]
 }
 
 export function date(
@@ -38,12 +40,15 @@ export function number(
 
   return formatter.format(value)
 }
-
+export type PluralOptions = { [key: string]: Intl.LDMLPluralRule } & {
+  offset: number
+  other: string
+}
 export function plural(
   locales: Locales,
   ordinal: boolean,
   value: number,
-  { offset = 0, ...rules }
+  { offset = 0, ...rules }: PluralOptions
 ): string {
   const _locales = normalizeLocales(locales)
 

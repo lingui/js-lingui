@@ -18,9 +18,16 @@ describe("I18n", () => {
       }
 
       const i18n = setupI18n()
+      expect(i18n.messages).toEqual({})
       i18n.load("en", messages)
       i18n.activate("en")
       expect(i18n.messages).toEqual(messages)
+
+      const extraMessages = {
+        World: "World",
+      }
+      i18n.load("en", extraMessages)
+      expect(i18n.messages).toEqual({ ...messages, ...extraMessages })
 
       // fr catalog shouldn't affect the english one
       i18n.load("fr", { Hello: "Salut" })
@@ -203,6 +210,9 @@ describe("I18n", () => {
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
+    expect(i18n._({ id: "missing", message: "Missing message" })).toEqual(
+      "Missing message"
+    )
     expect(i18n._("Missing {name}", { name: "Fred" })).toEqual("Missing Fred")
     expect(
       i18n._(

@@ -1,7 +1,7 @@
 import { Content, parse, Token } from "@messageformat/parser"
 
 export type CompiledIcuChoices = Record<string, CompiledMessage> & {
-  offset: number
+  offset: number | undefined
 }
 
 export type CompiledMessageToken =
@@ -57,8 +57,8 @@ function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
       {
         offset,
         ...formatProps,
-      } as any,
-    ] as CompiledMessageToken
+      } as CompiledIcuChoices,
+    ]
   })
 }
 

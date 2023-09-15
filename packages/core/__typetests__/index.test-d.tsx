@@ -55,3 +55,8 @@ expectType<string>(
     { message: "Hello {name}", comment: "", formats: {} }
   )
 )
+
+i18n.load("cs", {})
+i18n.load({ cs: {} })
+// @ts-expect-error this is an invalid call
+i18n.load({ cs: {} }, {})
