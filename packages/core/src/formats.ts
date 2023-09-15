@@ -14,7 +14,7 @@ function normalizeLocales(locales: Locales): string[] {
 export function date(
   locales: Locales,
   value: string | Date,
-  format?: Intl.DateTimeFormatOptions | undefined
+  format?: Intl.DateTimeFormatOptions
 ): string {
   const _locales = normalizeLocales(locales)
 
@@ -29,7 +29,7 @@ export function date(
 export function number(
   locales: Locales,
   value: number,
-  format?: Intl.NumberFormatOptions | undefined
+  format?: Intl.NumberFormatOptions
 ): string {
   const _locales = normalizeLocales(locales)
 
