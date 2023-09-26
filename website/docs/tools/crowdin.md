@@ -137,6 +137,15 @@ To see the full list of possible commands and options:
 npm run crowdin -h
 ```
 
+### Over-The-Air Content Delivery
+
+Over-the-Air Content Delivery is a feature that allows you to instantly update sources and translations in your mobile, server, desktop, or web apps with a single click without preparing a new release.
+
+Visit the following pages to learn more about how to integrate Over-The-Air Content Delivery into your Lingui project:
+
+- [Lingui tutorial - Crowdin OTA JS Client](https://crowdin.github.io/ota-client-js/tutorials/lingui/)
+- [Lingui String Exporter - Crowdin Marketplace](https://store.crowdin.com/lingui-string-exporter)
+
 ### [API](https://support.crowdin.com/api/v2/) and webhooks
 
 Customize your experience. Automate and scale your localization workflow. Seamlessly add new content for translation to your Crowdin project, check translation status, merge new content, etc.
