@@ -94,9 +94,7 @@ i18n.load({
 });
 i18n.activate("en");
 
-const DefaultI18n = ({ isTranslated, children }) => (
-  <span style={{ color: isTranslated ? undefined : "red" }}>{children}</span>
-);
+const DefaultI18n = ({ children }) => <span>{children}</span>;
 
 const App = () => {
   return (
