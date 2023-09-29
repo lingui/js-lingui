@@ -15,14 +15,6 @@ module.exports = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: "eslint-plugin",
-      content:
-        '🎉 The Lingui ESLint plugin is now available, <a target="_blank" rel="noopener noreferrer" href="https://lingui.dev/ref/eslint-plugin">check it out!</a>',
-      backgroundColor: "#ef4242",
-      textColor: "#FFFFFF",
-      isCloseable: true,
-    },
     navbar: {
       title: "",
       logo: {
