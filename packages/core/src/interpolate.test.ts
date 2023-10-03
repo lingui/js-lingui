@@ -1,5 +1,4 @@
 import { compileMessage as compile } from "@lingui/message-utils/compileMessage"
-import { mockEnv, mockConsole } from "@lingui/jest-mocks"
 import { interpolate } from "./interpolate"
 import { Locale, Locales } from "./i18n"
 
@@ -8,15 +7,6 @@ describe("interpolate", () => {
     const tokens = compile(translation)
     return interpolate(tokens, locale || "en", locales)
   }
-
-  it("should handle an error if message has syntax errors", () => {
-    mockConsole((console) => {
-      expect(compile("Invalid {message")).toEqual("Invalid {message")
-      expect(console.error).toBeCalledWith(
-        expect.stringMatching("Unexpected message end at line")
-      )
-    })
-  })
 
   it("should process string chunks with provided map fn", () => {
     const tokens = compile(
@@ -36,17 +26,7 @@ describe("interpolate", () => {
     ])
   })
 
-  it("should compile static message", () => {
-    const cache = compile("Static message")
-    expect(cache).toEqual("Static message")
-
-    mockEnv("production", () => {
-      const cache = compile("Static message")
-      expect(cache).toEqual("Static message")
-    })
-  })
-
-  it("should compile message with variable", () => {
+  it("should interpolate message with variable", () => {
     const cache = compile("Hey {name}!")
     expect(interpolate(cache, "en", [])({ name: "Joe" })).toEqual("Hey Joe!")
   })
@@ -54,10 +34,10 @@ describe("interpolate", () => {
   it("should not interpolate escaped placeholder", () => {
     const msg = prepare("Hey '{name}'!")
 
-    expect(msg({})).toEqual("Hey {name}!")
+    expect(msg({ name: "Joe" })).toEqual("Hey {name}!")
   })
 
-  it("should compile plurals", () => {
+  it("should interpolate plurals", () => {
     const plural = prepare(
       "{value, plural, one {{value} Book} other {# Books}}"
     )
@@ -72,7 +52,7 @@ describe("interpolate", () => {
     expect(offset({ value: 3 })).toEqual("2 Books")
   })
 
-  it("should compile plurals with falsy value choice", () => {
+  it("should interpolate plurals with falsy value choice", () => {
     const plural = prepare("{value, plural, one {} other {# Books}}")
     expect(plural({ value: 1 })).toEqual("")
     expect(plural({ value: 2 })).toEqual("2 Books")
@@ -85,7 +65,7 @@ describe("interpolate", () => {
     expect(plural({ value: 30 })).toEqual("30% discount")
   })
 
-  it("should compile selectordinal", () => {
+  it("should interpolate selectordinal", () => {
     const cache = prepare(
       "{value, selectordinal, one {#st Book} two {#nd Book}}"
     )
@@ -119,7 +99,7 @@ describe("interpolate", () => {
     )
   })
 
-  it("should compile select", () => {
+  it("should interpolate select", () => {
     const cache = prepare("{value, select, female {She} other {They}}")
     expect(cache({ value: "female" })).toEqual("She")
     expect(cache({ value: "n/a" })).toEqual("They")
@@ -161,7 +141,7 @@ describe("interpolate", () => {
         expectedCurrency2,
       ] = tc
 
-      it(`should compile custom format for locale=${locale} and locales=${locales}`, () => {
+      it(`should interpolate custom format for locale=${locale} and locales=${locales}`, () => {
         const number = prepare("{value, number}", locale, locales)
         expect(number({ value: 0.1 })).toEqual(expectedNumber)
 
