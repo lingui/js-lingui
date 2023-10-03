@@ -1,3 +1,5 @@
+import fs from "node:fs"
+
 type PackageJson = {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
@@ -56,5 +58,13 @@ export async function getPackageJson(rootDir: string): Promise<PackageJson> {
     )
   }
 
-  return await import(packageJsonPath)
+  try {
+    return JSON.parse(await fs.promises.readFile(packageJsonPath, "utf-8"))
+  } catch (e) {
+    throw new Error(
+      `Unable to read package.json file at path ${packageJsonPath}. \n\n Error: ${
+        (e as Error).message
+      }`
+    )
+  }
 }

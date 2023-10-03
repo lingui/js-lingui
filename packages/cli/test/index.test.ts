@@ -119,9 +119,7 @@ describe("E2E Extractor Test", () => {
     compareFolders(actualPath, expectedPath)
   })
 
-  const skipOnWindows = os.platform().startsWith("win")
-    ? describe.skip
-    : describe
+  const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
 
   skipOnWindows("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
