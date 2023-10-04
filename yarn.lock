@@ -3411,6 +3411,7 @@ __metadata:
   dependencies:
     "@lingui/jest-mocks": "workspace:^"
     "@messageformat/parser": ^5.0.0
+    js-sha256: ^0.10.1
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -10652,6 +10653,13 @@ __metadata:
     typescript: ^4.9.5
   languageName: unknown
   linkType: soft
+
+"js-sha256@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "js-sha256@npm:0.10.1"
+  checksum: 6eb5c9f95aa902cec1930f036deb3bc664024b75fede456c0ac74b855797776c18620f47efec36787077a56ba2f3b8d6aacc7733ff8a2b5bb9ce6b655a35c5e6
+  languageName: node
+  linkType: hard
 
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
