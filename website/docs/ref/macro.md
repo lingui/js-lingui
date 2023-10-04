@@ -782,7 +782,7 @@ const message = /*i18n*/ {
 | --------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `id`      | string | Custom message ID                                                                                                                   |
 | `comment` | string | Comment for translators                                                                                                             |
-| `context` | string | Allows to extract the same messages with different IDs. See [Context](/tutorials/explicit-vs-generated-ids#context) for more detail |
+| `context` | string | Allows to extract the same messages with different IDs. See [Context](/docs/tutorials/explicit-vs-generated-ids.md#context) for more detail |
 
 [`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
 
@@ -816,7 +816,7 @@ It's removed from the production code.
 
 Contextual information for translators. Similar to [`comment`](#comment) but also allows to extract the same messages with different IDs. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
 
-It's removed from the production code. See [Context](/tutorials/explicit-vs-generated-ids#context) for more details.
+It's removed from the production code. See [Context](/docs/tutorials/explicit-vs-generated-ids.md#context) for more details.
 
 ```jsx
 import { Trans } from "@lingui/macro";
