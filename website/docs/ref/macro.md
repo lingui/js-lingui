@@ -778,11 +778,11 @@ const message = /*i18n*/ {
 
 ### `Trans`
 
-| Prop name | Type   | Description                                                                                     |
-| --------- | ------ | ----------------------------------------------------------------------------------------------- |
-| `id`      | string | Custom message ID                                                                               |
-| `comment` | string | Comment for translators                                                                         |
-| `context` | string | Allows to extract the same messages with different IDs. See [Context](#context) for more detail |
+| Prop name | Type   | Description                                                                                                                         |
+| --------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `id`      | string | Custom message ID                                                                                                                   |
+| `comment` | string | Comment for translators                                                                                                             |
+| `context` | string | Allows to extract the same messages with different IDs. See [Context](/tutorials/explicit-vs-generated-ids#context) for more detail |
 
 [`Trans`](/docs/ref/react.md#trans) is the basic macro for static messages, messages with variables, but also for messages with inline markup:
 
@@ -816,7 +816,7 @@ It's removed from the production code.
 
 Contextual information for translators. Similar to [`comment`](#comment) but also allows to extract the same messages with different IDs. It will be visible in the [TMS](/tools/introduction) if supported by it, and the [catalog format](/ref/catalog-formats).
 
-It's removed from the production code. See [Context](#context) for more details.
+It's removed from the production code. See [Context](/tutorials/explicit-vs-generated-ids#context) for more details.
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -1010,14 +1010,3 @@ Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or 
   <Select value={gender} _male="His book" _female="Her book" other="Their book" />
 </Trans>
 ```
-
-## Context
-
-By default, when using generated IDs, the same text elements are extracted with the same ID, and then translated once. This, however, may not always be desired because the same text can have different meaning and translation: For example, consider the word "right" and its two possible meanings:
-
-- correct as in "you are right"
-- direction as in "turn right"
-
-To distinguish these two cases, you can add `context` to messages. The same text elements with different contexts are extracted with different IDs. Then, they can be translated differently and merged back into the application as different translation entries.
-
-Regardless of whether you use generated IDs or not, adding context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve.
