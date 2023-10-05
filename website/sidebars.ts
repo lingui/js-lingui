@@ -41,6 +41,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Explicit vs Generated IDs",
+        id: "tutorials/explicit-vs-generated-ids",
+      },
+      {
+        type: "doc",
         label: "React Native",
         id: "tutorials/react-native",
       },
