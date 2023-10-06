@@ -87,13 +87,13 @@ function MyComponent() {
 :::
 
 :::note
-The all js macros such as [`t`](/docs/ref/macro.md#t) [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select), [`selectOrdinal`](/docs/ref/macro.md#selectordinal) cannot be used on the module level.
+All js macros such as [`t`](/docs/ref/macro.md#t) [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select), [`selectOrdinal`](/docs/ref/macro.md#selectordinal) cannot be used on the module level.
 
 ```jsx
 import { t } from "@lingui/macro";
 
 // ❌ Bad! This won't work because the `t` macro is used at the module level.
-// The `t` macro returns a string, and once this string is assigned, it won't react to changes.
+// The `t` macro returns a string, and once this string is assigned, it won't react to locale changes.
 const colors = [t`Red`, t`Orange`, t`Yellow`, t`Green`];
 
 // ✅ Good! Every time the function is executed, the `t` macro will be re-executed as well,
