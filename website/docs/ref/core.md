@@ -73,7 +73,7 @@ When some messages for the provided locale are already loaded, calling `i18n.loa
 ```ts
 import { i18n } from "@lingui/core";
 
-const messages = {
+const messagesEn = {
   Hello: "Hello",
   "Good bye": "Good bye",
 
