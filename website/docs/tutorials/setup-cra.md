@@ -1,6 +1,6 @@
 # Setup with Create React App
 
-[Create React App](https://github.com/facebook/create-react-app) is a framework for writing React apps with no build configuration. This guide suppose you use Create React App 2.0 (the default version).
+[Create React App](https://github.com/facebook/create-react-app) is a framework for writing React apps with no build configuration. This guide assumes you use Create React App 2.0 (the default version).
 
 ## Install
 

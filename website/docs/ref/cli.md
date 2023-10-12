@@ -129,11 +129,19 @@ lingui compile
     [--watch [--debounce <delay>]]
 ```
 
+This command compiles message catalogs in `localeDir` and outputs minified JavaScript files. The produced file is basically a string which is parsed into a plain-JS object using `JSON.parse`.
+
+The produced output has this shape:
+
+```ts
+export const messages=JSON.parse(`{
+// object with keys (translation ids) and values (translations)
+}`);
+```
+
 #### `--overwrite` {#compile-overwrite}
 
-This command compiles message catalogs in `localeDir` and outputs minified Javascript files. Each message is replaced with a function that returns the translated message when called.
-
-Also, language data (pluralizations) are written to the message catalog as well.
+Overwrite translations for source locale from source.
 
 #### `--strict` {#compile-strict}
 

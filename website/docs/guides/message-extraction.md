@@ -2,7 +2,7 @@
 
 Message extraction is an essential step in the internationalization process. It involves analyzing your code and extracting all messages defined in it so that your message catalogs are always up-to-date with the source code.
 
-To extract messages from your application with the lingui functions, use the `lingui extract` command.
+To extract messages from your application with the Lingui cli, use the `lingui extract` command.
 
 ## Supported patterns
 
@@ -27,7 +27,9 @@ For more usage examples, refer to the [macro documentation](/docs/ref/macro.md).
 
 ### Non-Macro usages
 
-Extractor matches `i18n._` or `i18n.t` function calls. It also matches when these functions are called from other member expressions, such as `ctx.i18n.t()`.
+Note that the non-macro usage is not common. We recommend you use macros.
+
+The extractor matches `i18n._` or `i18n.t` function calls. It also matches when these functions are called from other member expressions, such as `ctx.i18n.t()`.
 
 :::note
 Extractor matches calls only by name. It doesn't check whether they were really imported from Lingui packages.
@@ -153,9 +155,9 @@ lingui extract-experimental
 
 It's worth noting that the accuracy of the catalog heavily relies on tree-shaking, a technique used by modern bundlers to eliminate unused code from the final bundle.
 
-If the code passed to the extractor is written in a tree-shakeable way, the user will receive a highly accurate catalogs.
+If the code passed to the extractor is written in a tree-shakeable way, the user will receive highly accurate catalogs.
 
-While you might think that your code is tree-shakeable, in practice tree-shaking might work differently than what you expect and some unwanted strings may be included in the catalogs.
+While you might think that your code is tree-shakeable, in practice, tree-shaking might work differently than what you expect and some unwanted strings may be included in the catalogs.
 
 To illustrate, let's consider the following code:
 

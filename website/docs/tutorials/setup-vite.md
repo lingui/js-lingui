@@ -7,7 +7,7 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
 
-`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS rely on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
 
 1.  Install `@lingui/cli`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
@@ -41,7 +41,7 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc) {#setup-with-vitejs-plugin-react-swc}
 
-`@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS rely on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS relies on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
 
 1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
@@ -69,7 +69,7 @@ The Lingui Vite integration:
 
 ## Further Setup
 
-1. Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with a directory name where you have source files:
+1. Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with the directory name where you have source files:
 
 ```ts title="lingui.config.ts"
 import type { LinguiConfig } from "@lingui/conf";

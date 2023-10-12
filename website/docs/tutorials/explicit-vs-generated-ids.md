@@ -22,7 +22,7 @@ Lingui example:
 
 ### Generated IDs
 
-On the other hand, generated IDs are automatically created by the internalization library. In Lingui, such IDs are created based on a source message and [context](#context).
+On the other hand, generated IDs are automatically created by the internalization library. In Lingui, such IDs are created based on the source message and [context](#context).
 
 Lingui example:
 
@@ -38,7 +38,7 @@ Lingui example:
 
 ### Benefits of Generated IDs
 
-1. **Avoiding "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. The natural language is used to create an ID.
+1. **Avoiding the "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. Natural language is used to create an ID.
 2. **Better Developer Experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process.
 3. **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
 4. **Avoiding Duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
@@ -46,7 +46,7 @@ Lingui example:
 
 ### Benefits of Explicit IDs
 
-1. **Control:** Developers have full control over the naming and assignment of explicit IDs. This control allows for precise targeting and easy maintenance of internationalization keys.
+1. **Control:** Developers have full control over the naming and assignment of explicit IDs. This allows for precise targeting and easy maintenance of internationalization keys. If your team uses a translation management system (TMS), even non-technical people can change the strings without having to touch the code.
 2. **Readability:** Explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
 3. **Predictability:** Since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
 

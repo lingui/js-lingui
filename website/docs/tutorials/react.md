@@ -1,6 +1,6 @@
 # Internationalization of React apps
 
-Through this tutorial, we'll learn how to add internationalization (i18n) to an existing application in React JS.
+In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application.
 
 ## Let's Start
 
@@ -59,9 +59,9 @@ Follow setup guide either for projects using [LinguiJS with Create React App](/d
 
 We will directly start translating the `Inbox` component, but we need to complete one more step to setup our application.
 
-Components need to read information about current language and message catalogs from `i18n` instance. Initially, you can use the one created and exported from `@lingui/core` and later you can replace with your one if such need arise.
+Components need to read information about current language and message catalogs from `i18n` instance. Initially, you can use the one created and exported from `@lingui/core` and later you can replace with your one if such need arises.
 
-In order to pass `i18n` around the I18nProvider wraps around React Context.
+Lingui uses the `I18nProvider` to pass the instance `i18n` to your React components.
 
 Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/ref/react.md#i18nprovider):
 
@@ -139,9 +139,9 @@ import { Trans } from "@lingui/react";
 ```
 
 See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` and `message` props with a message in ICU MessageFormat syntax.
-We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros to generate message for ourselves.
+We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros generate the message for us.
 
-Another advantage of using macros is that all non-essential properties are dropped in the production build. This results in a significant reduction in the size footprint for internationalization.
+Another advantage of using macros is that all non-essential properties are excluded from the production build. This results in a significant reduction in the size footprint for internationalization.
 
 ```jsx
 // NODE_ENV=production
@@ -166,7 +166,7 @@ Lingui was unable to find a config!
 Create 'lingui.config.js' file with LinguiJS configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf
 ```
 
-We need here to fix the configuration. Create a `lingui.config.js` file:
+We need to create the `lingui.config.js` file:
 
 ```js title="lingui.config.js"
 /** @type {import('@lingui/conf').LinguiConfig} */
@@ -181,7 +181,7 @@ module.exports = {
 };
 ```
 
-After fixing configuration, let's run [`extract`](/docs/ref/cli.md#extract) command again:
+After adding the configuration file, let's run [`extract`](/docs/ref/cli.md#extract) command again:
 
 ```bash
 > lingui extract
@@ -217,7 +217,7 @@ msgstr ""
 
 That's the message we've wrapped inside [`Trans`](/docs/ref/macro.md#trans) macro!
 
-Let's add a Czech translation:
+Let's add the Czech translation:
 
 ```po title="src/locales/cs/messages.po"
 #: src/Inbox.js:12
@@ -242,7 +242,7 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into your app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
+That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into our app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
 
 ```bash
 > lingui compile
@@ -330,7 +330,7 @@ Spooky, right? Let's see how this message actually looks in the message catalog.
 See all <0>unread messages</0> or <1>mark them</1> as read.
 ```
 
-You may notice that components and html tags are replaced with indexed tags (_<0>_, _<1>_). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: they are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
+You may notice that components and html tags are replaced with indexed tags (_<0>_, _<1>_). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: translators are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
 
 ### JSX to MessageFormat transformations
 

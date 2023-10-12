@@ -32,7 +32,7 @@ Manage the whole intl workflow using Lingui [CLI](/docs/tutorials/cli.md). It ex
 
 ### Unopinionated
 
-Integrate Lingui into your existing workflow. It supports message keys as well as auto generated messages. Translations are stored either in JSON or standard PO file, which is supported in almost all translation tools.
+Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored either in JSON or standard PO file, which is supported in almost all translation tools.
 
 ### Lightweight and optimized
 
