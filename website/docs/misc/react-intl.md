@@ -129,7 +129,7 @@ Using [Lingui](https://github.com/lingui/js-lingui) macros, we could combine [`T
 
 ```jsx
 <Trans id="welcome">
-  Hello <b>{name}</b>, you have {i18n.number(undreadCount)} <Plural one="message" other="messages" />
+  Hello <b>{name}</b>, you have {i18n.number(unreadCount)} <Plural one="message" other="messages" />
 </Trans>
 ```
 
@@ -157,12 +157,12 @@ It's good to mention here that this isn't the best example of using plurals. Mak
   value={number}
   one={
     <>
-      Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} message.
+      Hello <b>{name}</b>, you have {i18n.number(unreadMessages)} message.
     </>
   }
   other={
     <>
-      Hello <b>{name}</b>, you have {i18n.number(undreadMessages)} messages.
+      Hello <b>{name}</b>, you have {i18n.number(unreadMessages)} messages.
     </>
   }
 />
