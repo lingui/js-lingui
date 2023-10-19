@@ -187,7 +187,7 @@ function render() {
 }
 ```
 
-The messages with IDs `msg.header` and `msg.hello`  will be extracted with their default values as `LinguiJS example` and `Hello <0>{name}</0>.` respectively.
+The messages with IDs `msg.header` and `msg.hello` will be extracted with their default values as `LinguiJS example` and `Hello <0>{name}</0>.` respectively.
 
 ### With non-JSX macro
 
