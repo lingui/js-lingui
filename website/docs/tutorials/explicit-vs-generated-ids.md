@@ -38,7 +38,7 @@ Lingui example:
 
 ### Benefits of Generated IDs
 
-1. **Avoiding the challenge of naming things:** You don't need to come up with a name for each single phrase in the app. The natural language is used to create an ID.
+1. **Avoiding "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. The natural language is used to create an ID.
 2. **Better Developer Experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process.
 3. **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
 4. **Avoiding Duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
