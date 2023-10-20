@@ -4,7 +4,7 @@ Following page describes the most common i18n patterns in React. It's a follow-u
 
 ## Macros
 
-Using jsx macros is the most straightforward way how to translate your React components.
+Using jsx macros is the most straightforward way to translate your React components.
 
 [`Trans`](/docs/ref/macro.md#trans) handles translations of messages including variables and other React components:
 
@@ -37,7 +37,7 @@ Sometimes you can't use [`Trans`](/docs/ref/macro.md#trans) component, for examp
 <img src="..." alt="Image caption" />
 ```
 
-In such case you need to use [`useLingui()`](/docs/ref/react.md#uselingui) hook with [`msg`](/docs/ref/macro.md#definemessage) macro.
+In such case you need to use the [`useLingui()`](/docs/ref/react.md#uselingui) hook with the [`msg`](/docs/ref/macro.md#definemessage) macro.
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -52,7 +52,7 @@ export default function ImageWithCaption() {
 
 ## Translations outside React components
 
-Another common pattern is when you need to access translations outside React components. You can use [`t`](/docs/ref/macro.md#t) macro outside React context as usual:
+Sometimes, you may need to access translations outside React components, which is another common pattern. You can use [`t`](/docs/ref/macro.md#t) macro outside React context as usual:
 
 ```jsx
 import { t } from "@lingui/macro";
@@ -110,7 +110,7 @@ Better option would be to use the Lazy Translations pattern described in the fol
 
 ## Lazy Translations
 
-Messages don't have to be declared at the same code location where they're displayed. Tag a string with the [`msg`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
+You don't need to declare messages at the same code location where they are displayed. Tag a string with the [`msg`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -195,7 +195,7 @@ export function HappySad(props) {
 
 Sometimes you need to pick between different messages to display, depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message representing the current status.
 
-A simple way to do this, is to make an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.md#definemessage) macro), and render them as needed with deferred translation:
+A simple way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.md#definemessage) macro), and render them as needed with deferred translation:
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -222,7 +222,7 @@ The documented behavior may not be intuitive at first, but it is expected, becau
 
 To avoid bugs with stale translations, use the `_` function returned from [`useLingui`](/ref/react#uselingui): it is safe to use with memoization because its reference changes whenever the Lingui context updates. We are open to accepting solutions to make working with the Lingui context easier.
 
-Please also note that `useMemo` is meant as a performance optimization in React and you probably don't need to memoize your translations. Additionally, this issue is not present when using the `Trans` component which we recommend to use when possible.
+Keep in mind that `useMemo` is primarily a performance optimization tool in React. Because of this, there might be no need to memoize your translations. Additionally, this issue is not present when using the `Trans` component which we recommend to use when possible.
 
 ```jsx
 import { msg } from "@lingui/macro";
