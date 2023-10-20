@@ -66,7 +66,7 @@ export default function Lingui({ numUsers, name = "You" }) {
       <p className="lead">
         {/* Variables are passed to messages in the same way as in JSX */}
         <Trans id="msg.lead">
-          Hello {name}, LinguiJS is a readable, automated, and optimized (5 kb) internationalization for JavaScript.
+          Hello {name}, LinguiJS is a readable, automated, and optimized (3 kb) internationalization for JavaScript.
         </Trans>
       </p>
 
