@@ -77,7 +77,7 @@ Visit the [Message Extraction](/docs/guides/message-extraction.md) guide to read
 
 ## Preparing catalogs for production
 
-Once we have all catalogs ready and translated, we can compile the JSON into a minified JS file with the [`compile`](/docs/ref/cli.md#compile) command. This command parses the messages in MessageFormat and compiles them into simple functions. It also adds plural rules to a production ready catalog:
+Once we have all catalogs ready and translated, we can compile the JSON into a minified JS file with the [`compile`](/docs/ref/cli.md#compile) command. This command parses the messages in MessageFormat and compiles them into simple functions. It also adds plural rules to a catalog that is ready for production:
 
 ```bash npm2yarn
 > npm run compile
@@ -101,7 +101,7 @@ It is also possible to merge the translated catalogs into a single file per loca
 
 By default, the [`extract`](/docs/ref/cli.md#extract) command merges messages extracted from source files with the existing message catalogs. This is safe as we won't accidentally lose translated messages.
 
-However, sooner or later some messages will be removed from the source. We can use the [`--clean`](/docs/ref/cli.md#extract-clean) option to clean up our message catalogs:
+However, over time, some messages might be removed from the source. We can use the [`--clean`](/docs/ref/cli.md#extract-clean) option to clean up our message catalogs:
 
 ```bash npm2yarn
 npm run extract --clean
@@ -123,7 +123,7 @@ Missing 42 translation(s)
 
 ## Configuring source locale
 
-We see that checking for missing translations has one drawback -- English message catalog doesn't require any translations because we're using English in our source code!
+One drawback to checking for missing translations is that the English message catalog doesn't need translations, as our source code is in English.
 
 Let's fix it by setting [`sourceLocale`](/docs/ref/conf.md#sourcelocale) in `package.json`:
 
@@ -162,7 +162,7 @@ If you use natural language for message IDs (that's the default), set [`sourceLo
 
 ## Catalogs in VCS and CI
 
-The `locale/_build` folder and `locale/*/*.js` (compiled catalogs) are safe to be ignored by your VCS. What you do need to keep in VCS are the json files (`locale/*/*.json`) that contain the messages for translators. The JavaScript functions that return the actual translations when your app runs in production are created from those json files. See [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
+The `locale/_build` folder and `locale/*/*.js` (compiled catalogs) are safe to be ignored by your VCS. What you do need to keep in VCS are the JSON files (`locale/*/*.json`) that contain the messages for translators. The JavaScript functions that return the actual translations when your app runs in production are created from those JSON files. See [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
 
 If you're using a CI, it is a good idea to add the `yarn extract` and `yarn compile` commands to your build process.
 
