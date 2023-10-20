@@ -1,8 +1,8 @@
-# Choosing between generated and explicit ID
+# Choosing between generated and explicit IDs
 
 In this guide, we will explore the fundamental concepts of explicit and generated IDs, and then delve into a comprehensive comparison, highlighting the benefits and drawbacks of each approach.
 
-## What is Explicit ID and What is Generated IDs?
+## What are Explicit IDs and Generated IDs?
 
 ### Explicit ID
 
@@ -39,7 +39,7 @@ Lingui example:
 ### Benefits of Generated IDs
 
 1. **Avoiding "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. The natural language is used to create an ID.
-2. **Better Developer Experience:** a more streamlined development process with less code to write.
+2. **Better Developer Experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process.
 3. **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
 4. **Avoiding Duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
 5. **Smaller bundle:** The Lingui generates short ID such as `uxV9Xq` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
@@ -53,7 +53,7 @@ Lingui example:
 In conclusion, the choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
 
 :::note
-You don't need to worry about the readability of ID's because you would barely see them. When extracted into a PO file, translators would see source string and its corresponding translation, while the IDs remain behind the scenes.
+You don't need to worry about the readability of IDs because you would barely see them. When extracted into a PO file, translators would see source string and its corresponding translation, while the IDs remain behind the scenes.
 
 ```gettext
 #: src/App.tsx:1
@@ -86,7 +86,7 @@ function render() {
 }
 ```
 
-In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would be fulfilled by these entries:
+In the example code above, the content of [`Trans`](/docs/ref/macro.md#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would contain these entries:
 
 ```js
 const catalog = [
@@ -113,7 +113,7 @@ msg`Hello World`;
 
 ### Context {#context}
 
-By default, when using generated IDs, the same text elements are extracted with the same ID, and then translated once. This, however, may not always be desired because the same text can have different meaning and translation: For example, consider the word "right" and its two possible meanings:
+By default, when using generated IDs, the same text elements are extracted with the same ID, and then translated once. However, this might not always be desirable since the same text can have different meanings and translations. For example, consider the word "right" and its two possible meanings:
 
 - correct as in "you are right"
 - direction as in "turn right"
@@ -187,11 +187,11 @@ function render() {
 }
 ```
 
-Messages `msg.header` and `msg.hello` will be extracted with default values `LinguiJS example` and `Hello <0>{name}</0>.`.
+The messages with IDs `msg.header` and `msg.hello` will be extracted with their default values as `LinguiJS example` and `Hello <0>{name}</0>.` respectively.
 
 ### With non-JSX macro
 
-If you're using custom IDs in your project, call [`msg`](/docs/ref/macro.md#definemessage) with a message descriptor object and pass ID as `id` prop:
+If you're using custom IDs in your project, call the [`msg`](/docs/ref/macro.md#definemessage) function with a message descriptor object, passing the ID using the `id` property:
 
 ```jsx
 import { msg } from "@lingui/macro";
