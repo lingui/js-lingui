@@ -287,6 +287,16 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       48,
     ],
   },
+  {
+    comment: undefined,
+    context: undefined,
+    id: Some Some Id,
+    message: Message with id some,
+    origin: [
+      js-with-macros.js,
+      50,
+    ],
+  },
 ]
 `;
 

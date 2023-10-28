@@ -126,6 +126,25 @@ export default class MacroJs {
       return false
     }
 
+    // t`id``message` -> i18n._({ id: "id", message: "message" })
+    if (
+      this.types.isTaggedTemplateExpression(path.node) &&
+      this.types.isTaggedTemplateExpression(path.parentPath.node) &&
+      this.isLinguiIdentifier(path.node.tag, "t")
+    ) {
+
+      const idTokens = this.tokenizeTemplateLiteral(path.node.quasi)
+      const msgTokens = this.tokenizeTemplateLiteral(path.parentPath.node.quasi)
+      const descriptor = this.createMessageDescriptorFromIdMsg(
+        idTokens,
+        msgTokens,
+        path.node.loc
+      )
+
+      path.replaceWith(descriptor)
+      return false
+    }
+
     // t(i18nInstance)(messageDescriptor) -> i18nInstance._(messageDescriptor)
     if (
       this.types.isCallExpression(path.node) &&
@@ -403,6 +422,27 @@ export default class MacroJs {
 
     const properties: ObjectProperty[] = [
       this.createIdProperty(message),
+
+      !this.stripNonEssentialProps
+        ? this.createObjectProperty(MESSAGE, this.types.stringLiteral(message))
+        : null,
+
+      this.createValuesProperty(values),
+    ]
+
+    return this.createMessageDescriptor(
+      properties,
+      // preserve line numbers for extractor
+      oldLoc
+    )
+  }
+
+  createMessageDescriptorFromIdMsg(idTokens: Tokens, msgTokens: Tokens, oldLoc?: SourceLocation) {
+    const { message, values } = buildICUFromTokens(msgTokens)
+    const { message: id} = buildICUFromTokens(idTokens)
+
+    const properties: ObjectProperty[] = [
+      this.createObjectProperty(ID, this.types.stringLiteral(id)),
 
       !this.stripNonEssentialProps
         ? this.createObjectProperty(MESSAGE, this.types.stringLiteral(message))
