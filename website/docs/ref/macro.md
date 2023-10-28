@@ -140,6 +140,20 @@ i18n._(
 ```
 
 ```js
+t`attachment.saved``Attachment ${name} saved`;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+i18n._(
+  /*i18n*/ {
+    id: "attachment.saved",
+    message: "Attachment {name} saved",
+    values: { name },
+  }
+);
+```
+
+```js
 t(customI18n)`Refresh inbox`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
