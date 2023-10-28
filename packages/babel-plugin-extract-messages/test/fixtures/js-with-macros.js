@@ -47,4 +47,4 @@ const defineMessageAlias = msg({
 
 const defineMessageAlias2 = msg`TplLiteral`
 
-const withIdMsg = t`Some Some Id``Message with id some`;
+const withIdMsg = t('Some Some Id')`Message with id some`

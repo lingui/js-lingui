@@ -111,6 +111,34 @@ export default class MacroJs {
       return false
     }
 
+    // t(`id`)`message` -> i18n._({ id: "id", message: "message" })
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.types.isTaggedTemplateExpression(path.parent) &&
+      (this.types.isStringLiteral(path.node.arguments[0]) ||
+        this.types.isTemplateLiteral(path.node.arguments[0])) &&
+      this.isLinguiIdentifier(path.node.callee, "t")
+    ) {
+      const idTokens = this.types.isTemplateLiteral(path.node.arguments[0])
+        ? this.tokenizeTemplateLiteral(path.node.arguments[0])
+        : [
+            {
+              type: "text",
+              value: this.expressionToArgument(path.node.arguments[0]),
+            } as TextToken,
+          ]
+      const msgTokens = this.tokenizeTemplateLiteral(path.parent.quasi)
+
+      const descriptor = this.createMessageDescriptorFromIdMsg(
+        idTokens,
+        msgTokens,
+        path.node.loc
+      )
+
+      path.replaceWith(descriptor)
+      return false
+    }
+
     // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
     if (
       this.types.isCallExpression(path.node) &&
@@ -123,25 +151,6 @@ export default class MacroJs {
       const tokens = this.tokenizeNode(path.parentPath.node)
 
       this.replacePathWithMessage(path.parentPath, tokens, i18nInstance)
-      return false
-    }
-
-    // t`id``message` -> i18n._({ id: "id", message: "message" })
-    if (
-      this.types.isTaggedTemplateExpression(path.node) &&
-      this.types.isTaggedTemplateExpression(path.parentPath.node) &&
-      this.isLinguiIdentifier(path.node.tag, "t")
-    ) {
-
-      const idTokens = this.tokenizeTemplateLiteral(path.node.quasi)
-      const msgTokens = this.tokenizeTemplateLiteral(path.parentPath.node.quasi)
-      const descriptor = this.createMessageDescriptorFromIdMsg(
-        idTokens,
-        msgTokens,
-        path.node.loc
-      )
-
-      path.replaceWith(descriptor)
       return false
     }
 
@@ -437,9 +446,13 @@ export default class MacroJs {
     )
   }
 
-  createMessageDescriptorFromIdMsg(idTokens: Tokens, msgTokens: Tokens, oldLoc?: SourceLocation) {
+  createMessageDescriptorFromIdMsg(
+    idTokens: Tokens,
+    msgTokens: Tokens,
+    oldLoc?: SourceLocation
+  ) {
     const { message, values } = buildICUFromTokens(msgTokens)
-    const { message: id} = buildICUFromTokens(idTokens)
+    const { message: id } = buildICUFromTokens(idTokens)
 
     const properties: ObjectProperty[] = [
       this.createObjectProperty(ID, this.types.stringLiteral(id)),

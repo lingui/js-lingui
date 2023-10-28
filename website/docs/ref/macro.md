@@ -140,7 +140,7 @@ i18n._(
 ```
 
 ```js
-t`attachment.saved``Attachment ${name} saved`;
+t('attachment.saved')`Attachment ${name} saved`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 

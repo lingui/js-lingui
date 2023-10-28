@@ -73,6 +73,19 @@ export function t(
 ): string
 
 /**
+ * Translates a template string using the global I18n instance and given id
+ *
+ * @example
+ * ```
+ * import { t } from "@lingui/macro";
+ * const message = t('some.id')`Hello ${name}`;
+ * ```
+ */
+export function t(id: string): {
+  (literals: TemplateStringsArray, ...placeholders: any[]): string
+}
+
+/**
  * Translates a template string or message descriptor using a given I18n instance
  *
  * @example
