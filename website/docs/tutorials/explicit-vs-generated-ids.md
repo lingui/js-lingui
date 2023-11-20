@@ -46,7 +46,7 @@ Lingui example:
 
 ### Benefits of Explicit IDs
 
-1. **Control:** Developers have full control over the naming and assignment of explicit IDs. This allows for precise targeting and easy maintenance of internationalization keys. If your team uses a translation management system (TMS), even non-technical people can change the strings without having to touch the code.
+1. **Control:** Developers have full control over the naming and assignment of explicit IDs. This control allows for precise targeting and easy maintenance of internationalization keys.
 2. **Readability:** Explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
 3. **Predictability:** Since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
 
