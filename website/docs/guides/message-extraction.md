@@ -2,7 +2,7 @@
 
 Message extraction is an essential step in the internationalization process. It involves analyzing your code and extracting all messages defined in it so that your message catalogs are always up-to-date with the source code.
 
-To extract messages from your application with the Lingui cli, use the `lingui extract` command.
+To extract messages (as marked with `<Trans>`, `t` or other macros) from your application, use the `lingui extract` cli command.
 
 ## Supported patterns
 

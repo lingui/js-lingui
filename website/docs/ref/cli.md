@@ -134,7 +134,7 @@ This command compiles message catalogs in `localeDir` and outputs minified JavaS
 The produced output has this shape:
 
 ```ts
-export const messages=JSON.parse(`{
+export const messages = JSON.parse(`{
 // object with keys (translation ids) and values (translations)
 }`);
 ```
