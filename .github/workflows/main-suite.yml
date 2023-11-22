@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ["16", "18", "19"]
+        node: ["16", "18", "19", "20"]
         os: [ubuntu-latest, windows-latest]
 
     steps:
@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     needs: test
-    name: validate (16, ubuntu-latest)
+    name: validate (node 20, ubuntu-latest)
     steps:
       - uses: actions/checkout@v3
         with:
@@ -52,7 +52,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           always-auth: true
-          node-version: 16
+          node-version: 20
           cache: 'yarn'
           scope: '@lingui'
 
