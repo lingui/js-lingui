@@ -28,6 +28,13 @@ export type JsonFormatterOptions = {
    * @default "lingui"
    */
   style?: "lingui" | "minimal"
+
+  /**
+  * Diferent indentation for output JSON
+  *
+  * @default 2
+  */
+  indentation?: number
 }
 
 type NoOriginsCatalogType = {
@@ -87,7 +94,7 @@ export function formatter(
         outputCatalog = serializeMinimal(outputCatalog)
       }
 
-      return JSON.stringify(outputCatalog, null, 2) + trailingNewLine
+      return JSON.stringify(outputCatalog, null, options.indentation ?? 2) + trailingNewLine
     },
 
     parse(content) {
