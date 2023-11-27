@@ -30,7 +30,7 @@ export type JsonFormatterOptions = {
   style?: "lingui" | "minimal"
 
   /**
-  * Diferent indentation for output JSON
+  * Indentation of output JSON
   *
   * @default 2
   */
