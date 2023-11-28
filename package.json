@@ -21,7 +21,7 @@
     "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",
     "prettier:check": "prettier --check '**/*.{ts,tsx,js,jsx}'",
     "verdaccio:release": "node -r @swc-node/register ./scripts/verdaccio-release.ts",
-    "release:build": "yarn workspaces foreach --topological-dev -pv run build",
+    "release:build": "yarn workspaces foreach --topological-dev -v run build",
     "release:test": "yarn release:build && yarn test:all",
     "version": "yarn install --no-immutable && git stage yarn.lock",
     "version:next": "lerna version --exact --force-publish --no-private --preid next --create-release github --conventional-commits --conventional-prerelease --yes",
