@@ -338,11 +338,13 @@ function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
 }
 
 export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
+  const collator = new Intl.Collator("en-US");
+
   return Object.keys(messages)
     .sort((a, b) => {
       const aMsg = messages[a].message || ""
       const bMsg = messages[b].message || ""
-      return aMsg.localeCompare(bMsg, "en-US")
+      return collator.compare(aMsg, bMsg)
     })
     .reduce((acc, key) => {
       ;(acc as any)[key] = messages[key]
