@@ -338,6 +338,8 @@ function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
 }
 
 export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
+  // hardcoded en-US locale to have consistent sorting
+  // @see https://github.com/lingui/js-lingui/pull/1808
   const collator = new Intl.Collator("en-US");
 
   return Object.keys(messages)
