@@ -94,7 +94,7 @@ export async function command(
           const typescriptPath = compiledPath.replace(/\.ts?$/, "") + ".d.ts"
           fs.writeFileSync(
             typescriptPath,
-            `import { Messages } from '@lingui/core';
+            `import type { Messages } from '@lingui/core';
           declare const messages: Messages;
           export { messages };
           `
