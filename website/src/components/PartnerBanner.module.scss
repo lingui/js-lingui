@@ -1,0 +1,14 @@
+.Partner {
+  margin-bottom: 86px;
+  position: relative;
+  z-index: 1000;
+
+  a {
+    text-decoration: none;
+    color: var(--p-color);
+  }
+}
+
+.muted {
+  color: grey;
+}
