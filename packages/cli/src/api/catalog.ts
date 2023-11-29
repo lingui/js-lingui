@@ -338,11 +338,15 @@ function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
 }
 
 export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
+  // hardcoded en-US locale to have consistent sorting
+  // @see https://github.com/lingui/js-lingui/pull/1808
+  const collator = new Intl.Collator("en-US")
+
   return Object.keys(messages)
     .sort((a, b) => {
       const aMsg = messages[a].message || ""
       const bMsg = messages[b].message || ""
-      return aMsg.localeCompare(bMsg)
+      return collator.compare(aMsg, bMsg)
     })
     .reduce((acc, key) => {
       ;(acc as any)[key] = messages[key]
