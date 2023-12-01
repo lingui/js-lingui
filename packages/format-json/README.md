@@ -52,6 +52,13 @@ export type JsonFormatterOptions = {
    * @default "lingui"
    */
   style?: "lingui" | "minimal"
+
+  /**
+  * Indentation of output JSON
+  *
+  * @default 2
+  */
+  indentation?: number
 }
 ```
 
