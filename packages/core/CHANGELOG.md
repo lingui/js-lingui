@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
+
+### Features
+
+- **message-utils:** make generateMessageId to be working in browser ([#1776](https://github.com/lingui/js-lingui/issues/1776)) ([f879ddb](https://github.com/lingui/js-lingui/commit/f879ddbbc4627f94c579e0156958b4ec4026e371))
+
 # [4.5.0](https://github.com/lingui/js-lingui/compare/v4.4.2...v4.5.0) (2023-09-14)
 
 **Note:** Version bump only for package @lingui/core

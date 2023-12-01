@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
+
+### Features
+
+- **format-json:** ability to set indentation ([#1807](https://github.com/lingui/js-lingui/issues/1807)) ([6ee7e63](https://github.com/lingui/js-lingui/commit/6ee7e63631387b634f0b3e753dae4417c27b7744))
+
 # [4.5.0](https://github.com/lingui/js-lingui/compare/v4.4.2...v4.5.0) (2023-09-14)
 
 **Note:** Version bump only for package @lingui/format-json

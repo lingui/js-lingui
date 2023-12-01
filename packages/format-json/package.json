@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-json",
-  "version": "4.5.0",
+  "version": "4.6.0",
   "description": "JSON format for Lingui Catalogs",
   "main": "./dist/json.cjs",
   "module": "./dist/json.mjs",
@@ -39,7 +39,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "4.5.0",
+    "@lingui/conf": "4.6.0",
     "ramda": "^0.28.0"
   },
   "devDependencies": {

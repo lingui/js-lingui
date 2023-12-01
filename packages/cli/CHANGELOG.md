@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
+
+### Bug Fixes
+
+- **cli:** import type as type ([#1802](https://github.com/lingui/js-lingui/issues/1802)) ([960aadb](https://github.com/lingui/js-lingui/commit/960aadb65f355e79af528d76549a480b0a2de4aa))
+- **cli:** sorting issue when different locales are used on host machines ([#1808](https://github.com/lingui/js-lingui/issues/1808)) ([4b8b2a7](https://github.com/lingui/js-lingui/commit/4b8b2a79e667a2959fea230b4bb897d2ed13bd08))
+- **experimental-extractor:** fix ERR_IMPORT_ASSERTION_TYPE_MISSING issue ([#1775](https://github.com/lingui/js-lingui/issues/1775)) ([efcd405](https://github.com/lingui/js-lingui/commit/efcd4051fbada719d69088107d8a6da0ad61daeb))
+
 # [4.5.0](https://github.com/lingui/js-lingui/compare/v4.4.2...v4.5.0) (2023-09-14)
 
 **Note:** Version bump only for package @lingui/cli
