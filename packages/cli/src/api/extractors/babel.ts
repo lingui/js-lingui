@@ -144,6 +144,7 @@ export async function extractFromFileWithBabel(
           },
         } satisfies ExtractPluginOpts,
       ],
+      ...[...parserOpts.plugins ?? []]
     ],
   })
 
