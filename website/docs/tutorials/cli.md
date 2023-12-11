@@ -162,9 +162,12 @@ If you use natural language for message IDs (that's the default), set [`sourceLo
 
 ## Catalogs in VCS and CI
 
-The `locale/_build` folder and `locale/*/*.js` (compiled catalogs) are safe to be ignored by your VCS. What you do need to keep in VCS are the JSON files (`locale/*/*.json`) that contain the messages for translators. The JavaScript functions that return the actual translations when your app runs in production are created from those JSON files. See [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
+If you're using CI, it is a good idea to add `yarn compile` to your build process. Alternatively, you can also use a [loader](/docs/ref/loader).
 
-If you're using a CI, it is a good idea to add the `yarn extract` and `yarn compile` commands to your build process.
+Depending on your localization setup, you might also want to run `yarn extract` in CI and upload the extracted messages to a translation service.
+
+Also see the [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
+
 
 ## Further reading
 
