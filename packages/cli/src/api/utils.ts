@@ -21,17 +21,9 @@ export function replacePlaceholders(
   })
 }
 
-export const splitOrigin = (origin: string) => {
-  const [file, line] = origin.split(":")
-  return [file, line ? Number(line) : null] as [file: string, line: number]
-}
-
-export const joinOrigin = (origin: [file: string, line?: number]): string =>
-  origin.join(":")
-
 export async function readFile(fileName: string): Promise<string | undefined> {
   try {
-    return (await fs.promises.readFile(fileName)).toString()
+    return (await fs.promises.readFile(fileName, "utf-8")).toString()
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code != "ENOENT") {
       throw err
@@ -66,7 +58,7 @@ export async function writeFile(
   content: string
 ): Promise<void> {
   await mkdirp(path.dirname(fileName))
-  await fs.promises.writeFile(fileName, content)
+  await fs.promises.writeFile(fileName, content, "utf-8")
 }
 
 export async function writeFileIfChanged(
