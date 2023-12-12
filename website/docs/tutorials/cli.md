@@ -162,7 +162,7 @@ If you use natural language for message IDs (that's the default), set [`sourceLo
 
 ## Catalogs in VCS and CI
 
-If you're using CI, it is a good idea to add `yarn compile` to your build process. Alternatively, you can also use a [loader](/ref/loader).
+If you're using CI, it is a good idea to add `yarn compile` to your build process. Alternatively, you can also use a [loader](/docs/ref/loader.md).
 
 Depending on your localization setup, you might also want to run `yarn extract` in CI and upload the extracted messages to a translation service.
 
