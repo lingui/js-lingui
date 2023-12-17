@@ -407,4 +407,22 @@ describe("getCatalogForFile", () => {
       catalog,
     })
   })
+
+  it("should allow parentheses in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/(asd)/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ format: "po", rootDir: "." })
+    )
+    const catalogs = [catalog]
+
+    expect(getCatalogForFile("./src/locales/(asd)/en.po", catalogs)).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
 })
