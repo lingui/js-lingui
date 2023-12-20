@@ -168,7 +168,6 @@ Depending on your localization setup, you might also want to run `yarn extract` 
 
 Also see the [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
 
-
 ## Further reading
 
 - [CLI Reference](/docs/ref/cli.md)
