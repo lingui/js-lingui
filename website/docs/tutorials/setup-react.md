@@ -36,7 +36,7 @@ This setup guide is for any project which uses React.
     If you use any preset, check first if it contains `macros` plugin. These presets already includes `macros` plugin: `react-scripts`
     :::
 
-3.  Create `lingui.config.js` file with LinguiJS configuration in root of your project (next to `package.json`). Replace `src` with a directory name where you have source files:
+3.  Create `lingui.config.js` file with LinguiJS configuration in root of your project (next to `package.json`). Replace `src` with the directory name where you have source files:
 
     ```js title="lingui.config.js"
     /** @type {import('@lingui/conf').LinguiConfig} */

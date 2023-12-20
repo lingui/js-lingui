@@ -4,7 +4,7 @@
 
 ## Extracting messages
 
-We're going to use an app we built in a [React tutorial](/docs/tutorials/react.md). The [`extract`](/docs/ref/cli.md#extract) command looks for messages in the source files and extracts them:
+We're going to use an app we built in the [React tutorial](/docs/tutorials/react.md). The [`extract`](/docs/ref/cli.md#extract) command looks for messages in the source files and extracts them:
 
 ```bash npm2yarn
 > npm run extract
@@ -77,7 +77,7 @@ Visit the [Message Extraction](/docs/guides/message-extraction.md) guide to read
 
 ## Preparing catalogs for production
 
-Once we have all catalogs ready and translated, we can compile the JSON into a minified JS file with the [`compile`](/docs/ref/cli.md#compile) command. This command parses the messages in MessageFormat and compiles them into simple functions. It also adds plural rules to a catalog that is ready for production:
+Once we have all catalogs ready and translated, we can compile all catalogs into minified JS files with the [`compile`](/docs/ref/cli.md#compile) command.
 
 ```bash npm2yarn
 > npm run compile
@@ -162,9 +162,11 @@ If you use natural language for message IDs (that's the default), set [`sourceLo
 
 ## Catalogs in VCS and CI
 
-The `locale/_build` folder and `locale/*/*.js` (compiled catalogs) are safe to be ignored by your VCS. What you do need to keep in VCS are the JSON files (`locale/*/*.json`) that contain the messages for translators. The JavaScript functions that return the actual translations when your app runs in production are created from those JSON files. See [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
+If you're using CI, it is a good idea to add `yarn compile` to your build process. Alternatively, you can also use a [loader](/docs/ref/loader.md).
 
-If you're using a CI, it is a good idea to add the `yarn extract` and `yarn compile` commands to your build process.
+Depending on your localization setup, you might also want to run `yarn extract` in CI and upload the extracted messages to a translation service.
+
+Also see the [Excluding build files](/docs/guides/excluding-build-files.md) guide for more info.
 
 ## Further reading
 

@@ -11,15 +11,15 @@ If you're looking for a working solution, check out the [sources available here]
 :::caution Note
 This tutorial assumes you use Lingui >= 4.2 and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
 
-`@lingui/core` depends on several apis exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
+`@lingui/core` depends on several APIs exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](https://formatjs.io/docs/polyfills).
 
 See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl` support in the Hermes engine.
 :::
 
-## Polyfilling Intl apis
+## Polyfilling Intl APIs
 
-React Native does not support all `Intl` features out of the box and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase your bundle size. At the same time, modern i18n libraries rely on its presence.
+React Native does not support all `Intl` features out of the box, and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase the amount of JS that needs to be `require`d by your app. At the same time, modern i18n libraries rely on its presence.
 
 Follow the polyfill installation instructions before proceeding further.
 

@@ -1,10 +1,10 @@
 # Typescript
 
-Lingui supports typescript types out of the box since version `3.0.0`.
+Lingui is written in Typescript and ships with TS typings out of the box. You should not need to do anything to get type support working.
 
 ## Macros types in non-React environments
 
-Since the opening of this issue we investigated that macros can be used on Typescript environments where React isn't required.
+We investigated how macros can be used on Typescript environments where React isn't required.
 
 Now we're shipping two declaration types:
 

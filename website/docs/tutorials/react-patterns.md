@@ -1,6 +1,6 @@
 # Common i18n patterns in React
 
-Following page describes the most common i18n patterns in React. It's a follow-up to [tutorial](/docs/tutorials/react.md) with practical examples. See the [API reference](/docs/ref/react.md) for detailed information about all components.
+This page describes the most common i18n patterns in React. It's a follow-up to the [tutorial](/docs/tutorials/react.md) with practical examples. See the [API reference](/docs/ref/react.md) for detailed information about all components.
 
 ## Macros
 
@@ -97,15 +97,15 @@ import { t } from "@lingui/macro";
 const colors = [t`Red`, t`Orange`, t`Yellow`, t`Green`];
 
 // ✅ Good! Every time the function is executed, the `t` macro will be re-executed as well,
-// and the actual result will be returned.
+// and the correctly translated color labels will be returned.
 function getColors() {
   return [t`Red`, t`Orange`, t`Yellow`, t`Green`];
 }
 ```
 
-There is an [ESLint Rule](https://github.com/lingui/eslint-plugin#t-call-in-function) designed to check for this misusage.
+There is an [ESLint Rule](https://github.com/lingui/eslint-plugin#t-call-in-function) designed to check for this misuse.
 
-Better option would be to use the Lazy Translations pattern described in the following paragraph.
+A better option would be to use the Lazy Translations pattern described in the following paragraph.
 :::
 
 ## Lazy Translations
@@ -132,10 +132,10 @@ export default function ColorList() {
 ```
 
 :::note
-Note that we import `<Trans>` component from `@lingui/react`, because we want to use a runtime version here, not a macro.
+Note that we import `<Trans>` component from `@lingui/react`, because we want to use the runtime `Trans` component here, not the (compile-time) macro.
 :::
 
-Or to render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
+To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
 
 ```jsx
 import { i18n } from "@lingui/core";

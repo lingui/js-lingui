@@ -22,7 +22,7 @@ Lingui example:
 
 ### Generated IDs
 
-On the other hand, generated IDs are automatically created by the internalization library. In Lingui, such IDs are created based on a source message and [context](#context).
+On the other hand, generated IDs are automatically created by the internalization library. In Lingui, such IDs are created based on the source message and [context](#context).
 
 Lingui example:
 
@@ -38,17 +38,18 @@ Lingui example:
 
 ### Benefits of Generated IDs
 
-1. **Avoiding "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. The natural language is used to create an ID.
-2. **Better Developer Experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process.
-3. **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
-4. **Avoiding Duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
-5. **Smaller bundle:** The Lingui generates short ID such as `uxV9Xq` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
+1. **Avoiding the "Naming Things" problem:** You don't need to come up with a name for each single phrase in the app. Lingui generates the IDs (in the form of short hashes) from the messages.
+2. **Better Developer Experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process. Searching for a user-facing string will lead to the place in code where it's used, as opposed to taking you to a (typically JSON) file full of translations.
+3. **Avoiding Duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
+4. **Smaller bundle:** Lingui generates short IDs such as `uxV9Xq` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
+5. **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
 
 ### Benefits of Explicit IDs
 
 1. **Control:** Developers have full control over the naming and assignment of explicit IDs. This control allows for precise targeting and easy maintenance of internationalization keys.
-2. **Readability:** Explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
-3. **Predictability:** Since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
+2. **Loose Coupling:** Explicit IDs are loosely coupled with the messages (as opposed to when they are generated from the messages). This means that if the message changes, the ID remains the same. When your team uses a TMS (Translation Management System), this makes it easier even for non-technical people to update the strings.
+3. **Readability:** Explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
+4. **Predictability:** Since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
 
 In conclusion, the choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
 
