@@ -22,6 +22,11 @@ const USERS: UserDetails[] = [
     link: "https://github.com/ansible/awx",
   },
   {
+    logo: "bluesky.png",
+    name: "Bluesky",
+    link: "https://github.com/bluesky-social/social-app",
+  },
+  {
     logo: "linkerd.png",
     name: "Linkerd",
     link: "https://github.com/linkerd/linkerd2",
