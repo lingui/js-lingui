@@ -53,7 +53,7 @@ export type PoFormatterOptions = {
    *
    * Set this option to true if you exclusively use explicit-ids in your project.
    *
-   * https://lingui.dev/tutorials/react-patterns#using-custom-id
+   * https://lingui.dev/tutorials/explicit-vs-generated-ids#using-custom-id
    *
    * @default false
    */
