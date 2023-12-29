@@ -11,6 +11,7 @@
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
+- [ ] Examples update
 
 Fixes # (issue)
 
@@ -20,4 +21,4 @@ Fixes # (issue)
 
 - [ ] I have read the [CONTRIBUTING](https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md) and [CODE_OF_CONDUCT](https://github.com/lingui/js-lingui/blob/main/CODE_OF_CONDUCT.md) docs
 - [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] I have added necessary documentation (if appropriate)
+- [ ] I have added the necessary documentation (if appropriate)
