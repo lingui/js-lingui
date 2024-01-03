@@ -43,7 +43,7 @@
     "@lingui/conf": "4.6.0"
   },
   "peerDependencies": {
-    "vite": "3 - 4"
+    "vite": "^3 || ^4 || ^5.0.9"
   },
   "devDependencies": {
     "@lingui/format-json": "workspace:^",
