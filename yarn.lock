@@ -3495,7 +3495,7 @@ __metadata:
     vite: 4.1.4
     vite-plugin-babel-macros: ^1.0.6
   peerDependencies:
-    vite: 3 - 4
+    vite: ^3 || ^4 || ^5.0.9
   languageName: unknown
   linkType: soft
 
