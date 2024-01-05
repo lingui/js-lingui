@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
+
+### Bug Fixes
+
+- warnings about invalid dependencies on Windows ([#1828](https://github.com/lingui/js-lingui/issues/1828)) ([5f07937](https://github.com/lingui/js-lingui/commit/5f0793746af292a994ba24ead45af9cda40792d3))
+
 # [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
 
 **Note:** Version bump only for package @lingui/loader

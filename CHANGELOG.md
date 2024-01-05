@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
+
+### Bug Fixes
+
+- allow parentheses in catalog pathnames ([#1820](https://github.com/lingui/js-lingui/issues/1820)) ([f5fae0e](https://github.com/lingui/js-lingui/commit/f5fae0ed69ccb91bdd80343686dec2a231aa7657))
+- double render due to wrong assertion ([#1817](https://github.com/lingui/js-lingui/issues/1817)) ([8830f2e](https://github.com/lingui/js-lingui/commit/8830f2eb69a39eb22131e8b554913b5fe2fc1165))
+- double render due to wrong assertion ([#1824](https://github.com/lingui/js-lingui/issues/1824)) ([bd8ad11](https://github.com/lingui/js-lingui/commit/bd8ad11b34b7784d767bce1256d1e845b0e6bdb3))
+- warnings about invalid dependencies on Windows ([#1828](https://github.com/lingui/js-lingui/issues/1828)) ([5f07937](https://github.com/lingui/js-lingui/commit/5f0793746af292a994ba24ead45af9cda40792d3))
+
+### Features
+
+- **vite-plugin:** add support for vite@5 ([#1827](https://github.com/lingui/js-lingui/issues/1827)) ([5548d26](https://github.com/lingui/js-lingui/commit/5548d26194296fdc0c02c1b4f2c5bbda5c94db0b))
+
 # [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
 
 ### Bug Fixes

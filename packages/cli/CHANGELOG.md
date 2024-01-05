@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
+
+### Bug Fixes
+
+- allow parentheses in catalog pathnames ([#1820](https://github.com/lingui/js-lingui/issues/1820)) ([f5fae0e](https://github.com/lingui/js-lingui/commit/f5fae0ed69ccb91bdd80343686dec2a231aa7657))
+
 # [4.6.0](https://github.com/lingui/js-lingui/compare/v4.5.0...v4.6.0) (2023-12-01)
 
 ### Bug Fixes
