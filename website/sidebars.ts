@@ -209,7 +209,7 @@ const sidebar = [
   {
     type: "category",
     label: "Resources",
-    items: ["misc/community", "misc/resources", "misc/showroom", "misc/react-intl", "misc/i18next", "misc/tooling"],
+    items: ["misc/community", "misc/resources", "misc/tooling", "misc/showroom", "misc/react-intl", "misc/i18next"],
   },
   {
     type: "category",
