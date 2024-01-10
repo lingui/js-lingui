@@ -1,4 +1,4 @@
-# Projects using LinguiJS
+# Projects using Lingui
 
 Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list your project here.
 
@@ -35,3 +35,7 @@ Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list
 - [mapflow.ai](https://mapflow.ai)
 - [Ascendero.com](https://ascendero.com/)
 - [InterMenu.com](https://intermenu.com)
+
+---
+
+Do you use Lingui in production or for hobby project? Please [let us know](https://github.com/lingui/js-lingui/discussions/1404), so we can add you to the showroom!
