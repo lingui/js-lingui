@@ -142,7 +142,9 @@ module.exports = {
           breadcrumbs: false,
           routeBasePath: "/",
           editUrl: "https://github.com/lingui/js-lingui/tree/main/website",
-          remarkPlugins: [[require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          remarkPlugins: [
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true, converters: ["yarn", "pnpm"] }],
+          ],
         },
         blog: {
           showReadingTime: true,

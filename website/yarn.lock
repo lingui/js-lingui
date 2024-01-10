@@ -2038,14 +2038,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/remark-plugin-npm2yarn@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "@docusaurus/remark-plugin-npm2yarn@npm:2.3.1"
+"@docusaurus/remark-plugin-npm2yarn@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@docusaurus/remark-plugin-npm2yarn@npm:2.4.3"
   dependencies:
-    npm-to-yarn: ^1.0.1
-    tslib: ^2.4.0
+    npm-to-yarn: ^2.0.0
+    tslib: ^2.4.1
     unist-util-visit: ^2.0.3
-  checksum: ef6cf613fecdc86bdbe3bfb49e212cbf18c5882a78363e1355899dbae110111adae31986a1318790698eb9d6e4fe0a02864fd3d711892331bc2425603f9e2f93
+  checksum: 8bc17fbcfaac11ca3a8ff9ffabfb3cda0e37173e9ceee64dc8a18f87822f71a4dbef942355ed2ebf9a05e760514c60945fdd3ecf19bf579963884454faebe948
   languageName: node
   linkType: hard
 
@@ -7891,7 +7891,7 @@ __metadata:
     "@docusaurus/eslint-plugin": 2.3.1
     "@docusaurus/module-type-aliases": 2.3.1
     "@docusaurus/preset-classic": 2.3.1
-    "@docusaurus/remark-plugin-npm2yarn": ^2.3.1
+    "@docusaurus/remark-plugin-npm2yarn": 2.4.3
     "@docusaurus/utils": 2.3.1
     "@mdx-js/react": 1.6.22
     "@tsconfig/docusaurus": 1.0.6
@@ -9387,10 +9387,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-to-yarn@npm:^1.0.1":
-  version: 1.2.1
-  resolution: "npm-to-yarn@npm:1.2.1"
-  checksum: 7a4a0774968a22ec2f11cff99c21d1ef201232dff38a5ffab253b9a45faf8c9639c1163a314c64b5e7258c85b9311b8c8d9468bea2042de4ba534309b388c1f4
+"npm-to-yarn@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "npm-to-yarn@npm:2.1.0"
+  checksum: 0e5ed46d9c1bbacc93a83c8ebe347578188b58b5bcb3bc727f7c582aa9144121f981b604778dad10c46dbb2e927da8f0943fd5ca7c2ef26824bdaac317d1d47e
   languageName: node
   linkType: hard
 
@@ -13447,6 +13447,13 @@ __metadata:
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.4.1":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
   languageName: node
   linkType: hard
 
