@@ -17,4 +17,4 @@
 
 ---
 
-Would like to add something to the list? Visit the [Contributing](https://lingui.dev/misc/community#contributing) section.
+Would like to add something to the list? Visit the [Contributing](/misc/community#contributing) section.
