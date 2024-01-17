@@ -1,7 +1,7 @@
 import { CompiledMessage, Formats, Locales, Values } from "./i18n"
 import { date, number, plural, type PluralOptions } from "./formats"
 import { isString } from "./essentials"
-import unraw from "unraw"
+import { unraw } from "unraw"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
 
