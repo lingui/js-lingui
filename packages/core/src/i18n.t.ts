@@ -113,3 +113,5 @@ export type TFnOptions = {
 export type TFnOptionsWithMessage<Message extends string> = {
   message: Message
 } & TFnOptions
+
+export type MessageWithNoParams<Message extends string> = DropEscapedBraces<Message> extends `${string}{${string}}${string}` ? never : Message;

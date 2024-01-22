@@ -206,6 +206,7 @@ describe("I18n", () => {
     expect(i18n.t("Hello")).toEqual("Salut")
 
     // missing { name }
+    // @ts-expect-error
     expect(i18n._("My name is {name}")).toEqual("Je m'appelle")
 
     // Untranslated message
