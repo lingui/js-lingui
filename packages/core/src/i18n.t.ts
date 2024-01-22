@@ -1,5 +1,15 @@
 import { Formats } from "./i18n"
 
+export type Replace<
+  Input extends string,
+  Search extends string,
+  Replacement extends string,
+> = Input extends `${infer Head}${Search}${infer Tail}`
+  ? `${Head}${Replacement}${Replace<Tail, Search, Replacement>}`
+  : Input;
+
+type DropEscapedBraces<Input extends string> = Replace<Input, `'{` | `}'`, ''>;
+
 type ExtractNextBrace<T extends string, Acc extends string = ""> = T extends `${infer Head}${infer Tail}` ?
   Head extends "{" | "}" ? [Acc, Head, Tail] : ExtractNextBrace<Tail, `${Acc}${Head}`>
   : never;
@@ -74,7 +84,7 @@ type _ExtractVars<Input extends string> =
         : {}
   ;
 
-export type I18nT<Input extends string> = Normalize<_ExtractVars<Input>>;
+export type I18nT<Input extends string> = Normalize<_ExtractVars<DropEscapedBraces<Input>>>;
 
 type MessageDescriptorWithIdAsMessage<Message extends string> =
   {} extends I18nT<Message>
