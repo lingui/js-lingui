@@ -68,9 +68,9 @@ type _ExtractVars<Input extends string> =
           ?
           BraceBody extends `${infer FormatterInput},${infer FormatterTail}`
             ?
-            { [P in FormatterInput]: string } & UnionToIntersection<_ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>>
+            { [P in Trim<FormatterInput>]: string } & UnionToIntersection<_ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>>
             :
-            { [P in BraceBody]: string } & _ExtractVars<Next>
+            { [P in Trim<BraceBody>]: string } & _ExtractVars<Next>
           : {}
         : {}
   ;
