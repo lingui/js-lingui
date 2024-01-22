@@ -1,14 +1,10 @@
+// Already listed, not sure what else to do
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Replace, Simplify, Trim, UnionToIntersection } from "type-fest"
 import { Formats } from "./i18n"
 
-export type Replace<
-  Input extends string,
-  Search extends string,
-  Replacement extends string,
-> = Input extends `${infer Head}${Search}${infer Tail}`
-  ? `${Head}${Replacement}${Replace<Tail, Search, Replacement>}`
-  : Input;
 
-type DropEscapedBraces<Input extends string> = Replace<Input, `'{` | `}'`, ''>;
+type DropEscapedBraces<Input extends string> = Replace<Replace<Input, `'{`, ''>,  `}'`, ''>;
 
 type ExtractNextBrace<T extends string, Acc extends string = ""> = T extends `${infer Head}${infer Tail}` ?
   Head extends "{" | "}" ? [Acc, Head, Tail] : ExtractNextBrace<Tail, `${Acc}${Head}`>
@@ -58,11 +54,6 @@ type ExtractFormatterMessages<Input extends string> =
         []
   ;
 
-type UnionToIntersection<U> =
-  (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
-
-type Normalize<T> = { [K in keyof T]: T[K] } & {}
-
 type _ExtractVars<Input extends string> =
   string extends Input
     ?
@@ -84,7 +75,7 @@ type _ExtractVars<Input extends string> =
         : {}
   ;
 
-export type I18nT<Input extends string> = Normalize<_ExtractVars<DropEscapedBraces<Input>>>;
+export type I18nT<Input extends string> = Simplify<_ExtractVars<DropEscapedBraces<Input>>>;
 
 type MessageDescriptorWithIdAsMessage<Message extends string> =
   {} extends I18nT<Message>

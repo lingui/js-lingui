@@ -3299,6 +3299,7 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
     "@lingui/message-utils": 4.7.0
+    type-fest: ^4.9.0
     unbuild: 2.0.0
     unraw: ^3.0.0
   languageName: unknown
@@ -10678,6 +10679,7 @@ __metadata:
     strip-ansi: ^6.0.1
     swc-node: ^1.0.0
     ts-jest: ^29.0.5
+    type-fest: ^4.9.0
     typescript: ^4.9.5
   languageName: unknown
   linkType: soft
@@ -15122,6 +15124,13 @@ __metadata:
   version: 0.8.1
   resolution: "type-fest@npm:0.8.1"
   checksum: d61c4b2eba24009033ae4500d7d818a94fd6d1b481a8111612ee141400d5f1db46f199c014766b9fa9b31a6a7374d96fc748c6d688a78a3ce5a33123839becb7
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "type-fest@npm:4.9.0"
+  checksum: 73383de23237b399a70397a53101152548846d919aebcc7d8733000c6c354dc2632fe37c4a70b8571b79fdbfa099e2d8304c5ac56b3254780acff93e4c7a797f
   languageName: node
   linkType: hard
 
