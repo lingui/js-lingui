@@ -1,7 +1,7 @@
 import React, { ComponentType } from "react"
 
 import { formatElements } from "./format"
-import type { MessageOptions } from "@lingui/core"
+import type { TFnOptions } from "@lingui/core"
 import { I18n } from "@lingui/core"
 
 export type TransRenderProps = {
@@ -32,7 +32,7 @@ export type TransProps = {
   message?: string
   values?: Record<string, unknown>
   components?: { [key: string]: React.ElementType | any }
-  formats?: MessageOptions["formats"]
+  formats?: TFnOptions["formats"]
   comment?: string
   children?: React.ReactNode
 } & TransRenderCallbackOrComponent
@@ -90,7 +90,7 @@ export function TransNoContext(
 
   const _translation: string =
     i18n && typeof i18n._ === "function"
-      ? i18n._(id, values, { message, formats })
+      ? i18n._(id, values, { message, formats } as any)
       : id // i18n provider isn't loaded at all
 
   const translation = _translation

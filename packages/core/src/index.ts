@@ -1,14 +1,14 @@
 export { setupI18n, I18n } from "./i18n"
 
+export * from './i18n.t';
+
 export type {
   AllMessages,
-  MessageDescriptor,
   Messages,
   AllLocaleData,
   LocaleData,
   Locale,
   Locales,
-  MessageOptions,
 } from "./i18n"
 
 // Default i18n object

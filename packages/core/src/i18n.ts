@@ -4,12 +4,8 @@ import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
+import { I18nT, MessageDescriptor, TFnOptions, TFnOptionsWithMessage } from "./i18n.t"
 
-export type MessageOptions = {
-  message?: string
-  formats?: Formats
-  comment?: string
-}
 
 export type { CompiledMessage }
 export type Locale = string
@@ -40,12 +36,6 @@ export type Messages = Record<string, CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
-export type MessageDescriptor = {
-  id: string
-  comment?: string
-  message?: string
-  values?: Record<string, unknown>
-}
 
 export type MissingMessageEvent = {
   locale: Locale
@@ -80,10 +70,10 @@ type LoadAndActivateOptions = {
 }
 
 export class I18n extends EventEmitter<Events> {
-  private _locale: Locale = ""
-  private _locales?: Locales
-  private _localeData: AllLocaleData = {}
-  private _messages: AllMessages = {}
+  /**
+   * Alias for {@see I18n._}
+   */
+  t: I18n["_"] = this._.bind(this)
   private _missing?: MissingHandler
 
   constructor(params: setupI18nProps) {
@@ -97,17 +87,19 @@ export class I18n extends EventEmitter<Events> {
     }
   }
 
+  private _locale: Locale = ""
+
   get locale() {
     return this._locale
   }
+
+  private _locales?: Locales
 
   get locales() {
     return this._locales
   }
 
-  get messages(): Messages {
-    return this._messages[this._locale] ?? {}
-  }
+  private _localeData: AllLocaleData = {}
 
   /**
    * @deprecated this has no effect. Please remove this from the code. Deprecated in v4
@@ -116,13 +108,10 @@ export class I18n extends EventEmitter<Events> {
     return this._localeData[this._locale] ?? {}
   }
 
-  private _loadLocaleData(locale: Locale, localeData: LocaleData) {
-    const maybeLocaleData = this._localeData[locale]
-    if (!maybeLocaleData) {
-      this._localeData[locale] = localeData
-    } else {
-      Object.assign(maybeLocaleData, localeData)
-    }
+  private _messages: AllMessages = {}
+
+  get messages(): Messages {
+    return this._messages[this._locale] ?? {}
   }
 
   /**
@@ -153,17 +142,10 @@ export class I18n extends EventEmitter<Events> {
     this.emit("change")
   }
 
-  private _load(locale: Locale, messages: Messages) {
-    const maybeMessages = this._messages[locale]
-    if (!maybeMessages) {
-      this._messages[locale] = messages
-    } else {
-      Object.assign(maybeMessages, messages)
-    }
-  }
-
   load(allMessages: AllMessages): void
+
   load(locale: Locale, messages: Messages): void
+
   load(localeOrMessages: AllMessages | Locale, messages?: Messages): void {
     if (typeof localeOrMessages == "string" && typeof messages === "object") {
       // load('en', catalog)
@@ -205,17 +187,29 @@ export class I18n extends EventEmitter<Events> {
   }
 
   // method for translation and formatting
-  _(descriptor: MessageDescriptor): string
-  _(id: string, values?: Values, options?: MessageOptions): string
+  _(id: string): string
+  _<Message extends string>(descriptor: MessageDescriptor<Message>): string
+  _<Message extends string>(id: string, values: I18nT<Message>, options: TFnOptionsWithMessage<Message>): string
+  _<Message extends string>(id: Message, values?: I18nT<Message>, options?: TFnOptions): string
   _(
-    id: MessageDescriptor | string,
+    id: {  id: string,
+      message?: string,
+      values?: Values,
+      comment?:string
+    } | string,
     values?: Values,
-    options?: MessageOptions
+    options?: {
+      formats?: Formats
+      comment?: string
+      message?: string,
+    }
   ): string {
     let message = options?.message
     if (!isString(id)) {
       values = id.values || values
-      message = id.message
+      if('message' in id) {
+        message = id.message
+      }
       id = id.id
     }
 
@@ -252,17 +246,30 @@ export class I18n extends EventEmitter<Events> {
     )(values, options?.formats)
   }
 
-  /**
-   * Alias for {@see I18n._}
-   */
-  t: I18n["_"] = this._.bind(this)
-
   date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
     return date(this._locales || this._locale, value, format)
   }
 
   number(value: number, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
+  }
+
+  private _loadLocaleData(locale: Locale, localeData: LocaleData) {
+    const maybeLocaleData = this._localeData[locale]
+    if (!maybeLocaleData) {
+      this._localeData[locale] = localeData
+    } else {
+      Object.assign(maybeLocaleData, localeData)
+    }
+  }
+
+  private _load(locale: Locale, messages: Messages) {
+    const maybeMessages = this._messages[locale]
+    if (!maybeMessages) {
+      this._messages[locale] = messages
+    } else {
+      Object.assign(maybeMessages, messages)
+    }
   }
 }
 
