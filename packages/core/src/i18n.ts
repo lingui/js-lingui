@@ -5,7 +5,7 @@ import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
 import {
-  I18nT,
+  I18nTValues,
   I18nTDescriptorById,
   I18nTDescriptorByMessage,
   I18nTMessageWithNoParams,
@@ -195,12 +195,12 @@ export class I18n extends EventEmitter<Events> {
   _<Message extends string>(id: I18nTMessageWithNoParams<Message>): string
   _<Message extends string>(
     id: string,
-    values: I18nT<Message>,
+    values: I18nTValues<Message>,
     options: I18nTOptionsWithMessage<Message>
   ): string
   _<Message extends string>(
     id: Message,
-    values: I18nT<Message>,
+    values: I18nTValues<Message>,
     options?: I18nTOptions
   ): string
   _<Message extends string>(

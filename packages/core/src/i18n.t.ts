@@ -70,7 +70,7 @@ type _ExtractVars<Input extends string> = string extends Input
     : {}
   : {}
 
-export type I18nT<Input extends string> = Simplify<
+export type I18nTValues<Input extends string> = Simplify<
   _ExtractVars<DropEscapedBraces<Input>>
 >
 
@@ -79,16 +79,16 @@ type I18nTDescriptorBasic = {
 }
 
 export type I18nTDescriptorById<Message extends string> = I18nTDescriptorBasic &
-  ({} extends I18nT<Message>
+  ({} extends I18nTValues<Message>
     ? { id: Message }
-    : { id: Message; values: I18nT<Message> })
+    : { id: Message; values: I18nTValues<Message> })
 
 export type I18nTDescriptorByMessage<Message extends string> = ({
   id: string
 } & I18nTDescriptorBasic) &
-  ({} extends I18nT<Message>
+  ({} extends I18nTValues<Message>
     ? { message: Message }
-    : { message: Message; values: I18nT<Message> })
+    : { message: Message; values: I18nTValues<Message> })
 
 export type I18nTOptions = {
   formats?: Formats
