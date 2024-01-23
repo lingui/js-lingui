@@ -19,6 +19,9 @@ expectType<string>(i18n._("Hello, {}", { "": "Name" }))
 expectType<string>(i18n._("Hello, {name}", { name: "Name" }))
 // @ts-expect-error cannot call without a parameter object
 expectType<string>(i18n._("Hello, {name}"))
+i18n._("You have {n, number} unread messages", { n: 10 })
+// @ts-expect-error n should be of type "number"
+i18n._("You have {n, number} unread messages", { n: "hello" })
 // @ts-expect-error cannot call with incorrect parameters object
 expectType<string>(i18n._("Hello {name}", { username: "Name" }))
 expectType<string>(
