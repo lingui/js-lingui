@@ -39,7 +39,7 @@ expectType<string>(
 expectType<string>(
   i18n._(
     `
-{
+{username} have {
   numBooks, plural, 
     one {
       {
@@ -47,20 +47,26 @@ expectType<string>(
           one {
             1 book and 1 article
           } other {
-            1 book and {numArticles} articles
+            1 book and {numArticles, number} articles, good job, {name} !
           }
       }
     } other {
       {numArticles, plural, 
         one {
-          {numBooks} books and 1 article
+          {numBooks, number} books and 1 article
         } other {
-          {numBooks} books and {numArticles} articles
+          numBooks, number} books and {numArticles, number} articles
         }
       }
     }
-}`,
-    { numBooks: "1", numArticles: "100" }
+}. Wish you a good {what}`,
+    {
+      numBooks: 1,
+      numArticles: 1,
+      username: "username",
+      name: "name",
+      what: "luck",
+    }
   )
 )
 expectType<string>(
