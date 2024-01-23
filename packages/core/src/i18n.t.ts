@@ -1,5 +1,3 @@
-// Already listed, not sure what else to do
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Replace, Simplify, Trim, UnionToIntersection } from "type-fest"
 import { Formats } from "./i18n"
 
