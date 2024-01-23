@@ -2,9 +2,10 @@ import { Replace, Simplify, Trim, UnionToIntersection } from "type-fest"
 import { Formats, FormatterMap } from "./formatter"
 
 type DropEscapedBraces<Input extends string> = Replace<
-  Replace<Input, `'{`, "">,
+  Replace<Input, `'{`, "", { all: true }>,
   `}'`,
-  ""
+  "",
+  { all: true }
 >
 
 type ExtractNextBrace<
