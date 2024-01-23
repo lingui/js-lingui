@@ -72,7 +72,7 @@ type _ExtractVars<Input extends string> = string extends Input
     : {}
   : {}
 
-export type I18nT<Input extends string> = Simplify<
+export type I18nTValues<Input extends string> = Simplify<
   _ExtractVars<DropEscapedBraces<Input>>
 >
 
@@ -82,16 +82,16 @@ type MessageDescriptorRest = {
 
 export type MessageDescriptorWithIdAsMessage<Message extends string> =
   MessageDescriptorRest &
-    ({} extends I18nT<Message>
+    ({} extends I18nTValues<Message>
       ? { id: Message }
-      : { id: Message; values: I18nT<Message> })
+      : { id: Message; values: I18nTValues<Message> })
 
 export type MessageDescriptorWithMessageAsMessage<Message extends string> = ({
   id: string
 } & MessageDescriptorRest) &
-  ({} extends I18nT<Message>
+  ({} extends I18nTValues<Message>
     ? { message: Message }
-    : { message: Message; values: I18nT<Message> })
+    : { message: Message; values: I18nTValues<Message> })
 
 export type TFnOptions = {
   formats?: Formats

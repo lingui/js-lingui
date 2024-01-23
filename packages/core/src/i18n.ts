@@ -5,14 +5,13 @@ import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
 import {
-  I18nT,
+  I18nTValues,
   MessageDescriptorWithIdAsMessage,
   MessageDescriptorWithMessageAsMessage,
   MessageWithNoParams,
   TFnOptions,
-  TFnOptionsWithMessage
-} from "./i18n.t"
-
+  TFnOptionsWithMessage,
+} from "./i18nTValues"
 
 export type { CompiledMessage }
 export type Locale = string
@@ -42,7 +41,6 @@ export type AllLocaleData = Record<Locale, LocaleData>
 export type Messages = Record<string, CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
-
 
 export type MissingMessageEvent = {
   locale: Locale
@@ -195,27 +193,37 @@ export class I18n extends EventEmitter<Events> {
 
   // method for translation and formatting
   _<Message extends string>(id: MessageWithNoParams<Message>): string
-  _<Message extends string>(id: string, values: I18nT<Message>, options: TFnOptionsWithMessage<Message>): string
-  _<Message extends string>(id: Message, values: I18nT<Message>, options?: TFnOptions): string
-  _<Message extends string>(descriptor: MessageDescriptorWithMessageAsMessage<Message>): string
-  _<Message extends string>(descriptor: MessageDescriptorWithIdAsMessage<Message>): string
+  _<Message extends string>(
+    id: string,
+    values: I18nTValues<Message>,
+    options: TFnOptionsWithMessage<Message>
+  ): string
+  _<Message extends string>(
+    id: Message,
+    values: I18nTValues<Message>,
+    options?: TFnOptions
+  ): string
+  _<Message extends string>(
+    descriptor: MessageDescriptorWithMessageAsMessage<Message>
+  ): string
+  _<Message extends string>(
+    descriptor: MessageDescriptorWithIdAsMessage<Message>
+  ): string
   _(
-    id: {  id: string,
-      message?: string,
-      values?: Values,
-      comment?:string
-    } | string,
+    id:
+      | { id: string; message?: string; values?: Values; comment?: string }
+      | string,
     values?: Values,
     options?: {
       formats?: Formats
       comment?: string
-      message?: string,
+      message?: string
     }
   ): string {
     let message = options?.message
     if (!isString(id)) {
       values = id.values || values
-      if('message' in id) {
+      if ("message" in id) {
         message = id.message
       }
       id = id.id
