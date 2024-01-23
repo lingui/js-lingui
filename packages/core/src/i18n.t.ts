@@ -72,37 +72,36 @@ type _ExtractVars<Input extends string> = string extends Input
     : {}
   : {}
 
-export type I18nTValues<Input extends string> = Simplify<
+export type I18nT<Input extends string> = Simplify<
   _ExtractVars<DropEscapedBraces<Input>>
 >
 
-type MessageDescriptorRest = {
+type I18nTDescriptorBasic = {
   comment?: string
 }
 
-export type MessageDescriptorWithIdAsMessage<Message extends string> =
-  MessageDescriptorRest &
-    ({} extends I18nTValues<Message>
-      ? { id: Message }
-      : { id: Message; values: I18nTValues<Message> })
+export type I18nTDescriptorById<Message extends string> = I18nTDescriptorBasic &
+  ({} extends I18nT<Message>
+    ? { id: Message }
+    : { id: Message; values: I18nT<Message> })
 
-export type MessageDescriptorWithMessageAsMessage<Message extends string> = ({
+export type I18nTDescriptorByMessage<Message extends string> = ({
   id: string
-} & MessageDescriptorRest) &
-  ({} extends I18nTValues<Message>
+} & I18nTDescriptorBasic) &
+  ({} extends I18nT<Message>
     ? { message: Message }
-    : { message: Message; values: I18nTValues<Message> })
+    : { message: Message; values: I18nT<Message> })
 
-export type TFnOptions = {
+export type I18nTOptions = {
   formats?: Formats
   comment?: string
 }
 
-export type TFnOptionsWithMessage<Message extends string> = {
+export type I18nTOptionsWithMessage<Message extends string> = {
   message: Message
-} & TFnOptions
+} & I18nTOptions
 
-export type MessageWithNoParams<Message extends string> =
+export type I18nTMessageWithNoParams<Message extends string> =
   DropEscapedBraces<Message> extends `${string}{${string}}${string}`
     ? never
     : Message

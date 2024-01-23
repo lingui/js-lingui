@@ -5,13 +5,13 @@ import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
 import {
-  I18nTValues,
-  MessageDescriptorWithIdAsMessage,
-  MessageDescriptorWithMessageAsMessage,
-  MessageWithNoParams,
-  TFnOptions,
-  TFnOptionsWithMessage,
-} from "./i18nTValues"
+  I18nT,
+  I18nTDescriptorById,
+  I18nTDescriptorByMessage,
+  I18nTMessageWithNoParams,
+  I18nTOptions,
+  I18nTOptionsWithMessage,
+} from "./i18n.t"
 
 export type { CompiledMessage }
 export type Locale = string
@@ -192,23 +192,21 @@ export class I18n extends EventEmitter<Events> {
   }
 
   // method for translation and formatting
-  _<Message extends string>(id: MessageWithNoParams<Message>): string
+  _<Message extends string>(id: I18nTMessageWithNoParams<Message>): string
   _<Message extends string>(
     id: string,
-    values: I18nTValues<Message>,
-    options: TFnOptionsWithMessage<Message>
+    values: I18nT<Message>,
+    options: I18nTOptionsWithMessage<Message>
   ): string
   _<Message extends string>(
     id: Message,
-    values: I18nTValues<Message>,
-    options?: TFnOptions
+    values: I18nT<Message>,
+    options?: I18nTOptions
   ): string
   _<Message extends string>(
-    descriptor: MessageDescriptorWithMessageAsMessage<Message>
+    descriptor: I18nTDescriptorByMessage<Message>
   ): string
-  _<Message extends string>(
-    descriptor: MessageDescriptorWithIdAsMessage<Message>
-  ): string
+  _<Message extends string>(descriptor: I18nTDescriptorById<Message>): string
   _(
     id:
       | { id: string; message?: string; values?: Values; comment?: string }

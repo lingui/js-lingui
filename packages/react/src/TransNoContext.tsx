@@ -1,7 +1,7 @@
 import React, { ComponentType } from "react"
 
 import { formatElements } from "./format"
-import type { TFnOptions } from "@lingui/core"
+import type { I18nTOptions } from "@lingui/core"
 import { I18n } from "@lingui/core"
 
 export type TransRenderProps = {
@@ -32,7 +32,7 @@ export type TransProps = {
   message?: string
   values?: Record<string, unknown>
   components?: { [key: string]: React.ElementType | any }
-  formats?: TFnOptions["formats"]
+  formats?: I18nTOptions["formats"]
   comment?: string
   children?: React.ReactNode
 } & TransRenderCallbackOrComponent

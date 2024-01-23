@@ -1,6 +1,6 @@
 export { setupI18n, I18n } from "./i18n"
 
-export * from "./i18nTValues"
+export * from "./i18n.t"
 
 export type {
   AllMessages,

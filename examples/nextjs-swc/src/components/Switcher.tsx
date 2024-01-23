@@ -1,18 +1,13 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { t, msg } from '@lingui/macro'
-import {
-  MessageDescriptorWithMessageAsMessage,
-  MessageDescriptorWithIdAsMessage
-} from '@lingui/core/src'
+import { I18nTDescriptorByMessage, I18nTDescriptorById } from '@lingui/core/src'
 import { useLingui } from '@lingui/react'
 
 type LOCALES = 'en' | 'sr' | 'es' | 'pseudo'
 
 const languages: {
-  [key: string]:
-    | MessageDescriptorWithMessageAsMessage<string>
-    | MessageDescriptorWithIdAsMessage<string>
+  [key: string]: I18nTDescriptorByMessage<string> | I18nTDescriptorById<string>
 } = {
   en: msg`English`,
   sr: msg`Serbian`,

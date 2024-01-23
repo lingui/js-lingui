@@ -2,8 +2,8 @@
 import type { ReactNode, VFC, FC } from "react"
 import type {
   I18n,
-  MessageDescriptorWithIdAsMessage,
-  MessageDescriptorWithMessageAsMessage
+  I18nTDescriptorById,
+  I18nTDescriptorByMessage,
 } from "@lingui/core"
 import type { TransRenderCallbackOrComponent } from "@lingui/react"
 
@@ -22,19 +22,20 @@ export type ChoiceOptions = {
   [digit: `${number}`]: string
 }
 
-type MacroMessageDescriptorBasics = {
+type MacroTDescriptorBase = {
   comment?: string
   context?: string
 }
 
-type MacroMessageDescriptorWithIdAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
+type MacroTDescriptorById<Message extends string> = MacroTDescriptorBase & {
   id: Message
 }
 
-type MacroMessageDescriptorWithMessageAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
-  id?: string
-  message: Message
-}
+type MacroTDescriptorByMessage<Message extends string> =
+  MacroTDescriptorBase & {
+    id?: string
+    message: Message
+  }
 
 /**
  * Translates a message descriptor
@@ -60,8 +61,12 @@ type MacroMessageDescriptorWithMessageAsMessage<Message extends string> = MacroM
  *
  * @param descriptor The message descriptor to translate
  */
-export function t<Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
-export function t<Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
+export function t<Message extends string>(
+  descriptor: MacroTDescriptorByMessage<Message>
+): string
+export function t<Message extends string>(
+  descriptor: MacroTDescriptorById<Message>
+): string
 
 /**
  * Translates a template string using the global I18n instance
@@ -104,8 +109,10 @@ export function t(
  */
 export function t(i18n: I18n): {
   (literals: TemplateStringsArray, ...placeholders: any[]): string
-  <Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
-  <Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
+  <Message extends string>(
+    descriptor: MacroTDescriptorByMessage<Message>
+  ): string
+  <Message extends string>(descriptor: MacroTDescriptorById<Message>): string
 }
 
 /**
@@ -196,11 +203,11 @@ export function select(value: string, choices: SelectOptions): string
  * @param descriptor The message descriptor
  */
 export function defineMessage<Message extends string>(
-  descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>
-): MessageDescriptorWithMessageAsMessage<Message>
+  descriptor: MacroTDescriptorByMessage<Message>
+): I18nTDescriptorByMessage<Message>
 export function defineMessage<Message extends string>(
-  descriptor: MacroMessageDescriptorWithIdAsMessage<Message>
-): MessageDescriptorWithIdAsMessage<Message>
+  descriptor: MacroTDescriptorById<Message>
+): I18nTDescriptorById<Message>
 
 /**
  * Define a message for later use
@@ -217,7 +224,7 @@ export function defineMessage<Message extends string>(
 export function defineMessage(
   literals: TemplateStringsArray,
   ...placeholders: any[]
-): MessageDescriptorWithMessageAsMessage<string>
+): I18nTDescriptorByMessage<string>
 
 /**
  * Define a message for later use

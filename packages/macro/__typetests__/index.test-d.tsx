@@ -1,5 +1,5 @@
 import { expectType } from "tsd"
-import type { MessageDescriptorWithMessageAsMessage, I18n } from "@lingui/core"
+import type { I18nTDescriptorByMessage, I18n } from "@lingui/core"
 
 import {
   t,
@@ -69,7 +69,7 @@ expectType<string>(
   })
 )
 
-expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
+expectType<I18nTDescriptorByMessage<"Hello world">>(
   defineMessage({
     id: "custom.id",
     comment: "Hello",
@@ -77,7 +77,7 @@ expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
     message: "Hello world",
   })
 )
-expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
+expectType<I18nTDescriptorByMessage<"Hello world">>(
   msg({
     id: "custom.id",
     comment: "Hello",
@@ -85,13 +85,11 @@ expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
     message: "Hello world",
   })
 )
-expectType<MessageDescriptorWithMessageAsMessage<string>>(
-  defineMessage`Message`
-)
-expectType<MessageDescriptorWithMessageAsMessage<string>>(msg`Message`)
+expectType<I18nTDescriptorByMessage<string>>(defineMessage`Message`)
+expectType<I18nTDescriptorByMessage<string>>(msg`Message`)
 
 // @ts-expect-error id or message should be presented
-expectType<MessageDescriptorWithMessageAsMessage<string>>(defineMessage({}))
+expectType<I18nTDescriptorByMessage<string>>(defineMessage({}))
 
 ///////////////////
 //// Plural  //////
