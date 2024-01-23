@@ -1,5 +1,5 @@
 import { expectType } from "tsd"
-import type { MessageDescriptor, I18n } from "@lingui/core"
+import type { MessageDescriptorWithMessageAsMessage, I18n } from "@lingui/core"
 
 import {
   t,
@@ -49,8 +49,8 @@ t({ comment: "", context: "" })
 // @ts-expect-error id or message should be presented
 t({})
 
-// @ts-expect-error `values` is invalid field for macro message descriptor
 t({
+  // @ts-expect-error `values` is invalid field for macro message descriptor
   id: "custom.id",
   comment: "Hello",
   context: "context",
@@ -69,7 +69,7 @@ expectType<string>(
   })
 )
 
-expectType<MessageDescriptor>(
+expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
   defineMessage({
     id: "custom.id",
     comment: "Hello",
@@ -77,7 +77,7 @@ expectType<MessageDescriptor>(
     message: "Hello world",
   })
 )
-expectType<MessageDescriptor>(
+expectType<MessageDescriptorWithMessageAsMessage<"Hello world">>(
   msg({
     id: "custom.id",
     comment: "Hello",
@@ -85,11 +85,13 @@ expectType<MessageDescriptor>(
     message: "Hello world",
   })
 )
-expectType<MessageDescriptor>(defineMessage`Message`)
-expectType<MessageDescriptor>(msg`Message`)
+expectType<MessageDescriptorWithMessageAsMessage<string>>(
+  defineMessage`Message`
+)
+expectType<MessageDescriptorWithMessageAsMessage<string>>(msg`Message`)
 
 // @ts-expect-error id or message should be presented
-expectType<MessageDescriptor>(defineMessage({}))
+expectType<MessageDescriptorWithMessageAsMessage<string>>(defineMessage({}))
 
 ///////////////////
 //// Plural  //////
