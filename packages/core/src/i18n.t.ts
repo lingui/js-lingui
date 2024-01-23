@@ -17,29 +17,44 @@ type ExtractNextBrace<
     : ExtractNextBrace<Tail, `${Acc}${Head}`>
   : never
 
+/**
+ * Takes a string literal and recursively extracts the content inside curly braces.
+ * It expects that opening curly brace is omitted.
+ * @example `name}` -> 'name'
+ * @example `plural, one {just one} other {many}} and much more` -> 'plural, one {just one} other {many}'
+ */
 type ExtractBraceBody<
-  Input extends string,
-  OpenedBrackets extends "{"[] = [],
-  Body extends string = ""
-> = string extends Input
-  ? string
-  : Input extends ""
-  ? [Body, ""]
+  Input extends string, // The string to be processed.
+  OpenedBraceStack extends "{"[] = [], // A stack to keep track of opened curly braces.
+  Body extends string = "" // Accumulator to build up the content inside the braces.
+> = string extends Input // Check if Input is a wide 'string' type rather than a string literal.
+  ? string // If it is, return the wide 'string' type.
+  : Input extends "" // Check if the input string is empty.
+  ? [Body, ""] // If it is, return the accumulated Body and an empty string as a tuple.
   : ExtractNextBrace<Input> extends [
+      // Use ExtractNextBrace to get the next brace and the parts of the string before and after it.
       infer Before extends string,
       infer Brace,
-      infer Tail extends string
+      infer After extends string
     ]
-  ? Brace extends "{"
+  ? Brace extends "{" // Check if the extracted brace is an opening brace '{'.
     ? ExtractBraceBody<
-        Tail,
-        ["{", ...OpenedBrackets],
-        `${Body}${Before}${Brace}`
+        // If it is, recursively call ExtractBraceBody...
+        After, // ...with the rest of the string...
+        ["{", ...OpenedBraceStack], //  ...pushing '{' onto the stack...
+        `${Body}${Before}${Brace}` //  ...and appending the Before part and the brace to the Body.
       >
-    : OpenedBrackets extends ["{", ...infer Rest extends "{"[]]
-    ? ExtractBraceBody<Tail, Rest, `${Body}${Before}}`>
-    : [`${Body}${Before}`, Tail]
-  : never
+    : // Otherwise, if Brace is not an opening '{' but a closing one '}'
+    OpenedBraceStack extends ["{", ...infer Rest extends "{"[]] // Check if there are any unmatched opening braces in the stack.
+    ? ExtractBraceBody<
+        // If there are, recursively call ExtractBraceBody...
+        After, // ...with the rest of the string...
+        Rest, // ...popping the last '{' from the stack...
+        `${Body}${Before}}` // ...and appending the Before part and the closing brace '}' to the Body.
+      >
+    : // If the brace is a closing brace '}' and there are no unmatched opening braces...
+      [`${Body}${Before}`, After] // ...return the content inside the braces (Body + Before) and the rest of the string (After) as a tuple.
+  : never // If the string does not match the expected pattern, return 'never'.
 
 type ExtractFormatterMessages<Input extends string> = string extends Input
   ? string[]
@@ -69,6 +84,11 @@ type FormatterInputType<FormatterId extends string> =
       : never
     : never
 
+/**
+ * Takes a string literal and extracts interpolation variables from it.
+ * @example `My name is {name}, i'm from {city}` -> {name: string} | {city: string}
+ * @return union of objects with one property each
+ */
 type ExtractVars<Input extends string> = string extends Input // Check if the type of Input is the general 'string' type and not a string literal.
   ? Record<string, unknown> // If it is, return a wide type Record<string, unknown> to represent any object.
   : // Start processing the literal string.
