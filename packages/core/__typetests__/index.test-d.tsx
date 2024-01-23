@@ -6,6 +6,7 @@ import { i18n } from "@lingui/core"
 expectType<string>(i18n._())
 expectType<string>(i18n._("message.id"))
 expectType<string>(i18n._("Hello, '{name}'"))
+expectType<string>(i18n._("Hello, '{name}' '{lastName}'"))
 expectType<string>(i18n._("Hello, '{name}'", {}))
 expectType<string>(
   i18n._("Hello, {lastName} '{name}', you have {count} messages", {
