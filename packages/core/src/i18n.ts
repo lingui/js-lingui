@@ -1,25 +1,22 @@
 import { interpolate, UNICODE_REGEX } from "./interpolate"
-import { isString, isFunction } from "./essentials"
+import { isFunction, isString } from "./essentials"
 import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
-import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
 import {
-  I18nTValues,
   I18nTDescriptorById,
   I18nTDescriptorByMessage,
   I18nTMessageWithNoParams,
   I18nTOptions,
   I18nTOptionsWithMessage,
+  I18nTValues,
 } from "./i18n.t"
+import { Formats } from "./formatter"
 
 export type { CompiledMessage }
 export type Locale = string
 export type Locales = Locale | Locale[]
-export type Formats = Record<
-  string,
-  Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
->
 
 export type Values = Record<string, unknown>
 

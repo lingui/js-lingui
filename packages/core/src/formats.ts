@@ -1,5 +1,6 @@
 import { isString } from "./essentials"
 import { Locales } from "./i18n"
+import { PluralFormatterOptions } from "./formatter"
 
 /** Memoized cache */
 const cache = new Map<string, unknown>()
@@ -40,15 +41,11 @@ export function number(
 
   return formatter.format(value)
 }
-export type PluralOptions = { [key: string]: Intl.LDMLPluralRule } & {
-  offset: number
-  other: string
-}
 export function plural(
   locales: Locales,
   ordinal: boolean,
   value: number,
-  { offset = 0, ...rules }: PluralOptions
+  { offset = 0, ...rules }: PluralFormatterOptions
 ): string {
   const _locales = normalizeLocales(locales)
 

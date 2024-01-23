@@ -1,7 +1,8 @@
-import { CompiledMessage, Formats, Locales, Values } from "./i18n"
-import { date, number, plural, type PluralOptions } from "./formats"
+import { CompiledMessage, Locales, Values } from "./i18n"
+import { date, number, plural } from "./formats"
 import { isString } from "./essentials"
 import { unraw } from "unraw"
+import { Formats, FormatterMap, PluralFormatterOptions } from "./formatter"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
 
@@ -9,7 +10,7 @@ const getDefaultFormats = (
   locale: string,
   passedLocales?: Locales,
   formats: Formats = {}
-) => {
+): FormatterMap => {
   const locales = passedLocales || locale
 
   const style = <T extends object>(format: string | T): T => {
@@ -26,14 +27,14 @@ const getDefaultFormats = (
   }
 
   return {
-    plural: (value: number, cases: PluralOptions) => {
+    plural: (value: number, cases: PluralFormatterOptions) => {
       const { offset = 0 } = cases
       const message = plural(locales, false, value, cases)
 
       return replaceOctothorpe(value - offset, message)
     },
 
-    selectordinal: (value: number, cases: PluralOptions) => {
+    selectordinal: (value: number, cases: PluralFormatterOptions) => {
       const { offset = 0 } = cases
       const message = plural(locales, true, value, cases)
 
@@ -53,7 +54,7 @@ const getDefaultFormats = (
     ): string => date(locales, value, style(format)),
 
     undefined: undefinedFormatter,
-  } as const
+  }
 }
 
 const selectFormatter = (value: string, rules: Record<string, any>) =>

@@ -1,5 +1,5 @@
 import { Replace, Simplify, Trim, UnionToIntersection } from "type-fest"
-import { Formats } from "./i18n"
+import { Formats, FormatterMap } from "./formatter"
 
 type DropEscapedBraces<Input extends string> = Replace<
   Replace<Input, `'{`, "">,
@@ -53,6 +53,21 @@ type ExtractFormatterMessages<Input extends string> = string extends Input
     : []
   : []
 
+type ExtractFormatterId<Input extends string> =
+  Input extends `${infer FormatterId},${string}`
+    ? Trim<FormatterId>
+    : Trim<Input>
+
+type IsExistedFormatter<FormatterId extends string> =
+  FormatterId extends keyof FormatterMap ? FormatterId : never
+
+type FormatterInputType<FormatterId extends string> =
+  FormatterMap[IsExistedFormatter<FormatterId>] extends infer FormatterFn
+    ? FormatterFn extends (input: infer InputType, ...args: any[]) => any
+      ? InputType
+      : never
+    : never
+
 type ExtractVars<Input extends string> = string extends Input
   ? Record<string, unknown>
   : Input extends ""
@@ -63,15 +78,20 @@ type ExtractVars<Input extends string> = string extends Input
       infer Next extends string
     ]
     ? BraceBody extends `${infer FormatterInput},${infer FormatterTail}`
-      ? { [P in Trim<FormatterInput>]: string } & UnionToIntersection<
-          ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>
-        >
-      : { [P in Trim<BraceBody>]: string } & ExtractVars<Next>
+      ?
+          | {
+              [P in Trim<FormatterInput>]: FormatterInputType<
+                ExtractFormatterId<FormatterTail>
+              >
+            }
+          | ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>
+          | ExtractVars<Next>
+      : { [P in Trim<BraceBody>]: string } | ExtractVars<Next>
     : {}
   : {}
 
 export type I18nTValues<Input extends string> = Simplify<
-  ExtractVars<DropEscapedBraces<Input>>
+  UnionToIntersection<ExtractVars<DropEscapedBraces<Input>>>
 >
 
 type I18nTDescriptorBasic = {
