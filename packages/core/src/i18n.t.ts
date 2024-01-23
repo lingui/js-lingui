@@ -53,7 +53,7 @@ type ExtractFormatterMessages<Input extends string> = string extends Input
     : []
   : []
 
-type _ExtractVars<Input extends string> = string extends Input
+type ExtractVars<Input extends string> = string extends Input
   ? {}
   : Input extends ""
   ? {}
@@ -64,14 +64,14 @@ type _ExtractVars<Input extends string> = string extends Input
     ]
     ? BraceBody extends `${infer FormatterInput},${infer FormatterTail}`
       ? { [P in Trim<FormatterInput>]: string } & UnionToIntersection<
-          _ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>
+          ExtractVars<ExtractFormatterMessages<FormatterTail>[number]>
         >
-      : { [P in Trim<BraceBody>]: string } & _ExtractVars<Next>
+      : { [P in Trim<BraceBody>]: string } & ExtractVars<Next>
     : {}
   : {}
 
 export type I18nTValues<Input extends string> = Simplify<
-  _ExtractVars<DropEscapedBraces<Input>>
+  ExtractVars<DropEscapedBraces<Input>>
 >
 
 type I18nTDescriptorBasic = {
