@@ -54,7 +54,7 @@ type ExtractFormatterMessages<Input extends string> = string extends Input
   : []
 
 type ExtractVars<Input extends string> = string extends Input
-  ? {}
+  ? Record<string, unknown>
   : Input extends ""
   ? {}
   : Input extends `${string}{${infer Tail}`
