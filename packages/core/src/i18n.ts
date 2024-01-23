@@ -4,7 +4,14 @@ import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
-import { I18nT, MessageDescriptor, MessageWithNoParams, TFnOptions, TFnOptionsWithMessage } from "./i18n.t"
+import {
+  I18nT,
+  MessageDescriptorWithIdAsMessage,
+  MessageDescriptorWithMessageAsMessage,
+  MessageWithNoParams,
+  TFnOptions,
+  TFnOptionsWithMessage
+} from "./i18n.t"
 
 
 export type { CompiledMessage }
@@ -188,9 +195,10 @@ export class I18n extends EventEmitter<Events> {
 
   // method for translation and formatting
   _<Message extends string>(id: MessageWithNoParams<Message>): string
-  _<Message extends string>(id: Message, values: I18nT<Message>, options?: TFnOptions): string
   _<Message extends string>(id: string, values: I18nT<Message>, options: TFnOptionsWithMessage<Message>): string
-  _<Message extends string>(descriptor: MessageDescriptor<Message>): string
+  _<Message extends string>(id: Message, values: I18nT<Message>, options?: TFnOptions): string
+  _<Message extends string>(descriptor: MessageDescriptorWithMessageAsMessage<Message>): string
+  _<Message extends string>(descriptor: MessageDescriptorWithIdAsMessage<Message>): string
   _(
     id: {  id: string,
       message?: string,

@@ -1,6 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { ReactNode, VFC, FC } from "react"
-import type { I18n, MessageDescriptor } from "@lingui/core"
+import type {
+  I18n,
+  MessageDescriptorWithIdAsMessage,
+  MessageDescriptorWithMessageAsMessage
+} from "@lingui/core"
 import type { TransRenderCallbackOrComponent } from "@lingui/react"
 
 export type ChoiceOptions = {
@@ -18,18 +22,18 @@ export type ChoiceOptions = {
   [digit: `${number}`]: string
 }
 
-type MacroMessageDescriptor = (
-  | {
-      id: string
-      message?: string
-    }
-  | {
-      id?: string
-      message: string
-    }
-) & {
+type MacroMessageDescriptorBasics = {
   comment?: string
   context?: string
+}
+
+type MacroMessageDescriptorWithIdAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
+  id: Message
+}
+
+type MacroMessageDescriptorWithMessageAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
+  id?: string
+  message: Message
 }
 
 /**
@@ -56,7 +60,8 @@ type MacroMessageDescriptor = (
  *
  * @param descriptor The message descriptor to translate
  */
-export function t(descriptor: MacroMessageDescriptor): string
+export function t<Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
+export function t<Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
 
 /**
  * Translates a template string using the global I18n instance
@@ -99,7 +104,8 @@ export function t(
  */
 export function t(i18n: I18n): {
   (literals: TemplateStringsArray, ...placeholders: any[]): string
-  (descriptor: MacroMessageDescriptor): string
+  <Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
+  <Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
 }
 
 /**
@@ -189,9 +195,12 @@ export function select(value: string, choices: SelectOptions): string
  *
  * @param descriptor The message descriptor
  */
-export function defineMessage(
-  descriptor: MacroMessageDescriptor
-): MessageDescriptor
+export function defineMessage<Message extends string>(
+  descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>
+): MessageDescriptorWithMessageAsMessage<Message>
+export function defineMessage<Message extends string>(
+  descriptor: MacroMessageDescriptorWithIdAsMessage<Message>
+): MessageDescriptorWithIdAsMessage<Message>
 
 /**
  * Define a message for later use
@@ -208,7 +217,7 @@ export function defineMessage(
 export function defineMessage(
   literals: TemplateStringsArray,
   ...placeholders: any[]
-): MessageDescriptor
+): MessageDescriptorWithMessageAsMessage<string>
 
 /**
  * Define a message for later use

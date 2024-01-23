@@ -2,20 +2,20 @@
 // https://github.com/lingui/js-lingui/issues/936
 // @ts-ignore
 declare module "@lingui/macro" {
-  import type { MessageDescriptor, I18n } from "@lingui/core"
+  import type { I18n, MessageDescriptorWithIdAsMessage, MessageDescriptorWithMessageAsMessage } from "@lingui/core"
 
-  type MacroMessageDescriptor = (
-    | {
-        id: string
-        message?: string
-      }
-    | {
-        id?: string
-        message: string
-      }
-  ) & {
+  type MacroMessageDescriptorBasics = {
     comment?: string
     context?: string
+  }
+
+  type MacroMessageDescriptorWithIdAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
+    id: Message
+  }
+
+  type MacroMessageDescriptorWithMessageAsMessage<Message extends string> = MacroMessageDescriptorBasics & {
+    id?: string
+    message: Message
   }
 
   export type BasicType = {
@@ -47,7 +47,8 @@ declare module "@lingui/macro" {
    *
    * @param descriptor The message descriptor to translate
    */
-  export function t(descriptor: MacroMessageDescriptor): string
+  export function t<Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
+  export function t<Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
 
   /**
    * Translates a template string using the global I18n instance
@@ -90,7 +91,8 @@ declare module "@lingui/macro" {
    */
   export function t(i18n: I18n): {
     (literals: TemplateStringsArray, ...placeholders: any[]): string
-    (descriptor: MacroMessageDescriptor): string
+    <Message extends string>(descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>): string
+    <Message extends string>(descriptor: MacroMessageDescriptorWithIdAsMessage<Message>): string
   }
 
   export type UnderscoreDigit<T = string> = { [digit: string]: T }
@@ -190,9 +192,12 @@ declare module "@lingui/macro" {
    *
    * @param descriptor The message descriptor
    */
-  export function defineMessage(
-    descriptor: MacroMessageDescriptor
-  ): MessageDescriptor
+  export function defineMessage<Message extends string>(
+    descriptor: MacroMessageDescriptorWithMessageAsMessage<Message>
+  ): MessageDescriptorWithMessageAsMessage<Message>
+  export function defineMessage<Message extends string>(
+    descriptor: MacroMessageDescriptorWithIdAsMessage<Message>
+  ): MessageDescriptorWithIdAsMessage<Message>
 
   export type ChoiceProps = {
     value?: string | number
