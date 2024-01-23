@@ -71,8 +71,6 @@ type FormatterInputType<FormatterId extends string> =
 
 type ExtractVars<Input extends string> = string extends Input
   ? Record<string, unknown>
-  : Input extends ""
-  ? {}
   : Input extends `${string}{${infer Tail}`
   ? ExtractBraceBody<Tail> extends [
       infer BraceBody extends string,
