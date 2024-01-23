@@ -10679,7 +10679,6 @@ __metadata:
     strip-ansi: ^6.0.1
     swc-node: ^1.0.0
     ts-jest: ^29.0.5
-    type-fest: ^4.9.0
     typescript: ^4.9.5
   languageName: unknown
   linkType: soft
