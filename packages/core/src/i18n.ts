@@ -190,18 +190,18 @@ export class I18n extends EventEmitter<Events> {
 
   // method for translation and formatting
   _<Message extends string>(
-    id:
+    _:
       | I18nTMessageWithNoParams<Message>
       | I18nTDescriptorByMessage<Message>
       | I18nTDescriptorById<Message>
   ): string
   _<Message extends string>(
-    id: string,
+    _: string,
     values: I18nTValues<Message>,
     options: I18nTOptionsWithMessage<Message>
   ): string
   _<Message extends string>(
-    id: Message,
+    _: Message,
     values: I18nTValues<Message>,
     options?: I18nTOptions
   ): string
