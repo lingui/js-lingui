@@ -13,7 +13,7 @@
   "dependencies": {
     "@lingui/core": "^4.1.2",
     "@lingui/react": "^4.1.2",
-    "next": "13.3.1",
+    "next": "13.5.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -21,7 +21,7 @@
     "@lingui/cli": "^4.1.2",
     "@lingui/loader": "^4.1.2",
     "@lingui/macro": "^4.1.2",
-    "@lingui/swc-plugin": "^4.0.0",
+    "@lingui/swc-plugin": "4.0.5",
     "@types/react": "^18.0.14",
     "eslint": "8.35.0",
     "eslint-config-next": "12.3.4",

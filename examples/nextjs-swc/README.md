@@ -6,6 +6,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 SWC Plugin support is still experimental. Semver backwards compatibility between different `next-swc` versions is not guaranteed.
 
 Therefore, you need to select an appropriate version of the Lingui plugin to match compatible `NextJs` version.
+You also need to add the `@lingui/swc-plugin` dependency with strict version without a range specifier.
+
+```json
+{
+  "devDependencies": {
+    "@lingui/swc-plugin": "4.0.5"
+  }
+}
+```
 
 For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
 
