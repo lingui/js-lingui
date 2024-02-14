@@ -2,8 +2,11 @@ import { CompiledMessage, Formats, Locales, Values } from "./i18n"
 import { date, number, plural, type PluralOptions } from "./formats"
 import { isString } from "./essentials"
 import { unraw } from "unraw"
+import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
 
 export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
+
+const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 
 const getDefaultFormats = (
   locale: string,
@@ -22,7 +25,7 @@ const getDefaultFormats = (
       ? style("number")
       : undefined
     const valueStr = number(locales, value, numberFormat)
-    return message.replace("#", valueStr)
+    return message.replace(new RegExp(OCTOTHORPE_PH, "g"), valueStr)
   }
 
   return {
@@ -51,15 +54,11 @@ const getDefaultFormats = (
       value: string,
       format: string | Intl.DateTimeFormatOptions
     ): string => date(locales, value, style(format)),
-
-    undefined: undefinedFormatter,
   } as const
 }
 
 const selectFormatter = (value: string, rules: Record<string, any>) =>
   rules[value] ?? rules.other
-
-const undefinedFormatter = (value: unknown) => value
 
 /**
  * @param translation compiled message
@@ -78,26 +77,50 @@ export function interpolate(
   return (values: Values = {}, formats?: Formats): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
 
-    const formatMessage = (message: CompiledMessage | number | undefined) => {
-      if (!Array.isArray(message)) return message
+    const formatMessage = (tokens: CompiledMessage | number | undefined) => {
+      if (!Array.isArray(tokens)) return tokens
 
-      return message.reduce<string>((message, token) => {
-        if (isString(token)) return message + token
+      return tokens.reduce<string>((message, token) => {
+        if (token === "#") {
+          return message + OCTOTHORPE_PH
+        }
+
+        if (isString(token)) {
+          return message + token
+        }
 
         const [name, type, format] = token
 
         let interpolatedFormat: any = {}
-        if (format != null && typeof format === "object") {
-          Object.entries(format).forEach(([key, value]) => {
-            interpolatedFormat[key] = formatMessage(value)
-          })
+
+        if (
+          type === "plural" ||
+          type === "selectordinal" ||
+          type === "select"
+        ) {
+          Object.entries(format as CompiledIcuChoices).forEach(
+            ([key, value]) => {
+              interpolatedFormat[key] = formatMessage(value)
+            }
+          )
         } else {
           interpolatedFormat = format
         }
-        // @ts-ignore TS2538: Type undefined cannot be used as an index type.
-        const formatter = formatters[type]
-        const value = formatter(values[name], interpolatedFormat)
-        if (value == null) return message
+
+        let value: unknown
+
+        if (type) {
+          // run formatter, such as plural, number, etc.
+          const formatter = (formatters as any)[type]
+          value = formatter(values[name], interpolatedFormat)
+        } else {
+          // simple placeholder variable interpolation eq {variableName}
+          value = values[name]
+        }
+
+        if (value == null) {
+          return message
+        }
 
         return message + value
       }, "")
