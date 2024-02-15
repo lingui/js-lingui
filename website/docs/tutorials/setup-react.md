@@ -60,7 +60,7 @@ This setup guide is for any project which uses React.
     {
       "scripts": {
         "extract": "lingui extract",
-        "compile": "lingui compile"
+        "compile": "lingui compile --typescript"
       }
     }
     ```

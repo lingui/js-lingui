@@ -245,13 +245,13 @@ Catalog statistics:
 That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into our app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
 
 ```bash
-> lingui compile
+> lingui compile --typescript
 
 Compiling message catalogs…
 Done!
 ```
 
-What just happened? If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.js`. This file contains compiled message catalog.
+What just happened? If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.ts`. This file contains compiled message catalog.
 
 Let's load this file into our app and set active language to `cs`:
 

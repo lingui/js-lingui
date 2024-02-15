@@ -16,7 +16,7 @@
     {
       "scripts": {
         "extract": "lingui extract",
-        "compile": "lingui compile"
+        "compile": "lingui compile --typescript"
       }
     }
     ```
@@ -125,6 +125,7 @@ lingui compile
     [--strict]
     [--format <format>]
     [--verbose]
+    [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
 ```
@@ -161,7 +162,7 @@ Specify namespace for compiled message catalogs (also see [`compileNamespace`](/
 
 #### `--typescript` {#compile-typescript}
 
-Is the same as using [`compileNamespace`](/docs/ref/conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.d.ts` and the compiled file is generated using the extension .ts
+Is the same as using [`compileNamespace`](/docs/ref/conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.ts` file and the exported object is typed using TS.
 
 #### `--watch` {#compile-watch}
 
