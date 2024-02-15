@@ -58,6 +58,25 @@ describe("interpolate", () => {
     expect(plural({ value: 2 })).toEqual("2 Books")
   })
 
+  it("should not replace `#` symbol passed in the variable in the jsx expression", () => {
+    const plural = prepare(
+      "{value, plural, one {There is a notification in <1>{documentTitle}</1>} other {There are # notifications in <1>{documentTitle}</1>}}"
+    )
+
+    expect(plural({ value: 1, documentTitle: "Title #1" })).toEqual(
+      "There is a notification in <1>Title #1</1>"
+    )
+    expect(plural({ value: 2, documentTitle: "Title #1" })).toEqual(
+      "There are 2 notifications in <1>Title #1</1>"
+    )
+  })
+
+  it("should replace more than one octothorpe symbols in message", () => {
+    const plural = prepare("{value, plural, one {} other {# and #}}")
+
+    expect(plural({ value: 2 })).toEqual("2 and 2")
+  })
+
   it("when a value is defined (even when empty) plural will return it. Conversely, if a value is not defined, plural defaults to 'other'", () => {
     const plural = prepare("{value, plural, =0 {} other {#% discount}}")
     expect(plural({ value: 0 })).toEqual("")
