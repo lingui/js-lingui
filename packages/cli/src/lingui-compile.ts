@@ -1,6 +1,5 @@
 import chalk from "chalk"
 import chokidar from "chokidar"
-import fs from "fs"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -89,17 +88,6 @@ export async function command(
           compiledCatalog,
           namespace
         )
-
-        if (options.typescript) {
-          const typescriptPath = compiledPath.replace(/\.ts?$/, "") + ".d.ts"
-          fs.writeFileSync(
-            typescriptPath,
-            `import type { Messages } from '@lingui/core';
-          declare const messages: Messages;
-          export { messages };
-          `
-          )
-        }
 
         compiledPath = normalizeSlashes(
           nodepath.relative(config.rootDir, compiledPath)

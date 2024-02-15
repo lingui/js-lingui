@@ -70,7 +70,29 @@ function buildExportStatement(
   expression: t.Expression,
   namespace: CompiledCatalogNamespace
 ) {
-  if (namespace === "es" || namespace === "ts") {
+  if (namespace === "ts") {
+    // import type { Messages } from "@lingui/core";
+    const importMessagesTypeDeclaration = t.importDeclaration(
+      [t.importSpecifier(t.identifier("Messages"), t.identifier("Messages"))],
+      t.stringLiteral("@lingui/core")
+    )
+    importMessagesTypeDeclaration.importKind = "type"
+
+    // Create the exported `messages` identifier with a `Messages` TS type annotation
+    const messagesIdentifier = t.identifier("messages")
+    messagesIdentifier.typeAnnotation = t.tsTypeAnnotation(
+      t.tsTypeReference(t.identifier("Messages"))
+    )
+
+    // export const messages:Messages = { message: "Translation" }
+    const exportDeclaration = t.exportNamedDeclaration(
+      t.variableDeclaration("const", [
+        t.variableDeclarator(messagesIdentifier, expression),
+      ])
+    )
+
+    return t.program([importMessagesTypeDeclaration, exportDeclaration])
+  } else if (namespace === "es") {
     // export const messages = { message: "Translation" }
     return t.exportNamedDeclaration(
       t.variableDeclaration("const", [
