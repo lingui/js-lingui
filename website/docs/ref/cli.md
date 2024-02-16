@@ -16,10 +16,23 @@
     {
       "scripts": {
         "extract": "lingui extract",
-        "compile": "lingui compile --typescript"
+        "compile": "lingui compile"
       }
     }
     ```
+
+:::tip
+If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+
+```json title="package.json"
+{
+  "scripts": {
+    "compile": "lingui compile --typescript"
+  }
+}
+```
+
+:::
 
 ## Global options
 
@@ -58,7 +71,7 @@ lingui extract src/components
 
 Will extract only messages from `src/components/**/*` files, you can also pass multiple paths.
 
-It's useful if you want to run extract command on files that are staged, using for example `husky`, before commiting will extract messages from staged files:
+It's useful if you want to run extract command on files that are staged, using for example `husky`, before committing will extract messages from staged files:
 
 ```json title="package.json"
 {
