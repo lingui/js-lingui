@@ -12,6 +12,11 @@ interface UserDetails {
 
 const USERS: UserDetails[] = [
   {
+    logo: "brave.png",
+    name: "Brave",
+    link: "https://github.com/brave/ads-ui",
+  },
+  {
     logo: "lenster.svg",
     name: "Lenster",
     link: "https://github.com/lensterxyz/lenster",
