@@ -60,10 +60,14 @@ This setup guide is for any project which uses React.
     {
       "scripts": {
         "extract": "lingui extract",
-        "compile": "lingui compile --typescript"
+        "compile": "lingui compile"
       }
     }
     ```
+
+:::tip
+If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+:::
 
 5.  Check the installation by running:
 
