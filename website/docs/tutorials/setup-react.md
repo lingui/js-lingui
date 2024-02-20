@@ -65,6 +65,10 @@ This setup guide is for any project which uses React.
     }
     ```
 
+:::tip
+If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+:::
+
 5.  Check the installation by running:
 
     ```bash npm2yarn

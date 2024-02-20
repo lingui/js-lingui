@@ -253,6 +253,10 @@ Done!
 
 What just happened? If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.js`. This file contains compiled message catalog.
 
+:::tip
+If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+:::
+
 Let's load this file into our app and set active language to `cs`:
 
 ```jsx title="src/index.js" {6-7,10-14}

@@ -21,6 +21,19 @@
     }
     ```
 
+:::tip
+If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+
+```json title="package.json"
+{
+  "scripts": {
+    "compile": "lingui compile --typescript"
+  }
+}
+```
+
+:::
+
 ## Global options
 
 ### `--config <config>`
@@ -58,7 +71,7 @@ lingui extract src/components
 
 Will extract only messages from `src/components/**/*` files, you can also pass multiple paths.
 
-It's useful if you want to run extract command on files that are staged, using for example `husky`, before commiting will extract messages from staged files:
+It's useful if you want to run extract command on files that are staged, using for example `husky`, before committing will extract messages from staged files:
 
 ```json title="package.json"
 {
@@ -125,6 +138,7 @@ lingui compile
     [--strict]
     [--format <format>]
     [--verbose]
+    [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
 ```
@@ -161,7 +175,7 @@ Specify namespace for compiled message catalogs (also see [`compileNamespace`](/
 
 #### `--typescript` {#compile-typescript}
 
-Is the same as using [`compileNamespace`](/docs/ref/conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.d.ts` and the compiled file is generated using the extension .ts
+Is the same as using [`compileNamespace`](/docs/ref/conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.ts` file and the exported object is typed using TS.
 
 #### `--watch` {#compile-watch}
 
