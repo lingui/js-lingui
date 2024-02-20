@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
+
+**Note:** Version bump only for package @lingui/format-po
+
 # [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
 
 **Note:** Version bump only for package @lingui/format-po

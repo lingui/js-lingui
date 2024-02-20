@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
+
+### Bug Fixes
+
+- compile should generate a TS file ([#1851](https://github.com/lingui/js-lingui/issues/1851)) ([e4fbd59](https://github.com/lingui/js-lingui/commit/e4fbd59011064731473c3b476d9ae1c2ea7799ab))
+
 # [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
 
 ### Bug Fixes

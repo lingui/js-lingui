@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
+
+### Bug Fixes
+
+- **core:** use named instead of default export for unraw lib ([#1837](https://github.com/lingui/js-lingui/issues/1837)) ([85f0944](https://github.com/lingui/js-lingui/commit/85f094449ea1b8aa46339b2975b7e02fff4df234))
+- don't replace octothorpe coming from variable ([#1850](https://github.com/lingui/js-lingui/issues/1850)) ([e321729](https://github.com/lingui/js-lingui/commit/e321729702b117c8cfea5ae861cf3767030cc9c4))
+
 # [4.7.0](https://github.com/lingui/js-lingui/compare/v4.6.0...v4.7.0) (2024-01-05)
 
 **Note:** Version bump only for package @lingui/core
