@@ -26,6 +26,10 @@ Use it everywhere. [`@lingui/core`](/docs/ref/core.md) provides the essential in
 
 Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX.
 
+### AI Translations Ready
+
+For AI to do great translations for you, context is critical. Translating UI copy is difficult because it's usually a list of short strings without enough context. Lingui's localization formats allow developers to write descriptions of where and how your keys are used. This allows both human translators and AI to make better translations.
+
 ### Powerful tooling
 
 Manage the whole intl workflow using Lingui [CLI](/docs/tutorials/cli.md). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.

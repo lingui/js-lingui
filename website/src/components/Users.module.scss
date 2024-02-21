@@ -34,6 +34,8 @@
 .logo {
   width: 64px;
   height: auto;
+  border-radius: 8px;
+  transition: 0.2s;
 }
 
 .user,
@@ -43,4 +45,8 @@
 
 .user:hover {
   text-decoration: none;
+
+  .logo {
+    transform: scale(1.1);
+  }
 }
