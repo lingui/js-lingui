@@ -17,29 +17,34 @@ const USERS: UserDetails[] = [
     link: "https://github.com/brave/ads-ui",
   },
   {
-    logo: "lenster.svg",
-    name: "Lenster",
-    link: "https://github.com/lensterxyz/lenster",
-  },
-  {
-    logo: "ansible.png",
-    name: "Ansible AWX",
-    link: "https://github.com/ansible/awx",
-  },
-  {
     logo: "bluesky.png",
     name: "Bluesky",
     link: "https://github.com/bluesky-social/social-app",
   },
   {
-    logo: "linkerd.png",
-    name: "Linkerd",
-    link: "https://github.com/linkerd/linkerd2",
+    logo: "ansible.png",
+    name: "Ansible",
+    link: "https://github.com/ansible/awx",
+  },
+  {
+    logo: "metamask.png",
+    name: "Metamask",
+    link: "https://github.com/MetaMask/snaps-directory",
   },
   {
     logo: "uniswap.png",
     name: "Uniswap",
     link: "https://github.com/Uniswap/interface",
+  },
+  {
+    logo: "graysky.png",
+    name: "Graysky",
+    link: "https://github.com/mozzius/graysky",
+  },
+  {
+    logo: "linkerd.png",
+    name: "Linkerd",
+    link: "https://github.com/linkerd/linkerd2",
   },
   {
     logo: "zipkin.png",

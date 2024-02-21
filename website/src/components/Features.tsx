@@ -47,6 +47,18 @@ const FEATURES: FeatureDetails[] = [
     additionalClass: "",
   },
   {
+    title: "AI Translations Ready",
+    description: (
+      <p>
+        For AI to do great translations for you, context is critical. Translating UI copy is difficult because it&apos;s
+        usually a list of short strings without enough context. Lingui&apos;s localization formats allow developers to
+        write descriptions of where and how your keys are used.
+      </p>
+    ),
+    image: "ai-ready.png",
+    additionalClass: "",
+  },
+  {
     title: "Headache-Free Professional Localization",
     description: (
       <div>
@@ -64,6 +76,19 @@ const FEATURES: FeatureDetails[] = [
       </div>
     ),
     image: "clean-and-readable.png",
+    additionalClass: styles.featureCardCellWide,
+  },
+  {
+    title: "Battle-Proven & Future Proof",
+    description: (
+      <p>
+        During the last 7 years, we&apos;ve seen a lot of localization projects and developed a tool to handle them all.
+        <br />
+        If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
+        most recent translations directly to your customers – we&apos;ve got you covered.
+      </p>
+    ),
+    image: "time.svg",
     additionalClass: styles.featureCardCellWide,
   },
   {
@@ -89,19 +114,6 @@ const FEATURES: FeatureDetails[] = [
     additionalClass: "",
   },
   {
-    title: "Battle-Proven & Future Proof",
-    description: (
-      <p>
-        During the last 7 years, we&apos;ve seen a lot of localization projects and developed a tool to handle them all.
-        <br />
-        If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
-        most recent translations directly to your customers – we&apos;ve got you covered.
-      </p>
-    ),
-    image: "time.svg",
-    additionalClass: styles.featureCardCellWide,
-  },
-  {
     title: "Fully Fledged",
     description: (
       <p>
@@ -112,17 +124,6 @@ const FEATURES: FeatureDetails[] = [
     ),
     image: "fledged.svg",
     additionalClass: styles.featureCardCellWide,
-  },
-  {
-    title: "Free and Fully Supported",
-    description: (
-      <p>
-        With Lingui, you have access to a powerful i18n tool at no cost and our team is always available to assist you
-        with any questions.
-      </p>
-    ),
-    image: "free.svg",
-    additionalClass: "",
   },
 ];
 
