@@ -316,3 +316,35 @@ export const SelectOrdinal: VFC<PluralChoiceProps>
  * ```
  */
 export const Select: VFC<SelectChoiceProps>
+
+export function _t(descriptor: MacroMessageDescriptor): string
+export function _t(
+  literals: TemplateStringsArray,
+  ...placeholders: any[]
+): string
+
+/**
+ *
+ * Return `t` macro function which is bound to i18n passed from React.Context
+ *
+ * Returned `t` macro function has all the same signatures as global `t`
+ *
+ * @example
+ * ```
+ * const { t } = useLingui();
+ * const message = t`Text`;
+ * ```
+ *
+ * @example
+ * ```
+ * const { t } = useLingui();
+ * const message = t({
+ *   id: "msg.hello",
+ *   comment: "Greetings at the homepage",
+ *   message: `Hello ${name}`,
+ * });
+ * ```
+ */
+export const useLingui: () => {
+  t: typeof _t
+}

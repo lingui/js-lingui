@@ -10,6 +10,7 @@ import {
   isImportSpecifier,
   isIdentifier,
   JSXIdentifier,
+  Statement,
 } from "@babel/types"
 
 export type LinguiMacroOpts = {
@@ -23,6 +24,7 @@ const jsMacroTags = new Set([
   "msg",
   "arg",
   "t",
+  "useLingui",
   "plural",
   "select",
   "selectOrdinal",
@@ -45,6 +47,8 @@ function getConfig(_config?: LinguiConfigNormalized) {
 function macro({ references, state, babel, config }: MacroParams) {
   const opts: LinguiMacroOpts = config as LinguiMacroOpts
 
+  const body = state.file.path.node.body
+
   const {
     i18nImportModule,
     i18nImportName,
@@ -55,6 +59,7 @@ function macro({ references, state, babel, config }: MacroParams) {
   const jsxNodes = new Set<NodePath>()
   const jsNodes = new Set<NodePath>()
   let needsI18nImport = false
+  let needsUseLinguiImport = false
 
   let nameMap = new Map<string, string>()
   Object.keys(references).forEach((tagName) => {
@@ -92,7 +97,9 @@ function macro({ references, state, babel, config }: MacroParams) {
       nameMap,
     })
     try {
-      if (macro.replacePath(path)) needsI18nImport = true
+      macro.replacePath(path)
+      needsI18nImport = needsI18nImport || macro.needsI18nImport
+      needsUseLinguiImport = needsUseLinguiImport || macro.needsUseLinguiImport
     } catch (e) {
       reportUnsupportedSyntax(path, e as Error)
     }
@@ -110,12 +117,16 @@ function macro({ references, state, babel, config }: MacroParams) {
     }
   })
 
+  if (needsUseLinguiImport) {
+    addImport(babel, body, "@lingui/react", "useLingui")
+  }
+
   if (needsI18nImport) {
-    addImport(babel, state, i18nImportModule, i18nImportName)
+    addImport(babel, body, i18nImportModule, i18nImportName)
   }
 
   if (jsxNodes.size) {
-    addImport(babel, state, TransImportModule, TransImportName)
+    addImport(babel, body, TransImportModule, TransImportName)
   }
 }
 
@@ -130,13 +141,13 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
 
 function addImport(
   babel: MacroParams["babel"],
-  state: MacroParams["state"],
+  body: Statement[],
   module: string,
   importName: string
 ) {
   const { types: t } = babel
 
-  const linguiImport = state.file.path.node.body.find(
+  const linguiImport = body.find(
     (importNode) =>
       t.isImportDeclaration(importNode) &&
       importNode.source.value === module &&
@@ -148,16 +159,16 @@ function addImport(
   // Handle adding the import or altering the existing import
   if (linguiImport) {
     if (
-      linguiImport.specifiers.findIndex(
+      !linguiImport.specifiers.find(
         (specifier) =>
           isImportSpecifier(specifier) &&
           isIdentifier(specifier.imported, { name: importName })
-      ) === -1
+      )
     ) {
       linguiImport.specifiers.push(t.importSpecifier(tIdentifier, tIdentifier))
     }
   } else {
-    state.file.path.node.body.unshift(
+    body.unshift(
       t.importDeclaration(
         [t.importSpecifier(tIdentifier, tIdentifier)],
         t.stringLiteral(module)

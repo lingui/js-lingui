@@ -40,6 +40,7 @@ const testCases: Record<string, TestCase[]> = {
   "jsx-plural": require("./jsx-plural").default,
   "jsx-selectOrdinal": require("./jsx-selectOrdinal").default,
   "js-defineMessage": require("./js-defineMessage").default,
+  "js-useLingui": require("./js-useLingui").default,
 }
 
 function stripIdPlugin(): PluginObj {

@@ -54,6 +54,9 @@ export default class MacroJs {
   nameMap: Map<string, string>
   nameMapReversed: Map<string, string>
 
+  needsUseLinguiImport = false
+  needsI18nImport = false
+
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   _expressionIndex = makeCounter()
 
@@ -148,13 +151,105 @@ export default class MacroJs {
       this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       this.replaceTAsFunction(path as NodePath<CallExpression>)
+      this.needsI18nImport = true
+
       return true
+    }
+
+    // { t } = useLingui()
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.isLinguiIdentifier(path.node.callee, "useLingui") &&
+      this.types.isVariableDeclarator(path.parentPath.node)
+    ) {
+      this.needsUseLinguiImport = true
+
+      const varDec = path.parentPath.node
+      const _property = this.types.isObjectPattern(varDec.id)
+        ? varDec.id.properties.find(
+            (property): property is ObjectProperty & { value: Identifier } =>
+              this.types.isObjectProperty(property) &&
+              this.types.isIdentifier(property.key) &&
+              this.types.isIdentifier(property.value) &&
+              property.key.name == "t"
+          )
+        : null
+
+      // Enforce destructuring `t` from `useLingui` macro to prevent misuse
+      if (!_property) {
+        throw new Error(
+          `Must destruct _ when using useLingui macro, i.e:
+const { t } = useLingui()
+or
+const { t: _ } = useLingui()`
+        )
+      }
+
+      const uniqTIdentifier = path.scope.generateUidIdentifier("t")
+
+      const newUseLinguiExpression = this.types.variableDeclarator(
+        this.types.objectPattern([
+          this.types.objectProperty(
+            this.types.identifier("_"),
+            uniqTIdentifier
+          ),
+        ]),
+        this.types.callExpression(this.types.identifier("useLingui"), [])
+      )
+
+      path.parentPath.replaceWith(newUseLinguiExpression)
+
+      path.scope
+        .getBinding(_property.value.name)
+        ?.referencePaths.forEach((refPath) => {
+          const currentPath = refPath.parentPath
+
+          // { t } = useLingui()
+          // t`Hello!`
+          if (currentPath.isTaggedTemplateExpression()) {
+            const tokens = this.tokenizeTemplateLiteral(currentPath.node)
+
+            const descriptor = this.createMessageDescriptorFromTokens(
+              tokens,
+              currentPath.node.loc
+            )
+
+            const callExpr = this.types.callExpression(
+              this.types.identifier(uniqTIdentifier.name),
+              [descriptor]
+            )
+
+            return currentPath.replaceWith(callExpr)
+          }
+
+          // { t } = useLingui()
+          // t(messageDescriptor)
+          if (
+            currentPath.isCallExpression() &&
+            this.types.isExpression(currentPath.node.arguments[0])
+          ) {
+            let descriptor = this.processDescriptor(
+              currentPath.node.arguments[0]
+            )
+            const callExpr = this.types.callExpression(
+              this.types.identifier(uniqTIdentifier.name),
+              [descriptor]
+            )
+
+            return currentPath.replaceWith(callExpr)
+          }
+
+          // for rest of cases just rename identifier for run-time counterpart
+          refPath.replaceWith(this.types.identifier(uniqTIdentifier.name))
+        })
+      return false
     }
 
     const tokens = this.tokenizeNode(path.node)
 
     this.replacePathWithMessage(path, tokens)
 
+    this.needsI18nImport = true
     return true
   }
 
@@ -467,8 +562,10 @@ export default class MacroJs {
     return (
       this.types.isTaggedTemplateExpression(node) &&
       (this.isLinguiIdentifier(node.tag, "t") ||
+        this.isLinguiIdentifier(node.tag, "_") ||
         (this.types.isCallExpression(node.tag) &&
-          this.isLinguiIdentifier(node.tag.callee, "t")))
+          (this.isLinguiIdentifier(node.tag.callee, "t") ||
+            this.isLinguiIdentifier(node.tag.callee, "_"))))
     )
   }
 
