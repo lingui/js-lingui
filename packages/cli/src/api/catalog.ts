@@ -105,7 +105,7 @@ export class Catalog {
 
     const sortedCatalogs = cleanAndSort(catalogs)
 
-    const locales = options.locale ? [options.locale] : this.locales
+    const locales = options.locale ? options.locale : this.locales
     await Promise.all(
       locales.map((locale) => this.write(locale, sortedCatalogs[locale]))
     )

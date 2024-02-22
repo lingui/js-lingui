@@ -16,7 +16,7 @@ export type CliExtractOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -103,7 +103,7 @@ type CliOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -111,7 +111,13 @@ type CliOptions = {
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
-    .option("--locale <locale>", "Only extract the specified locale")
+    .option(
+      "--locale <locale, [...]>",
+      "Only extract the specified locales",
+      (value) => {
+        return value.split(",")
+      }
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -148,10 +154,16 @@ if (require.main === module) {
     process.exit(1)
   }
 
-  if (options.locale && !config.locales.includes(options.locale)) {
-    hasErrors = true
-    console.error(`Locale ${chalk.bold(options.locale)} does not exist.`)
-    console.error()
+  if (options.locale) {
+    const missingLocale = options.locale.find(
+      (l) => !config.locales.includes(l)
+    )
+
+    if (missingLocale) {
+      hasErrors = true
+      console.error(`Locale ${chalk.bold(missingLocale)} does not exist.`)
+      console.error()
+    }
   }
 
   if (hasErrors) process.exit(1)
