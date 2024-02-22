@@ -115,7 +115,7 @@ if (require.main === module) {
       "--locale <locale, [...]>",
       "Only extract the specified locales",
       (value) => {
-        return value.split(",")
+        return value.split(",").filter(Boolean)
       }
     )
     .option("--overwrite", "Overwrite translations for source locale")
