@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test:tsd": "tsd",
-    "build": "rimraf ./dist && unbuild",
+    "build": "rm -rf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
   "license": "MIT",

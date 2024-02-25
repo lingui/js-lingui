@@ -157,91 +157,48 @@ export default class MacroJs {
     }
 
     // { t } = useLingui()
+    // t`Hello!`
+    if (
+      path.isTaggedTemplateExpression() &&
+      this.isLinguiIdentifier(path.node.tag, "_t")
+    ) {
+      this.needsUseLinguiImport = true
+      const tokens = this.tokenizeTemplateLiteral(path.node)
+
+      const descriptor = this.createMessageDescriptorFromTokens(
+        tokens,
+        path.node.loc
+      )
+
+      const callExpr = this.types.callExpression(
+        this.types.isIdentifier(path.node.tag) && path.node.tag,
+        [descriptor]
+      )
+
+      path.replaceWith(callExpr)
+
+      return false
+    }
+
+    // { t } = useLingui()
+    // t(messageDescriptor)
+    if (
+      path.isCallExpression() &&
+      this.isLinguiIdentifier(path.node.callee, "_t") &&
+      this.types.isExpression(path.node.arguments[0])
+    ) {
+      this.needsUseLinguiImport = true
+      let descriptor = this.processDescriptor(path.node.arguments[0])
+      path.node.arguments = [descriptor]
+      return false
+    }
+
     if (
       this.types.isCallExpression(path.node) &&
       this.isLinguiIdentifier(path.node.callee, "useLingui") &&
       this.types.isVariableDeclarator(path.parentPath.node)
     ) {
       this.needsUseLinguiImport = true
-
-      const varDec = path.parentPath.node
-      const _property = this.types.isObjectPattern(varDec.id)
-        ? varDec.id.properties.find(
-            (property): property is ObjectProperty & { value: Identifier } =>
-              this.types.isObjectProperty(property) &&
-              this.types.isIdentifier(property.key) &&
-              this.types.isIdentifier(property.value) &&
-              property.key.name == "t"
-          )
-        : null
-
-      // Enforce destructuring `t` from `useLingui` macro to prevent misuse
-      if (!_property) {
-        throw new Error(
-          `Must destruct _ when using useLingui macro, i.e:
-const { t } = useLingui()
-or
-const { t: _ } = useLingui()`
-        )
-      }
-
-      const uniqTIdentifier = path.scope.generateUidIdentifier("t")
-
-      const newUseLinguiExpression = this.types.variableDeclarator(
-        this.types.objectPattern([
-          this.types.objectProperty(
-            this.types.identifier("_"),
-            uniqTIdentifier
-          ),
-        ]),
-        this.types.callExpression(this.types.identifier("useLingui"), [])
-      )
-
-      path.parentPath.replaceWith(newUseLinguiExpression)
-
-      path.scope
-        .getBinding(_property.value.name)
-        ?.referencePaths.forEach((refPath) => {
-          const currentPath = refPath.parentPath
-
-          // { t } = useLingui()
-          // t`Hello!`
-          if (currentPath.isTaggedTemplateExpression()) {
-            const tokens = this.tokenizeTemplateLiteral(currentPath.node)
-
-            const descriptor = this.createMessageDescriptorFromTokens(
-              tokens,
-              currentPath.node.loc
-            )
-
-            const callExpr = this.types.callExpression(
-              this.types.identifier(uniqTIdentifier.name),
-              [descriptor]
-            )
-
-            return currentPath.replaceWith(callExpr)
-          }
-
-          // { t } = useLingui()
-          // t(messageDescriptor)
-          if (
-            currentPath.isCallExpression() &&
-            this.types.isExpression(currentPath.node.arguments[0])
-          ) {
-            let descriptor = this.processDescriptor(
-              currentPath.node.arguments[0]
-            )
-            const callExpr = this.types.callExpression(
-              this.types.identifier(uniqTIdentifier.name),
-              [descriptor]
-            )
-
-            return currentPath.replaceWith(callExpr)
-          }
-
-          // for rest of cases just rename identifier for run-time counterpart
-          refPath.replaceWith(this.types.identifier(uniqTIdentifier.name))
-        })
       return false
     }
 
@@ -562,10 +519,8 @@ const { t: _ } = useLingui()`
     return (
       this.types.isTaggedTemplateExpression(node) &&
       (this.isLinguiIdentifier(node.tag, "t") ||
-        this.isLinguiIdentifier(node.tag, "_") ||
         (this.types.isCallExpression(node.tag) &&
-          (this.isLinguiIdentifier(node.tag.callee, "t") ||
-            this.isLinguiIdentifier(node.tag.callee, "_"))))
+          this.isLinguiIdentifier(node.tag.callee, "t")))
     )
   }
 

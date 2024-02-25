@@ -325,7 +325,7 @@ export function _t(
 
 /**
  *
- * Return `t` macro function which is bound to i18n passed from React.Context
+ * Macro version of useLingui replaces _ function with `t` macro function which is bound to i18n passed from React.Context
  *
  * Returned `t` macro function has all the same signatures as global `t`
  *
@@ -337,7 +337,8 @@ export function _t(
  *
  * @example
  * ```
- * const { t } = useLingui();
+ * const { i18n, t } = useLingui();
+ * const locale = i18n.locale;
  * const message = t({
  *   id: "msg.hello",
  *   comment: "Greetings at the homepage",
@@ -345,6 +346,6 @@ export function _t(
  * });
  * ```
  */
-export const useLingui: () => {
+export function useLingui(): Omit<I18nContext, "_"> & {
   t: typeof _t
 }

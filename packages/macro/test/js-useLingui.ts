@@ -57,14 +57,13 @@ import { useLingui } from '@lingui/macro';
 function MyComponent() {
   const { t } = useLingui();
   const a = t\`Text\`;
-  
+
   {
     // here is child scope with own "t" binding, shouldn't be processed
     const t = () => {};
     t\`Text\`;
   }
-  
-   {
+  {
     // here is child scope which should be processed, since 't' relates to outer scope
     t\`Text\`;
   }
@@ -143,7 +142,6 @@ function MyComponent() {
 
     `,
     expected: `
-import { i18n } from "@lingui/core";
 import { useLingui } from "@lingui/react";
 function MyComponent() {
   const { _: _t } = useLingui();
@@ -209,6 +207,33 @@ function MyComponent() {
         }
       ),
     [_t]
+  );
+}
+`,
+  },
+  {
+    name: "transform to standard useLingui statement",
+    input: `
+import { useLingui } from '@lingui/macro';
+
+function MyComponent() {
+  const { i18n, t } = useLingui();
+
+  console.log(i18n);
+  const a = t\`Text\`;
+}
+    `,
+    expected: `
+import { useLingui } from "@lingui/react";
+function MyComponent() {
+  const { i18n, _: _t } = useLingui();
+  console.log(i18n);
+  const a = _t(
+    /*i18n*/
+    {
+      id: "xeiujy",
+      message: "Text",
+    }
   );
 }
 `,
