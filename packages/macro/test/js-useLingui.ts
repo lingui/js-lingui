@@ -302,6 +302,44 @@ function MyComponent() {
 }
 `,
   },
+  {
+    name: "work with multiple react components",
+    input: `
+import { useLingui } from '@lingui/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t\`Text\`;
+}
+
+function MyComponent2() {
+  const { t } = useLingui();
+  const b = t\`Text\`;
+}`,
+    expected: `
+import { useLingui } from "@lingui/react";
+function MyComponent() {
+  const { _: _t } = useLingui();
+  const a = _t(
+    /*i18n*/
+    {
+      id: "xeiujy",
+      message: "Text",
+    }
+  );
+}
+function MyComponent2() {
+  const { _: _t } = useLingui();
+  const b = _t(
+    /*i18n*/
+    {
+      id: "xeiujy",
+      message: "Text",
+    }
+  );
+}
+`,
+  },
 ]
 
 export default cases
