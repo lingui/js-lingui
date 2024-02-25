@@ -67,7 +67,7 @@ function macro({ references, state, babel, config }: MacroParams) {
         } else {
           needsUseLinguiImport = true
           nameMap.set("_t", uniq_tIdentifier.name)
-          processUseLingui(path, uniq_tIdentifier.name).forEach((n) =>
+          processUseLingui(path, uniq_tIdentifier.name)?.forEach((n) =>
             jsNodes.add(n)
           )
         }
@@ -148,7 +148,10 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
  *
  * @returns Array of paths to useLingui's t macro
  */
-function processUseLingui(path: NodePath, newIdentifier: string): NodePath[] {
+function processUseLingui(
+  path: NodePath,
+  newIdentifier: string
+): NodePath[] | null {
   if (!path.parentPath.parentPath.isVariableDeclarator()) {
     reportUnsupportedSyntax(
       path,
@@ -156,7 +159,7 @@ function processUseLingui(path: NodePath, newIdentifier: string): NodePath[] {
         "useLingui must be used in variable declaration. const { t } = useLingui()"
       )
     )
-    return []
+    return null
   }
 
   const varDec = path.parentPath.parentPath.node
