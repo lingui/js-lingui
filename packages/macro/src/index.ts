@@ -45,6 +45,8 @@ function macro({ references, state, babel, config }: MacroParams) {
     i18nImportName,
     TransImportModule,
     TransImportName,
+    useLinguiImportModule,
+    useLinguiImportName,
   } = getConfig(opts.linguiConfig).runtimeConfigModule
 
   const jsxNodes = new Set<NodePath>()
@@ -120,7 +122,7 @@ function macro({ references, state, babel, config }: MacroParams) {
   })
 
   if (needsUseLinguiImport) {
-    addImport(babel, body, "@lingui/react", "useLingui")
+    addImport(babel, body, useLinguiImportModule, useLinguiImportName)
   }
 
   if (needsI18nImport) {
@@ -156,7 +158,12 @@ function processUseLingui(
     reportUnsupportedSyntax(
       path,
       new Error(
-        "useLingui must be used in variable declaration. const { t } = useLingui()"
+        `\`useLingui\` macro must be used in variable declaration.
+        
+ Example:
+
+ const { t } = useLingui()
+`
       )
     )
     return null
@@ -180,12 +187,13 @@ function processUseLingui(
 
   if (!_property) {
     reportUnsupportedSyntax(
-      path,
+      path.parentPath.parentPath,
       new Error(
-        `Must destruct \`t\` when using useLingui macro, i.e:
-const { t } = useLingui()
-or
-const { t: _ } = useLingui()`
+        `Must destruct \`t\` when using \`useLingui\` macro, i.e:
+ const { t } = useLingui()
+ or
+ const { t: _ } = useLingui()
+ `
       )
     )
     return null

@@ -323,4 +323,26 @@ describe("macro", function () {
       })
     })
   })
+
+  describe("useLingui", () => {
+    it("Should throw if used not in the variable declaration", () => {
+      const code = `
+      import {useLingui} from "@lingui/macro";
+      
+      useLingui()
+       
+       `
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+
+    it("Should throw if not used with destructuring", () => {
+      const code = `
+      import {useLingui} from "@lingui/macro";
+      
+      const lingui = useLingui()
+       
+       `
+      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+    })
+  })
 })

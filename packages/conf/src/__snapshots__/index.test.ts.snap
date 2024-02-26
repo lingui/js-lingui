@@ -57,6 +57,8 @@ exports[`@lingui/conf should return default config 1`] = `
     TransImportName: Trans,
     i18nImportModule: @lingui/core,
     i18nImportName: i18n,
+    useLinguiImportModule: @lingui/react,
+    useLinguiImportName: useLingui,
   },
   service: {
     apiKey: ,

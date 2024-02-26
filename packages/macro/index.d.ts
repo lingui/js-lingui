@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { ReactNode, VFC, FC } from "react"
 import type { I18n, MessageDescriptor } from "@lingui/core"
-import type { TransRenderCallbackOrComponent } from "@lingui/react"
+import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */

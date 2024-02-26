@@ -1,4 +1,5 @@
 import { TestCase } from "./index"
+import { makeConfig } from "@lingui/conf"
 
 const cases: TestCase[] = [
   {
@@ -331,6 +332,40 @@ function MyComponent() {
 function MyComponent2() {
   const { _: _t } = useLingui();
   const b = _t(
+    /*i18n*/
+    {
+      id: "xeiujy",
+      message: "Text",
+    }
+  );
+}
+`,
+  },
+  {
+    name: "support configuring runtime module import using LinguiConfig.runtimeConfigModule",
+    macroOpts: {
+      linguiConfig: makeConfig(
+        {
+          runtimeConfigModule: {
+            useLingui: ["@my/lingui-react", "myUselingui"],
+          },
+        },
+        { skipValidation: true }
+      ),
+    },
+    input: `
+import { useLingui } from '@lingui/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t\`Text\`;
+}
+`,
+    expected: `
+import { myUselingui } from "@my/lingui-react";
+function MyComponent() {
+  const { _: _t } = useLingui();
+  const a = _t(
     /*i18n*/
     {
       id: "xeiujy",
