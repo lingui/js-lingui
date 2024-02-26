@@ -332,7 +332,9 @@ describe("macro", function () {
       useLingui()
        
        `
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(code)).toThrowError(
+        "Error: `useLingui` macro must be used in variable declaration."
+      )
     })
 
     it("Should throw if not used with destructuring", () => {
@@ -342,7 +344,9 @@ describe("macro", function () {
       const lingui = useLingui()
        
        `
-      expect(transformCode(code)).toThrowErrorMatchingSnapshot()
+      expect(transformCode(code)).toThrowError(
+        " Must destruct `t` when using `useLingui` macro, i.e:"
+      )
     })
   })
 })
