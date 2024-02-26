@@ -334,7 +334,7 @@ Spooky, right? Let's see how this message actually looks in the message catalog.
 See all <0>unread messages</0> or <1>mark them</1> as read.
 ```
 
-You may notice that components and html tags are replaced with indexed tags (_<0>_, _<1>_). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: translators are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
+You may notice that components and html tags are replaced with indexed tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: translators are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
 
 ### JSX to MessageFormat transformations
 

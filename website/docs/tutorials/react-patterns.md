@@ -169,7 +169,7 @@ export function LoginLogoutButtons(props) {
 }
 ```
 
-If you need the prop to be displayed as a string-only translation, you can pass a message tagged with the [`msg`](/docs/ref/macro.md#defineMessage) macro:
+If you need the prop to be displayed as a string-only translation, you can pass a message tagged with the [`msg`](/docs/ref/macro.md#definemessage) macro:
 
 ```jsx
 import { msg } from "@lingui/macro";

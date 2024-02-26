@@ -1,11 +1,11 @@
-const copyright = `Copyright © 2017-2022 Tom Ehrlich, © 2022-${new Date().getFullYear()} Crowdin.`;
-const url = process.env["SITE_URL"] || "https://lingui.dev";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+import { themes } from "prism-react-renderer";
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config: Config = {
   title: "Lingui",
   tagline: "Internationalization Framework for Global Products",
-  url: url,
+  url: process.env["SITE_URL"] || "https://lingui.dev",
   baseUrl: "/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
@@ -62,7 +62,7 @@ module.exports = {
     },
     footer: {
       style: "dark",
-      copyright,
+      copyright: `Copyright © 2017-2022 Tom Ehrlich, © 2022-${new Date().getFullYear()} Crowdin.`,
       links: [
         {
           title: "Docs",
@@ -127,11 +127,11 @@ module.exports = {
       indexName: "lingui",
     },
     prism: {
-      theme: require("prism-react-renderer/themes/github"),
-      darkTheme: require("prism-react-renderer/themes/dracula"),
-      additionalLanguages: ["bash", "gettext", "icu-message-format", "ignore"],
+      theme: themes.github,
+      darkTheme: themes.dracula,
+      additionalLanguages: ["bash", "json", "gettext", "icu-message-format", "ignore", "diff"],
     },
-  },
+  } satisfies Preset.ThemeConfig,
   presets: [
     [
       "@docusaurus/preset-classic",
@@ -151,15 +151,16 @@ module.exports = {
           editUrl: "https://github.com/lingui/js-lingui/tree/main/website/",
         },
         sitemap: {
-          changefreq: "weekly",
           priority: 0.5,
           filename: "sitemap.xml",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.scss"),
         },
-      },
+      } satisfies Preset.Options,
     ],
   ],
   plugins: ["docusaurus-plugin-sass"],
 };
+
+export default config;
