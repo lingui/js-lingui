@@ -301,7 +301,7 @@ const msg = /*i18n*/ {
 />
 ```
 
-## JS macros
+## Core macros
 
 These macros can be used in any context (e.g. outside JSX). All JS macros are transformed into a _Message Descriptor_ wrapped inside of [`i18n._`](/docs/ref/core.md#i18n._) call.
 
@@ -774,7 +774,7 @@ const message = /*i18n*/ {
 
 :::
 
-## JSX Macros
+## React Macros
 
 ### `Trans`
 
@@ -1009,4 +1009,43 @@ Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or 
 <Trans context={"my context"}>
   <Select value={gender} _male="His book" _female="Her book" other="Their book" />
 </Trans>
+```
+
+### `useLingui`
+
+:::note
+`useLingui` is available from `@lingui/macro@4.8.0` and not available yet in the `@lingui/swc-plugin`
+:::
+
+Gives access to a [`t`](/docs/ref/macro.md#t) macro bound to the local i18n object passed from React context.
+
+It returns an object with the following content:
+
+| Key                | Type                  | Description                                                           |
+| ------------------ | --------------------- | --------------------------------------------------------------------- |
+| `i18n`             | `I18n`                | the `I18` object instance that you passed to `I18nProvider`           |
+| `t`                | `t`                   | reference to `t` macro, described above                               |
+| `defaultComponent` | `React.ComponentType` | the same `defaultComponent` you passed to `I18nProvider`, if provided |
+
+```jsx
+import { useLingui } from "@lingui/macro";
+
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t`Text`;
+}
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+import { useLingui } from "@lingui/react";
+
+function MyComponent() {
+  const { _ } = useLingui();
+  const a = _(
+    /*i18n*/
+    {
+      id: "xeiujy",
+      message: "Text",
+    }
+  );
+}
 ```

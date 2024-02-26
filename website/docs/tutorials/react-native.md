@@ -112,12 +112,14 @@ We're importing the default `i18n` object from `@lingui/core`. Read more about t
 
 Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.md#trans) macro here!
 
-The solution is to use the `t` macro together with the `i18n` object which we can obtain from the `useLingui` hook. We use the two like this to get a translated string:
+The solution is to use the `t` macro which we can obtain from the `useLingui` hook. We use it like this to get a translated string:
 
 ```tsx
-const { i18n } = useLingui()
+import { useLingui } from '@lingui/macro';
+
+const { t } = useLingui()
 ...
-<Button title={t(i18n)`this will be translated and rerendered with locale changes`}/>
+<Button title={t`this will be translated and rerendered with locale changes`}/>
 ```
 
 Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes the instance of the `i18n` object and passes it to `Trans` components through React context. `I18nProvider` will update the context value (which then rerenders components that consume the provided context value) when locale or message catalogs are updated.
@@ -128,7 +130,7 @@ The interplay of `I18nProvider` and `useLingui` is shown in the following simpli
 
 ```tsx
 import { I18nProvider } from "@lingui/react";
-import { t, Trans } from "@lingui/macro";
+import { Trans, useLingui } from "@lingui/macro";
 import { i18n } from "@lingui/core";
 
 <I18nProvider i18n={i18n}>
@@ -136,13 +138,13 @@ import { i18n } from "@lingui/core";
 </I18nProvider>;
 //...
 const Inbox = ({ markAsRead }) => {
-  const { i18n } = useLingui();
+  const { t } = useLingui();
   return (
     <View>
       <Text style={styles.heading}>
         <Trans>Message Inbox</Trans>
       </Text>
-      <Button onPress={markAsRead} title={t(i18n)`Mark messages as read`} />
+      <Button onPress={markAsRead} title={t`Mark messages as read`} />
     </View>
   );
 };

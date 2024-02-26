@@ -304,6 +304,45 @@ It isn't necessary to extract/translate messages one by one. This usually happen
 
 For more info about CLI, checkout the [CLI tutorial](/docs/tutorials/cli.md).
 
+## Non-JSX Translation
+
+Until now learned how to translate string inside a JSX elements, but what if we want to translate something that is not in a JSX? Or pass a translation as prop to another component?
+
+We have this piece of code in our example:
+
+```js
+const markAsRead = () => {
+  alert("Marked as read.");
+};
+```
+
+To translate it we will use a `useLingui` macro hook:
+
+```js
+import { useLingui } from '@lingui/macro';
+
+...
+
+const { t } = useLingui();
+
+const markAsRead = () => {
+  alert(t`Marked as read.`);
+};
+```
+
+Now the `Marked as read.` message would be picked up by extractor, and available for translation in the catalog.
+
+You also could pass variables and use any other macro in the message.
+
+```jsx
+const { t } = useLingui();
+
+const markAsRead = () => {
+  const userName = "User1234";
+  alert(t`Hello {userName}, your messages marked as read!`);
+};
+```
+
 ## Formatting
 
 Let's move on to another paragraph in our project. This paragraph has some variables, some HTML and components inside:
@@ -633,7 +672,7 @@ The last message in our component is again a bit specific:
 `lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core.md#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react.md#uselingui) hook:
 
 ```jsx title="src/Inbox.js"
-import { useLingui } from "@lingui/react";
+import { useLingui } from "@lingui/macro";
 
 export default function Inbox() {
   const { i18n } = useLingui();
@@ -658,16 +697,15 @@ After all modifications, the final component with i18n looks like this:
 
 ```jsx title="src/Inbox.js"
 import React from "react";
-import { Trans, Plural } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { Trans, Plural, useLingui } from "@lingui/macro";
 
 export default function Inbox() {
-  const { i18n } = useLingui();
+  const { i18n, t } = useLingui();
   const messages = [{}, {}];
   const messagesCount = messages.length;
   const lastLogin = new Date();
   const markAsRead = () => {
-    alert("Marked as read.");
+    alert(t`Marked as read.`);
   };
 
   return (
