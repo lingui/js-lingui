@@ -131,7 +131,7 @@ const CurrentLocale = () => {
 ```
 
 :::tip
-There is a [macro version](/ref/macro#uselingui) of `useLingui` hook. Which supports all features of [`t` macro](/docs/ref/macro.md#t) and uses runtime `useLingui` hook under the hood.
+There is a [macro version](/ref/macro#uselingui) of the `useLingui` hook which supports all features of the [`t` macro](/docs/ref/macro.md#t) and uses the runtime `useLingui` hook (from `@lingui/react`) under the hood.
 
 ```jsx
 import { useLingui } from "@lingui/macro";
@@ -144,7 +144,7 @@ const CurrentLocale = () => {
 };
 ```
 
-You also can safely use returned `t` function in a dependency array of React hooks.
+You also can safely use the returned `t` function in a dependency array of React hooks.
 :::
 
 ## Components

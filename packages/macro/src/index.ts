@@ -145,7 +145,7 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
 
 /**
  * Pre-process useLingui macro
- * 1. Get references to destructed t function for macro processing
+ * 1. Get references to destructured t function for macro processing
  * 2. Transform usage to non-macro useLingui
  *
  * @returns Array of paths to useLingui's t macro
@@ -189,7 +189,7 @@ function processUseLingui(
     reportUnsupportedSyntax(
       path.parentPath.parentPath,
       new Error(
-        `Must destruct \`t\` when using \`useLingui\` macro, i.e:
+        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
  const { t } = useLingui()
  or
  const { t: _ } = useLingui()

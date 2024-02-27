@@ -316,7 +316,7 @@ const markAsRead = () => {
 };
 ```
 
-To translate it we will use a `useLingui` macro hook:
+To translate it, we will use the `useLingui` macro hook:
 
 ```js
 import { useLingui } from '@lingui/macro';

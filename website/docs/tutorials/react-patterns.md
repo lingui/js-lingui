@@ -96,7 +96,7 @@ function MyComponent() {
 }
 ```
 
-Note that we import `useLingui` component from `@lingui/macro`. There is also a runtime version of `useLingui` hook exported from `@lingui/react`. In the case above, it doesn't matter what version to choose since we use only `i18n` object which is presented in both.
+Note that we import `useLingui` from `@lingui/macro`. There is also a runtime version of `useLingui` hook exported from `@lingui/react`. In the case above, it doesn't matter what version to choose since we use only `i18n` object which is presented in both.
 
 :::
 
@@ -245,7 +245,7 @@ export function Welcome() {
 ```
 
 :::note
-Note on [`useLingui`](/ref/macro#uselingui) macro usage. The `t` function destructured from this hook, behaves the same way as `_` from runtime [`useLingui`](/ref/react#uselingui) counterpart, so you can safely use it in the dependency array.
+Note on [`useLingui`](/ref/macro#uselingui) macro usage. The `t` function destructured from this hook, behaves the same way as `_` from the runtime [`useLingui`](/ref/react#uselingui) counterpart, so you can safely use it in the dependency array.
 
 ```ts
 import { useLingui } from "@lingui/macro";
