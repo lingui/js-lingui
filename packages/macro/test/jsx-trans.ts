@@ -8,8 +8,8 @@ const cases: TestCase[] = [
         <Trans>Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"mY42CM"} message={"Hello World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"mY42CM"} message={"Hello World"} />;
       `,
   },
   {
@@ -20,9 +20,9 @@ const cases: TestCase[] = [
         <Trans context="my context">Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"mY42CM"} message={"Hello World"} />;
-        <Trans id={"SO/WB8"} message={"Hello World"} context="my context" />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"mY42CM"} message={"Hello World"} />;
+        <_Trans id={"SO/WB8"} message={"Hello World"} context="my context" />;
       `,
   },
   {
@@ -32,8 +32,8 @@ const cases: TestCase[] = [
         <Trans id="msg.hello">Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message={"Hello World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -43,8 +43,8 @@ const cases: TestCase[] = [
         <Trans id={"msg.hello"}>Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message={"Hello World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -54,8 +54,8 @@ const cases: TestCase[] = [
         <Trans id={\`msg.hello\`}>Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message={"Hello World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" message={"Hello World"} />;
       `,
   },
   {
@@ -70,8 +70,8 @@ const cases: TestCase[] = [
         >Hello World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           render={() => {}}
           id="custom.id"
           message={"Hello World"}
@@ -88,8 +88,8 @@ const cases: TestCase[] = [
         <Trans2>Hello World</Trans2>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Hello World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Hello World"} />;
       `,
   },
   {
@@ -100,8 +100,8 @@ const cases: TestCase[] = [
         <Trans>Hi {yourName}, my name is {myName}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"}
           message={"Hi {yourName}, my name is {myName}"}
           values={{
@@ -119,8 +119,8 @@ const cases: TestCase[] = [
         <Trans>{duplicate} variable {duplicate}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           id={"<stripped>"}
           message={"{duplicate} variable {duplicate}"} 
           values={{
@@ -137,9 +137,9 @@ const cases: TestCase[] = [
         <Trans id="custom-id">Speak "friend"!</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"NWmRwM"} message={'Speak "friend"!'} />;
-        <Trans id="custom-id" message={'Speak "friend"!'} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"NWmRwM"} message={'Speak "friend"!'} />;
+        <_Trans id="custom-id" message={'Speak "friend"!'} />;
       `,
   },
   {
@@ -152,8 +152,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"} 
           message={"<0>This should work \\xA0</0>"}
            components={{
@@ -170,8 +170,8 @@ const cases: TestCase[] = [
         <Trans>{\`How much is \${expression}? \${count}\`}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"} 
           message={"How much is {expression}? {count}"} values={{
             expression: expression,
@@ -188,8 +188,8 @@ const cases: TestCase[] = [
         <Trans>{"hello {count, plural, one {world} other {worlds}}"}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"} 
           message={"hello {count, plural, one {world} other {worlds}}"} 
         />;
@@ -210,8 +210,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"}
           message={"Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}"} 
           values={{
@@ -229,18 +229,17 @@ const cases: TestCase[] = [
     name: "JSX Macro inside JSX conditional expressions",
     stripId: true,
     input: `
-       import { Trans } from '@lingui/macro'
-       ;<Trans>Hello, {props.world ? <Trans>world</Trans> : <Trans>guys</Trans>}</Trans>
+       import { Trans } from '@lingui/macro';
+       <Trans>Hello, {props.world ? <Trans>world</Trans> : <Trans>guys</Trans>}</Trans>
       `,
     expected: `
-        import { Trans } from '@lingui/react'
+        import { Trans as _Trans } from '@lingui/react';
 
-        ;
-        <Trans
+        <_Trans
           id={'<stripped>'}
           message={"Hello, {0}"}
           values={{
-            0: props.world ? <Trans id={"<stripped>"} message={'world'} /> : <Trans id={'<stripped>'} message={'guys'} />
+            0: props.world ? <_Trans id={"<stripped>"} message={'world'} /> : <_Trans id={'<stripped>'} message={'guys'} />
           }}
         />
       `,
@@ -249,26 +248,26 @@ const cases: TestCase[] = [
     name: "JSX Macro inside JSX multiple nested conditional expressions",
     stripId: true,
     input: `
-      import { Trans } from '@lingui/macro'
-        ;<Trans>Hello, {props.world ? <Trans>world</Trans> : (
-          props.b
-            ? <Trans>nested</Trans>
-            : <Trans>guys</Trans>
-        )
-      }</Trans>
+      import { Trans } from '@lingui/macro';
+      <Trans>Hello, {props.world ? <Trans>world</Trans> : (
+        props.b
+          ? <Trans>nested</Trans>
+          : <Trans>guys</Trans>
+      )
+    }</Trans>
       `,
     expected: `
-      import { Trans } from "@lingui/react";
-      <Trans
+      import { Trans as _Trans } from "@lingui/react";
+      <_Trans
         id={"<stripped>"}
         message={"Hello, {0}"}
         values={{
           0: props.world ? (
-            <Trans id={"<stripped>"} message={"world"} />
+            <_Trans id={"<stripped>"} message={"world"} />
           ) : props.b ? (
-            <Trans id={"<stripped>"} message={"nested"} />
+            <_Trans id={"<stripped>"} message={"nested"} />
           ) : (
-            <Trans id={"<stripped>"} message={"guys"} />
+            <_Trans id={"<stripped>"} message={"guys"} />
           ),
         }}
       />;
@@ -288,8 +287,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"}
           message={"Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>"} 
           values={{
@@ -313,8 +312,8 @@ const cases: TestCase[] = [
         <Trans>{<span>Component inside expression container</span>}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           id={"<stripped>"}
           message={"<0>Component inside expression container</0>"} 
           components={{
@@ -331,8 +330,8 @@ const cases: TestCase[] = [
         <Trans>{<br />}</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"<0/>"} components={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"<0/>"} components={{
           0: <br />
         }} />;
       `,
@@ -345,8 +344,8 @@ const cases: TestCase[] = [
         <Trans id="msg.hello" context="my context" comment="Hello World">Hello World</Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" />;
       `,
   },
   {
@@ -360,8 +359,8 @@ const cases: TestCase[] = [
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" message={"Hello World"} comment="Hello World"/>;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" message={"Hello World"} comment="Hello World"/>;
       `,
   },
   {
@@ -374,8 +373,8 @@ const cases: TestCase[] = [
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="msg.hello" />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="msg.hello" />;
         export {};
       `,
   },
@@ -391,8 +390,8 @@ const cases: TestCase[] = [
         </Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Strip whitespace around arguments: '{name}'"} values={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Strip whitespace around arguments: '{name}'"} values={{
           name: name
         }} />;
       `,
@@ -409,8 +408,8 @@ const cases: TestCase[] = [
         </Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Strip whitespace around tags, but keep <0>forced spaces</0>!"} components={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Strip whitespace around tags, but keep <0>forced spaces</0>!"} components={{
           0: <strong />
         }} />;
       `,
@@ -426,8 +425,8 @@ const cases: TestCase[] = [
         </Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Keep forced\\n newlines!"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Keep forced\\n newlines!"} />;
       `,
   },
   {
@@ -442,8 +441,8 @@ const cases: TestCase[] = [
         </Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Keep multiple\\n forced\\n newlines!"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Keep multiple\\n forced\\n newlines!"} />;
       `,
   },
   {
@@ -454,16 +453,16 @@ const cases: TestCase[] = [
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        import { i18n } from "@lingui/core";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        import { i18n as _i18n } from "@lingui/core";
+        <_Trans
           id={"<stripped>"}
           message={"Read <0>more</0>"}
           components={{
             0: (
               <a
                 href="/more"
-                title={i18n._(
+                title={_i18n._(
                   /*i18n*/
                   {
                     id: "qzc3IN",
@@ -490,10 +489,10 @@ const cases: TestCase[] = [
         })}>About</a>
       `,
     expected: `
-        import { i18n } from "@lingui/core";
+        import { i18n as _i18n } from "@lingui/core";
          <a
             href="/about"
-            title={i18n._(
+            title={_i18n._(
               /*i18n*/
               {
                 id: "esnaQO",
@@ -516,8 +515,8 @@ const cases: TestCase[] = [
         <Trans>Hello {/* and I cannot stress this enough */} World</Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"Hello  World"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"Hello  World"} />;
       `,
   },
   {
@@ -528,8 +527,8 @@ const cases: TestCase[] = [
         <Trans>&amp;</Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={"&"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={"&"} />;
       `,
   },
   {
@@ -542,8 +541,8 @@ const cases: TestCase[] = [
         const cmp = <Trans>Hello</Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        const cmp = <Trans id={"<stripped>"} message={"Hello"} />;
+        import { Trans as _Trans } from "@lingui/react";
+        const cmp = <_Trans id={"<stripped>"} message={"Hello"} />;
         export {};
       `,
   },

@@ -91,13 +91,9 @@ export default function ({
             getConfig((state.opts as LinguiPluginOpts).linguiConfig)
           )
 
-          // uniqI18nName = path.scope.generateUid("i18n")
-          // uniqTransName = path.scope.generateUid("Trans")
-          // uniqUseLinguiName = path.scope.generateUid("useLingui")
-
-          uniqI18nName = "i18n"
-          uniqTransName = "Trans"
-          uniqUseLinguiName = "useLingui"
+          uniqI18nName = path.scope.generateUid("i18n")
+          uniqTransName = path.scope.generateUid("Trans")
+          uniqUseLinguiName = path.scope.generateUid("useLingui")
         },
         exit(path, state) {
           const macroImports = path.get("body").filter((statement) => {

@@ -13,10 +13,10 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -37,10 +37,10 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -71,9 +71,9 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -112,10 +112,10 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
   const _t = "i'm here";
-  const { _: _t2 } = useLingui();
+  const { _: _t2 } = _useLingui();
   const a = _t2(
     /*i18n*/
     {
@@ -143,9 +143,9 @@ function MyComponent() {
 
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -171,9 +171,9 @@ function MyComponent() {
 }
     `,
     expected: `
-    import { useLingui } from "@lingui/react";
+    import { useLingui as _useLingui } from "@lingui/react";
     function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -195,9 +195,9 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = useMemo(
     () =>
       _t(
@@ -225,9 +225,9 @@ function MyComponent() {
 }
     `,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
-  const { i18n, _: _t } = useLingui();
+  const { i18n, _: _t } = _useLingui();
   console.log(i18n);
   const a = _t(
     /*i18n*/
@@ -254,11 +254,12 @@ function MyComponent() {
 }
     `,
     expected: `
+import { useLingui as _useLingui } from "@lingui/react";
 import { useLingui } from "@lingui/react";
 function MyComponent() {
   const { _ } = useLingui();
   console.log(_);
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -271,12 +272,10 @@ function MyComponent() {
   },
 
   {
-    // todo: implement this
-    skip: true,
     name: "work with renamed existing useLingui statement",
     input: `
-import { useLingui as useLinguiMacro } from '@lingui/macro';
 import { useLingui as useLinguiRenamed  } from '@lingui/react';
+import { useLingui as useLinguiMacro } from '@lingui/macro';
 
 function MyComponent() {
   const { _ } = useLinguiRenamed();
@@ -288,11 +287,11 @@ function MyComponent() {
     `,
     expected: `
 import { useLingui as useLinguiRenamed  } from '@lingui/react';
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
   const { _ } = useLinguiRenamed();
   console.log(_);
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -318,9 +317,9 @@ function MyComponent2() {
   const b = t\`Text\`;
 }`,
     expected: `
-import { useLingui } from "@lingui/react";
+import { useLingui as _useLingui } from "@lingui/react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
@@ -330,7 +329,7 @@ function MyComponent() {
   );
 }
 function MyComponent2() {
-  const { _: _t2 } = useLingui();
+  const { _: _t2 } = _useLingui();
   const b = _t2(
     /*i18n*/
     {
@@ -362,9 +361,9 @@ function MyComponent() {
 }
 `,
     expected: `
-import { myUselingui as useLingui } from "@my/lingui-react";
+import { myUselingui as _useLingui } from "@my/lingui-react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = _useLingui();
   const a = _t(
     /*i18n*/
     {
