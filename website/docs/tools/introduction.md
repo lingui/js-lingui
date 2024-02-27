@@ -42,9 +42,9 @@ Instead of manually sending and receiving many emails and fixing the inconsisten
 ### [Crowdin](https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev)
 
 - Documentation: [Crowdin](/docs/tools/crowdin.md)
-- GitHub: <https://github.com/crowdin>
+- GitHub: https://github.com/crowdin
 
 ### [Translation.io](https://translation.io/lingui)
 
 - Documentation: [translation-io](/docs/tools/translation-io.md)
-- GitHub: <https://github.com/translation/lingui>
+- GitHub: https://github.com/translation/lingui

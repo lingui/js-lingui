@@ -146,7 +146,7 @@ and the final message would be very similar:
 />
 ```
 
-The only difference is the [<0>] tag included in the message, as [LinguiJS](https://github.com/lingui/js-lingui) can handle components in both variables and the message itself.
+The only difference is the `<0>` tag included in the message, as [LinguiJS](https://github.com/lingui/js-lingui) can handle components in both variables and the message itself.
 
 :::note
 It's good to mention here that this isn't the best example of using plurals. Make your translators happy and move plurals to the top of the message:
@@ -190,7 +190,7 @@ Custom IDs are supported as well:
 ```
 
 :::note
-To inject `i18n` object into props, you need to use [`useLingui`](/docs/ref/react.md#useLingui) hook. It's very similar to `useIntl` from [react-intl](https://formatjs.io/docs/react-intl/api/#useintl-hook).
+To inject `i18n` object into props, you need to use [`useLingui`](/docs/ref/react.md#uselingui) hook. It's very similar to `useIntl` from [react-intl](https://formatjs.io/docs/react-intl/api/#useintl-hook).
 :::
 
 ## External message catalog

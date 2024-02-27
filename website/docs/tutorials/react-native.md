@@ -83,7 +83,7 @@ As you can see, it's a simple mailbox application with only one screen.
 ## Internationalization in React (Native)
 
 :::tip TL;DR
-There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#withi18n) hook together with the [`t`](/docs/ref/macro.md#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
+There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.md#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
 :::
 
 Not surprisingly, this part isn't too different from the [React tutorial](/docs/tutorials/react.md).

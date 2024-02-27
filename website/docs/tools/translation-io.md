@@ -7,8 +7,8 @@
 
 Links:
 
-- Website: <https://translation.io/lingui>
-- GitHub: <https://github.com/translation/lingui>
+- Website: https://translation.io/lingui
+- GitHub: https://github.com/translation/lingui
 
 ## Features
 
@@ -157,4 +157,4 @@ npm run sync_and_purge
 
 ---
 
-If you need some help with your project, feel free to contact <contact@translation.io>
+If you need some help with your project, feel free to contact contact@translation.io

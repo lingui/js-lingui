@@ -16,10 +16,10 @@ Minimal required versions are:
 
 - `<I18n>` render-prop component was removed in favor of [`useLingui`](/docs/ref/react.md#uselingui) hook.
 - In [`I18nProvider`](/docs/ref/react.md#i18nprovider), `defaultRender` prop was renamed to `defaultComponent`, and now only accepts Custom Components
-- In [`Trans`](/docs/ref/react.md#Trans), `defaults` prop was renamed to `message` and `description` to `comment`.
-- In [`Trans`](/docs/ref/react.md#Trans), `render` prop only accepts render-prop function which is used to render translation.
-- In [`Trans`](/docs/ref/react.md#Trans), new prop `component` accepts React component which is used to render translation.
-- In [`Trans`](/docs/ref/react.md#Trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
+- In [`Trans`](/docs/ref/react.md#trans), `defaults` prop was renamed to `message` and `description` to `comment`.
+- In [`Trans`](/docs/ref/react.md#trans), `render` prop only accepts render-prop function which is used to render translation.
+- In [`Trans`](/docs/ref/react.md#trans), new prop `component` accepts React component which is used to render translation.
+- In [`Trans`](/docs/ref/react.md#trans), `components` is now an object, not an array. When using the low level API, it allows to name the component placeholders:
 
   ```jsx
   <Trans id="Read <a>the docs</a>!" components={{ a: <a href="/docs" /> }} />
