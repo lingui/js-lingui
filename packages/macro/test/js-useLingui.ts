@@ -330,8 +330,8 @@ function MyComponent() {
   );
 }
 function MyComponent2() {
-  const { _: _t } = useLingui();
-  const b = _t(
+  const { _: _t2 } = useLingui();
+  const b = _t2(
     /*i18n*/
     {
       id: "xeiujy",
@@ -362,9 +362,9 @@ function MyComponent() {
 }
 `,
     expected: `
-import { myUselingui } from "@my/lingui-react";
+import { myUselingui as useLingui } from "@my/lingui-react";
 function MyComponent() {
-  const { _: _t } = myUselingui();
+  const { _: _t } = useLingui();
   const a = _t(
     /*i18n*/
     {

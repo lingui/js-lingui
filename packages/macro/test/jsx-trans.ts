@@ -93,17 +93,6 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: "Macro without children is noop",
-    input: `
-        import { Trans } from '@lingui/macro';
-        <Trans id={msg} />;
-      `,
-    expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={msg} />;
-      `,
-  },
-  {
     name: "Variables are converted to named arguments",
     stripId: true,
     input: `
@@ -346,17 +335,6 @@ const cases: TestCase[] = [
         <Trans id={"<stripped>"} message={"<0/>"} components={{
           0: <br />
         }} />;
-      `,
-  },
-  {
-    name: "JSX spread child is noop",
-    input: `
-        import { Trans } from '@lingui/macro';
-        <Trans>{...spread}</Trans>
-      `,
-    expected: `
-        import { Trans } from "@lingui/react";
-        <Trans>{...spread}</Trans>
       `,
   },
   {

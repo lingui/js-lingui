@@ -314,7 +314,7 @@ const cases: TestCase[] = [
   {
     name: "Support id and comment in t macro as callExpression",
     input: `
-        import { t } from '@lingui/macro'
+        import { t, plural } from '@lingui/macro'
         const msg = t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
       `,
     expected: `
@@ -386,7 +386,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `
-      import { t } from '@lingui/macro';
+      import { t, plural } from '@lingui/macro';
       const msg = t({
         id: 'msgId',
         comment: 'description for translators',
@@ -491,6 +491,33 @@ const cases: TestCase[] = [
   },
   {
     filename: "js-t-var/js-t-var.js",
+  },
+  {
+    name: "Support t in t",
+    input: `
+        import { t } from '@lingui/macro'
+        t\`Field \${t\`First Name\`} is required\`
+      `,
+    expected: `
+      import { i18n } from "@lingui/core";
+i18n._(
+  /*i18n*/
+  {
+    id: "O8dJMg",
+    message: "Field {0} is required",
+    values: {
+      0: i18n._(
+        /*i18n*/
+        {
+          id: "kODvZJ",
+          message: "First Name",
+        }
+      ),
+    },
+  }
+);
+
+      `,
   },
 ]
 

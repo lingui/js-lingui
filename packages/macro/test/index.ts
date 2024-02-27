@@ -7,7 +7,7 @@ import {
   transformSync,
 } from "@babel/core"
 import prettier from "prettier"
-import { LinguiMacroOpts } from "../src/index"
+import { LinguiPluginOpts } from "../src/plugin"
 import {
   JSXAttribute,
   jsxExpressionContainer,
@@ -23,7 +23,7 @@ export type TestCase = {
   filename?: string
   production?: boolean
   useTypescriptPreset?: boolean
-  macroOpts?: LinguiMacroOpts
+  macroOpts?: LinguiPluginOpts
   /** Remove hash id from snapshot for more stable testing */
   stripId?: boolean
   only?: boolean
@@ -69,7 +69,7 @@ describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const getDefaultBabelOptions = (
-    macroOpts: LinguiMacroOpts = {},
+    macroOpts: LinguiPluginOpts = {},
     isTs: boolean = false,
     stripId = false
   ): TransformOptions => {
@@ -324,7 +324,7 @@ describe("macro", function () {
     })
   })
 
-  describe("useLingui", () => {
+  describe("useLingui validation", () => {
     it("Should throw if used not in the variable declaration", () => {
       const code = `
       import {useLingui} from "@lingui/macro";
@@ -347,6 +347,24 @@ describe("macro", function () {
       expect(transformCode(code)).toThrowError(
         "You have to destructure `t` when using the `useLingui` macro"
       )
+    })
+  })
+
+  describe("Trans validation", () => {
+    it("Should throw if spread used in children", () => {
+      const code = `
+        import { Trans } from '@lingui/macro';
+        <Trans>{...spread}</Trans>
+       `
+      expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
+    })
+
+    it("Should throw if used without children", () => {
+      const code = `
+      import { Trans } from '@lingui/macro';
+      <Trans id={msg} />;
+       `
+      expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
     })
   })
 })

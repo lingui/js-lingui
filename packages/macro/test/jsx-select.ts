@@ -50,7 +50,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Select should support JSX elements in cases",
     input: `
-        import { Select } from '@lingui/macro';
+        import { Select, Trans } from '@lingui/macro';
         <Select
           value="happy"
           _happy={

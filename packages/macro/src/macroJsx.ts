@@ -21,7 +21,14 @@ import ICUMessageFormat, {
   Token,
 } from "./icu"
 import { makeCounter } from "./utils"
-import { COMMENT, CONTEXT, ID, MESSAGE } from "./constants"
+import {
+  COMMENT,
+  CONTEXT,
+  ID,
+  MESSAGE,
+  MACRO_PACKAGE,
+  JsxMacroName,
+} from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
@@ -65,7 +72,7 @@ export function normalizeWhitespace(text: string): string {
 
 export type MacroJsxOpts = {
   stripNonEssentialProps: boolean
-  nameMap: Map<string, string>
+  transImportName: string
 }
 
 export default class MacroJSX {
@@ -73,17 +80,12 @@ export default class MacroJSX {
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
   stripNonEssentialProps: boolean
-  nameMap: Map<string, string>
-  nameMapReversed: Map<string, string>
+  transImportName: string
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
     this.stripNonEssentialProps = opts.stripNonEssentialProps
-    this.nameMap = opts.nameMap
-    this.nameMapReversed = Array.from(opts.nameMap.entries()).reduce(
-      (map, [key, value]) => map.set(value, key),
-      new Map()
-    )
+    this.transImportName = opts.transImportName
   }
 
   createStringJsxAttribute = (name: string, value: string) => {
@@ -94,12 +96,16 @@ export default class MacroJSX {
     )
   }
 
-  replacePath = (path: NodePath) => {
+  replacePath = (path: NodePath): false | Node => {
     if (!path.isJSXElement()) {
-      return path
+      return false
     }
 
-    const tokens = this.tokenizeNode(path)
+    const tokens = this.tokenizeNode(path, true, true)
+
+    if (!tokens) {
+      return false
+    }
 
     const messageFormat = new ICUMessageFormat()
     const {
@@ -114,7 +120,7 @@ export default class MacroJSX {
     )
 
     if (!id && !message) {
-      return
+      throw new Error("Incorrect usage of Trans")
     }
 
     if (id) {
@@ -191,7 +197,7 @@ export default class MacroJSX {
 
     const newNode = this.types.jsxElement(
       this.types.jsxOpeningElement(
-        this.types.jsxIdentifier("Trans"),
+        this.types.jsxIdentifier(this.transImportName),
         attributes,
         true
       ),
@@ -201,7 +207,7 @@ export default class MacroJSX {
     )
     newNode.loc = path.node.loc
 
-    path.replaceWith(newNode)
+    return newNode
   }
 
   attrName = (names: string[], exclude = false) => {
@@ -246,16 +252,33 @@ export default class MacroJSX {
     }
   }
 
-  tokenizeNode = (path: NodePath): Token[] => {
+  tokenizeNode = (
+    path: NodePath,
+    ignoreExpression = false,
+    ignoreElement = false
+  ): Token[] => {
     if (this.isTransComponent(path)) {
       // t
       return this.tokenizeTrans(path)
-    } else if (this.isChoiceComponent(path)) {
+    }
+
+    const componentName = this.isChoiceComponent(path)
+
+    if (componentName) {
       // plural, select and selectOrdinal
-      return [this.tokenizeChoiceComponent(path)]
-    } else if (path.isJSXElement()) {
+      return [
+        this.tokenizeChoiceComponent(
+          path as NodePath<JSXElement>,
+          componentName
+        ),
+      ]
+    }
+
+    if (path.isJSXElement() && !ignoreElement) {
       return [this.tokenizeElement(path)]
-    } else {
+    }
+
+    if (!ignoreExpression) {
       return [this.tokenizeExpression(path)]
     }
   }
@@ -325,11 +348,13 @@ export default class MacroJSX {
     })
   }
 
-  tokenizeChoiceComponent = (path: NodePath<JSXElement>): Token => {
+  tokenizeChoiceComponent = (
+    path: NodePath<JSXElement>,
+    componentName: JsxMacroName
+  ): Token => {
     const element = path.get("openingElement")
-    const name = this.getJsxTagName(path.node)
 
-    const format = (this.nameMapReversed.get(name) || name).toLowerCase()
+    const format = componentName.toLowerCase()
     const props = element.get("attributes").filter((attr) => {
       return this.attrName(
         [
@@ -478,26 +503,31 @@ export default class MacroJSX {
 
   isLinguiComponent = (
     path: NodePath,
-    name: string
+    name: JsxMacroName
   ): path is NodePath<JSXElement> => {
     return (
       path.isJSXElement() &&
-      this.types.isJSXIdentifier(path.node.openingElement.name, {
-        name: this.nameMap.get(name) || name,
-      })
+      path
+        .get("openingElement")
+        .get("name")
+        .referencesImport(MACRO_PACKAGE, name)
     )
   }
 
   isTransComponent = (path: NodePath): path is NodePath<JSXElement> => {
-    return this.isLinguiComponent(path, "Trans")
+    return this.isLinguiComponent(path, JsxMacroName.Trans)
   }
 
-  isChoiceComponent = (path: NodePath): path is NodePath<JSXElement> => {
-    return (
-      this.isLinguiComponent(path, "Plural") ||
-      this.isLinguiComponent(path, "Select") ||
-      this.isLinguiComponent(path, "SelectOrdinal")
-    )
+  isChoiceComponent = (path: NodePath): JsxMacroName => {
+    if (this.isLinguiComponent(path, JsxMacroName.Plural)) {
+      return JsxMacroName.Plural
+    }
+    if (this.isLinguiComponent(path, JsxMacroName.Select)) {
+      return JsxMacroName.Select
+    }
+    if (this.isLinguiComponent(path, JsxMacroName.SelectOrdinal)) {
+      return JsxMacroName.SelectOrdinal
+    }
   }
 
   getJsxTagName = (node: JSXElement): string => {

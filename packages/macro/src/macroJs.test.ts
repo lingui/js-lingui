@@ -1,7 +1,35 @@
-import { parseExpression } from "@babel/parser"
 import * as types from "@babel/types"
+import { type CallExpression, type Expression } from "@babel/types"
 import MacroJs from "./macroJs"
-import { CallExpression } from "@babel/types"
+import type { NodePath } from "@babel/traverse"
+import { transformSync } from "@babel/core"
+import { JsMacroName } from "./constants"
+
+const parseExpression = (expression: string) => {
+  let path: NodePath<Expression>
+
+  const importExp = `import {t, plural, select, selectOrdinal} from "@lingui/macro"; \n`
+  transformSync(importExp + expression, {
+    filename: "unit-test.js",
+    configFile: false,
+    presets: [],
+    plugins: [
+      "@babel/plugin-syntax-jsx",
+      {
+        visitor: {
+          "CallExpression|TaggedTemplateExpression": (
+            d: NodePath<Expression>
+          ) => {
+            path = d
+            d.stop()
+          },
+        },
+      },
+    ],
+  })
+
+  return path
+}
 
 function createMacro() {
   return new MacroJs(
@@ -9,7 +37,7 @@ function createMacro() {
     {
       i18nImportName: "i18n",
       stripNonEssentialProps: false,
-      nameMap: new Map<string, string>(),
+      useLinguiImportName: "useLingui",
     }
   )
 }
@@ -125,7 +153,7 @@ describe("js macro", () => {
       ])
     })
 
-    it("message with double scaped literals it's stripped", () => {
+    it("message with double escaped literals it's stripped", () => {
       const macro = createMacro()
       const exp = parseExpression(
         "t`Passing \\`${argSet}\\` is not supported.`"
@@ -140,20 +168,10 @@ describe("js macro", () => {
           name: "argSet",
           type: "arg",
           value: {
-            end: 20,
             loc: {
-              end: {
-                column: 20,
-                line: 1,
-              },
               identifierName: "argSet",
-              start: {
-                column: 14,
-                line: 1,
-              },
             },
             name: "argSet",
-            start: 14,
             type: "Identifier",
           },
         },
@@ -171,7 +189,10 @@ describe("js macro", () => {
       const exp = parseExpression(
         "plural(count, { one: '# book', other: '# books'})"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+      const tokens = macro.tokenizeChoiceComponent(
+        exp as NodePath<CallExpression>,
+        JsMacroName.plural
+      )
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -197,7 +218,10 @@ describe("js macro", () => {
           other: '# books'
          })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+      const tokens = macro.tokenizeChoiceComponent(
+        exp as NodePath<CallExpression>,
+        JsMacroName.plural
+      )
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -220,7 +244,10 @@ describe("js macro", () => {
       const exp = parseExpression(
         "plural(count, { one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+      const tokens = macro.tokenizeChoiceComponent(
+        exp as NodePath<CallExpression>,
+        JsMacroName.plural
+      )
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -274,7 +301,10 @@ describe("js macro", () => {
           other: otherText
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
+      const tokens = macro.tokenizeChoiceComponent(
+        exp as NodePath<CallExpression>,
+        JsMacroName.plural
+      )
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -328,8 +358,11 @@ describe("js macro", () => {
           other: "they"
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp as CallExpression)
-      expect(tokens).toEqual({
+      const tokens = macro.tokenizeChoiceComponent(
+        exp as NodePath<CallExpression>,
+        JsMacroName.select
+      )
+      expect(tokens).toMatchObject({
         format: "select",
         name: "gender",
         options: expect.objectContaining({
@@ -340,20 +373,7 @@ describe("js macro", () => {
         }),
         type: "arg",
         value: {
-          end: 13,
-          loc: {
-            end: expect.objectContaining({
-              column: 13,
-              line: 1,
-            }),
-            identifierName: "gender",
-            start: expect.objectContaining({
-              column: 7,
-              line: 1,
-            }),
-          },
           name: "gender",
-          start: 7,
           type: "Identifier",
         },
       })
