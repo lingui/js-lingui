@@ -364,7 +364,7 @@ function MyComponent() {
     expected: `
 import { myUselingui } from "@my/lingui-react";
 function MyComponent() {
-  const { _: _t } = useLingui();
+  const { _: _t } = myUselingui();
   const a = _t(
     /*i18n*/
     {

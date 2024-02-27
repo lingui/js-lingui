@@ -69,9 +69,11 @@ function macro({ references, state, babel, config }: MacroParams) {
         } else {
           needsUseLinguiImport = true
           nameMap.set("_t", uniq_tIdentifier.name)
-          processUseLingui(path, uniq_tIdentifier.name)?.forEach((n) =>
-            jsNodes.add(n)
-          )
+          processUseLingui(
+            path,
+            useLinguiImportName,
+            uniq_tIdentifier.name
+          )?.forEach((n) => jsNodes.add(n))
         }
       })
     } else if (jsxMacroTags.has(tagName)) {
@@ -152,6 +154,7 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
  */
 function processUseLingui(
   path: NodePath,
+  useLinguiName: string,
   newIdentifier: string
 ): NodePath[] | null {
   if (!path.parentPath.parentPath.isVariableDeclarator()) {
@@ -201,7 +204,7 @@ function processUseLingui(
 
   if (t.isIdentifier(path.node)) {
     // rename to standard useLingui
-    path.scope.rename(path.node.name, "useLingui")
+    path.scope.rename(path.node.name, useLinguiName)
   }
 
   // rename to standard useLingui _
