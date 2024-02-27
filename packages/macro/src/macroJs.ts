@@ -159,98 +159,7 @@ export default class MacroJs {
       this.isLinguiIdentifier(path.get("callee"), JsMacroName.useLingui)
     ) {
       this.needsUseLinguiImport = true
-
-      if (!path.parentPath.isVariableDeclarator()) {
-        throw new Error(
-          `\`useLingui\` macro must be used in variable declaration.
-
- Example:
-
- const { t } = useLingui()
-      `
-        )
-      }
-
-      const varDec = path.parentPath.node
-      const _property = this.types.isObjectPattern(varDec.id)
-        ? varDec.id.properties.find(
-            (
-              property
-            ): property is ObjectProperty & {
-              value: Identifier
-              key: Identifier
-            } =>
-              this.types.isObjectProperty(property) &&
-              this.types.isIdentifier(property.key) &&
-              this.types.isIdentifier(property.value) &&
-              property.key.name == "t"
-          )
-        : null
-
-      // Enforce destructuring `t` from `useLingui` macro to prevent misuse
-      if (!_property) {
-        throw new Error(
-          `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
- const { t } = useLingui()
- or
- const { t: _ } = useLingui()
- `
-        )
-      }
-
-      const uniqTIdentifier = path.scope.generateUidIdentifier("t")
-
-      path.scope
-        .getBinding(_property.value.name)
-        ?.referencePaths.forEach((refPath) => {
-          const currentPath = refPath.parentPath
-
-          // { t } = useLingui()
-          // t`Hello!`
-          if (currentPath.isTaggedTemplateExpression()) {
-            const tokens = this.tokenizeTemplateLiteral(currentPath)
-
-            const descriptor = this.createMessageDescriptorFromTokens(
-              tokens,
-              currentPath.node.loc
-            )
-
-            const callExpr = this.types.callExpression(
-              this.types.identifier(uniqTIdentifier.name),
-              [descriptor]
-            )
-
-            return currentPath.replaceWith(callExpr)
-          }
-
-          // { t } = useLingui()
-          // t(messageDescriptor)
-          if (
-            currentPath.isCallExpression() &&
-            currentPath.get("arguments")[0].isObjectExpression()
-          ) {
-            let descriptor = this.processDescriptor(
-              currentPath.get("arguments")[0] as NodePath<ObjectExpression>
-            )
-            const callExpr = this.types.callExpression(
-              this.types.identifier(uniqTIdentifier.name),
-              [descriptor]
-            )
-
-            return currentPath.replaceWith(callExpr)
-          }
-
-          // for rest of cases just rename identifier for run-time counterpart
-          refPath.replaceWith(this.types.identifier(uniqTIdentifier.name))
-        })
-
-      _property.key.name = "_"
-      path.scope.rename(_property.value.name, uniqTIdentifier.name)
-
-      return this.types.callExpression(
-        this.types.identifier(this.useLinguiImportName),
-        []
-      )
+      return this.processUseLingui(path)
     }
 
     const tokens = this.tokenizeNode(path, true)
@@ -276,6 +185,127 @@ export default class MacroJs {
     )
 
     return this.createI18nCall(descriptor, linguiInstance)
+  }
+
+  /**
+   * Receives reference to `useLingui()` call
+   *
+   * Finds every usage of { t } destructured from the call
+   * and process each reference as usual `t` macro.
+   *
+   * const { t } = useLingui()
+   * t`Message`
+   *
+   * ↓ ↓ ↓ ↓ ↓ ↓
+   *
+   * const { _: _t } = useLingui()
+   * _t({id: <hash>, message: "Message"})
+   */
+  processUseLingui(path: NodePath<CallExpression>) {
+    /*
+     * path is CallExpression eq:
+     * useLingui()
+     *
+     * path.parentPath should be a VariableDeclarator eq:
+     * const { t } = useLingui()
+     */
+    if (!path.parentPath.isVariableDeclarator()) {
+      throw new Error(
+        `\`useLingui\` macro must be used in variable declaration.
+
+ Example:
+
+ const { t } = useLingui()
+      `
+      )
+    }
+
+    // looking for `t` property in left side assigment
+    // in the declarator `const { t } = useLingui()`
+    const varDec = path.parentPath.node
+    const _property = this.types.isObjectPattern(varDec.id)
+      ? varDec.id.properties.find(
+          (
+            property
+          ): property is ObjectProperty & {
+            value: Identifier
+            key: Identifier
+          } =>
+            this.types.isObjectProperty(property) &&
+            this.types.isIdentifier(property.key) &&
+            this.types.isIdentifier(property.value) &&
+            property.key.name == "t"
+        )
+      : null
+
+    // Enforce destructuring `t` from `useLingui` macro to prevent misuse
+    if (!_property) {
+      throw new Error(
+        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
+ const { t } = useLingui()
+ or
+ const { t: _ } = useLingui()
+ `
+      )
+    }
+
+    const uniqTIdentifier = path.scope.generateUidIdentifier("t")
+
+    path.scope
+      .getBinding(_property.value.name)
+      ?.referencePaths.forEach((refPath) => {
+        // reference usually points to Identifier,
+        // parent would be an Expression with this identifier which we are interesting in
+        const currentPath = refPath.parentPath
+
+        // { t } = useLingui()
+        // t`Hello!`
+        if (currentPath.isTaggedTemplateExpression()) {
+          const tokens = this.tokenizeTemplateLiteral(currentPath)
+
+          const descriptor = this.createMessageDescriptorFromTokens(
+            tokens,
+            currentPath.node.loc
+          )
+
+          const callExpr = this.types.callExpression(
+            this.types.identifier(uniqTIdentifier.name),
+            [descriptor]
+          )
+
+          return currentPath.replaceWith(callExpr)
+        }
+
+        // { t } = useLingui()
+        // t(messageDescriptor)
+        if (
+          currentPath.isCallExpression() &&
+          currentPath.get("arguments")[0].isObjectExpression()
+        ) {
+          let descriptor = this.processDescriptor(
+            currentPath.get("arguments")[0] as NodePath<ObjectExpression>
+          )
+          const callExpr = this.types.callExpression(
+            this.types.identifier(uniqTIdentifier.name),
+            [descriptor]
+          )
+
+          return currentPath.replaceWith(callExpr)
+        }
+
+        // for rest of cases just rename identifier for run-time counterpart
+        refPath.replaceWith(this.types.identifier(uniqTIdentifier.name))
+      })
+
+    // assign uniq identifier for runtime `_`
+    // { t } = useLingui() -> { _ : _t } = useLingui()
+    _property.key.name = "_"
+    _property.value.name = uniqTIdentifier.name
+
+    return this.types.callExpression(
+      this.types.identifier(this.useLinguiImportName),
+      []
+    )
   }
 
   /**
