@@ -345,7 +345,7 @@ describe("macro", function () {
        
        `
       expect(transformCode(code)).toThrowError(
-        " Must destruct `t` when using `useLingui` macro, i.e:"
+        "You have to destructure `t` when using the `useLingui` macro"
       )
     })
   })
