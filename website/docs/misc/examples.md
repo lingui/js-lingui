@@ -1,23 +1,6 @@
 ---
 title: I18n Examples
-description: Examples of using Lingui for internationalization (i18n) in various frameworks and libraries.
-keywords:
-  [
-    l10n,
-    i18n,
-    localization,
-    internationalization,
-    example,
-    react,
-    create-react-app,
-    vanilla-js,
-    next.js,
-    react-native,
-    babel,
-    swc,
-    vite,
-    rspack,
-  ]
+description: Examples of using Lingui for internationalization (i18n) in various frameworks and libraries
 ---
 
 # Examples

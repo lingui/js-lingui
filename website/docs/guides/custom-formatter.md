@@ -1,7 +1,6 @@
 ---
 title: Creating a Custom Message Formatter
-description: Learn how to write a custom localization message formatter for your project.
-keywords: [formatter, format, localization, internationalization, i18n, l10n, catalog, file format, custom]
+description: Learn how to write a custom localization message formatter for your project
 ---
 
 # Custom Formatter

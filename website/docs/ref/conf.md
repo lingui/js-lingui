@@ -1,7 +1,6 @@
 ---
 title: Lingui Configuration
-description: Learn how to configure Lingui for your project.
-keywords: [lingui, configuration, conf, setup, translation]
+description: Learn how to configure Lingui for your project
 ---
 
 # Lingui Configuration

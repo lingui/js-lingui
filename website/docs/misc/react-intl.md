@@ -1,7 +1,6 @@
 ---
 title: Lingui vs react-intl
-description: Comparison of Lingui and react-intl internationalization libraries.
-keywords: [i18n, internationalization, l10n, localization, lingui, react-intl, comparison, alternative]
+description: Comparison of Lingui and react-intl internationalization libraries
 ---
 
 # Comparison with react-intl

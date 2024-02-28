@@ -1,7 +1,6 @@
 ---
 title: Pluralization
-description: Learn about pluralization and how to use it in your application with Lingui.
-keywords: [plural, plurals, pluralization, forms, i18n, l10n, internationalization]
+description: Learn about pluralization and how to use it in your application with Lingui
 ---
 
 # Pluralization

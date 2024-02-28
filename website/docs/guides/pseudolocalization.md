@@ -1,7 +1,6 @@
 ---
 title: Pseudolocalization
-description: Learn how to use pseudolocalization to test the internationalization aspects of your application with Lingui.
-keywords: [pseudolocalization, pseudo-localization, pseudolocale, pseudo-locale, i18n, l10n, testing, locale]
+description: Learn how to use pseudolocalization to test the internationalization aspects of your application with Lingui
 ---
 
 # Pseudolocalization

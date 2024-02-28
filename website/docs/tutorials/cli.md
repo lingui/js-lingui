@@ -1,7 +1,6 @@
 ---
 title: Working with Lingui CLI
-description: Learn how to extract, merge and compile message catalogs with Lingui CLI.
-keywords: [cli, extract, compile, message catalogs, translation, tutorial]
+description: Learn how to extract, merge and compile message catalogs with Lingui CLI
 ---
 
 # Working with LinguiJS CLI

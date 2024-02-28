@@ -1,7 +1,6 @@
 ---
 title: Locale Detection
-description: Detect the user's locale with the `@lingui/detect-locale` package.
-keywords: [locale, detection, i18n, internationalization, l10n, localization, translation]
+description: Detect the user's locale with the `@lingui/detect-locale` package
 ---
 
 # Locale Detection

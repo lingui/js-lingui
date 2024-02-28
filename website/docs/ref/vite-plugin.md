@@ -1,7 +1,6 @@
 ---
 title: Lingui Vite Plugin
-description: Use Lingui with Vite and compile your message catalogs on the fly.
-keywords: [vite, plugin, i18n, internationalization, l10n, compilation]
+description: Use Lingui with Vite and compile your message catalogs on the fly
 ---
 
 # Vite Plugin

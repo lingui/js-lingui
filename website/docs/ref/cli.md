@@ -1,7 +1,6 @@
 ---
 title: Lingui CLI
-description: Lingui CLI manages locales, extracts messages from source files into message catalogs, and compiles message catalogs for production use.
-keywords: [lingui, cli, extract, compile, i18n, internationalization, l10n, localization, translation]
+description: Lingui CLI manages locales, extracts messages from source files into message catalogs, and compiles message catalogs for production use
 ---
 
 # Lingui CLI

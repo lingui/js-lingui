@@ -1,7 +1,6 @@
 ---
 title: Lingui vs i18next
-description: Comparison of Lingui and i18next internationalization libraries.
-keywords: [i18n, internationalization, l10n, localization, lingui, i18next, comparison, alternative]
+description: Comparison of Lingui and i18next internationalization libraries
 ---
 
 # Comparison with i18next

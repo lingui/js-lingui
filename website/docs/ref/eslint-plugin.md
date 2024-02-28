@@ -1,7 +1,6 @@
 ---
 title: Lingui ESLint Plugin
-description: Lingui ESLint Plugin helps you find and prevent common i18n mistakes in your code.
-keywords: [eslint, linter, i18n, internationalization, l10n, localization, translation, plugin]
+description: Lingui ESLint Plugin helps you find and prevent common i18n mistakes in your code
 ---
 
 # ESLint Plugin

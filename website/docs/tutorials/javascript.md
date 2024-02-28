@@ -1,7 +1,6 @@
 ---
 title: JavaScript Internationalization (i18n)
-description: Learn how to use Lingui's internationalization features in your vanilla JavaScript application.
-keywords: [javascript, i18n, internationalization, l10n, localization, translation, tutorial]
+description: Learn how to use Lingui's internationalization features in your vanilla JavaScript application
 ---
 
 # Internationalization of JavaScript apps

@@ -1,7 +1,6 @@
 ---
 title: Lingui Core package
-description: The package provides the main i18n object, which manages message catalogs, active locale, and message translation and formatting.
-keywords: [i18n, internationalization, l10n, localization, translation, core]
+description: The package provides the main i18n object, which manages message catalogs, active locale, and message translation and formatting
 ---
 
 # The core i18n functionality

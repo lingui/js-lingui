@@ -1,7 +1,6 @@
 ---
 title: Common i18n patterns in React
-description: Learn about the most common i18n patterns in React and how to use them with Lingui.
-keywords: [react, i18n, internationalization, patterns, l10n, localization, translation, tutorial]
+description: Learn about the most common i18n patterns in React and how to use them with Lingui
 ---
 
 # Common i18n patterns in React

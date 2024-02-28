@@ -1,7 +1,6 @@
 ---
 title: Internationalization Framework for Global Products
-description: Lingui is a universal, clean and readable, lightweight and powerful internationalization framework for global projects.
-keywords: [i18n, internationalization, l10n, localization, translation, framework, react, javascript, lingui]
+description: Lingui is a universal, clean and readable, lightweight and powerful internationalization framework for global projects
 ---
 
 📖 A readable, automated, and optimized (3 kb) internationalization for JavaScript

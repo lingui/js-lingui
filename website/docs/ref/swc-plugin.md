@@ -1,7 +1,6 @@
 ---
 title: Lingui SWC Plugin
-description: Use Lingui Macros in your SWC project.
-keywords: [swc, plugin, i18n, internationalization, l10n, localization, translation, lingui, macros, next.js, vite]
+description: Use Lingui Macros in your SWC project
 ---
 
 # SWC Plugin

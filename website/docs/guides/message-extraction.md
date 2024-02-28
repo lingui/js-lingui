@@ -1,7 +1,6 @@
 ---
 title: Message Extraction
-description: Learn about message extraction in i18n and how to use Lingui to extract messages from your application.
-keywords: [extract, extraction, message, patterns, i18n, internationalization, l10n, catalog]
+description: Learn about message extraction in i18n and how to use Lingui to extract messages from your application
 ---
 
 # Message Extraction

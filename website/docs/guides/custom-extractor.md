@@ -1,7 +1,6 @@
 ---
 title: Creating a Custom Message Extractor
-description: Learn how to write a custom message extractor for your project.
-keywords: [extractor, extraction, message, patterns, i18n, internationalization, l10n, catalog]
+description: Learn how to write a custom message extractor for your project
 ---
 
 # Custom Extractor

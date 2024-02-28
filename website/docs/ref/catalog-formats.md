@@ -1,7 +1,6 @@
 ---
 title: Message Catalog Formats
-description: Learn about the different catalog formats supported by Lingui.
-keywords: [internationalization, localization, i18n, l10n, catalog, format, gettext, po, json, csv, lingui]
+description: Learn about the different catalog formats supported by Lingui
 ---
 
 # Catalog formats

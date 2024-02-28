@@ -1,7 +1,6 @@
 ---
 title: Lingui React API
-description: Reference for the Lingui React API and components.
-keywords: [react, i18n, internationalization, l10n, localization, translation, I18nProvider, trans, plurals, useLingui]
+description: Reference for the Lingui React API and components
 ---
 
 # React API Reference
