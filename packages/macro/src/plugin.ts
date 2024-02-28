@@ -44,8 +44,6 @@ export default function ({
 }: {
   types: typeof babelTypes
 }): PluginObj {
-  const processedNodes = new Set<babelTypes.Node>()
-
   function addImport(state: PluginPass, name: LinguiSymbol) {
     const path = state.get(
       "macroImport"
@@ -120,10 +118,6 @@ export default function ({
           path.traverse(
             {
               JSXElement(path, state) {
-                if (processedNodes.has(path.node)) {
-                  return
-                }
-
                 const macro = new MacroJSX(
                   { types: t },
                   {
@@ -143,7 +137,6 @@ export default function ({
                 }
 
                 if (newNode) {
-                  processedNodes.add(newNode)
                   const [newPath] = path.replaceWith(newNode)
                   addImport(state, "Trans").reference(newPath)
                 }
@@ -156,9 +149,6 @@ export default function ({
                 >,
                 state: PluginPass
               ) {
-                if (processedNodes.has(path.node)) {
-                  return
-                }
                 const macro = new MacroJs(
                   { types: t },
                   {
@@ -179,7 +169,6 @@ export default function ({
                 }
 
                 if (newNode) {
-                  processedNodes.add(newNode)
                   const [newPath] = path.replaceWith(newNode)
 
                   if (macro.needsUseLinguiImport) {
