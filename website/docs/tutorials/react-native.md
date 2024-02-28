@@ -1,3 +1,9 @@
+---
+title: React Native Internationalization (i18n)
+description: Learn how to add internationalization to a React Native application using Lingui.
+keywords: [react native, i18n, internationalization, l10n, localization, translation, tutorial]
+---
+
 # Internationalization of React Native apps
 
 In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.md) for installation and setup instructions.

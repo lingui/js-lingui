@@ -1,3 +1,9 @@
+---
+title: Vite project Internationalization (i18n)
+description: Learn how to set up internationalization with Lingui for your Vite project.
+keywords: [vite, swc, react, config, setup, i18n, internationalization, l10n, localization, translation, tutorial]
+---
+
 # Setup with Vite
 
 The Lingui Vite integration:

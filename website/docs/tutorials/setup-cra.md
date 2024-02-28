@@ -1,3 +1,9 @@
+---
+title: Create React App Internationalization (i18n)
+description: Learn how to set up internationalization with Lingui for your Create React App project.
+keywords: [react, create react app, i18n, internationalization, l10n, localization, translation, tutorial]
+---
+
 # Setup with Create React App
 
 [Create React App](https://github.com/facebook/create-react-app) is a framework for writing React apps with no build configuration. This guide assumes you use Create React App 2.0 (the default version).

@@ -1,3 +1,9 @@
+---
+title: Creating a Custom Message Extractor
+description: Learn how to write a custom message extractor for your project.
+keywords: [extractor, extraction, message, patterns, i18n, internationalization, l10n, catalog]
+---
+
 # Custom Extractor
 
 If your project is not working well with Lingui's Extractor, you can write your custom extractor implementation.

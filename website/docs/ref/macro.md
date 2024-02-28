@@ -1,3 +1,9 @@
+---
+title: Lingui Macro package
+description: Transform JavaScript objects and JSX elements into ICU MessageFormat messages.
+keywords: [babel, swc, macro, transform, i18n, internationalization, l10n, localization, translation, icu]
+---
+
 # Macros
 
 The `@lingui/macro` package transforms JavaScript objects and JSX elements into ICU MessageFormat messages. You can use [Babel macros](#babel) or [SWC plugin](#swc) for this transformation.

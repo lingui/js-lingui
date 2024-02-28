@@ -1,3 +1,25 @@
+---
+title: I18n Examples
+description: Examples of using Lingui for internationalization (i18n) in various frameworks and libraries.
+keywords:
+  [
+    l10n,
+    i18n,
+    localization,
+    internationalization,
+    example,
+    react,
+    create-react-app,
+    vanilla-js,
+    next.js,
+    react-native,
+    babel,
+    swc,
+    vite,
+    rspack,
+  ]
+---
+
 # Examples
 
 To help you get started with Lingui, we've provided some example projects that demonstrate how Lingui can be integrated into various frameworks and libraries. These projects demonstrate Lingui's versatility and show you how to use it in real-world scenarios.

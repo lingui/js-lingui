@@ -1,3 +1,9 @@
+---
+title: Choosing between generated and explicit IDs
+description: Learn about the differences between explicit and generated IDs and how to choose the right approach for your project.
+keywords: [i18n, internationalization, l10n, localization, translation, tutorial, id, generated, explicit]
+---
+
 # Choosing between generated and explicit IDs
 
 In this guide, we will explore the fundamental concepts of explicit and generated IDs, and then delve into a comprehensive comparison, highlighting the benefits and drawbacks of each approach.

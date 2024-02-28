@@ -1,3 +1,9 @@
+---
+title: Pluralization
+description: Learn about pluralization and how to use it in your application with Lingui.
+keywords: [plural, plurals, pluralization, forms, i18n, l10n, internationalization]
+---
+
 # Pluralization
 
 Plurals are essential when dealing with internationalization. [LinguiJS](https://github.com/lingui/js-lingui) uses [CLDR Plural Rules](https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html).

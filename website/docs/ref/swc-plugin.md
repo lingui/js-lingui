@@ -1,3 +1,9 @@
+---
+title: Lingui SWC Plugin
+description: Use Lingui Macros in your SWC project.
+keywords: [swc, plugin, i18n, internationalization, l10n, localization, translation, lingui, macros, next.js, vite]
+---
+
 # SWC Plugin
 
 [SWC](https://swc.rs/) is an extensible Rust-based platform for the next generation of fast developer tools.

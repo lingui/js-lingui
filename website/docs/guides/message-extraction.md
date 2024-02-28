@@ -1,3 +1,9 @@
+---
+title: Message Extraction
+description: Learn about message extraction in i18n and how to use Lingui to extract messages from your application.
+keywords: [extract, extraction, message, patterns, i18n, internationalization, l10n, catalog]
+---
+
 # Message Extraction
 
 Message extraction is an essential step in the internationalization process. It involves analyzing your code and extracting all messages defined in it so that your message catalogs are always up-to-date with the source code.

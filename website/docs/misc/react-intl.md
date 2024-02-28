@@ -1,3 +1,9 @@
+---
+title: Lingui vs react-intl
+description: Comparison of Lingui and react-intl internationalization libraries.
+keywords: [i18n, internationalization, l10n, localization, lingui, react-intl, comparison, alternative]
+---
+
 # Comparison with react-intl
 
 [react-intl](https://github.com/formatjs/formatjs) (Format.js) is popular and widely-used i18n library for React. [Lingui](https://github.com/lingui/js-lingui) is in many ways very similar: both libraries use the same syntax for messages (ICU MessageFormat) and they also have very similar API.
