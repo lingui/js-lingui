@@ -15,6 +15,13 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
+    announcementBar: {
+      id: "follow_x",
+      content:
+        'Follow us on <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/LinguiJS">X (Twitter)</a> to get the latest news and updates!',
+      backgroundColor: "#f36c6c",
+      textColor: "#1a1a1a",
+    },
     navbar: {
       title: "",
       logo: {
