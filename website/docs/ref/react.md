@@ -1,3 +1,8 @@
+---
+title: Lingui React API
+description: Reference for the Lingui React API and components
+---
+
 # React API Reference
 
 Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when locale or messages change.

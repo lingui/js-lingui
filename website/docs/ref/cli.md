@@ -1,3 +1,8 @@
+---
+title: Lingui CLI
+description: Lingui CLI manages locales, extracts messages from source files into message catalogs, and compiles message catalogs for production use
+---
+
 # Lingui CLI
 
 `@lingui/cli` manages locales, extracts messages from source files into message catalogs and compiles message catalogs for production use.

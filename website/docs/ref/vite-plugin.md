@@ -1,3 +1,8 @@
+---
+title: Lingui Vite Plugin
+description: Use Lingui with Vite and compile your message catalogs on the fly
+---
+
 # Vite Plugin
 
 `@lingui/vite-plugin` is a Vite plugin, which compiles Lingui catalogs on the fly and provides additional required configuration for Vite.

@@ -1,3 +1,8 @@
+---
+title: Common i18n patterns in React
+description: Learn about the most common i18n patterns in React and how to use them with Lingui
+---
+
 # Common i18n patterns in React
 
 This page describes the most common i18n patterns in React. It's a follow-up to the [tutorial](/docs/tutorials/react.md) with practical examples. See the [API reference](/docs/ref/react.md) for detailed information about all components.

@@ -1,3 +1,8 @@
+---
+title: Pseudolocalization
+description: Learn how to use pseudolocalization to test the internationalization aspects of your application with Lingui
+---
+
 # Pseudolocalization
 
 There is built in support for [pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization). Pseudolocalization is a method for testing the internationalization aspects of your application by replacing your strings with altered versions and maintaining string readability. It also makes hard coded strings and improperly concatenated strings easy to spot so that they can be properly localized.

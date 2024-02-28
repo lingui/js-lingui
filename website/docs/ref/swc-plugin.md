@@ -1,3 +1,8 @@
+---
+title: Lingui SWC Plugin
+description: Use Lingui Macros in your SWC project
+---
+
 # SWC Plugin
 
 [SWC](https://swc.rs/) is an extensible Rust-based platform for the next generation of fast developer tools.

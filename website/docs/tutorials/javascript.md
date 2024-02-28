@@ -1,3 +1,8 @@
+---
+title: JavaScript Internationalization (i18n)
+description: Learn how to use Lingui's internationalization features in your vanilla JavaScript application
+---
+
 # Internationalization of JavaScript apps
 
 In this tutorial, we'll learn how to use LinguiJS's internationalization features that do not depend on React. We'll take a minimalist approach and cover the main functions from the `@lingui/core` package.

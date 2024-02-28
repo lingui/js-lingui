@@ -1,3 +1,8 @@
+---
+title: Lingui vs i18next
+description: Comparison of Lingui and i18next internationalization libraries
+---
+
 # Comparison with i18next
 
 [i18next](https://www.i18next.com/) is an internationalization-framework written in and for JavaScript. i18next and Lingui are two popular internationalization (i18n) libraries used for translating and localizing JS-based applications. Both libraries have their strengths and weaknesses, and which one is best for a particular project depends on the project's specific needs.

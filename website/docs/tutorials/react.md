@@ -1,3 +1,8 @@
+---
+title: React i18n with Lingui
+description: Learn how to add internationalization to a React application using Lingui
+---
+
 # Internationalization of React apps
 
 In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application.

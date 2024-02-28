@@ -1,5 +1,6 @@
 ---
-title: Internationalization in Javascript
+title: Internationalization Framework for Global Products
+description: Lingui is a universal, clean and readable, lightweight and powerful internationalization framework for global projects
 ---
 
 📖 A readable, automated, and optimized (3 kb) internationalization for JavaScript

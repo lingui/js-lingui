@@ -1,3 +1,8 @@
+---
+title: Vite project Internationalization (i18n)
+description: Learn how to set up internationalization with Lingui for your Vite project
+---
+
 # Setup with Vite
 
 The Lingui Vite integration:

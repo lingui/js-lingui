@@ -1,3 +1,8 @@
+---
+title: Working with Lingui CLI
+description: Learn how to extract, merge and compile message catalogs with Lingui CLI
+---
+
 # Working with LinguiJS CLI
 
 `@lingui/cli` provides the `lingui` command for extracting, merging and compiling message catalogs. Follow [setup instructions](/docs/ref/cli.md) to install required packages.

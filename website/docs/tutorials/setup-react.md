@@ -1,3 +1,8 @@
+---
+title: Setup i18n in a React project
+description: Learn how to add internationalization to a React application using Lingui
+---
+
 # Setup with React project
 
 :::info
