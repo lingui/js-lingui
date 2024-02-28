@@ -71,7 +71,8 @@ describe("macro", function () {
   const getDefaultBabelOptions = (
     macroOpts: LinguiPluginOpts = {},
     isTs: boolean = false,
-    stripId = false
+    stripId = false,
+    transformType: "plugin" | "macro" = "plugin"
   ): TransformOptions => {
     return {
       filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
@@ -80,7 +81,20 @@ describe("macro", function () {
       presets: [],
       plugins: [
         "@babel/plugin-syntax-jsx",
-        [linguiMacroPlugin, macroOpts],
+        transformType === "plugin"
+          ? [linguiMacroPlugin, macroOpts]
+          : [
+              "macros",
+              {
+                lingui: macroOpts,
+                // macro plugin uses package `resolve` to find a path of macro file
+                // this will not follow jest pathMapping and will resolve path from ./build
+                // instead of ./src which makes testing & developing hard.
+                // here we override resolve and provide correct path for testing
+                resolvePath: (source: string) => require.resolve(source),
+              },
+            ],
+
         ...(stripId ? [stripIdPlugin] : []),
       ],
     }
@@ -97,7 +111,7 @@ describe("macro", function () {
   }
 
   Object.keys(testCases).forEach((suiteName) => {
-    describe(suiteName, () => {
+    describe(`${suiteName}`, () => {
       const cases = testCases[suiteName]
 
       const clean = (value: string) =>
@@ -119,57 +133,68 @@ describe("macro", function () {
           },
           index
         ) => {
-          let run = it
-          if (only) run = it.only
-          if (skip) run = it.skip
-          run(name != null ? name : `${suiteName} #${index + 1}`, () => {
-            const babelOptions = getDefaultBabelOptions(
-              macroOpts,
-              useTypescriptPreset,
-              stripId
-            )
-            expect(input || filename).toBeDefined()
-
-            const originalEnv = process.env.NODE_ENV
-
-            if (production) {
-              process.env.NODE_ENV = "production"
-            }
-
-            if (useTypescriptPreset) {
-              babelOptions.presets.push("@babel/preset-typescript")
-            }
-
-            try {
-              if (filename) {
-                const inputPath = path.relative(
-                  process.cwd(),
-                  path.join(__dirname, "fixtures", filename)
+          let group = describe
+          if (only) group = describe.only
+          if (skip) group = describe.skip
+          group(name != null ? name : `${suiteName} #${index + 1}`, () => {
+            ;(["plugin", "macro"] as const).forEach((transformType) => {
+              it(transformType, () => {
+                const babelOptions = getDefaultBabelOptions(
+                  macroOpts,
+                  useTypescriptPreset,
+                  stripId,
+                  transformType
                 )
-                const expectedPath = inputPath.replace(/\.js$/, ".expected.js")
-                const expected = fs
-                  .readFileSync(expectedPath, "utf8")
-                  .replace(/\r/g, "")
-                  .trim()
+                expect(input || filename).toBeDefined()
 
-                const _babelOptions = {
-                  ...babelOptions,
-                  cwd: path.dirname(inputPath),
+                const originalEnv = process.env.NODE_ENV
+
+                if (production) {
+                  process.env.NODE_ENV = "production"
                 }
 
-                const actual = transformFileSync(inputPath, _babelOptions)
-                  .code.replace(/\r/g, "")
-                  .trim()
-                expect(clean(actual)).toEqual(clean(expected))
-              } else {
-                const actual = transformSync(input, babelOptions).code.trim()
+                if (useTypescriptPreset) {
+                  babelOptions.presets.push("@babel/preset-typescript")
+                }
 
-                expect(clean(actual)).toEqual(clean(expected))
-              }
-            } finally {
-              process.env.LINGUI_CONFIG = ""
-              process.env.NODE_ENV = originalEnv
-            }
+                try {
+                  if (filename) {
+                    const inputPath = path.relative(
+                      process.cwd(),
+                      path.join(__dirname, "fixtures", filename)
+                    )
+                    const expectedPath = inputPath.replace(
+                      /\.js$/,
+                      ".expected.js"
+                    )
+                    const expected = fs
+                      .readFileSync(expectedPath, "utf8")
+                      .replace(/\r/g, "")
+                      .trim()
+
+                    const _babelOptions = {
+                      ...babelOptions,
+                      cwd: path.dirname(inputPath),
+                    }
+
+                    const actual = transformFileSync(inputPath, _babelOptions)
+                      .code.replace(/\r/g, "")
+                      .trim()
+                    expect(clean(actual)).toEqual(clean(expected))
+                  } else {
+                    const actual = transformSync(
+                      input,
+                      babelOptions
+                    ).code.trim()
+
+                    expect(clean(actual)).toEqual(clean(expected))
+                  }
+                } finally {
+                  process.env.LINGUI_CONFIG = ""
+                  process.env.NODE_ENV = originalEnv
+                }
+              })
+            })
           })
         }
       )
