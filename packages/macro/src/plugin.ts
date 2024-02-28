@@ -1,10 +1,14 @@
 import type { PluginObj, Visitor, PluginPass } from "@babel/core"
-import * as babelTypes from "@babel/types"
+import type * as babelTypes from "@babel/types"
 import MacroJSX from "./macroJsx"
 import { NodePath } from "@babel/traverse"
 import MacroJs from "./macroJs"
 import { MACRO_PACKAGE } from "./constants"
-import { LinguiConfigNormalized, getConfig as loadConfig } from "@lingui/conf"
+import {
+  type LinguiConfigNormalized,
+  getConfig as loadConfig,
+} from "@lingui/conf"
+import { Program, Identifier } from "@babel/types"
 
 let config: LinguiConfigNormalized
 
@@ -33,184 +37,168 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   )
 }
 
+type LinguiSymbol = "Trans" | "useLingui" | "i18n"
+
 export default function ({
   types: t,
 }: {
   types: typeof babelTypes
 }): PluginObj {
-  let uniqI18nName: string
-  let uniqTransName: string
-  let uniqUseLinguiName: string
-
-  let needsI18nImport = false
-  let needsUseLinguiImport = false
-  let needsTransImport = false
-
-  // todo: check if babel re-execute this function on each file
   const processedNodes = new Set<babelTypes.Node>()
 
-  function addImport(
-    path: NodePath,
-    module: string,
-    importName: string,
-    bindingName: string
-  ) {
-    path.insertAfter(
-      t.importDeclaration(
-        [
-          t.importSpecifier(
-            t.identifier(bindingName),
-            t.identifier(importName)
-          ),
-        ],
-        t.stringLiteral(module)
+  function addImport(state: PluginPass, name: LinguiSymbol) {
+    const path = state.get(
+      "macroImport"
+    ) as NodePath<babelTypes.ImportDeclaration>
+
+    const config = state.get("linguiConfig") as LinguiConfigNormalized
+
+    if (!state.get("has_import_" + name)) {
+      state.set("has_import_" + name, true)
+      const [moduleSource, importName] = config.runtimeConfigModule[name]
+
+      const [newPath] = path.insertAfter(
+        t.importDeclaration(
+          [
+            t.importSpecifier(
+              getSymbolIdentifier(state, name),
+              t.identifier(importName)
+            ),
+          ],
+          t.stringLiteral(moduleSource)
+        )
       )
+
+      path.parentPath.scope.registerDeclaration(newPath)
+    }
+
+    return path.parentPath.scope.getBinding(
+      getSymbolIdentifier(state, name).name
     )
   }
 
+  function getMacroImports(path: NodePath<Program>) {
+    return path.get("body").filter((statement) => {
+      return (
+        statement.isImportDeclaration() &&
+        statement.get("source").node.value === MACRO_PACKAGE
+      )
+    })
+  }
+
+  function getSymbolIdentifier(
+    state: PluginPass,
+    name: LinguiSymbol
+  ): Identifier {
+    return state.get("linguiIdentifiers")[name]
+  }
+
   return {
-    pre(state) {
-      console.log(state.opts as LinguiPluginOpts)
-    },
+    name: "lingui-macro-plugin",
     visitor: {
       Program: {
         enter(path, state) {
-          const macroImports = path.get("body").filter((statement) => {
-            return (
-              statement.isImportDeclaration() &&
-              statement.get("source").node.value === MACRO_PACKAGE
-            )
-          })
+          const macroImports = getMacroImports(path)
 
           if (!macroImports.length) {
-            return path.stop()
+            return
           }
 
+          state.set("macroImport", macroImports[0])
+
           state.set(
-            "config",
+            "linguiConfig",
             getConfig((state.opts as LinguiPluginOpts).linguiConfig)
           )
 
-          uniqI18nName = path.scope.generateUid("i18n")
-          uniqTransName = path.scope.generateUid("Trans")
-          uniqUseLinguiName = path.scope.generateUid("useLingui")
-        },
-        exit(path, state) {
-          const macroImports = path.get("body").filter((statement) => {
-            return (
-              statement.isImportDeclaration() &&
-              statement.get("source").node.value === MACRO_PACKAGE
-            )
+          state.set("linguiIdentifiers", {
+            i18n: path.scope.generateUidIdentifier("i18n"),
+            Trans: path.scope.generateUidIdentifier("Trans"),
+            useLingui: path.scope.generateUidIdentifier("useLingui"),
           })
 
-          const config = getConfig(
-            (state.opts as LinguiPluginOpts).linguiConfig
+          path.traverse(
+            {
+              JSXElement(path, state) {
+                if (processedNodes.has(path.node)) {
+                  return
+                }
+
+                const macro = new MacroJSX(
+                  { types: t },
+                  {
+                    transImportName: getSymbolIdentifier(state, "Trans").name,
+                    stripNonEssentialProps:
+                      process.env.NODE_ENV == "production" &&
+                      !(state.opts as LinguiPluginOpts).extract,
+                  }
+                )
+
+                let newNode: false | babelTypes.Node
+
+                try {
+                  newNode = macro.replacePath(path)
+                } catch (e) {
+                  reportUnsupportedSyntax(path, e as Error)
+                }
+
+                if (newNode) {
+                  processedNodes.add(newNode)
+                  const [newPath] = path.replaceWith(newNode)
+                  addImport(state, "Trans").reference(newPath)
+                }
+              },
+
+              "CallExpression|TaggedTemplateExpression"(
+                path: NodePath<
+                  | babelTypes.CallExpression
+                  | babelTypes.TaggedTemplateExpression
+                >,
+                state: PluginPass
+              ) {
+                if (processedNodes.has(path.node)) {
+                  return
+                }
+                const macro = new MacroJs(
+                  { types: t },
+                  {
+                    stripNonEssentialProps:
+                      process.env.NODE_ENV == "production" &&
+                      !(state.opts as LinguiPluginOpts).extract,
+                    i18nImportName: getSymbolIdentifier(state, "i18n").name,
+                    useLinguiImportName: getSymbolIdentifier(state, "useLingui")
+                      .name,
+                  }
+                )
+                let newNode: false | babelTypes.Node
+
+                try {
+                  newNode = macro.replacePath(path)
+                } catch (e) {
+                  reportUnsupportedSyntax(path, e as Error)
+                }
+
+                if (newNode) {
+                  processedNodes.add(newNode)
+                  const [newPath] = path.replaceWith(newNode)
+
+                  if (macro.needsUseLinguiImport) {
+                    addImport(state, "useLingui").reference(newPath)
+                  }
+
+                  if (macro.needsI18nImport) {
+                    addImport(state, "i18n").reference(newPath)
+                  }
+                }
+              },
+            } as Visitor<PluginPass>,
+            state
           )
-
-          const {
-            i18nImportModule,
-            i18nImportName,
-            TransImportModule,
-            TransImportName,
-            useLinguiImportModule,
-            useLinguiImportName,
-          } = config.runtimeConfigModule
-
-          if (needsI18nImport) {
-            addImport(
-              macroImports[0],
-              i18nImportModule,
-              i18nImportName,
-              uniqI18nName
-            )
-          }
-
-          if (needsUseLinguiImport) {
-            addImport(
-              macroImports[0],
-              useLinguiImportModule,
-              useLinguiImportName,
-              uniqUseLinguiName
-            )
-          }
-
-          if (needsTransImport) {
-            addImport(
-              macroImports[0],
-              TransImportModule,
-              TransImportName,
-              uniqTransName
-            )
-          }
-
+        },
+        exit(path, state) {
+          const macroImports = getMacroImports(path)
           macroImports.forEach((path) => path.remove())
         },
-      },
-      JSXElement(path, state) {
-        if (processedNodes.has(path.node)) {
-          return
-        }
-
-        const macro = new MacroJSX(
-          { types: t },
-          {
-            transImportName: uniqTransName,
-            stripNonEssentialProps:
-              process.env.NODE_ENV == "production" &&
-              !(state.opts as LinguiPluginOpts).extract,
-          }
-        )
-
-        let newNode: false | babelTypes.Node
-
-        try {
-          newNode = macro.replacePath(path)
-        } catch (e) {
-          reportUnsupportedSyntax(path, e as Error)
-        }
-
-        if (newNode) {
-          processedNodes.add(newNode)
-          path.replaceWith(newNode)
-          needsTransImport = true
-        }
-      },
-
-      "CallExpression|TaggedTemplateExpression"(
-        path: NodePath<
-          babelTypes.CallExpression | babelTypes.TaggedTemplateExpression
-        >,
-        state: PluginPass
-      ) {
-        if (processedNodes.has(path.node)) {
-          return
-        }
-        const macro = new MacroJs(
-          { types: t },
-          {
-            stripNonEssentialProps:
-              process.env.NODE_ENV == "production" &&
-              !(state.opts as LinguiPluginOpts).extract,
-            i18nImportName: uniqI18nName,
-            useLinguiImportName: uniqUseLinguiName,
-          }
-        )
-        let newNode: false | babelTypes.Node
-
-        try {
-          newNode = macro.replacePath(path)
-        } catch (e) {
-          reportUnsupportedSyntax(path, e as Error)
-        }
-
-        if (newNode) {
-          processedNodes.add(newNode)
-          path.replaceWith(newNode)
-        }
-
-        needsI18nImport = needsI18nImport || macro.needsI18nImport
-        needsUseLinguiImport =
-          needsUseLinguiImport || macro.needsUseLinguiImport
       },
     } as Visitor<PluginPass>,
   }

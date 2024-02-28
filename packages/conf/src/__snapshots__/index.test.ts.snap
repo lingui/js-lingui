@@ -53,12 +53,18 @@ exports[`@lingui/conf should return default config 1`] = `
   pseudoLocale: ,
   rootDir: .,
   runtimeConfigModule: {
-    TransImportModule: @lingui/react,
-    TransImportName: Trans,
-    i18nImportModule: @lingui/core,
-    i18nImportName: i18n,
-    useLinguiImportModule: @lingui/react,
-    useLinguiImportName: useLingui,
+    Trans: [
+      @lingui/react,
+      Trans,
+    ],
+    i18n: [
+      @lingui/core,
+      i18n,
+    ],
+    useLingui: [
+      @lingui/react,
+      useLingui,
+    ],
   },
   service: {
     apiKey: ,

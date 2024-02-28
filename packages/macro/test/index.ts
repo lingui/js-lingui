@@ -7,7 +7,7 @@ import {
   transformSync,
 } from "@babel/core"
 import prettier from "prettier"
-import { LinguiPluginOpts } from "../src/plugin"
+import linguiMacroPlugin, { LinguiPluginOpts } from "../src/plugin"
 import {
   JSXAttribute,
   jsxExpressionContainer,
@@ -76,20 +76,11 @@ describe("macro", function () {
     return {
       filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
       configFile: false,
+      babelrc: false,
       presets: [],
       plugins: [
         "@babel/plugin-syntax-jsx",
-        [
-          "macros",
-          {
-            lingui: macroOpts,
-            // macro plugin uses package `resolve` to find a path of macro file
-            // this will not follow jest pathMapping and will resolve path from ./build
-            // instead of ./src which makes testing & developing hard.
-            // here we override resolve and provide correct path for testing
-            resolvePath: (source: string) => require.resolve(source),
-          },
-        ],
+        [linguiMacroPlugin, macroOpts],
         ...(stripId ? [stripIdPlugin] : []),
       ],
     }

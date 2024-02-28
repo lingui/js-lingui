@@ -57,6 +57,7 @@
     "@lingui/conf": "4.7.1",
     "@lingui/core": "4.7.1",
     "@lingui/format-po": "4.7.1",
+    "@lingui/macro": "4.7.1",
     "@lingui/message-utils": "4.7.1",
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
@@ -80,7 +81,6 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "@lingui/macro": "4.7.1",
     "@types/convert-source-map": "^2.0.0",
     "@types/glob": "^8.1.0",
     "@types/micromatch": "^4.0.1",

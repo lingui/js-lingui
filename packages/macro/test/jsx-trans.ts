@@ -375,7 +375,6 @@ const cases: TestCase[] = [
     expected: `
         import { Trans as _Trans } from "@lingui/react";
         <_Trans id="msg.hello" />;
-        export {};
       `,
   },
   {
@@ -543,7 +542,6 @@ const cases: TestCase[] = [
     expected: `
         import { Trans as _Trans } from "@lingui/react";
         const cmp = <_Trans id={"<stripped>"} message={"Hello"} />;
-        export {};
       `,
   },
 ]

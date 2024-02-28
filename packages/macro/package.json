@@ -54,6 +54,14 @@
       "import": {
         "types": "./dist/index.d.ts"
       }
+    },
+    "./plugin": {
+      "require": {
+        "types": "./dist/plugin.cjs"
+      },
+      "import": {
+        "types": "./dist/plugin.mjs"
+      }
     }
   },
   "files": [
@@ -63,6 +71,7 @@
     "index.d.ts"
   ],
   "dependencies": {
+    "@babel/core": "7.20.12",
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
     "@lingui/conf": "4.7.1",
@@ -73,8 +82,12 @@
     "@lingui/react": "^4.0.0",
     "babel-plugin-macros": "2 || 3"
   },
+  "peerDependenciesMeta": {
+    "babel-plugin-macros": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "@babel/core": "7.20.12",
     "@babel/parser": "7.20.15",
     "@babel/traverse": "7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",

@@ -44,6 +44,7 @@
     "@babel/traverse": "7.20.12",
     "@babel/types": "^7.20.7",
     "@lingui/jest-mocks": "*",
+    "@lingui/macro": "*",
     "unbuild": "2.0.0"
   }
 }

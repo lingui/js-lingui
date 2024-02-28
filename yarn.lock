@@ -3226,6 +3226,7 @@ __metadata:
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
     "@lingui/jest-mocks": "*"
+    "@lingui/macro": "*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3411,7 +3412,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.7.1, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@*, @lingui/macro@4.7.1, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -3430,6 +3431,9 @@ __metadata:
   peerDependencies:
     "@lingui/react": ^4.0.0
     babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
