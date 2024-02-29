@@ -452,8 +452,8 @@ const cases: TestCase[] = [
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
     expected: `
-        import { Trans as _Trans } from "@lingui/react";
         import { i18n as _i18n } from "@lingui/core";
+        import { Trans as _Trans } from "@lingui/react";
         <_Trans
           id={"<stripped>"}
           message={"Read <0>more</0>"}
