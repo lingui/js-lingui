@@ -306,7 +306,7 @@ For more info about CLI, checkout the [CLI tutorial](/docs/tutorials/cli.md).
 
 ## Non-JSX Translation
 
-Until now learned how to translate string inside a JSX elements, but what if we want to translate something that is not in a JSX? Or pass a translation as prop to another component?
+So far we learned how to translate string inside a JSX element, but what if we want to translate something that is not inside a JSX? Or pass a translation as a prop to another component?
 
 We have this piece of code in our example:
 
@@ -332,7 +332,7 @@ const markAsRead = () => {
 
 Now the `Marked as read.` message would be picked up by extractor, and available for translation in the catalog.
 
-You also could pass variables and use any other macro in the message.
+You could also pass variables and use any other macro in the message.
 
 ```jsx
 const { t } = useLingui();
