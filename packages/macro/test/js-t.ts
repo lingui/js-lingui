@@ -519,6 +519,59 @@ _i18n._(
 
       `,
   },
+  {
+    name: "should correctly process nested macro when referenced from different imports",
+    input: `
+        import { t } from '@lingui/macro'
+        import { plural } from '@lingui/macro'
+        t\`Ola! \${plural(count, {one: "1 user", many: "# users"})} is required\`
+      `,
+    expected: `
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "EUO+Gb",
+    message: "Ola! {count, plural, one {1 user} many {# users}} is required",
+    values: {
+      count: count,
+    },
+  }
+);
+      `,
+  },
+  {
+    name: "should correctly process nested macro when referenced from different imports 2",
+    input: `
+        import { t as t1, plural as plural1 } from '@lingui/macro'
+        import { plural as plural2, t as t2 } from '@lingui/macro'
+        t1\`Ola!  \${plural2(count, {one: "1 user", many: "# users"})} Ola!\`
+        t2\`Ola! \${plural1(count, {one: "1 user", many: "# users"})} Ola!\`
+      `,
+    expected: `
+    import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "aui5Gr",
+    message: "Ola!  {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    id: "wJ7AD9",
+    message: "Ola! {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+`,
+  },
 ]
 
 export default cases
