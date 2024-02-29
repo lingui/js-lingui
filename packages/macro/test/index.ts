@@ -69,10 +69,10 @@ describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const getDefaultBabelOptions = (
+    transformType: "plugin" | "macro" = "plugin",
     macroOpts: LinguiPluginOpts = {},
     isTs: boolean = false,
-    stripId = false,
-    transformType: "plugin" | "macro" = "plugin"
+    stripId = false
   ): TransformOptions => {
     return {
       filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
@@ -100,15 +100,33 @@ describe("macro", function () {
     }
   }
 
-  // return function, so we can test exceptions
-  const transformCode = (code: string) => () => {
-    try {
-      return transformSync(code, getDefaultBabelOptions()).code.trim()
-    } catch (e) {
-      ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
-      throw e
-    }
+  const transformTypes = ["plugin", "macro"] as const
+
+  function forTransforms(
+    run: (_transformCode: (code: string) => () => string) => any
+  ) {
+    return () =>
+      transformTypes.forEach((transformType) => {
+        test(transformType, () => {
+          return run((code) => transformCode(code, transformType))
+        })
+      })
   }
+
+  // return function, so we can test exceptions
+  const transformCode =
+    (code: string, transformType: "plugin" | "macro" = "plugin") =>
+    () => {
+      try {
+        return transformSync(
+          code,
+          getDefaultBabelOptions(transformType)
+        ).code.trim()
+      } catch (e) {
+        ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
+        throw e
+      }
+    }
 
   Object.keys(testCases).forEach((suiteName) => {
     describe(`${suiteName}`, () => {
@@ -137,13 +155,13 @@ describe("macro", function () {
           if (only) group = describe.only
           if (skip) group = describe.skip
           group(name != null ? name : `${suiteName} #${index + 1}`, () => {
-            ;(["plugin", "macro"] as const).forEach((transformType) => {
+            transformTypes.forEach((transformType) => {
               it(transformType, () => {
                 const babelOptions = getDefaultBabelOptions(
+                  transformType,
                   macroOpts,
                   useTypescriptPreset,
-                  stripId,
-                  transformType
+                  stripId
                 )
                 expect(input || filename).toBeDefined()
 
@@ -341,46 +359,58 @@ describe("macro", function () {
   })
 
   describe("useLingui validation", () => {
-    it("Should throw if used not in the variable declaration", () => {
-      const code = `
+    describe(
+      "Should throw if used not in the variable declaration",
+      forTransforms((transformCode) => {
+        const code = `
       import {useLingui} from "@lingui/macro";
       
       useLingui()
        
        `
-      expect(transformCode(code)).toThrowError(
-        "Error: `useLingui` macro must be used in variable declaration."
-      )
-    })
+        expect(transformCode(code)).toThrowError(
+          "Error: `useLingui` macro must be used in variable declaration."
+        )
+      })
+    )
 
-    it("Should throw if not used with destructuring", () => {
-      const code = `
+    describe(
+      "Should throw if not used with destructuring",
+      forTransforms((transformCode) => {
+        const code = `
       import {useLingui} from "@lingui/macro";
       
       const lingui = useLingui()
        
        `
-      expect(transformCode(code)).toThrowError(
-        "You have to destructure `t` when using the `useLingui` macro"
-      )
-    })
+        expect(transformCode(code)).toThrowError(
+          "You have to destructure `t` when using the `useLingui` macro"
+        )
+      })
+    )
   })
 
   describe("Trans validation", () => {
-    it("Should throw if spread used in children", () => {
-      const code = `
+    describe(
+      "Should throw if spread used in children",
+      forTransforms((transformCode) => {
+        const code = `
         import { Trans } from '@lingui/macro';
         <Trans>{...spread}</Trans>
        `
-      expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
-    })
+        expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
+      })
+    )
 
-    it("Should throw if used without children", () => {
-      const code = `
+    describe(
+      "Should throw if used without children",
+      forTransforms((transformCode) => {
+        const code = `
       import { Trans } from '@lingui/macro';
       <Trans id={msg} />;
        `
-      expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
-    })
+        expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
+      })
+    )
   })
 })
