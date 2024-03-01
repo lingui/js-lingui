@@ -12,6 +12,7 @@ import {
   Plural,
   Select,
   SelectOrdinal,
+  useLingui,
 } from "../index"
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React from "react"
@@ -338,3 +339,17 @@ m = (
     other={<Trans>...</Trans>}
   />
 )
+
+////////////////////////
+//// React useLingui()
+////////////////////////
+function MyComponent() {
+  const { t, i18n } = useLingui()
+
+  expectType<string>(t`Hello world`)
+  expectType<string>(t({ message: "my message" }))
+  // @ts-expect-error: you could not pass a custom instance here
+  t(i18n)({ message: "my message" })
+
+  expectType<I18n>(i18n)
+}

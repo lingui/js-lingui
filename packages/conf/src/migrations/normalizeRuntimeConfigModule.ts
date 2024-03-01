@@ -9,12 +9,18 @@ const getSymbolSource = (
   const name = defaults[1]
   if (Array.isArray(config)) {
     if (name === "i18n") {
-      return config
+      return config as ModuleSrc
     }
     return defaults
   }
 
-  return config[name] || defaults
+  const override = (config as any)[name] as ModuleSrc
+
+  if (!override) {
+    return defaults
+  }
+
+  return [override[0], override[1] || name]
 }
 
 export function normalizeRuntimeConfigModule(
@@ -28,6 +34,10 @@ export function normalizeRuntimeConfigModule(
     ["@lingui/react", "Trans"],
     config.runtimeConfigModule
   )
+  const [useLinguiImportModule, useLinguiImportName] = getSymbolSource(
+    ["@lingui/react", "useLingui"],
+    config.runtimeConfigModule
+  )
 
   return {
     ...config,
@@ -36,6 +46,8 @@ export function normalizeRuntimeConfigModule(
       i18nImportName,
       TransImportModule,
       TransImportName,
+      useLinguiImportModule,
+      useLinguiImportName,
     } satisfies LinguiConfigNormalized["runtimeConfigModule"],
   }
 }

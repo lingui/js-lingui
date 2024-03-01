@@ -4,14 +4,7 @@ import { getConfig as loadConfig, LinguiConfigNormalized } from "@lingui/conf"
 import MacroJS from "./macroJs"
 import MacroJSX from "./macroJsx"
 import { NodePath } from "@babel/traverse"
-import {
-  ImportDeclaration,
-  Identifier,
-  isImportSpecifier,
-  isIdentifier,
-  JSXIdentifier,
-} from "@babel/types"
-
+import * as t from "@babel/types"
 export type LinguiMacroOpts = {
   // explicitly set by CLI when running extraction process
   extract?: boolean
@@ -23,6 +16,7 @@ const jsMacroTags = new Set([
   "msg",
   "arg",
   "t",
+  "useLingui",
   "plural",
   "select",
   "selectOrdinal",
@@ -45,16 +39,23 @@ function getConfig(_config?: LinguiConfigNormalized) {
 function macro({ references, state, babel, config }: MacroParams) {
   const opts: LinguiMacroOpts = config as LinguiMacroOpts
 
+  const body = state.file.path.node.body
   const {
     i18nImportModule,
     i18nImportName,
     TransImportModule,
     TransImportName,
+    useLinguiImportModule,
+    useLinguiImportName,
   } = getConfig(opts.linguiConfig).runtimeConfigModule
 
   const jsxNodes = new Set<NodePath>()
   const jsNodes = new Set<NodePath>()
   let needsI18nImport = false
+  let needsUseLinguiImport = false
+
+  // create unique name for all _t, must be outside the loop
+  const uniq_tIdentifier = state.file.scope.generateUidIdentifier("_t")
 
   let nameMap = new Map<string, string>()
   Object.keys(references).forEach((tagName) => {
@@ -62,15 +63,25 @@ function macro({ references, state, babel, config }: MacroParams) {
 
     if (jsMacroTags.has(tagName)) {
       nodes.forEach((path) => {
-        nameMap.set(tagName, (path.node as Identifier).name)
-        jsNodes.add(path.parentPath)
+        if (tagName !== "useLingui") {
+          nameMap.set(tagName, (path.node as t.Identifier).name)
+          jsNodes.add(path.parentPath)
+        } else {
+          needsUseLinguiImport = true
+          nameMap.set("_t", uniq_tIdentifier.name)
+          processUseLingui(
+            path,
+            useLinguiImportName,
+            uniq_tIdentifier.name
+          )?.forEach((n) => jsNodes.add(n))
+        }
       })
     } else if (jsxMacroTags.has(tagName)) {
       // babel-plugin-macros return JSXIdentifier nodes.
       // Which is for every JSX element would be presented twice (opening / close)
       // Here we're taking JSXElement and dedupe it.
       nodes.forEach((path) => {
-        nameMap.set(tagName, (path.node as JSXIdentifier).name)
+        nameMap.set(tagName, (path.node as t.JSXIdentifier).name)
 
         // identifier.openingElement.jsxElement
         jsxNodes.add(path.parentPath.parentPath)
@@ -92,7 +103,9 @@ function macro({ references, state, babel, config }: MacroParams) {
       nameMap,
     })
     try {
-      if (macro.replacePath(path)) needsI18nImport = true
+      macro.replacePath(path)
+      needsI18nImport = needsI18nImport || macro.needsI18nImport
+      needsUseLinguiImport = needsUseLinguiImport || macro.needsUseLinguiImport
     } catch (e) {
       reportUnsupportedSyntax(path, e as Error)
     }
@@ -110,54 +123,133 @@ function macro({ references, state, babel, config }: MacroParams) {
     }
   })
 
+  if (needsUseLinguiImport) {
+    addImport(babel, body, useLinguiImportModule, useLinguiImportName)
+  }
+
   if (needsI18nImport) {
-    addImport(babel, state, i18nImportModule, i18nImportName)
+    addImport(babel, body, i18nImportModule, i18nImportName)
   }
 
   if (jsxNodes.size) {
-    addImport(babel, state, TransImportModule, TransImportName)
+    addImport(babel, body, TransImportModule, TransImportName)
   }
 }
 
 function reportUnsupportedSyntax(path: NodePath, e: Error) {
   throw path.buildCodeFrameError(
-    `Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros. 
+    `Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
- 
+
  Error: ${e.message}`
   )
 }
 
+/**
+ * Pre-process useLingui macro
+ * 1. Get references to destructured t function for macro processing
+ * 2. Transform usage to non-macro useLingui
+ *
+ * @returns Array of paths to useLingui's t macro
+ */
+function processUseLingui(
+  path: NodePath,
+  useLinguiName: string,
+  newIdentifier: string
+): NodePath[] | null {
+  if (!path.parentPath.parentPath.isVariableDeclarator()) {
+    reportUnsupportedSyntax(
+      path,
+      new Error(
+        `\`useLingui\` macro must be used in variable declaration.
+        
+ Example:
+
+ const { t } = useLingui()
+`
+      )
+    )
+    return null
+  }
+
+  const varDec = path.parentPath.parentPath.node
+  const _property = t.isObjectPattern(varDec.id)
+    ? varDec.id.properties.find(
+        (
+          property
+        ): property is t.ObjectProperty & {
+          key: t.Identifier
+          value: t.Identifier
+        } =>
+          t.isObjectProperty(property) &&
+          t.isIdentifier(property.key) &&
+          t.isIdentifier(property.value) &&
+          property.key.name == "t"
+      )
+    : null
+
+  if (!_property) {
+    reportUnsupportedSyntax(
+      path.parentPath.parentPath,
+      new Error(
+        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
+ const { t } = useLingui()
+ or
+ const { t: _ } = useLingui()
+ `
+      )
+    )
+    return null
+  }
+
+  if (t.isIdentifier(path.node)) {
+    // rename to standard useLingui
+    path.scope.rename(path.node.name, useLinguiName)
+  }
+
+  // rename to standard useLingui _
+  _property.key.name = "_"
+  path.scope.rename(_property.value.name, newIdentifier)
+
+  return path.scope
+    .getBinding(_property.value.name)
+    ?.referencePaths.filter(
+      // dont process array expression to allow use in dependency arrays
+      (path) => !path.parentPath.isArrayExpression()
+    )
+    .map((path) => path.parentPath)
+}
+
 function addImport(
   babel: MacroParams["babel"],
-  state: MacroParams["state"],
+  body: t.Statement[],
   module: string,
   importName: string
 ) {
   const { types: t } = babel
 
-  const linguiImport = state.file.path.node.body.find(
+  const linguiImport = body.find(
     (importNode) =>
       t.isImportDeclaration(importNode) &&
       importNode.source.value === module &&
       // https://github.com/lingui/js-lingui/issues/777
       importNode.importKind !== "type"
-  ) as ImportDeclaration
+  ) as t.ImportDeclaration
 
   const tIdentifier = t.identifier(importName)
   // Handle adding the import or altering the existing import
   if (linguiImport) {
     if (
-      linguiImport.specifiers.findIndex(
+      !linguiImport.specifiers.find(
         (specifier) =>
-          isImportSpecifier(specifier) &&
-          isIdentifier(specifier.imported, { name: importName })
-      ) === -1
+          t.isImportSpecifier(specifier) &&
+          t.isIdentifier(specifier.imported, { name: importName })
+      )
     ) {
       linguiImport.specifiers.push(t.importSpecifier(tIdentifier, tIdentifier))
     }
   } else {
-    state.file.path.node.body.unshift(
+    body.unshift(
       t.importDeclaration(
         [t.importSpecifier(tIdentifier, tIdentifier)],
         t.stringLiteral(module)

@@ -111,7 +111,7 @@ type LocaleObject = {
 
 export type FallbackLocales = LocaleObject
 
-type ModuleSource = [string, string?]
+type ModuleSource = readonly [module: string, specifier?: string]
 
 type CatalogService = {
   name: string
@@ -207,7 +207,9 @@ export type LinguiConfig = {
   orderBy?: OrderBy
   pseudoLocale?: string
   rootDir?: string
-  runtimeConfigModule?: ModuleSource | { [symbolName: string]: ModuleSource }
+  runtimeConfigModule?:
+    | ModuleSource
+    | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
   sourceLocale?: string
   service?: CatalogService
   experimental?: {
@@ -225,5 +227,7 @@ export type LinguiConfigNormalized = Omit<
     i18nImportName: string
     TransImportModule: string
     TransImportName: string
+    useLinguiImportModule: string
+    useLinguiImportName: string
   }
 }
