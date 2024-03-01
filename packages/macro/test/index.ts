@@ -40,6 +40,7 @@ const testCases: Record<string, TestCase[]> = {
   "jsx-plural": require("./jsx-plural").default,
   "jsx-selectOrdinal": require("./jsx-selectOrdinal").default,
   "js-defineMessage": require("./js-defineMessage").default,
+  "js-useLingui": require("./js-useLingui").default,
 }
 
 function stripIdPlugin(): PluginObj {
@@ -320,6 +321,32 @@ describe("macro", function () {
         const ordinal = `<SelectOrdinal value={value} three="Invalid" one="st" other="rd" />`
         expect(transformCode(ordinal)).toThrowErrorMatchingSnapshot()
       })
+    })
+  })
+
+  describe("useLingui", () => {
+    it("Should throw if used not in the variable declaration", () => {
+      const code = `
+      import {useLingui} from "@lingui/macro";
+      
+      useLingui()
+       
+       `
+      expect(transformCode(code)).toThrowError(
+        "Error: `useLingui` macro must be used in variable declaration."
+      )
+    })
+
+    it("Should throw if not used with destructuring", () => {
+      const code = `
+      import {useLingui} from "@lingui/macro";
+      
+      const lingui = useLingui()
+       
+       `
+      expect(transformCode(code)).toThrowError(
+        "You have to destructure `t` when using the `useLingui` macro"
+      )
     })
   })
 })

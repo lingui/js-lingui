@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import type { ReactNode, VFC, FC } from "react"
 import type { I18n, MessageDescriptor } from "@lingui/core"
-import type { TransRenderCallbackOrComponent } from "@lingui/react"
+import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -316,3 +316,36 @@ export const SelectOrdinal: VFC<PluralChoiceProps>
  * ```
  */
 export const Select: VFC<SelectChoiceProps>
+
+export function _t(descriptor: MacroMessageDescriptor): string
+export function _t(
+  literals: TemplateStringsArray,
+  ...placeholders: any[]
+): string
+
+/**
+ *
+ * Macro version of useLingui replaces _ function with `t` macro function which is bound to i18n passed from React.Context
+ *
+ * Returned `t` macro function has all the same signatures as global `t`
+ *
+ * @example
+ * ```
+ * const { t } = useLingui();
+ * const message = t`Text`;
+ * ```
+ *
+ * @example
+ * ```
+ * const { i18n, t } = useLingui();
+ * const locale = i18n.locale;
+ * const message = t({
+ *   id: "msg.hello",
+ *   comment: "Greetings at the homepage",
+ *   message: `Hello ${name}`,
+ * });
+ * ```
+ */
+export function useLingui(): Omit<I18nContext, "_"> & {
+  t: typeof _t
+}

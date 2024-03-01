@@ -58,7 +58,7 @@ i18n.activate("en");
 
 ## Localizing your app
 
-Once that is done, we can go ahead and use it! Wrap you text in [`t`](/docs/ref/macro.md#t) macro and pass it to [`i18n._()`](/docs/ref/core.md#i18n._) method:
+Once that is done, we can go ahead and use it! Wrap your text in [`t`](/docs/ref/macro.md#t) macro:
 
 ```js
 import { t } from "@lingui/macro";
