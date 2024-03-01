@@ -363,10 +363,10 @@ import { Trans } from "@lingui/react";
   })
 
   it("should extract all messages from JSX files (macros)", () => {
-    // return expectNoConsole(() => {
-    const messages = transform("jsx-with-macros.js")
-    expect(messages).toMatchSnapshot()
-    // })
+    return expectNoConsole(() => {
+      const messages = transform("jsx-with-macros.js")
+      expect(messages).toMatchSnapshot()
+    })
   })
 
   it("should extract Plural messages from JSX files when there's no Trans tag (integration)", () => {
