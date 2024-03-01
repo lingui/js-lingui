@@ -58,7 +58,7 @@ As you can see, it's a simple mailbox application with only one page.
 
 ## Installing LinguiJS
 
-Follow setup guide either for projects using [LinguiJS with Create React App](/docs/tutorials/setup-cra.md) or for general [React projects](/docs/tutorials/setup-react.md).
+Follow the [React projects](/docs/tutorials/setup-react.md) setup guide.
 
 ## Setup
 

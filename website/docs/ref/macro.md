@@ -897,7 +897,7 @@ Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which 
 
 > MessageFormat: `{arg, plural, ...forms}`
 
-Props of [`Plural`](/docs/ref/macro.md#plural-1) macro are transformed into [`plural`](/docs/ref/message-format.md) format.
+Props of [`Plural`](/docs/ref/macro.md#plural-1) macro are transformed into [`plural`](/docs/guides/message-format.md) format.
 
 ```jsx
 import { Plural } from "@lingui/macro";
@@ -964,7 +964,7 @@ Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or 
 
 > MessageFormat: `{arg, selectordinal, ...forms}`
 
-Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/ref/message-format.md) format:
+Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/guides/message-format.md) format:
 
 ```jsx
 import { SelectOrdinal } from "@lingui/macro";
@@ -997,7 +997,7 @@ Use `<SelectOrdinal>` inside `<Trans>` macro if you want to provide `id`, `conte
 The select cases except `other` should be prefixed with underscore: `_male` or `_female`.
 :::
 
-Props of `Select` macro are transformed into [`select`](/docs/ref/message-format.md) format:
+Props of `Select` macro are transformed into [`select`](/docs/guides/message-format.md) format:
 
 ```jsx
 import { Select } from "@lingui/macro";

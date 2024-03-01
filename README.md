@@ -53,14 +53,12 @@ Lingui is an easy yet powerful internationalization framework for global project
 
 ### Install
 
-- [Create React App][TutorialSetupCRA]
 - [React projects][TutorialSetupReact]
 - [Vite project][SetupVite]
 
 ### Tutorials
 
 - [React][TutorialReact]
-- [Vue.js][TutorialVue]
 - [React Native][TutorialReactNative]
 - [Plain JavaScript][TutorialJavaScript]
 - [Working with Command Line Tool][TutorialCLI]
@@ -69,6 +67,7 @@ Lingui is an easy yet powerful internationalization framework for global project
 
 - [SWC Plugin][SWCPlugin]
 - [Vite Plugin][VitePlugin]
+- [ESLint Plugin](ESLintPlugin)
 
 If you're a react-intl user, check out [a comparison of react-intl and Lingui](https://lingui.dev/misc/react-intl).
 
@@ -128,15 +127,14 @@ The project is licensed under the [MIT][License] license.
 [TutorialReactNative]: https://lingui.dev/tutorials/react-native
 [TutorialJavaScript]: https://lingui.dev/tutorials/javascript
 [TutorialCLI]: https://lingui.dev/tutorials/cli
-[TutorialSetupCRA]: https://lingui.dev/tutorials/setup-cra
 [TutorialSetupReact]: https://lingui.dev/tutorials/setup-react
-[TutorialVue]: https://lingui.dev/tutorials/extractor-vue
 [SetupVite]: https://lingui.dev/tutorials/setup-vite
 [RefCLI]: https://lingui.dev/ref/cli
 [Examples]: https://github.com/lingui/js-lingui/tree/main/examples
 
 [SWCPlugin]: https://lingui.dev/ref/swc-plugin
 [VitePlugin]: https://lingui.dev/ref/vite-plugin
+[ESLintPlugin]: https://lingui.dev/ref/eslint-plugin
 
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg

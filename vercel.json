@@ -1,6 +1,9 @@
 {
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/:path+.html", "destination": "/:path", "permanent": true }
+    { "source": "/:path+.html", "destination": "/:path", "permanent": true },
+    { "source": "/tutorials/setup-cra", "destination": "/tutorials/setup-react", "permanent": true},
+    { "source": "/ref/message-format", "destination": "/guides/message-format", "permanent": true},
+    { "source": "/tutorials/extractor-vue", "destination": "/ref/extractor-vue", "permanent": true}
   ]
 }

@@ -10,11 +10,6 @@ const sidebar = [
     items: [
       {
         type: "doc",
-        label: "Create React App",
-        id: "tutorials/setup-cra",
-      },
-      {
-        type: "doc",
         label: "React project",
         id: "tutorials/setup-react",
       },
@@ -36,13 +31,8 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - common patterns",
+        label: "React - Common Patterns",
         id: "tutorials/react-patterns",
-      },
-      {
-        type: "doc",
-        label: "Explicit vs Generated IDs",
-        id: "tutorials/explicit-vs-generated-ids",
       },
       {
         type: "doc",
@@ -56,13 +46,13 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "CLI",
-        id: "tutorials/cli",
+        label: "Explicit vs Generated IDs",
+        id: "tutorials/explicit-vs-generated-ids",
       },
       {
         type: "doc",
-        label: "Extracting Vue.js messages",
-        id: "tutorials/extractor-vue",
+        label: "CLI",
+        id: "tutorials/cli",
       },
     ],
   },
@@ -72,17 +62,28 @@ const sidebar = [
     items: [
       {
         type: "doc",
+        label: "Message Extraction",
         id: "guides/message-extraction",
+      },
+      {
+        type: "doc",
+        label: "Pseudolocalization",
+        id: "guides/pseudolocalization",
+      },
+      {
+        type: "doc",
+        label: "Dynamic Loading",
+        id: "guides/dynamic-loading-catalogs",
+      },
+      {
+        type: "doc",
+        label: "Pluralization",
+        id: "guides/plurals",
       },
       {
         type: "doc",
         label: "Testing",
         id: "guides/testing",
-      },
-      {
-        type: "doc",
-        label: "TypeScript",
-        id: "guides/typescript",
       },
       {
         type: "doc",
@@ -95,23 +96,13 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "Dynamic loading",
-        id: "guides/dynamic-loading-catalogs",
-      },
-      {
-        type: "doc",
-        label: "Pluralization",
-        id: "guides/plurals",
-      },
-      {
-        type: "doc",
         label: "Monorepo",
         id: "guides/monorepo",
       },
       {
         type: "doc",
-        label: "Pseudolocalization",
-        id: "guides/pseudolocalization",
+        label: "ICU MessageFormat",
+        id: "guides/message-format",
       },
       {
         type: "category",
@@ -119,10 +110,12 @@ const sidebar = [
         items: [
           {
             type: "doc",
+            label: "Custom Extractor",
             id: "guides/custom-extractor",
           },
           {
             type: "doc",
+            label: "Custom Formatter",
             id: "guides/custom-formatter",
           },
         ],
@@ -165,6 +158,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "@lingui/extractor-vue",
+        id: "ref/extractor-vue",
+      },
+      {
+        type: "doc",
         label: "Lingui Configuration",
         id: "ref/conf",
       },
@@ -173,25 +171,20 @@ const sidebar = [
         label: "Catalog formats",
         id: "ref/catalog-formats",
       },
-      {
-        type: "doc",
-        label: "ICU MessageFormat",
-        id: "ref/message-format",
-      },
     ],
   },
   {
     type: "category",
-    label: "Plugins",
+    label: "Tooling",
     items: [
       {
         type: "doc",
-        label: "@lingui/swc-plugin",
+        label: "SWC Plugin",
         id: "ref/swc-plugin",
       },
       {
         type: "doc",
-        label: "@lingui/vite-plugin",
+        label: "Vite Plugin",
         id: "ref/vite-plugin",
       },
       {
