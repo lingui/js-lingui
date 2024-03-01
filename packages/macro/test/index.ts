@@ -7,7 +7,9 @@ import {
   transformSync,
 } from "@babel/core"
 import prettier from "prettier"
-import linguiMacroPlugin, { LinguiPluginOpts } from "../src/plugin"
+// use package path instead relative because we want
+// to test it in from /dist folder in integration tests
+import linguiMacroPlugin, { LinguiPluginOpts } from "@lingui/macro/plugin"
 import {
   JSXAttribute,
   jsxExpressionContainer,
