@@ -672,7 +672,7 @@ The last message in our component is again a bit specific:
 `lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core.md#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react.md#uselingui) hook:
 
 ```jsx title="src/Inbox.js"
-import { useLingui } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function Inbox() {
   const { i18n } = useLingui();
