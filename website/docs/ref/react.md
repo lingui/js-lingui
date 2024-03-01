@@ -135,6 +135,23 @@ const CurrentLocale = () => {
 };
 ```
 
+:::tip
+There is a [macro version](/docs/ref/macro.mdx#uselingui) of the `useLingui` hook which supports all features of the [`t` macro](/docs/ref/macro.mdx#t) and uses the runtime `useLingui` hook (from `@lingui/react`) under the hood.
+
+```jsx
+import { useLingui } from "@lingui/macro";
+
+const CurrentLocale = () => {
+  const { t } = useLingui();
+
+  const userName = "Tim";
+  return <span>{t`Hello ${userName}`}</span>;
+};
+```
+
+You also can safely use the returned `t` function in a dependency array of React hooks.
+:::
+
 ## Components
 
 The `@lingui/react` package provides `Trans` component to render translations. However, you're more likely to use [macros](/docs/ref/macro.mdx) instead because they are more convenient and easier to use.

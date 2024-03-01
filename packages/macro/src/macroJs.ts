@@ -54,6 +54,9 @@ export default class MacroJs {
   nameMap: Map<string, string>
   nameMapReversed: Map<string, string>
 
+  needsUseLinguiImport = false
+  needsI18nImport = false
+
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   _expressionIndex = makeCounter()
 
@@ -148,13 +151,62 @@ export default class MacroJs {
       this.isLinguiIdentifier(path.node.callee, "t")
     ) {
       this.replaceTAsFunction(path as NodePath<CallExpression>)
+      this.needsI18nImport = true
+
       return true
+    }
+
+    // { t } = useLingui()
+    // t`Hello!`
+    if (
+      path.isTaggedTemplateExpression() &&
+      this.isLinguiIdentifier(path.node.tag, "_t")
+    ) {
+      this.needsUseLinguiImport = true
+      const tokens = this.tokenizeTemplateLiteral(path.node)
+
+      const descriptor = this.createMessageDescriptorFromTokens(
+        tokens,
+        path.node.loc
+      )
+
+      const callExpr = this.types.callExpression(
+        this.types.isIdentifier(path.node.tag) && path.node.tag,
+        [descriptor]
+      )
+
+      path.replaceWith(callExpr)
+
+      return false
+    }
+
+    // { t } = useLingui()
+    // t(messageDescriptor)
+    if (
+      path.isCallExpression() &&
+      this.isLinguiIdentifier(path.node.callee, "_t") &&
+      this.types.isExpression(path.node.arguments[0])
+    ) {
+      this.needsUseLinguiImport = true
+      let descriptor = this.processDescriptor(path.node.arguments[0])
+      path.node.arguments = [descriptor]
+      return false
+    }
+
+    if (
+      this.types.isCallExpression(path.node) &&
+      this.isLinguiIdentifier(path.node.callee, "useLingui") &&
+      this.types.isVariableDeclarator(path.parentPath.node)
+    ) {
+      this.needsUseLinguiImport = true
+      return false
     }
 
     const tokens = this.tokenizeNode(path.node)
 
     this.replacePathWithMessage(path, tokens)
 
+    this.needsI18nImport = true
     return true
   }
 

@@ -94,7 +94,7 @@ As you can see, it's a simple mailbox application with only one screen.
 ## Internationalization in React (Native)
 
 :::tip TL;DR
-There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.mdx#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
+There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.mdx#t) or [`msg`](/docs/ref/macro.mdx#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
 :::
 
 Not surprisingly, this part isn't too different from the [React tutorial](/docs/tutorials/react.md).
@@ -123,12 +123,14 @@ We're importing the default `i18n` object from `@lingui/core`. Read more about t
 
 Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.mdx#trans) macro here!
 
-The solution is to use the `t` macro together with the `i18n` object which we can obtain from the `useLingui` hook. We use the two like this to get a translated string:
+The solution is to use the `t` macro which we can obtain from the `useLingui` hook. We use it like this to get a translated string:
 
 ```tsx
-const { i18n } = useLingui()
+import { useLingui } from '@lingui/macro';
+
+const { t } = useLingui()
 ...
-<Button title={t(i18n)`this will be translated and rerendered with locale changes`}/>
+<Button title={t`this will be translated and rerendered with locale changes`}/>
 ```
 
 Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes the instance of the `i18n` object and passes it to `Trans` components through React context. `I18nProvider` will update the context value (which then rerenders components that consume the provided context value) when locale or message catalogs are updated.
@@ -139,7 +141,7 @@ The interplay of `I18nProvider` and `useLingui` is shown in the following simpli
 
 ```tsx
 import { I18nProvider } from "@lingui/react";
-import { t, Trans } from "@lingui/macro";
+import { Trans, useLingui } from "@lingui/macro";
 import { i18n } from "@lingui/core";
 
 <I18nProvider i18n={i18n}>
@@ -147,13 +149,13 @@ import { i18n } from "@lingui/core";
 </I18nProvider>;
 //...
 const Inbox = ({ markAsRead }) => {
-  const { i18n } = useLingui();
+  const { t } = useLingui();
   return (
     <View>
       <Text style={styles.heading}>
         <Trans>Message Inbox</Trans>
       </Text>
-      <Button onPress={markAsRead} title={t(i18n)`Mark messages as read`} />
+      <Button onPress={markAsRead} title={t`Mark messages as read`} />
     </View>
   );
 };

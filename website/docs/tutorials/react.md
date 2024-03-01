@@ -309,6 +309,45 @@ It isn't necessary to extract/translate messages one by one. This usually happen
 
 For more info about CLI, checkout the [CLI reference](/docs/ref/cli.md).
 
+## Non-JSX Translation
+
+So far we learned how to translate string inside a JSX element, but what if we want to translate something that is not inside a JSX? Or pass a translation as a prop to another component?
+
+We have this piece of code in our example:
+
+```js
+const markAsRead = () => {
+  alert("Marked as read.");
+};
+```
+
+To translate it, we will use the `useLingui` macro hook:
+
+```js
+import { useLingui } from '@lingui/macro';
+
+...
+
+const { t } = useLingui();
+
+const markAsRead = () => {
+  alert(t`Marked as read.`);
+};
+```
+
+Now the `Marked as read.` message would be picked up by extractor, and available for translation in the catalog.
+
+You could also pass variables and use any other macro in the message.
+
+```jsx
+const { t } = useLingui();
+
+const markAsRead = () => {
+  const userName = "User1234";
+  alert(t`Hello {userName}, your messages marked as read!`);
+};
+```
+
 ## Formatting
 
 Let's move on to another paragraph in our project. This paragraph has some variables, some HTML and components inside:
@@ -663,16 +702,15 @@ After all modifications, the final component with i18n looks like this:
 
 ```jsx title="src/Inbox.js"
 import React from "react";
-import { Trans, Plural } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { Trans, Plural, useLingui } from "@lingui/macro";
 
 export default function Inbox() {
-  const { i18n } = useLingui();
+  const { i18n, t } = useLingui();
   const messages = [{}, {}];
   const messagesCount = messages.length;
   const lastLogin = new Date();
   const markAsRead = () => {
-    alert("Marked as read.");
+    alert(t`Marked as read.`);
   };
 
   return (

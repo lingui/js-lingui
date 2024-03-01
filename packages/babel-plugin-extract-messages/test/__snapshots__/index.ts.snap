@@ -287,6 +287,26 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       48,
     ],
   },
+  {
+    comment: undefined,
+    context: undefined,
+    id: VO4BJY,
+    message: [useLingui]: TplLiteral,
+    origin: [
+      js-with-macros.js,
+      53,
+    ],
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: ZxxjOE,
+    message: [useLingui]: Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}},
+    origin: [
+      js-with-macros.js,
+      56,
+    ],
+  },
 ]
 `;
 
