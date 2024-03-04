@@ -117,8 +117,8 @@ if (require.main === module) {
       (value) => {
         return value
           .split(",")
-          .filter(Boolean)
           .map((s) => s.trim())
+          .filter(Boolean)
       }
     )
     .option("--overwrite", "Overwrite translations for source locale")
