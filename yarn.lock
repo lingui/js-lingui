@@ -3225,8 +3225,8 @@ __metadata:
     "@babel/core": ^7.21.0
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/jest-mocks": "*"
-    "@lingui/macro": "*"
+    "@lingui/jest-mocks": "workspace:*"
+    "@lingui/macro": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3293,20 +3293,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@npm:4.7.1":
-  version: 4.7.1
-  resolution: "@lingui/conf@npm:4.7.1"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    chalk: ^4.1.0
-    cosmiconfig: ^8.0.0
-    jest-validate: ^29.4.3
-    jiti: ^1.17.1
-    lodash.get: ^4.4.2
-  checksum: 4f98115c21508d89471afb0ee602f8b8ba763f59794126006831feb4080d8e878131e5b77807057d2c4b3a3d4119be0f9ea984ea81cf702c50cc2070d98bb529
-  languageName: node
-  linkType: hard
-
 "@lingui/core@4.8.0-next.0, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
@@ -3326,17 +3312,6 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/message-utils": 4.0.0
   checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
-  languageName: node
-  linkType: hard
-
-"@lingui/core@npm:4.7.1":
-  version: 4.7.1
-  resolution: "@lingui/core@npm:4.7.1"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.7.1
-    unraw: ^3.0.0
-  checksum: f9dca40a2a2f406cc0e1292066ce98ba74a4614abfbe0358f53cff8d2809329de37248117c06f267d859d08232eb9e8e0b70ce0a4e6d9667673b1042bc6af5b4
   languageName: node
   linkType: hard
 
@@ -3416,7 +3391,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
+"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
   version: 0.0.0-use.local
   resolution: "@lingui/jest-mocks@workspace:packages/jest-mocks"
   languageName: unknown
@@ -3437,7 +3412,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.8.0-next.0, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@4.8.0-next.0, @lingui/macro@workspace:*, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -3462,22 +3437,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@npm:*":
-  version: 4.7.1
-  resolution: "@lingui/macro@npm:4.7.1"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@babel/types": ^7.20.7
-    "@lingui/conf": 4.7.1
-    "@lingui/core": 4.7.1
-    "@lingui/message-utils": 4.7.1
-  peerDependencies:
-    "@lingui/react": ^4.0.0
-    babel-plugin-macros: 2 || 3
-  checksum: ced3208095731584a768a828a3b51a85519c69950177f8cd550016a1b312b684e5c9730f201cc5e483110b382751ffa1749c9567a1c7ac836d6dbee7a2036118
-  languageName: node
-  linkType: hard
-
 "@lingui/message-utils@4.8.0-next.0, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
@@ -3495,16 +3454,6 @@ __metadata:
   dependencies:
     "@messageformat/parser": ^5.0.0
   checksum: caefbe8be76c9bd10cdc526358260599f99e0c33cb498d01a56f330dde9a88921d4871d5389a6fd0e9e3810f15dea38d25dad5d7fa2b819b2321e10dc71105cf
-  languageName: node
-  linkType: hard
-
-"@lingui/message-utils@npm:4.7.1":
-  version: 4.7.1
-  resolution: "@lingui/message-utils@npm:4.7.1"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-  checksum: e4dbb4f2dc2f6d0eb2e7d1ee6a93957dcefc37ff2b85586d014e9c9f75b920a574ed6cf9eff60eae2ea99478e81aa5a0331377003f0dcef712a8bc5ff150ef3d
   languageName: node
   linkType: hard
 
