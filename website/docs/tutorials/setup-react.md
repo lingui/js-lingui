@@ -103,7 +103,7 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-Congratulations! You've successfully set up project with Lingui. Now it's good time to follow [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
+Congratulations! You've successfully set up project with Lingui. Now it's good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
 
 ## Further reading
 

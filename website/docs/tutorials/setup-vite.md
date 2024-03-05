@@ -159,4 +159,4 @@ See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-cata
 
 See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.
 
-Congratulations! You've successfully set up a Vite project with LinguiJS. Now it's a good time to follow [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
+Congratulations! You've successfully set up a Vite project with LinguiJS. Now it's a good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
