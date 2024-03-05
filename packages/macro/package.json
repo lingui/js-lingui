@@ -63,7 +63,6 @@
       "import": {
         "types": "./dist/plugin.d.ts",
         "default": "./dist/index.mjs"
-
       }
     }
   },

@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-15 10:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#: fixtures/pages/index.page.tsx:83
+#: fixtures/pages/index.page.tsx:85
+msgid "{0, plural, one {# Person} other {# Persons}}"
+msgstr "{0, plural, one {# Person} other {# Persons}}"
+
+#: fixtures/components/Developers.tsx:20
+msgid "{selected, plural, one {Developer} other {Developers}}"
+msgstr "{selected, plural, one {Developer} other {Developers}}"
+
+#: fixtures/pages/index.page.tsx:62
+msgid "<0>Next.js</0>say hi."
+msgstr "<0>Next.js</0>say hi."
+
+#: fixtures/components/Switcher.tsx:10
+msgid "English"
+msgstr "English"
+
+#: fixtures/components/AboutText.tsx:6
+msgid "Hello, world"
+msgstr "Hello, world"
+
+#. js-lingui-explicit-id
+#: fixtures/components/AboutText.tsx:8
+msgid "message.next-explanation"
+msgstr "Next.js is an open-source React front-end development web framework that enables functionality such as server-side rendering and generating static websites for React based web applications. It is a production-ready framework that allows developers to quickly create static and dynamic JAMstack websites and is used widely by many large companies."
+
+#: fixtures/pages/index.page.tsx:58
+#: fixtures/pages/index.page.tsx:60
+msgid "Plain text"
+msgstr "Plain text"
+
+#: fixtures/components/Developers.tsx:9
+msgid "Plural Test: How many developers?"
+msgstr "Plural Test: How many developers?"
+
+#: fixtures/components/Switcher.tsx:11
+msgid "Serbian"
+msgstr "Serbian"
+
+#: fixtures/components/Switcher.tsx:12
+msgid "Spanish"
+msgstr "Spanish"
+
+#: fixtures/pages/index.page.tsx:46
+msgid "Translation Demo"
+msgstr "Translation Demo"
+
+#: fixtures/pages/index.page.tsx:53
+msgid "Welcome to <0>Next.js!</0>"
+msgstr "Welcome to <0>Next.js!</0>"
+
+#: fixtures/pages/index.page.tsx:67
+msgid "Wonderful framework <0>Next.js</0>say hi."
+msgstr "Wonderful framework <0>Next.js</0>say hi."
+
+#: fixtures/pages/index.page.tsx:72
+msgid "Wonderful framework <0>Next.js</0>say hi. And <1>Next.js</1>say hi."
+msgstr "Wonderful framework <0>Next.js</0>say hi. And <1>Next.js</1>say hi."

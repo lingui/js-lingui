@@ -1,0 +1,30 @@
+{
+  "name": "nextjs-swc-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "debug": "NODE_OPTIONS='--inspect' next dev",
+    "build": "npm run lingui:extract && next build",
+    "start": "next start",
+    "lingui:extract": "lingui extract-experimental",
+    "test": "npm run build"
+  },
+  "dependencies": {
+    "@lingui/core": "^4.5.0",
+    "@lingui/react": "^4.5.0",
+    "next": "13.4.12",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@lingui/cli": "^4.5.0",
+    "@lingui/loader": "^4.5.0",
+    "@lingui/macro": "^4.5.0",
+    "@lingui/swc-plugin": "^4.0.4",
+    "@types/react": "^18.0.14",
+    "eslint": "8.35.0",
+    "eslint-config-next": "12.3.4",
+    "typescript": "^4.7.4"
+  }
+}

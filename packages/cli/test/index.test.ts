@@ -287,5 +287,58 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+
+    it("Should extract correctly all messages github-issue: 1797", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-1797"
+      )
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+            format: "po",
+            catalogs: [],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.tsx"],
+                output: "<rootDir>/actual/locales/{entryName}/{locale}",
+              },
+            },
+          }),
+          {
+            clean: true,
+          }
+        )
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+          Catalog statistics for fixtures/pages/_app.page.tsx:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      0      │    -    │
+          │ pl          │      0      │    0    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.tsx:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │     14      │    -    │
+          │ pl          │     14      │   14    │
+          └─────────────┴─────────────┴─────────┘
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
   })
 })
