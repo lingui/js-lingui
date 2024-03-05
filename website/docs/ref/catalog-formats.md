@@ -81,8 +81,8 @@ msgstr[1] "Case number {anotherCount}"
 
 Note that this format comes with several caveats and should therefore only be used if using ICU plurals in PO files is not an option:
 
-- Nested/multiple plurals in one message as shown in [`plural`](/docs/ref/macro.md#plural) are not supported as it cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
-- [`select`](/docs/ref/macro.md#select) and [`selectOrdinal`](/docs/ref/macro.md#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected behavior, include `{ disableSelectWarning: true }` in the [`format`](/docs/ref/conf.md#format) options.
+- Nested/multiple plurals in one message as shown in [`plural`](/docs/ref/macro.mdx#plural) are not supported as it cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
+- [`select`](/docs/ref/macro.mdx#select) and [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected behavior, include `{ disableSelectWarning: true }` in the [`format`](/docs/ref/conf.md#format) options.
 - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used, as gettext cannot have more than two plurals cases identifying an item (`msgid` and `msgid_plural`).
 - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules for these cases.
 

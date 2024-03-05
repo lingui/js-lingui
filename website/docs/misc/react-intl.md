@@ -67,7 +67,7 @@ However, let's go yet another level deeper.
 
 ## Macros for component-based message syntax
 
-[Lingui](https://github.com/lingui/js-lingui) provides macros [`@lingui/macro`](/docs/ref/macro.md) which automatically generates a message syntax.
+[Lingui](https://github.com/lingui/js-lingui) provides macros [`@lingui/macro`](/docs/ref/macro.mdx) which automatically generates a message syntax.
 
 Let's go back to the previous example:
 
@@ -75,7 +75,7 @@ Let's go back to the previous example:
 <p>Read the <a href="/docs">documentation</a>.</p>
 ```
 
-All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans) macro:
+All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.mdx#trans) macro:
 
 ```html
 <p>
@@ -83,9 +83,9 @@ All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.md#trans
 </p>
 ```
 
-The macro then parses the [`Trans`](/docs/ref/macro.md#trans) macro children and generates `message` and `components` props automatically in the form described in the previous section.
+The macro then parses the [`Trans`](/docs/ref/macro.mdx#trans) macro children and generates `message` and `components` props automatically in the form described in the previous section.
 
-This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.md#trans) macro.
+This is extremely useful when adding i18n to an existing project. All we need is to wrap all messages in [`Trans`](/docs/ref/macro.mdx#trans) macro.
 
 Let's compare it with react-intl solution to see the difference:
 
@@ -130,7 +130,7 @@ Let's take a look at the original example from react-intl docs:
 />
 ```
 
-Using [Lingui](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
+Using [Lingui](https://github.com/lingui/js-lingui) macros, we could combine [`Trans`](/docs/ref/macro.mdx#trans), [`Plural`](/docs/ref/macro.mdx#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
 
 ```jsx
 <Trans id="welcome">

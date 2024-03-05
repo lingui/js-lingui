@@ -11,7 +11,7 @@ This page describes the most common i18n patterns in React. It's a follow-up to 
 
 Using jsx macros is the most straightforward way to translate your React components.
 
-[`Trans`](/docs/ref/macro.md#trans) handles translations of messages including variables and other React components:
+[`Trans`](/docs/ref/macro.mdx#trans) handles translations of messages including variables and other React components:
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -32,17 +32,17 @@ function render() {
 }
 ```
 
-You don't need anything special to use [`Trans`](/docs/ref/macro.md#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react.md#i18nprovider)).
+You don't need anything special to use [`Trans`](/docs/ref/macro.mdx#trans) inside your app (except of wrapping the root component in [`I18nProvider`](/docs/ref/react.md#i18nprovider)).
 
 ## Element attributes and string-only translations
 
-Sometimes you can't use [`Trans`](/docs/ref/macro.md#trans) component, for example when translating element attributes:
+Sometimes you can't use [`Trans`](/docs/ref/macro.mdx#trans) component, for example when translating element attributes:
 
 ```html
 <img src="..." alt="Image caption" />
 ```
 
-In such case you need to use the [`useLingui()`](/docs/ref/react.md#uselingui) hook with the [`msg`](/docs/ref/macro.md#definemessage) macro.
+In such case you need to use the [`useLingui()`](/docs/ref/react.md#uselingui) hook with the [`msg`](/docs/ref/macro.mdx#definemessage) macro.
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -57,7 +57,7 @@ export default function ImageWithCaption() {
 
 ## Translations outside React components
 
-Sometimes, you may need to access translations outside React components, which is another common pattern. You can use [`t`](/docs/ref/macro.md#t) macro outside React context as usual:
+Sometimes, you may need to access translations outside React components, which is another common pattern. You can use [`t`](/docs/ref/macro.mdx#t) macro outside React context as usual:
 
 ```jsx
 import { t } from "@lingui/macro";
@@ -68,7 +68,7 @@ export function showAlert() {
 ```
 
 :::caution
-When you use [`t`](/docs/ref/macro.md#t) macro (and [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select), [`selectOrdinal`](/docs/ref/macro.md#selectordinal)), it uses a global `i18n` instance. While this generally works, there are situations, like in server-side rendering (SSR) applications, where it may not be the best fit.
+When you use [`t`](/docs/ref/macro.mdx#t) macro (and [`plural`](/docs/ref/macro.mdx#plural), [`select`](/docs/ref/macro.mdx#select), [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal)), it uses a global `i18n` instance. While this generally works, there are situations, like in server-side rendering (SSR) applications, where it may not be the best fit.
 
 For better control and flexibility, it's a good idea to avoid the global `i18n` instance and instead use a specific instance tailored to your needs.
 
@@ -92,7 +92,7 @@ function MyComponent() {
 :::
 
 :::note
-All js macros such as [`t`](/docs/ref/macro.md#t) [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select), [`selectOrdinal`](/docs/ref/macro.md#selectordinal) cannot be used on the module level.
+All js macros such as [`t`](/docs/ref/macro.mdx#t) [`plural`](/docs/ref/macro.mdx#plural), [`select`](/docs/ref/macro.mdx#select), [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal) cannot be used on the module level.
 
 ```jsx
 import { t } from "@lingui/macro";
@@ -115,7 +115,7 @@ A better option would be to use the Lazy Translations pattern described in the f
 
 ## Lazy Translations
 
-You don't need to declare messages at the same code location where they are displayed. Tag a string with the [`msg`](/docs/ref/macro.md#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.md#trans) as its `id` prop:
+You don't need to declare messages at the same code location where they are displayed. Tag a string with the [`msg`](/docs/ref/macro.mdx#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.mdx#trans) as its `id` prop:
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -155,7 +155,7 @@ export function getTranslatedColorNames() {
 
 ### Passing messages as props
 
-It's often convenient to pass messages around as component props, for example as a "label" prop on a button. The easiest way to do this is to pass a [`Trans`](/docs/ref/macro.md#trans) element as the prop:
+It's often convenient to pass messages around as component props, for example as a "label" prop on a button. The easiest way to do this is to pass a [`Trans`](/docs/ref/macro.mdx#trans) element as the prop:
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -174,7 +174,7 @@ export function LoginLogoutButtons(props) {
 }
 ```
 
-If you need the prop to be displayed as a string-only translation, you can pass a message tagged with the [`msg`](/docs/ref/macro.md#definemessage) macro:
+If you need the prop to be displayed as a string-only translation, you can pass a message tagged with the [`msg`](/docs/ref/macro.mdx#definemessage) macro:
 
 ```jsx
 import { msg } from "@lingui/macro";
@@ -200,7 +200,7 @@ export function HappySad(props) {
 
 Sometimes you need to pick between different messages to display, depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message representing the current status.
 
-A simple way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.md#definemessage) macro), and render them as needed with deferred translation:
+A simple way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.mdx#definemessage) macro), and render them as needed with deferred translation:
 
 ```jsx
 import { msg } from "@lingui/macro";

@@ -60,5 +60,5 @@ See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-cata
 See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.
 
 :::note
-You also need to set up [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to support [macros](/docs/ref/macro.md).
+You also need to set up [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to support [macros](/docs/ref/macro.mdx).
 :::

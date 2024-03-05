@@ -40,7 +40,7 @@ If you want to specify a message for an exact number, use [`exact matches`](/gui
 
 > Funny fact for non-English speakers: In English, 0 uses plural form too, _0 books_.
 
-Under the hood, [`plural`](/docs/ref/macro.md#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
+Under the hood, [`plural`](/docs/ref/macro.mdx#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
 
 ```js
 i18n._({

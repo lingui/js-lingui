@@ -9,30 +9,52 @@ Learn how to add internationalization to a React application using Lingui. This 
 
 ## Installation
 
-1.  Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel [^1] core packages as a development dependencies and `@lingui/react` as a runtime dependency.
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-    ```bash npm2yarn
-    npm install --save-dev @lingui/cli @babel/core
-    npm install --save-dev @lingui/macro babel-plugin-macros
-    npm install --save @lingui/react
-    ```
+<Tabs groupId="babel-swc">
+  <TabItem value="babel" label="Babel" default>
+    - Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
 
-    :::note
-    It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies` errors in ESLint.
-    :::
+      ```bash npm2yarn
+      npm install --save-dev @lingui/cli @babel/core
+      npm install --save-dev @lingui/macro babel-plugin-macros
+      npm install --save @lingui/react
+      ```
 
-2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
+    - Add `macros` plugin to Babel config (e.g: `.babelrc`):
 
-    ```json
-    {
-      "plugins": ["macros"]
-    }
-    ```
+      ```json
+      {
+        "plugins": ["macros"]
+      }
+      ```
 
-    If you use any preset, check first if it contains `macros` plugin. These presets already includes `macros` plugin: `react-scripts`.
+      When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
 
-:::info
-For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.
+  </TabItem>
+  <TabItem value="swc" label="SWC">
+    - Install `@lingui/cli`, `@lingui/macro`, and `@lingui/react` as a runtime dependency:
+
+      ```bash npm2yarn
+      npm install --save-dev @lingui/cli
+      npm install --save @lingui/react
+      npm install --save @lingui/macro
+      ```
+
+    - Install the `@lingui/swc-plugin` package as a development dependency:
+
+      ```bash npm2yarn
+      npm install --save-dev @lingui/swc-plugin
+      ```
+
+    - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+  </TabItem>
+</Tabs>
+
+:::note
+It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies` errors in ESLint.
 :::
 
 :::tip
@@ -113,5 +135,3 @@ Congratulations! You've successfully set up project with Lingui. Now it's good t
 - [CLI reference](/docs/ref/cli.md)
 - [Configuration reference](/docs/ref/conf.md)
 - [ICU Message Format](/docs/guides/message-format.md)
-
-[^1]: For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.

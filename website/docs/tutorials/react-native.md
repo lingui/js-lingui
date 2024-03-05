@@ -5,7 +5,7 @@ description: Learn how to add internationalization to a React Native application
 
 # Internationalization of React Native apps
 
-In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.md) for installation and setup instructions.
+In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx) for installation and setup instructions.
 
 The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
@@ -88,12 +88,12 @@ As you can see, it's a simple mailbox application with only one screen.
 ## Internationalization in React (Native)
 
 :::tip TL;DR
-There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.md#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
+There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.mdx#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
 :::
 
 Not surprisingly, this part isn't too different from the [React tutorial](/docs/tutorials/react.md).
 
-First, we need to wrap our app with [`I18nProvider`](/docs/ref/react.md#i18nprovider) and then we can use the [`Trans`](/docs/ref/macro.md#trans) macro to translate the screen heading:
+First, we need to wrap our app with [`I18nProvider`](/docs/ref/react.md#i18nprovider) and then we can use the [`Trans`](/docs/ref/macro.mdx#trans) macro to translate the screen heading:
 
 ```tsx
 import { I18nProvider } from '@lingui/react'
@@ -115,7 +115,7 @@ i18n.loadAndActivate({ locale: "en", messages });
 We're importing the default `i18n` object from `@lingui/core`. Read more about the `i18n` object in the [reference](/ref/core).
 :::
 
-Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.md#trans) macro here!
+Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.mdx#trans) macro here!
 
 The solution is to use the `t` macro together with the `i18n` object which we can obtain from the `useLingui` hook. We use the two like this to get a translated string:
 
