@@ -3218,7 +3218,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@4.7.1, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@4.8.0-next.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -3231,7 +3231,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@4.7.1, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@4.8.0-next.0, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -3240,13 +3240,13 @@ __metadata:
     "@babel/parser": ^7.21.2
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 4.7.1
-    "@lingui/conf": 4.7.1
-    "@lingui/core": 4.7.1
-    "@lingui/format-po": 4.7.1
+    "@lingui/babel-plugin-extract-messages": 4.8.0-next.0
+    "@lingui/conf": 4.8.0-next.0
+    "@lingui/core": 4.8.0-next.0
+    "@lingui/format-po": 4.8.0-next.0
     "@lingui/jest-mocks": "*"
-    "@lingui/macro": 4.7.1
-    "@lingui/message-utils": 4.7.1
+    "@lingui/macro": 4.8.0-next.0
+    "@lingui/message-utils": 4.8.0-next.0
     "@types/convert-source-map": ^2.0.0
     "@types/glob": ^8.1.0
     "@types/micromatch": ^4.0.1
@@ -3277,7 +3277,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@4.7.1, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@4.8.0-next.0, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -3293,13 +3293,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@4.7.1, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
+"@lingui/conf@npm:4.7.1":
+  version: 4.7.1
+  resolution: "@lingui/conf@npm:4.7.1"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    chalk: ^4.1.0
+    cosmiconfig: ^8.0.0
+    jest-validate: ^29.4.3
+    jiti: ^1.17.1
+    lodash.get: ^4.4.2
+  checksum: 4f98115c21508d89471afb0ee602f8b8ba763f59794126006831feb4080d8e878131e5b77807057d2c4b3a3d4119be0f9ea984ea81cf702c50cc2070d98bb529
+  languageName: node
+  linkType: hard
+
+"@lingui/core@4.8.0-next.0, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
-    "@lingui/message-utils": 4.7.1
+    "@lingui/message-utils": 4.8.0-next.0
     unbuild: 2.0.0
     unraw: ^3.0.0
   languageName: unknown
@@ -3312,6 +3326,17 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/message-utils": 4.0.0
   checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
+  languageName: node
+  linkType: hard
+
+"@lingui/core@npm:4.7.1":
+  version: 4.7.1
+  resolution: "@lingui/core@npm:4.7.1"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    "@lingui/message-utils": 4.7.1
+    unraw: ^3.0.0
+  checksum: f9dca40a2a2f406cc0e1292066ce98ba74a4614abfbe0358f53cff8d2809329de37248117c06f267d859d08232eb9e8e0b70ce0a4e6d9667673b1042bc6af5b4
   languageName: node
   linkType: hard
 
@@ -3328,9 +3353,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/extractor-vue@workspace:packages/extractor-vue"
   dependencies:
-    "@lingui/babel-plugin-extract-messages": 4.7.1
-    "@lingui/cli": 4.7.1
-    "@lingui/conf": 4.7.1
+    "@lingui/babel-plugin-extract-messages": 4.8.0-next.0
+    "@lingui/cli": 4.8.0-next.0
+    "@lingui/conf": 4.8.0-next.0
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 2.0.0
   languageName: unknown
@@ -3340,18 +3365,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
-    "@lingui/conf": 4.7.1
+    "@lingui/conf": 4.8.0-next.0
     papaparse: ^5.4.0
     tsd: ^0.28.0
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@4.7.1, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
+"@lingui/format-json@4.8.0-next.0, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 4.7.1
+    "@lingui/conf": 4.8.0-next.0
     ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^2.0.0
@@ -3362,10 +3387,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/conf": 4.7.1
-    "@lingui/format-po": 4.7.1
+    "@lingui/conf": 4.8.0-next.0
+    "@lingui/format-po": 4.8.0-next.0
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 4.7.1
+    "@lingui/message-utils": 4.8.0-next.0
     "@messageformat/parser": ^5.0.0
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
@@ -3376,13 +3401,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@4.7.1, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@4.8.0-next.0, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/conf": 4.7.1
+    "@lingui/conf": 4.8.0-next.0
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 4.7.1
+    "@lingui/message-utils": 4.8.0-next.0
     date-fns: ^2.29.3
     mockdate: ^3.0.5
     pofile: ^1.1.4
@@ -3402,9 +3427,9 @@ __metadata:
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 4.7.1
-    "@lingui/conf": 4.7.1
-    "@lingui/format-json": 4.7.1
+    "@lingui/cli": 4.8.0-next.0
+    "@lingui/conf": 4.8.0-next.0
+    "@lingui/format-json": 4.8.0-next.0
     unbuild: 2.0.0
     webpack: ^5.76.1
   peerDependencies:
@@ -3412,7 +3437,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@*, @lingui/macro@4.7.1, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@4.8.0-next.0, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -3421,9 +3446,9 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/conf": 4.7.1
-    "@lingui/core": 4.7.1
-    "@lingui/message-utils": 4.7.1
+    "@lingui/conf": 4.8.0-next.0
+    "@lingui/core": 4.8.0-next.0
+    "@lingui/message-utils": 4.8.0-next.0
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     tsd: ^0.26.1
@@ -3437,7 +3462,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@4.7.1, @lingui/message-utils@workspace:packages/message-utils":
+"@lingui/macro@npm:*":
+  version: 4.7.1
+  resolution: "@lingui/macro@npm:4.7.1"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    "@babel/types": ^7.20.7
+    "@lingui/conf": 4.7.1
+    "@lingui/core": 4.7.1
+    "@lingui/message-utils": 4.7.1
+  peerDependencies:
+    "@lingui/react": ^4.0.0
+    babel-plugin-macros: 2 || 3
+  checksum: ced3208095731584a768a828a3b51a85519c69950177f8cd550016a1b312b684e5c9730f201cc5e483110b382751ffa1749c9567a1c7ac836d6dbee7a2036118
+  languageName: node
+  linkType: hard
+
+"@lingui/message-utils@4.8.0-next.0, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
@@ -3457,12 +3498,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/message-utils@npm:4.7.1":
+  version: 4.7.1
+  resolution: "@lingui/message-utils@npm:4.7.1"
+  dependencies:
+    "@messageformat/parser": ^5.0.0
+    js-sha256: ^0.10.1
+  checksum: e4dbb4f2dc2f6d0eb2e7d1ee6a93957dcefc37ff2b85586d014e9c9f75b920a574ed6cf9eff60eae2ea99478e81aa5a0331377003f0dcef712a8bc5ff150ef3d
+  languageName: node
+  linkType: hard
+
 "@lingui/react@workspace:*, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 4.7.1
+    "@lingui/core": 4.8.0-next.0
     "@lingui/jest-mocks": "*"
     "@testing-library/react": ^14.0.0
     "@types/react": ^18.2.13
@@ -3491,8 +3542,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 4.7.1
-    "@lingui/conf": 4.7.1
+    "@lingui/cli": 4.8.0-next.0
+    "@lingui/conf": 4.8.0-next.0
     "@lingui/format-json": "workspace:^"
     "@lingui/macro": "workspace:^"
     unbuild: 2.0.0
