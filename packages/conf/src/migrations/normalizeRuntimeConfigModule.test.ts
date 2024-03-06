@@ -6,12 +6,18 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        TransImportModule: @lingui/react,
-        TransImportName: Trans,
-        i18nImportModule: @lingui/core,
-        i18nImportName: i18n,
-        useLinguiImportModule: @lingui/react,
-        useLinguiImportName: useLingui,
+        Trans: [
+          @lingui/react,
+          Trans,
+        ],
+        i18n: [
+          @lingui/core,
+          i18n,
+        ],
+        useLingui: [
+          @lingui/react,
+          useLingui,
+        ],
       }
     `)
   })
@@ -23,12 +29,18 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        TransImportModule: @lingui/react,
-        TransImportName: Trans,
-        i18nImportModule: ../my-i18n,
-        i18nImportName: myI18n,
-        useLinguiImportModule: @lingui/react,
-        useLinguiImportName: useLingui,
+        Trans: [
+          @lingui/react,
+          Trans,
+        ],
+        i18n: [
+          ../my-i18n,
+          myI18n,
+        ],
+        useLingui: [
+          @lingui/react,
+          useLingui,
+        ],
       }
     `)
   })
@@ -44,12 +56,18 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        TransImportModule: ./custom-trans,
-        TransImportName: myTrans,
-        i18nImportModule: ./custom-i18n,
-        i18nImportName: myI18n,
-        useLinguiImportModule: ./custom-use-lingui,
-        useLinguiImportName: myLingui,
+        Trans: [
+          ./custom-trans,
+          myTrans,
+        ],
+        i18n: [
+          ./custom-i18n,
+          myI18n,
+        ],
+        useLingui: [
+          ./custom-use-lingui,
+          myLingui,
+        ],
       }
     `)
   })
@@ -65,12 +83,18 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        TransImportModule: ./custom-trans,
-        TransImportName: Trans,
-        i18nImportModule: ./custom-i18n,
-        i18nImportName: i18n,
-        useLinguiImportModule: ./custom-use-lingui,
-        useLinguiImportName: useLingui,
+        Trans: [
+          ./custom-trans,
+          Trans,
+        ],
+        i18n: [
+          ./custom-i18n,
+          i18n,
+        ],
+        useLingui: [
+          ./custom-use-lingui,
+          useLingui,
+        ],
       }
     `)
   })

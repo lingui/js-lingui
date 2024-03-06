@@ -185,7 +185,7 @@ const cases: TestCase[] = [
   {
     name: "should preserve values",
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage, t } from '@lingui/macro';
         const message = defineMessage({
           message: t\`Hello $\{name\}\`
         })

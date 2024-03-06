@@ -13,8 +13,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           id={"<stripped>"}
           message={"{count, select, male {He} female {She} other {<0>Other</0>}}"} values={{
             count: count
@@ -38,8 +38,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans render="strong" id="msg.select" message={"{0, select, male {He} female {She} other {<0>Other</0>}}"} values={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans render="strong" id="msg.select" message={"{0, select, male {He} female {She} other {<0>Other</0>}}"} values={{
           0: user.gender
         }} components={{
           0: <strong />
@@ -50,7 +50,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Select should support JSX elements in cases",
     input: `
-        import { Select } from '@lingui/macro';
+        import { Select, Trans } from '@lingui/macro';
         <Select
           value="happy"
           _happy={
@@ -63,8 +63,8 @@ const cases: TestCase[] = [
         />
       `,
     expected: `
-      import { Trans } from "@lingui/react";
-      <Trans
+      import { Trans as _Trans } from "@lingui/react";
+      <_Trans
         id={"<stripped>"}
         message={"{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}"}
         values={{
@@ -90,8 +90,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans render="strong" id="msg.select" message={"{0, select, male {He} female {She} other {{otherText}}}"} values={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans render="strong" id="msg.select" message={"{0, select, male {He} female {She} other {{otherText}}}"} values={{
           0: user.gender,
           otherText: otherText
         }} />;

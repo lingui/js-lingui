@@ -7,7 +7,9 @@ import {
   transformSync,
 } from "@babel/core"
 import prettier from "prettier"
-import { LinguiMacroOpts } from "../src/index"
+// use package path instead relative because we want
+// to test it in from /dist folder in integration tests
+import linguiMacroPlugin, { LinguiPluginOpts } from "@lingui/macro/plugin"
 import {
   JSXAttribute,
   jsxExpressionContainer,
@@ -23,7 +25,7 @@ export type TestCase = {
   filename?: string
   production?: boolean
   useTypescriptPreset?: boolean
-  macroOpts?: LinguiMacroOpts
+  macroOpts?: LinguiPluginOpts
   /** Remove hash id from snapshot for more stable testing */
   stripId?: boolean
   only?: boolean
@@ -69,44 +71,67 @@ describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const getDefaultBabelOptions = (
-    macroOpts: LinguiMacroOpts = {},
+    transformType: "plugin" | "macro" = "plugin",
+    macroOpts: LinguiPluginOpts = {},
     isTs: boolean = false,
     stripId = false
   ): TransformOptions => {
     return {
       filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
       configFile: false,
+      babelrc: false,
       presets: [],
       plugins: [
         "@babel/plugin-syntax-jsx",
-        [
-          "macros",
-          {
-            lingui: macroOpts,
-            // macro plugin uses package `resolve` to find a path of macro file
-            // this will not follow jest pathMapping and will resolve path from ./build
-            // instead of ./src which makes testing & developing hard.
-            // here we override resolve and provide correct path for testing
-            resolvePath: (source: string) => require.resolve(source),
-          },
-        ],
+        transformType === "plugin"
+          ? [linguiMacroPlugin, macroOpts]
+          : [
+              "macros",
+              {
+                lingui: macroOpts,
+                // macro plugin uses package `resolve` to find a path of macro file
+                // this will not follow jest pathMapping and will resolve path from ./build
+                // instead of ./src which makes testing & developing hard.
+                // here we override resolve and provide correct path for testing
+                resolvePath: (source: string) => require.resolve(source),
+              },
+            ],
+
         ...(stripId ? [stripIdPlugin] : []),
       ],
     }
   }
 
-  // return function, so we can test exceptions
-  const transformCode = (code: string) => () => {
-    try {
-      return transformSync(code, getDefaultBabelOptions()).code.trim()
-    } catch (e) {
-      ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
-      throw e
-    }
+  const transformTypes = ["plugin", "macro"] as const
+
+  function forTransforms(
+    run: (_transformCode: (code: string) => () => string) => any
+  ) {
+    return () =>
+      transformTypes.forEach((transformType) => {
+        test(transformType, () => {
+          return run((code) => transformCode(code, transformType))
+        })
+      })
   }
 
+  // return function, so we can test exceptions
+  const transformCode =
+    (code: string, transformType: "plugin" | "macro" = "plugin") =>
+    () => {
+      try {
+        return transformSync(
+          code,
+          getDefaultBabelOptions(transformType)
+        ).code.trim()
+      } catch (e) {
+        ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
+        throw e
+      }
+    }
+
   Object.keys(testCases).forEach((suiteName) => {
-    describe(suiteName, () => {
+    describe(`${suiteName}`, () => {
       const cases = testCases[suiteName]
 
       const clean = (value: string) =>
@@ -128,57 +153,68 @@ describe("macro", function () {
           },
           index
         ) => {
-          let run = it
-          if (only) run = it.only
-          if (skip) run = it.skip
-          run(name != null ? name : `${suiteName} #${index + 1}`, () => {
-            const babelOptions = getDefaultBabelOptions(
-              macroOpts,
-              useTypescriptPreset,
-              stripId
-            )
-            expect(input || filename).toBeDefined()
-
-            const originalEnv = process.env.NODE_ENV
-
-            if (production) {
-              process.env.NODE_ENV = "production"
-            }
-
-            if (useTypescriptPreset) {
-              babelOptions.presets.push("@babel/preset-typescript")
-            }
-
-            try {
-              if (filename) {
-                const inputPath = path.relative(
-                  process.cwd(),
-                  path.join(__dirname, "fixtures", filename)
+          let group = describe
+          if (only) group = describe.only
+          if (skip) group = describe.skip
+          group(name != null ? name : `${suiteName} #${index + 1}`, () => {
+            transformTypes.forEach((transformType) => {
+              it(transformType, () => {
+                const babelOptions = getDefaultBabelOptions(
+                  transformType,
+                  macroOpts,
+                  useTypescriptPreset,
+                  stripId
                 )
-                const expectedPath = inputPath.replace(/\.js$/, ".expected.js")
-                const expected = fs
-                  .readFileSync(expectedPath, "utf8")
-                  .replace(/\r/g, "")
-                  .trim()
+                expect(input || filename).toBeDefined()
 
-                const _babelOptions = {
-                  ...babelOptions,
-                  cwd: path.dirname(inputPath),
+                const originalEnv = process.env.NODE_ENV
+
+                if (production) {
+                  process.env.NODE_ENV = "production"
                 }
 
-                const actual = transformFileSync(inputPath, _babelOptions)
-                  .code.replace(/\r/g, "")
-                  .trim()
-                expect(clean(actual)).toEqual(clean(expected))
-              } else {
-                const actual = transformSync(input, babelOptions).code.trim()
+                if (useTypescriptPreset) {
+                  babelOptions.presets.push("@babel/preset-typescript")
+                }
 
-                expect(clean(actual)).toEqual(clean(expected))
-              }
-            } finally {
-              process.env.LINGUI_CONFIG = ""
-              process.env.NODE_ENV = originalEnv
-            }
+                try {
+                  if (filename) {
+                    const inputPath = path.relative(
+                      process.cwd(),
+                      path.join(__dirname, "fixtures", filename)
+                    )
+                    const expectedPath = inputPath.replace(
+                      /\.js$/,
+                      ".expected.js"
+                    )
+                    const expected = fs
+                      .readFileSync(expectedPath, "utf8")
+                      .replace(/\r/g, "")
+                      .trim()
+
+                    const _babelOptions = {
+                      ...babelOptions,
+                      cwd: path.dirname(inputPath),
+                    }
+
+                    const actual = transformFileSync(inputPath, _babelOptions)
+                      .code.replace(/\r/g, "")
+                      .trim()
+                    expect(clean(actual)).toEqual(clean(expected))
+                  } else {
+                    const actual = transformSync(
+                      input,
+                      babelOptions
+                    ).code.trim()
+
+                    expect(clean(actual)).toEqual(clean(expected))
+                  }
+                } finally {
+                  process.env.LINGUI_CONFIG = ""
+                  process.env.NODE_ENV = originalEnv
+                }
+              })
+            })
           })
         }
       )
@@ -324,29 +360,59 @@ describe("macro", function () {
     })
   })
 
-  describe("useLingui", () => {
-    it("Should throw if used not in the variable declaration", () => {
-      const code = `
+  describe("useLingui validation", () => {
+    describe(
+      "Should throw if used not in the variable declaration",
+      forTransforms((transformCode) => {
+        const code = `
       import {useLingui} from "@lingui/macro";
       
       useLingui()
        
        `
-      expect(transformCode(code)).toThrowError(
-        "Error: `useLingui` macro must be used in variable declaration."
-      )
-    })
+        expect(transformCode(code)).toThrowError(
+          "Error: `useLingui` macro must be used in variable declaration."
+        )
+      })
+    )
 
-    it("Should throw if not used with destructuring", () => {
-      const code = `
+    describe(
+      "Should throw if not used with destructuring",
+      forTransforms((transformCode) => {
+        const code = `
       import {useLingui} from "@lingui/macro";
       
       const lingui = useLingui()
        
        `
-      expect(transformCode(code)).toThrowError(
-        "You have to destructure `t` when using the `useLingui` macro"
-      )
-    })
+        expect(transformCode(code)).toThrowError(
+          "You have to destructure `t` when using the `useLingui` macro"
+        )
+      })
+    )
+  })
+
+  describe("Trans validation", () => {
+    describe(
+      "Should throw if spread used in children",
+      forTransforms((transformCode) => {
+        const code = `
+        import { Trans } from '@lingui/macro';
+        <Trans>{...spread}</Trans>
+       `
+        expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
+      })
+    )
+
+    describe(
+      "Should throw if used without children",
+      forTransforms((transformCode) => {
+        const code = `
+      import { Trans } from '@lingui/macro';
+      <Trans id={msg} />;
+       `
+        expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
+      })
+    )
   })
 })

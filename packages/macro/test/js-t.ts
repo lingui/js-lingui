@@ -8,8 +8,8 @@ const cases: TestCase[] = [
         const a = t\`Expression assignment\`;
     `,
     expected: `
-        import { i18n } from "@lingui/core";
-        const a = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        const a = _i18n._(
           /*i18n*/
           {
             id: "mjnlP0",
@@ -25,9 +25,9 @@ const cases: TestCase[] = [
         const msg = message.error(t({message: "dasd"}))
     `,
     expected: `
-        import { i18n } from "@lingui/core";
+        import { i18n as _i18n } from "@lingui/core";
         const msg = message.error(
-          i18n._(
+          _i18n._(
             /*i18n*/
             {
               message: "dasd",
@@ -44,8 +44,8 @@ const cases: TestCase[] = [
         const a = t2\`Expression assignment\`;
     `,
     expected: `
-        import { i18n } from "@lingui/core";
-        const a = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        const a = _i18n._(
           /*i18n*/
           {
             id: "mjnlP0",
@@ -79,8 +79,8 @@ const cases: TestCase[] = [
         t\`Variable \${name}\`;
     `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "xRRkAE",
@@ -99,8 +99,8 @@ const cases: TestCase[] = [
         t\`Variable \\\`\${name}\\\`\`;
     `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "ICBco+",
@@ -119,8 +119,8 @@ const cases: TestCase[] = [
         t\`Variable \"name\" \`;
     `,
     expected: `
-       import { i18n } from "@lingui/core";
-       i18n._(
+       import { i18n as _i18n } from "@lingui/core";
+       _i18n._(
         /*i18n*/
         {
           id: "CcPIZW",
@@ -136,8 +136,8 @@ const cases: TestCase[] = [
         t\`\${duplicate} variable \${duplicate}\`;
     `,
     expected: `
-      import { i18n } from "@lingui/core";
-      i18n._(
+      import { i18n as _i18n } from "@lingui/core";
+      _i18n._(
         /*i18n*/
         {
           id: "+nhkwg",
@@ -163,8 +163,8 @@ const cases: TestCase[] = [
         \`
     `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "X1jIKa",
@@ -189,8 +189,8 @@ const cases: TestCase[] = [
           string\`
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "EfogM+",
@@ -206,8 +206,8 @@ const cases: TestCase[] = [
         const msg = t({ message: \`Hello \${name}\` })
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        const msg = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        const msg = _i18n._(
           /*i18n*/
           {
             values: {
@@ -266,15 +266,15 @@ const cases: TestCase[] = [
         t({ message: "Hello", context: "my custom" })
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             message: "Hello",
             id: "uzTaYi",
           }
         );
-        i18n._(
+        _i18n._(
           /*i18n*/
           {
             context: "my custom",
@@ -292,8 +292,8 @@ const cases: TestCase[] = [
         t({ message: "Hello", context: \`my custom\` })
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             context: "my custom",
@@ -301,7 +301,7 @@ const cases: TestCase[] = [
             id: "BYqAaU",
           }
         );
-        i18n._(
+        _i18n._(
           /*i18n*/
           {
             context: \`my custom\`,
@@ -314,12 +314,12 @@ const cases: TestCase[] = [
   {
     name: "Support id and comment in t macro as callExpression",
     input: `
-        import { t } from '@lingui/macro'
+        import { t, plural } from '@lingui/macro'
         const msg = t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        const msg = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        const msg = _i18n._(
           /*i18n*/
           {
             id: "msgId",
@@ -339,8 +339,8 @@ const cases: TestCase[] = [
         const msg = t({ id: 'msgId', message: \`Some \${value}\` })
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        const msg = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        const msg = _i18n._(
           /*i18n*/
           {
             id: "msgId",
@@ -359,9 +359,9 @@ const cases: TestCase[] = [
         const msg = t({ id: \`msgId\` })
       `,
     expected: `
-    import { i18n } from "@lingui/core";
+    import { i18n as _i18n } from "@lingui/core";
     const msg =
-      i18n._(/*i18n*/
+      _i18n._(/*i18n*/
         {
           id: \`msgId\`
         });
@@ -375,8 +375,8 @@ const cases: TestCase[] = [
       const msg = t\`Message\`
     `,
     expected: `
-      import { i18n } from "@lingui/core";
-      const msg = i18n._(/*i18n*/
+      import { i18n as _i18n } from "@lingui/core";
+      const msg = _i18n._(/*i18n*/
       {
         id: "xDAtGP",
       });
@@ -386,7 +386,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `
-      import { t } from '@lingui/macro';
+      import { t, plural } from '@lingui/macro';
       const msg = t({
         id: 'msgId',
         comment: 'description for translators',
@@ -395,9 +395,9 @@ const cases: TestCase[] = [
       })
     `,
     expected: `
-      import { i18n } from "@lingui/core";
+      import { i18n as _i18n } from "@lingui/core";
       const msg =
-      i18n._(/*i18n*/
+      _i18n._(/*i18n*/
       {
         id: "msgId",
         values: {
@@ -444,9 +444,9 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
+        import { i18n as _i18n } from "@lingui/core";
         const msg =
-        i18n._(/*i18n*/
+        _i18n._(/*i18n*/
           {
             id: 'msgId',
             values: {
@@ -471,9 +471,9 @@ const cases: TestCase[] = [
         })
     `,
     expected: `
-        import { i18n } from "@lingui/core";
+        import { i18n as _i18n } from "@lingui/core";
         const msg =
-        i18n._(/*i18n*/
+        _i18n._(/*i18n*/
           {
             id: 'msgId',
             context: 'My Context',
@@ -491,6 +491,86 @@ const cases: TestCase[] = [
   },
   {
     filename: "js-t-var/js-t-var.js",
+  },
+  {
+    name: "Support t in t",
+    input: `
+        import { t } from '@lingui/macro'
+        t\`Field \${t\`First Name\`} is required\`
+      `,
+    expected: `
+      import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "O8dJMg",
+    message: "Field {0} is required",
+    values: {
+      0: _i18n._(
+        /*i18n*/
+        {
+          id: "kODvZJ",
+          message: "First Name",
+        }
+      ),
+    },
+  }
+);
+
+      `,
+  },
+  {
+    name: "should correctly process nested macro when referenced from different imports",
+    input: `
+        import { t } from '@lingui/macro'
+        import { plural } from '@lingui/macro'
+        t\`Ola! \${plural(count, {one: "1 user", many: "# users"})} is required\`
+      `,
+    expected: `
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "EUO+Gb",
+    message: "Ola! {count, plural, one {1 user} many {# users}} is required",
+    values: {
+      count: count,
+    },
+  }
+);
+      `,
+  },
+  {
+    name: "should correctly process nested macro when referenced from different imports 2",
+    input: `
+        import { t as t1, plural as plural1 } from '@lingui/macro'
+        import { plural as plural2, t as t2 } from '@lingui/macro'
+        t1\`Ola!  \${plural2(count, {one: "1 user", many: "# users"})} Ola!\`
+        t2\`Ola! \${plural1(count, {one: "1 user", many: "# users"})} Ola!\`
+      `,
+    expected: `
+    import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "aui5Gr",
+    message: "Ola!  {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    id: "wJ7AD9",
+    message: "Ola! {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+`,
   },
 ]
 

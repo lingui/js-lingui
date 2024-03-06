@@ -43,7 +43,8 @@
     "@babel/core": "^7.21.0",
     "@babel/traverse": "7.20.12",
     "@babel/types": "^7.20.7",
-    "@lingui/jest-mocks": "*",
+    "@lingui/jest-mocks": "workspace:*",
+    "@lingui/macro": "workspace:*",
     "unbuild": "2.0.0"
   }
 }
