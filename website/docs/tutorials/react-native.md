@@ -7,6 +7,12 @@ description: Learn how to add internationalization to a React Native application
 
 In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx) for installation and setup instructions.
 
+:::caution Warning
+
+With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx react-native start --reset-cache` or `npx expo start -c` (if you use Expo).
+
+:::
+
 The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
 :::tip Hint
