@@ -1,5 +1,5 @@
-import { i18n } from "@lingui/core"
-i18n._(
+import { i18n as _i18n } from "@lingui/core"
+_i18n._(
   /*i18n*/
   {
     id: "LBYoFK",

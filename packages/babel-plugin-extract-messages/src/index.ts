@@ -2,14 +2,12 @@ import type * as BabelTypesNamespace from "@babel/types"
 import {
   Expression,
   Identifier,
-  ImportSpecifier,
   JSXAttribute,
   Node,
   ObjectExpression,
   ObjectProperty,
 } from "@babel/types"
-import type { PluginObj, PluginPass } from "@babel/core"
-import type { NodePath } from "@babel/core"
+import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
 
 type BabelTypes = typeof BabelTypesNamespace
@@ -148,14 +146,13 @@ function hasI18nComment(node: Node): boolean {
 }
 
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
-  let localTransComponentName: string
-
-  function isTransComponent(node: Node) {
+  function isTransComponent(path: NodePath) {
     return (
-      t.isJSXElement(node) &&
-      t.isJSXIdentifier(node.openingElement.name, {
-        name: localTransComponentName,
-      })
+      path.isJSXElement() &&
+      path
+        .get("openingElement")
+        .get("name")
+        .referencesImport("@lingui/react", "Trans")
     )
   }
 
@@ -190,33 +187,10 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
   return {
     visitor: {
-      // Get the local name of Trans component. Usually it's just `Trans`, but
-      // it might be different when the import is aliased:
-      // import { Trans as T } from '@lingui/react';
-      ImportDeclaration(path) {
-        const { node } = path
-
-        const moduleName = node.source.value
-        if (!["@lingui/react", "@lingui/core"].includes(moduleName)) return
-
-        const importDeclarations: Record<string, string> = {}
-        if (moduleName === "@lingui/react") {
-          node.specifiers.forEach((specifier) => {
-            specifier = specifier as ImportSpecifier
-            importDeclarations[(specifier.imported as Identifier).name] =
-              specifier.local.name
-          })
-
-          // Trans import might be missing if there's just Plural or similar macro.
-          // If there's no alias, consider it was imported as Trans.
-          localTransComponentName = importDeclarations["Trans"] || "Trans"
-        }
-      },
-
       // Extract translation from <Trans /> component.
       JSXElement(path, ctx) {
         const { node } = path
-        if (!localTransComponentName || !isTransComponent(node)) return
+        if (!isTransComponent(path)) return
 
         const attrs = (node.openingElement.attributes as JSXAttribute[]) || []
 

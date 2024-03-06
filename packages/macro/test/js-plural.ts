@@ -11,8 +11,8 @@ const cases: TestCase[] = [
         });
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-       const a = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+       const a = _i18n._(
           /*i18n*/
           {
             id: "esnaQO",
@@ -35,8 +35,8 @@ const cases: TestCase[] = [
         });
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-       const a = i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+       const a = _i18n._(
           /*i18n*/
           {
             id: "esnaQO",
@@ -61,8 +61,8 @@ const cases: TestCase[] = [
         });
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "CF5t+7",
@@ -86,8 +86,8 @@ const cases: TestCase[] = [
         });
       `,
     expected: `
-        import { i18n } from "@lingui/core";
-        i18n._(
+        import { i18n as _i18n } from "@lingui/core";
+        _i18n._(
           /*i18n*/
           {
             id: "0mcXIe",

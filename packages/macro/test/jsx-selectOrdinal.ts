@@ -15,8 +15,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"} message={
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"} message={
           "This is my {count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."
          }
          values={{
@@ -42,8 +42,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id={"<stripped>"}  message={
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id={"<stripped>"}  message={
           "This is my{count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."
          }
          values={{
@@ -67,8 +67,8 @@ const cases: TestCase[] = [
         </Trans>;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>" }
           message={
             "This is my {0, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."

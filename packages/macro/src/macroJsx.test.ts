@@ -1,15 +1,21 @@
+import type { JSXElement } from "@babel/types"
 import * as types from "@babel/types"
 import MacroJSX, { normalizeWhitespace } from "./macroJsx"
 import { transformSync } from "@babel/core"
 import type { NodePath } from "@babel/traverse"
-import type { JSXElement } from "@babel/types"
+import { JsxMacroName } from "./constants"
 
 const parseExpression = (expression: string) => {
   let path: NodePath<JSXElement>
 
-  transformSync(expression, {
+  const importExp = `import {Trans, Plural, Select, SelectOrdinal} from "@lingui/macro";\n`
+
+  transformSync(importExp + expression, {
     filename: "unit-test.js",
+    configFile: false,
+    presets: [],
     plugins: [
+      "@babel/plugin-syntax-jsx",
       {
         visitor: {
           JSXElement: (d) => {
@@ -27,7 +33,7 @@ const parseExpression = (expression: string) => {
 function createMacro() {
   return new MacroJSX(
     { types },
-    { stripNonEssentialProps: false, nameMap: new Map() }
+    { stripNonEssentialProps: false, transImportName: "Trans" }
   )
 }
 
@@ -195,7 +201,7 @@ describe("jsx macro", () => {
       const exp = parseExpression(
         "<Plural value={count} one='# book' other='# books' />"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -222,7 +228,7 @@ describe("jsx macro", () => {
           other='# books'
          />`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -251,7 +257,7 @@ describe("jsx macro", () => {
           other='# books'
          />`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -273,7 +279,7 @@ describe("jsx macro", () => {
       const exp = parseExpression(
         "<Plural value={count} one={`# glass of ${drink}`} other={`# glasses of ${drink}`} />"
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -330,7 +336,7 @@ describe("jsx macro", () => {
           }
         />`
       )
-      const tokens = macro.tokenizeChoiceComponent(exp)
+      const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
         type: "arg",
         name: "count",
@@ -383,18 +389,6 @@ describe("jsx macro", () => {
         },
         type: "arg",
         value: {
-          end: 31,
-          loc: {
-            end: {
-              column: 23,
-              line: 2,
-            },
-            identifierName: "gender",
-            start: {
-              column: 17,
-              line: 2,
-            },
-          },
           name: "gender",
           type: "Identifier",
         },

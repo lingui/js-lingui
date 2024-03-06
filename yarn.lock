@@ -3225,7 +3225,8 @@ __metadata:
     "@babel/core": ^7.21.0
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/jest-mocks": "*"
+    "@lingui/jest-mocks": "workspace:*"
+    "@lingui/macro": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3390,7 +3391,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
+"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
   version: 0.0.0-use.local
   resolution: "@lingui/jest-mocks@workspace:packages/jest-mocks"
   languageName: unknown
@@ -3411,7 +3412,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.8.0-next.0, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@4.8.0-next.0, @lingui/macro@workspace:*, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -3430,6 +3431,9 @@ __metadata:
   peerDependencies:
     "@lingui/react": ^4.0.0
     babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 

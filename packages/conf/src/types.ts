@@ -217,17 +217,16 @@ export type LinguiConfig = {
   }
 }
 
+type ModuleSourceNormalized = readonly [module: string, specifier: string]
+
 export type LinguiConfigNormalized = Omit<
   LinguiConfig,
   "runtimeConfigModule"
 > & {
   fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
-    i18nImportModule: string
-    i18nImportName: string
-    TransImportModule: string
-    TransImportName: string
-    useLinguiImportModule: string
-    useLinguiImportName: string
+    i18n: ModuleSourceNormalized
+    useLingui: ModuleSourceNormalized
+    Trans: ModuleSourceNormalized
   }
 }

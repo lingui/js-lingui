@@ -9,7 +9,8 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import type { ExtractorType } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 
-import { LinguiMacroOpts } from "@lingui/macro/node"
+import { type LinguiPluginOpts } from "@lingui/macro/plugin"
+import linguiMacroPlugin from "@lingui/macro/plugin"
 import { ExtractedMessage, ExtractorCtx } from "@lingui/conf"
 
 const babelRe = new RegExp(
@@ -120,18 +121,11 @@ export async function extractFromFileWithBabel(
 
     plugins: [
       [
-        "macros",
+        linguiMacroPlugin,
         {
-          // macro plugin uses package `resolve` to find a path of macro file
-          // this will not follow jest pathMapping and will resolve path from ./build
-          // instead of ./src which makes testing & developing hard.
-          // here we override resolve and provide correct path for testing
-          resolvePath: (source: string) => require.resolve(source),
-          lingui: {
-            extract: true,
-            linguiConfig: ctx.linguiConfig,
-          } satisfies LinguiMacroOpts,
-        },
+          extract: true,
+          linguiConfig: ctx.linguiConfig,
+        } satisfies LinguiPluginOpts,
       ],
       [
         linguiExtractMessages,

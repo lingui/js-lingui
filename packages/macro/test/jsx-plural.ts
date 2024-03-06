@@ -13,8 +13,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"tYX0sm"}
           message={
             "{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"
@@ -40,8 +40,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           id={"<stripped>"}
           message={"{count, plural, one {...} other {...}}"}
           values={{
@@ -67,8 +67,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           render={() => {}}
           id="custom.id"
           message={
@@ -104,8 +104,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans
           id={"<stripped>"}
           message={
             "{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}"
@@ -140,8 +140,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"<stripped>"}
           message={
             "{count, plural, one {One hello} other {Other hello}}"
@@ -166,8 +166,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans render="strong" id="msg.plural" message={"{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"} values={{
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans render="strong" id="msg.plural" message={"{count, plural, offset:1 =0 {Zero items} few {{count} items} other {<0>A lot of them</0>}}"} values={{
           count: count
         }} components={{
           0: <a href="/more" />
@@ -189,8 +189,8 @@ const cases: TestCase[] = [
         </Trans>
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans id="inner-id-removed" message={
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans id="inner-id-removed" message={
             "Looking for {0, plural, offset:1 =0 {zero items} few {{1} items {2}} other {<0>a lot of them</0>}}"
          }
          values={{
@@ -213,8 +213,8 @@ const cases: TestCase[] = [
         />;
       `,
     expected: `
-        import { Trans } from "@lingui/react";
-        <Trans 
+        import { Trans as _Trans } from "@lingui/react";
+        <_Trans 
           id={"EQvNfC"}
           message={
             "{count, plural, =0 {Zero items} one {{oneText}} other {<0>A lot of them</0>}}"

@@ -3,7 +3,6 @@ import {
   CallExpression,
   Expression,
   Identifier,
-  isObjectProperty,
   Node,
   ObjectExpression,
   ObjectProperty,
@@ -21,7 +20,15 @@ import ICUMessageFormat, {
   Tokens,
 } from "./icu"
 import { makeCounter } from "./utils"
-import { COMMENT, CONTEXT, EXTRACT_MARK, ID, MESSAGE } from "./constants"
+import {
+  COMMENT,
+  CONTEXT,
+  EXTRACT_MARK,
+  ID,
+  MESSAGE,
+  MACRO_PACKAGE,
+  JsMacroName,
+} from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
@@ -40,8 +47,9 @@ function buildICUFromTokens(tokens: Tokens) {
 
 export type MacroJsOpts = {
   i18nImportName: string
+  useLinguiImportName: string
+
   stripNonEssentialProps: boolean
-  nameMap: Map<string, string>
 }
 
 export default class MacroJs {
@@ -50,9 +58,8 @@ export default class MacroJs {
 
   // Identifier of i18n object
   i18nImportName: string
+  useLinguiImportName: string
   stripNonEssentialProps: boolean
-  nameMap: Map<string, string>
-  nameMapReversed: Map<string, string>
 
   needsUseLinguiImport = false
   needsI18nImport = false
@@ -63,12 +70,9 @@ export default class MacroJs {
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsOpts) {
     this.types = types
     this.i18nImportName = opts.i18nImportName
+    this.useLinguiImportName = opts.useLinguiImportName
+
     this.stripNonEssentialProps = opts.stripNonEssentialProps
-    this.nameMap = opts.nameMap
-    this.nameMapReversed = Array.from(opts.nameMap.entries()).reduce(
-      (map, [key, value]) => map.set(value, key),
-      new Map()
-    )
   }
 
   replacePathWithMessage = (
@@ -76,138 +80,96 @@ export default class MacroJs {
     tokens: Tokens,
     linguiInstance?: babelTypes.Expression
   ) => {
-    const newNode = this.createI18nCall(
+    return this.createI18nCall(
       this.createMessageDescriptorFromTokens(tokens, path.node.loc),
       linguiInstance
     )
-
-    path.replaceWith(newNode)
   }
 
-  // Returns a boolean indicating if the replacement requires i18n import
-  replacePath = (path: NodePath): boolean => {
+  replacePath = (path: NodePath): false | babelTypes.Expression => {
     // reset the expression counter
     this._expressionIndex = makeCounter()
 
     // defineMessage({ message: "Message", context: "My" }) -> {id: <hash + context>, message: "Message"}
     if (
-      this.types.isCallExpression(path.node) &&
-      this.isDefineMessage(path.node.callee)
+      //
+      path.isCallExpression() &&
+      this.isDefineMessage(path.get("callee"))
     ) {
-      let descriptor = this.processDescriptor(path.node.arguments[0])
-      path.replaceWith(descriptor)
-      return false
+      return this.processDescriptor(
+        path.get("arguments")[0] as NodePath<ObjectExpression>
+      )
     }
 
     // defineMessage`Message` -> {id: <hash>, message: "Message"}
     if (
-      this.types.isTaggedTemplateExpression(path.node) &&
-      this.isDefineMessage(path.node.tag)
+      path.isTaggedTemplateExpression() &&
+      this.isDefineMessage(path.get("tag"))
     ) {
-      const tokens = this.tokenizeTemplateLiteral(path.node.quasi)
-      const descriptor = this.createMessageDescriptorFromTokens(
-        tokens,
-        path.node.loc
-      )
-
-      path.replaceWith(descriptor)
-      return false
+      const tokens = this.tokenizeTemplateLiteral(path.get("quasi"))
+      return this.createMessageDescriptorFromTokens(tokens, path.node.loc)
     }
 
-    // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
-    if (
-      this.types.isCallExpression(path.node) &&
-      this.types.isTaggedTemplateExpression(path.parentPath.node) &&
-      this.types.isExpression(path.node.arguments[0]) &&
-      this.isLinguiIdentifier(path.node.callee, "t")
-    ) {
-      // Use the first argument as i18n instance instead of the default i18n instance
-      const i18nInstance = path.node.arguments[0]
-      const tokens = this.tokenizeNode(path.parentPath.node)
+    if (path.isTaggedTemplateExpression()) {
+      const tag = path.get("tag")
 
-      this.replacePathWithMessage(path.parentPath, tokens, i18nInstance)
-      return false
+      // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
+      if (
+        tag.isCallExpression() &&
+        tag.get("arguments")[0].isExpression() &&
+        this.isLinguiIdentifier(tag.get("callee"), JsMacroName.t)
+      ) {
+        // Use the first argument as i18n instance instead of the default i18n instance
+        const i18nInstance = tag.get("arguments")[0].node as Expression
+        const tokens = this.tokenizeNode(path)
+
+        return this.replacePathWithMessage(path, tokens, i18nInstance)
+      }
     }
 
     // t(i18nInstance)(messageDescriptor) -> i18nInstance._(messageDescriptor)
-    if (
-      this.types.isCallExpression(path.node) &&
-      this.types.isCallExpression(path.parentPath.node) &&
-      this.types.isExpression(path.node.arguments[0]) &&
-      path.parentPath.node.callee === path.node &&
-      this.isLinguiIdentifier(path.node.callee, "t")
-    ) {
-      const i18nInstance = path.node.arguments[0]
-      this.replaceTAsFunction(
-        path.parentPath as NodePath<CallExpression>,
-        i18nInstance
-      )
-      return false
+    if (path.isCallExpression()) {
+      const callee = path.get("callee")
+
+      if (
+        callee.isCallExpression() &&
+        callee.get("arguments")[0].isExpression() &&
+        this.isLinguiIdentifier(callee.get("callee"), JsMacroName.t)
+      ) {
+        const i18nInstance = callee.node.arguments[0] as Expression
+        return this.replaceTAsFunction(
+          path as NodePath<CallExpression>,
+          i18nInstance
+        )
+      }
     }
 
     // t({...})
     if (
-      this.types.isCallExpression(path.node) &&
-      this.isLinguiIdentifier(path.node.callee, "t")
+      path.isCallExpression() &&
+      this.isLinguiIdentifier(path.get("callee"), JsMacroName.t)
     ) {
-      this.replaceTAsFunction(path as NodePath<CallExpression>)
       this.needsI18nImport = true
-
-      return true
+      return this.replaceTAsFunction(path)
     }
 
     // { t } = useLingui()
-    // t`Hello!`
-    if (
-      path.isTaggedTemplateExpression() &&
-      this.isLinguiIdentifier(path.node.tag, "_t")
-    ) {
-      this.needsUseLinguiImport = true
-      const tokens = this.tokenizeTemplateLiteral(path.node)
-
-      const descriptor = this.createMessageDescriptorFromTokens(
-        tokens,
-        path.node.loc
-      )
-
-      const callExpr = this.types.callExpression(
-        this.types.isIdentifier(path.node.tag) && path.node.tag,
-        [descriptor]
-      )
-
-      path.replaceWith(callExpr)
-
-      return false
-    }
-
-    // { t } = useLingui()
-    // t(messageDescriptor)
     if (
       path.isCallExpression() &&
-      this.isLinguiIdentifier(path.node.callee, "_t") &&
-      this.types.isExpression(path.node.arguments[0])
+      this.isLinguiIdentifier(path.get("callee"), JsMacroName.useLingui)
     ) {
       this.needsUseLinguiImport = true
-      let descriptor = this.processDescriptor(path.node.arguments[0])
-      path.node.arguments = [descriptor]
-      return false
+      return this.processUseLingui(path)
     }
 
-    if (
-      this.types.isCallExpression(path.node) &&
-      this.isLinguiIdentifier(path.node.callee, "useLingui") &&
-      this.types.isVariableDeclarator(path.parentPath.node)
-    ) {
-      this.needsUseLinguiImport = true
-      return false
+    const tokens = this.tokenizeNode(path, true)
+
+    if (tokens) {
+      this.needsI18nImport = true
+      return this.replacePathWithMessage(path, tokens)
     }
 
-    const tokens = this.tokenizeNode(path.node)
-
-    this.replacePathWithMessage(path, tokens)
-
-    this.needsI18nImport = true
-    return true
+    return false
   }
 
   /**
@@ -217,9 +179,133 @@ export default class MacroJs {
   replaceTAsFunction = (
     path: NodePath<CallExpression>,
     linguiInstance?: babelTypes.Expression
-  ) => {
-    const descriptor = this.processDescriptor(path.node.arguments[0])
-    path.replaceWith(this.createI18nCall(descriptor, linguiInstance))
+  ): babelTypes.CallExpression => {
+    const descriptor = this.processDescriptor(
+      path.get("arguments")[0] as NodePath<ObjectExpression>
+    )
+
+    return this.createI18nCall(descriptor, linguiInstance)
+  }
+
+  /**
+   * Receives reference to `useLingui()` call
+   *
+   * Finds every usage of { t } destructured from the call
+   * and process each reference as usual `t` macro.
+   *
+   * const { t } = useLingui()
+   * t`Message`
+   *
+   * ↓ ↓ ↓ ↓ ↓ ↓
+   *
+   * const { _: _t } = useLingui()
+   * _t({id: <hash>, message: "Message"})
+   */
+  processUseLingui(path: NodePath<CallExpression>) {
+    /*
+     * path is CallExpression eq:
+     * useLingui()
+     *
+     * path.parentPath should be a VariableDeclarator eq:
+     * const { t } = useLingui()
+     */
+    if (!path.parentPath.isVariableDeclarator()) {
+      throw new Error(
+        `\`useLingui\` macro must be used in variable declaration.
+
+ Example:
+
+ const { t } = useLingui()
+      `
+      )
+    }
+
+    // looking for `t` property in left side assigment
+    // in the declarator `const { t } = useLingui()`
+    const varDec = path.parentPath.node
+    const _property = this.types.isObjectPattern(varDec.id)
+      ? varDec.id.properties.find(
+          (
+            property
+          ): property is ObjectProperty & {
+            value: Identifier
+            key: Identifier
+          } =>
+            this.types.isObjectProperty(property) &&
+            this.types.isIdentifier(property.key) &&
+            this.types.isIdentifier(property.value) &&
+            property.key.name == "t"
+        )
+      : null
+
+    // Enforce destructuring `t` from `useLingui` macro to prevent misuse
+    if (!_property) {
+      throw new Error(
+        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
+ const { t } = useLingui()
+ or
+ const { t: _ } = useLingui()
+ `
+      )
+    }
+
+    const uniqTIdentifier = path.scope.generateUidIdentifier("t")
+
+    path.scope
+      .getBinding(_property.value.name)
+      ?.referencePaths.forEach((refPath) => {
+        // reference usually points to Identifier,
+        // parent would be an Expression with this identifier which we are interesting in
+        const currentPath = refPath.parentPath
+
+        // { t } = useLingui()
+        // t`Hello!`
+        if (currentPath.isTaggedTemplateExpression()) {
+          const tokens = this.tokenizeTemplateLiteral(currentPath)
+
+          const descriptor = this.createMessageDescriptorFromTokens(
+            tokens,
+            currentPath.node.loc
+          )
+
+          const callExpr = this.types.callExpression(
+            this.types.identifier(uniqTIdentifier.name),
+            [descriptor]
+          )
+
+          return currentPath.replaceWith(callExpr)
+        }
+
+        // { t } = useLingui()
+        // t(messageDescriptor)
+        if (
+          currentPath.isCallExpression() &&
+          currentPath.get("arguments")[0].isObjectExpression()
+        ) {
+          let descriptor = this.processDescriptor(
+            currentPath.get("arguments")[0] as NodePath<ObjectExpression>
+          )
+          const callExpr = this.types.callExpression(
+            this.types.identifier(uniqTIdentifier.name),
+            [descriptor]
+          )
+
+          return currentPath.replaceWith(callExpr)
+        }
+
+        // for rest of cases just rename identifier for run-time counterpart
+        refPath.replaceWith(this.types.identifier(uniqTIdentifier.name))
+      })
+
+    // assign uniq identifier for runtime `_`
+    // { t } = useLingui() -> { _ : _t } = useLingui()
+    _property.key.name = "_"
+    _property.value.name = uniqTIdentifier.name
+
+    return this.types.callExpression(
+      this.types.identifier(this.useLinguiImportName),
+      []
+    )
   }
 
   /**
@@ -240,28 +326,33 @@ export default class MacroJs {
    * }
    *
    */
-  processDescriptor = (descriptor_: Node) => {
-    const descriptor = descriptor_ as ObjectExpression
-
+  processDescriptor = (descriptor: NodePath<ObjectExpression>) => {
     const messageProperty = this.getObjectPropertyByKey(descriptor, MESSAGE)
     const idProperty = this.getObjectPropertyByKey(descriptor, ID)
     const contextProperty = this.getObjectPropertyByKey(descriptor, CONTEXT)
+    const commentProperty = this.getObjectPropertyByKey(descriptor, COMMENT)
 
-    const properties: ObjectProperty[] = [idProperty]
+    const properties: ObjectProperty[] = []
 
-    if (!this.stripNonEssentialProps) {
-      properties.push(contextProperty)
+    if (idProperty) {
+      properties.push(idProperty.node)
+    }
+
+    if (!this.stripNonEssentialProps && contextProperty) {
+      properties.push(contextProperty.node)
     }
 
     // if there's `message` property, replace macros with formatted message
     if (messageProperty) {
       // Inside message descriptor the `t` macro in `message` prop is optional.
       // Template strings are always processed as if they were wrapped by `t`.
-      const tokens = this.types.isTemplateLiteral(messageProperty.value)
-        ? this.tokenizeTemplateLiteral(messageProperty.value)
-        : this.tokenizeNode(messageProperty.value, true)
+      const messageValue = messageProperty.get("value")
 
-      let messageNode = messageProperty.value as StringLiteral
+      const tokens = messageValue.isTemplateLiteral()
+        ? this.tokenizeTemplateLiteral(messageValue)
+        : this.tokenizeNode(messageValue, true)
+
+      let messageNode = messageValue.node as StringLiteral
 
       if (tokens) {
         const { message, values } = buildICUFromTokens(tokens)
@@ -279,17 +370,19 @@ export default class MacroJs {
       if (!idProperty && this.types.isStringLiteral(messageNode)) {
         const context =
           contextProperty &&
-          this.getTextFromExpression(contextProperty.value as Expression)
+          this.getTextFromExpression(
+            contextProperty.get("value").node as Expression
+          )
 
         properties.push(this.createIdProperty(messageNode.value, context))
       }
     }
 
-    if (!this.stripNonEssentialProps) {
-      properties.push(this.getObjectPropertyByKey(descriptor, COMMENT))
+    if (!this.stripNonEssentialProps && commentProperty) {
+      properties.push(commentProperty.node)
     }
 
-    return this.createMessageDescriptor(properties, descriptor.loc)
+    return this.createMessageDescriptor(properties, descriptor.node.loc)
   }
 
   createIdProperty(message: string, context?: string) {
@@ -312,17 +405,29 @@ export default class MacroJs {
     )
   }
 
-  tokenizeNode(node: Node, ignoreExpression = false): Token[] {
-    if (this.isI18nMethod(node)) {
+  tokenizeNode(path: NodePath, ignoreExpression = false): Token[] {
+    const node = path.node
+
+    if (this.isI18nMethod(path)) {
       // t
-      return this.tokenizeTemplateLiteral(node as Expression)
-    } else if (this.isChoiceMethod(node)) {
-      // plural, select and selectOrdinal
-      return [this.tokenizeChoiceComponent(node as CallExpression)]
-      // } else if (isFormatMethod(node.callee)) {
-      //   // date, number
-      //   return transformFormatMethod(node, file, props, root)
-    } else if (!ignoreExpression) {
+      return this.tokenizeTemplateLiteral(path as NodePath<Expression>)
+    }
+
+    const choiceMethod = this.isChoiceMethod(path)
+    // plural, select and selectOrdinal
+    if (choiceMethod) {
+      return [
+        this.tokenizeChoiceComponent(
+          path as NodePath<CallExpression>,
+          choiceMethod
+        ),
+      ]
+    }
+    //   if (isFormatMethod(node.callee)) {
+    //   // date, number
+    //   return transformFormatMethod(node, file, props, root)
+
+    if (!ignoreExpression) {
       return [this.tokenizeExpression(node)]
     }
   }
@@ -332,28 +437,30 @@ export default class MacroJs {
    * text chunks and node.expressions contains expressions.
    * Both arrays must be zipped together to get the final list of tokens.
    */
-  tokenizeTemplateLiteral(node: babelTypes.Expression): Token[] {
-    const tpl = this.types.isTaggedTemplateExpression(node)
-      ? node.quasi
-      : (node as TemplateLiteral)
+  tokenizeTemplateLiteral(path: NodePath<Expression>): Token[] {
+    const tpl = path.isTaggedTemplateExpression()
+      ? path.get("quasi")
+      : (path as NodePath<TemplateLiteral>)
 
-    const expressions = tpl.expressions as Expression[]
+    const expressions = tpl.get("expressions") as NodePath<Expression>[]
 
-    return tpl.quasis.flatMap((text, i) => {
+    return tpl.get("quasis").flatMap((text, i) => {
       // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
       // This regex will detect if a string contains unicode chars, when they're we should interpolate them
       // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw)
-        ? text.value.cooked
-        : text.value.raw
+      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
+        text.node.value.raw
+      )
+        ? text.node.value.cooked
+        : text.node.value.raw
 
       let argTokens: Token[] = []
       const currExp = expressions[i]
 
       if (currExp) {
-        argTokens = this.types.isCallExpression(currExp)
+        argTokens = currExp.isCallExpression()
           ? this.tokenizeNode(currExp)
-          : [this.tokenizeExpression(currExp)]
+          : [this.tokenizeExpression(currExp.node)]
       }
       const textToken: TextToken = {
         type: "text",
@@ -363,44 +470,53 @@ export default class MacroJs {
     })
   }
 
-  tokenizeChoiceComponent(node: CallExpression): ArgToken {
-    const name = (node.callee as Identifier).name
-    const format = (this.nameMapReversed.get(name) || name).toLowerCase()
+  tokenizeChoiceComponent(
+    path: NodePath<CallExpression>,
+    componentName: string
+  ): ArgToken {
+    const format = componentName.toLowerCase()
 
     const token: ArgToken = {
-      ...this.tokenizeExpression(node.arguments[0]),
-      format,
+      ...this.tokenizeExpression(path.node.arguments[0]),
+      format: format,
       options: {
         offset: undefined,
       },
     }
 
-    const props = (node.arguments[1] as ObjectExpression).properties
+    const props = (path.get("arguments")[1] as NodePath<ObjectExpression>).get(
+      "properties"
+    )
 
     for (const attr of props) {
-      const { key, value: attrValue } = attr as ObjectProperty
+      if (!attr.isObjectProperty()) {
+        throw new Error("Expected an ObjectProperty")
+      }
+
+      const key = attr.get("key")
+      const attrValue = attr.get("value") as NodePath<Expression>
 
       // name is either:
       // NumericLiteral => convert to `={number}`
       // StringLiteral => key.value
       // Identifier => key.name
-      const name = this.types.isNumericLiteral(key)
-        ? `=${key.value}`
-        : (key as Identifier).name || (key as StringLiteral).value
+      const name = key.isNumericLiteral()
+        ? `=${key.node.value}`
+        : (key.node as Identifier).name || (key.node as StringLiteral).value
 
       if (format !== "select" && name === "offset") {
-        token.options.offset = (attrValue as StringLiteral).value
+        token.options.offset = (attrValue.node as StringLiteral).value
       } else {
         let value: ArgToken["options"][string]
 
-        if (this.types.isTemplateLiteral(attrValue)) {
+        if (attrValue.isTemplateLiteral()) {
           value = this.tokenizeTemplateLiteral(attrValue)
-        } else if (this.types.isCallExpression(attrValue)) {
+        } else if (attrValue.isCallExpression()) {
           value = this.tokenizeNode(attrValue)
-        } else if (this.types.isStringLiteral(attrValue)) {
-          value = attrValue.value
-        } else if (this.types.isExpression(attrValue)) {
-          value = this.tokenizeExpression(attrValue)
+        } else if (attrValue.isStringLiteral()) {
+          value = attrValue.node.value
+        } else if (attrValue.isExpression()) {
+          value = this.tokenizeExpression(attrValue.node)
         } else {
           value = (attrValue as unknown as StringLiteral).value
         }
@@ -490,47 +606,64 @@ export default class MacroJs {
   }
 
   getObjectPropertyByKey(
-    objectExp: ObjectExpression,
+    objectExp: NodePath<ObjectExpression>,
     key: string
-  ): ObjectProperty {
-    return objectExp.properties.find(
+  ): NodePath<ObjectProperty> {
+    return objectExp.get("properties").find(
       (property) =>
-        isObjectProperty(property) && this.isLinguiIdentifier(property.key, key)
-    ) as ObjectProperty
+        property.isObjectProperty() &&
+        (property.get("key") as NodePath<Expression>).isIdentifier({
+          name: key,
+        })
+    ) as NodePath<ObjectProperty>
   }
 
   /**
    * Custom matchers
    */
-  isLinguiIdentifier(node: Node | Expression, name: string) {
-    return this.types.isIdentifier(node, {
-      name: this.nameMap.get(name) || name,
-    })
+  isLinguiIdentifier(path: NodePath, name: JsMacroName) {
+    if (path.isIdentifier() && path.referencesImport(MACRO_PACKAGE, name)) {
+      return true
+    }
   }
 
-  isDefineMessage(node: Node | Expression): boolean {
+  isDefineMessage(path: NodePath): boolean {
     return (
-      this.isLinguiIdentifier(node, "defineMessage") ||
-      this.isLinguiIdentifier(node, "msg")
+      this.isLinguiIdentifier(path, JsMacroName.defineMessage) ||
+      this.isLinguiIdentifier(path, JsMacroName.msg)
     )
   }
 
-  isI18nMethod(node: Node) {
+  isI18nMethod(path: NodePath) {
+    if (!path.isTaggedTemplateExpression()) {
+      return
+    }
+
+    const tag = path.get("tag")
+
     return (
-      this.types.isTaggedTemplateExpression(node) &&
-      (this.isLinguiIdentifier(node.tag, "t") ||
-        (this.types.isCallExpression(node.tag) &&
-          this.isLinguiIdentifier(node.tag.callee, "t")))
+      this.isLinguiIdentifier(tag, JsMacroName.t) ||
+      (tag.isCallExpression() &&
+        this.isLinguiIdentifier(tag.get("callee"), JsMacroName.t))
     )
   }
 
-  isChoiceMethod(node: Node) {
-    return (
-      this.types.isCallExpression(node) &&
-      (this.isLinguiIdentifier(node.callee, "plural") ||
-        this.isLinguiIdentifier(node.callee, "select") ||
-        this.isLinguiIdentifier(node.callee, "selectOrdinal"))
-    )
+  isChoiceMethod(path: NodePath) {
+    if (!path.isCallExpression()) {
+      return
+    }
+
+    const callee = path.get("callee")
+
+    if (this.isLinguiIdentifier(callee, JsMacroName.plural)) {
+      return JsMacroName.plural
+    }
+    if (this.isLinguiIdentifier(callee, JsMacroName.select)) {
+      return JsMacroName.select
+    }
+    if (this.isLinguiIdentifier(callee, JsMacroName.selectOrdinal)) {
+      return JsMacroName.selectOrdinal
+    }
   }
 
   getTextFromExpression(exp: Expression): string {
