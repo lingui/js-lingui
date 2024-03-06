@@ -10,6 +10,7 @@ import {
   SourceLocation,
   StringLiteral,
   TemplateLiteral,
+  MemberExpression,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
@@ -367,11 +368,31 @@ export default class MacroJs {
     }
   }
 
+  memberExpressionToArgument(exp: MemberExpression): string {
+    let parts: string[] = []
+
+    if (this.types.isThisExpression(exp.object)) {
+      // ignore this
+    } else {
+      parts.unshift(this.expressionToArgument(exp.object))
+    }
+
+    parts.push(
+      this.expressionToArgument(
+        this.types.isPrivateName(exp.property) ? exp.property.id : exp.property
+      )
+    )
+
+    return parts.join("_")
+  }
+
   expressionToArgument(exp: Expression): string {
     if (this.types.isIdentifier(exp)) {
       return exp.name
     } else if (this.types.isStringLiteral(exp)) {
       return exp.value
+    } else if (this.types.isMemberExpression(exp)) {
+      return this.memberExpressionToArgument(exp)
     } else {
       return String(this._expressionIndex())
     }

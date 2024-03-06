@@ -1,6 +1,7 @@
 import * as babelTypes from "@babel/types"
 import {
   ConditionalExpression,
+  MemberExpression,
   Expression,
   JSXAttribute,
   JSXElement,
@@ -285,6 +286,7 @@ export default class MacroJSX {
       if (exp.isJSXElement()) {
         return this.tokenizeNode(exp)
       }
+
       return [this.tokenizeExpression(exp)]
     } else if (path.isJSXElement()) {
       return this.tokenizeNode(path)
@@ -464,8 +466,35 @@ export default class MacroJSX {
     }
   }
 
+  memberExpressionToArgument(path: NodePath<MemberExpression>): string {
+    let parts: string[] = []
+
+    if (this.types.isThisExpression(path.node.object)) {
+      // ignore this
+    } else {
+      parts.unshift(this.expressionToArgument(path.get("object")))
+    }
+
+    const propertyPath = path.get("property")
+
+    parts.push(
+      this.expressionToArgument(
+        propertyPath.isPrivateName() ? propertyPath.get("id") : propertyPath
+      )
+    )
+    return parts.join("_")
+  }
+
   expressionToArgument(path: NodePath<Expression | Node>): string {
-    return path.isIdentifier() ? path.node.name : String(this.expressionIndex())
+    if (this.types.isIdentifier(path.node)) {
+      return path.node.name
+    } else if (this.types.isStringLiteral(path.node)) {
+      return path.node.value
+    } else if (path.isMemberExpression()) {
+      return this.memberExpressionToArgument(path)
+    } else {
+      return String(this.expressionIndex())
+    }
   }
 
   /**
