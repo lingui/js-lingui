@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0-next.1](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.1) (2024-03-06)
+
+### Features
+
+- **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([ea420a8](https://github.com/lingui/js-lingui/commit/ea420a8a396aac49b26cd9375f9f82de6c01aaf0))
+
 # [4.8.0-next.0](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.0) (2024-03-04)
 
 ### Features
