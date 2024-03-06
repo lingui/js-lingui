@@ -93,7 +93,7 @@ describe("Catalog", () => {
       // Everything should be empty
       expect(await catalog.readAll()).toMatchSnapshot()
 
-      await catalog.make({ ...defaultMakeOptions, locale: "en" })
+      await catalog.make({ ...defaultMakeOptions, locale: ["en"] })
       expect(await catalog.readAll()).toMatchSnapshot()
     })
 

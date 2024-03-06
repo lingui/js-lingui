@@ -54,7 +54,7 @@ lingui extract [files...]
         [--clean]
         [--overwrite]
         [--format <format>]
-        [--locale <locale>]
+        [--locale <locale, [...]>]
         [--convert-from <format>]
         [--verbose]
         [--watch [--debounce <delay>]]
@@ -100,9 +100,9 @@ Update translations for [`sourceLocale`](/docs/ref/conf.md#sourcelocale) from so
 
 Format of message catalogs (see [`format`](/docs/ref/conf.md#format) option).
 
-#### `--locale <locale>` {#extract-locale}
+#### `--locale <locale, [...]>` {#extract-locale}
 
-Only extract data for the specified locale.
+Only extract data for the specified locales.
 
 #### `--convert-from <format>` {#extract-convert-from}
 
