@@ -1,32 +1,29 @@
 import Head from "next/head"
 import classnames from "classnames"
 
-import { t, Trans } from "@lingui/macro"
+import { t, Trans, useLingui } from "@lingui/macro"
 
 import styles from "./Layout.module.css"
-import { useLingui } from "@lingui/react"
 import { useRouter } from "next/router"
 
 export function Layout({ title = null, className = "", children }) {
   /**
-   * This hook is needed to subscribe your
-   * component for changes if you use t`` macro
+   * This macro hook is needed to get `t` which
+   * is bound to i18n from React.Context
    */
-  useLingui()
+  const { t } = useLingui()
   const router = useRouter()
   const { pathname, asPath, query } = router
-
-  // Default props can't be translated at module level because active locale
-  // isn't known when module is imported, but rather when component
-  // is rendered.
-  if (title == null) {
-    title = t`Example project using LinguiJS`
-  }
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>{title}</title>
+        {/*
+         The Next Head component is not being rendered in the React
+         component tree and React Context is not being passed down to the components placed in the <Head>.
+         That means we cannot use the <Trans> component here and instead have to use `t` macro.
+        */}
+        <title>{title || t`Example project using LinguiJS`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
