@@ -137,7 +137,7 @@ const CurrentLocale = () => {
 
 ## Components
 
-The `@lingui/react` package provides `Trans` component to render translations. However, you're more likely to use [macros](/docs/ref/macro.md) instead because they are more convenient and easier to use.
+The `@lingui/react` package provides `Trans` component to render translations. However, you're more likely to use [macros](/docs/ref/macro.mdx) instead because they are more convenient and easier to use.
 
 This section is intended for reference purposes.
 
@@ -149,7 +149,7 @@ This section is intended for reference purposes.
 
 :::important
 
-Import [`Trans`](/docs/ref/macro.md#trans) macro instead of [`Trans`](#trans) component if you use macros:
+Import [`Trans`](/docs/ref/macro.mdx#trans) macro instead of [`Trans`](#trans) component if you use macros:
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -189,7 +189,7 @@ It's also possible to use `Trans` component directly without macros. In that cas
 
 ### Plurals
 
-If you cannot use [@lingui/macro](/docs/ref/macro.md) for some reason, you can render plurals using the plain Trans component like this:
+If you cannot use [@lingui/macro](/docs/ref/macro.mdx) for some reason, you can render plurals using the plain Trans component like this:
 
 ```jsx
 import React from "react";

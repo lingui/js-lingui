@@ -28,7 +28,7 @@ t({
 const jsx = <Trans>Hi, my name is {name}</Trans>;
 ```
 
-For more usage examples, refer to the [macro documentation](/docs/ref/macro.md).
+For more usage examples, refer to the [macro documentation](/docs/ref/macro.mdx).
 
 ### Non-Macro usages
 

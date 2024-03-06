@@ -5,46 +5,53 @@ description: Transform JavaScript objects and JSX elements into ICU MessageForma
 
 # Macros
 
-The `@lingui/macro` package transforms JavaScript objects and JSX elements into ICU MessageFormat messages. You can use [Babel macros](#babel) or [SWC plugin](#swc) for this transformation.
+The `@lingui/macro` package transforms JavaScript objects and JSX elements into ICU MessageFormat messages. You can use Babel macros or SWC plugin for this transformation.
 
 ## Installation
 
-Installing `@lingui/macro` can be done in two ways, depending on whether you use Babel or SWC as your compiler.
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-### Babel
+<Tabs groupId="babel-swc">
+  <TabItem value="babel" label="Babel" default>
+    Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise, install it as any other Babel plugin:
+    - Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
 
-Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise, install it as any other Babel plugin:
+      ```bash npm2yarn
+      npm install --save-dev babel-plugin-macros
+      npm install --save @lingui/macro
+      ```
 
-1. Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
+    - Add `macros` to the top of plugins section in your Babel config:
 
-```bash npm2yarn
-npm install --save-dev babel-plugin-macros
-npm install --save @lingui/macro
-```
+      ```json
+      {
+        "plugins": ["macros"]
+      }
+      ```
 
-2. Add `macros` to the top of plugins section in your Babel config:
+      When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
 
-```json
-{
-  "plugins": ["macros"]
-}
-```
+  </TabItem>
+  <TabItem value="swc" label="SWC">
+    - Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
 
-### SWC
+      ```bash npm2yarn
+      npm install --save-dev @lingui/swc-plugin
+      npm install --save @lingui/macro
+      ```
 
-For those who prefer not to use Babel, Lingui offers the [SWC Plugin](/docs/ref/swc-plugin.md) as an alternative.
+    - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
 
-1. Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
-
-```bash npm2yarn
-npm install --save-dev @lingui/swc-plugin
-npm install --save @lingui/macro
-```
-
-2. [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+  </TabItem>
+</Tabs>
 
 :::note
 It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies` errors in ESLint.
+:::
+
+:::tip
+Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
 :::
 
 ## Overview
@@ -89,10 +96,10 @@ i18n._(
 ```
 
 :::note
-By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.md#t).
+By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.mdx#t).
 :::
 
-The only exception is [`defineMessage`](/docs/ref/macro.md#definemessage) which is transformed into message descriptor. In other words, the message isn't translated directly and can be used anytime later:
+The only exception is [`defineMessage`](/docs/ref/macro.mdx#definemessage) which is transformed into message descriptor. In other words, the message isn't translated directly and can be used anytime later:
 
 ```jsx
 import { i18n } from "@lingui/core"
@@ -311,7 +318,7 @@ const msg = /*i18n*/ {
 These macros can be used in any context (e.g. outside JSX). All JS macros are transformed into a _Message Descriptor_ wrapped inside of [`i18n._`](/docs/ref/core.md#i18n._) call.
 
 :::note
-By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.md#t).
+By default, the `i18n` object is imported from `@lingui/core`. If you use a custom instance of `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.mdx#t).
 :::
 
 _Message Descriptor_ is an object with message ID, default message and other parameters. [`i18n._`](/docs/ref/core.md#i18n._) accepts message descriptors and performs translation and formatting:
@@ -482,7 +489,7 @@ const message = i18n._(
 );
 ```
 
-If you need to add variables to plural form, you can use template string literals. This time [`t`](/docs/ref/macro.md#t) macro isn't required as template strings are transformed automatically:
+If you need to add variables to plural form, you can use template string literals. This time [`t`](/docs/ref/macro.mdx#t) macro isn't required as template strings are transformed automatically:
 
 ```js
 import { plural } from "@lingui/macro";
@@ -897,7 +904,7 @@ Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which 
 
 > MessageFormat: `{arg, plural, ...forms}`
 
-Props of [`Plural`](/docs/ref/macro.md#plural-1) macro are transformed into [`plural`](/docs/ref/message-format.md) format.
+Props of [`Plural`](/docs/ref/macro.mdx#plural-1) macro are transformed into [`plural`](/docs/guides/message-format.md) format.
 
 ```jsx
 import { Plural } from "@lingui/macro";
@@ -964,7 +971,7 @@ Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or 
 
 > MessageFormat: `{arg, selectordinal, ...forms}`
 
-Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/ref/message-format.md) format:
+Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/guides/message-format.md) format:
 
 ```jsx
 import { SelectOrdinal } from "@lingui/macro";
@@ -997,7 +1004,7 @@ Use `<SelectOrdinal>` inside `<Trans>` macro if you want to provide `id`, `conte
 The select cases except `other` should be prefixed with underscore: `_male` or `_female`.
 :::
 
-Props of `Select` macro are transformed into [`select`](/docs/ref/message-format.md) format:
+Props of `Select` macro are transformed into [`select`](/docs/guides/message-format.md) format:
 
 ```jsx
 import { Select } from "@lingui/macro";

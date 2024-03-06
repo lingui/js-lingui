@@ -121,7 +121,7 @@ i18n.load({
 
 ### `@lingui/macro`
 
-- [`plural`](/docs/ref/macro.md#plural), [`select`](/docs/ref/macro.md#select) and [`selectOrdinal`](/docs/ref/macro.md#selectordinal) accepts value as a first parameter:
+- [`plural`](/docs/ref/macro.mdx#plural), [`select`](/docs/ref/macro.mdx#select) and [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal) accepts value as a first parameter:
 
   ```diff
   - plural({ value, one: "# book", other: "# books" })
@@ -182,7 +182,7 @@ npm install --dev @lingui/macro babel-plugin-macros
     }
     ```
 
-2. Import [`Trans`](/docs/ref/macro.md#trans), [`Plural`](/docs/ref/macro.md#plural-1), [`Select`](/docs/ref/macro.md#select-1) and [`SelectOrdinal`](/docs/ref/macro.md#selectordinal-1) from `@lingui/macro`:
+2. Import [`Trans`](/docs/ref/macro.mdx#trans), [`Plural`](/docs/ref/macro.mdx#plural-1), [`Select`](/docs/ref/macro.mdx#select-1) and [`SelectOrdinal`](/docs/ref/macro.mdx#selectordinal-1) from `@lingui/macro`:
 
    ```diff
    - import { Trans } from "@lingui/react"
@@ -190,7 +190,7 @@ npm install --dev @lingui/macro babel-plugin-macros
    ```
 
    :::caution Note
-   If you used [`Trans`](/docs/ref/macro.md#trans) component without children, then keep the import from `@lingui/react`:
+   If you used [`Trans`](/docs/ref/macro.mdx#trans) component without children, then keep the import from `@lingui/react`:
 
    ```jsx
    import { Trans } from "@lingui/react";

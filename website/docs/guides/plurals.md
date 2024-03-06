@@ -36,11 +36,11 @@ plural(numBooks, {
 When `numBooks == 1`, this will render as _1 book_ and for `numBook == 2` it will be _2 books_.
 
 Interestingly, for `numBooks == -1`, it will be _-1 book_. This is because the "one" plural form also applies to -1. It is therefore important to remember that the plural forms (such as "one" or "two") do not represent the numbers themselves, but rather _categories_ of numbers.
-If you want to specify a message for an exact number, use [`exact matches`](/ref/message-format#plurals).
+If you want to specify a message for an exact number, use [`exact matches`](/guides/message-format#plurals).
 
 > Funny fact for non-English speakers: In English, 0 uses plural form too, _0 books_.
 
-Under the hood, [`plural`](/docs/ref/macro.md#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
+Under the hood, [`plural`](/docs/ref/macro.mdx#plural) is replaced with low-level [`i18n._`](/docs/ref/core.md#i18n._). For production, the above example will become:
 
 ```js
 i18n._({

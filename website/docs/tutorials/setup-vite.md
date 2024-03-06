@@ -12,7 +12,7 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
 
-`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
 1.  Install `@lingui/cli`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
@@ -46,7 +46,7 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react-swc](https://www.npmjs.com/package/@vitejs/plugin-react-swc) {#setup-with-vitejs-plugin-react-swc}
 
-`@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS relies on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/ref/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS relies on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
 1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
@@ -159,4 +159,4 @@ See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-cata
 
 See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.
 
-Congratulations! You've successfully set up a Vite project with LinguiJS. Now it's a good time to follow [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/ref/message-format.md) which is used in messages.
+Congratulations! You've successfully set up a Vite project with LinguiJS. Now it's a good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.

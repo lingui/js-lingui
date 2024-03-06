@@ -50,7 +50,7 @@ Sometimes you have no choice but to confront your translators with HTML or inter
 
 ### Smart Plural Management
 
-Lingui allows to write plurals using the [ICU MessageFormat](/docs/ref/message-format.md) syntax that looks like this:
+Lingui allows to write plurals using the [ICU MessageFormat](/docs/guides/message-format.md) syntax that looks like this:
 
 ```icu-message-format
 {count, plural, =0 {No messages}

@@ -58,7 +58,7 @@ As you can see, it's a simple mailbox application with only one page.
 
 ## Installing LinguiJS
 
-Follow setup guide either for projects using [LinguiJS with Create React App](/docs/tutorials/setup-cra.md) or for general [React projects](/docs/tutorials/setup-react.md).
+Follow the [React projects](/docs/tutorials/setup-react.mdx) setup guide.
 
 ## Setup
 
@@ -111,7 +111,7 @@ Let's start with the basics - static messages. These messages don't have any var
 <h1>Message Inbox</h1>
 ```
 
-All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.md#trans) macro:
+All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.mdx#trans) macro:
 
 ```jsx
 import { Trans } from "@lingui/macro";
@@ -220,7 +220,7 @@ msgid "Message Inbox"
 msgstr ""
 ```
 
-That's the message we've wrapped inside [`Trans`](/docs/ref/macro.md#trans) macro!
+That's the message we've wrapped inside [`Trans`](/docs/ref/macro.mdx#trans) macro!
 
 Let's add the Czech translation:
 
@@ -296,7 +296,7 @@ When we run the app, we see the inbox header is translated into Czech.
 Let's go through the workflow again:
 
 1.  Add an [`I18nProvider`](/docs/ref/react.md#i18nprovider), this component provides the active language and catalog(s) to other components
-2.  Wrap messages in [`Trans`](/docs/ref/macro.md#trans) macro
+2.  Wrap messages in [`Trans`](/docs/ref/macro.mdx#trans) macro
 3.  Run [`extract`](/docs/ref/cli.md#extract) command to generate message catalogs
 4.  Translate message catalogs (send them to translators usually)
 5.  Run [`compile`](/docs/ref/cli.md#compile) to create runtime catalogs
@@ -321,7 +321,7 @@ Let's move on to another paragraph in our project. This paragraph has some varia
 </p>
 ```
 
-Although it looks complex, there's really nothing special here. Just wrap the content of the paragraph in [`Trans`](/docs/ref/macro.md#trans) and let the macro do the magic:
+Although it looks complex, there's really nothing special here. Just wrap the content of the paragraph in [`Trans`](/docs/ref/macro.mdx#trans) and let the macro do the magic:
 
 ```jsx
 <p>
@@ -343,7 +343,7 @@ You may notice that components and html tags are replaced with indexed tags (`<0
 
 ### JSX to MessageFormat transformations
 
-It may look a bit _hackish_ at first sight, but these transformations are actually very easy, intuitive and feel very _Reactish_. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.md#trans) macro.
+It may look a bit _hackish_ at first sight, but these transformations are actually very easy, intuitive and feel very _Reactish_. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
 
 Let's see some examples with MessageFormat equivalents:
 
@@ -433,7 +433,7 @@ Here's an example of a simple message catalog in **Czech** language:
 | Tuesday    | Mardi       |
 | Wednesday  | Mercredi    |
 
-The message ID is _what all catalogs have in common_ – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.md#trans) macro.
+The message ID is _what all catalogs have in common_ – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.mdx#trans) macro.
 
 There are two approaches to how a message ID can be created:
 
@@ -442,7 +442,7 @@ There are two approaches to how a message ID can be created:
 
 Both approaches have their pros and cons and it's not in the scope of this tutorial to compare them.
 
-By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.md#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
+By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.mdx#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
 
 ```jsx
 <h1>
@@ -494,7 +494,7 @@ How do we know which plural form we should use? It's very simple: we, as develop
 
 > Plural form
 
-We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.md#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
+We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.mdx#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
 ```jsx
 import { Trans, Plural } from "@lingui/macro";
@@ -516,7 +516,7 @@ Cool! Curious how this component is transformed under the hood and how the messa
 
 In the catalog, you'll see the message in one line. Here we wrapped it to make it more readable.
 
-The [`Plural`](/docs/ref/macro.md#plural-1) is gone and replaced with [`Trans`](/docs/ref/react.md#trans) again! The sole purpose of [`Plural`](/docs/ref/macro.md#plural-1) is to generate proper syntax in message.
+The [`Plural`](/docs/ref/macro.mdx#plural-1) is gone and replaced with [`Trans`](/docs/ref/react.md#trans) again! The sole purpose of [`Plural`](/docs/ref/macro.mdx#plural-1) is to generate proper syntax in message.
 
 Things are getting a bit more complicated, but i18n is a complex process. At least we don't have to write this message manually!
 
@@ -592,7 +592,7 @@ Let's go back to our original pluralized message:
 </p>
 ```
 
-What if we want to use variables or components inside messages? Easy! Either wrap messages in [`Trans`](/docs/ref/macro.md#trans) macro or use template literals (suppose we have a variable `name`):
+What if we want to use variables or components inside messages? Easy! Either wrap messages in [`Trans`](/docs/ref/macro.mdx#trans) macro or use template literals (suppose we have a variable `name`):
 
 ```jsx
 <p>
@@ -614,7 +614,7 @@ This gives us enough flexibility for all usecases.
 
 ### Custom message ID
 
-Let's finish this with a short example of plurals with custom ID. We can pass an `id` prop to [`Plural`](/docs/ref/macro.md#plural-1) as we would to [`Trans`](/docs/ref/macro.md#trans):
+Let's finish this with a short example of plurals with custom ID. We can pass an `id` prop to [`Plural`](/docs/ref/macro.mdx#plural-1) as we would to [`Trans`](/docs/ref/macro.mdx#trans):
 
 ```jsx
 <p>
