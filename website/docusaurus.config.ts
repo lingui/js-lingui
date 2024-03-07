@@ -7,9 +7,11 @@ const config: Config = {
   tagline: "Internationalization Framework for Global Products",
   url: process.env["SITE_URL"] || "https://lingui.dev",
   baseUrl: "/",
-  onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
   organizationName: "lingui",
+  onBrokenLinks: "throw",
+  onBrokenAnchors: "throw",
+  onBrokenMarkdownLinks: "throw",
   themeConfig: {
     colorMode: {
       disableSwitch: false,
