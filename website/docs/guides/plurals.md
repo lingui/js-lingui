@@ -51,7 +51,7 @@ i18n._({
 });
 ```
 
-When we extract messages from source code using [`lingui-cli`](/docs/tutorials/cli.md), we get:
+When we extract messages from source code using the [CLI tool](/docs/ref/cli.md), we get:
 
 ```icu-message-format
 {numBooks, plural, one {# book} other {# books}}

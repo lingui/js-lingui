@@ -31,7 +31,7 @@ Examples: `en-PL`, `pseudo-LOCALE`, `pseudolocalization` or `en-UK`
 
 ## Create pseudolocalization
 
-[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) string has to be in [`locales`](/docs/ref/conf.md#locales) config as well. Otherwise, no folder and no pseudolocalization is going to be created. After running [`extract`](/docs/ref/cli.md#extract) verify that the folder has been created. The pseudolocalization is automatically created on [`compile`](/docs/ref/cli.md#compile) from messages in order specified in [this cli section](/docs/tutorials/cli.md#preparing-catalogs-for-production). In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallbacklocale.
+[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) string has to be in [`locales`](/docs/ref/conf.md#locales) config as well. Otherwise, no folder and no pseudolocalization is going to be created. After running [`extract`](/docs/ref/cli.md#extract) verify that the folder has been created. The pseudolocalization is automatically created on [`compile`](/docs/ref/cli.md#compile) from messages. In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallback locale.
 
 ## Switch browser into specified pseudoLocale
 

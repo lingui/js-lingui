@@ -33,7 +33,7 @@ For AI to do great translations for you, context is critical. Translating UI cop
 
 ### Powerful tooling
 
-Manage the whole intl workflow using Lingui [CLI](/docs/tutorials/cli.md). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.
+Manage the whole intl workflow using Lingui [CLI](/docs/ref/cli.md). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.
 
 ### Unopinionated
 

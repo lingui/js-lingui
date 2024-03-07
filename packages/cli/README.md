@@ -60,7 +60,7 @@ node_modules/.bin/lingui compile
 
 ## Usage
 
-See the [tutorial][tutorial] or [reference][reference] documentation.
+See the [reference][reference] documentation.
 
 ## License
 
@@ -69,7 +69,6 @@ This package is licensed under [MIT][license] license.
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
-[tutorial]: https://lingui.dev/tutorials/cli
 [reference]: https://lingui.dev/ref/cli
 [package]: https://www.npmjs.com/package/@lingui/cli
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/cli.svg
