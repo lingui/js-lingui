@@ -104,11 +104,21 @@ describe("Trans component", () => {
       })
     })
 
-    it("when there's no i18n context", () => {
+    it("when there's no i18n context available", () => {
       const originalConsole = console.error
       console.error = jest.fn()
 
-      expect(() => render(<Trans id="unknown" />)).toThrow()
+      expect(() => render(<Trans id="unknown" />))
+        .toThrowErrorMatchingInlineSnapshot(`
+        "Trans component was rendered without I18nProvider.
+        Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider."
+      `)
+      expect(() =>
+        render(<Trans id="unknown" message={"some valid message"} />)
+      ).toThrowErrorMatchingInlineSnapshot(`
+        "Trans component was rendered without I18nProvider.
+        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider."
+      `)
 
       console.error = originalConsole
     })
