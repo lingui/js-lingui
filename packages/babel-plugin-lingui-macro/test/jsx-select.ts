@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     stripId: true,
     input: `
-        import { Select } from '@lingui/macro';
+        import { Select } from '@lingui/react.macro';
         <Select
           value={count}
           _male="He"
@@ -27,7 +27,7 @@ const cases: TestCase[] = [
   },
   {
     input: `
-        import { Select } from '@lingui/macro';
+        import { Select } from '@lingui/react.macro';
         <Select
           id="msg.select"
           render="strong"
@@ -50,7 +50,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Select should support JSX elements in cases",
     input: `
-        import { Select, Trans } from '@lingui/macro';
+        import { Select, Trans } from '@lingui/react.macro';
         <Select
           value="happy"
           _happy={
@@ -79,7 +79,7 @@ const cases: TestCase[] = [
   },
   {
     input: `
-        import { Select } from '@lingui/macro';
+        import { Select } from '@lingui/react.macro';
         <Select
           id="msg.select"
           render="strong"

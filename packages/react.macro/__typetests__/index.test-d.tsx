@@ -1,26 +1,8 @@
 import { expectType } from "tsd"
 import type { I18n } from "@lingui/core"
 
-import {
-  Trans,
-  Plural,
-  Select,
-  SelectOrdinal,
-  useLingui,
-  t,
-  plural,
-  msg,
-  defineMessage,
-} from "../index"
-import * as JsMacro from "@lingui/macro"
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { Trans, Plural, Select, SelectOrdinal, useLingui } from "../index"
 import React from "react"
-
-// should re-export from @lingui/macro
-expectType<(typeof JsMacro)["t"]>(t)
-expectType<(typeof JsMacro)["plural"]>(plural)
-expectType<(typeof JsMacro)["msg"]>(msg)
-expectType<(typeof JsMacro)["defineMessage"]>(defineMessage)
 
 const gender = "male"
 let m: any

@@ -28,6 +28,7 @@ import {
   MESSAGE,
   MACRO_PACKAGE,
   JsxMacroName,
+  MACRO_REACT_PACKAGE,
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -510,7 +511,7 @@ export default class MacroJSX {
       path
         .get("openingElement")
         .get("name")
-        .referencesImport(MACRO_PACKAGE, name)
+        .referencesImport(MACRO_REACT_PACKAGE, name)
     )
   }
 

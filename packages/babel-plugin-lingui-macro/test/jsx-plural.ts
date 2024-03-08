@@ -3,7 +3,7 @@ import { TestCase } from "./index"
 const cases: TestCase[] = [
   {
     input: `
-        import { Plural } from '@lingui/macro';
+        import { Plural } from '@lingui/react.macro';
         <Plural
           value={count}
           offset="1"
@@ -32,7 +32,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Plural macro could be renamed",
     input: `
-        import { Plural as Plural2 } from '@lingui/macro';
+        import { Plural as Plural2 } from '@lingui/react.macro';
         <Plural2
           value={count}
           one={"..."}
@@ -53,7 +53,7 @@ const cases: TestCase[] = [
   {
     name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
     input: `
-        import { Plural } from '@lingui/macro';
+        import { Plural } from '@lingui/react.macro';
         <Plural
           comment="Comment for translator"
           context="translation context"
@@ -88,7 +88,7 @@ const cases: TestCase[] = [
   {
     stripId: true,
     input: `
-        import { Trans, Plural } from '@lingui/macro';
+        import { Trans, Plural } from '@lingui/react.macro';
         <Plural
           value={count}
           one={
@@ -124,7 +124,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Should return cases without leading or trailing spaces for nested Trans inside Plural",
     input: `
-        import { Trans, Plural } from '@lingui/macro';
+        import { Trans, Plural } from '@lingui/react.macro';
         <Plural
               one={
                 <Trans>
@@ -154,7 +154,7 @@ const cases: TestCase[] = [
   },
   {
     input: `
-        import { Plural } from '@lingui/macro';
+        import { Plural } from '@lingui/react.macro';
         <Plural
           id="msg.plural"
           render="strong"
@@ -176,7 +176,7 @@ const cases: TestCase[] = [
   },
   {
     input: `
-        import { Trans, Plural } from '@lingui/macro';
+        import { Trans, Plural } from '@lingui/react.macro';
         <Trans id="inner-id-removed">
           Looking for{" "}
           <Plural
@@ -204,7 +204,7 @@ const cases: TestCase[] = [
   },
   {
     input: `
-        import { Plural } from '@lingui/macro';
+        import { Plural } from '@lingui/react.macro';
         <Plural
           value={count}
           _0="Zero items"

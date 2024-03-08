@@ -367,7 +367,7 @@ describe("macro", function () {
       "Should throw if used not in the variable declaration",
       forTransforms((transformCode) => {
         const code = `
-      import {useLingui} from "@lingui/macro";
+      import {useLingui} from "@lingui/react.macro";
       
       useLingui()
        
@@ -382,7 +382,7 @@ describe("macro", function () {
       "Should throw if not used with destructuring",
       forTransforms((transformCode) => {
         const code = `
-      import {useLingui} from "@lingui/macro";
+      import {useLingui} from "@lingui/react.macro";
       
       const lingui = useLingui()
        
@@ -399,7 +399,7 @@ describe("macro", function () {
       "Should throw if spread used in children",
       forTransforms((transformCode) => {
         const code = `
-        import { Trans } from '@lingui/macro';
+        import { Trans } from '@lingui/react.macro';
         <Trans>{...spread}</Trans>
        `
         expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
@@ -410,7 +410,7 @@ describe("macro", function () {
       "Should throw if used without children",
       forTransforms((transformCode) => {
         const code = `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react.macro';
       <Trans id={msg} />;
        `
         expect(transformCode(code)).toThrowError("Incorrect usage of Trans")

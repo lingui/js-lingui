@@ -46,16 +46,6 @@
         "types": "./index.d.ts",
         "default": "./dist/index.mjs"
       }
-    },
-    "./plugin": {
-      "require": {
-        "types": "./dist/plugin.d.ts",
-        "default": "./dist/plugin.cjs"
-      },
-      "import": {
-        "types": "./dist/plugin.d.ts",
-        "default": "./dist/index.mjs"
-      }
     }
   },
   "files": [

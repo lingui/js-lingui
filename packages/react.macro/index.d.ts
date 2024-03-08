@@ -1,7 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import type { ReactNode, VFC, FC } from "react"
 import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
-export type * from "@lingui/macro"
 import type { MacroMessageDescriptor } from "@lingui/macro"
 
 type CommonProps = TransRenderCallbackOrComponent & {

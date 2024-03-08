@@ -1,4 +1,5 @@
-import { t, defineMessage, msg, useLingui, plural } from "@lingui/macro"
+import { t, defineMessage, msg, plural } from "@lingui/macro"
+import { useLingui } from "@lingui/react.macro"
 
 t`Message`
 

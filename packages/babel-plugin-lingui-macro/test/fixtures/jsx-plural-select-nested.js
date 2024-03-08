@@ -1,6 +1,6 @@
-import { Select, Plural } from '@lingui/macro';
+import { Select, Plural } from "@lingui/react.macro"
 
-<Select
+;<Select
   value={genderOfHost}
   _female={
     <Plural

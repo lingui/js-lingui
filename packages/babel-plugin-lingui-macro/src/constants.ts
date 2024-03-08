@@ -4,6 +4,7 @@ export const COMMENT = "comment"
 export const EXTRACT_MARK = "i18n"
 export const CONTEXT = "context"
 export const MACRO_PACKAGE = "@lingui/macro"
+export const MACRO_REACT_PACKAGE = "@lingui/react.macro"
 
 export enum JsMacroName {
   t = "t",

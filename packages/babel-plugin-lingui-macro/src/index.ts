@@ -3,7 +3,7 @@ import type * as babelTypes from "@babel/types"
 import MacroJSX from "./macroJsx"
 import { NodePath } from "@babel/traverse"
 import MacroJs from "./macroJs"
-import { MACRO_PACKAGE } from "./constants"
+import { MACRO_PACKAGE, MACRO_REACT_PACKAGE } from "./constants"
 import {
   type LinguiConfigNormalized,
   getConfig as loadConfig,
@@ -79,7 +79,8 @@ export default function ({
     return path.get("body").filter((statement) => {
       return (
         statement.isImportDeclaration() &&
-        statement.get("source").node.value === MACRO_PACKAGE
+        (statement.get("source").node.value === MACRO_PACKAGE ||
+          statement.get("source").node.value === MACRO_REACT_PACKAGE)
       )
     })
   }

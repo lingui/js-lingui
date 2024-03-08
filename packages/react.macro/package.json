@@ -1,5 +1,5 @@
 {
-  "name": "@lingui/react-macro",
+  "name": "@lingui/react.macro",
   "version": "4.8.0-next.1",
   "description": "React Macro for generating messages in ICU MessageFormat syntax",
   "main": "./dist/index.cjs",
@@ -56,6 +56,7 @@
     "index.d.ts"
   ],
   "dependencies": {
+    "@lingui/macro": "4.8.0-next.1",
     "@lingui/react": "4.8.0-next.1"
   },
   "peerDependencies": {
@@ -73,6 +74,7 @@
   },
   "devDependencies": {
     "@lingui/core": "workspace:*",
+    "react": "^18.2.0",
     "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   }

@@ -3386,13 +3386,13 @@ __metadata:
     "@babel/core": ^7.21.0
     "@babel/traverse": 7.20.12
     "@babel/types": ^7.20.7
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/jest-mocks": "workspace:*"
-    "@lingui/macro": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+"@lingui/babel-plugin-lingui-macro@4.8.0-next.1, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
   dependencies:
@@ -3425,17 +3425,16 @@ __metadata:
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
     "@lingui/babel-plugin-extract-messages": 4.8.0-next.1
+    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
     "@lingui/conf": 4.8.0-next.1
     "@lingui/core": 4.8.0-next.1
     "@lingui/format-po": 4.8.0-next.1
     "@lingui/jest-mocks": "*"
-    "@lingui/macro": 4.8.0-next.1
     "@lingui/message-utils": 4.8.0-next.1
     "@types/convert-source-map": ^2.0.0
     "@types/glob": ^8.1.0
     "@types/micromatch": ^4.0.1
     "@types/normalize-path": ^3.0.0
-    babel-plugin-macros: ^3.0.1
     chalk: ^4.1.0
     chokidar: 3.5.1
     cli-table: 0.3.6
@@ -3596,7 +3595,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.8.0-next.1, @lingui/macro@workspace:*, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@4.8.0-next.1, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -3634,12 +3633,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/react-macro@workspace:packages/react-macro":
+"@lingui/react.macro@workspace:packages/react.macro":
   version: 0.0.0-use.local
-  resolution: "@lingui/react-macro@workspace:packages/react-macro"
+  resolution: "@lingui/react.macro@workspace:packages/react.macro"
   dependencies:
     "@lingui/core": "workspace:*"
+    "@lingui/macro": 4.8.0-next.1
     "@lingui/react": 4.8.0-next.1
+    react: ^18.2.0
     tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
@@ -5961,7 +5962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-macros@npm:^3.0.1, babel-plugin-macros@npm:^3.1.0":
+"babel-plugin-macros@npm:^3.1.0":
   version: 3.1.0
   resolution: "babel-plugin-macros@npm:3.1.0"
   dependencies:

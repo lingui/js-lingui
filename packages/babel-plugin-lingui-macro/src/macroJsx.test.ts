@@ -8,7 +8,7 @@ import { JsxMacroName } from "./constants"
 const parseExpression = (expression: string) => {
   let path: NodePath<JSXElement>
 
-  const importExp = `import {Trans, Plural, Select, SelectOrdinal} from "@lingui/macro";\n`
+  const importExp = `import {Trans, Plural, Select, SelectOrdinal} from "@lingui/react.macro";\n`
 
   transformSync(importExp + expression, {
     filename: "unit-test.js",

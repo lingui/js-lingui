@@ -28,6 +28,7 @@ import {
   MESSAGE,
   MACRO_PACKAGE,
   JsMacroName,
+  MACRO_REACT_PACKAGE,
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -154,10 +155,7 @@ export default class MacroJs {
     }
 
     // { t } = useLingui()
-    if (
-      path.isCallExpression() &&
-      this.isLinguiIdentifier(path.get("callee"), JsMacroName.useLingui)
-    ) {
+    if (path.isCallExpression() && this.isUseLinguiHook(path.get("callee"))) {
       this.needsUseLinguiImport = true
       return this.processUseLingui(path)
     }
@@ -623,6 +621,15 @@ export default class MacroJs {
    */
   isLinguiIdentifier(path: NodePath, name: JsMacroName) {
     if (path.isIdentifier() && path.referencesImport(MACRO_PACKAGE, name)) {
+      return true
+    }
+  }
+
+  isUseLinguiHook(path: NodePath) {
+    if (
+      path.isIdentifier() &&
+      path.referencesImport(MACRO_REACT_PACKAGE, JsMacroName.useLingui)
+    ) {
       return true
     }
   }

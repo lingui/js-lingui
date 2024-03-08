@@ -9,8 +9,8 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 import type { ExtractorType } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 
-import { type LinguiPluginOpts } from "@lingui/macro/plugin"
-import linguiMacroPlugin from "@lingui/macro/plugin"
+import { type LinguiPluginOpts } from "@lingui/babel-plugin-lingui-macro"
+import linguiMacroPlugin from "@lingui/babel-plugin-lingui-macro"
 import { ExtractedMessage, ExtractorCtx } from "@lingui/conf"
 
 const babelRe = new RegExp(

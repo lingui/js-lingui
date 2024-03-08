@@ -174,7 +174,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message,
     origin: [
       js-with-macros.js,
-      3,
+      4,
     ],
   },
   {
@@ -184,7 +184,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message,
     origin: [
       js-with-macros.js,
-      5,
+      6,
     ],
   },
   {
@@ -194,7 +194,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Description,
     origin: [
       js-with-macros.js,
-      7,
+      8,
     ],
   },
   {
@@ -204,7 +204,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message with id,
     origin: [
       js-with-macros.js,
-      12,
+      13,
     ],
   },
   {
@@ -214,7 +214,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Values {param},
     origin: [
       js-with-macros.js,
-      17,
+      18,
     ],
   },
   {
@@ -224,7 +224,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message with id some,
     origin: [
       js-with-macros.js,
-      19,
+      20,
     ],
   },
   {
@@ -234,7 +234,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      24,
+      25,
     ],
   },
   {
@@ -244,7 +244,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      28,
+      29,
     ],
   },
   {
@@ -254,7 +254,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      33,
+      34,
     ],
   },
   {
@@ -264,7 +264,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      38,
+      39,
     ],
   },
   {
@@ -274,7 +274,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      43,
+      44,
     ],
   },
   {
@@ -284,7 +284,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: TplLiteral,
     origin: [
       js-with-macros.js,
-      48,
+      49,
     ],
   },
   {
@@ -294,7 +294,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: [useLingui]: TplLiteral,
     origin: [
       js-with-macros.js,
-      53,
+      54,
     ],
   },
   {
@@ -304,7 +304,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: [useLingui]: Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}},
     origin: [
       js-with-macros.js,
-      56,
+      57,
     ],
   },
 ]
