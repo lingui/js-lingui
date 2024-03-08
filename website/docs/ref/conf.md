@@ -27,7 +27,7 @@ Default config:
       "exclude": ["**/node_modules/**"]
     }
   ],
-  "catalogMergePath": "",
+  "catalogsMergePath": "",
   "compileNamespace": "cjs",
   "extractorParserOptions": {},
   "compilerBabelOptions": {},
