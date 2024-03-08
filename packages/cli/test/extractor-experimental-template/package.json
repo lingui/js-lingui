@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@lingui/macro": "*",
+    "@lingui/react.macro": "*",
     "some-package": "*"
   }
 }

@@ -1,4 +1,5 @@
-import { t, Trans } from "@lingui/macro"
+import { t } from "@lingui/macro"
+import { Trans } from "@lingui/react.macro"
 import { msg as headerMsg } from "../components/header"
 
 // this import should be externalized

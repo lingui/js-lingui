@@ -1,17 +1,18 @@
-import { t, defineMessage, plural, Trans } from "@lingui/macro"
+import { t, defineMessage, plural } from "@lingui/macro"
+import { Trans } from "@lingui/react.macro"
 
 // JS Macro usages
 const msg = t`Message`
 
 const withDescription = defineMessage({
-  message: 'Description',
-  comment: "description"
+  message: "Description",
+  comment: "description",
 })
 
 const withTId = t({
-    id: "ID Some",
-    message: "Message with id some"
-  })
+  id: "ID Some",
+  message: "Message with id some",
+})
 
 // JSX Macro usages
 ;<Trans>Hi, my name is {name}</Trans>
@@ -20,6 +21,6 @@ const withTId = t({
 ;<span
   title={plural(count, {
     one: "# book",
-    other: "# books"
+    other: "# books",
   })}
 />

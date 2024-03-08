@@ -10,7 +10,7 @@ const Code = (): React.ReactElement => {
   const { withBaseUrl } = useBaseUrlUtils();
 
   const codeSample = `
-import { Trans } from "@lingui/macro"
+import { Trans } from "@lingui/react.macro"
 
 function App() {
   return (
