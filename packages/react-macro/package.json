@@ -1,14 +1,14 @@
 {
-  "name": "@lingui/macro",
+  "name": "@lingui/react-macro",
   "version": "4.8.0-next.1",
-  "description": "Macro for generating messages in ICU MessageFormat syntax",
+  "description": "React Macro for generating messages in ICU MessageFormat syntax",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./index.d.ts",
   "sideEffects": false,
   "author": {
-    "name": "Tomáš Ehrlich",
-    "email": "tomas.ehrlich@gmail.com"
+    "name": "Tim Iatsenko",
+    "email": "timiatsenko@gmail.com"
   },
   "scripts": {
     "test:tsd": "tsd",
@@ -18,6 +18,7 @@
   "license": "MIT",
   "keywords": [
     "babel-plugin-macros",
+    "react",
     "i18n",
     "internationalization",
     "i10n",
@@ -46,16 +47,6 @@
         "types": "./index.d.ts",
         "default": "./dist/index.mjs"
       }
-    },
-    "./plugin": {
-      "require": {
-        "types": "./dist/plugin.d.ts",
-        "default": "./dist/plugin.cjs"
-      },
-      "import": {
-        "types": "./dist/plugin.d.ts",
-        "default": "./dist/index.mjs"
-      }
     }
   },
   "files": [
@@ -65,15 +56,12 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.8.0-next.1",
-    "@lingui/core": "4.8.0-next.1",
-    "@lingui/message-utils": "4.8.0-next.1"
+    "@lingui/macro": "4.8.0-next.1",
+    "@lingui/react": "4.8.0-next.1"
   },
   "peerDependencies": {
-    "babel-plugin-macros": "2 || 3"
+    "babel-plugin-macros": "2 || 3",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "babel-plugin-macros": {
@@ -81,10 +69,7 @@
     }
   },
   "devDependencies": {
-    "@babel/parser": "^7.20.15",
-    "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
-    "prettier": "2.8.3",
+    "@lingui/core": "workspace:*",
     "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   }

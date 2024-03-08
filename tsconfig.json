@@ -22,6 +22,7 @@
       "@lingui/conf": ["./packages/conf/src"],
       "@lingui/macro/plugin": ["./packages/macro/src/plugin.ts"],
       "@lingui/macro": ["./packages/macro/src"],
+      "@lingui/react-macro": ["./packages/react-macro/src"],
       "@lingui/format-po": ["./packages/format-po/src/po.ts"],
       "@lingui/format-json": ["./packages/format-json/src/json.ts"],
       "@lingui/extractor-vue": ["./packages/extractor-vue/src"]
