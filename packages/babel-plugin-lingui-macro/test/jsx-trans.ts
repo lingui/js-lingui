@@ -414,35 +414,37 @@ const cases: TestCase[] = [
       `,
   },
   {
-    name: "Keep forced newlines",
+    name: "Strip whitespace around tags but keep whitespaces in JSX containers",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react/macro";
+      import { Trans } from "@lingui/react/macro";
         <Trans>
-          Keep forced{"\\n"}
-          newlines!
-        </Trans>
+        {"Wonderful framework "}
+        <a href="https://nextjs.org">Next.js</a>
+        {" say hi. And "}
+        <a href="https://nextjs.org">Next.js</a>
+        {" say hi."}
+      </Trans>
       `,
     expected: `
         import { Trans as _Trans } from "@lingui/react";
-        <_Trans id={"<stripped>"} message={"Keep forced\\n newlines!"} />;
+<_Trans
+  id={"<stripped>"}
+  message={
+    "Wonderful framework <0>Next.js</0> say hi. And <1>Next.js</1> say hi."
+  }
+  components={{
+    0: <a href="https://nextjs.org" />,
+    1: <a href="https://nextjs.org" />,
+  }}
+/>;
+;
       `,
   },
   {
-    name: "Keep multiple forced newlines",
+    name: "Keep forced newlines",
     stripId: true,
-    input: `
-        import { Trans } from "@lingui/react/macro";
-        <Trans>
-          Keep multiple{"\\n"}
-          forced{"\\n"}
-          newlines!
-        </Trans>
-      `,
-    expected: `
-        import { Trans as _Trans } from "@lingui/react";
-        <_Trans id={"<stripped>"} message={"Keep multiple\\n forced\\n newlines!"} />;
-      `,
+    filename: "./jsx-keep-forced-newlines.js",
   },
   {
     name: "Use a js macro inside a JSX Attribute of a component handled by JSX macro",

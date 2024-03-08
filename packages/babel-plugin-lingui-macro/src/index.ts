@@ -1,8 +1,8 @@
 import type { PluginObj, Visitor, PluginPass } from "@babel/core"
 import type * as babelTypes from "@babel/types"
-import MacroJSX from "./macroJsx"
+import { MacroJSX } from "./macroJsx"
 import { NodePath } from "@babel/traverse"
-import MacroJs from "./macroJs"
+import { MacroJs } from "./macroJs"
 import {
   MACRO_CORE_PACKAGE,
   MACRO_REACT_PACKAGE,
