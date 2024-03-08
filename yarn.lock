@@ -3392,6 +3392,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+  version: 0.0.0-use.local
+  resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
+  dependencies:
+    "@babel/core": ^7.20.12
+    "@babel/parser": ^7.20.15
+    "@babel/runtime": ^7.20.13
+    "@babel/traverse": ^7.20.12
+    "@babel/types": ^7.20.7
+    "@lingui/conf": 4.8.0-next.1
+    "@lingui/core": 4.8.0-next.1
+    "@lingui/message-utils": 4.8.0-next.1
+    "@types/babel-plugin-macros": ^2.8.5
+    prettier: 2.8.3
+    unbuild: 2.0.0
+  peerDependencies:
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@lingui/cli@4.8.0-next.1, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
@@ -3577,21 +3600,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
-    "@babel/core": ^7.20.12
-    "@babel/parser": ^7.20.15
-    "@babel/runtime": ^7.20.13
-    "@babel/traverse": ^7.20.12
-    "@babel/types": ^7.20.7
-    "@lingui/conf": 4.8.0-next.1
     "@lingui/core": 4.8.0-next.1
-    "@lingui/message-utils": 4.8.0-next.1
-    "@types/babel-plugin-macros": ^2.8.5
-    prettier: 2.8.3
     tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown
@@ -3622,14 +3639,16 @@ __metadata:
   resolution: "@lingui/react-macro@workspace:packages/react-macro"
   dependencies:
     "@lingui/core": "workspace:*"
-    "@lingui/macro": 4.8.0-next.1
     "@lingui/react": 4.8.0-next.1
     tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
     babel-plugin-macros: 2 || 3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown

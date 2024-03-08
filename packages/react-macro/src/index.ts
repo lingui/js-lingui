@@ -1,3 +1,3 @@
-import macro from "@lingui/macro"
+import macro from "@lingui/babel-plugin-lingui-macro/macro"
 
 export default macro

@@ -1,0 +1,93 @@
+{
+  "name": "@lingui/babel-plugin-lingui-macro",
+  "version": "4.8.0-next.1",
+  "description": "Babel plugin for transforming Lingui Macros",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "maintainers": [
+    {
+      "name": "Timofei Iatsenko",
+      "email": "timiatsenko@gmail.com"
+    }
+  ],
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "babel-plugin",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation",
+    "multilingual"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./macro": {
+      "require": {
+        "types": "./dist/macro.d.cts",
+        "default": "./dist/macro.cjs"
+      },
+      "import": {
+        "types": "./dist/macro.d.mts",
+        "default": "./dist/macro.mjs"
+      }
+    }
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/runtime": "^7.20.13",
+    "@babel/types": "^7.20.7",
+    "@lingui/conf": "4.8.0-next.1",
+    "@lingui/core": "4.8.0-next.1",
+    "@lingui/message-utils": "4.8.0-next.1"
+  },
+  "peerDependencies": {
+    "babel-plugin-macros": "2 || 3"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-macros": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.20.15",
+    "@babel/traverse": "^7.20.12",
+    "@types/babel-plugin-macros": "^2.8.5",
+    "prettier": "2.8.3",
+    "unbuild": "2.0.0"
+  }
+}

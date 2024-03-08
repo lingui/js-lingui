@@ -9,7 +9,9 @@ import {
 import prettier from "prettier"
 // use package path instead relative because we want
 // to test it in from /dist folder in integration tests
-import linguiMacroPlugin, { LinguiPluginOpts } from "@lingui/macro/plugin"
+import linguiMacroPlugin, {
+  LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
 import {
   JSXAttribute,
   jsxExpressionContainer,
@@ -223,7 +225,7 @@ describe("macro", function () {
 
   it("Should throw error if used without babel-macro-plugin", async () => {
     await expect(async () => {
-      const mod = await import("../src/index")
+      const mod = await import("../src/macro")
       return (mod as unknown as typeof import("@lingui/macro")).Trans
     }).rejects.toThrow('The macro you imported from "@lingui/macro"')
   })

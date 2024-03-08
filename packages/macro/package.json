@@ -65,26 +65,21 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.8.0-next.1",
-    "@lingui/core": "4.8.0-next.1",
-    "@lingui/message-utils": "4.8.0-next.1"
+    "@lingui/core": "4.8.0-next.1"
   },
   "peerDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
     "babel-plugin-macros": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@babel/parser": "^7.20.15",
-    "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
-    "prettier": "2.8.3",
     "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   }

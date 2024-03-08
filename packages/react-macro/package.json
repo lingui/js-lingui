@@ -56,14 +56,17 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@lingui/macro": "4.8.0-next.1",
     "@lingui/react": "4.8.0-next.1"
   },
   "peerDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
     "babel-plugin-macros": "2 || 3",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
     "babel-plugin-macros": {
       "optional": true
     }
