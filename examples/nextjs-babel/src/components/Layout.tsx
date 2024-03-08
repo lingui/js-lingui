@@ -1,7 +1,7 @@
 import Head from "next/head"
 import classnames from "classnames"
 
-import { t, Trans, useLingui } from "@lingui/macro"
+import { Trans, useLingui } from "@lingui/react.macro"
 
 import styles from "./Layout.module.css"
 import { useRouter } from "next/router"
