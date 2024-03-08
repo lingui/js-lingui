@@ -27,6 +27,7 @@ Default config:
       "exclude": ["**/node_modules/**"]
     }
   ],
+  "catalogMergePath": "",
   "compileNamespace": "cjs",
   "extractorParserOptions": {},
   "compilerBabelOptions": {},
@@ -178,6 +179,26 @@ components/
     └── LoginForm/
         ├── LoginForm.test.js
         └── LoginForm.js
+```
+
+## catalogsMergePath
+
+Default: `""`
+
+Specify the path to merge translated catalogs into a single file per locale during compile
+
+#### Example
+
+```json
+{
+  "catalogsMergePath": "locales/{locale}"
+}
+```
+The catalogs will be compiled to `locales/en.js` and `locales/cs.js`
+```bash
+locales
+├── en.js
+└── cs.js
 ```
 
 ## compileNamespace
