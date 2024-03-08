@@ -194,7 +194,9 @@ Specify the path to merge translated catalogs into a single file per locale duri
   "catalogsMergePath": "locales/{locale}"
 }
 ```
+
 The catalogs will be compiled to `locales/en.js` and `locales/cs.js`
+
 ```bash
 locales
 ├── en.js
