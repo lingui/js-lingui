@@ -26,7 +26,6 @@ import {
   CONTEXT,
   ID,
   MESSAGE,
-  MACRO_PACKAGE,
   JsxMacroName,
   MACRO_REACT_PACKAGE,
 } from "./constants"

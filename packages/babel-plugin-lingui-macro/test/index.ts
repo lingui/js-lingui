@@ -226,7 +226,7 @@ describe("macro", function () {
   it("Should throw error if used without babel-macro-plugin", async () => {
     await expect(async () => {
       const mod = await import("../src/macro")
-      return (mod as unknown as typeof import("@lingui/macro")).Trans
+      return (mod as any).Trans
     }).rejects.toThrow('The macro you imported from "@lingui/macro"')
   })
 
