@@ -27,6 +27,7 @@ Default config:
       "exclude": ["**/node_modules/**"]
     }
   ],
+  "catalogsMergePath": "",
   "compileNamespace": "cjs",
   "extractorParserOptions": {},
   "compilerBabelOptions": {},
@@ -127,7 +128,7 @@ locales
   "catalogs": [
     {
       "path": "components/{name}/locale/{locale}",
-      "include": "components/{name}/"
+      "include": ["components/{name}/"]
     }
   ]
 }
@@ -156,7 +157,7 @@ components/
   "catalogs": [
     {
       "path": "locale/{locale}/{name}",
-      "include": "components/{name}/"
+      "include": ["components/{name}/"]
     }
   ]
 }
@@ -178,6 +179,55 @@ components/
     └── LoginForm/
         ├── LoginForm.test.js
         └── LoginForm.js
+```
+
+## catalogsMergePath
+
+Default: `""`
+
+Specify the path to merge translated catalogs into a single file per locale during compile.
+
+#### Example
+
+Let's assume we have [separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
+
+Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](/docs/ref/cli.md#compile):
+
+```diff
+{
+  "catalogs": [
+    {
+      "path": "/locale/{locale}/{name}",
+      "include": ["components/{name}/"]
+    }
+  ],
++ "catalogsMergePath": "locales/{locale}"
+}
+```
+
+```diff
+.
+  ├── locale/
+  │   ├── en/
+  │   │   ├── RegistrationForm.po
+- │   │   ├── RegistrationForm.js
+  │   │   ├── LoginForm.po
+- │   │   └── LoginForm.js
+  │   └── cs/
+  │       ├── RegistrationForm.po
+- │       ├── RegistrationForm.js
+  │       ├── LoginForm.po
+- │       └── LoginForm.js
++ ├── locales/
++ │   ├── en.js
++ │   └── cs.js
+  └── components/
+      ├── RegistrationForm/
+      │   ├── RegistrationForm.test.js
+      │   └── RegistrationForm.js
+      └── LoginForm/
+          ├── LoginForm.test.js
+          └── LoginForm.js
 ```
 
 ## compileNamespace
