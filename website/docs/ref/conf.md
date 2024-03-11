@@ -185,7 +185,7 @@ components/
 
 Default: `""`
 
-Specify the path to merge translated catalogs into a single file per locale during compile
+Specify the path to merge translated catalogs into a single file per locale during compile.
 
 #### Example
 
@@ -195,7 +195,7 @@ Specify the path to merge translated catalogs into a single file per locale duri
 }
 ```
 
-The catalogs will be compiled to `locales/en.js` and `locales/cs.js`
+For `locales: ["en", "cs"]` the catalogs will be compiled into `locales/en.js` and `locales/cs.js`:
 
 ```bash
 locales
