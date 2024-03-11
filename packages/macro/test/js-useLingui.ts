@@ -303,16 +303,16 @@ function MyComponent() {
 `,
   },
   {
-    name: "should not break on function carrying",
+    name: "should not break on function currying",
     input: `
   import { useLingui } from '@lingui/macro';
 
-  const result = curringFoo()()
-  console.log('curringFoo', result)
+  const result = curryingFoo()()
+  console.log('curryingFoo', result)
     `,
     expected: `
-  const result = curringFoo()()
-  console.log('curringFoo', result)
+  const result = curryingFoo()()
+  console.log('curryingFoo', result)
 `,
   },
   {
