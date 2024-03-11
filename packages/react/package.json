@@ -101,6 +101,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   }
 }

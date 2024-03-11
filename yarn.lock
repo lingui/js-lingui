@@ -3483,6 +3483,7 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
     "@lingui/message-utils": 4.8.0-next.1
+    tsd: ^0.26.1
     unbuild: 2.0.0
     unraw: ^3.0.0
   peerDependencies:
@@ -3609,7 +3610,6 @@ __metadata:
   dependencies:
     "@lingui/core": 4.8.0-next.1
     "@lingui/react": 4.8.0-next.1
-    tsd: ^0.26.1
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
     babel-plugin-macros: 2 || 3
@@ -3654,6 +3654,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     react: ^18.2.0
     react-dom: ^18.2.0
+    tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1

@@ -63,8 +63,5 @@
     "babel-plugin-macros": {
       "optional": true
     }
-  },
-  "devDependencies": {
-    "tsd": "^0.26.1"
   }
 }

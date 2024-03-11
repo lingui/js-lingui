@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
+    "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   },
   "peerDependencies": {
