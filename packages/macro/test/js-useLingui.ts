@@ -303,6 +303,19 @@ function MyComponent() {
 `,
   },
   {
+    name: "should not break on function carrying",
+    input: `
+  import { useLingui } from '@lingui/macro';
+
+  const result = curringFoo()()
+  console.log('curringFoo', result)
+    `,
+    expected: `
+  const result = curringFoo()()
+  console.log('curringFoo', result)
+`,
+  },
+  {
     name: "work with multiple react components",
     input: `
 import { useLingui } from '@lingui/macro';
