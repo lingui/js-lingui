@@ -14,16 +14,21 @@ export type I18nProviderProps = Omit<I18nContext, "_"> & {
 
 export const LinguiContext = React.createContext<I18nContext | null>(null)
 
-export function useLingui(): I18nContext {
+export const useLinguiInternal = (devErrorMessage?: string): I18nContext => {
   const context = React.useContext(LinguiContext)
 
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
-      throw new Error("useLingui hook was used without I18nProvider.")
+      throw new Error(
+        devErrorMessage ?? "useLingui hook was used without I18nProvider."
+      )
     }
   }
 
   return context as I18nContext
+}
+export function useLingui(): I18nContext {
+  return useLinguiInternal()
 }
 
 export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
