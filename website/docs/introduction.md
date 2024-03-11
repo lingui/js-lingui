@@ -55,7 +55,7 @@ Low-level React API is very similar to react-intl and the message format is the 
 
 ```jsx
 import React from "react";
-import { Trans, Plural, useLingui } from "@lingui/core/macro";
+import { Trans, Plural, useLingui } from "@lingui/react/macro";
 
 export default function Lingui({ numUsers, name = "You" }) {
   const { t } = useLingui();

@@ -67,7 +67,7 @@ The advantages of using macros are:
 **JSX macros** are transformed to [`Trans`](/docs/ref/react.md#trans) component from [`@lingui/react`](/docs/ref/react.md):
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans>Attachment {name} saved</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
@@ -805,7 +805,7 @@ Each message in catalog is identified by **message ID**.
 While macro uses message (and `context` property if provided) to generate ID, it's possible to override it.
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="message.attachment_saved">Attachment {name} saved.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
@@ -831,7 +831,7 @@ Contextual information for translators. Similar to [`comment`](#comment) but als
 It's removed from the production code. See [Context](/docs/tutorials/explicit-vs-generated-ids.md#context) for more details.
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans>Refresh inbox</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
@@ -843,7 +843,7 @@ import { Trans } from "@lingui/react";
 Lingui generates different IDs when `context` is provided:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans context="direction">right</Trans>;
 <Trans context="correctness">right</Trans>;
 
@@ -857,7 +857,7 @@ import { Trans } from "@lingui/react";
 Custom `id` is preserved:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="message.attachment_saved">Attachment {name} saved.</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
@@ -869,7 +869,7 @@ import { Trans } from "@lingui/react";
 This macro is especially useful when message contains inline markup.
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 <Trans>
   Read the <a href="/docs">docs</a>.
@@ -877,7 +877,7 @@ import { Trans } from "@lingui/core/macro";
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id={"mk8bSG"} message="Read the <0>docs</0>." components={{ 0: <a href="/docs" /> }} />;
 ```
 
@@ -907,7 +907,7 @@ Components and HTML tags are replaced with dummy indexed tags (`<0></0>`) which 
 Props of [`Plural`](/docs/ref/macro.mdx#plural-1) macro are transformed into [`plural`](/docs/guides/message-format.md) format.
 
 ```jsx
-import { Plural } from "@lingui/core/macro";
+import { Plural } from "@lingui/react/macro";
 <Plural value={numBooks} one="Book" other="Books" />;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
@@ -921,7 +921,7 @@ import { Trans } from "@lingui/react";
 Exact matches in MessageFormat syntax are expressed as `=int` (e.g. `=0`), but in React this isn't a valid prop name. Therefore, exact matches are expressed as `_int` prop (e.g. `_0`). This is commonly used in combination with `offset` prop. `offset` affects only plural forms, not exact matches.
 
 ```jsx
-import { Plural } from "@lingui/core/macro";
+import { Plural } from "@lingui/react/macro";
 
 <Plural
   value={count}
@@ -974,7 +974,7 @@ Use `<Plural>` inside `<Trans>` macro if you want to provide `id`, `context` or 
 Props of `SelectOrdinal` macro are transformed into [`selectOrdinal`](/docs/guides/message-format.md) format:
 
 ```jsx
-import { SelectOrdinal } from "@lingui/core/macro";
+import { SelectOrdinal } from "@lingui/react/macro";
 
 // count == 1 -> 1st
 // count == 2 -> 2nd
@@ -1007,7 +1007,7 @@ The select cases except `other` should be prefixed with underscore: `_male` or `
 Props of `Select` macro are transformed into [`select`](/docs/guides/message-format.md) format:
 
 ```jsx
-import { Select } from "@lingui/core/macro";
+import { Select } from "@lingui/react/macro";
 
 // gender == "female"      -> Her book
 // gender == "male"        -> His book
@@ -1040,7 +1040,7 @@ It returns an object with the following content:
 | `defaultComponent` | `React.ComponentType` | the same `defaultComponent` you passed to `I18nProvider`, if provided |
 
 ```jsx
-import { useLingui } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 
 function MyComponent() {
   const { t } = useLingui();

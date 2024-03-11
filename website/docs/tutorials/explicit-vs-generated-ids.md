@@ -74,7 +74,7 @@ msgstr "LinguiJS przyklad"
 ### With [`Trans`](/docs/ref/macro.mdx#trans) macro
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 function render() {
   return (
@@ -131,7 +131,7 @@ Regardless of whether you use generated IDs or not, adding context makes the tra
 #### Providing context for a message
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans context="direction">right</Trans>;
 <Trans context="correctness">right</Trans>;
 
@@ -175,7 +175,7 @@ const ex2 = {
 If you're using custom IDs in your project, add `id` prop to i18n components:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 function render() {
   return (

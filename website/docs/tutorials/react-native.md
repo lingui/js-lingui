@@ -135,7 +135,7 @@ The interplay of `I18nProvider` and `useLingui` is shown in the following simpli
 
 ```tsx
 import { I18nProvider } from "@lingui/react";
-import { Trans, useLingui } from "@lingui/core/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { i18n } from "@lingui/core";
 
 <I18nProvider i18n={i18n}>

@@ -186,7 +186,7 @@ npm install --dev @lingui/macro babel-plugin-macros
 
    ```diff
    - import { Trans } from "@lingui/react"
-   + import { Trans } from "@lingui/core/macro"
+   + import { Trans } from "@lingui/macro"
    ```
 
    :::caution Note
@@ -207,7 +207,7 @@ These macros automatically binds message to default `i18n` object:
 
     ```diff
       import { i18n } from "@lingui/core"
-    + import { t } from "@lingui/core/macro"
+    + import { t } from "@lingui/macro"
 
     - i18n.t`Hello World`
     + t`Hello World`

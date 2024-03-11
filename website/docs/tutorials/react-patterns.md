@@ -14,7 +14,7 @@ Using jsx macros is the most straightforward way to translate your React compone
 [`Trans`](/docs/ref/macro.mdx#trans) handles translations of messages including variables and other React components:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 function render() {
   return (
@@ -45,7 +45,7 @@ Sometimes you can't use [`Trans`](/docs/ref/macro.mdx#trans) component, for exam
 In such case you need to use the [`useLingui()`](/docs/ref/macro.mdx#uselingui) macro:
 
 ```jsx
-import { useLingui } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 
 export default function ImageWithCaption() {
   const { t } = useLingui();
@@ -85,7 +85,8 @@ When you use [`t`](/docs/ref/macro.mdx#t) macro (and [`plural`](/docs/ref/macro.
 For better control and flexibility, it's a good idea to avoid the global `i18n` instance and instead use a specific instance tailored to your needs.
 
 ```ts
-import { msg, useLingui } from "@lingui/core/macro";
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 import { I18n } from "@lingui/core";
 
 export function showAlert(i18n: I18n) {
@@ -253,7 +254,7 @@ export function Welcome() {
 Note on [`useLingui`](/docs/ref/macro.mdx#uselingui) macro usage. The `t` function destructured from this hook, behaves the same way as `_` from the runtime [`useLingui`](/docs/ref/react.md#uselingui) counterpart, so you can safely use it in the dependency array.
 
 ```ts
-import { useLingui } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
 
 export function Welcome() {
   const { t } = useLingui();

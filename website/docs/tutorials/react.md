@@ -114,7 +114,7 @@ Let's start with the basics - static messages. These messages don't have any var
 All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.mdx#trans) macro:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 <h1>
   <Trans>Message Inbox</Trans>
@@ -130,7 +130,7 @@ In general, macros are executed at compile time and they transform source code i
 Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
 ```jsx
-import { Trans } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 
 <Trans>Hello {name}</Trans>;
 ```
@@ -536,7 +536,7 @@ How do we know which plural form we should use? It's very simple: we, as develop
 We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.mdx#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
 ```jsx
-import { Trans, Plural } from "@lingui/core/macro";
+import { Trans, Plural } from "@lingui/react/macro";
 
 <p>
   <Plural value={messagesCount} one="There's # message in your inbox" other="There are # messages in your inbox" />
@@ -702,7 +702,7 @@ After all modifications, the final component with i18n looks like this:
 
 ```jsx title="src/Inbox.js"
 import React from "react";
-import { Trans, Plural, useLingui } from "@lingui/core/macro";
+import { Trans, Plural, useLingui } from "@lingui/react/macro";
 
 export default function Inbox() {
   const { i18n, t } = useLingui();
