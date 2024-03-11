@@ -1,5 +1,5 @@
-import { t, defineMessage, plural } from "@lingui/macro"
-import { Trans } from "@lingui/react.macro"
+import { t, defineMessage, plural } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
 
 // JS Macro usages
 const msg = t`Message`

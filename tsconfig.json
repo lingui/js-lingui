@@ -16,14 +16,15 @@
         "./packages/babel-plugin-extract-messages/src"
       ],
       "@lingui/core": ["./packages/core/src"],
+      "@lingui/core/macro": ["./packages/core/macro"],
       "@lingui/message-utils/*": ["./packages/message-utils/src/*"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
+      "@lingui/react/macro": ["./packages/react/macro"],
       "@lingui/conf": ["./packages/conf/src"],
       "@lingui/babel-plugin-lingui-macro": ["./packages/babel-plugin-lingui-macro/src/index.ts"],
       "@lingui/babel-plugin-lingui-macro/macro": ["./packages/babel-plugin-lingui-macro/src/macro.ts"],
-      "@lingui/macro": ["./packages/macro/src"],
-      "@lingui/react.macro": ["./packages/react.macro/src"],
+      "@lingui/macro": ["./packages/macro"],
       "@lingui/format-po": ["./packages/format-po/src/po.ts"],
       "@lingui/format-json": ["./packages/format-json/src/json.ts"],
       "@lingui/extractor-vue": ["./packages/extractor-vue/src"]

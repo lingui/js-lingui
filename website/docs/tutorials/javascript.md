@@ -61,7 +61,7 @@ i18n.activate("en");
 Once that is done, we can go ahead and use it! Wrap your text in [`t`](/docs/ref/macro.mdx#t) macro:
 
 ```js
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 
 t`Hello World!`;
 // becomes "Salut le monde!"
@@ -74,7 +74,7 @@ t`My name is ${name}`;
 Plurals and selections are possible using plural and select methods:
 
 ```js
-import { plural } from "@lingui/macro";
+import { plural } from "@lingui/core/macro";
 
 const count = 42;
 
@@ -88,7 +88,7 @@ plural(count, {
 It's also possible to nest message formats. Each message format method in i18n has a standalone companion, which only returns message without performing the translation:
 
 ```js
-import { t, select, plural } from "@lingui/macro"
+import { t, select, plural } from "@lingui/core/macro"
 
 select(gender, {
   offset: 1,

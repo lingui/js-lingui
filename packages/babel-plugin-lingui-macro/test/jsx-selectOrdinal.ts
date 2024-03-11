@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     stripId: true,
     input: `
-        import { Trans, SelectOrdinal } from '@lingui/react.macro';
+        import { Trans, SelectOrdinal } from '@lingui/react/macro';
         <Trans>
           This is my <SelectOrdinal
             value={count}
@@ -30,7 +30,7 @@ const cases: TestCase[] = [
     // without trailing whitespace ICU expression on the next line will not have a space
     stripId: true,
     input: `
-        import { Trans, SelectOrdinal } from '@lingui/react.macro';
+        import { Trans, SelectOrdinal } from '@lingui/react/macro';
         <Trans>
           This is my
           <SelectOrdinal
@@ -56,7 +56,7 @@ const cases: TestCase[] = [
   {
     stripId: true,
     input: `
-        import { Trans, SelectOrdinal } from '@lingui/react.macro';
+        import { Trans, SelectOrdinal } from '@lingui/react/macro';
         <Trans>
           This is my <SelectOrdinal
           value={user.numCats}

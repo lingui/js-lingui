@@ -25,18 +25,15 @@ describe("vite-plugin", () => {
         await runVite(`no-macro-error/vite.config.ts`)
       } catch (e) {
         expect(e.stderr).toContain(
-          'The macro you imported from "@lingui/macro" or "@lingui/react.macro" is being executed outside the context of compilation.'
+          'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.'
         )
       }
     }
   )
-  skipOnWindows(
-    "should not report error when macro correctly used",
-    async () => {
-      const mod = await runVite(`macro-usage/vite.config.ts`)
-      expect(await mod.load()).toMatchSnapshot()
-    }
-  )
+  it("should not report error when macro correctly used", async () => {
+    const mod = await runVite(`macro-usage/vite.config.ts`)
+    expect(await mod.load()).toMatchSnapshot()
+  })
 })
 
 async function runVite(configPath: string) {

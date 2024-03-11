@@ -8,7 +8,7 @@ import { JsMacroName } from "./constants"
 const parseExpression = (expression: string) => {
   let path: NodePath<Expression>
 
-  const importExp = `import {t, plural, select, selectOrdinal} from "@lingui/macro"; \n`
+  const importExp = `import {t, plural, select, selectOrdinal} from "@lingui/core/macro"; \n`
   transformSync(importExp + expression, {
     filename: "unit-test.js",
     configFile: false,

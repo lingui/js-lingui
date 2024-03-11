@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     name: "Macro is used in expression assignment",
     input: `
-        import { plural } from '@lingui/macro'
+        import { plural } from '@lingui/core/macro'
         const a = plural(count, {
           "one": \`# book\`,
           other: "# books"
@@ -28,7 +28,7 @@ const cases: TestCase[] = [
   {
     name: "plural macro could be renamed",
     input: `
-        import { plural as plural2 } from '@lingui/macro'
+        import { plural as plural2 } from '@lingui/core/macro'
         const a = plural2(count, {
           "one": \`# book\`,
           other: "# books"
@@ -52,7 +52,7 @@ const cases: TestCase[] = [
   {
     name: "Macro with offset and exact matches",
     input: `
-        import { plural } from '@lingui/macro'
+        import { plural } from '@lingui/core/macro'
         plural(users.length, {
           offset: 1,
           0: "No books",
@@ -77,7 +77,7 @@ const cases: TestCase[] = [
   {
     name: "Macro with expression only choice",
     input: `
-        import { plural } from '@lingui/macro'
+        import { plural } from '@lingui/core/macro'
         plural(users.length, {
           offset: 1,
           0: "No books",

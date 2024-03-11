@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { Trans } from "@lingui/react.macro"
+import { Trans } from "@lingui/react/macro"
 
 import { Layout } from "../components/Layout"
 import styles from "./index.module.css"

@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     name: "Generate ID from message",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>Hello World</Trans>;
       `,
     expected: `
@@ -15,7 +15,7 @@ const cases: TestCase[] = [
   {
     name: "Generate different id when context provided",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>Hello World</Trans>;
         <Trans context="my context">Hello World</Trans>;
       `,
@@ -28,7 +28,7 @@ const cases: TestCase[] = [
   {
     name: "Preserve custom ID (string literal)",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id="msg.hello">Hello World</Trans>;
       `,
     expected: `
@@ -39,7 +39,7 @@ const cases: TestCase[] = [
   {
     name: "Preserve custom ID (literal expression)",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id={"msg.hello"}>Hello World</Trans>;
       `,
     expected: `
@@ -50,7 +50,7 @@ const cases: TestCase[] = [
   {
     name: "Preserve custom ID (template expression)",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id={\`msg.hello\`}>Hello World</Trans>;
       `,
     expected: `
@@ -61,7 +61,7 @@ const cases: TestCase[] = [
   {
     name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans
           comment="Comment for translator"
           context="translation context"
@@ -84,7 +84,7 @@ const cases: TestCase[] = [
     stripId: true,
     name: "Trans macro could be renamed",
     input: `
-        import { Trans as Trans2 } from '@lingui/react.macro';
+        import { Trans as Trans2 } from '@lingui/react/macro';
         <Trans2>Hello World</Trans2>;
       `,
     expected: `
@@ -96,7 +96,7 @@ const cases: TestCase[] = [
     name: "Variables are converted to named arguments",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>Hi {yourName}, my name is {myName}</Trans>;
       `,
     expected: `
@@ -115,7 +115,7 @@ const cases: TestCase[] = [
     name: "Variables are deduplicated",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>{duplicate} variable {duplicate}</Trans>;
       `,
     expected: `
@@ -132,7 +132,7 @@ const cases: TestCase[] = [
   {
     name: "Quoted JSX attributes are handled",
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>Speak "friend"!</Trans>;
         <Trans id="custom-id">Speak "friend"!</Trans>;
       `,
@@ -146,7 +146,7 @@ const cases: TestCase[] = [
     name: "HTML attributes are handled",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>
           <Text>This should work &nbsp;</Text>
         </Trans>;
@@ -166,7 +166,7 @@ const cases: TestCase[] = [
     name: "Template literals as children",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>{\`How much is \${expression}? \${count}\`}</Trans>;
       `,
     expected: `
@@ -184,7 +184,7 @@ const cases: TestCase[] = [
     name: "Strings as children are preserved",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>{"hello {count, plural, one {world} other {worlds}}"}</Trans>;
       `,
     expected: `
@@ -199,7 +199,7 @@ const cases: TestCase[] = [
     name: "Expressions are converted to positional arguments",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>
           Property {props.name},
           function {random()},
@@ -229,7 +229,7 @@ const cases: TestCase[] = [
     name: "JSX Macro inside JSX conditional expressions",
     stripId: true,
     input: `
-       import { Trans } from '@lingui/react.macro';
+       import { Trans } from '@lingui/react/macro';
        <Trans>Hello, {props.world ? <Trans>world</Trans> : <Trans>guys</Trans>}</Trans>
       `,
     expected: `
@@ -248,7 +248,7 @@ const cases: TestCase[] = [
     name: "JSX Macro inside JSX multiple nested conditional expressions",
     stripId: true,
     input: `
-      import { Trans } from '@lingui/react.macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans>Hello, {props.world ? <Trans>world</Trans> : (
         props.b
           ? <Trans>nested</Trans>
@@ -277,7 +277,7 @@ const cases: TestCase[] = [
     name: "Elements are replaced with placeholders",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>
           Hello <strong>World!</strong><br />
           <p>
@@ -308,7 +308,7 @@ const cases: TestCase[] = [
     name: "Elements inside expression container",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>{<span>Component inside expression container</span>}</Trans>;
       `,
     expected: `
@@ -326,7 +326,7 @@ const cases: TestCase[] = [
     name: "Elements without children",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>{<br />}</Trans>;
       `,
     expected: `
@@ -340,7 +340,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept",
     production: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id="msg.hello" context="my context" comment="Hello World">Hello World</Trans>
       `,
     expected: `
@@ -355,7 +355,7 @@ const cases: TestCase[] = [
       extract: true,
     },
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
@@ -369,7 +369,7 @@ const cases: TestCase[] = [
     useTypescriptPreset: true,
     input: `
         import type { withI18nProps } from '@lingui/react'
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
       `,
     expected: `
@@ -381,7 +381,7 @@ const cases: TestCase[] = [
     name: "Strip whitespace around arguments",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         <Trans>
           Strip whitespace around arguments: '
           {name}
@@ -399,7 +399,7 @@ const cases: TestCase[] = [
     name: "Strip whitespace around tags but keep forced spaces",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         <Trans>
           Strip whitespace around tags, but keep{" "}
           <strong>forced spaces</strong>
@@ -417,7 +417,7 @@ const cases: TestCase[] = [
     name: "Keep forced newlines",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         <Trans>
           Keep forced{"\\n"}
           newlines!
@@ -432,7 +432,7 @@ const cases: TestCase[] = [
     name: "Keep multiple forced newlines",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         <Trans>
           Keep multiple{"\\n"}
           forced{"\\n"}
@@ -448,8 +448,8 @@ const cases: TestCase[] = [
     name: "Use a js macro inside a JSX Attribute of a component handled by JSX macro",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
-        import { t } from '@lingui/macro';
+        import { Trans } from '@lingui/react/macro';
+        import { t } from '@lingui/core/macro';
         <Trans>Read <a href="/more" title={t\`Full content of \${articleName}\`}>more</a></Trans>
       `,
     expected: `
@@ -482,7 +482,7 @@ const cases: TestCase[] = [
   {
     name: "Use a js macro inside a JSX Attribute of a non macro JSX component",
     input: `
-        import { plural } from '@lingui/macro';
+        import { plural } from '@lingui/core/macro';
         <a href="/about" title={plural(count, {
           one: "# book",
           other: "# books"
@@ -511,7 +511,7 @@ const cases: TestCase[] = [
     name: "Ignore JSXEmptyExpression",
     stripId: true,
     input: `
-        import { Trans } from '@lingui/react.macro';
+        import { Trans } from '@lingui/react/macro';
         <Trans>Hello {/* and I cannot stress this enough */} World</Trans>;
       `,
     expected: `
@@ -523,7 +523,7 @@ const cases: TestCase[] = [
     name: "Use decoded html entities",
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         <Trans>&amp;</Trans>
       `,
     expected: `
@@ -536,7 +536,7 @@ const cases: TestCase[] = [
     useTypescriptPreset: true,
     stripId: true,
     input: `
-        import { Trans } from "@lingui/react.macro";
+        import { Trans } from "@lingui/react/macro";
         type X = typeof Trans;
         const cmp = <Trans>Hello</Trans>
       `,

@@ -26,9 +26,10 @@ import {
   EXTRACT_MARK,
   ID,
   MESSAGE,
-  MACRO_PACKAGE,
+  MACRO_CORE_PACKAGE,
   JsMacroName,
   MACRO_REACT_PACKAGE,
+  MACRO_LEGACY_PACKAGE,
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -620,7 +621,11 @@ export default class MacroJs {
    * Custom matchers
    */
   isLinguiIdentifier(path: NodePath, name: JsMacroName) {
-    if (path.isIdentifier() && path.referencesImport(MACRO_PACKAGE, name)) {
+    if (
+      path.isIdentifier() &&
+      (path.referencesImport(MACRO_CORE_PACKAGE, name) ||
+        path.referencesImport(MACRO_LEGACY_PACKAGE, name))
+    ) {
       return true
     }
   }
@@ -628,7 +633,8 @@ export default class MacroJs {
   isUseLinguiHook(path: NodePath) {
     if (
       path.isIdentifier() &&
-      path.referencesImport(MACRO_REACT_PACKAGE, JsMacroName.useLingui)
+      (path.referencesImport(MACRO_REACT_PACKAGE, JsMacroName.useLingui) ||
+        path.referencesImport(MACRO_LEGACY_PACKAGE, JsMacroName.useLingui))
     ) {
       return true
     }

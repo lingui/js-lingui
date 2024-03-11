@@ -64,7 +64,6 @@ module.exports = {
         "<rootDir>/packages/conf",
         "<rootDir>/packages/loader",
         "<rootDir>/packages/macro",
-        "<rootDir>/packages/react.macro",
         "<rootDir>/packages/vite-plugin",
         "<rootDir>/packages/format-po",
         "<rootDir>/packages/format-po-gettext",

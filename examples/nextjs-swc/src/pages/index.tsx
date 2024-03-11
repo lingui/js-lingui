@@ -1,5 +1,5 @@
-import { msg } from '@lingui/macro'
-import { Trans } from '@lingui/react.macro'
+import { msg } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { AboutText } from '../components/AboutText'

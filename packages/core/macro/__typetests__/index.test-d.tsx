@@ -1,7 +1,14 @@
 import { expectType } from "tsd"
 import type { MessageDescriptor, I18n } from "@lingui/core"
 
-import { t, defineMessage, msg, plural, selectOrdinal, select } from "../index"
+import {
+  t,
+  defineMessage,
+  msg,
+  plural,
+  selectOrdinal,
+  select,
+} from "@lingui/core/macro"
 
 const name = "Jack"
 const i18n: I18n = null

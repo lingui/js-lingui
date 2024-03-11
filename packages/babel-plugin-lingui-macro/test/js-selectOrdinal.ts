@@ -3,7 +3,7 @@ import { TestCase } from "./index"
 const cases: TestCase[] = [
   {
     input: `
-        import { t, selectOrdinal } from '@lingui/macro'
+        import { t, selectOrdinal } from '@lingui/core/macro'
         t\`This is my \${selectOrdinal(count, {
           one: "#st",
           "two": \`#nd\`,

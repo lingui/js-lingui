@@ -74,7 +74,7 @@ msgstr "LinguiJS przyklad"
 ### With [`Trans`](/docs/ref/macro.mdx#trans) macro
 
 ```jsx
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/core/macro";
 
 function render() {
   return (
@@ -112,7 +112,7 @@ const catalog = [
 In the following example, the message `Hello World` will be extracted and used to create an ID.
 
 ```jsx
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 
 msg`Hello World`;
 ```
@@ -131,7 +131,7 @@ Regardless of whether you use generated IDs or not, adding context makes the tra
 #### Providing context for a message
 
 ```jsx
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/core/macro";
 <Trans context="direction">right</Trans>;
 <Trans context="correctness">right</Trans>;
 
@@ -145,7 +145,7 @@ import { Trans } from "@lingui/react";
 or with non-jsx macro
 
 ```jsx
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 
 const ex1 = msg({
   message: `right`,
@@ -175,7 +175,7 @@ const ex2 = {
 If you're using custom IDs in your project, add `id` prop to i18n components:
 
 ```jsx
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/core/macro";
 
 function render() {
   return (
@@ -200,7 +200,7 @@ The messages with IDs `msg.header` and `msg.hello` will be extracted with their 
 If you're using custom IDs in your project, call the [`msg`](/docs/ref/macro.mdx#definemessage) function with a message descriptor object, passing the ID using the `id` property:
 
 ```jsx
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 
 msg({ id: "msg.greeting", message: `Hello World` });
 ```
@@ -210,7 +210,7 @@ Message `msg.greeting` will be extracted with default value `Hello World`.
 For all other js macros ([`plural`](/docs/ref/macro.mdx#plural), [`select`](/docs/ref/macro.mdx#select), [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal), use them inside [`msg`](/docs/ref/macro.mdx#definemessage) macro to pass ID (in this case, `'msg.caption'`).
 
 ```jsx
-import { msg, plural } from "@lingui/macro";
+import { msg, plural } from "@lingui/core/macro";
 
 msg({
   id: "msg.caption",

@@ -5,7 +5,7 @@ const cases: TestCase[] = [
   {
     name: "tagged template literal style",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -29,7 +29,7 @@ function MyComponent() {
   {
     name: "support renamed destructuring",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t: _ } = useLingui();
@@ -53,7 +53,7 @@ function MyComponent() {
   {
     name: "should process macro with  matching name in correct scopes",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -103,7 +103,7 @@ function MyComponent() {
   {
     name: "inserted statement should not clash with existing variables",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const _t = "i'm here";
@@ -129,8 +129,8 @@ function MyComponent() {
   {
     name: "support nested macro",
     input: `
-import { useLingui } from '@lingui/react.macro';
-import { plural } from '@lingui/macro';
+import { useLingui } from '@lingui/react/macro';
+import { plural } from '@lingui/core/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -164,7 +164,7 @@ function MyComponent() {
   {
     name: "support message descriptor",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -188,7 +188,7 @@ function MyComponent() {
   {
     name: "support passing t variable as dependency",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -216,7 +216,7 @@ function MyComponent() {
   {
     name: "transform to standard useLingui statement",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { i18n, t } = useLingui();
@@ -243,7 +243,7 @@ function MyComponent() {
   {
     name: "work with existing useLingui statement",
     input: `
-import { useLingui as useLinguiMacro } from '@lingui/react.macro';
+import { useLingui as useLinguiMacro } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 
 function MyComponent() {
@@ -276,7 +276,7 @@ function MyComponent() {
     name: "work with renamed existing useLingui statement",
     input: `
 import { useLingui as useLinguiRenamed  } from '@lingui/react';
-import { useLingui as useLinguiMacro } from '@lingui/react.macro';
+import { useLingui as useLinguiMacro } from '@lingui/react/macro';
 
 function MyComponent() {
   const { _ } = useLinguiRenamed();
@@ -306,7 +306,7 @@ function MyComponent() {
   {
     name: "should not break on function currying",
     input: `
-  import { useLingui } from '@lingui/macro';
+  import { useLingui } from '@lingui/core/macro';
 
   const result = curryingFoo()()
   console.log('curryingFoo', result)
@@ -319,7 +319,7 @@ function MyComponent() {
   {
     name: "work with multiple react components",
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();
@@ -367,7 +367,7 @@ function MyComponent2() {
       ),
     },
     input: `
-import { useLingui } from '@lingui/react.macro';
+import { useLingui } from '@lingui/react/macro';
 
 function MyComponent() {
   const { t } = useLingui();

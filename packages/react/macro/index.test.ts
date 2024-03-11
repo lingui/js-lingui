@@ -1,4 +1,4 @@
-import macro from "@lingui/macro"
+import macro from "@lingui/react/macro"
 
 describe("react-macro", () => {
   it("Should re-export Macro", () => {

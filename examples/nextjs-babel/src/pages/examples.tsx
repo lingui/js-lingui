@@ -1,5 +1,5 @@
-import { plural, msg } from "@lingui/macro"
-import { Trans, Plural } from "@lingui/react.macro"
+import { plural, msg } from "@lingui/core/macro"
+import { Trans, Plural } from "@lingui/react/macro"
 
 import { Layout } from "../components/Layout"
 import { PluralExample } from "../components/PluralExample"

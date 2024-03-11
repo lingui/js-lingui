@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     name: "Nested macros",
     input: `
-        import { select, plural } from '@lingui/macro'
+        import { select, plural } from '@lingui/core/macro'
         select(gender, {
           "male": plural(numOfGuests, {
             one: "He invites one guest",
@@ -32,7 +32,7 @@ const cases: TestCase[] = [
   {
     name: "Nested macros with pure expressions option",
     input: `
-        import { select, plural } from '@lingui/macro'
+        import { select, plural } from '@lingui/core/macro'
         select(gender, {
           "male": plural(numOfGuests, {
             one: "He invites one guest",

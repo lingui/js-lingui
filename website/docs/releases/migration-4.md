@@ -104,7 +104,7 @@ Prior to v4, these formats used the source message as the message ID. Now they u
 If you have been using the following pattern in your code:
 
 ```tsx
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 
 const myMsg = t`Hello world!`;
 
@@ -120,7 +120,7 @@ Due to the changes caused by hash-based message ID feature described earlier, th
 Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
 
 ```tsx
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 
 const myMsg = msg`Hello world!`;

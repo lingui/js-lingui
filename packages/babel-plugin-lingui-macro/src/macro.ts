@@ -43,7 +43,7 @@ function macro({ state, babel, config }: MacroParams) {
   Object.defineProperty(module.exports, name, {
     get() {
       throw new Error(
-        `The macro you imported from "@lingui/macro" or "@lingui/react.macro" is being executed outside the context of compilation with babel-plugin-macros. ` +
+        `The macro you imported from "@lingui/core/macro" or "@lingui/react/macro" is being executed outside the context of compilation with babel-plugin-macros. ` +
           `This indicates that you don't have the babel plugin "babel-plugin-macros" configured correctly. ` +
           `Please see the documentation for how to configure babel-plugin-macros properly: ` +
           "https://github.com/kentcdodds/babel-plugin-macros/blob/main/other/docs/user.md"

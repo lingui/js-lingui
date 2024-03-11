@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     name: "Macro is used in expression assignment",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         const a = t\`Expression assignment\`;
     `,
     expected: `
@@ -21,7 +21,7 @@ const cases: TestCase[] = [
   {
     name: "Macro is used in call expression",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         const msg = message.error(t({message: "dasd"}))
     `,
     expected: `
@@ -40,7 +40,7 @@ const cases: TestCase[] = [
   {
     name: "t`` macro could be renamed",
     input: `
-        import { t as t2 } from '@lingui/macro';
+        import { t as t2 } from '@lingui/core/macro';
         const a = t2\`Expression assignment\`;
     `,
     expected: `
@@ -57,7 +57,7 @@ const cases: TestCase[] = [
   {
     name: "Macro is used in expression assignment, with custom lingui instance",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         import { customI18n } from './lingui';
         const a = t(customI18n)\`Expression assignment\`;
     `,
@@ -75,7 +75,7 @@ const cases: TestCase[] = [
   {
     name: "Variables are replaced with named arguments",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`Variable \${name}\`;
     `,
     expected: `
@@ -95,7 +95,7 @@ const cases: TestCase[] = [
   {
     name: "Variables with escaped template literals are correctly formatted",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`Variable \\\`\${name}\\\`\`;
     `,
     expected: `
@@ -115,7 +115,7 @@ const cases: TestCase[] = [
   {
     name: "Variables with escaped double quotes are correctly formatted",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`Variable \"name\" \`;
     `,
     expected: `
@@ -132,7 +132,7 @@ const cases: TestCase[] = [
   {
     name: "Variables should be deduplicated",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`\${duplicate} variable \${duplicate}\`;
     `,
     expected: `
@@ -152,7 +152,7 @@ const cases: TestCase[] = [
   {
     name: "Anything variables except simple identifiers are used as positional arguments",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`
           Property \${props.name},\\
           function \${random()},\\
@@ -184,7 +184,7 @@ const cases: TestCase[] = [
   {
     name: "Newlines are preserved",
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         t\`Multiline
           string\`
       `,
@@ -202,7 +202,7 @@ const cases: TestCase[] = [
   {
     name: "Support template strings in t macro message",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         const msg = t({ message: \`Hello \${name}\` })
       `,
     expected: `
@@ -222,7 +222,7 @@ const cases: TestCase[] = [
   {
     name: "Support template strings in t macro message, with custom i18n instance",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         import { i18n } from './lingui'
         const msg = t(i18n)({ message: \`Hello \${name}\` })
       `,
@@ -243,7 +243,7 @@ const cases: TestCase[] = [
   {
     name: "Support template strings in t macro message, with custom i18n instance object property",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         const msg = t(global.i18n)({ message: \`Hello \${name}\` })
       `,
     expected: `const msg = global.i18n._(
@@ -261,7 +261,7 @@ const cases: TestCase[] = [
   {
     name: "Should generate different id when context provided",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         t({ message: "Hello" })
         t({ message: "Hello", context: "my custom" })
       `,
@@ -287,7 +287,7 @@ const cases: TestCase[] = [
   {
     name: "Context might be passed as template literal",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         t({ message: "Hello", context: "my custom" })
         t({ message: "Hello", context: \`my custom\` })
       `,
@@ -314,7 +314,7 @@ const cases: TestCase[] = [
   {
     name: "Support id and comment in t macro as callExpression",
     input: `
-        import { t, plural } from '@lingui/macro'
+        import { t, plural } from '@lingui/core/macro'
         const msg = t({ id: 'msgId', comment: 'description for translators', message: plural(val, { one: '...', other: '...' }) })
       `,
     expected: `
@@ -335,7 +335,7 @@ const cases: TestCase[] = [
   {
     name: "Support id with message interpolation",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         const msg = t({ id: 'msgId', message: \`Some \${value}\` })
       `,
     expected: `
@@ -355,7 +355,7 @@ const cases: TestCase[] = [
   {
     name: "Support id in template literal",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         const msg = t({ id: \`msgId\` })
       `,
     expected: `
@@ -371,7 +371,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept",
     production: true,
     input: `
-      import { t } from '@lingui/macro';
+      import { t } from '@lingui/core/macro';
       const msg = t\`Message\`
     `,
     expected: `
@@ -386,7 +386,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept, with plural, with custom i18n instance",
     production: true,
     input: `
-      import { t, plural } from '@lingui/macro';
+      import { t, plural } from '@lingui/core/macro';
       const msg = t({
         id: 'msgId',
         comment: 'description for translators',
@@ -410,7 +410,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept, with custom i18n instance",
     production: true,
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         import { i18n } from './lingui';
         const msg = t(i18n)({
             message: \`Hello $\{name\}\`,
@@ -435,7 +435,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept",
     production: true,
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         const msg = t({
             message: \`Hello $\{name\}\`,
             id: 'msgId',
@@ -462,7 +462,7 @@ const cases: TestCase[] = [
       extract: true,
     },
     input: `
-        import { t } from '@lingui/macro';
+        import { t } from '@lingui/core/macro';
         const msg = t({
             message: \`Hello $\{name\}\`,
             id: 'msgId',
@@ -495,7 +495,7 @@ const cases: TestCase[] = [
   {
     name: "Support t in t",
     input: `
-        import { t } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
         t\`Field \${t\`First Name\`} is required\`
       `,
     expected: `
@@ -522,8 +522,8 @@ _i18n._(
   {
     name: "should correctly process nested macro when referenced from different imports",
     input: `
-        import { t } from '@lingui/macro'
-        import { plural } from '@lingui/macro'
+        import { t } from '@lingui/core/macro'
+        import { plural } from '@lingui/core/macro'
         t\`Ola! \${plural(count, {one: "1 user", many: "# users"})} is required\`
       `,
     expected: `
@@ -543,8 +543,8 @@ _i18n._(
   {
     name: "should correctly process nested macro when referenced from different imports 2",
     input: `
-        import { t as t1, plural as plural1 } from '@lingui/macro'
-        import { plural as plural2, t as t2 } from '@lingui/macro'
+        import { t as t1, plural as plural1 } from '@lingui/core/macro'
+        import { plural as plural2, t as t2 } from '@lingui/core/macro'
         t1\`Ola!  \${plural2(count, {one: "1 user", many: "# users"})} Ola!\`
         t2\`Ola! \${plural1(count, {one: "1 user", many: "# users"})} Ola!\`
       `,

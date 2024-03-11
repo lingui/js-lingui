@@ -1,6 +1,6 @@
 import type { ReactNode, VFC, FC } from "react"
 import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
-import type { MacroMessageDescriptor } from "@lingui/macro"
+import type { MacroMessageDescriptor } from "@lingui/core/macro"
 
 type CommonProps = TransRenderCallbackOrComponent & {
   id?: string
@@ -55,7 +55,7 @@ export const Trans: FC<TransProps>
  *
  * @example
  * ```
- * import { Plural } from "@lingui/macro"
+ * import { Plural } from "@lingui/core/macro"
  * <Plural value={numBooks} one="Book" other="Books" />
  *
  * // ↓ ↓ ↓ ↓ ↓ ↓

@@ -4,7 +4,7 @@ const cases: TestCase[] = [
   {
     name: "defineMessage should support template literal",
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const message = defineMessage\`Message\`
     `,
     expected: `
@@ -19,7 +19,7 @@ const cases: TestCase[] = [
   {
     name: "defineMessage can be called by alias `msg`",
     input: `
-        import { msg } from '@lingui/macro';
+        import { msg } from '@lingui/core/macro';
         const message1 = msg\`Message\`
         const message2 = msg({message: "Message"})
     `,
@@ -41,7 +41,7 @@ const cases: TestCase[] = [
   {
     name: "should expand macros in message property",
     input: `
-        import { defineMessage, plural, arg } from '@lingui/macro';
+        import { defineMessage, plural, arg } from '@lingui/core/macro';
         const message = defineMessage({
           comment: "Description",
           message: plural(value, { one: "book", other: "books" })
@@ -63,7 +63,7 @@ const cases: TestCase[] = [
   {
     name: "defineMessage macro could be renamed",
     input: `
-        import { defineMessage as defineMessage2, plural as plural2 } from '@lingui/macro';
+        import { defineMessage as defineMessage2, plural as plural2 } from '@lingui/core/macro';
         const message = defineMessage2({
           comment: "Description",
           message: plural2(value, { one: "book", other: "books" })
@@ -85,7 +85,7 @@ const cases: TestCase[] = [
   {
     name: "should left string message intact",
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const message = defineMessage({
           message: "Message"
         })
@@ -102,7 +102,7 @@ const cases: TestCase[] = [
   {
     name: "should transform template literals",
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const message = defineMessage({
           message: \`Message \${name}\`
         })
@@ -122,7 +122,7 @@ const cases: TestCase[] = [
   {
     name: "should preserve custom id",
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const message = defineMessage({
           id: "msg.id",
           message: "Message"
@@ -141,7 +141,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept, without id",
     production: true,
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const msg = defineMessage({
             message: \`Hello $\{name\}\`,
             comment: 'description for translators',
@@ -163,7 +163,7 @@ const cases: TestCase[] = [
     name: "Production - only essential props are kept",
     production: true,
     input: `
-        import { defineMessage } from '@lingui/macro';
+        import { defineMessage } from '@lingui/core/macro';
         const msg = defineMessage({
             message: \`Hello $\{name\}\`,
             id: 'msgId',
@@ -185,7 +185,7 @@ const cases: TestCase[] = [
   {
     name: "should preserve values",
     input: `
-        import { defineMessage, t } from '@lingui/macro';
+        import { defineMessage, t } from '@lingui/core/macro';
         const message = defineMessage({
           message: t\`Hello $\{name\}\`
         })

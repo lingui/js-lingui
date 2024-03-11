@@ -1,7 +1,13 @@
 import { expectType } from "tsd"
 import type { I18n } from "@lingui/core"
 
-import { Trans, Plural, Select, SelectOrdinal, useLingui } from "../index"
+import {
+  Trans,
+  Plural,
+  Select,
+  SelectOrdinal,
+  useLingui,
+} from "@lingui/react/macro"
 import React from "react"
 
 const gender = "male"

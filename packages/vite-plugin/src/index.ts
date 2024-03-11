@@ -26,11 +26,12 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
       resolveId(id) {
         if (
           id.includes("@lingui/macro") ||
-          id.includes("@lingui/react.macro")
+          id.includes("@lingui/core/macro") ||
+          id.includes("@lingui/react/macro")
         ) {
           throw new Error(
-            `The macro you imported from "@lingui/macro" or "@lingui/react.macro" is being executed outside the context of compilation. \n` +
-              `This indicates that you don't one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro" configured correctly. ` +
+            `The macro you imported from "${id}" is being executed outside the context of compilation. \n` +
+              `This indicates that you don't configured correctly one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro"` +
               `Please see the documentation for how to configure Vite with Lingui correctly: ` +
               "https://lingui.dev/tutorials/setup-vite"
           )
@@ -46,7 +47,8 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
         }
         config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
         config.optimizeDeps.exclude.push("@lingui/macro")
-        config.optimizeDeps.exclude.push("@lingui/react.macro")
+        config.optimizeDeps.exclude.push("@lingui/core/macro")
+        config.optimizeDeps.exclude.push("@lingui/react/macro")
       },
       async transform(src, id) {
         if (fileRegex.test(id)) {

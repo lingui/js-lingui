@@ -3476,7 +3476,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@4.8.0-next.1, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
+"@lingui/core@4.8.0-next.1, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
@@ -3485,6 +3485,14 @@ __metadata:
     "@lingui/message-utils": 4.8.0-next.1
     unbuild: 2.0.0
     unraw: ^3.0.0
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3595,13 +3603,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.8.0-next.1, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
     "@lingui/core": 4.8.0-next.1
+    "@lingui/react": 4.8.0-next.1
     tsd: ^0.26.1
-    unbuild: 2.0.0
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
     babel-plugin-macros: 2 || 3
@@ -3633,28 +3641,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/react.macro@workspace:packages/react.macro":
-  version: 0.0.0-use.local
-  resolution: "@lingui/react.macro@workspace:packages/react.macro"
-  dependencies:
-    "@lingui/core": "workspace:*"
-    "@lingui/macro": 4.8.0-next.1
-    "@lingui/react": 4.8.0-next.1
-    react: ^18.2.0
-    tsd: ^0.26.1
-    unbuild: 2.0.0
-  peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
-    babel-plugin-macros: 2 || 3
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
-    babel-plugin-macros:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@lingui/react@4.8.0-next.1, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
@@ -3670,7 +3656,14 @@ __metadata:
     react-dom: ^18.2.0
     unbuild: 2.0.0
   peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 4.8.0-next.1
+    babel-plugin-macros: 2 || 3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3691,8 +3684,8 @@ __metadata:
   dependencies:
     "@lingui/cli": 4.8.0-next.1
     "@lingui/conf": 4.8.0-next.1
+    "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
-    "@lingui/macro": "workspace:^"
     unbuild: 2.0.0
     vite: 4.1.4
     vite-plugin-babel-macros: ^1.0.6

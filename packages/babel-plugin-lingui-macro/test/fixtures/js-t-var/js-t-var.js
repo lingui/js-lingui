@@ -1,6 +1,6 @@
-import { t } from '@lingui/macro'
+import { t } from "@lingui/core/macro"
 
-function scoped (foo) {
+function scoped(foo) {
   if (foo) {
     const bar = 50
     t`This is bar ${bar}`

@@ -2,8 +2,7 @@
   "name": "@lingui/macro",
   "version": "4.8.0-next.1",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "main": "./index.cjs",
   "types": "./index.d.ts",
   "sideEffects": false,
   "author": {
@@ -11,9 +10,7 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "scripts": {
-    "test:tsd": "tsd",
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "test:tsd": "tsd"
   },
   "license": "MIT",
   "keywords": [
@@ -40,11 +37,7 @@
     ".": {
       "require": {
         "types": "./index.d.ts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./index.cjs"
       }
     }
   },
@@ -52,10 +45,12 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "index.d.ts"
+    "index.d.ts",
+    "index.js"
   ],
   "dependencies": {
-    "@lingui/core": "4.8.0-next.1"
+    "@lingui/core": "4.8.0-next.1",
+    "@lingui/react": "4.8.0-next.1"
   },
   "peerDependencies": {
     "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
@@ -70,7 +65,6 @@
     }
   },
   "devDependencies": {
-    "tsd": "^0.26.1",
-    "unbuild": "2.0.0"
+    "tsd": "^0.26.1"
   }
 }
