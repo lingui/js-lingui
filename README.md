@@ -76,7 +76,7 @@ If you're a react-intl user, check out [a comparison of react-intl and Lingui](h
 Short example how i18n looks with JSX:
 
 ```js
-import { Trans } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
 
 function App() {
   return (
