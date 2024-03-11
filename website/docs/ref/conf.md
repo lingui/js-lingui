@@ -453,7 +453,7 @@ import { myI18n } from "./custom-i18n-config";
 // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
-In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro.mdx#trans) or [useLingui](/docs/ref/macro.mdx#useLingui) is imported. To do that, pass an object to `runtimeConfigModule`:
+In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro.mdx#trans) or [useLingui](/docs/ref/macro.mdx#uselingui) is imported. To do that, pass an object to `runtimeConfigModule`:
 
 ```jsx
 // If you import `i18n` object from custom module like this:
