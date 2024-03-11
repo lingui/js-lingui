@@ -304,6 +304,19 @@ function MyComponent() {
 `,
   },
   {
+    name: "should not break on function currying",
+    input: `
+  import { useLingui } from '@lingui/macro';
+
+  const result = curryingFoo()()
+  console.log('curryingFoo', result)
+    `,
+    expected: `
+  const result = curryingFoo()()
+  console.log('curryingFoo', result)
+`,
+  },
+  {
     name: "work with multiple react components",
     input: `
 import { useLingui } from '@lingui/react.macro';

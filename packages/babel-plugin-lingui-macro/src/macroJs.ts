@@ -117,7 +117,7 @@ export default class MacroJs {
       // t(i18nInstance)`Message` -> i18nInstance._(messageDescriptor)
       if (
         tag.isCallExpression() &&
-        tag.get("arguments")[0].isExpression() &&
+        tag.get("arguments")[0]?.isExpression() &&
         this.isLinguiIdentifier(tag.get("callee"), JsMacroName.t)
       ) {
         // Use the first argument as i18n instance instead of the default i18n instance
@@ -134,7 +134,7 @@ export default class MacroJs {
 
       if (
         callee.isCallExpression() &&
-        callee.get("arguments")[0].isExpression() &&
+        callee.get("arguments")[0]?.isExpression() &&
         this.isLinguiIdentifier(callee.get("callee"), JsMacroName.t)
       ) {
         const i18nInstance = callee.node.arguments[0] as Expression

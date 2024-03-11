@@ -29,12 +29,16 @@ function getConfig(_config?: LinguiConfigNormalized) {
 }
 
 function reportUnsupportedSyntax(path: NodePath, e: Error) {
-  throw path.buildCodeFrameError(
+  const codeFrameError = path.buildCodeFrameError(
     `Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
 
  Error: ${e.message}`
   )
+
+  // show stack trace where error originally happened
+  codeFrameError.stack = e.stack
+  throw codeFrameError
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
