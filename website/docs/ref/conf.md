@@ -189,40 +189,11 @@ Specify the path to merge translated catalogs into a single file per locale duri
 
 #### Example
 
-Let's assume we have separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory:
+Let's assume we have [separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
 
-```json
-{
-  "catalogs": [
-    {
-      "path": "locale/{locale}/{name}",
-      "include": "components/{name}/"
-    }
-  ]
-}
-```
+Using `catalogsMergePath`, separate catalogs can be merged during compile:
 
-```shell
-.
-├── locale/
-│   ├── en/
-│   │   ├── RegistrationForm.po
-│   │   └── LoginForm.po
-│   └── cs/
-│       ├── RegistrationForm.po
-│       └── LoginForm.po
-└── components/
-    ├── RegistrationForm/
-    │   ├── RegistrationForm.test.js
-    │   └── RegistrationForm.js
-    └── LoginForm/
-        ├── LoginForm.test.js
-        └── LoginForm.js
-```
-
-Separate catalogs can be merged during compile using `catalogsMergePath`:
-
-```json
+```diff
 {
   "catalogs": [
     {
@@ -230,29 +201,33 @@ Separate catalogs can be merged during compile using `catalogsMergePath`:
       "include": "components/{name}/"
     }
   ],
-  "catalogsMergePath": "locales/{locale}"
++ "catalogsMergePath": "locales/{locale}"
 }
 ```
 
-```shell
+```diff
 .
-├── locale/
-│   ├── en/
-│   │   ├── RegistrationForm.po
-│   │   └── LoginForm.po
-│   └── cs/
-│       ├── RegistrationForm.po
-│       └── LoginForm.po
-├── locales/
-│   ├── en.js
-│   └── cs.js
-└── components/
-    ├── RegistrationForm/
-    │   ├── RegistrationForm.test.js
-    │   └── RegistrationForm.js
-    └── LoginForm/
-        ├── LoginForm.test.js
-        └── LoginForm.js
+  ├── locale/
+  │   ├── en/
+  │   │   ├── RegistrationForm.po
+- │   │   ├── RegistrationForm.js
+  │   │   ├── LoginForm.po
+- │   │   └── LoginForm.js
+  │   └── cs/
+  │       ├── RegistrationForm.po
+- │       ├── RegistrationForm.js
+  │       ├── LoginForm.po
+- │       └── LoginForm.js
++ ├── locales/
++ │   ├── en.js
++ │   └── cs.js
+  └── components/
+      ├── RegistrationForm/
+      │   ├── RegistrationForm.test.js
+      │   └── RegistrationForm.js
+      └── LoginForm/
+          ├── LoginForm.test.js
+          └── LoginForm.js
 ```
 
 ## compileNamespace
