@@ -191,7 +191,7 @@ Specify the path to merge translated catalogs into a single file per locale duri
 
 Let's assume we have [separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
 
-Using `catalogsMergePath`, separate catalogs can be merged during compile:
+Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](/docs/ref/cli.md#compile):
 
 ```diff
 {
