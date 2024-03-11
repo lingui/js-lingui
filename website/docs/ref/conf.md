@@ -189,18 +189,70 @@ Specify the path to merge translated catalogs into a single file per locale duri
 
 #### Example
 
+Let's assume we have separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory:
+
 ```json
 {
+  "catalogs": [
+    {
+      "path": "locale/{locale}/{name}",
+      "include": "components/{name}/"
+    }
+  ]
+}
+```
+
+```shell
+.
+├── locale/
+│   ├── en/
+│   │   ├── RegistrationForm.po
+│   │   └── LoginForm.po
+│   └── cs/
+│       ├── RegistrationForm.po
+│       └── LoginForm.po
+└── components/
+    ├── RegistrationForm/
+    │   ├── RegistrationForm.test.js
+    │   └── RegistrationForm.js
+    └── LoginForm/
+        ├── LoginForm.test.js
+        └── LoginForm.js
+```
+
+Separate catalogs can be merged during compile using `catalogsMergePath`:
+
+```json
+{
+  "catalogs": [
+    {
+      "path": "/locale/{locale}/{name}",
+      "include": "components/{name}/"
+    }
+  ],
   "catalogsMergePath": "locales/{locale}"
 }
 ```
 
-For `locales: ["en", "cs"]` the catalogs will be compiled into `locales/en.js` and `locales/cs.js`:
-
-```bash
-locales
-├── en.js
-└── cs.js
+```shell
+.
+├── locale/
+│   ├── en/
+│   │   ├── RegistrationForm.po
+│   │   └── LoginForm.po
+│   └── cs/
+│       ├── RegistrationForm.po
+│       └── LoginForm.po
+├── locales/
+│   ├── en.js
+│   └── cs.js
+└── components/
+    ├── RegistrationForm/
+    │   ├── RegistrationForm.test.js
+    │   └── RegistrationForm.js
+    └── LoginForm/
+        ├── LoginForm.test.js
+        └── LoginForm.js
 ```
 
 ## compileNamespace
