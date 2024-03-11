@@ -128,7 +128,7 @@ locales
   "catalogs": [
     {
       "path": "components/{name}/locale/{locale}",
-      "include": "components/{name}/"
+      "include": ["components/{name}/"]
     }
   ]
 }
@@ -157,7 +157,7 @@ components/
   "catalogs": [
     {
       "path": "locale/{locale}/{name}",
-      "include": "components/{name}/"
+      "include": ["components/{name}/"]
     }
   ]
 }
@@ -198,7 +198,7 @@ Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](/d
   "catalogs": [
     {
       "path": "/locale/{locale}/{name}",
-      "include": "components/{name}/"
+      "include": ["components/{name}/"]
     }
   ],
 + "catalogsMergePath": "locales/{locale}"
