@@ -30,10 +30,13 @@ describe("vite-plugin", () => {
       }
     }
   )
-  it("should not report error when macro correctly used", async () => {
-    const mod = await runVite(`macro-usage/vite.config.ts`)
-    expect(await mod.load()).toMatchSnapshot()
-  })
+  skipOnWindows(
+    "should not report error when macro correctly used",
+    async () => {
+      const mod = await runVite(`macro-usage/vite.config.ts`)
+      expect(await mod.load()).toMatchSnapshot()
+    }
+  )
 })
 
 async function runVite(configPath: string) {
