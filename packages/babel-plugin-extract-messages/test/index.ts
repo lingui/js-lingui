@@ -3,7 +3,9 @@ import fs from "fs"
 import { transform as babelTransform } from "@babel/core"
 import plugin, { ExtractedMessage, ExtractPluginOpts } from "../src/index"
 import { mockConsole } from "@lingui/jest-mocks"
-import linguiMacroPlugin, { type LinguiPluginOpts } from "@lingui/macro/plugin"
+import linguiMacroPlugin, {
+  type LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
 
 const transform = (filename: string) => {
   const rootDir = path.join(__dirname, "fixtures")

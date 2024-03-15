@@ -139,7 +139,7 @@ const CurrentLocale = () => {
 There is a [macro version](/docs/ref/macro.mdx#uselingui) of the `useLingui` hook which supports all features of the [`t` macro](/docs/ref/macro.mdx#t) and uses the runtime `useLingui` hook (from `@lingui/react`) under the hood.
 
 ```jsx
-import { useLingui } from "@lingui/macro";
+import { useLingui } from "@lingui/react/macro";
 
 const CurrentLocale = () => {
   const { t } = useLingui();
@@ -169,7 +169,7 @@ This section is intended for reference purposes.
 Import [`Trans`](/docs/ref/macro.mdx#trans) macro instead of [`Trans`](#trans) component if you use macros:
 
 ```jsx
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 
 // Trans from @lingui/react won't work in this case
 // import { Trans } from "@lingui/react"

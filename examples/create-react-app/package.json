@@ -34,7 +34,6 @@
   "devDependencies": {
     "@lingui/cli": "^4.8.0-next.0",
     "@lingui/loader": "^4.8.0-next.0",
-    "@lingui/macro": "^4.8.0-next.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

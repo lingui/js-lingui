@@ -20,7 +20,6 @@
   "devDependencies": {
     "@lingui/cli": "^4.8.0-next.0",
     "@lingui/loader": "^4.8.0-next.0",
-    "@lingui/macro": "^4.8.0-next.0",
     "@lingui/swc-plugin": "4.0.6",
     "@types/react": "^18.0.14",
     "eslint": "8.35.0",

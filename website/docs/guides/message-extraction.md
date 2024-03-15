@@ -167,7 +167,7 @@ While you might think that your code is tree-shakeable, in practice, tree-shakin
 To illustrate, let's consider the following code:
 
 ```ts
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 
 export const species = {
   Cardano: [

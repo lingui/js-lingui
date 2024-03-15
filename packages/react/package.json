@@ -61,15 +61,33 @@
         "default": "./dist/server.mjs"
       }
     },
+    "./macro": {
+      "require": {
+        "types": "./macro/index.d.ts",
+        "default": "./macro/index.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "dist/"
+    "dist/",
+    "macro/index.d.ts",
+    "macro/index.js"
   ],
   "peerDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
+    "babel-plugin-macros": "2 || 3",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "babel-plugin-macros": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
@@ -83,6 +101,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tsd": "^0.26.1",
     "unbuild": "2.0.0"
   }
 }
