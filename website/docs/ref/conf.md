@@ -260,6 +260,12 @@ Use ES6 named export + .ts file with an additional `{compiledFile}.d.ts` file:
 /* eslint-disable */export const messages = {"..."}
 ```
 
+#### json
+
+```json
+{"messages": {"..."}}
+```
+
 ```js
 import { Messages } from '@lingui/core';
 declare const messages: Messages;

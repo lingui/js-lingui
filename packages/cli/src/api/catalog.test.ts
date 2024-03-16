@@ -605,6 +605,7 @@ describe("writeCompiled", () => {
   it.each([
     { namespace: "es", extension: /\.mjs$/ },
     { namespace: "ts", extension: /\.ts$/ },
+    { namespace: "json", extension: /\.json$/ },
     { namespace: undefined, extension: /\.js$/ },
     { namespace: "cjs", extension: /\.js$/ },
     { namespace: "window.test", extension: /\.js$/ },
