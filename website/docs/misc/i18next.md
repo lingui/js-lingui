@@ -51,7 +51,7 @@ document.getElementById("output").innerHTML = i18n.t({ id: "key", message: "Hell
 ```
 
 :::note
-The `message` property can be specified in the case of [Message Extraction](/docs/guides/message-extraction.md) usage flow. You can use the `i18n.t` function only with the `id`, but in this case you'll have to manage your localization catalogs yourself, without advantages of the [CLI message extraction](/docs/tutorials/cli.md#extracting-messages) feature.
+The `message` property can be specified in the case of [Message Extraction](/docs/guides/message-extraction.md) usage flow. You can use the `i18n.t` function only with the `id`, but in this case you'll have to manage your localization catalogs yourself, without advantages of the [message extraction](/docs/guides/message-extraction.md) feature.
 :::
 
 ## Interpolation

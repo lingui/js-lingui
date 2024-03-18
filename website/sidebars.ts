@@ -49,11 +49,6 @@ const sidebar = [
         label: "Explicit vs Generated IDs",
         id: "tutorials/explicit-vs-generated-ids",
       },
-      {
-        type: "doc",
-        label: "CLI",
-        id: "tutorials/cli",
-      },
     ],
   },
   {
@@ -128,6 +123,11 @@ const sidebar = [
     items: [
       {
         type: "doc",
+        label: "Lingui Configuration",
+        id: "ref/conf",
+      },
+      {
+        type: "doc",
         label: "@lingui/core",
         id: "ref/core",
       },
@@ -163,12 +163,7 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "Lingui Configuration",
-        id: "ref/conf",
-      },
-      {
-        type: "doc",
-        label: "Catalog formats",
+        label: "Catalog Formats",
         id: "ref/catalog-formats",
       },
     ],

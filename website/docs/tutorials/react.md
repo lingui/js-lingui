@@ -307,7 +307,7 @@ Steps 1 and 7 needs to be done only once per project and locale. Steps 2 to 5 be
 
 It isn't necessary to extract/translate messages one by one. This usually happens in batches. When you finalize your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate latest message catalogs and before building the app for production, run [`compile`](/docs/ref/cli.md#compile).
 
-For more info about CLI, checkout the [CLI tutorial](/docs/tutorials/cli.md).
+For more info about CLI, checkout the [CLI reference](/docs/ref/cli.md).
 
 ## Formatting
 

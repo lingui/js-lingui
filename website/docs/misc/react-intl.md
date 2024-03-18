@@ -204,7 +204,7 @@ Let's say our app has been internationalized and we now want to send the message
 
 [react-intl](https://github.com/formatjs/formatjs) comes with the Babel plugin which extracts messages from individual files, but it's up to you to merge them into one file which you can send to translators.
 
-[Lingui](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/tutorials/cli.md) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
+[Lingui](https://github.com/lingui/js-lingui) provides handy [`CLI`](/docs/ref/cli.md) which extracts messages and merges them with any existing translations. Again, the story doesn't end here.
 
 ## Compiling messages
 
