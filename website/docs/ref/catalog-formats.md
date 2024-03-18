@@ -3,7 +3,7 @@ title: Message Catalog Formats
 description: Learn about the different catalog formats supported by Lingui
 ---
 
-# Catalog formats
+# Catalog Formats
 
 Catalog format (configured by the [`format`](/docs/ref/conf.md#format) option) refers to the offline catalog file format. This format is never used in production, because the catalog is compiled into a JS module. The reason behind this build step is that the choice of catalog format depends on the individual internationalization workflow. On the other hand, runtime catalog should be as simple as possible, so it can be parsed quickly without additional overhead.
 

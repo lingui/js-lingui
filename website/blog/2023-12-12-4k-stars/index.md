@@ -15,7 +15,7 @@ We're thrilled to announce that the [Lingui repository](https://github.com/lingu
 
 - **Full rich-text support** - use React components within localized messages without restriction. Writing rich-text messages is as easy as writing JSX.
 
-- **Powerful tooling** - manage the entire intl workflow with the [Lingui CLI](https://lingui.dev/tutorials/cli). It extracts messages from source code, validates messages coming from translators, and many more. Use the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) to find common Lingui usage errors in your code. In addition, for Vite users, we have the [Vite plugin](https://lingui.dev/ref/vite-plugin) which compiles Lingui catalogs on the fly and provides additional configuration needed for Vite.
+- **Powerful tooling** - manage the entire intl workflow with the [Lingui CLI](https://lingui.dev/ref/cli). It extracts messages from source code, validates messages coming from translators, and many more. Use the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) to find common Lingui usage errors in your code. In addition, for Vite users, we have the [Vite plugin](https://lingui.dev/ref/vite-plugin) which compiles Lingui catalogs on the fly and provides additional configuration needed for Vite.
 
 - **Customization** - integrate Lingui with your existing workflow. It supports both message keys and auto-generated messages. Translations can be stored in a [variety of file formats](https://lingui.dev/ref/catalog-formats) including PO, JSON, and CSV. For more advanced usage, there is a possibility to create a [Custom Extractor](https://lingui.dev/guides/custom-extractor) or [Custom Formatter](https://lingui.dev/guides/custom-formatter) for your project.
 

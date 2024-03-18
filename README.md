@@ -61,7 +61,7 @@ Lingui is an easy yet powerful internationalization framework for global project
 - [React][TutorialReact]
 - [React Native][TutorialReactNative]
 - [Plain JavaScript][TutorialJavaScript]
-- [Working with Command Line Tool][TutorialCLI]
+- [Working with Command Line Tool][CLI]
 
 ### Plugins
 
@@ -126,7 +126,7 @@ The project is licensed under the [MIT][License] license.
 [TutorialReact]: https://lingui.dev/tutorials/react
 [TutorialReactNative]: https://lingui.dev/tutorials/react-native
 [TutorialJavaScript]: https://lingui.dev/tutorials/javascript
-[TutorialCLI]: https://lingui.dev/tutorials/cli
+[CLI]: https://lingui.dev/ref/cli
 [TutorialSetupReact]: https://lingui.dev/tutorials/setup-react
 [SetupVite]: https://lingui.dev/tutorials/setup-vite
 [RefCLI]: https://lingui.dev/ref/cli
