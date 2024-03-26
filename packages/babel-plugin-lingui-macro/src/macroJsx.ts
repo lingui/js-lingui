@@ -31,18 +31,13 @@ import {
   MACRO_LEGACY_PACKAGE,
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
   value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
 
 type JSXChildPath = NodePath<JSXElement["children"][number]>
-
-// replace whitespace before/after newline with single space
-const keepSpaceRe = /\s*(?:\r\n|\r|\n)+\s*/g
-// remove whitespace before/after tag or expression
-const stripAroundTagsRe =
-  /(?:([>}])(?:\r\n|\r|\n)+\s*|(?:\r\n|\r|\n)+\s*(?=[<{]))/g
 
 function maybeNodeValue(node: Node): string {
   if (!node) return null
@@ -55,28 +50,12 @@ function maybeNodeValue(node: Node): string {
   return null
 }
 
-export function normalizeWhitespace(text: string): string {
-  return (
-    text
-      .replace(stripAroundTagsRe, "$1")
-      .replace(keepSpaceRe, " ")
-      // keep escaped newlines
-      .replace(/\\n/g, "\n")
-      .replace(/\\s/g, " ")
-      // we remove trailing whitespace inside Plural
-      .replace(/(\s+})/gm, "}")
-      // we remove leading whitespace inside Plural
-      .replace(/({\s+)/gm, "{")
-      .trim()
-  )
-}
-
 export type MacroJsxOpts = {
   stripNonEssentialProps: boolean
   transImportName: string
 }
 
-export default class MacroJSX {
+export class MacroJSX {
   types: typeof babelTypes
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
@@ -109,13 +88,7 @@ export default class MacroJSX {
     }
 
     const messageFormat = new ICUMessageFormat()
-    const {
-      message: messageRaw,
-      values,
-      jsxElements,
-    } = messageFormat.fromTokens(tokens)
-    const message = normalizeWhitespace(messageRaw)
-
+    const { message, values, jsxElements } = messageFormat.fromTokens(tokens)
     const { attributes, id, comment, context } = this.stripMacroAttributes(
       path as NodePath<JSXElement>
     )
@@ -296,8 +269,7 @@ export default class MacroJSX {
       const exp = path.get("expression") as NodePath<Expression>
 
       if (exp.isStringLiteral()) {
-        // Escape forced newlines to keep them in message.
-        return [this.tokenizeText(exp.node.value.replace(/\n/g, "\\n"))]
+        return [this.tokenizeText(exp.node.value)]
       }
       if (exp.isTemplateLiteral()) {
         return this.tokenizeTemplateLiteral(exp)
@@ -315,7 +287,7 @@ export default class MacroJSX {
     } else if (path.isJSXSpreadChild()) {
       // just do nothing
     } else if (path.isJSXText()) {
-      return [this.tokenizeText(path.node.value)]
+      return [this.tokenizeText(cleanJSXElementLiteralChild(path.node.value))]
     } else {
       // impossible path
       // return this.tokenizeText(node.value)
@@ -531,12 +503,6 @@ export default class MacroJSX {
     }
     if (this.isLinguiComponent(path, JsxMacroName.SelectOrdinal)) {
       return JsxMacroName.SelectOrdinal
-    }
-  }
-
-  getJsxTagName = (node: JSXElement): string => {
-    if (this.types.isJSXIdentifier(node.openingElement.name)) {
-      return node.openingElement.name.name
     }
   }
 }

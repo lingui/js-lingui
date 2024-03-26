@@ -54,7 +54,7 @@ export type MacroJsOpts = {
   stripNonEssentialProps: boolean
 }
 
-export default class MacroJs {
+export class MacroJs {
   // Babel Types
   types: typeof babelTypes
 

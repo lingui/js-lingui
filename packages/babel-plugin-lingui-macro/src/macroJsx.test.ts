@@ -1,6 +1,6 @@
 import type { JSXElement } from "@babel/types"
 import * as types from "@babel/types"
-import MacroJSX, { normalizeWhitespace } from "./macroJsx"
+import { MacroJSX } from "./macroJsx"
 import { transformSync } from "@babel/core"
 import type { NodePath } from "@babel/traverse"
 import { JsxMacroName } from "./constants"
@@ -38,87 +38,6 @@ function createMacro() {
 }
 
 describe("jsx macro", () => {
-  describe("normalizeWhitespace", () => {
-    it("should remove whitespace before/after expression", () => {
-      const actual = normalizeWhitespace(
-        `You have
-
-          {count, plural, one {Message} other {Messages}}`
-      )
-
-      expect(actual).toBe(
-        `You have{count, plural, one {Message} other {Messages}}`
-      )
-    })
-
-    it("should remove whitespace before/after tag", () => {
-      const actual = normalizeWhitespace(
-        `    Hello <strong>World!</strong><br />
-    <p>
-     My name is <a href="/about">{{" "}}
-      <em>{{name}}</em></a>
-    </p>`
-      )
-
-      expect(actual).toBe(
-        `Hello <strong>World!</strong><br /><p>My name is <a href="/about">{{" "}}<em>{{name}}</em></a></p>`
-      )
-    })
-
-    it("should remove whitespace before/after tag", () => {
-      const actual = normalizeWhitespace(
-        `Property {0},
-          function {1},
-          array {2},
-          constant {3},
-          object {4},
-          everything {5}`
-      )
-
-      expect(actual).toBe(
-        `Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}`
-      )
-    })
-
-    it("should remove trailing whitespaces in icu expressions", () => {
-      const actual = normalizeWhitespace(
-        `{count, plural, one {
-
-              <0>#</0> slot added
-
-            } other {
-
-              <1>#</1> slots added
-
-            }}
-`
-      )
-
-      expect(actual).toBe(
-        `{count, plural, one {<0>#</0> slot added} other {<1>#</1> slots added}}`
-      )
-    })
-
-    it("should remove leading whitespaces in icu expressions", () => {
-      const actual = normalizeWhitespace(
-        `{count, plural, one {
-
-              One hello
-
-            } other {
-
-              Other hello
-
-            }}
-`
-      )
-
-      expect(actual).toBe(
-        `{count, plural, one {One hello} other {Other hello}}`
-      )
-    })
-  })
-
   describe("tokenizeTrans", () => {
     it("simple message without arguments", () => {
       const macro = createMacro()

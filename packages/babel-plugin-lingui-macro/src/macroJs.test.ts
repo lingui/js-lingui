@@ -1,6 +1,6 @@
 import * as types from "@babel/types"
 import { type CallExpression, type Expression } from "@babel/types"
-import MacroJs from "./macroJs"
+import { MacroJs } from "./macroJs"
 import type { NodePath } from "@babel/traverse"
 import { transformSync } from "@babel/core"
 import { JsMacroName } from "./constants"
