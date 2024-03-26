@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "4.7.1",
+  "version": "4.7.2",
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "./dist/index.cjs",
@@ -54,7 +54,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "4.7.1",
+    "@lingui/message-utils": "4.7.2",
     "unraw": "^3.0.0"
   },
   "devDependencies": {
