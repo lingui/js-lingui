@@ -11,6 +11,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @lingui/cli
 
+## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
+
+### Bug Fixes
+
+- allow parentheses in catalog pathnames ([#1890](https://github.com/lingui/js-lingui/issues/1890)) ([d6b9698](https://github.com/lingui/js-lingui/commit/d6b969846d3ae8e676732a4485d5c0592b1e4108))
+
 ## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
 
 ### Bug Fixes

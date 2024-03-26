@@ -15,6 +15,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([17f84e8](https://github.com/lingui/js-lingui/commit/17f84e84aeee1b154eb1a4c2bab9c239adff3ba3))
 
+## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
+
+**Note:** Version bump only for package @lingui/conf
+
 ## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
 
 **Note:** Version bump only for package @lingui/conf

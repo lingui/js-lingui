@@ -266,6 +266,12 @@ declare const messages: Messages;
 export { messages };
 ```
 
+#### json
+
+```json
+{"messages": {"..."}}
+```
+
 #### (window\|global).(.\*)
 
 Assign compiled messages to `window` or `global` object. Specify an identifier after `window` or `global` to which the catalog is assigned, e.g. `window.i18n`.

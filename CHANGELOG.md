@@ -15,6 +15,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([17f84e8](https://github.com/lingui/js-lingui/commit/17f84e84aeee1b154eb1a4c2bab9c239adff3ba3))
 
+## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
+
+### Bug Fixes
+
+- allow parentheses in catalog pathnames ([#1890](https://github.com/lingui/js-lingui/issues/1890)) ([d6b9698](https://github.com/lingui/js-lingui/commit/d6b969846d3ae8e676732a4485d5c0592b1e4108))
+- **typo:** Correct typo in build script of nextjs-swc example ([#1885](https://github.com/lingui/js-lingui/issues/1885)) ([7473bc4](https://github.com/lingui/js-lingui/commit/7473bc49f62e8990e8cf6310bbec91c76a2c09a7))
+
 ## [4.7.1](https://github.com/lingui/js-lingui/compare/v4.7.0...v4.7.1) (2024-02-20)
 
 ### Bug Fixes
