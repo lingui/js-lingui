@@ -137,6 +137,8 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
     )
       .replace("(", "\\(")
       .replace(")", "\\)")
+      .replace("[", "\\[")
+      .replace("]", "\\]")
 
     const match = micromatch.capture(matchPattern, normalizeRelativePath(file))
     if (match) {
