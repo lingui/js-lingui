@@ -1,5 +1,5 @@
-import { t, plural, Trans } from "@lingui/macro"
-
+import { Trans } from "@lingui/react/macro"
+import { t, plural } from "@lingui/core/macro"
 ;<Trans>Hi, my name is {name}</Trans>
 ;<Trans context="Context1">Some message</Trans>
 ;<Trans context="Context1">Some other message</Trans>
@@ -8,6 +8,6 @@ import { t, plural, Trans } from "@lingui/macro"
 ;<span
   title={plural(count, {
     one: "# book",
-    other: "# books"
+    other: "# books",
   })}
 />

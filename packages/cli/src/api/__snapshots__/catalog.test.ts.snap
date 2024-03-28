@@ -129,7 +129,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        11,
+        12,
       ],
     ],
   },
@@ -140,7 +140,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        19,
+        20,
       ],
     ],
   },
@@ -153,7 +153,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        6,
+        7,
       ],
     ],
   },
@@ -164,7 +164,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        18,
+        19,
       ],
     ],
   },
@@ -175,7 +175,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        17,
+        18,
       ],
     ],
   },
@@ -186,7 +186,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        21,
+        22,
       ],
     ],
   },
@@ -197,7 +197,7 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        4,
+        5,
       ],
     ],
   },
