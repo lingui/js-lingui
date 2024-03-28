@@ -14,7 +14,7 @@ jobs:
       CI_JOB_NUMBER: 1
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: andresz1/size-limit-action@v1
         with:
