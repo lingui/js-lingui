@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`xliff format should write catalog in pofile format 1`] = `
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="js-lingui" target-language="en">
+    <body>
+      <trans-unit id="static" datatype="html">
+        <target><![CDATA[Static message]]></target>
+      </trans-unit>
+      <trans-unit id="withOrigin" datatype="html">
+        <target><![CDATA[Message with origin]]></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/App.js</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="withContext" datatype="html">
+        <target><![CDATA[Message with context]]></target>
+        <note priority="1" from="context">my context</note>
+      </trans-unit>
+      <trans-unit id="Dgzql1" datatype="html">
+        <source><![CDATA[with generated id]]></source>
+        <note priority="1" from="context">my context</note>
+      </trans-unit>
+      <trans-unit id="withMultipleOrigins" datatype="html">
+        <target><![CDATA[Message with multiple origin]]></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/App.js</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/Component.js</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="withDescription" datatype="html">
+        <target><![CDATA[Message with description]]></target>
+        <note priority="1" from="comment">Description is comment from developers to translators</note>
+      </trans-unit>
+      <trans-unit id="veryLongString" datatype="html">
+        <target><![CDATA[One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human]]></target>
+      </trans-unit>
+      <trans-unit id="stringWithPlaceholders" datatype="html">
+        <source><![CDATA[Hello {world}]]></source>
+      </trans-unit>
+      <trans-unit id="stringWithJsxPlaceholders" datatype="html">
+        <source><![CDATA[Hello <0>String</0>]]></source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
+`;
