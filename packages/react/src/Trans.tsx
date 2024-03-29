@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react"
 
 import { useLinguiInternal } from "./I18nProvider"
