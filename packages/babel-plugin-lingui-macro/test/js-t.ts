@@ -116,7 +116,7 @@ const cases: TestCase[] = [
     name: "Variables with escaped double quotes are correctly formatted",
     input: `
         import { t } from '@lingui/core/macro';
-        t\`Variable \"name\" \`;
+        t\`Variable \"name\"\`;
     `,
     expected: `
        import { i18n as _i18n } from "@lingui/core";
@@ -153,32 +153,33 @@ const cases: TestCase[] = [
     name: "Anything variables except simple identifiers are used as positional arguments",
     input: `
         import { t } from '@lingui/core/macro';
-        t\`
-          Property \${props.name},\\
-          function \${random()},\\
-          array \${array[index]},\\
-          constant \${42},\\
-          object \${new Date()}\\
-          anything \${props.messages[index].value()}
-        \`
-    `,
+        t\`\
+ Property \${props.name},\
+ function \${random()},\
+ array \${array[index]},\
+ constant \${42},\
+ object \${new Date()}\
+ anything \${props.messages[index].value()}\
+\`
+`,
     expected: `
-        import { i18n as _i18n } from "@lingui/core";
-        _i18n._(
-          /*i18n*/
-          {
-            id: "X1jIKa",
-            message: "Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
+      import { i18n as _i18n } from "@lingui/core";
+      _i18n._(
+        /*i18n*/
+        {
+            id: "vVZNZ5",
+            message:
+              " Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
             values: {
-              0: props.name,
-              1: random(),
-              2: array[index],
-              3: 42,
-              4: new Date(),
-              5: props.messages[index].value(),
-            },
-          }
-        );
+            0: props.name,
+            1: random(),
+            2: array[index],
+            3: 42,
+            4: new Date(),
+            5: props.messages[index].value(),
+          },
+        }
+      );
     `,
   },
   {
@@ -193,8 +194,8 @@ const cases: TestCase[] = [
         _i18n._(
           /*i18n*/
           {
-            id: "EfogM+",
-            message: "Multiline\\nstring",
+            id: "+8iwDA",
+            message: "Multiline\\n          string",
           }
         );
       `,

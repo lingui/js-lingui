@@ -33,18 +33,11 @@ import {
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
-const keepSpaceRe = /(?:\\(?:\r\n|\r|\n))+\s+/g
-const keepNewLineRe = /(?:\r\n|\r|\n)+\s+/g
-
-function normalizeWhitespace(text: string): string {
-  return text.replace(keepSpaceRe, " ").replace(keepNewLineRe, "\n").trim()
-}
-
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
   const { message, values } = messageFormat.fromTokens(tokens)
 
-  return { message: normalizeWhitespace(message), values }
+  return { message, values }
 }
 
 export type MacroJsOpts = {
@@ -444,14 +437,7 @@ export class MacroJs {
     const expressions = tpl.get("expressions") as NodePath<Expression>[]
 
     return tpl.get("quasis").flatMap((text, i) => {
-      // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-      // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-      // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(
-        text.node.value.raw
-      )
-        ? text.node.value.cooked
-        : text.node.value.raw
+      const value = text.node.value.cooked
 
       let argTokens: Token[] = []
       const currExp = expressions[i]
@@ -463,7 +449,7 @@ export class MacroJs {
       }
       const textToken: TextToken = {
         type: "text",
-        value: this.clearBackslashes(value),
+        value,
       }
       return [...(value ? [textToken] : []), ...argTokens]
     })
@@ -542,14 +528,6 @@ export class MacroJs {
     } else {
       return String(this._expressionIndex())
     }
-  }
-
-  /**
-   * We clean '//\` ' to just '`'
-   */
-  clearBackslashes(value: string) {
-    // if not we replace the extra escaped literals
-    return value.replace(/\\`/g, "`")
   }
 
   createI18nCall(
