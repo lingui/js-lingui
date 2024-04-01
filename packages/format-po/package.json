@@ -43,7 +43,7 @@
   "dependencies": {
     "@lingui/conf": "4.7.2",
     "@lingui/message-utils": "4.7.2",
-    "date-fns": "^2.29.3",
+    "date-fns": "^3.6.0",
     "pofile": "^1.1.4"
   },
   "devDependencies": {
