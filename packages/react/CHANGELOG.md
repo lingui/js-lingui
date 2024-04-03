@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/lingui/js-lingui/compare/v4.7.2...v4.8.0) (2024-04-03)
+
+### Features
+
+- **react:** add "use client" for react bundle ([#1902](https://github.com/lingui/js-lingui/issues/1902)) ([5cf50ff](https://github.com/lingui/js-lingui/commit/5cf50ff22aa7424933bf0b875f0f483ce13d2967))
+
 ## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
 
 **Note:** Version bump only for package @lingui/react
