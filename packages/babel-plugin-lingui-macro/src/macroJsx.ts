@@ -298,12 +298,7 @@ export class MacroJSX {
     const expressions = exp.get("expressions") as NodePath<Expression>[]
 
     return exp.get("quasis").flatMap(({ node: text }, i) => {
-      // if it's an unicode we keep the cooked value because it's the parsed value by babel (without unicode chars)
-      // This regex will detect if a string contains unicode chars, when they're we should interpolate them
-      // why? because platforms like react native doesn't parse them, just doing a JSON.parse makes them UTF-8 friendly
-      const value = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g.test(text.value.raw)
-        ? text.value.cooked
-        : text.value.raw
+      const value = text.value.cooked
 
       let argTokens: Token[] = []
       const currExp = expressions[i]
@@ -314,10 +309,7 @@ export class MacroJSX {
           : [this.tokenizeExpression(currExp)]
       }
 
-      return [
-        ...(value ? [this.tokenizeText(this.clearBackslashes(value))] : []),
-        ...argTokens,
-      ]
+      return [...(value ? [this.tokenizeText(value)] : []), ...argTokens]
     })
   }
 
@@ -464,14 +456,6 @@ export class MacroJSX {
 
   expressionToArgument(path: NodePath<Expression | Node>): string {
     return path.isIdentifier() ? path.node.name : String(this.expressionIndex())
-  }
-
-  /**
-   * We clean '//\` ' to just '`'
-   **/
-  clearBackslashes(value: string): string {
-    // if not we replace the extra scaped literals
-    return value.replace(/\\`/g, "`")
   }
 
   isLinguiComponent = (
