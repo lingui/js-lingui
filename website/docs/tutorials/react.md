@@ -402,14 +402,11 @@ Any expressions are allowed, not just simple variables. The only difference is, 
   // Dear Watson,<0/>it's not exactly what I had in my mind.
   ```
 
-Obviously, you can also shoot yourself in the foot. Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
+Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
 
 ```jsx
-// Oh, seriously?
 <Trans>{isOpen && <Modal />}</Trans>
 ```
-
-If in doubt, imagine how the final message should look like.
 
 ### Message ID
 
