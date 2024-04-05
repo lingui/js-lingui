@@ -9,10 +9,6 @@ export type TransRenderProps = {
   translation: React.ReactNode
   children: React.ReactNode
   message?: string | null
-  /**
-   * @deprecated isTranslated prop is undocumented and buggy. It'll be removed in v5 release.
-   * */
-  isTranslated: boolean
 }
 
 export type TransRenderCallbackOrComponent =
@@ -110,8 +106,6 @@ export function TransNoContext(
     id,
     message,
     translation,
-    // TODO vonovak - remove isTranslated prop in v5 release
-    isTranslated: id !== translation && message !== translation,
     children: translation, // for type-compatibility with `component` prop
   }
 

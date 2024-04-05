@@ -305,7 +305,6 @@ describe("Trans component", () => {
         message: "Default",
         translation: "Translation",
         children: "Translation",
-        isTranslated: true,
       })
     })
 
@@ -369,7 +368,6 @@ describe("Trans component", () => {
       expect(element).toEqual(`<div id="Headline">value</div>`)
       expect(propsSpy).toHaveBeenCalledWith({
         id: "Headline",
-        isTranslated: false,
         message: undefined,
         translation: "Headline",
         children: "Headline",
@@ -388,8 +386,6 @@ describe("Trans component", () => {
         {props.translation && (
           <div data-testid="translation">{props.translation}</div>
         )}
-
-        <div data-testid="is-translated">{String(props.isTranslated)}</div>
       </>
     )
 
@@ -405,21 +401,6 @@ describe("Trans component", () => {
       expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
         "Translation"
       )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("true")
-    })
-
-    it("should pass isTranslated: false if no translation", () => {
-      const markup = render(
-        <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
-          <Trans id="NO_ID" message="Some message" />
-        </I18nProvider>
-      )
-
-      expect(markup.queryByTestId("id")?.innerHTML).toEqual("NO_ID")
-      expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
-        "Some message"
-      )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("false")
     })
 
     describe("TransNoContext", () => {
