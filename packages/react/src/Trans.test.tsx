@@ -138,6 +138,38 @@ describe("Trans component", () => {
     })
   })
 
+  it("should follow jsx semantics regarding booleans", () => {
+    expect(
+      html(
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: false && "lol",
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span></span> bar")
+
+    expect(
+      html(
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: "lol",
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span>lol</span> bar")
+  })
+
   it("should render default string", () => {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
@@ -269,6 +301,28 @@ describe("Trans component", () => {
       />
     )
     expect(translation).toEqual("1,00 €")
+  })
+
+  it("should render plural", () => {
+    const render = (count: number) =>
+      html(
+        <Trans
+          id={"tYX0sm"}
+          message={
+            "{count, plural, =0 {Zero items} one {# item} other {# <0>A lot of them</0>}}"
+          }
+          values={{
+            count,
+          }}
+          components={{
+            0: <a href="/more" />,
+          }}
+        />
+      )
+
+    expect(render(0)).toEqual("Zero items")
+    expect(render(1)).toEqual("1 item")
+    expect(render(2)).toEqual(`2 <a href="/more">A lot of them</a>`)
   })
 
   describe("rendering", () => {
