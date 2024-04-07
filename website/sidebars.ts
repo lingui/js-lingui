@@ -36,6 +36,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Next.js",
+        id: "tutorials/nextjs",
+      },
+      {
+        type: "doc",
         label: "React Native",
         id: "tutorials/react-native",
       },
