@@ -32,6 +32,7 @@ import {
   MACRO_LEGACY_PACKAGE,
 } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
@@ -76,7 +77,7 @@ export class MacroJs {
     linguiInstance?: babelTypes.Expression
   ) => {
     return this.createI18nCall(
-      this.createMessageDescriptorFromTokens(tokens, path.node.loc),
+      createMessageDescriptorFromTokens(tokens, path.node.loc),
       linguiInstance
     )
   }
@@ -102,7 +103,7 @@ export class MacroJs {
       this.isDefineMessage(path.get("tag"))
     ) {
       const tokens = this.tokenizeTemplateLiteral(path.get("quasi"))
-      return this.createMessageDescriptorFromTokens(tokens, path.node.loc)
+      return createMessageDescriptorFromTokens(tokens, path.node.loc)
     }
 
     if (path.isTaggedTemplateExpression()) {
@@ -255,7 +256,7 @@ export class MacroJs {
         if (currentPath.isTaggedTemplateExpression()) {
           const tokens = this.tokenizeTemplateLiteral(currentPath)
 
-          const descriptor = this.createMessageDescriptorFromTokens(
+          const descriptor = createMessageDescriptorFromTokens(
             tokens,
             currentPath.node.loc
           )
@@ -540,26 +541,6 @@ export class MacroJs {
         this.types.identifier("_")
       ),
       [messageDescriptor]
-    )
-  }
-
-  createMessageDescriptorFromTokens(tokens: Tokens, oldLoc?: SourceLocation) {
-    const { message, values } = buildICUFromTokens(tokens)
-
-    const properties: ObjectProperty[] = [
-      this.createIdProperty(message),
-
-      !this.stripNonEssentialProps
-        ? this.createObjectProperty(MESSAGE, this.types.stringLiteral(message))
-        : null,
-
-      this.createValuesProperty(values),
-    ]
-
-    return this.createMessageDescriptor(
-      properties,
-      // preserve line numbers for extractor
-      oldLoc
     )
   }
 

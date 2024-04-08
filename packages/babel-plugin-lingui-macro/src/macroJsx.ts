@@ -14,12 +14,7 @@ import {
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {
-  ArgToken,
-  ElementToken,
-  TextToken,
-  Token,
-} from "./icu"
+import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
 import {
   COMMENT,
@@ -30,8 +25,11 @@ import {
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
 } from "./constants"
-import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
+import {
+  createMessageDescriptorFromTokens,
+  createStringObjectProperty,
+} from "./messageDescriptorUtils"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -87,87 +85,26 @@ export class MacroJSX {
       return false
     }
 
-    const messageFormat = new ICUMessageFormat()
-    const { message, values, jsxElements } = messageFormat.fromTokens(tokens)
     const { attributes, id, comment, context } = this.stripMacroAttributes(
       path as NodePath<JSXElement>
     )
 
-    if (!id && !message) {
+    const messageDescriptor = createMessageDescriptorFromTokens(
+      tokens,
+      path.node.loc,
+      {
+        id,
+        context,
+        comment,
+      },
+      this.stripNonEssentialProps
+    )
+
+    if (!id && !tokens) {
       throw new Error("Incorrect usage of Trans")
     }
 
-    if (id) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier(ID),
-          this.types.stringLiteral(id)
-        )
-      )
-    } else {
-      attributes.push(
-        this.createStringJsxAttribute(ID, generateMessageId(message, context))
-      )
-    }
-
-    if (!this.stripNonEssentialProps) {
-      if (message) {
-        attributes.push(this.createStringJsxAttribute(MESSAGE, message))
-      }
-
-      if (comment) {
-        attributes.push(
-          this.types.jsxAttribute(
-            this.types.jsxIdentifier(COMMENT),
-            this.types.stringLiteral(comment)
-          )
-        )
-      }
-
-      if (context) {
-        attributes.push(
-          this.types.jsxAttribute(
-            this.types.jsxIdentifier(CONTEXT),
-            this.types.stringLiteral(context)
-          )
-        )
-      }
-    }
-
-    // Parameters for variable substitution
-    const valuesObject = Object.keys(values).map((key) =>
-      this.types.objectProperty(this.types.identifier(key), values[key])
-    )
-
-    if (valuesObject.length) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier("values"),
-          this.types.jsxExpressionContainer(
-            this.types.objectExpression(valuesObject)
-          )
-        )
-      )
-    }
-
-    // Inline elements
-    if (Object.keys(jsxElements).length) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier("components"),
-          this.types.jsxExpressionContainer(
-            this.types.objectExpression(
-              Object.keys(jsxElements).map((key) =>
-                this.types.objectProperty(
-                  this.types.identifier(key),
-                  jsxElements[key]
-                )
-              )
-            )
-          )
-        )
-      )
-    }
+    attributes.push(this.types.jsxSpreadAttribute(messageDescriptor))
 
     const newNode = this.types.jsxElement(
       this.types.jsxOpeningElement(
