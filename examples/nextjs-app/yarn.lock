@@ -3815,9 +3815,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nextjs-swc-example@workspace:.":
+"nextjs-app-example@workspace:.":
   version: 0.0.0-use.local
-  resolution: "nextjs-swc-example@workspace:."
+  resolution: "nextjs-app-example@workspace:."
   dependencies:
     "@lingui/cli": ^4.8.0
     "@lingui/core": ^4.8.0
