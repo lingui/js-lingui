@@ -82,7 +82,8 @@ module.exports = nextConfig;
 ## Examples
 
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
-- [Next.js with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
+- [Next.js with app router & SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-app)
+- [Next.js with pages router & SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-pages)
 
 ## Links
 
