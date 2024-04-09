@@ -271,7 +271,7 @@ export default function Header() {
 
 Finally an example of a locale switcher.
 
-```jsx
+```tsx
 'use client'
 
 import { useRouter, useParams } from 'next/navigation'
