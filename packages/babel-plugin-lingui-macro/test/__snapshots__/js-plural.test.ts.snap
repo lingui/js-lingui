@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Macro is used in expression assignment 1`] = `
+import { plural } from "@lingui/core/macro";
+const a = plural(count, {
+  one: \`# book\`,
+  other: "# books",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "esnaQO",
+    message: "{count, plural, one {# book} other {# books}}",
+    values: {
+      count: count,
+    },
+  }
+);
+
+`;
+
+exports[`Macro with expression only choice 1`] = `
+import { plural } from "@lingui/core/macro";
+plural(users.length, {
+  offset: 1,
+  0: "No books",
+  1: "1 book",
+  other: someOtherExp,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "0mcXIe",
+    message:
+      "{0, plural, offset:1 =0 {No books} =1 {1 book} other {{someOtherExp}}}",
+    values: {
+      0: users.length,
+      someOtherExp: someOtherExp,
+    },
+  }
+);
+
+`;
+
+exports[`Macro with offset and exact matches 1`] = `
+import { plural } from "@lingui/core/macro";
+plural(users.length, {
+  offset: 1,
+  0: "No books",
+  1: "1 book",
+  other: "# books",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "CF5t+7",
+    message: "{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}",
+    values: {
+      0: users.length,
+    },
+  }
+);
+
+`;
+
+exports[`plural macro could be renamed 1`] = `
+import { plural as plural2 } from "@lingui/core/macro";
+const a = plural2(count, {
+  one: \`# book\`,
+  other: "# books",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "esnaQO",
+    message: "{count, plural, one {# book} other {# books}}",
+    values: {
+      count: count,
+    },
+  }
+);
+
+`;

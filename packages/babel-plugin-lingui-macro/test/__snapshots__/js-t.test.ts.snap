@@ -1,0 +1,566 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Anything variables except simple identifiers are used as positional arguments 1`] = `
+import { t } from "@lingui/core/macro";
+t\` Property \${props.name}, function \${random()}, array \${
+  array[index]
+}, constant \${42}, object \${new Date()} anything \${props.messages[
+  index
+].value()}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "vVZNZ5",
+    message:
+      " Property {0}, function {1}, array {2}, constant {3}, object {4} anything {5}",
+    values: {
+      0: props.name,
+      1: random(),
+      2: array[index],
+      3: 42,
+      4: new Date(),
+      5: props.messages[index].value(),
+    },
+  }
+);
+
+`;
+
+exports[`Context might be passed as template literal 1`] = `
+import { t } from "@lingui/core/macro";
+t({ message: "Hello", context: "my custom" });
+t({ message: "Hello", context: \`my custom\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    context: "my custom",
+    message: "Hello",
+    id: "BYqAaU",
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    context: \`my custom\`,
+    message: "Hello",
+    id: "BYqAaU",
+  }
+);
+
+`;
+
+exports[`Macro is used in call expression 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = message.error(t({ message: "dasd" }));
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = message.error(
+  _i18n._(
+    /*i18n*/
+    {
+      message: "dasd",
+      id: "9ZMZjU",
+    }
+  )
+);
+
+`;
+
+exports[`Macro is used in expression assignment 1`] = `
+import { t } from "@lingui/core/macro";
+const a = t\`Expression assignment\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "mjnlP0",
+    message: "Expression assignment",
+  }
+);
+
+`;
+
+exports[`Macro is used in expression assignment, with custom lingui instance 1`] = `
+import { t } from "@lingui/core/macro";
+import { customI18n } from "./lingui";
+const a = t(customI18n)\`Expression assignment\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { customI18n } from "./lingui";
+const a = customI18n._(
+  /*i18n*/
+  {
+    id: "mjnlP0",
+    message: "Expression assignment",
+  }
+);
+
+`;
+
+exports[`Newlines are preserved 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Multiline
+          string\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "+8iwDA",
+    message: "Multiline\\n          string",
+  }
+);
+
+`;
+
+exports[`Production - all props kept if extract: true 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t({
+  message: \`Hello \${name}\`,
+  id: "msgId",
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    context: "My Context",
+    values: {
+      name: name,
+    },
+    message: "Hello {name}",
+    comment: "description for translators",
+  }
+);
+
+`;
+
+exports[`Production - only essential props are kept 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "xDAtGP",
+  }
+);
+
+`;
+
+exports[`Production - only essential props are kept 2`] = `
+import { t } from "@lingui/core/macro";
+const msg = t({
+  message: \`Hello \${name}\`,
+  id: "msgId",
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
+exports[`Production - only essential props are kept, with custom i18n instance 1`] = `
+import { t } from "@lingui/core/macro";
+import { i18n } from "./lingui";
+const msg = t(i18n)({
+  message: \`Hello \${name}\`,
+  id: "msgId",
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "./lingui";
+const msg = i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
+exports[`Production - only essential props are kept, with plural, with custom i18n instance 1`] = `
+import { t, plural } from "@lingui/core/macro";
+const msg = t({
+  id: "msgId",
+  comment: "description for translators",
+  context: "some context",
+  message: plural(val, { one: "...", other: "..." }),
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      val: val,
+    },
+  }
+);
+
+`;
+
+exports[`Should generate different id when context provided 1`] = `
+import { t } from "@lingui/core/macro";
+t({ message: "Hello" });
+t({ message: "Hello", context: "my custom" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    message: "Hello",
+    id: "uzTaYi",
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    context: "my custom",
+    message: "Hello",
+    id: "BYqAaU",
+  }
+);
+
+`;
+
+exports[`Support id and comment in t macro as callExpression 1`] = `
+import { t, plural } from "@lingui/core/macro";
+const msg = t({
+  id: "msgId",
+  comment: "description for translators",
+  message: plural(val, { one: "...", other: "..." }),
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      val: val,
+    },
+    message: "{val, plural, one {...} other {...}}",
+    comment: "description for translators",
+  }
+);
+
+`;
+
+exports[`Support id in template literal 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t({ id: \`msgId\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: \`msgId\`,
+  }
+);
+
+`;
+
+exports[`Support id with message interpolation 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t({ id: "msgId", message: \`Some \${value}\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      value: value,
+    },
+    message: "Some {value}",
+  }
+);
+
+`;
+
+exports[`Support t in t 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Field \${t\`First Name\`} is required\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "O8dJMg",
+    message: "Field {0} is required",
+    values: {
+      0: _i18n._(
+        /*i18n*/
+        {
+          id: "kODvZJ",
+          message: "First Name",
+        }
+      ),
+    },
+  }
+);
+
+`;
+
+exports[`Support template strings in t macro message 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t({ message: \`Hello \${name}\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    message: "Hello {name}",
+    id: "OVaF9k",
+  }
+);
+
+`;
+
+exports[`Support template strings in t macro message, with custom i18n instance 1`] = `
+import { t } from "@lingui/core/macro";
+import { i18n } from "./lingui";
+const msg = t(i18n)({ message: \`Hello \${name}\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "./lingui";
+const msg = i18n._(
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    message: "Hello {name}",
+    id: "OVaF9k",
+  }
+);
+
+`;
+
+exports[`Support template strings in t macro message, with custom i18n instance object property 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t(global.i18n)({ message: \`Hello \${name}\` });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const msg = global.i18n._(
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    message: "Hello {name}",
+    id: "OVaF9k",
+  }
+);
+
+`;
+
+exports[`Variables are replaced with named arguments 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${name}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
+exports[`Variables should be deduplicated 1`] = `
+import { t } from "@lingui/core/macro";
+t\`\${duplicate} variable \${duplicate}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "+nhkwg",
+    message: "{duplicate} variable {duplicate}",
+    values: {
+      duplicate: duplicate,
+    },
+  }
+);
+
+`;
+
+exports[`Variables with escaped double quotes are correctly formatted 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable "name"\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "CcPIZW",
+    message: 'Variable "name"',
+  }
+);
+
+`;
+
+exports[`Variables with escaped template literals are correctly formatted 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \\\`\${name}\\\`\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "ICBco+",
+    message: "Variable \`{name}\`",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
+exports[`should correctly process nested macro when referenced from different imports 1`] = `
+import { t } from "@lingui/core/macro";
+import { plural } from "@lingui/core/macro";
+t\`Ola! \${plural(count, { one: "1 user", many: "# users" })} is required\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "EUO+Gb",
+    message: "Ola! {count, plural, one {1 user} many {# users}} is required",
+    values: {
+      count: count,
+    },
+  }
+);
+
+`;
+
+exports[`should correctly process nested macro when referenced from different imports 2 1`] = `
+import { t as t1, plural as plural1 } from "@lingui/core/macro";
+import { plural as plural2, t as t2 } from "@lingui/core/macro";
+t1\`Ola!  \${plural2(count, { one: "1 user", many: "# users" })} Ola!\`;
+t2\`Ola! \${plural1(count, { one: "1 user", many: "# users" })} Ola!\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "aui5Gr",
+    message: "Ola!  {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    id: "wJ7AD9",
+    message: "Ola! {count, plural, one {1 user} many {# users}} Ola!",
+    values: {
+      count: count,
+    },
+  }
+);
+
+`;
+
+exports[`t\`\` macro could be renamed 1`] = `
+import { t as t2 } from "@lingui/core/macro";
+const a = t2\`Expression assignment\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "mjnlP0",
+    message: "Expression assignment",
+  }
+);
+
+`;
