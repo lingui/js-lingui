@@ -44,10 +44,12 @@
     ".": {
       "require": {
         "types": "./dist/index.d.cts",
+        "react-server": "./dist/index-rsc.cjs",
         "default": "./dist/index.cjs"
       },
       "import": {
         "types": "./dist/index.d.mts",
+        "react-server": "./dist/index-rsc.mjs",
         "default": "./dist/index.mjs"
       }
     },
