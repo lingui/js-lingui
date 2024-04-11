@@ -3604,7 +3604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@workspace:packages/macro":
+"@lingui/macro@workspace:*, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -15379,6 +15379,7 @@ __metadata:
   resolution: "typescript-nodenext-resolution@workspace:test/typescript-nodenext-resolution"
   dependencies:
     "@lingui/core": "workspace:*"
+    "@lingui/macro": "workspace:*"
     "@lingui/react": "workspace:*"
     typescript: 4.9.5
   languageName: unknown
