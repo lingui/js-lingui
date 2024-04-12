@@ -1,6 +1,8 @@
 export const ID = "id"
 export const MESSAGE = "message"
 export const COMMENT = "comment"
+export const VALUES = "values"
+export const COMPONENTS = "components"
 export const EXTRACT_MARK = "i18n"
 export const CONTEXT = "context"
 export const MACRO_LEGACY_PACKAGE = "@lingui/macro"

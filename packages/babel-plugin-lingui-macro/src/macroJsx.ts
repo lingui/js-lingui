@@ -11,6 +11,7 @@ import {
   Node,
   StringLiteral,
   TemplateLiteral,
+  SourceLocation,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
@@ -26,10 +27,7 @@ import {
   MACRO_LEGACY_PACKAGE,
 } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
-import {
-  createMessageDescriptorFromTokens,
-  createStringObjectProperty,
-} from "./messageDescriptorUtils"
+import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -37,14 +35,14 @@ const jsx2icuExactChoice = (value: string) =>
 
 type JSXChildPath = NodePath<JSXElement["children"][number]>
 
-function maybeNodeValue(node: Node): string {
+function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
   if (!node) return null
-  if (node.type === "StringLiteral") return node.value
+  if (node.type === "StringLiteral") return { text: node.value, loc: node.loc }
   if (node.type === "JSXAttribute") return maybeNodeValue(node.value)
   if (node.type === "JSXExpressionContainer")
     return maybeNodeValue(node.expression)
   if (node.type === "TemplateLiteral" && node.expressions.length === 0)
-    return node.quasis[0].value.raw
+    return { text: node.quasis[0].value.raw, loc: node.loc }
   return null
 }
 
@@ -92,12 +90,12 @@ export class MacroJSX {
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
+      this.stripNonEssentialProps,
       {
         id,
         context,
         comment,
-      },
-      this.stripNonEssentialProps
+      }
     )
 
     if (!id && !tokens) {

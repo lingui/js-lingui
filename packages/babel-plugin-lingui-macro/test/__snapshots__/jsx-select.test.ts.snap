@@ -13,14 +13,19 @@ import { Select } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"Imwef9"}
-  message={"{count, select, male {He} female {She} other {<0>Other</0>}}"}
-  values={{
-    count: count,
-  }}
-  components={{
-    0: <strong />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "Imwef9",
+      message: "{count, select, male {He} female {She} other {<0>Other</0>}}",
+      values: {
+        count: count,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
+  }
 />;
 
 `;
@@ -41,14 +46,19 @@ import { Select } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   render="strong"
-  id="msg.select"
-  message={"{0, select, male {He} female {She} other {<0>Other</0>}}"}
-  values={{
-    0: user.gender,
-  }}
-  components={{
-    0: <strong />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "msg.select",
+      message: "{0, select, male {He} female {She} other {<0>Other</0>}}",
+      values: {
+        0: user.gender,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
+  }
 />;
 
 `;
@@ -69,12 +79,17 @@ import { Select } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   render="strong"
-  id="msg.select"
-  message={"{0, select, male {He} female {She} other {{otherText}}}"}
-  values={{
-    0: user.gender,
-    otherText: otherText,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "msg.select",
+      message: "{0, select, male {He} female {She} other {{otherText}}}",
+      values: {
+        0: user.gender,
+        otherText: otherText,
+      },
+    }
+  }
 />;
 
 `;
@@ -100,15 +115,21 @@ import { Select, Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"f1ZLwG"}
-  message={"{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}"}
-  values={{
-    0: "happy",
-  }}
-  components={{
-    0: <Icon />,
-    1: <Icon />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "f1ZLwG",
+      message:
+        "{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}",
+      values: {
+        0: "happy",
+      },
+      components: {
+        0: <Icon />,
+        1: <Icon />,
+      },
+    }
+  }
 />;
 
 `;

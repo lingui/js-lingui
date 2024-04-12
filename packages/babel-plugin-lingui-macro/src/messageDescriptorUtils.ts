@@ -1,6 +1,20 @@
-import ICUMessageFormat, { Tokens, ParsedResult } from "./icu"
-import { SourceLocation, ObjectProperty, ObjectExpression } from "@babel/types"
-import { MESSAGE, ID, EXTRACT_MARK, COMMENT, CONTEXT } from "./constants"
+import ICUMessageFormat, { Tokens } from "./icu"
+import {
+  SourceLocation,
+  ObjectProperty,
+  ObjectExpression,
+  isObjectProperty,
+  Expression,
+} from "@babel/types"
+import {
+  MESSAGE,
+  ID,
+  EXTRACT_MARK,
+  COMMENT,
+  CONTEXT,
+  VALUES,
+  COMPONENTS,
+} from "./constants"
 import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -9,11 +23,20 @@ function buildICUFromTokens(tokens: Tokens) {
   return messageFormat.fromTokens(tokens)
 }
 
+type TextWithLoc = {
+  text: string
+  loc?: SourceLocation
+}
+
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,
-  oldLoc?: SourceLocation,
-  defaults: { id?: string; context?: string; comment?: string } = {},
-  stripNonEssentialProps = true
+  oldLoc: SourceLocation,
+  stripNonEssentialProps: boolean,
+  defaults: {
+    id?: TextWithLoc | ObjectProperty
+    context?: TextWithLoc | ObjectProperty
+    comment?: TextWithLoc | ObjectProperty
+  } = {}
 ) {
   const { message, values, jsxElements } = buildICUFromTokens(tokens)
 
@@ -21,24 +44,51 @@ export function createMessageDescriptorFromTokens(
 
   properties.push(
     defaults.id
-      ? createStringObjectProperty(ID, defaults.id)
-      : createIdProperty(message, defaults.context)
+      ? isObjectProperty(defaults.id)
+        ? defaults.id
+        : createStringObjectProperty(ID, defaults.id.text, defaults.id.loc)
+      : createIdProperty(
+          message,
+          defaults.context
+            ? isObjectProperty(defaults.context)
+              ? getTextFromExpression(defaults.context.value as Expression)
+              : defaults.context.text
+            : null
+        )
   )
 
   if (!stripNonEssentialProps) {
-    properties.push(createStringObjectProperty(MESSAGE, message))
+    if (message) {
+      properties.push(createStringObjectProperty(MESSAGE, message))
+    }
 
     if (defaults.comment) {
-      properties.push(createStringObjectProperty(COMMENT, defaults.comment))
+      properties.push(
+        isObjectProperty(defaults.comment)
+          ? defaults.comment
+          : createStringObjectProperty(
+              COMMENT,
+              defaults.comment.text,
+              defaults.comment.loc
+            )
+      )
     }
 
     if (defaults.context) {
-      properties.push(createStringObjectProperty(CONTEXT, defaults.context))
+      properties.push(
+        isObjectProperty(defaults.context)
+          ? defaults.context
+          : createStringObjectProperty(
+              CONTEXT,
+              defaults.context.text,
+              defaults.context.loc
+            )
+      )
     }
   }
 
-  properties.push(createValuesProperty(values))
-  properties.push(createComponentsProperty(jsxElements))
+  properties.push(createValuesProperty(VALUES, values))
+  properties.push(createValuesProperty(COMPONENTS, jsxElements))
 
   return createMessageDescriptor(
     properties,
@@ -51,7 +101,7 @@ function createIdProperty(message: string, context?: string) {
   return createStringObjectProperty(ID, generateMessageId(message, context))
 }
 
-function createValuesProperty(values: ParsedResult["values"]) {
+function createValuesProperty(key: string, values: Record<string, Expression>) {
   const valuesObject = Object.keys(values).map((key) =>
     types.objectProperty(types.identifier(key), values[key])
   )
@@ -59,43 +109,37 @@ function createValuesProperty(values: ParsedResult["values"]) {
   if (!valuesObject.length) return
 
   return types.objectProperty(
-    types.identifier("values"),
+    types.identifier(key),
     types.objectExpression(valuesObject)
   )
 }
 
-function createComponentsProperty(values: ParsedResult["jsxElements"]) {
-  const valuesObject = Object.keys(values).map((key) =>
-    types.objectProperty(types.identifier(key), values[key])
+export function createStringObjectProperty(
+  key: string,
+  value: string,
+  oldLoc?: SourceLocation
+) {
+  const property = types.objectProperty(
+    types.identifier(key),
+    types.stringLiteral(value)
   )
+  if (oldLoc) {
+    property.loc = oldLoc
+  }
 
-  if (!valuesObject.length) return
-
-  return types.objectProperty(
-    types.identifier("components"),
-    types.objectExpression(valuesObject)
-  )
+  return property
 }
 
-// if (Object.keys(jsxElements).length) {
-//   attributes.push(
-//     this.types.jsxAttribute(
-//       this.types.jsxIdentifier("components"),
-//       this.types.jsxExpressionContainer(
-//         this.types.objectExpression(
-//           Object.keys(jsxElements).map((key) =>
-//             this.types.objectProperty(
-//               this.types.identifier(key),
-//               jsxElements[key]
-//             )
-//           )
-//         )
-//       )
-//     )
-//   )
-// }
-export function createStringObjectProperty(key: string, value: string) {
-  return types.objectProperty(types.identifier(key), types.stringLiteral(value))
+function getTextFromExpression(exp: Expression): string {
+  if (types.isStringLiteral(exp)) {
+    return exp.value
+  }
+
+  if (types.isTemplateLiteral(exp)) {
+    if (exp?.quasis.length === 1) {
+      return exp.quasis[0]?.value?.cooked
+    }
+  }
 }
 
 function createMessageDescriptor(

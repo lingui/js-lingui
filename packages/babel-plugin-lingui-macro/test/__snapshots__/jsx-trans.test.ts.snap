@@ -18,18 +18,23 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"k9gsHO"}
-  message={"Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>"}
-  values={{
-    name: name,
-  }}
-  components={{
-    0: <strong />,
-    1: <br />,
-    2: <p />,
-    3: <a href="/about" />,
-    4: <em />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "k9gsHO",
+      message: "Hello <0>World!</0><1/><2>My name is <3> <4>{name}</4></3></2>",
+      values: {
+        name: name,
+      },
+      components: {
+        0: <strong />,
+        1: <br />,
+        2: <p />,
+        3: <a href="/about" />,
+        4: <em />,
+      },
+    }
+  }
 />;
 
 `;
@@ -42,11 +47,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"1cZQQW"}
-  message={"<0>Component inside expression container</0>"}
-  components={{
-    0: <span />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "1cZQQW",
+      message: "<0>Component inside expression container</0>",
+      components: {
+        0: <span />,
+      },
+    }
+  }
 />;
 
 `;
@@ -59,11 +69,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"SCJtqt"}
-  message={"<0/>"}
-  components={{
-    0: <br />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "SCJtqt",
+      message: "<0/>",
+      components: {
+        0: <br />,
+      },
+    }
+  }
 />;
 
 `;
@@ -79,18 +94,22 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"HjKDmx"}
-  message={
-    "Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}"
+  {
+    /*i18n*/
+    ...{
+      id: "HjKDmx",
+      message:
+        "Property {0}, function {1}, array {2}, constant {3}, object {4}, everything {5}",
+      values: {
+        0: props.name,
+        1: random(),
+        2: array[index],
+        3: 42,
+        4: new Date(),
+        5: props.messages[index].value(),
+      },
+    }
   }
-  values={{
-    0: props.name,
-    1: random(),
-    2: array[index],
-    3: 42,
-    4: new Date(),
-    5: props.messages[index].value(),
-  }}
 />;
 
 `;
@@ -102,7 +121,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"mY42CM"} message={"Hello World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -114,8 +141,25 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"mY42CM"} message={"Hello World"} />;
-<_Trans id={"SO/WB8"} message={"Hello World"} context="my context" />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "SO/WB8",
+      message: "Hello World",
+      context: "my context",
+    }
+  }
+/>;
 
 `;
 
@@ -129,11 +173,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"K/1Xpr"}
-  message={"<0>This should work \\xA0</0>"}
-  components={{
-    0: <Text />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "K/1Xpr",
+      message: "<0>This should work \\xA0</0>",
+      components: {
+        0: <Text />,
+      },
+    }
+  }
 />;
 
 `;
@@ -145,7 +194,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"i0M2R8"} message={"Hello  World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "i0M2R8",
+      message: "Hello  World",
+    }
+  }
+/>;
 
 `;
 
@@ -159,15 +216,36 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"UT5PlM"}
-  message={"Hello, {0}"}
-  values={{
-    0: props.world ? (
-      <_Trans id={"ELi2P3"} message={"world"} />
-    ) : (
-      <_Trans id={"39nd+2"} message={"guys"} />
-    ),
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "UT5PlM",
+      message: "Hello, {0}",
+      values: {
+        0: props.world ? (
+          <_Trans
+            {
+              /*i18n*/
+              ...{
+                id: "ELi2P3",
+                message: "world",
+              }
+            }
+          />
+        ) : (
+          <_Trans
+            {
+              /*i18n*/
+              ...{
+                id: "39nd+2",
+                message: "guys",
+              }
+            }
+          />
+        ),
+      },
+    }
+  }
 />;
 
 `;
@@ -189,17 +267,46 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"UT5PlM"}
-  message={"Hello, {0}"}
-  values={{
-    0: props.world ? (
-      <_Trans id={"ELi2P3"} message={"world"} />
-    ) : props.b ? (
-      <_Trans id={"lV+268"} message={"nested"} />
-    ) : (
-      <_Trans id={"39nd+2"} message={"guys"} />
-    ),
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "UT5PlM",
+      message: "Hello, {0}",
+      values: {
+        0: props.world ? (
+          <_Trans
+            {
+              /*i18n*/
+              ...{
+                id: "ELi2P3",
+                message: "world",
+              }
+            }
+          />
+        ) : props.b ? (
+          <_Trans
+            {
+              /*i18n*/
+              ...{
+                id: "lV+268",
+                message: "nested",
+              }
+            }
+          />
+        ) : (
+          <_Trans
+            {
+              /*i18n*/
+              ...{
+                id: "39nd+2",
+                message: "guys",
+              }
+            }
+          />
+        ),
+      },
+    }
+  }
 />;
 
 `;
@@ -211,7 +318,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" message={"Hello World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -222,7 +337,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" message={"Hello World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -233,7 +356,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" message={"Hello World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -246,7 +377,16 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" message={"Hello World"} comment="Hello World" />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+      comment: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -260,7 +400,14 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+    }
+  }
+/>;
 
 `;
 
@@ -273,7 +420,14 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id="msg.hello" />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+    }
+  }
+/>;
 
 `;
 
@@ -285,8 +439,24 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"NWmRwM"} message={'Speak "friend"!'} />;
-<_Trans id="custom-id" message={'Speak "friend"!'} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "NWmRwM",
+      message: 'Speak "friend"!',
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "custom-id",
+      message: 'Speak "friend"!',
+    }
+  }
+/>;
 
 `;
 
@@ -298,7 +468,17 @@ const cmp = <Trans>Hello</Trans>;
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-const cmp = <_Trans id={"uzTaYi"} message={"Hello"} />;
+const cmp = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
 
 `;
 
@@ -318,10 +498,15 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   render={() => {}}
-  id="custom.id"
-  message={"Hello World"}
-  comment="Comment for translator"
-  context="translation context"
+  {
+    /*i18n*/
+    ...{
+      id: "custom.id",
+      message: "Hello World",
+      comment: "Comment for translator",
+      context: "translation context",
+    }
+  }
 />;
 
 `;
@@ -334,8 +519,13 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"U8dd/d"}
-  message={"hello {count, plural, one {world} other {worlds}}"}
+  {
+    /*i18n*/
+    ...{
+      id: "U8dd/d",
+      message: "hello {count, plural, one {world} other {worlds}}",
+    }
+  }
 />;
 
 `;
@@ -348,11 +538,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"tRMgLt"}
-  message={"Strip whitespace around arguments: '{name}'"}
-  values={{
-    name: name,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "tRMgLt",
+      message: "Strip whitespace around arguments: '{name}'",
+      values: {
+        name: name,
+      },
+    }
+  }
 />;
 
 `;
@@ -367,11 +562,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"Ud4KOf"}
-  message={"Strip whitespace around tags, but keep <0>forced spaces</0>!"}
-  components={{
-    0: <strong />,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "Ud4KOf",
+      message: "Strip whitespace around tags, but keep <0>forced spaces</0>!",
+      components: {
+        0: <strong />,
+      },
+    }
+  }
 />;
 
 `;
@@ -390,14 +590,18 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"3YVd0H"}
-  message={
-    "Wonderful framework <0>Next.js</0> say hi. And <1>Next.js</1> say hi."
+  {
+    /*i18n*/
+    ...{
+      id: "3YVd0H",
+      message:
+        "Wonderful framework <0>Next.js</0> say hi. And <1>Next.js</1> say hi.",
+      components: {
+        0: <a href="https://nextjs.org" />,
+        1: <a href="https://nextjs.org" />,
+      },
+    }
   }
-  components={{
-    0: <a href="https://nextjs.org" />,
-    1: <a href="https://nextjs.org" />,
-  }}
 />;
 
 `;
@@ -410,12 +614,17 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"exe3kM"}
-  message={"How much is {expression}? {count}"}
-  values={{
-    expression: expression,
-    count: count,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "exe3kM",
+      message: "How much is {expression}? {count}",
+      values: {
+        expression: expression,
+        count: count,
+      },
+    }
+  }
 />;
 
 `;
@@ -427,7 +636,15 @@ import { Trans as Trans2 } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"mY42CM"} message={"Hello World"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
 
 `;
 
@@ -446,25 +663,30 @@ import { t } from "@lingui/core/macro";
 import { i18n as _i18n } from "@lingui/core";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"QZyANg"}
-  message={"Read <0>more</0>"}
-  components={{
-    0: (
-      <a
-        href="/more"
-        title={_i18n._(
-          /*i18n*/
-          {
-            id: "qzc3IN",
-            message: "Full content of {articleName}",
-            values: {
-              articleName: articleName,
-            },
-          }
-        )}
-      />
-    ),
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "QZyANg",
+      message: "Read <0>more</0>",
+      components: {
+        0: (
+          <a
+            href="/more"
+            title={_i18n._(
+              /*i18n*/
+              {
+                id: "qzc3IN",
+                message: "Full content of {articleName}",
+                values: {
+                  articleName: articleName,
+                },
+              }
+            )}
+          />
+        ),
+      },
+    }
+  }
 />;
 
 `;
@@ -509,7 +731,15 @@ import { Trans } from "@lingui/react/macro";
 ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans as _Trans } from "@lingui/react";
-<_Trans id={"EwTON7"} message={"&"} />;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "EwTON7",
+      message: "&",
+    }
+  }
+/>;
 
 `;
 
@@ -523,12 +753,17 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"y10VRI"}
-  message={"Hi {yourName}, my name is {myName}"}
-  values={{
-    yourName: yourName,
-    myName: myName,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "y10VRI",
+      message: "Hi {yourName}, my name is {myName}",
+      values: {
+        yourName: yourName,
+        myName: myName,
+      },
+    }
+  }
 />;
 
 `;
@@ -543,11 +778,16 @@ import { Trans } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"+nhkwg"}
-  message={"{duplicate} variable {duplicate}"}
-  values={{
-    duplicate: duplicate,
-  }}
+  {
+    /*i18n*/
+    ...{
+      id: "+nhkwg",
+      message: "{duplicate} variable {duplicate}",
+      values: {
+        duplicate: duplicate,
+      },
+    }
+  }
 />;
 
 `;

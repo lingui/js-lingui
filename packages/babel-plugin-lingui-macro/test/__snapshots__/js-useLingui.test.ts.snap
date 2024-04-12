@@ -123,9 +123,9 @@ function MyComponent() {
   const a = _t(
     /*i18n*/
     {
-      context: "my custom",
-      message: "Hello",
       id: "BYqAaU",
+      message: "Hello",
+      context: "my custom",
     }
   );
 }
