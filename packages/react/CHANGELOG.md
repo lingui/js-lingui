@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
+
+### Features
+
+- **react:** native support react RSC ([#1914](https://github.com/lingui/js-lingui/issues/1914)) ([0e94f2a](https://github.com/lingui/js-lingui/commit/0e94f2a5b7402b5197447932c6690502023b3c55))
+
 # [4.9.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.9.0) (2024-04-12)
 
 ### Features
