@@ -30,11 +30,9 @@ Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list
 - [Upcount](https://github.com/madisvain/upcount)
 - [Symbolovník](http://www.symbolovnik.cz)
 - [Notos](https://www.notos.co)
-- [Greenlight](https://greenlightready.com)
 - [OkCupid](https://www.okcupid.com)
 - [mapflow.ai](https://mapflow.ai)
-- [Ascendero.com](https://ascendero.com/)
-- [InterMenu.com](https://intermenu.com)
+- [lefun.fun](https://lefun.fun)
 
 ---
 
