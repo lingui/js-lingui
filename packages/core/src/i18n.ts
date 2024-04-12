@@ -234,9 +234,13 @@ export class I18n extends EventEmitter<Events> {
 
     // To avoid double compilation, skip compilation for `messageForId`, because message from catalog should be already compiled
     // ref: https://github.com/lingui/js-lingui/issues/1901
-    const translation = messageForId || (() => {
+    const translation =
+      messageForId ||
+      (() => {
         const trans: CompiledMessage | string = message || id
-        return process.env.NODE_ENV !== "production" ? compileMessage(trans) : trans
+        return process.env.NODE_ENV !== "production"
+          ? compileMessage(trans)
+          : trans
       })()
 
     // hack for parsing unicode values inside a string to get parsed in react native environments

@@ -188,7 +188,7 @@ describe("I18n", () => {
 
   it("._ should format message from catalog", () => {
     const messages = {
-      Hello: "Salut"
+      Hello: "Salut",
     }
 
     const i18n = setupI18n({
@@ -209,10 +209,12 @@ describe("I18n", () => {
     expect(i18n.t("Hello")).toEqual("Salut")
 
     // missing { name }
-    expect(i18n._({
+    expect(
+      i18n._({
         id: "My name is {name}",
         message: "Je m'appelle {name}",
-    })).toEqual("Je m'appelle")
+      })
+    ).toEqual("Je m'appelle")
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
@@ -252,10 +254,12 @@ describe("I18n", () => {
       messages: { es: messages },
     })
 
-    expect(i18n._({
-      id: "My ''name'' is '{name}'",
-      message: "Mi ''nombre'' es '{name}'"
-    })).toEqual("Mi 'nombre' es {name}")
+    expect(
+      i18n._({
+        id: "My ''name'' is '{name}'",
+        message: "Mi ''nombre'' es '{name}'",
+      })
+    ).toEqual("Mi 'nombre' es {name}")
   })
 
   it("._ shouldn't compile messages in production", () => {
@@ -290,9 +294,7 @@ describe("I18n", () => {
         messages: { fr: messages },
       })
 
-      expect(i18n._("My name is {name}")).toEqual(
-        "Je m'appelle {name}"
-      )
+      expect(i18n._("My name is {name}")).toEqual("Je m'appelle {name}")
     })
   })
 
