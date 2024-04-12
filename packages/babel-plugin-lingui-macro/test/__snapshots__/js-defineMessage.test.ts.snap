@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Production - only essential props are kept 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const msg = defineMessage({
+  message: \`Hello \${name}\`,
+  id: "msgId",
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const msg =
+  /*i18n*/
+  {
+    id: "msgId",
+    values: {
+      name: name,
+    },
+  };
+
+`;
+
+exports[`Production - only essential props are kept, without id 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const msg = defineMessage({
+  message: \`Hello \${name}\`,
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const msg =
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    id: "oT92lS",
+  };
+
+`;
+
+exports[`defineMessage can be called by alias \`msg\` 1`] = `
+import { msg } from "@lingui/core/macro";
+const message1 = msg\`Message\`;
+const message2 = msg({ message: "Message" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message1 =
+  /*i18n*/
+  {
+    id: "xDAtGP",
+    message: "Message",
+  };
+const message2 =
+  /*i18n*/
+  {
+    message: "Message",
+    id: "xDAtGP",
+  };
+
+`;
+
+exports[`defineMessage macro could be renamed 1`] = `
+import {
+  defineMessage as defineMessage2,
+  plural as plural2,
+} from "@lingui/core/macro";
+const message = defineMessage2({
+  comment: "Description",
+  message: plural2(value, { one: "book", other: "books" }),
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    values: {
+      value: value,
+    },
+    message: "{value, plural, one {book} other {books}}",
+    id: "SlmyxX",
+    comment: "Description",
+  };
+
+`;
+
+exports[`defineMessage should support template literal 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const message = defineMessage\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    id: "xDAtGP",
+    message: "Message",
+  };
+
+`;
+
+exports[`should expand macros in message property 1`] = `
+import { defineMessage, plural, arg } from "@lingui/core/macro";
+const message = defineMessage({
+  comment: "Description",
+  message: plural(value, { one: "book", other: "books" }),
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    values: {
+      value: value,
+    },
+    message: "{value, plural, one {book} other {books}}",
+    id: "SlmyxX",
+    comment: "Description",
+  };
+
+`;
+
+exports[`should left string message intact 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const message = defineMessage({
+  message: "Message",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    message: "Message",
+    id: "xDAtGP",
+  };
+
+`;
+
+exports[`should preserve custom id 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const message = defineMessage({
+  id: "msg.id",
+  message: "Message",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    id: "msg.id",
+    message: "Message",
+  };
+
+`;
+
+exports[`should preserve values 1`] = `
+import { defineMessage, t } from "@lingui/core/macro";
+const message = defineMessage({
+  message: t\`Hello \${name}\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    message: "Hello {name}",
+    id: "OVaF9k",
+  };
+
+`;
+
+exports[`should transform template literals 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+const message = defineMessage({
+  message: \`Message \${name}\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+const message =
+  /*i18n*/
+  {
+    values: {
+      name: name,
+    },
+    message: "Message {name}",
+    id: "A2aVLF",
+  };
+
+`;
