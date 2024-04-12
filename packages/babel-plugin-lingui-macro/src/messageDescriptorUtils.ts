@@ -6,15 +6,7 @@ import {
   isObjectProperty,
   Expression,
 } from "@babel/types"
-import {
-  MESSAGE,
-  ID,
-  EXTRACT_MARK,
-  COMMENT,
-  CONTEXT,
-  VALUES,
-  COMPONENTS,
-} from "./constants"
+import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -46,7 +38,11 @@ export function createMessageDescriptorFromTokens(
     defaults.id
       ? isObjectProperty(defaults.id)
         ? defaults.id
-        : createStringObjectProperty(ID, defaults.id.text, defaults.id.loc)
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.id,
+            defaults.id.text,
+            defaults.id.loc
+          )
       : createIdProperty(
           message,
           defaults.context
@@ -59,7 +55,9 @@ export function createMessageDescriptorFromTokens(
 
   if (!stripNonEssentialProps) {
     if (message) {
-      properties.push(createStringObjectProperty(MESSAGE, message))
+      properties.push(
+        createStringObjectProperty(MsgDescriptorPropKey.message, message)
+      )
     }
 
     if (defaults.comment) {
@@ -67,7 +65,7 @@ export function createMessageDescriptorFromTokens(
         isObjectProperty(defaults.comment)
           ? defaults.comment
           : createStringObjectProperty(
-              COMMENT,
+              MsgDescriptorPropKey.comment,
               defaults.comment.text,
               defaults.comment.loc
             )
@@ -79,7 +77,7 @@ export function createMessageDescriptorFromTokens(
         isObjectProperty(defaults.context)
           ? defaults.context
           : createStringObjectProperty(
-              CONTEXT,
+              MsgDescriptorPropKey.context,
               defaults.context.text,
               defaults.context.loc
             )
@@ -87,8 +85,10 @@ export function createMessageDescriptorFromTokens(
     }
   }
 
-  properties.push(createValuesProperty(VALUES, values))
-  properties.push(createValuesProperty(COMPONENTS, jsxElements))
+  properties.push(createValuesProperty(MsgDescriptorPropKey.values, values))
+  properties.push(
+    createValuesProperty(MsgDescriptorPropKey.components, jsxElements)
+  )
 
   return createMessageDescriptor(
     properties,
@@ -98,7 +98,10 @@ export function createMessageDescriptorFromTokens(
 }
 
 function createIdProperty(message: string, context?: string) {
-  return createStringObjectProperty(ID, generateMessageId(message, context))
+  return createStringObjectProperty(
+    MsgDescriptorPropKey.id,
+    generateMessageId(message, context)
+  )
 }
 
 function createValuesProperty(key: string, values: Record<string, Expression>) {

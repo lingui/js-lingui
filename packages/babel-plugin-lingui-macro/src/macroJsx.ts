@@ -18,13 +18,10 @@ import { NodePath } from "@babel/traverse"
 import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
 import {
-  COMMENT,
-  CONTEXT,
-  ID,
-  MESSAGE,
   JsxMacroName,
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
+  MsgDescriptorPropKey,
 } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
 import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
@@ -129,12 +126,23 @@ export class MacroJSX {
 
   stripMacroAttributes = (path: NodePath<JSXElement>) => {
     const { attributes } = path.node.openingElement
-    const id = attributes.find(this.attrName([ID]))
-    const message = attributes.find(this.attrName([MESSAGE]))
-    const comment = attributes.find(this.attrName([COMMENT]))
-    const context = attributes.find(this.attrName([CONTEXT]))
+    const id = attributes.find(this.attrName([MsgDescriptorPropKey.id]))
+    const message = attributes.find(
+      this.attrName([MsgDescriptorPropKey.message])
+    )
+    const comment = attributes.find(
+      this.attrName([MsgDescriptorPropKey.comment])
+    )
+    const context = attributes.find(
+      this.attrName([MsgDescriptorPropKey.context])
+    )
 
-    let reserved = [ID, MESSAGE, COMMENT, CONTEXT]
+    let reserved: string[] = [
+      MsgDescriptorPropKey.id,
+      MsgDescriptorPropKey.message,
+      MsgDescriptorPropKey.comment,
+      MsgDescriptorPropKey.context,
+    ]
 
     if (this.isChoiceComponent(path)) {
       reserved = [
@@ -258,10 +266,10 @@ export class MacroJSX {
     const props = element.get("attributes").filter((attr) => {
       return this.attrName(
         [
-          ID,
-          COMMENT,
-          MESSAGE,
-          CONTEXT,
+          MsgDescriptorPropKey.id,
+          MsgDescriptorPropKey.comment,
+          MsgDescriptorPropKey.message,
+          MsgDescriptorPropKey.context,
           "key",
           // we remove <Trans /> react props that are not useful for translation
           "render",

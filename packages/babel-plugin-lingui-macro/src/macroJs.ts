@@ -14,14 +14,11 @@ import { NodePath } from "@babel/traverse"
 import { ArgToken, TextToken, Token, Tokens } from "./icu"
 import { makeCounter } from "./utils"
 import {
-  COMMENT,
-  CONTEXT,
-  ID,
-  MESSAGE,
   MACRO_CORE_PACKAGE,
   JsMacroName,
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
+  MsgDescriptorPropKey,
 } from "./constants"
 import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 
@@ -313,20 +310,22 @@ export class MacroJs {
    *
    */
   processDescriptor = (descriptor: NodePath<ObjectExpression>) => {
-    const messageProperty = this.getObjectPropertyByKey(descriptor, MESSAGE)
-    const idProperty = this.getObjectPropertyByKey(descriptor, ID)
-    const contextProperty = this.getObjectPropertyByKey(descriptor, CONTEXT)
-    const commentProperty = this.getObjectPropertyByKey(descriptor, COMMENT)
-
-    // const properties: ObjectProperty[] = []
-    //
-    // if (idProperty) {
-    //   properties.push(idProperty.node)
-    // }
-    //
-    // if (!this.stripNonEssentialProps && contextProperty) {
-    //   properties.push(contextProperty.node)
-    // }
+    const messageProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.message
+    )
+    const idProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.id
+    )
+    const contextProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.context
+    )
+    const commentProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.comment
+    )
 
     let tokens: Token[] = []
 
@@ -339,31 +338,6 @@ export class MacroJs {
       tokens = messageValue.isTemplateLiteral()
         ? this.tokenizeTemplateLiteral(messageValue)
         : this.tokenizeNode(messageValue, true)
-
-      // let messageNode = messageValue.node as StringLiteral
-
-      // if (tokens) {
-      //   const { message, values } = buildICUFromTokens(tokens)
-      //   messageNode = this.types.stringLiteral(message)
-      //
-      //   properties.push(this.createValuesProperty(values))
-      // }
-
-      // if (!this.stripNonEssentialProps) {
-      //   properties.push(
-      //     this.createObjectProperty(MESSAGE, messageNode as Expression)
-      //   )
-      // }
-
-      // if (!idProperty && this.types.isStringLiteral(messageNode)) {
-      //   const context =
-      //     contextProperty &&
-      //     this.getTextFromExpression(
-      //       contextProperty.get("value").node as Expression
-      //     )
-      //
-      //   properties.push(this.createIdProperty(messageNode.value, context))
-      // }
     }
 
     return createMessageDescriptorFromTokens(
