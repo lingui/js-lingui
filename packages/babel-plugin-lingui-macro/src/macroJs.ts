@@ -350,12 +350,6 @@ export class MacroJs {
         comment: commentProperty?.node,
       }
     )
-
-    // if (!this.stripNonEssentialProps && commentProperty) {
-    //   properties.push(commentProperty.node)
-    // }
-
-    // return this.createMessageDescriptor(properties, descriptor.node.loc)
   }
 
   tokenizeNode(path: NodePath, ignoreExpression = false): Token[] {

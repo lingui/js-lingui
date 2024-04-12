@@ -61,14 +61,6 @@ export class MacroJSX {
     this.transImportName = opts.transImportName
   }
 
-  createStringJsxAttribute = (name: string, value: string) => {
-    // This handles quoted JSX attributes and html entities.
-    return this.types.jsxAttribute(
-      this.types.jsxIdentifier(name),
-      this.types.jsxExpressionContainer(this.types.stringLiteral(value))
-    )
-  }
-
   replacePath = (path: NodePath): false | Node => {
     if (!path.isJSXElement()) {
       return false
@@ -84,6 +76,10 @@ export class MacroJSX {
       path as NodePath<JSXElement>
     )
 
+    if (!tokens.length) {
+      throw new Error("Incorrect usage of Trans")
+    }
+
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
@@ -94,10 +90,6 @@ export class MacroJSX {
         comment,
       }
     )
-
-    if (!id && !tokens) {
-      throw new Error("Incorrect usage of Trans")
-    }
 
     attributes.push(this.types.jsxSpreadAttribute(messageDescriptor))
 
@@ -228,7 +220,9 @@ export class MacroJSX {
     } else if (path.isJSXElement()) {
       return this.tokenizeNode(path)
     } else if (path.isJSXSpreadChild()) {
-      // just do nothing
+      throw new Error(
+        "Incorrect usage of Trans: Spread could not be used as Trans children"
+      )
     } else if (path.isJSXText()) {
       return [this.tokenizeText(cleanJSXElementLiteralChild(path.node.value))]
     } else {
