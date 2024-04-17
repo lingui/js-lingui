@@ -74,6 +74,6 @@ export function setI18n(
  * }
  * ```
  */
-export function getI18n(): CtxValueRef | null {
-  return getLinguiCache()
+export function getI18n(): I18nContext | null {
+  return getLinguiCache()?.current
 }
