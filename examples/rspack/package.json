@@ -19,10 +19,8 @@
     "@lingui/swc-plugin": "^4.0.7",
     "@rspack/cli": "^0.6.2",
     "@rspack/core": "^0.6.2",
-    "@rspack/plugin-react-refresh": "^0.6.2",
     "@types/react": "^18.2.79",
     "@types/react-dom": "18.2.1",
-    "react-refresh": "^0.14.0",
     "typescript": "^5.0.4"
   }
 }

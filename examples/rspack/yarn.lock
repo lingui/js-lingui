@@ -877,18 +877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rspack/plugin-react-refresh@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "@rspack/plugin-react-refresh@npm:0.6.2"
-  peerDependencies:
-    react-refresh: ">=0.10.0 <1.0.0"
-  peerDependenciesMeta:
-    react-refresh:
-      optional: true
-  checksum: d86110f89d1e14ac71098559dab375ea13cfb2ff7742fb58cfdf113c8ddad99f9a23b4b8245b4a39e4f5da5668cc7aa0a6ba492b0c1348d65c34861abb563865
-  languageName: node
-  linkType: hard
-
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -4022,13 +4010,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-refresh@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "react-refresh@npm:0.14.0"
-  checksum: dc69fa8c993df512f42dd0f1b604978ae89bd747c0ed5ec595c0cc50d535fb2696619ccd98ae28775cc01d0a7c146a532f0f7fb81dc22e1977c242a4912312f4
-  languageName: node
-  linkType: hard
-
 "react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -4197,12 +4178,10 @@ __metadata:
     "@lingui/swc-plugin": ^4.0.7
     "@rspack/cli": ^0.6.2
     "@rspack/core": ^0.6.2
-    "@rspack/plugin-react-refresh": ^0.6.2
     "@types/react": ^18.2.79
     "@types/react-dom": 18.2.1
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-refresh: ^0.14.0
     typescript: ^5.0.4
   languageName: unknown
   linkType: soft
