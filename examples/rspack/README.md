@@ -19,7 +19,8 @@ This project shows how to use the [Rspack JavaScript bundler](https://www.rspack
 
 ## Configuration File Notes
 
-- [`rspack.config.js`](./rspack.config.js) specifies that the [`builtin:swc-loader`](https://www.rspack.dev/guide/builtin-swc-loader.html#builtinswc-loader) should transcompile all `.tsx` files using the Lingui SWC plugin. This is crucial for transcompiling Lingui Macros like `<Trans>` into their respective React components.
+- [`rspack.config.js`](./rspack.config.js) specifies that the [`builtin:swc-loader`](https://www.rspack.dev/guide/builtin-swc-loader.html#builtinswc-loader) should transcompile all `.tsx` files using the Lingui SWC plugin. Using Lingui SWC plugin makes sure that Lingui [Macros](https://lingui.dev/ref/macro) like `<Trans>` are transcompiled into their respective React components. When using Lingui SWC plugin, ensure compatibility with the version of `@rspack/core`. Refer to the [compatibility guide](https://github.com/lingui/swc-plugin#compatibility) for selecting the appropriate plugin version.
+
 - [`lingui.config.ts`](./lingui.config.ts) specifies the available locales, defaults, and paths where the message catalogs are stored.
 
 ## Helpful Resources
