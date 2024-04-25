@@ -1,8 +1,6 @@
-import React from "react";
-
 import { useLingui } from "@lingui/react";
 
-import { Trans, Plural } from "@lingui/macro";
+import { Plural, Trans } from "@lingui/macro";
 
 import LocaleSwitcher from './LocaleSwitcher';
 
