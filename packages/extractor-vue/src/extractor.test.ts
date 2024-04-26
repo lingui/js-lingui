@@ -1,8 +1,8 @@
+import type { ExtractedMessage } from "@lingui/babel-plugin-extract-messages"
 import { makeConfig } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
 import { vueExtractor } from "."
-import type { ExtractedMessage } from "@lingui/babel-plugin-extract-messages"
 
 function normalizePath(entries: ExtractedMessage[]): ExtractedMessage[] {
   return entries.map((entry) => {
@@ -82,5 +82,39 @@ describe("vue extractor", () => {
     messages = normalizePath(messages)
 
     expect(messages).toMatchSnapshot()
+  })
+
+  it("should catch warnings during parsing", async () => {
+    // ref: https://github.com/vuejs/core/blob/main/packages/compiler-sfc/__tests__/parse.spec.ts
+    const source = `<template></template><template></template>`
+
+    let messages: ExtractedMessage[] = []
+
+    expect(
+      vueExtractor.extract("parse.vue", source, (res) => messages.push(res), {
+        linguiConfig,
+      })
+    ).rejects.toMatchSnapshot()
+
+    expect(messages).toHaveLength(0)
+  })
+
+  it("should catch template errors", async () => {
+    // ref: https://github.com/vuejs/core/blob/main/packages/compiler-sfc/__tests__/compileTemplate.spec.ts
+    const source = `
+      <template lang="pug">
+        <div :bar="a[" v-model="baz"/>
+      </template>
+    `
+
+    let messages: ExtractedMessage[] = []
+
+    expect(
+      vueExtractor.extract("compile.vue", source, (res) => messages.push(res), {
+        linguiConfig,
+      })
+    ).rejects.toMatchSnapshot()
+
+    expect(messages).toHaveLength(0)
   })
 })
