@@ -16,6 +16,11 @@ function normalizePath(entries: ExtractedMessage[]): ExtractedMessage[] {
   })
 }
 
+function getFixtureCode(filename: string) {
+  const filePath = path.resolve(__dirname, "fixtures", filename)
+  return fs.readFileSync(filePath, "utf-8")
+}
+
 describe("vue extractor", () => {
   const linguiConfig = makeConfig({
     locales: ["en", "nb"],
@@ -41,8 +46,7 @@ describe("vue extractor", () => {
   })
 
   it("should extract message from vue file", async () => {
-    const filePath = path.resolve(__dirname, "fixtures/test.vue")
-    const code = fs.readFileSync(filePath, "utf-8")
+    const code = getFixtureCode("test.vue")
 
     let messages: ExtractedMessage[] = []
 
@@ -63,8 +67,7 @@ describe("vue extractor", () => {
   })
 
   it("should extract message from functional component", async () => {
-    const filePath = path.resolve(__dirname, "fixtures/functional.vue")
-    const code = fs.readFileSync(filePath, "utf-8")
+    const code = getFixtureCode("functional.vue")
 
     let messages: ExtractedMessage[] = []
 
@@ -86,14 +89,19 @@ describe("vue extractor", () => {
 
   it("should catch warnings during parsing", async () => {
     // ref: https://github.com/vuejs/core/blob/main/packages/compiler-sfc/__tests__/parse.spec.ts
-    const source = `<template></template><template></template>`
+    const code = getFixtureCode("test-parse.vue")
 
     let messages: ExtractedMessage[] = []
 
     expect(
-      vueExtractor.extract("parse.vue", source, (res) => messages.push(res), {
-        linguiConfig,
-      })
+      vueExtractor.extract(
+        "test-parse.vue",
+        code,
+        (res) => messages.push(res),
+        {
+          linguiConfig,
+        }
+      )
     ).rejects.toMatchSnapshot()
 
     expect(messages).toHaveLength(0)
@@ -101,18 +109,19 @@ describe("vue extractor", () => {
 
   it("should catch template errors", async () => {
     // ref: https://github.com/vuejs/core/blob/main/packages/compiler-sfc/__tests__/compileTemplate.spec.ts
-    const source = `
-      <template lang="pug">
-        <div :bar="a[" v-model="baz"/>
-      </template>
-    `
+    const source = getFixtureCode("test-compile.vue")
 
     let messages: ExtractedMessage[] = []
 
     expect(
-      vueExtractor.extract("compile.vue", source, (res) => messages.push(res), {
-        linguiConfig,
-      })
+      vueExtractor.extract(
+        "test-compile.vue",
+        source,
+        (res) => messages.push(res),
+        {
+          linguiConfig,
+        }
+      )
     ).rejects.toMatchSnapshot()
 
     expect(messages).toHaveLength(0)
