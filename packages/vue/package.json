@@ -1,0 +1,91 @@
+{
+  "name": "@lingui/vue",
+  "version": "4.8.0-next.1",
+  "sideEffects": false,
+  "description": "Vue components & tools for translations",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "name": "Jérôme Steunou",
+    "email": "jerome.steunou@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "component",
+    "i18n",
+    "internationalization",
+    "i9n",
+    "translation",
+    "icu",
+    "messageformat",
+    "multilingual",
+    "localization",
+    "l10n"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./compiler": {
+      "require": {
+        "types": "./dist/compiler/index.d.cts",
+        "default": "./dist/compiler/index.cjs"
+      },
+      "import": {
+        "types": "./dist/compiler/index.d.mts",
+        "default": "./dist/compiler/index.mjs"
+      }
+    },
+    "./extractor": {
+      "require": {
+        "types": "./dist/extractor/index.d.cts",
+        "default": "./dist/extractor/index.cjs"
+      },
+      "import": {
+        "types": "./dist/extractor/index.d.mts",
+        "default": "./dist/extractor/index.mjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "dependencies": {
+    "@lingui/cli": "4.8.0-next.1",
+    "@lingui/core": "4.8.0-next.1",
+    "@lingui/message-utils": "4.8.0-next.1",
+    "@vue/compiler-core": "^3.3.4",
+    "@vue/compiler-sfc": "^3.3.4",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5",
+    "unbuild": "2.0.0"
+  }
+}
