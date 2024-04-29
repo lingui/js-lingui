@@ -1,6 +1,15 @@
 import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
-import { SFCBlock, compileTemplate, parse } from "@vue/compiler-sfc"
+import {
+  CompilerError,
+  SFCBlock,
+  compileTemplate,
+  parse,
+} from "@vue/compiler-sfc"
+
+function handleErrors(errors: (string | CompilerError | SyntaxError)[]) {
+  errors.forEach(console.log)
+}
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {
@@ -19,8 +28,8 @@ export const vueExtractor: ExtractorType = {
     })
 
     if (parsedErrors.length) {
-      console.error("Error while parsing:")
-      throw parsedErrors
+      parsedErrors.forEach(console.log)
+      throw new Error("Vue parsing failed")
     }
 
     const isTsBlock = (block: SFCBlock) => block?.lang === "ts"
@@ -39,8 +48,8 @@ export const vueExtractor: ExtractorType = {
       })
 
     if (compiledTemplate?.errors?.length) {
-      console.error("Error while template compilation:")
-      throw compiledTemplate.errors
+      compiledTemplate.errors.forEach(console.log)
+      throw new Error("Vue template compilation failed")
     }
 
     const targets = [
