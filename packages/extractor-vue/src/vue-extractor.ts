@@ -1,15 +1,6 @@
 import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
-import {
-  CompilerError,
-  SFCBlock,
-  compileTemplate,
-  parse,
-} from "@vue/compiler-sfc"
-
-function handleErrors(errors: (string | CompilerError | SyntaxError)[]) {
-  errors.forEach(console.log)
-}
+import { SFCBlock, compileTemplate, parse } from "@vue/compiler-sfc"
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {
