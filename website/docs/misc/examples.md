@@ -1,6 +1,7 @@
 ---
 title: I18n Examples
 description: Examples of using Lingui for internationalization (i18n) in various frameworks and libraries
+image: /img/og-image-examples.png
 ---
 
 # Examples
