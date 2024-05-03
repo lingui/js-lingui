@@ -1,6 +1,6 @@
 {
   "name": "@lingui/extractor-vue",
-  "version": "4.10.0",
+  "version": "4.10.1",
   "description": "Custom Vue.js extractor to be used with the CLI tool",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -38,12 +38,12 @@
     "/dist"
   ],
   "dependencies": {
-    "@lingui/cli": "4.10.0",
-    "@lingui/conf": "4.10.0",
+    "@lingui/cli": "4.10.1",
+    "@lingui/conf": "4.10.1",
     "@vue/compiler-sfc": "^3.2.47"
   },
   "devDependencies": {
-    "@lingui/babel-plugin-extract-messages": "4.10.0",
+    "@lingui/babel-plugin-extract-messages": "4.10.1",
     "unbuild": "2.0.0"
   }
 }

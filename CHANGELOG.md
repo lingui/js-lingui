@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
+
+### Bug Fixes
+
+- **core:** pound symbol being replaced outside plural and selectordinal ([#1928](https://github.com/lingui/js-lingui/issues/1928)) ([e94c6fd](https://github.com/lingui/js-lingui/commit/e94c6fd9d1d8827f535a8ae8faa2d230e961ae9d))
+
 # [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
 
 ### Features
