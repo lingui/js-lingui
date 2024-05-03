@@ -77,11 +77,14 @@ export function interpolate(
   return (values: Values = {}, formats?: Formats): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
 
-    const formatMessage = (tokens: CompiledMessage | number | undefined) => {
+    const formatMessage = (
+      tokens: CompiledMessage | number | undefined,
+      replaceOctothorpe: boolean = false
+    ) => {
       if (!Array.isArray(tokens)) return tokens
 
       return tokens.reduce<string>((message, token) => {
-        if (token === "#") {
+        if (token === "#" && replaceOctothorpe) {
           return message + OCTOTHORPE_PH
         }
 
@@ -100,7 +103,10 @@ export function interpolate(
         ) {
           Object.entries(format as CompiledIcuChoices).forEach(
             ([key, value]) => {
-              interpolatedFormat[key] = formatMessage(value)
+              interpolatedFormat[key] = formatMessage(
+                value,
+                type === "plural" || type === "selectordinal"
+              )
             }
           )
         } else {

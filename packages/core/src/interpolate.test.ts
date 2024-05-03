@@ -71,6 +71,13 @@ describe("interpolate", () => {
     )
   })
 
+  it("should not replace `#` symbol outside plural and selectordinal", () => {
+    const cache = compile("#{place} in best seller list")
+    expect(interpolate(cache, "en", [])({ place: 7 })).toEqual(
+      "#7 in best seller list"
+    )
+  })
+
   it("should replace more than one octothorpe symbols in message", () => {
     const plural = prepare("{value, plural, one {} other {# and #}}")
 
