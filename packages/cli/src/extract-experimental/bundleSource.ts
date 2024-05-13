@@ -32,6 +32,7 @@ export async function bundleSource(
     "png",
     "css",
     "sass",
+    "scss",
     "less",
     "jpg",
   ]
