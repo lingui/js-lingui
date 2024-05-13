@@ -442,4 +442,23 @@ describe("pofile format", () => {
 
     `)
   })
+
+  it("should include custom header attributes", () => {
+    const format = createFormatter({ customHeaderAttributes: { 'X-Custom-Attribute': 'custom-value' }})
+    const catalog: CatalogType = {}
+    const actual = format.serialize(catalog, defaultSerializeCtx)
+
+    expect(actual).toMatchInlineSnapshot(`
+      msgid ""
+      msgstr ""
+      "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+      "MIME-Version: 1.0\\n"
+      "Content-Type: text/plain; charset=utf-8\\n"
+      "Content-Transfer-Encoding: 8bit\\n"
+      "X-Generator: @lingui/cli\\n"
+      "Language: en\\n"
+      "X-Custom-Attribute: custom-value\\n"
+
+    `)
+  })
 })
