@@ -72,7 +72,7 @@ function isGeneratedId(id: string, message: MessageType): boolean {
 
 function getCreateHeaders(
   language: string,
-  customHeaderAttributes: PoFormatterOptions['customHeaderAttributes']
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
 ): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -208,7 +208,10 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         po = PO.parse(ctx.existing)
       } else {
         po = new PO()
-        po.headers = getCreateHeaders(ctx.locale, options.customHeaderAttributes)
+        po.headers = getCreateHeaders(
+          ctx.locale,
+          options.customHeaderAttributes
+        )
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)
       }

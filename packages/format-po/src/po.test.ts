@@ -444,7 +444,9 @@ describe("pofile format", () => {
   })
 
   it("should include custom header attributes", () => {
-    const format = createFormatter({ customHeaderAttributes: { 'X-Custom-Attribute': 'custom-value' }})
+    const format = createFormatter({
+      customHeaderAttributes: { "X-Custom-Attribute": "custom-value" },
+    })
     const catalog: CatalogType = {}
     const actual = format.serialize(catalog, defaultSerializeCtx)
 
