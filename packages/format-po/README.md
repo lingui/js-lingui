@@ -76,6 +76,13 @@ export type PoFormatterOptions = {
    * @default false
    */
   explicitIdAsDefault?: boolean
+  
+  /**
+   * Custom attributes to append to the PO file header
+   *
+   * @default {}
+   */
+  customHeaderAttributes?: { [key: string]: string }
 }
 ```
 
