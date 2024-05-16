@@ -54,7 +54,7 @@ describe("compileMessage", () => {
 
   it("should compile plurals", () => {
     const tokens = compileMessage(
-      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books}}"
+      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books} =42 {FourtyTwo books} =99 {Books with problems}}"
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
@@ -63,6 +63,8 @@ describe("compileMessage", () => {
           plural,
           {
             0: No Books,
+            42: FourtyTwo books,
+            99: Books with problems,
             offset: 1,
             one: [
               #,

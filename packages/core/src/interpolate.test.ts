@@ -39,10 +39,12 @@ describe("interpolate", () => {
 
   it("should interpolate plurals", () => {
     const plural = prepare(
-      "{value, plural, one {{value} Book} other {# Books}}"
+      "{value, plural, one {{value} Book} =4 {Four books} =99 { Books with problems } other {# Books}}"
     )
     expect(plural({ value: 1 })).toEqual("1 Book")
     expect(plural({ value: 2 })).toEqual("2 Books")
+    expect(plural({ value: 4 })).toEqual("Four books")
+    expect(plural({ value: 99 })).toEqual("Books with problems")
 
     const offset = prepare(
       "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books}}"
