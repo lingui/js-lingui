@@ -1,5 +1,8 @@
 {
   "name": "@lingui/vue",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "4.8.0-next.1",
   "sideEffects": false,
   "description": "Vue components & tools for translations",
