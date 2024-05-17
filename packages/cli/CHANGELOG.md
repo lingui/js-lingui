@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
+
+### Bug Fixes
+
+- default message extraction ([#1936](https://github.com/lingui/js-lingui/issues/1936)) ([8f1ddd7](https://github.com/lingui/js-lingui/commit/8f1ddd787b79510b112b87c21d4a23b875722edc))
+- exclude .scss files from extract-experimental build ([#1935](https://github.com/lingui/js-lingui/issues/1935)) ([d01fa96](https://github.com/lingui/js-lingui/commit/d01fa969622605e40f417a85b98bce1f88771445))
+
 ## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
 
 **Note:** Version bump only for package @lingui/cli
