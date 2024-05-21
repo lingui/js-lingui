@@ -6,39 +6,21 @@ import {
   Node,
   ObjectExpression,
   ObjectProperty,
-  SourceLocation,
   StringLiteral,
   TemplateLiteral,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {
-  ArgToken,
-  ParsedResult,
-  TextToken,
-  Token,
-  Tokens,
-} from "./icu"
+import { ArgToken, TextToken, Token, Tokens } from "./icu"
 import { makeCounter } from "./utils"
 import {
-  COMMENT,
-  CONTEXT,
-  EXTRACT_MARK,
-  ID,
-  MESSAGE,
   MACRO_CORE_PACKAGE,
   JsMacroName,
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
+  MsgDescriptorPropKey,
 } from "./constants"
-import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-
-function buildICUFromTokens(tokens: Tokens) {
-  const messageFormat = new ICUMessageFormat()
-  const { message, values } = messageFormat.fromTokens(tokens)
-
-  return { message, values }
-}
+import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 
 export type MacroJsOpts = {
   i18nImportName: string
@@ -76,7 +58,11 @@ export class MacroJs {
     linguiInstance?: babelTypes.Expression
   ) => {
     return this.createI18nCall(
-      this.createMessageDescriptorFromTokens(tokens, path.node.loc),
+      createMessageDescriptorFromTokens(
+        tokens,
+        path.node.loc,
+        this.stripNonEssentialProps
+      ),
       linguiInstance
     )
   }
@@ -102,7 +88,11 @@ export class MacroJs {
       this.isDefineMessage(path.get("tag"))
     ) {
       const tokens = this.tokenizeTemplateLiteral(path.get("quasi"))
-      return this.createMessageDescriptorFromTokens(tokens, path.node.loc)
+      return createMessageDescriptorFromTokens(
+        tokens,
+        path.node.loc,
+        this.stripNonEssentialProps
+      )
     }
 
     if (path.isTaggedTemplateExpression()) {
@@ -255,9 +245,10 @@ export class MacroJs {
         if (currentPath.isTaggedTemplateExpression()) {
           const tokens = this.tokenizeTemplateLiteral(currentPath)
 
-          const descriptor = this.createMessageDescriptorFromTokens(
+          const descriptor = createMessageDescriptorFromTokens(
             tokens,
-            currentPath.node.loc
+            currentPath.node.loc,
+            this.stripNonEssentialProps
           )
 
           const callExpr = this.types.callExpression(
@@ -319,20 +310,24 @@ export class MacroJs {
    *
    */
   processDescriptor = (descriptor: NodePath<ObjectExpression>) => {
-    const messageProperty = this.getObjectPropertyByKey(descriptor, MESSAGE)
-    const idProperty = this.getObjectPropertyByKey(descriptor, ID)
-    const contextProperty = this.getObjectPropertyByKey(descriptor, CONTEXT)
-    const commentProperty = this.getObjectPropertyByKey(descriptor, COMMENT)
+    const messageProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.message
+    )
+    const idProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.id
+    )
+    const contextProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.context
+    )
+    const commentProperty = this.getObjectPropertyByKey(
+      descriptor,
+      MsgDescriptorPropKey.comment
+    )
 
-    const properties: ObjectProperty[] = []
-
-    if (idProperty) {
-      properties.push(idProperty.node)
-    }
-
-    if (!this.stripNonEssentialProps && contextProperty) {
-      properties.push(contextProperty.node)
-    }
+    let tokens: Token[] = []
 
     // if there's `message` property, replace macros with formatted message
     if (messageProperty) {
@@ -340,60 +335,20 @@ export class MacroJs {
       // Template strings are always processed as if they were wrapped by `t`.
       const messageValue = messageProperty.get("value")
 
-      const tokens = messageValue.isTemplateLiteral()
+      tokens = messageValue.isTemplateLiteral()
         ? this.tokenizeTemplateLiteral(messageValue)
         : this.tokenizeNode(messageValue, true)
-
-      let messageNode = messageValue.node as StringLiteral
-
-      if (tokens) {
-        const { message, values } = buildICUFromTokens(tokens)
-        messageNode = this.types.stringLiteral(message)
-
-        properties.push(this.createValuesProperty(values))
-      }
-
-      if (!this.stripNonEssentialProps) {
-        properties.push(
-          this.createObjectProperty(MESSAGE, messageNode as Expression)
-        )
-      }
-
-      if (!idProperty && this.types.isStringLiteral(messageNode)) {
-        const context =
-          contextProperty &&
-          this.getTextFromExpression(
-            contextProperty.get("value").node as Expression
-          )
-
-        properties.push(this.createIdProperty(messageNode.value, context))
-      }
     }
 
-    if (!this.stripNonEssentialProps && commentProperty) {
-      properties.push(commentProperty.node)
-    }
-
-    return this.createMessageDescriptor(properties, descriptor.node.loc)
-  }
-
-  createIdProperty(message: string, context?: string) {
-    return this.createObjectProperty(
-      ID,
-      this.types.stringLiteral(generateMessageId(message, context))
-    )
-  }
-
-  createValuesProperty(values: ParsedResult["values"]) {
-    const valuesObject = Object.keys(values).map((key) =>
-      this.types.objectProperty(this.types.identifier(key), values[key])
-    )
-
-    if (!valuesObject.length) return
-
-    return this.types.objectProperty(
-      this.types.identifier("values"),
-      this.types.objectExpression(valuesObject)
+    return createMessageDescriptorFromTokens(
+      tokens,
+      descriptor.node.loc,
+      this.stripNonEssentialProps,
+      {
+        id: idProperty?.node,
+        context: contextProperty?.node,
+        comment: commentProperty?.node,
+      }
     )
   }
 
@@ -413,6 +368,15 @@ export class MacroJs {
           path as NodePath<CallExpression>,
           choiceMethod
         ),
+      ]
+    }
+
+    if (path.isStringLiteral()) {
+      return [
+        {
+          type: "text",
+          value: path.node.value,
+        } satisfies TextToken,
       ]
     }
     //   if (isFormatMethod(node.callee)) {
@@ -543,45 +507,6 @@ export class MacroJs {
     )
   }
 
-  createMessageDescriptorFromTokens(tokens: Tokens, oldLoc?: SourceLocation) {
-    const { message, values } = buildICUFromTokens(tokens)
-
-    const properties: ObjectProperty[] = [
-      this.createIdProperty(message),
-
-      !this.stripNonEssentialProps
-        ? this.createObjectProperty(MESSAGE, this.types.stringLiteral(message))
-        : null,
-
-      this.createValuesProperty(values),
-    ]
-
-    return this.createMessageDescriptor(
-      properties,
-      // preserve line numbers for extractor
-      oldLoc
-    )
-  }
-
-  createMessageDescriptor(
-    properties: ObjectProperty[],
-    oldLoc?: SourceLocation
-  ): ObjectExpression {
-    const newDescriptor = this.types.objectExpression(
-      properties.filter(Boolean)
-    )
-    this.types.addComment(newDescriptor, "leading", EXTRACT_MARK)
-    if (oldLoc) {
-      newDescriptor.loc = oldLoc
-    }
-
-    return newDescriptor
-  }
-
-  createObjectProperty(key: string, value: Expression) {
-    return this.types.objectProperty(this.types.identifier(key), value)
-  }
-
   getObjectPropertyByKey(
     objectExp: NodePath<ObjectExpression>,
     key: string
@@ -654,18 +579,6 @@ export class MacroJs {
     }
     if (this.isLinguiIdentifier(callee, JsMacroName.selectOrdinal)) {
       return JsMacroName.selectOrdinal
-    }
-  }
-
-  getTextFromExpression(exp: Expression): string {
-    if (this.types.isStringLiteral(exp)) {
-      return exp.value
-    }
-
-    if (this.types.isTemplateLiteral(exp)) {
-      if (exp?.quasis.length === 1) {
-        return exp.quasis[0]?.value?.cooked
-      }
     }
   }
 }

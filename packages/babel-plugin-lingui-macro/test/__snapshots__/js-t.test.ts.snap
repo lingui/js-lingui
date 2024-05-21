@@ -41,17 +41,17 @@ import { i18n as _i18n } from "@lingui/core";
 _i18n._(
   /*i18n*/
   {
-    context: "my custom",
-    message: "Hello",
     id: "BYqAaU",
+    message: "Hello",
+    context: "my custom",
   }
 );
 _i18n._(
   /*i18n*/
   {
-    context: \`my custom\`,
-    message: "Hello",
     id: "BYqAaU",
+    message: "Hello",
+    context: \`my custom\`,
   }
 );
 
@@ -68,8 +68,8 @@ const msg = message.error(
   _i18n._(
     /*i18n*/
     {
-      message: "dasd",
       id: "9ZMZjU",
+      message: "dasd",
     }
   )
 );
@@ -145,12 +145,12 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "msgId",
+    message: "Hello {name}",
+    comment: "description for translators",
     context: "My Context",
     values: {
       name: name,
     },
-    message: "Hello {name}",
-    comment: "description for translators",
   }
 );
 
@@ -256,16 +256,16 @@ import { i18n as _i18n } from "@lingui/core";
 _i18n._(
   /*i18n*/
   {
-    message: "Hello",
     id: "uzTaYi",
+    message: "Hello",
   }
 );
 _i18n._(
   /*i18n*/
   {
-    context: "my custom",
-    message: "Hello",
     id: "BYqAaU",
+    message: "Hello",
+    context: "my custom",
   }
 );
 
@@ -286,11 +286,11 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "msgId",
+    message: "{val, plural, one {...} other {...}}",
+    comment: "description for translators",
     values: {
       val: val,
     },
-    message: "{val, plural, one {...} other {...}}",
-    comment: "description for translators",
   }
 );
 
@@ -323,10 +323,10 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "msgId",
+    message: "Some {value}",
     values: {
       value: value,
     },
-    message: "Some {value}",
   }
 );
 
@@ -368,11 +368,11 @@ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
+    id: "OVaF9k",
+    message: "Hello {name}",
     values: {
       name: name,
     },
-    message: "Hello {name}",
-    id: "OVaF9k",
   }
 );
 
@@ -389,11 +389,11 @@ import { i18n } from "./lingui";
 const msg = i18n._(
   /*i18n*/
   {
+    id: "OVaF9k",
+    message: "Hello {name}",
     values: {
       name: name,
     },
-    message: "Hello {name}",
-    id: "OVaF9k",
   }
 );
 
@@ -408,11 +408,11 @@ const msg = t(global.i18n)({ message: \`Hello \${name}\` });
 const msg = global.i18n._(
   /*i18n*/
   {
+    id: "OVaF9k",
+    message: "Hello {name}",
     values: {
       name: name,
     },
-    message: "Hello {name}",
-    id: "OVaF9k",
   }
 );
 

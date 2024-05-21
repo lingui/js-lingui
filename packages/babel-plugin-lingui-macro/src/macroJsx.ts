@@ -11,27 +11,20 @@ import {
   Node,
   StringLiteral,
   TemplateLiteral,
+  SourceLocation,
 } from "@babel/types"
 import { NodePath } from "@babel/traverse"
 
-import ICUMessageFormat, {
-  ArgToken,
-  ElementToken,
-  TextToken,
-  Token,
-} from "./icu"
+import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
 import {
-  COMMENT,
-  CONTEXT,
-  ID,
-  MESSAGE,
   JsxMacroName,
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
+  MsgDescriptorPropKey,
 } from "./constants"
-import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
+import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -39,14 +32,14 @@ const jsx2icuExactChoice = (value: string) =>
 
 type JSXChildPath = NodePath<JSXElement["children"][number]>
 
-function maybeNodeValue(node: Node): string {
+function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
   if (!node) return null
-  if (node.type === "StringLiteral") return node.value
+  if (node.type === "StringLiteral") return { text: node.value, loc: node.loc }
   if (node.type === "JSXAttribute") return maybeNodeValue(node.value)
   if (node.type === "JSXExpressionContainer")
     return maybeNodeValue(node.expression)
   if (node.type === "TemplateLiteral" && node.expressions.length === 0)
-    return node.quasis[0].value.raw
+    return { text: node.quasis[0].value.raw, loc: node.loc }
   return null
 }
 
@@ -68,14 +61,6 @@ export class MacroJSX {
     this.transImportName = opts.transImportName
   }
 
-  createStringJsxAttribute = (name: string, value: string) => {
-    // This handles quoted JSX attributes and html entities.
-    return this.types.jsxAttribute(
-      this.types.jsxIdentifier(name),
-      this.types.jsxExpressionContainer(this.types.stringLiteral(value))
-    )
-  }
-
   replacePath = (path: NodePath): false | Node => {
     if (!path.isJSXElement()) {
       return false
@@ -87,87 +72,26 @@ export class MacroJSX {
       return false
     }
 
-    const messageFormat = new ICUMessageFormat()
-    const { message, values, jsxElements } = messageFormat.fromTokens(tokens)
     const { attributes, id, comment, context } = this.stripMacroAttributes(
       path as NodePath<JSXElement>
     )
 
-    if (!id && !message) {
+    if (!tokens.length) {
       throw new Error("Incorrect usage of Trans")
     }
 
-    if (id) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier(ID),
-          this.types.stringLiteral(id)
-        )
-      )
-    } else {
-      attributes.push(
-        this.createStringJsxAttribute(ID, generateMessageId(message, context))
-      )
-    }
-
-    if (!this.stripNonEssentialProps) {
-      if (message) {
-        attributes.push(this.createStringJsxAttribute(MESSAGE, message))
+    const messageDescriptor = createMessageDescriptorFromTokens(
+      tokens,
+      path.node.loc,
+      this.stripNonEssentialProps,
+      {
+        id,
+        context,
+        comment,
       }
-
-      if (comment) {
-        attributes.push(
-          this.types.jsxAttribute(
-            this.types.jsxIdentifier(COMMENT),
-            this.types.stringLiteral(comment)
-          )
-        )
-      }
-
-      if (context) {
-        attributes.push(
-          this.types.jsxAttribute(
-            this.types.jsxIdentifier(CONTEXT),
-            this.types.stringLiteral(context)
-          )
-        )
-      }
-    }
-
-    // Parameters for variable substitution
-    const valuesObject = Object.keys(values).map((key) =>
-      this.types.objectProperty(this.types.identifier(key), values[key])
     )
 
-    if (valuesObject.length) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier("values"),
-          this.types.jsxExpressionContainer(
-            this.types.objectExpression(valuesObject)
-          )
-        )
-      )
-    }
-
-    // Inline elements
-    if (Object.keys(jsxElements).length) {
-      attributes.push(
-        this.types.jsxAttribute(
-          this.types.jsxIdentifier("components"),
-          this.types.jsxExpressionContainer(
-            this.types.objectExpression(
-              Object.keys(jsxElements).map((key) =>
-                this.types.objectProperty(
-                  this.types.identifier(key),
-                  jsxElements[key]
-                )
-              )
-            )
-          )
-        )
-      )
-    }
+    attributes.push(this.types.jsxSpreadAttribute(messageDescriptor))
 
     const newNode = this.types.jsxElement(
       this.types.jsxOpeningElement(
@@ -194,12 +118,23 @@ export class MacroJSX {
 
   stripMacroAttributes = (path: NodePath<JSXElement>) => {
     const { attributes } = path.node.openingElement
-    const id = attributes.find(this.attrName([ID]))
-    const message = attributes.find(this.attrName([MESSAGE]))
-    const comment = attributes.find(this.attrName([COMMENT]))
-    const context = attributes.find(this.attrName([CONTEXT]))
+    const id = attributes.find(this.attrName([MsgDescriptorPropKey.id]))
+    const message = attributes.find(
+      this.attrName([MsgDescriptorPropKey.message])
+    )
+    const comment = attributes.find(
+      this.attrName([MsgDescriptorPropKey.comment])
+    )
+    const context = attributes.find(
+      this.attrName([MsgDescriptorPropKey.context])
+    )
 
-    let reserved = [ID, MESSAGE, COMMENT, CONTEXT]
+    let reserved: string[] = [
+      MsgDescriptorPropKey.id,
+      MsgDescriptorPropKey.message,
+      MsgDescriptorPropKey.comment,
+      MsgDescriptorPropKey.context,
+    ]
 
     if (this.isChoiceComponent(path)) {
       reserved = [
@@ -285,7 +220,9 @@ export class MacroJSX {
     } else if (path.isJSXElement()) {
       return this.tokenizeNode(path)
     } else if (path.isJSXSpreadChild()) {
-      // just do nothing
+      throw new Error(
+        "Incorrect usage of Trans: Spread could not be used as Trans children"
+      )
     } else if (path.isJSXText()) {
       return [this.tokenizeText(cleanJSXElementLiteralChild(path.node.value))]
     } else {
@@ -323,10 +260,10 @@ export class MacroJSX {
     const props = element.get("attributes").filter((attr) => {
       return this.attrName(
         [
-          ID,
-          COMMENT,
-          MESSAGE,
-          CONTEXT,
+          MsgDescriptorPropKey.id,
+          MsgDescriptorPropKey.comment,
+          MsgDescriptorPropKey.message,
+          MsgDescriptorPropKey.context,
           "key",
           // we remove <Trans /> react props that are not useful for translation
           "render",
