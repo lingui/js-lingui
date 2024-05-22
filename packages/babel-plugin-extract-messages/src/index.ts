@@ -2,7 +2,6 @@ import type * as BabelTypesNamespace from "@babel/types"
 import {
   Expression,
   Identifier,
-  JSXAttribute,
   Node,
   ObjectExpression,
   ObjectProperty,
@@ -192,9 +191,20 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         const { node } = path
         if (!isTransComponent(path)) return
 
-        const attrs = (node.openingElement.attributes as JSXAttribute[]) || []
+        const attrs = node.openingElement.attributes || []
+
+        if (
+          t.isJSXSpreadAttribute(attrs[0]) &&
+          hasI18nComment(attrs[0].argument)
+        ) {
+          return
+        }
 
         const props = attrs.reduce<Record<string, unknown>>((acc, item) => {
+          if (t.isJSXSpreadAttribute(item)) {
+            return acc
+          }
+
           const key = item.name.name
           if (
             key === "id" ||
@@ -216,7 +226,9 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
         if (!props.id) {
           // <Trans id={message} /> is valid, don't raise warning
-          const idProp = attrs.filter((item) => item.name.name === "id")[0]
+          const idProp = attrs.filter(
+            (item) => t.isJSXAttribute(item) && item.name.name === "id"
+          )[0]
           if (idProp === undefined || t.isLiteral(props.id as any)) {
             console.warn(
               path.buildCodeFrameError("Missing message ID, skipping.").message

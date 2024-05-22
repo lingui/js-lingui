@@ -17,16 +17,20 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"3YEV8L"}
-  message={
-    "This is my {count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."
+  {
+    /*i18n*/
+    ...{
+      id: "3YEV8L",
+      message:
+        "This is my {count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat.",
+      values: {
+        count: count,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
   }
-  values={{
-    count: count,
-  }}
-  components={{
-    0: <strong />,
-  }}
 />;
 
 `;
@@ -48,16 +52,20 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"Dz3XK1"}
-  message={
-    "This is my{count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."
+  {
+    /*i18n*/
+    ...{
+      id: "Dz3XK1",
+      message:
+        "This is my{count, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat.",
+      values: {
+        count: count,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
   }
-  values={{
-    count: count,
-  }}
-  components={{
-    0: <strong />,
-  }}
 />;
 
 `;
@@ -79,16 +87,20 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
-  id={"CDpzE+"}
-  message={
-    "This is my {0, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat."
+  {
+    /*i18n*/
+    ...{
+      id: "CDpzE+",
+      message:
+        "This is my {0, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat.",
+      values: {
+        0: user.numCats,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
   }
-  values={{
-    0: user.numCats,
-  }}
-  components={{
-    0: <strong />,
-  }}
 />;
 
 `;

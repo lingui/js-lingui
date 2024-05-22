@@ -24,7 +24,6 @@ describe("Trans component", () => {
         "My name is {name}": "Jmenuji se {name}",
         Original: "Původní",
         Updated: "Aktualizovaný",
-        "msg.currency": "{value, number, currency}",
         ID: "Translation",
       },
     },
@@ -290,6 +289,7 @@ describe("Trans component", () => {
     const translation = text(
       <Trans
         id="msg.currency"
+        message="{value, number, currency}"
         values={{ value: 1 }}
         formats={{
           currency: {

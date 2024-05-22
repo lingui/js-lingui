@@ -35,10 +35,10 @@ const msg = defineMessage({
 const msg =
   /*i18n*/
   {
+    id: "oT92lS",
     values: {
       name: name,
     },
-    id: "oT92lS",
   };
 
 `;
@@ -59,8 +59,8 @@ const message1 =
 const message2 =
   /*i18n*/
   {
-    message: "Message",
     id: "xDAtGP",
+    message: "Message",
   };
 
 `;
@@ -80,12 +80,12 @@ const message = defineMessage2({
 const message =
   /*i18n*/
   {
+    id: "SlmyxX",
+    message: "{value, plural, one {book} other {books}}",
+    comment: "Description",
     values: {
       value: value,
     },
-    message: "{value, plural, one {book} other {books}}",
-    id: "SlmyxX",
-    comment: "Description",
   };
 
 `;
@@ -117,12 +117,12 @@ const message = defineMessage({
 const message =
   /*i18n*/
   {
+    id: "SlmyxX",
+    message: "{value, plural, one {book} other {books}}",
+    comment: "Description",
     values: {
       value: value,
     },
-    message: "{value, plural, one {book} other {books}}",
-    id: "SlmyxX",
-    comment: "Description",
   };
 
 `;
@@ -138,8 +138,8 @@ const message = defineMessage({
 const message =
   /*i18n*/
   {
-    message: "Message",
     id: "xDAtGP",
+    message: "Message",
   };
 
 `;
@@ -173,11 +173,11 @@ const message = defineMessage({
 const message =
   /*i18n*/
   {
+    id: "OVaF9k",
+    message: "Hello {name}",
     values: {
       name: name,
     },
-    message: "Hello {name}",
-    id: "OVaF9k",
   };
 
 `;
@@ -193,11 +193,11 @@ const message = defineMessage({
 const message =
   /*i18n*/
   {
+    id: "A2aVLF",
+    message: "Message {name}",
     values: {
       name: name,
     },
-    message: "Message {name}",
-    id: "A2aVLF",
   };
 
 `;
