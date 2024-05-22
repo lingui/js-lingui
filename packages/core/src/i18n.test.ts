@@ -300,11 +300,11 @@ describe("I18n", () => {
 
     const handler = jest.fn()
     i18n.on("missing", handler)
-    // @ts-ignore
+    // @ts-expect-error 'id' should be of 'MessageDescriptor' or 'string' type.
     i18n._(messageID)
     expect(handler).toHaveBeenCalledTimes(1)
     expect(handler).toHaveBeenCalledWith({
-      id: undefined,
+      id: messageID,
       locale: "en",
     })
   })
