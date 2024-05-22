@@ -31,3 +31,11 @@ export function vt(
     message: stringsOrMD.message || "fallback message",
   })
 }
+
+/**
+ * Internal method used by Vue macro
+ */
+;(vt as any)._ = (descriptor: MessageDescriptor) => {
+  const i18n = useI18n()
+  return i18n._(descriptor)
+}

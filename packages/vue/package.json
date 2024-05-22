@@ -80,6 +80,10 @@
     "dist/"
   ],
   "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/generator": "^7.20.12",
+    "@babel/types": "^7.20.12",
+    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
     "@lingui/cli": "4.8.0-next.1",
     "@lingui/core": "4.8.0-next.1",
     "@lingui/message-utils": "4.8.0-next.1",
@@ -88,6 +92,7 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@lingui/conf": "4.8.0-next.1",
     "@types/babel__core": "^7.20.5",
     "unbuild": "2.0.0"
   }

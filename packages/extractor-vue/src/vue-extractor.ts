@@ -1,6 +1,7 @@
 import { parse, compileTemplate, SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
+import { isElementNode } from "@lingui/vue/src/common/predicates"
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {
@@ -27,7 +28,17 @@ export const vueExtractor: ExtractorType = {
         filename,
         inMap: descriptor.template.map,
         id: filename,
+
         compilerOptions: {
+          nodeTransforms: [
+            // will be called for each ast "node"
+            // we want to run our test on the 1st real node
+            (node, context) => {
+              // context.
+              console.log(node, context)
+            },
+          ],
+
           isTS:
             isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
         },

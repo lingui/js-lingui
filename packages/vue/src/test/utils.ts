@@ -1,43 +1,30 @@
-import { type TransformContext, type ElementNode } from "@vue/compiler-core"
 import { compileTemplate } from "vue/compiler-sfc"
+import { transformer } from "../compiler"
+import { parse } from "@vue/compiler-sfc"
+import { BindingTypes } from "@vue/compiler-core"
 
-import { isElementNode } from "../common/predicates"
+export function run(source: string) {
+  const code = source.trim().startsWith("<script")
+    ? source
+    : `<template>${source}</template>`
 
-//
+  const { descriptor } = parse(code, {
+    sourceMap: true,
+    filename: "App.vue",
+    ignoreEmpty: true,
+  })
 
-export function run(
-  source: string,
-  test: (node: ElementNode, context: TransformContext) => void
-) {
-  let count = 0
-  let called = false
-  const compiled = compileTemplate({
+  return compileTemplate({
     filename: "App.vue",
     id: "app",
-    source: source.startsWith("<script")
-      ? source
-      : `<template>${source}</template>`,
+    source: descriptor.template?.src!,
+    ast: descriptor.template?.ast,
+
     compilerOptions: {
-      nodeTransforms: [
-        // will be called for each ast "node"
-        // we want to run our test on the 1st real node
-        (node, context) => {
-          count++
-          // 1st is SFC root
-          // 2nd is template node
-          // 3rd is our test
-          if (count === 3) {
-            if (isElementNode(node)) {
-              test(node, context)
-              called = true
-            } else {
-              throw new Error("wrong source")
-            }
-          }
-        },
-      ],
+      bindingMetadata: {
+        Trans: BindingTypes.SETUP_MAYBE_REF,
+      },
+      nodeTransforms: [transformer],
     },
   })
-  if (!called) throw new Error("test never called, check your source")
-  return compiled
 }

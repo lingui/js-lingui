@@ -5,8 +5,7 @@ import {
   type SFCBlock,
   type SFCTemplateCompileResults,
 } from "@vue/compiler-sfc"
-
-import { createTransformer } from "./transformer"
+import { transformer } from "../compiler"
 
 //
 
@@ -44,26 +43,10 @@ export const vueExtractor: ExtractorType = {
         inMap: descriptor.template.map,
         id: filename,
         compilerOptions: {
+          comments: true,
           isTS:
             isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
-          // the magic starts here
-          nodeTransforms: [
-            createTransformer((extrated) =>
-              onMessageExtracted({
-                ...extrated,
-                origin: [
-                  filename,
-                  // node line starts from <template> tag
-                  // <template> line includes itself
-                  // so we substract 1 to avoid double count
-                  extrated.origin.line +
-                    (descriptor.template?.loc.start.line ?? 1) -
-                    1,
-                  extrated.origin.column,
-                ],
-              })
-            ),
-          ],
+          nodeTransforms: [transformer],
         },
       })
 
@@ -84,6 +67,7 @@ export const vueExtractor: ExtractorType = {
         isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
       ],
     ] satisfies [string | undefined, RawSourceMap | undefined, boolean][]
+
     await Promise.all(
       targets
         .filter<[string, RawSourceMap | undefined, boolean]>(isFirstIsString)

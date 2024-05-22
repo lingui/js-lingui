@@ -12,7 +12,7 @@ const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
 export type ParsedResult = {
   message: string
   values?: Record<string, Expression>
-  jsxElements?: Record<string, JSXElement>
+  elements?: Record<string, JSXElement>
 }
 
 export type TextToken = {
@@ -54,18 +54,18 @@ export class ICUMessageFormat {
           ...message,
           message: props.message + message.message,
           values: { ...props.values, ...message.values },
-          jsxElements: { ...props.jsxElements, ...message.jsxElements },
+          elements: { ...props.elements, ...message.elements },
         }),
         {
           message: "",
           values: {},
-          jsxElements: {},
+          elements: {},
         }
       )
   }
 
   public processToken(token: Token): ParsedResult {
-    const jsxElements: ParsedResult["jsxElements"] = {}
+    const jsxElements: ParsedResult["elements"] = {}
 
     if (token.type === "text") {
       return {
@@ -101,7 +101,7 @@ export class ICUMessageFormat {
                 const {
                   message,
                   values: childValues,
-                  jsxElements: childJsxElements,
+                  elements: childJsxElements,
                 } = this.fromTokens(value)
 
                 Object.assign(values, childValues)
@@ -116,7 +116,7 @@ export class ICUMessageFormat {
           return {
             message: `{${token.name}, ${token.format}, ${formatOptions}}`,
             values,
-            jsxElements,
+            elements: jsxElements,
           }
         default:
           return {
@@ -132,7 +132,7 @@ export class ICUMessageFormat {
         const {
           message: childMessage,
           values: childValues,
-          jsxElements: childJsxElements,
+          elements: childJsxElements,
         } = this.fromTokens(child)
 
         message += childMessage
@@ -144,7 +144,7 @@ export class ICUMessageFormat {
           ? `<${token.name}>${message}</${token.name}>`
           : `<${token.name}/>`,
         values: elementValues,
-        jsxElements,
+        elements: jsxElements,
       }
     }
 
