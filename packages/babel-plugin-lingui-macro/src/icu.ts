@@ -44,7 +44,7 @@ export type ElementToken = {
 export type Tokens = Token | Token[]
 export type Token = TextToken | ArgToken | ElementToken
 
-export default class ICUMessageFormat {
+export class ICUMessageFormat {
   public fromTokens(tokens: Tokens): ParsedResult {
     return (Array.isArray(tokens) ? tokens : [tokens])
       .map((token) => this.processToken(token))

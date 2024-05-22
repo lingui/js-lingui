@@ -1,4 +1,4 @@
-import ICUMessageFormat, { Tokens } from "./icu"
+import { ICUMessageFormat, Tokens } from "./icu"
 import {
   SourceLocation,
   ObjectProperty,

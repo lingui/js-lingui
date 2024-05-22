@@ -24,6 +24,7 @@
       "@lingui/conf": ["./packages/conf/src"],
       "@lingui/babel-plugin-lingui-macro": ["./packages/babel-plugin-lingui-macro/src/index.ts"],
       "@lingui/babel-plugin-lingui-macro/macro": ["./packages/babel-plugin-lingui-macro/src/macro.ts"],
+      "@lingui/babel-plugin-lingui-macro/ast": ["./packages/babel-plugin-lingui-macro/src/ast.ts"],
       "@lingui/macro": ["./packages/macro"],
       "@lingui/format-po": ["./packages/format-po/src/po.ts"],
       "@lingui/format-json": ["./packages/format-json/src/json.ts"],
