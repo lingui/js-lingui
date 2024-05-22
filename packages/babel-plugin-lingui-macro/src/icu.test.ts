@@ -1,4 +1,4 @@
-import ICUMessageFormat, { Token } from "./icu"
+import { ICUMessageFormat, Token } from "./icu"
 import { Identifier } from "@babel/types"
 
 describe("ICU MessageFormat", function () {

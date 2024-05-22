@@ -1,6 +1,9 @@
-import * as types from "@babel/types"
 import { type CallExpression, type Expression } from "@babel/types"
-import { MacroJs } from "./macroJs"
+import {
+  tokenizeTemplateLiteral,
+  tokenizeChoiceComponent,
+  createMacroJsContext,
+} from "./macroJsAst"
 import type { NodePath } from "@babel/traverse"
 import { transformSync } from "@babel/core"
 import { JsMacroName } from "./constants"
@@ -31,23 +34,17 @@ const parseExpression = (expression: string) => {
   return path
 }
 
-function createMacro() {
-  return new MacroJs(
-    { types },
-    {
-      i18nImportName: "i18n",
-      stripNonEssentialProps: false,
-      useLinguiImportName: "useLingui",
-    }
-  )
+function createMacroCtx() {
+  return createMacroJsContext((identifier, macro) => {
+    return identifier.name === macro
+  }, false)
 }
 
 describe("js macro", () => {
   describe("tokenizeTemplateLiteral", () => {
     it("simple message without arguments", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Message`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -57,9 +54,8 @@ describe("js macro", () => {
     })
 
     it("with custom lingui instance", () => {
-      const macro = createMacro()
       const exp = parseExpression("t(i18n)`Message`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -69,9 +65,8 @@ describe("js macro", () => {
     })
 
     it("message with named argument", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Message ${name}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -89,9 +84,8 @@ describe("js macro", () => {
     })
 
     it("message with positional argument", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Message ${obj.name}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -108,9 +102,8 @@ describe("js macro", () => {
     })
 
     it("message with plural", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Message ${plural(count, {})}`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -129,9 +122,8 @@ describe("js macro", () => {
     })
 
     it("message with unicode \\u chars is interpreted by babel", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Message \\u0020`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -141,9 +133,8 @@ describe("js macro", () => {
     })
 
     it("message with unicode \\x chars is interpreted by babel", () => {
-      const macro = createMacro()
       const exp = parseExpression("t`Bienvenue\\xA0!`")
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
           type: "text",
@@ -154,11 +145,10 @@ describe("js macro", () => {
     })
 
     it("message with double escaped literals it's stripped", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         "t`Passing \\`${argSet}\\` is not supported.`"
       )
-      const tokens = macro.tokenizeTemplateLiteral(exp)
+      const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toMatchObject([
         {
           type: "text",
@@ -183,15 +173,15 @@ describe("js macro", () => {
     })
   })
 
-  describe("tokenizeChoiceMethod", () => {
+  describe("tokenizeChoiceComponent", () => {
     it("plural", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         "plural(count, { one: '# book', other: '# books'})"
       )
-      const tokens = macro.tokenizeChoiceComponent(
-        exp as NodePath<CallExpression>,
-        JsMacroName.plural
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.plural,
+        createMacroCtx()
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -209,7 +199,6 @@ describe("js macro", () => {
     })
 
     it("plural with offset", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         `plural(count, {
           offset: 1,
@@ -218,9 +207,10 @@ describe("js macro", () => {
           other: '# books'
          })`
       )
-      const tokens = macro.tokenizeChoiceComponent(
-        exp as NodePath<CallExpression>,
-        JsMacroName.plural
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.plural,
+        createMacroCtx()
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -240,13 +230,13 @@ describe("js macro", () => {
     })
 
     it("plural with template literal", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         "plural(count, { one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
       )
-      const tokens = macro.tokenizeChoiceComponent(
-        exp as NodePath<CallExpression>,
-        JsMacroName.plural
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.plural,
+        createMacroCtx()
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -290,7 +280,6 @@ describe("js macro", () => {
     })
 
     it("plural with select", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         `plural(count, {
           one: select(gender, {
@@ -301,9 +290,10 @@ describe("js macro", () => {
           other: otherText
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(
-        exp as NodePath<CallExpression>,
-        JsMacroName.plural
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.plural,
+        createMacroCtx()
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -350,7 +340,6 @@ describe("js macro", () => {
     })
 
     it("select", () => {
-      const macro = createMacro()
       const exp = parseExpression(
         `select(gender, {
           male: "he",
@@ -358,9 +347,10 @@ describe("js macro", () => {
           other: "they"
         })`
       )
-      const tokens = macro.tokenizeChoiceComponent(
-        exp as NodePath<CallExpression>,
-        JsMacroName.select
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.select,
+        createMacroCtx()
       )
       expect(tokens).toMatchObject({
         format: "select",
