@@ -213,7 +213,12 @@ export class I18n extends EventEmitter<Events> {
     options?: MessageOptions
   ): string {
     let message = options?.message
-    if (id && !isString(id)) {
+
+    if (!id) {
+      id = ""
+    }
+
+    if (!isString(id)) {
       values = id.values || values
       message = id.message
       id = id.id
