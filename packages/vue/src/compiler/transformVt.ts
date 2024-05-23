@@ -1,8 +1,8 @@
 import {
-  DirectiveNode,
   createSimpleExpression,
   SourceLocation,
   ConstantTypes,
+  ExpressionNode,
 } from "@vue/compiler-core"
 import * as t from "@babel/types"
 import generate from "@babel/generator"
@@ -45,12 +45,12 @@ function createVueMacroContext() {
   }, false)
 }
 
-export function transformVt(vueNode: DirectiveNode) {
-  if (!(vueNode.exp && vueNode.exp.ast)) {
-    return
+export function transformVt(vueNode: ExpressionNode) {
+  if (!vueNode.ast) {
+    return vueNode
   }
 
-  const node = vueNode.exp.ast
+  const node = vueNode.ast
   const ctx = createVueMacroContext()
 
   // plural / select / selectOrdinal
@@ -67,7 +67,7 @@ export function transformVt(vueNode: DirectiveNode) {
       ctx.stripNonEssentialProps
     )
 
-    vueNode.exp = createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
+    return createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
   }
 
   //  t(...)
@@ -80,7 +80,7 @@ export function transformVt(vueNode: DirectiveNode) {
       ctx
     )
 
-    vueNode.exp = createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
+    return createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
   }
 
   // t`Hello!`
@@ -96,6 +96,8 @@ export function transformVt(vueNode: DirectiveNode) {
       ctx.stripNonEssentialProps
     )
 
-    vueNode.exp = createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
+    return createLinguiSimpleExpression(messageDescriptor, vueNode.loc!)
   }
+
+  return vueNode
 }

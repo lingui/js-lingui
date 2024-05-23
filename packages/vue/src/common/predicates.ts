@@ -9,7 +9,7 @@ import {
   NodeTypes,
 } from "@vue/compiler-core"
 
-import { type Node, TAGS } from "./types"
+import { TAGS } from "./types"
 
 //
 export function isBaseNode(node: unknown): node is BaseNode {
@@ -44,8 +44,6 @@ export function isDirectiveNode(
   return node?.type === NodeTypes.DIRECTIVE
 }
 
-export function isTrans(node: Node): boolean {
-  return Boolean(
-    isElementNode(node) && node.tag === TAGS.Trans && node.children?.length
-  )
+export function isTrans(node: ElementNode): boolean {
+  return Boolean(node.tag === TAGS.Trans && node.children?.length)
 }

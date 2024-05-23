@@ -266,18 +266,17 @@ describe("transformTrans", () => {
 })
 
 describe("transform vt", () => {
-  it("should transform t macro", () => {
+  it("should transform t macro in props", () => {
     const { code } = run('<img :title="vt`Hello ${name}`" src="" />')
 
     expect(code).toMatchInlineSnapshot(`
-      import { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+      import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
 
       const _hoisted_1 = ["title"]
 
-      export function render(_ctx, _cache) {
-        return (_openBlock(), _createElementBlock("template", null, [
-          _createElementVNode("img", {
-            title: _ctx.vt._(
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createElementBlock("img", {
+          title: _ctx.vt._(
       /*i18n*/
       {
         id: "OVaF9k",
@@ -286,9 +285,28 @@ describe("transform vt", () => {
           name: _ctx.name
         }
       }),
-            src: ""
-          }, null, 8 /* PROPS */, _hoisted_1)
-        ]))
+          src: ""
+        }, null, 8 /* PROPS */, _hoisted_1))
+      }
+    `)
+  })
+
+  it("should transform t macro in interpolation", () => {
+    const { code } = run("<div>{{ vt`Hello ${name}` }}</div>")
+
+    expect(code).toMatchInlineSnapshot(`
+      import { toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createElementBlock("div", null, _toDisplayString(_ctx.vt._(
+      /*i18n*/
+      {
+        id: "OVaF9k",
+        message: "Hello {name}",
+        values: {
+          name: _ctx.name
+        }
+      })), 1 /* TEXT */))
       }
     `)
   })
@@ -299,23 +317,21 @@ describe("transform vt", () => {
     )
 
     expect(code).toMatchInlineSnapshot(`
-      import { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+      import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
 
       const _hoisted_1 = ["title"]
 
-      export function render(_ctx, _cache) {
-        return (_openBlock(), _createElementBlock("template", null, [
-          _createElementVNode("img", {
-            title: _ctx.vt._(
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createElementBlock("img", {
+          title: _ctx.vt._(
       /*i18n*/
       {
         id: "16G7ph",
         message: "Hello",
         context: \`i am a context\`
       }),
-            src: ""
-          }, null, 8 /* PROPS */, _hoisted_1)
-        ]))
+          src: ""
+        }, null, 8 /* PROPS */, _hoisted_1))
       }
     `)
   })
@@ -331,14 +347,13 @@ describe("transform vt", () => {
     )
 
     expect(code).toMatchInlineSnapshot(`
-      import { createElementVNode as _createElementVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+      import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
 
       const _hoisted_1 = ["title"]
 
-      export function render(_ctx, _cache) {
-        return (_openBlock(), _createElementBlock("template", null, [
-          _createElementVNode("img", {
-            title: _ctx.vt._(
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createElementBlock("img", {
+          title: _ctx.vt._(
       /*i18n*/
       {
         id: "CF5t+7",
@@ -347,9 +362,8 @@ describe("transform vt", () => {
           0: _ctx.users.length
         }
       }),
-            src: ""
-          }, null, 8 /* PROPS */, _hoisted_1)
-        ]))
+          src: ""
+        }, null, 8 /* PROPS */, _hoisted_1))
       }
     `)
   })

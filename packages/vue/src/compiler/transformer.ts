@@ -1,6 +1,11 @@
 import { type NodeTransform, NodeTypes } from "@vue/compiler-core"
 
-import { isTrans, isElementNode, isDirectiveNode } from "../common/predicates"
+import {
+  isTrans,
+  isElementNode,
+  isDirectiveNode,
+  isInterpolationNode,
+} from "../common/predicates"
 import { transformVt } from "./transformVt"
 import { transformTrans } from "./transformTrans"
 
@@ -25,15 +30,19 @@ export const transformer: NodeTransform = (node, context) => {
  * Actual transformer expanding macro calls.
  */
 const templateTransformer: NodeTransform = (node, context) => {
-  if (!isElementNode(node)) return
+  if (isElementNode(node)) {
+    if (isTrans(node)) {
+      transformTrans(node, context)
+    }
 
-  if (isTrans(node)) {
-    transformTrans(node, context)
-  } else {
     for (const prop of node.props) {
-      if (isDirectiveNode(prop)) {
-        transformVt(prop)
+      if (isDirectiveNode(prop) && prop.exp) {
+        prop.exp = transformVt(prop.exp)
       }
     }
+  }
+
+  if (isInterpolationNode(node)) {
+    node.content = transformVt(node.content)
   }
 }
