@@ -7,7 +7,8 @@ import {
   isInterpolationNode,
 } from "../common/predicates"
 import { transformVt } from "./transformVt"
-import { transformTrans } from "./transformTrans"
+import { transformTrans, transformChoiceElement } from "./transformTrans"
+import { isChoiceElement } from "../common/Trans"
 
 /**
  * Here is an entry point transformer.
@@ -31,6 +32,10 @@ export const transformer: NodeTransform = (node, context) => {
  */
 const templateTransformer: NodeTransform = (node, context) => {
   if (isElementNode(node)) {
+    if (isChoiceElement(node)) {
+      transformChoiceElement(node, context)
+    }
+
     if (isTrans(node)) {
       transformTrans(node, context)
     }

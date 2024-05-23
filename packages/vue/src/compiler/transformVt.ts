@@ -15,6 +15,7 @@ import {
   isChoiceMethod,
   tokenizeChoiceComponent,
   processDescriptor,
+  MacroJsContext,
 } from "@lingui/babel-plugin-lingui-macro/ast"
 
 const RUNTIME_VT_SYMBOL = "vt._"
@@ -45,13 +46,32 @@ function createVueMacroContext() {
   }, false)
 }
 
-export function transformVt(vueNode: ExpressionNode) {
+export function tokenizeVt(node: t.Node, ctx: MacroJsContext) {
+  // plural / select / selectOrdinal
+  if (t.isCallExpression(node) && isChoiceMethod(node, ctx)) {
+    return [tokenizeChoiceComponent(node, isChoiceMethod(node, ctx)!, ctx)]
+  }
+
+  // t`Hello!`
+  if (
+    t.isTaggedTemplateExpression(node) &&
+    isLinguiIdentifier(node.tag, JsMacroName.t, ctx)
+  ) {
+    return tokenizeTemplateLiteral(node, ctx)
+  }
+
+  return
+}
+
+export function transformVt(
+  vueNode: ExpressionNode,
+  ctx = createVueMacroContext()
+) {
   if (!vueNode.ast) {
     return vueNode
   }
 
   const node = vueNode.ast
-  const ctx = createVueMacroContext()
 
   // plural / select / selectOrdinal
   if (t.isCallExpression(node) && isChoiceMethod(node, ctx)) {

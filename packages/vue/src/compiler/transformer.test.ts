@@ -240,6 +240,114 @@ describe("transformTrans", () => {
     `)
   })
 
+  it("should support Plural", () => {
+    const { code } = run(
+      `
+      <Plural :value="count" one="# book" other="# books"/>
+    `
+    )
+
+    expect(code).toMatchInlineSnapshot(`
+      import { resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        const _component_Plural = _resolveComponent("Plural")
+
+        return (_openBlock(), _createBlock(_component_Plural, _normalizeProps(_guardReactiveProps(/*i18n*/
+      {
+        id: "esnaQO",
+        message: "{count, plural, one {# book} other {# books}}",
+        values: {
+          count: _ctx.count
+        }
+      })), null, 16 /* FULL_PROPS */))
+      }
+    `)
+  })
+
+  it("should support Plural with complex binding", () => {
+    const { code } = run(
+      `
+      <Plural :value="books.count" one="# book" other="# books"/>
+    `
+    )
+
+    expect(code).toMatchInlineSnapshot(`
+      import { resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        const _component_Plural = _resolveComponent("Plural")
+
+        return (_openBlock(), _createBlock(_component_Plural, _normalizeProps(_guardReactiveProps(/*i18n*/
+      {
+        id: "NzciCK",
+        message: "{0, plural, one {# book} other {# books}}",
+        values: {
+          0: _ctx.books.count
+        }
+      })), null, 16 /* FULL_PROPS */))
+      }
+    `)
+  })
+
+  // it.todo("should support Plural with interpolation in branches", () => {
+  //   const { code } = run(
+  //     `
+  //     <Plural :value="books.count" one="# book" other="# books"/>
+  //   `
+  //   )
+  //
+  //   expect(code).toMatchInlineSnapshot()
+  // })
+
+  it("should support Plural inside of Trans", () => {
+    const { code } = run(
+      `<Trans>
+       You have <Plural :value="count" one="# book" other="# books"/>
+      </Trans>`
+    )
+
+    expect(code).toMatchInlineSnapshot(`
+      import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/*i18n*/
+      {
+        id: "8GTfFt",
+        message: " You have {count, plural, one {# book} other {# books}}",
+        values: {
+          count: _ctx.count
+        }
+      })), null, 16 /* FULL_PROPS */))
+      }
+    `)
+  })
+
+  it("should support vplural inside of Trans", () => {
+    const { code } = run(
+      `
+<Trans>
+ You have {{plural(count, {one: "# book", other: "# books"})}}
+</Trans>
+    `
+    )
+
+    expect(code).toMatchInlineSnapshot(`
+      import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+      export function render(_ctx, _cache, $props, $setup, $data, $options) {
+        return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/*i18n*/
+      {
+        id: "8GTfFt",
+        message: " You have {count, plural, one {# book} other {# books}}",
+        values: {
+          count: _ctx.count
+        }
+      })), null, 16 /* FULL_PROPS */))
+      }
+    `)
+  })
+
   it("should handle multiple complex interpolation", () => {
     const { code } = run(
       `

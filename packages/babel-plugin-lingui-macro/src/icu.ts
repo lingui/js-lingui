@@ -1,9 +1,4 @@
-import {
-  Expression,
-  isJSXEmptyExpression,
-  JSXElement,
-  Node,
-} from "@babel/types"
+import { Expression, isJSXEmptyExpression, Node } from "@babel/types"
 
 const metaOptions = ["id", "comment", "props"]
 
@@ -12,7 +7,7 @@ const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
 export type ParsedResult = {
   message: string
   values?: Record<string, Expression>
-  elements?: Record<string, JSXElement>
+  elements?: Record<string, any> // JSXElement or ElementNode in Vue
 }
 
 export type TextToken = {
@@ -37,7 +32,7 @@ export type ArgToken = {
 }
 export type ElementToken = {
   type: "element"
-  value: JSXElement
+  value: any // JSXElement or ElementNode in Vue
   name?: string | number
   children?: Token[]
 }
