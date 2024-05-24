@@ -66,7 +66,7 @@ function tokenizeText(value: string): TextToken {
  *
  * ```
  * <Trans>Hello <strong>world!</strong></Trans>
- *              |---------------------|
+ *              ^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 function tokenizeElementNode(
@@ -104,20 +104,20 @@ function tokenizeChildren(
   ctx: MacroTransVueContext
 ): Token[] {
   // <Trans>Hello <strong>Username</strong></Trans>
-  //       |-----|
+  //        ^^^^^^
   if (isTextNode(node)) {
     return [tokenizeText(node.content)]
   }
 
   // <Trans>Hello <strong>Username</strong></Trans>
-  //             |------------------------|
+  //              ^^^^^^^^^^^^^^^^^^^^^^^^^
   // goes into recursion for inner Element Nodes
   if (isElementNode(node)) {
     return [tokenizeElementNode(node, ctx)]
   }
 
   // <Trans>Hello {{ username }}</Trans>
-  //             |-------------|
+  //              ^^^^^^^^^^^^^^
   if (isInterpolationNode(node) && isSimpleExpressionNode(node.content)) {
     return tokenizeSimpleExpressionNode(node.content, ctx)
   }
@@ -130,7 +130,7 @@ function tokenizeChildren(
  *
  * ```
  * <Trans>Hello {{ username }}</Trans>
- *              |------------|
+ *              ^^^^^^^^^^^^^
  * ```
  *
  * Supported expressions:
