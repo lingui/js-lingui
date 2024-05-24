@@ -46,12 +46,22 @@ function createVueMacroContext() {
   }, false)
 }
 
-export function tokenizeVt(node: t.Node, ctx: MacroJsContext) {
+export function tokenizeAsChoiceComponentOrUndefined(
+  node: t.Node,
+  ctx: MacroJsContext
+) {
   // plural / select / selectOrdinal
   if (t.isCallExpression(node) && isChoiceMethod(node, ctx)) {
     return [tokenizeChoiceComponent(node, isChoiceMethod(node, ctx)!, ctx)]
   }
 
+  return
+}
+
+export function tokenizeAsLinguiTemplateLiteralOrUndefined(
+  node: t.Node,
+  ctx: MacroJsContext
+) {
   // t`Hello!`
   if (
     t.isTaggedTemplateExpression(node) &&
@@ -59,7 +69,6 @@ export function tokenizeVt(node: t.Node, ctx: MacroJsContext) {
   ) {
     return tokenizeTemplateLiteral(node, ctx)
   }
-
   return
 }
 
@@ -74,15 +83,11 @@ export function transformVt(
   const node = vueNode.ast
 
   // plural / select / selectOrdinal
-  if (t.isCallExpression(node) && isChoiceMethod(node, ctx)) {
-    const tokens = tokenizeChoiceComponent(
-      node,
-      isChoiceMethod(node, ctx)!,
-      ctx
-    )
+  const choiceCmpTokens = tokenizeAsChoiceComponentOrUndefined(node, ctx)
 
+  if (choiceCmpTokens) {
     const messageDescriptor = createMessageDescriptorFromTokens(
-      tokens,
+      choiceCmpTokens,
       node.loc!,
       ctx.stripNonEssentialProps
     )
@@ -104,14 +109,10 @@ export function transformVt(
   }
 
   // t`Hello!`
-  if (
-    t.isTaggedTemplateExpression(node) &&
-    isLinguiIdentifier(node.tag, JsMacroName.t, ctx)
-  ) {
-    const tokens = tokenizeTemplateLiteral(node, ctx)
-
+  const tplLiteralTokens = tokenizeAsLinguiTemplateLiteralOrUndefined(node, ctx)
+  if (tplLiteralTokens) {
     const messageDescriptor = createMessageDescriptorFromTokens(
-      tokens,
+      tplLiteralTokens,
       node.loc!,
       ctx.stripNonEssentialProps
     )

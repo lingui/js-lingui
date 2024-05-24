@@ -103,6 +103,10 @@ export function tokenizeNode(
     return tokenizeTemplateLiteral(node as Expression, ctx)
   }
 
+  if (t.isCallExpression(node) && isArgDecorator(node, ctx)) {
+    return [tokenizeArg(node, ctx)]
+  }
+
   const choiceMethod = isChoiceMethod(node, ctx)
   // plural, select and selectOrdinal
   if (choiceMethod) {
@@ -227,6 +231,20 @@ export function tokenizeExpression(
   }
 }
 
+export function tokenizeArg(
+  node: CallExpression,
+  ctx: MacroJsContext
+): ArgToken {
+  const arg = node.arguments[0] as Expression
+
+  return {
+    type: "arg",
+    name: expressionToArgument(arg, ctx),
+    raw: true,
+    value: arg,
+  }
+}
+
 export function expressionToArgument(
   exp: Expression,
   ctx: MacroJsContext
@@ -238,6 +256,13 @@ export function expressionToArgument(
   } else {
     return String(ctx.getExpressionIndex())
   }
+}
+
+export function isArgDecorator(node: Node, ctx: MacroJsContext): boolean {
+  return (
+    t.isCallExpression(node) &&
+    isLinguiIdentifier(node.callee, JsMacroName.arg, ctx)
+  )
 }
 
 export function isDefineMessage(node: Node, ctx: MacroJsContext): boolean {

@@ -1,10 +1,6 @@
 import {
-  createSimpleExpression,
   type ElementNode,
   findProp,
-  type TemplateNode,
-  NodeTypes,
-  ElementTypes,
   TemplateChildNode,
   SimpleExpressionNode,
 } from "@vue/compiler-core"
@@ -15,7 +11,6 @@ import {
   isInterpolationNode,
   isSimpleExpressionNode,
   isTextNode,
-  isDirectiveNode,
 } from "./predicates"
 import {
   TextToken,
@@ -23,16 +18,15 @@ import {
   JsMacroName,
   ElementToken,
   ArgToken,
+  isArgDecorator,
+  tokenizeArg,
+  MacroJsContext,
 } from "@lingui/babel-plugin-lingui-macro/ast"
 import * as t from "@babel/types"
-import { tokenizeVt } from "../compiler/transformVt"
-
-export enum ElementMacroName {
-  Trans = "Trans",
-  Plural = "Plural",
-  Select = "Select",
-  SelectOrdinal = "SelectOrdinal",
-}
+import {
+  tokenizeAsChoiceComponentOrUndefined,
+  tokenizeAsLinguiTemplateLiteralOrUndefined,
+} from "../compiler/transformVt"
 
 export const makeCounter =
   (index = 0) =>
@@ -59,68 +53,6 @@ export function createMacroTransVueContext(
   }
 }
 
-function wrapInTemplateSlotNode(
-  index: number,
-  child: ElementNode
-): TemplateNode {
-  const loc = child.loc
-  return {
-    type: NodeTypes.ELEMENT,
-    ns: 0,
-    tag: "template",
-    tagType: ElementTypes.TEMPLATE,
-    props: [
-      {
-        type: NodeTypes.DIRECTIVE,
-        name: "slot",
-        exp: createSimpleExpression("{children}", false, loc, 0),
-        arg: createSimpleExpression(String(index), false, loc, 3),
-        modifiers: [],
-        loc,
-      },
-    ],
-    isSelfClosing: false,
-    children: [child],
-    codegenNode: undefined,
-    loc,
-  }
-}
-
-export function createInnerSlotNode(sourceChild: ElementNode): ElementNode {
-  if (sourceChild.isSelfClosing) return sourceChild
-  const loc = sourceChild.loc
-  // no need for a deep copy
-  return {
-    ...sourceChild,
-    children: [
-      {
-        type: NodeTypes.ELEMENT,
-        ns: 0,
-        tag: "component",
-        tagType: ElementTypes.COMPONENT,
-        props: [
-          {
-            type: NodeTypes.DIRECTIVE,
-            name: "bind",
-            exp: createSimpleExpression("children", false, loc, 0),
-            arg: createSimpleExpression("is", true, loc, 3),
-            modifiers: [],
-            loc,
-          },
-        ],
-        isSelfClosing: false,
-        children: [],
-        loc,
-        codegenNode: undefined,
-      },
-    ],
-  }
-}
-
-export function getTemplateSlot(index: number, node: ElementNode) {
-  return wrapInTemplateSlotNode(index, createInnerSlotNode(node))
-}
-
 function tokenizeText(value: string): TextToken {
   return {
     type: "text",
@@ -128,14 +60,16 @@ function tokenizeText(value: string): TextToken {
   }
 }
 
-const tokenizeElementNode = (node: ElementNode, ctx: MacroTransVueContext) => {
-  if (isChoiceElement(node)) {
-    return tokenizeChoiceElement(node, ctx)
-  }
-  return tokenizeNonLinguiElement(node, ctx)
-}
-
-function tokenizeNonLinguiElement(
+/**
+ * Receive a Vue element which is none of the Lingui macro, and returns Tokens for
+ * element itself and all of it's children
+ *
+ * ```
+ * <Trans>Hello <strong>world!</strong></Trans>
+ *              |---------------------|
+ * ```
+ */
+function tokenizeElementNode(
   node: ElementNode,
   ctx: MacroTransVueContext
 ): ElementToken {
@@ -146,136 +80,111 @@ function tokenizeNonLinguiElement(
   return {
     type: "element",
     name,
-    value: node as any,
+    value: node,
     children: node.children
       .flatMap((child) => tokenizeChildren(child, ctx))
       .filter(Boolean) as Token[],
   }
 }
 
+/**
+ * Take `<Trans>Hello <strong>{{name}}</strong></Trans>` and returns Tokens
+ */
 export function tokenizeTrans(node: ElementNode, ctx: MacroTransVueContext) {
   return node.children
     .flatMap((child) => tokenizeChildren(child, ctx))
     .filter(Boolean) as Token[]
 }
 
+/**
+ * Process children of Elements and returns Tokens
+ */
 function tokenizeChildren(
   node: TemplateChildNode,
   ctx: MacroTransVueContext
 ): Token[] {
+  // <Trans>Hello <strong>Username</strong></Trans>
+  //       |-----|
   if (isTextNode(node)) {
     return [tokenizeText(node.content)]
   }
 
+  // <Trans>Hello <strong>Username</strong></Trans>
+  //             |------------------------|
+  // goes into recursion for inner Element Nodes
   if (isElementNode(node)) {
     return [tokenizeElementNode(node, ctx)]
   }
 
+  // <Trans>Hello {{ username }}</Trans>
+  //             |-------------|
   if (isInterpolationNode(node) && isSimpleExpressionNode(node.content)) {
-    if (node.content.ast) {
-      const vtTokens = tokenizeVt(node.content.ast, ctx)
-
-      if (vtTokens) {
-        return vtTokens
-      }
-    }
-
-    return [expressionToArgument(node.content, ctx)]
+    return tokenizeSimpleExpressionNode(node.content, ctx)
   }
 
   return []
 }
 
-function expressionToArgument(
+/**
+ * Take an expression from Vue interpolation and returns Tokens
+ *
+ * ```
+ * <Trans>Hello {{ username }}</Trans>
+ *              |------------|
+ * ```
+ *
+ * Supported expressions:
+ *
+ * - {{ username }} -> {username}
+ * - {{ user.name }} -> {0}
+ * - {{ plural(...) }} | {{ select(...) }} -> {count, plural, one {...} other {...}}
+ * - {{ arg(username) }} -> username
+ */
+function tokenizeSimpleExpressionNode(
   node: SimpleExpressionNode,
   ctx: MacroTransVueContext
-) {
-  // simple interpolation with identifier only
-  if (!node.ast) {
-    return {
+): Token[] {
+  if (node.ast) {
+    const vtTokens = tokenizeVt(node.ast, ctx)
+
+    if (vtTokens) {
+      return vtTokens
+    }
+
+    if (t.isCallExpression(node.ast) && isArgDecorator(node.ast, ctx)) {
+      return [tokenizeArg(node.ast, ctx)]
+    }
+
+    return [
+      {
+        type: "arg",
+        name: String(ctx.getExpressionIndex()),
+        value: node.ast as t.Expression,
+      } satisfies ArgToken,
+    ]
+  }
+
+  // For simple interpolation with identifier
+  // only Vue doesn't populate an `.ast`
+  return [
+    {
       type: "arg",
       name: node.content,
       value: t.identifier(node.content),
-    } as ArgToken
-  }
-
-  return {
-    type: "arg",
-    name: String(ctx.getExpressionIndex()),
-    value: node.ast,
-  } as ArgToken
+    } satisfies ArgToken,
+  ]
 }
 
-const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
-const jsx2icuExactChoice = (value: string) =>
-  value.replace(/_(\d+)/, "=$1").replace(/_(\w+)/, "$1")
+function tokenizeVt(node: t.Node, ctx: MacroJsContext) {
+  for (const fn of [
+    tokenizeAsChoiceComponentOrUndefined,
+    tokenizeAsLinguiTemplateLiteralOrUndefined,
+  ]) {
+    const tokens = fn(node, ctx)
 
-export function tokenizeChoiceElement(
-  node: ElementNode,
-  ctx: MacroTransVueContext
-): Token {
-  const format = getChoiceElementType(node)!.toLowerCase()
-
-  const token: ArgToken = {
-    type: "arg",
-    format,
-    name: null!,
-    value: undefined!,
-    options: {
-      offset: undefined!,
-    },
-  }
-
-  const valueProp = findProp(node, "value", undefined, false)
-
-  if (isDirectiveNode(valueProp) && isSimpleExpressionNode(valueProp.exp)) {
-    const { name, value } = expressionToArgument(valueProp.exp, ctx)
-    token.name = name
-    token.value = value
-  } else {
-    // todo: rise an error, incorrect usage of Trans
-  }
-
-  for (const prop of node.props) {
-    let option: ArgToken["options"][number]
-
-    if (isAttributeNode(prop)) {
-      option = prop.value!.content
-    } else {
-      // todo DirectiveNode
-      // todo rise an error if a binding used
-      // if (prop.exp?.ast) {
-      //
-      // } else if (isSimpleExpressionNode(prop.exp)) {
-      //   option = t.identifier(prop.exp.content)
-      // }
+    if (tokens) {
+      return tokens
     }
-
-    if (pluralRuleRe.test(prop.name)) {
-      token.options![jsx2icuExactChoice(prop.name)] = option
-    } else {
-      token.options![prop.name] = option
-    }
-  }
-
-  return token
-}
-
-export function isChoiceElement(node: ElementNode): boolean {
-  return Boolean(getChoiceElementType(node))
-}
-
-export function getChoiceElementType(
-  node: ElementNode
-): ElementMacroName | undefined {
-  if (node.tag === ElementMacroName.Plural) {
-    return ElementMacroName.Plural
-  }
-  if (node.tag === ElementMacroName.Select) {
-    return ElementMacroName.Select
-  }
-  if (node.tag === ElementMacroName.SelectOrdinal) {
-    return ElementMacroName.SelectOrdinal
   }
 
   return

@@ -13,5 +13,7 @@ export {
   tokenizeNode,
   processDescriptor,
   createMacroJsContext,
-  MacroJsContext,
+  type MacroJsContext,
+  tokenizeArg,
+  isArgDecorator,
 } from "./macroJsAst"

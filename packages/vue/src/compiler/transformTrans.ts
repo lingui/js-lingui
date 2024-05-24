@@ -6,13 +6,12 @@ import {
   ConstantTypes,
   ElementTypes,
   SourceLocation,
+  type TemplateNode,
 } from "@vue/compiler-core"
 import {
   createMacroTransVueContext,
   tokenizeTrans,
-  getTemplateSlot,
   getTextProp,
-  tokenizeChoiceElement,
 } from "../common/Trans"
 import {
   ICUMessageFormat,
@@ -21,6 +20,64 @@ import {
 } from "@lingui/babel-plugin-lingui-macro/ast"
 import generate from "@babel/generator"
 import { ObjectExpression } from "@babel/types"
+
+function wrapInTemplateSlotNode(
+  index: number,
+  child: ElementNode
+): TemplateNode {
+  const loc = child.loc
+  return {
+    type: NodeTypes.ELEMENT,
+    ns: 0,
+    tag: "template",
+    tagType: ElementTypes.TEMPLATE,
+    props: [
+      {
+        type: NodeTypes.DIRECTIVE,
+        name: "slot",
+        exp: createSimpleExpression("{children}", false, loc, 0),
+        arg: createSimpleExpression(String(index), false, loc, 3),
+        modifiers: [],
+        loc,
+      },
+    ],
+    isSelfClosing: false,
+    children: [child],
+    codegenNode: undefined,
+    loc,
+  }
+}
+
+export function createInnerSlotNode(sourceChild: ElementNode): ElementNode {
+  if (sourceChild.isSelfClosing) return sourceChild
+  const loc = sourceChild.loc
+  // no need for a deep copy
+  return {
+    ...sourceChild,
+    children: [
+      {
+        type: NodeTypes.ELEMENT,
+        ns: 0,
+        tag: "component",
+        tagType: ElementTypes.COMPONENT,
+        props: [
+          {
+            type: NodeTypes.DIRECTIVE,
+            name: "bind",
+            exp: createSimpleExpression("children", false, loc, 0),
+            arg: createSimpleExpression("is", true, loc, 3),
+            modifiers: [],
+            loc,
+          },
+        ],
+        isSelfClosing: false,
+        children: [],
+        loc,
+        codegenNode: undefined,
+      },
+    ],
+  }
+}
 
 function transformElement(
   node: ElementNode,
@@ -50,32 +107,16 @@ function transformElement(
 
   if (elements) {
     node.children = Object.keys(elements).map((key) => {
-      return getTemplateSlot(Number(key), elements[key]! as any)
+      return wrapInTemplateSlotNode(
+        Number(key),
+        createInnerSlotNode(elements[key]! as any)
+      )
     })
   } else {
     node.children = []
   }
 
   node.tagType = ElementTypes.COMPONENT
-}
-
-export function transformChoiceElement(
-  node: ElementNode,
-  transformContext: TransformContext
-) {
-  const loc = node.loc
-
-  const tokens = tokenizeChoiceElement(
-    node,
-    createMacroTransVueContext(() => true, false)
-  )
-
-  const messageFormat = new ICUMessageFormat()
-  const { message, values, elements } = messageFormat.fromTokens(tokens)
-
-  const descriptor = createMessageDescriptor({ message, values }, loc, false)
-
-  transformElement(node, descriptor, loc, elements)
 }
 
 export function transformTrans(

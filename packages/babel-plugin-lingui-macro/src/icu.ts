@@ -14,11 +14,13 @@ export type TextToken = {
   type: "text"
   value: string
 }
+
 export type ArgToken = {
   type: "arg"
   value: Expression
   name?: string
 
+  raw?: boolean
   /**
    * plural
    * select
@@ -30,6 +32,7 @@ export type ArgToken = {
     [icuChoice: string]: string | Tokens
   }
 }
+
 export type ElementToken = {
   type: "element"
   value: any // JSXElement or ElementNode in Vue
@@ -115,7 +118,7 @@ export class ICUMessageFormat {
           }
         default:
           return {
-            message: `{${token.name}}`,
+            message: token.raw ? `${token.name}` : `{${token.name}}`,
             values,
           }
       }
