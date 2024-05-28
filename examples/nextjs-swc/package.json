@@ -8,7 +8,8 @@
     "build": "yarn lingui:extract && next build",
     "start": "next start",
     "lingui:extract": "lingui extract --clean",
-    "test": "yarn build"
+    "test": "yarn build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@lingui/core": "^4.11.0",

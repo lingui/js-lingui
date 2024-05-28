@@ -1,28 +1,14 @@
-import { t, Trans } from '@lingui/macro'
-import { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import { AboutText } from '../components/AboutText'
-import Developers from '../components/Developers'
-import { Switcher } from '../components/Switcher'
-import styles from '../styles/Index.module.css'
-import { loadCatalog } from '../utils'
+import React from 'react'
 import { useLingui } from '@lingui/react'
+import Head from 'next/head'
+import { t, Trans } from '@lingui/macro'
+import { Switcher } from './Switcher'
+import { AboutText } from './AboutText'
+import Developers from './Developers'
+import styles from '../styles/Index.module.css'
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const translation = await loadCatalog(ctx.locale!)
-  return {
-    props: {
-      translation
-    }
-  }
-}
-
-const Index: NextPage = () => {
-  /**
-   * This hook is needed to subscribe your
-   * component for changes if you use t`` macro
-   */
-  useLingui()
+export const HomePage = () => {
+  const { i18n } = useLingui()
 
   return (
     <div className={styles.container}>
@@ -32,7 +18,7 @@ const Index: NextPage = () => {
          component tree and React Context is not being passed down to the components placed in the <Head>.
          That means we cannot use the <Trans> component here and instead have to use `t` macro.
         */}
-        <title>{t`Translation Demo`}</title>
+        <title>{t(i18n)`Translation Demo`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -51,5 +37,3 @@ const Index: NextPage = () => {
     </div>
   )
 }
-
-export default Index
