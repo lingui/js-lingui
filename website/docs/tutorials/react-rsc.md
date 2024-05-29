@@ -38,7 +38,7 @@ module.exports = {
 With Lingui, the experience of localizing React is the same in client and server components: `Trans` and `useLingui` can be used identically in both worlds, even though internally there are two implementations.
 
 :::tip Under the hood
-Translation strings, one way or another, are obtained from an I18n object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
+Translation strings, one way or another, are obtained from an [I18n](/docs/ref/core.md) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
 :::
 
 To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js will pass to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
@@ -170,7 +170,7 @@ Next.js can use [static rendering](https://nextjs.org/docs/app/building-your-app
 
 To ensure static rendering takes into account the supported locales, implement [generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params) which will build the content for all locales.
 
-It's important that you do not create any locale-dependent strings at a place in the app where locale may not be initialized correctly at build time. This could result in the content being generated only for one locale, and for this reason we do not recommend using global i18n object in such scenarios. For example:
+It's important that you do not create any locale-dependent strings at a place in the app where locale may not be initialized correctly at build time. This could result in the content being generated only for one locale, and for this reason we do not recommend using the global i18n object in such scenarios. For example:
 
 ```tsx
 import { i18n } from "@lingui/core";
