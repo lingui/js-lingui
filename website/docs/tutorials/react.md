@@ -175,7 +175,7 @@ We need to create the `lingui.config.js` file:
 
 ```js title="lingui.config.js"
 /** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
+const config = {
   locales: ["cs", "en"],
   catalogs: [
     {
@@ -183,7 +183,10 @@ module.exports = {
       include: ["src"],
     },
   ],
+  compileNamespace: "es",
 };
+
+export default config;
 ```
 
 After adding the configuration file, let's run [`extract`](/docs/ref/cli.md#extract) command again:
