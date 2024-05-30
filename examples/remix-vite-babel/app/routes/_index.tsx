@@ -1,13 +1,19 @@
 import { t, Trans } from "@lingui/macro";
-import type { MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
 import { LocaleSelector } from "~/modules/lingui/lingui";
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: t`New Remix App` },
+    { title: data?.title ?? t`An Unexpected Error Occured` },
     { name: "description", content: t`Welcome to Remix!` },
   ];
 };
+
+export function loader() {
+  return json({
+    title: t`New Remix App`,
+  })
+}
 
 export default function Index() {
   return (

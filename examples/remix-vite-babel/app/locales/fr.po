@@ -13,11 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: app/routes/_index.tsx:23
+#: app/routes/_index.tsx:29
 msgid "15m Quickstart Blog Tutorial"
 msgstr "Tutoriel de démarrage rapide de 15 minutes pour un blog"
 
-#: app/routes/_index.tsx:32
+#: app/routes/_index.tsx:7
+msgid "An Unexpected Error Occured"
+msgstr "Une erreur inattendue s’est produite."
+
+#: app/routes/_index.tsx:38
 msgid "Deep Dive Jokes App Tutorial"
 msgstr "Tutoriel de l’application Deep Dive Jokes"
 
@@ -29,15 +33,15 @@ msgstr "Anglais"
 msgid "French"
 msgstr "Français"
 
-#: app/routes/_index.tsx:7
+#: app/routes/_index.tsx:14
 msgid "New Remix App"
 msgstr "Nouvelle App Remix"
 
-#: app/routes/_index.tsx:37
+#: app/routes/_index.tsx:43
 msgid "Remix Docs"
 msgstr "Documentation Remix"
 
-#: app/routes/_index.tsx:15
+#: app/routes/_index.tsx:21
 msgid "Welcome to Remix"
 msgstr "Bienvenue sur Remix"
 
