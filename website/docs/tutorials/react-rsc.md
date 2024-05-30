@@ -150,7 +150,7 @@ This means you need to repeat the `setI18n` in every page and layout. Luckily, y
 
 Most likely, your users will not need to change the language of the application because it will render in their preferred language (obtained from the `accept-language` header in the [middleware](#)), or with a fallback.
 
-To change language, redirect users to a page with the new locale in the url. We do not recommend [dynamic](/guides/dynamic-loading-catalogs.md)switching because server-rendered locale-dependent content would become stale.
+To change language, redirect users to a page with the new locale in the url. We do not recommend [dynamic](/guides/dynamic-loading-catalogs.md) switching because server-rendered locale-dependent content would become stale.
 
 ### Static Rendering Pitfall
 
