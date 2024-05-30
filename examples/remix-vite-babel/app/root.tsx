@@ -7,7 +7,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { linguiServer, localeCookie } from "./modules/lingui/lingui.server";
-import { useLocale } from "./modules/lingui/lingui";
+import { loadCatalog, useLocale } from "./modules/lingui/lingui";
+import { useEffect } from "react";
+import { i18n } from "@lingui/core";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -39,6 +41,12 @@ export type RootLoaderType = typeof loader;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
+
+  useEffect(() => {
+    if (i18n.locale !== locale) {
+      loadCatalog(locale)
+    }
+  }, [locale])
 
   return (
     <html lang={locale ?? 'en'}>
