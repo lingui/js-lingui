@@ -118,6 +118,7 @@ In fact, if you swapped the html tags for their more universal alternatives, thi
 
 ```tsx title="app/[lang]/components/SomeComponent.tsx"
 import { Trans, t } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export function SomeComponent() {
   const { i18n } = useLingui();
@@ -134,20 +135,7 @@ export function SomeComponent() {
 
 As you might recall, hooks are not supported in RSC, so you might be surprised that this works. Under RSC, `useLingui` is actually not a hook but a simple function call which reads from the React `cache` mentioned above.
 
-Here's how you could implement server-side `useLingui` yourself using `getI18n`, which is another way to obtain the I18n instance on the server:
-
-```tsx title="useLinguiForRSC.ts"
-import { getI18n } from "@lingui/react/server";
-
-export function useLingui() {
-  const ctx = getI18n();
-  if (!ctx) {
-    // throw an informative error
-  }
-
-  return ctx;
-}
-```
+The [RSC implementation](https://github.com/lingui/js-lingui/blob/ec49d0cc53dbc4f9e0f92f0edcdf59f3e5c1de1f/packages/react/src/index-rsc.ts#L12) of `useLingui` uses `getI18n`, which is another way to obtain the I18n instance on the server.
 
 ### Pages, Layouts and Lingui
 
@@ -162,7 +150,7 @@ This means you need to repeat the `setI18n` in every page and layout. Luckily, y
 
 Most likely, your users will not need to change the language of the application because it will render in their preferred language (obtained from the `accept-language` header in the [middleware](#)), or with a fallback.
 
-To change language, you can either redirect users to a page with the new locale in the url, or you can load another locale [dynamically](/guides/dynamic-loading-catalogs.md). However, you need to keep in mind that if you have server-rendered locale-dependent content, it'd become stale.
+To change language, redirect users to a page with the new locale in the url. We do not recommend [dynamic](/guides/dynamic-loading-catalogs.md)switching because server-rendered locale-dependent content would become stale.
 
 ### Static Rendering Pitfall
 
