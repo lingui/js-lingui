@@ -3,12 +3,12 @@ title: Lingui with React Server Components
 description: Learn how to setup and use Lingui with RSC & Next.js
 ---
 
-Lingui provides support for React Server Components (RSC) as of v4.10.0. In this tutorial, we'll learn how to add internationalization to an application with the Next.js app router. However, the same principles are applicable to any RSC-based solution.
+Lingui provides support for React Server Components (RSC) as of v4.10.0. In this tutorial, we'll learn how to add internationalization to an application with the Next.js [App Router](https://nextjs.org/docs/app). However, the same principles are applicable to any RSC-based solution.
 
 :::tip Hint
 There's a working example available [here](#). We will make references to the important parts of it throughout the tutorial. The example is more complete than this tutorial.
 
-The example uses both pages router and app router, so you can see how to use Lingui with both in [this commit](#).
+The example uses both Pages Router and App Router, so you can see how to use Lingui with both in [this commit](#).
 :::
 
 Before going further, please follow the [React setup](/tutorials/setup-react?babel-or-swc=swc) for installation and configuration instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
@@ -112,7 +112,7 @@ Lastly, there's the `appRouterI18n.ts` file, which is only executed on server an
 
 ### Rendering translations in server and client components
 
-Below you can see an example of a React component. This component can be rendered **both with RSC and on client**. This is great if you're migrating a Lingui-based project from pages router to app router because you can keep the same components working in both worlds.
+Below you can see an example of a React component. This component can be rendered **both with RSC and on client**. This is great if you're migrating a Lingui-based project from pages router to App Router because you can keep the same components working in both worlds.
 
 In fact, if you swapped the html tags for their more universal alternatives, this component could also be used in React Native.
 
@@ -139,7 +139,7 @@ The [RSC implementation](https://github.com/lingui/js-lingui/blob/ec49d0cc53dbc4
 
 ### Pages, Layouts and Lingui
 
-There's one last caveat: in a real-world app, you will need to localize many pages, and layouts. Because of the way the app router is designed, the `setI18n` call needs to happen not only in layouts, but also in pages. Read more in:
+There's one last caveat: in a real-world app, you will need to localize many pages, and layouts. Because of the way the App Router is designed, the `setI18n` call needs to happen not only in layouts, but also in pages. Read more in:
 
 - [Why do nested layouts/pages render before their parent layouts?](https://github.com/vercel/next.js/discussions/53026)
 - [On navigation, layouts preserve state and do not re-render](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts)
