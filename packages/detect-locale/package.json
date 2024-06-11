@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "4.11.0",
+  "version": "4.11.1",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "./dist/index.cjs",

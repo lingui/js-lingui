@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
+
+### Bug Fixes
+
+- (lingui/core) i18n error if id is undefined ([#1938](https://github.com/lingui/js-lingui/issues/1938)) ([36c637a](https://github.com/lingui/js-lingui/commit/36c637a23a27d0933de0fd8978d72291792a3041))
+
 # [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
 
 ### Bug Fixes
