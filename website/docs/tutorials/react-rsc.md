@@ -44,7 +44,7 @@ Translation strings, one way or another, are obtained from an [I18n](/docs/ref/c
 To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js will pass to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
 
 1. given `lang`, take an I18n instance and store it in the [`cache`](https://react.dev/reference/react/cache) so it can be used server-side
-2. given `lang`, take an I18n instance and make it available to client components via I18nProvider
+2. given `lang`, take an I18n instance and make it available to client components via `I18nProvider`
 
 This is how step (1) can be implemented:
 
@@ -133,7 +133,7 @@ export function SomeComponent() {
 }
 ```
 
-As you might recall, hooks are not supported in RSC, so you might be surprised that this works. Under RSC, `useLingui` is actually not a hook but a simple function call which reads from the React `cache` mentioned above.
+As you may recall, hooks are not supported in RSC, so you might be surprised that this works. Under RSC, `useLingui` is actually not a hook but a simple function call which reads from the React `cache` mentioned above.
 
 The [RSC implementation](https://github.com/lingui/js-lingui/blob/ec49d0cc53dbc4f9e0f92f0edcdf59f3e5c1de1f/packages/react/src/index-rsc.ts#L12) of `useLingui` uses `getI18n`, which is another way to obtain the I18n instance on the server.
 
