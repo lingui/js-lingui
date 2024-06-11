@@ -5,7 +5,7 @@ description: Learn how to add internationalization to a React Native application
 
 # Internationalization of React Native apps
 
-In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx) for installation and setup instructions.
+In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx?babel-or-swc=babel) (for Babel) for installation and configuration instructions.
 
 :::caution Warning
 
@@ -186,7 +186,7 @@ const showDeleteConfirmation = () => {
 
 The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
 
-However, we don't recommend that you change the locale like this, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
+However, we don't recommend that you change the locale like this in mobile apps, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
 
 ## Choosing the default locale
 

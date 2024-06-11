@@ -31,13 +31,18 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - Common Patterns",
-        id: "tutorials/react-patterns",
+        label: "React Server Components",
+        id: "tutorials/react-rsc",
       },
       {
         type: "doc",
         label: "React Native",
         id: "tutorials/react-native",
+      },
+      {
+        type: "doc",
+        label: "React - Common Patterns",
+        id: "tutorials/react-patterns",
       },
       {
         type: "doc",
