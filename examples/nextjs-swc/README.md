@@ -1,8 +1,9 @@
-## Example project using Next 13 SWC Compiler with LinguiJS Plugin
+## Example project using Next 14 and SWC Compiler with LinguiJS Plugin
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It showcases use with app router (in `src/app`) as well as with pages router (in `src/pages`).
 
 ## SWC Compatibility
+
 SWC Plugin support is still experimental. Semver backwards compatibility between different `next-swc` versions is not guaranteed.
 
 Therefore, you need to select an appropriate version of the Lingui plugin to match compatible `NextJs` version.
@@ -11,12 +12,12 @@ You also need to add the `@lingui/swc-plugin` dependency with strict version wit
 ```json
 {
   "devDependencies": {
-    "@lingui/swc-plugin": "4.0.5"
+    "@lingui/swc-plugin": "see-below"
   }
 }
 ```
 
-For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+For version compatibility table, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
 
 ## Getting Started
 
@@ -33,10 +34,10 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## LinguiJS Integration
-LinguiJs integrated with standard nextjs i18n support. Nextjs do routing for every language,
-LinguiJs activated with `router.locale`.
 
-Open [http://localhost:3000/cs](http://localhost:3000/cs) with your browser to prerender page in different language.
+LinguiJs is integrated with standard Next.js i18n support for using [middleware](https://nextjs.org/docs/app/building-your-application/routing/internationalization).
+
+Open [http://localhost:3000/es](http://localhost:3000/es) with your browser to prerender page in different language.
 
 ## LinguiJS Related Commands
 

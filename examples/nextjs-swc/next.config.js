@@ -1,14 +1,19 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  i18n: {
-    // These are all the locales you want to support in
-    // your application
-    locales: ['en', 'sr', 'es', 'pseudo'],
-    defaultLocale: 'en'
+  // i18n: {
+  // this option has been replaced by the middleware in src/
+  // when migrating to support app router
+  // },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.po$/,
+      use: {
+        loader: '@lingui/loader'
+      }
+    })
+    return config
   },
   experimental: {
-    swcPlugins: [
-      ['@lingui/swc-plugin', {}],
-    ],
-  },
+    swcPlugins: [['@lingui/swc-plugin', {}]]
+  }
 }
