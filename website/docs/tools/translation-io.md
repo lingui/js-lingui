@@ -1,7 +1,8 @@
 # Translation.io
 
-<img src="https://translation.io/assets/logo-for-fb-73866392ffcfc181d7d3d6c1b61fa03dbf60c842cbe82d0f58b38af4597614df.png" alt="Translation.io Lingui Logo" width="300"/>
-<br />
+<p align="center">
+  <img src="https://translation.io/logo.png" alt="Translation.io - Localization made simple for tech companies" width="300" />
+</p>
 
 [Translation.io](https://translation.io/lingui) is a professional synchronization and collaboration platform that will assist your team in the translation of your Lingui application.
 
@@ -42,7 +43,7 @@ Sometimes you have no choice but to confront your translators with HTML or inter
 
 `Hello {name}` should never be translated as `Bonjour {nom}`, and we have several mechanisms to ensure that, like warnings and auto-completion:
 
-![Syntax Highlighting warning on Translation.io](https://translation.io/_articles/2019-10-11-highlighting-of-html-tags-and-interpolated-variables/highlight-interpolated-variable-lingui.png)
+![Syntax Highlighting warning on Translation.io](https://translation.io/_articles/translation/2019-10-11-highlighting-of-html-tags-and-interpolated-variables/highlight-interpolated-variable-lingui.png)
 
 ---
 
