@@ -235,11 +235,11 @@ function createSegmentFromPoItem(item: POItem) {
     segment.source = item.msgstr[0]
     segment.context = item.msgid
   } else {
-     segment.source = item.msgid
+    segment.source = item.msgid
 
-      if (itemHasContext) {
-        segment.context = item.msgctxt
-      }
+    if (itemHasContext) {
+      segment.context = item.msgctxt
+    }
   }
 
   if (item.references.length) {
@@ -255,7 +255,10 @@ function createSegmentFromPoItem(item: POItem) {
       segment.comment = `${item.msgctxt} | ${segment.comment}`
 
       // Replace the flag to let us know how to recompose a target PO Item that is consistent with the source PO Item
-      segment.comment = segment.comment.replace(EXPLICIT_ID_FLAG, EXPLICIT_ID_AND_CONTEXT_FLAG)
+      segment.comment = segment.comment.replace(
+        EXPLICIT_ID_FLAG,
+        EXPLICIT_ID_AND_CONTEXT_FLAG
+      )
     }
   }
 
@@ -264,7 +267,9 @@ function createSegmentFromPoItem(item: POItem) {
 
 function createPoItemFromSegment(segment: TranslationIoSegment) {
   const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
-  const segmentHasExplicitIdAndContext = segment.comment?.includes(EXPLICIT_ID_AND_CONTEXT_FLAG)
+  const segmentHasExplicitIdAndContext = segment.comment?.includes(
+    EXPLICIT_ID_AND_CONTEXT_FLAG
+  )
 
   const item = new PO.Item()
 
@@ -276,10 +281,14 @@ function createPoItemFromSegment(segment: TranslationIoSegment) {
   }
 
   item.msgstr = [segment.target]
-  item.references = segment.references && segment.references.length ? segment.references : []
+  item.references =
+    segment.references && segment.references.length ? segment.references : []
 
   if (segment.comment) {
-    segment.comment = segment.comment.replace(EXPLICIT_ID_AND_CONTEXT_FLAG, EXPLICIT_ID_FLAG)
+    segment.comment = segment.comment.replace(
+      EXPLICIT_ID_AND_CONTEXT_FLAG,
+      EXPLICIT_ID_FLAG
+    )
     item.extractedComments = segment.comment ? segment.comment.split(" | ") : []
 
     // We recompose a target PO Item that is consistent with the source PO Item
