@@ -46,10 +46,8 @@
       }
     },
     "./macro": {
-      "require": {
-        "types": "./macro/index.d.ts",
-        "default": "./macro/index.js"
-      }
+      "types": "./macro/index.d.ts",
+      "default": "./macro/index.js"
     },
     "./package.json": "./package.json"
   },

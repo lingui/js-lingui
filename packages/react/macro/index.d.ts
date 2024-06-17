@@ -103,8 +103,11 @@ export const SelectOrdinal: VFC<PluralChoiceProps>
  */
 export const Select: VFC<SelectChoiceProps>
 
-function _t(descriptor: MacroMessageDescriptor): string
-function _t(literals: TemplateStringsArray, ...placeholders: any[]): string
+declare function _t(descriptor: MacroMessageDescriptor): string
+declare function _t(
+  literals: TemplateStringsArray,
+  ...placeholders: any[]
+): string
 
 /**
  *
