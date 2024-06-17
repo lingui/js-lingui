@@ -23,6 +23,9 @@ type TranslationIoProject = {
   url: string
 }
 
+const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
+const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
+
 const getCreateHeaders = (language: string) => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
   "MIME-Version": "1.0",
@@ -216,39 +219,83 @@ function sync(
 }
 
 function createSegmentFromPoItem(item: POItem) {
-  const itemHasId = item.msgid != item.msgstr[0] && item.msgstr[0].length
+  const itemHasExplicitId = item.extractedComments.includes(EXPLICIT_ID_FLAG)
+  const itemHasContext = item.msgctxt != null
 
   const segment: TranslationIoSegment = {
     type: "source", // No way to edit text for source language (inside code), so not using "key" here
-    source: itemHasId ? item.msgstr[0] : item.msgid, // msgstr may be empty if --overwrite is used and no ID is used
+    source: "",
     context: "",
     references: [],
     comment: "",
   }
 
-  if (itemHasId) {
+  // For segment.source & segment.context, we must remain compatible with projects created/synced before Lingui V4
+  if (itemHasExplicitId) {
+    segment.source = item.msgstr[0]
     segment.context = item.msgid
+  } else {
+    segment.source = item.msgid
+
+    if (itemHasContext) {
+      segment.context = item.msgctxt
+    }
   }
 
   if (item.references.length) {
     segment.references = item.references
   }
 
+  // Since Lingui v4, when using explicit IDs, Lingui automatically adds 'js-lingui-explicit-id' to the extractedComments array
   if (item.extractedComments.length) {
     segment.comment = item.extractedComments.join(" | ")
+
+    if (itemHasExplicitId && itemHasContext) {
+      // segment.context is already used for the explicit ID, so we need to pass the context (for translators) in segment.comment
+      segment.comment = `${item.msgctxt} | ${segment.comment}`
+
+      // Replace the flag to let us know how to recompose a target PO Item that is consistent with the source PO Item
+      segment.comment = segment.comment.replace(
+        EXPLICIT_ID_FLAG,
+        EXPLICIT_ID_AND_CONTEXT_FLAG
+      )
+    }
   }
 
   return segment
 }
 
 function createPoItemFromSegment(segment: TranslationIoSegment) {
+  const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
+  const segmentHasExplicitIdAndContext = segment.comment?.includes(
+    EXPLICIT_ID_AND_CONTEXT_FLAG
+  )
+
   const item = new PO.Item()
 
-  item.msgid = segment.context ? segment.context : segment.source
+  if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
+    item.msgid = segment.context
+  } else {
+    item.msgid = segment.source
+    item.msgctxt = segment.context
+  }
+
   item.msgstr = [segment.target]
   item.references =
     segment.references && segment.references.length ? segment.references : []
-  item.extractedComments = segment.comment ? segment.comment.split(" | ") : []
+
+  if (segment.comment) {
+    segment.comment = segment.comment.replace(
+      EXPLICIT_ID_AND_CONTEXT_FLAG,
+      EXPLICIT_ID_FLAG
+    )
+    item.extractedComments = segment.comment ? segment.comment.split(" | ") : []
+
+    // We recompose a target PO Item that is consistent with the source PO Item
+    if (segmentHasExplicitIdAndContext) {
+      item.msgctxt = item.extractedComments.shift()
+    }
+  }
 
   return item
 }
