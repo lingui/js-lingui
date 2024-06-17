@@ -25,70 +25,74 @@ import {
 /**
  * @deprecated please import from `@lingui/core/macro` directly
  */
-const t = _t
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const msg = _msg
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const plural = _plural
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const defineMessage = _defineMessage
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const select = _select
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const selectOrdinal = _selectOrdinal
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const SelectOptions = _SelectOptions
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const ChoiceOptions = _ChoiceOptions
-/**
- * @deprecated please import from `@lingui/core/macro` directly
- */
-const MacroMessageDescriptor = _MacroMessageDescriptor
+declare const t: typeof _t
 
-export const Trans = _Trans
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const msg: typeof _msg
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const plural: typeof _plural
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const defineMessage: typeof _defineMessage
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const select: typeof _select
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const selectOrdinal: typeof _selectOrdinal
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const SelectOptions: _SelectOptions
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const ChoiceOptions: _ChoiceOptions
+/**
+ * @deprecated please import from `@lingui/core/macro` directly
+ */
+declare const MacroMessageDescriptor: _MacroMessageDescriptor
+
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const Plural = _Plural
+declare const Trans: typeof _Trans
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const PluralChoiceProps = _PluralChoiceProps
+export const Plural: typeof _Plural
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const SelectChoiceProps = _SelectChoiceProps
+export const PluralChoiceProps: _PluralChoiceProps
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const Select = _Select
+export const SelectChoiceProps: _SelectChoiceProps
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const CommonProps = _CommonProps
+export const Select: typeof _Select
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const SelectOrdinal = _SelectOrdinal
+export const CommonProps: _CommonProps
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const TransProps = _TransProps
+export const SelectOrdinal: typeof _SelectOrdinal
 /**
  * @deprecated please import from `@lingui/react/macro` directly
  */
-export const useLingui = _useLingui
+export const TransProps: _TransProps
+/**
+ * @deprecated please import from `@lingui/react/macro` directly
+ */
+export const useLingui: typeof _useLingui
