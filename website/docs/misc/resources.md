@@ -7,6 +7,7 @@
 - [The complete guide to internationalization in Next.js](https://blog.logrocket.com/complete-guide-internationalization-nextjs/) - by [Ivan Vlatkovic](https://blog.logrocket.com/author/ivanvlatkovic/)
 - [How We Migrated a Large React Application from react-i18next to LinguiJS in 1 Day](https://medium.com/@radist2s/one-command-one-day-multiple-languages-our-migration-from-react-i18next-to-linguijs-4b07ac73a9bb) - by [Alex Batalov](https://medium.com/@radist2s)
 - [Javascript i18n with Lingui](https://mikewilliamson.wordpress.com/2017/11/05/javascript-i18n-with-lingui/) - by [Mike Williamson](https://mikewilliamson.wordpress.com/)
+- [Translate your Remix.run app with Lingui](https://www.simondepelchin.be/articles/translate-your-remix-run-app-with-lingui) - by [Simon Depelchin](https://x.com/SimonDepelchin)
 
 ## Talks
 
