@@ -6,14 +6,19 @@ import type {
 } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import type { ExtractorType } from "@lingui/conf"
+import {
+  ExtractorType,
+  LinguiConfig,
+  ExtractedMessage,
+  ExtractorCtx,
+} from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 
-import { type LinguiPluginOpts } from "@lingui/babel-plugin-lingui-macro"
-import linguiMacroPlugin from "@lingui/babel-plugin-lingui-macro"
-import { ExtractedMessage, ExtractorCtx } from "@lingui/conf"
+import linguiMacroPlugin, {
+  type LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
 
-const babelRe = new RegExp(
+export const babelRe = new RegExp(
   "\\.(" +
     [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
       .map((ext) => ext.slice(1))
@@ -103,7 +108,8 @@ export async function extractFromFileWithBabel(
   code: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
   ctx: ExtractorCtx,
-  parserOpts: ParserOptions
+  parserOpts: ParserOptions,
+  skipMacroPlugin = false
 ) {
   const mapper = await createSourceMapper(code, ctx?.sourceMaps)
 
@@ -120,13 +126,17 @@ export async function extractFromFileWithBabel(
     parserOpts,
 
     plugins: [
-      [
-        linguiMacroPlugin,
-        {
-          extract: true,
-          linguiConfig: ctx.linguiConfig,
-        } satisfies LinguiPluginOpts,
-      ],
+      ...(!skipMacroPlugin
+        ? [
+            [
+              linguiMacroPlugin,
+              {
+                extract: true,
+                linguiConfig: ctx.linguiConfig,
+              } satisfies LinguiPluginOpts,
+            ],
+          ]
+        : []),
       [
         linguiExtractMessages,
         {
@@ -144,6 +154,35 @@ export async function extractFromFileWithBabel(
   mapper.destroy()
 }
 
+export function getBabelParserOptions(
+  filename: string,
+  parserOptions: LinguiConfig["extractorParserOptions"]
+) {
+  // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
+  const parserPlugins: ParserPlugin[] = []
+
+  if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {
+    parserPlugins.push("typescript")
+    if (parserOptions.tsExperimentalDecorators) {
+      parserPlugins.push("decorators-legacy")
+    } else {
+      parserPlugins.push("decorators")
+    }
+  } else {
+    parserPlugins.push("decorators")
+
+    if (parserOptions?.flow) {
+      parserPlugins.push("flow")
+    }
+  }
+
+  if ([/\.js$/, /\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
+    parserPlugins.push("jsx")
+  }
+
+  return parserPlugins
+}
+
 const extractor: ExtractorType = {
   match(filename) {
     return babelRe.test(filename)
@@ -152,32 +191,8 @@ const extractor: ExtractorType = {
   async extract(filename, code, onMessageExtracted, ctx) {
     const parserOptions = ctx.linguiConfig.extractorParserOptions
 
-    // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
-    const parserPlugins: ParserPlugin[] = []
-
-    if (
-      [/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))
-    ) {
-      parserPlugins.push("typescript")
-      if (parserOptions.tsExperimentalDecorators) {
-        parserPlugins.push("decorators-legacy")
-      } else {
-        parserPlugins.push("decorators")
-      }
-    } else {
-      parserPlugins.push("decorators")
-
-      if (parserOptions?.flow) {
-        parserPlugins.push("flow")
-      }
-    }
-
-    if ([/\.js$/, /\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
-      parserPlugins.push("jsx")
-    }
-
     return extractFromFileWithBabel(filename, code, onMessageExtracted, ctx, {
-      plugins: parserPlugins,
+      plugins: getBabelParserOptions(filename, parserOptions),
     })
   },
 }

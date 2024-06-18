@@ -211,16 +211,16 @@ describe("E2E Extractor Test", () => {
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      3      │    2    │
+          │ en (source) │      3      │    -    │
+          │ pl          │      4      │    3    │
           └─────────────┴─────────────┴─────────┘
 
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      1      │    -    │
-          │ pl          │      1      │    1    │
+          │ en (source) │      2      │    -    │
+          │ pl          │      2      │    2    │
           └─────────────┴─────────────┴─────────┘
 
           Compiling message catalogs…

@@ -1,22 +1,20 @@
-import { ExperimentalExtractorOptions } from "@lingui/conf"
+import { LinguiConfigNormalized } from "@lingui/conf"
 import { BuildOptions } from "esbuild"
-import {
-  buildExternalizeFilter,
-  getPackageJson,
-} from "./buildExternalizeFilter"
+import { pluginLinguiMacro } from "./linguiEsbuildPlugin"
 
 function createExtRegExp(extensions: string[]) {
   return new RegExp("\\.(?:" + extensions.join("|") + ")(?:\\?.*)?$")
 }
 
 export async function bundleSource(
-  config: ExperimentalExtractorOptions,
+  linguiConfig: LinguiConfigNormalized,
   entryPoints: string[],
   outDir: string,
   rootDir: string
 ) {
   const esbuild = await import("esbuild")
 
+  const config = linguiConfig.experimental.extractor
   const excludeExtensions = config.excludeExtensions || [
     "ico",
     "pot",
@@ -36,8 +34,6 @@ export async function bundleSource(
     "jpg",
   ]
 
-  const packageJson = await getPackageJson(rootDir)
-
   const esbuildOptions: BuildOptions = {
     entryPoints: entryPoints,
     outExtension: { ".js": ".jsx" },
@@ -52,28 +48,12 @@ export async function bundleSource(
     sourcemap: "inline",
     sourceRoot: outDir,
     sourcesContent: false,
+    packages: "external",
     outbase: rootDir,
     metafile: true,
-    plugins: [
-      {
-        name: "externalize-deps",
-        setup(build) {
-          const isExternal = buildExternalizeFilter({
-            includeDeps: config.includeDeps || [],
-            excludeDeps: config.excludeDeps || [],
-            packageJson,
-          })
 
-          // externalize bare imports
-          build.onResolve({ filter: /^[^.].*/ }, async ({ path: id }) => {
-            if (isExternal(id)) {
-              return {
-                external: true,
-              }
-            }
-          })
-        },
-      },
+    plugins: [
+      pluginLinguiMacro({ linguiConfig }),
       {
         name: "externalize-files",
         setup(build) {
