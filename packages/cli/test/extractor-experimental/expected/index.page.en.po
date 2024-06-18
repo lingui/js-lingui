@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/pages/index.page.ts:3
+#: fixtures/pages/index.page.ts:4
 msgid "index page message"
 msgstr "index page message"
+
+#: fixtures/constants/red.ts:3
+msgid "Red"
+msgstr "Red"
