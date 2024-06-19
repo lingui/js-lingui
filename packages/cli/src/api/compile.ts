@@ -84,10 +84,16 @@ function buildExportStatement(
       t.tsTypeReference(t.identifier("Messages"))
     )
 
-    // export const messages:Messages = { message: "Translation" }
+    // Also type case the expression to `Messages` for better compatibility
+    const typeCastExpression = t.tsAsExpression(
+      expression,
+      t.tsTypeReference(t.identifier("Messages"))
+    )
+
+    // export const messages:Messages = ({ message: "Translation" } as Messages)
     const exportDeclaration = t.exportNamedDeclaration(
       t.variableDeclaration("const", [
-        t.variableDeclarator(messagesIdentifier, expression),
+        t.variableDeclarator(messagesIdentifier, typeCastExpression),
       ])
     )
 
