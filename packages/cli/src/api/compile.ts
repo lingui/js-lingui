@@ -78,22 +78,16 @@ function buildExportStatement(
     )
     importMessagesTypeDeclaration.importKind = "type"
 
-    // Create the exported `messages` identifier with a `Messages` TS type annotation
-    const messagesIdentifier = t.identifier("messages")
-    messagesIdentifier.typeAnnotation = t.tsTypeAnnotation(
-      t.tsTypeReference(t.identifier("Messages"))
-    )
-
-    // Also type case the expression to `Messages` for better compatibility
-    const typeCastExpression = t.tsAsExpression(
+    // Cast the expression to `Messages`
+    const castExpression = t.tsAsExpression(
       expression,
       t.tsTypeReference(t.identifier("Messages"))
     )
 
-    // export const messages:Messages = ({ message: "Translation" } as Messages)
+    // export const messages = ({ message: "Translation" } as Messages)
     const exportDeclaration = t.exportNamedDeclaration(
       t.variableDeclaration("const", [
-        t.variableDeclarator(messagesIdentifier, typeCastExpression),
+        t.variableDeclarator(t.identifier("messages"), castExpression),
       ])
     )
 
