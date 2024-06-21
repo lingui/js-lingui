@@ -49,7 +49,7 @@ export function mergeCatalog(
   const obsoleteMessages = obsoleteKeys.map((key) => ({
     [key]: {
       ...prevCatalog[key],
-      obsolete: !options.files,
+      ...(!options.files && { obsolete: true }),
     },
   }))
 
