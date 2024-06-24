@@ -83,14 +83,21 @@ msgstr ""
 "Language: en\\n"
 
 #. js-lingui-explicit-id
-#. ph: {0} = getValue()
+#. placeholder {0}: getValue()
 msgid "static"
 msgstr "Static message {0} {name}"
 
+#. placeholder: {0} = getValue()
 #. js-lingui-explicit-id
-#. ph: {0} = getValue()
+#. placeholder {0}: getValue()
 msgid "static2"
 msgstr "Static message {0} {name}"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: user ? user.name : null
+#. placeholder {0}: userName
+msgid "static3"
+msgstr "Static message {0}"
 
 `;
 

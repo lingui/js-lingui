@@ -451,17 +451,26 @@ describe("pofile format", () => {
         message: "Static message {0} {name}",
         translation: "Static message {0} {name}",
         placeholders: {
-          0: "getValue()",
-          name: "user.getName()",
+          0: ["getValue()"],
+          name: ["user.getName()"],
         },
       },
+      // should not push placeholder comment twice
       static2: {
         message: "Static message {0} {name}",
         translation: "Static message {0} {name}",
-        comments: ["ph: {0} = getValue()"],
+        comments: ["placeholder: {0} = getValue()"],
         placeholders: {
-          0: "getValue()",
-          name: "user.getName()",
+          0: ["getValue()"],
+          name: ["user.getName()"],
+        },
+      },
+      // multiline placeholder value + multiple entries
+      static3: {
+        message: "Static message {0}",
+        translation: "Static message {0}",
+        placeholders: {
+          0: ["user \n ? user.name \n : null", "userName"],
         },
       },
     }

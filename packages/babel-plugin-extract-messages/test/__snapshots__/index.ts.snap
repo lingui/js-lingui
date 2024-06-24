@@ -133,7 +133,7 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
   {
     comment: undefined,
     context: undefined,
-    id: Values {param} {0} {name},
+    id: Values {param} {0} {name} {value},
     message: undefined,
     origin: [
       js-message-descriptor.js,
@@ -143,6 +143,9 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
       0: user.getName(),
       name: "foo",
       param: param,
+      value: user
+      ? user.name
+      : null,
     },
   },
   {
@@ -152,7 +155,7 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
     message: undefined,
     origin: [
       js-message-descriptor.js,
-      15,
+      23,
     ],
     placeholders: {},
   },
@@ -163,7 +166,7 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
     message: undefined,
     origin: [
       js-message-descriptor.js,
-      17,
+      25,
     ],
     placeholders: {},
   },

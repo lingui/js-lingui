@@ -72,7 +72,7 @@ export type PoFormatterOptions = {
    *
    * This will be extracted as
    *
-   * ```gettext
+   * ```po
    * #. ph: {0} = user.name
    * msgid "Hello {0} {value}"
    * ```
@@ -143,15 +143,18 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
       item.msgid = id
     }
 
-    if (options.printPlaceholdersInComments) {
+    if (options.printPlaceholdersInComments !== false) {
       item.extractedComments = item.extractedComments.filter(
-        (comment) => !comment.startsWith("ph:")
+        (comment) => !comment.startsWith("placeholder ")
       )
 
       if (message.placeholders) {
         Object.entries(message.placeholders).forEach(([name, value]) => {
           if (/^\d+$/.test(name)) {
-            item.extractedComments.push(`ph: {${name}} = ${value}`)
+            value.forEach((entry) => {
+              const cleared = entry.replace(/\n/g, " ").replace(/\s{2,}/g, " ")
+              item.extractedComments.push(`placeholder {${name}}: ${cleared}`)
+            })
           }
         })
       }
