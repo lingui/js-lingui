@@ -5,6 +5,7 @@ import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
 import os from "os"
 import nodepath from "path"
+import glob from "glob"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
@@ -22,13 +23,18 @@ async function prepare(caseFolderName: string) {
 
   const actualPath = nodepath.join(rootDir, "actual")
   const expectedPath = nodepath.join(rootDir, "expected")
+  const existingPath = nodepath.join(rootDir, "existing")
 
   await fs.rm(actualPath, {
     recursive: true,
     force: true,
   })
 
-  return { rootDir, actualPath, expectedPath }
+  if (glob.sync(existingPath).length === 1) {
+    await fs.cp(existingPath, actualPath, { recursive: true })
+  }
+
+  return { rootDir, actualPath, existingPath, expectedPath }
 }
 
 describe("E2E Extractor Test", () => {
@@ -288,4 +294,31 @@ describe("E2E Extractor Test", () => {
       compareFolders(actualPath, expectedPath)
     })
   })
+
+  it("should extract consistently with files argument", async () => {
+    const { rootDir, actualPath, expectedPath } = await prepare(
+      "extract-partial-consistency"
+    )
+
+    await extractCommand(
+      makeConfig({
+        rootDir: rootDir,
+        locales: ["en"],
+        sourceLocale: "en",
+        format: "po",
+        catalogs: [
+          {
+            path: "<rootDir>/actual/{locale}",
+            include: ["<rootDir>/fixtures"],
+          },
+        ],
+      }),
+      {
+        files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")]
+      }
+    )
+
+    compareFolders(actualPath, expectedPath)
+  })
+
 })
