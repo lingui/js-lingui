@@ -36,6 +36,7 @@ export type ExtractedMessageType<Extra = CatalogExtra> = {
    * formatters can store additional data
    */
   extra?: Extra
+  placeholders?: Record<string, string>
 }
 export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
   translation: string

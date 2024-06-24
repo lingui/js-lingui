@@ -442,4 +442,31 @@ describe("pofile format", () => {
 
     `)
   })
+
+  it("should print unnamed placeholders as comments", () => {
+    const format = createFormatter({ printPlaceholdersInComments: true })
+
+    const catalog: CatalogType = {
+      static: {
+        message: "Static message {0} {name}",
+        translation: "Static message {0} {name}",
+        placeholders: {
+          0: "getValue()",
+          name: "user.getName()",
+        },
+      },
+      static2: {
+        message: "Static message {0} {name}",
+        translation: "Static message {0} {name}",
+        comments: ["ph: {0} = getValue()"],
+        placeholders: {
+          0: "getValue()",
+          name: "user.getName()",
+        },
+      },
+    }
+
+    const actual = format.serialize(catalog, defaultSerializeCtx)
+    expect(actual).toMatchSnapshot()
+  })
 })

@@ -58,6 +58,28 @@ export type PoFormatterOptions = {
    * @default false
    */
   explicitIdAsDefault?: boolean
+
+  /**
+   * Print values for unnamed placeholders as comments for each message.
+   *
+   * This can give more context to translators for better translations.
+   *
+   * Example:
+   *
+   * ```js
+   * t`Hello ${user.name} ${value}`
+   * ```
+   *
+   * This will be extracted as
+   *
+   * ```gettext
+   * #. ph: {0} = user.name
+   * msgid "Hello {0} {value}"
+   * ```
+   *
+   * @default true
+   */
+  printPlaceholdersInComments?: boolean
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -119,6 +141,20 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
       }
 
       item.msgid = id
+    }
+
+    if (options.printPlaceholdersInComments) {
+      item.extractedComments = item.extractedComments.filter(
+        (comment) => !comment.startsWith("ph:")
+      )
+
+      if (message.placeholders) {
+        Object.entries(message.placeholders).forEach(([name, value]) => {
+          if (/^\d+$/.test(name)) {
+            item.extractedComments.push(`ph: {${name}} = ${value}`)
+          }
+        })
+      }
     }
 
     if (message.context) {
