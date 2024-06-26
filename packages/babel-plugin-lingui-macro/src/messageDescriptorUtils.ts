@@ -54,6 +54,7 @@ export function createMessageDescriptor(
 
   properties.push(
     defaults.id
+      // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
       ? isObjectProperty(defaults.id)
         ? defaults.id
         : createStringObjectProperty(
@@ -64,6 +65,7 @@ export function createMessageDescriptor(
       : createIdProperty(
           message,
           defaults.context
+            // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
             ? isObjectProperty(defaults.context)
               ? getTextFromExpression(defaults.context.value as Expression)
               : defaults.context.text
@@ -80,6 +82,7 @@ export function createMessageDescriptor(
 
     if (defaults.comment) {
       properties.push(
+        // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
         isObjectProperty(defaults.comment)
           ? defaults.comment
           : createStringObjectProperty(
@@ -92,6 +95,7 @@ export function createMessageDescriptor(
 
     if (defaults.context) {
       properties.push(
+        // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
         isObjectProperty(defaults.context)
           ? defaults.context
           : createStringObjectProperty(
