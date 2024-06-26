@@ -17,10 +17,6 @@ function isFirstIsString(
   return typeof arr[0] === "string"
 }
 
-//
-// from official @lingui/vue-extractor
-//
-
 type ExtractorType = typeof defaultExtractor
 
 export const vueExtractor: ExtractorType = {
@@ -68,6 +64,9 @@ export const vueExtractor: ExtractorType = {
       ],
     ] satisfies [string | undefined, RawSourceMap | undefined, boolean][]
 
+    // early return to please TypeScript
+    if (!ctx) return
+
     await Promise.all(
       targets
         .filter<[string, RawSourceMap | undefined, boolean]>(isFirstIsString)
@@ -77,10 +76,9 @@ export const vueExtractor: ExtractorType = {
             source,
             onMessageExtracted,
             {
-              sourceMaps: map,
-              // TODO: find why destruct ctx here mess with the type
               ...ctx,
-            } as Parameters<ExtractorType["extract"]>[3]
+              sourceMaps: map,
+            }
           )
         )
     )

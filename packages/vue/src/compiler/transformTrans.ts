@@ -119,6 +119,16 @@ function transformElement(
   node.tagType = ElementTypes.COMPONENT
 }
 
+// from SFC to Babel
+function convertLoc(loc: SourceLocation): Parameters<typeof createMessageDescriptor>[1] {
+  return {
+    start: {...loc.start, index: loc.start.offset},
+    end: {...loc.end, index: loc.end.offset},
+    filename: loc.source,
+    identifierName: null,
+  }
+}
+
 export function transformTrans(
   node: ElementNode,
   transformContext: TransformContext
@@ -142,7 +152,7 @@ export function transformTrans(
   const context = getTextProp(node, "context")
   const comment = getTextProp(node, "comment")
 
-  const descriptor = createMessageDescriptor({ message, values }, loc, false, {
+  const descriptor = createMessageDescriptor({ message, values }, convertLoc(loc), false, {
     ...(id
       ? {
           id: {

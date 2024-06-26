@@ -1,7 +1,6 @@
 import { parse, compileTemplate, SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
-import { isElementNode } from "@lingui/vue/src/common/predicates"
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {
