@@ -443,39 +443,90 @@ describe("pofile format", () => {
     `)
   })
 
-  it("should print unnamed placeholders as comments", () => {
-    const format = createFormatter({ printPlaceholdersInComments: true })
+  describe("printPlaceholdersInComments", () => {
+    it("should print unnamed placeholders as comments", () => {
+      const format = createFormatter()
 
-    const catalog: CatalogType = {
-      static: {
-        message: "Static message {0} {name}",
-        translation: "Static message {0} {name}",
-        placeholders: {
-          0: ["getValue()"],
-          name: ["user.getName()"],
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
         },
-      },
-      // should not push placeholder comment twice
-      static2: {
-        message: "Static message {0} {name}",
-        translation: "Static message {0} {name}",
-        comments: ["placeholder: {0} = getValue()"],
-        placeholders: {
-          0: ["getValue()"],
-          name: ["user.getName()"],
+        // should not push placeholder comment twice
+        static2: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          comments: ["placeholder: {0} = getValue()"],
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
         },
-      },
-      // multiline placeholder value + multiple entries
-      static3: {
-        message: "Static message {0}",
-        translation: "Static message {0}",
-        placeholders: {
-          0: ["user \n ? user.name \n : null", "userName"],
+        // multiline placeholder value + multiple entries
+        static3: {
+          message: "Static message {0}",
+          translation: "Static message {0}",
+          placeholders: {
+            0: ["user \n ? user.name \n : null", "userName"],
+          },
         },
-      },
-    }
 
-    const actual = format.serialize(catalog, defaultSerializeCtx)
-    expect(actual).toMatchSnapshot()
+        // should limit to 3 by default
+        static4: {
+          message: "Static message {0}",
+          translation: "Static message {0}",
+          placeholders: {
+            0: ["userName", "user.name", "profile.name", "authorName"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("Should not print placeholders if printPlaceholdersInComments = false", () => {
+      const format = createFormatter({ printPlaceholdersInComments: false })
+
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("Should print printPlaceholdersInComments.limit amount of values for placeholder", () => {
+      const format = createFormatter({
+        printPlaceholdersInComments: {
+          limit: 1,
+        },
+      })
+
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {1}",
+          translation: "Static message {0} {1}",
+          placeholders: {
+            0: ["userName", "user.name", "profile.name", "authorName"],
+            1: ["a", "b", "c", "d"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
   })
 })

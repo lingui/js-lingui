@@ -3,6 +3,7 @@ import PO from "pofile"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import { normalizePlaceholderValue } from "./utils"
 
 type POItem = InstanceType<typeof PO.Item>
 
@@ -64,6 +65,8 @@ export type PoFormatterOptions = {
    *
    * This can give more context to translators for better translations.
    *
+   * By default first 3 placeholders are shown.
+   *
    * Example:
    *
    * ```js
@@ -79,7 +82,7 @@ export type PoFormatterOptions = {
    *
    * @default true
    */
-  printPlaceholdersInComments?: boolean
+  printPlaceholdersInComments?: boolean | { limit?: number }
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -148,12 +151,19 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
         (comment) => !comment.startsWith("placeholder ")
       )
 
+      const limit =
+        typeof options.printPlaceholdersInComments === "object" &&
+        options.printPlaceholdersInComments.limit
+          ? options.printPlaceholdersInComments.limit
+          : 3
+
       if (message.placeholders) {
         Object.entries(message.placeholders).forEach(([name, value]) => {
           if (/^\d+$/.test(name)) {
-            value.forEach((entry) => {
-              const cleared = entry.replace(/\n/g, " ").replace(/\s{2,}/g, " ")
-              item.extractedComments.push(`placeholder {${name}}: ${cleared}`)
+            value.slice(0, limit).forEach((entry) => {
+              item.extractedComments.push(
+                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`
+              )
             })
           }
         })

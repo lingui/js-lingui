@@ -1,5 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pofile format printPlaceholdersInComments Should not print placeholders if printPlaceholdersInComments = false 1`] = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#. js-lingui-explicit-id
+msgid "static"
+msgstr "Static message {0} {name}"
+
+`;
+
+exports[`pofile format printPlaceholdersInComments Should print printPlaceholdersInComments.limit amount of values for placeholder 1`] = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: userName
+#. placeholder {1}: a
+msgid "static"
+msgstr "Static message {0} {1}"
+
+`;
+
+exports[`pofile format printPlaceholdersInComments should print unnamed placeholders as comments 1`] = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: getValue()
+msgid "static"
+msgstr "Static message {0} {name}"
+
+#. placeholder: {0} = getValue()
+#. js-lingui-explicit-id
+#. placeholder {0}: getValue()
+msgid "static2"
+msgstr "Static message {0} {name}"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: user ? user.name : null
+#. placeholder {0}: userName
+msgid "static3"
+msgstr "Static message {0}"
+
+#. js-lingui-explicit-id
+#. placeholder {0}: userName
+#. placeholder {0}: user.name
+#. placeholder {0}: profile.name
+msgid "static4"
+msgstr "Static message {0}"
+
+`;
+
 exports[`pofile format should correct badly used comments 1`] = `
 {
   withDescriptionAndComments: {
@@ -69,35 +139,6 @@ msgstr ""
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
-`;
-
-exports[`pofile format should print unnamed placeholders as comments 1`] = `
-msgid ""
-msgstr ""
-"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-"MIME-Version: 1.0\\n"
-"Content-Type: text/plain; charset=utf-8\\n"
-"Content-Transfer-Encoding: 8bit\\n"
-"X-Generator: @lingui/cli\\n"
-"Language: en\\n"
-
-#. js-lingui-explicit-id
-#. placeholder {0}: getValue()
-msgid "static"
-msgstr "Static message {0} {name}"
-
-#. placeholder: {0} = getValue()
-#. js-lingui-explicit-id
-#. placeholder {0}: getValue()
-msgid "static2"
-msgstr "Static message {0} {name}"
-
-#. js-lingui-explicit-id
-#. placeholder {0}: user ? user.name : null
-#. placeholder {0}: userName
-msgid "static3"
-msgstr "Static message {0}"
 
 `;
 
