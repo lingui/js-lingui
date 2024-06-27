@@ -1,8 +1,6 @@
 import { type I18n } from "@lingui/core"
 import { inject, type Plugin } from "vue"
 
-//
-
 type LinguiPluginOptions = {
   i18n: I18n
 }

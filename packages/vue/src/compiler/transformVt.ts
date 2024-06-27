@@ -36,14 +36,14 @@ function createLinguiSimpleExpression(
   )
 }
 
-function createVueMacroContext() {
+function createVueMacroContext(options: { stripNonEssentialProps?: boolean }) {
   return createMacroJsContext((identifier, macro) => {
     if (macro === JsMacroName.t) {
       return identifier.name === "vt"
     }
 
     return identifier.name === macro
-  }, false)
+  }, !!options?.stripNonEssentialProps)
 }
 
 export function tokenizeAsChoiceComponentOrUndefined(
@@ -74,8 +74,11 @@ export function tokenizeAsLinguiTemplateLiteralOrUndefined(
 
 export function transformVt(
   vueNode: ExpressionNode,
-  ctx = createVueMacroContext()
+  options: {
+    stripNonEssentialProps?: boolean
+  }
 ) {
+  const ctx = createVueMacroContext(options)
   if (!vueNode.ast) {
     return vueNode
   }

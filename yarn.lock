@@ -2989,7 +2989,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/vite-plugin@workspace:packages/vite-plugin":
+"@lingui/vite-plugin@4.8.0-next.1, @lingui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
@@ -3017,11 +3017,17 @@ __metadata:
     "@lingui/conf": 4.8.0-next.1
     "@lingui/core": 4.8.0-next.1
     "@lingui/message-utils": 4.8.0-next.1
+    "@lingui/vite-plugin": 4.8.0-next.1
     "@types/babel__core": ^7.20.5
+    "@vitejs/plugin-vue": ^5.0.5
     "@vue/compiler-core": ^3.3.4
     "@vue/compiler-sfc": ^3.3.4
     unbuild: 2.0.0
+    vite: 4.1.4
     vue: ^3.3.4
+  peerDependencies:
+    "@vitejs/plugin-vue": "*"
+    vite: ^3 || ^4 || ^5.0.9
   languageName: unknown
   linkType: soft
 
@@ -4484,6 +4490,16 @@ __metadata:
     "@typescript-eslint/types": 5.50.0
     eslint-visitor-keys: ^3.3.0
   checksum: 55319cb7ee7b78d07d9dc67a388d69fe0b7f11cbc79190e17e7f87a39c9992d08dab3b5872d5a7f01094dda28ad6ac61d3573e59015ef70bf138d4c4f8c45b88
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-vue@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@vitejs/plugin-vue@npm:5.0.5"
+  peerDependencies:
+    vite: ^5.0.0
+    vue: ^3.2.25
+  checksum: 96077539da0c6d0d19f68ca112466d804e374a9e18cdb97b5396793a7eecaff433c109bac82ff0d130d39c48963f658158f2f44696fd0a50df2eb5080fafbdcc
   languageName: node
   linkType: hard
 

@@ -1,7 +1,6 @@
 import {
   createSimpleExpression,
   type ElementNode,
-  type TransformContext,
   NodeTypes,
   ConstantTypes,
   ElementTypes,
@@ -133,7 +132,9 @@ function convertLoc(
 
 export function transformTrans(
   node: ElementNode,
-  transformContext: TransformContext
+  options: {
+    stripNonEssentialProps?: boolean
+  }
 ) {
   const loc = node.loc
   const tokens = tokenizeTrans(
@@ -144,7 +145,7 @@ export function transformTrans(
       }
 
       return identifier.name === macro
-    }, false)
+    }, !!options.stripNonEssentialProps)
   )
 
   const messageFormat = new ICUMessageFormat()

@@ -1,14 +1,16 @@
-// TODO: need to go full ESM to be able to use those types
-// import { type Plugin, type TransformResult } from 'vite'
+import { type Plugin, type TransformResult } from "vite"
 import * as babel from "@babel/core"
 
 const sourceRegex = /\.(:?[j|t]sx?|vue)$/u
 
 // make babel macros works in vite
-export function babelMacros() {
+export function linguiCoreMacros(): Plugin {
   return {
-    name: "vite-plugin-babel-macros",
-    async transform(source: string, filename: string) {
+    name: "vite-plugin-vue-lingui-babel-macro",
+    async transform(
+      source: string,
+      filename: string
+    ): Promise<string | undefined | TransformResult> {
       if (filename.includes("node_modules")) {
         return undefined
       }
@@ -19,13 +21,16 @@ export function babelMacros() {
 
       const result = await babel.transformAsync(source, {
         filename,
-        plugins: ["macros"],
+        plugins: ["@lingui/babel-plugin-lingui-macro"],
         babelrc: false,
         configFile: false,
         sourceMaps: true,
       })
 
-      return result
+      return {
+        code: result?.code,
+        map: result?.map,
+      } as TransformResult
     },
   } as const
 }

@@ -72,6 +72,16 @@
         "default": "./dist/extractor/index.mjs"
       }
     },
+    "./vite-plugin": {
+      "require": {
+        "types": "./dist/vite-plugin/index.d.cts",
+        "default": "./dist/vite-plugin/index.cjs"
+      },
+      "import": {
+        "types": "./dist/vite-plugin/index.d.mts",
+        "default": "./dist/vite-plugin/index.mjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -87,13 +97,20 @@
     "@lingui/cli": "4.8.0-next.1",
     "@lingui/core": "4.8.0-next.1",
     "@lingui/message-utils": "4.8.0-next.1",
+    "@lingui/vite-plugin": "4.8.0-next.1",
     "@vue/compiler-core": "^3.3.4",
     "@vue/compiler-sfc": "^3.3.4",
     "vue": "^3.3.4"
   },
+  "peerDependencies": {
+    "@vitejs/plugin-vue": "*",
+    "vite": "^3 || ^4 || ^5.0.9"
+  },
   "devDependencies": {
     "@lingui/conf": "4.8.0-next.1",
     "@types/babel__core": "^7.20.5",
-    "unbuild": "2.0.0"
+    "@vitejs/plugin-vue": "^5.0.5",
+    "unbuild": "2.0.0",
+    "vite": "4.1.4"
   }
 }
