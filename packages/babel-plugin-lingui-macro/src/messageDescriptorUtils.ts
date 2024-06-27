@@ -3,7 +3,6 @@ import {
   SourceLocation,
   ObjectProperty,
   ObjectExpression,
-  isObjectProperty,
   Expression,
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
@@ -18,6 +17,12 @@ function buildICUFromTokens(tokens: Tokens) {
 type TextWithLoc = {
   text: string
   loc?: SourceLocation
+}
+
+function isObjectProperty(
+  node: TextWithLoc | ObjectProperty
+): node is ObjectProperty {
+  return "type" in node
 }
 
 export function createMessageDescriptorFromTokens(
@@ -54,7 +59,6 @@ export function createMessageDescriptor(
 
   properties.push(
     defaults.id
-      // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
       ? isObjectProperty(defaults.id)
         ? defaults.id
         : createStringObjectProperty(
@@ -65,7 +69,6 @@ export function createMessageDescriptor(
       : createIdProperty(
           message,
           defaults.context
-            // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
             ? isObjectProperty(defaults.context)
               ? getTextFromExpression(defaults.context.value as Expression)
               : defaults.context.text
@@ -82,7 +85,6 @@ export function createMessageDescriptor(
 
     if (defaults.comment) {
       properties.push(
-        // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
         isObjectProperty(defaults.comment)
           ? defaults.comment
           : createStringObjectProperty(
@@ -95,7 +97,6 @@ export function createMessageDescriptor(
 
     if (defaults.context) {
       properties.push(
-        // @ts-expect-error wants type Node but we obviously have ObjectProperty | ...
         isObjectProperty(defaults.context)
           ? defaults.context
           : createStringObjectProperty(

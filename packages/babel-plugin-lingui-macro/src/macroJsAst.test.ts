@@ -1,5 +1,9 @@
 import { type CallExpression, type Expression } from "@babel/types"
-import { tokenizeTemplateLiteral, tokenizeChoiceComponent, createMacroJsContext } from "./macroJsAst"
+import {
+  tokenizeTemplateLiteral,
+  tokenizeChoiceComponent,
+  createMacroJsContext,
+} from "./macroJsAst"
 import type { NodePath } from "@babel/traverse"
 import { transformSync } from "@babel/core"
 import { JsMacroName } from "./constants"
@@ -31,10 +35,9 @@ const parseExpression = (expression: string) => {
 }
 
 function createMacroCtx() {
-  return createMacroJsContext(
-    () => true,
-    false,
-  )
+  return createMacroJsContext((identifier, macro) => {
+    return identifier.name === macro
+  }, false)
 }
 
 describe("js macro", () => {
@@ -100,7 +103,6 @@ describe("js macro", () => {
 
     it("message with plural", () => {
       const exp = parseExpression("t`Message ${plural(count, {})}`")
-      console.log(exp.node);
       const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toEqual([
         {
