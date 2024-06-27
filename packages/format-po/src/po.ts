@@ -76,7 +76,7 @@ export type PoFormatterOptions = {
    * This will be extracted as
    *
    * ```po
-   * #. ph: {0} = user.name
+   * #. placeholder {0}: user.name
    * msgid "Hello {0} {value}"
    * ```
    *

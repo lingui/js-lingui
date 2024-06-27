@@ -8,7 +8,6 @@ import {
   isObjectExpression,
 } from "@babel/types"
 import type { PluginObj, PluginPass, NodePath } from "@babel/core"
-import {} from "@babel/core"
 import type { Hub } from "@babel/traverse"
 
 type BabelTypes = typeof BabelTypesNamespace
