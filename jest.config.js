@@ -70,6 +70,7 @@ module.exports = {
         "<rootDir>/packages/format-csv",
         "<rootDir>/packages/message-utils",
         "<rootDir>/packages/extractor-vue",
+        "<rootDir>/packages/format-xliff",
       ],
     },
   ],
