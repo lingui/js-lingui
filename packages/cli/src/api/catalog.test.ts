@@ -214,6 +214,7 @@ describe("Catalog", () => {
                 15,
               ],
             ],
+            placeholders: {},
           },
         }
       `)
