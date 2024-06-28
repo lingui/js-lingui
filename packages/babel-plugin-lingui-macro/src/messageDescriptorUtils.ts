@@ -1,9 +1,8 @@
-import ICUMessageFormat, { Tokens } from "./icu"
+import { ICUMessageFormat, Tokens, ParsedResult } from "./icu"
 import {
   SourceLocation,
   ObjectProperty,
   ObjectExpression,
-  isObjectProperty,
   Expression,
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
@@ -20,6 +19,12 @@ type TextWithLoc = {
   loc?: SourceLocation
 }
 
+function isObjectProperty(
+  node: TextWithLoc | ObjectProperty
+): node is ObjectProperty {
+  return "type" in node
+}
+
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
@@ -30,7 +35,25 @@ export function createMessageDescriptorFromTokens(
     comment?: TextWithLoc | ObjectProperty
   } = {}
 ) {
-  const { message, values, jsxElements } = buildICUFromTokens(tokens)
+  return createMessageDescriptor(
+    buildICUFromTokens(tokens),
+    oldLoc,
+    stripNonEssentialProps,
+    defaults
+  )
+}
+
+export function createMessageDescriptor(
+  result: Partial<ParsedResult>,
+  oldLoc: SourceLocation,
+  stripNonEssentialProps: boolean,
+  defaults: {
+    id?: TextWithLoc | ObjectProperty
+    context?: TextWithLoc | ObjectProperty
+    comment?: TextWithLoc | ObjectProperty
+  } = {}
+) {
+  const { message, values, elements } = result
 
   const properties: ObjectProperty[] = []
 
@@ -85,12 +108,17 @@ export function createMessageDescriptorFromTokens(
     }
   }
 
-  properties.push(createValuesProperty(MsgDescriptorPropKey.values, values))
-  properties.push(
-    createValuesProperty(MsgDescriptorPropKey.components, jsxElements)
-  )
+  if (values) {
+    properties.push(createValuesProperty(MsgDescriptorPropKey.values, values))
+  }
 
-  return createMessageDescriptor(
+  if (elements) {
+    properties.push(
+      createValuesProperty(MsgDescriptorPropKey.components, elements)
+    )
+  }
+
+  return createMessageDescriptorObjectExpression(
     properties,
     // preserve line numbers for extractor
     oldLoc
@@ -145,7 +173,7 @@ function getTextFromExpression(exp: Expression): string {
   }
 }
 
-function createMessageDescriptor(
+function createMessageDescriptorObjectExpression(
   properties: ObjectProperty[],
   oldLoc?: SourceLocation
 ): ObjectExpression {

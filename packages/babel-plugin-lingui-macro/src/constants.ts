@@ -19,6 +19,7 @@ export enum JsMacroName {
   selectOrdinal = "selectOrdinal",
   msg = "msg",
   defineMessage = "defineMessage",
+  arg = "arg",
   useLingui = "useLingui",
 }
 

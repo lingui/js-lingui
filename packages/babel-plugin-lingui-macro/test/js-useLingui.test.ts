@@ -1,6 +1,8 @@
 import { makeConfig } from "@lingui/conf"
 import { macroTester } from "./macroTester"
 
+describe.skip("", () => {})
+
 macroTester({
   cases: [
     {
