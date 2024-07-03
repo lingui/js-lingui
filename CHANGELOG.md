@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.2](https://github.com/lingui/js-lingui/compare/v4.11.1...v4.11.2) (2024-07-03)
+
+### Bug Fixes
+
+- **cli:** update translationIO service in CLI package (to handle context) ([#1949](https://github.com/lingui/js-lingui/issues/1949)) ([ea7b9e7](https://github.com/lingui/js-lingui/commit/ea7b9e7154858960af29fc427ee2f64e2a96d425))
+- include type cast on ts compilation ([#1962](https://github.com/lingui/js-lingui/issues/1962)) ([0f66617](https://github.com/lingui/js-lingui/commit/0f6661799acfb62c4d169cacc8f6867278263f0e))
+
 ## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
 
 ### Bug Fixes
