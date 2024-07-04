@@ -3493,7 +3493,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+"@lingui/babel-plugin-lingui-macro@4.11.2, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
   dependencies:
@@ -3526,6 +3526,7 @@ __metadata:
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
     "@lingui/babel-plugin-extract-messages": 4.11.2
+    "@lingui/babel-plugin-lingui-macro": 4.11.2
     "@lingui/conf": 4.11.2
     "@lingui/core": 4.11.2
     "@lingui/format-po": 4.11.2
@@ -3734,11 +3735,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
-    "@babel/runtime": ^7.20.13
-    "@babel/types": ^7.20.7
-    "@lingui/conf": 4.11.2
     "@lingui/core": 4.11.2
-    "@lingui/message-utils": 4.11.2
+    "@lingui/react": 4.11.2
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 4.11.2
     babel-plugin-macros: 2 || 3
@@ -3780,7 +3778,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/react@workspace:*, @lingui/react@workspace:packages/react":
+"@lingui/react@4.11.2, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:

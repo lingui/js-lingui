@@ -54,6 +54,7 @@
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
     "@lingui/babel-plugin-extract-messages": "4.11.2",
+    "@lingui/babel-plugin-lingui-macro": "4.11.2",
     "@lingui/conf": "4.11.2",
     "@lingui/core": "4.11.2",
     "@lingui/format-po": "4.11.2",

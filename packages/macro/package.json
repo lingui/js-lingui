@@ -47,11 +47,8 @@
     "index.js"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.11.2",
     "@lingui/core": "4.11.2",
-    "@lingui/message-utils": "4.11.2"
+    "@lingui/react": "4.11.2"
   },
   "peerDependencies": {
     "@lingui/babel-plugin-lingui-macro": "4.11.2",
