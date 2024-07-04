@@ -3,11 +3,11 @@ import type {
   ExtractorType,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import extract from "../extractors"
-import path from "path"
 import chalk from "chalk"
+import path from "path"
+import extract from "../extractors"
+import { ExtractedCatalogType, MessageOrigin } from "../types"
 import { prettyOrigin } from "../utils"
-import { MessageOrigin, ExtractedCatalogType } from "../types"
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
@@ -70,6 +70,7 @@ export async function extractFromFiles(
 
         messages[next.id] = {
           ...prev,
+          message: prev.message ?? next.message,
           comments: next.comment
             ? [...prev.comments, next.comment]
             : prev.comments,

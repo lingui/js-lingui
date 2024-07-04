@@ -78,6 +78,13 @@ export type PoFormatterOptions = {
   explicitIdAsDefault?: boolean
 
   /**
+   * Custom attributes to append to the PO file header
+   *
+   * @default {}
+   */
+  customHeaderAttributes?: { [key: string]: string }
+
+  /**
    * Print values for unnamed placeholders as comments for each message.
    *
    * This can give more context to translators for better translations.

@@ -318,6 +318,23 @@ describe("I18n", () => {
     expect(handler).toHaveBeenCalledTimes(2)
   })
 
+  it("._ should emit missing event for undefined id", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    const handler = jest.fn()
+    i18n.on("missing", handler)
+    // @ts-expect-error 'id' should be of 'MessageDescriptor' or 'string' type.
+    i18n._()
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith({
+      id: "",
+      locale: "en",
+    })
+  })
+
   describe("params.missing - handling missing translations", () => {
     it("._ should return custom string for missing translations", () => {
       const i18n = setupI18n({

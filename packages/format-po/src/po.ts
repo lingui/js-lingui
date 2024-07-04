@@ -61,6 +61,13 @@ export type PoFormatterOptions = {
   explicitIdAsDefault?: boolean
 
   /**
+   * Custom attributes to append to the PO file header
+   *
+   * @default {}
+   */
+  customHeaderAttributes?: { [key: string]: string }
+
+  /**
    * Print values for unnamed placeholders as comments for each message.
    *
    * This can give more context to translators for better translations.
@@ -89,7 +96,10 @@ function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message, message.context)
 }
 
-function getCreateHeaders(language: string): PO["headers"] {
+function getCreateHeaders(
+  language: string,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
+): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
     "MIME-Version": "1.0",
@@ -97,6 +107,7 @@ function getCreateHeaders(language: string): PO["headers"] {
     "Content-Transfer-Encoding": "8bit",
     "X-Generator": "@lingui/cli",
     ...(language ? { Language: language } : {}),
+    ...(customHeaderAttributes ?? {}),
   }
 }
 
@@ -247,7 +258,10 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         po = PO.parse(ctx.existing)
       } else {
         po = new PO()
-        po.headers = getCreateHeaders(ctx.locale)
+        po.headers = getCreateHeaders(
+          ctx.locale,
+          options.customHeaderAttributes
+        )
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)
       }

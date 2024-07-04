@@ -1,6 +1,6 @@
 {
   "name": "@lingui/vite-plugin",
-  "version": "4.8.0-next.1",
+  "version": "4.11.2",
   "description": "Vite plugin for Lingui message catalogs",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -39,8 +39,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "4.8.0-next.1",
-    "@lingui/conf": "4.8.0-next.1"
+    "@lingui/cli": "4.11.2",
+    "@lingui/conf": "4.11.2"
   },
   "peerDependencies": {
     "vite": "^3 || ^4 || ^5.0.9"

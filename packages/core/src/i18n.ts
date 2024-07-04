@@ -54,7 +54,7 @@ export type MissingMessageEvent = {
 
 type MissingHandler = string | ((locale: string, id: string) => string)
 
-type setupI18nProps = {
+export type I18nProps = {
   locale?: Locale
   locales?: Locales
   messages?: AllMessages
@@ -86,7 +86,7 @@ export class I18n extends EventEmitter<Events> {
   private _messages: AllMessages = {}
   private _missing?: MissingHandler
 
-  constructor(params: setupI18nProps) {
+  constructor(params: I18nProps) {
     super()
 
     if (params.missing != null) this._missing = params.missing
@@ -213,6 +213,11 @@ export class I18n extends EventEmitter<Events> {
     options?: MessageOptions
   ): string {
     let message = options?.message
+
+    if (!id) {
+      id = ""
+    }
+
     if (!isString(id)) {
       values = id.values || values
       message = id.message
@@ -269,7 +274,7 @@ export class I18n extends EventEmitter<Events> {
   }
 }
 
-function setupI18n(params: setupI18nProps = {}): I18n {
+function setupI18n(params: I18nProps = {}): I18n {
   return new I18n(params)
 }
 

@@ -2994,7 +2994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/macro@npm:^4.8.0-next.0, @lingui/macro@npm:^4.8.0-next.1":
+"@lingui/macro@npm:^4.8.0-next.1":
   version: 4.8.0-next.1
   resolution: "@lingui/macro@npm:4.8.0-next.1"
   dependencies:
@@ -5817,7 +5817,6 @@ __metadata:
     "@lingui/cli": ^4.8.0-next.0
     "@lingui/core": ^4.1.2
     "@lingui/loader": ^4.8.0-next.0
-    "@lingui/macro": ^4.8.0-next.0
     "@lingui/react": ^4.1.2
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^14.0.0

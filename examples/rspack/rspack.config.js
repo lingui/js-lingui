@@ -1,40 +1,53 @@
+const rspack = require("@rspack/core")
+
 /**
  * @type {import('@rspack/cli').Configuration}
  */
 module.exports = {
-    context: __dirname,
-    entry: {
-        main: "./src/main.tsx"
-    },
-    builtins: {
-        html: [
-            {
-                template: "./index.html"
-            }
-        ]
-    },
-    module: {
-        rules: [
-            {
-                test: /\.svg$/,
-                type: "asset"
+  context: __dirname,
+  entry: {
+    main: "./src/main.tsx",
+  },
+  resolve: {
+    extensions: [".js", ".ts", ".tsx", ".jsx"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        type: "asset",
+      },
+      {
+        test: /\.(jsx?|tsx?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "builtin:swc-loader",
+            options: {
+              sourceMap: true,
+              jsc: {
+                parser: {
+                  syntax: "typescript",
+                  tsx: true,
+                },
+                experimental: {
+                  plugins: [["@lingui/swc-plugin", {}]],
+                },
+                transform: {
+                  react: {
+                    runtime: "automatic",
+                  },
+                },
+              },
             },
-            {
-                test: /\.tsx$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            "@babel/preset-typescript",
-                            "@babel/preset-react"
-                        ],
-                        plugins: [
-                            "macros"
-                        ]
-                    }
-                }
-            }
-        ]
-    }
-};
+          },
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new rspack.HtmlRspackPlugin({
+      template: "./index.html",
+    }),
+  ],
+}

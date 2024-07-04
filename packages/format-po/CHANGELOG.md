@@ -3,11 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.8.0-next.1](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.1) (2024-03-06)
+## [4.11.2](https://github.com/lingui/js-lingui/compare/v4.11.1...v4.11.2) (2024-07-03)
 
 **Note:** Version bump only for package @lingui/format-po
 
-# [4.8.0-next.0](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.0) (2024-03-04)
+## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
+
+**Note:** Version bump only for package @lingui/format-po
+
+# [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
+
+### Features
+
+- **format-po:** configure header attributes in PO file formatter ([#1934](https://github.com/lingui/js-lingui/issues/1934)) ([d90f778](https://github.com/lingui/js-lingui/commit/d90f77813381e8a74dc9e16662a3ce384c683493))
+
+## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
+
+**Note:** Version bump only for package @lingui/format-po
+
+# [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
+
+**Note:** Version bump only for package @lingui/format-po
+
+# [4.9.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.9.0) (2024-04-12)
+
+**Note:** Version bump only for package @lingui/format-po
+
+# [4.8.0](https://github.com/lingui/js-lingui/compare/v4.7.2...v4.8.0) (2024-04-03)
 
 **Note:** Version bump only for package @lingui/format-po
 

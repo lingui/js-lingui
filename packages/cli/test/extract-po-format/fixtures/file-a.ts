@@ -18,3 +18,6 @@ const msgDescriptor = defineMessage({
 })
 
 i18n._(msgDescriptor)
+
+i18n._("addToCart")
+i18n._({id: "addToCart", message: "Add To Cart"})

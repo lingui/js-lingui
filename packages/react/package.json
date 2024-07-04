@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "4.8.0-next.1",
+  "version": "4.11.2",
   "sideEffects": false,
   "description": "React components for translations",
   "main": "./dist/index.cjs",
@@ -44,10 +44,12 @@
     ".": {
       "require": {
         "types": "./dist/index.d.cts",
+        "react-server": "./dist/index-rsc.cjs",
         "default": "./dist/index.cjs"
       },
       "import": {
         "types": "./dist/index.d.mts",
+        "react-server": "./dist/index-rsc.mjs",
         "default": "./dist/index.mjs"
       }
     },
@@ -75,7 +77,7 @@
     "macro/index.js"
   ],
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
+    "@lingui/babel-plugin-lingui-macro": "4.11.2",
     "babel-plugin-macros": "2 || 3",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
@@ -89,7 +91,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "4.8.0-next.1"
+    "@lingui/core": "4.11.2"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",

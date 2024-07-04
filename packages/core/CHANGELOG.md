@@ -3,11 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.8.0-next.1](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.1) (2024-03-06)
+## [4.11.2](https://github.com/lingui/js-lingui/compare/v4.11.1...v4.11.2) (2024-07-03)
 
 **Note:** Version bump only for package @lingui/core
 
-# [4.8.0-next.0](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.0) (2024-03-04)
+## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
+
+### Bug Fixes
+
+- (lingui/core) i18n error if id is undefined ([#1938](https://github.com/lingui/js-lingui/issues/1938)) ([36c637a](https://github.com/lingui/js-lingui/commit/36c637a23a27d0933de0fd8978d72291792a3041))
+
+# [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
+
+### Bug Fixes
+
+- **message-utils:** correctly handle multi-digit complex argument cases ([#1937](https://github.com/lingui/js-lingui/issues/1937)) ([47a0dde](https://github.com/lingui/js-lingui/commit/47a0dded190fa990ea21239a464073348209b8f0))
+
+## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
+
+### Bug Fixes
+
+- **core:** pound symbol being replaced outside plural and selectordinal ([#1928](https://github.com/lingui/js-lingui/issues/1928)) ([e94c6fd](https://github.com/lingui/js-lingui/commit/e94c6fd9d1d8827f535a8ae8faa2d230e961ae9d))
+
+# [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
+
+### Features
+
+- **react:** native support react RSC ([#1914](https://github.com/lingui/js-lingui/issues/1914)) ([0e94f2a](https://github.com/lingui/js-lingui/commit/0e94f2a5b7402b5197447932c6690502023b3c55))
+
+# [4.9.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.9.0) (2024-04-12)
+
+### Features
+
+- **react:** native support react RSC ([#1914](https://github.com/lingui/js-lingui/issues/1914)) ([0e94f2a](https://github.com/lingui/js-lingui/commit/0e94f2a5b7402b5197447932c6690502023b3c55))
+
+# [4.8.0](https://github.com/lingui/js-lingui/compare/v4.7.2...v4.8.0) (2024-04-03)
 
 **Note:** Version bump only for package @lingui/core
 

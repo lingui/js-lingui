@@ -14,7 +14,7 @@ The Lingui Vite integration:
 
 `@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
-1.  Install `@lingui/cli`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
+1.  Install `@lingui/cli`, `@lingui/vite-plugin`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
     npm install --save-dev @lingui/cli @lingui/vite-plugin babel-plugin-macros

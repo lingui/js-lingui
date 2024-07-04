@@ -7,6 +7,12 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: pl\n"
 
+#. js-lingui-explicit-id
+#: fixtures/file-a.ts:22
+#: fixtures/file-a.ts:23
+msgid "addToCart"
+msgstr ""
+
 #. placeholder {0}: user.name
 #. placeholder {0}: author.name
 #. placeholder {0}: moderator.name

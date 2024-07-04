@@ -47,9 +47,9 @@ const Header = (): React.ReactElement => {
               </p>
 
               <div className={clsx(styles.heroButtons, "name", "margin-vert--md")}>
-                <Button href={useBaseUrl("/tutorials/setup-react")}>Get Started</Button>
-                <Button href={useBaseUrl("/introduction")} isOutline={true}>
-                  View Docs
+                <Button href={useBaseUrl("/introduction")}>Get Started</Button>
+                <Button href={useBaseUrl("/misc/examples")} isOutline={true}>
+                  Examples
                 </Button>
               </div>
               <iframe

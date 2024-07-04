@@ -15,9 +15,9 @@
     "fixFormat": "prettier --write ."
   },
   "dependencies": {
-    "@docusaurus/core": "3.1.1",
-    "@docusaurus/preset-classic": "3.1.1",
-    "@docusaurus/remark-plugin-npm2yarn": "3.1.1",
+    "@docusaurus/core": "3.2.1",
+    "@docusaurus/preset-classic": "3.2.1",
+    "@docusaurus/remark-plugin-npm2yarn": "3.2.1",
     "@mdx-js/react": "3.0.1",
     "clsx": "2.1.0",
     "docusaurus-plugin-sass": "^0.2.5",
@@ -31,10 +31,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "3.1.1",
-    "@docusaurus/module-type-aliases": "3.1.1",
-    "@docusaurus/utils": "3.1.1",
-    "@tsconfig/docusaurus": "2.0.2",
+    "@docusaurus/eslint-plugin": "3.2.1",
+    "@docusaurus/module-type-aliases": "3.2.1",
+    "@docusaurus/utils": "3.2.1",
+    "@tsconfig/docusaurus": "2.0.3",
     "@types/react": "18.2.58",
     "@types/react-helmet": "6.1.11",
     "@types/react-router-dom": "5.3.3",

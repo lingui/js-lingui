@@ -6,7 +6,7 @@ This project shows how to use the [Rspack JavaScript bundler](https://www.rspack
 
 ## Setup Instructions
 
-1. `cd rspack-project && npm install`
+1. `npm install` to install dependencies
 2. `npm run dev` to run the development server.
 3. `npm run build` to build the application.
 
@@ -19,9 +19,9 @@ This project shows how to use the [Rspack JavaScript bundler](https://www.rspack
 
 ## Configuration File Notes
 
-- [rspack.config.js](./rspack-project/rspack.config.js) specifies that that babel should transcompile all `.tsx` files using the `@babel/preset-typscript` and `@babel/preset-react` [presets](https://babeljs.io/docs/presets), as well as the `macros` [plugin](https://babeljs.io/docs/plugins). This step is necessary so that [Lingui Macros](https://lingui.dev/ref/macro) such as `<Trans>` are correctly transcompiled into their respective React components.
-- [lingui.config.ts](./rspack-project/lingui.config.ts) specifies the available locales, defaults, and paths where the message catalogs are stored.
-- As per the [Rspack documentation](https://www.rspack.dev/guide/builtin-swc-loader.html), `builtin:swc-loader` does not currently support plugins, which is why the trans-compilation work is still done in babel. Once SWC plugins are supported, transcompilation should be done with Rspack's `builtin:swc-loader` for improved performance.
+- [`rspack.config.js`](./rspack.config.js) specifies the [`builtin:swc-loader`](https://www.rspack.dev/guide/builtin-swc-loader.html#builtinswc-loader) should transcompile all `.tsx` files using the Lingui SWC plugin, ensuring transcompilation of [Lingui Macros](https://lingui.dev/ref/macro) like `<Trans>` into their respective React components. When using Lingui SWC plugin, ensure version compatibility with `@rspack/core`. Refer to the [compatibility guide](https://github.com/lingui/swc-plugin#compatibility) for selecting the appropriate plugin version.
+
+- [`lingui.config.ts`](./lingui.config.ts) specifies the available locales, defaults, and paths where the message catalogs are stored.
 
 ## Helpful Resources
 
