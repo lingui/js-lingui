@@ -3502,9 +3502,9 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/conf": 4.8.0-next.1
-    "@lingui/core": 4.8.0-next.1
-    "@lingui/message-utils": 4.8.0-next.1
+    "@lingui/conf": 4.11.2
+    "@lingui/core": 4.11.2
+    "@lingui/message-utils": 4.11.2
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     unbuild: 2.0.0
@@ -3578,20 +3578,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@npm:4.8.0-next.1":
-  version: 4.8.0-next.1
-  resolution: "@lingui/conf@npm:4.8.0-next.1"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    chalk: ^4.1.0
-    cosmiconfig: ^8.0.0
-    jest-validate: ^29.4.3
-    jiti: ^1.17.1
-    lodash.get: ^4.4.2
-  checksum: ac300bd2b82bcf9f9990cadacbdc13d2983b91d0aaa93f499f293f6e8b2d60015633c3e007d9c192ed63fd648aac66bd07b57a0d879451ccce59f60f8d7075ac
-  languageName: node
-  linkType: hard
-
 "@lingui/core@4.11.2, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
@@ -3620,17 +3606,6 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/message-utils": 4.0.0
   checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
-  languageName: node
-  linkType: hard
-
-"@lingui/core@npm:4.8.0-next.1":
-  version: 4.8.0-next.1
-  resolution: "@lingui/core@npm:4.8.0-next.1"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": ^4.8.0-next.1
-    unraw: ^3.0.0
-  checksum: 5c96feba95c4226723e5aefd093fe13bd7735c3bd52b03b4cec53870de8434c19ffcff0a0bb7017b4ed460839ee0ea72e6d326c685acd951703befd9ab464a95
   languageName: node
   linkType: hard
 
@@ -3748,7 +3723,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@4.11.2, @lingui/message-utils@^4.8.0-next.1, @lingui/message-utils@workspace:packages/message-utils":
+"@lingui/message-utils@4.11.2, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
@@ -3765,16 +3740,6 @@ __metadata:
   dependencies:
     "@messageformat/parser": ^5.0.0
   checksum: caefbe8be76c9bd10cdc526358260599f99e0c33cb498d01a56f330dde9a88921d4871d5389a6fd0e9e3810f15dea38d25dad5d7fa2b819b2321e10dc71105cf
-  languageName: node
-  linkType: hard
-
-"@lingui/message-utils@npm:4.8.0-next.1":
-  version: 4.8.0-next.1
-  resolution: "@lingui/message-utils@npm:4.8.0-next.1"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-  checksum: d6e3b628f0491d17473a546aa5d1a0af62295de525604babfa0d2b7f1e6130888f40ebabc2614af6a179e5c6cfa7033d077bf620b118bb985cc072d56b1f67d1
   languageName: node
   linkType: hard
 
