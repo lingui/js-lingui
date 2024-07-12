@@ -42,7 +42,7 @@ export const vueExtractor: ExtractorType = {
           comments: true,
           isTS:
             isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
-          nodeTransforms: [transformer],
+          nodeTransforms: [transformer()],
         },
       })
 

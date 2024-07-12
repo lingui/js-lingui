@@ -24,7 +24,7 @@ export function run(source: string) {
       bindingMetadata: {
         Trans: BindingTypes.SETUP_MAYBE_REF,
       },
-      nodeTransforms: [transformer],
+      nodeTransforms: [transformer()],
     },
   })
 }

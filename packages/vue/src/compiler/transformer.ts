@@ -22,7 +22,7 @@ export type LinguiTransformerOptions = {
  *
  */
 export const transformer =
-  (options: LinguiTransformerOptions): NodeTransform =>
+  (options: LinguiTransformerOptions = {}): NodeTransform =>
   (node, context) => {
     if (
       node.type === NodeTypes.ROOT &&
