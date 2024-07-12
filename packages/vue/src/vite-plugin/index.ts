@@ -57,5 +57,3 @@ export function vueLingui(options: Options = {}): PluginOption[] {
     },
   ]
 }
-
-export default lingui
