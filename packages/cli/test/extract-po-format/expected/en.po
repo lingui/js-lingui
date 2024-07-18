@@ -45,3 +45,15 @@ msgstr "This JSX element has custom id"
 #: fixtures/file-a.ts:11
 msgid "custom.id"
 msgstr "This message has custom id"
+
+#. multi line
+#. comment 1
+#: fixtures/file-b.tsx:21
+msgid "translation with multi line comment 1"
+msgstr "translation with multi line comment 1"
+
+#. multi line
+#. comment 2
+#: fixtures/file-b.tsx:25
+msgid "translation with multi line comment 2"
+msgstr "translation with multi line comment 2"

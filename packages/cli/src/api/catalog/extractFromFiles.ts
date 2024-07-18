@@ -9,6 +9,17 @@ import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
 import { prettyOrigin } from "../utils"
 
+const formatComment = (comment: string) => {
+  // split multi line comment
+  if (comment.includes("\n")) {
+    return comment
+      .split("\n") // split comments by newline character
+      .filter(Boolean) // eliminate empty strings
+      .map((commentSlice) => commentSlice.trim()) // trim whitespace
+  }
+  return [comment]
+}
+
 export async function extractFromFiles(
   paths: string[],
   config: LinguiConfigNormalized
@@ -52,7 +63,7 @@ export async function extractFromFiles(
           ...prev,
           message: prev.message ?? next.message,
           comments: next.comment
-            ? [...prev.comments, next.comment]
+            ? [...prev.comments, ...formatComment(next.comment)]
             : prev.comments,
           origin: [...prev.origin, [filename, next.origin[1]]],
         }
