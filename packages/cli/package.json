@@ -61,7 +61,7 @@
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
     "chokidar": "3.5.1",
-    "cli-table": "0.3.6",
+    "cli-table": "^0.3.11",
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",

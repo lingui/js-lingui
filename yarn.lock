@@ -3253,7 +3253,7 @@ __metadata:
     babel-plugin-macros: ^3.0.1
     chalk: ^4.1.0
     chokidar: 3.5.1
-    cli-table: 0.3.6
+    cli-table: ^0.3.11
     commander: ^10.0.0
     convert-source-map: ^2.0.0
     date-fns: ^3.6.0
@@ -6312,12 +6312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table@npm:0.3.6":
-  version: 0.3.6
-  resolution: "cli-table@npm:0.3.6"
+"cli-table@npm:^0.3.11":
+  version: 0.3.11
+  resolution: "cli-table@npm:0.3.11"
   dependencies:
     colors: 1.0.3
-  checksum: b0cd08578c810240920438cc2b3ffb4b4f5106b29f3362707f1d8cfc0c0440ad2afb70b96e30ce37f72f0ffe1e844ae7341dde4df17d51ad345eb186a5903af2
+  checksum: 59fb61f992ac9bc8610ed98c72bf7f5d396c5afb42926b6747b46b0f8bb98a0dfa097998e77542ac334c1eb7c18dbf4f104d5783493273c5ec4c34084aa7c663
   languageName: node
   linkType: hard
 
