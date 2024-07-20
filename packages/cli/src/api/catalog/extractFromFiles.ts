@@ -14,8 +14,8 @@ const formatComment = (comment: string) => {
   if (comment.includes("\n")) {
     return comment
       .split("\n") // split comments by newline character
-      .filter(Boolean) // eliminate empty strings
       .map((commentSlice) => commentSlice.trim()) // trim whitespace
+      .filter(Boolean) // eliminate empty strings
   }
   return [comment]
 }
