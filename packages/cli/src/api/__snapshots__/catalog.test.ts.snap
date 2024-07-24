@@ -7,6 +7,44 @@ exports[`Catalog POT Flow Should get translations from template if locale file n
 }
 `;
 
+exports[`Catalog collect should extract files with special characters when passed in options 1`] = `
+{
+  Component C: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/(componentC)/index.js,
+        1,
+      ],
+    ],
+  },
+  Component D: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/[componentD]/index.js,
+        1,
+      ],
+    ],
+  },
+  Component E: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/$componentE/index.js,
+        1,
+      ],
+    ],
+  },
+}
+`;
+
 exports[`Catalog collect should extract messages from source files 1`] = `
 {
   Component A: {
@@ -27,6 +65,39 @@ exports[`Catalog collect should extract messages from source files 1`] = `
     origin: [
       [
         collect/componentB.js,
+        1,
+      ],
+    ],
+  },
+  Component C: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/(componentC)/index.js,
+        1,
+      ],
+    ],
+  },
+  Component D: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/[componentD]/index.js,
+        1,
+      ],
+    ],
+  },
+  Component E: {
+    comments: [],
+    context: undefined,
+    message: undefined,
+    origin: [
+      [
+        collect/$componentE/index.js,
         1,
       ],
     ],
@@ -422,6 +493,60 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       ],
       translation: ,
     },
+    Component C: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/(componentC)/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Component D: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/[componentD]/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Component E: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/$componentE/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
     Hello World: {
       comments: [
         Comment A,
@@ -514,6 +639,60 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       origin: [
         [
           collect/componentB.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Component C: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/(componentC)/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Component D: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/[componentD]/index.js,
+          1,
+        ],
+      ],
+      translation: ,
+    },
+    Component E: {
+      comments: [
+        js-lingui-explicit-id,
+      ],
+      context: null,
+      extra: {
+        flags: [],
+        translatorComments: [],
+      },
+      obsolete: false,
+      origin: [
+        [
+          collect/$componentE/index.js,
           1,
         ],
       ],
