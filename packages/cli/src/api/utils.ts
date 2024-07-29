@@ -115,3 +115,10 @@ export function normalizeRelativePath(sourcePath: string): string {
     (isDir ? "/" : "")
   )
 }
+
+/**
+ * Escape special regex characters used in file-based routing systems
+ */
+export function makePathRegexSafe(path: string) {
+  return path.replace(/[(){}[\]^$+]/g, "\\$&")
+}

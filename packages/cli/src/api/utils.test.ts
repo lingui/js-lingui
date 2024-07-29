@@ -1,4 +1,8 @@
-import { normalizeRelativePath, replacePlaceholders } from "./utils"
+import {
+  makePathRegexSafe,
+  normalizeRelativePath,
+  replacePlaceholders,
+} from "./utils"
 import mockFs from "mock-fs"
 
 describe("replacePlaceholders", () => {
@@ -61,5 +65,73 @@ describe("normalizeRelativePath", () => {
     expect(normalizeRelativePath("./componentA")).toEqual("componentA/")
     // ComponentB is a file shouldn't add ending slash
     expect(normalizeRelativePath("./componentB")).toEqual("componentB")
+  })
+})
+
+describe("makePathRegexSafe", () => {
+  it("should not modify paths without special characters", () => {
+    const path = "src/components/test.tsx"
+    expect(makePathRegexSafe(path)).toBe(path)
+  })
+
+  it("should escape parentheses", () => {
+    const path = "src/(components)/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\(components\\)/test.tsx")
+  })
+
+  it("should escape square brackets", () => {
+    const path = "src/[components]/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\[components\\]/test.tsx")
+  })
+
+  it("should escape curly braces", () => {
+    const path = "src/{components}/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\{components\\}/test.tsx")
+  })
+
+  it("should escape caret symbol", () => {
+    const path = "src/^components/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\^components/test.tsx")
+  })
+
+  it("should escape dollar sign", () => {
+    const path = "src/$components/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\$components/test.tsx")
+  })
+
+  it("should escape plus sign", () => {
+    const path = "src/+components/test.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/\\+components/test.tsx")
+  })
+
+  it("should handle multiple special characters", () => {
+    const path = "src/components/test(1)[2]{3}^$+.tsx"
+    expect(makePathRegexSafe(path)).toBe(
+      "src/components/test\\(1\\)\\[2\\]\\{3\\}\\^\\$\\+.tsx"
+    )
+  })
+
+  it("should handle paths with spaces", () => {
+    const path = "src/components/test component.tsx"
+    expect(makePathRegexSafe(path)).toBe("src/components/test component.tsx")
+  })
+
+  it("should handle empty string", () => {
+    expect(makePathRegexSafe("")).toBe("")
+  })
+
+  it("should handle root-level path", () => {
+    const path = "test.tsx"
+    expect(makePathRegexSafe(path)).toBe("test.tsx")
+  })
+
+  it("should handle relative paths", () => {
+    const path = "./src/components/test[1].tsx"
+    expect(makePathRegexSafe(path)).toBe("./src/components/test\\[1\\].tsx")
+  })
+
+  it("should handle paths with consecutive special characters", () => {
+    const path = "src/components/test[[]].tsx"
+    expect(makePathRegexSafe(path)).toBe("src/components/test\\[\\[\\]\\].tsx")
   })
 })
