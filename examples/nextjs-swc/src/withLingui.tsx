@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { allI18nInstances } from './appRouterI18n'
+import { getI18nInstance } from './appRouterI18n'
 import { setI18n } from '@lingui/react/server'
 
 export type PageLangParam = {
@@ -21,7 +21,7 @@ export const withLinguiPage = <Props extends PageProps>(
 ): PageExposedToNextJS<Props> => {
   return function WithLingui(props) {
     const lang = props.params.lang
-    const i18n = allI18nInstances[lang]!
+    const i18n = getI18nInstance(lang)
     setI18n(i18n)
 
     return <AppRouterPage {...props} lang={lang} />
@@ -37,7 +37,7 @@ export const withLinguiLayout = <Props extends LayoutProps>(
 ): LayoutExposedToNextJS<Props> => {
   return function WithLingui(props) {
     const lang = props.params.lang
-    const i18n = allI18nInstances[lang]!
+    const i18n = getI18nInstance(lang)
     setI18n(i18n)
 
     return <AppRouterPage {...props} lang={lang} />
