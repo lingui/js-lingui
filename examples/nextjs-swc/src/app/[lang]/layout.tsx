@@ -1,5 +1,5 @@
 import linguiConfig from '../../../lingui.config'
-import { allI18nInstances, allMessages } from '../../appRouterI18n'
+import { allMessages, getI18nInstance } from '../../appRouterI18n'
 import { LinguiClientProvider } from '../../components/LinguiClientProvider'
 import { PageLangParam, withLinguiLayout } from '../../withLingui'
 import React from 'react'
@@ -10,7 +10,7 @@ export async function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: PageLangParam) {
-  const i18n = allI18nInstances[params.lang]!
+  const i18n = getI18nInstance(params.lang)
 
   return {
     title: t(i18n)`Translation Demo`
