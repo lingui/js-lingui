@@ -14,17 +14,3 @@ export function MyComponent2() {
 export function MyComponent3() {
   return <Trans id={"jsx.custom.id"}>This JSX element has custom id</Trans>
 }
-
-
-export function MyComponent4() {
-  return <div>
-    <Trans comment="multi line
-    comment 1">
-      translation with multi line comment 1
-    </Trans>
-    <Trans comment={`multi line
-    comment 2`}>
-      translation with multi line comment 2
-    </Trans>
-  </div>
-}

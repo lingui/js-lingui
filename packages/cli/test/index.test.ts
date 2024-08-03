@@ -69,8 +69,8 @@ describe("E2E Extractor Test", () => {
         ┌─────────────┬─────────────┬─────────┐
         │ Language    │ Total count │ Missing │
         ├─────────────┼─────────────┼─────────┤
-        │ en (source) │     10      │    -    │
-        │ pl          │     10      │   10    │
+        │ en (source) │      8      │    -    │
+        │ pl          │      8      │    8    │
         └─────────────┴─────────────┴─────────┘
 
         (use "yarn extract" to update catalogs with new messages)
