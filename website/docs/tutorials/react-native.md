@@ -103,7 +103,7 @@ First, we need to wrap our app with [`I18nProvider`](/docs/ref/react.md#i18nprov
 
 ```tsx
 import { I18nProvider } from "@lingui/react";
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 import { i18n } from "@lingui/core";
 import { Text } from "react-native";
 
@@ -126,7 +126,7 @@ Translating the heading is done. Now, let's translate the `title` prop in the `<
 The solution is to use the `t` macro which we can obtain from the `useLingui` hook. We use it like this to get a translated string:
 
 ```tsx
-import { useLingui } from '@lingui/macro';
+import { useLingui } from '@lingui/react/macro';
 
 const { t } = useLingui()
 ...
