@@ -11,7 +11,7 @@
  * $ yarn lingui extract
  * ...
  * (use "yarn lingui compile" to compile catalogs for production)
- * 
+ *
  * $ pnpm run extract
  * ...
  * (use "pnpm run compile" to compile catalogs for production)
