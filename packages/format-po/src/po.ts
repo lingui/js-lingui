@@ -11,6 +11,17 @@ const splitOrigin = (origin: string) => {
   return [file, line ? Number(line) : null] as [file: string, line: number]
 }
 
+const splitMultiLineComments = (comments: string[]) => {
+  return comments.flatMap((comment) =>
+    comment.includes("\n")
+      ? comment
+          .split("\n")
+          .map((slice) => slice.trim())
+          .filter(Boolean)
+      : comment
+  )
+}
+
 /**
  * @internal
  */
@@ -96,7 +107,11 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
 
     // The extractedComments array may be modified in this method,
     // so create a new array with the message's elements.
-    item.extractedComments = [...(message.comments || [])]
+    item.extractedComments = [
+      ...(message.comments?.length
+        ? splitMultiLineComments(message.comments)
+        : []),
+    ]
 
     item.flags = ((message.extra?.flags || []) as string[]).reduce<
       Record<string, boolean>

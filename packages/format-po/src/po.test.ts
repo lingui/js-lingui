@@ -1,9 +1,9 @@
 import fs from "fs"
 import path from "path"
 
-import { formatter as createFormatter, POCatalogExtra } from "./po"
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import MockDate from "mockdate"
+import { formatter as createFormatter, POCatalogExtra } from "./po"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -86,6 +86,15 @@ describe("pofile format", () => {
           " legs, pitifully thin compared with the size of the rest of him, waved about" +
           " helplessly as he looked. \"What's happened to me?\" he thought. It wasn't" +
           " a dream. His room, a proper human",
+      },
+      withMultiLineComments: {
+        translation: "Message with multi line comments",
+        comments: [
+          `hello
+          world
+          
+          `,
+        ],
       },
     }
 
