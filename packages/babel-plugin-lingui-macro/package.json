@@ -53,6 +53,16 @@
         "types": "./dist/macro.d.mts",
         "default": "./dist/macro.mjs"
       }
+    },
+    "./ast": {
+      "require": {
+        "types": "./dist/ast.d.cts",
+        "default": "./dist/ast.cjs"
+      },
+      "import": {
+        "types": "./dist/ast.d.mts",
+        "default": "./dist/ast.mjs"
+      }
     }
   },
   "files": [

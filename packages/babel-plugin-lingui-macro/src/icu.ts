@@ -1,9 +1,4 @@
-import {
-  Expression,
-  isJSXEmptyExpression,
-  JSXElement,
-  Node,
-} from "@babel/types"
+import { Expression, isJSXEmptyExpression, Node } from "@babel/types"
 
 const metaOptions = ["id", "comment", "props"]
 
@@ -12,18 +7,20 @@ const escapedMetaOptionsRe = new RegExp(`^_(${metaOptions.join("|")})$`)
 export type ParsedResult = {
   message: string
   values?: Record<string, Expression>
-  jsxElements?: Record<string, JSXElement>
+  elements?: Record<string, any> // JSXElement or ElementNode in Vue
 }
 
 export type TextToken = {
   type: "text"
   value: string
 }
+
 export type ArgToken = {
   type: "arg"
   value: Expression
   name?: string
 
+  raw?: boolean
   /**
    * plural
    * select
@@ -35,16 +32,17 @@ export type ArgToken = {
     [icuChoice: string]: string | Tokens
   }
 }
+
 export type ElementToken = {
   type: "element"
-  value: JSXElement
+  value: any // JSXElement or ElementNode in Vue
   name?: string | number
   children?: Token[]
 }
 export type Tokens = Token | Token[]
 export type Token = TextToken | ArgToken | ElementToken
 
-export default class ICUMessageFormat {
+export class ICUMessageFormat {
   public fromTokens(tokens: Tokens): ParsedResult {
     return (Array.isArray(tokens) ? tokens : [tokens])
       .map((token) => this.processToken(token))
@@ -54,18 +52,18 @@ export default class ICUMessageFormat {
           ...message,
           message: props.message + message.message,
           values: { ...props.values, ...message.values },
-          jsxElements: { ...props.jsxElements, ...message.jsxElements },
+          elements: { ...props.elements, ...message.elements },
         }),
         {
           message: "",
           values: {},
-          jsxElements: {},
+          elements: {},
         }
       )
   }
 
   public processToken(token: Token): ParsedResult {
-    const jsxElements: ParsedResult["jsxElements"] = {}
+    const jsxElements: ParsedResult["elements"] = {}
 
     if (token.type === "text") {
       return {
@@ -101,7 +99,7 @@ export default class ICUMessageFormat {
                 const {
                   message,
                   values: childValues,
-                  jsxElements: childJsxElements,
+                  elements: childJsxElements,
                 } = this.fromTokens(value)
 
                 Object.assign(values, childValues)
@@ -116,11 +114,11 @@ export default class ICUMessageFormat {
           return {
             message: `{${token.name}, ${token.format}, ${formatOptions}}`,
             values,
-            jsxElements,
+            elements: jsxElements,
           }
         default:
           return {
-            message: `{${token.name}}`,
+            message: token.raw ? `${token.name}` : `{${token.name}}`,
             values,
           }
       }
@@ -132,7 +130,7 @@ export default class ICUMessageFormat {
         const {
           message: childMessage,
           values: childValues,
-          jsxElements: childJsxElements,
+          elements: childJsxElements,
         } = this.fromTokens(child)
 
         message += childMessage
@@ -144,7 +142,7 @@ export default class ICUMessageFormat {
           ? `<${token.name}>${message}</${token.name}>`
           : `<${token.name}/>`,
         values: elementValues,
-        jsxElements,
+        elements: jsxElements,
       }
     }
 

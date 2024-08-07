@@ -326,6 +326,7 @@ export class MacroJSX {
         } else {
           option = this.tokenizeChildren(value as JSXChildPath)
         }
+
         if (pluralRuleRe.test(name)) {
           token.options[jsx2icuExactChoice(name)] = option
         } else {
