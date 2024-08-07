@@ -241,8 +241,10 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         const attrs = node.openingElement.attributes || []
 
         if (
-          t.isJSXSpreadAttribute(attrs[0]) &&
-          hasI18nComment(attrs[0].argument)
+          attrs.find(
+            (attr) =>
+              t.isJSXSpreadAttribute(attr) && hasI18nComment(attr.argument)
+          )
         ) {
           return
         }

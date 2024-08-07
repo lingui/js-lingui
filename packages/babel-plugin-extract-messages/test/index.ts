@@ -98,6 +98,20 @@ import { Trans } from "@lingui/react";
       })
     })
 
+    it("Should not rise warning when `key` used with macro", () => {
+      const code = `
+import { Trans } from "@lingui/react/macro";
+
+<Trans context="Context2" key={1}>
+  Some message
+</Trans>
+      `
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages.length).toBe(1)
+      })
+    })
+
     it("Should log error when no ID provided", () => {
       const code = `
 import { Trans } from "@lingui/react";
