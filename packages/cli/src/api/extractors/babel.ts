@@ -18,6 +18,8 @@ import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
 
+import path from "node:path"
+
 export const babelRe = new RegExp(
   "\\.(" +
     [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
@@ -49,9 +51,10 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
   } else if (code.search(inlineSourceMapsRE) != -1) {
     const { SourceMapConsumer } = await import("source-map")
     const { fromSource } = await import("convert-source-map")
-    sourceMapsConsumer = await new SourceMapConsumer(
-      fromSource(code).toObject()
-    )
+
+    const t = fromSource(code).toObject()
+
+    sourceMapsConsumer = await new SourceMapConsumer(t)
   }
 
   return {
@@ -73,7 +76,11 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
         column,
       })
 
-      return [mappedPosition.source, mappedPosition.line, mappedPosition.column]
+      return [
+        path.resolve(origin[0] + "/../" + mappedPosition.source),
+        mappedPosition.line,
+        mappedPosition.column,
+      ]
     },
   }
 }

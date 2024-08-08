@@ -271,7 +271,7 @@ describe("Catalog", () => {
 
       const messages = await catalog.collect()
       expect(messages[Object.keys(messages)[0]].origin).toStrictEqual([
-        ["../../../../../input.tsx", 5],
+        ["collect-inline-sourcemaps/input.tsx", 5],
       ])
     })
 

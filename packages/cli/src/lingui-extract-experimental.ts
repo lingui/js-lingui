@@ -6,7 +6,8 @@ import os from "os"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
 import { extractFromFiles } from "./api/catalog/extractFromFiles"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
+
 import { bundleSource } from "./extract-experimental/bundleSource"
 import {
   writeCatalogs,
@@ -136,9 +137,7 @@ export default async function command(
     }
 
     stats.push({
-      entry: normalizeSlashes(
-        nodepath.relative(linguiConfig.rootDir, entryPoint)
-      ),
+      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
       content: output,
     })
   }
