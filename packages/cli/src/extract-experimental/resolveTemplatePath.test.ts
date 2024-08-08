@@ -1,9 +1,7 @@
 import { resolveTemplatePath } from "./resolveTemplatePath"
-import os from "os"
+import normalizePath from "normalize-path"
 
-const skipOnWindows = os.platform().startsWith("win") ? describe.skip : describe
-
-skipOnWindows("resolveTemplateName", () => {
+describe("resolveTemplateName", () => {
   const rootDir = "/Users/lingui-app"
 
   test("Should use `messages` suffix when {entryName} defined in output", () => {
@@ -11,7 +9,7 @@ skipOnWindows("resolveTemplateName", () => {
     const output = `${rootDir}/locales/{entryDir}/{entryName}.{locale}`
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".pot")
-    expect(actual).toMatchInlineSnapshot(
+    expect(normalizePath(actual)).toMatchInlineSnapshot(
       `/Users/lingui-app/locales/pages/about/index.messages.pot`
     )
   })
@@ -21,7 +19,7 @@ skipOnWindows("resolveTemplateName", () => {
     const output = `${rootDir}/locales/{entryDir}/{locale}`
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".json")
-    expect(actual).toMatchInlineSnapshot(
+    expect(normalizePath(actual)).toMatchInlineSnapshot(
       `/Users/lingui-app/locales/pages/about/index.json`
     )
   })
@@ -31,7 +29,7 @@ skipOnWindows("resolveTemplateName", () => {
     const output = `${rootDir}/{entryDir}/locales/{locale}`
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".pot")
-    expect(actual).toMatchInlineSnapshot(
+    expect(normalizePath(actual)).toMatchInlineSnapshot(
       `/Users/lingui-app/pages/trip/day/locales/[day].page.pot`
     )
   })

@@ -2,11 +2,11 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
-import os from "os"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
 import { extractFromFiles } from "./api/catalog/extractFromFiles"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
+
 import { bundleSource } from "./extract-experimental/bundleSource"
 import {
   writeCatalogs,
@@ -53,9 +53,15 @@ export default async function command(
     )
   )
 
-  const tempDir = await fs.mkdtemp(
-    nodepath.join(os.tmpdir(), "js-lingui-extract-")
-  )
+  // unfortunately we can't use os.tmpdir() in this case
+  // on windows it might create a folder on a different disk then source code is stored
+  // (tmpdir would be always on C: but code could be stored on D:)
+  // and then relative path in sourcemaps produced by esbuild will be broken.
+  // sourcemaps itself doesn't allow to have absolute windows path, because they are not URL compatible.
+  // that's why we store esbuild bundles in .lingui folder
+  const tmpPrefix = ".lingui/"
+  await fs.mkdir(tmpPrefix, { recursive: true })
+  const tempDir = await fs.mkdtemp(tmpPrefix)
   await fs.rm(tempDir, { recursive: true, force: true })
 
   const bundleResult = await bundleSource(
@@ -136,9 +142,7 @@ export default async function command(
     }
 
     stats.push({
-      entry: normalizeSlashes(
-        nodepath.relative(linguiConfig.rootDir, entryPoint)
-      ),
+      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
       content: output,
     })
   }

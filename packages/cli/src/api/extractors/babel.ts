@@ -49,9 +49,10 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
   } else if (code.search(inlineSourceMapsRE) != -1) {
     const { SourceMapConsumer } = await import("source-map")
     const { fromSource } = await import("convert-source-map")
-    sourceMapsConsumer = await new SourceMapConsumer(
-      fromSource(code).toObject()
-    )
+
+    const t = fromSource(code).toObject()
+
+    sourceMapsConsumer = await new SourceMapConsumer(t)
   }
 
   return {
