@@ -37,6 +37,11 @@ const USERS: UserDetails[] = [
     link: "https://github.com/Uniswap/interface",
   },
   {
+    logo: "documenso.png",
+    name: "Documenso",
+    link: "https://github.com/documenso/documenso",
+  },
+  {
     logo: "graysky.png",
     name: "Graysky",
     link: "https://github.com/mozzius/graysky",
