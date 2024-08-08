@@ -24,7 +24,7 @@ export const fixture = (...dirs: string[]) =>
     path.resolve(__dirname, path.join("fixtures", ...dirs)) +
     // preserve trailing slash
     (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
-  ).replace(/\\/, "/")
+  ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
