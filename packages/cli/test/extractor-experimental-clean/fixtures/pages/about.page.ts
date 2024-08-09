@@ -1,4 +1,4 @@
-import { t } from "@lingui/macro"
+import { t } from "@lingui/core/macro"
 import { msg as headerMsg } from "../components/header"
 
 const msg = t`about page message`

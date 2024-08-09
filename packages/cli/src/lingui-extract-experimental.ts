@@ -14,6 +14,10 @@ import {
 } from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
 import chalk from "chalk"
+import {
+  extractFromFileWithBabel,
+  getBabelParserOptions,
+} from "./api/extractors/babel"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -55,7 +59,7 @@ export default async function command(
   await fs.rm(tempDir, { recursive: true, force: true })
 
   const bundleResult = await bundleSource(
-    config,
+    linguiConfig,
     getEntryPoints(config.entries),
     tempDir,
     linguiConfig.rootDir
@@ -69,6 +73,29 @@ export default async function command(
     linguiConfig.formatOptions,
     linguiConfig.sourceLocale
   )
+
+  linguiConfig.extractors = [
+    {
+      match(_filename: string) {
+        return true
+      },
+
+      async extract(filename, code, onMessageExtracted, ctx) {
+        const parserOptions = ctx.linguiConfig.extractorParserOptions
+
+        return extractFromFileWithBabel(
+          filename,
+          code,
+          onMessageExtracted,
+          ctx,
+          {
+            plugins: getBabelParserOptions(filename, parserOptions),
+          },
+          true
+        )
+      },
+    },
+  ]
 
   for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
     const messages = await extractFromFiles([outFile], linguiConfig)

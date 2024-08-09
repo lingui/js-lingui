@@ -57,6 +57,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component B: {
     comments: [],
@@ -68,6 +69,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component C: {
     comments: [],
@@ -124,6 +126,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   custom.id: {
     comments: [],
@@ -135,6 +138,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         4,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -151,6 +155,7 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Hello World: {
     comments: [
@@ -174,6 +179,7 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   custom.id: {
     comments: [],
@@ -185,6 +191,7 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         4,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -200,9 +207,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        11,
+        12,
       ],
     ],
+    placeholders: {},
   },
   MHrjPM: {
     comments: [],
@@ -211,9 +219,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        19,
+        20,
       ],
     ],
+    placeholders: {},
   },
   Nu4oKW: {
     comments: [
@@ -224,9 +233,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        6,
+        7,
       ],
     ],
+    placeholders: {},
   },
   YikuIL: {
     comments: [],
@@ -235,9 +245,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        18,
+        19,
       ],
     ],
+    placeholders: {},
   },
   d1Kdl3: {
     comments: [],
@@ -246,9 +257,14 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        17,
+        18,
       ],
     ],
+    placeholders: {
+      name: [
+        name,
+      ],
+    },
   },
   esnaQO: {
     comments: [],
@@ -257,9 +273,14 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        21,
+        22,
       ],
     ],
+    placeholders: {
+      count: [
+        count,
+      ],
+    },
   },
   xDAtGP: {
     comments: [],
@@ -268,9 +289,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        4,
+        5,
       ],
     ],
+    placeholders: {},
   },
 }
 `;

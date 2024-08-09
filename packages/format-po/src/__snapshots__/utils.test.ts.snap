@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`normalizePlaceholderValue Should normalize whitespaces 1`] = `user ? user.name : null`;
+
+exports[`normalizePlaceholderValue Should normalize whitespaces 2`] = `userName`;

@@ -13,8 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/pages/about.page.ts:4
+#: fixtures/pages/about.page.ts:5
 msgid "about page message"
+msgstr ""
+
+#: fixtures/constants/green.ts:3
+msgid "Green"
 msgstr ""
 
 #: fixtures/components/header.ts:3

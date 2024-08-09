@@ -207,7 +207,7 @@ const sidebar = [
   {
     type: "category",
     label: "Releases",
-    items: ["releases/migration-4", "releases/migration-3"],
+    items: ["releases/migration-5", "releases/migration-4", "releases/migration-3"],
   },
 ];
 

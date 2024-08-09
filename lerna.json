@@ -1,6 +1,8 @@
 {
-  "version": "4.11.2",
-  "packages": ["packages/*"],
+  "version": "5.0.0-next.0",
+  "packages": [
+    "packages/*"
+  ],
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
@@ -17,7 +19,10 @@
       ]
     },
     "publish": {
-      "allowBranch": ["main", "next"],
+      "allowBranch": [
+        "main",
+        "next"
+      ],
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",
