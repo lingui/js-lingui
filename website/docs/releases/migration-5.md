@@ -4,157 +4,164 @@
 
 TBD
 
-## Split React and JS Macro into separate packages
+## React and Js Macros was split to separate packages
 
-The current Lingui macro is tightly coupled with React, which poses problems for developers using vanilla JavaScript or other frameworks such as Vue.
+The current Lingui macro is tightly coupled with React, which poses problems for developers using Lingui with vanilla JavaScript or other frameworks such as Vue.
 
-#### Issues
-
-- The existing macro assumes React usage, which isn't ideal for non-React projects.
-- Using `@types/react` and `@lingui/react` adds React dependencies to projects that don't use React, which is unnecessary.
-
-#### Benefits of the Split
-
-- Allows the macro to be used with other JSX-based frameworks in the future.
-- Removes unwanted React dependencies, making Lingui more versatile.
-
-#### Solution
-
-To address this, the macro package has been split into two separate packages:
+The macro package has been split into two separate entrypoints from existing packages:
 
 - `@lingui/react/macro`
 - `@lingui/core/macro`
-
-Also, the transformation code has been extracted into a separate Babel plugin `@lingui/babel-plugin-lingui-macro`, which can be used independently of `babel-plugin-macros`.
 
 **Example Usage:**
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
-import { t } from "@lingui/core/macro";
+import { msg } from "@lingui/core/macro";
+
+const colors = [msg`Red`, msg`Yellow`, msg`Green`];
 
 function MyComponent() {
-  <Trans>Hi, my name is {name}</Trans>
-  <span title={t`Title`} />
+  <Trans>Hi, my name is {name}</Trans>;
 }
 ```
 
-#### Migration Strategy
+### Migration
 
-- Users can migrate gradually by starting with `@lingui/macro`, which consolidates macros from both core and React-specific packages.
-- Over time, users are encouraged to migrate directly to `@lingui/core/macro` or `@lingui/react/macro` depending on their specific needs.
+This is not a breaking change.
 
-:::tip
-There is a Codemod [@lingui/codemods](https://www.npmjs.com/package/@lingui/codemods) to help you with the migration. Check out the [`split-macro-imports.ts`](https://github.com/lingui/codemods/blob/main/transforms/split-macro-imports.ts) for more details.
-:::
+Imports from `@lingui/macro` still work, but marked as deprecated. They would be removed in the next major release.
+
+You can use an automatic [codemod](https://www.npmjs.com/package/@lingui/codemods) to convert your codebase to the new imports:
+
+```bash
+npx @lingui/codemods split-macro-imports <path>
+```
+
+After this codemod you can drop `@lingui/macro` from your dependencies.
 
 ## Full Vue.js support
 
 TBD ([#1925](https://github.com/lingui/js-lingui/pull/1925))
 
-## Whitespaces handling changes
+## Changes in whitespaces handling
 
-The current whitespace handling in Lingui, specifically through `normalizeWhitespace`, has been identified as problematic due to occasional incorrect processing of whitespace normalization. This proposal suggests a revised approach that uses stricter rules based on JSX node types to ensure more accurate and predictable whitespace handling.
+### Robust whitespace cleaning in JSX
 
-#### Issues
-
-- The existing `normalizeWhitespace` function uses regex to manage whitespace, which sometimes leads to unintended normalization results.
-- Complex JSX structures and interactions with Babel transformations can further complicate whitespace management.
-- The current method merges various JSX node types into a single string before normalization, potentially losing context-specific whitespace information.
-
-#### Solution
-
-- **Utilize JSX Node Information:**
-  - Instead of treating JSX content as a single string for normalization, use specific JSX node types (e.g., JSXText, JSXExpressionContainer) to apply appropriate whitespace rules.
-  - Implement a function (cleanJSXElementLiteralChild) that adheres to JSX's intrinsic whitespace handling rules, similar to those defined in Babel's sources.
-
-**Before:**
-
-```ts
-<Trans>Hello◦{"◦"}◦world</Trans>
-// -> normalizeWhitespace("Hello◦◦◦world")  we lost here information that middle space came from explicit `{"◦"}`
-```
-
-**After:**
-
-```ts
-<Trans>Hello◦{"◦"}◦world</Trans>
-
-// there are strict rules how whitespaces processed in JSXText,
-// use `cleanJSXElementLiteralChild` function which follows this rules (taken from babel's sources)
-cleanJSXElementLiteralChild("processHello◦") // JSXText
-{"◦"} // JSXExpressionContainer - arbitary content, left as is
-cleanJSXElementLiteralChild("◦world") // JSXText
-```
-
-This revised approach to whitespace handling in Lingui addresses current limitations and aligns with best practices observed in JSX processing. The processing now mirrors how JSX handles whitespace.
-
-## Introducing `useLingui` Macro for Simplified Localization in React
-
-The `useLingui` macro simplifies the handling of non-JSX messages in React components, making internationalization (i18n) integration easy. It replaces direct `t` function calls with cleaner syntax and supports advanced usage within React hooks.
-
-**For example:**
+Whitespace cleaning in JSX expression is unavoidable, otherwise formatting your JSX code, for example with Prettier, will cause changes in extracted message.
 
 ```jsx
-import { useLingui } from "@lingui/macro";
-function MyComponent() {
-  const { t } = useLingui();
-  const a = t`Text`;
-}
+// prettier-ignore
+<Trans>
+  Hello◦{"◦"}◦world
+</Trans>
 
-// ↓ ↓ ↓ ↓ ↓ ↓
+// should be extracted as
+// "Hello◦◦◦world"
+// without new lines in start and end of tag
+```
 
+Previously Lingui used some regexp based approach to normalize whitespaces in the JSX nodes processed by macro. That approach was not perfect and didn't follow JSX language grammar, that sometimes lead to unexpected results.
+
+With this version lingui use the same set of rules to clean whitespaces as it's done in JSX. This lead to more anticipated results without unwanted cleaning of whitespaces.
+
+### No whitespaces cleaning in `t` and other JS macros
+
+We've got a feedback which we agreed on that whitespaces cleaning in the JS macros is redundant and counterintuitive.
+
+```js
+t`Label:◦` + value;
+```
+
+Note the space after ":", it's expected by developer to be there, but "normalization" will remove it.
+
+Other example would be a markdown, or just a whatever purpose developer want to have an original formatting.
+
+Starting from v5 cleaning whitespaces for JS macros is completely removed.
+
+### Migration
+
+This is a breaking change. Some messages in catalogs might be extracted with different whitespaces and therefore with different ids.
+
+There is no way to automatically convert your catalogs to pick-up existing translation.
+
+If you use TMS (such as Crowdin or Translation.io), migration should be pretty simple. Use Translation Memory feature (or analog).
+
+if you don't use TMS you will need to migrate catalogs manually.
+
+## Standalone `babel-plugin-lingui-macro`
+
+Starting with this version there two ways of using Lingui macro with Babel. With `babel-macro-plugin` and with `babel-plugin-lingui-macro`.
+
+```bash npm2yarn
+npm install --save-dev @lingui/babel-plugin-lingui-macro
+```
+
+### Migration
+
+If you have access to the babel configuration and don't use any other macro in your code, you can drop `babel-macro-plugin` and add `babel-plugin-lingui-macro` to your babel config.
+
+You will benefit from a slightly faster transpiling time and more configuration options for the plugin which are not available for `babel-macro-plugin` version.
+
+## Introducing `useLingui` macro
+
+The `useLingui` macro simplify working with non-jsx messages in react components.
+
+Before this macro you have to combine `t` or `msg` macro with an instance returned from `useLingui` hook:
+
+```jsx
+import { t, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
+
 function MyComponent() {
-  const { _: _t } = useLingui();
-  const a = _t(
-    /*i18n*/
-    {
-      id: "xeiujy",
-      message: "Text",
-    }
-  );
+  const { i18n, _ } = useLingui();
+
+  const a = t(i18n)`Text`;
+  // or
+  const b = _(msg`Text`);
 }
 ```
 
-As a result, it reduces complexity by consolidating i18n handling into a single macro call.
+With the new macro code above simplifies to:
+
+```jsx
+import { useLingui } from "@lingui/react/macro";
+
+function MyComponent() {
+  const { t } = useLingui();
+
+  const a = t`Text`;
+}
+```
+
+Note that `useLingui()` is imported from `@lingui/react/macro`, because it's a macro and not a runtime function. This will be transpiled to the regular `useLingui` from `@lingui/react` under the hood by Lingui.
 
 ## Dependency tree crawling extractor improvements
 
 TBD ([#1958](https://github.com/lingui/js-lingui/pull/1958))
 
-## Improved context
+## Print placeholder values for better translation context
 
-This proposal improves Lingui messages by automatically adding placeholder values as comments in PO files. This improves clarity for translators and AI tools. This feature provides critical **context** to support accurate translations.
+If the message contains unnamed placeholders, such as `{0}` Lingui will print theirs values into PO comments, so translators and AI got more context what this placeholder is about.
 
-For example:
-
-```js title="Message"
-t`from ${myTrip.date}`;
+```js
+t`Hello ${user.name} ${value}`;
 ```
 
-```po title="PO file" {1}
-#. placeholder {0}: myTrip.date
-msgid "from {0}"
+This will be extracted as
+
+Before:
+
+```po
+msgid "Hello {0} {value}"
 ```
 
-In case the string is used in multiple places with different values, the context will be more specific:
+After:
 
-```js title="Messages"
-t`from ${myTrip.date}`;
-
-// ...
-
-t`from ${eventDate}`;
+```po
+#. placeholder {0}: user.name
+msgid "Hello {0} {value}"
 ```
-
-```po title="PO file" {1,2}
-#. placeholder {0}: myTrip.date
-#. placeholder {0}: eventDate
-msgid "from {0}"
-```
-
-By improving the handling of placeholder contexts, Lingui enhances the **usability for translators and AI**, promoting more accurate and efficient localization processes.
 
 ## Deprecations
 

@@ -327,9 +327,7 @@ const markAsRead = () => {
 To translate it, we will use the `useLingui` macro hook:
 
 ```js
-import { useLingui } from '@lingui/macro';
-
-...
+import { useLingui } from "@lingui/react/macro";
 
 const { t } = useLingui();
 
@@ -347,7 +345,7 @@ const { t } = useLingui();
 
 const markAsRead = () => {
   const userName = "User1234";
-  alert(t`Hello {userName}, your messages marked as read!`);
+  alert(t`Hello ${userName}, your messages marked as read!`);
 };
 ```
 

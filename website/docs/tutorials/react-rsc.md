@@ -117,17 +117,16 @@ Below you can see an example of a React component. This component can be rendere
 In fact, if you swapped the html tags for their more universal alternatives, this component could also be used in React Native.
 
 ```tsx title="app/[lang]/components/SomeComponent.tsx"
-import { Trans, t } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { Trans, useLingui } from "@lingui/react/macro";
 
 export function SomeComponent() {
-  const { i18n } = useLingui();
+  const { t } = useLingui();
   return (
     <div>
       <p>
         <Trans>Some Item</Trans>
       </p>
-      <p>{t(i18n)`Other Item`}</p>
+      <p>{t`Other Item`}</p>
     </div>
   );
 }
@@ -162,7 +161,7 @@ It's important that you do not create any locale-dependent strings at a place in
 
 ```tsx
 import { i18n } from "@lingui/core";
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 // 😰 if this code runs at build time, it'll always be in the locale
 // which the imported global i18n object had at that time
 const immutableGreeting = t(i18n)`Hello World`;
