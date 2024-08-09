@@ -18,8 +18,6 @@ import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
 
-import path from "node:path"
-
 export const babelRe = new RegExp(
   "\\.(" +
     [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
@@ -76,13 +74,7 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
         column,
       })
 
-      return [
-        // path.resolve(origin[0] + "/../" + mappedPosition.source),
-        path.resolve(mappedPosition.source),
-
-        mappedPosition.line,
-        mappedPosition.column,
-      ]
+      return [mappedPosition.source, mappedPosition.line, mappedPosition.column]
     },
   }
 }

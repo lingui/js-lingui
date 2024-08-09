@@ -58,8 +58,8 @@ export default async function command(
   // (tmpdir would be always on C: but code could be stored on D:)
   // and then relative path in sourcemaps produced by esbuild will be broken.
   // sourcemaps itself doesn't allow to have absolute windows path, because they are not URL compatible.
-  // that's why we store esbuild bundles in node_modules/.tmp folder
-  const tmpPrefix = "node_modules/.tmp/"
+  // that's why we store esbuild bundles in .lingui folder
+  const tmpPrefix = ".lingui/"
   await fs.mkdir(tmpPrefix, { recursive: true })
   const tempDir = await fs.mkdtemp(tmpPrefix)
   await fs.rm(tempDir, { recursive: true, force: true })

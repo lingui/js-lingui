@@ -5,6 +5,7 @@ import { FormatterWrapper } from "../formats"
 import mockFs from "mock-fs"
 import * as process from "process"
 import os from "os"
+import path from "node:path"
 
 describe("getCatalogDependentFiles", () => {
   let format: FormatterWrapper
@@ -196,11 +197,13 @@ describe("getCatalogDependentFiles", () => {
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
     mockFs.restore()
+    process.chdir(oldCwd)
 
     if (os.platform() === "win32") {
+      const root = path.parse(oldCwd).root
       expect(actual).toStrictEqual([
-        "C:\\src\\locales\\pt-BR.po",
-        "C:\\src\\locales\\en.po",
+        `${root}src\\locales\\pt-BR.po`,
+        `${root}src\\locales\\en.po`,
       ])
     } else {
       expect(actual).toStrictEqual([
@@ -208,7 +211,5 @@ describe("getCatalogDependentFiles", () => {
         "/src/locales/en.po",
       ])
     }
-
-    process.chdir(oldCwd)
   })
 })
