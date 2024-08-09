@@ -102,7 +102,9 @@ describe("getCatalogs", () => {
       ],
     })
 
-    const catalogs = await getCatalogs(config)
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
 
     expect([cleanCatalog(catalogs[0]), cleanCatalog(catalogs[1])]).toEqual([
       cleanCatalog(
@@ -147,7 +149,12 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
+
+    expect(cleanCatalog(catalogs[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -182,7 +189,12 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
+
+    expect(cleanCatalog(catalogs[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {

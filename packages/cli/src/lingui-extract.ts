@@ -9,7 +9,7 @@ import { getCatalogs, AllCatalogsType } from "./api"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -40,7 +40,7 @@ export default async function command(
     })
 
     catalogStats[
-      normalizeSlashes(nodepath.relative(config.rootDir, catalog.path))
+      normalizePath(nodepath.relative(config.rootDir, catalog.path))
     ] = result || {}
 
     commandSuccess &&= Boolean(result)

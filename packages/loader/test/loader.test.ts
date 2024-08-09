@@ -4,9 +4,7 @@ import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
 
-const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
-
-skipOnWindows("lingui-loader", () => {
+describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
     const built = await build(path.join(__dirname, "po-format/entrypoint.js"))
 
