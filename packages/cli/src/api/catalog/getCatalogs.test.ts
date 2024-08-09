@@ -108,9 +108,9 @@ describe("getCatalogs", () => {
       cleanCatalog(
         new Catalog(
           {
-            name: "componentA",
-            path: "componentA/locales/{locale}",
-            include: ["componentA/"],
+            name: "componentB",
+            path: "componentB/locales/{locale}",
+            include: ["componentB/"],
             exclude: [],
             format,
           },
@@ -120,9 +120,9 @@ describe("getCatalogs", () => {
       cleanCatalog(
         new Catalog(
           {
-            name: "componentB",
-            path: "componentB/locales/{locale}",
-            include: ["componentB/"],
+            name: "componentA",
+            path: "componentA/locales/{locale}",
+            include: ["componentA/"],
             exclude: [],
             format,
           },

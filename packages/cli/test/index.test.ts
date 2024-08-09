@@ -156,11 +156,11 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.tsx:
-          4 message(s) extracted
-
           Catalog statistics for fixtures/pages/index.page.ts:
           1 message(s) extracted
+
+          Catalog statistics for fixtures/pages/about.page.tsx:
+          4 message(s) extracted
 
           Compiling message catalogs…
         `)
@@ -207,20 +207,20 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      3      │    -    │
-          │ pl          │      4      │    3    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
           │ en (source) │      2      │    -    │
           │ pl          │      2      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      3      │    -    │
+          │ pl          │      4      │    3    │
           └─────────────┴─────────────┴─────────┘
 
           Compiling message catalogs…
@@ -266,20 +266,20 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      3      │    2    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
           │ en (source) │      1      │    -    │
           │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
           └─────────────┴─────────────┴─────────┘
 
         `)
