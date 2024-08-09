@@ -47,10 +47,9 @@ export async function bundleSource(
     treeShaking: true,
     outdir: outDir,
     sourcemap: "inline",
-    // sourceRoot: normalizePath(outDir),
+    sourceRoot: outDir,
     sourcesContent: false,
     packages: "external",
-    outbase: rootDir,
     metafile: true,
 
     plugins: [

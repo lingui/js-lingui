@@ -77,7 +77,9 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
       })
 
       return [
-        path.resolve(origin[0] + "/../" + mappedPosition.source),
+        // path.resolve(origin[0] + "/../" + mappedPosition.source),
+        path.resolve(mappedPosition.source),
+
         mappedPosition.line,
         mappedPosition.column,
       ]
