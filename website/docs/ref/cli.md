@@ -178,7 +178,7 @@ Overwrite source locale translations from source.
 
 #### `--strict` {#compile-strict}
 
-Fail if a catalog has missing translations.
+Disable defaults for missing translations.
 
 #### `--format <format>` {#compile-format}
 
