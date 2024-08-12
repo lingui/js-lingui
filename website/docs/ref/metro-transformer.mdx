@@ -12,7 +12,9 @@ Install `@lingui/metro-transformer` as a development dependency:
 npm install --save-dev @lingui/metro-transformer
 ```
 
-Set up the transformer in your `metro.config.js` by specifying [`babelTransformerPath`](https://metrobundler.dev/docs/configuration/#babeltransformerpath) and updating `sourceExts`:
+Set up the transformer in your `metro.config.js` by specifying [`babelTransformerPath`](https://metrobundler.dev/docs/configuration/#babeltransformerpath) and updating `sourceExts`.
+
+If you need to combine multiple transformers, use [this approach](https://stackoverflow.com/a/57660231/2070942):
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
