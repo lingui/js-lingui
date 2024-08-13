@@ -135,10 +135,7 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
     const matchPattern = normalizeRelativePath(
       path.relative(catalog.config.rootDir, catalogGlob)
     )
-      .replace("(", "\\(")
-      .replace(")", "\\)")
-      .replace("[", "\\[")
-      .replace("]", "\\]")
+      .replace(/(\(|\)|\[|\])/g, "\\$1")
 
     const match = micromatch.capture(matchPattern, normalizeRelativePath(file))
     if (match) {
