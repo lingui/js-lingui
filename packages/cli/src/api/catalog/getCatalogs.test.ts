@@ -438,7 +438,9 @@ describe("getCatalogForFile", () => {
     )
     const catalogs = [catalog]
 
-    expect(getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs)).toEqual({
+    expect(
+      getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs)
+    ).toEqual({
       locale: "en",
       catalog,
     })
@@ -476,11 +478,11 @@ describe("getCatalogForFile", () => {
     )
     const catalogs = [catalog]
 
-    expect(getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs)).toEqual(
-      {
-        locale: "en",
-        catalog,
-      }
-    )
+    expect(
+      getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs)
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
   })
 })
