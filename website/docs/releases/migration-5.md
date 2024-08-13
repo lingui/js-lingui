@@ -4,9 +4,9 @@
 
 TBD
 
-## React and Js Macros was split to separate packages
+## React and JS Macros were split to separate packages
 
-The current Lingui macro is tightly coupled with React, which poses problems for developers using Lingui with vanilla JavaScript or other frameworks such as Vue.
+The previous Lingui macro was tightly coupled with React, which posed problems for developers using Lingui with vanilla JavaScript or other frameworks such as Vue.
 
 The macro package has been split into two separate entrypoints from existing packages:
 
@@ -30,7 +30,7 @@ function MyComponent() {
 
 This is not a breaking change.
 
-Imports from `@lingui/macro` still work, but marked as deprecated. They would be removed in the next major release.
+Imports from `@lingui/macro` still work, but are marked as deprecated. They will be removed in the next major release.
 
 You can use an automatic [codemod](https://www.npmjs.com/package/@lingui/codemods) to convert your codebase to the new imports:
 
@@ -38,7 +38,7 @@ You can use an automatic [codemod](https://www.npmjs.com/package/@lingui/codemod
 npx @lingui/codemods split-macro-imports <path>
 ```
 
-After this codemod you can drop `@lingui/macro` from your dependencies.
+After running this codemod you can drop `@lingui/macro` from your dependencies.
 
 ## Full Vue.js support
 
@@ -61,23 +61,23 @@ Whitespace cleaning in JSX expression is unavoidable, otherwise formatting your 
 // without new lines in start and end of tag
 ```
 
-Previously Lingui used some regexp based approach to normalize whitespaces in the JSX nodes processed by macro. That approach was not perfect and didn't follow JSX language grammar, that sometimes lead to unexpected results.
+Previously, Lingui used a regexp based approach to normalize whitespaces in the JSX nodes processed by macro. That approach was not perfect and didn't follow JSX language grammar, which sometimes lead to unexpected results.
 
-With this version lingui use the same set of rules to clean whitespaces as it's done in JSX. This lead to more anticipated results without unwanted cleaning of whitespaces.
+With v5, Lingui uses the same set of rules to clean whitespaces as it's done in JSX. This leads to more predictable results without unwanted cleaning of whitespaces.
 
 ### No whitespaces cleaning in `t` and other JS macros
 
-We've got a feedback which we agreed on that whitespaces cleaning in the JS macros is redundant and counterintuitive.
+Based on feedback from developers, it was agreed that whitespace cleaning in the JS macros is redundant and counterintuitive.
 
 ```js
 t`Label:◦` + value;
 ```
 
-Note the space after ":", it's expected by developer to be there, but "normalization" will remove it.
+Note the space after ":" - it's expected by developer to stay in the extracted string, but "normalization" would previously remove it.
 
-Other example would be a markdown, or just a whatever purpose developer want to have an original formatting.
+Other example would be markdown, or any reason for which developer wants to keep the original formatting.
 
-Starting from v5 cleaning whitespaces for JS macros is completely removed.
+Starting from v5, cleaning whitespaces for JS macros is completely removed.
 
 ### Migration
 
@@ -87,7 +87,7 @@ There is no way to automatically convert your catalogs to pick-up existing trans
 
 If you use TMS (such as Crowdin or Translation.io), migration should be pretty simple. Use Translation Memory feature (or analog).
 
-if you don't use TMS you will need to migrate catalogs manually.
+If you don't use a TMS you will need to migrate catalogs manually.
 
 ## Standalone `babel-plugin-lingui-macro`
 
@@ -107,7 +107,7 @@ You will benefit from a slightly faster transpiling time and more configuration 
 
 The `useLingui` macro simplify working with non-jsx messages in react components.
 
-Before this macro you have to combine `t` or `msg` macro with an instance returned from `useLingui` hook:
+Before this macro you had to combine `t` or `msg` macro with the i18n instance returned from `useLingui` hook:
 
 ```jsx
 import { t, msg } from "@lingui/macro";
@@ -142,7 +142,7 @@ TBD ([#1958](https://github.com/lingui/js-lingui/pull/1958))
 
 ## Print placeholder values for better translation context
 
-If the message contains unnamed placeholders, such as `{0}` Lingui will print theirs values into PO comments, so translators and AI got more context what this placeholder is about.
+If the message contains unnamed placeholders such as `{0}`, Lingui will print their values into PO comments, so that translators and AI get more context on what the placeholder is about.
 
 ```js
 t`Hello ${user.name} ${value}`;

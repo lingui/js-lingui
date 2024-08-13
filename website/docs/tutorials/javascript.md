@@ -25,7 +25,7 @@ Let's start with the three major packages:
 
 > Transforms messages wrapped in tagged template literals to ICU MessageFormat and validates them.
 
-1. Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as a development dependencies and `@lingui/core` as a runtime dependency:
+1. Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as development dependencies and `@lingui/core` as a runtime dependency:
 
 ```bash npm2yarn
 npm install --save-dev @lingui/cli @lingui/babel-plugin-lingui-macro @babel/core
