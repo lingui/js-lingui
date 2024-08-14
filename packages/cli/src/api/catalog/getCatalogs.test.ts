@@ -426,6 +426,26 @@ describe("getCatalogForFile", () => {
     })
   })
 
+  it("should allow nested parentheses in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/(asd)/((asd))/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ format: "po", rootDir: "." })
+    )
+    const catalogs = [catalog]
+
+    expect(
+      getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs)
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
+
   it("should allow brackets in path names", async () => {
     const catalog = new Catalog(
       {
@@ -444,5 +464,25 @@ describe("getCatalogForFile", () => {
         catalog,
       }
     )
+  })
+
+  it("should allow nested brackets in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/[...asd]/[[...asd]]/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ format: "po", rootDir: "." })
+    )
+    const catalogs = [catalog]
+
+    expect(
+      getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs)
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
   })
 })
