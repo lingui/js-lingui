@@ -55,6 +55,32 @@ The Lingui Vite integration:
     npm install --save @lingui/react @lingui/macro
     ```
 
+    :::note
+    SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions [is not guaranteed](https://github.com/swc-project/swc/issues/5060).
+
+    You need to select an appropriate version of the `@lingui/swc-plugin` to match compatible `@swc/core` version.
+
+    The version of `@swc/core` is specified within the `@vitejs/plugin-react-swc` package.
+
+    To ensure that the resolved version of `@swc/core` is one of the supported versions, you may utilize the `resolutions` field in the `package.json` file, which is supported by Yarn:
+
+    ```json
+    "resolutions": {
+      "@swc/core": "1.3.56"
+    },
+    ```
+
+    or `overrides` for >npm@8.3
+
+    ```json
+    "overrides": {
+      "@swc/core": "1.3.56"
+    },
+    ```
+
+    For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+    :::
+
 2.  Setup Lingui in `vite.config.ts`:
 
     ```ts title="vite.config.ts"
