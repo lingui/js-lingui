@@ -12,7 +12,7 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
 
-`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `@lingui/babel-plugin-lingui-macro` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
 1.  Install `@lingui/cli`, `@lingui/vite-plugin`, `@lingui/babel-plugin-lingui-macro` as development dependencies and `@lingui/react` as a runtime dependency:
 
