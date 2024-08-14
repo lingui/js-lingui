@@ -50,7 +50,6 @@ export async function bundleSource(
     sourceRoot: outDir,
     sourcesContent: false,
     packages: "external",
-    outbase: rootDir,
     metafile: true,
 
     plugins: [
