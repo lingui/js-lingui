@@ -13,6 +13,7 @@ type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
+  useCLDRPlurals?: boolean
 }
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
@@ -148,9 +149,12 @@ function serializePlurals(
  * This approach is heavily influenced by
  * https://github.com/LLK/po2icu/blob/9eb97f81f72b2fee02b77f1424702e019647e9b9/lib/po2icu.js#L148.
  */
-const getPluralCases = (lang: string): string[] | undefined => {
+const getPluralCases = (lang: string, useCLDRPlurals: boolean): string[] | undefined => {
   // If users uses locale with underscore or slash, es-ES, es_ES, gettextplural is "es" not es-ES.
   const [correctLang] = lang.split(/[-_]/g)
+  if (useCLDRPlurals) {
+    return pluralsCldr.forms(correctLang)
+  }
   const gettextPluralsInfo = gettextPlurals[correctLang]
 
   return gettextPluralsInfo?.examples.map((pluralCase: any) =>
@@ -244,6 +248,7 @@ export function formatter(
   options = {
     origins: true,
     lineNumbers: true,
+    useCLDRPlurals: false,
     ...options,
   }
 
@@ -259,7 +264,7 @@ export function formatter(
       // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
       // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
       // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-      let pluralForms = getPluralCases(po.headers.Language)
+      let pluralForms = getPluralCases(po.headers.Language, options.useCLDRPlurals)
 
       po.items.forEach((item) => {
         convertPluralsToICU(item, pluralForms, po.headers.Language)
