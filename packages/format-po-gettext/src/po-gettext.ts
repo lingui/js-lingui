@@ -185,7 +185,7 @@ const convertPluralsToICU = (
 
   const contextComment = item.extractedComments
     .find((comment) => comment.startsWith(ctxPrefix))
-    ?.substr(ctxPrefix.length)
+    ?.substring(ctxPrefix.length)
   const ctx = new URLSearchParams(contextComment)
 
   if (contextComment != null) {
