@@ -72,10 +72,17 @@ export type PoGettextFormatterOptions = {
 
   /**
    * Disable warning about unsupported `Select` feature encountered in catalogs
-   * 
+   *
    * @default false
    */
   disableSelectWarning?: boolean
+
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
+  customCtxPrefix?: string
 }
 ```
 
