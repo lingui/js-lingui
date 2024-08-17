@@ -230,4 +230,110 @@ msgstr[2] "# dní"
 
     expect(catalog).toMatchSnapshot()
   })
+
+  describe("when using cldr plural rules", () => {
+    it("should convert ICU plural messages to gettext plurals", () => {
+      const catalog: CatalogType = {
+        static: {
+          translation: "Static message",
+        },
+        message_with_id_and_octothorpe: {
+          message: "{count, plural, one {Singular} other {Number is #}}",
+          translation: "{count, plural, one {Singular} other {Number is #}}",
+          comments: ["js-lingui-explicit-id"],
+        },
+        message_with_id: {
+          message:
+            "{someCount, plural, one {Singular case with id\
+            and linebreak} other {Case number {someCount} with id}}",
+          translation:
+            "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
+          comments: [
+            "This is a comment by the developers about how the content must be localized.",
+            "js-lingui-explicit-id",
+          ],
+        },
+        WGI12K: {
+          message:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+          translation:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+        },
+        // Entry with developer-defined ID that generates empty msgstr[] lines
+        message_with_id_but_without_translation: {
+          message:
+            "{count, plural, one {Singular with id but no translation} other {Plural {count} with empty id but no translation}}",
+          translation: "",
+          comments: ["js-lingui-explicit-id"],
+        },
+        // Entry with automatic ID that generates empty msgstr[] lines
+        xZCXAV: {
+          message:
+            "{count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}",
+          translation: "",
+        },
+      }
+      const format = createFormat({ useCLDRPlurals: true })
+      const pofile = format.serialize(catalog, defaultSerializeCtx)
+
+      expect(pofile).toMatchSnapshot()
+    })
+
+    it("should use cldr plural counts instead of gettext", () => {
+      const po = `
+msgid ""
+msgstr ""
+"Language: cs\n"
+
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+few+%7B%7Bcount%7D+days%7D+many+%7B%7Bcount%7D+days%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=#
+msgid "# day"
+msgid_plural "# days"
+msgstr[0] "# den"
+msgstr[1] "# dny"
+msgstr[2] "# dne"
+msgstr[3] "# dní"
+        `
+
+      const parsed = format.parse(po, defaultParseCtx)
+      const cldrParsed = createFormat({ useCLDRPlurals: true }).parse(
+        po,
+        defaultParseCtx
+      )
+
+      // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+      expect(parsed).toMatchInlineSnapshot(`
+        {
+          GMnlGy: {
+            comments: [],
+            context: null,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
+            obsolete: false,
+            origin: [],
+            translation: {#, plural, one {# den} few {# dny} other {# dne} undefined {# dní}},
+          },
+        }
+      `)
+
+      expect(cldrParsed).toMatchInlineSnapshot(`
+        {
+          GMnlGy: {
+            comments: [],
+            context: null,
+            extra: {
+              flags: [],
+              translatorComments: [],
+            },
+            message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
+            obsolete: false,
+            origin: [],
+            translation: {#, plural, one {# den} few {# dny} many {# dne} other {# dní}},
+          },
+        }
+      `)
+    })
+  })
 })
