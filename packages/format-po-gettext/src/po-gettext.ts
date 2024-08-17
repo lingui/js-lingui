@@ -164,7 +164,7 @@ const convertPluralsToICU = (
   item: POItem,
   pluralForms: string[],
   lang: string,
-  ctxPrefix: string = DEFAULT_CTX_PREFIX,
+  ctxPrefix: string = DEFAULT_CTX_PREFIX
 ) => {
   const translationCount = item.msgstr.length
   const messageKey = item.msgid
@@ -265,7 +265,12 @@ export function formatter(
       let pluralForms = getPluralCases(po.headers.Language)
 
       po.items.forEach((item) => {
-        convertPluralsToICU(item, pluralForms, po.headers.Language, options.customCtxPrefix)
+        convertPluralsToICU(
+          item,
+          pluralForms,
+          po.headers.Language,
+          options.customCtxPrefix
+        )
       })
 
       return formatter.parse(po.toString(), ctx) as CatalogType

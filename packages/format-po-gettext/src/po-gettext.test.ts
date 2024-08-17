@@ -236,7 +236,10 @@ msgstr[2] "# dní"
       const defaultProfile = fs
         .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
         .toString()
-      const customProfile = defaultProfile.replace(/js-lingui:/g, "custom-prefix:")
+      const customProfile = defaultProfile.replace(
+        /js-lingui:/g,
+        "custom-prefix:"
+      )
 
       const defaultPrefix = createFormat()
       const customPrefix = createFormat({ customCtxPrefix: "custom-prefix:" })
@@ -255,13 +258,20 @@ msgstr[2] "# dní"
         .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
         .toString()
 
-      const usingInvalidPrefix = createFormat({ customCtxPrefix: "invalid-prefix:" })
+      const usingInvalidPrefix = createFormat({
+        customCtxPrefix: "invalid-prefix:",
+      })
       mockConsole((console) => {
         const catalog = usingInvalidPrefix.parse(
           defaultProfile,
           defaultParseCtx
         )
-        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("should be stored in a comment starting with"), expect.anything())
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining(
+            "should be stored in a comment starting with"
+          ),
+          expect.anything()
+        )
         expect(catalog).toMatchSnapshot()
       })
     })
