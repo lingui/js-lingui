@@ -85,6 +85,7 @@ Note that this format comes with several caveats and should therefore only be us
 - [`select`](/docs/ref/macro.mdx#select) and [`selectOrdinal`](/docs/ref/macro.mdx#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still saved to the `msgid`/`msgstr` properties. To disable the warning that this might not be the expected behavior, include `{ disableSelectWarning: true }` in the [`format`](/docs/ref/conf.md#format) options.
 - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used, as gettext cannot have more than two plurals cases identifying an item (`msgid` and `msgid_plural`).
 - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules for these cases.
+- Gettext has its own plural rules and for many languages it is different than CLDR plurals (which is used by default - See [Pluralization](/guides/plurals)). To use CLDR plural rules, but with Gettext-style PO files, add `{ useCLDRPlurals: true }` in the [`format`](/docs/ref/conf.md#format) options.
 
 ## JSON (minimal) {#json}
 

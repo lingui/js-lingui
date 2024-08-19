@@ -76,6 +76,14 @@ export type PoGettextFormatterOptions = {
    * @default false
    */
   disableSelectWarning?: boolean
+
+  /**
+   * Use CLDR plural rules instead of gettext plurals.
+   * This is useful if you need to use CLDR plurals with gettext-style PO files
+   * 
+   * @default false
+   */
+  useCLDRPlurals?: boolean
 }
 ```
 
