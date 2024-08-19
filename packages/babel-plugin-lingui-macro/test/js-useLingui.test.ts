@@ -1,6 +1,8 @@
 import { makeConfig } from "@lingui/conf"
 import { macroTester } from "./macroTester"
 
+describe.skip("", () => {})
+
 macroTester({
   cases: [
     {
@@ -108,6 +110,18 @@ function MyComponent() {
 
   console.log(i18n);
   const a = t\`Text\`;
+}
+    `,
+    },
+    {
+      name: "support i18n export",
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { i18n } = useLingui();
+
+  console.log(i18n);
 }
     `,
     },

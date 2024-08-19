@@ -205,6 +205,18 @@ export class MacroJs {
     // looking for `t` property in left side assigment
     // in the declarator `const { t } = useLingui()`
     const varDec = path.parentPath.node
+
+    if (!this.types.isObjectPattern(varDec.id)) {
+      // Enforce destructuring `t` from `useLingui` macro to prevent misuse
+      throw new Error(
+        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
+ const { t } = useLingui()
+ or
+ const { t: _ } = useLingui()
+ `
+      )
+    }
+
     const _property = this.types.isObjectPattern(varDec.id)
       ? varDec.id.properties.find(
           (
@@ -220,15 +232,13 @@ export class MacroJs {
         )
       : null
 
-    // Enforce destructuring `t` from `useLingui` macro to prevent misuse
+    const newNode = this.types.callExpression(
+      this.types.identifier(this.useLinguiImportName),
+      []
+    )
+
     if (!_property) {
-      throw new Error(
-        `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
- const { t } = useLingui()
- or
- const { t: _ } = useLingui()
- `
-      )
+      return newNode
     }
 
     const uniqTIdentifier = path.scope.generateUidIdentifier("t")
@@ -285,10 +295,7 @@ export class MacroJs {
     _property.key.name = "_"
     _property.value.name = uniqTIdentifier.name
 
-    return this.types.callExpression(
-      this.types.identifier(this.useLinguiImportName),
-      []
-    )
+    return newNode
   }
 
   /**
