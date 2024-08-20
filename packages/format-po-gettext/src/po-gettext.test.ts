@@ -230,4 +230,79 @@ msgstr[2] "# dní"
 
     expect(catalog).toMatchSnapshot()
   })
+
+  it("should use respect Plural-Forms header", () => {
+    const po = `
+msgid ""
+msgstr ""
+"Language: fr\\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\\n"
+
+#. js-lingui:icu=%7B0%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=0
+msgid "{count} day"
+msgid_plural "{count} days"
+msgstr[0] "{count} jour"
+msgstr[1] "{count} jours"
+msgstr[2] "{count} jours"
+        `
+
+    const parsed = format.parse(po, defaultParseCtx)
+
+    // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        ZETJEQ: {
+          comments: [],
+          context: null,
+          extra: {
+            flags: [],
+            translatorComments: [],
+          },
+          message: {0, plural, one {{count} day} other {{count} days}},
+          obsolete: false,
+          origin: [],
+          translation: {0, plural, one {{count} jour} many {{count} jours} other {{count} jours}},
+        },
+      }
+    `)
+  })
+
+  it("should correctly handle skipped form", () => {
+    // in this test Plural-Forms header defines 4 forms via `nplurals=4`
+    // but expression never returns 2 form, only [0, 1, 3]
+    const po = `
+msgid ""
+msgstr ""
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
+
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+few+%7B%7Bcount%7D+days%7D+many+%7B%7Bcount%7D+days%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=#
+msgid "# day"
+msgid_plural "# days"
+msgstr[0] "# den"
+msgstr[1] "# dny"
+msgstr[2] "# dne"
+msgstr[3] "# dní"
+        `
+
+    const parsed = format.parse(po, defaultParseCtx)
+
+    // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        GMnlGy: {
+          comments: [],
+          context: null,
+          extra: {
+            flags: [],
+            translatorComments: [],
+          },
+          message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
+          obsolete: false,
+          origin: [],
+          translation: {#, plural, one {# den} few {# dny} undefined {# dne} other {# dní}},
+        },
+      }
+    `)
+  })
 })
