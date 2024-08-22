@@ -102,7 +102,7 @@ function MyComponent() {
 }
 ```
 
-Note that we import `useLingui` from `@lingui/macro`. There is also a runtime version of `useLingui` hook exported from `@lingui/react`. In the case above, it doesn't matter what version to choose since we use only `i18n` object which is presented in both.
+Note that we import `useLingui` from `@lingui/react/macro`. There is also a runtime version of `useLingui` hook exported from `@lingui/react`. In the case above, it doesn't matter what version to choose since we use only `i18n` object which is returned by both.
 
 :::
 

@@ -12,13 +12,13 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
 
-`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `@lingui/babel-plugin-lingui-macro` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
-1.  Install `@lingui/cli`, `@lingui/vite-plugin`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
+1.  Install `@lingui/cli`, `@lingui/vite-plugin`, `@lingui/babel-plugin-lingui-macro` as development dependencies and `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
-    npm install --save-dev @lingui/cli @lingui/vite-plugin babel-plugin-macros
-    npm install --save @lingui/react @lingui/macro
+    npm install --save-dev @lingui/cli @lingui/vite-plugin @lingui/babel-plugin-lingui-macro
+    npm install --save @lingui/react
     ```
 
 2.  Setup Lingui in `vite.config.ts`:
@@ -36,7 +36,7 @@ The Lingui Vite integration:
       plugins: [
         react({
           babel: {
-            plugins: ["macros"],
+            plugins: ["@lingui/babel-plugin-lingui-macro"],
           },
         }),
         lingui(),
@@ -48,11 +48,11 @@ The Lingui Vite integration:
 
 `@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS relies on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
-1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
+1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
     npm install --save-dev @lingui/cli @lingui/vite-plugin @lingui/swc-plugin
-    npm install --save @lingui/react @lingui/macro
+    npm install --save @lingui/react
     ```
 
 2.  Setup Lingui in `vite.config.ts`:
