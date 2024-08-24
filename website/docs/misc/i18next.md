@@ -28,7 +28,7 @@ i18next.init({
 document.getElementById("output").innerHTML = i18next.t("key");
 ```
 
-Since the Lingui v4 release, there is a core function [i18n.t(...)](/docs/ref/core.md#i18n.t) that allows doing pretty much the same thing. The following example shows how this works with Lingui:
+Since the Lingui v4 release, there is a core function [i18n._(...)](/docs/ref/core.md#i18n._) that allows pretty much the same thing. There's also a more descriptive syntax, if desired. The following example shows how this works with Lingui:
 
 ```js title="lingui.config.{js,ts}"
 /** @type {import('@lingui/conf').LinguiConfig} */
@@ -47,11 +47,16 @@ module.exports = {
 ```js
 import { i18n } from "@lingui/core";
 
-document.getElementById("output").innerHTML = i18n.t({ id: "key", message: "Hello world" });
+document.getElementById("output").innerHTML = i18n._("key");
+
+//you can also feed a descriptor object, including a default message or other details
+document.getElementById("output").innerHTML = i18n._({ id: "key", message: "Hello world" });
 ```
 
 :::note
-The `message` property can be specified in the case of [Message Extraction](/docs/guides/message-extraction.md) usage flow. You can use the `i18n.t` function only with the `id`, but in this case you'll have to manage your localization catalogs yourself, without advantages of the [message extraction](/docs/guides/message-extraction.md) feature.
+The `message` property can be specified in the case of [Message Extraction](/docs/guides/message-extraction.md) usage flow. You can use the `i18n._` function only with the `id`, but in this case you'll have to manage your localization catalogs yourself, without advantages of the [message extraction](/docs/guides/message-extraction.md) feature.
+
+That said, you're not forced to use message IDs. Lingui has first-class support for natural language keys - no additional configuration is required.
 :::
 
 ## Interpolation
@@ -62,11 +67,14 @@ i18next sample:
 
 ```js
 i18next.t("msg.name", { name: "Tom" });
+i18next.t("My name is {name}", { name: "Tom" });
 ```
 
 Lingui sample:
 
 ```js
+i18n._("My name is {name}", { name: "Tom" });
+i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" });
 i18n._({ id: "msg.name", message: "My name is {name}", values: { name: "Tom" } });
 ```
 
@@ -192,7 +200,19 @@ i18next.t("key", { count: 5 }); // -> "items"
 
 ## Context
 
-By providing a context you can differ translations. Both i18next and Lingui have the context feature to differentiate messages.
+By providing a context you can differ translations for the same sentences, or give more details to translators. Both i18next and Lingui have the context feature to differentiate messages. However, Lingui offers an automatic additional "context" by including in the `.po` file the locations where each message is used - i18next can't do that from their plain JSON files.
+
+i18next sample:
+
+```js
+i18next.t("Hello!", { context: "This goes in the header" });
+```
+
+Lingui sample:
+
+```js
+i18n._("Hello!", { comment: "This goes in the header" });
+```
 
 ## Summary
 
@@ -202,7 +222,7 @@ On top of that, [Lingui](https://github.com/lingui/js-lingui):
 
 - supports rich-text messages
 - provides macros to simplify writing messages using MessageFormat syntax
-- provides a CLI for extracting and compiling messages
+- provides an integrated CLI for extracting and compiling messages
 - supports a number of [Catalog formats](/docs/ref/catalog-formats.md), including [Custom Formatters](/docs/guides/custom-formatter.md)
 - is very small (**3kb** gzipped), fast, flexible, and stable
 - works for vanilla JS, Next.js, Vue.js, Node.js etc.
@@ -210,8 +230,8 @@ On top of that, [Lingui](https://github.com/lingui/js-lingui):
 
 On the other hand, [i18next](https://www.i18next.com/):
 
-- mature. Based on how long i18next already is available open source, there is no real i18n case that could not be solved with i18next
-- extensible
+- is mature. Based on how long i18next already is available open source, there is no real i18n case that could not be solved with i18next
+- is extensible, with lots of plugins and tools developed by other contributors, including extractors, locale identifiers, etc
 - has a big ecosystem.
 
 Lingui is a great choice for projects that require modern and efficient translation approaches, support for popular frameworks, and tools for managing translations. However, whether Lingui is better than i18next or not depends on the specific needs of the project.
