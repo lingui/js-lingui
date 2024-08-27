@@ -87,7 +87,7 @@ function formatElements(
     if (after) tree.push(after)
   }
 
-  return tree
+  return tree.length === 1 ? tree[0] : tree;
 }
 
 /*
