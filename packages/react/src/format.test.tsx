@@ -143,16 +143,18 @@ describe("formatElements", function () {
 
     expect(React.isValidElement(elements)).toBe(true)
 
-    assert.ok(React.isValidElement<{
-      children: React.ReactElement[]
-    }>(elements))
+    assert.ok(
+      React.isValidElement<{
+        children: React.ReactElement[]
+      }>(elements)
+    )
 
     const childElements = elements.props.children
-    const childKeys = childElements
-      .map((el) => el?.key)
-      .filter(Boolean)
+    const childKeys = childElements.map((el) => el?.key).filter(Boolean)
 
-    assert.ok(typeof childKeys[0] === 'string' && typeof childKeys[1] === 'string')
+    assert.ok(
+      typeof childKeys[0] === "string" && typeof childKeys[1] === "string"
+    )
 
     expect(cleanPrefix(childKeys[0])).toBeLessThan(cleanPrefix(childKeys[1]))
   })
