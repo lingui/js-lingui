@@ -12,9 +12,9 @@
  * ...
  * (use "yarn lingui compile" to compile catalogs for production)
  *
- * $ pnpm run extract
+ * $ pnpm extract
  * ...
- * (use "pnpm run compile" to compile catalogs for production)
+ * (use "pnpm compile" to compile catalogs for production)
  *
  * $ npm run extract
  * ...
@@ -55,7 +55,7 @@ function runCommandFrom(userAgent: string | undefined): string {
   }
 
   if (userAgent.includes("pnpm")) {
-    return "pnpm run"
+    return "pnpm"
   }
 
   return defaultRunCommand
