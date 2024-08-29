@@ -68,7 +68,7 @@
     "esbuild": "^0.17.10",
     "glob": "^7.1.4",
     "inquirer": "^7.3.3",
-    "micromatch": "4.0.2",
+    "micromatch": "^4.0.2",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
     "pathe": "^1.1.0",
