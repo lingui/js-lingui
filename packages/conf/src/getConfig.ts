@@ -71,7 +71,7 @@ export function getConfig({
     )
 
     // gracefully stop further executing
-    throw new Error("No Config")
+    throw new Error("No Lingui config found")
   }
 
   const userConfig = result ? result.config : {}

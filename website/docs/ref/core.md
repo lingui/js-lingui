@@ -15,7 +15,7 @@ npm install --save @lingui/core
 
 ## Overview
 
-`@lingui/core` package exports the global instance of `i18n` object. Simply import it and use it:
+`@lingui/core` package exports the global instance of `i18n` object, which you may import and use as follows:
 
 ```ts
 import { i18n } from "@lingui/core";
@@ -30,13 +30,13 @@ async function activate(locale: string) {
   i18n.loadAndActivate({ locale, messages });
 }
 
-activate("cs");
+await activate("cs");
 
 // returns the Czech translation of "Hello World"
 const translation = i18n._("Hello World");
 ```
 
-If you don't want to use the global `i18n` instance and you want to setup your own, you can use [`setupI18n`](#setupi18n) method. You also need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) for macros to work correctly:
+The global instance is used by [JS macros](/ref/macro#js-macros) In case you want to customize where the global instance  also need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) for [JS macros](/ref/macro#js-macros) to work correctly:
 
 ```ts
 // If you import `i18n` object from custom module like this:
@@ -45,6 +45,8 @@ import { i18n } from "./custom-i18n-config";
 // ... then add following line to your Lingui configuration:
 // "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
 ```
+
+Depending on your use case, you may not want to use the global instance, for example with statically rendered websites. In that case, you can use [`setupI18n`](#setupi18n) method to create your own instance(s).
 
 ## Reference
 
@@ -267,11 +269,11 @@ i18n.number(12345.678, { style: "currency", currency: "CZK" });
 Initialize and return a new I18n instance. Usually you want to call it just once and then use returned `i18n` object across whole codebase.
 
 :::note
-You don't need to setup i18n instance
+You don't need to set up i18n instance
 
 In most cases you can use the global `i18n` object exported from `@lingui/core` directly.
 
-However, if you do need to setup your own `i18n` instance, remember to also set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) work macros to work properly:
+However, if you do need to set up your own `i18n` instance, remember to also set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) work macros to work properly:
 
 ```ts
 // If you import `i18n` object from custom module like this:

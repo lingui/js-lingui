@@ -18,15 +18,15 @@ msgstr ""
 "X-Crowdin-File: messages.po\n"
 "X-Crowdin-File-ID: 25\n"
 
-#: src/MainScreen.tsx:102
+#: src/MainScreen.tsx:91
 msgid "{messageIndex, selectordinal, one {#st message} two {#nd message} few {#rd message} other {#th message}}"
 msgstr "{messageIndex, selectordinal, other {#. zpráva}}"
 
-#: src/MainScreen.tsx:89
+#: src/MainScreen.tsx:78
 msgid "{messagesCount, plural, =0 {You have no unread messages} one {There's # message in your inbox} few {There're # messages in your inbox} other {There're # messages in your inbox}}"
 msgstr "{messagesCount, plural, =0 {Nemáte žádné nepřečtené zprávy} one {Ve vaší schránce je # zpráva} few {Ve vaší schránce jsou # zprávy} many {Ve vaší schránce je # zpráv} other {Ve vaší schránce je # zpráv}}"
 
-#: src/MainScreen.tsx:87
+#: src/MainScreen.tsx:76
 msgid "Add a message to your inbox"
 msgstr "Přidat zprávu do doručené pošty"
 
@@ -38,23 +38,22 @@ msgstr "Zrušit"
 msgid "Do you want to set all your messages as read?"
 msgstr "Chcete označit všechny vaše zprávy jako přečtené?"
 
-#: src/MainScreen.tsx:86
+#: src/MainScreen.tsx:75
 msgid "Mark messages as read"
 msgstr "Označit zprávy jako přečtené"
 
-#: src/MainScreen.tsx:83
+#: src/MainScreen.tsx:73
 msgid "Message Inbox"
 msgstr "Doručená pošta"
 
-#: src/MainScreen.tsx:101
+#: src/MainScreen.tsx:90
 msgid "order:"
 msgstr "pořadí:"
 
-#: src/MainScreen.tsx:43
+#: src/MainScreen.tsx:44
 msgid "Toggle language to {0}"
 msgstr "Přepnout jazyk na {0}"
 
 #: src/MainScreen.tsx:17
 msgid "Yes"
 msgstr "Ano"
-
