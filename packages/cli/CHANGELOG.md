@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
+
+### Bug Fixes
+
+- **cli:** use caret range for `micromatch` dependency ([#2020](https://github.com/lingui/js-lingui/issues/2020)) ([be441e3](https://github.com/lingui/js-lingui/commit/be441e31ea1c5a0325f77402602f61c20a4aff4e))
+- escape nested brackets ([#2001](https://github.com/lingui/js-lingui/issues/2001)) ([6d00301](https://github.com/lingui/js-lingui/commit/6d0030146cc73f457e4cdcd1837f3d8f060d16fc))
+
 ## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
 
 ### Bug Fixes
