@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "4.8.0-next.1",
+  "version": "5.0.0-next.0",
   "sideEffects": false,
   "description": "Vue components & tools for translations",
   "main": "./dist/index.cjs",
@@ -93,11 +93,11 @@
     "@babel/core": "^7.20.12",
     "@babel/generator": "^7.20.12",
     "@babel/types": "^7.20.12",
-    "@lingui/babel-plugin-lingui-macro": "4.8.0-next.1",
-    "@lingui/cli": "4.8.0-next.1",
-    "@lingui/core": "4.8.0-next.1",
-    "@lingui/message-utils": "4.8.0-next.1",
-    "@lingui/vite-plugin": "4.8.0-next.1",
+    "@lingui/babel-plugin-lingui-macro": "5.0.0-next.0",
+    "@lingui/cli": "5.0.0-next.0",
+    "@lingui/core": "5.0.0-next.0",
+    "@lingui/message-utils": "5.0.0-next.0",
+    "@lingui/vite-plugin": "5.0.0-next.0",
     "@vue/compiler-core": "^3.3.4",
     "@vue/compiler-sfc": "^3.3.4",
     "vue": "^3.3.4"
@@ -107,7 +107,7 @@
     "vite": "^3 || ^4 || ^5.0.9"
   },
   "devDependencies": {
-    "@lingui/conf": "4.8.0-next.1",
+    "@lingui/conf": "5.0.0-next.0",
     "@types/babel__core": "^7.20.5",
     "@vitejs/plugin-vue": "^5.0.5",
     "unbuild": "2.0.0",
