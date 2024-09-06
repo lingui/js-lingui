@@ -108,6 +108,24 @@ function MyComponent() {
 
 `;
 
+exports[`support i18n export 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function MyComponent() {
+  const { i18n } = useLingui();
+
+  console.log(i18n);
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function MyComponent() {
+  const { i18n } = _useLingui();
+  console.log(i18n);
+}
+
+`;
+
 exports[`support message descriptor 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function MyComponent() {
