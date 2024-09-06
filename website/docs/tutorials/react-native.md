@@ -30,9 +30,9 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 
 ## Polyfilling Intl APIs
 
-React Native does not support all `Intl` features out of the box, and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase the amount of JS that needs to be `require`d by your app. At the same time, modern i18n libraries rely on its presence.
+React Native's JS engine may not support all `Intl` features out of the box. As of 08/2024, we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase the amount of JS that needs to be `require`d by your app. At the same time, modern i18n libraries rely on its presence.
 
-Follow the polyfill installation instructions before proceeding further.
+Follow the polyfill installation instructions before proceeding further. Import polyfills from `/polyfill-force` to avoid [slow initialization time on low-end devices](https://github.com/formatjs/formatjs/issues/4463).
 
 ## Example component
 

@@ -18,6 +18,7 @@ import { mergeCatalog } from "./catalog/mergeCatalog"
 import { extractFromFiles } from "./catalog/extractFromFiles"
 import {
   isDirectory,
+  makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
   writeFile,
@@ -132,7 +133,9 @@ export class Catalog {
   ): Promise<ExtractedCatalogType | undefined> {
     let paths = this.sourcePaths
     if (options.files) {
-      options.files = options.files.map((p) => normalize(p, false))
+      options.files = options.files.map((p) =>
+        makePathRegexSafe(normalize(p, false))
+      )
 
       const regex = new RegExp(options.files.join("|"), "i")
       paths = paths.filter((path: string) => regex.test(normalize(path)))

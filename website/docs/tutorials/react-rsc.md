@@ -41,7 +41,7 @@ With Lingui, the experience of localizing React is the same in client and server
 Translation strings, one way or another, are obtained from an [I18n](/docs/ref/core.md) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
 :::
 
-To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js will pass to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
+To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js passes to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
 
 1. given `lang`, take an I18n instance and store it in the [`cache`](https://react.dev/reference/react/cache) so it can be used server-side
 2. given `lang`, take an I18n instance and make it available to client components via `I18nProvider`
@@ -50,7 +50,7 @@ This is how step (1) can be implemented:
 
 ```tsx title="src/app/[lang]/layout.tsx"
 import { setI18n } from "@lingui/react/server";
-import { allI18nInstances } from "./appRouterI18n";
+import { getI18nInstance } from "./appRouterI18n";
 import { LinguiClientProvider } from "./LinguiClientProvider";
 
 type Props = {
@@ -61,7 +61,7 @@ type Props = {
 };
 
 export default function RootLayout({ params: { lang }, children }: Props) {
-  const i18n = allI18nInstances[lang]; // get a ready-made i18n instance for the given locale
+  const i18n = getI18nInstance(lang); // get a ready-made i18n instance for the given locale
   setI18n(i18n); // make it available server-side for the current request
 
   return (
@@ -105,10 +105,10 @@ export function LinguiClientProvider({
 ```
 
 :::tip
-Why we are not passing the I18n instance directly from `RootLayout` to the client via `LinguiClientProvider`? It's because the I18n object isn't serializable, and cannot be passed from server to client.
+Why are we not passing the I18n instance directly from `RootLayout` to the client via `LinguiClientProvider`? It's because the I18n object isn't serializable, and cannot be passed from server to client.
 :::
 
-Lastly, there's the `appRouterI18n.ts` file, which is only executed on server and holds one instance of I18n object for each locale of our application. See [here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/appRouterI18n.ts) how it's implemented in the example.
+Lastly, there's the `appRouterI18n.ts` file, which is only executed on server and holds one instance of I18n object for each locale of our application. See [here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/appRouterI18n.ts) how it's implemented in the example app.
 
 ### Rendering translations in server and client components
 

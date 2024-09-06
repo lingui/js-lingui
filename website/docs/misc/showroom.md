@@ -33,6 +33,7 @@ Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list
 - [OkCupid](https://www.okcupid.com)
 - [mapflow.ai](https://mapflow.ai)
 - [lefun.fun](https://lefun.fun)
+- [Rove.me](https://rove.me)
 
 ---
 

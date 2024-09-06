@@ -269,6 +269,30 @@ describe("Trans component", () => {
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
 
+  it("should render nested elements with `asChild` pattern", () => {
+    const ComponentThatExpectsSingleElementChild: React.FC<{
+      asChild: boolean
+      children?: React.ReactElement
+    }> = (props) => {
+      if (props.asChild && React.isValidElement(props.children)) {
+        return props.children
+      }
+
+      return <div />
+    }
+
+    const translation = html(
+      <Trans
+        id="please <0><1>sign in again</1></0>"
+        components={{
+          0: <ComponentThatExpectsSingleElementChild asChild />,
+          1: <a href="/login" />,
+        }}
+      />
+    )
+    expect(translation).toEqual(`please <a href="/login">sign in again</a>`)
+  })
+
   it("should render translation inside custom component", () => {
     const Component = (props: PropsWithChildren) => (
       <p className="lead">{props.children}</p>
