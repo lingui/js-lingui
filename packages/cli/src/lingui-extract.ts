@@ -60,14 +60,14 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(use "${chalk.yellow(
+      `(Use "${chalk.yellow(
         helpRun("extract")
-      )}" to update catalogs with new messages)`
+      )}" to update catalogs with new messages.)`
     )
     console.log(
-      `(use "${chalk.yellow(
+      `(Use "${chalk.yellow(
         helpRun("compile")
-      )}" to compile catalogs for production)`
+      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#catalogs-in-vcs-and-ci)`
     )
   }
 

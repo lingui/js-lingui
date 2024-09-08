@@ -54,11 +54,10 @@ Please check that \`catalogs.path\` is filled properly.\n`
     sourceLocale: config.sourceLocale,
   })
 
-  // In production we don't want untranslated strings. It's better to use message
+  // In production, we don't want untranslated strings. It's better to use message
   // keys as a last resort.
   // In development, however, we want to catch missing strings with `missing` parameter
-  // of I18nProvider (React) or setupI18n (core) and therefore we need to get
-  // empty translations if missing.
+  // of setupI18n (core) and therefore we need to get empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
 
   return createCompiledCatalog(locale, messages, {
