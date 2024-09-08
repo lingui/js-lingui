@@ -57,8 +57,7 @@ lingui extract [files...]
         [--locale <locale>]
         [--convert-from <format>]
         [--verbose]
-        [--watch]
-        [--debounce <delay>]
+        [--watch [--debounce <delay>]]
 ```
 
 The `extract` command looks for messages in the source files and extracts them
@@ -211,7 +210,7 @@ One drawback to checking for missing translations is that the English message ca
 
 ## Catalogs in VCS and CI
 
-If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/docs/ref/loader.md) or [Vite plugin](/docs/ref/vite-plugin.md).
+If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/docs/ref/loader.md), [Vite plugin](/docs/ref/vite-plugin.md) or [Metro transformer](/docs/ref/metro-transformer.mdx).
 
 Depending on your localization setup, you might also want to run the `extract` command in CI and upload the extracted messages to a [translation service](/docs/tools/introduction.md).
 
