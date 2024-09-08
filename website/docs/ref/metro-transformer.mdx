@@ -56,13 +56,11 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
  */
 const config = {
   transformer: {
-    babelTransformerPath: require.resolve(
-      "@lingui/metro-transformer/react-native"
-    )
+    babelTransformerPath: require.resolve("@lingui/metro-transformer/react-native"),
   },
   resolver: {
-    sourceExts: [...sourceExts, "po", "pot"]
-  }
+    sourceExts: [...sourceExts, "po", "pot"],
+  },
 };
 
 module.exports = mergeConfig(defaultConfig, config);
@@ -95,8 +93,8 @@ The library is currently in beta. If you encounter any issues, please [report th
     }
     ```
 
-3. Restart Metro bundler with `expo start -c` or `yarn start --reset-cache` to clear the transformer cache.
-4. Profit! 🎉
+3.  Restart Metro bundler with `expo start -c` or `yarn start --reset-cache` to clear the transformer cache.
+4.  Profit! 🎉
 
 :::danger
 Whenever you make a change to the Lingui config file (this should not happen often), restart Metro bundler.
