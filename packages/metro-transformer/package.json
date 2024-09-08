@@ -1,0 +1,68 @@
+{
+  "name": "@lingui/metro-transformer",
+  "version": "0.1.0",
+  "description": "Metro bundler transformer for LinguiJS catalogs",
+  "exports": {
+    "./expo": {
+      "require": "./dist/expo/index.cjs",
+      "import": "./dist/expo/index.mjs",
+      "types": "./dist/expo/index.d.ts"
+    },
+    "./react-native": {
+      "require": "./dist/react-native/index.cjs",
+      "import": "./dist/react-native/index.mjs",
+      "types": "./dist/react-native/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "author": {
+    "name": "Vojtech Novak",
+    "email": "vonovak@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "metro",
+    "react native",
+    "metro bundler",
+    "i18n",
+    "internationalization",
+    "i10n",
+    "localization",
+    "i9n",
+    "translation",
+    "multilingual"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.20.13",
+    "@lingui/cli": "4.11.2",
+    "@lingui/conf": "4.11.2",
+    "memoize-one": "^6.0.0"
+  },
+  "devDependencies": {
+    "@lingui/format-json": "4.11.2",
+    "rimraf": "^6.0.1",
+    "unbuild": "2.0.0"
+  },
+  "peerDependencies": {
+    "metro": "*"
+  }
+}
