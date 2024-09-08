@@ -9,7 +9,7 @@ In this tutorial, we'll learn how to add internationalization to an existing app
 
 :::caution Warning
 
-With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx react-native start --reset-cache` or `npx expo start -c` (if you use Expo).
+With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx expo start -c` or `npx react-native start --reset-cache` (if you do not use Expo).
 
 :::
 
