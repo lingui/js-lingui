@@ -201,4 +201,14 @@ describe("interpolate", () => {
       "Hey Joeª!"
     )
   })
+
+  it("should not crash on a unicode sequences if the same string goes twice in a row", () => {
+    const cache = compile("Hey {name}!")
+    expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
+      "Hey Joeª!"
+    )
+    expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
+      "Hey Joeª!"
+    )
+  })
 })
