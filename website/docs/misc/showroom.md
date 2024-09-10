@@ -2,6 +2,7 @@
 
 Feel free to [send a PR](https://github.com/lingui/js-lingui/issues/new) to list your project here.
 
+- [Bluesky](https://bsky.app/) ([source](https://github.com/bluesky-social/social-app))
 - [Fider](https://fider.io/) ([source](https://github.com/getfider/fider))
 - [Flood](https://flood.js.org/) ([source](https://github.com/jesec/flood))
 - [Lenster](https://lenster.xyz/) ([source](https://github.com/lensterxyz/lenster))
