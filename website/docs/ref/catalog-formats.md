@@ -33,12 +33,12 @@ npm install --save-dev @lingui/format-po
 ### Usage {#po-usage}
 
 ```js title="lingui.config.{js,ts}"
-import {formatter} from "@lingui/format-po"
+import { formatter } from "@lingui/format-po";
 
 export default {
   // [...]
-  format: formatter({lineNumbers: false}),
-}
+  format: formatter({ lineNumbers: false }),
+};
 ```
 
 ### Configuration {#po-configuration}
@@ -52,21 +52,21 @@ export type PoFormatterOptions = {
    *
    * @default true
    */
-  origins?: boolean
+  origins?: boolean;
 
   /**
    * Print line numbers in origins
    *
    * @default true
    */
-  lineNumbers?: boolean
+  lineNumbers?: boolean;
 
   /**
    * Print `js-lingui-id: Xs4as` statement in extracted comments section
    *
    * @default false
    */
-  printLinguiId?: boolean
+  printLinguiId?: boolean;
 
   /**
    * By default, the po-formatter treats the pair `msgid` + `msgctx` as the source
@@ -77,15 +77,15 @@ export type PoFormatterOptions = {
    *
    * @default false
    */
-  explicitIdAsDefault?: boolean
+  explicitIdAsDefault?: boolean;
 
   /**
    * Custom attributes to append to the PO file header
    *
    * @default {}
    */
-  customHeaderAttributes?: { [key: string]: string }
-}
+  customHeaderAttributes?: { [key: string]: string };
+};
 ```
 
 ### Examples {#po-examples}
@@ -136,12 +136,12 @@ npm install --save-dev @lingui/format-po-gettext
 ### Usage {#po-gettext-usage}
 
 ```js title="lingui.config.{js,ts}"
-import {formatter} from "@lingui/format-po-gettext"
+import { formatter } from "@lingui/format-po-gettext";
 
 export default {
   // [...]
-  format: formatter({lineNumbers: false}),
-}
+  format: formatter({ lineNumbers: false }),
+};
 ```
 
 ### Configuration {#po-gettext-configuration}
@@ -155,22 +155,22 @@ export type PoGettextFormatterOptions = {
    *
    * @default true
    */
-  origins?: boolean
+  origins?: boolean;
 
   /**
    * Print line numbers in origins
    *
    * @default true
    */
-  lineNumbers?: boolean
+  lineNumbers?: boolean;
 
   /**
    * Disable warning about unsupported `Select` feature encountered in catalogs
    *
    * @default false
    */
-  disableSelectWarning?: boolean
-}
+  disableSelectWarning?: boolean;
+};
 ```
 
 ### Examples {#po-gettext-examples}
@@ -228,12 +228,12 @@ npm install --save-dev @lingui/format-json
 ### Usage {#json-usage}
 
 ```js title="lingui.config.{js,ts}"
-import {formatter} from "@lingui/format-json"
+import { formatter } from "@lingui/format-json";
 
 export default {
   // [...]
-  format: formatter({style: "lingui"}),
-}
+  format: formatter({ style: "lingui" }),
+};
 ```
 
 ### Configuration {#json-configuration}
@@ -247,29 +247,29 @@ export type JsonFormatterOptions = {
    *
    * @default true
    */
-  origins?: boolean
+  origins?: boolean;
 
   /**
    * Print line numbers in origins
    *
    * @default true
    */
-  lineNumbers?: boolean
+  lineNumbers?: boolean;
 
   /**
    * Different styles of how information could be printed
    *
    * @default "lingui"
    */
-  style?: "lingui" | "minimal"
+  style?: "lingui" | "minimal";
 
   /**
-  * Indentation of output JSON
-  *
-  * @default 2
-  */
-  indentation?: number
-}
+   * Indentation of output JSON
+   *
+   * @default 2
+   */
+  indentation?: number;
+};
 ```
 
 ### Examples {#json-examples}
@@ -322,12 +322,12 @@ npm install --save-dev @lingui/format-csv
 ### Usage {#csv-usage}
 
 ```js title="lingui.config.{js,ts}"
-import {formatter} from "@lingui/format-csv"
+import { formatter } from "@lingui/format-csv";
 
 export default {
   // [...]
   format: formatter(),
-}
+};
 ```
 
 This formatter has no configurable options.

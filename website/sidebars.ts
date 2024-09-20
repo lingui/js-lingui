@@ -48,7 +48,7 @@ const sidebar = [
         type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
-      }
+      },
     ],
   },
   {

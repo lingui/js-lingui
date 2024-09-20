@@ -179,6 +179,7 @@ The compiled files can be safely ignored by your version control system, since t
 ```ignore title=".gitignore"
 your_locale_folder/**/*.js
 ```
+
 :::
 
 #### `--overwrite` {#compile-overwrite}
