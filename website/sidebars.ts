@@ -1,13 +1,13 @@
 const sidebar = [
   {
-    type: "doc",
-    label: "Introduction",
-    id: "introduction",
-  },
-  {
     type: "category",
-    label: "Installation",
+    label: "Getting Started",
     items: [
+      {
+        type: "doc",
+        label: "Introduction",
+        id: "introduction",
+      },
       {
         type: "doc",
         label: "React project",
@@ -48,12 +48,7 @@ const sidebar = [
         type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
-      },
-      {
-        type: "doc",
-        label: "Explicit vs Generated IDs",
-        id: "tutorials/explicit-vs-generated-ids",
-      },
+      }
     ],
   },
   {
@@ -64,6 +59,11 @@ const sidebar = [
         type: "doc",
         label: "Message Extraction",
         id: "guides/message-extraction",
+      },
+      {
+        type: "doc",
+        label: "Explicit vs Generated IDs",
+        id: "guides/explicit-vs-generated-ids",
       },
       {
         type: "doc",
