@@ -43,7 +43,7 @@ Default config:
 }
 ```
 
-## `catalogs`
+## catalogs
 
 Default:
 
@@ -392,16 +392,7 @@ export default {
 }
 ```
 
-Official Lingui format packages:
-
-- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po) - Gettext PO used by default in Lingui
-- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext) - Gettext PO format with gettext-style plurals
-- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) - JSON format (`minimal` and `lingui`)
-- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) - CSV format
-
-See the README of each package for configuration parameters.
-
-Visit [Advanced: Custom Formatter](/docs/guides/custom-formatter.md) to learn how to create a custom formatter.
+Read more about available formatters in [Catalog Formats](/docs/ref/catalog-formats.md) or create your own [Custom Formatter](/docs/guides/custom-formatter.md).
 
 ## locales
 
