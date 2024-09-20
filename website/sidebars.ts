@@ -87,11 +87,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "Excluding build files",
-        id: "guides/excluding-build-files",
-      },
-      {
-        type: "doc",
         label: "Monorepo",
         id: "guides/monorepo",
       },
