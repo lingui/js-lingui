@@ -286,23 +286,28 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 
 Default: `{}`
 
-Specify extra options used to parse source files when messages are being extracted.
+Specify additional options used to parse source files when extracting messages.
 
-```ts
-"extractorParserOptions": {
-  /**
-   * default false
-   * By default, standard decorators (Stage3) are applied for TS files
-   * Enable this if you want to use TypesScript's experimental decorators.
-   */
-  tsExperimentalDecorators?: boolean
-  /**
-   * default false
-   * Enable if you use flow. This will apply Flow syntax to files with .js, cjs, .mjs extension.
-   */
-  flow?: boolean
+```json
+{
+  "extractorParserOptions": {
+    "tsExperimentalDecorators": false,
+    "flow": false
+  }
 }
 ```
+
+#### tsExperimentalDecorators
+
+Default: `false`
+
+By default, standard decorators (Stage3) are applied to TS files. Enable this if you want to use TypeScript's experimental decorators.
+
+#### flow
+
+Default: `false`
+
+Lingui does not ship with [Flow](https://flow.org/) typing. However, you can use Lingui in projects written in Flow. Enable this option to tell the extractor that your sources use Flow syntax.
 
 ## compilerBabelOptions
 

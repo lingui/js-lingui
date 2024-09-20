@@ -87,10 +87,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        id: "guides/flow",
-      },
-      {
-        type: "doc",
         label: "Excluding build files",
         id: "guides/excluding-build-files",
       },

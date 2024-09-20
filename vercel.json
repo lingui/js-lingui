@@ -6,5 +6,6 @@
     { "source": "/ref/message-format", "destination": "/guides/message-format", "permanent": true},
     { "source": "/tutorials/extractor-vue", "destination": "/ref/extractor-vue", "permanent": true},
     { "source": "/tutorials/cli", "destination": "/ref/cli", "permanent": true}
+    { "source": "/guides/flow", "destination": "/ref/conf#flow", "permanent": true}
   ]
 }
