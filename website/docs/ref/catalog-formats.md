@@ -332,7 +332,7 @@ export default {
 
 This formatter has no configurable options.
 
-## Examples {#csv-examples}
+### Examples {#csv-examples}
 
 ```csv
 messageId,Message
