@@ -1,5 +1,6 @@
 import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {
   describe("I18n.load", () => {
@@ -262,7 +263,7 @@ describe("I18n", () => {
     ).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", () => {
+  it("._ shouldn't compile uncompiled messages in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
@@ -281,20 +282,59 @@ describe("I18n", () => {
     })
   })
 
-  it("._ shouldn't compiled message from catalogs in development", () => {
+  it("._ shouldn't use compiled message in production", () => {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}",
+      "My name is {name}": compileMessage("Je m'appelle {name}"),
     }
 
-    mockEnv("development", () => {
+    mockEnv("production", () => {
       const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
         messages: { fr: messages },
       })
 
-      expect(i18n._("My name is {name}")).toEqual("Je m'appelle {name}")
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("._ shouldn't double compile message in development", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": ["Je m'appelle {name}"],
+    }
+
+    const { setupI18n } = require("@lingui/core")
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: messages },
+    })
+
+    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+      "Je m'appelle {name}"
+    )
+  })
+
+  it("setMessagesCompiler should register a message compiler for production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      i18n.setMessagesCompiler(compileMessage)
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
     })
   })
 

@@ -36,7 +36,8 @@ export type LocaleData = {
  */
 export type AllLocaleData = Record<Locale, LocaleData>
 
-export type Messages = Record<string, CompiledMessage>
+export type UncompiledMessage = string
+export type Messages = Record<string, UncompiledMessage | CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
@@ -79,15 +80,22 @@ type LoadAndActivateOptions = {
   messages: Messages
 }
 
+export type MessageCompiler = (message: string) => CompiledMessage
+
 export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
   private _localeData: AllLocaleData = {}
   private _messages: AllMessages = {}
   private _missing?: MissingHandler
+  private _messageCompiler?: MessageCompiler
 
   constructor(params: I18nProps) {
     super()
+
+    if (process.env.NODE_ENV !== "production") {
+      this.setMessagesCompiler(compileMessage)
+    }
 
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
@@ -123,6 +131,26 @@ export class I18n extends EventEmitter<Events> {
     } else {
       Object.assign(maybeLocaleData, localeData)
     }
+  }
+
+  /**
+   * Registers a `MessageCompiler` to enable the use of uncompiled catalogs at runtime.
+   *
+   * In production builds, the `MessageCompiler` is typically excluded to reduce bundle size.
+   * By default, message catalogs should be precompiled during the build process. However,
+   * if you need to compile catalogs at runtime, you can use this method to set a message compiler.
+   *
+   * Example usage:
+   *
+   * ```ts
+   * import { compileMessage } from "@lingui/message-utils/compileMessage";
+   *
+   * i18n.setMessagesCompiler(compileMessage);
+   * ```
+   */
+  setMessagesCompiler(compiler: MessageCompiler) {
+    this._messageCompiler = compiler
+    return this
   }
 
   /**
@@ -237,16 +265,13 @@ export class I18n extends EventEmitter<Events> {
       this.emit("missing", { id, locale: this._locale })
     }
 
-    // To avoid double compilation, skip compilation for `messageForId`, because message from catalog should be already compiled
-    // ref: https://github.com/lingui/js-lingui/issues/1901
-    const translation =
-      messageForId ||
-      (() => {
-        const trans: CompiledMessage | string = message || id
-        return process.env.NODE_ENV !== "production"
-          ? compileMessage(trans)
-          : trans
-      })()
+    let translation = messageForId || message || id
+
+    // Compiled message is always an array (`["Ola!"]`).
+    // If message comes as string - it's not compiled, and we need to compile it beforehand.
+    if (isString(translation) && this._messageCompiler) {
+      translation = this._messageCompiler(translation)
+    }
 
     // hack for parsing unicode values inside a string to get parsed in react native environments
     if (isString(translation) && UNICODE_REGEX.test(translation))
