@@ -115,8 +115,6 @@ describe("transformTrans", () => {
     expect(code).toMatchInlineSnapshot(`
       import { resolveDynamicComponent as _resolveDynamicComponent, openBlock as _openBlock, createBlock as _createBlock, createElementVNode as _createElementVNode, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx } from "vue"
 
-      const _hoisted_1 = /*#__PURE__*/_createElementVNode("br", null, null, -1 /* HOISTED */)
-
       export function render(_ctx, _cache, $props, $setup, $data, $options) {
         return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/*i18n*/
       {
@@ -133,9 +131,9 @@ describe("transformTrans", () => {
               (_openBlock(), _createBlock(_resolveDynamicComponent(children)))
             ])
           ]),
-          [1]: _withCtx(({children}) => [
-            _hoisted_1
-          ]),
+          [1]: _withCtx(({children}) => _cache[0] || (_cache[0] = [
+            _createElementVNode("br", null, null, -1 /* HOISTED */)
+          ])),
           [2]: _withCtx(({children}) => [
             _createElementVNode("span", null, [
               (_openBlock(), _createBlock(_resolveDynamicComponent(children)))

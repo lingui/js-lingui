@@ -12,6 +12,7 @@ exports[`vue extractor should extract message from functional component 1`] = `
       10,
       33,
     ],
+    placeholders: {},
   },
 ]
 `;
@@ -28,6 +29,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       4,
       0,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -39,6 +41,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       19,
       20,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -50,6 +53,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       27,
       11,
     ],
+    placeholders: {},
   },
   {
     comment: Message comment,
@@ -61,6 +65,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       29,
       10,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -72,6 +77,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       35,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -83,6 +89,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       36,
       11,
     ],
+    placeholders: {},
   },
 ]
 `;
@@ -99,6 +106,7 @@ exports[`vue extractor should support macro expansion 1`] = `
       5,
       0,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -110,6 +118,7 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -121,6 +130,7 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {},
   },
   {
     comment: this is a comment,
@@ -132,6 +142,7 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -143,6 +154,7 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -154,6 +166,11 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {
+      name: _ctx.name,
+      persona: _ctx.persona,
+      town: _ctx.town,
+    },
   },
   {
     comment: undefined,
@@ -165,6 +182,9 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {
+      name: _ctx.name,
+    },
   },
   {
     comment: undefined,
@@ -176,6 +196,9 @@ exports[`vue extractor should support macro expansion 1`] = `
       null,
       null,
     ],
+    placeholders: {
+      count: _ctx.count,
+    },
   },
 ]
 `;

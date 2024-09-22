@@ -236,10 +236,7 @@ export class MacroJs {
         )
       : null
 
-    const newNode = this.types.callExpression(
-      this.types.identifier(this.useLinguiImportName),
-      []
-    )
+    const newNode = t.callExpression(t.identifier(this.useLinguiImportName), [])
 
     if (!_property) {
       return newNode
