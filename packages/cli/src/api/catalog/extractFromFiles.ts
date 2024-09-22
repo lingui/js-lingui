@@ -3,11 +3,30 @@ import type {
   ExtractorType,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import extract from "../extractors"
-import path from "path"
 import chalk from "chalk"
+import path from "path"
+import extract from "../extractors"
+import { ExtractedCatalogType, MessageOrigin } from "../types"
 import { prettyOrigin } from "../utils"
-import { MessageOrigin, ExtractedCatalogType } from "../types"
+
+function mergePlaceholders(
+  prev: Record<string, string[]>,
+  next: Record<string, string>
+) {
+  const res = { ...prev }
+
+  Object.entries(next).forEach(([key, value]) => {
+    if (!res[key]) {
+      res[key] = []
+    }
+
+    if (!res[key].includes(value)) {
+      res[key].push(value)
+    }
+  })
+
+  return res
+}
 
 export async function extractFromFiles(
   paths: string[],
@@ -24,6 +43,7 @@ export async function extractFromFiles(
           messages[next.id] = {
             message: next.message,
             context: next.context,
+            placeholders: {},
             comments: [],
             origin: [],
           }
@@ -50,10 +70,12 @@ export async function extractFromFiles(
 
         messages[next.id] = {
           ...prev,
+          message: prev.message ?? next.message,
           comments: next.comment
             ? [...prev.comments, next.comment]
             : prev.comments,
           origin: [...prev.origin, [filename, next.origin[1]]],
+          placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
         }
       },
       config,

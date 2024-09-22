@@ -175,7 +175,7 @@ We need to create the `lingui.config.js` file:
 
 ```js title="lingui.config.js"
 /** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
+const config = {
   locales: ["cs", "en"],
   catalogs: [
     {
@@ -183,7 +183,10 @@ module.exports = {
       include: ["src"],
     },
   ],
+  compileNamespace: "es",
 };
+
+export default config;
 ```
 
 After adding the configuration file, let's run [`extract`](/docs/ref/cli.md#extract) command again:
@@ -324,9 +327,7 @@ const markAsRead = () => {
 To translate it, we will use the `useLingui` macro hook:
 
 ```js
-import { useLingui } from '@lingui/macro';
-
-...
+import { useLingui } from "@lingui/react/macro";
 
 const { t } = useLingui();
 
@@ -344,7 +345,7 @@ const { t } = useLingui();
 
 const markAsRead = () => {
   const userName = "User1234";
-  alert(t`Hello {userName}, your messages marked as read!`);
+  alert(t`Hello ${userName}, your messages marked as read!`);
 };
 ```
 
@@ -441,14 +442,11 @@ Any expressions are allowed, not just simple variables. The only difference is, 
   // Dear Watson,<0/>it's not exactly what I had in my mind.
   ```
 
-Obviously, you can also shoot yourself in the foot. Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
+Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
 
 ```jsx
-// Oh, seriously?
 <Trans>{isOpen && <Modal />}</Trans>
 ```
-
-If in doubt, imagine how the final message should look like.
 
 ### Message ID
 

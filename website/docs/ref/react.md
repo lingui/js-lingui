@@ -206,7 +206,7 @@ It's also possible to use `Trans` component directly without macros. In that cas
 
 ### Plurals
 
-If you cannot use [@lingui/macro](/docs/ref/macro.mdx) for some reason, you can render plurals using the plain Trans component like this:
+If you cannot use [@lingui/react/macro](/docs/ref/macro.mdx) for some reason, you can render plurals using the plain Trans component like this:
 
 ```jsx
 import React from "react";

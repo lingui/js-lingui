@@ -114,6 +114,18 @@ function MyComponent() {
     `,
     },
     {
+      name: "support i18n export",
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { i18n } = useLingui();
+
+  console.log(i18n);
+}
+    `,
+    },
+    {
       name: "work with existing useLingui statement",
       code: `
 import { useLingui as useLinguiMacro } from '@lingui/react/macro';

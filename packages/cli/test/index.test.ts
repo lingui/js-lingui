@@ -3,7 +3,6 @@ import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
-import os from "os"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
@@ -69,8 +68,8 @@ describe("E2E Extractor Test", () => {
         ┌─────────────┬─────────────┬─────────┐
         │ Language    │ Total count │ Missing │
         ├─────────────┼─────────────┼─────────┤
-        │ en (source) │      7      │    -    │
-        │ pl          │      7      │    7    │
+        │ en (source) │     10      │    -    │
+        │ pl          │     10      │   10    │
         └─────────────┴─────────────┴─────────┘
 
         (use "yarn extract" to update catalogs with new messages)
@@ -119,9 +118,7 @@ describe("E2E Extractor Test", () => {
     compareFolders(actualPath, expectedPath)
   })
 
-  const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
-
-  skipOnWindows("extractor-experimental", () => {
+  describe("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental-template"
@@ -156,11 +153,11 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.tsx:
-          4 message(s) extracted
-
           Catalog statistics for fixtures/pages/index.page.ts:
           1 message(s) extracted
+
+          Catalog statistics for fixtures/pages/about.page.tsx:
+          4 message(s) extracted
 
           Compiling message catalogs…
         `)
@@ -207,20 +204,20 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      3      │    -    │
-          │ pl          │      4      │    3    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
           │ en (source) │      2      │    -    │
           │ pl          │      2      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      3      │    -    │
+          │ pl          │      4      │    3    │
           └─────────────┴─────────────┴─────────┘
 
           Compiling message catalogs…
@@ -266,20 +263,20 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      3      │    2    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
           │ en (source) │      1      │    -    │
           │ pl          │      1      │    1    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      3      │    2    │
           └─────────────┴─────────────┴─────────┘
 
         `)

@@ -31,13 +31,18 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - Common Patterns",
-        id: "tutorials/react-patterns",
+        label: "React Server Components",
+        id: "tutorials/react-rsc",
       },
       {
         type: "doc",
         label: "React Native",
         id: "tutorials/react-native",
+      },
+      {
+        type: "doc",
+        label: "React - Common Patterns",
+        id: "tutorials/react-patterns",
       },
       {
         type: "doc",
@@ -202,7 +207,7 @@ const sidebar = [
   {
     type: "category",
     label: "Releases",
-    items: ["releases/migration-4", "releases/migration-3"],
+    items: ["releases/migration-5", "releases/migration-4", "releases/migration-3"],
   },
 ];
 

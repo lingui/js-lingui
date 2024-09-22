@@ -3,12 +3,24 @@ import PO from "pofile"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import { normalizePlaceholderValue } from "./utils"
 
 type POItem = InstanceType<typeof PO.Item>
 
 const splitOrigin = (origin: string) => {
   const [file, line] = origin.split(":")
   return [file, line ? Number(line) : null] as [file: string, line: number]
+}
+
+const splitMultiLineComments = (comments: string[]) => {
+  return comments.flatMap((comment) =>
+    comment.includes("\n")
+      ? comment
+          .split("\n")
+          .map((slice) => slice.trim())
+          .filter(Boolean)
+      : comment
+  )
 }
 
 /**
@@ -58,13 +70,47 @@ export type PoFormatterOptions = {
    * @default false
    */
   explicitIdAsDefault?: boolean
+
+  /**
+   * Custom attributes to append to the PO file header
+   *
+   * @default {}
+   */
+  customHeaderAttributes?: { [key: string]: string }
+
+  /**
+   * Print values for unnamed placeholders as comments for each message.
+   *
+   * This can give more context to translators for better translations.
+   *
+   * By default first 3 placeholders are shown.
+   *
+   * Example:
+   *
+   * ```js
+   * t`Hello ${user.name} ${value}`
+   * ```
+   *
+   * This will be extracted as
+   *
+   * ```po
+   * #. placeholder {0}: user.name
+   * msgid "Hello {0} {value}"
+   * ```
+   *
+   * @default true
+   */
+  printPlaceholdersInComments?: boolean | { limit?: number }
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message, message.context)
 }
 
-function getCreateHeaders(language: string): PO["headers"] {
+function getCreateHeaders(
+  language: string,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
+): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
     "MIME-Version": "1.0",
@@ -72,6 +118,7 @@ function getCreateHeaders(language: string): PO["headers"] {
     "Content-Transfer-Encoding": "8bit",
     "X-Generator": "@lingui/cli",
     ...(language ? { Language: language } : {}),
+    ...(customHeaderAttributes ?? {}),
   }
 }
 
@@ -86,7 +133,11 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
 
     // The extractedComments array may be modified in this method,
     // so create a new array with the message's elements.
-    item.extractedComments = [...(message.comments || [])]
+    item.extractedComments = [
+      ...(message.comments?.length
+        ? splitMultiLineComments(message.comments)
+        : []),
+    ]
 
     item.flags = ((message.extra?.flags || []) as string[]).reduce<
       Record<string, boolean>
@@ -119,6 +170,30 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
       }
 
       item.msgid = id
+    }
+
+    if (options.printPlaceholdersInComments !== false) {
+      item.extractedComments = item.extractedComments.filter(
+        (comment) => !comment.startsWith("placeholder ")
+      )
+
+      const limit =
+        typeof options.printPlaceholdersInComments === "object" &&
+        options.printPlaceholdersInComments.limit
+          ? options.printPlaceholdersInComments.limit
+          : 3
+
+      if (message.placeholders) {
+        Object.entries(message.placeholders).forEach(([name, value]) => {
+          if (/^\d+$/.test(name)) {
+            value.slice(0, limit).forEach((entry) => {
+              item.extractedComments.push(
+                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`
+              )
+            })
+          }
+        })
+      }
     }
 
     if (message.context) {
@@ -198,7 +273,10 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         po = PO.parse(ctx.existing)
       } else {
         po = new PO()
-        po.headers = getCreateHeaders(ctx.locale)
+        po.headers = getCreateHeaders(
+          ctx.locale,
+          options.customHeaderAttributes
+        )
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)
       }

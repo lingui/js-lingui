@@ -14,7 +14,7 @@
     "test:integration": "jest -c jest.config.integration.js",
     "test:e2e": "yarn workspaces foreach -p run test:e2e",
     "test:tsd": "jest -c jest.config.types.js",
-    "test:all": "yarn test && yarn test:integration && yarn test:e2e && test:tsd",
+    "test:all": "yarn test && yarn test:integration && yarn test:e2e && yarn test:tsd",
     "lint:types": "tsc",
     "lint:eslint": "eslint './packages/**/*.{ts,tsx,js,jsx}'",
     "lint:all": "yarn lint:eslint && yarn lint:types",

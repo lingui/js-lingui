@@ -3,17 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.8.0-next.1](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.1) (2024-03-06)
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
+
+### Bug Fixes
+
+- **cli:** use caret range for `micromatch` dependency ([#2020](https://github.com/lingui/js-lingui/issues/2020)) ([be441e3](https://github.com/lingui/js-lingui/commit/be441e31ea1c5a0325f77402602f61c20a4aff4e))
+- escape nested brackets ([#2001](https://github.com/lingui/js-lingui/issues/2001)) ([6d00301](https://github.com/lingui/js-lingui/commit/6d0030146cc73f457e4cdcd1837f3d8f060d16fc))
+- return a single node when applicable ([#2016](https://github.com/lingui/js-lingui/issues/2016)) ([68d8358](https://github.com/lingui/js-lingui/commit/68d8358ff7bbb09de8953db9c7faf0a9a4e99d80))
+- run type tests in test:all ([#2017](https://github.com/lingui/js-lingui/issues/2017)) ([b9e89c1](https://github.com/lingui/js-lingui/commit/b9e89c17de2bdaaf64d3d40bd308777285ed2b1a))
+
+## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
+
+### Bug Fixes
+
+- **cli:** add pnpm detection to command suggestions ([#1989](https://github.com/lingui/js-lingui/issues/1989)) ([287a688](https://github.com/lingui/js-lingui/commit/287a68848d84134db10fbd373138ec8bbbf2889e))
+- **extract:** escape special regex characters used in file-based routing systems when files are passed in options ([#1984](https://github.com/lingui/js-lingui/issues/1984)) ([fd92d20](https://github.com/lingui/js-lingui/commit/fd92d203ba299816150556aee46620d2e3f7794a))
+
+## [4.11.2](https://github.com/lingui/js-lingui/compare/v4.11.1...v4.11.2) (2024-07-03)
+
+### Bug Fixes
+
+- **cli:** update translationIO service in CLI package (to handle context) ([#1949](https://github.com/lingui/js-lingui/issues/1949)) ([ea7b9e7](https://github.com/lingui/js-lingui/commit/ea7b9e7154858960af29fc427ee2f64e2a96d425))
+- include type cast on ts compilation ([#1962](https://github.com/lingui/js-lingui/issues/1962)) ([0f66617](https://github.com/lingui/js-lingui/commit/0f6661799acfb62c4d169cacc8f6867278263f0e))
+
+## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
+
+### Bug Fixes
+
+- (lingui/core) i18n error if id is undefined ([#1938](https://github.com/lingui/js-lingui/issues/1938)) ([36c637a](https://github.com/lingui/js-lingui/commit/36c637a23a27d0933de0fd8978d72291792a3041))
+
+# [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
+
+### Bug Fixes
+
+- default message extraction ([#1936](https://github.com/lingui/js-lingui/issues/1936)) ([8f1ddd7](https://github.com/lingui/js-lingui/commit/8f1ddd787b79510b112b87c21d4a23b875722edc))
+- exclude .scss files from extract-experimental build ([#1935](https://github.com/lingui/js-lingui/issues/1935)) ([d01fa96](https://github.com/lingui/js-lingui/commit/d01fa969622605e40f417a85b98bce1f88771445))
+- **message-utils:** correctly handle multi-digit complex argument cases ([#1937](https://github.com/lingui/js-lingui/issues/1937)) ([47a0dde](https://github.com/lingui/js-lingui/commit/47a0dded190fa990ea21239a464073348209b8f0))
 
 ### Features
 
-- **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([ea420a8](https://github.com/lingui/js-lingui/commit/ea420a8a396aac49b26cd9375f9f82de6c01aaf0))
+- **format-po:** configure header attributes in PO file formatter ([#1934](https://github.com/lingui/js-lingui/issues/1934)) ([d90f778](https://github.com/lingui/js-lingui/commit/d90f77813381e8a74dc9e16662a3ce384c683493))
 
-# [4.8.0-next.0](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.0) (2024-03-04)
+## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
+
+### Bug Fixes
+
+- **core:** pound symbol being replaced outside plural and selectordinal ([#1928](https://github.com/lingui/js-lingui/issues/1928)) ([e94c6fd](https://github.com/lingui/js-lingui/commit/e94c6fd9d1d8827f535a8ae8faa2d230e961ae9d))
+
+# [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
 
 ### Features
 
-- **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([17f84e8](https://github.com/lingui/js-lingui/commit/17f84e84aeee1b154eb1a4c2bab9c239adff3ba3))
+- **react:** native support react RSC ([#1914](https://github.com/lingui/js-lingui/issues/1914)) ([0e94f2a](https://github.com/lingui/js-lingui/commit/0e94f2a5b7402b5197447932c6690502023b3c55))
+
+# [4.9.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.9.0) (2024-04-12)
+
+### Features
+
+- **react:** native support react RSC ([#1914](https://github.com/lingui/js-lingui/issues/1914)) ([0e94f2a](https://github.com/lingui/js-lingui/commit/0e94f2a5b7402b5197447932c6690502023b3c55))
+
+# [4.8.0](https://github.com/lingui/js-lingui/compare/v4.7.2...v4.8.0) (2024-04-03)
+
+### Features
+
+- **react:** add "use client" for react bundle ([#1902](https://github.com/lingui/js-lingui/issues/1902)) ([5cf50ff](https://github.com/lingui/js-lingui/commit/5cf50ff22aa7424933bf0b875f0f483ce13d2967))
 
 ## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
 

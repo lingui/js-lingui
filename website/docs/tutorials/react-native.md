@@ -5,7 +5,7 @@ description: Learn how to add internationalization to a React Native application
 
 # Internationalization of React Native apps
 
-In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx) for installation and setup instructions.
+In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx?babel-or-swc=babel) (for Babel) for installation and configuration instructions.
 
 :::caution Warning
 
@@ -30,9 +30,9 @@ See [here](https://github.com/facebook/hermes/issues/23) for details about `Intl
 
 ## Polyfilling Intl APIs
 
-React Native does not support all `Intl` features out of the box, and we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase the amount of JS that needs to be `require`d by your app. At the same time, modern i18n libraries rely on its presence.
+React Native's JS engine may not support all `Intl` features out of the box. As of 08/2024, we need to polyfill [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) using [`@formatjs/intl-locale`](https://formatjs.io/docs/polyfills/intl-locale/) and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) using [`@formatjs/intl-pluralrules`](https://formatjs.io/docs/polyfills/intl-pluralrules). Please note that importing the `Intl` polyfills can significantly increase the amount of JS that needs to be `require`d by your app. At the same time, modern i18n libraries rely on its presence.
 
-Follow the polyfill installation instructions before proceeding further.
+Follow the polyfill installation instructions before proceeding further. Import polyfills from `/polyfill-force` to avoid [slow initialization time on low-end devices](https://github.com/formatjs/formatjs/issues/4463).
 
 ## Example component
 
@@ -102,9 +102,9 @@ Not surprisingly, this part isn't too different from the [React tutorial](/docs/
 First, we need to wrap our app with [`I18nProvider`](/docs/ref/react.md#i18nprovider) and then we can use the [`Trans`](/docs/ref/macro.mdx#trans) macro to translate the screen heading:
 
 ```tsx
-import { I18nProvider } from '@lingui/react'
-import { Trans } from '@lingui/macro'
-import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
+import { i18n } from "@lingui/core";
 import { Text } from "react-native";
 
 i18n.loadAndActivate({ locale: "en", messages });
@@ -126,7 +126,7 @@ Translating the heading is done. Now, let's translate the `title` prop in the `<
 The solution is to use the `t` macro which we can obtain from the `useLingui` hook. We use it like this to get a translated string:
 
 ```tsx
-import { useLingui } from '@lingui/macro';
+import { useLingui } from '@lingui/react/macro';
 
 const { t } = useLingui()
 ...
@@ -188,7 +188,7 @@ const showDeleteConfirmation = () => {
 
 The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
 
-However, we don't recommend that you change the locale like this, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
+However, we don't recommend that you change the locale like this in mobile apps, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
 
 ## Choosing the default locale
 

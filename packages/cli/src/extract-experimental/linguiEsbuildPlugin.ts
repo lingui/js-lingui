@@ -50,7 +50,7 @@ export const pluginLinguiMacro = (options: {
         ],
       })
 
-      return { contents: result.code, loader: "jsx" }
+      return { contents: result.code, loader: "tsx" }
     })
   },
 })

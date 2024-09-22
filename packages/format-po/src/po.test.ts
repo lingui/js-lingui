@@ -1,9 +1,9 @@
 import fs from "fs"
 import path from "path"
 
-import { formatter as createFormatter, POCatalogExtra } from "./po"
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import MockDate from "mockdate"
+import { formatter as createFormatter, POCatalogExtra } from "./po"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -86,6 +86,15 @@ describe("pofile format", () => {
           " legs, pitifully thin compared with the size of the rest of him, waved about" +
           " helplessly as he looked. \"What's happened to me?\" he thought. It wasn't" +
           " a dream. His room, a proper human",
+      },
+      withMultiLineComments: {
+        translation: "Message with multi line comments",
+        comments: [
+          `hello
+          world
+          
+          `,
+        ],
       },
     }
 
@@ -441,5 +450,113 @@ describe("pofile format", () => {
       msgstr "Message with multiple origin"
 
     `)
+  })
+
+  it("should include custom header attributes", () => {
+    const format = createFormatter({
+      customHeaderAttributes: { "X-Custom-Attribute": "custom-value" },
+    })
+    const catalog: CatalogType = {}
+    const actual = format.serialize(catalog, defaultSerializeCtx)
+
+    expect(actual).toMatchInlineSnapshot(`
+      msgid ""
+      msgstr ""
+      "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+      "MIME-Version: 1.0\\n"
+      "Content-Type: text/plain; charset=utf-8\\n"
+      "Content-Transfer-Encoding: 8bit\\n"
+      "X-Generator: @lingui/cli\\n"
+      "Language: en\\n"
+      "X-Custom-Attribute: custom-value\\n"
+
+    `)
+  })
+
+  describe("printPlaceholdersInComments", () => {
+    it("should print unnamed placeholders as comments", () => {
+      const format = createFormatter()
+
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
+        },
+        // should not push placeholder comment twice
+        static2: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          comments: ["placeholder: {0} = getValue()"],
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
+        },
+        // multiline placeholder value + multiple entries
+        static3: {
+          message: "Static message {0}",
+          translation: "Static message {0}",
+          placeholders: {
+            0: ["user \n ? user.name \n : null", "userName"],
+          },
+        },
+
+        // should limit to 3 by default
+        static4: {
+          message: "Static message {0}",
+          translation: "Static message {0}",
+          placeholders: {
+            0: ["userName", "user.name", "profile.name", "authorName"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("Should not print placeholders if printPlaceholdersInComments = false", () => {
+      const format = createFormatter({ printPlaceholdersInComments: false })
+
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {name}",
+          translation: "Static message {0} {name}",
+          placeholders: {
+            0: ["getValue()"],
+            name: ["user.getName()"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("Should print printPlaceholdersInComments.limit amount of values for placeholder", () => {
+      const format = createFormatter({
+        printPlaceholdersInComments: {
+          limit: 1,
+        },
+      })
+
+      const catalog: CatalogType = {
+        static: {
+          message: "Static message {0} {1}",
+          translation: "Static message {0} {1}",
+          placeholders: {
+            0: ["userName", "user.name", "profile.name", "authorName"],
+            1: ["a", "b", "c", "d"],
+          },
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
   })
 })

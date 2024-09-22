@@ -12,13 +12,13 @@ The Lingui Vite integration:
 
 ## Setup with [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
 
-`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `babel-plugin-macros` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
+`@vitejs/plugin-react` uses Babel to transform your code. LinguiJS relies on `@lingui/babel-plugin-lingui-macro` to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
-1.  Install `@lingui/cli`, `babel-plugin-macros` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
+1.  Install `@lingui/cli`, `@lingui/vite-plugin`, `@lingui/babel-plugin-lingui-macro` as development dependencies and `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
-    npm install --save-dev @lingui/cli @lingui/vite-plugin babel-plugin-macros
-    npm install --save @lingui/react @lingui/macro
+    npm install --save-dev @lingui/cli @lingui/vite-plugin @lingui/babel-plugin-lingui-macro
+    npm install --save @lingui/react
     ```
 
 2.  Setup Lingui in `vite.config.ts`:
@@ -36,7 +36,7 @@ The Lingui Vite integration:
       plugins: [
         react({
           babel: {
-            plugins: ["macros"],
+            plugins: ["@lingui/babel-plugin-lingui-macro"],
           },
         }),
         lingui(),
@@ -48,12 +48,38 @@ The Lingui Vite integration:
 
 `@vitejs/plugin-react-swc` uses [SWC](https://swc.rs/) to transform your code, which is 20x faster than Babel. LinguiJS relies on [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md) to compile JSX to [ICU Message Format](/docs/guides/message-format.md) and for automatic ID generation.
 
-1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/macro`, `@lingui/react` as a runtime dependency:
+1.  Install `@lingui/cli`, `@lingui/swc-plugin` as development dependencies and `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
     npm install --save-dev @lingui/cli @lingui/vite-plugin @lingui/swc-plugin
-    npm install --save @lingui/react @lingui/macro
+    npm install --save @lingui/react
     ```
+
+    :::note
+    SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions [is not guaranteed](https://github.com/swc-project/swc/issues/5060).
+
+    You need to select an appropriate version of the `@lingui/swc-plugin` to match compatible `@swc/core` version.
+
+    The version of `@swc/core` is specified within the `@vitejs/plugin-react-swc` package.
+
+    To ensure that the resolved version of `@swc/core` is one of the supported versions, you may utilize the `resolutions` field in the `package.json` file, which is supported by Yarn:
+
+    ```json
+    "resolutions": {
+      "@swc/core": "1.3.56"
+    },
+    ```
+
+    or `overrides` for >npm@8.3
+
+    ```json
+    "overrides": {
+      "@swc/core": "1.3.56"
+    },
+    ```
+
+    For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+    :::
 
 2.  Setup Lingui in `vite.config.ts`:
 

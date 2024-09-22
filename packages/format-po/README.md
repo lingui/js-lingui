@@ -39,7 +39,7 @@ export default {
 
 Possible options:
 
-```ts
+````ts
 export type PoFormatterOptions = {
   /**
    * Print places where message is used
@@ -54,14 +54,14 @@ export type PoFormatterOptions = {
    * @default true
    */
   lineNumbers?: boolean
-  
+
   /**
    * Print `js-lingui-id: Xs4as` statement in extracted comments section
    *
    * @default false
    */
   printLinguiId?: boolean
-  
+
   /**
    * By default, the po-formatter treats the pair `msgid` + `msgctx` as the source
    * for generating an ID by hashing its value.
@@ -76,8 +76,39 @@ export type PoFormatterOptions = {
    * @default false
    */
   explicitIdAsDefault?: boolean
+
+  /**
+   * Custom attributes to append to the PO file header
+   *
+   * @default {}
+   */
+  customHeaderAttributes?: { [key: string]: string }
+
+  /**
+   * Print values for unnamed placeholders as comments for each message.
+   *
+   * This can give more context to translators for better translations.
+   *
+   * By default first 3 placeholders are shown.
+   *
+   * Example:
+   *
+   * ```js
+   * t`Hello ${user.name} ${value}`
+   * ```
+   *
+   * This will be extracted as
+   *
+   * ```po
+   * #. placeholder {0}: user.name
+   * msgid "Hello {0} {value}"
+   * ```
+   *
+   * @default true
+   */
+  printPlaceholdersInComments?: boolean | { limit?: number }
 }
-```
+````
 
 ## License
 

@@ -3,17 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.8.0-next.1](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.1) (2024-03-06)
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
 
-### Features
+**Note:** Version bump only for package @lingui/macro
 
-- **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([ea420a8](https://github.com/lingui/js-lingui/commit/ea420a8a396aac49b26cd9375f9f82de6c01aaf0))
+## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
 
-# [4.8.0-next.0](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.8.0-next.0) (2024-03-04)
+**Note:** Version bump only for package @lingui/macro
 
-### Features
+## [4.11.2](https://github.com/lingui/js-lingui/compare/v4.11.1...v4.11.2) (2024-07-03)
 
-- **macro:** add useLingui macro ([#1859](https://github.com/lingui/js-lingui/issues/1859)) ([17f84e8](https://github.com/lingui/js-lingui/commit/17f84e84aeee1b154eb1a4c2bab9c239adff3ba3))
+**Note:** Version bump only for package @lingui/macro
+
+## [4.11.1](https://github.com/lingui/js-lingui/compare/v4.11.0...v4.11.1) (2024-05-30)
+
+**Note:** Version bump only for package @lingui/macro
+
+# [4.11.0](https://github.com/lingui/js-lingui/compare/v4.10.1...v4.11.0) (2024-05-17)
+
+**Note:** Version bump only for package @lingui/macro
+
+## [4.10.1](https://github.com/lingui/js-lingui/compare/v4.10.0...v4.10.1) (2024-05-03)
+
+**Note:** Version bump only for package @lingui/macro
+
+# [4.10.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.10.0) (2024-04-12)
+
+**Note:** Version bump only for package @lingui/macro
+
+# [4.9.0](https://github.com/lingui/js-lingui/compare/v4.8.0...v4.9.0) (2024-04-12)
+
+**Note:** Version bump only for package @lingui/macro
+
+# [4.8.0](https://github.com/lingui/js-lingui/compare/v4.7.2...v4.8.0) (2024-04-03)
+
+**Note:** Version bump only for package @lingui/macro
 
 ## [4.7.2](https://github.com/lingui/js-lingui/compare/v4.7.1...v4.7.2) (2024-03-26)
 

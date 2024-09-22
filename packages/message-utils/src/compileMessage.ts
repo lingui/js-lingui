@@ -44,11 +44,9 @@ function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
 
     // complex argument with cases
     const formatProps: Record<string, CompiledMessage> = {}
-    token.cases.forEach((item) => {
-      formatProps[item.key.replace(/^=(.)+/, "$1")] = processTokens(
-        item.tokens,
-        mapText
-      )
+    token.cases.forEach(({ key, tokens }) => {
+      const prop = key[0] === "=" ? key.slice(1) : key
+      formatProps[prop] = processTokens(tokens, mapText)
     })
 
     return [
