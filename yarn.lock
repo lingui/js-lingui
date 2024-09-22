@@ -3047,6 +3047,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@isaacs/cliui@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "@isaacs/cliui@npm:8.0.2"
+  dependencies:
+    string-width: ^5.1.2
+    string-width-cjs: "npm:string-width@^4.2.0"
+    strip-ansi: ^7.0.1
+    strip-ansi-cjs: "npm:strip-ansi@^6.0.1"
+    wrap-ansi: ^8.1.0
+    wrap-ansi-cjs: "npm:wrap-ansi@^7.0.0"
+  checksum: 4a473b9b32a7d4d3cfb7a614226e555091ff0c5a29a1734c28c72a182c2f6699b26fc6b5c2131dfd841e86b185aea714c72201d7c98c2fba5f17709333a67aeb
+  languageName: node
+  linkType: hard
+
 "@isaacs/string-locale-compare@npm:^1.1.0":
   version: 1.1.0
   resolution: "@isaacs/string-locale-compare@npm:1.1.0"
@@ -3480,7 +3494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@5.0.0-next.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@5.0.0-next.1, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -3493,7 +3507,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-lingui-macro@5.0.0-next.0, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+"@lingui/babel-plugin-lingui-macro@5.0.0-next.1, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
   dependencies:
@@ -3502,9 +3516,9 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/conf": 5.0.0-next.0
-    "@lingui/core": 5.0.0-next.0
-    "@lingui/message-utils": 5.0.0-next.0
+    "@lingui/conf": 5.0.0-next.1
+    "@lingui/core": 5.0.0-next.1
+    "@lingui/message-utils": 5.0.0-next.1
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     unbuild: 2.0.0
@@ -3516,7 +3530,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@5.0.0-next.0, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@5.0.0-next.1, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -3525,28 +3539,27 @@ __metadata:
     "@babel/parser": ^7.21.2
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 5.0.0-next.0
-    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.0
-    "@lingui/conf": 5.0.0-next.0
-    "@lingui/core": 5.0.0-next.0
-    "@lingui/format-po": 5.0.0-next.0
+    "@lingui/babel-plugin-extract-messages": 5.0.0-next.1
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.1
+    "@lingui/conf": 5.0.0-next.1
+    "@lingui/core": 5.0.0-next.1
+    "@lingui/format-po": 5.0.0-next.1
     "@lingui/jest-mocks": "*"
-    "@lingui/message-utils": 5.0.0-next.0
+    "@lingui/message-utils": 5.0.0-next.1
     "@types/convert-source-map": ^2.0.0
-    "@types/glob": ^8.1.0
     "@types/micromatch": ^4.0.1
     "@types/normalize-path": ^3.0.0
     babel-plugin-macros: ^3.0.1
     chalk: ^4.1.0
     chokidar: 3.5.1
-    cli-table: 0.3.6
+    cli-table: ^0.3.11
     commander: ^10.0.0
     convert-source-map: ^2.0.0
     date-fns: ^3.6.0
     esbuild: ^0.21.5
-    glob: ^7.1.4
+    glob: ^11.0.0
     inquirer: ^7.3.3
-    micromatch: 4.0.2
+    micromatch: ^4.0.7
     mock-fs: ^5.2.0
     mockdate: ^3.0.5
     normalize-path: ^3.0.0
@@ -3562,7 +3575,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@5.0.0-next.0, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@5.0.0-next.1, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -3578,18 +3591,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@5.0.0-next.0, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
+"@lingui/core@5.0.0-next.1, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
-    "@lingui/message-utils": 5.0.0-next.0
+    "@lingui/message-utils": 5.0.0-next.1
     tsd: ^0.26.1
     unbuild: 2.0.0
     unraw: ^3.0.0
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.0
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.1
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
     "@lingui/babel-plugin-lingui-macro":
@@ -3622,9 +3635,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/extractor-vue@workspace:packages/extractor-vue"
   dependencies:
-    "@lingui/babel-plugin-extract-messages": 5.0.0-next.0
-    "@lingui/cli": 5.0.0-next.0
-    "@lingui/conf": 5.0.0-next.0
+    "@lingui/babel-plugin-extract-messages": 5.0.0-next.1
+    "@lingui/cli": 5.0.0-next.1
+    "@lingui/conf": 5.0.0-next.1
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 2.0.0
   languageName: unknown
@@ -3634,18 +3647,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
-    "@lingui/conf": 5.0.0-next.0
+    "@lingui/conf": 5.0.0-next.1
     papaparse: ^5.4.0
     tsd: ^0.28.0
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@5.0.0-next.0, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
+"@lingui/format-json@5.0.0-next.1, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 5.0.0-next.0
+    "@lingui/conf": 5.0.0-next.1
     ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^2.0.0
@@ -3656,10 +3669,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/conf": 5.0.0-next.0
-    "@lingui/format-po": 5.0.0-next.0
+    "@lingui/conf": 5.0.0-next.1
+    "@lingui/format-po": 5.0.0-next.1
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 5.0.0-next.0
+    "@lingui/message-utils": 5.0.0-next.1
     "@messageformat/parser": ^5.0.0
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
@@ -3670,13 +3683,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@5.0.0-next.0, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@5.0.0-next.1, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/conf": 5.0.0-next.0
+    "@lingui/conf": 5.0.0-next.1
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 5.0.0-next.0
+    "@lingui/message-utils": 5.0.0-next.1
     date-fns: ^3.6.0
     mockdate: ^3.0.5
     pofile: ^1.1.4
@@ -3696,9 +3709,9 @@ __metadata:
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 5.0.0-next.0
-    "@lingui/conf": 5.0.0-next.0
-    "@lingui/format-json": 5.0.0-next.0
+    "@lingui/cli": 5.0.0-next.1
+    "@lingui/conf": 5.0.0-next.1
+    "@lingui/format-json": 5.0.0-next.1
     unbuild: 2.0.0
     webpack: ^5.76.1
   peerDependencies:
@@ -3710,8 +3723,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
-    "@lingui/core": 5.0.0-next.0
-    "@lingui/react": 5.0.0-next.0
+    "@lingui/core": 5.0.0-next.1
+    "@lingui/react": 5.0.0-next.1
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 4.11.2
     babel-plugin-macros: 2 || 3
@@ -3723,7 +3736,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@5.0.0-next.0, @lingui/message-utils@workspace:packages/message-utils":
+"@lingui/message-utils@5.0.0-next.1, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
@@ -3743,12 +3756,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/react@5.0.0-next.0, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
+"@lingui/react@5.0.0-next.1, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 5.0.0-next.0
+    "@lingui/core": 5.0.0-next.1
     "@lingui/jest-mocks": "*"
     "@testing-library/react": ^14.0.0
     "@types/react": ^18.2.13
@@ -3759,7 +3772,7 @@ __metadata:
     tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.0
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.1
     babel-plugin-macros: 2 || 3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   peerDependenciesMeta:
@@ -3785,8 +3798,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 5.0.0-next.0
-    "@lingui/conf": 5.0.0-next.0
+    "@lingui/cli": 5.0.0-next.1
+    "@lingui/conf": 5.0.0-next.1
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
     unbuild: 2.0.0
@@ -4296,6 +4309,13 @@ __metadata:
   peerDependencies:
     typescript: ^3 || ^4
   checksum: 64eb6d90aafa889f62fe73d128b7be2b3295dffde4d5dff63bad75d512b6bc1d8419d8fc784a1a60b45aba4cda2eaf6e233bf59797a1d91b26fac27d99dae047
+  languageName: node
+  linkType: hard
+
+"@pkgjs/parseargs@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@pkgjs/parseargs@npm:0.11.0"
+  checksum: 6ad6a00fc4f2f2cfc6bff76fb1d88b8ee20bc0601e18ebb01b6d4be583733a860239a521a7fbca73b612e66705078809483549d2b18f370eb346c5155c8e4a0f
   languageName: node
   linkType: hard
 
@@ -4817,16 +4837,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "@types/glob@npm:8.1.0"
-  dependencies:
-    "@types/minimatch": ^5.1.2
-    "@types/node": "*"
-  checksum: 9101f3a9061e40137190f70626aa0e202369b5ec4012c3fabe6f5d229cce04772db9a94fa5a0eb39655e2e4ad105c38afbb4af56a56c0996a8c7d4fc72350e3d
-  languageName: node
-  linkType: hard
-
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.6
   resolution: "@types/graceful-fs@npm:4.1.6"
@@ -4909,13 +4919,6 @@ __metadata:
   version: 3.0.5
   resolution: "@types/minimatch@npm:3.0.5"
   checksum: c41d136f67231c3131cf1d4ca0b06687f4a322918a3a5adddc87ce90ed9dbd175a3610adee36b106ae68c0b92c637c35e02b58c8a56c424f71d30993ea220b92
-  languageName: node
-  linkType: hard
-
-"@types/minimatch@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "@types/minimatch@npm:5.1.2"
-  checksum: 0391a282860c7cb6fe262c12b99564732401bdaa5e395bee9ca323c312c1a0f45efbf34dce974682036e857db59a5c9b1da522f3d6055aeead7097264c8705a8
   languageName: node
   linkType: hard
 
@@ -5746,7 +5749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^6.0.0":
+"ansi-styles@npm:^6.0.0, ansi-styles@npm:^6.1.0":
   version: 6.2.1
   resolution: "ansi-styles@npm:6.2.1"
   checksum: ef940f2f0ced1a6347398da88a91da7930c33ecac3c77b72c5905f8b8fe402c52e6fde304ff5347f616e27a742da3f1dc76de98f6866c69251ad0b07a66776d9
@@ -6220,12 +6223,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.1, braces@npm:^3.0.2, braces@npm:~3.0.2":
-  version: 3.0.2
-  resolution: "braces@npm:3.0.2"
+"braces@npm:^3.0.3, braces@npm:~3.0.2":
+  version: 3.0.3
+  resolution: "braces@npm:3.0.3"
   dependencies:
-    fill-range: ^7.0.1
-  checksum: e2a8e769a863f3d4ee887b5fe21f63193a891c68b612ddb4b68d82d1b5f3ff9073af066c343e9867a393fe4c2555dcb33e89b937195feb9c1613d259edfcd459
+    fill-range: ^7.1.1
+  checksum: b95aa0b3bd909f6cd1720ffcf031aeaf46154dd88b4da01f9a1d3f7ea866a79eba76a6d01cbc3c422b2ee5cdc39a4f02491058d5df0d7bf6e6a162a832df1f69
   languageName: node
   linkType: hard
 
@@ -6631,12 +6634,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table@npm:0.3.6":
-  version: 0.3.6
-  resolution: "cli-table@npm:0.3.6"
+"cli-table@npm:^0.3.11":
+  version: 0.3.11
+  resolution: "cli-table@npm:0.3.11"
   dependencies:
     colors: 1.0.3
-  checksum: b0cd08578c810240920438cc2b3ffb4b4f5106b29f3362707f1d8cfc0c0440ad2afb70b96e30ce37f72f0ffe1e844ae7341dde4df17d51ad345eb186a5903af2
+  checksum: 59fb61f992ac9bc8610ed98c72bf7f5d396c5afb42926b6747b46b0f8bb98a0dfa097998e77542ac334c1eb7c18dbf4f104d5783493273c5ec4c34084aa7c663
   languageName: node
   linkType: hard
 
@@ -7131,7 +7134,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -8807,12 +8810,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fill-range@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "fill-range@npm:7.0.1"
+"fill-range@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "fill-range@npm:7.1.1"
   dependencies:
     to-regex-range: ^5.0.1
-  checksum: cc283f4e65b504259e64fd969bcf4def4eb08d85565e906b7d36516e87819db52029a76b6363d0f02d0d532f0033c9603b9e2d943d56ee3b0d4f7ad3328ff917
+  checksum: b4abfbca3839a3d55e4ae5ec62e131e2e356bf4859ce8480c64c4876100f4df292a63e5bb1618e1d7460282ca2b305653064f01654474aa35c68000980f17798
   languageName: node
   linkType: hard
 
@@ -8886,6 +8889,16 @@ __metadata:
   dependencies:
     is-callable: ^1.1.3
   checksum: 6c48ff2bc63362319c65e2edca4a8e1e3483a2fabc72fbe7feaf8c73db94fc7861bd53bc02c8a66a0c1dd709da6b04eec42e0abdd6b40ce47305ae92a25e5d28
+  languageName: node
+  linkType: hard
+
+"foreground-child@npm:^3.1.0":
+  version: 3.3.0
+  resolution: "foreground-child@npm:3.3.0"
+  dependencies:
+    cross-spawn: ^7.0.0
+    signal-exit: ^4.0.1
+  checksum: 1989698488f725b05b26bc9afc8a08f08ec41807cd7b92ad85d96004ddf8243fd3e79486b8348c64a3011ae5cc2c9f0936af989e1f28339805d8bc178a75b451
   languageName: node
   linkType: hard
 
@@ -9267,6 +9280,22 @@ __metadata:
     once: ^1.3.0
     path-is-absolute: ^1.0.0
   checksum: f52480fc82b1e66e52990f0f2e7306447d12294c83fbbee0395e761ad1178172012a7cc0673dbf4810baac400fc09bf34484c08b5778c216403fd823db281716
+  languageName: node
+  linkType: hard
+
+"glob@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "glob@npm:11.0.0"
+  dependencies:
+    foreground-child: ^3.1.0
+    jackspeak: ^4.0.1
+    minimatch: ^10.0.0
+    minipass: ^7.1.2
+    package-json-from-dist: ^1.0.0
+    path-scurry: ^2.0.0
+  bin:
+    glob: dist/esm/bin.mjs
+  checksum: 8a2dd914d5776987be5244624d9491bbcaf19f2387e06783737003ff696ebfd2264190c47014f8709c1c02d8bc892f17660cf986c587b107e194c0a3151ab333
   languageName: node
   linkType: hard
 
@@ -10357,6 +10386,19 @@ __metadata:
     html-escaper: ^2.0.0
     istanbul-lib-report: ^3.0.0
   checksum: 7867228f83ed39477b188ea07e7ccb9b4f5320b6f73d1db93a0981b7414fa4ef72d3f80c4692c442f90fc250d9406e71d8d7ab65bb615cb334e6292b73192b89
+  languageName: node
+  linkType: hard
+
+"jackspeak@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "jackspeak@npm:4.0.1"
+  dependencies:
+    "@isaacs/cliui": ^8.0.2
+    "@pkgjs/parseargs": ^0.11.0
+  dependenciesMeta:
+    "@pkgjs/parseargs":
+      optional: true
+  checksum: 7989d19eddeff0631ef653df413e26290db77dc3791438bd12b56bed1c0b24d5d535fdfec13cf35775cd5b47f8ee57d36fd0bceaf2df672b1f523533fd4184cc
   languageName: node
   linkType: hard
 
@@ -11664,6 +11706,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "lru-cache@npm:11.0.0"
+  checksum: c29385f9369b1a566e1db9eda9a4b12f6507de906e5720ca12844dd775b7139c42b8e5837e7d5162bcc292ce4d3eecfa74ec2856c6afcc0caa2e3c9ea3a17f27
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^5.1.1":
   version: 5.1.1
   resolution: "lru-cache@npm:5.1.1"
@@ -11870,23 +11919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:4.0.2":
-  version: 4.0.2
-  resolution: "micromatch@npm:4.0.2"
+"micromatch@npm:^4.0.4, micromatch@npm:^4.0.5, micromatch@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "micromatch@npm:4.0.7"
   dependencies:
-    braces: ^3.0.1
-    picomatch: ^2.0.5
-  checksum: 39590a96d9ffad21f0afac044d0a5af4f33715a16fdd82c53a01c8f5ff6f70832a31b53e52972dac3deff8bf9f0bed0207d1c34e54ab3306a5e4c4efd5f7d249
-  languageName: node
-  linkType: hard
-
-"micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "micromatch@npm:4.0.5"
-  dependencies:
-    braces: ^3.0.2
+    braces: ^3.0.3
     picomatch: ^2.3.1
-  checksum: 02a17b671c06e8fefeeb6ef996119c1e597c942e632a21ef589154f23898c9c6a9858526246abb14f8bca6e77734aa9dcf65476fca47cedfb80d9577d52843fc
+  checksum: 3cde047d70ad80cf60c787b77198d680db3b8c25b23feb01de5e2652205d9c19f43bd81882f69a0fd1f0cde6a7a122d774998aad3271ddb1b8accf8a0f480cf7
   languageName: node
   linkType: hard
 
@@ -11933,6 +11972,15 @@ __metadata:
   dependencies:
     brace-expansion: ^1.1.7
   checksum: a3b84b426eafca947741b864502cee02860c4e7b145de11ad98775cfcf3066fef422583bc0ffce0952ddf4750c1ccf4220b1556430d4ce10139f66247d87d69e
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: f5b63c2f30606091a057c5f679b067f84a2cd0ffbd2dbc9143bda850afd353c7be81949ff11ae0c86988f07390eeca64efd7143ee05a0dab37f6c6b38a2ebb6c
   languageName: node
   linkType: hard
 
@@ -12046,6 +12094,13 @@ __metadata:
   version: 4.2.4
   resolution: "minipass@npm:4.2.4"
   checksum: c664f2ae4401408d1e7a6e4f50aca45f87b1b0634bc9261136df5c378e313e77355765f73f59c4a5abcadcdf43d83fcd3eb14e4a7cdcce8e36508e2290345753
+  languageName: node
+  linkType: hard
+
+"minipass@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "minipass@npm:7.1.2"
+  checksum: 2bfd325b95c555f2b4d2814d49325691c7bee937d753814861b0b49d5edcda55cbbf22b6b6a60bb91eddac8668771f03c5ff647dcd9d0f798e9548b9cdc46ee3
   languageName: node
   linkType: hard
 
@@ -13079,6 +13134,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"package-json-from-dist@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "package-json-from-dist@npm:1.0.0"
+  checksum: ac706ec856a5a03f5261e4e48fa974f24feb044d51f84f8332e2af0af04fbdbdd5bbbfb9cbbe354190409bc8307c83a9e38c6672c3c8855f709afb0006a009ea
+  languageName: node
+  linkType: hard
+
 "pacote@npm:13.6.1":
   version: 13.6.1
   resolution: "pacote@npm:13.6.1"
@@ -13266,6 +13328,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-scurry@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "path-scurry@npm:2.0.0"
+  dependencies:
+    lru-cache: ^11.0.0
+    minipass: ^7.1.2
+  checksum: 9953ce3857f7e0796b187a7066eede63864b7e1dfc14bf0484249801a5ab9afb90d9a58fc533ebb1b552d23767df8aa6a2c6c62caf3f8a65f6ce336a97bbb484
+  languageName: node
+  linkType: hard
+
 "path-type@npm:^3.0.0":
   version: 3.0.0
   resolution: "path-type@npm:3.0.0"
@@ -13317,7 +13389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.0.5, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
@@ -14429,6 +14501,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"signal-exit@npm:^4.0.1":
+  version: 4.1.0
+  resolution: "signal-exit@npm:4.1.0"
+  checksum: 64c757b498cb8629ffa5f75485340594d2f8189e9b08700e69199069c8e3070fb3e255f7ab873c05dc0b3cec412aea7402e10a5990cb6a050bd33ba062a6c549
+  languageName: node
+  linkType: hard
+
 "sisteransi@npm:^1.0.5":
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
@@ -14734,6 +14813,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string-width-cjs@npm:string-width@^4.2.0, string-width@npm:^1.0.2 || 2 || 3 || 4, string-width@npm:^4.1.0, string-width@npm:^4.2.0, string-width@npm:^4.2.3":
+  version: 4.2.3
+  resolution: "string-width@npm:4.2.3"
+  dependencies:
+    emoji-regex: ^8.0.0
+    is-fullwidth-code-point: ^3.0.0
+    strip-ansi: ^6.0.1
+  checksum: e52c10dc3fbfcd6c3a15f159f54a90024241d0f149cf8aed2982a2d801d2e64df0bf1dc351cf8e95c3319323f9f220c16e740b06faecd53e2462df1d2b5443fb
+  languageName: node
+  linkType: hard
+
 "string-width@npm:^1.0.1":
   version: 1.0.2
   resolution: "string-width@npm:1.0.2"
@@ -14745,18 +14835,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-width@npm:^1.0.2 || 2 || 3 || 4, string-width@npm:^4.1.0, string-width@npm:^4.2.0, string-width@npm:^4.2.3":
-  version: 4.2.3
-  resolution: "string-width@npm:4.2.3"
-  dependencies:
-    emoji-regex: ^8.0.0
-    is-fullwidth-code-point: ^3.0.0
-    strip-ansi: ^6.0.1
-  checksum: e52c10dc3fbfcd6c3a15f159f54a90024241d0f149cf8aed2982a2d801d2e64df0bf1dc351cf8e95c3319323f9f220c16e740b06faecd53e2462df1d2b5443fb
-  languageName: node
-  linkType: hard
-
-"string-width@npm:^5.0.0":
+"string-width@npm:^5.0.0, string-width@npm:^5.0.1, string-width@npm:^5.1.2":
   version: 5.1.2
   resolution: "string-width@npm:5.1.2"
   dependencies:
@@ -14823,21 +14902,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:^6.0.0, strip-ansi@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "strip-ansi@npm:6.0.1"
+  dependencies:
+    ansi-regex: ^5.0.1
+  checksum: f3cd25890aef3ba6e1a74e20896c21a46f482e93df4a06567cebf2b57edabb15133f1f94e57434e0a958d61186087b1008e89c94875d019910a213181a14fc8c
+  languageName: node
+  linkType: hard
+
 "strip-ansi@npm:^3.0.0, strip-ansi@npm:^3.0.1":
   version: 3.0.1
   resolution: "strip-ansi@npm:3.0.1"
   dependencies:
     ansi-regex: ^2.0.0
   checksum: 9b974de611ce5075c70629c00fa98c46144043db92ae17748fb780f706f7a789e9989fd10597b7c2053ae8d1513fd707816a91f1879b2f71e6ac0b6a863db465
-  languageName: node
-  linkType: hard
-
-"strip-ansi@npm:^6.0.0, strip-ansi@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "strip-ansi@npm:6.0.1"
-  dependencies:
-    ansi-regex: ^5.0.1
-  checksum: f3cd25890aef3ba6e1a74e20896c21a46f482e93df4a06567cebf2b57edabb15133f1f94e57434e0a958d61186087b1008e89c94875d019910a213181a14fc8c
   languageName: node
   linkType: hard
 
@@ -16176,6 +16255,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0, wrap-ansi@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "wrap-ansi@npm:7.0.0"
+  dependencies:
+    ansi-styles: ^4.0.0
+    string-width: ^4.1.0
+    strip-ansi: ^6.0.0
+  checksum: a790b846fd4505de962ba728a21aaeda189b8ee1c7568ca5e817d85930e06ef8d1689d49dbf0e881e8ef84436af3a88bc49115c2e2788d841ff1b8b5b51a608b
+  languageName: node
+  linkType: hard
+
 "wrap-ansi@npm:^6.2.0":
   version: 6.2.0
   resolution: "wrap-ansi@npm:6.2.0"
@@ -16187,14 +16277,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrap-ansi@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "wrap-ansi@npm:7.0.0"
+"wrap-ansi@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "wrap-ansi@npm:8.1.0"
   dependencies:
-    ansi-styles: ^4.0.0
-    string-width: ^4.1.0
-    strip-ansi: ^6.0.0
-  checksum: a790b846fd4505de962ba728a21aaeda189b8ee1c7568ca5e817d85930e06ef8d1689d49dbf0e881e8ef84436af3a88bc49115c2e2788d841ff1b8b5b51a608b
+    ansi-styles: ^6.1.0
+    string-width: ^5.0.1
+    strip-ansi: ^7.0.1
+  checksum: 371733296dc2d616900ce15a0049dca0ef67597d6394c57347ba334393599e800bab03c41d4d45221b6bc967b8c453ec3ae4749eff3894202d16800fdfe0e238
   languageName: node
   linkType: hard
 

@@ -1,5 +1,5 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
-import glob from "glob"
+import { globSync } from "glob"
 import path from "path"
 import { Catalog } from "../catalog"
 import { normalizeRelativePath, PATHSEP, replacePlaceholders } from "../utils"
@@ -62,13 +62,11 @@ export async function getCatalogs(
     const patterns = include.map((path) =>
       replacePlaceholders(path, { name: "*" })
     )
-    const candidates = glob.sync(
-      patterns.length > 1 ? `{${patterns.join(",")}}` : patterns[0],
-      {
-        ignore: exclude,
-        mark: true,
-      }
-    )
+
+    const candidates = globSync(patterns, {
+      ignore: exclude,
+      mark: true,
+    })
 
     candidates.forEach((catalogDir) => {
       const name = path.basename(catalogDir)
@@ -134,11 +132,7 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
     const catalogGlob = replacePlaceholders(catalogFile, { locale: "*" })
     const matchPattern = normalizeRelativePath(
       path.relative(catalog.config.rootDir, catalogGlob)
-    )
-      .replace("(", "\\(")
-      .replace(")", "\\)")
-      .replace("[", "\\[")
-      .replace("]", "\\]")
+    ).replace(/(\(|\)|\[|\])/g, "\\$1")
 
     const match = micromatch.capture(matchPattern, normalizeRelativePath(file))
     if (match) {

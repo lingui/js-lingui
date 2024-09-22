@@ -57,7 +57,8 @@ lingui extract [files...]
         [--locale <locale, [...]>]
         [--convert-from <format>]
         [--verbose]
-        [--watch [--debounce <delay>]]
+        [--watch]
+        [--debounce <delay>]
 ```
 
 The `extract` command looks for messages in the source files and extracts them

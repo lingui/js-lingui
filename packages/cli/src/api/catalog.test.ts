@@ -20,9 +20,11 @@ import { extractFromFiles } from "./catalog/extractFromFiles"
 import { FormatterWrapper, getFormat } from "./formats"
 
 export const fixture = (...dirs: string[]) =>
-  path.resolve(__dirname, path.join("fixtures", ...dirs)) +
-  // preserve trailing slash
-  (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  (
+    path.resolve(__dirname, path.join("fixtures", ...dirs)) +
+    // preserve trailing slash
+    (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -290,6 +292,28 @@ describe("Catalog", () => {
 
       const messages = await catalog.collect({
         files: [fixture("collect/componentA")],
+      })
+      expect(messages).toMatchSnapshot()
+    })
+
+    it("should extract files with special characters when passed in options", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect")],
+          exclude: [],
+          format,
+        },
+        mockConfig()
+      )
+
+      const messages = await catalog.collect({
+        files: [
+          fixture("collect/(componentC)/index.js"),
+          fixture("collect/[componentD]/index.js"),
+          fixture("collect/$componentE/index.js"),
+        ],
       })
       expect(messages).toMatchSnapshot()
     })

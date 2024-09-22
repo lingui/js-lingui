@@ -14,7 +14,7 @@ It is required that you use JavaScript or TypeScript for your Lingui configurati
 
 ```js title="lingui.config.{js,ts}"
 import { vueExtractor } from "@lingui/extractor-vue";
-import { extractor as defaultExtractor } from "@lingui/cli/api";
+import babel from "@lingui/cli/api/extractors/babel";
 
 /** @type {import('@lingui/conf').LinguiConfig} */
 const linguiConfig = {

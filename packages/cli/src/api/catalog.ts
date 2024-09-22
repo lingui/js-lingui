@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import * as R from "ramda"
-import glob from "glob"
+import { globSync } from "glob"
 import normalize from "normalize-path"
 
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
@@ -18,6 +18,7 @@ import { mergeCatalog } from "./catalog/mergeCatalog"
 import { extractFromFiles } from "./catalog/extractFromFiles"
 import {
   isDirectory,
+  makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
   writeFile,
@@ -132,9 +133,12 @@ export class Catalog {
   ): Promise<ExtractedCatalogType | undefined> {
     let paths = this.sourcePaths
     if (options.files) {
-      options.files = options.files.map((p) => normalize(p, false))
+      options.files = options.files.map((p) =>
+        makePathRegexSafe(normalize(p, false))
+      )
+
       const regex = new RegExp(options.files.join("|"), "i")
-      paths = paths.filter((path: string) => regex.test(path))
+      paths = paths.filter((path: string) => regex.test(normalize(path)))
     }
 
     return await extractFromFiles(paths, this.config)
@@ -263,9 +267,7 @@ export class Catalog {
         : includePath
     })
 
-    const patterns =
-      includeGlobs.length > 1 ? `{${includeGlobs.join(",")}}` : includeGlobs[0]
-    return glob.sync(patterns, { ignore: this.exclude, mark: true })
+    return globSync(includeGlobs, { ignore: this.exclude, mark: true })
   }
 
   get localeDir() {
@@ -273,7 +275,7 @@ export class Catalog {
     if (localePatternIndex === -1) {
       throw Error(`Invalid catalog path: ${LOCALE} variable is missing`)
     }
-    return this.path.substr(0, localePatternIndex)
+    return this.path.substring(0, localePatternIndex)
   }
 
   get locales() {

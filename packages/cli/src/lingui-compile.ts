@@ -9,7 +9,8 @@ import { helpRun } from "./api/help"
 import { getCatalogs, getFormat } from "./api"
 import { TranslationMissingEvent } from "./api/catalog/getTranslationsForCatalog"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
+
 import nodepath from "path"
 
 export type CliCompileOptions = {
@@ -89,7 +90,7 @@ export async function command(
           namespace
         )
 
-        compiledPath = normalizeSlashes(
+        compiledPath = normalizePath(
           nodepath.relative(config.rootDir, compiledPath)
         )
 
@@ -113,7 +114,7 @@ export async function command(
         namespace
       )
 
-      compiledPath = normalizeSlashes(
+      compiledPath = normalizePath(
         nodepath.relative(config.rootDir, compiledPath)
       )
 

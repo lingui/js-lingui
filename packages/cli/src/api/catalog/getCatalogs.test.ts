@@ -102,7 +102,9 @@ describe("getCatalogs", () => {
       ],
     })
 
-    const catalogs = await getCatalogs(config)
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
 
     expect([cleanCatalog(catalogs[0]), cleanCatalog(catalogs[1])]).toEqual([
       cleanCatalog(
@@ -147,7 +149,12 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
+
+    expect(cleanCatalog(catalogs[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -182,7 +189,12 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+
+    const catalogs = (await getCatalogs(config)).sort((a, b) =>
+      a.path.localeCompare(b.path)
+    )
+
+    expect(cleanCatalog(catalogs[0])).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -426,6 +438,26 @@ describe("getCatalogForFile", () => {
     })
   })
 
+  it("should allow nested parentheses in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/(asd)/((asd))/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ format: "po", rootDir: "." })
+    )
+    const catalogs = [catalog]
+
+    expect(
+      getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs)
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
+
   it("should allow brackets in path names", async () => {
     const catalog = new Catalog(
       {
@@ -444,5 +476,25 @@ describe("getCatalogForFile", () => {
         catalog,
       }
     )
+  })
+
+  it("should allow nested brackets in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/[...asd]/[[...asd]]/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ format: "po", rootDir: "." })
+    )
+    const catalogs = [catalog]
+
+    expect(
+      getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs)
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
   })
 })

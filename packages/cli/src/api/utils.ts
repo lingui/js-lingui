@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import normalize from "normalize-path"
+import normalizePath from "normalize-path"
 
 export const PATHSEP = "/" // force posix everywhere
 
@@ -89,13 +89,6 @@ export function makeInstall(packageName: string, dev: boolean = false) {
 }
 
 /**
- * Normalize Windows backslashes in path so they look always as posix
- */
-export function normalizeSlashes(path: string) {
-  return path.replace("\\", "/")
-}
-
-/**
  * Remove ./ at the beginning: ./relative  => relative
  *                             relative    => relative
  * Preserve directories:       ./relative/ => relative/
@@ -104,14 +97,21 @@ export function normalizeSlashes(path: string) {
 export function normalizeRelativePath(sourcePath: string): string {
   if (path.isAbsolute(sourcePath)) {
     // absolute path
-    return normalize(sourcePath, false)
+    return normalizePath(sourcePath, false)
   }
 
   // https://github.com/lingui/js-lingui/issues/809
   const isDir = isDirectory(sourcePath)
 
   return (
-    normalize(path.relative(process.cwd(), sourcePath), false) +
+    normalizePath(path.relative(process.cwd(), sourcePath), false) +
     (isDir ? "/" : "")
   )
+}
+
+/**
+ * Escape special regex characters used in file-based routing systems
+ */
+export function makePathRegexSafe(path: string) {
+  return path.replace(/[(){}[\]^$+]/g, "\\$&")
 }
