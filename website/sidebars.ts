@@ -94,23 +94,7 @@ const sidebar = [
         type: "doc",
         label: "ICU MessageFormat",
         id: "guides/message-format",
-      },
-      {
-        type: "category",
-        label: "Advanced",
-        items: [
-          {
-            type: "doc",
-            label: "Custom Extractor",
-            id: "guides/custom-extractor",
-          },
-          {
-            type: "doc",
-            label: "Custom Formatter",
-            id: "guides/custom-formatter",
-          },
-        ],
-      },
+      }
     ],
   },
   {
@@ -121,6 +105,11 @@ const sidebar = [
         type: "doc",
         label: "Lingui Configuration",
         id: "ref/conf",
+      },
+      {
+        type: "doc",
+        label: "Catalog Formats",
+        id: "ref/catalog-formats",
       },
       {
         type: "doc",
@@ -158,10 +147,21 @@ const sidebar = [
         id: "ref/extractor-vue",
       },
       {
-        type: "doc",
-        label: "Catalog Formats",
-        id: "ref/catalog-formats",
-      },
+        type: "category",
+        label: "Advanced",
+        items: [
+          {
+            type: "doc",
+            label: "Custom Extractor",
+            id: "guides/custom-extractor",
+          },
+          {
+            type: "doc",
+            label: "Custom Formatter",
+            id: "guides/custom-formatter",
+          },
+        ],
+      }
     ],
   },
   {
