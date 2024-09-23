@@ -14,32 +14,30 @@ import TabItem from "@theme/TabItem";
 
 <Tabs groupId="babel-swc" queryString="babel-or-swc">
   <TabItem value="babel" label="Babel" default>
-    - Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
+    - Install `@lingui/cli`, ` @lingui/babel-plugin-lingui-macro` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
 
       ```bash npm2yarn
       npm install --save-dev @lingui/cli @babel/core
-      npm install --save-dev @lingui/macro babel-plugin-macros
+      npm install --save-dev @lingui/babel-plugin-lingui-macro
       npm install --save @lingui/react
       ```
 
-    - Add `macros` plugin to Babel config (e.g: `.babelrc`):
+    - Add `lingui-macro` plugin to Babel config (e.g: `.babelrc`):
 
       ```json
       {
-        "plugins": ["macros"]
+        "plugins": ["@lingui/babel-plugin-lingui-macro"]
       }
       ```
-
-      When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
+      When using any preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up  `@lingui/babel-plugin-lingui-macro`. For example, the `react-scripts` preset is known to contain the `macros` plugin.
 
   </TabItem>
   <TabItem value="swc" label="SWC">
-    - Install `@lingui/cli`, `@lingui/macro`, and `@lingui/react` as a runtime dependency:
+    - Install `@lingui/cli`, and `@lingui/react` as a runtime dependency:
 
       ```bash npm2yarn
       npm install --save-dev @lingui/cli
       npm install --save @lingui/react
-      npm install --save @lingui/macro
       ```
 
     - Install the `@lingui/swc-plugin` package as a development dependency:
@@ -52,10 +50,6 @@ import TabItem from "@theme/TabItem";
 
   </TabItem>
 </Tabs>
-
-:::note
-It's recommended to install `@lingui/macro` package as a production dependency rather than development one to avoid `import/no-extraneous-dependencies` errors in ESLint.
-:::
 
 :::tip
 Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.

@@ -21,14 +21,14 @@ Let's start with the three major packages:
 
 > The core library responsible for translation and handling of message catalogs
 
-`@lingui/macro`
+`@lingui/babel-plugin-lingui-macro`
 
 > Transforms messages wrapped in tagged template literals to ICU MessageFormat and validates them.
 
-1. Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel core packages as a development dependencies and `@lingui/core` as a runtime dependency:
+1. Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as development dependencies and `@lingui/core` as a runtime dependency:
 
 ```bash npm2yarn
-npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros @babel/core
+npm install --save-dev @lingui/cli @lingui/babel-plugin-lingui-macro @babel/core
 npm install --save @lingui/core
 ```
 
@@ -36,7 +36,7 @@ npm install --save @lingui/core
 
     ```json
     {
-      "plugins": ["macros"]
+      "plugins": ["@lingui/babel-plugin-lingui-macro"]
     }
     ```
 
@@ -58,10 +58,10 @@ i18n.activate("en");
 
 ## Localizing your app
 
-Once that is done, we can go ahead and use it! Wrap you text in [`t`](/docs/ref/macro.mdx#t) macro and pass it to [`i18n._()`](/docs/ref/core.md#i18n._) method:
+Once that is done, we can go ahead and use it! Wrap your text in [`t`](/docs/ref/macro.mdx#t) macro:
 
 ```js
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 
 t`Hello World!`;
 // becomes "Salut le monde!"
@@ -74,7 +74,7 @@ t`My name is ${name}`;
 Plurals and selections are possible using plural and select methods:
 
 ```js
-import { plural } from "@lingui/macro";
+import { plural } from "@lingui/core/macro";
 
 const count = 42;
 
@@ -88,7 +88,7 @@ plural(count, {
 It's also possible to nest message formats. Each message format method in i18n has a standalone companion, which only returns message without performing the translation:
 
 ```js
-import { t, select, plural } from "@lingui/macro"
+import { t, select, plural } from "@lingui/core/macro"
 
 select(gender, {
   offset: 1,

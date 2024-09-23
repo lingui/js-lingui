@@ -2,14 +2,12 @@ import type * as BabelTypesNamespace from "@babel/types"
 import {
   Expression,
   Identifier,
-  ImportSpecifier,
-  JSXAttribute,
   Node,
   ObjectExpression,
   ObjectProperty,
+  isObjectExpression,
 } from "@babel/types"
-import type { PluginObj, PluginPass } from "@babel/core"
-import type { NodePath } from "@babel/core"
+import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
 
 type BabelTypes = typeof BabelTypesNamespace
@@ -22,6 +20,7 @@ export type ExtractedMessage = {
   origin?: Origin
 
   comment?: string
+  placeholders?: Record<string, string>
 }
 
 export type ExtractPluginOpts = {
@@ -33,6 +32,7 @@ type RawMessage = {
   message?: string
   comment?: string
   context?: string
+  placeholders?: Record<string, string>
 }
 
 export type Origin = [filename: string, line: number, column?: number]
@@ -55,6 +55,7 @@ function collectMessage(
     message: props.message,
     context: props.context,
     comment: props.comment,
+    placeholders: props.placeholders || {},
     origin: [ctx.file.opts.filename, line, column],
   })
 }
@@ -112,19 +113,67 @@ function getTextFromExpression(
   }
 }
 
-function extractFromObjectExpression(
+function getNodeSource(fileContents: string, node: Node) {
+  return fileContents.slice(node.start, node.end)
+}
+
+function valuesObjectExpressionToPlaceholdersRecord(
   t: BabelTypes,
   exp: ObjectExpression,
-  hub: Hub,
-  keys: readonly string[]
+  hub: Hub
 ) {
   const props: Record<string, string> = {}
 
   ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
+    let name: string
+
+    if (t.isStringLiteral(key) || t.isNumericLiteral(key)) {
+      name = key.value.toString()
+    } else if (t.isIdentifier(key)) {
+      name = key.name
+    } else {
+      console.warn(
+        hub.buildError(
+          exp,
+          `Could not extract values to placeholders. The key #${i} has unsupported syntax`,
+          SyntaxError
+        ).message
+      )
+    }
+
+    if (name) {
+      props[name] = getNodeSource(hub.getCode(), value)
+    }
+  })
+
+  return props
+}
+
+function extractFromObjectExpression(
+  t: BabelTypes,
+  exp: ObjectExpression,
+  hub: Hub
+) {
+  const props: RawMessage = {}
+
+  const textKeys = ["id", "message", "comment", "context"] as const
+
+  ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
     const name = (key as Identifier).name
 
-    if (!keys.includes(name as any)) return
-    props[name] = getTextFromExpression(t, value as Expression, hub)
+    if (name === "values" && isObjectExpression(value)) {
+      props.placeholders = valuesObjectExpressionToPlaceholdersRecord(
+        t,
+        value,
+        hub
+      )
+    } else if (textKeys.includes(name as any)) {
+      props[name as (typeof textKeys)[number]] = getTextFromExpression(
+        t,
+        value as Expression,
+        hub
+      )
+    }
   })
 
   return props
@@ -148,14 +197,13 @@ function hasI18nComment(node: Node): boolean {
 }
 
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
-  let localTransComponentName: string
-
-  function isTransComponent(node: Node) {
+  function isTransComponent(path: NodePath) {
     return (
-      t.isJSXElement(node) &&
-      t.isJSXIdentifier(node.openingElement.name, {
-        name: localTransComponentName,
-      })
+      path.isJSXElement() &&
+      path
+        .get("openingElement")
+        .get("name")
+        .referencesImport("@lingui/react", "Trans")
     )
   }
 
@@ -171,12 +219,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
     path: NodePath<ObjectExpression>,
     ctx: PluginPass
   ) => {
-    const props = extractFromObjectExpression(t, path.node, ctx.file.hub, [
-      "id",
-      "message",
-      "comment",
-      "context",
-    ])
+    const props = extractFromObjectExpression(t, path.node, ctx.file.hub)
 
     if (!props.id) {
       console.warn(
@@ -190,37 +233,27 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
   return {
     visitor: {
-      // Get the local name of Trans component. Usually it's just `Trans`, but
-      // it might be different when the import is aliased:
-      // import { Trans as T } from '@lingui/react';
-      ImportDeclaration(path) {
-        const { node } = path
-
-        const moduleName = node.source.value
-        if (!["@lingui/react", "@lingui/core"].includes(moduleName)) return
-
-        const importDeclarations: Record<string, string> = {}
-        if (moduleName === "@lingui/react") {
-          node.specifiers.forEach((specifier) => {
-            specifier = specifier as ImportSpecifier
-            importDeclarations[(specifier.imported as Identifier).name] =
-              specifier.local.name
-          })
-
-          // Trans import might be missing if there's just Plural or similar macro.
-          // If there's no alias, consider it was imported as Trans.
-          localTransComponentName = importDeclarations["Trans"] || "Trans"
-        }
-      },
-
       // Extract translation from <Trans /> component.
       JSXElement(path, ctx) {
         const { node } = path
-        if (!localTransComponentName || !isTransComponent(node)) return
+        if (!isTransComponent(path)) return
 
-        const attrs = (node.openingElement.attributes as JSXAttribute[]) || []
+        const attrs = node.openingElement.attributes || []
 
-        const props = attrs.reduce<Record<string, unknown>>((acc, item) => {
+        if (
+          attrs.find(
+            (attr) =>
+              t.isJSXSpreadAttribute(attr) && hasI18nComment(attr.argument)
+          )
+        ) {
+          return
+        }
+
+        const props = attrs.reduce<RawMessage>((acc, item) => {
+          if (t.isJSXSpreadAttribute(item)) {
+            return acc
+          }
+
           const key = item.name.name
           if (
             key === "id" ||
@@ -237,12 +270,27 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
               acc[key] = item.value.expression.value
             }
           }
+
+          if (
+            key === "values" &&
+            t.isJSXExpressionContainer(item.value) &&
+            isObjectExpression(item.value.expression)
+          ) {
+            acc.placeholders = valuesObjectExpressionToPlaceholdersRecord(
+              t,
+              item.value.expression,
+              ctx.file.hub
+            )
+          }
+
           return acc
         }, {})
 
         if (!props.id) {
           // <Trans id={message} /> is valid, don't raise warning
-          const idProp = attrs.filter((item) => item.name.name === "id")[0]
+          const idProp = attrs.filter(
+            (item) => t.isJSXAttribute(item) && item.name.name === "id"
+          )[0]
           if (idProp === undefined || t.isLiteral(props.id as any)) {
             console.warn(
               path.buildCodeFrameError("Missing message ID, skipping.").message
@@ -280,7 +328,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
           return
         } else {
           // i18n._(id, variables, descriptor)
-          let props = {
+          let props: RawMessage = {
             id: getTextFromExpression(
               t,
               firstArgument.node as Expression,
@@ -293,16 +341,21 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
             return
           }
 
+          const secondArgument = path.node.arguments[1]
+          if (secondArgument && t.isObjectExpression(secondArgument)) {
+            props.placeholders = valuesObjectExpressionToPlaceholdersRecord(
+              t,
+              secondArgument,
+              ctx.file.hub
+            )
+          }
+
           const msgDescArg = path.node.arguments[2]
 
           if (t.isObjectExpression(msgDescArg)) {
             props = {
               ...props,
-              ...extractFromObjectExpression(t, msgDescArg, ctx.file.hub, [
-                "message",
-                "comment",
-                "context",
-              ]),
+              ...extractFromObjectExpression(t, msgDescArg, ctx.file.hub),
             }
           }
 
