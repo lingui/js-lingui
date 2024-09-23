@@ -94,7 +94,7 @@ const sidebar = [
         type: "doc",
         label: "ICU MessageFormat",
         id: "guides/message-format",
-      }
+      },
     ],
   },
   {
@@ -161,7 +161,7 @@ const sidebar = [
             id: "guides/custom-formatter",
           },
         ],
-      }
+      },
     ],
   },
   {
