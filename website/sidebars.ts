@@ -1,13 +1,13 @@
 const sidebar = [
   {
-    type: "doc",
-    label: "Introduction",
-    id: "introduction",
-  },
-  {
     type: "category",
-    label: "Installation",
+    label: "Getting Started",
     items: [
+      {
+        type: "doc",
+        label: "Introduction",
+        id: "introduction",
+      },
       {
         type: "doc",
         label: "React project",
@@ -49,11 +49,6 @@ const sidebar = [
         label: "JavaScript",
         id: "tutorials/javascript",
       },
-      {
-        type: "doc",
-        label: "Explicit vs Generated IDs",
-        id: "tutorials/explicit-vs-generated-ids",
-      },
     ],
   },
   {
@@ -64,6 +59,11 @@ const sidebar = [
         type: "doc",
         label: "Message Extraction",
         id: "guides/message-extraction",
+      },
+      {
+        type: "doc",
+        label: "Explicit vs Generated IDs",
+        id: "guides/explicit-vs-generated-ids",
       },
       {
         type: "doc",
@@ -87,15 +87,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        id: "guides/flow",
-      },
-      {
-        type: "doc",
-        label: "Excluding build files",
-        id: "guides/excluding-build-files",
-      },
-      {
-        type: "doc",
         label: "Monorepo",
         id: "guides/monorepo",
       },
@@ -103,22 +94,6 @@ const sidebar = [
         type: "doc",
         label: "ICU MessageFormat",
         id: "guides/message-format",
-      },
-      {
-        type: "category",
-        label: "Advanced",
-        items: [
-          {
-            type: "doc",
-            label: "Custom Extractor",
-            id: "guides/custom-extractor",
-          },
-          {
-            type: "doc",
-            label: "Custom Formatter",
-            id: "guides/custom-formatter",
-          },
-        ],
       },
     ],
   },
@@ -130,6 +105,11 @@ const sidebar = [
         type: "doc",
         label: "Lingui Configuration",
         id: "ref/conf",
+      },
+      {
+        type: "doc",
+        label: "Catalog Formats",
+        id: "ref/catalog-formats",
       },
       {
         type: "doc",
@@ -167,9 +147,20 @@ const sidebar = [
         id: "ref/extractor-vue",
       },
       {
-        type: "doc",
-        label: "Catalog Formats",
-        id: "ref/catalog-formats",
+        type: "category",
+        label: "Advanced",
+        items: [
+          {
+            type: "doc",
+            label: "Custom Extractor",
+            id: "guides/custom-extractor",
+          },
+          {
+            type: "doc",
+            label: "Custom Formatter",
+            id: "guides/custom-formatter",
+          },
+        ],
       },
     ],
   },
