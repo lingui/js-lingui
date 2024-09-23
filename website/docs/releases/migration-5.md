@@ -2,7 +2,7 @@
 
 ## Node.js version
 
-TBD
+The minimum required version of Node.js is **20**.
 
 ## React and JS Macros were split to separate packages
 

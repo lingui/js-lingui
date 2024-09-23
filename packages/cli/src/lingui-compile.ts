@@ -187,7 +187,7 @@ if (require.main === module) {
     return previousRun
   }
 
-  let debounceTimer: NodeJS.Timer
+  let debounceTimer: NodeJS.Timeout
 
   const dispatchCompile = () => {
     // Skip debouncing if not enabled

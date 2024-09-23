@@ -68,7 +68,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
