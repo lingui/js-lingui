@@ -1,5 +1,6 @@
-import type { PluginObj, Visitor, PluginPass } from "@babel/core"
+import type { PluginObj, Visitor, PluginPass, BabelFile } from "@babel/core"
 import type * as babelTypes from "@babel/types"
+import { Program, Identifier } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
 import { NodePath } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
@@ -7,12 +8,12 @@ import {
   MACRO_CORE_PACKAGE,
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
+  JsMacroName,
 } from "./constants"
 import {
   type LinguiConfigNormalized,
   getConfig as loadConfig,
 } from "@lingui/conf"
-import { Program, Identifier } from "@babel/types"
 
 let config: LinguiConfigNormalized
 
@@ -46,6 +47,21 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
+
+const getIdentifierPath = ((path: NodePath, node: Identifier) => {
+  let foundPath: NodePath
+
+  path.traverse({
+    Identifier: (path) => {
+      if (path.node === node) {
+        foundPath = path
+        path.stop()
+      }
+    },
+  })
+
+  return foundPath
+}) as any
 
 export default function ({
   types: t,
@@ -103,8 +119,41 @@ export default function ({
     return state.get("linguiIdentifiers")[name]
   }
 
+  function isLinguiIdentifier(
+    path: NodePath,
+    node: Identifier,
+    macro: JsMacroName
+  ) {
+    let identPath = getIdentifierPath(path, node)
+
+    if (macro === JsMacroName.useLingui) {
+      if (
+        identPath.referencesImport(
+          MACRO_REACT_PACKAGE,
+          JsMacroName.useLingui
+        ) ||
+        identPath.referencesImport(MACRO_LEGACY_PACKAGE, JsMacroName.useLingui)
+      ) {
+        return true
+      }
+    } else {
+      // useLingui might ask for identifiers which are not direct child of macro
+      identPath = identPath || getIdentifierPath(path.getFunctionParent(), node)
+
+      if (
+        identPath.referencesImport(MACRO_CORE_PACKAGE, macro) ||
+        identPath.referencesImport(MACRO_LEGACY_PACKAGE, macro)
+      ) {
+        return true
+      }
+    }
+    return false
+  }
   return {
     name: "lingui-macro-plugin",
+    pre(file: BabelFile) {
+      file.hub
+    },
     visitor: {
       Program: {
         enter(path, state) {
@@ -161,17 +210,17 @@ export default function ({
                 >,
                 state: PluginPass
               ) {
-                const macro = new MacroJs(
-                  { types: t },
-                  {
-                    stripNonEssentialProps:
-                      process.env.NODE_ENV == "production" &&
-                      !(state.opts as LinguiPluginOpts).extract,
-                    i18nImportName: getSymbolIdentifier(state, "i18n").name,
-                    useLinguiImportName: getSymbolIdentifier(state, "useLingui")
-                      .name,
-                  }
-                )
+                const macro = new MacroJs({
+                  stripNonEssentialProps:
+                    process.env.NODE_ENV == "production" &&
+                    !(state.opts as LinguiPluginOpts).extract,
+                  i18nImportName: getSymbolIdentifier(state, "i18n").name,
+                  useLinguiImportName: getSymbolIdentifier(state, "useLingui")
+                    .name,
+
+                  isLinguiIdentifier: (node: Identifier, macro) =>
+                    isLinguiIdentifier(path, node, macro),
+                })
                 let newNode: false | babelTypes.Node
 
                 try {
