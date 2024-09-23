@@ -268,9 +268,21 @@ export class I18n extends EventEmitter<Events> {
     let translation = messageForId || message || id
 
     // Compiled message is always an array (`["Ola!"]`).
-    // If message comes as string - it's not compiled, and we need to compile it beforehand.
-    if (isString(translation) && this._messageCompiler) {
-      translation = this._messageCompiler(translation)
+    // If a message comes as string - it's not compiled, and we need to compile it beforehand.
+    if (isString(translation)) {
+      if (this._messageCompiler) {
+        translation = this._messageCompiler(translation)
+      } else {
+        console.warn(`Uncompiled message detected! Message:
+
+> ${translation}
+
+That means you use raw catalog or your catalog doesn't have a translation for the message and fallback was used.
+ICU features such as interpolation and plurals will not work properly for that message. 
+
+Please compile your catalog first. 
+`)
+      }
     }
 
     // hack for parsing unicode values inside a string to get parsed in react native environments

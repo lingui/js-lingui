@@ -282,7 +282,7 @@ describe("I18n", () => {
     })
   })
 
-  it("._ shouldn't use compiled message in production", () => {
+  it("._ should use compiled message in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": compileMessage("Je m'appelle {name}"),
@@ -304,7 +304,7 @@ describe("I18n", () => {
   it("._ shouldn't double compile message in development", () => {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": ["Je m'appelle {name}"],
+      "My name is {name}": compileMessage("Je m'appelle '{name}'"),
     }
 
     const { setupI18n } = require("@lingui/core")
@@ -338,6 +338,26 @@ describe("I18n", () => {
     })
   })
 
+  it("should print warning if uncompiled message is used", () => {
+    expect.assertions(1)
+
+    const messages = {
+      Hello: "Salut",
+    }
+
+    mockEnv("production", () => {
+      mockConsole((console) => {
+        const { setupI18n } = require("@lingui/core")
+        const i18n = setupI18n({
+          locale: "fr",
+          messages: { fr: messages },
+        })
+
+        i18n._("Hello")
+        expect(console.warn).toBeCalled()
+      })
+    })
+  })
   it("._ should emit missing event for missing translation", () => {
     const i18n = setupI18n({
       locale: "en",
