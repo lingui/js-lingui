@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           always-auth: true
-          node-version: 16
+          node-version: 20
           cache: 'yarn'
 
       - name: Install dependencies if needed
