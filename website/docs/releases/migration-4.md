@@ -87,7 +87,7 @@ Enabling this mode will swap the logic, and the formatter will treat all message
 
 You can read more about the motivation behind this change in the [original RFC](https://github.com/lingui/js-lingui/issues/1360)
 
-Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/docs/tutorials/explicit-vs-generated-ids.md#providing-context-for-a-message).
+Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/docs/guides/explicit-vs-generated-ids.md#providing-context-for-a-message).
 
 The context feature affects the message ID generation and adds the `msgctxt` parameter in case of the PO catalog format extraction.
 

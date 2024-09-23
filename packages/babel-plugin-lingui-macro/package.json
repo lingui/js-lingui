@@ -53,6 +53,16 @@
         "types": "./dist/macro.d.mts",
         "default": "./dist/macro.mjs"
       }
+    },
+    "./ast": {
+      "require": {
+        "types": "./dist/ast.d.cts",
+        "default": "./dist/ast.cjs"
+      },
+      "import": {
+        "types": "./dist/ast.d.mts",
+        "default": "./dist/ast.mjs"
+      }
     }
   },
   "files": [
@@ -68,7 +78,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",

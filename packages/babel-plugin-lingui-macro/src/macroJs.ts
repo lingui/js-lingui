@@ -298,7 +298,7 @@ export class MacroJs {
     _property.key.name = "_"
     _property.value.name = uniqTIdentifier.name
 
-    return newNode
+    return t.callExpression(t.identifier(this.useLinguiImportName), [])
   }
 
   private createI18nCall(

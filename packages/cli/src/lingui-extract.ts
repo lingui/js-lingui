@@ -184,7 +184,7 @@ if (require.main === module) {
   }
 
   const changedPaths = new Set<string>()
-  let debounceTimer: NodeJS.Timer
+  let debounceTimer: NodeJS.Timeout
   let previousExtract = Promise.resolve(true)
   const dispatchExtract = (filePath?: string[]) => {
     // Skip debouncing if not enabled but still chain them so no racing issue
