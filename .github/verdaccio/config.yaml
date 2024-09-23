@@ -1,3 +1,4 @@
+listen: 0.0.0.0:4873
 auth:
   auth-memory:
     users:

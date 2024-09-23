@@ -359,4 +359,16 @@ describe("I18n", () => {
       expect(missing).toHaveBeenCalledWith("en", "missing")
     })
   })
+
+  it("._ should parse unicode sequences even if the same string goes twice in a row", () => {
+    const messages = {
+      "Software development": "Software\\u00ADentwicklung",
+    }
+    const i18n = setupI18n({
+      locale: "de",
+      messages: { de: messages },
+    })
+    expect(i18n._("Software development")).toEqual("Software­entwicklung")
+    expect(i18n._("Software development")).toEqual("Software­entwicklung")
+  })
 })

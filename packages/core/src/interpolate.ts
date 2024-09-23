@@ -4,7 +4,7 @@ import { isString } from "./essentials"
 import { unraw } from "unraw"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
 
-export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/g
+export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/
 
 const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 

@@ -9,6 +9,8 @@ image: ./img/social-card.png
 
 We're thrilled to announce that the [Lingui repository](https://github.com/lingui/js-lingui) has reached an important milestone - **4,000** stars! This achievement is a testament to the growing popularity of Lingui as a powerful and flexible internationalization solution for global products.
 
+<!--truncate-->
+
 ### Lingui has been gaining traction in the JS community due to its several key advantages {#advantages}
 
 - **Universal** - use it everywhere: Vanilla JS, React, Vue.js, Next.js, Node.js, etc.
