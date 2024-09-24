@@ -1,10 +1,12 @@
-export function getConsoleMockCalls({ mock }: jest.MockInstance<any, any>) {
+import { vi, MockInstance, Mocked } from "vitest"
+
+export function getConsoleMockCalls({ mock }: MockInstance<any>) {
   if (!mock.calls.length) return
   return mock.calls.map((call) => call[0]).join("\n")
 }
 
 export function mockConsole(
-  testCase: (console: jest.Mocked<Console>) => any,
+  testCase: (console: Mocked<Console>) => any,
   mock = {}
 ) {
   function restoreConsole() {
@@ -14,9 +16,9 @@ export function mockConsole(
   const originalConsole = global.console
 
   const defaults = {
-    log: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
+    log: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
   }
 
   global.console = {
@@ -26,7 +28,7 @@ export function mockConsole(
 
   let result
   try {
-    result = testCase(global.console as jest.Mocked<Console>)
+    result = testCase(global.console as Mocked<Console>)
   } catch (e) {
     restoreConsole()
     throw e

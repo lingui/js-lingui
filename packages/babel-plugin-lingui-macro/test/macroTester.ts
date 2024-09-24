@@ -7,7 +7,7 @@ import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
-
+import { test, expect } from "vitest"
 export type TestCase = TestCaseInline | TestCaseFixture
 
 type TestCaseInline = {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest"
 import { FormatterWrapper } from "./formatterWrapper"
 import mockFs from "mock-fs"
 import fs from "fs"
@@ -53,7 +53,7 @@ describe("FormatterWrapper", () => {
     })
 
     it("should read file from FS and parse using provided formatter", async () => {
-      const parseMock = jest
+      const parseMock = vi
         .fn()
         .mockImplementation((content: string) => content.split(",") as any)
       const format = new FormatterWrapper(
@@ -142,7 +142,7 @@ describe("FormatterWrapper", () => {
     })
 
     it("should pass context to the formatter", async () => {
-      const serializeMock = jest
+      const serializeMock = vi
         .fn()
         .mockImplementation((catalog) => JSON.stringify(catalog))
 
