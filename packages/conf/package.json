@@ -40,6 +40,7 @@
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "tsd": "^0.26.1",
-    "unbuild": "^2.0.0"
+    "unbuild": "^2.0.0",
+    "vitest": "^2.1.1"
   }
 }

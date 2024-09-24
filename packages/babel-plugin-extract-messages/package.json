@@ -45,6 +45,7 @@
     "@babel/types": "^7.20.7",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
     "@lingui/jest-mocks": "workspace:*",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vitest": "^2.1.1"
   }
 }

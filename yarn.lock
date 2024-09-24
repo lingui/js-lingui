@@ -2470,6 +2470,7 @@ __metadata:
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/jest-mocks": "workspace:*"
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2488,6 +2489,7 @@ __metadata:
     "@types/babel-plugin-macros": ^2.8.5
     prettier: 2.8.3
     unbuild: 2.0.0
+    vitest: ^2.1.1
   peerDependencies:
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
@@ -2536,6 +2538,7 @@ __metadata:
     pseudolocale: ^2.0.0
     ramda: ^0.27.1
     source-map: ^0.8.0-beta.0
+    vitest: ^2.1.1
   bin:
     lingui: ./dist/lingui.js
   languageName: unknown
@@ -2554,6 +2557,7 @@ __metadata:
     lodash.get: ^4.4.2
     tsd: ^0.26.1
     unbuild: ^2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2567,6 +2571,7 @@ __metadata:
     tsd: ^0.26.1
     unbuild: 2.0.0
     unraw: ^3.0.0
+    vitest: ^2.1.1
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.0.0-next.1
     babel-plugin-macros: 2 || 3
@@ -2594,6 +2599,7 @@ __metadata:
   dependencies:
     jsdom: ^16.4.0
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2606,6 +2612,7 @@ __metadata:
     "@lingui/conf": 5.0.0-next.1
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2617,6 +2624,7 @@ __metadata:
     papaparse: ^5.4.0
     tsd: ^0.28.0
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2628,6 +2636,7 @@ __metadata:
     ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2646,6 +2655,7 @@ __metadata:
     pofile: ^1.1.4
     tsd: ^0.28.0
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2661,6 +2671,7 @@ __metadata:
     pofile: ^1.1.4
     tsd: ^0.28.0
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2679,6 +2690,7 @@ __metadata:
     "@lingui/conf": 5.0.0-next.1
     "@lingui/format-json": 5.0.0-next.1
     unbuild: 2.0.0
+    vitest: ^2.1.1
     webpack: ^5.76.1
   peerDependencies:
     webpack: ^5.0.0
@@ -2710,6 +2722,7 @@ __metadata:
     "@messageformat/parser": ^5.0.0
     js-sha256: ^0.10.1
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2737,6 +2750,7 @@ __metadata:
     react-dom: ^18.2.0
     tsd: ^0.26.1
     unbuild: 2.0.0
+    vitest: ^2.1.1
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.0.0-next.1
     babel-plugin-macros: 2 || 3
@@ -2757,6 +2771,7 @@ __metadata:
     "@lingui/message-utils": 4.0.0
     ramda: ^0.27.1
     unbuild: 2.0.0
+    vitest: ^2.1.1
   languageName: unknown
   linkType: soft
 
@@ -2771,6 +2786,7 @@ __metadata:
     unbuild: 2.0.0
     vite: 4.1.4
     vite-plugin-babel-macros: ^1.0.6
+    vitest: ^2.1.1
   peerDependencies:
     vite: ^3 || ^4 || ^5.0.9
   languageName: unknown

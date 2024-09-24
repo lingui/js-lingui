@@ -54,6 +54,7 @@
   ],
   "devDependencies": {
     "jsdom": "^16.4.0",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vitest": "^2.1.1"
   }
 }
