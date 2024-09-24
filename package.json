@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "vitest run",
     "test:ci": "jest --ci --runInBand",
     "test:ci:coverage": "yarn test:ci --coverage",
     "test:integration": "jest -c jest.config.integration.js",
@@ -44,7 +44,6 @@
     "@size-limit/preset-small-lib": "^8.1.1",
     "@swc/core": "^1.3.26",
     "@tsd/typescript": "^4.9.5",
-    "@types/jest": "^29.4.0",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "20.14.8",
     "@types/ramda": "^0.27.23",
@@ -61,10 +60,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "husky": "^8.0.3",
-    "jest": "^29.4.3",
-    "jest-environment-jsdom": "^29.4.3",
     "jest-environment-node-single-context": "^29.0.0",
     "jest-runner-tsd": "^4.0.0",
+    "jsdom": "^25.0.1",
     "lerna": "^6.5.1",
     "lint-staged": "^13.1.0",
     "memory-fs": "^0.5.0",
@@ -79,7 +77,8 @@
     "strip-ansi": "^6.0.1",
     "swc-node": "^1.0.0",
     "ts-jest": "^29.0.5",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vitest": "^2.1.1"
   },
   "workspaces": [
     "packages/*",

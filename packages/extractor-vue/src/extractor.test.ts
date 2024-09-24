@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { makeConfig } from "@lingui/conf"
 import fs from "fs"
 import path from "path"

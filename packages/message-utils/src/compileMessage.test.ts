@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { mockConsole } from "@lingui/jest-mocks"
 import { compileMessage } from "./compileMessage"
 

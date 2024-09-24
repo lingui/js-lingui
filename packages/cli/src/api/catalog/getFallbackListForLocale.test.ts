@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { getFallbackListForLocale } from "./getFallbackListForLocale"
 
 describe("getFallbackListForLocale", () => {

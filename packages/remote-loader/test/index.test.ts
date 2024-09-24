@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { remoteLoader } from "../src"
 import fs from "fs"
 

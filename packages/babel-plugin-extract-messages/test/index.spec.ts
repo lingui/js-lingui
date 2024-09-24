@@ -6,6 +6,7 @@ import { mockConsole } from "@lingui/jest-mocks"
 import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
+import { describe, expect, it } from "vitest"
 
 const transform = (filename: string) => {
   const rootDir = path.join(__dirname, "fixtures")

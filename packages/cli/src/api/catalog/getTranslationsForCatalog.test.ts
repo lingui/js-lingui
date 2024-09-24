@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from "vitest";
 import { getTranslationsForCatalog } from "./getTranslationsForCatalog"
 import { Catalog } from "../catalog"
 import type { AllCatalogsType, CatalogType } from "../types"
@@ -51,7 +52,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
@@ -77,7 +78,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
@@ -107,7 +108,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
@@ -153,7 +154,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
@@ -188,7 +189,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-      const missingSpy = jest.fn()
+      const missingSpy = vi.fn()
       const actual = await getTranslationsForCatalog(catalogStub, "en", {
         sourceLocale: "en",
         fallbackLocales: {},
@@ -215,7 +216,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
@@ -246,7 +247,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
@@ -277,7 +278,7 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: null,
       fallbackLocales: {},
@@ -305,7 +306,7 @@ describe("getTranslationsForCatalog", () => {
       message("hashid4", "Sit", true)
     ]).tpl)
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
@@ -327,7 +328,7 @@ describe("getTranslationsForCatalog", () => {
       message("hashid1", "Lorem", true),
     ]).tpl)
 
-    const missingSpy = jest.fn()
+    const missingSpy = vi.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},

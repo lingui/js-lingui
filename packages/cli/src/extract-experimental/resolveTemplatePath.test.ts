@@ -1,3 +1,4 @@
+import { describe, expect } from "vitest"
 import { resolveTemplatePath } from "./resolveTemplatePath"
 import normalizePath from "normalize-path"
 

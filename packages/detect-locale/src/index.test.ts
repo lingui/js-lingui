@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { fromUrl, detect, fromNavigator, multipleDetect } from "./index"
 
 describe("detect", () => {

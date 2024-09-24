@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from "vitest";
 import path from "path"
 import fs from "node:fs/promises"
 import { build, watch } from "./compiler"
@@ -86,7 +87,7 @@ msgstr ""
     )
 
     const stats2 = await watching.build()
-    jest.resetModules()
+    vi.resetModules()
 
     expect((await stats2.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`

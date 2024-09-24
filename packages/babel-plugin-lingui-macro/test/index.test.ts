@@ -1,6 +1,7 @@
 import path from "path"
 import { transformSync } from "@babel/core"
 import { getDefaultBabelOptions } from "./macroTester"
+import { describe, expect, it, test } from "vitest"
 
 describe("macro", function () {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")

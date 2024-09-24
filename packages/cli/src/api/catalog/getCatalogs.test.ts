@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from "vitest";
 import mockFs from "mock-fs"
 import {
   getCatalogForFile,

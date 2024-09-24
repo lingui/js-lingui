@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { mockConsole } from "@lingui/jest-mocks"
 import fs from "fs"
 import path from "path"

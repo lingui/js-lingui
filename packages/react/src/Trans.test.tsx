@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from "vitest";
 import * as React from "react"
 import { render } from "@testing-library/react"
 import {
@@ -105,7 +106,7 @@ describe("Trans component", () => {
 
     it("when there's no i18n context available", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       expect(() => render(<Trans id="unknown" />))
         .toThrowErrorMatchingInlineSnapshot(`
@@ -124,7 +125,7 @@ describe("Trans component", () => {
 
     it("when deprecated string built-ins are used", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       // @ts-expect-error testing the error
       renderWithI18n(<Trans render="span" id="Some text" />)
@@ -366,7 +367,7 @@ describe("Trans component", () => {
     })
 
     it("supports render callback function", () => {
-      const spy = jest.fn()
+      const spy = vi.fn()
       text(
         <Trans
           id="ID"
@@ -433,7 +434,7 @@ describe("Trans component", () => {
     })
 
     it("should render function component as simple prop", () => {
-      const propsSpy = jest.fn()
+      const propsSpy = vi.fn()
       const ComponentFC: React.FunctionComponent<TransRenderProps> = (
         props
       ) => {
