@@ -171,17 +171,13 @@ const getPluralCases = (
   }
 
   const cases: string[] = [...Array(pluralsCldr.forms(correctLang).length)]
-  const _samples: any[] = [...pluralsCldr.forms(correctLang)]
 
   for (let form of pluralsCldr.forms(correctLang)) {
     const samples = cldrSamples[correctLang][form]
+    // both need to cast to Number - funcs test with `===` and may return boolean
+    const pluralForm = Number(gettextPluralsInfo.pluralsFunc(Number(samples[0])))
 
-    _samples[gettextPluralsInfo.pluralsFunc(samples[0])] = [
-      samples[0],
-      gettextPluralsInfo.pluralsFunc(samples[0]),
-    ]
-
-    cases[gettextPluralsInfo.pluralsFunc(samples[0])] = form
+    cases[pluralForm] = form
   }
 
   return cases
