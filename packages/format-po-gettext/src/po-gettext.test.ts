@@ -300,7 +300,7 @@ msgstr[3] "# dní"
           message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
           obsolete: false,
           origin: [],
-          translation: {#, plural, one {# den} few {# dny} undefined {# dne} other {# dní}},
+          translation: {#, plural, one {# den} few {# dny}  other {# dní}},
         },
       }
     `)
