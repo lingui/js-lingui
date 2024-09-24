@@ -1,5 +1,8 @@
 andrii-bodnar:
   name: Andrii Bodnar
   title: Engineering Manager
-  url: https://github.com/andrii-bodnar
+  page: true
   image_url: https://github.com/andrii-bodnar.png
+  socials:
+    x: AndriiBodnar1
+    github: andrii-bodnar

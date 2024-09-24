@@ -151,6 +151,11 @@ const config: Config = {
       apiKey: "50e12ed6fd44188e9abd4e0e9d2cb935",
       indexName: "lingui",
     },
+    blog: {
+      sidebar: {
+        groupByYear: false,
+      },
+    },
     prism: {
       theme: themes.github,
       darkTheme: themes.dracula,
