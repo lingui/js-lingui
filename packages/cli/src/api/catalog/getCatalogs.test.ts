@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest"
 import mockFs from "mock-fs"
 import {
   getCatalogForFile,

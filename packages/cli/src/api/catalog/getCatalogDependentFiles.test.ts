@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest"
 import { getCatalogDependentFiles, getFormat } from "@lingui/cli/api"
 import { makeConfig } from "@lingui/conf"
 import { Catalog } from "../catalog"
