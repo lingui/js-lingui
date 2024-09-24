@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     environment: "node",
-    snapshotSerializers: ["../../scripts/jest/stripAnsiSerializer.js"],
+    snapshotSerializers: ["../../scripts/jest/stripAnsiSerializer.ts"],
   },
 })

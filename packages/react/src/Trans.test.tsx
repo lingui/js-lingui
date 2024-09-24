@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, test } from "vitest"
 import * as React from "react"
 import { render } from "@testing-library/react"
 import {
@@ -110,14 +110,14 @@ describe("Trans component", () => {
 
       expect(() => render(<Trans id="unknown" />))
         .toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider."
-      `)
+          [Error: Trans component was rendered without I18nProvider.
+          Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider.]
+        `)
       expect(() =>
         render(<Trans id="unknown" message={"some valid message"} />)
       ).toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider."
+        [Error: Trans component was rendered without I18nProvider.
+        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider.]
       `)
 
       console.error = originalConsole
