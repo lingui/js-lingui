@@ -3,13 +3,13 @@ title: JavaScript Internationalization (i18n)
 description: Learn how to use Lingui's internationalization features in your vanilla JavaScript application
 ---
 
-# Internationalization of JavaScript apps
+# Internationalization of JavaScript Apps
 
-In this tutorial, we'll learn how to use LinguiJS's internationalization features that do not depend on React. We'll take a minimalist approach and cover the main functions from the `@lingui/core` package.
+In this tutorial, we'll learn how to use Lingui's internationalization features that do not depend on React. We'll take a minimalist approach and cover the main functions from the `@lingui/core` package.
 
-## Installing LinguiJS
+## Introduction
 
-[LinguiJS](https://github.com/lingui/js-lingui) isn't just a package. It's a set of tools which helps you to internationalize. You can pick whichever tool you want to use in your project. We're trying to use most of them to show the full power of LinguiJS.
+[Lingui](https://github.com/lingui/js-lingui) isn't just a package. It's a set of tools which helps you to internationalize. You can pick whichever tool you want to use in your project. We're trying to use most of them to show the full power of Lingui.
 
 Let's start with the three major packages:
 
@@ -25,12 +25,14 @@ Let's start with the three major packages:
 
 > Transforms messages wrapped in tagged template literals to ICU MessageFormat and validates them.
 
-1. Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel core packages as a development dependencies and `@lingui/core` as a runtime dependency:
+## Installation
 
-```bash npm2yarn
-npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros @babel/core
-npm install --save @lingui/core
-```
+1.  Install `@lingui/cli`, `@lingui/macro`, `babel-plugin-macros` and Babel core packages as a development dependencies and `@lingui/core` as a runtime dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/cli @lingui/macro babel-plugin-macros @babel/core
+    npm install --save @lingui/core
+    ```
 
 2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
 
@@ -56,7 +58,7 @@ i18n.load("en", messages);
 i18n.activate("en");
 ```
 
-## Localizing your app
+## Localizing Your App
 
 Once that is done, we can go ahead and use it! Wrap you text in [`t`](/docs/ref/macro.mdx#t) macro and pass it to [`i18n._()`](/docs/ref/core.md#i18n._) method:
 
@@ -104,7 +106,7 @@ select(gender, {
 })
 ```
 
-## Further reading
+## Further Reading
 
-- [`@lingui/cli` reference documentation](/docs/ref/cli.md)
+- [CLI Reference](/docs/ref/cli.md)
 - [Pluralization Guide](/docs/guides/plurals.md)
