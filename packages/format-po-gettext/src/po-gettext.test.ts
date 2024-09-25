@@ -144,17 +144,17 @@ msgstr[2] "# dní"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        Y8Xw2Y: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "Y8Xw2Y": {
+          "comments": [],
+          "context": null,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {#, plural, one {day} other {days}},
-          obsolete: false,
-          origin: [],
-          translation: {#, plural, one {# den} few {# dny} other {# dní}},
+          "message": "{#, plural, one {day} other {days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{#, plural, one {# den} few {# dny} other {# dní}}",
         },
       }
     `)

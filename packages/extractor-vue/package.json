@@ -27,7 +27,8 @@
   },
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "engines": {
     "node": ">=20.0.0"

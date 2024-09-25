@@ -39,18 +39,18 @@ describe("compileMessage", () => {
     const tokens = compileMessage("Hey {name}!")
     expect(tokens).toMatchInlineSnapshot(`
       [
-        Hey ,
+        "Hey ",
         [
-          name,
+          "name",
         ],
-        !,
+        "!",
       ]
     `)
   })
 
   it("should not interpolate escaped placeholder", () => {
     const tokens = compileMessage("Hey '{name}'!")
-    expect(tokens).toMatchInlineSnapshot(`Hey {name}!`)
+    expect(tokens).toMatchInlineSnapshot(`"Hey {name}!"`)
   })
 
   it("should compile plurals", () => {
@@ -60,20 +60,20 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          plural,
+          "value",
+          "plural",
           {
-            0: No Books,
-            42: FourtyTwo books,
-            99: Books with problems,
-            offset: 1,
-            one: [
-              #,
-               Book,
+            "0": "No Books",
+            "42": "FourtyTwo books",
+            "99": "Books with problems",
+            "offset": 1,
+            "one": [
+              "#",
+              " Book",
             ],
-            other: [
-              #,
-               Books,
+            "other": [
+              "#",
+              " Books",
             ],
           },
         ],
@@ -88,17 +88,17 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          selectordinal,
+          "value",
+          "selectordinal",
           {
-            offset: undefined,
-            one: [
-              #,
-              st Book,
+            "offset": undefined,
+            "one": [
+              "#",
+              "st Book",
             ],
-            two: [
-              #,
-              nd Book,
+            "two": [
+              "#",
+              "nd Book",
             ],
           },
         ],
@@ -117,44 +117,44 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          gender,
-          select,
+          "gender",
+          "select",
           {
-            female: [
+            "female": [
               [
-                numOfGuests,
-                plural,
+                "numOfGuests",
+                "plural",
                 {
-                  offset: undefined,
-                  one: She invites one guest,
-                  other: [
-                    She invites ,
-                    #,
-                     guests,
+                  "offset": undefined,
+                  "one": "She invites one guest",
+                  "other": [
+                    "She invites ",
+                    "#",
+                    " guests",
                   ],
                 },
               ],
             ],
-            male: [
+            "male": [
               [
-                numOfGuests,
-                plural,
+                "numOfGuests",
+                "plural",
                 {
-                  offset: undefined,
-                  one: He invites one guest,
-                  other: [
-                    He invites ,
-                    #,
-                     guests,
+                  "offset": undefined,
+                  "one": "He invites one guest",
+                  "other": [
+                    "He invites ",
+                    "#",
+                    " guests",
                   ],
                 },
               ],
             ],
-            offset: undefined,
-            other: [
-              They is ,
+            "offset": undefined,
+            "other": [
+              "They is ",
               [
-                gender,
+                "gender",
               ],
             ],
           },
@@ -168,12 +168,12 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          select,
+          "value",
+          "select",
           {
-            female: She,
-            offset: undefined,
-            other: They,
+            "female": "She",
+            "offset": undefined,
+            "other": "They",
           },
         ],
       ]
@@ -185,8 +185,8 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          date,
+          "value",
+          "date",
         ],
       ]
     `)
@@ -196,17 +196,17 @@ describe("compileMessage", () => {
     expect(compileMessage("{value, number, percent}")).toMatchInlineSnapshot(`
       [
         [
-          value,
-          number,
-          percent,
+          "value",
+          "number",
+          "percent",
         ],
       ]
     `)
     expect(compileMessage("{value, number}")).toMatchInlineSnapshot(`
       [
         [
-          value,
-          number,
+          "value",
+          "number",
         ],
       ]
     `)

@@ -1,3 +1,4 @@
+import {describe, it, expect} from 'vitest';
 import path from "path"
 import { exec as _exec } from "child_process"
 import { mkdtempSync } from "fs"

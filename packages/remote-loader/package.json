@@ -24,7 +24,8 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",

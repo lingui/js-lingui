@@ -9,6 +9,9 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
+  "scripts": {
+    "test": "vitest --run"
+  },
   "keywords": [
     "jest",
     "testing",

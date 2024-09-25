@@ -24,7 +24,8 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",
@@ -51,7 +52,7 @@
     "unbuild": "2.0.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.1",
-    "webpack": "^5.76.1"
+    "webpack": "^5.94.0"
   },
   "peerDependencies": {
     "webpack": "^5.0.0"

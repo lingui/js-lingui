@@ -37,7 +37,8 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc -p tsconfig.build.json"
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json",
+    "test": "vitest --run"
   },
   "engines": {
     "node": ">=20.0.0"

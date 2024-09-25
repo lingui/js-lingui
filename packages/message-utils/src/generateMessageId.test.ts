@@ -3,12 +3,12 @@ import { generateMessageId } from "./generateMessageId"
 
 describe("generateMessageId", () => {
   it("Should generate an id for a message", () => {
-    expect(generateMessageId("my message")).toMatchInlineSnapshot(`vQhkQx`)
+    expect(generateMessageId("my message")).toMatchInlineSnapshot(`"vQhkQx"`)
   })
 
   it("Should generate different id when context is provided", () => {
     const withContext = generateMessageId("my message", "custom context")
-    expect(withContext).toMatchInlineSnapshot(`gGUeZH`)
+    expect(withContext).toMatchInlineSnapshot(`"gGUeZH"`)
 
     expect(withContext != generateMessageId("my message")).toBeTruthy()
   })

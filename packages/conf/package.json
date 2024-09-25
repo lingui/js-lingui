@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",

@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "vitest run",
+    "test": "yarn workspaces foreach run test",
     "test:ci": "jest --ci --runInBand",
     "test:ci:coverage": "yarn test:ci --coverage",
     "test:integration": "jest -c jest.config.integration.js",
