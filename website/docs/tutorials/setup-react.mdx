@@ -1,9 +1,9 @@
 ---
-title: Setup i18n in a React project
+title: Setup i18n in a React Project
 description: Learn how to add internationalization to a React application using Lingui
 ---
 
-# Setup with React project
+# Setup with React
 
 Learn how to add internationalization to a React application using Lingui. This guide applies to any React project, including those created with [Create React App](https://create-react-app.dev/).
 
@@ -97,19 +97,21 @@ Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help
    }
    ```
 
+See [Configuration reference](/docs/ref/conf.md) for more options.
+
 :::tip
 If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
 :::
 
 ## Usage
 
-Check the installation by running:
+Verify the installation by running the CLI command to extract messages from source files and update message catalogs:
 
 ```bash npm2yarn
 npm run extract
 ```
 
-There should be no error and you should see output similar following:
+There should be no error, and you should see output similar to the following:
 
 ```bash npm2yarn
 > npm run extract
@@ -127,13 +129,11 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-Congratulations! You've successfully set up project with Lingui. Now it's good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
+Read more about [Lingui CLI](/docs/ref/cli.md) and its commands.
 
-## Further reading
+## Further Reading
 
-- [Internationalization of React apps](/docs/tutorials/react.md)
-- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` reference documentation](/docs/ref/react.md)
-- [CLI reference](/docs/ref/cli.md)
-- [Configuration reference](/docs/ref/conf.md)
+- [Internationalization of React Apps](/docs/tutorials/react.md)
+- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` Reference Documentation](/docs/ref/react.md)
 - [ICU Message Format](/docs/guides/message-format.md)
