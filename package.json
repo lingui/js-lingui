@@ -2,6 +2,7 @@
   "name": "js-lingui-workspaces",
   "private": true,
   "version": "4.0.0",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -49,6 +50,7 @@
     "@types/ramda": "^0.27.23",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
+    "@vitest/ui": "^2.1.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^29.4.3",
     "chalk": "^4.1.0",
@@ -76,6 +78,7 @@
     "swc-node": "^1.0.0",
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.5",
+    "vite": "^5.4.7",
     "vitest": "^2.1.1"
   },
   "workspaces": [
