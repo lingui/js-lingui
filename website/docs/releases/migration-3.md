@@ -137,39 +137,39 @@ i18n.load({
 
 Whitespace handling in plugins had few bugs. By fixing them, there might be few backward incompatible changes. It's advised to run [`extract`](/docs/ref/cli.md#extract) and inspect changes in catalogs (if any).
 
-1. Spaces before `{variables}` in JSX aren't preserved. This is how React handles whitespaces in JSX. Leading whitespace is always removed:
+1.  Spaces before `{variables}` in JSX aren't preserved. This is how React handles whitespaces in JSX. Leading whitespace is always removed:
 
-```jsx
-<Trans>
-  &quot;
-  {variable}
-  &quot;
-</Trans>
+    ```jsx
+    <Trans>
+      &quot;
+      {variable}
+      &quot;
+    </Trans>
 
-// Becomes: &quot;{variable}&quot;
-```
+    // Becomes: &quot;{variable}&quot;
+    ```
 
-2. Forced newlines are preserved. Sometimes it's useful to keep newlines in JSX. If that's your case, you need to force it in the same was as spaces are forced before variables or elements:
+2.  Forced newlines are preserved. Sometimes it's useful to keep newlines in JSX. If that's your case, you need to force it in the same was as spaces are forced before variables or elements:
 
-```jsx
-<Trans>
-  1. Item{"\n"}
-  2. Item
-</Trans>
+    ```jsx
+    <Trans>
+      1. Item{"\n"}
+      2. Item
+    </Trans>
 
-// Becomes: 1. Item\n2. Item
-```
+    // Becomes: 1. Item\n2. Item
+    ```
 
 ### Plugins/Presets
 
 Plugins are replaced with macros. Presets are removed completely because they aren't needed anymore.
 
-1. Uninstall plugins/presets, remove them from Babel config and replace them with `macros`:
+1.  Uninstall plugins/presets, remove them from Babel config and replace them with `macros`:
 
-```bash npm2yarn
-npm uninstall @lingui/babel-preset-react
-npm install --dev @lingui/macro babel-plugin-macros
-```
+    ```bash npm2yarn
+    npm uninstall @lingui/babel-preset-react
+    npm install --dev @lingui/macro babel-plugin-macros
+    ```
 
     ```diff
     {
@@ -182,28 +182,28 @@ npm install --dev @lingui/macro babel-plugin-macros
     }
     ```
 
-2. Import [`Trans`](/docs/ref/macro.mdx#trans), [`Plural`](/docs/ref/macro.mdx#plural-1), [`Select`](/docs/ref/macro.mdx#select-1) and [`SelectOrdinal`](/docs/ref/macro.mdx#selectordinal-1) from `@lingui/macro`:
+2.  Import [`Trans`](/docs/ref/macro.mdx#trans), [`Plural`](/docs/ref/macro.mdx#plural-1), [`Select`](/docs/ref/macro.mdx#select-1) and [`SelectOrdinal`](/docs/ref/macro.mdx#selectordinal-1) from `@lingui/macro`:
 
-   ```diff
-   - import { Trans } from "@lingui/react"
-   + import { Trans } from "@lingui/macro"
-   ```
+    ```diff
+    - import { Trans } from "@lingui/react"
+    + import { Trans } from "@lingui/macro"
+    ```
 
-   :::caution Note
-   If you used [`Trans`](/docs/ref/macro.mdx#trans) component without children, then keep the import from `@lingui/react`:
+    :::caution Note
+    If you used [`Trans`](/docs/ref/macro.mdx#trans) component without children, then keep the import from `@lingui/react`:
 
-   ```jsx
-   import { Trans } from "@lingui/react";
+    ```jsx
+    import { Trans } from "@lingui/react";
 
-   const CustomID = () => <Trans id="msg.id" />;
-   const DynamicID = () => <Trans id={msgId} />;
-   ```
+    const CustomID = () => <Trans id="msg.id" />;
+    const DynamicID = () => <Trans id={msgId} />;
+    ```
 
-   :::
+    :::
 
-3. `i18n.t`, `i18n.plural`, `i18n.select` and `i18n.selectOrdinal` methods are removed and replaced with macros.
+3.  `i18n.t`, `i18n.plural`, `i18n.select` and `i18n.selectOrdinal` methods are removed and replaced with macros.
 
-These macros automatically binds message to default `i18n` object:
+    These macros automatically binds message to default `i18n` object:
 
     ```diff
       import { i18n } from "@lingui/core"

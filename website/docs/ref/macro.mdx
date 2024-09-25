@@ -13,37 +13,40 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 <Tabs groupId="babel-swc">
-  <TabItem value="babel" label="Babel" default>
-    Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise, install it as any other Babel plugin:
-    - Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
+<TabItem value="babel" label="Babel" default>
 
-      ```bash npm2yarn
-      npm install --save-dev babel-plugin-macros
-      npm install --save @lingui/macro
-      ```
+Babel macros require [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work. If you use a framework (for example GatsbyJS, Create React App > 2.0) you might already have macros enabled. Otherwise, install it as any other Babel plugin:
 
-    - Add `macros` to the top of plugins section in your Babel config:
+- Install `babel-plugin-macros` as a dev dependency and `@lingui/macro` as dependency:
 
-      ```json
-      {
-        "plugins": ["macros"]
-      }
-      ```
+  ```bash npm2yarn
+  npm install --save-dev babel-plugin-macros
+  npm install --save @lingui/macro
+  ```
 
-      When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
+- Add `macros` to the top of plugins section in your Babel config:
 
-  </TabItem>
-  <TabItem value="swc" label="SWC">
-    - Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
+  ```json
+  {
+    "plugins": ["macros"]
+  }
+  ```
 
-      ```bash npm2yarn
-      npm install --save-dev @lingui/swc-plugin
-      npm install --save @lingui/macro
-      ```
+  When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
 
-    - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+</TabItem>
+<TabItem value="swc" label="SWC">
 
-  </TabItem>
+- Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
+
+  ```bash npm2yarn
+  npm install --save-dev @lingui/swc-plugin
+  npm install --save @lingui/macro
+  ```
+
+- [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+</TabItem>
 </Tabs>
 
 :::note
