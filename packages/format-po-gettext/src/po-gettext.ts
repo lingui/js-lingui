@@ -170,6 +170,16 @@ const getPluralCases = (
     gettextPluralsInfo = gettextPlurals[correctLang]
   }
 
+  if (!gettextPluralsInfo) {
+    // do not warn on pseudo
+    if (lang !== "pseudo") {
+      console.warn(
+        `No plural rules found for language "${lang}".`
+      )
+    }
+    return undefined
+  }
+
   const cases: string[] = [...Array(pluralsCldr.forms(correctLang).length)]
 
   for (let form of pluralsCldr.forms(correctLang)) {
