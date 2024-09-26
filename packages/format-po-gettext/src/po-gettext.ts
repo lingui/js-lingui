@@ -173,9 +173,7 @@ const getPluralCases = (
   if (!gettextPluralsInfo) {
     // do not warn on pseudo
     if (lang !== "pseudo") {
-      console.warn(
-        `No plural rules found for language "${lang}".`
-      )
+      console.warn(`No plural rules found for language "${lang}".`)
     }
     return undefined
   }
