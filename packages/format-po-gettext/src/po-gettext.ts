@@ -173,7 +173,9 @@ const getPluralCases = (
   if (!gettextPluralsInfo) {
     // do not warn on pseudo
     if (lang !== "pseudo") {
-      console.warn(`No plural rules found for language "${lang}".`)
+      console.warn(
+        `No plural rules found for language "${lang}". Please add a Plural-Forms header.`
+      )
     }
     return undefined
   }
@@ -209,7 +211,7 @@ function parsePluralFormsFn(pluralFormsHeader: string): GettextPluralsInfo {
     }
   } catch (e) {
     console.warn(
-      `Plural-Forms header has incorrect value: ${pluralFormsHeader}. Please add a Plural-Forms header.`
+      `Plural-Forms header has incorrect value: ${pluralFormsHeader}`
     )
     return undefined
   }
