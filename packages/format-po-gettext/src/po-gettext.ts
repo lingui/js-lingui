@@ -175,7 +175,9 @@ const getPluralCases = (
   for (let form of pluralsCldr.forms(correctLang)) {
     const samples = cldrSamples[correctLang][form]
     // both need to cast to Number - funcs test with `===` and may return boolean
-    const pluralForm = Number(gettextPluralsInfo.pluralsFunc(Number(samples[0])))
+    const pluralForm = Number(
+      gettextPluralsInfo.pluralsFunc(Number(samples[0]))
+    )
 
     cases[pluralForm] = form
   }
@@ -199,7 +201,7 @@ function parsePluralFormsFn(pluralFormsHeader: string): GettextPluralsInfo {
     }
   } catch (e) {
     console.warn(
-      `Plural-Forms header has incorrect value: ${pluralFormsHeader}`
+      `Plural-Forms header has incorrect value: ${pluralFormsHeader}. Please add a Plural-Forms header.`
     )
     return undefined
   }
