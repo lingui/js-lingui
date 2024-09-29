@@ -14,6 +14,9 @@
       "types": "./dist/react-native/index.d.ts"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "author": {
     "name": "Vojtech Novak",

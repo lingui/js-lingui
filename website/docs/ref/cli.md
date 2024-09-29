@@ -208,7 +208,7 @@ Delays compilation by `<delay>` milliseconds to avoid multiple compilations for 
 
 One drawback to checking for missing translations is that the English message catalog doesn't need translations because our source code is in English. This can be addressed by configuring the [`sourceLocale`](/docs/ref/conf.md#sourcelocale) in the configuration file.
 
-## Catalogs in VCS and CI
+## Compiling Catalogs in CI {#compiling-catalogs-in-ci}
 
 If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/docs/ref/loader.md), [Vite plugin](/docs/ref/vite-plugin.md) or [Metro transformer](/docs/ref/metro-transformer.mdx).
 

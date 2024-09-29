@@ -67,7 +67,7 @@ export default async function command(
     console.log(
       `(Use "${chalk.yellow(
         helpRun("compile")
-      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#catalogs-in-vcs-and-ci)`
+      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
     )
   }
 
