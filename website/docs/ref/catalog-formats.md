@@ -144,21 +144,40 @@ export default {
 };
 ```
 
-  origins?: boolean;
+### Configuration {#po-gettext-config}
+
+The PO Gettext formatter accepts the following options:
+
+```ts
+export type PoGettextFormatterOptions = {
+  /**
+   * Print places where message is used
+   *
+   * @default true
+   */
+  origins?: boolean
+
   /**
    * Print line numbers in origins
    *
    * @default true
    */
-  lineNumbers?: boolean;
+  lineNumbers?: boolean
 
   /**
    * Disable warning about unsupported `Select` feature encountered in catalogs
    *
    * @default false
    */
-  disableSelectWarning?: boolean;
-};
+  disableSelectWarning?: boolean
+
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
+  customCtxPrefix?: string
+}
 ```
 
 ### Examples {#po-gettext-examples}
