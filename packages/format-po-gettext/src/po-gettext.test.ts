@@ -242,7 +242,7 @@ msgstr[2] "# dní"
       )
 
       const defaultPrefix = createFormat()
-      const customPrefix = createFormat({ customCtxPrefix: "custom-prefix:" })
+      const customPrefix = createFormat({ customICUPrefix: "custom-prefix:" })
 
       const defaultCatalog = defaultPrefix.parse(
         defaultProfile,
@@ -259,7 +259,7 @@ msgstr[2] "# dní"
         .toString()
 
       const usingInvalidPrefix = createFormat({
-        customCtxPrefix: "invalid-prefix:",
+        customICUPrefix: "invalid-prefix:",
       })
       mockConsole((console) => {
         const catalog = usingInvalidPrefix.parse(
@@ -277,7 +277,7 @@ msgstr[2] "# dní"
     })
 
     it("handles custom prefix", () => {
-      const format = createFormat({ customCtxPrefix: "custom-prefix:" })
+      const format = createFormat({ customICUPrefix: "custom-prefix:" })
 
       const catalog: CatalogType = {
         message_with_id: {

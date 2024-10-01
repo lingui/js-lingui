@@ -13,7 +13,7 @@ type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
-  customCtxPrefix?: string
+  customICUPrefix?: string
 }
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
@@ -53,7 +53,7 @@ function serializePlurals(
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
   const icuMessage = message.message
-  const ctxPrefix = options.customCtxPrefix || DEFAULT_CTX_PREFIX
+  const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
 
   if (!icuMessage) {
     return item
@@ -269,7 +269,7 @@ export function formatter(
           item,
           pluralForms,
           po.headers.Language,
-          options.customCtxPrefix
+          options.customICUPrefix
         )
       })
 

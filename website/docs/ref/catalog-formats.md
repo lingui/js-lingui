@@ -155,29 +155,29 @@ export type PoGettextFormatterOptions = {
    *
    * @default true
    */
-  origins?: boolean
+  origins?: boolean;
 
   /**
    * Print line numbers in origins
    *
    * @default true
    */
-  lineNumbers?: boolean
+  lineNumbers?: boolean;
 
   /**
    * Disable warning about unsupported `Select` feature encountered in catalogs
    *
    * @default false
    */
-  disableSelectWarning?: boolean
+  disableSelectWarning?: boolean;
 
   /**
    * Overrides the default prefix for icu and plural comments in the final PO catalog.
    *
    * @default "js-lingui:"
    */
-  customCtxPrefix?: string
-}
+  customICUPrefix?: string;
+};
 ```
 
 ### Examples {#po-gettext-examples}
@@ -210,19 +210,18 @@ With this format, plural messages are exported in the following ways, depending 
 
   Note how `msgid` and `msgid_plural` were extracted from the original message.
 
-
 - Message **with a custom comment prefix**.
 
   Some TMS might modify the ICU comment by attempting to split lines to be 80 characters or less,
   or have trouble reading lingui comments because of the `js-lingui:` prefix. To change the prefix,
-  set `customCtxPrefix` to modify the prefix for ICU comments.
+  set `customICUPrefix` to modify the prefix for ICU comments.
 
   ```po
   # with default prefix
   #. js-
   #. lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
 
-  # customCtxPrefix = jsi18n:
+  # customICUPrefix = jsi18n:
   #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
   ```
 

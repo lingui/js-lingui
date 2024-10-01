@@ -13,7 +13,7 @@
 
 > **Warning**
 > This formatter is made for compatibility with translation management systems, which do not support ICU expressions in PO files.
-> 
+>
 > It does not support all features of LinguiJS and should be carefully considered over other formats.
 >
 > Not supported features (native gettext doesn't support this):
@@ -82,7 +82,7 @@ export type PoGettextFormatterOptions = {
    *
    * @default "js-lingui:"
    */
-  customCtxPrefix?: string
+  customICUPrefix?: string
 }
 ```
 
