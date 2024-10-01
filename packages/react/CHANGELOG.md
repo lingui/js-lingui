@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
+
+### Bug Fixes
+
+- return a single node when applicable ([#2016](https://github.com/lingui/js-lingui/issues/2016)) ([68d8358](https://github.com/lingui/js-lingui/commit/68d8358ff7bbb09de8953db9c7faf0a9a4e99d80))
+
 ## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
 
 **Note:** Version bump only for package @lingui/react

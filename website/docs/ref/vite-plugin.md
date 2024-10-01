@@ -7,10 +7,6 @@ description: Use Lingui with Vite and compile your message catalogs on the fly
 
 `@lingui/vite-plugin` is a Vite plugin, which compiles Lingui catalogs on the fly and provides additional required configuration for Vite.
 
-:::note
-Refer to [Setup with Vite](/docs/tutorials/setup-vite.md) for a full installation guide.
-:::
-
 [![npm-version](https://img.shields.io/npm/v/@lingui/vite-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/vite-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/vite-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/vite-plugin)
 
@@ -21,6 +17,8 @@ Install `@lingui/vite-plugin` as a development dependency:
 ```bash npm2yarn
 npm install --save-dev @lingui/vite-plugin
 ```
+
+For a complete installation guide, see [Setup with Vite](/docs/tutorials/setup-vite.md).
 
 ## Usage
 
@@ -46,7 +44,7 @@ export async function dynamicActivate(locale: string) {
 }
 ```
 
-:::note
+:::tip
 If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
 
 ```ts
@@ -55,10 +53,7 @@ const { messages } = await import(`./locales/${language}.json?lingui`);
 
 :::
 
-See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
+## See Also
 
-See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.
-
-:::note
-You also need to set up [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to support [macros](/docs/ref/macro.mdx).
-:::
+- [Dynamic Loading](/docs/guides/dynamic-loading-catalogs.md)
+- [Dynamic Import in Vite](https://vitejs.dev/guide/features.html#dynamic-import)

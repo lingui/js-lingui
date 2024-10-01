@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
+
+**Note:** Version bump only for package @lingui/detect-locale
+
 ## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
 
 **Note:** Version bump only for package @lingui/detect-locale
