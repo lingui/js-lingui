@@ -79,6 +79,18 @@ msgstr[0] "Singular case"
 msgstr[1] "Case number {anotherCount}"
 ```
 
+If you need to change the comment prefix from `js-lingui:` to anything else, add the `customCtxPrefix`. This is helpful if your TMS
+splits comments on a certain line length, or if you need to use a different separation character other than `:`
+
+```po
+# with default prefix
+#. js-
+#. lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+
+# customCtxPrefix = jsi18n:
+#. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+```
+
 Note that this format comes with several caveats and should therefore only be used if using ICU plurals in PO files is not an option:
 
 - Nested/multiple plurals in one message as shown in [`plural`](/docs/ref/macro.mdx#plural) are not supported as it cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
