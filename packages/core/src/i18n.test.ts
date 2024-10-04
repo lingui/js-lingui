@@ -123,8 +123,8 @@ describe("I18n", () => {
 
       mockEnv("production", () => {
         vi.resetModules()
-        mockConsole((console) => {
-          const { setupI18n } = require("@lingui/core")
+        mockConsole(async (console) => {
+          const { setupI18n } = await import("@lingui/core")
           const i18n = setupI18n()
           i18n.activate("xyz")
           expect(console.warn).not.toBeCalled()
@@ -269,8 +269,9 @@ describe("I18n", () => {
       "My name is {name}": "Je m'appelle {name}",
     }
 
-    mockEnv("production", () => {
-      const { setupI18n } = require("@lingui/core")
+    mockEnv("production", async () => {
+      const { setupI18n } = await import("@lingui/core")
+
       const i18n = setupI18n({
         locale: "fr",
         messages: { fr: messages },
@@ -288,8 +289,8 @@ describe("I18n", () => {
       "My name is {name}": "Je m'appelle {name}",
     }
 
-    mockEnv("development", () => {
-      const { setupI18n } = require("@lingui/core")
+    mockEnv("development", async () => {
+      const { setupI18n } = await import("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
         messages: { fr: messages },

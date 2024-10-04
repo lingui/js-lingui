@@ -22,10 +22,11 @@ export default async function extract(
 
   for (let e of extractorsToExtract) {
     let ext: ExtractorType = e
-    if (typeof e === "string") {
-      // in case of the user using require.resolve in their extractors, we require that module
-      ext = require(e)
-    }
+    // if (typeof e === "string") {
+    //   // in case of the user using require.resolve in their extractors, we require that module
+    //   /* @vite-ignore */
+    //   ext = require(e)
+    // }
     if ((ext as any).default) {
       ext = (ext as any).default
     }

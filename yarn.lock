@@ -2451,6 +2451,7 @@ __metadata:
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/jest-mocks": "workspace:*"
     unbuild: 2.0.0
+    vite-tsconfig-paths: ^5.0.1
     vitest: ^2.1.1
   languageName: unknown
   linkType: soft
@@ -4647,7 +4648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
+"acorn@npm:^8.12.1, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
   version: 8.12.1
   resolution: "acorn@npm:8.12.1"
   bin:
@@ -6614,7 +6615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^1.2.1":
+"es-module-lexer@npm:^1.2.1, es-module-lexer@npm:^1.5.4":
   version: 1.5.4
   resolution: "es-module-lexer@npm:1.5.4"
   checksum: a0cf04fb92d052647ac7d818d1913b98d3d3d0f5b9d88f0eafb993436e4c3e2c958599db68839d57f2dfa281fdf0f60e18d448eb78fc292c33c0f25635b6854f
@@ -7555,6 +7556,19 @@ __metadata:
     merge2: ^1.3.0
     micromatch: ^4.0.4
   checksum: b6f3add6403e02cf3a798bfbb1183d0f6da2afd368f27456010c0bc1f9640aea308243d4cb2c0ab142f618276e65ecb8be1661d7c62a7b4e5ba774b9ce5432e5
+  languageName: node
+  linkType: hard
+
+"fast-glob@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "fast-glob@npm:3.3.2"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: 900e4979f4dbc3313840078419245621259f349950411ca2fa445a2f9a1a6d98c3b5e7e0660c5ccd563aa61abe133a21765c6c0dec8e57da1ba71d8000b05ec1
   languageName: node
   linkType: hard
 
@@ -9272,6 +9286,7 @@ __metadata:
     ts-jest: ^29.0.5
     typescript: ^4.9.5
     vite: ^5.4.7
+    vite-plugin-commonjs: ^0.10.3
     vitest: ^2.1.1
   languageName: unknown
   linkType: soft
@@ -14010,6 +14025,29 @@ __metadata:
   peerDependencies:
     vite: ">=2"
   checksum: 577d3d99b4b088b83adffab656461d0d00618afe7d2e64972077e6b15fd221df92c6278bdfce586a380954159e6c0886658d086df26a6748e65b28e1c9923a40
+  languageName: node
+  linkType: hard
+
+"vite-plugin-commonjs@npm:^0.10.3":
+  version: 0.10.3
+  resolution: "vite-plugin-commonjs@npm:0.10.3"
+  dependencies:
+    acorn: ^8.12.1
+    magic-string: ^0.30.11
+    vite-plugin-dynamic-import: ^1.6.0
+  checksum: 9df157aafe0ef803aa2504f1302bd0699abb20d2d9a74c9147d071d86357cb82a5a880eb8ce082eccfb025843dc63afa482887a8b6f72d918db8aa4fa4900978
+  languageName: node
+  linkType: hard
+
+"vite-plugin-dynamic-import@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "vite-plugin-dynamic-import@npm:1.6.0"
+  dependencies:
+    acorn: ^8.12.1
+    es-module-lexer: ^1.5.4
+    fast-glob: ^3.3.2
+    magic-string: ^0.30.11
+  checksum: 46b009c80db82a8ed935c6ec7c08a8d3d7e5d3118fbfb1b4e18f13e4e9c34db6b3f28fa697d7f78d3f36edae69479a0ba2dfae1b76d2b2ca8e3e06dcf1e9870c
   languageName: node
   linkType: hard
 
