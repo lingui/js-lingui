@@ -60,14 +60,18 @@ describe("lingui-loader", () => {
     expect((await res.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
       {
-        ED2Xk0: String from template,
+        ED2Xk0: [
+          String from template,
+        ],
         mVmaLu: [
           My name is ,
           [
             name,
           ],
         ],
-        mY42CM: Hello World,
+        mY42CM: [
+          Hello World,
+        ],
       }
     `)
 
@@ -97,8 +101,12 @@ msgstr ""
             name,
           ],
         ],
-        mY42CM: Hello World,
-        wg2uwk: String from template changes!,
+        mY42CM: [
+          Hello World,
+        ],
+        wg2uwk: [
+          String from template changes!,
+        ],
       }
     `)
 
