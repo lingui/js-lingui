@@ -1,4 +1,4 @@
-import type { PluginObj, Visitor, PluginPass, BabelFile } from "@babel/core"
+import type { PluginObj, Visitor, PluginPass } from "@babel/core"
 import type * as babelTypes from "@babel/types"
 import { Program, Identifier } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
@@ -151,9 +151,6 @@ export default function ({
   }
   return {
     name: "lingui-macro-plugin",
-    pre(file: BabelFile) {
-      file.hub
-    },
     visitor: {
       Program: {
         enter(path, state) {

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { date, number } from "./formats"
 
 describe("@lingui/core/formats", () => {

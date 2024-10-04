@@ -1,3 +1,4 @@
+import { afterEach, beforeAll, describe, expect, it } from "vitest"
 import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
@@ -448,7 +449,7 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
-    xit("should read file in previous format", async () => {
+    it.skip("should read file in previous format", async () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(

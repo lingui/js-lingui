@@ -5,6 +5,7 @@
     "noEmit": true,
     "baseUrl": "./",
     "pretty": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "stripInternal": true,
     "noUnusedLocals": true,

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { printStats } from "./stats"
 import { defaultMergeOptions, makeCatalog, makeNextMessage } from "../tests"
 import { makeConfig } from "@lingui/conf"

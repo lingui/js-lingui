@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { type CallExpression, type Expression } from "@babel/types"
 import {
   tokenizeTemplateLiteral,

@@ -7,7 +7,7 @@ import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
-
+import { test, expect } from "vitest"
 export type TestCase = TestCaseInline | TestCaseFixture
 
 type TestCaseInline = {
@@ -40,6 +40,15 @@ export type MacroTesterOptions = {
 
 export function macroTester(opts: MacroTesterOptions) {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
+
+  expect.addSnapshotSerializer({
+    serialize(val) {
+      return val
+    },
+    test(val) {
+      return typeof val === "string"
+    },
+  })
 
   const clean = (value: string) =>
     prettier.format(value, { parser: "babel-ts" }).replace(/\n+/, "\n")

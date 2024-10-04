@@ -37,7 +37,8 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc -p tsconfig.build.json"
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json",
+    "test": "vitest --run"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -85,6 +86,8 @@
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.5"
+    "mockdate": "^3.0.5",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { command } from "../lingui-compile"
 import { makeConfig } from "@lingui/conf"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"

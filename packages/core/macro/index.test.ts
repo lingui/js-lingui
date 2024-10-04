@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import macro from "@lingui/core/macro"
 
 describe("react-macro", () => {

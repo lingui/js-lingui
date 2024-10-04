@@ -101,6 +101,7 @@
     "@babel/traverse": "^7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
     "prettier": "2.8.3",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vitest": "^2.1.1"
   }
 }

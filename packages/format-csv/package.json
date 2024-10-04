@@ -21,7 +21,8 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,8 @@
   },
   "devDependencies": {
     "tsd": "^0.28.0",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   }
 }

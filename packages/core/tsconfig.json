@@ -4,6 +4,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true,
-  }
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["vitest.config.mts"]
 }
