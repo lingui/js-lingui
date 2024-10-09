@@ -3820,7 +3820,21 @@ __metadata:
     rimraf: ^6.0.1
     unbuild: 2.0.0
   peerDependencies:
+    "@expo/metro-config": "*"
+    "@react-native/metro-babel-transformer": "*"
+    expo: ">=49.0.0"
     metro: "*"
+    metro-react-native-babel-transformer: "*"
+    react-native: ">=0.72.1"
+  peerDependenciesMeta:
+    "@expo/metro-config":
+      optional: true
+    "@react-native/metro-babel-transformer":
+      optional: true
+    expo:
+      optional: true
+    metro-react-native-babel-transformer:
+      optional: true
   languageName: unknown
   linkType: soft
 

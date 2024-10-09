@@ -1,6 +1,6 @@
 {
   "name": "@lingui/metro-transformer",
-  "version": "0.1.0",
+  "version": "4.11.4",
   "description": "Metro bundler transformer for LinguiJS catalogs",
   "exports": {
     "./expo": {
@@ -47,7 +47,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=16.0.0"
   },
   "files": [
     "LICENSE",
@@ -66,6 +66,25 @@
     "unbuild": "2.0.0"
   },
   "peerDependencies": {
-    "metro": "*"
+    "@expo/metro-config": "*",
+    "@react-native/metro-babel-transformer": "*",
+    "expo": ">=49.0.0",
+    "metro": "*",
+    "metro-react-native-babel-transformer": "*",
+    "react-native": ">=0.72.1"
+  },
+  "peerDependenciesMeta": {
+    "@expo/metro-config": {
+      "optional": true
+    },
+    "@react-native/metro-babel-transformer": {
+      "optional": true
+    },
+    "expo": {
+      "optional": true
+    },
+    "metro-react-native-babel-transformer": {
+      "optional": true
+    }
   }
 }
