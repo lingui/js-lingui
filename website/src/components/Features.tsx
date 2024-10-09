@@ -28,8 +28,8 @@ const FEATURES: FeatureDetails[] = [
     title: "Powerful Tooling",
     description: (
       <p>
-        Manage the whole intl workflow using Lingui CLI. It extracts messages from source code, validates messages from
-        translators and checks that all messages are translated before shipping to production.
+        Manage the entire intl workflow with Lingui CLI. It extracts messages from source code, validates messages from
+        translators, and verifies that all messages are translated before shipping to production.
       </p>
     ),
     image: "tooling.png",
@@ -70,8 +70,8 @@ const FEATURES: FeatureDetails[] = [
           .
         </div>
         <p>
-          You don&apos;t have to know how many plurals the language has. Create a product in one language, and deliver a
-          perfect translation to users. Lingui follows Unicode ICU standards to handle plurals, genders, and selects.
+          No need to know how many plurals the language has. Create a product in one language and deliver a perfect
+          translation to users. Lingui follows Unicode ICU standards to handle plurals, genders and selects.
         </p>
       </div>
     ),
@@ -82,7 +82,7 @@ const FEATURES: FeatureDetails[] = [
     title: "Battle-Proven & Future Proof",
     description: (
       <p>
-        During the last 7 years, we&apos;ve seen a lot of localization projects and developed a tool to handle them all.
+        Over the past few years, we have seen a lot of localization projects and developed a tool to handle them all.
         <br />
         If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
         most recent translations directly to your customers – we&apos;ve got you covered.
@@ -95,8 +95,8 @@ const FEATURES: FeatureDetails[] = [
     title: "Suitable for All Localization Platforms",
     description: (
       <p>
-        Integrate Lingui into your existing workflow. It supports message keys as well as auto-generated messages.
-        Translations are stored in JSON or standard PO file, which is supported in almost all translation tools.
+        Integrate Lingui with your existing workflow. It supports both explicit and auto-generated message keys.
+        Translations are stored in JSON or a standard PO file, which is supported by almost all translation tools.
       </p>
     ),
     image: "all-platforms.svg",
