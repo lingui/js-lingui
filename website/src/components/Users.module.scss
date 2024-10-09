@@ -4,8 +4,8 @@
   padding: 0;
 
   &Holder {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     border-radius: var(--lingui-card-raduis);
     background: var(--lingui-gray-bg);
 
@@ -36,11 +36,6 @@
   height: auto;
   border-radius: 8px;
   transition: 0.2s;
-}
-
-.user,
-.muted {
-  color: grey;
 }
 
 .user:hover {
