@@ -13,7 +13,7 @@
 
 > **Warning**
 > This formatter is made for compatibility with translation management systems, which do not support ICU expressions in PO files.
-> 
+>
 > It does not support all features of LinguiJS and should be carefully considered over other formats.
 >
 > Not supported features (native gettext doesn't support this):
@@ -72,10 +72,17 @@ export type PoGettextFormatterOptions = {
 
   /**
    * Disable warning about unsupported `Select` feature encountered in catalogs
-   * 
+   *
    * @default false
    */
   disableSelectWarning?: boolean
+
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
+  customICUPrefix?: string
 }
 ```
 
