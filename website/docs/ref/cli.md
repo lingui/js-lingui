@@ -170,7 +170,16 @@ Messages added to the compiled file are collected in a specific order:
 3.  Translated message from default fallback locale.
 4.  Message key.
 
-It is also possible to merge the translated catalogs into a single file per locale by specifying `catalogsMergePath` in the configuration. For example, if `catalogsMergePath` is set to `locales/{locale}`, then the catalogs will be compiled into `/locales/cs.js` and `/locales/en.js`.
+It is also possible to merge the translated catalogs into a single file per locale by specifying [`catalogsMergePath`](/docs/ref/conf.md#catalogsmergepath) in the configuration.
+
+:::tip
+The compiled files can be safely ignored by your version control system, since these files must be created each time you deploy to production. We recommend you to create the compiled catalogs in CI as part of your deployment process. Always remember to **use compiled catalogs** in deployments.
+
+```ignore title=".gitignore"
+your_locale_folder/**/*.js
+```
+
+:::
 
 #### `--overwrite` {#compile-overwrite}
 
@@ -220,4 +229,3 @@ Depending on your localization setup, you might also want to run the `extract` c
 - [Message Extraction](/docs/guides/message-extraction.md)
 - [Catalog Formats](/docs/ref/catalog-formats.md)
 - [Custom Extractor](/docs/guides/custom-extractor.md)
-- [Excluding build files](/docs/guides/excluding-build-files.md)

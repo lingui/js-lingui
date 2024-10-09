@@ -18,9 +18,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     announcementBar: {
-      id: "follow_x",
+      id: "v5_release",
       content:
-        'Follow us on <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/LinguiJS">X (Twitter)</a> to get the latest news and updates!',
+        'The <b>v5.0.0</b> Pre-Release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=tag%3Av5&expanded=true">discover its new capabilities!</a>',
       backgroundColor: "#f36c6c",
       textColor: "#1a1a1a",
     },
@@ -150,6 +150,11 @@ const config: Config = {
       appId: "JJFVB18YWS",
       apiKey: "50e12ed6fd44188e9abd4e0e9d2cb935",
       indexName: "lingui",
+    },
+    blog: {
+      sidebar: {
+        groupByYear: false,
+      },
     },
     prism: {
       theme: themes.github,

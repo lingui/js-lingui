@@ -3,7 +3,7 @@ title: React Native Internationalization (i18n)
 description: Learn how to add internationalization to a React Native application using Lingui
 ---
 
-# Internationalization of React Native apps
+# Internationalization of React Native Apps
 
 In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](/docs/tutorials/setup-react.mdx?babel-or-swc=babel) (for Babel) for installation and configuration instructions.
 

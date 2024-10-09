@@ -1,10 +1,10 @@
-# Dynamic loading of message catalogs
+# Dynamic Loading of Message Catalogs
 
 [`I18nProvider`](/docs/ref/react.md#i18nprovider) doesn't assume anything about your app and it's the developer responsibility to load messages based on active language.
 
 Here's an example of a basic setup with a dynamic load of catalogs.
 
-## Final I18n loader helper
+## Final i18n Loader Helper
 
 Here's the full source of `i18n.ts` logic:
 
@@ -69,5 +69,3 @@ When page is loaded initially, only main bundle and bundle for the first languag
 After changing language in UI, the second language bundle is loaded:
 
 ![Requests during the second render](/img/docs/dynamic-loading-catalogs-2.png)
-
-And that's it! 🎉

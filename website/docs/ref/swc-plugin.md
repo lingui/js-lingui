@@ -11,16 +11,16 @@ If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. T
 
 [![npm-version](https://img.shields.io/npm/v/@lingui/swc-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/swc-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/swc-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/swc-plugin)
-[![CI](https://github.com/lingui/swc-plugin/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/lingui/swc-plugin/actions/workflows/ci.yml)
-[![GitHub contributors](https://img.shields.io/github/contributors/lingui/swc-plugin?cacheSeconds=1000)](https://github.com/lingui/swc-plugin/graphs/contributors)
 
 ## SWC Compatibility
 
 SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed.
 
-Therefore, you need to select an appropriate version of the `@lingui/swc-plugin` to match compatible `@swc/core` version.
+Therefore, you need to select an appropriate version of `@lingui/swc-plugin` to match the compatible `@swc/core` version.
 
-For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+:::tip
+It is recommended to check the [plugins.swc.rs](https://plugins.swc.rs/) site to find the compatible version.
+:::
 
 ## Installation
 
