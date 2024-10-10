@@ -7,7 +7,8 @@ module.exports = {
   ...sourceConfig,
   projects: sourceConfig.projects.map((project) => ({
     ...project,
-    // Redirect imports to the compiled bundles
+    // Redirect imports to the compiled bundles.
+    // This is to test compiled code instead of source (applies to code under test and also its deps).
     moduleNameMapper: {},
   })),
 

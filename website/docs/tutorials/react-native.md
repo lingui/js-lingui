@@ -9,14 +9,14 @@ In this tutorial, we'll learn how to add internationalization to an existing app
 
 :::caution Warning
 
-With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx react-native start --reset-cache` or `npx expo start -c` (if you use Expo).
+With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx expo start -c` or `npx react-native start --reset-cache` (if you do not use Expo).
 
 :::
 
 The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
 :::tip Hint
-If you're looking for a working solution, check out the [sources available here](https://github.com/lingui/js-lingui/tree/main/examples/react-native) and the [demo app on Expo](https://exp.host/@vonovak/js-lingui-demo). It showcases more functionality than this guide.
+If you're looking for a working solution, check out the [sources available here](https://github.com/lingui/js-lingui/tree/main/examples/react-native). The example app showcases more functionality than this guide.
 :::
 
 :::caution Note
@@ -238,6 +238,7 @@ The important point here is that the sentence isn't broken into pieces but remai
 
 ## Further reading
 
+- [Metro transformer for `po` files](/docs/ref/metro-transformer.mdx)
 - [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
 - [`@lingui/react` reference documentation](/docs/ref/react.md)
 - [`@lingui/cli` reference documentation](/docs/ref/cli.md)

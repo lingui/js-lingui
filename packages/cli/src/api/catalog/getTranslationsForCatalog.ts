@@ -18,8 +18,10 @@ export async function getTranslationsForCatalog(
   locale: string,
   options: GetTranslationsOptions
 ) {
-  const catalogs = await catalog.readAll()
-  const template = (await catalog.readTemplate()) || {}
+  const [catalogs, template] = await Promise.all([
+    catalog.readAll(),
+    catalog.readTemplate(),
+  ])
 
   const sourceLocaleCatalog = catalogs[options.sourceLocale] || {}
 
