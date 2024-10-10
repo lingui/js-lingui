@@ -68,10 +68,9 @@
   "peerDependencies": {
     "@expo/metro-config": "*",
     "@react-native/metro-babel-transformer": "*",
-    "expo": ">=49.0.0",
+    "expo": ">=50.0.0",
     "metro": "*",
-    "metro-react-native-babel-transformer": "*",
-    "react-native": ">=0.72.1"
+    "react-native": ">=0.73.0"
   },
   "peerDependenciesMeta": {
     "@expo/metro-config": {
@@ -81,9 +80,6 @@
       "optional": true
     },
     "expo": {
-      "optional": true
-    },
-    "metro-react-native-babel-transformer": {
       "optional": true
     }
   }

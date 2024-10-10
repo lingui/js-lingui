@@ -1,11 +1,6 @@
 import { createLinguiMetroTransformer } from "../metroTransformer"
 
-const reactNativeTransformer = (() => {
-  try {
-    return require("@react-native/metro-babel-transformer")
-  } catch (error) {
-    return require("metro-react-native-babel-transformer")
-  }
-})()
+// @ts-expect-error typings are not published
+import reactNativeTransformer from "@react-native/metro-babel-transformer"
 
 export const transform = createLinguiMetroTransformer(reactNativeTransformer)
