@@ -3,7 +3,6 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
-
 :root {
   --ifm-color-primary: #ef4242;
   --ifm-color-primary-dark: #ed2626;
@@ -13,6 +12,7 @@
   --ifm-color-primary-lighter: #f36c6c;
   --ifm-color-primary-lightest: #f69696;
   --ifm-link-color: #ef4242;
+  --ifm-color-secondary: var(--ifm-color-gray-600);
   --text: #1a1a1a;
 
   --ifm-hero-background-bg: linear-gradient(180deg, transparent 0%, rgba(239, 66, 66, 0.05) 100%);
@@ -43,41 +43,15 @@
   --lingui-card-border-color: transparent;
   --ifm-link-color: var(--ifm-color-primary-lighter);
   --ifm-color-primary: var(--ifm-color-primary-lighter);
-}
+  --ifm-color-secondary: var(--ifm-color-gray-500);
 
-.d-block {
-  display: block;
-}
+  .footer--dark {
+    --ifm-footer-background-color: var(--ifm-navbar-background-color);
+  }
 
-ol {
-  list-style: none;
-  counter-reset: item;
-  padding-left: 0;
-}
-
-ol > li {
-  counter-increment: item;
-  padding-left: var(--ifm-list-left-padding);
-}
-
-ol > li:before {
-  margin-left: calc(-1 * var(--ifm-list-left-padding) - 11px);
-  content: counter(item) ".";
-  position: absolute;
-  font-weight: var(--ifm-font-weight-bold);
-  width: calc(var(--ifm-list-left-padding));
-  text-align: right;
-}
-
-.navbar__title {
-  font-family: var(--ifm-heading-font-family);
-  font-weight: var(--ifm-heading-font-weight);
-  font-size: 200%;
-}
-
-.hero {
-  padding-top: 0;
-  padding-bottom: 0;
+  .header-github-link:before {
+    filter: invert(1);
+  }
 }
 
 /* Line up the left edge of the logo with the left edge of the docs sidebar */
@@ -88,65 +62,26 @@ ol > li:before {
   }
 }
 
-.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible > a {
-  font-family: var(--ifm-heading-font-family);
-  font-weight: var(--ifm-heading-font-weight);
-  font-size: 130%;
+.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible {
+  margin-top: 0.5rem;
 
-  margin-top: calc(3 * var(--ifm-menu-link-padding-vertical));
-}
+  > a {
+    font-weight: 550;
+    color: var(--ifm-heading-color);
+    font-size: 110%;
+  }
 
-.menu__link > a,
-.menu__list-item > a {
-  padding-right: calc(0.5 * var(--ifm-menu-link-padding-horizontal));
-}
-
-.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible:hover,
-.menu > ul.menu__list > li.menu__list-item > .menu__list-item-collapsible:active {
-  background: none;
-}
-
-.menu > ul.menu__list > li.menu__list-item:first-of-type > .menu__list-item-collapsible > a {
-  margin-top: 0;
-}
-
-.menu__list .menu__list {
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.menu__list .menu__list .menu__list {
-  margin-left: var(--ifm-menu-link-padding-horizontal);
-}
-
-.menu__list-item {
-  margin-top: 0.1rem;
-  margin-bottom: 0.1rem;
-}
-
-.DocSearch-Button,
-input[type="search"] {
-  font-family: var(--ifm-font-family-base);
-}
-
-.DocSearch-Button-Placeholder {
-  margin-bottom: 2px;
-}
-
-.pagination-nav,
-.pagination-nav__sublabel {
-  display: none;
+  &:hover,
+  &:active {
+    background: none;
+    cursor: default;
+  }
 }
 
 .footer__copyright {
   margin-top: 50px;
   color: var(--ifm-color-gray-500);
   font-size: 0.875rem;
-}
-
-.header-github-link:hover,
-.header-discord-link:hover {
-  opacity: 0.6;
 }
 
 .header-github-link::before {
@@ -166,19 +101,13 @@ input[type="search"] {
   background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 -28.5 256 256' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' preserveAspectRatio='xMidYMid'%3E%3Cpath d='M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z' fill='%235865F2' fill-rule='nonzero'%3E%3C/path%3E%3C/svg%3E");
 }
 
-html[data-theme="dark"] {
-  .header-github-link:before {
-    filter: invert(1);
-  }
-
-  .footer--dark {
-    --ifm-footer-background-color: var(--ifm-navbar-background-color);
-  }
+.header-github-link:hover,
+.header-discord-link:hover {
+  opacity: 0.6;
 }
 
-.main-page-content {
-  overflow: hidden;
-  padding-top: 4rem;
+.footer--dark {
+  --ifm-color-secondary: var(--ifm-color-gray-400);
 }
 
 [data-theme="light"] img[src$="#gh-dark-mode-only"],
