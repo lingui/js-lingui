@@ -8,6 +8,7 @@ import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
+import cldrSamples from "./cldr-samples.json"
 
 type POItem = InstanceType<typeof PO.Item>
 
@@ -138,6 +139,10 @@ function serializePlurals(
   return item
 }
 
+type GettextPluralsInfo = {
+  nplurals: number
+  pluralsFunc: (n: number) => number
+}
 /**
  * Returns ICU case labels in the order that gettext lists localized messages, e.g. 0,1,2 => `["one", "two", "other"]`.
  *
@@ -148,14 +153,60 @@ function serializePlurals(
  * This approach is heavily influenced by
  * https://github.com/LLK/po2icu/blob/9eb97f81f72b2fee02b77f1424702e019647e9b9/lib/po2icu.js#L148.
  */
-const getPluralCases = (lang: string): string[] | undefined => {
+const getPluralCases = (
+  lang: string,
+  pluralFormsHeader: string
+): string[] | undefined => {
+  let gettextPluralsInfo: GettextPluralsInfo
+
+  if (pluralFormsHeader) {
+    gettextPluralsInfo = parsePluralFormsFn(pluralFormsHeader)
+  }
+
   // If users uses locale with underscore or slash, es-ES, es_ES, gettextplural is "es" not es-ES.
   const [correctLang] = lang.split(/[-_]/g)
-  const gettextPluralsInfo = gettextPlurals[correctLang]
 
-  return gettextPluralsInfo?.examples.map((pluralCase: any) =>
-    pluralsCldr(correctLang, pluralCase.sample)
-  )
+  if (!gettextPluralsInfo) {
+    gettextPluralsInfo = gettextPlurals[correctLang]
+  }
+
+  const cases: string[] = [...Array(pluralsCldr.forms(correctLang).length)]
+  const _samples: any[] = [...pluralsCldr.forms(correctLang)]
+
+  for (let form of pluralsCldr.forms(correctLang)) {
+    const samples = cldrSamples[correctLang][form]
+
+    _samples[gettextPluralsInfo.pluralsFunc(samples[0])] = [
+      samples[0],
+      gettextPluralsInfo.pluralsFunc(samples[0]),
+    ]
+
+    cases[gettextPluralsInfo.pluralsFunc(samples[0])] = form
+  }
+
+  return cases
+}
+
+function parsePluralFormsFn(pluralFormsHeader: string): GettextPluralsInfo {
+  const [npluralsExpr, expr] = pluralFormsHeader.split(";")
+
+  try {
+    const nplurals = new Function(npluralsExpr + "; return nplurals;")()
+    const pluralsFunc = new Function(
+      "n",
+      expr + "; return plural;"
+    ) as GettextPluralsInfo["pluralsFunc"]
+
+    return {
+      nplurals,
+      pluralsFunc,
+    }
+  } catch (e) {
+    console.warn(
+      `Plural-Forms header has incorrect value: ${pluralFormsHeader}`
+    )
+    return undefined
+  }
 }
 
 const convertPluralsToICU = (
@@ -222,7 +273,9 @@ const convertPluralsToICU = (
 
   // Map each msgstr to a "<pluralform> {<translated_string>}" entry, joined by one space.
   const pluralClauses = item.msgstr
-    .map((str, index) => pluralForms[index] + " {" + str + "}")
+    .map((str, index) =>
+      pluralForms[index] ? pluralForms[index] + " {" + str + "}" : ""
+    )
     .join(" ")
 
   // Find out placeholder name from item's message context, defaulting to "count".
@@ -259,7 +312,10 @@ export function formatter(
       // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
       // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
       // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-      let pluralForms = getPluralCases(po.headers.Language)
+      let pluralForms = getPluralCases(
+        po.headers.Language,
+        po.headers["Plural-Forms"]
+      )
 
       po.items.forEach((item) => {
         convertPluralsToICU(item, pluralForms, po.headers.Language)
