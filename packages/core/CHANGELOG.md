@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
+
+### Bug Fixes
+
+- unicode parsing ([#2030](https://github.com/lingui/js-lingui/issues/2030)) ([0ac26cc](https://github.com/lingui/js-lingui/commit/0ac26ccf6c0fce7a25950f5643e2d9937dd0b031))
+
 ## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
 
 **Note:** Version bump only for package @lingui/core

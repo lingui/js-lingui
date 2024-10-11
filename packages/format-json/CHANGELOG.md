@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
+
+**Note:** Version bump only for package @lingui/format-json
+
 ## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
 
 **Note:** Version bump only for package @lingui/format-json
