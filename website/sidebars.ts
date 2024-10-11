@@ -143,6 +143,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "@lingui/metro-transformer",
+        id: "ref/metro-transformer",
+      },
+      {
+        type: "doc",
         label: "@lingui/extractor-vue",
         id: "ref/extractor-vue",
       },
