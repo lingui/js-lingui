@@ -144,7 +144,7 @@ export default {
 };
 ```
 
-### Configuration {#po-gettext-config}
+### Configuration {#po-gettext-configuration}
 
 The PO Gettext formatter accepts the following options:
 
@@ -212,9 +212,7 @@ With this format, plural messages are exported in the following ways, depending 
 
 - Message **with a custom comment prefix**.
 
-  Some TMS might modify the ICU comment by attempting to split lines to be 80 characters or less,
-  or have trouble reading lingui comments because of the `js-lingui:` prefix. To change the prefix,
-  set `customICUPrefix` to modify the prefix for ICU comments.
+  Some TMS might modify the ICU comment by attempting to split lines to be 80 characters or less, or have trouble reading lingui comments because of the `js-lingui:` prefix. To change the prefix, set `customICUPrefix` to modify the prefix for ICU comments.
 
   ```po
   # with default prefix
