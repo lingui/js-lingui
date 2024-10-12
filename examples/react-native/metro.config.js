@@ -10,8 +10,7 @@ config.transformer = {
 };
 config.resolver = {
   ...resolver,
-  assetExts: resolver.assetExts.filter((ext) => ext !== "po"),
-  sourceExts: [...resolver.sourceExts, "po"],
+  sourceExts: [...resolver.sourceExts, "po", "pot"],
 };
 
 module.exports = config;
