@@ -146,7 +146,7 @@ export default {
 
 ### Configuration {#po-gettext-configuration}
 
-PO Gettext formatter accepts the following options:
+The PO Gettext formatter accepts the following options:
 
 ```ts
 export type PoGettextFormatterOptions = {
@@ -170,6 +170,13 @@ export type PoGettextFormatterOptions = {
    * @default false
    */
   disableSelectWarning?: boolean;
+
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
+  customICUPrefix?: string;
 };
 ```
 
@@ -202,6 +209,19 @@ With this format, plural messages are exported in the following ways, depending 
   ```
 
   Note how `msgid` and `msgid_plural` were extracted from the original message.
+
+- Message **with a custom comment prefix**.
+
+  Some TMS might modify the ICU comment by attempting to split lines to be 80 characters or less, or have trouble reading lingui comments because of the `js-lingui:` prefix. To change the prefix, set `customICUPrefix` to modify the prefix for ICU comments.
+
+  ```po
+  # with default prefix
+  #. js-
+  #. lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+
+  # customICUPrefix = jsi18n:
+  #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+  ```
 
 ### Limitations {#po-gettext-limitations}
 
