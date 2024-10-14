@@ -858,6 +858,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/parser@npm:^7.22.0":
+  version: 7.25.8
+  resolution: "@babel/parser@npm:7.25.8"
+  dependencies:
+    "@babel/types": ^7.25.8
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: c33f6d26542f156927c5dbe131265c791177d271e582338e960f803903086ec5c152bf25deae5f4c061b7bee14dc0b5fd2882ccb5a21c16ee0738d24fcc0406e
+  languageName: node
+  linkType: hard
+
 "@babel/parser@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/parser@npm:7.22.5"
@@ -1833,7 +1844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.19.0, @babel/types@npm:^7.2.0":
+"@babel/types@npm:^7.19.0, @babel/types@npm:^7.2.0, @babel/types@npm:^7.25.8":
   version: 7.25.8
   resolution: "@babel/types@npm:7.25.8"
   dependencies:
@@ -2869,10 +2880,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@npm:4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/babel-plugin-extract-messages@npm:4.11.3"
-  checksum: 1e6ed0e940be89dfd6b5a9a3f52f2723f27dcfbc458032b862e8cf8832ff643ea9c57686fdd8c703bc5f78a4706b70c305a80d77f414a6ee08f431bcfb79ff4c
+"@lingui/babel-plugin-extract-messages@npm:4.12.0":
+  version: 4.12.0
+  resolution: "@lingui/babel-plugin-extract-messages@npm:4.12.0"
+  checksum: de5385390d9fbe4fa02d9d1d21a973413b885a43b41c1b0b02ccbba17d99eaad339beedf3de73f95dd6cde94544f8e69814e87aadca70491c65856280519efc3
   languageName: node
   linkType: hard
 
@@ -2915,20 +2926,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/cli@npm:^4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/cli@npm:4.11.3"
+"@lingui/cli@npm:^4.12.0":
+  version: 4.12.0
+  resolution: "@lingui/cli@npm:4.12.0"
   dependencies:
     "@babel/core": ^7.21.0
     "@babel/generator": ^7.21.1
-    "@babel/parser": ^7.21.2
+    "@babel/parser": ^7.22.0
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 4.11.3
-    "@lingui/conf": 4.11.3
-    "@lingui/core": 4.11.3
-    "@lingui/format-po": 4.11.3
-    "@lingui/message-utils": 4.11.3
+    "@lingui/babel-plugin-extract-messages": 4.12.0
+    "@lingui/conf": 4.12.0
+    "@lingui/core": 4.12.0
+    "@lingui/format-po": 4.12.0
+    "@lingui/message-utils": 4.12.0
     babel-plugin-macros: ^3.0.1
     chalk: ^4.1.0
     chokidar: 3.5.1
@@ -2939,7 +2950,7 @@ __metadata:
     esbuild: ^0.17.10
     glob: ^7.1.4
     inquirer: ^7.3.3
-    micromatch: 4.0.2
+    micromatch: ^4.0.2
     normalize-path: ^3.0.0
     ora: ^5.1.0
     pathe: ^1.1.0
@@ -2950,7 +2961,7 @@ __metadata:
     source-map: ^0.8.0-beta.0
   bin:
     lingui: dist/lingui.js
-  checksum: aca04b98a70b0d8e8bd47a7b00961fb5858c2be8f94e2eea6221ed6da22eef59a08a10d48a55717ec9de9aecfd988498851c77ce527ee0fe29f48b803982cc27
+  checksum: bd27814e97d9cb50f3604644299d87f6b743cab1772fd0de60e4408e882a6ce5410969f59bd088f245c405333f3a530786400747e4401f8021f2ced0bc19d4af
   languageName: node
   linkType: hard
 
@@ -2968,9 +2979,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/conf@npm:4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/conf@npm:4.11.3"
+"@lingui/conf@npm:4.12.0":
+  version: 4.12.0
+  resolution: "@lingui/conf@npm:4.12.0"
   dependencies:
     "@babel/runtime": ^7.20.13
     chalk: ^4.1.0
@@ -2978,7 +2989,7 @@ __metadata:
     jest-validate: ^29.4.3
     jiti: ^1.17.1
     lodash.get: ^4.4.2
-  checksum: 97db5a6825a081f7c114cdac0623abef10ad81ec67668a27c60452f803e5d223c287dbe7c7584ab7d9d4f3b41cf9f4966fe011dc8866828954e3b243fe467078
+  checksum: 88e0b383a9c9bfa0b7c2efaac747f1c72f52a2c2750bc47a2a887a07f9bef6ece80dafdeba7beccc6c13c9218edbfc02e0ef119bbca1f5842dec4f32b5c71a90
   languageName: node
   linkType: hard
 
@@ -2990,17 +3001,6 @@ __metadata:
     "@lingui/message-utils": 4.11.2
     unraw: ^3.0.0
   checksum: 10e77a8486dd8ae9ab3a687276a626d568f6b65b57a3071f9ee18c31989133a0a429eec28c0254e48a36fa77ff775f9b6dfa945df6767f2fc91782c10582d3ca
-  languageName: node
-  linkType: hard
-
-"@lingui/core@npm:4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/core@npm:4.11.3"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.11.3
-    unraw: ^3.0.0
-  checksum: aa4578f015814cdf2395c6cc43e1184a9e356ad6c440b61702607775932dceb3c03350fd53e0287a78693ddca348a8922fa7dc67086721ed8bf02352d6aea443
   languageName: node
   linkType: hard
 
@@ -3027,31 +3027,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/format-po@npm:4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/format-po@npm:4.11.3"
+"@lingui/format-po@npm:4.12.0":
+  version: 4.12.0
+  resolution: "@lingui/format-po@npm:4.12.0"
   dependencies:
-    "@lingui/conf": 4.11.3
-    "@lingui/message-utils": 4.11.3
+    "@lingui/conf": 4.12.0
+    "@lingui/message-utils": 4.12.0
     date-fns: ^3.6.0
     pofile: ^1.1.4
-  checksum: 5335e69df7800de4954dcf523accfdb1a93ff6e5494d757f096c654dbb061389ddcaef1dafebf3d8defb183c93f6c0e80c9825f09367a443f1e9e908da09582c
+  checksum: 2466e916a144b44353f0a0cdf1dda0e52f6d4d54421daa11de6097c9880bb4bc756937bad3b01fdeb0ff9a756a9adfe8df675c4f8a259dc20b754f333f8ac2be
   languageName: node
   linkType: hard
 
-"@lingui/macro@npm:^4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/macro@npm:4.11.3"
+"@lingui/macro@npm:^4.12.0":
+  version: 4.12.0
+  resolution: "@lingui/macro@npm:4.12.0"
   dependencies:
     "@babel/runtime": ^7.20.13
     "@babel/types": ^7.20.7
-    "@lingui/conf": 4.11.3
-    "@lingui/core": 4.11.3
-    "@lingui/message-utils": 4.11.3
+    "@lingui/conf": 4.12.0
+    "@lingui/core": 4.12.0
+    "@lingui/message-utils": 4.12.0
   peerDependencies:
     "@lingui/react": ^4.0.0
     babel-plugin-macros: 2 || 3
-  checksum: 7c2737f1a667d43c9d3c8bb1aebb92a56f60eb03c515b953e4650c1f666903faa4b1ec2abfb4ea963e1810a8cfeb57643fe2350ab340a458fbf846726a16ba28
+  checksum: c81f47161a784b50f616975f3bfeabd94f54c019385706d1bc2262bfd73fa058414fba4fcdb73c2c7a81102791f1a310f26b5d52a0ef656ae54cb70b8e0ef9fd
   languageName: node
   linkType: hard
 
@@ -3062,16 +3062,6 @@ __metadata:
     "@messageformat/parser": ^5.0.0
     js-sha256: ^0.10.1
   checksum: 126469e50fa189d9aebdf8785249ff91a9e725b241a141bdfe95727fd8c27d8f3ff792625c3e59cf2e73b8862d08d9babb93e3338891250999c020f0967bfac6
-  languageName: node
-  linkType: hard
-
-"@lingui/message-utils@npm:4.11.3":
-  version: 4.11.3
-  resolution: "@lingui/message-utils@npm:4.11.3"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-  checksum: e0cf65fb3341599f207c1663a8c90e816019c7aeb67381dfaabe8f8c6d0bb124ca4bcc9e2e206aa3cc37d90db13af2df0e7416f672f05007e2106078ec368511
   languageName: node
   linkType: hard
 
@@ -8297,9 +8287,9 @@ __metadata:
     "@babel/core": ^7.24.0
     "@formatjs/intl-locale": ^4.0.2
     "@formatjs/intl-pluralrules": ^5.2.16
-    "@lingui/cli": ^4.11.3
+    "@lingui/cli": ^4.12.0
     "@lingui/core": ^4.12.0
-    "@lingui/macro": ^4.11.3
+    "@lingui/macro": ^4.12.0
     "@lingui/metro-transformer": ^4.12.0
     "@lingui/react": ^4.12.0
     "@react-native-community/eslint-config": ^3.2.0
