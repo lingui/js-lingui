@@ -25,9 +25,8 @@ export const createLinguiMetroTransformer = (
 
 const getCatalogList = async () => {
   const config = getConfig()
-  // We are aggressive at caching all catalogs because
-  // in development, modifying po files doesn't matter anyway because core calls `compileMessage` in development.
-  // In production, po files don't change, and we don't need to call getCatalogs() on every request.
+  // We are aggressive at caching the set of all catalogs (but not their contents) because
+  // the set of processed po files doesn't change unless Lingui config changes, and we don't need to call getCatalogs() on every request.
   const allCatalogs = await getCatalogs(config)
   return {
     config,
