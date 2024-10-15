@@ -160,7 +160,10 @@ export function getBabelParserOptions(
   parserOptions: LinguiConfig["extractorParserOptions"]
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
-  const parserPlugins: ParserPlugin[] = []
+  const parserPlugins: ParserPlugin[] = [
+    "importAttributes", // stage3
+    "explicitResourceManagement", // stage3,
+  ]
 
   if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {
     parserPlugins.push("typescript")

@@ -1,9 +1,9 @@
 ---
-title: Setup i18n in a React project
+title: Setup i18n in a React Project
 description: Learn how to add internationalization to a React application using Lingui
 ---
 
-# Setup with React project
+# Setup with React
 
 Learn how to add internationalization to a React application using Lingui. This guide applies to any React project, including those created with [Create React App](https://create-react-app.dev/).
 
@@ -13,42 +13,45 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 <Tabs groupId="babel-swc" queryString="babel-or-swc">
-  <TabItem value="babel" label="Babel" default>
-    - Install `@lingui/cli`, ` @lingui/babel-plugin-lingui-macro` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
+<TabItem value="babel" label="Babel" default>
 
-      ```bash npm2yarn
-      npm install --save-dev @lingui/cli @babel/core
-      npm install --save-dev @lingui/babel-plugin-lingui-macro
-      npm install --save @lingui/react
-      ```
+- Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
 
-    - Add `lingui-macro` plugin to Babel config (e.g: `.babelrc`):
+```bash npm2yarn
+npm install --save-dev @lingui/cli @babel/core
+npm install --save-dev @lingui/babel-plugin-lingui-macro
+npm install --save @lingui/react
+```
 
-      ```json
-      {
-        "plugins": ["@lingui/babel-plugin-lingui-macro"]
-      }
-      ```
-      When using any preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up  `@lingui/babel-plugin-lingui-macro`. For example, the `react-scripts` preset is known to contain the `macros` plugin.
+- Add `lingui-macro` plugin to Babel config (e.g: `.babelrc`):
 
-  </TabItem>
-  <TabItem value="swc" label="SWC">
-    - Install `@lingui/cli`, and `@lingui/react` as a runtime dependency:
+```json
+{
+  "plugins": ["@lingui/babel-plugin-lingui-macro"]
+}
+```
 
-      ```bash npm2yarn
-      npm install --save-dev @lingui/cli
-      npm install --save @lingui/react
-      ```
+When using any preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up `@lingui/babel-plugin-lingui-macro`. For example, the `react-scripts` preset is known to contain the `macros` plugin.
 
-    - Install the `@lingui/swc-plugin` package as a development dependency:
+</TabItem>
+<TabItem value="swc" label="SWC">
 
-      ```bash npm2yarn
-      npm install --save-dev @lingui/swc-plugin
-      ```
+- Install `@lingui/cli`, and `@lingui/react` as a runtime dependency:
 
-    - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+```bash npm2yarn
+npm install --save-dev @lingui/cli
+npm install --save @lingui/react
+```
 
-  </TabItem>
+- Install the `@lingui/swc-plugin` package as a development dependency:
+
+```bash npm2yarn
+npm install --save-dev @lingui/swc-plugin
+```
+
+- [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+</TabItem>
 </Tabs>
 
 :::tip
@@ -89,19 +92,21 @@ Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help
    }
    ```
 
+See [Configuration reference](/docs/ref/conf.md) for more options.
+
 :::tip
 If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
 :::
 
 ## Usage
 
-Check the installation by running:
+Verify the installation by running the CLI command to extract messages from source files and update message catalogs:
 
 ```bash npm2yarn
 npm run extract
 ```
 
-There should be no error and you should see output similar following:
+There should be no error, and you should see output similar to the following:
 
 ```bash npm2yarn
 > npm run extract
@@ -119,13 +124,11 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-Congratulations! You've successfully set up project with Lingui. Now it's good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
+Read more about [Lingui CLI](/docs/ref/cli.md) and its commands.
 
-## Further reading
+## Further Reading
 
-- [Internationalization of React apps](/docs/tutorials/react.md)
-- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` reference documentation](/docs/ref/react.md)
-- [CLI reference](/docs/ref/cli.md)
-- [Configuration reference](/docs/ref/conf.md)
+- [Internationalization of React Apps](/docs/tutorials/react.md)
+- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` Reference Documentation](/docs/ref/react.md)
 - [ICU Message Format](/docs/guides/message-format.md)

@@ -72,8 +72,8 @@ describe("E2E Extractor Test", () => {
         │ pl          │     10      │   10    │
         └─────────────┴─────────────┴─────────┘
 
-        (use "yarn extract" to update catalogs with new messages)
-        (use "yarn compile" to compile catalogs for production)
+        (Use "yarn extract" to update catalogs with new messages.)
+        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
       `)
     })
 

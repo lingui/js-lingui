@@ -31,8 +31,8 @@ export const Body = React.memo(() => {
     const newActiveLanguage = activeLanguage === "en" ? "cs" : "en";
     const catalog =
       newActiveLanguage === "en"
-        ? require("./locales/en/messages.js")
-        : require("./locales/cs/messages.js");
+        ? require("./locales/en/messages.po")
+        : require("./locales/cs/messages.po");
     i18n.load(newActiveLanguage, catalog.messages);
     i18n.activate(newActiveLanguage);
   };

@@ -1,5 +1,5 @@
 ---
-title: Vite project Internationalization (i18n)
+title: Vite Project Internationalization (i18n)
 description: Learn how to set up internationalization with Lingui for your Vite project
 ---
 
@@ -78,7 +78,7 @@ The Lingui Vite integration:
     },
     ```
 
-    For more information on compatibility, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+    For more information about compatibility, see the [plugins.swc.rs](https://plugins.swc.rs/) page.
     :::
 
 2.  Setup Lingui in `vite.config.ts`:
@@ -100,89 +100,89 @@ The Lingui Vite integration:
 
 ## Further Setup
 
-1. Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with the directory name where you have source files:
+1.  Create a `lingui.config.ts` file with LinguiJS configuration in the root of your project (next to `package.json`). Replace `src` with the directory name where you have source files:
 
-```ts title="lingui.config.ts"
-import type { LinguiConfig } from "@lingui/conf";
+    ```ts title="lingui.config.ts"
+    import type { LinguiConfig } from "@lingui/conf";
 
-const config: LinguiConfig = {
-  locales: ["en", "cs", "fr"],
-  catalogs: [
+    const config: LinguiConfig = {
+      locales: ["en", "cs", "fr"],
+      catalogs: [
+        {
+          path: "<rootDir>/src/locales/{locale}",
+          include: ["src"],
+        },
+      ],
+    };
+
+    export default config;
+    ```
+
+    The PO format is recommended for message catalogs, and could be compiled on the fly thanks to `@lingui/vite-plugin`. See [Catalog Formats](/docs/ref/catalog-formats.md) for other available formats.
+
+2.  Add the following scripts to your `package.json`:
+
+    ```json title="package.json"
     {
-      path: "<rootDir>/src/locales/{locale}",
-      include: ["src"],
-    },
-  ],
-};
+      "scripts": {
+        "messages:extract": "lingui extract"
+      }
+    }
+    ```
 
-export default config;
-```
+3.  Check the installation by running:
 
-PO format is recommended for message catalogs, and could be compiled on the fly thanks to `@lingui/vite-plugin`.
+    ```bash npm2yarn
+    npm run messages:extract
+    ```
 
-See [`format`](/docs/ref/catalog-formats.md) documentation for other available formats.
+    There should be no error and you should see output similar following:
 
-2. Add the following scripts to your `package.json`:
+    ```bash npm2yarn
+    > npm run messages:extract
 
-```json title="package.json"
-{
-  "scripts": {
-    "messages:extract": "lingui extract"
-  }
-}
-```
+    Catalog statistics:
+    ┌──────────┬─────────────┬─────────┐
+    │ Language │ Total count │ Missing │
+    ├──────────┼─────────────┼─────────┤
+    │ cs       │     0       │   0     │
+    │ en       │     0       │   0     │
+    │ fr       │     0       │   0     │
+    └──────────┴─────────────┴─────────┘
 
-3. Check the installation by running:
+    (use "lingui extract" to update catalogs with new messages)
+    (use "lingui compile" to compile catalogs for production)
+    ```
 
-   ```bash npm2yarn
-   npm run messages:extract
-   ```
+    This command should create `.po` catalogs in the `src/locales/` folder:
 
-   There should be no error and you should see output similar following:
-
-   ```bash npm2yarn
-   > npm run messages:extract
-
-   Catalog statistics:
-   ┌──────────┬─────────────┬─────────┐
-   │ Language │ Total count │ Missing │
-   ├──────────┼─────────────┼─────────┤
-   │ cs       │     0       │   0     │
-   │ en       │     0       │   0     │
-   │ fr       │     0       │   0     │
-   └──────────┴─────────────┴─────────┘
-
-   (use "lingui extract" to update catalogs with new messages)
-   (use "lingui compile" to compile catalogs for production)
-   ```
-
-   This command should create `.po` catalogs in the `src/locales/` folder:
-
-   ```bash
-   src
-   └── locales
+    ```bash
+    src
+    └── locales
        ├── cs.po
        ├── en.po
        └── fr.po
-   ```
+    ```
 
-4. Import `.po` those files directly in your Vite processed code:
+4.  Import `.po` those files directly in your Vite processed code:
 
-   ```ts
-   export async function dynamicActivate(locale: string) {
-     const { messages } = await import(`./locales/${locale}.po`);
+    ```ts
+    export async function dynamicActivate(locale: string) {
+      const { messages } = await import(`./locales/${locale}.po`);
 
-     i18n.load(locale, messages);
-     i18n.activate(locale);
-   }
-   ```
+      i18n.load(locale, messages);
+      i18n.activate(locale);
+    }
+    ```
+
+See the [Dynamic loading of message catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
 
 :::tip
 Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
 :::
 
-See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
+## See Also
 
-See [Vite's official documentation](https://vitejs.dev/guide/features.html#dynamic-import) for more info about Vite dynamic imports.
-
-Congratulations! You've successfully set up a Vite project with LinguiJS. Now it's a good time to follow the [React tutorial](/docs/tutorials/react.md) or read about [ICU Message Format](/docs/guides/message-format.md) which is used in messages.
+- [Dynamic Import in Vite](https://vitejs.dev/guide/features.html#dynamic-import)
+- [Internationalization of React apps](/docs/tutorials/react.md)
+- [ICU Message Format](/docs/guides/message-format.md)

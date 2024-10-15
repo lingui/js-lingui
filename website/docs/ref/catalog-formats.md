@@ -146,7 +146,7 @@ export default {
 
 ### Configuration {#po-gettext-configuration}
 
-PO Gettext formatter accepts the following options:
+The PO Gettext formatter accepts the following options:
 
 ```ts
 export type PoGettextFormatterOptions = {
@@ -170,6 +170,13 @@ export type PoGettextFormatterOptions = {
    * @default false
    */
   disableSelectWarning?: boolean;
+
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
+  customICUPrefix?: string;
 };
 ```
 
@@ -202,6 +209,19 @@ With this format, plural messages are exported in the following ways, depending 
   ```
 
   Note how `msgid` and `msgid_plural` were extracted from the original message.
+
+- Message **with a custom comment prefix**.
+
+  Some TMS might modify the ICU comment by attempting to split lines to be 80 characters or less, or have trouble reading lingui comments because of the `js-lingui:` prefix. To change the prefix, set `customICUPrefix` to modify the prefix for ICU comments.
+
+  ```po
+  # with default prefix
+  #. js-
+  #. lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+
+  # customICUPrefix = jsi18n:
+  #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+  ```
 
 ### Limitations {#po-gettext-limitations}
 
@@ -347,11 +367,11 @@ msg.common,String for translation
 [package-po-gettext]: https://www.npmjs.com/package/@lingui/format-po-gettext
 [package-json]: https://www.npmjs.com/package/@lingui/format-json
 [package-csv]: https://www.npmjs.com/package/@lingui/format-csv
-[badge-downloads-po]: https://img.shields.io/npm/dw/@lingui/format-po.svg
-[badge-downloads-po-gettext]: https://img.shields.io/npm/dw/@lingui/format-po-gettext.svg
-[badge-downloads-json]: https://img.shields.io/npm/dw/@lingui/format-json.svg
-[badge-downloads-csv]: https://img.shields.io/npm/dw/@lingui/format-csv.svg
-[badge-version-po]: https://img.shields.io/npm/v/@lingui/format-po.svg
-[badge-version-po-gettext]: https://img.shields.io/npm/v/@lingui/format-po-gettext.svg
-[badge-version-json]: https://img.shields.io/npm/v/@lingui/format-json.svg
-[badge-version-csv]: https://img.shields.io/npm/v/@lingui/format-csv.svg
+[badge-downloads-po]: https://img.shields.io/npm/dw/@lingui/format-po.svg?cacheSeconds=86400
+[badge-downloads-po-gettext]: https://img.shields.io/npm/dw/@lingui/format-po-gettext.svg?cacheSeconds=86400
+[badge-downloads-json]: https://img.shields.io/npm/dw/@lingui/format-json.svg?cacheSeconds=86400
+[badge-downloads-csv]: https://img.shields.io/npm/dw/@lingui/format-csv.svg?cacheSeconds=86400
+[badge-version-po]: https://img.shields.io/npm/v/@lingui/format-po.svg?cacheSeconds=86400
+[badge-version-po-gettext]: https://img.shields.io/npm/v/@lingui/format-po-gettext.svg?cacheSeconds=86400
+[badge-version-json]: https://img.shields.io/npm/v/@lingui/format-json.svg?cacheSeconds=86400
+[badge-version-csv]: https://img.shields.io/npm/v/@lingui/format-csv.svg?cacheSeconds=86400

@@ -24,11 +24,66 @@ Next, install `eslint-plugin-lingui`:
 npm install --save-dev eslint-plugin-lingui
 ```
 
+:::info
 If you have installed ESLint globally (using the `-g` flag), you must also install `eslint-plugin-lingui` globally.
+:::
 
 ## Usage
 
-Add `lingui` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
+### Flat Config (`eslint.config.js`) {#flat-config}
+
+Version 8 of ESLint introduced a new configuration format called [Flat Config](https://eslint.org/docs/latest/use/configure/configuration-files). Flat config files represent plugins and parsers as JavaScript objects.
+
+#### Recommended Setup
+
+To enable all the recommended rules for the plugin, add the following config:
+
+```js
+import pluginLingui from "eslint-plugin-lingui";
+
+export default [
+  pluginLingui.configs["flat/recommended"],
+  // Any other config...
+];
+```
+
+#### Custom Setup
+
+Alternatively, you can load the plugin and configure only the rules you want to use:
+
+```js
+import pluginLingui from "eslint-plugin-lingui";
+
+export default [
+  {
+    plugins: {
+      lingui: pluginLingui,
+    },
+    rules: {
+      "lingui/t-call-in-function": "error",
+    },
+  },
+  // Any other config...
+];
+```
+
+### Legacy Config (`.eslintrc`) {#legacy-eslintrc}
+
+The legacy configuration format has been deprecated by ESLint, but it's still supported. If you're using the legacy format, you can use the following configuration.
+
+#### Recommended Setup
+
+To enable all the recommended rules for the plugin, add `plugin:lingui/recommended` to the `extends` section:
+
+```json
+{
+  "extends": ["plugin:lingui/recommended"]
+}
+```
+
+#### Custom Setup
+
+Alternatively, add `lingui` to the `plugins` section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
@@ -51,10 +106,6 @@ In the rules section, configure the rules you want to use:
 }
 ```
 
-:::info
+:::tip
 See the [official repository](https://github.com/lingui/eslint-plugin) for more information about the rules.
-:::
-
-:::caution
-The ESLint's [Flat Config](https://eslint.org/blog/2022/08/new-config-system-part-2/) is not yet supported. See [#31](https://github.com/lingui/eslint-plugin/issues/31).
 :::

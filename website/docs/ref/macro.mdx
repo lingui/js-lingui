@@ -13,39 +13,41 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 <Tabs groupId="babel-swc">
-  <TabItem value="babel" label="Babel" default>
-    Lingui macros require `@lingui/babel-plugin-lingui-macro` or [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work.
+<TabItem value="babel" label="Babel" default>
 
-    The recommended way is to use `@lingui/babel-plugin-lingui-macro` directly, but if you use a framework which is does not allow to change babel configuration (for example Create React App > 2.0), that frameworks might support `babel-plugin-macros` out of the box.
+Lingui macros require `@lingui/babel-plugin-lingui-macro` or [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros) to work.
 
-    - Install `@lingui/babel-plugin-lingui-macro` as a dev dependency:
+The recommended way is to use `@lingui/babel-plugin-lingui-macro` directly, but if you use a framework which is does not allow to change babel configuration (for example Create React App > 2.0), that frameworks might support `babel-plugin-macros` out of the box.
 
-      ```bash npm2yarn
-      npm install --save-dev babel-plugin-macros
-      ```
+- Install `@lingui/babel-plugin-lingui-macro` as a dev dependency:
 
-    - Add `@lingui/babel-plugin-lingui-macro` to the top of plugins section in your Babel config:
+```bash npm2yarn
+npm install --save-dev babel-plugin-macros
+```
 
-      ```json
-      {
-        "plugins": ["@lingui/babel-plugin-lingui-macro"]
-      }
-      ```
+- Add `@lingui/babel-plugin-lingui-macro` to the top of plugins section in your Babel config:
 
-      When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
+```json
+{
+  "plugins": ["@lingui/babel-plugin-lingui-macro"]
+}
+```
 
-  </TabItem>
-  <TabItem value="swc" label="SWC">
-    - Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
+When using any preset, first check if it includes the `macros` plugin. These presets already includes the `macros` plugin: `react-scripts`.
 
-      ```bash npm2yarn
-      npm install --save-dev @lingui/swc-plugin
-      npm install --save @lingui/macro
-      ```
+</TabItem>
+<TabItem value="swc" label="SWC">
 
-    - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+- Install `@lingui/swc-plugin` as a dev dependency and `@lingui/macro` as dependency:
 
-  </TabItem>
+```bash npm2yarn
+npm install --save-dev @lingui/swc-plugin
+npm install --save @lingui/macro
+```
+
+- [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+</TabItem>
 </Tabs>
 
 :::tip

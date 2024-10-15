@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
-    "@babel/traverse": "7.20.12",
+    "@babel/traverse": "^7.20.12",
     "@babel/types": "^7.20.7",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
     "@lingui/jest-mocks": "workspace:*",

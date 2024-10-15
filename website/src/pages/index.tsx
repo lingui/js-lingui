@@ -13,7 +13,7 @@ function Home() {
   return (
     <Layout title={siteConfig.tagline}>
       <Header />
-      <main className={"main-page-content"}>
+      <main>
         <PartnerBanner />
         <Features />
         <Code />

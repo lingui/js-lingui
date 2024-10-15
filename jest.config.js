@@ -63,6 +63,7 @@ module.exports = {
         "<rootDir>/packages/cli",
         "<rootDir>/packages/conf",
         "<rootDir>/packages/loader",
+        "<rootDir>/packages/metro-transformer",
         "<rootDir>/packages/macro",
         "<rootDir>/packages/vite-plugin",
         "<rootDir>/packages/format-po",

@@ -10,12 +10,12 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React project",
+        label: "React Project",
         id: "tutorials/setup-react",
       },
       {
         type: "doc",
-        label: "Vite project",
+        label: "Vite Project",
         id: "tutorials/setup-vite",
       },
     ],
@@ -140,6 +140,11 @@ const sidebar = [
         type: "doc",
         label: "@lingui/loader",
         id: "ref/loader",
+      },
+      {
+        type: "doc",
+        label: "@lingui/metro-transformer",
+        id: "ref/metro-transformer",
       },
       {
         type: "doc",
