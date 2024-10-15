@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
+
+### Features
+
+- adds custom prefix support for gettext po ([#2004](https://github.com/lingui/js-lingui/issues/2004)) ([25b3bc6](https://github.com/lingui/js-lingui/commit/25b3bc60b6b793cd0ef15c25f760de9fef7a6750))
+
 # [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
 
 **Note:** Version bump only for package @lingui/format-po-gettext
