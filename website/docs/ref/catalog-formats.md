@@ -85,6 +85,24 @@ export type PoFormatterOptions = {
    * @default {}
    */
   customHeaderAttributes?: { [key: string]: string };
+
+  /**
+   * Print values for unnamed placeholders as comments for each message.
+   * This can give more context to translators for better translations.
+   * By default, first 3 placeholders are shown.
+   *
+   * Example:
+   *
+   * t\`Hello ${user.name} ${value}\`
+   *
+   * Will be extracted as
+   *
+   * #. placeholder {0}: user.name
+   * msgid "Hello {0} {value}"
+   *
+   * @default true
+   */
+  printPlaceholdersInComments?: boolean | { limit?: number };
 };
 ```
 

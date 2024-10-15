@@ -1,14 +1,18 @@
 # Migration guide from 4.x to 5.x
 
-## Node.js version
+This guide will help you migrate from Lingui 4.x to 5.x. It covers the most important changes and breaking changes.
 
-The minimum required version of Node.js is **20**.
+Need to upgrade an older project to v4 first? See our [older migration guide](/docs/releases/migration-4.md).
 
-## React and JS Macros were split to separate packages
+## Node.js Version
+
+The minimum supported version of Node.js in Lingui v5 is v20.
+
+## React and JS Macros Were Split to Separate Packages
 
 The previous Lingui macro was tightly coupled with React, which posed problems for developers using Lingui with vanilla JavaScript or other frameworks such as Vue.
 
-The macro package has been split into two separate entrypoints from existing packages:
+The `@lingui/macro` package has been split into two separate entry points from the existing packages:
 
 - `@lingui/react/macro`
 - `@lingui/core/macro`
@@ -26,11 +30,11 @@ function MyComponent() {
 }
 ```
 
+This change allows developers to use Lingui macros in any JavaScript project without pulling in the entire React package.
+
 ### Migration
 
-This is not a breaking change.
-
-Imports from `@lingui/macro` still work, but are marked as deprecated. They will be removed in the next major release.
+This is not a breaking change. Imports from `@lingui/macro` still work, but are marked as deprecated. They will be removed in the next major release.
 
 You can use an automatic [codemod](https://www.npmjs.com/package/@lingui/codemods) to convert your codebase to the new imports:
 
@@ -38,15 +42,17 @@ You can use an automatic [codemod](https://www.npmjs.com/package/@lingui/codemod
 npx @lingui/codemods split-macro-imports <path>
 ```
 
-After running this codemod you can drop `@lingui/macro` from your dependencies.
+After running this codemod, you can remove `@lingui/macro` from your dependencies.
 
-## Full Vue.js support
+:::tip
+Read more about the motivation and discuss the changes in the [RFC](https://github.com/lingui/js-lingui/issues/1361).
+:::
 
-TBD ([#1925](https://github.com/lingui/js-lingui/pull/1925))
+## Whitespace Handling Changes
 
-## Changes in whitespaces handling
+Lingui has made some changes to how whitespace is handled in JSX and JS macros.
 
-### Robust whitespace cleaning in JSX
+### Robust Whitespace Cleaning in JSX
 
 Whitespace cleaning in JSX expression is unavoidable, otherwise formatting your JSX code, for example with Prettier, will cause changes in extracted message.
 
@@ -63,35 +69,33 @@ Whitespace cleaning in JSX expression is unavoidable, otherwise formatting your 
 
 Previously, Lingui used a regexp based approach to normalize whitespaces in the JSX nodes processed by macro. That approach was not perfect and didn't follow JSX language grammar, which sometimes lead to unexpected results.
 
-With v5, Lingui uses the same set of rules to clean whitespaces as it's done in JSX. This leads to more predictable results without unwanted cleaning of whitespaces.
+Now Lingui uses the same set of rules to clean whitespaces as it does in JSX. This leads to more predictable results without unwanted whitespace cleaning.
 
-### No whitespaces cleaning in `t` and other JS macros
+### No Whitespace Cleaning in JS macros
 
-Based on feedback from developers, it was agreed that whitespace cleaning in the JS macros is redundant and counterintuitive.
+Based on feedback from developers, it was agreed that whitespace cleaning in JS macros was redundant and counterintuitive.
 
 ```js
 t`Label:◦` + value;
 ```
 
-Note the space after ":" - it's expected by developer to stay in the extracted string, but "normalization" would previously remove it.
+Note the space after ":" - it's expected by the developer to stay in the extracted string, but "normalization" would remove it before. Another example would be markdown or any other reason where the developer wants to keep the original formatting.
 
-Other example would be markdown, or any reason for which developer wants to keep the original formatting.
-
-Starting from v5, cleaning whitespaces for JS macros is completely removed.
+From this release, whitespace cleaning for JS macros has been **completely removed**.
 
 ### Migration
 
-This is a breaking change. Some messages in catalogs might be extracted with different whitespaces and therefore with different ids.
+This is a **breaking change**. Some messages in catalogs might be extracted with different whitespaces and therefore with different ids. There is no way to automatically convert your catalogs to pick up existing translations.
 
-There is no way to automatically convert your catalogs to pick-up existing translation.
+If you use a TMS (such as Crowdin or Translation.io), migration should be straightforward. Use the translation memory feature (or similar). Otherwise, you will need to migrate the catalogs manually.
 
-If you use TMS (such as Crowdin or Translation.io), migration should be pretty simple. Use Translation Memory feature (or analog).
-
-If you don't use a TMS you will need to migrate catalogs manually.
+:::tip
+Read more about the motivation and discuss the changes in the [RFC](https://github.com/lingui/js-lingui/discussions/1873).
+:::
 
 ## Standalone `babel-plugin-lingui-macro`
 
-Starting with this version there two ways of using Lingui macro with Babel. With `babel-macro-plugin` and with `babel-plugin-lingui-macro`.
+From this release, there are two ways to use Lingui macro with Babel. With `babel-macro-plugin` and with `babel-plugin-lingui-macro`.
 
 ```bash npm2yarn
 npm install --save-dev @lingui/babel-plugin-lingui-macro
@@ -101,9 +105,9 @@ npm install --save-dev @lingui/babel-plugin-lingui-macro
 
 If you have access to the babel configuration and don't use any other macro in your code, you can drop `babel-macro-plugin` and add `babel-plugin-lingui-macro` to your babel config.
 
-You will benefit from a slightly faster transpiling time and more configuration options for the plugin which are not available for `babel-macro-plugin` version.
+You will benefit from a slightly faster transpiling time and more configuration options for the plugin that are not available for the `babel-macro-plugin` version.
 
-## Introducing `useLingui` macro
+## Introducing `useLingui` Macro
 
 The `useLingui` macro simplify working with non-jsx messages in react components.
 
@@ -136,11 +140,11 @@ function MyComponent() {
 
 Note that `useLingui()` is imported from `@lingui/react/macro`, because it's a macro and not a runtime function. This will be transpiled to the regular `useLingui` from `@lingui/react` under the hood by Lingui.
 
-## Dependency tree crawling extractor improvements
+:::tip
+Read more about the motivation and discuss the changes in the [RFC](https://github.com/lingui/js-lingui/issues/1852).
+:::
 
-TBD ([#1958](https://github.com/lingui/js-lingui/pull/1958))
-
-## Print placeholder values for better translation context
+## Print Placeholder Values for Better Translation Context
 
 If the message contains unnamed placeholders such as `{0}`, Lingui will print their values into PO comments, so that translators and AI get more context on what the placeholder is about.
 
@@ -148,7 +152,7 @@ If the message contains unnamed placeholders such as `{0}`, Lingui will print th
 t`Hello ${user.name} ${value}`;
 ```
 
-This will be extracted as
+This will be extracted as:
 
 Before:
 
@@ -156,13 +160,46 @@ Before:
 msgid "Hello {0} {value}"
 ```
 
-After:
+Now:
 
 ```po
 #. placeholder {0}: user.name
 msgid "Hello {0} {value}"
 ```
 
-## Deprecations
+This feature is enabled by default and can be disabled by setting `printPlaceholdersInComments` to `false` in the [configuration](/docs/ref/catalog-formats.md#po).
 
-- Removed the deprecated `isTranslated` property (React `Trans` component)
+## Compiled Messages Structure Changes
+
+The structure of compiled messages has been changed to make them more predictable and easier to work with.
+
+**Previous Format**:
+
+- Messages without ICU placeholders were represented as strings.
+- Messages with ICU placeholders were represented as arrays.
+- This inconsistency made it difficult to distinguish between compiled and uncompiled messages, leading to problems such as double compilation.
+
+```json
+{
+  "simpleMessage": "Hello, world!",
+  "messageWithICU": ["Hello ", "name", "!"]
+}
+```
+
+**New Format**:
+
+- All uncompiled messages are always represented as strings.
+- All compiled messages are always represented as arrays.
+
+```json
+{
+  "simpleMessage": ["Hello, world!"],
+  "messageWithICU": ["Hello", "name", "!"]
+}
+```
+
+You'll need to [re-compile](/docs/ref/cli.md#compile) your messages in the new format.
+
+## Deprecations and Removals
+
+- Removed the deprecated `isTranslated` prop from the React `Trans` component.

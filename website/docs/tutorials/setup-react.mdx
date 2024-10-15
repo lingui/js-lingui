@@ -17,19 +17,19 @@ import TabItem from "@theme/TabItem";
 
 - Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as a development dependencies, and `@lingui/react` as a runtime dependency:
 
-```bash npm2yarn
-npm install --save-dev @lingui/cli @babel/core
-npm install --save-dev @lingui/babel-plugin-lingui-macro
-npm install --save @lingui/react
-```
+  ```bash npm2yarn
+  npm install --save-dev @lingui/cli @babel/core
+  npm install --save-dev @lingui/babel-plugin-lingui-macro
+  npm install --save @lingui/react
+  ```
 
 - Add `lingui-macro` plugin to Babel config (e.g: `.babelrc`):
 
-```json
-{
-  "plugins": ["@lingui/babel-plugin-lingui-macro"]
-}
-```
+  ```json
+  {
+    "plugins": ["@lingui/babel-plugin-lingui-macro"]
+  }
+  ```
 
 When using any preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up `@lingui/babel-plugin-lingui-macro`. For example, the `react-scripts` preset is known to contain the `macros` plugin.
 
@@ -38,16 +38,16 @@ When using any preset, first check if it includes the `macros` plugin. If so, th
 
 - Install `@lingui/cli`, and `@lingui/react` as a runtime dependency:
 
-```bash npm2yarn
-npm install --save-dev @lingui/cli
-npm install --save @lingui/react
-```
+  ```bash npm2yarn
+  npm install --save-dev @lingui/cli
+  npm install --save @lingui/react
+  ```
 
 - Install the `@lingui/swc-plugin` package as a development dependency:
 
-```bash npm2yarn
-npm install --save-dev @lingui/swc-plugin
-```
+  ```bash npm2yarn
+  npm install --save-dev @lingui/swc-plugin
+  ```
 
 - [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
 
