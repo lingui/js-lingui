@@ -143,6 +143,20 @@ macroTester({
       `,
     },
     {
+      name: "Should not crash when a variable passed",
+      code: `
+        import { t } from '@lingui/core/macro'
+        const msg = t(msg)
+      `,
+    },
+    {
+      name: "should not crash when no params passed",
+      code: `
+        import { t } from '@lingui/core/macro'
+        const msg = t()
+      `,
+    },
+    {
       name: "Production - only essential props are kept",
       production: true,
       code: `

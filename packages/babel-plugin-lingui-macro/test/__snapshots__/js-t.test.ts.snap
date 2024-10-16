@@ -271,6 +271,17 @@ _i18n._(
 
 `;
 
+exports[`Should not crash when a variable passed 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t(msg);
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(msg);
+
+`;
+
 exports[`Support id and comment in t macro as callExpression 1`] = `
 import { t, plural } from "@lingui/core/macro";
 const msg = t({
@@ -545,6 +556,17 @@ _i18n._(
     },
   }
 );
+
+`;
+
+exports[`should not crash when no params passed 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t();
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._();
 
 `;
 
