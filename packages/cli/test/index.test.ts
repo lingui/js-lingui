@@ -4,8 +4,8 @@ import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
 import os from "os"
-import nodepath from "path"
 import glob from "glob"
+import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
@@ -180,12 +180,6 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental"
       )
 
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
-      )
-
       await mockConsole(async (console) => {
         const config = makeConfig({
           rootDir: rootDir,
@@ -238,12 +232,6 @@ describe("E2E Extractor Test", () => {
     it("should extract and clean obsolete", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental-clean"
-      )
-
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
       )
 
       await mockConsole(async (console) => {
@@ -314,11 +302,10 @@ describe("E2E Extractor Test", () => {
         ],
       }),
       {
-        files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")]
+        files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
       }
     )
 
     compareFolders(actualPath, expectedPath)
   })
-
 })
