@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@lingui/conf config file extractBabelOptions deprecation if deprecated extractBabelOptions is defined, we show deprecation message 1`] = `
-● Deprecation Warning:
-
- Option extractBabelOptions was removed. 
-    
-    Please remove it from your config file. 
-
-    You can find more information here: https://lingui.dev/releases/migration-4
-    
-
-Documentation: https://lingui.dev/ref/conf
-`;
-
 exports[`@lingui/conf should return default config 1`] = `
 {
   catalogs: [
