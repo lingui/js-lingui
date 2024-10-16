@@ -199,7 +199,7 @@ export type LinguiConfig = {
   }
   compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
-  extractors?: (string | ExtractorType)[]
+  extractors?: ExtractorType[]
   prevFormat?: CatalogFormat
   localeDir?: string
   format?: CatalogFormat | CatalogFormatter
