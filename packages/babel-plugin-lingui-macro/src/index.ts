@@ -42,7 +42,7 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   )
 
   // show stack trace where error originally happened
-  codeFrameError.stack = e.stack
+  codeFrameError.stack = codeFrameError.message + "\n" + e.stack
   throw codeFrameError
 }
 
