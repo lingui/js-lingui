@@ -165,12 +165,13 @@ export class MacroJs {
     ctx: MacroJsContext,
     linguiInstance?: babelTypes.Expression
   ): babelTypes.CallExpression => {
-    const descriptor = processDescriptor(
-      node.arguments[0] as ObjectExpression,
-      ctx
-    )
+    let arg: Expression = node.arguments[0] as Expression
 
-    return this.createI18nCall(descriptor, linguiInstance)
+    if (t.isObjectExpression(arg)) {
+      arg = processDescriptor(arg, ctx)
+    }
+
+    return this.createI18nCall(arg, linguiInstance)
   }
 
   /**
@@ -274,7 +275,7 @@ export class MacroJs {
         // t(messageDescriptor)
         if (
           currentPath.isCallExpression() &&
-          currentPath.get("arguments")[0].isObjectExpression()
+          currentPath.get("arguments")[0]?.isObjectExpression()
         ) {
           let descriptor = processDescriptor(
             (currentPath.get("arguments")[0] as NodePath<ObjectExpression>)
@@ -302,7 +303,7 @@ export class MacroJs {
   }
 
   private createI18nCall(
-    messageDescriptor: ObjectExpression,
+    messageDescriptor: Expression | undefined,
     linguiInstance?: Expression
   ) {
     return t.callExpression(
@@ -310,7 +311,7 @@ export class MacroJs {
         linguiInstance ?? t.identifier(this.i18nImportName),
         t.identifier("_")
       ),
-      [messageDescriptor]
+      messageDescriptor ? [messageDescriptor] : []
     )
   }
 }

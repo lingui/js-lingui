@@ -90,6 +90,28 @@ function MyComponent() {
     `,
     },
     {
+      name: "support a variable",
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t(msg);
+}
+    `,
+    },
+    {
+      name: "does not crash when no params",
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t();
+}
+    `,
+    },
+    {
       name: "support passing t variable as dependency",
       code: `
 import { useLingui } from '@lingui/react/macro';
