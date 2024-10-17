@@ -20,9 +20,11 @@ import { extractFromFiles } from "./catalog/extractFromFiles"
 import { FormatterWrapper, getFormat } from "./formats"
 
 export const fixture = (...dirs: string[]) =>
-  path.resolve(__dirname, path.join("fixtures", ...dirs)) +
-  // preserve trailing slash
-  (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  (
+    path.resolve(__dirname, path.join("fixtures", ...dirs)) +
+    // preserve trailing slash
+    (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -93,7 +95,7 @@ describe("Catalog", () => {
       // Everything should be empty
       expect(await catalog.readAll()).toMatchSnapshot()
 
-      await catalog.make({ ...defaultMakeOptions, locale: "en" })
+      await catalog.make({ ...defaultMakeOptions, locale: ["en"] })
       expect(await catalog.readAll()).toMatchSnapshot()
     })
 
@@ -214,6 +216,7 @@ describe("Catalog", () => {
                 15,
               ],
             ],
+            placeholders: {},
           },
         }
       `)

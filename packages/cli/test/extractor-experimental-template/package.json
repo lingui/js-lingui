@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@lingui/macro": "*",
+    "@lingui/core": "*",
+    "@lingui/react": "*",
     "some-package": "*"
   }
 }

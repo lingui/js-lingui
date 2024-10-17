@@ -39,6 +39,7 @@ export default {
     ],
 
     // Rules enabled by default by presents above that we don't want
+    ["remark-lint-code-block-style", false],
     ["remark-lint-file-extension", false],
     ["remark-lint-heading-style", false],
     ["remark-lint-list-item-indent", false],

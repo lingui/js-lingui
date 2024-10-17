@@ -35,7 +35,7 @@
     "postinstall": "yarn stub:all"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
@@ -46,7 +46,7 @@
     "@tsd/typescript": "^4.9.5",
     "@types/jest": "^29.4.0",
     "@types/mock-fs": "^4.13.1",
-    "@types/node": "16.18.13",
+    "@types/node": "20.14.8",
     "@types/ramda": "^0.27.23",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",

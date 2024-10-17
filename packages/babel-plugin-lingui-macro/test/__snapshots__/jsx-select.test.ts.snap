@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#1 1`] = `
+import { Select } from "@lingui/react/macro";
+<Select
+  value={count}
+  _male="He"
+  _female={\`She\`}
+  other={<strong>Other</strong>}
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "Imwef9",
+      message: "{count, select, male {He} female {She} other {<0>Other</0>}}",
+      values: {
+        count: count,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`#2 1`] = `
+import { Select } from "@lingui/react/macro";
+<Select
+  id="msg.select"
+  render="strong"
+  value={user.gender}
+  _male="He"
+  _female={\`She\`}
+  other={<strong>Other</strong>}
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  render="strong"
+  {
+    /*i18n*/
+    ...{
+      id: "msg.select",
+      message: "{0, select, male {He} female {She} other {<0>Other</0>}}",
+      values: {
+        0: user.gender,
+      },
+      components: {
+        0: <strong />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`#4 1`] = `
+import { Select } from "@lingui/react/macro";
+<Select
+  id="msg.select"
+  render="strong"
+  value={user.gender}
+  _male="He"
+  _female={\`She\`}
+  other={otherText}
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  render="strong"
+  {
+    /*i18n*/
+    ...{
+      id: "msg.select",
+      message: "{0, select, male {He} female {She} other {{otherText}}}",
+      values: {
+        0: user.gender,
+        otherText: otherText,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Select should support JSX elements in cases 1`] = `
+import { Select, Trans } from "@lingui/react/macro";
+<Select
+  value="happy"
+  _happy={
+    <Trans>
+      Hooray! <Icon />
+    </Trans>
+  }
+  _sad={
+    <Trans>
+      Oh no! <Icon />
+    </Trans>
+  }
+  other="Dunno"
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "f1ZLwG",
+      message:
+        "{0, select, happy {Hooray! <0/>} sad {Oh no! <1/>} other {Dunno}}",
+      values: {
+        0: "happy",
+      },
+      components: {
+        0: <Icon />,
+        1: <Icon />,
+      },
+    }
+  }
+/>;
+
+`;
