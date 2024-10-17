@@ -27,6 +27,7 @@ export type MacroJsOpts = {
   useLinguiImportName: string
 
   stripNonEssentialProps: boolean
+  stripMessageProp: boolean
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
@@ -46,7 +47,8 @@ export class MacroJs {
 
     this._ctx = createMacroJsContext(
       opts.isLinguiIdentifier,
-      opts.stripNonEssentialProps
+      opts.stripNonEssentialProps,
+      opts.stripMessageProp
     )
   }
 
@@ -59,7 +61,8 @@ export class MacroJs {
       createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        this._ctx.stripNonEssentialProps
+        this._ctx.stripNonEssentialProps,
+        this._ctx.stripMessageProp
       ),
       linguiInstance
     )
@@ -89,7 +92,8 @@ export class MacroJs {
       return createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        ctx.stripNonEssentialProps
+        ctx.stripNonEssentialProps,
+        ctx.stripMessageProp
       )
     }
 
@@ -260,7 +264,8 @@ export class MacroJs {
           const descriptor = createMessageDescriptorFromTokens(
             tokens,
             currentPath.node.loc,
-            ctx.stripNonEssentialProps
+            ctx.stripNonEssentialProps,
+            ctx.stripMessageProp
           )
 
           const callExpr = t.callExpression(

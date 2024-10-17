@@ -20,6 +20,7 @@ let config: LinguiConfigNormalized
 export type LinguiPluginOpts = {
   // explicitly set by CLI when running extraction process
   extract?: boolean
+  stripMessageField?: boolean
   linguiConfig?: LinguiConfigNormalized
 }
 
@@ -44,6 +45,19 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   // show stack trace where error originally happened
   codeFrameError.stack = codeFrameError.message + "\n" + e.stack
   throw codeFrameError
+}
+
+function shouldStripMessageProp(opts: LinguiPluginOpts) {
+  if (opts.extract) {
+    // never strip message during extraction process
+    return false
+  }
+  if (typeof opts.stripMessageField === "boolean") {
+    // if explicitly set in options, use it
+    return opts.stripMessageField
+  }
+  // default to strip message in production if no explicit option is set
+  return process.env.NODE_ENV === "production"
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
@@ -186,6 +200,9 @@ export default function ({
                     stripNonEssentialProps:
                       process.env.NODE_ENV == "production" &&
                       !(state.opts as LinguiPluginOpts).extract,
+                    stripMessageProp: shouldStripMessageProp(
+                      state.opts as LinguiPluginOpts
+                    ),
                   }
                 )
 
@@ -214,6 +231,9 @@ export default function ({
                   stripNonEssentialProps:
                     process.env.NODE_ENV == "production" &&
                     !(state.opts as LinguiPluginOpts).extract,
+                  stripMessageProp: shouldStripMessageProp(
+                    state.opts as LinguiPluginOpts
+                  ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
                     .name,

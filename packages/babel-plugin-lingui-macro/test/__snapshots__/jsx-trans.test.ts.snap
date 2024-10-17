@@ -411,6 +411,27 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Production - message prop is kept if stripMessageField: false 1`] = `
+import { Trans } from "@lingui/macro";
+<Trans id="msg.hello" comment="Hello World">
+  Hello World
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
 exports[`Production - only essential props are kept 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" context="my context" comment="Hello World">
@@ -786,6 +807,43 @@ import { Trans as _Trans } from "@lingui/react";
       values: {
         duplicate: duplicate,
       },
+    }
+  }
+/>;
+
+`;
+
+exports[`stripMessageField option - Message prop is kept during extraction process if extract: true and stripMessageField: true 1`] = `
+import { Trans } from "@lingui/macro";
+<Trans id="msg.hello">Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
+exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
+import { Trans } from "@lingui/macro";
+<Trans id="msg.hello">Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
     }
   }
 />;
