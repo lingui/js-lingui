@@ -29,6 +29,7 @@ export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
   stripNonEssentialProps: boolean,
+  stripMessageProp: boolean,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -39,6 +40,7 @@ export function createMessageDescriptorFromTokens(
     buildICUFromTokens(tokens),
     oldLoc,
     stripNonEssentialProps,
+    stripMessageProp,
     defaults
   )
 }
@@ -47,6 +49,7 @@ export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
   stripNonEssentialProps: boolean,
+  stripMessageProp: boolean,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -76,13 +79,15 @@ export function createMessageDescriptor(
         )
   )
 
-  if (!stripNonEssentialProps) {
+  if (!stripMessageProp) {
     if (message) {
       properties.push(
         createStringObjectProperty(MsgDescriptorPropKey.message, message)
       )
     }
+  }
 
+  if (!stripNonEssentialProps) {
     if (defaults.comment) {
       properties.push(
         isObjectProperty(defaults.comment)
