@@ -203,3 +203,4 @@ You'll need to [re-compile](/docs/ref/cli.md#compile) your messages in the new f
 ## Deprecations and Removals
 
 - Removed the deprecated `isTranslated` prop from the React `Trans` component.
+- Removed support of the module path strings in `LinguiConfig.extractors` property. Please pass extractor object directly.
