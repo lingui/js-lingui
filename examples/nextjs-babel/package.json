@@ -9,18 +9,18 @@
     "start": "next start"
   },
   "dependencies": {
-    "@lingui/core": "^4.8.0-next.0",
-    "@lingui/react": "^4.8.0-next.0",
+    "@lingui/core": "^5.0.0-next.2",
+    "@lingui/react": "^5.0.0-next.2",
     "classnames": "^2.3.1",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@lingui/cli": "^4.8.0-next.0",
-    "@lingui/loader": "^4.8.0-next.0",
+    "@lingui/babel-plugin-lingui-macro": "^5.0.0-next.2",
+    "@lingui/cli": "^5.0.0-next.2",
+    "@lingui/loader": "^5.0.0-next.2",
     "@types/react": "^18.0.28",
-    "babel-plugin-macros": "^3.1.0",
     "typescript": "^4.9.5",
     "webpack": "^5.76.2"
   }
