@@ -1,47 +1,21 @@
 ---
-title: Lingui Configuration
+title: Configuration
 description: Learn how to configure Lingui for your project
 ---
 
-# Lingui Configuration
+# Configuration
 
-Configuration is read from 4 different sources (the first found wins):
+The following reference covers all supported configuration options in Lingui. To learn more about configuring Lingui, read the [Installation and Setup](/docs/installation.mdx) guide.
 
-- from `lingui` section in `package.json`
-- from `.linguirc`
-- from `lingui.config.js`
-- from `lingui.config.ts` _(since 3.4.0)_
+By default, Lingui looks for the configuration in the following locations:
 
-You can also define environment variable `LINGUI_CONFIG` with path to your config file.
+- `lingui.config.js` or `lingui.config.ts` file exporting a configuration object (recommended).
+- `.linguirc` file in JSON format.
+- `lingui` section in `package.json`.
+
+You can also define the environment variable `LINGUI_CONFIG` with the path to your config file.
 
 In the case of TypeScript based config you can use ESM format and _export default_.
-
-Default config:
-
-```json
-{
-  "catalogs": [
-    {
-      "path": "<rootDir>/locale/{locale}/messages",
-      "include": ["<rootDir>"],
-      "exclude": ["**/node_modules/**"]
-    }
-  ],
-  "catalogsMergePath": "",
-  "compileNamespace": "cjs",
-  "extractorParserOptions": {},
-  "compilerBabelOptions": {},
-  "fallbackLocales": {},
-  "format": "po",
-  "locales": [],
-  "extractors": ["babel"],
-  "orderBy": "messageId",
-  "pseudoLocale": "",
-  "rootDir": ".",
-  "runtimeConfigModule": ["@lingui/core", "i18n"],
-  "sourceLocale": ""
-}
-```
 
 ## catalogs
 
