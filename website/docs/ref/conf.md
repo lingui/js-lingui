@@ -1,9 +1,9 @@
 ---
-title: Lingui Configuration
+title: Configuration
 description: Learn how to configure Lingui for your project
 ---
 
-# Lingui Configuration
+# Configuration
 
 Configuration is read from 4 different sources (the first found wins):
 
