@@ -37,6 +37,20 @@ describe("vite-plugin", () => {
       expect(await mod.load()).toMatchSnapshot()
     }
   )
+
+  skipOnWindows(
+    "should report error when @lingui/macro is dynamically imported",
+    async () => {
+      expect.assertions(1)
+      try {
+        await runVite(`dynamic-macro-error/vite.config.ts`)
+      } catch (e) {
+        expect(e.stderr).toContain(
+          'The macro you imported from "@lingui/macro" cannot be dynamically imported.'
+        )
+      }
+    }
+  )
 })
 
 async function runVite(configPath: string) {
