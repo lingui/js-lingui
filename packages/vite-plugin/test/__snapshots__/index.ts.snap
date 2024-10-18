@@ -10,13 +10,17 @@ exports[`vite-plugin should return compiled catalog 1`] = `
       name,
     ],
   ],
-  mY42CM: Hello World,
+  mY42CM: [
+    Hello World,
+  ],
 }
 `;
 
 exports[`vite-plugin should return compiled catalog json 1`] = `
 {
-  key: Message,
+  key: [
+    Message,
+  ],
   key2: [
     Hello ,
     [

@@ -9,10 +9,6 @@ export type TransRenderProps = {
   translation: React.ReactNode
   children: React.ReactNode
   message?: string | null
-  /**
-   * @deprecated isTranslated prop is undocumented and buggy. It'll be removed in v5 release.
-   * */
-  isTranslated: boolean
 }
 
 export type TransRenderCallbackOrComponent =
@@ -62,28 +58,31 @@ export function TransNoContext(
 
   if (values) {
     /*
-      Related discussion: https://github.com/lingui/js-lingui/issues/183
+      Replace values placeholders with <INDEX /> and add values to `components`.
+      This makes them processed as JSX children and follow JSX semantics.
 
-      Values *might* contain React elements with static content.
-      They're replaced with <INDEX /> placeholders and added to `components`.
+      Related discussion: https://github.com/lingui/js-lingui/issues/1904
+
+      Another use-case is when React components directly passed as values:
 
       Example:
-      Translation: Hello {name}
+      Translation: 'Hello {name}'
       Values: { name: <strong>Jane</strong> }
 
       It'll become "Hello <0 />" with components=[<strong>Jane</strong>]
-      */
 
+      Related discussion: https://github.com/lingui/js-lingui/issues/183
+    */
     Object.keys(values).forEach((key) => {
-      const value = values[key]
-      const valueIsReactEl =
-        React.isValidElement(value) ||
-        (Array.isArray(value) && value.every(React.isValidElement))
-      if (!valueIsReactEl) return
-
       const index = Object.keys(components).length
 
-      components[index] = value
+      // simple scalars should be processed as values to be able to apply formatting
+      if (typeof values[key] === "string" || typeof values[key] === "number") {
+        return
+      }
+
+      // react components, arrays, falsy values, all should be processed as JSX children
+      components[index] = <>{values[key]}</>
       values[key] = `<${index}/>`
     })
   }
@@ -110,8 +109,6 @@ export function TransNoContext(
     id,
     message,
     translation,
-    // TODO vonovak - remove isTranslated prop in v5 release
-    isTranslated: id !== translation && message !== translation,
     children: translation, // for type-compatibility with `component` prop
   }
 

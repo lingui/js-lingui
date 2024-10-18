@@ -24,7 +24,7 @@ See the [reference][reference] documentation.
 
 ```jsx
 import { setupI18n } from "@lingui/core"
-import { t } from "@lingui/macro"
+import { t } from "@lingui/core/macro"
 
 const i18n = setupI18n()
 

@@ -2,7 +2,6 @@ import path from "path"
 import { getConfig } from "./getConfig"
 import { makeConfig } from "./makeConfig"
 import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
-import { LinguiConfig } from "./types"
 
 describe("@lingui/conf", () => {
   it("should return default config", () => {
@@ -66,21 +65,6 @@ describe("@lingui/conf", () => {
         ),
       })
       expect(config.locales).toEqual(["pl"])
-    })
-
-    describe("extractBabelOptions deprecation", () => {
-      it("if deprecated extractBabelOptions is defined, we show deprecation message", () => {
-        mockConsole((console) => {
-          makeConfig({
-            locales: ["en-US"],
-            extractBabelOptions: {
-              prop: "value",
-            },
-          } as LinguiConfig & { extractBabelOptions: any })
-
-          expect(getConsoleMockCalls(console.warn)).toMatchSnapshot()
-        })
-      })
     })
 
     describe("Build parent cldr fallbackLocales", () => {

@@ -8,13 +8,13 @@ export type CompiledMessageToken =
   | string
   | [name: string, type?: string, format?: null | string | CompiledIcuChoices]
 
-export type CompiledMessage = string | CompiledMessageToken[]
+export type CompiledMessage = CompiledMessageToken[]
 
 type MapTextFn = (value: string) => string
 
 function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
   if (!tokens.filter((token) => token.type !== "content").length) {
-    return tokens.map((token) => mapText((token as Content).value)).join("")
+    return tokens.map((token) => mapText((token as Content).value))
   }
 
   return tokens.map<CompiledMessageToken>((token) => {
@@ -68,6 +68,6 @@ export function compileMessage(
     return processTokens(parse(message), mapText)
   } catch (e) {
     console.error(`${(e as Error).message} \n\nMessage: ${message}`)
-    return message
+    return [message]
   }
 }
