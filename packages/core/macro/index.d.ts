@@ -78,7 +78,7 @@ export function t(
  * import { I18n } from "@lingui/core";
  * const i18n = new I18n({
  *   locale: "nl",
- *   messages: { "Hello {0}": "Hallo {0}" },
+ *   messages: { "Hello {name}": "Hallo {name}" },
  * });
  * const message = t(i18n)`Hello ${name}`;
  * ```
@@ -89,10 +89,14 @@ export function t(
  * import { I18n } from "@lingui/core";
  * const i18n = new I18n({
  *   locale: "nl",
- *   messages: { "Hello {0}": "Hallo {0}" },
+ *   messages: { "Hello {name}": "Hallo {name}" },
  * });
  * const message = t(i18n)({ message: `Hello ${name}` });
  * ```
+ *
+ * @deprecated in v5, would be removed in v6.
+ * Please use `` i18n._(msg`Hello ${name}`) `` instead
+ *
  */
 export function t(i18n: I18n): {
   (literals: TemplateStringsArray, ...placeholders: any[]): string
@@ -209,6 +213,6 @@ export function defineMessage(
 
 /**
  * Define a message for later use
- * Alias for {@see defineMessage}
+ * Alias for {@link defineMessage}
  */
 export const msg: typeof defineMessage
