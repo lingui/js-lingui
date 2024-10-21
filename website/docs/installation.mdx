@@ -80,6 +80,36 @@ SWC Plugin support is still experimental. Semver backwards compatibility between
 </TabItem>
 </Tabs>
 
+## Basic Configuration
+
+Lingui needs a configuration file to work. The configuration file specifies the source files, message catalogs, and other settings.
+
+Let's create a basic configuration file in the root of your project (next to `package.json`):
+
+```js title="lingui.config.js"
+/** @type {import('@lingui/conf').LinguiConfig} */
+module.exports = {
+  sourceLocale: "en",
+  locales: ["cs", "en"],
+  catalogs: [
+    {
+      path: "<rootDir>/src/locales/{locale}/messages",
+      include: ["src"],
+    },
+  ],
+};
+```
+
+The configuration above specifies the source locale as English and the target locales as Czech and English.
+
+According to this configuration, Lingui will extract messages from source files in the `src` directory and write them to message catalogs in `src/locales` (the English catalog would be in `src/locales/en/messages.po`, for example). See [Configuration](/docs/ref/conf.md) for a complete reference.
+
+:::note
+Replace `src` with the name of the directory where you have the source files.
+:::
+
+The PO format is the default and recommended format for message catalogs. See the [Catalog Formats](/docs/ref/catalog-formats.md) for other available formats.
+
 ## Build Tools
 
 ### Vite
@@ -160,33 +190,3 @@ The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is 
 
 </TabItem>
 </Tabs>
-
-## Basic Configuration
-
-Lingui needs a configuration file to work. The configuration file specifies the source files, message catalogs, and other settings.
-
-Let's create a basic configuration file in the root of your project (next to `package.json`):
-
-```js title="lingui.config.js"
-/** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
-  sourceLocale: "en",
-  locales: ["cs", "en"],
-  catalogs: [
-    {
-      path: "<rootDir>/src/locales/{locale}/messages",
-      include: ["src"],
-    },
-  ],
-};
-```
-
-The configuration above specifies the source locale as English and the target locales as Czech and English.
-
-According to this configuration, Lingui will extract messages from source files in the `src` directory and write them to message catalogs in `src/locales` (the English catalog would be in `src/locales/en/messages.po`, for example). See [Configuration](/docs/ref/conf.md) for a complete reference.
-
-:::note
-Replace `src` with the name of the directory where you have the source files.
-:::
-
-The PO format is the default and recommended format for message catalogs. See the [Catalog Formats](/docs/ref/catalog-formats.md) for other available formats.
