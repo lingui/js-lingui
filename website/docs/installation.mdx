@@ -38,10 +38,9 @@ If you are using a framework that doesn't allow you to change the Babel configur
 
 Follow these steps to set up Lingui with Babel:
 
-1.  Install the Babel core and `@lingui/babel-plugin-lingui-macro` packages as development dependencies:
+1.  Install the `@lingui/babel-plugin-lingui-macro` package as a development dependency:
 
     ```bash npm2yarn
-    npm install --save-dev @babel/core
     npm install --save-dev @lingui/babel-plugin-lingui-macro
     ```
 
@@ -87,13 +86,16 @@ SWC Plugin support is still experimental. Semver backwards compatibility between
 
 > Vite is a blazing fast frontend build tool powering the next generation of web applications.
 
-Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/docs/ref/vite-plugin.md). The Lingui Vite integration supports both [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) and [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc) and compiles `.po` message catalogs on the fly.
+Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/docs/ref/vite-plugin.md). This plugin is responsible for extracting messages from your source code and compiling message catalogs.
 
-#### Setup with [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) {#setup-with-vitejs-plugin-react}
+There are two ways to set up Lingui with Vite by using the [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) or [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc). You need to choose the one that fits your project setup.
 
-This plugin uses Babel to transform your code. To use Lingui with Vite and `@vitejs/plugin-react`, follow these steps:
+<Tabs groupId="transpiler" queryString>
+<TabItem value="babel" label="Babel (plugin-react)" default>
 
-1.  Follow the [Babel Setup](/installation?transpiler=babel#choosing-transpiler) instructions.
+The `@vitejs/plugin-react` plugin uses Babel to transform your code. To use Lingui with Vite and Babel, follow these steps:
+
+1.  Follow the [Choosing Transpiler](#choosing-transpiler) instructions.
 
 2.  Install `@lingui/vite-plugin` as a development dependency and `@lingui/react` as a runtime dependency:
 
@@ -121,17 +123,18 @@ This plugin uses Babel to transform your code. To use Lingui with Vite and `@vit
     });
     ```
 
-    :::info
-    The `@vitejs/plugin-react` does not use babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify Babel options directly in `vite.config.ts`.
-    :::
+:::info
+The `@vitejs/plugin-react` does not use babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify Babel options directly in `vite.config.ts`.
+:::
 
-#### Setup with [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc) {#setup-with-vitejs-plugin-react-swc}
+</TabItem>
+<TabItem value="swc" label="SWC (plugin-react-swc)">
 
-This plugin uses SWC to transform your code, which is significantly faster than Babel.
+The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is significantly faster than Babel. To use Lingui with Vite and SWC, follow these steps:
 
-1.  Follow the [SWC Setup](/installation?transpiler=swc#choosing-transpiler) instructions.
+1.  Follow the [Choosing Transpiler](#choosing-transpiler) instructions.
 
-2.  Install `@lingui/vite-plugin` and `@lingui/swc-plugin` as development dependencies and `@lingui/react` as a runtime dependency:
+2.  Install `@lingui/vite-plugin`, `@lingui/swc-plugin` as development dependencies and `@lingui/react` as a runtime dependency:
 
     ```bash npm2yarn
     npm install --save-dev @lingui/vite-plugin @lingui/swc-plugin
@@ -155,17 +158,12 @@ This plugin uses SWC to transform your code, which is significantly faster than 
     });
     ```
 
+</TabItem>
+</Tabs>
+
 ## Basic Configuration
 
 Lingui needs a configuration file to work. The configuration file specifies the source files, message catalogs, and other settings.
-
-By default, Lingui looks for the configuration in the following locations:
-
-- `lingui.config.js` or `lingui.config.ts` file exporting a configuration object (recommended).
-- `.linguirc` file in JSON format.
-- `lingui` section in `package.json`.
-
-You can also define the environment variable `LINGUI_CONFIG` with the path to your config file.
 
 Let's create a basic configuration file in the root of your project (next to `package.json`):
 
