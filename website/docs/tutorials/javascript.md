@@ -9,12 +9,8 @@ In this tutorial, we'll learn how to use Lingui's internationalization features 
 
 ## Installing Lingui
 
-1.  Follow the [Installation](/docs/installation.mdx) page for initial setup.
-
-2.  Install the Core package, which is responsible for translation and handling of message catalogs:
-    ```bash npm2yarn
-    npm install --save @lingui/core
-    ```
+1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
+2. Install the [`@lingui/core`](/docs/ref/core.md) package, which is responsible for translation and handling of message catalogs.
 
 ## Setting up i18n
 

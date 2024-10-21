@@ -9,12 +9,8 @@ In this tutorial, we'll learn how to add internationalization (i18n) to an exist
 
 ## Installing Lingui
 
-1.  Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
-
-2.  Install The React package which provides React components and hooks for internationalization:
-    ```bash npm2yarn
-    npm install --save @lingui/react
-    ```
+1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
+2. Install the [`@lingui/react`](/docs/ref/react.md) package which provides React components and hooks for internationalization.
 
 ## Let's Start
 
