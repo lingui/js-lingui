@@ -11,7 +11,7 @@ There's a working example available [here](https://github.com/lingui/js-lingui/t
 The example uses both Pages Router and App Router, so you can see how to use Lingui with both in [this commit](https://github.com/lingui/js-lingui/pull/1944/commits/100fc74abb49cff677f4b1cac1dfd5da60262b67).
 :::
 
-Before going further, please follow the [React setup](/tutorials/setup-react?babel-or-swc=swc) for installation and configuration instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
+Before going further, please follow the [Installation and Setup](/docs/installation.mdx?transpiler=swc) instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
 
 ### Adding i18n support to Next.js
 

@@ -18,7 +18,7 @@ Install `@lingui/vite-plugin` as a development dependency:
 npm install --save-dev @lingui/vite-plugin
 ```
 
-For a complete installation guide, see [Setup with Vite](/docs/tutorials/setup-vite.md).
+For a complete installation guide, see [Installation and Setup](/docs/installation.mdx#vite).
 
 ## Usage
 

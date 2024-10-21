@@ -8,6 +8,8 @@
     { "source": "/tutorials/cli", "destination": "/ref/cli", "permanent": true},
     { "source": "/guides/flow", "destination": "/ref/conf#flow", "permanent": true},
     { "source": "/guides/excluding-build-files", "destination": "/ref/cli#compile", "permanent": true},
-    { "source": "/tutorials/explicit-vs-generated-ids", "destination": "/guides/explicit-vs-generated-ids", "permanent": true}
+    { "source": "/tutorials/explicit-vs-generated-ids", "destination": "/guides/explicit-vs-generated-ids", "permanent": true},
+    { "source": "/tutorials/setup-vite", "destination": "/installation#vite", "permanent": true },
+    { "source": "/tutorials/setup-react", "destination": "/installation", "permanent": true }
   ]
 }

@@ -10,13 +10,8 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React Project",
-        id: "tutorials/setup-react",
-      },
-      {
-        type: "doc",
-        label: "Vite Project",
-        id: "tutorials/setup-vite",
+        label: "Installation and Setup",
+        id: "installation",
       },
     ],
   },
@@ -103,7 +98,7 @@ const sidebar = [
     items: [
       {
         type: "doc",
-        label: "Lingui Configuration",
+        label: "Configuration",
         id: "ref/conf",
       },
       {

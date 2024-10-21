@@ -7,7 +7,7 @@ description: Learn how to set up and use Lingui CLI to extract, merge and compil
 
 The `@lingui/cli` tool provides the `lingui` command, which allows the extraction of messages from source files into message catalogs and the compilation of message catalogs for production use.
 
-## Install
+## Installation
 
 1. Install `@lingui/cli` as a development dependency:
 
