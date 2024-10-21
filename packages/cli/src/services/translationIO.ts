@@ -2,7 +2,7 @@ import fs from "fs"
 import { dirname } from "path"
 import PO from "pofile"
 import https from "https"
-import glob from "glob"
+import { globSync } from "glob"
 import { format as formatDate } from "date-fns"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
@@ -380,7 +380,7 @@ function poPathsPerLocale(config: LinguiConfigNormalized) {
 
       // If {name} is present (replaced by *), list all the existing POs
       if (path.includes("*")) {
-        paths[locale] = paths[locale].concat(glob.sync(path))
+        paths[locale] = paths[locale].concat(globSync(path))
       } else {
         paths[locale].push(path)
       }

@@ -12,6 +12,7 @@ exports[`vue extractor should extract message from functional component 1`] = `
       10,
       33,
     ],
+    placeholders: {},
   },
 ]
 `;
@@ -28,6 +29,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       4,
       0,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -39,6 +41,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       19,
       20,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -50,6 +53,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       27,
       11,
     ],
+    placeholders: {},
   },
   {
     comment: Message comment,
@@ -61,6 +65,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       29,
       10,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -72,6 +77,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       35,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -83,6 +89,7 @@ exports[`vue extractor should extract message from vue file 1`] = `
       36,
       11,
     ],
+    placeholders: {},
   },
 ]
 `;

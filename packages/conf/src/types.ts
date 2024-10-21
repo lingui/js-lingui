@@ -36,6 +36,7 @@ export type ExtractedMessageType<Extra = CatalogExtra> = {
    * formatters can store additional data
    */
   extra?: Extra
+  placeholders?: Record<string, string[]>
 }
 export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
   translation: string
@@ -87,6 +88,7 @@ export type ExtractedMessage = {
   origin?: [filename: string, line: number, column?: number]
 
   comment?: string
+  placeholders?: Record<string, string>
 }
 
 export type CatalogFormatOptions = {
@@ -111,7 +113,7 @@ type LocaleObject = {
 
 export type FallbackLocales = LocaleObject
 
-type ModuleSource = [string, string?]
+type ModuleSource = readonly [module: string, specifier?: string]
 
 type CatalogService = {
   name: string
@@ -197,7 +199,7 @@ export type LinguiConfig = {
   }
   compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
-  extractors?: (string | ExtractorType)[]
+  extractors?: ExtractorType[]
   prevFormat?: CatalogFormat
   localeDir?: string
   format?: CatalogFormat | CatalogFormatter
@@ -207,7 +209,9 @@ export type LinguiConfig = {
   orderBy?: OrderBy
   pseudoLocale?: string
   rootDir?: string
-  runtimeConfigModule?: ModuleSource | { [symbolName: string]: ModuleSource }
+  runtimeConfigModule?:
+    | ModuleSource
+    | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
   sourceLocale?: string
   service?: CatalogService
   experimental?: {
@@ -215,15 +219,16 @@ export type LinguiConfig = {
   }
 }
 
+type ModuleSourceNormalized = readonly [module: string, specifier: string]
+
 export type LinguiConfigNormalized = Omit<
   LinguiConfig,
   "runtimeConfigModule"
 > & {
   fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
-    i18nImportModule: string
-    i18nImportName: string
-    TransImportModule: string
-    TransImportName: string
+    i18n: ModuleSourceNormalized
+    useLingui: ModuleSourceNormalized
+    Trans: ModuleSourceNormalized
   }
 }

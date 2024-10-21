@@ -1,5 +1,5 @@
 import { i18n } from "@lingui/core"
-import { t, plural, defineMessage } from "@lingui/macro"
+import { t, plural, defineMessage } from "@lingui/core/macro"
 
 i18n.load({
   en: require("./locale/en/messages").messages,

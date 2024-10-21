@@ -1,6 +1,6 @@
 import "./App.css"
 import React, { useState } from "react"
-import { Trans, Plural } from "@lingui/macro"
+import { Trans, Plural } from "@lingui/react/macro"
 
 import { locales, dynamicActivate } from "./i18n"
 import { useLingui } from "@lingui/react"

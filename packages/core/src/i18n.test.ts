@@ -1,5 +1,6 @@
 import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {
   describe("I18n.load", () => {
@@ -189,7 +190,6 @@ describe("I18n", () => {
   it("._ should format message from catalog", () => {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}",
     }
 
     const i18n = setupI18n({
@@ -198,15 +198,24 @@ describe("I18n", () => {
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
-    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-      "Je m'appelle Fred"
-    )
+    expect(
+      i18n._({
+        id: "My name is {name}",
+        message: "Je m'appelle {name}",
+        values: { name: "Fred" },
+      })
+    ).toEqual("Je m'appelle Fred")
 
     // alias
     expect(i18n.t("Hello")).toEqual("Salut")
 
     // missing { name }
-    expect(i18n._("My name is {name}")).toEqual("Je m'appelle")
+    expect(
+      i18n._({
+        id: "My name is {name}",
+        message: "Je m'appelle {name}",
+      })
+    ).toEqual("Je m'appelle")
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
@@ -239,19 +248,22 @@ describe("I18n", () => {
   })
 
   it("._ allow escaping syntax characters", () => {
-    const messages = {
-      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'",
-    }
+    const messages = {}
 
     const i18n = setupI18n({
       locale: "es",
       messages: { es: messages },
     })
 
-    expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
+    expect(
+      i18n._({
+        id: "My ''name'' is '{name}'",
+        message: "Mi ''nombre'' es '{name}'",
+      })
+    ).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", () => {
+  it("._ shouldn't compile uncompiled messages in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
@@ -270,6 +282,82 @@ describe("I18n", () => {
     })
   })
 
+  it("._ should use compiled message in production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": compileMessage("Je m'appelle {name}"),
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("._ shouldn't double compile message in development", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": compileMessage("Je m'appelle '{name}'"),
+    }
+
+    const { setupI18n } = require("@lingui/core")
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: messages },
+    })
+
+    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+      "Je m'appelle {name}"
+    )
+  })
+
+  it("setMessagesCompiler should register a message compiler for production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      i18n.setMessagesCompiler(compileMessage)
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("should print warning if uncompiled message is used", () => {
+    expect.assertions(1)
+
+    const messages = {
+      Hello: "Salut",
+    }
+
+    mockEnv("production", () => {
+      mockConsole((console) => {
+        const { setupI18n } = require("@lingui/core")
+        const i18n = setupI18n({
+          locale: "fr",
+          messages: { fr: messages },
+        })
+
+        i18n._("Hello")
+        expect(console.warn).toBeCalled()
+      })
+    })
+  })
   it("._ should emit missing event for missing translation", () => {
     const i18n = setupI18n({
       locale: "en",

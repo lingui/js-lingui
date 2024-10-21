@@ -9,14 +9,14 @@ import { getCatalogs, AllCatalogsType } from "./api"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
 
 export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -40,7 +40,7 @@ export default async function command(
     })
 
     catalogStats[
-      normalizeSlashes(nodepath.relative(config.rootDir, catalog.path))
+      normalizePath(nodepath.relative(config.rootDir, catalog.path))
     ] = result || {}
 
     commandSuccess &&= Boolean(result)
@@ -103,7 +103,7 @@ type CliOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -111,7 +111,16 @@ type CliOptions = {
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
-    .option("--locale <locale>", "Only extract the specified locale")
+    .option(
+      "--locale <locale, [...]>",
+      "Only extract the specified locales",
+      (value) => {
+        return value
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      }
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -148,10 +157,16 @@ if (require.main === module) {
     process.exit(1)
   }
 
-  if (options.locale && !config.locales.includes(options.locale)) {
-    hasErrors = true
-    console.error(`Locale ${chalk.bold(options.locale)} does not exist.`)
-    console.error()
+  if (options.locale) {
+    const missingLocale = options.locale.find(
+      (l) => !config.locales.includes(l)
+    )
+
+    if (missingLocale) {
+      hasErrors = true
+      console.error(`Locale ${chalk.bold(missingLocale)} does not exist.`)
+      console.error()
+    }
   }
 
   if (hasErrors) process.exit(1)
@@ -169,7 +184,7 @@ if (require.main === module) {
   }
 
   const changedPaths = new Set<string>()
-  let debounceTimer: NodeJS.Timer
+  let debounceTimer: NodeJS.Timeout
   let previousExtract = Promise.resolve(true)
   const dispatchExtract = (filePath?: string[]) => {
     // Skip debouncing if not enabled but still chain them so no racing issue

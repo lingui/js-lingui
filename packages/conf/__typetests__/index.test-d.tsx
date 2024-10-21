@@ -48,7 +48,6 @@ expectAssignable<LinguiConfig>({
 expectAssignable<LinguiConfig>({
   locales: ["en", "pl"],
   extractors: [
-    "babel",
     {
       match: (fileName: string) => false,
       extract: (

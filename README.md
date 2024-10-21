@@ -12,12 +12,12 @@
 [![Join the community on Discord][Badge-Discord]][Discord]
 
 [**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
+
 </div>
 
 > Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
 >
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
-
 
 Lingui is an easy yet powerful internationalization framework for global projects.
 
@@ -76,14 +76,14 @@ If you're a react-intl user, check out [a comparison of react-intl and Lingui](h
 Short example how i18n looks with JSX:
 
 ```js
-import { Trans } from "@lingui/macro"
+import { Trans } from "@lingui/react/macro"
 
 function App() {
   return (
-   <Trans id="msg.docs" /* id is optional */>
-     Read the <a href="https://lingui.dev">documentation</a>
-     for more info.
-   </Trans>
+    <Trans id="msg.docs" /* id is optional */>
+      Read the <a href="https://lingui.dev">documentation</a>
+      for more info.
+    </Trans>
   )
 }
 ```
@@ -131,18 +131,15 @@ The project is licensed under the [MIT][License] license.
 [SetupVite]: https://lingui.dev/tutorials/setup-vite
 [RefCLI]: https://lingui.dev/ref/cli
 [Examples]: https://github.com/lingui/js-lingui/tree/main/examples
-
 [SWCPlugin]: https://lingui.dev/ref/swc-plugin
 [VitePlugin]: https://lingui.dev/ref/vite-plugin
 [ESLintPlugin]: https://lingui.dev/ref/eslint-plugin
-
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
 [Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [Badge-Discord]: https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square
 [Contributors]: https://github.com/lingui/js-lingui/graphs/contributors
-
 [Coverage]: https://codecov.io/gh/lingui/js-lingui
 [License]: https://github.com/lingui/js-lingui/blob/main/LICENSE
 [Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
