@@ -502,7 +502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.21.2, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.25.7":
+"@babel/parser@npm:^7.23.9, @babel/parser@npm:^7.25.7":
   version: 7.25.7
   resolution: "@babel/parser@npm:7.25.7"
   dependencies:
@@ -1602,6 +1602,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/aix-ppc64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/aix-ppc64@npm:0.21.5"
+  conditions: os=aix & cpu=ppc64
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-arm64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/android-arm64@npm:0.16.17"
@@ -1626,6 +1633,13 @@ __metadata:
 "@esbuild/android-arm64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/android-arm64@npm:0.19.2"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-arm64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/android-arm64@npm:0.21.5"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
@@ -1658,6 +1672,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/android-arm@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/android-arm@npm:0.21.5"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/android-x64@npm:0.16.17"
@@ -1682,6 +1703,13 @@ __metadata:
 "@esbuild/android-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/android-x64@npm:0.19.2"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/android-x64@npm:0.21.5"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
@@ -1714,6 +1742,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/darwin-arm64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/darwin-arm64@npm:0.21.5"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/darwin-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/darwin-x64@npm:0.16.17"
@@ -1738,6 +1773,13 @@ __metadata:
 "@esbuild/darwin-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/darwin-x64@npm:0.19.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/darwin-x64@npm:0.21.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -1770,6 +1812,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/freebsd-arm64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/freebsd-arm64@npm:0.21.5"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/freebsd-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/freebsd-x64@npm:0.16.17"
@@ -1794,6 +1843,13 @@ __metadata:
 "@esbuild/freebsd-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/freebsd-x64@npm:0.19.2"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/freebsd-x64@npm:0.21.5"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
@@ -1826,6 +1882,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-arm64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-arm64@npm:0.21.5"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-arm@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/linux-arm@npm:0.16.17"
@@ -1850,6 +1913,13 @@ __metadata:
 "@esbuild/linux-arm@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/linux-arm@npm:0.19.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-arm@npm:0.21.5"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -1882,6 +1952,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-ia32@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-ia32@npm:0.21.5"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-loong64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/linux-loong64@npm:0.16.17"
@@ -1906,6 +1983,13 @@ __metadata:
 "@esbuild/linux-loong64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/linux-loong64@npm:0.19.2"
+  conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-loong64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-loong64@npm:0.21.5"
   conditions: os=linux & cpu=loong64
   languageName: node
   linkType: hard
@@ -1938,6 +2022,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-mips64el@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-mips64el@npm:0.21.5"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-ppc64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/linux-ppc64@npm:0.16.17"
@@ -1962,6 +2053,13 @@ __metadata:
 "@esbuild/linux-ppc64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/linux-ppc64@npm:0.19.2"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ppc64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-ppc64@npm:0.21.5"
   conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
@@ -1994,6 +2092,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-riscv64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-riscv64@npm:0.21.5"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-s390x@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/linux-s390x@npm:0.16.17"
@@ -2018,6 +2123,13 @@ __metadata:
 "@esbuild/linux-s390x@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/linux-s390x@npm:0.19.2"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-s390x@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-s390x@npm:0.21.5"
   conditions: os=linux & cpu=s390x
   languageName: node
   linkType: hard
@@ -2050,6 +2162,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/linux-x64@npm:0.21.5"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/netbsd-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/netbsd-x64@npm:0.16.17"
@@ -2074,6 +2193,13 @@ __metadata:
 "@esbuild/netbsd-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/netbsd-x64@npm:0.19.2"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/netbsd-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/netbsd-x64@npm:0.21.5"
   conditions: os=netbsd & cpu=x64
   languageName: node
   linkType: hard
@@ -2106,6 +2232,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/openbsd-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/openbsd-x64@npm:0.21.5"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/sunos-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/sunos-x64@npm:0.16.17"
@@ -2130,6 +2263,13 @@ __metadata:
 "@esbuild/sunos-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/sunos-x64@npm:0.19.2"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/sunos-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/sunos-x64@npm:0.21.5"
   conditions: os=sunos & cpu=x64
   languageName: node
   linkType: hard
@@ -2162,6 +2302,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/win32-arm64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/win32-arm64@npm:0.21.5"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/win32-ia32@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/win32-ia32@npm:0.16.17"
@@ -2190,6 +2337,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/win32-ia32@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/win32-ia32@npm:0.21.5"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@esbuild/win32-x64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/win32-x64@npm:0.16.17"
@@ -2214,6 +2368,13 @@ __metadata:
 "@esbuild/win32-x64@npm:0.19.2":
   version: 0.19.2
   resolution: "@esbuild/win32-x64@npm:0.19.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-x64@npm:0.21.5":
+  version: 0.21.5
+  resolution: "@esbuild/win32-x64@npm:0.21.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -2664,26 +2825,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@4.13.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@5.0.0-next.3, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
     "@babel/core": ^7.21.0
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/jest-mocks": "*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/jest-mocks": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-extract-messages@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/babel-plugin-extract-messages@npm:4.11.2"
-  checksum: 7b3be3815cf1a5d717b4d777ef7238f0aa69d6145aaf60311f31ba7fe4da1359d7ad1d46a35203031a2a7a72e61e340872ca73cb071ebd9d7ade39728efdb2bd
-  languageName: node
-  linkType: hard
+"@lingui/babel-plugin-lingui-macro@5.0.0-next.3, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+  version: 0.0.0-use.local
+  resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
+  dependencies:
+    "@babel/core": ^7.20.12
+    "@babel/parser": ^7.20.15
+    "@babel/runtime": ^7.20.13
+    "@babel/traverse": ^7.20.12
+    "@babel/types": ^7.20.7
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/core": 5.0.0-next.3
+    "@lingui/message-utils": 5.0.0-next.3
+    "@types/babel-plugin-macros": ^2.8.5
+    prettier: 2.8.3
+    unbuild: 2.0.0
+  peerDependencies:
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
+  languageName: unknown
+  linkType: soft
 
-"@lingui/cli@4.13.0, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@5.0.0-next.3, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
@@ -2692,15 +2870,14 @@ __metadata:
     "@babel/parser": ^7.22.0
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 4.13.0
-    "@lingui/conf": 4.13.0
-    "@lingui/core": 4.13.0
-    "@lingui/format-po": 4.13.0
+    "@lingui/babel-plugin-extract-messages": 5.0.0-next.3
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.3
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/core": 5.0.0-next.3
+    "@lingui/format-po": 5.0.0-next.3
     "@lingui/jest-mocks": "*"
-    "@lingui/macro": 4.13.0
-    "@lingui/message-utils": 4.13.0
+    "@lingui/message-utils": 5.0.0-next.3
     "@types/convert-source-map": ^2.0.0
-    "@types/glob": ^8.1.0
     "@types/micromatch": ^4.0.1
     "@types/normalize-path": ^3.0.0
     babel-plugin-macros: ^3.0.1
@@ -2710,10 +2887,10 @@ __metadata:
     commander: ^10.0.0
     convert-source-map: ^2.0.0
     date-fns: ^3.6.0
-    esbuild: ^0.17.10
-    glob: ^7.1.4
+    esbuild: ^0.21.5
+    glob: ^11.0.0
     inquirer: ^7.3.3
-    micromatch: ^4.0.2
+    micromatch: ^4.0.7
     mock-fs: ^5.2.0
     mockdate: ^3.0.5
     normalize-path: ^3.0.0
@@ -2729,46 +2906,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/cli@npm:4.11.2"
-  dependencies:
-    "@babel/core": ^7.21.0
-    "@babel/generator": ^7.21.1
-    "@babel/parser": ^7.21.2
-    "@babel/runtime": ^7.21.0
-    "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 4.11.2
-    "@lingui/conf": 4.11.2
-    "@lingui/core": 4.11.2
-    "@lingui/format-po": 4.11.2
-    "@lingui/message-utils": 4.11.2
-    babel-plugin-macros: ^3.0.1
-    chalk: ^4.1.0
-    chokidar: 3.5.1
-    cli-table: 0.3.6
-    commander: ^10.0.0
-    convert-source-map: ^2.0.0
-    date-fns: ^3.6.0
-    esbuild: ^0.17.10
-    glob: ^7.1.4
-    inquirer: ^7.3.3
-    micromatch: 4.0.2
-    normalize-path: ^3.0.0
-    ora: ^5.1.0
-    pathe: ^1.1.0
-    pkg-up: ^3.1.0
-    pofile: ^1.1.4
-    pseudolocale: ^2.0.0
-    ramda: ^0.27.1
-    source-map: ^0.8.0-beta.0
-  bin:
-    lingui: dist/lingui.js
-  checksum: 99a90f86646df3438a64be2087b3865a31284a5805b2e8d49823de892090966386d04569dd8dda701bbaecd9bc82a072ffc053afbbdd4153a3d797f5efb11436
-  languageName: node
-  linkType: hard
-
-"@lingui/conf@4.13.0, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@5.0.0-next.3, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -2784,29 +2922,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/conf@npm:4.11.2"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    chalk: ^4.1.0
-    cosmiconfig: ^8.0.0
-    jest-validate: ^29.4.3
-    jiti: ^1.17.1
-    lodash.get: ^4.4.2
-  checksum: 16cd06773a6a97dc99fdd7742ec02392defa058e07a0892ce2b9425a9a30720eef87acfa740b6e41bf9c345d21489f311d6e1f060e745d53f00738d151e89862
-  languageName: node
-  linkType: hard
-
-"@lingui/core@4.13.0, @lingui/core@workspace:*, @lingui/core@workspace:packages/core":
+"@lingui/core@5.0.0-next.3, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
-    "@lingui/message-utils": 4.13.0
+    "@lingui/message-utils": 5.0.0-next.3
+    tsd: ^0.26.1
     unbuild: 2.0.0
     unraw: ^3.0.0
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.3
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -2817,17 +2950,6 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/message-utils": 4.0.0
   checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
-  languageName: node
-  linkType: hard
-
-"@lingui/core@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/core@npm:4.11.2"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.11.2
-    unraw: ^3.0.0
-  checksum: 10e77a8486dd8ae9ab3a687276a626d568f6b65b57a3071f9ee18c31989133a0a429eec28c0254e48a36fa77ff775f9b6dfa945df6767f2fc91782c10582d3ca
   languageName: node
   linkType: hard
 
@@ -2844,9 +2966,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/extractor-vue@workspace:packages/extractor-vue"
   dependencies:
-    "@lingui/babel-plugin-extract-messages": 4.13.0
-    "@lingui/cli": 4.13.0
-    "@lingui/conf": 4.13.0
+    "@lingui/babel-plugin-extract-messages": 5.0.0-next.3
+    "@lingui/cli": 5.0.0-next.3
+    "@lingui/conf": 5.0.0-next.3
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 2.0.0
   languageName: unknown
@@ -2856,42 +2978,32 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
-    "@lingui/conf": 4.13.0
+    "@lingui/conf": 5.0.0-next.3
     papaparse: ^5.4.0
     tsd: ^0.28.0
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@4.13.0, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
+"@lingui/format-json@5.0.0-next.3, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 4.13.0
+    "@lingui/conf": 5.0.0-next.3
     ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^2.0.0
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/format-json@npm:4.11.2"
-  dependencies:
-    "@lingui/conf": 4.11.2
-    ramda: ^0.28.0
-  checksum: 6c4781a4df4dde380b25aca44a93603dd1bff2bc18b3e636965b03fee716905868381db2f93f3a1e2064dd5dffa1f5a476c2c6d9e6e8adee4794eef3b3e27e17
-  languageName: node
-  linkType: hard
-
 "@lingui/format-po-gettext@workspace:packages/format-po-gettext":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/conf": 4.13.0
-    "@lingui/format-po": 4.13.0
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/format-po": 5.0.0-next.3
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 4.13.0
+    "@lingui/message-utils": 5.0.0-next.3
     "@messageformat/parser": ^5.0.0
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
@@ -2902,13 +3014,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@4.13.0, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@5.0.0-next.3, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/conf": 4.13.0
+    "@lingui/conf": 5.0.0-next.3
     "@lingui/jest-mocks": "workspace:^"
-    "@lingui/message-utils": 4.13.0
+    "@lingui/message-utils": 5.0.0-next.3
     date-fns: ^3.6.0
     mockdate: ^3.0.5
     pofile: ^1.1.4
@@ -2917,19 +3029,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/format-po@npm:4.11.2"
-  dependencies:
-    "@lingui/conf": 4.11.2
-    "@lingui/message-utils": 4.11.2
-    date-fns: ^3.6.0
-    pofile: ^1.1.4
-  checksum: 89af5d48bac0170d0b8658c170ae0342b27519fd623b41abad41139a3105079360a4e937607b96f531ae1394f7a3d55b4186f50e7935c2bdc2539bdaad3ae58a
-  languageName: node
-  linkType: hard
-
-"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
+"@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
   version: 0.0.0-use.local
   resolution: "@lingui/jest-mocks@workspace:packages/jest-mocks"
   languageName: unknown
@@ -2940,9 +3040,9 @@ __metadata:
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 4.13.0
-    "@lingui/conf": 4.13.0
-    "@lingui/format-json": 4.13.0
+    "@lingui/cli": 5.0.0-next.3
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/format-json": 5.0.0-next.3
     unbuild: 2.0.0
     webpack: ^5.76.1
   peerDependencies:
@@ -2950,29 +3050,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@4.13.0, @lingui/macro@workspace:^, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@workspace:*, @lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
-    "@babel/core": ^7.20.12
-    "@babel/parser": ^7.20.15
-    "@babel/runtime": ^7.20.13
-    "@babel/traverse": ^7.20.12
-    "@babel/types": ^7.20.7
-    "@lingui/conf": 4.13.0
-    "@lingui/core": 4.13.0
-    "@lingui/message-utils": 4.13.0
-    "@types/babel-plugin-macros": ^2.8.5
-    prettier: 2.8.3
-    tsd: ^0.26.1
-    unbuild: 2.0.0
+    "@lingui/core": 5.0.0-next.3
+    "@lingui/react": 5.0.0-next.3
   peerDependencies:
-    "@lingui/react": ^4.0.0
+    "@lingui/babel-plugin-lingui-macro": 4.11.2
     babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@4.13.0, @lingui/message-utils@workspace:packages/message-utils":
+"@lingui/message-utils@5.0.0-next.3, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
@@ -2992,24 +3087,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/message-utils@npm:4.11.2":
-  version: 4.11.2
-  resolution: "@lingui/message-utils@npm:4.11.2"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-  checksum: 126469e50fa189d9aebdf8785249ff91a9e725b241a141bdfe95727fd8c27d8f3ff792625c3e59cf2e73b8862d08d9babb93e3338891250999c020f0967bfac6
-  languageName: node
-  linkType: hard
-
 "@lingui/metro-transformer@workspace:packages/metro-transformer":
   version: 0.0.0-use.local
   resolution: "@lingui/metro-transformer@workspace:packages/metro-transformer"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/cli": 4.11.2
-    "@lingui/conf": 4.11.2
-    "@lingui/format-json": 4.11.2
+    "@lingui/cli": 5.0.0-next.3
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/format-json": 5.0.0-next.3
     memoize-one: ^6.0.0
     rimraf: ^6.0.1
     unbuild: 2.0.0
@@ -3029,12 +3114,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/react@workspace:*, @lingui/react@workspace:packages/react":
+"@lingui/react@5.0.0-next.3, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 4.13.0
+    "@lingui/core": 5.0.0-next.3
     "@lingui/jest-mocks": "*"
     "@testing-library/react": ^14.0.0
     "@types/react": ^18.2.13
@@ -3042,9 +3127,17 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     react: ^18.2.0
     react-dom: ^18.2.0
+    tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.0.0-next.3
+    babel-plugin-macros: 2 || 3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3063,10 +3156,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 4.13.0
-    "@lingui/conf": 4.13.0
+    "@lingui/cli": 5.0.0-next.3
+    "@lingui/conf": 5.0.0-next.3
+    "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
-    "@lingui/macro": "workspace:^"
     unbuild: 2.0.0
     vite: 4.1.4
     vite-plugin-babel-macros: ^1.0.6
@@ -4073,16 +4166,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "@types/glob@npm:8.1.0"
-  dependencies:
-    "@types/minimatch": ^5.1.2
-    "@types/node": "*"
-  checksum: 9101f3a9061e40137190f70626aa0e202369b5ec4012c3fabe6f5d229cce04772db9a94fa5a0eb39655e2e4ad105c38afbb4af56a56c0996a8c7d4fc72350e3d
-  languageName: node
-  linkType: hard
-
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.6
   resolution: "@types/graceful-fs@npm:4.1.6"
@@ -4168,13 +4251,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/minimatch@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "@types/minimatch@npm:5.1.2"
-  checksum: 0391a282860c7cb6fe262c12b99564732401bdaa5e395bee9ca323c312c1a0f45efbf34dce974682036e857db59a5c9b1da522f3d6055aeead7097264c8705a8
-  languageName: node
-  linkType: hard
-
 "@types/minimist@npm:^1.2.0":
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
@@ -4198,10 +4274,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.18.13":
-  version: 16.18.13
-  resolution: "@types/node@npm:16.18.13"
-  checksum: c284f97a0630d65887be0e0d7ef8e5e5022eb4916ffae142db07f22dad565a80f17b6a84f21b4521c707f642540430710a8aa5930a2cf2bcbecde0a476ff9c02
+"@types/node@npm:20.14.8":
+  version: 20.14.8
+  resolution: "@types/node@npm:20.14.8"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: a9128840005d4a0aba68826e22ac0fdd86bb9073f1d274217d3509b52f969d1aab83415c85a8461259f33cf34f9eee02fb13dca059865bed2ba2e728bc936a76
   languageName: node
   linkType: hard
 
@@ -5460,7 +5538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.1, braces@npm:^3.0.3, braces@npm:~3.0.2":
+"braces@npm:^3.0.3, braces@npm:~3.0.2":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -5826,15 +5904,6 @@ __metadata:
   version: 2.7.0
   resolution: "cli-spinners@npm:2.7.0"
   checksum: a9afaf73f58d1f951fb23742f503631b3cf513f43f4c7acb1b640100eb76bfa16efbcd1994d149ffc6603a6d75dd3d4a516a76f125f90dce437de9b16fd0ee6f
-  languageName: node
-  linkType: hard
-
-"cli-table@npm:0.3.6":
-  version: 0.3.6
-  resolution: "cli-table@npm:0.3.6"
-  dependencies:
-    colors: 1.0.3
-  checksum: b0cd08578c810240920438cc2b3ffb4b4f5106b29f3362707f1d8cfc0c0440ad2afb70b96e30ce37f72f0ffe1e844ae7341dde4df17d51ad345eb186a5903af2
   languageName: node
   linkType: hard
 
@@ -7083,7 +7152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.17.10, esbuild@npm:^0.17.2":
+"esbuild@npm:^0.17.2":
   version: 0.17.11
   resolution: "esbuild@npm:0.17.11"
   dependencies:
@@ -7311,6 +7380,86 @@ __metadata:
   bin:
     esbuild: bin/esbuild
   checksum: f9ad8ad4f0cbcc675c059f2676c4458d75307af20f9168859de8642accd7f2b7d6bbe8286a23633790dcba07d1d66a8f63c204ea933a0d51300c1b69d4f25d8f
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.21.5":
+  version: 0.21.5
+  resolution: "esbuild@npm:0.21.5"
+  dependencies:
+    "@esbuild/aix-ppc64": 0.21.5
+    "@esbuild/android-arm": 0.21.5
+    "@esbuild/android-arm64": 0.21.5
+    "@esbuild/android-x64": 0.21.5
+    "@esbuild/darwin-arm64": 0.21.5
+    "@esbuild/darwin-x64": 0.21.5
+    "@esbuild/freebsd-arm64": 0.21.5
+    "@esbuild/freebsd-x64": 0.21.5
+    "@esbuild/linux-arm": 0.21.5
+    "@esbuild/linux-arm64": 0.21.5
+    "@esbuild/linux-ia32": 0.21.5
+    "@esbuild/linux-loong64": 0.21.5
+    "@esbuild/linux-mips64el": 0.21.5
+    "@esbuild/linux-ppc64": 0.21.5
+    "@esbuild/linux-riscv64": 0.21.5
+    "@esbuild/linux-s390x": 0.21.5
+    "@esbuild/linux-x64": 0.21.5
+    "@esbuild/netbsd-x64": 0.21.5
+    "@esbuild/openbsd-x64": 0.21.5
+    "@esbuild/sunos-x64": 0.21.5
+    "@esbuild/win32-arm64": 0.21.5
+    "@esbuild/win32-ia32": 0.21.5
+    "@esbuild/win32-x64": 0.21.5
+  dependenciesMeta:
+    "@esbuild/aix-ppc64":
+      optional: true
+    "@esbuild/android-arm":
+      optional: true
+    "@esbuild/android-arm64":
+      optional: true
+    "@esbuild/android-x64":
+      optional: true
+    "@esbuild/darwin-arm64":
+      optional: true
+    "@esbuild/darwin-x64":
+      optional: true
+    "@esbuild/freebsd-arm64":
+      optional: true
+    "@esbuild/freebsd-x64":
+      optional: true
+    "@esbuild/linux-arm":
+      optional: true
+    "@esbuild/linux-arm64":
+      optional: true
+    "@esbuild/linux-ia32":
+      optional: true
+    "@esbuild/linux-loong64":
+      optional: true
+    "@esbuild/linux-mips64el":
+      optional: true
+    "@esbuild/linux-ppc64":
+      optional: true
+    "@esbuild/linux-riscv64":
+      optional: true
+    "@esbuild/linux-s390x":
+      optional: true
+    "@esbuild/linux-x64":
+      optional: true
+    "@esbuild/netbsd-x64":
+      optional: true
+    "@esbuild/openbsd-x64":
+      optional: true
+    "@esbuild/sunos-x64":
+      optional: true
+    "@esbuild/win32-arm64":
+      optional: true
+    "@esbuild/win32-ia32":
+      optional: true
+    "@esbuild/win32-x64":
+      optional: true
+  bin:
+    esbuild: bin/esbuild
+  checksum: 2911c7b50b23a9df59a7d6d4cdd3a4f85855787f374dce751148dbb13305e0ce7e880dde1608c2ab7a927fc6cec3587b80995f7fc87a64b455f8b70b55fd8ec1
   languageName: node
   linkType: hard
 
@@ -10113,7 +10262,7 @@ __metadata:
     "@tsd/typescript": ^4.9.5
     "@types/jest": ^29.4.0
     "@types/mock-fs": ^4.13.1
-    "@types/node": 16.18.13
+    "@types/node": 20.14.8
     "@types/ramda": ^0.27.23
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
@@ -11016,17 +11165,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:4.0.2":
-  version: 4.0.2
-  resolution: "micromatch@npm:4.0.2"
-  dependencies:
-    braces: ^3.0.1
-    picomatch: ^2.0.5
-  checksum: 39590a96d9ffad21f0afac044d0a5af4f33715a16fdd82c53a01c8f5ff6f70832a31b53e52972dac3deff8bf9f0bed0207d1c34e54ab3306a5e4c4efd5f7d249
-  languageName: node
-  linkType: hard
-
-"micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
+"micromatch@npm:^4.0.4, micromatch@npm:^4.0.5, micromatch@npm:^4.0.7":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
   dependencies:
@@ -12461,7 +12600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.0.5, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.3, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
@@ -14643,6 +14782,7 @@ __metadata:
   resolution: "typescript-nodenext-resolution@workspace:test/typescript-nodenext-resolution"
   dependencies:
     "@lingui/core": "workspace:*"
+    "@lingui/macro": "workspace:*"
     "@lingui/react": "workspace:*"
     typescript: 4.9.5
   languageName: unknown
@@ -14732,6 +14872,13 @@ __metadata:
   bin:
     unbuild: dist/cli.mjs
   checksum: abf70bcf94045ec213b8466357ba8db33badba11cec87c58d4a142c0a628430f45ada574a835b9a5a217352f313067afd2ce1389c61941a74eccec23a1769787
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 

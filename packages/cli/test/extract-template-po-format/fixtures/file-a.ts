@@ -1,4 +1,4 @@
-import { defineMessage, t } from "@lingui/macro"
+import { defineMessage, t } from "@lingui/core/macro"
 import { i18n } from "@lingui/core"
 
 const msg = t`Hello world`

@@ -193,7 +193,23 @@ const sidebar = [
   {
     type: "category",
     label: "Sync & Collaboration Tools",
-    items: ["tools/introduction", "tools/crowdin", "tools/translation-io"],
+    items: [
+      {
+        type: "doc",
+        label: "Introduction",
+        id: "tools/introduction",
+      },
+      {
+        type: "doc",
+        label: "Crowdin",
+        id: "tools/crowdin",
+      },
+      {
+        type: "doc",
+        label: "Translation.io",
+        id: "tools/translation-io",
+      },
+    ],
   },
   {
     type: "category",
@@ -203,7 +219,7 @@ const sidebar = [
   {
     type: "category",
     label: "Releases",
-    items: ["releases/migration-4", "releases/migration-3"],
+    items: ["releases/migration-5", "releases/migration-4", "releases/migration-3"],
   },
 ];
 

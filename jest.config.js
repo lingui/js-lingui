@@ -59,6 +59,7 @@ module.exports = {
       setupFilesAfterEnv: [require.resolve("./scripts/jest/env.js")],
       roots: [
         "<rootDir>/packages/babel-plugin-extract-messages",
+        "<rootDir>/packages/babel-plugin-lingui-macro",
         "<rootDir>/packages/cli",
         "<rootDir>/packages/conf",
         "<rootDir>/packages/loader",
