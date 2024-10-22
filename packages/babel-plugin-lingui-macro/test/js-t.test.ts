@@ -167,17 +167,6 @@ macroTester({
         `,
     },
     {
-      name: "stripMessageField option - Message prop is kept during extraction process if extract: true and stripMessageField: true",
-      macroOpts: {
-        extract: true,
-        stripMessageField: true,
-      },
-      code: `
-          import { t } from '@lingui/macro'
-          const msg = t\`Message\`
-        `,
-    },
-    {
       name: "Production - only essential props are kept",
       production: true,
       code: `

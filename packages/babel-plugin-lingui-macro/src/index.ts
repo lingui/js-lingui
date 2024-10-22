@@ -48,16 +48,12 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
 }
 
 function shouldStripMessageProp(opts: LinguiPluginOpts) {
-  if (opts.extract) {
-    // never strip message during extraction process
-    return false
-  }
   if (typeof opts.stripMessageField === "boolean") {
     // if explicitly set in options, use it
     return opts.stripMessageField
   }
-  // default to strip message in production if no explicit option is set
-  return process.env.NODE_ENV === "production"
+  // default to strip message in production if no explicit option is set and not during extract
+  return process.env.NODE_ENV === "production" && !opts.extract
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
