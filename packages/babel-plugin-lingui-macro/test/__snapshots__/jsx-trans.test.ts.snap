@@ -813,25 +813,6 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
-exports[`stripMessageField option - Message prop is kept during extraction process if extract: true and stripMessageField: true 1`] = `
-import { Trans } from "@lingui/macro";
-<Trans id="msg.hello">Hello World</Trans>;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { Trans as _Trans } from "@lingui/react";
-<_Trans
-  {
-    /*i18n*/
-    ...{
-      id: "msg.hello",
-      message: "Hello World",
-    }
-  }
-/>;
-
-`;
-
 exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
 import { Trans } from "@lingui/macro";
 <Trans id="msg.hello">Hello World</Trans>;
