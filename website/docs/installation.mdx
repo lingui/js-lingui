@@ -10,7 +10,7 @@ import TabItem from "@theme/TabItem";
 
 Lingui is more than just a package; it's a comprehensive suite of tools designed to simplify internationalization. You have the flexibility to choose the specific tools that best fit your project's needs.
 
-Learn how to install Lingui in your project, whether you use JavaScript, React or React Native. Lingui also supports various transpilers and build tools, such as Babel, SWC, and Vite.
+Learn how to install Lingui in your project, whether you use JavaScript, React (including RSC) or React Native. Lingui also supports various transpilers and build tools, such as Babel, SWC, and Vite.
 
 ## Prerequisites
 
@@ -21,11 +21,11 @@ Learn how to install Lingui in your project, whether you use JavaScript, React o
 Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
 :::
 
-## Choosing Transpiler
+## Choosing a Transpiler
 
-> A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more detailed implementations.
+> A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more verbose implementations.
 
-Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU Message Format](/docs/guides/message-format.md) and extracting message IDs. Both Babel and SWC transpilers are supported. Depending on your project setup, you can choose the one that suits your needs.
+Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU Message Format](/docs/guides/message-format.md) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses.
 
 <Tabs groupId="transpiler" queryString>
 <TabItem value="babel" label="Babel" default>

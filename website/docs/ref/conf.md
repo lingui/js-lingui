@@ -15,7 +15,7 @@ By default, Lingui looks for the configuration in the following locations:
 
 You can also define the environment variable `LINGUI_CONFIG` with the path to your config file.
 
-In the case of TypeScript based config you can use ESM format and _export default_.
+In the case of TypeScript-based config you can use ESM format and _export default_.
 
 ## catalogs
 
