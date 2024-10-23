@@ -5,11 +5,13 @@ description: Comparison of Lingui and i18next internationalization libraries
 
 # Comparison with i18next
 
-[i18next](https://www.i18next.com/) is an internationalization-framework written in and for JavaScript. i18next and Lingui are two popular internationalization (i18n) libraries used for translating and localizing JS-based applications. Both libraries have their strengths and weaknesses, and which one is best for a particular project depends on the project's specific needs.
+[i18next](https://www.i18next.com/) is a widely used internationalization framework designed specifically for JavaScript applications. Both i18next and Lingui are popular libraries for translating and localizing JavaScript-based projects, each offering unique strengths and features.
 
-## Basic comparison
+The choice between them ultimately depends on the specific needs of your project.
 
-Here is a basic example of the i18next usage:
+## Basic Comparison
+
+Here's a simple example of how to use i18next:
 
 ```js
 import i18next from "i18next";
@@ -24,11 +26,15 @@ i18next.init({
     },
   },
 });
-// ...
+```
+
+```js
+import i18next from "i18next";
+
 document.getElementById("output").innerHTML = i18next.t("key");
 ```
 
-Since the Lingui v4 release, there is a core function [i18n.t(...)](/docs/ref/core.md#i18n.t) that allows doing pretty much the same thing. The following example shows how this works with Lingui:
+The equivalent example with Lingui looks like this:
 
 ```js title="lingui.config.{js,ts}"
 /** @type {import('@lingui/conf').LinguiConfig} */
@@ -45,48 +51,72 @@ module.exports = {
 ```
 
 ```js
-import { i18n } from "@lingui/core";
+import { t } from "@lingui/core/macro";
 
-document.getElementById("output").innerHTML = i18n.t({ id: "key", message: "Hello world" });
+document.getElementById("output").innerHTML = t`Hello world`;
 ```
 
-:::note
-The `message` property can be specified in the case of [Message Extraction](/docs/guides/message-extraction.md) usage flow. You can use the `i18n.t` function only with the `id`, but in this case you'll have to manage your localization catalogs yourself, without advantages of the [message extraction](/docs/guides/message-extraction.md) feature.
+:::tip
+This example uses a macro for the translation. Macros are a powerful feature of Lingui that allows you to write messages directly in your code. Read more about [Macros](/docs/ref/macro.mdx).
 :::
+
+If you prefer to use explicit IDs for your messages, you can utilize the `msg` macro:
+
+```js
+import { msg } from "@lingui/core/macro";
+
+msg({ id: "msg.greeting", message: `Hello World` });
+```
+
+Read more about [Explicit vs Generated Message IDs](/docs/guides/explicit-vs-generated-ids.md).
 
 ## Interpolation
 
-Interpolation is one of the most used functionalities in I18N. It allows integrating dynamic values into your translations.
+Interpolation is a key internationalization (i18n) feature that allows you to insert dynamic values into your translations. Both Lingui and i18next support interpolation.
 
 i18next sample:
 
 ```js
+import i18next from "i18next";
+
+i18next.t("My name is {name}", { name: "Tom" });
 i18next.t("msg.name", { name: "Tom" });
 ```
 
 Lingui sample:
 
 ```js
-i18n._({ id: "msg.name", message: "My name is {name}", values: { name: "Tom" } });
+import { msg, t } from "@lingui/core/macro";
+
+const name = "Tom";
+
+t`My name is ${name}`;
+msg({ id: "msg.name", message: `My name is ${name}` });
 ```
 
 ## Formatting
 
-Both the Lingui and i18next formatting functions are based on the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
+Both Lingui and i18next formatting functions are based on the [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
 ### Numbers
 
 i18next sample:
 
 ```js
+import i18next from "i18next";
+
 i18next.t("intlNumber", { val: 1000 });
 // --> Some 1,000
+
 i18next.t("intlNumber", { val: 1000.1, minimumFractionDigits: 3 });
 // --> Some 1,000.100
+
 i18next.t("intlNumber", { val: 1000.1, formatParams: { val: { minimumFractionDigits: 3 } } });
 // --> Some 1,000.100
+
 i18next.t("intlNumberWithOptions", { val: 2000 });
 // --> Some 2,000.00
+
 i18next.t("intlNumberWithOptions", { val: 2000, minimumFractionDigits: 3 });
 // --> Some 2,000.000
 ```
@@ -116,8 +146,11 @@ i18n.number(12345.678, { style: "currency", currency: "CZK" });
 i18next sample:
 
 ```js
+import i18next from "i18next";
+
 i18next.t("intlDateTime", { val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) });
 // --> On the 12/20/2012
+
 i18next.t("intlDateTime", {
   val: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)),
   formatParams: {
@@ -147,7 +180,7 @@ i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
 
 ## Plurals
 
-Lingui uses the ICU MessageFormat syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
+Lingui uses the [ICU MessageFormat](/docs/guides/message-format.md)) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
 
 For example:
 
@@ -158,7 +191,7 @@ plural(numBooks, {
 });
 ```
 
-Under the hood, plural is replaced with low-level `i18n._`. For production, the above example will become:
+Under the hood, the [`plural`](/docs/ref/macro.mdx#plural) macro is replaced with a low-level [`i18n._`](/docs/ref/core.md#i18n._) call. In production, the example will look like this:
 
 ```js
 i18n._({
@@ -169,7 +202,7 @@ i18n._({
 });
 ```
 
-When we extract messages from source code using Lingui CLI, we get:
+When we extract messages from the source code using the [Lingui CLI](/docs/ref/cli.md), we get:
 
 ```icu-message-format
 {numBooks, plural, one {# book} other {# books}}
@@ -185,6 +218,8 @@ i18next handles plurals differently. It requires a separate key to be defined fo
 ```
 
 ```js
+import i18next from "i18next";
+
 i18next.t("key", { count: 0 }); // -> "items"
 i18next.t("key", { count: 1 }); // -> "item"
 i18next.t("key", { count: 5 }); // -> "items"
@@ -192,30 +227,69 @@ i18next.t("key", { count: 5 }); // -> "items"
 
 ## Context
 
-By providing a context you can differ translations. Both i18next and Lingui have the context feature to differentiate messages.
+By providing context, you can differentiate translations for the same sentences or provide translators with more details. Both i18next and Lingui have the context feature to differentiate messages. However, Lingui provides an automatic additional "context" by including in the `.po` file the locations where each message is used - i18next can't do this from its plain JSON files.
+
+i18next sample:
+
+```js
+import i18next from "i18next";
+
+i18next.t("Right", { context: "direction" });
+```
+
+Lingui sample:
+
+```js
+import { msg } from "@lingui/core/macro";
+
+msg({
+  message: "Right",
+  context: "direction",
+});
+```
+
+## React Integration
+
+Both libraries provide React components for handling translations in React applications. Lingui provides a set of [React Macros](/docs/ref/macro.mdx#react-macros) that simplify writing messages directly in your code. i18next provides a `Trans` component to handle translations in JSX.
+
+i18next sample:
+
+```jsx
+import { Trans } from "react-i18next";
+
+const HelloWorld = () => {
+  return <Trans i18nKey="welcome">Hello World!</Trans>;
+};
+```
+
+Lingui sample:
+
+```jsx
+import { Trans } from "@lingui/react/macro";
+
+const HelloWorld = () => {
+  return <Trans>Hello World!</Trans>;
+};
+```
 
 ## Summary
 
-This is a rather short comparison. Both libraries have quite different concepts, but at the same time the core internationalization approaches are similar and use the same background.
+This is a rather brief comparison. Both libraries have quite different concepts, but at the same time the core internationalization approaches are similar and use the same background.
 
-On top of that, [Lingui](https://github.com/lingui/js-lingui):
+**On top of that, Lingui:**
 
-- supports rich-text messages
-- provides macros to simplify writing messages using MessageFormat syntax
-- provides a CLI for extracting and compiling messages
-- supports a number of [Catalog formats](/docs/ref/catalog-formats.md), including [Custom Formatters](/docs/guides/custom-formatter.md)
-- is very small (**3kb** gzipped), fast, flexible, and stable
-- works for vanilla JS, Next.js, Vue.js, Node.js etc.
-- is actively maintained.
+- Supports rich-text messages.
+- Provides macros to simplify writing messages using ICU MessageFormat syntax.
+- Provides a CLI tool for extracting and compiling messages.
+- Supports a number of [Catalog Formats](/docs/ref/catalog-formats.md), including [Custom Formatters](/docs/guides/custom-formatter.md).
+- Is very small, fast, flexible, and stable.
+- Works with vanilla JS, React (including RSC), Next.js, Node.js, Vue.js etc.
+- Is actively maintained.
 
-On the other hand, [i18next](https://www.i18next.com/):
+**On the other hand, i18next:**
 
-- mature. Based on how long i18next already is available open source, there is no real i18n case that could not be solved with i18next
-- extensible
-- has a big ecosystem.
+- Is mature. Based on how long i18next has been open source, there is no real i18n case that cannot be solved with i18next.
+- Is extensible, with many plugins and tools developed by other contributors, including extractors, locale identifiers, etc.
+- Has a big ecosystem.
 
-Lingui is a great choice for projects that require modern and efficient translation approaches, support for popular frameworks, and tools for managing translations. However, whether Lingui is better than i18next or not depends on the specific needs of the project.
-
-## Discussion
-
-Do you have any comments or questions? Please join the discussion at [GitHub](https://github.com/lingui/js-lingui/discussions) or raise an [issue](https://github.com/lingui/js-lingui/issues/new). All feedback is welcome!
+In conclusion, Lingui is an excellent option for projects that need modern and efficient translation methods, support for popular frameworks, and effective translation management tools. However, the choice between Lingui and i18next ultimately depends on the specific requirements of your project.

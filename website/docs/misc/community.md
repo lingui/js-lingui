@@ -1,33 +1,36 @@
 ---
 title: Community and Contributing
+description: Learn how to connect with the Lingui community and contribute to the project
 ---
+
+For any open-source project, the community is the backbone of success. It's the community that drives growth, provides valuable feedback, and contributes to the project in countless ways.
 
 ## Community
 
 Lingui has a significant number of developers as a part of its community.
 
-On this page we've listed some Lingui-related communities that you can be a part of; see the other pages in this section for additional online and in-person learning materials.
+On this page, you'll find links to various Lingui-related communities you can join, as well as additional resources for learning and collaboration. Be sure to explore the other pages in this section for more learning opportunities.
 
-Before participating in Lingui's communities, please read our [Code of Conduct](https://github.com/lingui/js-lingui/blob/main/CODE_OF_CONDUCT.md). We expect that all community members adhere to the guidelines within.
+Before participating, please take a moment to review our [Code of Conduct](https://github.com/lingui/js-lingui/blob/main/CODE_OF_CONDUCT.md). We expect all members to follow these guidelines to ensure a positive and welcoming environment for everyone.
+
+### Discussion Forums
+
+The [Lingui Discord Server](https://discord.gg/gFWwAYnMtA) is a place where you can learn, share, and collaborate about anything and everything Lingui.
+
+![Join the community on Discord](https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square)
+
+- Connect with users in the community.
+- Get your questions answered and learn cool new tips and tricks.
+- Get notifications about new content from Lingui and the community.
+- Share your knowledge and experience with others.
 
 ### Stack Overflow
 
 Stack Overflow is a popular forum to ask code-level questions or if you're stuck with a specific error. Read through the [existing questions](https://stackoverflow.com/questions/tagged/linguijs) tagged with `linguijs` or [ask your own](https://stackoverflow.com/questions/ask?tags=linguijs)!
 
-### Discussion forums
-
-The [Lingui Discord server](https://discord.gg/gFWwAYnMtA) is a place where you can learn, share, and collaborate about anything and everything Lingui.
-
-![Join the community on Discord](https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square)
-
-- Connect with users from the community.
-- Get your questions answered and learn cool new tips and tricks.
-- Watch for notifications of new content from Lingui and the community.
-- Share your knowledge and expertise with others.
-
 ### News
 
-For the latest news about Lingui, follow [@LinguiJS](https://twitter.com/LinguiJS) on Twitter.
+For the latest news about Lingui, follow [@LinguiJS](https://x.com/LinguiJS) on X.
 
 ## Contributing
 
