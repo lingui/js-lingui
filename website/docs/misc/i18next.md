@@ -60,12 +60,12 @@ document.getElementById("output").innerHTML = t`Hello world`;
 This example uses a macro for the translation. Macros are a powerful feature of Lingui that allows you to write messages directly in your code. Read more about [Macros](/docs/ref/macro.mdx).
 :::
 
-If you prefer to use explicit IDs for your messages, you can utilize the `msg` macro:
+If you prefer to define explicit IDs for your messages, you can follow this approach:
 
 ```js
-import { msg } from "@lingui/core/macro";
+import { t } from "@lingui/core/macro";
 
-msg({ id: "msg.greeting", message: `Hello World` });
+document.getElementById("output").innerHTML = t({ id: "msg.greeting", message: `Hello World` });
 ```
 
 Read more about [Explicit vs Generated Message IDs](/docs/guides/explicit-vs-generated-ids.md).
@@ -86,12 +86,12 @@ i18next.t("msg.name", { name: "Tom" });
 Lingui sample:
 
 ```js
-import { msg, t } from "@lingui/core/macro";
+import { t } from "@lingui/core/macro";
 
 const name = "Tom";
 
 t`My name is ${name}`;
-msg({ id: "msg.name", message: `My name is ${name}` });
+t({ id: "msg.name", message: `My name is ${name}` });
 ```
 
 ## Formatting
@@ -180,7 +180,7 @@ i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
 
 ## Plurals
 
-Lingui uses the [ICU MessageFormat](/docs/guides/message-format.md)) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
+Lingui uses the [ICU MessageFormat](/docs/guides/message-format.md) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
 
 For example:
 
@@ -227,7 +227,7 @@ i18next.t("key", { count: 5 }); // -> "items"
 
 ## Context
 
-By providing context, you can differentiate translations for the same sentences or provide translators with more details. Both i18next and Lingui have the context feature to differentiate messages. However, Lingui provides an automatic additional "context" by including in the `.po` file the locations where each message is used - i18next can't do this from its plain JSON files.
+By providing context, you can differentiate translations for the same sentences or provide translators with more details. Both i18next and Lingui have the context feature to differentiate messages.
 
 i18next sample:
 
@@ -247,6 +247,19 @@ msg({
   context: "direction",
 });
 ```
+
+:::tip
+Lingui automatically provides additional context by including in the `.po` file the locations where each message is used, and `msgctxt` if the context is specified. This is useful for translators to understand the context of the message:
+
+```gettext title="en.po"
+#: src/App.js:5
+msgctxt "direction"
+msgid "Right"
+msgstr "Right"
+```
+
+i18next can't do this from its plain JSON files.
+:::
 
 ## React Integration
 
