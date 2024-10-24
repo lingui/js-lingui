@@ -5,40 +5,53 @@ description: Learn about message extraction in i18n and how to use Lingui to ext
 
 # Message Extraction
 
-Message extraction is an essential step in the internationalization process. It involves analyzing your code and extracting all messages defined in it so that your message catalogs are always up-to-date with the source code.
+Message extraction is a key part of the internationalization process. It involves scanning your codebase to identify and extract all the defined messages, ensuring that your message catalogs stay synchronized with the source code.
 
-To extract messages (as marked with `<Trans>`, `t` or other macros) from your application, use the `lingui extract` cli command.
+In practice, developers define messages directly in the source code, and the extraction tool automatically collects these messages and stores them in a message catalog for translation.
 
-## Supported patterns
+Read more about the [`lingui extract`](/docs/ref/cli.md) command.
 
-The extractor operates on a static level and doesn't execute your code. As a result, complex patterns and dynamic code are not supported.
+## Supported Patterns
 
-### Macro usages
+The extractor operates at a static level, meaning that it analyzes the source code without executing it. As a result, it doesn't support complex patterns or dynamic code, and only simple, statically defined messages are collected.
 
-Extractor supports all macro usages, such as the following examples:
+### Macros Usage
+
+> Macros are JavaScript functions that run at build time. The value returned by a macro is inlined into the bundle instead of the original function call.
+
+The Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](/docs/guides/message-format.md) messages at compile time.
+
+Extractor supports all macro usage, such as the following examples:
 
 ```tsx
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+
 t`Message`;
 
 t({
-  id: "ID Some",
-  message: "Message with id some",
+  id: "custom.id",
+  message: "Message with custom ID",
 });
 
 const jsx = <Trans>Hi, my name is {name}</Trans>;
 ```
 
-For more usage examples, refer to the [macro documentation](/docs/ref/macro.mdx).
+The extractor matches the `t` and `Trans` macro calls and extracts the messages from them.
 
-### Non-Macro usages
+For more usage examples, see to the [Macros](/docs/ref/macro.mdx) reference.
 
-Note that the non-macro usage is not common. We recommend you use macros.
+### Non-Macros Usage
+
+Non-macro use is also supported, but it's not common. It's recommended to use macros.
 
 The extractor matches `i18n._` or `i18n.t` function calls. It also matches when these functions are called from other member expressions, such as `ctx.i18n.t()`.
 
-:::note
-Extractor matches calls only by name. It doesn't check whether they were really imported from Lingui packages.
+:::caution
+The extractor only matches calls by name. It doesn't check if they are really imported from Lingui packages.
 :::
+
+For example:
 
 ```ts
 i18n._("message.id");
@@ -52,18 +65,18 @@ ctx.request.i18n.t("message.id");
 // and so on
 ```
 
-You can ignore a specific call expression by adding a `lingui-extract-ignore` comment.
+To ignore a specific call expression during extraction, you can add a `lingui-extract-ignore` comment:
 
 ```ts
 /* lingui-extract-ignore */
 ctx.i18n._("Message");
 ```
 
-This message would not be extracted.
+Messages marked with this comment will be excluded from extraction.
 
-### Explicitly marking messages
+### Explicitly Marking Messages
 
-Apart from call expressions, which are the most commonly used method, the extractor tool also supports simple string literals and message descriptors with explicit annotations.
+In addition to call expressions, which are the most commonly used method, the extractor tool also supports simple string literals and message descriptors with explicit annotations.
 
 To do this, simply prefix your expression with the `/*i18n*/` comment, like so:
 
@@ -74,58 +87,54 @@ const stringLiteral = /*i18n*/ "Message";
 
 ## Unsupported Patterns
 
-The extractor is limited to extracting messages from code that is written in a certain way. It cannot extract messages from variables or function calls. It also cannot follow program structure and get the value of a variable defined elsewhere.
+The extractor is limited to extracting messages from code that is written a certain way. It cannot extract messages from variables or function calls. It also cannot follow the program structure and get the value of a variable defined elsewhere.
 
-This means that in order for a message to be extracted, it must be defined directly in the function call.
-
-For example, the following code cannot be extracted:
+This means that in order for a message to be extracted, it must be defined directly in the function call:
 
 ```ts
+// ❌ This message will not be extracted
 const message = "Message";
 i18n._(message);
-```
 
-Instead, you should define the message directly in the function arguments:
-
-```ts
+// ✅ This message will be extracted
 i18n._("Message");
 ```
 
-## Defining sources for analyzing
+## Defining Sources for Analyzing
 
-The lingui extract command can discover source files in two ways: by using a glob pattern or by crawling the dependency tree.
+The extractor can locate source files in two ways: by specifying a glob pattern or by crawling the dependency tree.
 
 ### Glob Pattern
 
-By default, `lingui extract` uses a glob pattern to search for source files that contain messages.
+By default, `lingui extract` uses a glob pattern to search for source files containing messages.
 
-The pattern is defined in the `catalogs` property in the `lingui.config.js` file, which is located in the root directory of your project.
+The pattern is defined in the [`catalogs`](/docs//ref/conf.md#catalogs) property of the Lingui configuration file in your project's root directory.
 
 ![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme.jpg#gh-light-mode-only)
 ![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme-dark.jpg#gh-dark-mode-only)
 
-### Dependency tree crawling (experimental)
+### Dependency Tree Crawling
 
-:::caution
-This is experimental feature. Experimental features not covered by semver and might be subject of a change.
+While the glob-based extraction process works well for most projects, it can be challenging for multi-page applications (MPAs) such as Next.js. In such cases, the glob approach generates a single catalog that includes all messages from each page, which may not be ideal for effectively managing translations.
+
+This means that the entire catalog must be loaded for each page or navigation, resulting in unnecessary loading of messages that aren't utilized on that specific page.
+
+To address this issue, an `experimental-extractor` has been introduced in Lingui v4.
+
+:::caution Experimental
+This is an experimental feature. Experimental features are not covered by semver and may be subject to change.
 :::
-
-Although the glob-based extraction process is effective for most projects, however, multipage (MPA) frameworks such as NextJS pose a problem because the glob-based approach creates a catalog consisting of all messages from all pages.
-
-This means that the entire catalog must be loaded for each page/navigation, which results in loading messages that are not used on that page.
-
-To address this issue, a new `experimental-extractor` has been introduced in version 4.
 
 This extractor uses the dependency tree of files, rather than just a glob pattern, to crawl imports and discover files more accurately.
 
 By doing so, it creates a more optimized catalog that only contains the messages needed for each page.
 
-The catalogs would still contain duplicating messages for common components, but it would be much better than the current approach.
+The catalogs would still contain duplicate messages for common components, but it would be much better than the current approach.
 
 ![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.jpg#gh-light-mode-only)
 ![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme-dark.jpg#gh-dark-mode-only)
 
-To start using `experimental-extractor`, you need to add the following section to lingui config:
+To start using `experimental-extractor`, add the following section to your Lingui configuration:
 
 ```ts
 /**
@@ -150,19 +159,19 @@ module.exports = {
 };
 ```
 
-And then call in the terminal:
+Then run the following command in your terminal:
 
 ```bash
 lingui extract-experimental
 ```
 
-#### Notes
+#### Important Notes
 
-It's worth noting that the accuracy of the catalog heavily relies on tree-shaking, a technique used by modern bundlers to eliminate unused code from the final bundle.
+It's worth noting that the accuracy of the catalog depends heavily on tree-shaking, a technique used by modern bundlers to remove unused code from the final bundle.
 
-If the code passed to the extractor is written in a tree-shakeable way, the user will receive highly accurate catalogs.
+If the code passed to the extractor is written in a tree-shakeable way, the user will get highly accurate catalogs.
 
-While you might think that your code is tree-shakeable, in practice, tree-shaking might work differently than what you expect and some unwanted strings may be included in the catalogs.
+While you may think that your code is tree-shakeable, in practice tree-shaking may work differently than you expect, and some unwanted strings may be included in the catalogs.
 
 To illustrate, let's consider the following code:
 
@@ -185,16 +194,24 @@ export const species = {
 };
 ```
 
-On the surface, it may appear that this code can be safely removed from the final bundle if it's not used. However, the `msg` function call can potentially produce a side effect, preventing the bundler from removing the entire `species` object from the final bundle. As a result, messages defined in this snippet may be included in more catalogs than expected.
+On the surface, it may appear that this code can be safely removed from the final bundle if it isn't used. However, the `msg` function call may have a side effect that prevents the bundler from removing the entire `species` object from the final bundle. As a result, messages defined in this snippet may be included in more catalogs than expected.
 
-To avoid this issue, one solution is to wrap the `species` object inside an Immediately Invoked Function Expression (IIFE) and add the `/* @__PURE__ */` annotation.
+:::tip
+To avoid this issue, one solution is to wrap the `species` object inside an _Immediately Invoked Function Expression_ (IIFE) and add the `/* @__PURE__ */` annotation.
+:::
 
-By adding this annotation to the IIFE, we are telling the bundler that the entire `species` object can be safely removed if it is not used or exported elsewhere in the code.
+By adding this annotation to the IIFE, we tell the bundler that the entire `species' object can be safely removed if it is not used or exported elsewhere in the code.
 
-## Supported source types
+## Supported Source Types
 
-The extractor supports TypeScript, Flow and JavaScript (Stage 3) out of the box.
+The extractor supports TypeScript, Flow, and JavaScript (Stage 3) out of the box.
 
-If you use some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your custom extractor.
+If you are using some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your own custom extractor.
 
-Visit [Advanced: Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.
+Visit [Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.
+
+## See Also
+
+- [Lingui CLI Reference](/docs/ref/cli.md)
+- [Macros Reference](/docs/ref/macro.mdx)
+- [Catalog Formats](/docs/ref/catalog-formats.md)

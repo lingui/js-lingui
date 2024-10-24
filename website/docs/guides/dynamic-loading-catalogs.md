@@ -1,12 +1,19 @@
+---
+title: Dynamic Loading of Message Catalogs
+description: Learn how to set up dynamic loading of message catalogs in Lingui to reduce bundle size and improve performance
+---
+
 # Dynamic Loading of Message Catalogs
 
-[`I18nProvider`](/docs/ref/react.md#i18nprovider) doesn't assume anything about your app and it's the developer responsibility to load messages based on active language.
+Internationalization in modern applications requires an efficient way to manage and load localized messages without overwhelming the initial bundle size. With Lingui's flexible approach, the developer is responsible for dynamically loading message catalogs based on the active language.
 
-Here's an example of a basic setup with a dynamic load of catalogs.
+The [`I18nProvider`](/docs/ref/react.md#i18nprovider) component doesn't make assumptions about your app's structure, giving you the freedom to load only the necessary messages for the currently selected language.
+
+This guide shows how to set up dynamic loading of message catalogs, ensuring only the needed catalogs are loaded, which reduces bundle size and improves performance.
 
 ## Final i18n Loader Helper
 
-Here's the full source of `i18n.ts` logic:
+The following code defines the complete logic for dynamically loading and activating message catalogs based on the selected locale. It ensures that only the required catalog is loaded at runtime, optimizing performance:
 
 ```tsx title="i18n.ts"
 import { i18n } from "@lingui/core";
@@ -28,7 +35,9 @@ export async function dynamicActivate(locale: string) {
 }
 ```
 
-**How should I use the dynamicActivate in our application?**
+### Usage in Your Application
+
+To use the `dynamicActivate` function in your application, you must call it on application startup. The following example shows how to use it in a React application:
 
 ```jsx
 import React, { useEffect } from "react";
@@ -62,10 +71,10 @@ i18n-1.f0cf2e3d.chunk.js
 main.ab4626ef.js
 ```
 
-When page is loaded initially, only main bundle and bundle for the first language are loaded:
+When the page is first loaded, only the main bundle and the bundle for the first language are loaded:
 
 ![Requests during the first render](/img/docs/dynamic-loading-catalogs-1.png)
 
-After changing language in UI, the second language bundle is loaded:
+After changing the language in the UI, the second language bundle is loaded:
 
 ![Requests during the second render](/img/docs/dynamic-loading-catalogs-2.png)
