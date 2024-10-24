@@ -1,0 +1,192 @@
+---
+title: Installation and Setup
+description: Learn how to install Lingui in your project
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Installation and Setup
+
+Lingui is more than just a package; it's a comprehensive suite of tools designed to simplify internationalization. You have the flexibility to choose the specific tools that best fit your project's needs.
+
+Learn how to install Lingui in your project, whether you use JavaScript, React (including RSC) or React Native. Lingui also supports various transpilers and build tools, such as Babel, SWC, and Vite.
+
+## Prerequisites
+
+- Make sure you have [Node.js](https://nodejs.org/) installed (v20 or higher).
+- Install [Lingui CLI](/docs/ref/cli.md) to manage your translations and catalogs.
+
+:::tip
+Don't miss the [Lingui ESLint Plugin](/docs/ref/eslint-plugin.md) which can help you find and prevent common l10n mistakes in your code.
+:::
+
+## Choosing a Transpiler
+
+> A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more verbose implementations.
+
+Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/docs/guides/message-format.md) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses.
+
+<Tabs groupId="transpiler" queryString>
+<TabItem value="babel" label="Babel" default>
+
+> Babel is a JavaScript transpiler that converts modern code into backward-compatible versions and allows custom syntax transformations.
+
+Lingui requires `@lingui/babel-plugin-lingui-macro` (recommended) or [`babel-plugin-macros`](https://github.com/kentcdodds/babel-plugin-macros) to perform the transformation.
+
+If you are using a framework that doesn't allow you to change the Babel configuration (e.g. Create React App > 2.0), these frameworks may support `babel-plugin-macros` out of the box.
+
+Follow these steps to set up Lingui with Babel:
+
+1.  Install the `@lingui/babel-plugin-lingui-macro` package as a development dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/babel-plugin-lingui-macro
+    ```
+
+2.  Add `@lingui/babel-plugin-lingui-macro` to the top of the `plugins` section of your Babel config (e.g. `.babelrc`):
+
+    ```json
+    {
+      "plugins": ["@lingui/babel-plugin-lingui-macro"]
+    }
+    ```
+
+:::tip
+When using a preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up `@lingui/babel-plugin-lingui-macro`. For example, `react-scripts` already includes the `macros` plugin.
+:::
+
+</TabItem>
+<TabItem value="swc" label="SWC">
+
+> SWC is an extensible Rust-based platform for the next generation of fast developer tools.
+
+Lingui supports SWC with a dedicated plugin [`@lingui/swc-plugin`](/docs/ref/swc-plugin.md). SWC is significantly faster than Babel and is a good choice for large projects.
+
+Follow these steps to set up Lingui with SWC:
+
+1.  Install `@lingui/swc-plugin` as a development dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/swc-plugin
+    ```
+
+2.  [Add necessary configurations](/docs/ref/swc-plugin.md#usage).
+
+:::caution
+SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed. See the [SWC compatibility](/docs/ref/swc-plugin.md#swc-compatibility) for more information.
+:::
+
+</TabItem>
+</Tabs>
+
+## Basic Configuration
+
+Lingui needs a configuration file to work. The configuration file specifies the source files, message catalogs, and other settings.
+
+Let's create a basic configuration file in the root of your project (next to `package.json`):
+
+```js title="lingui.config.js"
+/** @type {import('@lingui/conf').LinguiConfig} */
+module.exports = {
+  sourceLocale: "en",
+  locales: ["cs", "en"],
+  catalogs: [
+    {
+      path: "<rootDir>/src/locales/{locale}/messages",
+      include: ["src"],
+    },
+  ],
+};
+```
+
+The configuration above specifies the source locale as English and the target locales as Czech and English.
+
+According to this configuration, Lingui will extract messages from source files in the `src` directory and write them to message catalogs in `src/locales` (the English catalog would be in `src/locales/en/messages.po`, for example). See [Configuration](/docs/ref/conf.md) for a complete reference.
+
+:::note
+Replace `src` with the name of the directory where you have the source files.
+:::
+
+The PO format is the default and recommended format for message catalogs. See the [Catalog Formats](/docs/ref/catalog-formats.md) for other available formats.
+
+## Build Tools
+
+### Vite
+
+> Vite is a blazing fast frontend build tool powering the next generation of web applications.
+
+Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/docs/ref/vite-plugin.md). This plugin is responsible for extracting messages from your source code and compiling message catalogs.
+
+There are two ways to set up Lingui with Vite by using the [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) or [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc). You need to choose the one that fits your project setup.
+
+<Tabs groupId="transpiler" queryString>
+<TabItem value="babel" label="Babel (plugin-react)" default>
+
+The `@vitejs/plugin-react` plugin uses Babel to transform your code. To use Lingui with Vite and Babel, follow these steps:
+
+1.  Follow the [Choosing a Transpiler](#choosing-a-transpiler) instructions.
+
+2.  Install `@lingui/vite-plugin` as a development dependency and `@lingui/react` as a runtime dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/vite-plugin
+    npm install --save @lingui/react
+    ```
+
+3.  Setup Lingui in `vite.config.ts`:
+
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
+    import { lingui } from "@lingui/vite-plugin";
+
+    export default defineConfig({
+      plugins: [
+        react({
+          babel: {
+            plugins: ["@lingui/babel-plugin-lingui-macro"],
+          },
+        }),
+        lingui(),
+      ],
+    });
+    ```
+
+:::info
+The `@vitejs/plugin-react` does not use the Babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify Babel options directly in `vite.config.ts`.
+:::
+
+</TabItem>
+<TabItem value="swc" label="SWC (plugin-react-swc)">
+
+The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is significantly faster than Babel. To use Lingui with Vite and SWC, follow these steps:
+
+1.  Follow the [Choosing a Transpiler](#choosing-a-transpiler) instructions.
+
+2.  Install `@lingui/vite-plugin`, `@lingui/swc-plugin` as development dependencies and `@lingui/react` as a runtime dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/vite-plugin @lingui/swc-plugin
+    npm install --save @lingui/react
+    ```
+
+3.  Setup Lingui in `vite.config.ts`:
+
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react-swc";
+    import { lingui } from "@lingui/vite-plugin";
+
+    export default defineConfig({
+      plugins: [
+        react({
+          plugins: [["@lingui/swc-plugin", {}]],
+        }),
+        lingui(),
+      ],
+    });
+    ```
+
+</TabItem>
+</Tabs>

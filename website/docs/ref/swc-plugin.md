@@ -7,16 +7,14 @@ description: Use Lingui Macros in your SWC project
 
 [SWC](https://swc.rs/) is an extensible Rust-based platform for the next generation of fast developer tools.
 
-If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [LinguiJS Macro](/docs/ref/macro.mdx).
+If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [Lingui Macros](/docs/ref/macro.mdx).
 
 [![npm-version](https://img.shields.io/npm/v/@lingui/swc-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/swc-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/swc-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/swc-plugin)
 
 ## SWC Compatibility
 
-SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed.
-
-Therefore, you need to select an appropriate version of `@lingui/swc-plugin` to match the compatible `@swc/core` version.
+SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions [is not guaranteed](https://github.com/swc-project/swc/issues/5060). You need to choose an appropriate version of the `@lingui/swc-plugin` to match the compatible `@swc/core` version.
 
 :::tip
 It is recommended to check the [plugins.swc.rs](https://plugins.swc.rs/) site to find the compatible version.
@@ -28,6 +26,22 @@ Install `@lingui/swc-plugin` as a development dependency:
 
 ```bash npm2yarn
 npm install --save-dev @lingui/swc-plugin
+```
+
+To ensure that the resolved version of `@swc/core` is one of the supported versions, you can use the `resolutions` field in the `package.json` file, which is supported by Yarn:
+
+```json
+"resolutions": {
+  "@swc/core": "1.3.56"
+},
+```
+
+or `overrides` for >npm@8.3
+
+```json
+"overrides": {
+  "@swc/core": "1.3.56"
+},
 ```
 
 ## Usage

@@ -7,6 +7,12 @@ description: Reference for the Lingui React API and components
 
 Components from `@lingui/react` wrap the vanilla JS API from `@lingui/core`. React components handle changes of active language or interpolated variables better than low-level API and also take care of re-rendering when locale or messages change.
 
+## Installation
+
+```bash npm2yarn
+npm install --save @lingui/react
+```
+
 ## Rendering of Translations {#rendering-translations}
 
 All i18n components render translation as text without a wrapping tag. This can be customized in two different ways:

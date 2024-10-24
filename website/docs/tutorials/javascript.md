@@ -3,46 +3,14 @@ title: JavaScript Internationalization (i18n)
 description: Learn how to use Lingui's internationalization features in your vanilla JavaScript application
 ---
 
-# Internationalization of JavaScript Apps
+# JavaScript Apps Internationalization
 
-In this tutorial, we'll learn how to use Lingui's internationalization features that do not depend on React. We'll take a minimalist approach and cover the main functions from the `@lingui/core` package.
+In this tutorial, we'll learn how to use Lingui's internationalization features that don't depend on React. We'll take a minimalist approach and cover the main features of the `@lingui/core` package.
 
-## Introduction
+## Installing Lingui
 
-[Lingui](https://github.com/lingui/js-lingui) isn't just a package. It's a set of tools which helps you to internationalize. You can pick whichever tool you want to use in your project. We're trying to use most of them to show the full power of Lingui.
-
-Let's start with the three major packages:
-
-`@lingui/cli`
-
-> CLI for i18n management and working with message catalogs
-
-`@lingui/core`
-
-> The core library responsible for translation and handling of message catalogs
-
-`@lingui/babel-plugin-lingui-macro`
-
-> Transforms messages wrapped in tagged template literals to ICU MessageFormat and validates them.
-
-## Installation
-
-1.  Install `@lingui/cli`, `@lingui/babel-plugin-lingui-macro` and Babel core packages as development dependencies and `@lingui/core` as a runtime dependency:
-
-    ```bash npm2yarn
-    npm install --save-dev @lingui/cli @lingui/babel-plugin-lingui-macro @babel/core
-    npm install --save @lingui/core
-    ```
-
-2.  Add `macros` plugin to Babel config (e.g: `.babelrc`):
-
-    ```json
-    {
-      "plugins": ["@lingui/babel-plugin-lingui-macro"]
-    }
-    ```
-
-Now we have the environment up and running and we can start internationalizing our app!
+1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
+2. Install the [`@lingui/core`](/docs/ref/core.md) package, which is responsible for translation and handling of message catalogs.
 
 ## Setting up i18n
 

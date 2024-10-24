@@ -1,11 +1,11 @@
 ---
-title: Lingui Core package
+title: Lingui Core API
 description: The package provides the main i18n object, which manages message catalogs, active locale, and message translation and formatting
 ---
 
-# The core i18n functionality
+# Core API Reference
 
-`@lingui/core` package provides the main i18n object which manages message catalogs, active locale as well as translation and formatting of messages.
+The `@lingui/core` package provides the main i18n object which manages message catalogs, active locale as well as translation and formatting of messages.
 
 ## Installation
 

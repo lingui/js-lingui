@@ -3,13 +3,18 @@ title: React i18n with Lingui
 description: Learn how to add internationalization to a React application using Lingui
 ---
 
-# Internationalization of React Apps
+# React Apps Internationalization
 
 In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application.
 
+## Installing Lingui
+
+1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
+2. Install the [`@lingui/react`](/docs/ref/react.md) package which provides React components and hooks for internationalization.
+
 ## Let's Start
 
-We're going to translate the following app:
+We're going to translate the following one-page mailbox application:
 
 ```jsx title="src/index.js"
 import React from "react";
@@ -53,12 +58,6 @@ export default function Inbox() {
   );
 }
 ```
-
-As you can see, it's a simple mailbox application with only one page.
-
-## Installing Lingui
-
-Follow the [React Project](/docs/tutorials/setup-react.mdx) setup guide.
 
 ## Setup
 
@@ -161,35 +160,7 @@ Back to our project. It's nice to use JSX and let macros generate messages under
 
 All messages from the source code must be extracted into external message catalogs. Message catalogs are interchange files between developers and translators. We're going to have one file per language. Let's enter command line for a while.
 
-We're going to use [CLI](/docs/ref/cli.md) again. Run [`extract`](/docs/ref/cli.md#extract) command to extract messages:
-
-```bash
-> lingui extract
-
-Lingui was unable to find a config!
-
-Create 'lingui.config.js' file with Lingui configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf
-```
-
-We need to create the `lingui.config.js` file:
-
-```js title="lingui.config.js"
-/** @type {import('@lingui/conf').LinguiConfig} */
-const config = {
-  locales: ["cs", "en"],
-  catalogs: [
-    {
-      path: "<rootDir>/src/locales/{locale}/messages",
-      include: ["src"],
-    },
-  ],
-  compileNamespace: "es",
-};
-
-export default config;
-```
-
-After adding the configuration file, let's run [`extract`](/docs/ref/cli.md#extract) command again:
+Let's run the [`extract`](/docs/ref/cli.md#extract) CLI command:
 
 ```bash
 > lingui extract
@@ -259,7 +230,7 @@ Compiling message catalogs…
 Done!
 ```
 
-What just happened? If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.js`. This file contains compiled message catalog.
+If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.js`. This file contains compiled message catalog.
 
 :::tip
 If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
@@ -309,8 +280,6 @@ Let's go through the workflow again:
 Steps 1 and 7 needs to be done only once per project and locale. Steps 2 to 5 become the common workflow for internationalizing the app.
 
 It isn't necessary to extract/translate messages one by one. This usually happens in batches. When you finalize your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate latest message catalogs and before building the app for production, run [`compile`](/docs/ref/cli.md#compile).
-
-For more info about CLI, checkout the [CLI reference](/docs/ref/cli.md).
 
 ## Non-JSX Translation
 
