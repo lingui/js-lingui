@@ -131,16 +131,12 @@ const config: Config = {
               to: "/blog",
             },
             {
+              label: "X",
+              href: "https://x.com/LinguiJS",
+            },
+            {
               label: "GitHub",
               href: "https://github.com/lingui/js-lingui",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/LinguiJS",
-            },
-            {
-              label: "ICU Playground",
-              href: "https://format-message.github.io/icu-message-format-for-translators/editor.html",
             },
           ],
         },

@@ -1,5 +1,7 @@
 # Talks and Articles
 
+Discover a collection of talks and articles on Lingui and the broader topic of internationalization.
+
 ## Articles
 
 - [How to Localize JavaScript and React Apps with LinguiJS](https://crowdin.com/blog/2022/12/13/lingui-i18n?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) - by [Crowdin](https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev)
@@ -14,7 +16,3 @@
 - [Let React speak your language](https://www.youtube.com/watch?v=soAEB7ltQPk) - by Tomáš Ehrlich
 - [Internationalization is a piece of cake](https://www.youtube.com/watch?v=vhUiL_wUAjo) - by Eli Schutze
 - [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512) - by [Vojtech Novak](https://twitter.com/vonovak); covers RN but general i18n topics as well
-
----
-
-Would like to add something to the list? Visit the [Contributing](/misc/community#contributing) section.
