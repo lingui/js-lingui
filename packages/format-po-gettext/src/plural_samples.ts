@@ -185,11 +185,11 @@ let compiled = {};
 const pluralRules = {}
 
 // Parse plural rules
-Object.entries(cardinals.supplemental['plurals-type-cardinal']).forEach(([ loc, ruleset ]) => {
-  let rules = renameKeys(ruleset);
+// Object.entries(cardinals.supplemental['plurals-type-cardinal']).forEach(([ loc, ruleset ]) => {
+//   let rules = renameKeys(ruleset);
 
-  compiled[loc.toLowerCase()] = createLocaleFn(rules);
-  pluralRules[loc.toLowerCase()] = createLocaleTest(rules);
-});
+//   compiled[loc.toLowerCase()] = createLocaleFn(rules);
+//   pluralRules[loc.toLowerCase()] = createLocaleTest(rules);
+// });
 
 export default pluralRules
