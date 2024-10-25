@@ -19,7 +19,7 @@ In the case of TypeScript-based config you can use ESM format and _export defaul
 
 ## catalogs
 
-Default:
+Default value:
 
 ```js
 [
@@ -156,7 +156,7 @@ components/
 
 ## locales
 
-Default: `[]`
+Default value: `[]`
 
 The locale tags used in the project. The [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) commands write a catalog for each locale specified. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html):
 
@@ -168,7 +168,7 @@ The locale tags used in the project. The [`extract`](/docs/ref/cli.md#extract) a
 
 ## fallbackLocales
 
-Default: `{}`
+Default value: `{}`
 
 Translations from `fallbackLocales` are used if the translation for the given locale is missing. It uses [CLDR Parent Locales](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json) by default, unless you override it with a `false` to use the default message or message ID instead:
 
@@ -205,7 +205,7 @@ it's also possible to configure a `default` fallback locale for all locales:
 
 ## sourceLocale
 
-Default: `""`
+Default value: `""`
 
 `sourceLocale` specifies the default language of message IDs in your source files. The catalog for `sourceLocale` doesn't need actual translations since message IDs are used as-is by default. However, you can still override any message ID by providing a custom translation.
 
@@ -213,7 +213,7 @@ The main difference between `sourceLocale` and [`fallbackLocales`](#fallbackloca
 
 ## pseudoLocale
 
-Default: `""`
+Default value: `""`
 
 Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the `en` catalog will be pseudo-localized. The locale must be included in the `locales` config.
 
@@ -221,7 +221,7 @@ Read more about [Pseudolocalization](/docs/guides/pseudolocalization.md).
 
 ## catalogsMergePath
 
-Default: `""`
+Default value: `""`
 
 Define the path where translated catalogs are merged into a single file per locale during the [`compile`](/docs/ref/cli.md#compile) process.
 
@@ -270,7 +270,7 @@ Using the `catalogsMergePath`, separate catalogs can be merged into a single fil
 
 ## compileNamespace
 
-Default: `cjs`
+Default value: `cjs`
 
 Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli.md#compile) command.
 
@@ -322,7 +322,7 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 
 ## extractorParserOptions
 
-Default: `{}`
+Default value: `{}`
 
 Specify additional options used to parse source files when extracting messages.
 
@@ -337,19 +337,19 @@ Specify additional options used to parse source files when extracting messages.
 
 #### tsExperimentalDecorators
 
-Default: `false`
+Default value: `false`
 
 By default, standard decorators (Stage3) are applied to TS files. Enable this if you want to use TypeScript's experimental decorators.
 
 #### flow
 
-Default: `false`
+Default value: `false`
 
 Lingui does not ship with [Flow](https://flow.org/) typing. However, you can use Lingui in projects written in Flow. Enable this option to tell the extractor that your sources use Flow syntax.
 
 ## compilerBabelOptions
 
-Default:
+Default value:
 
 ```json
 {
@@ -376,7 +376,7 @@ This example configuration will compile with escaped ASCII characters ([jsesc#mi
 
 ## format
 
-Default: `po`
+Default value: `po`
 
 Message catalog format. The `po` formatter is used by default. Other formatters are available as separate packages.
 
@@ -393,7 +393,7 @@ Read more about available formatters in [Catalog Formats](/docs/ref/catalog-form
 
 ## orderBy
 
-Default: `message`
+Default value: `message`
 
 Order of messages in catalog:
 
@@ -419,7 +419,7 @@ Note that using `<rootDir>` as a string token in any other path-based config set
 
 ## runtimeConfigModule
 
-Default: `["@lingui/core", "i18n"]`
+Default value: `["@lingui/core", "i18n"]`
 
 This setting specifies the module path for the exported `i18n` object. The first value in the array is the module path, and the second is the name of the import. This configuration is essential for [macros](/docs/ref/macro.mdx) that need to reference the global `i18n` object.
 
@@ -466,7 +466,7 @@ import { Trans, useLingui } from "./custom-config";
 
 ## extractors
 
-Default: `[babel]`
+Default value: `[babel]`
 
 Extractors it's the way to customize which extractor you want for your codebase.
 
