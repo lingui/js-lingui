@@ -8,13 +8,15 @@ import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
-import cldrSamples from "./plural_samples"
+import { getCldrPluralSamples } from "./plural_samples"
 
 type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
 }
+
+const cldrSamples = getCldrPluralSamples()
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
 function stringifyICUCase(icuCase: SelectCase): string {
