@@ -231,7 +231,6 @@ msgstr[2] "# dní"
     expect(catalog).toMatchSnapshot()
   })
 
-
   test("should use respect Plural-Forms header", () => {
     const po = `
 msgid ""
