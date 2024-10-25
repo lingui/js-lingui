@@ -17,8 +17,15 @@ const FEATURES: FeatureDetails[] = [
     title: "Universal",
     description: (
       <p>
-        Use it everywhere. <code>@lingui/core</code> provides the essential intl functionality which works in any
-        JavaScript project, while <code>@lingui/react</code> offers components for leveraging React rendering.
+        Use it everywhere.{" "}
+        <a href="/ref/core">
+          <code>@lingui/core</code>
+        </a>{" "}
+        provides the essential intl functionality which works in any JavaScript project, while{" "}
+        <a href="/ref/react">
+          <code>@lingui/react</code>
+        </a>{" "}
+        offers components for leveraging React rendering, including React Server Components (RSC) support.
       </p>
     ),
     image: "universal.svg",
@@ -27,10 +34,16 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Powerful Tooling",
     description: (
-      <p>
-        Manage the whole intl workflow using Lingui CLI. It extracts messages from source code, validates messages from
-        translators and checks that all messages are translated before shipping to production.
-      </p>
+      <>
+        <p>
+          Manage your intl workflow with the Lingui <a href="/ref/cli">CLI</a>,{" "}
+          <a href="/ref/vite-plugin">Vite plugin</a>, and <a href="/ref/eslint-plugin">ESLint plugin</a>.
+        </p>
+        <p>
+          The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the
+          ESLint plugin helps catch common usage errors.
+        </p>
+      </>
     ),
     image: "tooling.png",
     additionalClass: "",
@@ -39,8 +52,8 @@ const FEATURES: FeatureDetails[] = [
     title: "Full Rich-Text Support",
     description: (
       <p>
-        Use React components inside localized messages without any limitations. Writing rich-text messages is as easy as
-        writing JSX.
+        Seamlessly use React components within localized messages, without any restrictions. Creating rich-text messages
+        feels just like writing JSX.
       </p>
     ),
     image: "rich-text.svg",
@@ -49,11 +62,16 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "AI Translations Ready",
     description: (
-      <p>
-        For AI to do great translations for you, context is critical. Translating UI copy is difficult because it&apos;s
-        usually a list of short strings without enough context. Lingui&apos;s localization formats allow developers to
-        write descriptions of where and how your keys are used.
-      </p>
+      <>
+        <p>
+          For AI to do great translations for you, context is critical. Translating UI copy is difficult because
+          it&apos;s usually a list of short strings without enough context.
+        </p>
+        <p>
+          Lingui&apos;s localization formats allow developers to write descriptions of where and how their keys are
+          used.
+        </p>
+      </>
     ),
     image: "ai-ready.png",
     additionalClass: "",
@@ -61,7 +79,7 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Headache-Free Professional Localization",
     description: (
-      <div>
+      <>
         <div className={"margin-bottom--sm"}>
           <code>Candidate knows 1 language</code>, but{" "}
           <code>
@@ -70,10 +88,10 @@ const FEATURES: FeatureDetails[] = [
           .
         </div>
         <p>
-          You don&apos;t have to know how many plurals the language has. Create a product in one language, and deliver a
-          perfect translation to users. Lingui follows Unicode ICU standards to handle plurals, genders, and selects.
+          No need to know how many plurals the language has. Create a product in one language and deliver a perfect
+          translation to users. Lingui follows Unicode ICU standards to handle plurals, genders and selects.
         </p>
-      </div>
+      </>
     ),
     image: "clean-and-readable.png",
     additionalClass: styles.featureCardCellWide,
@@ -81,12 +99,15 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Battle-Proven & Future Proof",
     description: (
-      <p>
-        During the last 7 years, we&apos;ve seen a lot of localization projects and developed a tool to handle them all.
-        <br />
-        If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
-        most recent translations directly to your customers – we&apos;ve got you covered.
-      </p>
+      <>
+        <p>
+          Over the past few years, we have seen a lot of localization projects and developed a tool to handle them all.
+        </p>
+        <p>
+          If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
+          most recent translations directly to your customers – we&apos;ve got you covered.
+        </p>
+      </>
     ),
     image: "time.svg",
     additionalClass: styles.featureCardCellWide,
@@ -94,10 +115,12 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Suitable for All Localization Platforms",
     description: (
-      <p>
-        Integrate Lingui into your existing workflow. It supports message keys as well as auto-generated messages.
-        Translations are stored in JSON or standard PO file, which is supported in almost all translation tools.
-      </p>
+      <>
+        <p>Integrate Lingui with your existing workflow. It supports both explicit and auto-generated message keys.</p>
+        <p>
+          Translations are stored in JSON or a standard PO file, which is supported by almost all translation tools.
+        </p>
+      </>
     ),
     image: "all-platforms.svg",
     additionalClass: "",
@@ -107,7 +130,7 @@ const FEATURES: FeatureDetails[] = [
     description: (
       <p>
         Lingui has been used and tested by thousands of satisfied users and has been proven to provide accurate and
-        efficient i18n and l10n results. Join the thousands of satisfied customers.
+        efficient i18n and l10n results. Join the community.
       </p>
     ),
     image: "verified.svg",
@@ -116,11 +139,16 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Fully Fledged",
     description: (
-      <p>
-        Lingui is a general-purpose framework with bindings for React. Use it on a server in Node.js or Vanilla
-        JavaScript.
-        <br />A set of optional modules would implement lazy loading of language packs, user locale detection, and more.
-      </p>
+      <>
+        <p>
+          Lingui is a general-purpose framework with bindings for React (including RSC). It can be used on a server with
+          Node.js or in Vanilla JavaScript.
+        </p>
+        <p>
+          Extend its functionality with optional modules for features like lazy loading of language packs, automatic
+          user locale detection, and more.
+        </p>
+      </>
     ),
     image: "fledged.svg",
     additionalClass: styles.featureCardCellWide,

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
+
+**Note:** Version bump only for package @lingui/babel-plugin-extract-messages
+
+# [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
+
+### Features
+
+- enable importAttributes and explicitResourceManagement for extractor ([#2009](https://github.com/lingui/js-lingui/issues/2009)) ([c20ce12](https://github.com/lingui/js-lingui/commit/c20ce12dbc3edaf476fd745df7e8f8b1390afe95))
+
+## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
+
+**Note:** Version bump only for package @lingui/babel-plugin-extract-messages
+
 ## [4.11.3](https://github.com/lingui/js-lingui/compare/v4.11.2...v4.11.3) (2024-08-09)
 
 **Note:** Version bump only for package @lingui/babel-plugin-extract-messages

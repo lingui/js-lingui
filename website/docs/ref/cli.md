@@ -57,8 +57,7 @@ lingui extract [files...]
         [--locale <locale>]
         [--convert-from <format>]
         [--verbose]
-        [--watch]
-        [--debounce <delay>]
+        [--watch [--debounce <delay>]]
 ```
 
 The `extract` command looks for messages in the source files and extracts them
@@ -171,7 +170,16 @@ Messages added to the compiled file are collected in a specific order:
 3.  Translated message from default fallback locale.
 4.  Message key.
 
-It is also possible to merge the translated catalogs into a single file per locale by specifying `catalogsMergePath` in the configuration. For example, if `catalogsMergePath` is set to `locales/{locale}`, then the catalogs will be compiled into `/locales/cs.js` and `/locales/en.js`.
+It is also possible to merge the translated catalogs into a single file per locale by specifying [`catalogsMergePath`](/docs/ref/conf.md#catalogsmergepath) in the configuration.
+
+:::tip
+The compiled files can be safely ignored by your version control system, since these files must be created each time you deploy to production. We recommend you to create the compiled catalogs in CI as part of your deployment process. Always remember to **use compiled catalogs** in deployments.
+
+```ignore title=".gitignore"
+your_locale_folder/**/*.js
+```
+
+:::
 
 #### `--overwrite` {#compile-overwrite}
 
@@ -209,9 +217,9 @@ Delays compilation by `<delay>` milliseconds to avoid multiple compilations for 
 
 One drawback to checking for missing translations is that the English message catalog doesn't need translations because our source code is in English. This can be addressed by configuring the [`sourceLocale`](/docs/ref/conf.md#sourcelocale) in the configuration file.
 
-## Catalogs in VCS and CI
+## Compiling Catalogs in CI {#compiling-catalogs-in-ci}
 
-If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/docs/ref/loader.md) or [Vite plugin](/docs/ref/vite-plugin.md).
+If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/docs/ref/loader.md), [Vite plugin](/docs/ref/vite-plugin.md) or [Metro transformer](/docs/ref/metro-transformer.mdx).
 
 Depending on your localization setup, you might also want to run the `extract` command in CI and upload the extracted messages to a [translation service](/docs/tools/introduction.md).
 
@@ -221,4 +229,3 @@ Depending on your localization setup, you might also want to run the `extract` c
 - [Message Extraction](/docs/guides/message-extraction.md)
 - [Catalog Formats](/docs/ref/catalog-formats.md)
 - [Custom Extractor](/docs/guides/custom-extractor.md)
-- [Excluding build files](/docs/guides/excluding-build-files.md)

@@ -43,7 +43,7 @@ Default config:
 }
 ```
 
-## `catalogs`
+## catalogs
 
 Default:
 
@@ -286,23 +286,28 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 
 Default: `{}`
 
-Specify extra options used to parse source files when messages are being extracted.
+Specify additional options used to parse source files when extracting messages.
 
-```ts
-"extractorParserOptions": {
-  /**
-   * default false
-   * By default, standard decorators (Stage3) are applied for TS files
-   * Enable this if you want to use TypesScript's experimental decorators.
-   */
-  tsExperimentalDecorators?: boolean
-  /**
-   * default false
-   * Enable if you use flow. This will apply Flow syntax to files with .js, cjs, .mjs extension.
-   */
-  flow?: boolean
+```json
+{
+  "extractorParserOptions": {
+    "tsExperimentalDecorators": false,
+    "flow": false
+  }
 }
 ```
+
+#### tsExperimentalDecorators
+
+Default: `false`
+
+By default, standard decorators (Stage3) are applied to TS files. Enable this if you want to use TypeScript's experimental decorators.
+
+#### flow
+
+Default: `false`
+
+Lingui does not ship with [Flow](https://flow.org/) typing. However, you can use Lingui in projects written in Flow. Enable this option to tell the extractor that your sources use Flow syntax.
 
 ## compilerBabelOptions
 
@@ -387,16 +392,7 @@ export default {
 }
 ```
 
-Official Lingui format packages:
-
-- [@lingui/format-po](https://www.npmjs.com/package/@lingui/format-po) - Gettext PO used by default in Lingui
-- [@lingui/format-po-gettext](https://www.npmjs.com/package/@lingui/format-po-gettext) - Gettext PO format with gettext-style plurals
-- [@lingui/format-json](https://www.npmjs.com/package/@lingui/format-json) - JSON format (`minimal` and `lingui`)
-- [@lingui/format-csv](https://www.npmjs.com/package/@lingui/format-csv) - CSV format
-
-See the README of each package for configuration parameters.
-
-Visit [Advanced: Custom Formatter](/docs/guides/custom-formatter.md) to learn how to create a custom formatter.
+Read more about available formatters in [Catalog Formats](/docs/ref/catalog-formats.md) or create your own [Custom Formatter](/docs/guides/custom-formatter.md).
 
 ## locales
 

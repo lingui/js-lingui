@@ -231,7 +231,8 @@ msgstr[2] "# dní"
     expect(catalog).toMatchSnapshot()
   })
 
-  it("should use respect Plural-Forms header", () => {
+
+  test("should use respect Plural-Forms header", () => {
     const po = `
 msgid ""
 msgstr ""
@@ -304,5 +305,79 @@ msgstr[3] "# dní"
         },
       }
     `)
+  })
+
+  describe("using custom prefix", () => {
+    it("parses plurals correctly", () => {
+      const defaultProfile = fs
+        .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
+        .toString()
+      const customProfile = defaultProfile.replace(
+        /js-lingui:/g,
+        "custom-prefix:"
+      )
+
+      const defaultPrefix = createFormat()
+      const customPrefix = createFormat({ customICUPrefix: "custom-prefix:" })
+
+      const defaultCatalog = defaultPrefix.parse(
+        defaultProfile,
+        defaultParseCtx
+      )
+      const customCatalog = customPrefix.parse(customProfile, defaultParseCtx)
+
+      expect(defaultCatalog).toEqual(customCatalog)
+    })
+
+    it("warns and falls back to using count if prefix is not found", () => {
+      const defaultProfile = fs
+        .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
+        .toString()
+
+      const usingInvalidPrefix = createFormat({
+        customICUPrefix: "invalid-prefix:",
+      })
+      mockConsole((console) => {
+        const catalog = usingInvalidPrefix.parse(
+          defaultProfile,
+          defaultParseCtx
+        )
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining(
+            "should be stored in a comment starting with"
+          ),
+          expect.anything()
+        )
+        expect(catalog).toMatchSnapshot()
+      })
+    })
+
+    it("handles custom prefix", () => {
+      const format = createFormat({ customICUPrefix: "custom-prefix:" })
+
+      const catalog: CatalogType = {
+        message_with_id: {
+          message:
+            "{someCount, plural, one {Singular case with id\
+            and linebreak} other {Case number {someCount} with id}}",
+          translation:
+            "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
+          comments: [
+            "This is a comment by the developers about how the content must be localized.",
+            "js-lingui-explicit-id",
+          ],
+        },
+        WGI12K: {
+          message:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+          translation:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+        },
+      }
+
+      const pofile = format.serialize(catalog, defaultSerializeCtx)
+
+      expect(pofile).toMatchSnapshot()
+    })
   })
 })

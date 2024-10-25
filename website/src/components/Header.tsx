@@ -13,7 +13,7 @@ const Header = (): React.ReactElement => {
   const ogImage = `${siteConfig.url}/img/og-image.png`;
 
   return (
-    <header className={clsx("hero", styles.heroBanner)}>
+    <header className={clsx(styles.heroBanner)}>
       <Head>
         <title>{siteConfig.title}</title>
         <meta property="og:image" content={ogImage} />
@@ -43,7 +43,7 @@ const Header = (): React.ReactElement => {
               <h1 className={clsx(styles.heroTitle)}>{siteConfig.tagline}</h1>
               <p className={"margin-bottom--lg"}>
                 JavaScript library for internalization (i18n) of JavaScript projects. Supports React (including RSC and
-                React Native), Vue, Node.js, and Angular.
+                React Native), Vue, Node.js, and more.
               </p>
 
               <div className={clsx(styles.heroButtons, "name", "margin-vert--md")}>

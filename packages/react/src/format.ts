@@ -35,7 +35,7 @@ const voidElementTags = {
 function formatElements(
   value: string,
   elements: { [key: string]: React.ReactElement } = {}
-): string | Array<React.ReactElement | string> {
+): string | React.ReactElement | Array<React.ReactElement | string> {
   const uniqueId = makeCounter(0, "$lingui$")
   const parts = value.replace(nlRe, "").split(tagRe)
 
@@ -87,7 +87,7 @@ function formatElements(
     if (after) tree.push(after)
   }
 
-  return tree
+  return tree.length === 1 ? tree[0]! : tree
 }
 
 /*

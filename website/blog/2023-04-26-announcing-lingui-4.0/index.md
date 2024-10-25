@@ -33,6 +33,8 @@ This version is packed with tons of new features, improvements and fixes that wi
 
 The codebase has also been significantly refactored and updated. As a result, Lingui has become much more stable, lightweight, reliable, and less fragile.
 
+<!--truncate-->
+
 ### Extractors
 
 The big change in v4.0 is in the extractor internals. It is now less fragile and doesn't depend on host project settings. Also, the extractor now supports TypeScript out of the box.

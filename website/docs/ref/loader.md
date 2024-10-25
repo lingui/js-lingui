@@ -1,6 +1,6 @@
 # Webpack Loader
 
-The Webpack loader compiles catalogs on the fly. It replaces the `lingui compile` command: with the loader, you can `import` po files directly, instead of running `lingui compile` and `import`ing its output.
+The Webpack loader compiles catalogs on the fly. It's an alternative to the [`lingui compile`](/ref/cli#compile) command: the loader enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
 
 ## Installation
 

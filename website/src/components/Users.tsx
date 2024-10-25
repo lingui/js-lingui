@@ -32,11 +32,6 @@ const USERS: UserDetails[] = [
     link: "https://github.com/MetaMask/snaps-directory",
   },
   {
-    logo: "uniswap.png",
-    name: "Uniswap",
-    link: "https://github.com/Uniswap/interface",
-  },
-  {
     logo: "documenso.png",
     name: "Documenso",
     link: "https://github.com/documenso/documenso",
@@ -83,7 +78,13 @@ const Users = (): React.ReactElement => {
           <h2>Loved by hundreds of teams, including:</h2>
           <div className={clsx("row", styles.usersList)}>
             {USERS.map((user, idx) => (
-              <a href={user.link} key={idx} target="_blank" rel="noreferrer" className={styles.user}>
+              <a
+                href={user.link}
+                key={idx}
+                target="_blank"
+                rel="noreferrer"
+                className={clsx(styles.user, "text--secondary")}
+              >
                 <img
                   className={clsx(styles.logo, "margin-bottom--sm")}
                   alt={user.name}
@@ -96,7 +97,7 @@ const Users = (): React.ReactElement => {
             ))}
           </div>
 
-          <p className={styles.muted}>And many more...</p>
+          <p className="text--secondary">And many more...</p>
         </div>
       </div>
     </section>

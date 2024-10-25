@@ -1,5 +1,5 @@
-import * as React from "react"
 import { render } from "@testing-library/react"
+import * as React from "react"
 import { formatElements } from "./format"
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mockConsole } from "@lingui/jest-mocks"
@@ -138,13 +138,17 @@ describe("formatElements", function () {
     const elements = formatElements("<div><0/><0/></div>", {
       div: <div />,
       0: <span>hi</span>,
-    }) as Array<React.ReactElement>
+    })
 
-    expect(elements).toHaveLength(1)
-    const childElements = elements[0]!.props.children
-    const childKeys = childElements
-      .map((el: React.ReactElement) => el?.key)
-      .filter(Boolean)
-    expect(cleanPrefix(childKeys[0])).toBeLessThan(cleanPrefix(childKeys[1]))
+    expect(React.isValidElement(elements)).toBe(true)
+
+    const childElements = (
+      elements as React.ReactElement<{ children: React.ReactElement[] }>
+    ).props.children
+    const childKeys = childElements.map((el) => el?.key).filter(Boolean)
+
+    expect(cleanPrefix(childKeys[0] as string)).toBeLessThan(
+      cleanPrefix(childKeys[1] as string)
+    )
   })
 })

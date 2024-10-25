@@ -14,6 +14,7 @@ type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
+  customICUPrefix?: string
 }
 
 const cldrSamples = getCldrPluralSamples()
@@ -43,7 +44,7 @@ const ICU_SELECT_REGEX = /^{.*, select(Ordinal)?, .*}$/
 const LINE_ENDINGS = /\r?\n/g
 
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
-const CTX_PREFIX = "js-lingui:"
+const DEFAULT_CTX_PREFIX = "js-lingui:"
 
 function serializePlurals(
   item: POItem,
@@ -55,6 +56,7 @@ function serializePlurals(
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
   const icuMessage = message.message
+  const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
 
   if (!icuMessage) {
     return item
@@ -102,7 +104,7 @@ function serializePlurals(
       }
 
       ctx.sort()
-      item.extractedComments.push(CTX_PREFIX + ctx.toString())
+      item.extractedComments.push(ctxPrefix + ctx.toString())
 
       // If there is a translated value, parse that instead of the original message to prevent overriding localized
       // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
@@ -222,7 +224,8 @@ function parsePluralFormsFn(pluralFormsHeader: string): GettextPluralsInfo {
 const convertPluralsToICU = (
   item: POItem,
   pluralForms: string[],
-  lang: string
+  lang: string,
+  ctxPrefix: string = DEFAULT_CTX_PREFIX
 ) => {
   const translationCount = item.msgstr.length
   const messageKey = item.msgid
@@ -242,13 +245,13 @@ const convertPluralsToICU = (
   }
 
   const contextComment = item.extractedComments
-    .find((comment) => comment.startsWith(CTX_PREFIX))
-    ?.substr(CTX_PREFIX.length)
+    .find((comment) => comment.startsWith(ctxPrefix))
+    ?.substring(ctxPrefix.length)
   const ctx = new URLSearchParams(contextComment)
 
   if (contextComment != null) {
     item.extractedComments = item.extractedComments.filter(
-      (comment) => !comment.startsWith(CTX_PREFIX)
+      (comment) => !comment.startsWith(ctxPrefix)
     )
   }
 
@@ -292,7 +295,7 @@ const convertPluralsToICU = (
   let pluralizeOn = ctx.get("pluralize_on")
   if (!pluralizeOn) {
     console.warn(
-      `Unable to determine plural placeholder name for item with key "%s" in language "${lang}" (should be stored in a comment starting with "#. ${CTX_PREFIX}"), assuming "count".`,
+      `Unable to determine plural placeholder name for item with key "%s" in language "${lang}" (should be stored in a comment starting with "#. ${ctxPrefix}"), assuming "count".`,
       messageKey
     )
     pluralizeOn = "count"
@@ -328,7 +331,12 @@ export function formatter(
       )
 
       po.items.forEach((item) => {
-        convertPluralsToICU(item, pluralForms, po.headers.Language)
+        convertPluralsToICU(
+          item,
+          pluralForms,
+          po.headers.Language,
+          options.customICUPrefix
+        )
       })
 
       return formatter.parse(po.toString(), ctx) as CatalogType

@@ -3,7 +3,7 @@ title: React i18n with Lingui
 description: Learn how to add internationalization to a React application using Lingui
 ---
 
-# Internationalization of React apps
+# Internationalization of React Apps
 
 In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application.
 
@@ -56,9 +56,9 @@ export default function Inbox() {
 
 As you can see, it's a simple mailbox application with only one page.
 
-## Installing LinguiJS
+## Installing Lingui
 
-Follow the [React projects](/docs/tutorials/setup-react.mdx) setup guide.
+Follow the [React Project](/docs/tutorials/setup-react.mdx) setup guide.
 
 ## Setup
 
@@ -97,7 +97,7 @@ You might be wondering: how are we going to change the active language? That's w
 Let's deal with language switching later... but if you're still curious, take a look at [example](/docs/guides/dynamic-loading-catalogs.md) with Redux and Webpack.
 :::
 
-## Introducing internationalization
+## Introducing Internationalization
 
 Now we're finally going to _translate_ our app. Actually, we aren't going to _translate_ from one language to another right now. Instead, we're going to _prepare_ our app for translation. This process is called _internationalization_ and you should practice saying this word aloud until you're able to say it three times very quickly.
 
@@ -125,7 +125,7 @@ import { Trans } from "@lingui/macro";
 
 If you're wondering what macros are and what's the difference between macros and components, this short paragraph is for you.
 
-In general, macros are executed at compile time and they transform source code in some way. We use this feature in [LinguiJS](https://github.com/lingui/js-lingui) to simplify writing messages.
+In general, macros are executed at compile time and they transform source code in some way. We use this feature in [Lingui](https://github.com/lingui/js-lingui) to simplify writing messages.
 
 Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
 
@@ -155,7 +155,7 @@ import { Trans } from "@lingui/react";
 <Trans id="OVaF9k" values={{ name }} />;
 ```
 
-### Extracting messages
+### Extracting Messages
 
 Back to our project. It's nice to use JSX and let macros generate messages under the hood. Let's check that it actually works correctly.
 
@@ -168,7 +168,7 @@ We're going to use [CLI](/docs/ref/cli.md) again. Run [`extract`](/docs/ref/cli.
 
 Lingui was unable to find a config!
 
-Create 'lingui.config.js' file with LinguiJS configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf
+Create 'lingui.config.js' file with Lingui configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf
 ```
 
 We need to create the `lingui.config.js` file:
@@ -250,7 +250,7 @@ Catalog statistics:
 (use "lingui compile" to compile catalogs for production)
 ```
 
-That's great! So, how we're going to load it into your app? [LinguiJS](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into our app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
+That's great! So, how we're going to load it into your app? [Lingui](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into our app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
 
 ```bash
 > lingui compile
@@ -294,7 +294,7 @@ render(<App />, document.getElementById("root"));
 
 When we run the app, we see the inbox header is translated into Czech.
 
-### Summary of basic workflow
+### Summary of Basic Workflow
 
 Let's go through the workflow again:
 
@@ -344,7 +344,7 @@ See all <0>unread messages</0> or <1>mark them</1> as read.
 
 You may notice that components and html tags are replaced with indexed tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: translators are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
 
-### JSX to MessageFormat transformations
+### JSX to MessageFormat Transformations
 
 It may look a bit _hackish_ at first sight, but these transformations are actually very easy, intuitive and feel very _Reactish_. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
 
@@ -442,7 +442,7 @@ There are two approaches to how a message ID can be created:
 
 Both approaches have their pros and cons and it's not in the scope of this tutorial to compare them.
 
-By default, [LinguiJS](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.mdx#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
+By default, [Lingui](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.mdx#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
 
 ```jsx
 <h1>
@@ -482,7 +482,7 @@ What's tricky is that different languages use different number of plural forms. 
 Lingui uses `Intl.PluralRules` which is supported in [every modern browser](https://caniuse.com/intl-pluralrules) and can be polyfilled for older. So you don't need to setup anything special.
 :::
 
-### English plural rules
+### English Plural Rules
 
 How do we know which plural form we should use? It's very simple: we, as developers, only need to know plural forms of the language we use in our source. Our component is written in English, so looking at [English plural rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en) we'll need just two forms:
 
@@ -553,7 +553,7 @@ There are 0.0 messages in your inbox.
 
 Aren't languages beautiful?
 
-### Exact forms
+### Exact Forms
 
 Alright, back to our example. What if we really want to render `There are no messages` for `messagesCount = 0`? Exact forms to the rescue!
 
@@ -582,7 +582,7 @@ It works with any number, so we can go wild and customize it this way:
 
 ... and so on. Exact matches always take precedence before plural forms.
 
-### Variables and components
+### Variables and Components
 
 Let's go back to our original pluralized message:
 
@@ -612,7 +612,7 @@ We can use nested macros, components, variables, expressions, really anything.
 
 This gives us enough flexibility for all usecases.
 
-### Custom message ID
+### Custom Message ID
 
 Let's finish this with a short example of plurals with custom ID. We can pass an `id` prop to [`Plural`](/docs/ref/macro.mdx#plural-1) as we would to [`Trans`](/docs/ref/macro.mdx#trans):
 
@@ -709,7 +709,7 @@ That's all for this tutorial! Checkout the reference documentation or various gu
 
 ## Further reading
 
-- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` reference documentation](/docs/ref/react.md)
-- [`@lingui/cli` reference documentation](/docs/ref/cli.md)
+- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
+- [`@lingui/react` Reference Documentation](/docs/ref/react.md)
+- [CLI Reference](/docs/ref/cli.md)
 - [Pluralization Guide](/docs/guides/plurals.md)
