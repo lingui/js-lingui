@@ -48,8 +48,8 @@ export function fillRange(value: string): number[] {
 }
 
 // Create array of test values for @integer or @decimal
-function createSamples(src) {
-  let result = [];
+export function createSamples(src: string): number[] {
+  let result: number[] = [];
 
   src
     .replace(/…/, '')
