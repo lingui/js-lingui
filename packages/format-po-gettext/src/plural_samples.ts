@@ -22,36 +22,29 @@ export function renameKeys(rules: Record<string, string>): FormattedRuleset {
 
 // Create array of sample values for single range
 // 5~16, 0.04~0.09. Both string & integer forms (when possible)
-function fillRange(value: string) {
-  const [ start, end ] = value.split('~')
+export function fillRange(value: string): number[] {
+  let [ start, end ] = value.split('~')
 
-  let decimals = (start.split('.')[1] || '').length;
+  const decimals = (start.split('.')[1] || '').length;
+  // for example 0.1~0.9 has 10 values, need to add that many to list
+  // 0.004~0.009 has 100 values
   let mult = Math.pow(10, decimals);
 
-  let range = Array(end * mult - start * mult + 1).fill()
-    .map((v, idx) => ((idx + start * mult) / mult))
-    // round errors to required decimal precision
-    .map(v => v.toFixed(decimals));
+  // convert to numbers
+  const startNum = Number(start);
+  const endNum = Number(end);
 
+  let range = Array(Math.ceil(endNum * mult - startNum * mult + 1)).fill(0)
+    .map((v, idx) => ((idx + startNum * mult) / mult))
 
   let last = range[range.length - 1];
 
   // Stupid self check
-  if (+end !== +last) {
+  if (endNum !== last) {
     throw new Error(`Range create error for ${value}: last value is ${last}`);
   }
 
-  // Now we have array of string samples. Add integers when possible.
-  let result = [];
-
-  range.forEach(val => {
-    // push test data as String
-    result.push(val);
-    // push test data as Number if the same
-    if (String(+val) === val) { result.push(+val); }
-  });
-
-  return result;
+  return range.map(v => Number(v));
 }
 
 // Create array of test values for @integer or @decimal
