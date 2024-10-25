@@ -113,4 +113,75 @@ describe("Plural samples generation util", () => {
       1.7, 10, 100, 1000, 10000, 100000,
     ])
   })
+
+  test("Run on ruleset", () => {
+    // ruleset for cs
+    const ruleset = {
+      "pluralRule-count-one": "i = 1 and v = 0 @integer 1",
+      "pluralRule-count-few": "i = 2..4 and v = 0 @integer 2~4",
+      "pluralRule-count-many":
+        "v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …",
+      "pluralRule-count-other":
+        " @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …",
+    }
+    expect(createLocaleTest(ruleset)).toMatchInlineSnapshot(`
+      {
+        pluralRule-count-few: [
+          2,
+          3,
+          4,
+        ],
+        pluralRule-count-many: [
+          0,
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1,
+          1.1,
+          1.2,
+          1.3,
+          1.4,
+          1.5,
+          10,
+          100,
+          1000,
+          10000,
+          100000,
+          1000000,
+        ],
+        pluralRule-count-one: [
+          1,
+        ],
+        pluralRule-count-other: [
+          0,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          100,
+          1000,
+          10000,
+          100000,
+          1000000,
+        ],
+      }
+    `)
+  })
 })
