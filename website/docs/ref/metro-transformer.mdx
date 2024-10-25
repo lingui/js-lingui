@@ -1,6 +1,13 @@
-# Metro transformer
+---
+title: Metro Transformer
+description: Use Lingui with React Native and compile your message catalogs on the fly
+---
 
-[Metro bundler](https://metrobundler.dev/) is a JavaScript bundler used in React Native apps. This package offers an alternative to the [`lingui compile`](/ref/cli#compile) command: a transformer that enables Metro to compile `.po` files on the fly. The transformer enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
+# Metro Transformer
+
+[Metro bundler](https://metrobundler.dev/) is a JavaScript bundler used in React Native apps. The `@lingui/metro-transformer` offers an alternative to the [`lingui compile`](/ref/cli#compile) command: a transformer that enables Metro to compile `.po` files on the fly.
+
+The transformer enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
 
 ## Installation
 
@@ -42,7 +49,7 @@ module.exports = config;
 ```
 
   </TabItem>
-<TabItem value="plain-RN" label="plain React Native">
+<TabItem value="plain-RN" label="Plain React Native">
 
 ```js title="metro.config.js"
 const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
