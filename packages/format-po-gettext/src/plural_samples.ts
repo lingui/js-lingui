@@ -1,30 +1,33 @@
 import cardinals from "cldr-core/supplemental/plurals.json";
 
-const FORMS = [ 'zero', 'one', 'two', 'few', 'many', 'other' ];
+type PluralForm = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
+type FormattedRuleset = Record<PluralForm, string>
+
+
+const FORMS: Readonly<PluralForm[]> = [ 'zero', 'one', 'two', 'few', 'many', 'other' ];
 
 ////////////////////////////////////////////////////////////////////////////////
 // Helpers
 
 // Strip key prefixes to get clear names: zero / one / two / few / many / other
-//
-function renameKeys(rules) {
-  let result = {};
+// pluralRule-count-other -> other
+export function renameKeys(rules: Record<string, string>): FormattedRuleset {
+  const result = {};
   Object.keys(rules).forEach(k => {
-    // @ts-ignore
-    result[k.match(/[^-]+$/)] = rules[k];
+    const newKey = k.match(/[^-]+$/)[0]
+    result[newKey] = rules[k];
   });
-  return result;
+  return result as FormattedRuleset
 }
 
 // Create array of sample values for single range
 // 5~16, 0.04~0.09. Both string & integer forms (when possible)
-function fillRange(value) {
-  let [ start, end ] = value.split('~');
+function fillRange(value: string) {
+  const [ start, end ] = value.split('~')
 
   let decimals = (start.split('.')[1] || '').length;
   let mult = Math.pow(10, decimals);
 
-  // @ts-ignore
   let range = Array(end * mult - start * mult + 1).fill()
     .map((v, idx) => ((idx + start * mult) / mult))
     // round errors to required decimal precision
