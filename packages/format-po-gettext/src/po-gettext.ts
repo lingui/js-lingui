@@ -8,7 +8,7 @@ import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
-import { getCldrPluralSamples } from "./plural_samples"
+import { getCldrPluralSamples } from "./plural-samples"
 
 type POItem = InstanceType<typeof PO.Item>
 

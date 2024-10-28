@@ -3,7 +3,7 @@ import {
   createSamples,
   fillRange,
   renameKeys,
-} from "./plural_samples"
+} from "./plural-samples"
 
 describe("Plural samples generation util", () => {
   test.each([
