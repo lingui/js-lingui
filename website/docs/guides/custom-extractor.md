@@ -5,21 +5,19 @@ description: Learn how to write a custom message extractor for your project
 
 # Custom Extractor
 
-## Supported Syntax of the Default Extractor
+Lingui's default extractor supports JavaScript (Stage 3), TypeScript, and Flow out of the box, covering most standard and modern syntax features. However, if your project relies on experimental ECMAScript syntax or custom file formats, a custom extractor gives you the flexibility to handle these scenarios.
 
-The default extractor supports **TypeScript**, **Flow**, and **JavaScript** (Stage 3) out of the box. It does **not** intentionally use your project's Babel configuration.
+### Why It Doesn't Use Your Babel Config?
 
-### Why doesn't it use the project's Babel config?
+Babel plugins from your configuration define transformations, and some of these may interfere with or slow down the extraction process. The extractor doesn't have to transform your code, it just analyzes it. Therefore, it's designed to understand different syntax without worrying about how the code is transpiled or down-levelled.
 
-Babel plugins from your configuration define transformations, and some of these may interfere with or slow down the extraction process. The extractor doesn't need to transform your code; it only analyzes it. Therefore, it's designed to understand different syntax without concern for how the code is transpiled or down-leveled.
+:::info
+We are constantly updating the extractor to keep up with the latest ECMAScript features. However, if you find that a recently added Stage 3 feature doesn't work as expected, please [create an issue](https://github.com/lingui/js-lingui/issues/new/choose).
+:::
 
-We continually update the extractor to stay in line with the latest ECMAScript features. However, if you find that a recently added Stage 3 feature isn't working as expected, please [create an issue](https://github.com/lingui/js-lingui/issues/new/choose).
+## Experimental ECMAScript Syntax
 
-## Supporting Experimental ECMAScript Syntax (Stage 0 - Stage 2)
-
-If you use experimental features (Stage 0 - Stage 2), you'll need to configure a custom list of parser plugins. This can be done by overriding the default extractor and using the `extractFromFileWithBabel()` function.
-
-### Example: Configuring Parser Plugins
+If you are using experimental features (Stage 0 - Stage 2), you'll need to configure a custom list of parser plugins. This can be done by overriding the default extractor and using the `extractFromFileWithBabel()` function:
 
 ```ts title="lingui.config.ts"
 import { extractFromFileWithBabel } from "@lingui/cli/api";
@@ -60,11 +58,9 @@ const config: LinguiConfig = {
 export default config;
 ```
 
-## Supporting Other Frameworks or Custom Syntax
+## Other Frameworks or Custom Syntax
 
-If you're working with files that aren't valid JavaScript, you can create a custom extractor to handle them.
-
-### Example: Custom Extractor Implementation
+If you're working with files that aren't valid JavaScript, you can create a custom extractor to handle them:
 
 ```ts title="./my-custom-extractor.ts"
 import { extractor as defaultExtractor } from "@lingui/cli/api";
@@ -87,9 +83,11 @@ export const extractor: ExtractorType = {
 };
 ```
 
-### Adding the Custom Extractor to Your Configuration
+### Adding the Custom Extractor to the Configuration
 
-```ts title="lingui.config.ts"
+To use the custom extractor, you need to add it to your Lingui configuration file:
+
+```ts title="lingui.config.ts" {1,6}
 import { extractor } from "./my-custom-extractor.ts";
 import { LinguiConfig } from "@lingui/conf";
 
@@ -102,5 +100,5 @@ export default config;
 ```
 
 :::caution Important
-If you're using TypeScript to create your extractor, ensure that your Lingui configuration file has the `.ts` extension.
+If you are using TypeScript to create your extractor, you should use the `.ts` extension for your Lingui configuration file.
 :::

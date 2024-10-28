@@ -5,23 +5,27 @@ description: Learn how to write a custom localization message formatter for your
 
 # Custom Formatter
 
-If your project requires some special format or handling logic, you can write your own format implementation.
+If your project requires a message catalog format that Lingui doesn't [natively support](/docs/ref/catalog-formats.md), you can create a custom formatter to handle it. A custom formatter allows you to define how extracted strings are formatted into a custom catalog format, providing flexibility for specialized workflows and integration with unique file structures.
 
-Formatter is a simple object with 2 main functions `parse` and `serialize`, which should take Lingui catalog and serialize it to string and vice versa.
+## Overview
 
-You don't need to create a separate package for formatter, you can write it directly in `lingui.config.{ts,js}`.
+A formatter is an object with two main functions, `parse` and `serialize`, which define how catalogs are read from and written to your custom format.
+
+The formatter can be configured directly in your `lingui.config.{ts,js}` file - no separate package is needed:
 
 ```ts title="lingui.config.{ts,js}"
-import { extractor } from './my-custom-extractor.ts'
+import { extractor } from "./my-custom-extractor.ts";
 module.exports = {
-  [...]
+  // [...]
   format: {
     catalogExtension: "json",
     parse: (content: string): CatalogType => JSON.parse(content),
     serialize: (catalog: CatalogType): string => JSON.stringify(catalog),
-  }
-}
+  },
+};
 ```
+
+## Reference
 
 The shape of formatter is the following:
 
@@ -70,5 +74,5 @@ export type MessageType<Extra = CatalogExtra> = {
 ```
 
 :::caution Important
-If you are using TypeScript to build your formatter, you should use the `ts` extension for your Lingui configuration file.
+If you are using TypeScript to create your formatter, you should use the `.ts` extension for your Lingui configuration file.
 :::
