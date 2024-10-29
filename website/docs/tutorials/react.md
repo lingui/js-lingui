@@ -120,6 +120,8 @@ import { Trans } from "@lingui/react/macro";
 </h1>;
 ```
 
+Using JSX Macros is the easiest way to translate your React components. It handles translations of messages, including variables and other React components.
+
 ### Macros vs. Components
 
 If you're wondering what [Macros](/docs/ref/macro.mdx) are and the difference between macros and runtime components, here's a quick explanation.
@@ -285,46 +287,9 @@ Let's go through the workflow again:
 
 It's not necessary to extract/translate messages one by one. This is usually done in batches. When you finish your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate the latest message catalogs, and before building the application for production, run [`compile`](/docs/ref/cli.md#compile).
 
-## Non-JSX Translation
-
-So far we have learned how to translate strings inside a JSX element, but what if we want to translate something that is not inside a JSX? Or pass a translation as a prop to another component?
-
-We have this piece of code in our example:
-
-```js
-const markAsRead = () => {
-  alert("Marked as read.");
-};
-```
-
-To translate it, we will use the [`useLingui`](/docs/ref/macro.mdx#uselingui) macro hook:
-
-```js
-import { useLingui } from "@lingui/react/macro";
-
-const { t } = useLingui();
-
-const markAsRead = () => {
-  alert(t`Marked as read.`);
-};
-```
-
-Now the `Marked as read.` message would be picked up by the extractor, and available for translation in the catalog.
-
-You could also pass variables and use any other macro in the message:
-
-```jsx
-const { t } = useLingui();
-
-const markAsRead = () => {
-  const userName = "User1234";
-  alert(t`Hello ${userName}, your messages marked as read!`);
-};
-```
-
 ## Formatting
 
-Let's move on to another paragraph in our project. This paragraph has some variables, some HTML and components inside:
+Let's move on to another paragraph in our project. The following paragraph has some variables, some HTML and components inside:
 
 ```jsx
 <p>
@@ -583,15 +548,66 @@ To include variables or components within messages, simply wrap them in the [`Tr
 
 Nested macros, components, variables, and expressions are all supported, providing the flexibility needed for any use case.
 
-## Formats
+## Translations Outside React Components
 
-The last message in our component is again a bit specific:
+So far, we have learned how to translate strings within a JSX element. However, what if we need to translate content that is outside JSX or pass a translation as a prop to another component?
+
+In our example, we have the following code:
+
+```js
+const markAsRead = () => {
+  alert("Marked as read.");
+};
+```
+
+To translate it, we will use the [`useLingui`](/docs/ref/macro.mdx#uselingui) macro hook:
+
+```js
+import { useLingui } from "@lingui/react/macro";
+
+const { t } = useLingui();
+
+const markAsRead = () => {
+  alert(t`Marked as read.`);
+};
+```
+
+Now the `Marked as read.` message would be picked up by the extractor, and available for translation in the catalog.
+
+You could also pass variables and use any other macro in the message:
+
+```jsx
+const { t } = useLingui();
+
+const markAsRead = () => {
+  const userName = "User1234";
+  alert(t`Hello ${userName}, your messages marked as read!`);
+};
+```
+
+:::tip
+You can also use this approach to translate element attributes, such as `alt' in an image tag:
+
+```jsx
+import { useLingui } from "@lingui/react/macro";
+
+export default function ImageWithCaption() {
+  const { t } = useLingui();
+
+  return <img src="..." alt={t`Image caption`} />;
+}
+```
+:::
+
+## Dates and Numbers
+
+The last message in our component is again a bit specific - it contains a date:
 
 ```jsx
 <footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
 ```
 
-`lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/docs/ref/core.md#i18n.date) function.
+Dates (as well as numbers) are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/docs/ref/core.md#i18n.date) function.
 
 The `i18n` object can be accessed with the [`useLingui`](/docs/ref/react.md#uselingui) hook:
 
@@ -662,9 +678,3 @@ export default function Inbox() {
 
 That's it for this tutorial! For more details, see the reference documentation or check out additional tutorials. Happy Internationalizing!
 
-## See Also
-
-- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` Reference](/docs/ref/react.md)
-- [`@lingui/cli` Reference](/docs/ref/cli.md)
-- [Pluralization Guide](/docs/guides/plurals.md)

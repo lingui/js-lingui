@@ -21,7 +21,7 @@ After configuring the middleware, make sure your page and route files are moved 
 
 ### Next.js Config
 
-Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui macros](https://lingui.dev/ref/macro).
+Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/docs/ref/macro.mdx).
 
 ```js title="next.config.js"
 /** @type {import('next').NextConfig} */

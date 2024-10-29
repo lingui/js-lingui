@@ -62,6 +62,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Lazy Translations",
+        id: "guides/lazy-translations",
+      },
+      {
+        type: "doc",
         label: "Pseudolocalization",
         id: "guides/pseudolocalization",
       },

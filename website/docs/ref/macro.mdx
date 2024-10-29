@@ -791,6 +791,57 @@ function MyComponent() {
 The `useLingui` React macro is available from **Lingui v5**.
 :::
 
+## Important Notes
+
+### Using Macros
+
+All Core Macros cannot be used at the module level:
+
+```jsx
+import { t } from "@lingui/core/macro";
+
+// ❌ Bad! This won't work because the `t` macro is used at the module level.
+// The `t` macro returns a string, and once this string is assigned, it won't react to locale changes.
+const colors = [t`Red`, t`Orange`, t`Yellow`, t`Green`];
+
+// ✅ Good! Every time the function is executed, the `t` macro will be re-executed as well,
+// and the correctly translated color labels will be returned.
+function getColors() {
+  return [t`Red`, t`Orange`, t`Yellow`, t`Green`];
+}
+```
+
+:::tip
+There is an [ESLint Plugin](/docs/ref/eslint-plugin.md) rule designed to check for this misuse: `t-call-in-function`.
+:::
+
+[//]: # (TODO: link to the article)
+
+A better option would be to use the Lazy Translations pattern.
+
+### Global `i18n` Instance
+
+When you use the [`t`](#t) macro (or [`plural`](#plural), [`select`](#select), [`selectOrdinal`](#selectordinal)), it uses a global [`i18n`](/docs/ref/core.md#i18n) instance. While this generally works, there are situations, such as server-side rendering (SSR) applications, where it may not be the best solution.
+
+For better control and flexibility, it's a good idea to avoid the global `i18n` instance and instead use a specific instance tailored to your needs:
+
+```js
+import { msg } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react/macro";
+
+export function showAlert(i18n) {
+  alert(i18n._(msg`...`));
+}
+
+function MyComponent() {
+  // Get i18n instance from React Context
+  const { i18n } = useLingui();
+
+  // Pass the instance from outside
+  showAlert(i18n);
+}
+```
+
 ## More Examples
 
 ### Examples of JS macros
