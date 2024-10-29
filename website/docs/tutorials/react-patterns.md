@@ -87,7 +87,7 @@ For better control and flexibility, it's a good idea to avoid the global `i18n` 
 ```ts
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
-import { I18n } from "@lingui/core";
+import { i18n } from "@lingui/core";
 
 export function showAlert(i18n: I18n) {
   alert(i18n._(msg`...`));

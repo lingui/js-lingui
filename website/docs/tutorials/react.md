@@ -5,12 +5,18 @@ description: Learn how to add internationalization to a React application using 
 
 # React Apps Internationalization
 
-In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application.
+In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application. We'll focus on the most common patterns and best practices for using Lingui in React.
+
+:::tip Example
+If you're looking for a working solution, check out the [Examples page](/docs/misc/examples.md). It contains several sample projects with the complete setup using Lingui and React.
+
+It includes examples for _Create React App_, _React with Vite and Babel_, _React with Vite and SWC_, and more.
+:::
 
 ## Installing Lingui
 
 1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
-2. Install the [`@lingui/react`](/docs/ref/react.md) package which provides React components and hooks for internationalization.
+2. Install the [`@lingui/core`](/docs/ref/core.md) and [`@lingui/react`](/docs/ref/react.md) packages.
 
 ## Let's Start
 
@@ -59,13 +65,13 @@ export default function Inbox() {
 }
 ```
 
+This application is a simple mailbox with a header, a paragraph with a link and a button, another paragraph with a message count, and a footer with the last login date. We will use it as the basis for our tutorial.
+
 ## Setup
 
-We will directly start translating the `Inbox` component, but we need to complete one more step to setup our application.
+We will start translating the `Inbox` component right away, but we need to do one more step to set up our application.
 
-Components need to read information about current language and message catalogs from `i18n` instance. Initially, you can use the one created and exported from `@lingui/core` and later you can replace with your one if such need arises.
-
-Lingui uses the `I18nProvider` to pass the instance `i18n` to your React components.
+Components need to read information about current language and message catalogs from the [`i18n`](/docs/ref/core.md#i18n) instance. Lingui uses the [`I18nProvider`](/docs/ref/react.md#i18nprovider) to pass the `i18n` instance to your React components.
 
 Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/ref/react.md#i18nprovider):
 
@@ -90,19 +96,13 @@ const App = () => (
 render(<App />, document.getElementById("root"));
 ```
 
-:::tip
+:::info
 You might be wondering: how are we going to change the active language? That's what the [`I18n.load`](/docs/ref/core.md#i18n.load) and [`i18n.activate`](/docs/ref/core.md#i18n.activate) calls are for! However, we cannot change the language unless we have the translated message catalog. And to get the catalog, we first need to extract all messages from the source code.
-
-Let's deal with language switching later... but if you're still curious, take a look at [example](/docs/guides/dynamic-loading-catalogs.md) with Redux and Webpack.
 :::
 
 ## Introducing Internationalization
 
-Now we're finally going to _translate_ our app. Actually, we aren't going to _translate_ from one language to another right now. Instead, we're going to _prepare_ our app for translation. This process is called _internationalization_ and you should practice saying this word aloud until you're able to say it three times very quickly.
-
-:::note
-From now on, _internationalization_ will be shortened to a common numeronym _i18n_.
-:::
+Now we're finally going to _translate_ our application. Actually, we're not going to _translate_ from one language to another right now. Instead, we're going to _prepare_ our app for translation. This process is called _internationalization_.
 
 Let's start with the basics - static messages. These messages don't have any variables, HTML or components inside. Just some text:
 
@@ -110,7 +110,7 @@ Let's start with the basics - static messages. These messages don't have any var
 <h1>Message Inbox</h1>
 ```
 
-All we need to make this heading translatable is wrap it in [`Trans`](/docs/ref/macro.mdx#trans) macro:
+To make this heading translatable, simply wrap it in the [`Trans`](/docs/ref/macro.mdx#trans) macro:
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
@@ -122,30 +122,28 @@ import { Trans } from "@lingui/react/macro";
 
 ### Macros vs. Components
 
-If you're wondering what macros are and what's the difference between macros and components, this short paragraph is for you.
+If you're wondering what [Macros](/docs/ref/macro.mdx) are and the difference between macros and runtime components, here's a quick explanation.
 
-In general, macros are executed at compile time and they transform source code in some way. We use this feature in [Lingui](https://github.com/lingui/js-lingui) to simplify writing messages.
+In general, macros are executed at compile time and serve to transform the source code to make the message writing process easier. Under the hood, all JSX macros are transformed into the runtime component [`Trans`](/docs/ref/react.md#trans) (imported from `@lingui/react`).
 
-Under the hood, all JSX macros are transformed into [`Trans`](/docs/ref/react.md#trans) component. Take a look at this short example. This is what we write:
+Below is a brief example demonstrating this transformation:
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
 
 <Trans>Hello {name}</Trans>;
-```
 
-And this is how the code is transformed:
+// ↓ ↓ ↓ ↓ ↓ ↓
 
-```jsx
 import { Trans } from "@lingui/react";
 
 <Trans id="OVaF9k" message="Hello {name}" values={{ name }} />;
 ```
 
-See the difference? [`Trans`](/docs/ref/react.md#trans) component receives `id` and `message` props with a message in ICU MessageFormat syntax.
-We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros generate the message for us.
+As you can see, the [`Trans`](/docs/ref/react.md#trans) runtime component gets `id` and `message` props with a message in [ICU MessageFormat](/docs/guides/message-format.md) syntax. We could write it manually, but it's just easier and shorter to write JSX as we're used to and let macros generate the message for us.
 
-Another advantage of using macros is that all non-essential properties are excluded from the production build. This results in a significant reduction in the size footprint for internationalization.
+:::tip Bundle Size Impact
+Another advantage of using macros is that all non-essential properties are excluded from the production build. This results in a significant reduction in the size footprint for internationalization:
 
 ```jsx
 // NODE_ENV=production
@@ -154,13 +152,19 @@ import { Trans } from "@lingui/react";
 <Trans id="OVaF9k" values={{ name }} />;
 ```
 
+:::
+
 ### Extracting Messages
 
 Back to our project. It's nice to use JSX and let macros generate messages under the hood. Let's check that it actually works correctly.
 
-All messages from the source code must be extracted into external message catalogs. Message catalogs are interchange files between developers and translators. We're going to have one file per language. Let's enter command line for a while.
+All messages from the source code must be extracted into external message catalogs. Message catalogs are interchange files between developers and translators. We're going to have one file per language.
 
-Let's run the [`extract`](/docs/ref/cli.md#extract) CLI command:
+:::info
+Refer to the [Message Extraction](/docs/guides/message-extraction.md) guide for more information about various message extraction concepts and strategies.
+:::
+
+Let's switch to the command line for a moment. Execute the [`extract`](/docs/ref/cli.md#extract) CLI command. If everything is set up correctly, you should see the extracted message statistics in the output:
 
 ```bash
 > lingui extract
@@ -172,12 +176,11 @@ Catalog statistics:
 │ cs       │      1      │    1    │
 │ en       │      1      │    1    │
 └──────────┴─────────────┴─────────┘
-
-(use "lingui extract" to update catalogs with new messages)
-(use "lingui compile" to compile catalogs for production)
 ```
 
-Nice! It seems it worked, we have two message catalogs (one per each locale) with 1 message each. Let's take a look at file `src/locales/cs/messages.po`:
+As a result, we have two new files in the `locales` directory: `en/messages.po` and `cs/messages.po`. These files contain extracted messages from the source code.
+
+Let's take a look at the Czech message catalog:
 
 ```gettext title="src/locales/cs/messages.po"
 msgid ""
@@ -189,22 +192,22 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: cs\n"
 
+// highlight-start
 #: src/Inbox.js:12
 msgid "Message Inbox"
 msgstr ""
+// highlight-end
 ```
 
-That's the message we've wrapped inside [`Trans`](/docs/ref/macro.mdx#trans) macro!
+It contains the message we wrapped in the [`Trans`](/docs/ref/macro.mdx#trans) macro. Let's add the Czech translation:
 
-Let's add the Czech translation:
-
-```po title="src/locales/cs/messages.po"
+```po title="src/locales/cs/messages.po" {3}
 #: src/Inbox.js:12
 msgid "Message Inbox"
 msgstr "Příchozí zprávy"
 ```
 
-If we run [`extract`](/docs/ref/cli.md#extract) command again, we'll see that all Czech messages are translated:
+If we run the [`extract`](/docs/ref/cli.md#extract) command again, we'll see that all the Czech messages have been translated:
 
 ```bash
 > lingui extract
@@ -216,12 +219,11 @@ Catalog statistics:
 │ cs       │      1      │    0    │
 │ en       │      1      │    1    │
 └──────────┴─────────────┴─────────┘
-
-(use "lingui extract" to update catalogs with new messages)
-(use "lingui compile" to compile catalogs for production)
 ```
 
-That's great! So, how we're going to load it into your app? [Lingui](https://github.com/lingui/js-lingui) introduces concept of compiled message catalogs. Before we load messages into our app, we need to compile them. As you see in the help in command output, we use [`compile`](/docs/ref/cli.md#compile) for that:
+That's great! So how do we load it into your application? Lingui introduces the concept of compiled message catalogs. Before we load messages into our application, we need to compile them.
+
+Use the [`compile`](/docs/ref/cli.md#compile) command to do this:
 
 ```bash
 > lingui compile
@@ -230,10 +232,10 @@ Compiling message catalogs…
 Done!
 ```
 
-If you look inside `locales/<locale>` directory, you'll see there's a new file for each locale: `messages.js`. This file contains compiled message catalog.
+If you look inside the `locales/<locale>` directory, you'll see that there is a new file for each locale: `messages.js`. This file contains the compiled message catalog.
 
 :::tip
-If you use TypeScript, you can add `--typescript` flag to `compile` script to produce compiled message catalogs with TypeScript types.
+If you use TypeScript, you can add the `--typescript` flag to the `compile` command to produce compiled message catalogs with TypeScript types.
 :::
 
 Let's load this file into our app and set active language to `cs`:
@@ -265,25 +267,27 @@ render(<App />, document.getElementById("root"));
 
 When we run the app, we see the inbox header is translated into Czech.
 
+:::tip
+Alternatively, you can load catalogs dynamically using the [`@lingui/loader`](/docs/ref/loader.md) or [`@lingui/vite-plugin`](/docs/ref/vite-plugin.md) without the need to import compiled messages manually.
+:::
+
 ### Summary of Basic Workflow
 
 Let's go through the workflow again:
 
-1.  Add an [`I18nProvider`](/docs/ref/react.md#i18nprovider), this component provides the active language and catalog(s) to other components
-2.  Wrap messages in [`Trans`](/docs/ref/macro.mdx#trans) macro
-3.  Run [`extract`](/docs/ref/cli.md#extract) command to generate message catalogs
-4.  Translate message catalogs (send them to translators usually)
-5.  Run [`compile`](/docs/ref/cli.md#compile) to create runtime catalogs
-6.  Load runtime catalog
-7.  Profit
+1. Add an [`I18nProvider`](/docs/ref/react.md#i18nprovider), this component provides the active language and catalog(s) to other components.
+2. Wrap messages in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
+3. Run [`extract`](/docs/ref/cli.md#extract) command to generate message catalogs.
+4. Translate message catalogs (send them to translators usually).
+5. Run [`compile`](/docs/ref/cli.md#compile) to create runtime catalogs.
+6. Load runtime catalog.
+7. Profit! 🎉
 
-Steps 1 and 7 needs to be done only once per project and locale. Steps 2 to 5 become the common workflow for internationalizing the app.
-
-It isn't necessary to extract/translate messages one by one. This usually happens in batches. When you finalize your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate latest message catalogs and before building the app for production, run [`compile`](/docs/ref/cli.md#compile).
+It's not necessary to extract/translate messages one by one. This is usually done in batches. When you finish your work or PR, run [`extract`](/docs/ref/cli.md#extract) to generate the latest message catalogs, and before building the application for production, run [`compile`](/docs/ref/cli.md#compile).
 
 ## Non-JSX Translation
 
-So far we learned how to translate string inside a JSX element, but what if we want to translate something that is not inside a JSX? Or pass a translation as a prop to another component?
+So far we have learned how to translate strings inside a JSX element, but what if we want to translate something that is not inside a JSX? Or pass a translation as a prop to another component?
 
 We have this piece of code in our example:
 
@@ -293,7 +297,7 @@ const markAsRead = () => {
 };
 ```
 
-To translate it, we will use the `useLingui` macro hook:
+To translate it, we will use the [`useLingui`](/docs/ref/macro.mdx#uselingui) macro hook:
 
 ```js
 import { useLingui } from "@lingui/react/macro";
@@ -305,9 +309,9 @@ const markAsRead = () => {
 };
 ```
 
-Now the `Marked as read.` message would be picked up by extractor, and available for translation in the catalog.
+Now the `Marked as read.` message would be picked up by the extractor, and available for translation in the catalog.
 
-You could also pass variables and use any other macro in the message.
+You could also pass variables and use any other macro in the message:
 
 ```jsx
 const { t } = useLingui();
@@ -342,54 +346,40 @@ Although it looks complex, there's really nothing special here. Just wrap the co
 </p>
 ```
 
-Spooky, right? Let's see how this message actually looks in the message catalog. Run [`extract`](/docs/ref/cli.md#extract) command and take a look at the message:
+Let's see how this message actually looks in the message catalog. Run the [`extract`](/docs/ref/cli.md#extract) command and take a look at the message:
 
-```jsx
-See all <0>unread messages</0> or <1>mark them</1> as read.
+```gettext
+#: src/Inbox.js:20
+msgid "See all <0>unread messages</0> or <1>mark them</1> as read."
+msgstr ""
 ```
 
-You may notice that components and html tags are replaced with indexed tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. The tags in the extracted message won't scare our translators either: translators are used to seeing tags and their tools support them. Also, in case we change a `className`, we don't need to update our message catalogs. How cool is that?
+You may notice that components and html tags are replaced with indexed tags (`<0>`, `<1>`). This is a little extension to the ICU MessageFormat which allows rich-text formatting inside translations. Components and their props remain in the source code and don't scare our translators. Also, in case we change a `className`, we don't need to update our message catalogs.
 
 ### JSX to MessageFormat Transformations
 
-It may look a bit _hackish_ at first sight, but these transformations are actually very easy, intuitive and feel very _Reactish_. We don't have to think about the MessageFormat, because it's created by the library. We write our components in the same way as we're used to and simply wrap text in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
+At first glance, these transformations might seem somewhat unconventional; however, they are straightforward, intuitive, and align well with React principles. There is no need to focus on MessageFormat, as the library handles its creation for us. We can write our components as we typically would and simply wrap the text in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
 
 Let's see some examples with MessageFormat equivalents:
 
 ```jsx
-// Expressions
-<p>
-  <Trans>Hello {name}</Trans>
-</p>
+<Trans>Hello {name}</Trans>
 // Hello {name}
 ```
 
 Any expressions are allowed, not just simple variables. The only difference is, only the variable name will be included in the extracted message:
 
-- Simple variable -> named argument:
-
-  ```jsx
-  <p>
-    <Trans>Hello {name}</Trans>
-  </p>
-  // Hello {name}
-  ```
-
 - Any expression -> positional argument:
 
   ```jsx
-  <p>
-    <Trans>Hello {user.name}</Trans>
-  </p>
+  <Trans>Hello {user.name}</Trans>
   // Hello {0}
   ```
 
 - Object, arrays, function calls -> positional argument:
 
   ```jsx
-  <p>
-    <Trans>The random number is {Math.rand()}</Trans>
-  </p>
+  <Trans>The random number is {Math.rand()}</Trans>
   // The random number is {0}
   ```
 
@@ -411,17 +401,13 @@ Any expressions are allowed, not just simple variables. The only difference is, 
   // Dear Watson,<0/>it's not exactly what I had in my mind.
   ```
 
-Some expressions are _valid_ and won't throw any error, yet it doesn't make any sense to write:
-
-```jsx
-<Trans>{isOpen && <Modal />}</Trans>
-```
+:::caution
+Try to keep your messages simple and avoid complex expressions. During extraction, these expressions will be replaced by placeholders, resulting in a lack of context for translators. There is also a special rule in Lingui [ESLint Plugin](/docs/ref/eslint-plugin.md) to catch these cases: `no-expression-in-message`.
+:::
 
 ### Message ID
 
-At this point we're going to explain what message ID is and how to set it manually.
-
-Translators work with the _message catalogs_ we saw above. No matter what format we use (gettext, xliff, json), it's just a mapping of a message ID to the translation.
+At this point, we'll explain what the message ID is and how to set it manually. Translators work with _message catalogs_. No matter what format we use, it's just a mapping of a message ID to the translation.
 
 Here's an example of a simple message catalog in **Czech** language:
 
@@ -439,34 +425,16 @@ Here's an example of a simple message catalog in **Czech** language:
 | Tuesday    | Mardi       |
 | Wednesday  | Mercredi    |
 
-The message ID is _what all catalogs have in common_ – Lundi and Pondělí represent the same message in different languages. It's also the same as the `id` prop in [`Trans`](/docs/ref/macro.mdx#trans) macro.
+The message ID is _what all catalogs have in common_ – "Lundi" and "Pondělí" represent the same message in different languages.
 
-There are two approaches to how a message ID can be created:
+There are two approaches for creating a message ID:
 
-1.  Using the source language (e.g. `Monday` from English, as in example above)
-2.  Using a custom id (e.g. `weekday.monday`)
+- Automatically generated from message (e.g. `Monday`) and context, if available.
+- Explicit message ID set by the developer (e.g. `days.monday`).
 
-Both approaches have their pros and cons and it's not in the scope of this tutorial to compare them.
-
-By default, [Lingui](https://github.com/lingui/js-lingui) generates message ID from the content of [`Trans`](/docs/ref/macro.mdx#trans) macro, which means it uses the source language. However, we can easily override it by setting the `id` prop manually:
-
-```jsx
-<h1>
-  <Trans id="inbox.title">Message Inbox</Trans>
-</h1>
-```
-
-This will generate:
-
-```jsx
-<h1>
-  <Trans id="inbox.title" message="Message Inbox" />
-</h1>
-```
-
-In our message catalog, we'll see `inbox.title` as message ID, but we also get `Message Inbox` as default translation for English.
-
-For the rest of this tutorial, we'll use auto-generated message IDs to keep it simple.
+:::info
+Refer to the [Explicit vs Generated IDs](/docs/guides/explicit-vs-generated-ids.md) guide for more information about the pros and cons of each approach.
+:::
 
 ## Plurals
 
@@ -480,11 +448,11 @@ Let's move on and add i18n to another text in our component:
 </p>
 ```
 
-This message is a bit special, because it depends on the value of the `messagesCount` variable. Most languages use different forms of words when describing quantities - this is called [pluralization](https://en.wikipedia.org/wiki/Plural).
+This message is a bit special, because it depends on the value of the `messagesCount` variable. Most languages use different forms of words when describing quantities - this is called [pluralization](/docs/guides/plurals.md).
 
 What's tricky is that different languages use different number of plural forms. For example, English has only two forms - singular and plural - as we can see in the example above. However, Czech language has three plural forms. Some languages have up to 6 plural forms and some don't have plurals at all!
 
-:::tip
+:::info
 Lingui uses `Intl.PluralRules` which is supported in [every modern browser](https://caniuse.com/intl-pluralrules) and can be polyfilled for older. So you don't need to setup anything special.
 :::
 
@@ -503,7 +471,7 @@ How do we know which plural form we should use? It's very simple: we, as develop
 We don't need to select these forms manually. We'll use [`Plural`](/docs/ref/macro.mdx#plural-1) component, which takes a `value` prop and based on the active language, selects the right plural form:
 
 ```jsx
-import { Trans, Plural } from "@lingui/react/macro";
+import { Plural } from "@lingui/react/macro";
 
 <p>
   <Plural value={messagesCount} one="There's # message in your inbox" other="There are # messages in your inbox" />
@@ -512,38 +480,33 @@ import { Trans, Plural } from "@lingui/react/macro";
 
 This component will render `There's 1 message in your inbox` when `messageCount = 1` and `There are # messages in your inbox` for any other values of `messageCount`. `#` is a placeholder, which is replaced with `value`.
 
-Cool! Curious how this component is transformed under the hood and how the message looks in MessageFormat syntax? Run [`extract`](/docs/ref/cli.md#extract) command and find out by yourself:
+Let's run the [`extract`](/docs/ref/cli.md#extract) command to see the extracted message:
 
 ```icu-message-format
 {messagesCount, plural,
-    one {There's # message in your inbox}
-    other {There are # messages in your inbox}}
+  one {There's # message in your inbox}
+  other {There are # messages in your inbox}
+}
 ```
 
-In the catalog, you'll see the message in one line. Here we wrapped it to make it more readable.
+In the catalog, you'll see the message in a single line. Here we have wrapped it to make it more readable.
 
-The [`Plural`](/docs/ref/macro.mdx#plural-1) is gone and replaced with [`Trans`](/docs/ref/react.md#trans) again! The sole purpose of [`Plural`](/docs/ref/macro.mdx#plural-1) is to generate proper syntax in message.
+### Beware of Zeroes!
 
-Things are getting a bit more complicated, but i18n is a complex process. At least we don't have to write this message manually!
-
-### Beware of zeroes!
-
-Just a short detour, because it's a common misunderstanding.
-
-You may wonder why the following code doesn't work as expected:
+Just a short detour, because it's a common misunderstanding. You may wonder why the following code doesn't work as expected:
 
 ```jsx
-<Plural
-  value={messagesCount}
-  zero="There are no messages"
-  one="There's # message in your inbox"
-  other="There are # messages in your inbox"
-/>
+<p>
+  <Plural
+    value={messagesCount}
+    zero="There are no messages"
+    one="There's # message in your inbox"
+    other="There are # messages in your inbox"
+  />
+</p>
 ```
 
-This component will render `There are 0 messages in your inbox` for `messagesCount = 0`. Why so? Because English doesn't have `zero` [plural form](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en).
-
-Looking at [English plural rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en), it's:
+This component will render `There are 0 messages in your inbox` for `messagesCount = 0`. Why so? Because English doesn't have `zero` plural form. Looking at [English plural rules](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#en), it's:
 
 | N   | Form                  |
 | --- | --------------------- |
@@ -551,42 +514,46 @@ Looking at [English plural rules](http://www.unicode.org/cldr/charts/latest/supp
 | 1   | one                   |
 | n   | other (anything else) |
 
-However, decimal numbers (even `1.0`) use `other` form every time:
+However, decimal numbers (even `1.0`) always use the `other` form:
 
 ```default
 There are 0.0 messages in your inbox.
 ```
 
-Aren't languages beautiful?
-
 ### Exact Forms
 
-Alright, back to our example. What if we really want to render `There are no messages` for `messagesCount = 0`? Exact forms to the rescue!
+Going back to our example, what if we specifically want to display `There are no messages` when `messagesCount = 0`? This is where exact forms come in handy:
 
-```jsx
-<Plural
-  value={messagesCount}
-  _0="There are no messages"
-  one="There's # message in your inbox"
-  other="There are # messages in your inbox"
-/>
+```jsx {4}
+<p>
+  <Plural
+    value={messagesCount}
+    _0="There are no messages"
+    one="There's # message in your inbox"
+    other="There are # messages in your inbox"
+  />
+</p>
 ```
 
-What's that `_0`? MessageFormat allows exact forms, like `=0`. However, React props can't start with `=` and can't be numbers either, so we need to write `_N` instead of `=0`.
+:::tip
+MessageFormat allows exact forms, like `=0`. However, React props can't start with `=` and can't be numbers either, so we need to write `_N` instead of `=0`.
+:::
 
-It works with any number, so we can go wild and customize it this way:
+It works with any number, allowing for extensive customization as follows:
 
-```jsx
-<Plural
-  value={messagesCount}
-  _0="There are no messages"
-  _1="There's one message in your inbox"
-  _2="There are two messages in your inbox, that's not much!"
-  other="There are # messages in your inbox"
-/>
+```jsx {4-6}
+<p>
+  <Plural
+    value={messagesCount}
+    _0="There are no messages"
+    _1="There's one message in your inbox"
+    _2="There are two messages in your inbox, that's not much!"
+    other="There are # messages in your inbox"
+  />
+</p>
 ```
 
-... and so on. Exact matches always take precedence before plural forms.
+Exact matches always take precedence over plural forms.
 
 ### Variables and Components
 
@@ -598,7 +565,7 @@ Let's go back to our original pluralized message:
 </p>
 ```
 
-What if we want to use variables or components inside messages? Easy! Either wrap messages in [`Trans`](/docs/ref/macro.mdx#trans) macro or use template literals (suppose we have a variable `name`):
+To include variables or components within messages, simply wrap them in the [`Trans`](/docs/ref/macro.mdx#trans) macro or use template literals (for example, with a variable `name`):
 
 ```jsx
 <p>
@@ -614,24 +581,7 @@ What if we want to use variables or components inside messages? Easy! Either wra
 </p>
 ```
 
-We can use nested macros, components, variables, expressions, really anything.
-
-This gives us enough flexibility for all usecases.
-
-### Custom Message ID
-
-Let's finish this with a short example of plurals with custom ID. We can pass an `id` prop to [`Plural`](/docs/ref/macro.mdx#plural-1) as we would to [`Trans`](/docs/ref/macro.mdx#trans):
-
-```jsx
-<p>
-  <Plural
-    id="Inbox.messagesCount"
-    value={messagesCount}
-    one="There's # message in your inbox"
-    other="There are # messages in your inbox"
-  />
-</p>
-```
+Nested macros, components, variables, and expressions are all supported, providing the flexibility needed for any use case.
 
 ## Formats
 
@@ -641,18 +591,18 @@ The last message in our component is again a bit specific:
 <footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
 ```
 
-`lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [Intl object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use [`i18n.date()`](/docs/ref/core.md#i18n.date) function. The `i18n` object can be accessed by [`useLingui`](/docs/ref/react.md#uselingui) hook:
+`lastLogin` is a date object, and we need to format it properly. Dates are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/docs/ref/core.md#i18n.date) function.
 
-```jsx title="src/Inbox.js"
+The `i18n` object can be accessed with the [`useLingui`](/docs/ref/react.md#uselingui) hook:
+
+```jsx title="src/Inbox.js" {4,9}
 import { useLingui } from "@lingui/react";
 
 export default function Inbox() {
   const { i18n } = useLingui();
-  // ...
 
   return (
     <div>
-      {/* ... */}
       <footer>
         <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
       </footer>
@@ -665,7 +615,7 @@ This will format the date using the conventional format for the active language.
 
 ## Review
 
-After all modifications, the final component with i18n looks like this:
+After all modifications, the final i18n-ready component looks like this:
 
 ```jsx title="src/Inbox.js"
 import React from "react";
@@ -710,11 +660,11 @@ export default function Inbox() {
 }
 ```
 
-That's all for this tutorial! Checkout the reference documentation or various guides in the documentation for more info and happy internationalizing!
+That's it for this tutorial! For more details, see the reference documentation or check out additional tutorials. Happy Internationalizing!
 
-## Further reading
+## See Also
 
 - [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` Reference Documentation](/docs/ref/react.md)
-- [CLI Reference](/docs/ref/cli.md)
+- [`@lingui/react` Reference](/docs/ref/react.md)
+- [`@lingui/cli` Reference](/docs/ref/cli.md)
 - [Pluralization Guide](/docs/guides/plurals.md)
