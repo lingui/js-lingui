@@ -241,7 +241,6 @@ The important point here is that the sentence isn't broken into pieces but remai
 ## See Also
 
 - [Message Extraction Guide](/docs/guides/message-extraction.md)
-- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
 - [`@lingui/react` Reference](/docs/ref/react.md)
 - [`@lingui/cli` Reference](/docs/ref/cli.md)
 - [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)

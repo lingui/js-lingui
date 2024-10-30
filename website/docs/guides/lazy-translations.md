@@ -1,11 +1,30 @@
 ---
 title: Lazy Translations
-description: Lazy translations allow you to defer translation of a message until it is actually displayed.
+description: Lazy translations allow you to defer translation of a message until it is actually displayed
 ---
 
 # Lazy Translations
 
-You don't need to declare messages at the same code location where they are displayed. Tag a string with the [`msg`](/docs/ref/macro.mdx#definemessage) macro, and you've created a "message descriptor", which can then be passed around as a variable, and can be displayed as a translated string by passing its `id` to [`Trans`](/docs/ref/macro.mdx#trans) as its `id` prop:
+Lazy translation allows you to defer translation of a message until it's rendered, giving you flexibility in how and where you define messages in your code. With lazy translation, you can tag a string with the [`msg`](/docs/ref/macro.mdx#definemessage) macro to create a _message descriptor_ that can be saved, passed around as a variable, and rendered later.
+
+## Usage Example
+
+To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
+
+```jsx
+import { msg } from "@lingui/core/macro";
+import { i18n } from "@lingui/core";
+
+const favoriteColors = [msg`Red`, msg`Orange`, msg`Yellow`, msg`Green`];
+
+export function getTranslatedColorNames() {
+  return favoriteColors.map((color) => i18n._(color));
+}
+```
+
+## Usage in React
+
+To render the message descriptor in a React component, pass its `id` to the [`Trans`](/docs/ref/react.md#trans) component as a value of the `id` prop:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -26,28 +45,15 @@ export default function ColorList() {
 }
 ```
 
-:::note
-Note that we import `<Trans>` component from `@lingui/react`, because we want to use the runtime `Trans` component here, not the (compile-time) macro.
+:::info Important
+Please note that we import the `<Trans>` component from `@lingui/react` to use the runtime version, as the message is already defined and we don't need the compile-time macro here.
 :::
 
-To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/docs/ref/core.md#i18n._) method:
+### Picking a Message Based on a Variable
 
-```jsx
-import { i18n } from "@lingui/core";
-import { msg } from "@lingui/core/macro";
+Sometimes you need to choose between different messages to display depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message that represents the current status.
 
-const favoriteColors = [msg`Red`, msg`Orange`, msg`Yellow`, msg`Green`];
-
-export function getTranslatedColorNames() {
-  return favoriteColors.map((color) => i18n._(color));
-}
-```
-
-### Picking a message based on a variable
-
-Sometimes you need to pick between different messages to display, depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message representing the current status.
-
-A simple way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.mdx#definemessage) macro), and render them as needed with deferred translation:
+An easy way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/docs/ref/macro.mdx#definemessage) macro) and render them as needed with deferred translation:
 
 ```jsx
 import { msg } from "@lingui/core/macro";

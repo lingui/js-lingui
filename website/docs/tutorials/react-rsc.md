@@ -177,9 +177,8 @@ export default function SomePage() {
 }
 ```
 
-Read more about [lazy translation](/docs/tutorials/react-patterns.md#translations-outside-react-components) to see how to handle translation defined on the module level.
+Read more about [Lazy Translation](/docs/guides/lazy-translations.md) to see how to handle translation defined on the module level.
 
 ## See Also
 
-- [Common i18n Patterns in React](/docs/tutorials/react-patterns.md)
 - [`@lingui/react` Reference](/docs/ref/react.md)

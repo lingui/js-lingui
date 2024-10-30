@@ -126,7 +126,7 @@ This hook allows access to the Lingui context. It returns an object with the fol
 | `_`                | `I18n[_]`             | reference to the [`i18n._`](/ref/core#i18n._) function, explained below |
 | `defaultComponent` | `React.ComponentType` | the same `defaultComponent` you passed to `I18nProvider`, if provided   |
 
-Components that use `useLingui` hook will re-render when locale and / or catalogs change. However, the reference to the `i18n` object is stable and doesn't change between re-renders. This can lead to unexpected behavior with memoization (see [memoization pitfall](/tutorials/react-patterns#memoization-pitfall)).
+Components that use `useLingui` hook will re-render when locale and / or catalogs change. However, the reference to the `i18n` object is stable and doesn't change between re-renders. This can lead to unexpected behavior with memoization (see [memoization pitfall](/tutorials/react#memoization-pitfall)).
 
 To alleviate the issue, `useLingui` provides the `_` function, which is the same as [`i18n._`](/ref/core#i18n._) but _its reference changes_ with each update of the Lingui context. Thanks to that, you can safely use this `_` function as a hook dependency.
 

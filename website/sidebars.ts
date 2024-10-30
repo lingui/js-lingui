@@ -36,11 +36,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - Common Patterns",
-        id: "tutorials/react-patterns",
-      },
-      {
-        type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
       },

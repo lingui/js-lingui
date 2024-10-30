@@ -386,7 +386,7 @@ const message = t({
 
 ### `defineMessage` / `msg` {#definemessage}
 
-The `defineMessage` (alias: `msg`) macro allows to define a message for later use. It has the same signature as `t` and returns a `MessageDescriptor` that you can pass to `i18n._` to get a translated string at any time later. This is useful for [lazy translations](/tutorials/react-patterns#lazy-translations).
+The `defineMessage` (alias: `msg`) macro allows to define a message for later use. It has the same signature as `t` and returns a `MessageDescriptor` that you can pass to `i18n._` to get a translated string at any time later. This is useful for [Lazy Translations](/guides/lazy-translations).
 
 In other words, `t` returns a translated string at the time when it's called, while `msg` returns a `MessageDescriptor` that can produce translated strings later:
 
@@ -815,9 +815,7 @@ function getColors() {
 There is an [ESLint Plugin](/docs/ref/eslint-plugin.md) rule designed to check for this misuse: `t-call-in-function`.
 :::
 
-[//]: # (TODO: link to the article)
-
-A better option would be to use the Lazy Translations pattern.
+A better option would be to use the [Lazy Translations](/guides/lazy-translations) pattern.
 
 ### Global `i18n` Instance
 
