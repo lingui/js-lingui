@@ -17,7 +17,7 @@ The extractor operates at a static level, meaning that it analyzes the source co
 
 ### Macros Usage
 
-> Macros are JavaScript functions that run at build time. The value returned by a macro is inlined into the bundle instead of the original function call.
+> Macros are JavaScript transformers that run at build time. The value returned by a macro is inlined into the bundle instead of the original function call.
 
 The Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](/docs/guides/message-format.md) messages at compile time.
 

@@ -5,7 +5,7 @@ description: Learn about pluralization and how to use it in your application wit
 
 # Pluralization
 
-Pluralization is essential for effective internationalization, allowing applications to display messages or select options based on the number. In this article, you'll explore various categories of pluralization, see implementation examples, and learn how to customize your application for different languages.
+Pluralization is essential for effective internationalization, allowing applications to display messages or select options based on the number. In this article, we explore various categories of pluralization, see implementation examples, and learn how to customize your application for different languages.
 
 Lingui uses the [CLDR Plural Rules](https://www.unicode.org/cldr/charts/42/supplemental/language_plural_rules.html) to determine the correct plural form for each language.
 

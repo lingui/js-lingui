@@ -7,7 +7,7 @@ description: Learn about the differences between explicit and generated IDs and 
 
 When internationalizing your application, you may need to decide whether to use explicit or generated IDs for your messages.
 
-In this guide, we will explore the basic concepts of explicit and generated IDs, and then delve into a comprehensive comparison, highlighting the advantages and disadvantages of each approach.
+In this guide, we explore the basic concepts of explicit and generated IDs, and then delve into a comprehensive comparison, highlighting the advantages and disadvantages of each approach.
 
 ## What are Explicit IDs and Generated IDs?
 
