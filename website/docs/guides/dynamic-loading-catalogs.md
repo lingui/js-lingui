@@ -35,6 +35,12 @@ export async function dynamicActivate(locale: string) {
 }
 ```
 
+:::caution Important
+Even the "default" locale requires a catalog to be loaded. Lingui aims to keep the internationalization footprint to a minimum by dropping default messages from the production build. This way, only the catalog for the active language is loaded, avoiding duplication.
+
+Without this optimization, switching from the default language (e.g. EN) to another (e.g. FR) would require loading both language catalogs. This strategy ensures efficiency by loading only the necessary messages for one language at a time.
+:::
+
 ### Usage in Your Application
 
 To use the `dynamicActivate` function in your application, you must call it on application startup. The following example shows how to use it in a React application:
