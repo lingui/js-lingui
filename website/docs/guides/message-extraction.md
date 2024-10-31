@@ -200,7 +200,7 @@ On the surface, it may appear that this code can be safely removed from the fina
 To avoid this issue, one solution is to wrap the `species` object inside an _Immediately Invoked Function Expression_ (IIFE) and add the `/* @__PURE__ */` annotation.
 :::
 
-By adding this annotation to the IIFE, we tell the bundler that the entire `species' object can be safely removed if it is not used or exported elsewhere in the code.
+By adding this annotation to the IIFE, we tell the bundler that the entire `species` object can be safely removed if it is not used or exported elsewhere in the code.
 
 ## Supported Source Types
 
