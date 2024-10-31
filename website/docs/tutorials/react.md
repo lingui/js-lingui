@@ -8,7 +8,7 @@ description: Learn how to add internationalization to a React application using 
 In this tutorial, we'll learn how to add internationalization (i18n) to an existing React JS application. We'll focus on the most common patterns and best practices for using Lingui in React.
 
 :::tip Example
-If you're looking for a working solution, check out the [Examples page](/docs/misc/examples.md). It contains several sample projects with the complete setup using Lingui and React.
+If you're looking for a working solution, check out the [Examples](/docs/misc/examples.md) page. It contains several sample projects with the complete setup using Lingui and React.
 
 It includes examples for _Create React App_, _React with Vite and Babel_, _React with Vite and SWC_, and more.
 :::
@@ -370,6 +370,36 @@ Any expressions are allowed, not just simple variables. The only difference is, 
 Try to keep your messages simple and avoid complex expressions. During extraction, these expressions will be replaced by placeholders, resulting in a lack of context for translators. There is also a special rule in Lingui [ESLint Plugin](/docs/ref/eslint-plugin.md) to catch these cases: `no-expression-in-message`.
 :::
 
+### Dates and Numbers
+
+Take a look at the message in the footer of our component. It is a bit special because it contains a date:
+
+```jsx
+<footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
+```
+
+Dates (as well as numbers) are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/docs/ref/core.md#i18n.date) function.
+
+The `i18n` object can be accessed with the [`useLingui`](/docs/ref/react.md#uselingui) hook:
+
+```jsx title="src/Inbox.js" {4,9}
+import { useLingui } from "@lingui/react";
+
+export default function Inbox() {
+  const { i18n } = useLingui();
+
+  return (
+    <div>
+      <footer>
+        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
+      </footer>
+    </div>
+  );
+}
+```
+
+This will format the date using the conventional format for the active language. To format numbers, use the [`i18n.number()`](/docs/ref/core.md#i18n.number) function.
+
 ### Message ID
 
 At this point, we'll explain what the message ID is and how to set it manually. Translators work with _message catalogs_. No matter what format we use, it's just a mapping of a message ID to the translation.
@@ -403,7 +433,7 @@ Refer to the [Explicit vs Generated IDs](/docs/guides/explicit-vs-generated-ids.
 
 ## Plurals
 
-Let's move on and add i18n to another text in our component:
+Let's take a closer look at the following code in our component:
 
 ```jsx
 <p>
@@ -599,98 +629,6 @@ export default function ImageWithCaption() {
 ```
 
 :::
-
-## Dates and Numbers
-
-The last message in our component is again a bit specific - it contains a date:
-
-```jsx
-<footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
-```
-
-Dates (as well as numbers) are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/docs/ref/core.md#i18n.date) function.
-
-The `i18n` object can be accessed with the [`useLingui`](/docs/ref/react.md#uselingui) hook:
-
-```jsx title="src/Inbox.js" {4,9}
-import { useLingui } from "@lingui/react";
-
-export default function Inbox() {
-  const { i18n } = useLingui();
-
-  return (
-    <div>
-      <footer>
-        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
-      </footer>
-    </div>
-  );
-}
-```
-
-This will format the date using the conventional format for the active language.
-
-## Memoization Pitfall
-
-In the following contrived example, we document how a welcome message will or will not be updated when locale changes. The documented behavior may not be intuitive at first, but it is expected, because of the way the `useMemo` dependencies work.
-
-To avoid bugs with stale translations, use the `_` function returned from the [`useLingui`](/docs/ref/react.md#uselingui) hook: it is safe to use with memoization because its reference changes whenever the Lingui context updates.
-
-:::tip
-You can also use the `t` function from the [`useLingui`](/docs/ref/macro.mdx#uselingui) macro hook, which behaves the same way as `_` from the runtime [`useLingui`](/docs/ref/react.md#uselingui) counterpart.
-:::
-
-Keep in mind that `useMemo` is primarily a performance optimization tool in React. Because of this, there might be no need to memoize your translations. Additionally, this issue is not present when using the `Trans` component, which we recommend using whenever possible.
-
-```jsx
-import { msg } from "@lingui/core/macro";
-import { i18n } from "@lingui/core";
-import { useLingui } from "@lingui/react";
-
-const welcomeMessage = msg`Welcome!`;
-
-// ❌ Bad! This code won't work
-export function Welcome() {
-  const buggyWelcome = useMemo(() => {
-    return i18n._(welcomeMessage);
-  }, []);
-
-  return <div>{buggyWelcome}</div>;
-}
-
-// ❌ Bad! This code won't work either because the reference to i18n does not change
-export function Welcome() {
-  const { i18n } = useLingui();
-
-  const buggyWelcome = useMemo(() => {
-    return i18n._(welcomeMessage);
-  }, [i18n]);
-
-  return <div>{buggyWelcome}</div>;
-}
-
-// ✅ Good! `useMemo` has i18n context in the dependency
-export function Welcome() {
-  const linguiCtx = useLingui();
-
-  const welcome = useMemo(() => {
-    return linguiCtx.i18n._(welcomeMessage);
-  }, [linguiCtx]);
-
-  return <div>{welcome}</div>;
-}
-
-// 🤩 Better! `useMemo` consumes the `_` function from the Lingui context
-export function Welcome() {
-  const { _ } = useLingui();
-
-  const welcome = useMemo(() => {
-    return _(welcomeMessage);
-  }, [_]);
-
-  return <div>{welcome}</div>;
-}
-```
 
 ## Review
 
