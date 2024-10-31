@@ -18,18 +18,23 @@ It includes examples for _Create React App_, _React with Vite and Babel_, _React
 1. Follow the [Installation and Setup](/docs/installation.mdx) page for initial setup.
 2. Install the [`@lingui/core`](/docs/ref/core.md) and [`@lingui/react`](/docs/ref/react.md) packages.
 
-## Let's Start
+## Example Component
 
 We're going to translate the following one-page mailbox application:
 
 ```jsx title="src/index.js"
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 import Inbox from "./Inbox";
 
 const App = () => <Inbox />;
 
-render(<App />, document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 ```
 
 ```jsx title="src/Inbox.js"
@@ -77,7 +82,7 @@ Let's add all required imports and wrap our app inside [`I18nProvider`](/docs/re
 
 ```jsx title="src/index.js"
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -93,7 +98,12 @@ const App = () => (
   </I18nProvider>
 );
 
-render(<App />, document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 ```
 
 :::info
@@ -244,7 +254,7 @@ Let's load this file into our app and set active language to `cs`:
 
 ```jsx title="src/index.js" {6-7,10-14}
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -264,7 +274,12 @@ const App = () => (
   </I18nProvider>
 );
 
-render(<App />, document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 ```
 
 When we run the app, we see the inbox header is translated into Czech.
@@ -578,7 +593,7 @@ To include variables or components within messages, simply wrap them in the [`Tr
 
 Nested macros, components, variables, and expressions are all supported, providing the flexibility needed for any use case.
 
-## Translations Outside React Components
+## Internationalization Outside of React
 
 So far, we have learned how to translate strings within a JSX element. However, what if we need to translate content that is outside JSX or pass a translation as a prop to another component?
 
@@ -616,7 +631,7 @@ const markAsRead = () => {
 ```
 
 :::tip
-You can also use this approach to translate element attributes, such as `alt' in an image tag:
+You can also use this approach to translate element attributes, such as `alt` in an `img` tag:
 
 ```jsx
 import { useLingui } from "@lingui/react/macro";
