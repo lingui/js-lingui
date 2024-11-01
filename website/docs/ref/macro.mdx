@@ -542,7 +542,7 @@ Available Props:
 | `id`      | string | Custom message ID                                      |
 | `comment` | string | Comment for translators                                |
 | `context` | string | Allows to extract the same messages with different IDs |
-| `render`  | func   | Render prop function used to render translation        |
+| `render`  | func   | Custom render callback to render translation           |
 
 #### `id`
 
@@ -566,7 +566,7 @@ Comment for translators to give them additional information about the message. I
 
 Allows to extract the same messages with different IDs. It is useful when the same message has different meanings in different contexts. See [Context](/docs/guides/explicit-vs-generated-ids.md#context) for more details.
 
-Similarly to [`comment`](#comment), it will be added to the message catalog, visible in TMS and will be removed from the production code.
+Similarly to [`comment`](#comment), it will be added to the message catalog, visible in TMS and will be removed from the production code:
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
@@ -603,11 +603,11 @@ Components and HTML tags are replaced by dummy indexed tags (`<0></0>`) which ha
 
 #### `render`
 
-Render prop function used to render translation. This prop is passed directly to the [`Trans`](/docs/ref/react.md#trans) component from the [`@lingui/react`](/docs/ref/react.md) package.
+Custom render callback to render translation. This prop is passed directly to the [`Trans`](/docs/ref/react.md#trans) component from the [`@lingui/react`](/docs/ref/react.md) package.
 
 ### `Plural`
 
-The `Plural` JSX macro is used to handle plural forms. It's similar to the [`plural`](#plural) macro from the core macros, but it's used in JSX elements.
+The `Plural` JSX macro is used to handle plural forms. It's similar to the [`plural`](#plural) core macro, but is used in JSX elements.
 
 ```jsx
 import { Plural } from "@lingui/react/macro";
@@ -621,18 +621,22 @@ import { Trans } from "@lingui/react";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                           |
-| ----------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`     | number         | (required) Value is mapped to plural form below                                                                                                       |
-| `format`    | string\|Object | Number format passed as options to [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
-| `offset`    | number         | Offset of value when calculating plural forms                                                                                                         |
-| `zero`      | string         | Form for empty `value`                                                                                                                                |
-| `one`       | string         | _Singular_ form                                                                                                                                       |
-| `two`       | string         | _Dual_ form                                                                                                                                           |
-| `few`       | string         | _Paucal_ form                                                                                                                                         |
-| `many`      | string         | _Plural_ form                                                                                                                                         |
-| `other`     | string         | (required) general _plural_ form                                                                                                                      |
-| `_<number>` | string         | Exact match form, corresponds to `=N` rule                                                                                                            |
+| Prop name   | Type           | Description                                                                                                                                             |
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
+| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
+| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
+| `offset`    | number         | Offset of value when calculating plural forms                                                                                                           |
+| `zero`      | string         | Form for empty `value`                                                                                                                                  |
+| `one`       | string         | _Singular_ form                                                                                                                                         |
+| `two`       | string         | _Dual_ form                                                                                                                                             |
+| `few`       | string         | _Paucal_ form                                                                                                                                           |
+| `many`      | string         | _Plural_ form                                                                                                                                           |
+| `_<number>` | string         | Exact match form, corresponds to `=N` rule                                                                                                              |
+| `id`        | string         | Custom message ID                                                                                                                                       |
+| `comment`   | string         | Comment for translators                                                                                                                                 |
+| `context`   | string         | Allows to extract the same messages with different IDs                                                                                                  |
+| `render`    | func           | Custom render callback to render translation                                                                                                            |
 
 Exact matches in MessageFormat syntax are expressed as `=int` (e.g. `=0`), but in React this isn't a valid prop name. Therefore, exact matches are expressed as `_int` prop (e.g. `_0`). This is commonly used in combination with `offset` prop. `offset` affects only plural forms, not exact matches.
 
@@ -662,21 +666,9 @@ import { Plural } from "@lingui/react/macro";
 */
 ```
 
-:::tip
-
-Use `<Plural>` inside `<Trans>` macro if you want to add custom `id`, `context` or `comment` for translators.
-
-```jsx
-<Trans context={"my context"}>
-  <Plural value={numBooks} one="Book" other="Books" />;
-</Trans>
-```
-
-:::
-
 ### `SelectOrdinal`
 
-The `SelectOrdinal` JSX macro is used to handle ordinal numbers. It's similar to the [`selectOrdinal`](#selectordinal) macro from the core macros, but it's used in JSX elements.
+The `SelectOrdinal` JSX macro is used to handle ordinal numbers. It's similar to the [`selectOrdinal`](#selectordinal) core macro, but is used in JSX elements.
 
 ```jsx
 import { SelectOrdinal } from "@lingui/react/macro";
@@ -690,34 +682,22 @@ import { SelectOrdinal } from "@lingui/react/macro";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                           |
-| ----------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`     | number         | (required) Value is mapped to plural form below                                                                                                       |
-| `offset`    | number         | Offset of value for plural forms                                                                                                                      |
-| `zero`      | string         | Form for empty `value`                                                                                                                                |
-| `one`       | string         | _Singular_ form                                                                                                                                       |
-| `two`       | string         | _Dual_ form                                                                                                                                           |
-| `few`       | string         | _Paucal_ form                                                                                                                                         |
-| `many`      | string         | _Plural_ form                                                                                                                                         |
-| `other`     | string         | (required) general _plural_ form                                                                                                                      |
-| `_<number>` | string         | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`)                                                                                          |
-| `format`    | string\|Object | Number format passed as options to [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
-
-:::tip
-
-Use `<SelectOrdinal>` inside `<Trans>` macro if you want to add custom `id`, `context` or `comment` for translators.
-
-```jsx
-<Trans context={"my context"}>
-  <SelectOrdinal value={count} one="#st" two="#nd" few="#rd" other="#th" />
-</Trans>
-```
-
-:::
+| Prop name   | Type           | Description                                                                                                                                             |
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
+| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
+| `offset`    | number         | Offset of value for plural forms                                                                                                                        |
+| `zero`      | string         | Form for empty `value`                                                                                                                                  |
+| `one`       | string         | _Singular_ form                                                                                                                                         |
+| `two`       | string         | _Dual_ form                                                                                                                                             |
+| `few`       | string         | _Paucal_ form                                                                                                                                           |
+| `many`      | string         | _Plural_ form                                                                                                                                           |
+| `_<number>` | string         | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`)                                                                                            |
+| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
 
 ### `Select`
 
-The `Select` JSX macro is used to handle different forms of a message based on a value. It's similar to the [`select`](#select) macro from the core macros, but it's used in JSX elements.
+The `Select` JSX macro is used to handle different forms of a message based on a value. It's similar to the [`select`](#select) core macro, but is used in JSX elements.
 
 ```jsx
 import { Select } from "@lingui/react/macro";
@@ -730,25 +710,17 @@ import { Select } from "@lingui/react/macro";
 
 Available Props:
 
-| Prop name | Type   | Description                                      |
-| --------- | ------ | ------------------------------------------------ |
-| `value`   | number | (required) Value determines which form is output |
-| `_<case>` | string | Form for specific case                           |
-| `other`   | number | (required) Default, catch-all form               |
+| Prop name | Type   | Description                                            |
+| --------- | ------ | ------------------------------------------------------ |
+| `value`   | number | _(required)_ Value determines which form is output     |
+| `other`   | number | _(required)_ Default, catch-all form                   |
+| `_<case>` | string | Form for specific case                                 |
+| `id`      | string | Custom message ID                                      |
+| `comment` | string | Comment for translators                                |
+| `context` | string | Allows to extract the same messages with different IDs |
+| `render`  | func   | Custom render callback to render translation           |
 
 The select cases except `other` should be prefixed with underscore: `_male` or `_female`.
-
-:::tip
-
-Use `<Select>` inside `<Trans>` macro if you want to provide `id`, `context` or `comment`.
-
-```jsx
-<Trans context={"my context"}>
-  <Select value={gender} _male="His book" _female="Her book" other="Their book" />
-</Trans>
-```
-
-:::
 
 ### `useLingui`
 
@@ -773,6 +745,7 @@ function MyComponent() {
 }
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
 import { useLingui } from "@lingui/react";
 
 function MyComponent() {
