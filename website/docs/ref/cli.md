@@ -5,7 +5,7 @@ description: Learn how to set up and use Lingui CLI to extract, merge and compil
 
 # Lingui CLI
 
-The `@lingui/cli` tool provides the `lingui` command, which allows the extraction of messages from source files into message catalogs and the compilation of message catalogs for production use.
+The `@lingui/cli` tool provides the `lingui` command which allows you to extract messages from source files into message catalogs and compile these catalogs for production use.
 
 ## Installation
 
@@ -39,11 +39,11 @@ If you use TypeScript, you can add the `--typescript` flag to the `compile` scri
 
 :::
 
-## Global options
+## Global Options
 
 ### `--config <config>`
 
-Path to the configuration file. If not set, the default file is loaded as described in the [Lingui configuration](/docs/ref/conf.md) reference.
+Path to the configuration file. If not set, the default file is loaded as described in the [Configuration](/docs/ref/conf.md) reference.
 
 ## Commands
 
@@ -60,30 +60,30 @@ lingui extract [files...]
         [--watch [--debounce <delay>]]
 ```
 
-The `extract` command looks for messages in the source files and extracts them
+The `extract` command scans source files to locate and extract messages, generating separate message catalogs for each language.
 
-This command scans the source files, identifies messages, and creates a separate message catalog for each language. The process includes the following steps:
+This process involves:
 
-1. Extract messages from files based on the `include` and `exclude` options in the [`catalogs`](/docs/ref/conf.md#catalogs) section of the configuration file.
-2. Merge them with existing message catalogs (if any)
-3. Write updated message catalogs.
-4. Print statistics about the extracted messages for each language, showing the total number of messages and the number of missing translations.
+1. Extracting messages from files based on the `include` and `exclude` settings in the [`catalogs`](/docs/ref/conf.md#catalogs) section of the configuration file.
+2. Merging the newly extracted messages with any existing message catalogs.
+3. Updating and saving the message catalogs.
+4. Printing extraction statistics for each language, including the total number of messages and any missing translations.
 
 :::tip
-Visit the [Message Extraction](/docs/guides/message-extraction.md) guide to learn more about how it works.
+Refer to the [Message Extraction](/docs/guides/message-extraction.md) guide to learn more about this process and the options available.
 :::
 
 #### `files` {#extract-files}
 
-Filters source paths to only extract messages from passed files. For ex:
+Filter source paths to extract messages only from specific files. For example:
 
 ```shell
 lingui extract src/components
 ```
 
-Will only extract messages from `src/components/**/*` files, you can pass multiple paths.
+This command extracts messages from files within the `src/components/**/*` path. You can also pass multiple paths for extraction.
 
-It's useful if you want to run the extract command on files that are staged, for example using `husky`, before committing will extract messages from staged files:
+This feature is useful when you want to extract messages from files that are staged for commit. For example, you can use husky to automatically extract messages from staged files before committing:
 
 ```json title="package.json"
 {
@@ -97,9 +97,9 @@ It's useful if you want to run the extract command on files that are staged, for
 
 #### `--clean` {#extract-clean}
 
-By default, the `extract` command merges messages extracted from source files with the existing message catalogs. This is safe as we won't accidentally lose translated messages.
+By default, the extract command merges messages extracted from source files with existing message catalogs, ensuring that translated messages are preserved and not accidentally lost.
 
-However, over time, some messages may be removed from the source code. We can use this option to clean up our message catalogs from obsolete messages.
+However, over time, some messages may be removed from the source code. You can use the following option to clean up your message catalogs and remove obsolete messages.
 
 #### `--overwrite` {#extract-overwrite}
 
@@ -119,15 +119,15 @@ Convert message catalogs from the previous format (see the [`format`](/docs/ref/
 
 #### `--verbose` {#extract-verbose}
 
-Prints additional information.
+Print additional information.
 
 #### `--watch` {#extract-watch}
 
-Watch mode. Only watches for changes in files in paths defined in the config file or in the command itself. Remember to use this only in development, as this command does not clean up obsolete translations.
+Enable watch mode to monitor changes in files located in the paths specified in the configuration file or in the command itself. Note that this feature is intended for development use only, as it does not remove obsolete translations.
 
 #### `--debounce <delay>` {#extract-debounce}
 
-Delays the extraction by `<delay>` milliseconds, bundling multiple file changes together.
+Delay the extraction by `<delay>` milliseconds, bundling multiple file changes together.
 
 ### `extract-template`
 
@@ -135,11 +135,13 @@ Delays the extraction by `<delay>` milliseconds, bundling multiple file changes 
 lingui extract-template [--verbose]
 ```
 
-This command extracts messages from source files and creates a `.pot` template file. Any artifacts created by this command may be ignored in version control. If your message catalogs are not synchronized with the source and don't contain some messages, the application will fall back to the template file. This command is useful to run before building the application.
+This command extracts messages from your source files and generates a `.pot` template file. Any artifacts created by this command can be safely ignored in version control.
+
+If your message catalogs are not synchronized with the source and some messages are missing, the application will fallback to the template file. Running this command before building the application is recommended to ensure all messages are accounted for.
 
 #### `--verbose` {#extract-template-verbose}
 
-Prints additional information.
+Print additional information.
 
 ### `compile`
 
@@ -153,7 +155,7 @@ lingui compile
     [--watch [--debounce <delay>]]
 ```
 
-Once we have all the catalogs ready and translated, we can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs in the [`path`](/docs/ref/conf.md#catalogs) directory and outputs minified JavaScript files. The resulting file is basically a string that is parsed into a plain JS object using `JSON.parse`.
+Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/docs/ref/conf.md#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
 
 The output looks like this:
 
@@ -165,10 +167,10 @@ export const messages = JSON.parse(`{
 
 Messages added to the compiled file are collected in a specific order:
 
-1.  Translated messages from the specified locale.
-2.  Translated messages from the fallback locale for the specified locale.
-3.  Translated message from default fallback locale.
-4.  Message key.
+1. Translated messages from the specified locale.
+2. Translated messages from the fallback locale for the specified locale.
+3. Translated message from default fallback locale.
+4. Message key.
 
 It is also possible to merge the translated catalogs into a single file per locale by specifying [`catalogsMergePath`](/docs/ref/conf.md#catalogsmergepath) in the configuration.
 
@@ -195,7 +197,7 @@ Format of message catalogs (see the [`format`](/docs/ref/conf.md#format) option 
 
 #### `--verbose` {#compile-verbose}
 
-Prints additional information.
+Print additional information.
 
 #### `--namespace` {#compile-namespace}
 
@@ -213,9 +215,9 @@ Watch mode. Watches only for changes in locale files in your defined locale cata
 
 Delays compilation by `<delay>` milliseconds to avoid multiple compilations for subsequent file changes.
 
-## Configuring the source locale
+## Configuring the Source Locale
 
-One drawback to checking for missing translations is that the English message catalog doesn't need translations because our source code is in English. This can be addressed by configuring the [`sourceLocale`](/docs/ref/conf.md#sourcelocale) in the configuration file.
+One limitation of checking for missing translations is that the English message catalog typically does not require translations since our source code is in English. This issue can be resolved by configuring the [`sourceLocale`](/docs/ref/conf.md#sourcelocale) in the configuration file.
 
 ## Compiling Catalogs in CI {#compiling-catalogs-in-ci}
 

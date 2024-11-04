@@ -77,14 +77,26 @@ msgid "msg.inbox"
 msgstr "Message Inbox"
 ```
 
-Messages with plurals are exported in ICU format:
+Messages with plurals are exported in [ICU MessageFormat](/docs/guides/message-format.md):
 
 ```po
 msgid "{count, plural, one {Message} other {Messages}}"
 msgstr "{count, plural, one {Message} other {Messages}}"
 ```
 
-Read more about [ICU MessageFormat](/docs/guides/message-format.md).
+Messages with placeholders:
+
+```js
+t`Hello ${user.name} ${value}`;
+```
+
+are exported as:
+
+```po
+#. placeholder {0}: user.name
+msgid "Hello {0} {value}"
+msgstr "Hello {0} {value}"
+```
 
 ## PO with gettext Plurals {#po-gettext}
 

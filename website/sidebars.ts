@@ -103,6 +103,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Macros",
+        id: "ref/macro",
+      },
+      {
+        type: "doc",
         label: "Catalog Formats",
         id: "ref/catalog-formats",
       },
@@ -118,17 +123,12 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "@lingui/macro",
-        id: "ref/macro",
-      },
-      {
-        type: "doc",
         label: "@lingui/cli",
         id: "ref/cli",
       },
       {
         type: "doc",
-        label: "@lingui/locale-detector",
+        label: "@lingui/detect-locale",
         id: "ref/locale-detector",
       },
       {

@@ -32,8 +32,7 @@ const linguiConfig = {
 export default linguiConfig;
 ```
 
-## Further reading
+## See Also
 
 - [Message Extraction](/docs/guides/message-extraction.md)
 - [Custom Extractor](/docs/guides/custom-extractor.md)
-- [GitHub Repository](https://github.com/lingui/js-lingui/tree/main/packages/extractor-vue)
