@@ -36,11 +36,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - Common Patterns",
-        id: "tutorials/react-patterns",
-      },
-      {
-        type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
       },
@@ -59,6 +54,11 @@ const sidebar = [
         type: "doc",
         label: "Explicit vs Generated IDs",
         id: "guides/explicit-vs-generated-ids",
+      },
+      {
+        type: "doc",
+        label: "Lazy Translations",
+        id: "guides/lazy-translations",
       },
       {
         type: "doc",

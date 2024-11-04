@@ -117,7 +117,7 @@ You will need to make some changes as this is a misuse of the library that actua
 
 Due to the changes caused by hash-based message ID feature described earlier, this approach will no longer work.
 
-Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
+Instead, please use [recommended](/guides/lazy-translations) pattern for such translations:
 
 ```tsx
 import { msg } from "@lingui/macro";
