@@ -13,7 +13,7 @@ It also makes it easy to identify hard-coded strings and improperly concatenated
 
 ## Configuration
 
-To configure pseudolocalization, add the [`pseudoLocale`](/docs/ref/conf.md#pseudolocale) property to your Lingui configuration file:
+To configure pseudolocalization, add the [`pseudoLocale`](/ref/conf#pseudolocale) property to your Lingui configuration file:
 
 ```json title="lingui.config.js"
 {
@@ -25,15 +25,15 @@ To configure pseudolocalization, add the [`pseudoLocale`](/docs/ref/conf.md#pseu
 }
 ```
 
-The `pseudoLocale` option must be set to any string that matches a value in the [`locales`](/docs/ref/conf.md#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.
+The `pseudoLocale` option must be set to any string that matches a value in the [`locales`](/ref/conf#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.
 
 If the `fallbackLocales` is configured, the pseudolocalization will be generated from the translated fallback locale instead.
 
 ## Generate Pseudolocalization
 
-After running the [`extract`](/docs/ref/cli.md#extract) command, verify that the folder for the pseudolocale has been created.
+After running the [`extract`](/ref/cli#extract) command, verify that the folder for the pseudolocale has been created.
 
-Pseudolocalization is automatically generated during the [`compile`](/docs/ref/cli.md#compile) process, using the messages.
+Pseudolocalization is automatically generated during the [`compile`](/ref/cli#compile) process, using the messages.
 
 ## Switch Browser Into Specified Pseudolocale
 

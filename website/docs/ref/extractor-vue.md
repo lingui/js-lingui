@@ -34,5 +34,5 @@ export default linguiConfig;
 
 ## See Also
 
-- [Message Extraction](/docs/guides/message-extraction.md)
-- [Custom Extractor](/docs/guides/custom-extractor.md)
+- [Message Extraction](/guides/message-extraction)
+- [Custom Extractor](/guides/custom-extractor)

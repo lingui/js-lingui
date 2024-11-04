@@ -7,7 +7,7 @@ description: Learn how to add internationalization to a React Native application
 
 In this tutorial, we'll learn how to add internationalization to an existing application in React Native.
 
-The React Native tutorial is similar to the one for [React](/docs/tutorials/react.md) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
+The React Native tutorial is similar to the one for [React](/tutorials/react) and we highly recommend you read that one first because it goes into greater detail on many topics. Here, we will only cover parts that are relevant for React Native.
 
 :::tip Example
 If you're looking for a working solution, check out the [React Native example](https://github.com/lingui/js-lingui/tree/main/examples/react-native). This example application shows a complete setup using Lingui and React Native.
@@ -20,9 +20,9 @@ If some `Intl` feature is not supported by your runtime, you can [polyfill it](#
 
 ## Installing Lingui
 
-1. Follow the [Installation and Setup](/docs/installation.mdx?transpiler=babel) page for initial setup (for Babel).
-2. Install the [`@lingui/core`](/docs/ref/core.md) and [`@lingui/react`](/docs/ref/react.md) packages.
-3. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/docs/ref/metro-transformer.mdx) package that enables Metro to compile `.po` files on the fly.
+1. Follow the [Installation and Setup](/installation?transpiler=babel) page for initial setup (for Babel).
+2. Install the [`@lingui/core`](/ref/core) and [`@lingui/react`](/ref/react) packages.
+3. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/ref/metro-transformer) package that enables Metro to compile `.po` files on the fly.
 
 :::caution Warning
 With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx expo start -c` or `npx react-native start --reset-cache` (if you do not use Expo).
@@ -94,12 +94,12 @@ As you can see, it's a simple mailbox application with only one screen.
 ## Internationalization in React (Native)
 
 :::tip TL;DR
-There are several ways to render translations: You may use the [`Trans`](/docs/ref/react.md#trans) component or the [`useLingui`](/docs/ref/react.md#uselingui) hook together with the [`t`](/docs/ref/macro.mdx#t) or [`msg`](/docs/ref/macro.mdx#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render, making sure the UI shows the correct translations.
+There are several ways to render translations: You may use the [`Trans`](/ref/react#trans) component or the [`useLingui`](/ref/react#uselingui) hook together with the [`t`](/ref/macro#t) or [`msg`](/ref/macro#definemessage) macros. When you change the active locale or load new messages, all components that consume the Lingui context provided by [`I18nProvider`](/ref/react#i18nprovider) will re-render, making sure the UI shows the correct translations.
 :::
 
-Not surprisingly, this part isn't too different from the [React tutorial](/docs/tutorials/react.md).
+Not surprisingly, this part isn't too different from the [React tutorial](/tutorials/react).
 
-First, we need to wrap our app with [`I18nProvider`](/docs/ref/react.md#i18nprovider) and then we can use the [`Trans`](/docs/ref/macro.mdx#trans) macro to translate the screen heading:
+First, we need to wrap our app with [`I18nProvider`](/ref/react#i18nprovider) and then we can use the [`Trans`](/ref/macro#trans) macro to translate the screen heading:
 
 ```tsx
 import { I18nProvider } from "@lingui/react";
@@ -121,7 +121,7 @@ i18n.loadAndActivate({ locale: "en", messages });
 We're importing the default `i18n` object from `@lingui/core`. Read more about the `i18n` object in the [reference](/ref/core).
 :::
 
-Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/docs/ref/macro.mdx#trans) macro here!
+Translating the heading is done. Now, let's translate the `title` prop in the `<Button title="mark messages as read" />` element. In this case, `Button` expects to receive a `string`, so we cannot use the [`Trans`](/ref/macro#trans) macro here!
 
 The solution is to use the `t` macro which we can obtain from the `useLingui` hook. We use it like this to get a translated string:
 
@@ -133,7 +133,7 @@ const { t } = useLingui();
 <Button title={t`this will be translated and rerendered with locale changes`}/>
 ```
 
-Under the hood, [`I18nProvider`](/docs/ref/react.md#i18nprovider) takes the instance of the `i18n` object and passes it to `Trans` components through React context. `I18nProvider` will update the context value (which then rerenders components that consume the provided context value) when locale or message catalogs are updated.
+Under the hood, [`I18nProvider`](/ref/react#i18nprovider) takes the instance of the `i18n` object and passes it to `Trans` components through React context. `I18nProvider` will update the context value (which then rerenders components that consume the provided context value) when locale or message catalogs are updated.
 
 The `Trans` component uses the `i18n` instance to get the translations from it. If we cannot use `Trans`, we can use the `useLingui` hook to get hold of the `i18n` instance ourselves and get the translations from there.
 
@@ -186,7 +186,7 @@ const showDeleteConfirmation = () => {
 
 ## Changing the Active Locale
 
-The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/docs/ref/react.md#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
+The last remaining piece of the puzzle is changing the active locale. The `i18n` object exposes [`i18n.loadAndActivate()`](/ref/core#i18n.loadAndActivate) for that. Call the method and the [`I18nProvider`](/ref/react#i18nprovider) will re-render the translations. It all becomes clear when you take a look at the [final code](https://github.com/lingui/js-lingui/tree/main/examples/react-native/src/MainScreen.tsx#L29).
 
 However, we don't recommend that you change the locale like this in mobile apps, as it can cause conflicts in how your app ui is localized. This is further [explained here](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=9088).
 
@@ -198,7 +198,7 @@ Instead, please refer to [Expo localization](https://docs.expo.dev/versions/late
 
 ## Rendering and Styling of Translations
 
-As described in the [reference](/docs/ref/react.md#rendering-translations), by default, translation components render translation as text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/docs/ref/macro.mdx#trans) component like this:
+As described in the [reference](/ref/react#rendering-translations), by default, translation components render translation as text without a wrapping tag. In React Native though, all text must be wrapped in the `Text` component. This means we would need to use the [`Trans`](/ref/macro#trans) component like this:
 
 ```tsx
 <Text>
@@ -206,17 +206,17 @@ As described in the [reference](/docs/ref/react.md#rendering-translations), by d
 </Text>
 ```
 
-You'll surely agree the `Text` component looks a little redundant. That's why the [`I18nProvider`](/docs/ref/react.md#i18nprovider) component accepts a `defaultComponent` prop. Just supply the `Text` component as the `defaultComponent` prop and the previous example can be simplified to:
+You'll surely agree the `Text` component looks a little redundant. That's why the [`I18nProvider`](/ref/react#i18nprovider) component accepts a `defaultComponent` prop. Just supply the `Text` component as the `defaultComponent` prop and the previous example can be simplified to:
 
 ```tsx
 <Trans>Message Inbox</Trans>
 ```
 
-Alternatively, you may override the default locally on the i18n components, using the `render` or `component` props, as documented in the [reference](/docs/ref/react.md#rendering-translations). Use them to apply styling to the rendered string.
+Alternatively, you may override the default locally on the i18n components, using the `render` or `component` props, as documented in the [reference](/ref/react#rendering-translations). Use them to apply styling to the rendered string.
 
 ## Nesting Components
 
-The [`Trans`](/docs/ref/macro.mdx#trans) macro and `Text` component may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native [handles nested text](https://facebook.github.io/react-native/docs/text#nested-text).
+The [`Trans`](/ref/macro#trans) macro and `Text` component may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native [handles nested text](https://facebook.github.io/react-native/docs/text#nested-text).
 
 ![image](/img/docs/rn-component-nesting.png)
 
@@ -240,9 +240,10 @@ The important point here is that the sentence isn't broken into pieces but remai
 
 ## See Also
 
-- [Message Extraction Guide](/docs/guides/message-extraction.md)
-- [`@lingui/react` Reference](/docs/ref/react.md)
-- [`@lingui/cli` Reference](/docs/ref/cli.md)
+- [React i18n Tutorial](/tutorials/react)
+- [Message Extraction Guide](/guides/message-extraction)
+- [`@lingui/react` Reference](/ref/react)
+- [Lingui CLI Reference](/ref/cli)
 - [Localizing React Native apps talk from React Native EU 2022](https://www.youtube.com/live/uLicTDG5hSs?feature=share&t=7512)
 
 ---

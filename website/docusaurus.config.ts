@@ -55,7 +55,7 @@ const config: Config = {
           position: "left",
         },
         {
-          to: "/misc/examples",
+          to: "/examples",
           label: "Examples",
           position: "left",
         },
@@ -65,7 +65,7 @@ const config: Config = {
           position: "left",
         },
         {
-          to: "/misc/community",
+          to: "/community",
           label: "Community",
           position: "left",
         },

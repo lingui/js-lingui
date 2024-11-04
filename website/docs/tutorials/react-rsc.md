@@ -11,7 +11,7 @@ There's a working example available [here](https://github.com/lingui/js-lingui/t
 The example uses both Pages Router and App Router, so you can see how to use Lingui with both in [this commit](https://github.com/lingui/js-lingui/pull/1944/commits/100fc74abb49cff677f4b1cac1dfd5da60262b67).
 :::
 
-Before going further, please follow the [Installation and Setup](/docs/installation.mdx?transpiler=swc) instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
+Before going further, please follow the [Installation and Setup](/installation?transpiler=swc) instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
 
 ### Adding i18n Support to Next.js
 
@@ -21,7 +21,7 @@ After configuring the middleware, make sure your page and route files are moved 
 
 ### Next.js Config
 
-Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/docs/ref/macro.mdx).
+Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/ref/macro).
 
 ```js title="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -38,7 +38,7 @@ module.exports = {
 With Lingui, the experience of localizing React is the same in client and server components: `Trans` and `useLingui` can be used identically in both worlds, even though internally there are two implementations.
 
 :::tip Under the hood
-Translation strings, one way or another, are obtained from an [I18n](/docs/ref/core.md) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
+Translation strings, one way or another, are obtained from an [I18n](/ref/core) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
 :::
 
 To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js passes to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
@@ -177,8 +177,9 @@ export default function SomePage() {
 }
 ```
 
-Read more about [Lazy Translation](/docs/guides/lazy-translations.md) to see how to handle translation defined on the module level.
+Read more about [Lazy Translation](/guides/lazy-translations) to see how to handle translation defined on the module level.
 
 ## See Also
 
-- [`@lingui/react` Reference](/docs/ref/react.md)
+- [React i18n Tutorial](/tutorials/react)
+- [`@lingui/react` Reference](/ref/react)

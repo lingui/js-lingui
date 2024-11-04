@@ -5,7 +5,7 @@ description: Learn how to configure Lingui for your project
 
 # Configuration
 
-The following reference covers all supported configuration options in Lingui. To learn more about configuring Lingui, read the [Installation and Setup](/docs/installation.mdx) guide.
+The following reference covers all supported configuration options in Lingui. To learn more about configuring Lingui, read the [Installation and Setup](/installation) guide.
 
 By default, Lingui looks for the configuration in the following locations:
 
@@ -31,7 +31,7 @@ Default value:
 ];
 ```
 
-The `catalogs` configuration defines the location of message catalogs and specifies which files are included when the [`extract`](/docs/ref/cli.md#extract) command scans for messages.
+The `catalogs` configuration defines the location of message catalogs and specifies which files are included when the [`extract`](/ref/cli#extract) command scans for messages.
 
 - `path`: the directory where the message catalogs are located. It should not end with a slash and must not include a file extension, which depends on the [`format`](#format) configuration. The `{locale}` token will be replaced by the catalog's locale.
 - `include` and `exclude`: these patterns specify which files to include or exclude during the extraction process. They are passed to [minimatch](https://github.com/isaacs/minimatch) for pattern matching.
@@ -158,7 +158,7 @@ components/
 
 Default value: `[]`
 
-The locale tags used in the project. The [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) commands write a catalog for each locale specified. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html):
+The locale tags used in the project. The [`extract`](/ref/cli#extract) and [`compile`](/ref/cli#compile) commands write a catalog for each locale specified. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html):
 
 ```json
 {
@@ -217,13 +217,13 @@ Default value: `""`
 
 Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the `en` catalog will be pseudo-localized. The locale must be included in the `locales` config.
 
-Read more about [Pseudolocalization](/docs/guides/pseudolocalization.md).
+Read more about [Pseudolocalization](/guides/pseudolocalization).
 
 ## catalogsMergePath
 
 Default value: `""`
 
-Define the path where translated catalogs are merged into a single file per locale during the [`compile`](/docs/ref/cli.md#compile) process.
+Define the path where translated catalogs are merged into a single file per locale during the [`compile`](/ref/cli#compile) process.
 
 #### Example
 
@@ -272,7 +272,7 @@ Using the `catalogsMergePath`, separate catalogs can be merged into a single fil
 
 Default value: `cjs`
 
-Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli.md#compile) command.
+Specify namespace for exporting compiled messages. See [`compile`](/ref/cli#compile) command.
 
 #### cjs
 
@@ -389,7 +389,7 @@ export default {
 }
 ```
 
-Read more about available formatters in [Catalog Formats](/docs/ref/catalog-formats.md) or create your own [Custom Formatter](/docs/guides/custom-formatter.md).
+Read more about available formatters in [Catalog Formats](/ref/catalog-formats) or create your own [Custom Formatter](/guides/custom-formatter).
 
 ## orderBy
 
@@ -421,9 +421,9 @@ Note that using `<rootDir>` as a string token in any other path-based config set
 
 Default value: `["@lingui/core", "i18n"]`
 
-This setting specifies the module path for the exported `i18n` object. The first value in the array is the module path, and the second is the name of the import. This configuration is essential for [macros](/docs/ref/macro.mdx) that need to reference the global `i18n` object.
+This setting specifies the module path for the exported `i18n` object. The first value in the array is the module path, and the second is the name of the import. This configuration is essential for [macros](/ref/macro) that need to reference the global `i18n` object.
 
-You only need to set this value if you use custom object created using [`setupI18n`](/docs/ref/core.md#setupi18n):
+You only need to set this value if you use custom object created using [`setupI18n`](/ref/core#setupi18n):
 
 For example, if you have a custom module that exports the `i18n` object:
 
@@ -449,7 +449,7 @@ import { myI18n } from "./custom-i18n-config";
 }
 ```
 
-In more advanced scenarios, you may need to change the module from which the [`Trans`](/docs/ref/macro.mdx#trans) or [`useLingui`](/docs/ref/macro.mdx#uselingui) macros are imported:
+In more advanced scenarios, you may need to change the module from which the [`Trans`](/ref/macro#trans) or [`useLingui`](/ref/macro#uselingui) macros are imported:
 
 ```jsx
 import { Trans, useLingui } from "./custom-config";
@@ -478,4 +478,4 @@ Extractors it's the way to customize which extractor you want for your codebase.
 }
 ```
 
-See the [Custom Extractor](/docs/guides/custom-extractor.md) guide for instructions on creating your own extractor.
+See the [Custom Extractor](/guides/custom-extractor) guide for instructions on creating your own extractor.

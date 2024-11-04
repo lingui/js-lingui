@@ -65,7 +65,7 @@ The translator gets the message in one piece: `Read the <link>documentation</lin
 
 ## Macros for Component-Based Message Syntax
 
-Lingui provides powerful [Macros](/docs/ref/macro.mdx) that automatically generate a message syntax.
+Lingui provides powerful [Macros](/ref/macro) that automatically generate a message syntax.
 
 Let's go back to the previous example:
 
@@ -73,7 +73,7 @@ Let's go back to the previous example:
 <p>Read the <a href="/docs">documentation</a>.</p>
 ```
 
-All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.mdx#trans) macro:
+All we need to do is to wrap the message in a [`Trans`](/ref/macro#trans) macro:
 
 ```html
 <p>
@@ -81,9 +81,9 @@ All we need to do is to wrap the message in a [`Trans`](/docs/ref/macro.mdx#tran
 </p>
 ```
 
-The macro will then parse the [`Trans`](/docs/ref/macro.mdx#trans) macro children and automatically generate `message` and `components` props in the form described in the previous section.
+The macro will then parse the [`Trans`](/ref/macro#trans) macro children and automatically generate `message` and `components` props in the form described in the previous section.
 
-This is very useful when adding i18n to an existing project. All we need to do is wrap all messages in the [`Trans`](/docs/ref/macro.mdx#trans) macro.
+This is very useful when adding i18n to an existing project. All we need to do is wrap all messages in the [`Trans`](/ref/macro#trans) macro.
 
 Let's compare it to the react-intl solution to see the difference:
 
@@ -110,7 +110,7 @@ It's also worth mentioning that the message IDs are completely optional. Lingui 
 
 The message ID is `Read the <0>documentation</0>.` instead of `msg.docs`. Both solutions have pros and cons and the library lets you choose the one which works best for you.
 
-Read more about [Explicit vs Generated Message IDs](/docs/guides/explicit-vs-generated-ids.md).
+Read more about [Explicit vs Generated Message IDs](/guides/explicit-vs-generated-ids).
 :::
 
 ## Plurals
@@ -130,7 +130,7 @@ Let's take a look at the original example from react-intl docs:
 />
 ```
 
-Using Lingui macros, we could combine [`Trans`](/docs/ref/macro.mdx#trans), [`Plural`](/docs/ref/macro.mdx#plural-1) components and [`i18n.number`](/docs/ref/core.md#i18n.number) macro:
+Using Lingui macros, we could combine [`Trans`](/ref/macro#trans), [`Plural`](/ref/macro#plural-1) components and [`i18n.number`](/ref/core#i18n.number) macro:
 
 ```jsx
 <Trans id="welcome">
@@ -195,7 +195,7 @@ Custom IDs are supported as well:
 ```
 
 :::note
-To inject `i18n` object into props, you need to use [`useLingui`](/docs/ref/react.md#uselingui) hook. It's very similar to `useIntl` from [react-intl](https://formatjs.io/docs/react-intl/api/#useintl-hook).
+To inject `i18n` object into props, you need to use [`useLingui`](/ref/react#uselingui) hook. It's very similar to `useIntl` from [react-intl](https://formatjs.io/docs/react-intl/api/#useintl-hook).
 :::
 
 ## External Message Catalog
@@ -204,7 +204,7 @@ Let's say our application has been internationalized and we want to send the mes
 
 react-intl comes with the Babel plugin which extracts messages from individual files, but it's up to you to merge them into one file which you can send to translators.
 
-Lingui provides a handy [`CLI`](/docs/ref/cli.md) that extracts messages and merges them with any existing translations. It supports both the Babel and SWC ecosystems for extracting messages.
+Lingui provides a handy [`CLI`](/ref/cli) that extracts messages and merges them with any existing translations. It supports both the Babel and SWC ecosystems for extracting messages.
 
 ## Compiling Messages
 
