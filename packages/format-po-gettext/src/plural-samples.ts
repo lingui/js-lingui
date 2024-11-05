@@ -1,10 +1,15 @@
 import cardinals from "cldr-core/supplemental/plurals.json"
 
+/*
+This script is heavily influenced by one that is used to generate plural samples
+found here: https://github.com/nodeca/plurals-cldr/blob/master/support/generate.js
+
+Ordinals were removed, and the original script supported strings and numbers,
+but for the use case of lingui-gettext formatter, we only want numbers.
+*/
+
 type PluralForm = "zero" | "one" | "two" | "few" | "many" | "other"
 type FormattedRuleset = Record<PluralForm, string>
-
-////////////////////////////////////////////////////////////////////////////////
-// Helpers
 
 // Strip key prefixes to get clear names: zero / one / two / few / many / other
 // pluralRule-count-other -> other
@@ -27,7 +32,6 @@ export function fillRange(value: string): number[] {
   // 0.004~0.009 has 100 values
   let mult = Math.pow(10, decimals)
 
-  // convert to numbers
   const startNum = Number(start)
   const endNum = Number(end)
 
@@ -37,7 +41,7 @@ export function fillRange(value: string): number[] {
 
   let last = range[range.length - 1]
 
-  // Stupid self check
+  // Number defined in the range should be the last one, i.e. 5~16 should have 16
   if (endNum !== last) {
     throw new Error(`Range create error for ${value}: last value is ${last}`)
   }
@@ -84,7 +88,6 @@ export function createLocaleTest(rules) {
   return result
 }
 
-////////////////////////////////////////////////////////////////////////////////
 
 export function getCldrPluralSamples(): Record<
   string,
