@@ -88,7 +88,6 @@ export function createLocaleTest(rules) {
   return result
 }
 
-
 export function getCldrPluralSamples(): Record<
   string,
   Record<PluralForm, number[]>
