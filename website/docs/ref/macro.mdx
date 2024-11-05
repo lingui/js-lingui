@@ -112,24 +112,6 @@ const message = i18n._(
 );
 ```
 
-Optionally, a custom `i18n` instance can be passed that can be used instead of the global instance:
-
-```jsx
-import { t } from "@lingui/core/macro";
-import { i18nCustom } from "./lingui";
-const message = t(i18nCustom)`Hello World`;
-
-// ↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18nCustom } from "./lingui";
-const message = i18nCustom._(
-  /*i18n*/ {
-    id: "mY42CM",
-    message: "Hello World",
-  }
-);
-```
-
 :::info
 By default the `i18n` object is imported from [`@lingui/core`](/ref/core). If you are using a custom instance of the `i18n` object, you need to set [`runtimeConfigModule`](/ref/conf#runtimeconfigmodule) or pass a custom instance to [`t`](/ref/macro#t).
 :::
@@ -831,7 +813,7 @@ i18n._(
 ```
 
 ```js
-t(customI18n)`Refresh inbox`;
+customI18n._(msg(`Refresh inbox`));
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -883,22 +865,6 @@ t({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
-    id: "msg.refresh",
-    message: "Refresh inbox",
-  }
-);
-```
-
-```js
-t(customI18n)({
-  id: "msg.refresh",
-  message: "Refresh inbox",
-});
-
-// ↓ ↓ ↓ ↓ ↓ ↓
-
-customI18n._(
   /*i18n*/ {
     id: "msg.refresh",
     message: "Refresh inbox",
