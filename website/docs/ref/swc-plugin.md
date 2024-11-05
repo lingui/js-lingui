@@ -7,7 +7,7 @@ description: Use Lingui Macros in your SWC project
 
 [SWC](https://swc.rs/) is an extensible Rust-based platform for the next generation of fast developer tools.
 
-If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [Lingui Macros](/docs/ref/macro.mdx).
+If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [Lingui Macros](/ref/macro).
 
 [![npm-version](https://img.shields.io/npm/v/@lingui/swc-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/swc-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/swc-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/swc-plugin)
@@ -103,7 +103,7 @@ You can configure the plugin by passing the `runtimeModules` option. This option
 ]
 ```
 
-For more details, refer to the [Runtime Configuration](/docs/ref/conf.md#runtimeconfigmodule) section of the documentation.
+For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
 
 :::info
 If you would like to suggest a new feature or report a bug, please [open an issue](https://github.com/lingui/swc-plugin/issues) on the GitHub repository.

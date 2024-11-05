@@ -1,6 +1,6 @@
 # Testing
 
-In a React application, components that use [`Trans`](/docs/ref/react.md#trans) or [`useLingui`](/docs/ref/react.md#uselingui) need access to the context provided by [`I18nProvider`](/docs/ref/react.md#i18nprovider). How you wrap your component with the I18nProvider depends on the testing library you're using.
+In a React application, components that use [`Trans`](/ref/react#trans) or [`useLingui`](/ref/react#uselingui) need access to the context provided by [`I18nProvider`](/ref/react#i18nprovider). How you wrap your component with the I18nProvider depends on the testing library you're using.
 
 Below is an example using [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/) and its [wrapper-property](https://testing-library.com/docs/react-testing-library/api#wrapper):
 

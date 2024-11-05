@@ -108,11 +108,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "Catalog Formats",
-        id: "ref/catalog-formats",
-      },
-      {
-        type: "doc",
         label: "@lingui/core",
         id: "ref/core",
       },
@@ -145,6 +140,11 @@ const sidebar = [
         type: "doc",
         label: "@lingui/extractor-vue",
         id: "ref/extractor-vue",
+      },
+      {
+        type: "doc",
+        label: "Catalog Formats",
+        id: "ref/catalog-formats",
       },
       {
         type: "category",
@@ -209,7 +209,7 @@ const sidebar = [
   {
     type: "category",
     label: "Resources",
-    items: ["misc/community", "misc/resources", "misc/tooling", "misc/showroom", "misc/react-intl", "misc/i18next"],
+    items: ["misc/resources", "misc/tooling", "misc/showroom", "misc/react-intl", "misc/i18next"],
   },
   {
     type: "category",

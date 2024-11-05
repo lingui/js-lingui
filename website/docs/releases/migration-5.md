@@ -2,7 +2,7 @@
 
 This guide will help you migrate from Lingui 4.x to 5.x. It covers the most important changes and breaking changes.
 
-Need to upgrade an older project to v4 first? See our [older migration guide](/docs/releases/migration-4.md).
+Need to upgrade an older project to v4 first? See our [older migration guide](/releases/migration-4).
 
 ## Node.js Version
 
@@ -194,7 +194,7 @@ Now:
 msgid "Hello {0} {value}"
 ```
 
-This feature is enabled by default and can be disabled by setting `printPlaceholdersInComments` to `false` in the [configuration](/docs/ref/catalog-formats.md#po).
+This feature is enabled by default and can be disabled by setting `printPlaceholdersInComments` to `false` in the [configuration](/ref/catalog-formats#po).
 
 ## Compiled Messages Structure Changes
 
@@ -227,7 +227,7 @@ The structure of compiled messages has been changed to make them more predictabl
 
 ### Migration
 
-You'll need to re-[`compile`](/docs/ref/cli.md#compile) your messages in the new format.
+You'll need to re-[`compile`](/ref/cli#compile) your messages in the new format.
 
 :::info
 Read more about the motivation and discuss the changes in the related [issue](https://github.com/lingui/js-lingui/issues/2043).

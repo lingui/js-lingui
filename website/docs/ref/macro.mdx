@@ -5,7 +5,7 @@ description: Transform JavaScript objects and JSX elements into ICU MessageForma
 
 # Macros
 
-Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](/docs/guides/message-format.md) messages at compile time. It provides a more efficient and developer-friendly way to handle internationalization in your project.
+Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](/guides/message-format) messages at compile time. It provides a more efficient and developer-friendly way to handle internationalization in your project.
 
 The benefits of using macros:
 
@@ -19,7 +19,7 @@ There are two types of macros: [Core Macros](#core-macros) (JS) and [React Macro
 
 ## Core Macros
 
-Core (JS) Macros can be used in any JavaScript context (e.g. outside JSX). All JS macros are transformed into a _Message Descriptor_ wrapped inside of [`i18n._`](/docs/ref/core.md#i18n._) call:
+Core (JS) Macros can be used in any JavaScript context (e.g. outside JSX). All JS macros are transformed into a _Message Descriptor_ wrapped inside of [`i18n._`](/ref/core#i18n._) call:
 
 ```js
 import { t } from "@lingui/core/macro";
@@ -54,7 +54,7 @@ type MessageDescriptor = {
 
 The `id` is the message ID and is the only parameter required. The `id` and `message` are extracted into the message catalog. Only `id` and `values` are used at runtime, all other attributes are removed from the production code for size optimization.
 
-You don't need to specify the ID manually. By default, Macro will automatically create a short ID from your message. However, you can explicitly specify a custom ID. Read more about [Explicit vs Generated IDs](/docs/guides/explicit-vs-generated-ids.md).
+You don't need to specify the ID manually. By default, Macro will automatically create a short ID from your message. However, you can explicitly specify a custom ID. Read more about [Explicit vs Generated IDs](/guides/explicit-vs-generated-ids).
 
 ### `t`
 
@@ -112,26 +112,8 @@ const message = i18n._(
 );
 ```
 
-Optionally, a custom `i18n` instance can be passed that can be used instead of the global instance:
-
-```jsx
-import { t } from "@lingui/core/macro";
-import { i18nCustom } from "./lingui";
-const message = t(i18nCustom)`Hello World`;
-
-// ↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18nCustom } from "./lingui";
-const message = i18nCustom._(
-  /*i18n*/ {
-    id: "mY42CM",
-    message: "Hello World",
-  }
-);
-```
-
 :::info
-By default the `i18n` object is imported from [`@lingui/core`](/docs/ref/core.md). If you are using a custom instance of the `i18n` object, you need to set [`runtimeConfigModule`](/docs/ref/conf.md#runtimeconfigmodule) or pass a custom instance to [`t`](/docs/ref/macro.mdx#t).
+By default the `i18n` object is imported from [`@lingui/core`](/ref/core). If you are using a custom instance of the `i18n` object, you need to set [`runtimeConfigModule`](/ref/conf#runtimeconfigmodule) or pass a custom instance to [`t`](/ref/macro#t).
 :::
 
 It's also possible to pass custom `id` and `comment` for translators by calling `t` macro with a message descriptor:
@@ -211,7 +193,7 @@ const message = i18n._(
 Choose the plural forms used in your source code based on the pluralization rules of your source locale.
 :::
 
-If you need to add variables in plural form, you can use template string literals. This time you don't need the [`t`](/docs/ref/macro.mdx#t) macro, because template strings are transformed automatically:
+If you need to add variables in plural form, you can use template string literals. This time you don't need the [`t`](/ref/macro#t) macro, because template strings are transformed automatically:
 
 ```js
 import { plural } from "@lingui/core/macro";
@@ -438,7 +420,7 @@ type MacroMessageDescriptor = {
 };
 ```
 
-Either the `id` or `message` property is required. `id` is a custom message ID. If it isn't set, the `message` (and `context` if present) will be used to generate an ID. Read more about [Explicit vs Generated IDs](/docs/guides/explicit-vs-generated-ids.md).
+Either the `id` or `message` property is required. `id` is a custom message ID. If it isn't set, the `message` (and `context` if present) will be used to generate an ID. Read more about [Explicit vs Generated IDs](/guides/explicit-vs-generated-ids).
 
 ```js
 import { defineMessage } from "@lingui/core/macro";
@@ -519,7 +501,7 @@ const message = /*i18n*/ {
 
 ## React Macros
 
-React (JSX) Macros are used in JSX elements and are transformed into the [`Trans`](/docs/ref/react.md#trans) component imported from the [`@lingui/react`](/docs/ref/react.md) package.
+React (JSX) Macros are used in JSX elements and are transformed into the [`Trans`](/ref/react#trans) component imported from the [`@lingui/react`](/ref/react) package.
 
 ### `Trans`
 
@@ -546,7 +528,7 @@ Available Props:
 
 #### `id`
 
-Each message in the catalog is identified by a message ID. While macro uses message (and `context` property if provided) to generate the ID, it's possible to provide custom ID. Read more about [Explicit vs Generated IDs](/docs/guides/explicit-vs-generated-ids.md).
+Each message in the catalog is identified by a message ID. While macro uses message (and `context` property if provided) to generate the ID, it's possible to provide custom ID. Read more about [Explicit vs Generated IDs](/guides/explicit-vs-generated-ids).
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
@@ -564,7 +546,7 @@ Comment for translators to give them additional information about the message. I
 
 #### `context`
 
-Allows to extract the same messages with different IDs. It is useful when the same message has different meanings in different contexts. See [Context](/docs/guides/explicit-vs-generated-ids.md#context) for more details.
+Allows to extract the same messages with different IDs. It is useful when the same message has different meanings in different contexts. See [Context](/guides/explicit-vs-generated-ids#context) for more details.
 
 Similarly to [`comment`](#comment), it will be added to the message catalog, visible in TMS and will be removed from the production code:
 
@@ -603,7 +585,7 @@ Components and HTML tags are replaced by dummy indexed tags (`<0></0>`) which ha
 
 #### `render`
 
-Custom render callback to render translation. This prop is passed directly to the [`Trans`](/docs/ref/react.md#trans) component from the [`@lingui/react`](/docs/ref/react.md) package.
+Custom render callback to render translation. This prop is passed directly to the [`Trans`](/ref/react#trans) component from the [`@lingui/react`](/ref/react) package.
 
 ### `Plural`
 
@@ -724,7 +706,7 @@ The select cases except `other` should be prefixed with underscore: `_male` or `
 
 ### `useLingui`
 
-The `useLingui` React macro gives access to a [`t`](/docs/ref/macro.mdx#t) macro that is bound to the local `i18n` object passed from the React context.
+The `useLingui` React macro gives access to a [`t`](/ref/macro#t) macro that is bound to the local `i18n` object passed from the React context.
 
 It returns an object with the following content:
 
@@ -785,14 +767,14 @@ function getColors() {
 ```
 
 :::tip
-There is an [ESLint Plugin](/docs/ref/eslint-plugin.md) rule designed to check for this misuse: `t-call-in-function`.
+There is an [ESLint Plugin](/ref/eslint-plugin) rule designed to check for this misuse: [`t-call-in-function`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/t-call-in-function.md).
 :::
 
 A better option would be to use the [Lazy Translations](/guides/lazy-translations) pattern.
 
 ### Global `i18n` Instance
 
-When you use the [`t`](#t) macro (or [`plural`](#plural), [`select`](#select), [`selectOrdinal`](#selectordinal)), it uses a global [`i18n`](/docs/ref/core.md#i18n) instance. While this generally works, there are situations, such as server-side rendering (SSR) applications, where it may not be the best solution.
+When you use the [`t`](#t) macro (or [`plural`](#plural), [`select`](#select), [`selectOrdinal`](#selectordinal)), it uses a global [`i18n`](/ref/core#i18n) instance. While this generally works, there are situations, such as server-side rendering (SSR) applications, where it may not be the best solution.
 
 For better control and flexibility, it's a good idea to avoid the global `i18n` instance and instead use a specific instance tailored to your needs:
 
@@ -831,7 +813,7 @@ i18n._(
 ```
 
 ```js
-t(customI18n)`Refresh inbox`;
+customI18n._(msg(`Refresh inbox`));
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -883,22 +865,6 @@ t({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
-    id: "msg.refresh",
-    message: "Refresh inbox",
-  }
-);
-```
-
-```js
-t(customI18n)({
-  id: "msg.refresh",
-  message: "Refresh inbox",
-});
-
-// ↓ ↓ ↓ ↓ ↓ ↓
-
-customI18n._(
   /*i18n*/ {
     id: "msg.refresh",
     message: "Refresh inbox",

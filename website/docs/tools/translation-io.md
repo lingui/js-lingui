@@ -48,7 +48,7 @@ Sometimes you have no choice but to confront your translators with HTML or inter
 
 ### Smart Plural Management
 
-Lingui allows to write plurals using the [ICU MessageFormat](/docs/guides/message-format.md) syntax that looks like this:
+Lingui allows to write plurals using the [ICU MessageFormat](/guides/message-format) syntax that looks like this:
 
 ```icu-message-format
 {count, plural, =0 {No messages}
@@ -108,7 +108,7 @@ The configuration file looks like this:
 }
 ```
 
-The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
+The synchronization will then be part of the [`extract`](/ref/cli#extract) command.
 
 ### Add the following scripts
 

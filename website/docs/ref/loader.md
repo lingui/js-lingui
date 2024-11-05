@@ -39,5 +39,5 @@ const { messages } = (await import(`@lingui/loader!./locales/${locale}/messages.
 
 ## See Also
 
-- [Dynamic Loading of Message Catalogs](/docs/guides/dynamic-loading-catalogs.md)
-- [Catalog Formats](/docs/ref/catalog-formats.md)
+- [Dynamic Loading of Message Catalogs](/guides/dynamic-loading-catalogs)
+- [Catalog Formats](/ref/catalog-formats)
