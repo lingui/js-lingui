@@ -6,8 +6,7 @@
 
 > Metro bundler transformer for LinguiJS catalogs
 
-`@lingui/metro-transformer` is part of [LinguiJS][linguijs]. See the
-[documentation][documentation] for all information, tutorials and examples.
+`@lingui/metro-transformer` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## Installation & Usage
 
