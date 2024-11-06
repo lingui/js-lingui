@@ -41,7 +41,7 @@ It provides a set of tools and APIs that make it easy for developers to create m
 
 Lingui has gone through a significant number of changes and milestones since the last major release.
 
-Before we dive into the new features and improvements in 5.0, let's take a look at the growth of the project since the 4.0 release in April 2023.
+Before we dive into the new features and improvements in 5.0, let's take a look at the growth of the project since the [4.0 release](/blog/2023/04/26/announcing-lingui-4.0) in April 2023.
 
 The project has seen a significant increase in popularity since the last major release. The number of GitHub stars has increased by 28%, and the number of downloads per month has more than doubled for the `@lingui/core` and `@lingui/react` packages. The SWC and Vite plugins are also gaining a lot of traction.
 
@@ -64,7 +64,7 @@ graph LR
         stars2["GitHub Stars ⭐<br/>4.6K"]
 
         subgraph downloads2["Downloads 📥 / month"]
-            B1["@lingui/core<br/>1.2M"]
+            B1["@lingui/core<br/>1.3M"]
             B2["@lingui/react<br/>770k"]
             B3["@lingui/swc-plugin<br/>186k"]
             B4["@lingui/vite-plugin<br/>147k"]
@@ -72,7 +72,7 @@ graph LR
     end
 
     stars1 -->|"<b>ㅤ+28%ㅤ</b>"| stars2
-    A1 -->|"<b>ㅤ+107%ㅤ</b>"| B1
+    A1 -->|"<b>ㅤ+124%ㅤ</b>"| B1
     A2 -->|"<b>ㅤ+100%ㅤ</b>"| B2
     A3 -->|"<b>ㅤ+402%ㅤ</b>"| B3
     A4 -->|"<b>ㅤ+2350%ㅤ</b>"| B4
@@ -82,6 +82,8 @@ style stars2 stroke-width:2px,rx:20,ry:20
 ```
 
 (_The download numbers are based on the [npm-stat.com](https://npm-stat.com/) data_)
+
+The journey from [Lingui 4.0](/blog/2023/04/26/announcing-lingui-4.0) includes **25 version updates** (minor and patch), more than **100 closed issues**, and more than **150 merged pull requests**.
 
 Let's now take a quick look at some of the major features and improvements that have been released between 4.0 and 5.0.
 
@@ -116,6 +118,8 @@ This is a great addition to the Lingui ecosystem and simplifies the workflow for
 📖 See the [`@lingui/metro-transformer`](/ref/metro-transformer) reference for more details.
 
 ## What's New in 5.0? {#whats-new-in-5.0}
+
+Lingui 5.0 includes over 50 merged pull requests, bringing new features, improvements, bug fixes, and documentation updates. Here are some of the key highlights of this release.
 
 ### React and JS Macros Were Split to Separate Packages
 
