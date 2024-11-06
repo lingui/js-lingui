@@ -200,14 +200,18 @@ The structure of compiled messages has been changed to make them more predictabl
 
 You'll need to [re-compile](/docs/ref/cli.md#compile) your messages in the new format.
 
-## Deprecations and Removals
+## Deprecations
 
-- Removed the deprecated `isTranslated` prop from the React `Trans` component.
-- Removed support of the module path strings in `LinguiConfig.extractors` property. Please pass extractor object directly.
+In this release, we've removed some deprecated features and introduced new deprecations.
 
-### Using a Custom i18n Instance with the `t` Macro is Deprecated
+### Previous Deprecations Removed
 
-When you use the global `t` macro from `@lingui/macro`, it automatically relies on the global `i18n` instance. If you want to use a custom `i18n` instance, you could pass it directly to the `t` macro like this:
+- Removed the `isTranslated` prop from the React `Trans` component.
+- Removed support of the module path strings in `LinguiConfig.extractors` property. Pass the extractor object directly.
+
+### New Deprecations
+
+Using a custom `i18n` instance with the `t` macro is deprecated. When you use the global `t` macro from `@lingui/macro`, it automatically relies on the global `i18n` instance. If you want to use a custom `i18n` instance, you could pass it directly to the `t` macro like this:
 
 ```js
 import { t } from "@lingui/macro";
@@ -225,6 +229,6 @@ i18n._(msg(`Hello!`));
 
 This approach is neither better nor worse; it simply offers a different way to achieve the same result.
 
-From a technical perspective, supporting the custom i18n instance with the `t` macro required extra handling in Lingui's plugins for Babel, SWC, and ESLint, which introduced unnecessary complexity and maintenance overhead.
+From a technical perspective, supporting the custom `i18n` instance with the `t` macro required extra handling in Lingui's plugins for Babel, SWC, and ESLint, which introduced unnecessary complexity and maintenance overhead.
 
-As a result, using a custom i18n instance with the `t` macro has been deprecated. To assist with the transition, an automatic migration is available using [GritQL](https://gist.github.com/timofei-iatsenko/876706f265d725d0aac01018f1812b39).
+As a result, using a custom `i18n` instance with the `t` macro has been deprecated. To assist with the transition, an automatic migration is available using [GritQL](https://gist.github.com/timofei-iatsenko/876706f265d725d0aac01018f1812b39).
