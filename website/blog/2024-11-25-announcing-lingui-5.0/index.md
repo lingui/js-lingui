@@ -156,6 +156,8 @@ function MyComponent() {
   const { i18n, _ } = useLingui();
 
   const a = t(i18n)`Text`;
+  // or
+  const b = _(msg`Second Text`);
 }
 ```
 
@@ -168,6 +170,7 @@ function MyComponent() {
   const { t } = useLingui();
 
   const a = t`Text`;
+  const b = t`Second Text`;
 }
 ```
 
@@ -194,7 +197,7 @@ We recommend replacing `babel-macro-plugin` with `@lingui/babel-plugin-lingui-ma
 
 Context is critical for translators (and AI) to provide accurate translations. This release introduces a new feature that prints placeholder values in PO comments.
 
-If the message contains unnamed placeholders such as `{0}`, Lingui will print their values in PO comments, giving translators and AI more context about what the placeholder is about.
+If the message contains unnamed placeholders such as `{0}`, Lingui will print the name of the placeholder variable in the PO comments, giving translators and AI more context about what the placeholder is about.
 
 Consider the following example:
 
@@ -217,7 +220,7 @@ This gives the translators more context about the placeholders, which definitely
 
 By default, Lingui strips messages and comments from the production bundle to reduce the bundle size.
 
-It's now possible to enable this feature in development mode by setting the `stripMessageField` option in the Babel configuration:
+It's now possible to configure this feature by setting the `stripMessageField` option in the Babel configuration:
 
 ```js title="babel.config.js" {5-7}
 module.exports = {
@@ -231,6 +234,8 @@ module.exports = {
   ],
 };
 ```
+
+Setting `stripMessageField` to `true` will strip messages and comments from both development and production bundles. Alternatively, set it to `false` to keep the original messages in both environments.
 
 This helps to align the development and production environments and catch potential issues early in the development process.
 
@@ -246,7 +251,7 @@ By default, Lingui supports Typescript, Flow, and JavaScript (Stage 3) syntax. T
 
 The [Dependency Tree Extractor](/guides/message-extraction#dependency-tree-crawling) has been improved to provide better performance and more accurate results.
 
-- Use the newer esbuild version and refactor the codebase to apply theLingui macro to each file as an esbuild plugin.
+- Use the newer esbuild version and refactor the codebase to apply the Lingui macro to each file as an esbuild plugin.
 - Change the way how the external dependencies are excluded from the extraction process.
 - Use the TSX loader instead of JSX.
 - Improved Tree Shaking support.
@@ -265,7 +270,7 @@ lingui extract --locale de --locale fr
 
 All Lingui CLI commands now work without problems on Windows, as well as the Webpack Loader and the Vite plugin. We've fixed all known bugs and improved the overall experience for Windows users.
 
-## Documentation Updates
+### Documentation Updates
 
 In addition to the new features and improvements, we've also made significant updates to the documentation to make it more comprehensive and user-friendly:
 
