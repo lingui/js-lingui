@@ -65,7 +65,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node-single-context": "^29.4.0",
     "jest-runner-tsd": "^4.0.0",
-    "lerna": "^6.5.1",
+    "lerna": "^8.1.9",
     "lint-staged": "^13.1.0",
     "memory-fs": "^0.5.0",
     "minimist": "^1.2.5",

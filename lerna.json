@@ -4,7 +4,6 @@
     "packages/*"
   ],
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "message": "chore(release): published %s [skip ci]",
@@ -33,5 +32,6 @@
         "test/**"
       ]
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
