@@ -102,14 +102,18 @@ Not surprisingly, this part isn't too different from the [React tutorial](/tutor
 First, we need to wrap our app with [`I18nProvider`](/ref/react#i18nprovider) and then we can use the [`Trans`](/ref/macro#trans) macro to translate the screen heading:
 
 ```tsx
-import { I18nProvider } from "@lingui/react";
+import { I18nProvider, TransRenderProps } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { i18n } from "@lingui/core";
 import { Text } from "react-native";
 
 i18n.loadAndActivate({ locale: "en", messages });
 
-<I18nProvider i18n={i18n} defaultComponent={Text}>
+const DefaultComponent = (props: TransRenderProps) => {
+  return <Text>{props.children}</Text>;
+};
+
+<I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
  <AppRoot />
 </I18nProvider>
 

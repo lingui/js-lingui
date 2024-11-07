@@ -3005,6 +3005,7 @@ __metadata:
     "@lingui/jest-mocks": "workspace:^"
     "@lingui/message-utils": 5.0.0-next.3
     "@messageformat/parser": ^5.0.0
+    cldr-core: ^45.0.0
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
     plurals-cldr: ^2.0.1
@@ -5874,6 +5875,13 @@ __metadata:
   version: 1.2.2
   resolution: "cjs-module-lexer@npm:1.2.2"
   checksum: 977f3f042bd4f08e368c890d91eecfbc4f91da0bc009a3c557bc4dfbf32022ad1141244ac1178d44de70fc9f3dea7add7cd9a658a34b9fae98a55d8f92331ce5
+  languageName: node
+  linkType: hard
+
+"cldr-core@npm:^45.0.0":
+  version: 45.0.0
+  resolution: "cldr-core@npm:45.0.0"
+  checksum: 06e39807a90483dfb7f2ba69c04e6cf15dd8ca7558cd772a3cd23db582ae95845a169917e070844b3b25d194c412f7e8b3d953ff88006b424803912c93603290
   languageName: node
   linkType: hard
 

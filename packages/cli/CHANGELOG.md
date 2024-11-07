@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+### Bug Fixes
+
+- **extract:** when files are used, don't overwrite obsolete ([#1964](https://github.com/lingui/js-lingui/issues/1964)) ([e726b16](https://github.com/lingui/js-lingui/commit/e726b16a2a9299913d386489d92e0daa9c42e40d))
+
 # [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
 
 **Note:** Version bump only for package @lingui/cli

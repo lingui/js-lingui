@@ -3,6 +3,7 @@ import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
+import { sync } from "glob"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
@@ -21,13 +22,18 @@ async function prepare(caseFolderName: string) {
 
   const actualPath = nodepath.join(rootDir, "actual")
   const expectedPath = nodepath.join(rootDir, "expected")
+  const existingPath = nodepath.join(rootDir, "existing")
 
   await fs.rm(actualPath, {
     recursive: true,
     force: true,
   })
 
-  return { rootDir, actualPath, expectedPath }
+  if (sync(existingPath).length === 1) {
+    await fs.cp(existingPath, actualPath, { recursive: true })
+  }
+
+  return { rootDir, actualPath, existingPath, expectedPath }
 }
 
 describe("E2E Extractor Test", () => {
@@ -171,12 +177,6 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental"
       )
 
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
-      )
-
       await mockConsole(async (console) => {
         const config = makeConfig({
           rootDir: rootDir,
@@ -231,12 +231,6 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental-clean"
       )
 
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
-      )
-
       await mockConsole(async (console) => {
         const result = await extractExperimentalCommand(
           makeConfig({
@@ -284,5 +278,31 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+  })
+
+  it("should extract consistently with files argument", async () => {
+    const { rootDir, actualPath, expectedPath } = await prepare(
+      "extract-partial-consistency"
+    )
+
+    await extractCommand(
+      makeConfig({
+        rootDir: rootDir,
+        locales: ["en"],
+        sourceLocale: "en",
+        format: "po",
+        catalogs: [
+          {
+            path: "<rootDir>/actual/{locale}",
+            include: ["<rootDir>/fixtures"],
+          },
+        ],
+      }),
+      {
+        files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
+      }
+    )
+
+    compareFolders(actualPath, expectedPath)
   })
 })

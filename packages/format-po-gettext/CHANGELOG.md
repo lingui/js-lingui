@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+### Features
+
+- **format-po-gettext:** respect Plural-Forms header ([#2070](https://github.com/lingui/js-lingui/issues/2070)) ([5d0516e](https://github.com/lingui/js-lingui/commit/5d0516e5ee8de5bd4369e8760b4a5c77259853db))
+
 # [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
 
 ### Features
