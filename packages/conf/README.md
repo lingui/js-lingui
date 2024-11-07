@@ -14,16 +14,7 @@ Package finds nearest package.json starting from current directory, reads `lingu
 
 ## Usage
 
-```js
-const getConfig = require("@lingui/conf")
-
-const config = getConfig()
-// When package.json is located in '/app/package.json'
-// config.rootDir === '/app'
-// config.localeDir === '/app/locale'
-```
-
-See the [reference][reference] documentation of `lingui-cli` for all options.
+See the [reference][reference] documentation.
 
 ## License
 
