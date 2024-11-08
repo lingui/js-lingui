@@ -19,7 +19,7 @@ The `@lingui/macro` package has been split into two separate entry points from t
 
 ```diff
 - import { t, plural, select, selectOrdinal, defineMessage, msg } from "@lingui/macro";
-+ import { t, plural, select, selectOrdinal, defineMessage } from "@lingui/core/macro";
++ import { t, plural, select, selectOrdinal, defineMessage, msg } from "@lingui/core/macro";
 
 - import { Trans, Plural, Select, SelectOrdinal } from "@lingui/macro";
 + import { Trans, Plural, Select, SelectOrdinal } from "@lingui/react/macro";
