@@ -10,6 +10,7 @@
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Join the community on Discord][Badge-Discord]][Discord]
+[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20Lingui%20JS%20Guru-006BFF)](https://gurubase.io/g/lingui-js)
 
 [**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 </div>
