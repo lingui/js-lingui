@@ -10,7 +10,6 @@
 [![Code Coverage][Badge-Coverage]][Coverage]
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Join the community on Discord][Badge-Discord]][Discord]
-[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20Lingui%20JS%20Guru-006BFF?style=flat-square)](https://gurubase.io/g/lingui-js)
 
 [**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 </div>
@@ -105,6 +104,7 @@ If you are having issues, please let us know.
 - Join us on [Discord](https://discord.gg/gFWwAYnMtA) to chat with the community.
 - Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=linguijs) and mark it with [Lingui](https://stackoverflow.com/questions/tagged/linguijs) tag.
 - If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
+- You can also [Ask Lingui JS Guru](https://gurubase.io/g/lingui-js), it is a Lingui JS focused AI to answer your questions.
 
 ## Contribute
 
