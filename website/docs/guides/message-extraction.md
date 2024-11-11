@@ -110,8 +110,7 @@ By default, `lingui extract` uses a glob pattern to search for source files cont
 
 The pattern is defined in the [`catalogs`](/ref/conf#catalogs) property of the Lingui configuration file in your project's root directory.
 
-![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme.jpg#gh-light-mode-only)
-![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme-dark.jpg#gh-dark-mode-only)
+![Scheme of discovering by glob pattern](/img/docs/extractor-glob-scheme.svg)
 
 ### Dependency Tree Crawling
 
@@ -131,8 +130,7 @@ By doing so, it creates a more optimized catalog that only contains the messages
 
 The catalogs would still contain duplicate messages for common components, but it would be much better than the current approach.
 
-![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.jpg#gh-light-mode-only)
-![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme-dark.jpg#gh-dark-mode-only)
+![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.svg)
 
 To start using `experimental-extractor`, add the following section to your Lingui configuration:
 
