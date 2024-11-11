@@ -15,14 +15,16 @@ It also makes it easy to identify hard-coded strings and improperly concatenated
 
 To configure pseudolocalization, add the [`pseudoLocale`](/ref/conf#pseudolocale) property to your Lingui configuration file:
 
-```json title="lingui.config.js"
-{
-  "locales": ["en", "pseudo-LOCALE"],
-  "pseudoLocale": "pseudo-LOCALE",
-  "fallbackLocales": {
-    "pseudo-LOCALE": "en"
-  }
-}
+```ts title="lingui.config.{ts,js}"
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
+  locales: ["en", "pseudo-LOCALE"],
+  pseudoLocale: "pseudo-LOCALE",
+  fallbackLocales: {
+    "pseudo-LOCALE": "en",
+  },
+});
 ```
 
 The `pseudoLocale` option must be set to any string that matches a value in the [`locales`](/ref/conf#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.

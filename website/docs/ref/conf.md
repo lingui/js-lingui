@@ -381,12 +381,13 @@ Default value: `po`
 Message catalog format. The `po` formatter is used by default. Other formatters are available as separate packages.
 
 ```js title="lingui.config.{js,ts}"
-import { formatter } from "@lingui/format-po"
+import { defineConfig } from "@lingui/cli";
+import { formatter } from "@lingui/format-po";
 
-export default {
-  [...]
-  format: formatter({ lineNumbers: false })
-}
+export default defineConfig({
+  // [...]
+  format: formatter({ lineNumbers: false }),
+});
 ```
 
 Read more about available formatters in [Catalog Formats](/ref/catalog-formats) or create your own [Custom Formatter](/guides/custom-formatter).

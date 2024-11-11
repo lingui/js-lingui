@@ -37,8 +37,9 @@ document.getElementById("output").innerHTML = i18next.t("key");
 The equivalent example with Lingui looks like this:
 
 ```js title="lingui.config.{js,ts}"
-/** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
   sourceLocale: "en",
   locales: ["en", "cs", "fr"],
   catalogs: [
@@ -47,7 +48,7 @@ module.exports = {
       include: ["src"],
     },
   ],
-};
+});
 ```
 
 ```js

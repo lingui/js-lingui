@@ -14,15 +14,17 @@ A formatter is an object with two main functions, `parse` and `serialize`, which
 The formatter can be configured directly in your `lingui.config.{ts,js}` file - no separate package is needed:
 
 ```ts title="lingui.config.{ts,js}"
+import { defineConfig } from "@lingui/cli";
 import { extractor } from "./my-custom-extractor.ts";
-module.exports = {
+
+export default defineConfig({
   // [...]
   format: {
     catalogExtension: "json",
     parse: (content: string): CatalogType => JSON.parse(content),
     serialize: (catalog: CatalogType): string => JSON.stringify(catalog),
   },
-};
+});
 ```
 
 ## Reference
