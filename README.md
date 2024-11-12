@@ -104,6 +104,7 @@ If you are having issues, please let us know.
 - Join us on [Discord](https://discord.gg/gFWwAYnMtA) to chat with the community.
 - Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=linguijs) and mark it with [Lingui](https://stackoverflow.com/questions/tagged/linguijs) tag.
 - If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
+- You can also [Ask Lingui JS Guru](https://gurubase.io/g/lingui-js), it is a Lingui JS focused AI to answer your questions.
 
 ## Contribute
 
