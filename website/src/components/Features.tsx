@@ -214,7 +214,7 @@ const Features = (): React.ReactElement => {
           </div>
         </div>
       </div>
-      <div className={styles.linkFeatures}>
+      <div className="text--center">
         <Button href={withBaseUrl("/introduction#key-features")} isOutline={true}>
           More Features
         </Button>
