@@ -2,8 +2,18 @@ import path from "path"
 import { getConfig } from "./getConfig"
 import { makeConfig } from "./makeConfig"
 import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
+import { defineConfig } from "./defineConfig"
+import { LinguiConfig } from "./types"
 
 describe("@lingui/conf", () => {
+  describe("defineConfig", () => {
+    it("Should simply return a passed config", () => {
+      const config: LinguiConfig = { locales: ["en", "pl"], sourceLocale: "en" }
+
+      expect(defineConfig(config)).toStrictEqual(config)
+    })
+  })
+
   it("should return default config", () => {
     mockConsole((console) => {
       const config = getConfig({

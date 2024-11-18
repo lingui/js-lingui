@@ -33,12 +33,13 @@ npm install --save-dev @lingui/format-po
 ### Usage {#po-usage}
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-po";
 
-export default {
+export default defineConfig({
   // [...]
   format: formatter({ lineNumbers: false }),
-};
+});
 ```
 
 ### Configuration {#po-configuration}
@@ -114,12 +115,13 @@ npm install --save-dev @lingui/format-po-gettext
 ### Usage {#po-gettext-usage}
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-po-gettext";
 
-export default {
+export default defineConfig({
   // [...]
   format: formatter({ lineNumbers: false }),
-};
+});
 ```
 
 ### Configuration {#po-gettext-configuration}
@@ -201,12 +203,13 @@ npm install --save-dev @lingui/format-json
 ### Usage {#json-usage}
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-json";
 
-export default {
+export default defineConfig({
   // [...]
   format: formatter({ style: "lingui" }),
-};
+});
 ```
 
 ### Configuration {#json-configuration}
@@ -270,12 +273,13 @@ npm install --save-dev @lingui/format-csv
 ### Usage {#csv-usage}
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-csv";
 
-export default {
+export default defineConfig({
   // [...]
   format: formatter(),
-};
+});
 ```
 
 This formatter has no configurable options.

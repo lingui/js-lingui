@@ -20,7 +20,7 @@ We are constantly updating the extractor to keep up with the latest ECMAScript f
 If you are using experimental features (Stage 0 - Stage 2), you'll need to configure a custom list of parser plugins. This can be done by overriding the default extractor and using the `extractFromFileWithBabel()` function:
 
 ```ts title="lingui.config.ts"
-import { extractFromFileWithBabel } from "@lingui/cli/api";
+import { extractFromFileWithBabel, defineConfig } from "@lingui/cli/api";
 import type { ParserPlugin } from "@babel/parser";
 
 export function getBabelParserOptions(filename: string) {
@@ -38,7 +38,7 @@ export function getBabelParserOptions(filename: string) {
   return parserPlugins;
 }
 
-const config: LinguiConfig = {
+export default defineConfig({
   // [...]
   extractors: [
     {
@@ -53,9 +53,7 @@ const config: LinguiConfig = {
       },
     },
   ],
-};
-
-export default config;
+});
 ```
 
 ## Other Frameworks or Custom Syntax
@@ -89,14 +87,12 @@ To use the custom extractor, you need to add it to your Lingui configuration fil
 
 ```ts title="lingui.config.ts" {1,6}
 import { extractor } from "./my-custom-extractor.ts";
-import { LinguiConfig } from "@lingui/conf";
+import { defineConfig } from "@lingui/cli";
 
-const config: LinguiConfig = {
+export default defineConfig({
   // [...]
   extractors: [extractor],
-};
-
-export default config;
+});
 ```
 
 :::caution Important

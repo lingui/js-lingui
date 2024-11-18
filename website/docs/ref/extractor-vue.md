@@ -13,11 +13,11 @@ npm install --save-dev @lingui/extractor-vue
 It is required that you use JavaScript or TypeScript for your Lingui configuration.
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { vueExtractor } from "@lingui/extractor-vue";
 import babel from "@lingui/cli/api/extractors/babel";
 
-/** @type {import('@lingui/conf').LinguiConfig} */
-const linguiConfig = {
+export default defineConfig({
   locales: ["en", "nb"],
   sourceLocale: "en",
   catalogs: [
@@ -27,9 +27,7 @@ const linguiConfig = {
     },
   ],
   extractors: [babel, vueExtractor],
-};
-
-export default linguiConfig;
+});
 ```
 
 ## See Also

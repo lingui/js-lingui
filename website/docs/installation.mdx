@@ -87,8 +87,9 @@ Lingui needs a configuration file to work. The configuration file specifies the 
 Let's create a basic configuration file in the root of your project (next to `package.json`):
 
 ```js title="lingui.config.js"
-/** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
   sourceLocale: "en",
   locales: ["cs", "en"],
   catalogs: [
@@ -97,7 +98,7 @@ module.exports = {
       include: ["src"],
     },
   ],
-};
+});
 ```
 
 The configuration above specifies the source locale as English and the target locales as Czech and English.
