@@ -27,7 +27,7 @@ The `@lingui/metro-transformer` package is available as of version 4.12.0. Pleas
 
 ## Getting Started
 
-The **TD;DR** is: install `@lingui/metro-transformer`, update `metro.config.js` and you're ready to go!
+The **TL;DR** is: install `@lingui/metro-transformer`, update `metro.config.js` and you're ready to go!
 
 For more details - see the official [docs](https://lingui.dev/ref/metro-transformer).
 
