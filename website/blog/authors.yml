@@ -6,3 +6,11 @@ andrii-bodnar:
   socials:
     x: AndriiBodnar1
     github: andrii-bodnar
+vonovak:
+  name: Vojtech Novak
+  title: Software Engineer
+  page: true
+  image_url: https://github.com/vonovak.png
+  socials:
+    x: vonovak
+    github: vonovak
