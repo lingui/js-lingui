@@ -1,6 +1,9 @@
 import type { ReactNode, VFC, FC } from "react"
 import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
-import type { MacroMessageDescriptor } from "@lingui/core/macro"
+import type {
+  MacroMessageDescriptor,
+  LabeledExpression,
+} from "@lingui/core/macro"
 
 type CommonProps = TransRenderCallbackOrComponent & {
   id?: string
@@ -8,8 +11,9 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
+type TransChildren = ReactNode | LabeledExpression
 type TransProps = {
-  children: ReactNode
+  children: TransChildren | TransChildren[]
 } & CommonProps
 
 type PluralChoiceProps = {
