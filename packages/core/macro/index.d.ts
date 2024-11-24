@@ -55,6 +55,9 @@ type MacroMessageDescriptor = (
  */
 export function t(descriptor: MacroMessageDescriptor): string
 
+export type LabeledExpression = Record<string, string | number>
+export type MessagePlaceholder = string | number | LabeledExpression
+
 /**
  * Translates a template string using the global I18n instance
  *
@@ -66,7 +69,7 @@ export function t(descriptor: MacroMessageDescriptor): string
  */
 export function t(
   literals: TemplateStringsArray,
-  ...placeholders: any[]
+  ...placeholders: MessagePlaceholder[]
 ): string
 
 /**
@@ -208,7 +211,7 @@ export function defineMessage(
  */
 export function defineMessage(
   literals: TemplateStringsArray,
-  ...placeholders: any[]
+  ...placeholders: MessagePlaceholder[]
 ): MessageDescriptor
 
 /**
@@ -216,3 +219,8 @@ export function defineMessage(
  * Alias for {@link defineMessage}
  */
 export const msg: typeof defineMessage
+
+/**
+ * Helps to define a name for a variable in the message
+ */
+export function ph(def: LabeledExpression): string

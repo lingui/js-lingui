@@ -76,6 +76,30 @@ macroTester({
 `,
     },
     {
+      name: "Variables with explicit label",
+      code: `
+        import { t } from '@lingui/core/macro';
+      
+        t\`Variable \${{name: random()}}\`;
+    `,
+    },
+    {
+      name: "Variables with explicit label, shortcut syntax",
+      code: `
+        import { t } from '@lingui/core/macro';
+      
+        t\`Variable \${{name}}\`;
+    `,
+    },
+    {
+      name: "Variables with explicit ph helper",
+      code: `
+        import { t, ph } from '@lingui/core/macro';
+     
+        t\`Variable \${ph({name: random()})}\`;
+    `,
+    },
+    {
       name: "Newlines are preserved",
       code: `
         import { t } from '@lingui/core/macro';

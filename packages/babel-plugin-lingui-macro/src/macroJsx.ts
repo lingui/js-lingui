@@ -12,6 +12,7 @@ import {
   StringLiteral,
   TemplateLiteral,
   SourceLocation,
+  Identifier,
 } from "@babel/types"
 import type { NodePath } from "@babel/traverse"
 
@@ -22,9 +23,15 @@ import {
   MACRO_REACT_PACKAGE,
   MACRO_LEGACY_PACKAGE,
   MsgDescriptorPropKey,
+  JsMacroName,
 } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
 import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMacroJsContext,
+  MacroJsContext,
+  tokenizeExpression,
+} from "./macroJsAst"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -43,25 +50,34 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
   return null
 }
 
+export type MacroJsxContext = MacroJsContext & {
+  elementIndex: () => number
+  transImportName: string
+}
+
 export type MacroJsxOpts = {
   stripNonEssentialProps: boolean
   stripMessageProp: boolean
   transImportName: string
+  isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
 export class MacroJSX {
   types: typeof babelTypes
-  expressionIndex = makeCounter()
-  elementIndex = makeCounter()
-  stripNonEssentialProps: boolean
-  stripMessageProp: boolean
-  transImportName: string
+  ctx: MacroJsxContext
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
-    this.stripNonEssentialProps = opts.stripNonEssentialProps
-    this.stripMessageProp = opts.stripMessageProp
-    this.transImportName = opts.transImportName
+
+    this.ctx = {
+      ...createMacroJsContext(
+        opts.isLinguiIdentifier,
+        opts.stripNonEssentialProps,
+        opts.stripMessageProp
+      ),
+      transImportName: opts.transImportName,
+      elementIndex: makeCounter(),
+    }
   }
 
   replacePath = (path: NodePath): false | Node => {
@@ -86,8 +102,8 @@ export class MacroJSX {
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
-      this.stripNonEssentialProps,
-      this.stripMessageProp,
+      this.ctx.stripNonEssentialProps,
+      this.ctx.stripMessageProp,
       {
         id,
         context,
@@ -99,7 +115,7 @@ export class MacroJSX {
 
     const newNode = this.types.jsxElement(
       this.types.jsxOpeningElement(
-        this.types.jsxIdentifier(this.transImportName),
+        this.types.jsxIdentifier(this.ctx.transImportName),
         attributes,
         true
       ),
@@ -345,7 +361,7 @@ export class MacroJSX {
   tokenizeElement = (path: NodePath<JSXElement>): ElementToken => {
     // !!! Important: Calculate element index before traversing children.
     // That way outside elements are numbered before inner elements. (...and it looks pretty).
-    const name = this.elementIndex()
+    const name = this.ctx.elementIndex()
 
     return {
       type: "element",
@@ -363,11 +379,7 @@ export class MacroJSX {
   }
 
   tokenizeExpression = (path: NodePath<Expression | Node>): ArgToken => {
-    return {
-      type: "arg",
-      name: this.expressionToArgument(path),
-      value: path.node as Expression,
-    }
+    return tokenizeExpression(path.node, this.ctx)
   }
 
   tokenizeConditionalExpression = (
@@ -397,7 +409,9 @@ export class MacroJSX {
   }
 
   expressionToArgument(path: NodePath<Expression | Node>): string {
-    return path.isIdentifier() ? path.node.name : String(this.expressionIndex())
+    return path.isIdentifier()
+      ? path.node.name
+      : String(this.ctx.getExpressionIndex())
   }
 
   isLinguiComponent = (

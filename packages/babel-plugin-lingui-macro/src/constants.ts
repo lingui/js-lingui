@@ -21,6 +21,7 @@ export enum JsMacroName {
   defineMessage = "defineMessage",
   arg = "arg",
   useLingui = "useLingui",
+  ph = "ph",
 }
 
 export enum JsxMacroName {

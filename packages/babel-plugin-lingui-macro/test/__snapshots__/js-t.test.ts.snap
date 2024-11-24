@@ -531,6 +531,66 @@ _i18n._(
 
 `;
 
+exports[`Variables with explicit label 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${{ name: random() }}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: random(),
+    },
+  }
+);
+
+`;
+
+exports[`Variables with explicit label, shortcut syntax 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${{ name }}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
+exports[`Variables with explicit ph helper 1`] = `
+import { t, ph } from "@lingui/core/macro";
+t\`Variable \${ph({ name: random() })}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: random(),
+    },
+  }
+);
+
+`;
+
 exports[`should correctly process nested macro when referenced from different imports 1`] = `
 import { t } from "@lingui/core/macro";
 import { plural } from "@lingui/core/macro";
