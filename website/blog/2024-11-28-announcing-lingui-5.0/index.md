@@ -2,7 +2,7 @@
 title: Announcing Lingui 5.0
 authors: andrii-bodnar
 tags: [release]
-image: ./img/social-card.png
+image: ./social-card.png
 ---
 
 Today we are pleased to announce the release of Lingui 5.0! :rocket:
@@ -11,7 +11,7 @@ This release is a **major milestone** for the project and includes a number of n
 
 In line with the principles of [Semantic Versioning](https://semver.org/), this release contains **breaking changes** that we have thoroughly documented in the [v5 upgrade guide](/releases/migration-5).
 
-![social-card image](./img/social-card.png)
+![social-card image](./social-card.png)
 
 <!--truncate-->
 
@@ -269,6 +269,27 @@ lingui extract --locale de --locale fr
 #### Quality of Life Update for Windows Users
 
 All Lingui CLI commands now work without problems on Windows, as well as the Webpack Loader and the Vite plugin. We've fixed all known bugs and improved the overall experience for Windows users.
+
+#### New `defineConfig` Method
+
+We've introduced a new `defineConfig` method that allows you to define configuration options for the Lingui CLI in a more flexible and convenient way:
+
+```js title="lingui.config.{js,ts}" {1,3}
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
+  sourceLocale: "en",
+  locales: ["cs", "en"],
+  catalogs: [
+    {
+      path: "<rootDir>/src/locales/{locale}/messages",
+      include: ["src"],
+    },
+  ],
+});
+```
+
+This method provides a more structured and type-safe way to define configuration options for the Lingui CLI, and it's quite common in modern JavaScript tools.
 
 ### Documentation Updates
 
