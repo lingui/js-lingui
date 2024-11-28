@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/lingui/js-lingui/compare/v4.14.1...v5.0.0) (2024-11-28)
+
+We are pleased to announce the release of Lingui 5.0! This release is a **major milestone** for the project and includes a number of new features, improvements and bug fixes.
+
+Check out the links below for more details:
+
+- [Blog Post: Announcing Lingui 5.0](https://lingui.dev/blog/2024/11/28/announcing-lingui-5.0)
+- [Migration Guide from 4.x to 5.x](https://lingui.dev/releases/migration-5)
+- [Full Changelog](https://github.com/lingui/js-lingui/compare/v4.14.1...v5.0.0)
+
 ## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
 
 ### Bug Fixes
