@@ -1,0 +1,4 @@
+{
+  "plugins": ["solid"],
+  "extends": ["../../.eslintrc", "plugin:solid/typescript"]
+}

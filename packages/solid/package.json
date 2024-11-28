@@ -1,0 +1,85 @@
+{
+  "name": "@lingui/solid",
+  "version": "4.14.0",
+  "sideEffects": false,
+  "description": "SolidJS components for translations",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "solidjs",
+    "component",
+    "i18n",
+    "internationalization",
+    "i9n",
+    "translation",
+    "icu",
+    "messageformat",
+    "multilingual",
+    "localization",
+    "l10n"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && unbuild",
+    "stub": "unbuild --stub"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lingui/js-lingui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./server": {
+      "require": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.cjs"
+      },
+      "import": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.mjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "peerDependencies": {
+    "solid-js": "^1.9.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.13",
+    "@lingui/core": "4.14.0",
+    "@lingui/solid": "4.14.0"
+  },
+  "devDependencies": {
+    "@lingui/jest-mocks": "*",
+    "@solidjs/testing-library": "^0.8.10",
+    "babel-preset-solid": "^1.9.3",
+    "eslint-plugin-solid": "0.13.2",
+    "solid-js": "^1.9.3",
+    "unbuild": "2.0.0"
+  }
+}

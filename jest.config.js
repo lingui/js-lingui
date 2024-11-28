@@ -42,6 +42,16 @@ module.exports = {
       roots: ["<rootDir>/packages/react"],
     },
     {
+      displayName: "web",
+      testEnvironment: "jsdom",
+      testMatch,
+      moduleNameMapper: tsConfigPathMapping,
+      roots: ["<rootDir>/packages/solid"],
+      transform: {
+        "\\.[jt]sx?$": ["babel-jest", { configFile: "./packages/solid/babel.config.js" }]
+      },
+    },
+    {
       displayName: "universal",
       testEnvironment: "jest-environment-node-single-context",
       testMatch,

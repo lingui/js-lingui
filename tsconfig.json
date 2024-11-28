@@ -35,6 +35,7 @@
     "dist",
     "website",
     "**/fixtures/**",
-    "**/__typetests__/**"
+    "**/__typetests__/**",
+    "packages/solid/**"
   ]
 }

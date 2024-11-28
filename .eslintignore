@@ -7,3 +7,4 @@ examples/*
 README.md
 **/npm/*
 /packages/*/build/**
+/packages/solid/babel.config.js
