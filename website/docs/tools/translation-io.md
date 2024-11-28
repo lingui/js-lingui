@@ -4,18 +4,15 @@
   <img src="https://translation.io/logo.png" alt="Translation.io - Localization made simple for tech companies" width="300" />
 </p>
 
-[Translation.io](https://translation.io/lingui) is a professional synchronization and collaboration platform that will assist your team in the translation of your Lingui application.
+Translation.io is a professional synchronization and collaboration platform that will assist your team in the translation of your Lingui application.
 
-Links:
-
-- Website: https://translation.io/lingui
-- GitHub: https://github.com/translation/lingui
+[Website](https://translation.io/lingui) \| [GitHub](https://github.com/translation/lingui) \| [contact@translation.io](mailto:contact@translation.io)
 
 ## Features
 
 ### Smooth Team Management
 
-Invite your collaborators using their email or username, and assign them a role and a target language. We'll bring them on board and keep them informed about any new activity in their language.
+Invite collaborators using their email or username, and assign them a role and a target language. They will be brought on board and kept informed about any new activity in their language.
 
 ![Smooth Team Management on Translation.io](https://translation.io/gifs/lingui/translation-collaborators.gif)
 
@@ -41,7 +38,7 @@ Learn more:
 
 Sometimes you have no choice but to confront your translators with HTML or interpolated variables. The problem is that translators do not necessarily know the meaning of these notations and may be tempted to translate them or may inadvertently alter them.
 
-`Hello {name}` should never be translated as `Bonjour {nom}`, and we have several mechanisms to ensure that, like warnings and auto-completion:
+`Hello {name}` should never be translated as `Bonjour {nom}`, and several mechanisms are in place to ensure this, such as warnings and auto-completion:
 
 ![Syntax Highlighting warning on Translation.io](https://translation.io/_articles/translation/2019-10-11-highlighting-of-html-tags-and-interpolated-variables/highlight-interpolated-variable-lingui.png)
 
@@ -51,7 +48,7 @@ Sometimes you have no choice but to confront your translators with HTML or inter
 
 ### Smart Plural Management
 
-Lingui allows to write plurals using the [ICU MessageFormat](/docs/guides/message-format.md) syntax that looks like this:
+Lingui allows to write plurals using the [ICU MessageFormat](/guides/message-format) syntax that looks like this:
 
 ```icu-message-format
 {count, plural, =0 {No messages}
@@ -61,9 +58,9 @@ Lingui allows to write plurals using the [ICU MessageFormat](/docs/guides/messag
 
 But you can't ask a translator to understand this syntax, and he or she would be tempted to translate `one` or `other` keywords in other languages, breaking your code at the same time.
 
-That's why we deconstruct the plural syntaxes to make them easy to translate, and then reconstruct them inside your local `.po` files.
+That's why plural syntaxes are deconstructed to make translation easier, and then reconstructed in the local `.po` files.
 
-If the target language has more plural forms than the source language, we also provide some examples to the translator, because it could be unclear what plural form the `few` or `other` keyword may refer to in that specific target language (in this example, Czech has 3 plural forms).
+If the target language has more plural forms than the source language, examples are also provided to the translator, as it may be unclear which plural form the `few` or `other` keyword refers to in that specific target language (for instance, Czech has three plural forms).
 
 ![Smart Plural Management on Translation.io](/img/docs/translation-lingui-plural-forms.png)
 
@@ -90,11 +87,11 @@ Learn more:
 
 ## Installation
 
-### 1. Create your Lingui project
+### Create your Lingui project
 
 Create an account on [Translation.io](https://translation.io/lingui) and create a new Lingui project.
 
-### 2. Configure your application
+### Configure your application
 
 Copy the `.linguirc` configuration file that was generated for you to the root of your application.
 
@@ -111,9 +108,9 @@ The configuration file looks like this:
 }
 ```
 
-The synchronization will then be part of the [`extract`](/docs/ref/cli.md#extract) command.
+The synchronization will then be part of the [`extract`](/ref/cli#extract) command.
 
-### 3. Add the following scripts
+### Add the following scripts
 
 Add these lines to your `package.json` to make your life easier.
 
@@ -126,7 +123,7 @@ Add these lines to your `package.json` to make your life easier.
 }
 ```
 
-### 4. Initialize your project
+### Initialize your project
 
 Initialize your project and upload your source text and potential existing translations with:
 
@@ -155,7 +152,3 @@ As the name says, this operation will also perform a sync at the same time.
 ```bash npm2yarn
 npm run sync_and_purge
 ```
-
----
-
-If you need some help with your project, feel free to contact contact@translation.io

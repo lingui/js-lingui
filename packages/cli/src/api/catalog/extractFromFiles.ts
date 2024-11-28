@@ -9,6 +9,25 @@ import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
 import { prettyOrigin } from "../utils"
 
+function mergePlaceholders(
+  prev: Record<string, string[]>,
+  next: Record<string, string>
+) {
+  const res = { ...prev }
+
+  Object.entries(next).forEach(([key, value]) => {
+    if (!res[key]) {
+      res[key] = []
+    }
+
+    if (!res[key].includes(value)) {
+      res[key].push(value)
+    }
+  })
+
+  return res
+}
+
 export async function extractFromFiles(
   paths: string[],
   config: LinguiConfigNormalized
@@ -24,6 +43,7 @@ export async function extractFromFiles(
           messages[next.id] = {
             message: next.message,
             context: next.context,
+            placeholders: {},
             comments: [],
             origin: [],
           }
@@ -55,6 +75,7 @@ export async function extractFromFiles(
             ? [...prev.comments, next.comment]
             : prev.comments,
           origin: [...prev.origin, [filename, next.origin[1]]],
+          placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
         }
       },
       config,

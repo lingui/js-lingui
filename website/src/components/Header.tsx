@@ -48,7 +48,7 @@ const Header = (): React.ReactElement => {
 
               <div className={clsx(styles.heroButtons, "name", "margin-vert--md")}>
                 <Button href={useBaseUrl("/introduction")}>Get Started</Button>
-                <Button href={useBaseUrl("/misc/examples")} isOutline={true}>
+                <Button href={useBaseUrl("/examples")} isOutline={true}>
                   Examples
                 </Button>
               </div>

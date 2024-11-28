@@ -1,7 +1,7 @@
 {
   "name": "js-lingui-workspaces",
   "private": true,
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -35,7 +35,7 @@
     "postinstall": "yarn stub:all"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
@@ -46,7 +46,7 @@
     "@tsd/typescript": "^4.9.5",
     "@types/jest": "^29.4.0",
     "@types/mock-fs": "^4.13.1",
-    "@types/node": "16.18.13",
+    "@types/node": "20.14.8",
     "@types/ramda": "^0.27.23",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
@@ -65,7 +65,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node-single-context": "^29.4.0",
     "jest-runner-tsd": "^4.0.0",
-    "lerna": "^6.5.1",
+    "lerna": "^8.1.9",
     "lint-staged": "^13.1.0",
     "memory-fs": "^0.5.0",
     "minimist": "^1.2.5",

@@ -5,15 +5,15 @@ description: Learn how to setup and use Lingui with RSC & Next.js
 
 Lingui provides support for React Server Components (RSC) as of v4.10.0. In this tutorial, we'll learn how to add internationalization to an application with the Next.js [App Router](https://nextjs.org/docs/app). However, the same principles are applicable to any RSC-based solution.
 
-:::tip Hint
+:::tip Example
 There's a working example available [here](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc). We will make references to the important parts of it throughout the tutorial. The example is more complete than this tutorial.
 
 The example uses both Pages Router and App Router, so you can see how to use Lingui with both in [this commit](https://github.com/lingui/js-lingui/pull/1944/commits/100fc74abb49cff677f4b1cac1dfd5da60262b67).
 :::
 
-Before going further, please follow the [React setup](/tutorials/setup-react?babel-or-swc=swc) for installation and configuration instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
+Before going further, please follow the [Installation and Setup](/installation?transpiler=swc) instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
 
-### Adding i18n support to Next.js
+### Adding i18n Support to Next.js
 
 Firstly, your Next.js app needs to be ready for routing and rendering of content in multiple languages. This is done through the middleware (see the [example app's middleware](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/middleware.ts)). Please read the [official Next.js docs](https://nextjs.org/docs/app/building-your-application/routing/internationalization) for more information.
 
@@ -21,7 +21,7 @@ After configuring the middleware, make sure your page and route files are moved 
 
 ### Next.js Config
 
-Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui macros](https://lingui.dev/ref/macro).
+Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/ref/macro).
 
 ```js title="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -33,12 +33,12 @@ module.exports = {
 };
 ```
 
-### Setup with server components
+### Setup with Server Components
 
 With Lingui, the experience of localizing React is the same in client and server components: `Trans` and `useLingui` can be used identically in both worlds, even though internally there are two implementations.
 
 :::tip Under the hood
-Translation strings, one way or another, are obtained from an [I18n](/docs/ref/core.md) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
+Translation strings, one way or another, are obtained from an [I18n](/ref/core) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
 :::
 
 To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js passes to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
@@ -110,24 +110,23 @@ Why are we not passing the I18n instance directly from `RootLayout` to the clien
 
 Lastly, there's the `appRouterI18n.ts` file, which is only executed on server and holds one instance of I18n object for each locale of our application. See [here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/appRouterI18n.ts) how it's implemented in the example app.
 
-### Rendering translations in server and client components
+### Rendering Translations in Server and Client Components
 
 Below you can see an example of a React component. This component can be rendered **both with RSC and on client**. This is great if you're migrating a Lingui-based project from pages router to App Router because you can keep the same components working in both worlds.
 
 In fact, if you swapped the html tags for their more universal alternatives, this component could also be used in React Native.
 
 ```tsx title="app/[lang]/components/SomeComponent.tsx"
-import { Trans, t } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { Trans, useLingui } from "@lingui/react/macro";
 
 export function SomeComponent() {
-  const { i18n } = useLingui();
+  const { t } = useLingui();
   return (
     <div>
       <p>
         <Trans>Some Item</Trans>
       </p>
-      <p>{t(i18n)`Other Item`}</p>
+      <p>{t`Other Item`}</p>
     </div>
   );
 }
@@ -146,7 +145,7 @@ There's one last caveat: in a real-world app, you will need to localize many pag
 
 This means you need to repeat the `setI18n` in every page and layout. Luckily, you can easily factor it out into a simple function call, or create a HOC with which you'll wrap pages and layouts [as seen here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/withLingui.tsx). Please let us know if there's a known better way.
 
-### Changing the active language
+### Changing the Active Language
 
 Most likely, your users will not need to change the language of the application because it will render in their preferred language (obtained from the `accept-language` header in the [middleware](https://github.com/lingui/js-lingui/blob/2f1c1c3ae9e079c1c0e1a2ff617b1d0775af3170/examples/nextjs-swc/src/middleware.ts#L30)), or with a fallback.
 
@@ -162,7 +161,7 @@ It's important that you do not create any locale-dependent strings at a place in
 
 ```tsx
 import { i18n } from "@lingui/core";
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 // 😰 if this code runs at build time, it'll always be in the locale
 // which the imported global i18n object had at that time
 const immutableGreeting = t(i18n)`Hello World`;
@@ -178,9 +177,9 @@ export default function SomePage() {
 }
 ```
 
-Read more about [lazy translation](/docs/tutorials/react-patterns.md#translations-outside-react-components) to see how to handle translation defined on the module level.
+Read more about [Lazy Translation](/guides/lazy-translations) to see how to handle translation defined on the module level.
 
-## Further reading
+## See Also
 
-- [Common i18n patterns in React](/docs/tutorials/react-patterns.md)
-- [`@lingui/react` reference documentation](/docs/ref/react.md)
+- [React i18n Tutorial](/tutorials/react)
+- [`@lingui/react` Reference](/ref/react)

@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "4.14.1",
+  "version": "5.0.0",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -23,6 +23,10 @@
     "lingui": "./dist/lingui.js"
   },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./api": {
       "types": "./dist/api/index.d.ts",
       "default": "./dist/api/index.js"
@@ -40,7 +44,7 @@
     "build": "rimraf ./dist && tsc -p tsconfig.build.json"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "LICENSE",
@@ -53,11 +57,12 @@
     "@babel/parser": "^7.22.0",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
-    "@lingui/babel-plugin-extract-messages": "4.14.1",
-    "@lingui/conf": "4.14.1",
-    "@lingui/core": "4.14.1",
-    "@lingui/format-po": "4.14.1",
-    "@lingui/message-utils": "4.14.1",
+    "@lingui/babel-plugin-extract-messages": "5.0.0",
+    "@lingui/babel-plugin-lingui-macro": "5.0.0",
+    "@lingui/conf": "5.0.0",
+    "@lingui/core": "5.0.0",
+    "@lingui/format-po": "5.0.0",
+    "@lingui/message-utils": "5.0.0",
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
     "chokidar": "3.5.1",
@@ -65,10 +70,10 @@
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",
-    "esbuild": "^0.17.10",
-    "glob": "^7.1.4",
+    "esbuild": "^0.21.5",
+    "glob": "^11.0.0",
     "inquirer": "^7.3.3",
-    "micromatch": "^4.0.2",
+    "micromatch": "^4.0.7",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
     "pathe": "^1.1.0",
@@ -80,9 +85,7 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "@lingui/macro": "4.14.1",
     "@types/convert-source-map": "^2.0.0",
-    "@types/glob": "^8.1.0",
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",

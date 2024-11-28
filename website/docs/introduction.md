@@ -5,7 +5,7 @@ description: Lingui is a universal, clean and readable, lightweight and powerful
 
 # Introduction
 
-📖 A readable, automated, and optimized (3 kb) internationalization for JavaScript
+📖 A readable, automated, and optimized internationalization for JavaScript
 
 > **Internationalization** is the design and development of a product, application or document content that enables easy **localization** for target audiences that vary in culture, region, or language.
 >
@@ -13,73 +13,95 @@ description: Lingui is a universal, clean and readable, lightweight and powerful
 
 [![GitHub stars](https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars)](https://github.com/lingui/js-lingui/)
 
-## Key features
+## Key Features
 
 Lingui is an easy yet powerful internationalization framework for global projects.
 
-### Clean and readable
+### Clean and Readable
 
 Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
 ### Universal
 
-Use it everywhere. [`@lingui/core`](/docs/ref/core.md) provides the essential intl functionality which works in any JavaScript project while [`@lingui/react`](/docs/ref/react.md) offers components to leverage React rendering.
+Use it everywhere. [`@lingui/core`](/ref/core) provides the essential intl functionality which works in any JavaScript project, while [`@lingui/react`](/ref/react) offers components for leveraging React rendering, including React Server Components (RSC) support.
 
-### Full rich-text support
+### Full Rich-text Support
 
-Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX.
+Seamlessly use React components within localized messages, without any restrictions. Creating rich-text messages feels just like writing JSX.
 
-### AI Translations Ready
+### Powerful Tooling
 
-For AI to do great translations for you, context is critical. Translating UI copy is difficult because it's usually a list of short strings without enough context. Lingui's localization formats allow developers to write descriptions of where and how your keys are used. This allows both human translators and AI to make better translations.
-
-### Powerful tooling
-
-Manage the whole intl workflow using Lingui [CLI](/docs/ref/cli.md). It extracts messages from source code, validates messages coming from translators and checks that all messages are translated before shipping to production.
+Manage your intl workflow with the Lingui [CLI](/ref/cli), [Vite Plugin](/ref/vite-plugin), and [ESLint Plugin](/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
 
 ### Unopinionated
 
 Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored either in JSON or standard PO file, which is supported in almost all translation tools.
 
-### Lightweight and optimized
+### Lightweight and Optimized
 
-Core library is only [1.5 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react). That's less than Redux for a full-featured intl library.
+Core library is less than [3 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.4 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
 
-### Active community
+### AI Translations Ready
 
-Join us on [GitHub Discussions](https://github.com/lingui/js-lingui/discussions) to discuss the latest development or ask questions.
+For AI to do great translations for you, context is critical. Translating UI copy is difficult because it's usually a list of short strings without enough context. Lingui's localization formats allow developers to write descriptions of where and how your keys are used. This allows both human translators and AI to make better translations.
 
-### Compatible with react-intl
+### Active Community
 
-Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate an existing project.
+Join the growing [community of developers](/community) who are using Lingui to build global products.
 
-## Quick overview
+## Workflow
+
+Using Lingui for internationalization is a straightforward process. Here's a high-level overview of the workflow.
+
+![Workflow scheme](/img/docs/lingui-workflow.svg)
+
+### Define Messages
+
+Write messages directly in your codebase using Lingui's components. This keeps your code clean and readable while embedding translations naturally.
+
+### Extract
+
+Use the Lingui CLI to extract all translatable messages from your codebase and create or update message catalogs. This step ensures that all messages are captured and ready for translation.
+
+### Translate
+
+Translate your message catalogs either manually or through integration with translation tools.
+
+### Compile
+
+Use the Lingui CLI to compile your message catalogs into a format that can be used in your application. This step minimizes the size of your translation bundle and ensures that only the necessary data is bundled.
+
+### Deploy
+
+Include the compiled message catalogs in your production build to ensure that users receive localized content based on their language preferences.
+
+## Quick Overview
 
 ```jsx
 import React from "react";
-import { t, Trans, Plural } from "@lingui/macro";
+import { Trans, Plural, useLingui } from "@lingui/react/macro";
 
 export default function Lingui({ numUsers, name = "You" }) {
+  const { t } = useLingui();
+
   return (
     <div>
       <h1>
         {/* Localized messages are simply wrapped in <Trans> */}
-        <Trans id="msg.header">Internationalization in React</Trans>
+        <Trans>Internationalization in React</Trans>
       </h1>
 
       {/* Element attributes are translated using t macro */}
       <img src="./logo.png" alt={t`Logo of Lingui Project`} />
 
-      <p className="lead">
+      <p>
         {/* Variables are passed to messages in the same way as in JSX */}
-        <Trans id="msg.lead">
-          Hello {name}, LinguiJS is a readable, automated, and optimized (3 kb) internationalization for JavaScript.
-        </Trans>
+        <Trans>Hello {name}, Lingui is a readable, automated, and optimized i18n for JavaScript.</Trans>
       </p>
 
       {/* React Elements inside messages works in the same way as in JSX */}
       <p>
-        <Trans id="msg.docs">
+        <Trans>
           Read the <a href="https://lingui.dev">documentation</a>
           for more info.
         </Trans>
@@ -87,12 +109,10 @@ export default function Lingui({ numUsers, name = "You" }) {
 
       {/*
         Plurals are managed using ICU plural rules.
-        Content of one/other slots is localized using <Trans>.
         Nesting of i18n components is allowed.
         Syntactically valid message in ICU MessageFormat is guaranteed.
       */}
       <Plural
-        id="msg.plurals"
         value={numUsers}
         one={
           <span>
@@ -109,3 +129,7 @@ export default function Lingui({ numUsers, name = "You" }) {
   );
 }
 ```
+
+## See Also
+
+- [Installation and Setup](/installation)

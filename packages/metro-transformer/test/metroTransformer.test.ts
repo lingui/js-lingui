@@ -19,12 +19,12 @@ describe("Lingui Metro transformer tests", () => {
     [
       "English PO file",
       "en",
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":\\"Add a message to your inbox\\",\\"dEgA5A\\":\\"Cancel\\"}");`,
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Add a message to your inbox\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`,
     ],
     [
       "Czech PO file with fallback to English",
       "cs",
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":\\"Přidat zprávu do doručené pošty\\",\\"dEgA5A\\":\\"Cancel\\"}");`,
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`,
     ],
   ])(
     "should transform %s to a JS export",
@@ -49,7 +49,7 @@ describe("Lingui Metro transformer tests", () => {
         filename,
       })
     ).resolves.toMatchInlineSnapshot(
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":\\"Add a message to your inbox\\",\\"dEgA5A\\":\\"Cancel\\"}");`
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Add a message to your inbox\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`
     )
   })
 

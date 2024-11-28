@@ -114,3 +114,9 @@
 [data-theme="dark"] img[src$="#gh-light-mode-only"] {
   display: none;
 }
+
+/* Hide the "Next" and "Previous" labels on the pagination nav */
+.pagination-nav,
+.pagination-nav__sublabel {
+  display: none;
+}

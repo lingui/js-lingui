@@ -1,4 +1,5 @@
-import { t, defineMessage, msg } from "@lingui/macro"
+import { t, defineMessage, msg, plural } from "@lingui/core/macro"
+import { useLingui } from "@lingui/react/macro"
 
 t`Message`
 
@@ -46,3 +47,17 @@ const defineMessageAlias = msg({
 })
 
 const defineMessageAlias2 = msg`TplLiteral`
+
+function MyComponent() {
+  const { t } = useLingui()
+
+  t`[useLingui]: TplLiteral`
+
+  // macro nesting
+  const a = t`[useLingui]: Text ${plural(users.length, {
+    offset: 1,
+    0: "No books",
+    1: "1 book",
+    other: "# books",
+  })}`
+}

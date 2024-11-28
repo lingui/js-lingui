@@ -4,9 +4,7 @@ import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
 
-const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
-
-skipOnWindows("lingui-loader", () => {
+describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
     const built = await build(path.join(__dirname, "po-format/entrypoint.js"))
 
@@ -62,14 +60,18 @@ skipOnWindows("lingui-loader", () => {
     expect((await res.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
       {
-        ED2Xk0: String from template,
+        ED2Xk0: [
+          String from template,
+        ],
         mVmaLu: [
           My name is ,
           [
             name,
           ],
         ],
-        mY42CM: Hello World,
+        mY42CM: [
+          Hello World,
+        ],
       }
     `)
 
@@ -99,8 +101,12 @@ msgstr ""
             name,
           ],
         ],
-        mY42CM: Hello World,
-        wg2uwk: String from template changes!,
+        mY42CM: [
+          Hello World,
+        ],
+        wg2uwk: [
+          String from template changes!,
+        ],
       }
     `)
 

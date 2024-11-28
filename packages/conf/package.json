@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "4.14.1",
+  "version": "5.0.0",
   "sideEffects": false,
   "description": "Get lingui configuration from package.json",
   "keywords": [
@@ -18,7 +18,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "rimraf ./dist && unbuild",

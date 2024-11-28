@@ -5,34 +5,55 @@ description: Detect the user's locale with the `@lingui/detect-locale` package
 
 # Locale Detection
 
-`@lingui/detect-locale` is little package _just (1 kB Gzip)_ with some helper functions that will help you detect the locale of the user:
+The `@lingui/detect-locale` is a lightweight package _(only ~1 kB Gzip)_ providing several methods and helpers to determine the user's locale using different detection strategies.
+
+Most of the detectors accept custom document, location or window objects as parameters, which is especially useful for testing purposes or when implementing server-side detection strategies.
 
 ## Installation
-
-Install `@lingui/detect-locale` as a dependency:
 
 ```bash npm2yarn
 npm install --save @lingui/detect-locale
 ```
 
-## Usage
+## Reference
 
-`@lingui/detect-locale:` exports multiple methods:
+### `detect`
 
-- `detect` - Will return the first occurrence of detectors
-- `multipleDetect` - Will return an array with all the locales detected by each detector
+The `detect` method accepts multiple detectors as arguments and returns the first valid locale detected.
 
-and some helpers:
+### `multipleDetect`
 
-- `fromCookie(key: string)` - Accepts a key as param will recover from navigator cookies the value
-- `fromHtmlTag(tag: string)` - Will find on HtmlDocument the attribute passed in params (normally it's used lang or xml:lang)
-- `fromNavigator()` - Recovers the navigator language, it's also compatible with old browsers like IE11
-- `fromPath(localePathIndex: number)` - Splits the location.pathname in an array so you have to specify the index of the array where's locale is set
-- `fromStorage(key: string, { useSessionStorage: boolean }` - Will search on localStorage by default the item that has that key, if **useSessionStorage** is passed, will search on sessionStorage
-- `fromSubdomain(localeSubdomainIndex: number)` - Like fromPath, splits the location.href on segments you must specify the index of that segment
-- `fromUrl(parameter: string)` - Uses a query-string parser to recover the correct parameter
+The `multipleDetect` method also accepts multiple detectors as arguments and returns an array with all locales detected by each detector.
 
-Practically all detectors accepts a custom document, location, or window object as param, it's useful when testing or using some server-side strategy.
+### `fromCookie(key: string)` {#fromCookie}
+
+Accepts a key as a parameter and retrieves the locale value from the browser's cookies based on that key.
+
+### `fromHtmlTag(tag: string)` {#fromHtmlTag}
+
+Looks for the specified attribute in the HTML document (commonly `lang` or `xml:lang`) to detect the locale.
+
+### `fromNavigator()` {#fromNavigator}
+
+Retrieves the user's language setting from the browser, compatible with older browsers such as IE11.
+
+### `fromPath(localePathIndex: number)` {#fromPath}
+
+Splits `location.pathname` into an array, requiring you to specify the index where the locale is located.
+
+### `fromStorage(key: string, { useSessionStorage: boolean })` {#fromStorage}
+
+Searches for the item with the specified key in `localStorage` by default. If the `useSessionStorage` parameter is passed, it will search in `sessionStorage`.
+
+### `fromSubdomain(localeSubdomainIndex: number)` {#fromSubdomain}
+
+Splits `location.href` by subdomain segments, requiring the index where the locale is specified.
+
+### `fromUrl(parameter: string)` {#fromUrl}
+
+Uses a query string parser to find the locale by the specified parameter in the URL.
+
+## Usage Examples
 
 ### Usage with `detect`
 

@@ -4,7 +4,7 @@ import { compileMessage } from "./compileMessage"
 describe("compileMessage", () => {
   it("should handle an error if message has syntax errors", () => {
     mockConsole((console) => {
-      expect(compileMessage("Invalid {message")).toEqual("Invalid {message")
+      expect(compileMessage("Invalid {message")).toEqual(["Invalid {message"])
       expect(console.error).toBeCalledWith(
         expect.stringMatching("Unexpected message end at line")
       )
@@ -31,7 +31,7 @@ describe("compileMessage", () => {
 
   it("should compileMessage static message", () => {
     const tokens = compileMessage("Static message")
-    expect(tokens).toEqual("Static message")
+    expect(tokens).toEqual(["Static message"])
   })
 
   it("should compileMessage message with variable", () => {
@@ -49,7 +49,11 @@ describe("compileMessage", () => {
 
   it("should not interpolate escaped placeholder", () => {
     const tokens = compileMessage("Hey '{name}'!")
-    expect(tokens).toMatchInlineSnapshot(`Hey {name}!`)
+    expect(tokens).toMatchInlineSnapshot(`
+      [
+        Hey {name}!,
+      ]
+    `)
   })
 
   it("should compile plurals", () => {
@@ -62,9 +66,15 @@ describe("compileMessage", () => {
           value,
           plural,
           {
-            0: No Books,
-            42: FourtyTwo books,
-            99: Books with problems,
+            0: [
+              No Books,
+            ],
+            42: [
+              FourtyTwo books,
+            ],
+            99: [
+              Books with problems,
+            ],
             offset: 1,
             one: [
               #,
@@ -125,7 +135,9 @@ describe("compileMessage", () => {
                 plural,
                 {
                   offset: undefined,
-                  one: She invites one guest,
+                  one: [
+                    She invites one guest,
+                  ],
                   other: [
                     She invites ,
                     #,
@@ -140,7 +152,9 @@ describe("compileMessage", () => {
                 plural,
                 {
                   offset: undefined,
-                  one: He invites one guest,
+                  one: [
+                    He invites one guest,
+                  ],
                   other: [
                     He invites ,
                     #,
@@ -170,9 +184,13 @@ describe("compileMessage", () => {
           value,
           select,
           {
-            female: She,
+            female: [
+              She,
+            ],
             offset: undefined,
-            other: They,
+            other: [
+              They,
+            ],
           },
         ],
       ]

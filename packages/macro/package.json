@@ -1,9 +1,8 @@
 {
   "name": "@lingui/macro",
-  "version": "4.14.1",
+  "version": "5.0.0",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "main": "./index.js",
   "types": "./index.d.ts",
   "sideEffects": false,
   "author": {
@@ -11,9 +10,7 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "scripts": {
-    "test:tsd": "tsd",
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "test:tsd": "tsd"
   },
   "license": "MIT",
   "keywords": [
@@ -34,52 +31,35 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "exports": {
     ".": {
-      "require": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./node": {
-      "require": {
-        "types": "./dist/index.d.ts"
-      },
-      "import": {
-        "types": "./dist/index.d.ts"
-      }
+      "types": "./index.d.ts",
+      "default": "./index.js"
     }
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/",
-    "index.d.ts"
+    "index.d.ts",
+    "index.js"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.14.1",
-    "@lingui/core": "4.14.1",
-    "@lingui/message-utils": "4.14.1"
+    "@lingui/core": "5.0.0",
+    "@lingui/react": "5.0.0"
   },
   "peerDependencies": {
-    "@lingui/react": "^4.0.0",
+    "@lingui/babel-plugin-lingui-macro": "4.11.2",
     "babel-plugin-macros": "2 || 3"
   },
-  "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/parser": "^7.20.15",
-    "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
-    "prettier": "2.8.3",
-    "tsd": "^0.26.1",
-    "unbuild": "2.0.0"
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "babel-plugin-macros": {
+      "optional": true
+    }
   }
 }

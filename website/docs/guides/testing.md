@@ -1,8 +1,8 @@
 # Testing
 
-Components using [`Trans`](/docs/ref/react.md#trans) or [`useLingui`](/docs/ref/react.md#uselingui) require access to the context of [`I18nProvider`](/docs/ref/react.md#i18nprovider). How you can wrap your component with the I18nProvider depends on the test library you use.
+In a React application, components that use [`Trans`](/ref/react#trans) or [`useLingui`](/ref/react#uselingui) need access to the context provided by [`I18nProvider`](/ref/react#i18nprovider). How you wrap your component with the I18nProvider depends on the testing library you're using.
 
-Here is a working example with [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/), using the [wrapper-property](https://testing-library.com/docs/react-testing-library/api#wrapper):
+Below is an example using [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/) and its [wrapper-property](https://testing-library.com/docs/react-testing-library/api#wrapper):
 
 ```tsx title="index.js"
 import React from "react";
@@ -40,4 +40,4 @@ test("Content should be translated correctly in Czech", () => {
 });
 ```
 
-You could define a custom renderer to re-use this TestingProvider, see [react testing library - Custom Render](https://testing-library.com/docs/react-testing-library/setup#custom-render)
+To avoid repeating the `TestingProvider` setup in multiple tests, consider defining a custom renderer. You can find more about this in the [react testing library - Custom Render](https://testing-library.com/docs/react-testing-library/setup#custom-render) documentation.

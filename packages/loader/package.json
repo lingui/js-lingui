@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "4.14.1",
+  "version": "5.0.0",
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
@@ -34,7 +34,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "LICENSE",
@@ -43,11 +43,11 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "4.14.1",
-    "@lingui/conf": "4.14.1"
+    "@lingui/cli": "5.0.0",
+    "@lingui/conf": "5.0.0"
   },
   "devDependencies": {
-    "@lingui/format-json": "4.14.1",
+    "@lingui/format-json": "5.0.0",
     "unbuild": "2.0.0",
     "webpack": "^5.76.1"
   },

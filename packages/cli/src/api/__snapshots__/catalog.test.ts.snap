@@ -19,6 +19,7 @@ exports[`Catalog collect should extract files with special characters when passe
         1,
       ],
     ],
+    placeholders: {},
   },
   Component D: {
     comments: [],
@@ -30,6 +31,7 @@ exports[`Catalog collect should extract files with special characters when passe
         1,
       ],
     ],
+    placeholders: {},
   },
   Component E: {
     comments: [],
@@ -41,6 +43,7 @@ exports[`Catalog collect should extract files with special characters when passe
         1,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -57,6 +60,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component B: {
     comments: [],
@@ -68,6 +72,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component C: {
     comments: [],
@@ -79,6 +84,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component D: {
     comments: [],
@@ -90,6 +96,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Component E: {
     comments: [],
@@ -101,16 +108,21 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Hello World: {
     comments: [
+      Hello comment,
       Comment A,
       Comment A again,
-      Hello comment,
     ],
     context: undefined,
     message: undefined,
     origin: [
+      [
+        collect/componentA/index.js,
+        1,
+      ],
       [
         collect/componentA/componentA.js,
         2,
@@ -119,11 +131,8 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         collect/componentA/componentA.js,
         3,
       ],
-      [
-        collect/componentA/index.js,
-        1,
-      ],
     ],
+    placeholders: {},
   },
   custom.id: {
     comments: [],
@@ -135,6 +144,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
         4,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -151,16 +161,21 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         1,
       ],
     ],
+    placeholders: {},
   },
   Hello World: {
     comments: [
+      Hello comment,
       Comment A,
       Comment A again,
-      Hello comment,
     ],
     context: undefined,
     message: undefined,
     origin: [
+      [
+        collect/componentA/index.js,
+        1,
+      ],
       [
         collect/componentA/componentA.js,
         2,
@@ -169,11 +184,8 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         collect/componentA/componentA.js,
         3,
       ],
-      [
-        collect/componentA/index.js,
-        1,
-      ],
     ],
+    placeholders: {},
   },
   custom.id: {
     comments: [],
@@ -185,6 +197,7 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
         4,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -200,9 +213,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        11,
+        12,
       ],
     ],
+    placeholders: {},
   },
   MHrjPM: {
     comments: [],
@@ -211,9 +225,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        19,
+        20,
       ],
     ],
+    placeholders: {},
   },
   Nu4oKW: {
     comments: [
@@ -224,9 +239,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        6,
+        7,
       ],
     ],
+    placeholders: {},
   },
   YikuIL: {
     comments: [],
@@ -235,9 +251,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        18,
+        19,
       ],
     ],
+    placeholders: {},
   },
   d1Kdl3: {
     comments: [],
@@ -246,9 +263,14 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        17,
+        18,
       ],
     ],
+    placeholders: {
+      name: [
+        name,
+      ],
+    },
   },
   esnaQO: {
     comments: [],
@@ -257,9 +279,14 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        21,
+        22,
       ],
     ],
+    placeholders: {
+      count: [
+        count,
+      ],
+    },
   },
   xDAtGP: {
     comments: [],
@@ -268,9 +295,10 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
     origin: [
       [
         collect-typescript-jsx/macro.tsx,
-        4,
+        5,
       ],
     ],
+    placeholders: {},
   },
 }
 `;
@@ -305,9 +333,9 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     },
     Hello World: {
       comments: [
+        Hello comment,
         Comment A,
         Comment A again,
-        Hello comment,
         js-lingui-explicit-id,
       ],
       context: null,
@@ -318,16 +346,16 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       obsolete: false,
       origin: [
         [
+          collect/componentA/index.js,
+          1,
+        ],
+        [
           collect/componentA/componentA.js,
           2,
         ],
         [
           collect/componentA/componentA.js,
           3,
-        ],
-        [
-          collect/componentA/index.js,
-          1,
         ],
       ],
       translation: ,
@@ -372,9 +400,9 @@ exports[`Catalog make should collect and write catalogs 2`] = `
     },
     Hello World: {
       comments: [
+        Hello comment,
         Comment A,
         Comment A again,
-        Hello comment,
         js-lingui-explicit-id,
       ],
       context: null,
@@ -385,16 +413,16 @@ exports[`Catalog make should collect and write catalogs 2`] = `
       obsolete: false,
       origin: [
         [
+          collect/componentA/index.js,
+          1,
+        ],
+        [
           collect/componentA/componentA.js,
           2,
         ],
         [
           collect/componentA/componentA.js,
           3,
-        ],
-        [
-          collect/componentA/index.js,
-          1,
         ],
       ],
       translation: ,
@@ -549,9 +577,9 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     },
     Hello World: {
       comments: [
+        Hello comment,
         Comment A,
         Comment A again,
-        Hello comment,
         js-lingui-explicit-id,
       ],
       context: null,
@@ -562,16 +590,16 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       obsolete: false,
       origin: [
         [
+          collect/componentA/index.js,
+          1,
+        ],
+        [
           collect/componentA/componentA.js,
           2,
         ],
         [
           collect/componentA/componentA.js,
           3,
-        ],
-        [
-          collect/componentA/index.js,
-          1,
         ],
       ],
       translation: ,
@@ -700,9 +728,9 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
     },
     Hello World: {
       comments: [
+        Hello comment,
         Comment A,
         Comment A again,
-        Hello comment,
         js-lingui-explicit-id,
       ],
       context: null,
@@ -713,16 +741,16 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
       obsolete: false,
       origin: [
         [
+          collect/componentA/index.js,
+          1,
+        ],
+        [
           collect/componentA/componentA.js,
           2,
         ],
         [
           collect/componentA/componentA.js,
           3,
-        ],
-        [
-          collect/componentA/index.js,
-          1,
         ],
       ],
       translation: ,
@@ -792,9 +820,9 @@ exports[`Catalog make should only update the specified locale 2`] = `
     },
     Hello World: {
       comments: [
+        Hello comment,
         Comment A,
         Comment A again,
-        Hello comment,
         js-lingui-explicit-id,
       ],
       context: null,
@@ -805,16 +833,16 @@ exports[`Catalog make should only update the specified locale 2`] = `
       obsolete: false,
       origin: [
         [
+          collect/componentA/index.js,
+          1,
+        ],
+        [
           collect/componentA/componentA.js,
           2,
         ],
         [
           collect/componentA/componentA.js,
           3,
-        ],
-        [
-          collect/componentA/index.js,
-          1,
         ],
       ],
       translation: ,
@@ -865,9 +893,9 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
   },
   Hello World: {
     comments: [
+      Hello comment,
       Comment A,
       Comment A again,
-      Hello comment,
       js-lingui-explicit-id,
     ],
     context: null,
@@ -878,16 +906,16 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
     obsolete: false,
     origin: [
       [
+        collect/componentA/index.js,
+        1,
+      ],
+      [
         collect/componentA/componentA.js,
         2,
       ],
       [
         collect/componentA/componentA.js,
         3,
-      ],
-      [
-        collect/componentA/index.js,
-        1,
       ],
     ],
     translation: ,

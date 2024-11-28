@@ -11,3 +11,4 @@ coverage/
 website/
 .github
 examples
+/.nx/workspace-data

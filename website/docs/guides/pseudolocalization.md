@@ -5,44 +5,50 @@ description: Learn how to use pseudolocalization to test the internationalizatio
 
 # Pseudolocalization
 
-There is built in support for [pseudolocalization](https://en.wikipedia.org/wiki/Pseudolocalization). Pseudolocalization is a method for testing the internationalization aspects of your application by replacing your strings with altered versions and maintaining string readability. It also makes hard coded strings and improperly concatenated strings easy to spot so that they can be properly localized.
+Pseudo-localization is a method used to check the software's readiness to be localized. This method shows how the product's UI will look after translation. Use this feature to reduce potential rework by checking whether any source strings should be altered before the translation process begins.
+
+It also makes it easy to identify hard-coded strings and improperly concatenated strings so that they can be localized properly.
 
 > Example: Ţĥĩś ţēxţ ĩś ƥśēũďōĺōćàĺĩźēď
 
 ## Configuration
 
-To setup pseudolocalization add [`pseudoLocale`](/docs/ref/conf.md#pseudolocale) to your lingui [`configuration file`](/docs/ref/conf.md):
+To configure pseudolocalization, add the [`pseudoLocale`](/ref/conf#pseudolocale) property to your Lingui configuration file:
 
-```json
-{
-  "lingui": {
-    "locale": ["en", "pseudo-LOCALE"],
-    "pseudoLocale": "pseudo-LOCALE",
-    "fallbackLocales": {
-      "pseudo-LOCALE": "en"
-    }
-  }
-}
+```ts title="lingui.config.{ts,js}"
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
+  locales: ["en", "pseudo-LOCALE"],
+  pseudoLocale: "pseudo-LOCALE",
+  fallbackLocales: {
+    "pseudo-LOCALE": "en",
+  },
+});
 ```
 
-[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) option can be any string that is in `locale`
+The `pseudoLocale` option must be set to any string that matches a value in the [`locales`](/ref/conf#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.
 
-Examples: `en-PL`, `pseudo-LOCALE`, `pseudolocalization` or `en-UK`
+If the `fallbackLocales` is configured, the pseudolocalization will be generated from the translated fallback locale instead.
 
-## Create pseudolocalization
+## Generate Pseudolocalization
 
-[`pseudoLocale`](/docs/ref/conf.md#pseudolocale) string has to be in [`locales`](/docs/ref/conf.md#locales) config as well. Otherwise, no folder and no pseudolocalization is going to be created. After running [`extract`](/docs/ref/cli.md#extract) verify that the folder has been created. The pseudolocalization is automatically created on [`compile`](/docs/ref/cli.md#compile) from messages. In case fallbackLocales has been used, the pseudolocalization is going to be created from translated fallback locale.
+After running the [`extract`](/ref/cli#extract) command, verify that the folder for the pseudolocale has been created.
 
-## Switch browser into specified pseudoLocale
+Pseudolocalization is automatically generated during the [`compile`](/ref/cli#compile) process, using the messages.
 
-We can use browsers settings or extensions. Extensions allow to use any locale. Browsers are usually limited into valid language tags (BCP 47). In that case, the locale for pseudolocalization has to be standard locale, which is not used in your application for example `zu_ZA` Zulu - SOUTH AFRICA
+## Switch Browser Into Specified Pseudolocale
+
+You can switch your browser to a pseudolocale either by adjusting the browser settings or by using extensions. Extensions provide flexibility by allowing you to use any locale, while browser settings are usually limited to valid language tags (BCP 47).
+
+In such cases, the pseudolocale must be a standard locale that isn't already used in your application. For example, you could use `zu_ZA` (Zulu - South Africa).
 
 Chrome:
 
-- With extension (valid locale) - [Locale Switcher](https://chrome.google.com/webstore/detail/locale-switcher/kngfjpghaokedippaapkfihdlmmlafcc)
-- Without extension (valid locale) - [chrome://settings/?search=languages](chrome://settings/?search=languages)
+- With extension (valid locale) - [Locale Switcher](https://chrome.google.com/webstore/detail/locale-switcher/kngfjpghaokedippaapkfihdlmmlafcc).
+- Without extension (valid locale) - [chrome://settings/?search=languages](chrome://settings/?search=languages).
 
 Firefox:
 
-- With extension (any string) - [Quick Accept-Language Switcher](https://addons.mozilla.org/en-GB/firefox/addon/quick-accept-language-switc/?src=search)
-- Without extension (valid locale) - [about:preferences#general](about:preferences#general) > _Language_
+- With extension (any string) - [Quick Accept-Language Switcher](https://addons.mozilla.org/en-GB/firefox/addon/quick-accept-language-switc/?src=search).
+- Without extension (valid locale) - [about:preferences#general](about:preferences#general) > _Language_.

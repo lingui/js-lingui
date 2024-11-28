@@ -11,6 +11,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       1,
     ],
+    placeholders: {},
   },
   {
     comment: description,
@@ -21,6 +22,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       3,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -31,6 +33,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -41,6 +44,9 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       7,
     ],
+    placeholders: {
+      param: param,
+    },
   },
   {
     comment: undefined,
@@ -51,6 +57,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       9,
     ],
+    placeholders: {},
   },
   {
     comment: My comment,
@@ -61,6 +68,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       12,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -71,6 +79,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       19,
     ],
+    placeholders: {},
   },
   {
     comment: My comment,
@@ -81,6 +90,7 @@ exports[`@lingui/babel-plugin-extract-messages CallExpression i18n._() should ex
       js-call-expression.js,
       22,
     ],
+    placeholders: {},
   },
 ]
 `;
@@ -96,6 +106,7 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
       js-message-descriptor.js,
       1,
     ],
+    placeholders: {},
   },
   {
     comment: description,
@@ -106,6 +117,7 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
       js-message-descriptor.js,
       3,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -116,16 +128,36 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
       js-message-descriptor.js,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
     context: undefined,
-    id: Values {param},
+    id: Values {param} {0} {name} {value},
     message: undefined,
     origin: [
       js-message-descriptor.js,
       7,
     ],
+    placeholders: {
+      0: user.getName(),
+      name: "foo",
+      param: param,
+      value: user
+      ? user.name
+      : null,
+    },
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: Values {param} {0},
+    message: undefined,
+    origin: [
+      js-message-descriptor.js,
+      23,
+    ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -134,8 +166,9 @@ exports[`@lingui/babel-plugin-extract-messages MessageDescriptor should extract 
     message: undefined,
     origin: [
       js-message-descriptor.js,
-      9,
+      25,
     ],
+    placeholders: {},
   },
 ]
 `;
@@ -149,8 +182,11 @@ exports[`@lingui/babel-plugin-extract-messages should extract Plural messages fr
     message: {count, plural, one {# book} other {# books}},
     origin: [
       jsx-without-trans.js,
-      3,
+      2,
     ],
+    placeholders: {
+      count: count,
+    },
   },
   {
     comment: undefined,
@@ -159,8 +195,11 @@ exports[`@lingui/babel-plugin-extract-messages should extract Plural messages fr
     message: {count, plural, one {# book} other {# books}},
     origin: [
       jsx-without-trans.js,
-      4,
+      3,
     ],
+    placeholders: {
+      count: count,
+    },
   },
 ]
 `;
@@ -174,8 +213,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message,
     origin: [
       js-with-macros.js,
-      3,
+      4,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -184,8 +224,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message,
     origin: [
       js-with-macros.js,
-      5,
+      6,
     ],
+    placeholders: {},
   },
   {
     comment: description,
@@ -194,8 +235,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Description,
     origin: [
       js-with-macros.js,
-      7,
+      8,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -204,8 +246,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message with id,
     origin: [
       js-with-macros.js,
-      12,
+      13,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -214,8 +257,11 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Values {param},
     origin: [
       js-with-macros.js,
-      17,
+      18,
     ],
+    placeholders: {
+      param: param,
+    },
   },
   {
     comment: undefined,
@@ -224,8 +270,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: Message with id some,
     origin: [
       js-with-macros.js,
-      19,
+      20,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -234,8 +281,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      24,
+      25,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -244,8 +292,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      28,
+      29,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -254,8 +303,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      33,
+      34,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -264,8 +314,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      38,
+      39,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -274,8 +325,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: undefined,
     origin: [
       js-with-macros.js,
-      43,
+      44,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -284,8 +336,33 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
     message: TplLiteral,
     origin: [
       js-with-macros.js,
-      48,
+      49,
     ],
+    placeholders: {},
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: VO4BJY,
+    message: [useLingui]: TplLiteral,
+    origin: [
+      js-with-macros.js,
+      54,
+    ],
+    placeholders: {},
+  },
+  {
+    comment: undefined,
+    context: undefined,
+    id: ZxxjOE,
+    message: [useLingui]: Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}},
+    origin: [
+      js-with-macros.js,
+      57,
+    ],
+    placeholders: {
+      0: users.length,
+    },
   },
 ]
 `;
@@ -301,6 +378,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       3,
     ],
+    placeholders: {
+      name: name,
+    },
   },
   {
     comment: undefined,
@@ -311,6 +391,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       4,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -321,6 +402,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -331,6 +413,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       6,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -341,6 +424,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       7,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -351,6 +435,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-with-macros.js,
       9,
     ],
+    placeholders: {
+      count: count,
+    },
   },
 ]
 `;
@@ -366,6 +453,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       5,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -376,6 +464,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       6,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -386,6 +475,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       7,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -396,6 +486,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       8,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -406,6 +497,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       9,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -416,6 +508,7 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       10,
     ],
+    placeholders: {},
   },
   {
     comment: undefined,
@@ -426,6 +519,9 @@ exports[`@lingui/babel-plugin-extract-messages should extract all messages from 
       jsx-without-macros.js,
       11,
     ],
+    placeholders: {
+      count: count,
+    },
   },
 ]
 `;

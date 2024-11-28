@@ -13,6 +13,21 @@ msgstr ""
 msgid "addToCart"
 msgstr "Add To Cart"
 
+#. placeholder {0}: user.name
+#. placeholder {0}: author.name
+#. placeholder {0}: moderator.name
+#: fixtures/placeholders.ts:3
+#: fixtures/placeholders.ts:4
+#: fixtures/placeholders.ts:5
+msgid "Hello {0}"
+msgstr "Hello {0}"
+
+#. placeholder {0}: user.name
+#. placeholder {1}: user ? user.name : null
+#: fixtures/placeholders.ts:7
+msgid "Hello {userName} {0} {1}"
+msgstr "Hello {userName} {0} {1}"
+
 #. this is a comment
 #: fixtures/file-b.tsx:6
 msgid "Hello this is JSX Translation"
