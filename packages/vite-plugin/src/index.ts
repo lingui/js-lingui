@@ -33,6 +33,16 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
           )
         }
       },
+      resolveDynamicImport(specifier, importer, options) {
+        if (specifier === "@lingui/macro") {
+          throw new Error(
+            `The macro you imported from "@lingui/macro" cannot be dynamically imported. \n` +
+              `Please check the import statement in file "${importer}". \n` +
+              `Please see the documentation for how to configure Vite with Lingui correctly: ` +
+              "https://lingui.dev/tutorials/setup-vite"
+          )
+        }
+      },
     },
     {
       name: "vite-plugin-lingui",
