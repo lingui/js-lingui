@@ -22,10 +22,10 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     announcementBar: {
-      id: "v5_release",
+      id: "v5_release-available",
       content:
-        'The <b>v5.0.0</b> Pre-Release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=tag%3Av5&expanded=true">discover its new capabilities!</a>',
-      backgroundColor: "#f36c6c",
+        'Lingui <b>v5.0</b> is officially released! <a href="/blog/2024/11/28/announcing-lingui-5.0" target="_blank" rel="noopener noreferrer">Check it out!</a>',
+      backgroundColor: "#89cecf",
       textColor: "#1a1a1a",
     },
     metadata: [

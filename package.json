@@ -1,7 +1,7 @@
 {
   "name": "js-lingui-workspaces",
   "private": true,
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
