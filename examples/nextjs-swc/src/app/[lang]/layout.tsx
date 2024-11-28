@@ -1,26 +1,27 @@
 import linguiConfig from '../../../lingui.config'
 import { allMessages, getI18nInstance } from '../../appRouterI18n'
 import { LinguiClientProvider } from '../../components/LinguiClientProvider'
-import { PageLangParam, withLinguiLayout } from '../../withLingui'
+import { initLingui, PageLangParam } from '../../initLingui'
 import React from 'react'
 import { t } from '@lingui/macro'
+import { setI18n } from '@lingui/react/server'
 
 export async function generateStaticParams() {
   return linguiConfig.locales.map((lang) => ({ lang }))
 }
 
-export function generateMetadata({ params }: PageLangParam) {
-  const i18n = getI18nInstance(params.lang)
+export async function generateMetadata(props: PageLangParam) {
+  const i18n = getI18nInstance((await props.params).lang)
 
   return {
     title: t(i18n)`Translation Demo`
   }
 }
 
-export default withLinguiLayout(function RootLayout({
-  children,
-  params: { lang }
-}) {
+export default async function RootLayout({ children, params }) {
+  const lang = (await params).lang
+  initLingui(lang)
+
   return (
     <html lang={lang}>
       <body className="bg-background text-foreground">
@@ -35,4 +36,4 @@ export default withLinguiLayout(function RootLayout({
       </body>
     </html>
   )
-})
+}
