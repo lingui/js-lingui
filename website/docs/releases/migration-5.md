@@ -171,7 +171,7 @@ Read more about the motivation and discuss the changes in the related [issue](ht
 
 Context is critical for translators (and AI) to provide accurate translations. This release introduces a new feature that prints placeholder values in PO comments.
 
-If the message contains unnamed placeholders such as `{0}`, Lingui will print their values in PO comments, so that translators and AI get more context about what the placeholder is about.
+If the message contains unnamed placeholders such as `{0}`, Lingui will print the name of the placeholder variable in the PO comments, so that translators and AI have more context about what the placeholder is.
 
 For example:
 
