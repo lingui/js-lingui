@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
+
+### Bug Fixes
+
+- don't report statistics for pseudo locale ([#2094](https://github.com/lingui/js-lingui/issues/2094)) ([113c05d](https://github.com/lingui/js-lingui/commit/113c05d91dba210b73444f4824c47d2709f8f5cf))
+
 # [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
 
 ### Bug Fixes

@@ -305,4 +305,42 @@ describe("E2E Extractor Test", () => {
 
     compareFolders(actualPath, expectedPath)
   })
+
+  it("Should not report statistics on pseudolocalizations", async () => {
+    const { rootDir } = await prepare("extract-po-format")
+
+    await mockConsole(async (console) => {
+      const result = await extractCommand(
+        makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl", "pseudo-LOCALE"],
+          pseudoLocale: "pseudo-LOCALE",
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [
+            {
+              path: "<rootDir>/actual/{locale}",
+              include: ["<rootDir>/fixtures"],
+            },
+          ],
+        }),
+        {}
+      )
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.error)).toBeFalsy()
+      expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Catalog statistics for actual/{locale}: 
+        ┌─────────────┬─────────────┬─────────┐
+        │ Language    │ Total count │ Missing │
+        ├─────────────┼─────────────┼─────────┤
+        │ en (source) │      8      │    -    │
+        │ pl          │      8      │    8    │
+        └─────────────┴─────────────┴─────────┘
+
+        (Use "yarn extract" to update catalogs with new messages.)
+        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+      `)
+    })
+  })
 })
