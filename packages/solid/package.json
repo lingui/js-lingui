@@ -68,6 +68,7 @@
     "@lingui/jest-mocks": "*",
     "@rollup/plugin-babel": "^6.0.4",
     "@solidjs/testing-library": "^0.8.10",
+    "babel-preset-solid": "^1.9.3",
     "eslint-plugin-solid": "0.13.2",
     "rimraf": "^6.0.1",
     "solid-js": "^1.9.3",
