@@ -27,17 +27,17 @@ const voidElementTags = {
 
 function appendChildren(parent: HTMLElement, children: JSX.Element) {
   if (children == null)
-    return;
+    return
   if (Array.isArray(children)) {
     for (const node of (children as JSX.ArrayElement)) {
       appendChildren(parent, node)
     }
   } else if (children instanceof Node) {
-    parent.appendChild(children as Node);
+    parent.appendChild(children as Node)
   } else if (typeof children === "string") {
-    parent.appendChild(document.createTextNode(children));
+    parent.appendChild(document.createTextNode(children))
   } else {
-    console.error(`Invalid children type: ${typeof children}`)
+    console.error(`Invalid children type: ${typeof children}`, children)
   }
 }
 
@@ -85,7 +85,7 @@ function formatElements(
       }
     }
 
-    tree.push(element);
+    tree.push(element)
 
     if (after) tree.push(after)
   }

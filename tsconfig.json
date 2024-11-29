@@ -20,6 +20,7 @@
       "@lingui/message-utils/*": ["./packages/message-utils/src/*"],
       "@lingui/cli/api": ["./packages/cli/src/api"],
       "@lingui/react": ["./packages/react/src"],
+      "@lingui/solid": ["./packages/solid/src"],
       "@lingui/react/macro": ["./packages/react/macro"],
       "@lingui/conf": ["./packages/conf/src"],
       "@lingui/babel-plugin-lingui-macro": ["./packages/babel-plugin-lingui-macro/src/index.ts"],

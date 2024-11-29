@@ -39,7 +39,7 @@ export const I18nProvider: ParentComponent<I18nProviderProps> = (props) => {
   // eslint-disable-next-line solid/reactivity
   const [i18n, setI18n] = createSignal(props.i18n, { equals: (_, next) => next.locale != latestKnownLocale() })
   const defaultComponent = createMemo(() => props.defaultComponent)
-  const _: I18n["_"] = ((...args: any[]) => (i18n()._ as Function).apply(i18n(), args));
+  const _: I18n["_"] = ((...args: any[]) => (i18n()._ as Function).apply(i18n(), args))
 
   /**
    * Subscribe for locale/message changes
@@ -55,7 +55,7 @@ export const I18nProvider: ParentComponent<I18nProviderProps> = (props) => {
     }
 
     if (unsubscribe)
-      unsubscribe();
+      unsubscribe()
     unsubscribe = props.i18n.on("change", updateContext)
 
     /**
@@ -65,7 +65,7 @@ export const I18nProvider: ParentComponent<I18nProviderProps> = (props) => {
     if (latestKnownLocale() !== props.i18n.locale) {
       updateContext()
     }
-  }));
+  }))
 
   onCleanup(() => unsubscribe())
 

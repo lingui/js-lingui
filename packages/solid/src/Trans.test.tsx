@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library"
-import { JSX, ParentComponent } from "solid-js"
+import { createSignal, JSX, ParentComponent } from "solid-js"
 import {
   Trans,
   I18nProvider,
@@ -10,6 +10,7 @@ import {
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { TransNoContext } from "./TransNoContext"
+import { createSign } from "crypto"
 
 describe("Trans component", () => {
   /*
@@ -136,6 +137,38 @@ describe("Trans component", () => {
       expect(console.error).toHaveBeenCalledTimes(2)
       console.error = originalConsole
     })
+  })
+
+  it("should follow jsx semantics regarding booleans", () => {
+    expect(
+      html(() =>
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: false && "lol",
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span></span> bar")
+
+    expect(
+      html(() =>
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: "lol",
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span>lol</span> bar")
   })
 
   it("should render default string", () => {
@@ -271,6 +304,28 @@ describe("Trans component", () => {
     expect(translation).toEqual("1,00 €")
   })
 
+  it("should render plural", () => {
+    const render = (count: number) =>
+      html(() =>
+        <Trans
+          id={"tYX0sm"}
+          message={
+            "{count, plural, =0 {Zero items} one {# item} other {# <0>A lot of them</0>}}"
+          }
+          values={{
+            count,
+          }}
+          components={{
+            0: <a href="/more" />,
+          }}
+        />
+      )
+
+    expect(render(0)).toEqual("Zero items")
+    expect(render(1)).toEqual("1 item")
+    expect(render(2)).toEqual(`2 <a href="/more">A lot of them</a>`)
+  })
+
   describe("rendering", () => {
     it("should render a text node with no wrapper element", () => {
       const txt = html(() => <Trans id="Some text" />)
@@ -305,7 +360,6 @@ describe("Trans component", () => {
         message: "Default",
         translation: "Translation",
         children: "Translation",
-        isTranslated: true,
       })
     })
 
@@ -344,6 +398,28 @@ describe("Trans component", () => {
     )
   })
 
+  describe("component prop rendering", () => {
+    it("should render function component as simple prop", () => {
+      const propsSpy = jest.fn()
+      const ComponentFC: ParentComponent<TransRenderProps> = (
+        props
+      ) => {
+        propsSpy(props)
+        const [state] = createSignal("value")
+        return <div id={props.id}>{state()}</div>
+      }
+
+      const element = html(() => <Trans component={ComponentFC} id="Headline" />)
+      expect(element).toEqual(`<div id="Headline">value</div>`)
+      expect(propsSpy).toHaveBeenCalledWith({
+        id: "Headline",
+        message: undefined,
+        translation: "Headline",
+        children: "Headline",
+      })
+    })
+  })
+
   describe("I18nProvider defaultComponent accepts render-like props", () => {
     const DefaultComponent: ParentComponent<TransRenderProps> = (
       props
@@ -355,8 +431,6 @@ describe("Trans component", () => {
         {props.translation && (
           <div data-testid="translation">{props.translation}</div>
         )}
-
-        <div data-testid="is-translated">{String(props.isTranslated)}</div>
       </>
     )
 
@@ -372,21 +446,6 @@ describe("Trans component", () => {
       expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
         "Translation"
       )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("true")
-    })
-
-    it("should pass isTranslated: false if no translation", () => {
-      const markup = render(() =>
-        <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
-          <Trans id="NO_ID" message="Some message" />
-        </I18nProvider>
-      )
-
-      expect(markup.queryByTestId("id")?.innerHTML).toEqual("NO_ID")
-      expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
-        "Some message"
-      )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("false")
     })
 
     describe("TransNoContext", () => {
@@ -395,7 +454,7 @@ describe("Trans component", () => {
           i18n: () => i18n,
           _: i18n._,
           defaultComponent: () => undefined
-        };
+        }
         const translation = render(() =>
           <TransNoContext
             id="All human beings are born free and equal in dignity and rights."

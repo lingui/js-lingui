@@ -9,10 +9,6 @@ export type TransRenderProps = {
   translation: JSX.Element
   children: JSX.Element
   message?: string | null
-  /**
-   * @deprecated isTranslated prop is undocumented and buggy. It'll be removed in v5 release.
-   * */
-  isTranslated: boolean
 }
 
 export type TransRenderCallbackOrComponent =
@@ -46,8 +42,8 @@ export const TransNoContext: ParentComponent<TransProps & {
   lingui: I18nContext
 }> = (props) => {
   const translatedContent = createMemo(() => {
-    const values = { ...props.values ?? {} };
-    const components = { ...props.components ?? {} };
+    const values = { ...props.values ?? {} }
+    const components = { ...props.components ?? {} }
 
     if (props.values) {
       /*
@@ -57,20 +53,28 @@ export const TransNoContext: ParentComponent<TransProps & {
         They're replaced with <INDEX /> placeholders and added to `components`.
 
         Example:
-        Translation: Hello {name}
+        Translation: 'Hello {name}'
         Values: { name: <strong>Jane</strong> }
 
         It'll become "Hello <0 />" with components=[<strong>Jane</strong>]
-        */
-
+      */
       Object.keys(props.values).forEach((key) => {
-        const value = values[key]
         const index = Object.keys(components).length
 
-        if (_isValidElement(value)) {
-          components[index] = value
-          values[key] = `<${index}/>`
+        // simple scalars should be processed as values to be able to apply formatting
+        if (typeof values[key] === "string" || typeof values[key] === "number") {
+          return
         }
+
+        // falsy values should be empty string
+        if (!values[key]) {
+          values[key] = ""
+          return
+        }
+
+        // html nodes, arrays
+        components[index] = values[key]
+        values[key] = `<${index}/>`
       })
     }
 
@@ -79,7 +83,7 @@ export const TransNoContext: ParentComponent<TransProps & {
         ? props.lingui.i18n()._(props.id, values, { message: props.message, formats: props.formats })
         : props.id // i18n provider isn't loaded at all
 
-    const translation = _translation ? formatElements(_translation, components) : null;
+    const translation = _translation ? formatElements(_translation, components) : null
 
     if (props.render === null || props.component === null) {
       // Although `string` is a valid SolidJS element, types only allow `Element`
@@ -94,8 +98,6 @@ export const TransNoContext: ParentComponent<TransProps & {
       id: props.id,
       message: props.message,
       translation,
-      // TODO vonovak - remove isTranslated prop in v5 release
-      isTranslated: props.id !== translation && props.message !== translation,
       children: translation, // for type-compatibility with `component` prop
     }
 
@@ -134,11 +136,4 @@ export const TransNoContext: ParentComponent<TransProps & {
 const RenderFragment: ParentComponent<TransRenderProps> = (props) => {
   // cannot use <></> directly because we're passing in props that it doesn't support
   return <>{props.children}</>
-}
-
-function _isValidElement(element: unknown): boolean {
-  if (Array.isArray(element)) {
-    return (element as Array<unknown>).every(_isValidElement);
-  }
-  return (element instanceof Node);
 }
