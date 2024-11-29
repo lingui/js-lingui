@@ -326,7 +326,7 @@ describe("Trans component", () => {
     )
     expect(translation).toEqual("1,00 €")
   })
-mponent prop rendering
+
   it("should render plural", () => {
     const render = (count: number) =>
       html(
