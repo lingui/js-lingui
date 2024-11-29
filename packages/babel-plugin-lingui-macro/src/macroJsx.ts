@@ -20,6 +20,7 @@ import { makeCounter } from "./utils"
 import {
   JsxMacroName,
   MACRO_REACT_PACKAGE,
+  MACRO_SOLID_PACKAGE,
   MACRO_LEGACY_PACKAGE,
   MsgDescriptorPropKey,
 } from "./constants"
@@ -412,6 +413,7 @@ export class MacroJSX {
 
     return (
       identifier.referencesImport(MACRO_REACT_PACKAGE, name) ||
+      identifier.referencesImport(MACRO_SOLID_PACKAGE, name) ||
       identifier.referencesImport(MACRO_LEGACY_PACKAGE, name)
     )
   }
