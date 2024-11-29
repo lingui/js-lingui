@@ -10,7 +10,6 @@ import {
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { TransNoContext } from "./TransNoContext"
-import { createSign } from "crypto"
 
 describe("Trans component", () => {
   /*
