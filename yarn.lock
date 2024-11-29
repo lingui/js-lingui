@@ -3598,6 +3598,7 @@ __metadata:
     eslint-plugin-solid: 0.13.2
     rimraf: 3.0.2
     solid-js: ^1.9.3
+    tsd: 0.26.1
     vite: ^6.0.1
     vite-plugin-dts: ^4.3.0
     vite-plugin-solid: ^2.11.0
@@ -16543,7 +16544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsd@npm:^0.26.1":
+"tsd@npm:0.26.1, tsd@npm:^0.26.1":
   version: 0.26.1
   resolution: "tsd@npm:0.26.1"
   dependencies:
