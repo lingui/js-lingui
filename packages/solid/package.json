@@ -25,8 +25,8 @@
     "l10n"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "rimraf ./dist && vite build",
+    "stub": "rimraf ./dist && vite build"
   },
   "repository": {
     "type": "git",
