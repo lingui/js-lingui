@@ -76,7 +76,6 @@ export const I18nProvider: ParentComponent<I18nProviderProps> = (props) => {
         "I18nProvider rendered `<></>`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
         "This is not an error but an informational message logged only in development."
       )
-      return null
     }
   })
 

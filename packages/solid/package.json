@@ -41,22 +41,12 @@
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       },
       "import": {
-        "types": "./dist/index.d.mts",
+        "types": "./dist/index.d.ts",
         "default": "./dist/index.mjs"
-      }
-    },
-    "./server": {
-      "require": {
-        "types": "./dist/server.d.ts",
-        "default": "./dist/server.cjs"
-      },
-      "import": {
-        "types": "./dist/server.d.ts",
-        "default": "./dist/server.mjs"
       }
     },
     "./package.json": "./package.json"
@@ -76,10 +66,13 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
+    "@rollup/plugin-babel": "^6.0.4",
     "@solidjs/testing-library": "^0.8.10",
-    "babel-preset-solid": "^1.9.3",
     "eslint-plugin-solid": "0.13.2",
+    "rimraf": "^6.0.1",
     "solid-js": "^1.9.3",
-    "unbuild": "2.0.0"
+    "vite": "^6.0.1",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-plugin-solid": "^2.11.0"
   }
 }

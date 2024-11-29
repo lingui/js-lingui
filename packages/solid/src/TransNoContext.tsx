@@ -99,8 +99,6 @@ export const TransNoContext: ParentComponent<TransProps & {
       children: translation, // for type-compatibility with `component` prop
     }
 
-//    console.log(props.values, props.components, _translation);
-
     // Validation of `render` and `component` props
     if (props.render && props.component) {
       console.error(
