@@ -3605,7 +3605,7 @@ __metadata:
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.0.0
     babel-plugin-macros: 2 || 3
-    solid-js: ^1.9.0
+    solid-js: ^1.6.0
   peerDependenciesMeta:
     "@lingui/babel-plugin-lingui-macro":
       optional: true
