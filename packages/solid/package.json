@@ -1,6 +1,6 @@
 {
   "name": "@lingui/solid",
-  "version": "4.14.0",
+  "version": "5.0.0",
   "sideEffects": false,
   "description": "SolidJS components for translations",
   "main": "./dist/index.cjs",
@@ -49,20 +49,36 @@
         "default": "./dist/index.mjs"
       }
     },
+    "./macro": {
+      "types": "./macro/index.d.ts",
+      "default": "./macro/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "dist/"
+    "dist/",
+    "macro/index.d.ts",
+    "macro/index.js"
   ],
   "peerDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "5.0.0",
+    "babel-plugin-macros": "2 || 3",
     "solid-js": "^1.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "babel-plugin-macros": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "4.14.0",
-    "@lingui/solid": "4.14.0"
+    "@lingui/core": "5.0.0",
+    "@lingui/solid": "5.0.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
@@ -70,7 +86,7 @@
     "@solidjs/testing-library": "^0.8.10",
     "babel-preset-solid": "^1.9.3",
     "eslint-plugin-solid": "0.13.2",
-    "rimraf": "^6.0.1",
+    "rimraf": "3.0.2",
     "solid-js": "^1.9.3",
     "vite": "^6.0.1",
     "vite-plugin-dts": "^4.3.0",

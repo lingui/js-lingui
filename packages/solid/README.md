@@ -4,7 +4,7 @@
 
 # @lingui/solid
 
-> React components for internationalization
+> SolidJS components for internationalization
 
 `@lingui/solid` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 

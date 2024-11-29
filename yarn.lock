@@ -3384,17 +3384,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/core@npm:4.14.0":
-  version: 4.14.0
-  resolution: "@lingui/core@npm:4.14.0"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.14.0
-    unraw: ^3.0.0
-  checksum: 680ea64d1f5f46e1bd4671cfaa09f5317402bfff8b6cbad6d76ab207675ccba447ce33ed6b9d779c3cd43fdd44a2a90cf979c44a014d77d16750dbecfee21225
-  languageName: node
-  linkType: hard
-
 "@lingui/detect-locale@workspace:packages/detect-locale":
   version: 0.0.0-use.local
   resolution: "@lingui/detect-locale@workspace:packages/detect-locale"
@@ -3530,16 +3519,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/message-utils@npm:4.14.0":
-  version: 4.14.0
-  resolution: "@lingui/message-utils@npm:4.14.0"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-  checksum: 441f61d6931e6618a542d59e7d88dd52d1a10a354df8b6c2900fd6c083c30ece6413e9cc91cd4d341d806295051eef85304691fadb9282dcec9156d90baca424
-  languageName: node
-  linkType: hard
-
 "@lingui/metro-transformer@workspace:packages/metro-transformer":
   version: 0.0.0-use.local
   resolution: "@lingui/metro-transformer@workspace:packages/metro-transformer"
@@ -3605,25 +3584,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/solid@4.14.0, @lingui/solid@workspace:packages/solid":
+"@lingui/solid@5.0.0, @lingui/solid@workspace:packages/solid":
   version: 0.0.0-use.local
   resolution: "@lingui/solid@workspace:packages/solid"
   dependencies:
     "@babel/runtime": ^7.20.13
-    "@lingui/core": 4.14.0
+    "@lingui/core": 5.0.0
     "@lingui/jest-mocks": "*"
-    "@lingui/solid": 4.14.0
+    "@lingui/solid": 5.0.0
     "@rollup/plugin-babel": ^6.0.4
     "@solidjs/testing-library": ^0.8.10
     babel-preset-solid: ^1.9.3
     eslint-plugin-solid: 0.13.2
-    rimraf: ^6.0.1
+    rimraf: 3.0.2
     solid-js: ^1.9.3
     vite: ^6.0.1
     vite-plugin-dts: ^4.3.0
     vite-plugin-solid: ^2.11.0
   peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.0.0
+    babel-plugin-macros: 2 || 3
     solid-js: ^1.9.0
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -15182,7 +15168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
+"rimraf@npm:3.0.2, rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
   version: 3.0.2
   resolution: "rimraf@npm:3.0.2"
   dependencies:
