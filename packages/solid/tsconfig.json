@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "exclude": ["dist"],
+  "exclude": ["dist", "macro/__typetests__"],
   "compilerOptions": {
     "strict": true,
     "jsx": "preserve",
