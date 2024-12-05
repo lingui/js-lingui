@@ -15,7 +15,7 @@
     "test:e2e": "yarn workspaces foreach -p run test:e2e",
     "test:tsd": "jest -c jest.config.types.js",
     "test:all": "yarn test && yarn test:integration && yarn test:e2e && yarn test:tsd",
-    "lint:types": "tsc",
+    "lint:types": "tsc && tsc -p packages/solid/",
     "lint:eslint": "eslint './packages/**/*.{ts,tsx,js,jsx}'",
     "lint:all": "yarn lint:eslint && yarn lint:types",
     "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",

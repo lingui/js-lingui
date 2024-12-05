@@ -7,6 +7,7 @@ import { MacroJs } from "./macroJs"
 import {
   MACRO_CORE_PACKAGE,
   MACRO_REACT_PACKAGE,
+  MACRO_SOLID_PACKAGE,
   MACRO_LEGACY_PACKAGE,
   JsMacroName,
 } from "./constants"
@@ -116,6 +117,7 @@ export default function ({
         [
           MACRO_CORE_PACKAGE,
           MACRO_REACT_PACKAGE,
+          MACRO_SOLID_PACKAGE,
           MACRO_LEGACY_PACKAGE,
         ].includes(statement.get("source").node.value)
       )
@@ -140,6 +142,10 @@ export default function ({
       if (
         identPath.referencesImport(
           MACRO_REACT_PACKAGE,
+          JsMacroName.useLingui
+        ) ||
+        identPath.referencesImport(
+          MACRO_SOLID_PACKAGE,
           JsMacroName.useLingui
         ) ||
         identPath.referencesImport(MACRO_LEGACY_PACKAGE, JsMacroName.useLingui)

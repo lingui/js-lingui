@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "exclude": ["dist", "macro/__typetests__"],
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
