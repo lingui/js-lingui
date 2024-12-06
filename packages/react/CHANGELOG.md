@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+### Features
+
+- **react:** add support for React 19 ([#2111](https://github.com/lingui/js-lingui/issues/2111)) ([e93b73d](https://github.com/lingui/js-lingui/commit/e93b73d075165d91fa598fa0c579a8ceb5c86845))
+
 ## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
 
 **Note:** Version bump only for package @lingui/react

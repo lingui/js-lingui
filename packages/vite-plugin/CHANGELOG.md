@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+### Features
+
+- **vite-plugin:** add support for vite@6 ([#2108](https://github.com/lingui/js-lingui/issues/2108)) ([38a0c6f](https://github.com/lingui/js-lingui/commit/38a0c6f8b7f4d961f1580228310f4ebe959eb5a5))
+
 ## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
 
 **Note:** Version bump only for package @lingui/vite-plugin

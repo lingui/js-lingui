@@ -1,8 +1,6 @@
 {
-  "version": "5.0.0",
-  "packages": [
-    "packages/*"
-  ],
+  "version": "5.1.0",
+  "packages": ["packages/*"],
   "npmClient": "yarn",
   "command": {
     "version": {
@@ -18,10 +16,7 @@
       ]
     },
     "publish": {
-      "allowBranch": [
-        "main",
-        "next"
-      ],
+      "allowBranch": ["main", "next"],
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",
