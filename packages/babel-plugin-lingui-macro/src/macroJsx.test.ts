@@ -37,6 +37,7 @@ function createMacro() {
       stripNonEssentialProps: false,
       stripMessageProp: false,
       transImportName: "Trans",
+      isLinguiIdentifier: () => true,
     }
   )
 }
