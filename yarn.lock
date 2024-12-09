@@ -2800,7 +2800,7 @@ __metadata:
     unbuild: 2.0.0
     unraw: ^3.0.0
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.0.0
+    "@lingui/babel-plugin-lingui-macro": 5.1.0
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
     "@lingui/babel-plugin-lingui-macro":
@@ -2925,7 +2925,7 @@ __metadata:
     "@lingui/core": 5.1.0
     "@lingui/react": 5.1.0
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 4.11.2
+    "@lingui/babel-plugin-lingui-macro": 5.1.0
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
     "@lingui/babel-plugin-lingui-macro":
@@ -2998,7 +2998,7 @@ __metadata:
     tsd: ^0.26.1
     unbuild: 2.0.0
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.0.0
+    "@lingui/babel-plugin-lingui-macro": 5.1.0
     babel-plugin-macros: 2 || 3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
