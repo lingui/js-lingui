@@ -1,5 +1,12 @@
 import { CompiledMessage, Formats, Locales, Values } from "./i18n"
-import { date, number, plural, type PluralOptions } from "./formats"
+import {
+  date,
+  DateTimeFormatSize,
+  number,
+  plural,
+  type PluralOptions,
+  time,
+} from "./formats"
 import { isString } from "./essentials"
 import { unraw } from "unraw"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
@@ -16,10 +23,10 @@ const getDefaultFormats = (
   const locales = passedLocales || locale
 
   const style = <T extends object>(format: string | T): T => {
-    return typeof format === "object"
-      ? (format as any)
-      : formats[format] || { style: format }
+    if (typeof format === "object") return format as T
+    return formats[format] as T
   }
+
   const replaceOctothorpe = (value: number, message: string): string => {
     const numberFormat = Object.keys(formats).length
       ? style("number")
@@ -48,12 +55,20 @@ const getDefaultFormats = (
     number: (
       value: number,
       format: string | Intl.NumberFormatOptions
-    ): string => number(locales, value, style(format)),
+    ): string =>
+      number(
+        locales,
+        value,
+        style(format) || ({ style: format } as Intl.NumberFormatOptions)
+      ),
 
     date: (
       value: string,
-      format: string | Intl.DateTimeFormatOptions
-    ): string => date(locales, value, style(format)),
+      format: Intl.DateTimeFormatOptions | string
+    ): string =>
+      date(locales, value, style(format) || (format as DateTimeFormatSize)),
+    time: (value: string, format: string): string =>
+      time(locales, value, style(format) || (format as DateTimeFormatSize)),
   } as const
 }
 
