@@ -9,7 +9,7 @@ const tsConfigPathMapping = pathsToModuleNameMapper(
 )
 
 const testMatch = ["**/?(*.)test.(js|ts|tsx)", "**/test/index.(js|ts|tsx)"]
-
+const transformIgnorePatterns = ["node_modules/(?!@messageformat)"]
 /**
  * @type {import('jest').Config}
  */
@@ -38,6 +38,7 @@ module.exports = {
       displayName: "web",
       testEnvironment: "jsdom",
       testMatch,
+      transformIgnorePatterns,
       moduleNameMapper: tsConfigPathMapping,
       roots: ["<rootDir>/packages/react"],
     },
@@ -45,6 +46,7 @@ module.exports = {
       displayName: "universal",
       testEnvironment: "jest-environment-node-single-context",
       testMatch,
+      transformIgnorePatterns,
       moduleNameMapper: tsConfigPathMapping,
       roots: ["<rootDir>/packages/core", "<rootDir>/packages/remote-loader"],
     },
@@ -57,6 +59,7 @@ module.exports = {
         require.resolve("./scripts/jest/stripAnsiSerializer.js"),
       ],
       setupFilesAfterEnv: [require.resolve("./scripts/jest/env.js")],
+      transformIgnorePatterns,
       roots: [
         "<rootDir>/packages/babel-plugin-extract-messages",
         "<rootDir>/packages/babel-plugin-lingui-macro",
