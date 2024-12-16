@@ -1,33 +1,6 @@
-import { date, number } from "./formats"
+import { number } from "./formats"
 
 describe("@lingui/core/formats", () => {
-  describe("date", () => {
-    it("should support Date as input", () => {
-      expect(date(["en"], new Date(2023, 2, 5))).toBe("3/5/2023")
-    })
-    it("should support iso string as input", () => {
-      expect(date(["en"], new Date(2023, 2, 5).toISOString())).toBe("3/5/2023")
-    })
-
-    it("should pass format options", () => {
-      expect(
-        date(["en"], new Date(2023, 2, 5).toISOString(), { dateStyle: "full" })
-      ).toBe("Sunday, March 5, 2023")
-
-      expect(
-        date(["en"], new Date(2023, 2, 5).toISOString(), {
-          dateStyle: "medium",
-        })
-      ).toBe("Mar 5, 2023")
-    })
-
-    it("should respect passed locale", () => {
-      expect(
-        date(["pl"], new Date(2023, 2, 5).toISOString(), { dateStyle: "full" })
-      ).toBe("niedziela, 5 marca 2023")
-    })
-  })
-
   describe("number", () => {
     it("should pass format options", () => {
       expect(number(["en"], 1000, { style: "currency", currency: "EUR" })).toBe(

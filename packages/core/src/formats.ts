@@ -11,19 +11,86 @@ function normalizeLocales(locales: Locales): string[] {
   return [...out, defaultLocale]
 }
 
+export type DateTimeFormatSize = "short" | "default" | "long" | "full"
+
 export function date(
   locales: Locales,
   value: string | Date,
-  format?: Intl.DateTimeFormatOptions
+  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
 ): string {
   const _locales = normalizeLocales(locales)
 
+  if (!format) {
+    format = "default"
+  }
+
+  let o: Intl.DateTimeFormatOptions
+
+  if (typeof format === "string") {
+    // Implementation is taken from
+    // https://github.com/messageformat/messageformat/blob/df2da92bf6541a77aac2ce3cdcd0100bed2b2c5b/mf1/packages/runtime/src/fmt/date.ts
+    o = {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }
+
+    /* eslint-disable no-fallthrough */
+    switch (format) {
+      case "full":
+        o.weekday = "long"
+      case "long":
+        o.month = "long"
+        break
+      case "short":
+        o.month = "numeric"
+        break
+    }
+  } else {
+    o = format
+  }
+
   const formatter = getMemoized(
     () => cacheKey("date", _locales, format),
-    () => new Intl.DateTimeFormat(_locales, format)
+    () => new Intl.DateTimeFormat(_locales, o)
   )
 
   return formatter.format(isString(value) ? new Date(value) : value)
+}
+
+export function time(
+  locales: Locales,
+  value: string | Date,
+  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
+): string {
+  let o: Intl.DateTimeFormatOptions
+
+  if (!format) {
+    format = "default"
+  }
+
+  if (typeof format === "string") {
+    // https://github.com/messageformat/messageformat/blob/df2da92bf6541a77aac2ce3cdcd0100bed2b2c5b/mf1/packages/runtime/src/fmt/time.ts
+
+    o = {
+      second: "numeric",
+      minute: "numeric",
+      hour: "numeric",
+    }
+
+    switch (format) {
+      case "full":
+      case "long":
+        o.timeZoneName = "short"
+        break
+      case "short":
+        delete o.second
+    }
+  } else {
+    o = format
+  }
+
+  return date(locales, value, o)
 }
 
 export function number(
@@ -78,11 +145,7 @@ function getMemoized<T>(getKey: () => string, construct: () => T) {
   return formatter
 }
 
-function cacheKey(
-  type: string,
-  locales: readonly string[],
-  options?: Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
-) {
+function cacheKey(type: string, locales: readonly string[], options?: unknown) {
   const localeKey = locales.join("-")
   return `${type}-${localeKey}-${JSON.stringify(options)}`
 }
