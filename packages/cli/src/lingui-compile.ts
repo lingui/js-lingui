@@ -45,7 +45,7 @@ export async function command(
         },
       })
 
-      if (!options.allowEmpty && missingMessages.length > 0) {
+      if (!options.allowEmpty && locale !== config.pseudoLocale && missingMessages.length > 0) {
         console.error(
           chalk.red(
             `Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`
