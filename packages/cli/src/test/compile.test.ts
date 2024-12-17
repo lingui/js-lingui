@@ -12,7 +12,7 @@ describe("CLI Command: Compile", () => {
     return makeConfig({
       locales: ["en", "pl"],
       sourceLocale: "en",
-      pseudoLocale,
+      pseudoLocale: pseudoLocale,
       rootDir: rootDir,
       catalogs: [
         {
