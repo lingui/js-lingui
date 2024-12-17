@@ -8,10 +8,11 @@ describe("CLI Command: Compile", () => {
     // todo
   })
 
-  function getConfig(rootDir: string) {
+  function getConfig(rootDir: string, pseudoLocale?: string) {
     return makeConfig({
       locales: ["en", "pl"],
       sourceLocale: "en",
+      pseudoLocale,
       rootDir: rootDir,
       catalogs: [
         {
@@ -96,6 +97,42 @@ msgstr ""
           const log = getConsoleMockCalls(console.error)
           expect(log).toMatchSnapshot()
           expect(result).toBeFalsy()
+        })
+      }
+    )
+
+    it(
+      "Should allow empty translation for pseudo locale",
+      async () => {
+        expect.assertions(4)
+
+        const rootDir = await createFixtures({
+          "/test": {
+            "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+            "pl.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+          },
+        })
+
+        const config = getConfig(rootDir, 'pl')
+
+        await mockConsole(async (console) => {
+          const result = await command(config, {
+            allowEmpty: false,
+          })
+          const actualFiles = readFsToJson(config.rootDir)
+
+          expect(actualFiles["pl.js"]).toBeTruthy()
+          expect(actualFiles["en.js"]).toBeTruthy()
+
+          const log = getConsoleMockCalls(console.error)
+          expect(log).toBeUndefined()
+          expect(result).toBeTruthy()
         })
       }
     )
