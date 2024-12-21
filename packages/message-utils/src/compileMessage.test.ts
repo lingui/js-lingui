@@ -197,16 +197,60 @@ describe("compileMessage", () => {
     `)
   })
 
-  it("should compile date", () => {
-    const tokens = compileMessage("{value, date}")
-    expect(tokens).toMatchInlineSnapshot(`
-      [
+  describe("compiling dates", () => {
+    it("with size", () => {
+      expect(compileMessage("{value, date, short}")).toMatchInlineSnapshot(`
+              [
+                [
+                  value,
+                  date,
+                  short,
+                ],
+              ]
+          `)
+    })
+
+    it("with no size", () => {
+      expect(compileMessage("{value, date}")).toMatchInlineSnapshot(`
         [
-          value,
-          date,
-        ],
-      ]
-    `)
+          [
+            value,
+            date,
+          ],
+        ]
+      `)
+    })
+
+    it("using date skeleton", () => {
+      expect(compileMessage("{value, date, ::GrMMMdd}")).toMatchInlineSnapshot(`
+        [
+          [
+            value,
+            date,
+            {
+              calendar: gregory,
+              day: 2-digit,
+              era: short,
+              month: short,
+              timeZone: undefined,
+              year: numeric,
+            },
+          ],
+        ]
+      `)
+    })
+
+    it("should report an error if wrong date skeleton", () => {
+      mockConsole((console) => {
+        expect(compileMessage("{value, date, ::bla}")).toEqual([
+          "{value, date, ::bla}",
+        ])
+
+        expect(console.error).toBeCalledWith(
+          expect.stringMatching("Unable to compile date expression")
+        )
+      })
+    })
   })
 
   it("should compile number", () => {
