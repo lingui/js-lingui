@@ -74,7 +74,7 @@
     "strip-ansi": "^6.0.1",
     "swc-node": "^1.0.0",
     "ts-jest": "^29.2.4",
-    "typescript": "^4.9.5",
+    "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
   "workspaces": [
