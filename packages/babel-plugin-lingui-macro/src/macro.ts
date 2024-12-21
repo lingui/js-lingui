@@ -1,6 +1,6 @@
 import { createMacro, MacroParams } from "babel-plugin-macros"
 
-import { VisitNodeObject } from "@babel/traverse"
+import type { VisitNodeObject } from "@babel/traverse"
 import { Program } from "@babel/types"
 
 import linguiPlugin from "./index"

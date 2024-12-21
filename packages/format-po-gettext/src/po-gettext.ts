@@ -1,7 +1,6 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
 import PO from "pofile"
-// @ts-ignore
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
@@ -185,7 +184,7 @@ const getPluralCases = (
 
   const cases: string[] = [...Array(pluralsCldr.forms(correctLang).length)]
 
-  for (let form of pluralsCldr.forms(correctLang)) {
+  for (const form of pluralsCldr.forms(correctLang)) {
     const samples = cldrSamples[correctLang][form]
     // both need to cast to Number - funcs test with `===` and may return boolean
     const pluralForm = Number(
@@ -324,7 +323,7 @@ export function formatter(
       // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
       // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
       // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
-      let pluralForms = getPluralCases(
+      const pluralForms = getPluralCases(
         po.headers.Language,
         po.headers["Plural-Forms"]
       )
