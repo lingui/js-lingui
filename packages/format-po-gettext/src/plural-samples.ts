@@ -25,21 +25,21 @@ export function renameKeys(rules: Record<string, string>): FormattedRuleset {
 // Create array of sample values for single range
 // 5~16, 0.04~0.09. Both string & integer forms (when possible)
 export function fillRange(value: string): number[] {
-  let [start, end] = value.split("~")
+  const [start, end] = value.split("~")
 
   const decimals = (start.split(".")[1] || "").length
   // for example 0.1~0.9 has 10 values, need to add that many to list
   // 0.004~0.009 has 100 values
-  let mult = Math.pow(10, decimals)
+  const mult = Math.pow(10, decimals)
 
   const startNum = Number(start)
   const endNum = Number(end)
 
-  let range = Array(Math.ceil(endNum * mult - startNum * mult + 1))
+  const range = Array(Math.ceil(endNum * mult - startNum * mult + 1))
     .fill(0)
     .map((v, idx) => (idx + startNum * mult) / mult)
 
-  let last = range[range.length - 1]
+  const last = range[range.length - 1]
 
   // Number defined in the range should be the last one, i.e. 5~16 should have 16
   if (endNum !== last) {
@@ -74,10 +74,10 @@ export function createSamples(src: string): number[] {
 
 // Create fixtures for single locale rules
 export function createLocaleTest(rules) {
-  let result = {}
+  const result = {}
 
   Object.keys(rules).forEach((form) => {
-    let samples = rules[form].split(/@integer|@decimal/).slice(1)
+    const samples = rules[form].split(/@integer|@decimal/).slice(1)
 
     result[form] = []
     samples.forEach((sample) => {
@@ -97,7 +97,7 @@ export function getCldrPluralSamples(): Record<
   // Parse plural rules
   Object.entries(cardinals.supplemental["plurals-type-cardinal"]).forEach(
     ([loc, ruleset]) => {
-      let rules = renameKeys(ruleset)
+      const rules = renameKeys(ruleset)
 
       pluralRules[loc.toLowerCase()] = createLocaleTest(rules)
     }

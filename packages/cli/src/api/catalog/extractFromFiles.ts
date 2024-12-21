@@ -35,7 +35,7 @@ export async function extractFromFiles(
   const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
-  for (let filename of paths) {
+  for (const filename of paths) {
     const fileSuccess = await extract(
       filename,
       (next: ExtractedMessage) => {

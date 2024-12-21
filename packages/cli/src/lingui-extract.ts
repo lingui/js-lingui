@@ -33,7 +33,7 @@ export default async function command(
 
   const spinner = ora().start()
 
-  for (let catalog of catalogs) {
+  for (const catalog of catalogs) {
     const result = await catalog.make({
       ...(options as CliExtractOptions),
       orderBy: config.orderBy,
@@ -211,8 +211,8 @@ if (require.main === module) {
     console.info(chalk.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
       const catalogs = await getCatalogs(config)
-      let paths: string[] = []
-      let ignored: string[] = []
+      const paths: string[] = []
+      const ignored: string[] = []
 
       catalogs.forEach((catalog) => {
         paths.push(...catalog.include)

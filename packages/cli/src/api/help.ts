@@ -26,7 +26,9 @@ export function helpRun(command: string) {
   let findRootPkgJson: Record<string, unknown>
   try {
     findRootPkgJson = require(resolve(join(process.cwd(), "package.json")))
-  } catch (error) {}
+  } catch (error) {
+    // noting
+  }
 
   if (findRootPkgJson?.scripts) {
     const res = Object.entries(findRootPkgJson.scripts).find(([_, value]) =>

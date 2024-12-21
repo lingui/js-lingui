@@ -18,7 +18,7 @@ export default async function command(
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
-  const catalogStats: { [path: string]: Number } = {}
+  const catalogStats: { [path: string]: number } = {}
 
   let commandSuccess = true
 

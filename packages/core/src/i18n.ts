@@ -164,17 +164,19 @@ export class I18n extends EventEmitter<Events> {
   /**
    * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
-  // @ts-ignore deprecated, so ignore the reported error
-  loadLocaleData(localeOrAllData, localeData?) {
-    if (localeData != null) {
+  loadLocaleData(
+    localeOrAllData: AllLocaleData | Locale,
+    localeData?: LocaleData
+  ) {
+    if (typeof localeOrAllData === "string") {
       // loadLocaleData('en', enLocaleData)
       // Loading locale data for a single locale.
-      this._loadLocaleData(localeOrAllData, localeData)
+      this._loadLocaleData(localeOrAllData, localeData!)
     } else {
       // loadLocaleData(allLocaleData)
       // Loading all locale data at once.
       Object.keys(localeOrAllData).forEach((locale) =>
-        this._loadLocaleData(locale, localeOrAllData[locale])
+        this._loadLocaleData(locale, localeOrAllData[locale]!)
       )
     }
 
