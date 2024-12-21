@@ -431,4 +431,17 @@ describe("I18n", () => {
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
   })
+
+  it("._ should throw a meaningful error when locale is not set", () => {
+    const i18n = setupI18n({})
+    expect(() =>
+      i18n._(
+        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}"
+      )
+    ).toThrowErrorMatchingInlineSnapshot(`
+      "Lingui: Attempted to call a translation function without setting a locale.
+      Make sure to call \`i18n.activate(locale)\` before using Lingui functions.
+      This issue may also occur due to a race condition in your initialization logic."
+    `)
+  })
 })
