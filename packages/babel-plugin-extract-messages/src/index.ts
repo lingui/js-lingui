@@ -1,11 +1,10 @@
 import type * as BabelTypesNamespace from "@babel/types"
-import {
+import type {
   Expression,
   Identifier,
   Node,
   ObjectExpression,
   ObjectProperty,
-  isObjectExpression,
 } from "@babel/types"
 import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
@@ -161,7 +160,7 @@ function extractFromObjectExpression(
   ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
     const name = (key as Identifier).name
 
-    if (name === "values" && isObjectExpression(value)) {
+    if (name === "values" && t.isObjectExpression(value)) {
       props.placeholders = valuesObjectExpressionToPlaceholdersRecord(
         t,
         value,
@@ -274,7 +273,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
           if (
             key === "values" &&
             t.isJSXExpressionContainer(item.value) &&
-            isObjectExpression(item.value.expression)
+            t.isObjectExpression(item.value.expression)
           ) {
             acc.placeholders = valuesObjectExpressionToPlaceholdersRecord(
               t,
