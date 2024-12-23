@@ -1,3 +1,4 @@
+import { describe } from "vitest"
 import { macroTester } from "./macroTester"
 
 describe.skip("", () => {})
@@ -51,7 +52,7 @@ macroTester({
       name: "Variables with escaped double quotes are correctly formatted",
       code: `
         import { t } from '@lingui/core/macro';
-        t\`Variable \"name\"\`;
+        t\`Variable "name"\`;
     `,
     },
     {
@@ -194,7 +195,7 @@ macroTester({
         import { t } from '@lingui/core/macro';
         import { i18n } from './lingui';
         const msg = t(i18n)({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',
@@ -207,7 +208,7 @@ macroTester({
       code: `
         import { t } from '@lingui/core/macro';
         const msg = t({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',
@@ -223,7 +224,7 @@ macroTester({
       code: `
           import { t } from '@lingui/macro';
           const msg = t({
-              message: \`Hello $\{name\}\`,
+              message: \`Hello \${name}\`,
               id: 'msgId',
               comment: 'description for translators',
               context: 'My Context',
@@ -239,7 +240,7 @@ macroTester({
       code: `
         import { t } from '@lingui/core/macro';
         const msg = t({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',

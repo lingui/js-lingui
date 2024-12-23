@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { ICUMessageFormat, Token } from "./icu"
 import { Identifier } from "@babel/types"
 

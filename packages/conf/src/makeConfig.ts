@@ -27,11 +27,9 @@ export function makeConfig(
     validateLocales(config)
   }
 
-  config = pipe(
-    // List config migrations from oldest to newest
-    setCldrParentLocales,
-    normalizeRuntimeConfigModule
-  )(config)
+  // List config migrations from oldest to newest
+  config = setCldrParentLocales(config)
+  config = normalizeRuntimeConfigModule(config) as any
 
   // `replaceRootDir` should always be the last
   return replaceRootDir(
@@ -120,8 +118,3 @@ function validateLocales(config: LinguiConfig) {
     )
   }
 }
-
-const pipe =
-  (...functions: Array<Function>) =>
-  (args: any): any =>
-    functions.reduce((arg, fn) => fn(arg), args)

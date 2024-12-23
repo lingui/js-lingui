@@ -1,7 +1,7 @@
+import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react"
 import * as React from "react"
 import { formatElements } from "./format"
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { mockConsole } from "@lingui/jest-mocks"
 
 describe("formatElements", function () {

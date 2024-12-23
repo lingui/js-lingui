@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { compileMessage as compile } from "@lingui/message-utils/compileMessage"
 import { interpolate } from "./interpolate"
 import { Locale, Locales } from "./i18n"

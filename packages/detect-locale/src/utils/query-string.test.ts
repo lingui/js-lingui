@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { parse } from "./query-string"
 
 describe("query-string", function () {

@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po-gettext",
-  "version": "5.0.0",
+  "version": "5.1.2",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
   "main": "./dist/po-gettext.cjs",
   "module": "./dist/po-gettext.mjs",
@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",
@@ -41,9 +42,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.0.0",
-    "@lingui/format-po": "5.0.0",
-    "@lingui/message-utils": "5.0.0",
+    "@lingui/conf": "5.1.2",
+    "@lingui/format-po": "5.1.2",
+    "@lingui/message-utils": "5.1.2",
     "@messageformat/parser": "^5.0.0",
     "cldr-core": "^45.0.0",
     "node-gettext": "^3.0.0",
@@ -54,6 +55,8 @@
     "@lingui/jest-mocks": "workspace:^",
     "mockdate": "^3.0.5",
     "tsd": "^0.28.0",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { mockEnv, mockConsole } from "./index"
 
 describe("mocks - testing utilities", function () {

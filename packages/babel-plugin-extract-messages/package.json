@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "5.0.0",
+  "version": "5.1.2",
   "description": "Babel plugin for collecting messages from source code for internationalization",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "files": [
     "LICENSE",
@@ -45,6 +46,8 @@
     "@babel/types": "^7.20.7",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
     "@lingui/jest-mocks": "workspace:*",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   }
 }

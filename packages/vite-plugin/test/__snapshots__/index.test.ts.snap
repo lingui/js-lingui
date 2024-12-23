@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vite-plugin > should return compiled catalog json 1`] = `
+{
+  "key": [
+    "Message",
+  ],
+  "key2": [
+    "Hello ",
+    [
+      "name",
+    ],
+  ],
+}
+`;

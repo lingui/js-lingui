@@ -1,3 +1,4 @@
+import { expect, it } from "vitest"
 import { replaceRootDir } from "./replaceRootDir"
 
 it("should replace <rootDir>", () => {

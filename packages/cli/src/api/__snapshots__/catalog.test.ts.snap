@@ -1,13 +1,13 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Catalog POT Flow Should get translations from template if locale file not presented 1`] = `
+exports[`Catalog > POT Flow > Should get translations from template if locale file not presented 1`] = `
 {
   2ZeN02: Test String,
   mY42CM: Hello World,
 }
 `;
 
-exports[`Catalog collect should extract files with special characters when passed in options 1`] = `
+exports[`Catalog > collect > should extract files with special characters when passed in options 1`] = `
 {
   Component C: {
     comments: [],
@@ -48,7 +48,7 @@ exports[`Catalog collect should extract files with special characters when passe
 }
 `;
 
-exports[`Catalog collect should extract messages from source files 1`] = `
+exports[`Catalog > collect > should extract messages from source files 1`] = `
 {
   Component A: {
     comments: [],
@@ -149,7 +149,7 @@ exports[`Catalog collect should extract messages from source files 1`] = `
 }
 `;
 
-exports[`Catalog collect should extract only files passed on options 1`] = `
+exports[`Catalog > collect > should extract only files passed on options 1`] = `
 {
   Component A: {
     comments: [],
@@ -202,9 +202,9 @@ exports[`Catalog collect should extract only files passed on options 1`] = `
 }
 `;
 
-exports[`Catalog collect should support Flow syntax if enabled 1`] = `{}`;
+exports[`Catalog > collect > should support Flow syntax if enabled 1`] = `{}`;
 
-exports[`Catalog collect should support JSX and Typescript 1`] = `
+exports[`Catalog > collect > should support JSX and Typescript 1`] = `
 {
   ID Some: {
     comments: [],
@@ -303,14 +303,14 @@ exports[`Catalog collect should support JSX and Typescript 1`] = `
 }
 `;
 
-exports[`Catalog make should collect and write catalogs 1`] = `
+exports[`Catalog > make > should collect and write catalogs 1`] = `
 {
   cs: null,
   en: null,
 }
 `;
 
-exports[`Catalog make should collect and write catalogs 2`] = `
+exports[`Catalog > make > should collect and write catalogs 2`] = `
 {
   cs: {
     Component A: {
@@ -449,7 +449,7 @@ exports[`Catalog make should collect and write catalogs 2`] = `
 }
 `;
 
-exports[`Catalog make should merge with existing catalogs 1`] = `
+exports[`Catalog > make > should merge with existing catalogs 1`] = `
 {
   cs: {
     mY42CM: {
@@ -482,7 +482,7 @@ exports[`Catalog make should merge with existing catalogs 1`] = `
 }
 `;
 
-exports[`Catalog make should merge with existing catalogs 2`] = `
+exports[`Catalog > make > should merge with existing catalogs 2`] = `
 {
   cs: {
     Component A: {
@@ -789,14 +789,14 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
 }
 `;
 
-exports[`Catalog make should only update the specified locale 1`] = `
+exports[`Catalog > make > should only update the specified locale 1`] = `
 {
   cs: null,
   en: null,
 }
 `;
 
-exports[`Catalog make should only update the specified locale 2`] = `
+exports[`Catalog > make > should only update the specified locale 2`] = `
 {
   cs: null,
   en: {
@@ -869,9 +869,9 @@ exports[`Catalog make should only update the specified locale 2`] = `
 }
 `;
 
-exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
+exports[`Catalog > makeTemplate > should collect and write a template 1`] = `null`;
 
-exports[`Catalog makeTemplate should collect and write a template 2`] = `
+exports[`Catalog > makeTemplate > should collect and write a template 2`] = `
 {
   Component A: {
     comments: [
@@ -941,7 +941,7 @@ exports[`Catalog makeTemplate should collect and write a template 2`] = `
 }
 `;
 
-exports[`Catalog read should read file in given format 1`] = `
+exports[`Catalog > read > should read file in given format 1`] = `
 {
   obsolete: {
     comments: [
@@ -1085,9 +1085,7 @@ exports[`Catalog read should read file in given format 1`] = `
 }
 `;
 
-exports[`Catalog read should read file in previous format 1`] = `null`;
-
-exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
+exports[`Catalog > readAll > should read existing catalogs for all locales 1`] = `
 {
   cs: {
     mY42CM: {
@@ -1120,7 +1118,7 @@ exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 }
 `;
 
-exports[`cleanObsolete should remove obsolete messages from catalog 1`] = `
+exports[`cleanObsolete > should remove obsolete messages from catalog 1`] = `
 {
   Label: {
     obsolete: false,
@@ -1135,7 +1133,7 @@ exports[`cleanObsolete should remove obsolete messages from catalog 1`] = `
 }
 `;
 
-exports[`order should order messages alphabetically 1`] = `
+exports[`order > should order messages alphabetically 1`] = `
 {
   LabelA: {
     obsolete: false,
@@ -1180,7 +1178,7 @@ exports[`order should order messages alphabetically 1`] = `
 }
 `;
 
-exports[`order should order messages alphabetically 2`] = `
+exports[`order > should order messages alphabetically 2`] = `
 [
   LabelA,
   LabelB,
@@ -1189,7 +1187,7 @@ exports[`order should order messages alphabetically 2`] = `
 ]
 `;
 
-exports[`order should order messages by origin 1`] = `
+exports[`order > should order messages by origin 1`] = `
 {
   LabelA: {
     obsolete: false,
@@ -1238,7 +1236,7 @@ exports[`order should order messages by origin 1`] = `
 }
 `;
 
-exports[`order should order messages by origin 2`] = `
+exports[`order > should order messages by origin 2`] = `
 [
   LabelC,
   LabelB,

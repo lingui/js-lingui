@@ -4,6 +4,7 @@ import {
   fillRange,
   renameKeys,
 } from "./plural-samples"
+import { describe, test, expect } from "vitest"
 
 describe("Plural samples generation util", () => {
   test.each([
@@ -126,12 +127,12 @@ describe("Plural samples generation util", () => {
     }
     expect(createLocaleTest(ruleset)).toMatchInlineSnapshot(`
       {
-        pluralRule-count-few: [
+        "pluralRule-count-few": [
           2,
           3,
           4,
         ],
-        pluralRule-count-many: [
+        "pluralRule-count-many": [
           0,
           0.1,
           0.2,
@@ -155,10 +156,10 @@ describe("Plural samples generation util", () => {
           100000,
           1000000,
         ],
-        pluralRule-count-one: [
+        "pluralRule-count-one": [
           1,
         ],
-        pluralRule-count-other: [
+        "pluralRule-count-other": [
           0,
           5,
           6,

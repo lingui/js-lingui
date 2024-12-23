@@ -9,11 +9,17 @@
     "email": "tomas.ehrlich@gmail.com"
   },
   "license": "MIT",
+  "scripts": {
+    "test": "vitest --run"
+  },
   "keywords": [
     "jest",
     "testing",
     "mock"
   ],
+  "dependencies": {
+    "vitest": "^2.1.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lingui/js-lingui.git"

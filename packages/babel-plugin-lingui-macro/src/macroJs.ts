@@ -7,7 +7,7 @@ import {
   ObjectExpression,
   ObjectProperty,
 } from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
 import { JsMacroName } from "./constants"
@@ -282,7 +282,7 @@ export class MacroJs {
           currentPath.isCallExpression() &&
           currentPath.get("arguments")[0]?.isObjectExpression()
         ) {
-          let descriptor = processDescriptor(
+          const descriptor = processDescriptor(
             (currentPath.get("arguments")[0] as NodePath<ObjectExpression>)
               .node,
             ctx

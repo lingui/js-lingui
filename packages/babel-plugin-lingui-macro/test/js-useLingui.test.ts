@@ -1,3 +1,4 @@
+import { describe } from "vitest"
 import { makeConfig } from "@lingui/conf"
 import { macroTester } from "./macroTester"
 

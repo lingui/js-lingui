@@ -1,13 +1,14 @@
 import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
+import { describe, it, expect, vi } from "vitest"
 
 describe("I18n", () => {
   describe("I18n.load", () => {
     it("should emit event", () => {
       const i18n = setupI18n()
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
       i18n.load("en", { msg: "Message" })
       expect(cbChange).toBeCalled()
@@ -66,7 +67,7 @@ describe("I18n", () => {
         },
       })
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
       i18n.activate("en")
       expect(cbChange).toBeCalled()
@@ -122,7 +123,7 @@ describe("I18n", () => {
       })
 
       mockEnv("production", () => {
-        jest.resetModules()
+        vi.resetModules()
         mockConsole((console) => {
           const { setupI18n } = require("@lingui/core")
           const i18n = setupI18n()
@@ -137,7 +138,7 @@ describe("I18n", () => {
     it("should set locale and messages", () => {
       const i18n = setupI18n()
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
 
       i18n.loadAndActivate({
@@ -364,7 +365,7 @@ describe("I18n", () => {
       messages: { en: { exists: "exists" } },
     })
 
-    const handler = jest.fn()
+    const handler = vi.fn()
     i18n.on("missing", handler)
     i18n._("exists")
     expect(handler).toHaveBeenCalledTimes(0)
@@ -384,7 +385,7 @@ describe("I18n", () => {
       messages: { en: {} },
     })
 
-    const handler = jest.fn()
+    const handler = vi.fn()
     i18n.on("missing", handler)
     // @ts-expect-error 'id' should be of 'MessageDescriptor' or 'string' type.
     i18n._()
@@ -407,7 +408,7 @@ describe("I18n", () => {
     })
 
     it("._ should call a function with message ID of missing translation", () => {
-      const missing = jest.fn((locale, id) => id.split("").reverse().join(""))
+      const missing = vi.fn((locale, id) => id.split("").reverse().join(""))
       const i18n = setupI18n({
         locale: "en",
         messages: {
@@ -430,5 +431,18 @@ describe("I18n", () => {
     })
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
+  })
+
+  it("._ should throw a meaningful error when locale is not set", () => {
+    const i18n = setupI18n({})
+    expect(() =>
+      i18n._(
+        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}"
+      )
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: Lingui: Attempted to call a translation function without setting a locale.
+      Make sure to call \`i18n.activate(locale)\` before using Lingui functions.
+      This issue may also occur due to a race condition in your initialization logic.]
+    `)
   })
 })

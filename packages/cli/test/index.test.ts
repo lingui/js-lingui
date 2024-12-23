@@ -1,3 +1,4 @@
+import { describe, expect, it, beforeAll, afterAll } from "vitest"
 import extractTemplateCommand from "../src/lingui-extract-template"
 import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"

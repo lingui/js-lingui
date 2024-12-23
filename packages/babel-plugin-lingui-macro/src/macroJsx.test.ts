@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import type { JSXElement } from "@babel/types"
 import * as types from "@babel/types"
 import { MacroJSX } from "./macroJsx"

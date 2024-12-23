@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "5.0.0",
+  "version": "5.1.2",
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "./dist/index.cjs",
@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",
@@ -60,16 +61,18 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "5.0.0",
+    "@lingui/message-utils": "5.1.2",
     "unraw": "^3.0.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "tsd": "^0.26.1",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.0.0",
+    "@lingui/babel-plugin-lingui-macro": "5.1.2",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {

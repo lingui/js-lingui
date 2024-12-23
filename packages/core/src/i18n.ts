@@ -164,17 +164,19 @@ export class I18n extends EventEmitter<Events> {
   /**
    * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
-  // @ts-ignore deprecated, so ignore the reported error
-  loadLocaleData(localeOrAllData, localeData?) {
-    if (localeData != null) {
+  loadLocaleData(
+    localeOrAllData: AllLocaleData | Locale,
+    localeData?: LocaleData
+  ) {
+    if (typeof localeOrAllData === "string") {
       // loadLocaleData('en', enLocaleData)
       // Loading locale data for a single locale.
-      this._loadLocaleData(localeOrAllData, localeData)
+      this._loadLocaleData(localeOrAllData, localeData!)
     } else {
       // loadLocaleData(allLocaleData)
       // Loading all locale data at once.
       Object.keys(localeOrAllData).forEach((locale) =>
-        this._loadLocaleData(locale, localeOrAllData[locale])
+        this._loadLocaleData(locale, localeOrAllData[locale]!)
       )
     }
 
@@ -240,6 +242,14 @@ export class I18n extends EventEmitter<Events> {
     values?: Values,
     options?: MessageOptions
   ): string {
+    if (!this.locale) {
+      throw new Error(
+        "Lingui: Attempted to call a translation function without setting a locale.\n" +
+          "Make sure to call `i18n.activate(locale)` before using Lingui functions.\n" +
+          "This issue may also occur due to a race condition in your initialization logic."
+      )
+    }
+
     let message = options?.message
 
     if (!id) {

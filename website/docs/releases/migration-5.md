@@ -4,6 +4,8 @@ This guide will help you migrate from Lingui 4.x to 5.x. It covers the most impo
 
 Need to upgrade an older project to v4 first? See our [older migration guide](/releases/migration-4).
 
+If you're looking for 4.x documentation, you can find it [here](https://js-lingui-m3z8jlqt6-crowdin.vercel.app/).
+
 ## Node.js Version
 
 The minimum supported version of Node.js in Lingui v5 is v20.
