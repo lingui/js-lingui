@@ -1,6 +1,9 @@
 import type { ReactNode, VFC, FC } from "react"
 import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
-import type { MacroMessageDescriptor } from "@lingui/core/macro"
+import type {
+  MacroMessageDescriptor,
+  LabeledExpression,
+} from "@lingui/core/macro"
 
 type CommonProps = TransRenderCallbackOrComponent & {
   id?: string
@@ -8,12 +11,13 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
+type TransChildren = ReactNode | LabeledExpression<string | number>
 type TransProps = {
-  children: ReactNode
+  children: TransChildren | TransChildren[]
 } & CommonProps
 
 type PluralChoiceProps = {
-  value: string | number
+  value: string | number | LabeledExpression<string | number>
   /** Offset of value when calculating plural forms */
   offset?: number
   zero?: ReactNode
@@ -29,7 +33,7 @@ type PluralChoiceProps = {
 } & CommonProps
 
 type SelectChoiceProps = {
-  value: string
+  value: string | LabeledExpression<string | number>
   /** Catch-all option */
   other: ReactNode
   [option: `_${string}`]: ReactNode

@@ -196,6 +196,8 @@ export default function ({
                     stripMessageProp: shouldStripMessageProp(
                       state.opts as LinguiPluginOpts
                     ),
+                    isLinguiIdentifier: (node: Identifier, macro) =>
+                      isLinguiIdentifier(path, node, macro),
                   }
                 )
 

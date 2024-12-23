@@ -122,6 +122,30 @@ macroTester({
       `,
     },
     {
+      name: "With labeled expression as value",
+      code: `
+        import { Plural } from '@lingui/react/macro';
+        <Plural
+          value={{count: getCount()}}
+          one={"oneText"}
+          other={<a href="/more">A lot of them</a>}
+        />;
+      `,
+    },
+    {
+      name: "With labeled expression as value with ph",
+      code: `
+        import { Plural } from '@lingui/react/macro';
+        import { ph } from '@lingui/core/macro';
+        <Plural
+          value={ph({count: getCount()})}
+          one={"oneText"}
+          other={<a href="/more">A lot of them</a>}
+        />;
+      `,
+    },
+
+    {
       filename: `jsx-plural-select-nested.js`,
     },
   ],

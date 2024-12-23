@@ -1,16 +1,16 @@
 import * as t from "@babel/types"
 import {
-  ObjectExpression,
+  CallExpression,
   Expression,
-  TemplateLiteral,
   Identifier,
   Node,
-  CallExpression,
-  StringLiteral,
+  ObjectExpression,
   ObjectProperty,
+  StringLiteral,
+  TemplateLiteral,
 } from "@babel/types"
-import { MsgDescriptorPropKey, JsMacroName } from "./constants"
-import { Token, TextToken, ArgToken } from "./icu"
+import { JsMacroName, MsgDescriptorPropKey } from "./constants"
+import { ArgToken, TextToken, Token } from "./icu"
 import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 import { makeCounter } from "./utils"
 
@@ -224,10 +224,55 @@ export function tokenizeChoiceComponent(
   return token
 }
 
+function tokenizeLabeledExpression(
+  node: ObjectExpression,
+  ctx: MacroJsContext
+): ArgToken {
+  if (node.properties.length > 1) {
+    throw new Error(
+      "Incorrect usage, expected exactly one property as `{variableName: variableValue}`"
+    )
+  }
+
+  // assume this is labeled expression, {label: value}
+  const property = node.properties[0]
+
+  if (t.isProperty(property) && t.isIdentifier(property.key)) {
+    return {
+      type: "arg",
+      name: expressionToArgument(property.key, ctx),
+      value: property.value as Expression,
+    }
+  } else {
+    throw new Error(
+      "Incorrect usage of a labeled expression. Expected to have one object property with property key as identifier"
+    )
+  }
+}
+
 export function tokenizeExpression(
   node: Node | Expression,
   ctx: MacroJsContext
 ): ArgToken {
+  if (t.isTSAsExpression(node)) {
+    return tokenizeExpression(node.expression, ctx)
+  }
+  if (t.isObjectExpression(node)) {
+    return tokenizeLabeledExpression(node, ctx)
+  } else if (
+    t.isCallExpression(node) &&
+    isLinguiIdentifier(node.callee, JsMacroName.ph, ctx) &&
+    node.arguments.length > 0
+  ) {
+    if (!t.isObjectExpression(node.arguments[0])) {
+      throw new Error(
+        "Incorrect usage of `ph` macro. First argument should be an ObjectExpression"
+      )
+    }
+
+    return tokenizeLabeledExpression(node.arguments[0], ctx)
+  }
+
   return {
     type: "arg",
     name: expressionToArgument(node as Expression, ctx),
@@ -255,11 +300,8 @@ export function expressionToArgument(
 ): string {
   if (t.isIdentifier(exp)) {
     return exp.name
-  } else if (t.isStringLiteral(exp)) {
-    return exp.value
-  } else {
-    return String(ctx.getExpressionIndex())
   }
+  return String(ctx.getExpressionIndex())
 }
 
 export function isArgDecorator(node: Node, ctx: MacroJsContext): boolean {
