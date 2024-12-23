@@ -113,5 +113,10 @@
       "limit": "8 kB"
     }
   ],
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.4.1",
+  "dependencies": {
+    "@vitest/ui": "^2.1.8",
+    "vite-plugin-commonjs": "^0.10.4",
+    "vitest": "^2.1.8"
+  }
 }
