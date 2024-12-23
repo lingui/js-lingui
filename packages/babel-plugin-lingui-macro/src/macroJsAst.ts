@@ -254,6 +254,9 @@ export function tokenizeExpression(
   node: Node | Expression,
   ctx: MacroJsContext
 ): ArgToken {
+  if (t.isTSAsExpression(node)) {
+    return tokenizeExpression(node.expression, ctx)
+  }
   if (t.isObjectExpression(node)) {
     return tokenizeLabeledExpression(node, ctx)
   } else if (

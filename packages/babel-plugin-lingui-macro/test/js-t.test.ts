@@ -100,6 +100,15 @@ macroTester({
     `,
     },
     {
+      useTypescriptPreset: true,
+      name: "Variables with `as` type casting",
+      code: `
+        import { t } from '@lingui/core/macro';
+     
+        t\`Variable \${{name} as any}\`;
+    `,
+    },
+    {
       name: "Newlines are preserved",
       code: `
         import { t } from '@lingui/core/macro';

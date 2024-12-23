@@ -336,6 +336,33 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Labeled expressions with \`as\` expression 1`] = `
+import { Trans } from "@lingui/react/macro";
+import { ph } from "@lingui/core/macro";
+<Trans>
+  Hi {{ name: getUserName() } as any}, my name is{" "}
+  {{ myName: getMyName() } as any}
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "eqk/cH",
+      message: "Hi {name}, my name is {myName}",
+      values: {
+        name: getUserName(),
+        myName: getMyName(),
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`Labeled expressions with ph helper 1`] = `
 import { Trans } from "@lingui/react/macro";
 import { ph } from "@lingui/core/macro";

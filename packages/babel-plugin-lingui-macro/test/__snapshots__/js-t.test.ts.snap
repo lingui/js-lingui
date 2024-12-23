@@ -494,6 +494,26 @@ _i18n._(
 
 `;
 
+exports[`Variables with \`as\` type casting 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${{ name } as any}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
 exports[`Variables with escaped double quotes are correctly formatted 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable "name"\`;
