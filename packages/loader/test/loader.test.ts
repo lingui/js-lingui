@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest"
 import path from "path"
 import fs from "node:fs/promises"
 import { build, watch } from "./compiler"
@@ -9,6 +9,7 @@ describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
     const built = await build(path.join(__dirname, "po-format/entrypoint.js"))
 
+    console.log(built.stats.errors[0])
     const data = await built.loadBundle()
     expect(built.stats.errors).toEqual([])
     expect(built.stats.warnings).toEqual([])
