@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "yarn lingui:extract && next build",
     "start": "next start",
@@ -12,22 +12,22 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@lingui/core": "^5.0.0-next.3",
-    "@lingui/react": "^5.0.0-next.3",
+    "@lingui/core": "^5.1.2",
+    "@lingui/react": "^5.1.2",
     "negotiator": "^0.6.3",
-    "next": "^14.2.15",
+    "next": "15.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@lingui/cli": "^5.0.0-next.3",
-    "@lingui/loader": "^5.0.0-next.3",
-    "@lingui/swc-plugin": "^5.0.0-next.2",
+    "@lingui/cli": "^5.1.2",
+    "@lingui/loader": "^5.1.2",
+    "@lingui/swc-plugin": "^5.0.1",
     "@types/negotiator": "^0.6.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.3",
+    "eslint-config-next": "15.0.1",
     "typescript": "^5.4.5"
   }
 }
