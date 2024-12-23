@@ -240,6 +240,14 @@ export class I18n extends EventEmitter<Events> {
     values?: Values,
     options?: MessageOptions
   ): string {
+    if (!this.locale) {
+      throw new Error(
+        "Lingui: Attempted to call a translation function without setting a locale.\n" +
+          "Make sure to call `i18n.activate(locale)` before using Lingui functions.\n" +
+          "This issue may also occur due to a race condition in your initialization logic."
+      )
+    }
+
     let message = options?.message
 
     if (!id) {
