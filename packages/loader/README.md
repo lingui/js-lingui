@@ -6,17 +6,9 @@
 
 > webpack loader for compiling message catalog on the fly
 
-`@lingui/loader` is part of [LinguiJS][linguijs]. See the
-[documentation][documentation] for all information, tutorials and examples.
+`@lingui/loader` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
-## Installation
-
-```sh
-npm install --save-dev @lingui/loader
-# yarn add --dev @lingui/loader
-```
-
-## Usage
+## Installation & Usage
 
 See the [reference][reference] documentation.
 

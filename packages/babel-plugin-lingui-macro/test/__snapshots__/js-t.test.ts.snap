@@ -156,6 +156,31 @@ const msg = _i18n._(
 
 `;
 
+exports[`Production - message prop is kept if stripMessageField: false 1`] = `
+import { t } from "@lingui/macro";
+const msg = t({
+  message: \`Hello \${name}\`,
+  id: "msgId",
+  comment: "description for translators",
+  context: "My Context",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "msgId",
+    message: "Hello {name}",
+    values: {
+      name: name,
+    },
+  }
+);
+
+`;
+
 exports[`Production - only essential props are kept 1`] = `
 import { t } from "@lingui/core/macro";
 const msg = t\`Message\`;
@@ -268,6 +293,17 @@ _i18n._(
     context: "my custom",
   }
 );
+
+`;
+
+exports[`Should not crash when a variable passed 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t(msg);
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(msg);
 
 `;
 
@@ -543,6 +579,33 @@ _i18n._(
     values: {
       count: count,
     },
+  }
+);
+
+`;
+
+exports[`should not crash when no params passed 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t();
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._();
+
+`;
+
+exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
+import { t } from "@lingui/macro";
+const msg = t\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "xDAtGP",
   }
 );
 

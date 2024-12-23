@@ -5,34 +5,13 @@
 
 # @lingui/macro
 
-> [Babel Macros](https://github.com/kentcdodds/babel-plugin-macros) which
-> transforms tagged template literals and JSX components to ICU MessageFormat.
+> [Babel Macros](https://github.com/kentcdodds/babel-plugin-macros) which transforms tagged template literals and JSX components to ICU MessageFormat.
 
-`@lingui/macro` is part of [LinguiJS][linguijs]. See the [documentation][documentation]
-for all information, tutorials and examples.
+`@lingui/macro` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
-## Installation
-
-```sh
-npm install --save-dev @lingui/macro
-# yarn add --dev @lingui/macro
-```
-
-## Usage
+## Installation & Usage
 
 See the [reference][reference] documentation.
-
-```jsx
-import { setupI18n } from "@lingui/core"
-import { t } from "@lingui/core/macro"
-
-const i18n = setupI18n()
-
-const message = i18n._(t`Hello, my name is ${name} and today is ${date(now)}`)
-
-// line above is transformed using babel-plugin-macros to this
-// const message = i18n._(/*i18n*/{ id: "Hello, my name is {name} and today is {now,date}", values: { name, now }})
-```
 
 ## License
 

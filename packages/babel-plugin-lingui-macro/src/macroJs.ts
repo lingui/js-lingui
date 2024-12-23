@@ -7,7 +7,7 @@ import {
   ObjectExpression,
   ObjectProperty,
 } from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
 import { JsMacroName } from "./constants"
@@ -27,6 +27,7 @@ export type MacroJsOpts = {
   useLinguiImportName: string
 
   stripNonEssentialProps: boolean
+  stripMessageProp: boolean
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
@@ -46,7 +47,8 @@ export class MacroJs {
 
     this._ctx = createMacroJsContext(
       opts.isLinguiIdentifier,
-      opts.stripNonEssentialProps
+      opts.stripNonEssentialProps,
+      opts.stripMessageProp
     )
   }
 
@@ -59,7 +61,8 @@ export class MacroJs {
       createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        this._ctx.stripNonEssentialProps
+        this._ctx.stripNonEssentialProps,
+        this._ctx.stripMessageProp
       ),
       linguiInstance
     )
@@ -89,7 +92,8 @@ export class MacroJs {
       return createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        ctx.stripNonEssentialProps
+        ctx.stripNonEssentialProps,
+        ctx.stripMessageProp
       )
     }
 
@@ -165,12 +169,13 @@ export class MacroJs {
     ctx: MacroJsContext,
     linguiInstance?: babelTypes.Expression
   ): babelTypes.CallExpression => {
-    const descriptor = processDescriptor(
-      node.arguments[0] as ObjectExpression,
-      ctx
-    )
+    let arg: Expression = node.arguments[0] as Expression
 
-    return this.createI18nCall(descriptor, linguiInstance)
+    if (t.isObjectExpression(arg)) {
+      arg = processDescriptor(arg, ctx)
+    }
+
+    return this.createI18nCall(arg, linguiInstance)
   }
 
   /**
@@ -259,7 +264,8 @@ export class MacroJs {
           const descriptor = createMessageDescriptorFromTokens(
             tokens,
             currentPath.node.loc,
-            ctx.stripNonEssentialProps
+            ctx.stripNonEssentialProps,
+            ctx.stripMessageProp
           )
 
           const callExpr = t.callExpression(
@@ -274,9 +280,9 @@ export class MacroJs {
         // t(messageDescriptor)
         if (
           currentPath.isCallExpression() &&
-          currentPath.get("arguments")[0].isObjectExpression()
+          currentPath.get("arguments")[0]?.isObjectExpression()
         ) {
-          let descriptor = processDescriptor(
+          const descriptor = processDescriptor(
             (currentPath.get("arguments")[0] as NodePath<ObjectExpression>)
               .node,
             ctx
@@ -302,7 +308,7 @@ export class MacroJs {
   }
 
   private createI18nCall(
-    messageDescriptor: ObjectExpression,
+    messageDescriptor: Expression | undefined,
     linguiInstance?: Expression
   ) {
     return t.callExpression(
@@ -310,7 +316,7 @@ export class MacroJs {
         linguiInstance ?? t.identifier(this.i18nImportName),
         t.identifier("_")
       ),
-      [messageDescriptor]
+      messageDescriptor ? [messageDescriptor] : []
     )
   }
 }

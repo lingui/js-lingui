@@ -36,9 +36,13 @@ const parseExpression = (expression: string) => {
 }
 
 function createMacroCtx() {
-  return createMacroJsContext((identifier, macro) => {
-    return identifier.name === macro
-  }, false)
+  return createMacroJsContext(
+    (identifier, macro) => {
+      return identifier.name === macro
+    },
+    false, // stripNonEssentialProps
+    false // stripMessageProp
+  )
 }
 
 describe("js macro", () => {

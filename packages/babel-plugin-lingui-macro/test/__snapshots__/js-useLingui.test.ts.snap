@@ -1,5 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`does not crash when no params 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t();
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function MyComponent() {
+  const { _: _t } = _useLingui();
+  const a = _t();
+}
+
+`;
+
 exports[`inserted statement should not clash with existing variables 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function MyComponent() {
@@ -81,6 +98,23 @@ function MyComponent() {
       }
     );
   }
+}
+
+`;
+
+exports[`support a variable 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function MyComponent() {
+  const { t } = useLingui();
+  const a = t(msg);
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function MyComponent() {
+  const { _: _t } = _useLingui();
+  const a = _t(msg);
 }
 
 `;

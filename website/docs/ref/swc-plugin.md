@@ -7,16 +7,14 @@ description: Use Lingui Macros in your SWC project
 
 [SWC](https://swc.rs/) is an extensible Rust-based platform for the next generation of fast developer tools.
 
-If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [LinguiJS Macro](/docs/ref/macro.mdx).
+If you're using SWC in your project, you can opt for the `@lingui/swc-plugin`. This plugin, designed for SWC, is a Rust version of [Lingui Macros](/ref/macro).
 
 [![npm-version](https://img.shields.io/npm/v/@lingui/swc-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/swc-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/swc-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/swc-plugin)
 
 ## SWC Compatibility
 
-SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed.
-
-Therefore, you need to select an appropriate version of `@lingui/swc-plugin` to match the compatible `@swc/core` version.
+SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions [is not guaranteed](https://github.com/swc-project/swc/issues/5060). You need to choose an appropriate version of the `@lingui/swc-plugin` to match the compatible `@swc/core` version.
 
 :::tip
 It is recommended to check the [plugins.swc.rs](https://plugins.swc.rs/) site to find the compatible version.
@@ -28,6 +26,22 @@ Install `@lingui/swc-plugin` as a development dependency:
 
 ```bash npm2yarn
 npm install --save-dev @lingui/swc-plugin
+```
+
+To ensure that the resolved version of `@swc/core` is one of the supported versions, you can use the `resolutions` field in the `package.json` file, which is supported by Yarn:
+
+```json title="package.json"
+"resolutions": {
+  "@swc/core": "1.3.56"
+}
+```
+
+or `overrides` for >npm@8.3
+
+```json title="package.json"
+"overrides": {
+  "@swc/core": "1.3.56"
+}
 ```
 
 ## Usage
@@ -43,13 +57,7 @@ Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configura
         [
           "@lingui/swc-plugin",
           {
-            // Optional
-            // Unlike the JS version this option must be passed as object only.
-            // Docs https://lingui.dev/ref/conf#runtimeconfigmodule
-            // "runtimeModules": {
-            //   "i18n": ["@lingui/core", "i18n"],
-            //   "trans": ["@lingui/react", "Trans"]
-            // }
+            // Additional Configuration
           }
         ]
       ]
@@ -69,7 +77,7 @@ const nextConfig = {
       [
         "@lingui/swc-plugin",
         {
-          // the same options as in .swcrc
+          // Additional Configuration
         },
       ],
     ],
@@ -79,12 +87,29 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
+### Additional Configuration
+
+You can configure the plugin by passing the `runtimeModules` option. This option is an object that maps runtime module names to their corresponding module paths and export names. It is essential for macros, which rely on referencing the global `i18n` object.
+
+```json
+[
+  "@lingui/swc-plugin",
+  {
+    "runtimeModules": {
+      "i18n": ["@lingui/core", "i18n"],
+      "trans": ["@lingui/react", "Trans"]
+    }
+  }
+]
+```
+
+For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
+
+:::info
+If you would like to suggest a new feature or report a bug, please [open an issue](https://github.com/lingui/swc-plugin/issues) on the GitHub repository.
+:::
+
 ## Examples
 
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
 - [Next.js with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
-
-## Links
-
-- [GitHub Repository](https://github.com/lingui/swc-plugin)
-- [NPM Package](https://www.npmjs.com/package/@lingui/swc-plugin)

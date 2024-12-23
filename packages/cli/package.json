@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "5.0.0-next.1",
+  "version": "5.1.2",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -23,6 +23,10 @@
     "lingui": "./dist/lingui.js"
   },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./api": {
       "types": "./dist/api/index.d.ts",
       "default": "./dist/api/index.js"
@@ -51,15 +55,15 @@
   "dependencies": {
     "@babel/core": "^7.21.0",
     "@babel/generator": "^7.21.1",
-    "@babel/parser": "^7.21.2",
+    "@babel/parser": "^7.22.0",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
-    "@lingui/babel-plugin-extract-messages": "5.0.0-next.1",
-    "@lingui/babel-plugin-lingui-macro": "5.0.0-next.1",
-    "@lingui/conf": "5.0.0-next.1",
-    "@lingui/core": "5.0.0-next.1",
-    "@lingui/format-po": "5.0.0-next.1",
-    "@lingui/message-utils": "5.0.0-next.1",
+    "@lingui/babel-plugin-extract-messages": "5.1.2",
+    "@lingui/babel-plugin-lingui-macro": "5.1.2",
+    "@lingui/conf": "5.1.2",
+    "@lingui/core": "5.1.2",
+    "@lingui/format-po": "5.1.2",
+    "@lingui/message-utils": "5.1.2",
     "babel-plugin-macros": "^3.0.1",
     "chalk": "^4.1.0",
     "chokidar": "3.5.1",

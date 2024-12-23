@@ -18,17 +18,20 @@ export type MacroJsContext = {
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   getExpressionIndex: () => number
   stripNonEssentialProps: boolean
+  stripMessageProp: boolean
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
 export function createMacroJsContext(
   isLinguiIdentifier: MacroJsContext["isLinguiIdentifier"],
-  stripNonEssentialProps: boolean
+  stripNonEssentialProps: boolean,
+  stripMessageProp: boolean
 ): MacroJsContext {
   return {
     getExpressionIndex: makeCounter(),
     isLinguiIdentifier,
     stripNonEssentialProps,
+    stripMessageProp,
   }
 }
 
@@ -85,6 +88,7 @@ export function processDescriptor(
     tokens,
     descriptor.loc,
     ctx.stripNonEssentialProps,
+    ctx.stripMessageProp,
     {
       id: idProperty,
       context: contextProperty,

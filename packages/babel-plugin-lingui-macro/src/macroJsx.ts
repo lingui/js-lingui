@@ -13,7 +13,7 @@ import {
   TemplateLiteral,
   SourceLocation,
 } from "@babel/types"
-import { NodePath } from "@babel/traverse"
+import type { NodePath } from "@babel/traverse"
 
 import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
@@ -45,6 +45,7 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
 
 export type MacroJsxOpts = {
   stripNonEssentialProps: boolean
+  stripMessageProp: boolean
   transImportName: string
 }
 
@@ -53,11 +54,13 @@ export class MacroJSX {
   expressionIndex = makeCounter()
   elementIndex = makeCounter()
   stripNonEssentialProps: boolean
+  stripMessageProp: boolean
   transImportName: string
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
     this.stripNonEssentialProps = opts.stripNonEssentialProps
+    this.stripMessageProp = opts.stripMessageProp
     this.transImportName = opts.transImportName
   }
 
@@ -84,6 +87,7 @@ export class MacroJSX {
       tokens,
       path.node.loc,
       this.stripNonEssentialProps,
+      this.stripMessageProp,
       {
         id,
         context,

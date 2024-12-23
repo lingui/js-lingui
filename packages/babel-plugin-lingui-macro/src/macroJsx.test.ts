@@ -34,7 +34,11 @@ const parseExpression = (expression: string) => {
 function createMacro() {
   return new MacroJSX(
     { types },
-    { stripNonEssentialProps: false, transImportName: "Trans" }
+    {
+      stripNonEssentialProps: false,
+      stripMessageProp: false,
+      transImportName: "Trans",
+    }
   )
 }
 

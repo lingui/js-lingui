@@ -10,12 +10,12 @@ describe("compile", () => {
     const getPSource = (message: string) => compile(message, true)
 
     it("should pseudolocalize strings", () => {
-      expect(getPSource("Martin Černý")).toEqual("Màŕţĩń Čēŕńý")
+      expect(getPSource("Martin Černý")).toEqual(["Màŕţĩń Čēŕńý"])
     })
 
     it("should pseudolocalize escaping syntax characters", () => {
       // TODO: should this turn into pseudoLocale string?
-      expect(getPSource("'{name}'")).toEqual("{name}")
+      expect(getPSource("'{name}'")).toEqual(["{name}"])
       // expect(getPSource("'{name}'")).toEqual('"{ńàmē}"')
     })
 
@@ -32,18 +32,18 @@ describe("compile", () => {
     })
 
     it("should not pseudolocalize HTML tags", () => {
-      expect(getPSource('Martin <span id="spanId">Černý</span>')).toEqual(
-        'Màŕţĩń <span id="spanId">Čēŕńý</span>'
-      )
+      expect(getPSource('Martin <span id="spanId">Černý</span>')).toEqual([
+        'Màŕţĩń <span id="spanId">Čēŕńý</span>',
+      ])
       expect(
         getPSource("Martin Cerny  123a<span id='id'>Černý</span>")
-      ).toEqual("Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>")
-      expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual(
-        "Màŕţĩń <a title='>>a'>à</a>"
-      )
-      expect(getPSource("<a title=TITLE>text</a>")).toEqual(
-        "<a title=TITLE>ţēxţ</a>"
-      )
+      ).toEqual(["Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"])
+      expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual([
+        "Màŕţĩń <a title='>>a'>à</a>",
+      ])
+      expect(getPSource("<a title=TITLE>text</a>")).toEqual([
+        "<a title=TITLE>ţēxţ</a>",
+      ])
     })
 
     describe("Plurals", () => {
@@ -83,7 +83,7 @@ describe("compile", () => {
             "plural",
             {
               offset: 1,
-              zero: "Ţĥēŕē àŕē ńō mēśśàĝēś",
+              zero: ["Ţĥēŕē àŕē ńō mēśśàĝēś"],
               other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
             },
           ],
@@ -139,8 +139,8 @@ describe("compile", () => {
             one: ["#", "śţ"],
             two: ["#", "ńď"],
             few: ["#", "ŕď"],
-            4: "4ţĥ",
-            many: "ţēśţMàńŷ",
+            4: ["4ţĥ"],
+            many: ["ţēśţMàńŷ"],
             other: ["#", "ţĥ"],
           },
         ],
@@ -156,7 +156,7 @@ describe("compile", () => {
         [
           "gender",
           "select",
-          { male: "Ĥē", female: "Śĥē", other: "<span>Ōţĥēŕ</span>" },
+          { male: ["Ĥē"], female: ["Śĥē"], other: ["<span>Ōţĥēŕ</span>"] },
         ],
       ])
     })
@@ -172,9 +172,9 @@ describe("compile", () => {
           "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}"
         )
       ).toEqual([
-        ["bcount", "plural", { one: "ƀōŷ", other: ["#", " ƀōŷś"] }],
+        ["bcount", "plural", { one: ["ƀōŷ"], other: ["#", " ƀōŷś"] }],
         " ",
-        ["gcount", "plural", { one: "ĝĩŕĺ", other: ["#", " ĝĩŕĺś"] }],
+        ["gcount", "plural", { one: ["ĝĩŕĺ"], other: ["#", " ĝĩŕĺś"] }],
       ])
     })
   })

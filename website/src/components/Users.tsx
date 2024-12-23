@@ -24,7 +24,7 @@ const USERS: UserDetails[] = [
   {
     logo: "ansible.png",
     name: "Ansible",
-    link: "https://github.com/ansible/awx",
+    link: "https://github.com/ansible/ansible-hub-ui",
   },
   {
     logo: "metamask.png",
@@ -78,7 +78,13 @@ const Users = (): React.ReactElement => {
           <h2>Loved by hundreds of teams, including:</h2>
           <div className={clsx("row", styles.usersList)}>
             {USERS.map((user, idx) => (
-              <a href={user.link} key={idx} target="_blank" rel="noreferrer" className={styles.user}>
+              <a
+                href={user.link}
+                key={idx}
+                target="_blank"
+                rel="noreferrer"
+                className={clsx(styles.user, "text--secondary")}
+              >
                 <img
                   className={clsx(styles.logo, "margin-bottom--sm")}
                   alt={user.name}
@@ -91,7 +97,7 @@ const Users = (): React.ReactElement => {
             ))}
           </div>
 
-          <p className={styles.muted}>And many more...</p>
+          <a href="/misc/showroom">And many more...</a>
         </div>
       </div>
     </section>

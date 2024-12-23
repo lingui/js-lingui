@@ -166,12 +166,33 @@ macroTester({
       `,
     },
     {
+      name: "stripMessageField option - message prop is removed if stripMessageField: true",
+      macroOpts: {
+        stripMessageField: true,
+      },
+      code: `
+      import { Trans } from '@lingui/macro';
+      <Trans id="msg.hello">Hello World</Trans>
+    `,
+    },
+    {
       name: "Production - only essential props are kept",
       production: true,
       code: `
         import { Trans } from '@lingui/react/macro';
         <Trans id="msg.hello" context="my context" comment="Hello World">Hello World</Trans>
       `,
+    },
+    {
+      name: "Production - message prop is kept if stripMessageField: false",
+      production: true,
+      macroOpts: {
+        stripMessageField: false,
+      },
+      code: `
+      import { Trans } from '@lingui/macro';
+      <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
+    `,
     },
     {
       name: "Production - all props kept if extract: true",

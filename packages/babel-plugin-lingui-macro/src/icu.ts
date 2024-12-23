@@ -82,7 +82,7 @@ export class ICUMessageFormat {
       switch (token.format) {
         case "plural":
         case "select":
-        case "selectordinal":
+        case "selectordinal": {
           const formatOptions = Object.keys(token.options)
             .filter((key) => token.options[key] != null)
             .map((key) => {
@@ -116,6 +116,7 @@ export class ICUMessageFormat {
             values,
             elements: jsxElements,
           }
+        }
         default:
           return {
             message: token.raw ? `${token.name}` : `{${token.name}}`,
@@ -124,7 +125,7 @@ export class ICUMessageFormat {
       }
     } else if (token.type === "element") {
       let message = ""
-      let elementValues: ParsedResult["values"] = {}
+      const elementValues: ParsedResult["values"] = {}
       Object.assign(jsxElements, { [token.name]: token.value })
       token.children.forEach((child) => {
         const {

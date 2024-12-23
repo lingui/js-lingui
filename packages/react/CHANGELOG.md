@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/lingui/js-lingui/compare/v5.1.1...v5.1.2) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/react
+
+## [5.1.1](https://github.com/lingui/js-lingui/compare/v5.1.0...v5.1.1) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/react
+
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+### Features
+
+- **react:** add support for React 19 ([#2111](https://github.com/lingui/js-lingui/issues/2111)) ([e93b73d](https://github.com/lingui/js-lingui/commit/e93b73d075165d91fa598fa0c579a8ceb5c86845))
+
+## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
+
+**Note:** Version bump only for package @lingui/react
+
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+**Note:** Version bump only for package @lingui/react
+
+# [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
+
+**Note:** Version bump only for package @lingui/react
+
+# [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
+
+**Note:** Version bump only for package @lingui/react
+
 ## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
 
 ### Bug Fixes

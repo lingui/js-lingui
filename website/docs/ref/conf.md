@@ -1,51 +1,25 @@
 ---
-title: Lingui Configuration
+title: Configuration
 description: Learn how to configure Lingui for your project
 ---
 
-# Lingui Configuration
+# Configuration
 
-Configuration is read from 4 different sources (the first found wins):
+The following reference covers all supported configuration options in Lingui. To learn more about configuring Lingui, read the [Installation and Setup](/installation) guide.
 
-- from `lingui` section in `package.json`
-- from `.linguirc`
-- from `lingui.config.js`
-- from `lingui.config.ts` _(since 3.4.0)_
+By default, Lingui looks for the configuration in the following locations:
 
-You can also define environment variable `LINGUI_CONFIG` with path to your config file.
+- `lingui.config.js` or `lingui.config.ts` file exporting a configuration object (recommended).
+- `.linguirc` file in JSON format.
+- `lingui` section in `package.json`.
 
-In the case of TypeScript based config you can use ESM format and _export default_.
+You can also define the environment variable `LINGUI_CONFIG` with the path to your config file.
 
-Default config:
-
-```json
-{
-  "catalogs": [
-    {
-      "path": "<rootDir>/locale/{locale}/messages",
-      "include": ["<rootDir>"],
-      "exclude": ["**/node_modules/**"]
-    }
-  ],
-  "catalogsMergePath": "",
-  "compileNamespace": "cjs",
-  "extractorParserOptions": {},
-  "compilerBabelOptions": {},
-  "fallbackLocales": {},
-  "format": "po",
-  "locales": [],
-  "extractors": ["babel"],
-  "orderBy": "messageId",
-  "pseudoLocale": "",
-  "rootDir": ".",
-  "runtimeConfigModule": ["@lingui/core", "i18n"],
-  "sourceLocale": ""
-}
-```
+In the case of TypeScript-based config you can use ESM format and _export default_.
 
 ## catalogs
 
-Default:
+Default value:
 
 ```js
 [
@@ -57,16 +31,15 @@ Default:
 ];
 ```
 
-Defines location of message catalogs and what files are included when [`extract`](/docs/ref/cli.md#extract) is scanning for messages.
+The `catalogs` configuration defines the location of message catalogs and specifies which files are included when the [`extract`](/ref/cli#extract) command scans for messages.
 
-`path` shouldn't end with slash and it shouldn't include file extension which depends on [`format`](/docs/ref/catalog-formats.md).
-`{locale}` token is replaced by catalog locale.
+- `path`: the directory where the message catalogs are located. It should not end with a slash and must not include a file extension, which depends on the [`format`](#format) configuration. The `{locale}` token will be replaced by the catalog's locale.
+- `include` and `exclude`: these patterns specify which files to include or exclude during the extraction process. They are passed to [minimatch](https://github.com/isaacs/minimatch) for pattern matching.
+- [`<rootDir>`](#rootdir): represents the root directory of the project. It is replaced with the actual root directory when the configuration is loaded. By default, [`<rootDir>`](#rootdir) represents the configuration file's location.
 
-Patterns in `include` and `exclude` are passed to [minimatch](https://github.com/isaacs/minimatch).
+The `path`, `include`, and `exclude` patterns are interpreted relative to the current process CWD (current working directory).
 
-`path`, `include`, and `exclude` are interpreted from the current process CWD. If you want to make these paths relative to the configuration file, you can prefix them with a [`rootDir`](#rootdir) token. By default, [`rootDir`](#rootdir) represents the configuration file's location.
-
-`{name}` token in `path` is replaced with a catalog name. Source path must include `{name}` pattern as well and it works as a `*` glob pattern:
+The `{name}` token in the `path` will be replaced with the catalog name. Be sure to include the `{name}` pattern in the source path as well, as it acts like a `*` glob pattern:
 
 ```json
 {
@@ -113,7 +86,7 @@ locales/
 }
 ```
 
-```bash
+```bash {3,5}
 locales
 ├── en/
 │   └── messages.po
@@ -121,7 +94,7 @@ locales
     └── messages.po
 ```
 
-#### Separate catalogs per component, placed inside component dir
+#### Separate catalogs per component, placed inside component directory
 
 ```json
 {
@@ -134,7 +107,7 @@ locales
 }
 ```
 
-```shell
+```shell {4,5,10,11}
 components/
 ├── RegistrationForm/
 │   ├── locale/
@@ -163,7 +136,7 @@ components/
 }
 ```
 
-```shell
+```shell {4,5,7,8}
 .
 ├── locale/
 │   ├── en/
@@ -181,17 +154,82 @@ components/
         └── LoginForm.js
 ```
 
+## locales
+
+Default value: `[]`
+
+The locale tags used in the project. The [`extract`](/ref/cli#extract) and [`compile`](/ref/cli#compile) commands write a catalog for each locale specified. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html):
+
+```json
+{
+  "locales": ["en", "cs"]
+}
+```
+
+## fallbackLocales
+
+Default value: `{}`
+
+Translations from `fallbackLocales` are used if the translation for the given locale is missing. It uses [CLDR Parent Locales](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json) by default, unless you override it with a `false` to use the default message or message ID instead:
+
+```json
+{
+  "fallbackLocales": false
+}
+```
+
+The `fallbackLocales` object allows to configure fallback locales for each locale instance:
+
+```json
+{
+  "fallbackLocales": {
+    "en-US": ["en-GB", "en"],
+    "es-MX": "es"
+  }
+}
+```
+
+In this example, if any translation isn't found on `en-US`, then it will search on `en-GB`, after that if not found we'll search in `en`.
+
+it's also possible to configure a `default` fallback locale for all locales:
+
+```json {5}
+{
+  "fallbackLocales": {
+    "en-US": ["en-GB", "en"],
+    "es-MX": "es",
+    "default": "en"
+  }
+}
+```
+
+## sourceLocale
+
+Default value: `""`
+
+`sourceLocale` specifies the default language of message IDs in your source files. The catalog for `sourceLocale` doesn't need actual translations since message IDs are used as-is by default. However, you can still override any message ID by providing a custom translation.
+
+The main difference between `sourceLocale` and [`fallbackLocales`](#fallbacklocales) is their purpose: `sourceLocale` defines the language used for message IDs, while `fallbackLocales` provides alternative translations when specific messages are missing for a particular locale.
+
+## pseudoLocale
+
+Default value: `""`
+
+Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the `en` catalog will be pseudo-localized. The locale must be included in the `locales` config.
+
+Read more about [Pseudolocalization](/guides/pseudolocalization).
+
 ## catalogsMergePath
 
-Default: `""`
+Default value: `""`
 
-Specify the path to merge translated catalogs into a single file per locale during compile.
+Define the path where translated catalogs are merged into a single file per locale during the [`compile`](/ref/cli#compile) process.
 
 #### Example
 
-Let's assume we have [separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
+Let's assume we have [separate catalogs per component, placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
 
-Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](/docs/ref/cli.md#compile):
+Using the `catalogsMergePath`, separate catalogs can be merged into a single file:
 
 ```diff
 {
@@ -232,9 +270,9 @@ Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](/d
 
 ## compileNamespace
 
-Default: `cjs`
+Default value: `cjs`
 
-Specify namespace for exporting compiled messages. See [`compile`](/docs/ref/cli.md#compile) command.
+Specify namespace for exporting compiled messages. See [`compile`](/ref/cli#compile) command.
 
 #### cjs
 
@@ -254,7 +292,7 @@ Use ES6 named export:
 
 #### ts
 
-Use ES6 named export + .ts file with an additional `{compiledFile}.d.ts` file:
+Use ES6 named export + `.ts` file with an additional `{compiledFile}.d.ts` file:
 
 ```js
 /* eslint-disable */export const messages = {"..."}
@@ -284,7 +322,7 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 
 ## extractorParserOptions
 
-Default: `{}`
+Default value: `{}`
 
 Specify additional options used to parse source files when extracting messages.
 
@@ -299,19 +337,19 @@ Specify additional options used to parse source files when extracting messages.
 
 #### tsExperimentalDecorators
 
-Default: `false`
+Default value: `false`
 
 By default, standard decorators (Stage3) are applied to TS files. Enable this if you want to use TypeScript's experimental decorators.
 
 #### flow
 
-Default: `false`
+Default value: `false`
 
 Lingui does not ship with [Flow](https://flow.org/) typing. However, you can use Lingui in projects written in Flow. Enable this option to tell the extractor that your sources use Flow syntax.
 
 ## compilerBabelOptions
 
-Default:
+Default value:
 
 ```json
 {
@@ -336,73 +374,27 @@ Specify extra babel options used to generate files when messages are being compi
 
 This example configuration will compile with escaped ASCII characters ([jsesc#minimal](https://github.com/mathiasbynens/jsesc#minimal)).
 
-## fallbackLocales
-
-Default: `{}`
-
-`fallbackLocales` by default is using [CLDR Parent Locales](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json), unless you disable it with a `false`:
-
-```json
-{
-  "fallbackLocales": false
-}
-```
-
-`fallbackLocales` object lets us configure fallback locales to each locale instance.
-
-```json
-{
-  "fallbackLocales": {
-    "en-US": ["en-GB", "en"],
-    "es-MX": "es"
-  }
-}
-```
-
-On this example if any translation isn't found on `en-US` then will search on `en-GB`, after that if not found we'll search in `en`.
-
-Also, we can configure a default one for everything:
-
-```json
-{
-  "fallbackLocales": {
-    "en-US": ["en-GB", "en"],
-    "es-MX": "es",
-    "default": "en"
-  }
-}
-```
-
-Translations from `fallbackLocales` is used when translation for given locale is missing.
-
-If `fallbackLocales` is `false` default message or message ID is used instead.
-
 ## format
 
-Default: `po`
+Default value: `po`
 
 Message catalog format. The `po` formatter is used by default. Other formatters are available as separate packages.
 
 ```js title="lingui.config.{js,ts}"
-import { formatter } from "@lingui/format-po"
+import { defineConfig } from "@lingui/cli";
+import { formatter } from "@lingui/format-po";
 
-export default {
-  [...]
-  format: formatter({ lineNumbers: false })
-}
+export default defineConfig({
+  // [...]
+  format: formatter({ lineNumbers: false }),
+});
 ```
 
-Read more about available formatters in [Catalog Formats](/docs/ref/catalog-formats.md) or create your own [Custom Formatter](/docs/guides/custom-formatter.md).
-
-## locales
-
-Default: `[]`
-
-Locale tags which are used in the project. [`extract`](/docs/ref/cli.md#extract) and [`compile`](/docs/ref/cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
+Read more about available formatters in [Catalog Formats](/ref/catalog-formats) or create your own [Custom Formatter](/guides/custom-formatter).
 
 ## orderBy
 
-Default: `message`
+Default value: `message`
 
 Order of messages in catalog:
 
@@ -418,68 +410,64 @@ Sort by the message ID, `js-lingui-id` will be used if no custom id provided.
 
 Sort by message origin (e.g. `App.js:3`)
 
-## pseudoLocale
-
-Default: `""`
-
-Locale used for pseudolocalization. For example when you set `pseudoLocale: "en"` then all messages in `en` catalog will be pseudo localized. The locale has to be included in `locales` config.
-
 ## rootDir
 
-Default: The root of the directory containing your Lingui config file or the `package.json`.
+Default: The root of the directory containing your Lingui configuration file or the `package.json`.
 
-The root directory that Lingui CLI should scan when extracting messages from source files.
+This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
 
 Note that using `<rootDir>` as a string token in any other path-based config settings will refer back to this value.
 
 ## runtimeConfigModule
 
-Default: `["@lingui/core", "i18n"]`
+Default value: `["@lingui/core", "i18n"]`
 
-Module path with exported i18n object. The first value in array is module path, the second is the import identifier. This value is used in macros, which need to reference the global `i18n` object.
+This setting specifies the module path for the exported `i18n` object. The first value in the array is the module path, and the second is the name of the import. This configuration is essential for [macros](/ref/macro) that need to reference the global `i18n` object.
 
-You only need to set this value if you use custom object created using [`setupI18n`](/docs/ref/core.md#setupi18n):
+You only need to set this value if you use custom object created using [`setupI18n`](/ref/core#setupi18n):
+
+For example, if you have a custom module that exports the `i18n` object:
 
 ```jsx
-// If you import `i18n` object from custom module like this:
 import { i18n } from "./custom-i18n-config";
+```
 
-// ... then add following line to Lingui configuration:
-// "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
+```json
+{
+  "runtimeConfigModule": ["./custom-i18n-config", "i18n"]
+}
 ```
 
 You may use a different named export:
 
 ```jsx
 import { myI18n } from "./custom-i18n-config";
-// "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
-In some advanced cases you may also need to change the module from which [Trans](/docs/ref/macro.mdx#trans) or [useLingui](/docs/ref/macro.mdx#uselingui) is imported. To do that, pass an object to `runtimeConfigModule`:
+```json
+{
+  "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
+}
+```
+
+In more advanced scenarios, you may need to change the module from which the [`Trans`](/ref/macro#trans) or [`useLingui`](/ref/macro#uselingui) macros are imported:
 
 ```jsx
-// If you import `i18n` object from custom module like this:
-import { Trans, i18n } from "./custom-config";
-
-// ... then add following line to Lingui configuration:
-// "runtimeConfigModule": {
-//   i18n: ["./custom-config", "i18n"],
-//   Trans: ["./custom-config", "Trans"]
-//   useLingui: ["./custom-useLingui", "myUseLingui"]
-// }
+import { Trans, useLingui } from "./custom-config";
 ```
 
-## sourceLocale
-
-Default: `''`
-
-Locale of message IDs, which is used in source files. Catalog for `sourceLocale` doesn't require translated messages, because message IDs are used by default. However, it's still possible to override message ID by providing custom translation.
-
-The difference between [`fallbackLocales`](#fallbacklocales) and `sourceLocale` is that [`fallbackLocales`](#fallbacklocales) is used in translation, while `sourceLocale` is used for the message ID.
+```json
+{
+  "runtimeConfigModule": {
+    "Trans": ["./custom-config", "Trans"],
+    "useLingui": ["./custom-config", "useLingui"]
+  }
+}
+```
 
 ## extractors
 
-Default: `[babel]`
+Default value: `[babel]`
 
 Extractors it's the way to customize which extractor you want for your codebase.
 
@@ -491,4 +479,4 @@ Extractors it's the way to customize which extractor you want for your codebase.
 }
 ```
 
-Visit [Advanced: Custom Extractor](/docs/guides/custom-extractor.md) to learn how to create a custom extractor.
+See the [Custom Extractor](/guides/custom-extractor) guide for instructions on creating your own extractor.

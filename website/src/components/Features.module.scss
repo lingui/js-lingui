@@ -19,10 +19,10 @@
     grid-row: 2;
     grid-column: 1 / -1;
     height: 0;
-    z-index: 0;
+    z-index: -1;
 
     img {
-      bottom: 120px;
+      bottom: -30px;
       position: absolute;
       left: -150px;
       width: 900px;
@@ -45,10 +45,6 @@
       height: 680px;
     }
   }
-}
-
-.linkFeatures {
-  text-align: center;
 }
 
 .featureCard {

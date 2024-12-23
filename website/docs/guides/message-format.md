@@ -1,6 +1,6 @@
 # ICU MessageFormat
 
-ICU MessageFormat is a flexible yet powerful syntax to express all nuances of grammar for each language.
+ICU MessageFormat is a flexible and powerful syntax designed to express the grammatical nuances of different languages. Its flexibility ensures that your application can handle grammatical variations, making it essential for effective internationalization.
 
 ## Overview
 
@@ -20,7 +20,7 @@ Example: `Attachment {name} saved`
 {count, plural, one {Message} other {Messages}}
 ```
 
-> Using exact matches (`=0`):
+> Using exact matches for specific counts (`=0`):
 
 ```icu-message-format
 {count, plural, =0 {No messages}
@@ -28,7 +28,7 @@ Example: `Attachment {name} saved`
                 other {# messages}}
 ```
 
-> Offsetting plural form:
+> Offsetting plural forms:
 
 ```icu-message-format
 {count, plural, offset:1
@@ -55,6 +55,7 @@ Example: `Attachment {name} saved`
                        other {#th message}}
 ```
 
-## Further reading
+## See Also
 
+- [Pluralization](/guides/plurals)
 - [ICU Playground](https://format-message.github.io/icu-message-format-for-translators/editor.html)

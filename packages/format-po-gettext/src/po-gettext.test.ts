@@ -231,4 +231,153 @@ msgstr[2] "# dní"
 
     expect(catalog).toMatchSnapshot()
   })
+
+  test("should use respect Plural-Forms header", () => {
+    const po = `
+msgid ""
+msgstr ""
+"Language: fr\\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\\n"
+
+#. js-lingui:icu=%7B0%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=0
+msgid "{count} day"
+msgid_plural "{count} days"
+msgstr[0] "{count} jour"
+msgstr[1] "{count} jours"
+msgstr[2] "{count} jours"
+        `
+
+    const parsed = format.parse(po, defaultParseCtx)
+
+    // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        ZETJEQ: {
+          comments: [],
+          context: null,
+          extra: {
+            flags: [],
+            translatorComments: [],
+          },
+          message: {0, plural, one {{count} day} other {{count} days}},
+          obsolete: false,
+          origin: [],
+          translation: {0, plural, one {{count} jour} many {{count} jours} other {{count} jours}},
+        },
+      }
+    `)
+  })
+
+  it("should correctly handle skipped form", () => {
+    // in this test Plural-Forms header defines 4 forms via `nplurals=4`
+    // but expression never returns 2 form, only [0, 1, 3]
+    const po = `
+msgid ""
+msgstr ""
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
+
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+few+%7B%7Bcount%7D+days%7D+many+%7B%7Bcount%7D+days%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=#
+msgid "# day"
+msgid_plural "# days"
+msgstr[0] "# den"
+msgstr[1] "# dny"
+msgstr[2] "# dne"
+msgstr[3] "# dní"
+        `
+
+    const parsed = format.parse(po, defaultParseCtx)
+
+    // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        GMnlGy: {
+          comments: [],
+          context: null,
+          extra: {
+            flags: [],
+            translatorComments: [],
+          },
+          message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
+          obsolete: false,
+          origin: [],
+          translation: {#, plural, one {# den} few {# dny}  other {# dní}},
+        },
+      }
+    `)
+  })
+
+  describe("using custom prefix", () => {
+    it("parses plurals correctly", () => {
+      const defaultProfile = fs
+        .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
+        .toString()
+      const customProfile = defaultProfile.replace(
+        /js-lingui:/g,
+        "custom-prefix:"
+      )
+
+      const defaultPrefix = createFormat()
+      const customPrefix = createFormat({ customICUPrefix: "custom-prefix:" })
+
+      const defaultCatalog = defaultPrefix.parse(
+        defaultProfile,
+        defaultParseCtx
+      )
+      const customCatalog = customPrefix.parse(customProfile, defaultParseCtx)
+
+      expect(defaultCatalog).toEqual(customCatalog)
+    })
+
+    it("warns and falls back to using count if prefix is not found", () => {
+      const defaultProfile = fs
+        .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
+        .toString()
+
+      const usingInvalidPrefix = createFormat({
+        customICUPrefix: "invalid-prefix:",
+      })
+      mockConsole((console) => {
+        const catalog = usingInvalidPrefix.parse(
+          defaultProfile,
+          defaultParseCtx
+        )
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining(
+            "should be stored in a comment starting with"
+          ),
+          expect.anything()
+        )
+        expect(catalog).toMatchSnapshot()
+      })
+    })
+
+    it("handles custom prefix", () => {
+      const format = createFormat({ customICUPrefix: "custom-prefix:" })
+
+      const catalog: CatalogType = {
+        message_with_id: {
+          message:
+            "{someCount, plural, one {Singular case with id\
+            and linebreak} other {Case number {someCount} with id}}",
+          translation:
+            "{someCount, plural, one {Singular case with id} other {Case number {someCount} with id}}",
+          comments: [
+            "This is a comment by the developers about how the content must be localized.",
+            "js-lingui-explicit-id",
+          ],
+        },
+        WGI12K: {
+          message:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+          translation:
+            "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+        },
+      }
+
+      const pofile = format.serialize(catalog, defaultSerializeCtx)
+
+      expect(pofile).toMatchSnapshot()
+    })
+  })
 })

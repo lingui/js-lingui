@@ -4,6 +4,7 @@ import extractCommand from "../src/lingui-extract"
 import extractExperimentalCommand from "../src/lingui-extract-experimental"
 import { command as compileCommand } from "../src/lingui-compile"
 import fs from "fs/promises"
+import { sync } from "glob"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
 import { listingToHumanReadable, readFsToJson } from "../src/tests"
@@ -22,13 +23,18 @@ async function prepare(caseFolderName: string) {
 
   const actualPath = nodepath.join(rootDir, "actual")
   const expectedPath = nodepath.join(rootDir, "expected")
+  const existingPath = nodepath.join(rootDir, "existing")
 
   await fs.rm(actualPath, {
     recursive: true,
     force: true,
   })
 
-  return { rootDir, actualPath, expectedPath }
+  if (sync(existingPath).length === 1) {
+    await fs.cp(existingPath, actualPath, { recursive: true })
+  }
+
+  return { rootDir, actualPath, existingPath, expectedPath }
 }
 
 describe("E2E Extractor Test", () => {
@@ -73,8 +79,8 @@ describe("E2E Extractor Test", () => {
         │ pl          │     10      │   10    │
         └─────────────┴─────────────┴─────────┘
 
-        (use "yarn extract" to update catalogs with new messages)
-        (use "yarn compile" to compile catalogs for production)
+        (Use "yarn extract" to update catalogs with new messages.)
+        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
       `)
     })
 
@@ -172,12 +178,6 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental"
       )
 
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
-      )
-
       await mockConsole(async (console) => {
         const config = makeConfig({
           rootDir: rootDir,
@@ -232,12 +232,6 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental-clean"
       )
 
-      await fs.cp(
-        nodepath.join(rootDir, "existing"),
-        nodepath.join(rootDir, "actual"),
-        { recursive: true }
-      )
-
       await mockConsole(async (console) => {
         const result = await extractExperimentalCommand(
           makeConfig({
@@ -284,6 +278,70 @@ describe("E2E Extractor Test", () => {
       })
 
       compareFolders(actualPath, expectedPath)
+    })
+  })
+
+  it("should extract consistently with files argument", async () => {
+    const { rootDir, actualPath, expectedPath } = await prepare(
+      "extract-partial-consistency"
+    )
+
+    await extractCommand(
+      makeConfig({
+        rootDir: rootDir,
+        locales: ["en"],
+        sourceLocale: "en",
+        format: "po",
+        catalogs: [
+          {
+            path: "<rootDir>/actual/{locale}",
+            include: ["<rootDir>/fixtures"],
+          },
+        ],
+      }),
+      {
+        files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
+      }
+    )
+
+    compareFolders(actualPath, expectedPath)
+  })
+
+  it("Should not report statistics on pseudolocalizations", async () => {
+    const { rootDir } = await prepare("extract-po-format")
+
+    await mockConsole(async (console) => {
+      const result = await extractCommand(
+        makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl", "pseudo-LOCALE"],
+          pseudoLocale: "pseudo-LOCALE",
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [
+            {
+              path: "<rootDir>/actual/{locale}",
+              include: ["<rootDir>/fixtures"],
+            },
+          ],
+        }),
+        {}
+      )
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.error)).toBeFalsy()
+      expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Catalog statistics for actual/{locale}: 
+        ┌─────────────┬─────────────┬─────────┐
+        │ Language    │ Total count │ Missing │
+        ├─────────────┼─────────────┼─────────┤
+        │ en (source) │     10      │    -    │
+        │ pl          │     10      │   10    │
+        └─────────────┴─────────────┴─────────┘
+
+        (Use "yarn extract" to update catalogs with new messages.)
+        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+      `)
     })
   })
 })

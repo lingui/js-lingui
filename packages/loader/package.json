@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "5.0.0-next.1",
+  "version": "5.1.2",
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
@@ -44,11 +44,11 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "5.0.0-next.1",
-    "@lingui/conf": "5.0.0-next.1"
+    "@lingui/cli": "5.1.2",
+    "@lingui/conf": "5.1.2"
   },
   "devDependencies": {
-    "@lingui/format-json": "5.0.0-next.1",
+    "@lingui/format-json": "5.1.2",
     "unbuild": "2.0.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.1",

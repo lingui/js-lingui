@@ -145,7 +145,7 @@ describe("Trans component", () => {
           id="unknown"
           message={"foo <0>{0}</0> bar"}
           values={{
-            0: false && "lol",
+            0: false,
           }}
           components={{
             0: <span />,

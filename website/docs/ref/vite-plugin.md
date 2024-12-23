@@ -5,7 +5,9 @@ description: Use Lingui with Vite and compile your message catalogs on the fly
 
 # Vite Plugin
 
-`@lingui/vite-plugin` is a Vite plugin, which compiles Lingui catalogs on the fly and provides additional required configuration for Vite.
+Vite is a blazing fast frontend build tool powering the next generation of web applications.
+
+The `@lingui/vite-plugin` is a Vite plugin that compiles Lingui catalogs on the fly and provides the necessary configuration for seamless integration with Vite.
 
 [![npm-version](https://img.shields.io/npm/v/@lingui/vite-plugin?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@lingui/vite-plugin)
 [![npm-downloads](https://img.shields.io/npm/dt/@lingui/vite-plugin?cacheSeconds=500)](https://www.npmjs.com/package/@lingui/vite-plugin)
@@ -18,11 +20,11 @@ Install `@lingui/vite-plugin` as a development dependency:
 npm install --save-dev @lingui/vite-plugin
 ```
 
-For a complete installation guide, see [Setup with Vite](/docs/tutorials/setup-vite.md).
+For a complete installation guide, see [Installation and Setup](/installation#vite).
 
 ## Usage
 
-Simply add `@lingui/vite-plugin` inside your `vite.config.ts`:
+To integrate Lingui with Vite, add the `@lingui/vite-plugin` inside your `vite.config.ts` as follows:
 
 ```ts title="vite.config.ts"
 import { UserConfig } from "vite";
@@ -33,7 +35,7 @@ const config: UserConfig = {
 };
 ```
 
-Then in your code all you need is to use [dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports) to load only necessary catalog. Extension is mandatory.
+Then use [dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports) in your code to load only necessary catalog:
 
 ```ts
 export async function dynamicActivate(locale: string) {
@@ -43,6 +45,8 @@ export async function dynamicActivate(locale: string) {
   i18n.activate(locale);
 }
 ```
+
+Remember that the file extension is mandatory.
 
 :::tip
 If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
@@ -55,5 +59,5 @@ const { messages } = await import(`./locales/${language}.json?lingui`);
 
 ## See Also
 
-- [Dynamic Loading](/docs/guides/dynamic-loading-catalogs.md)
+- [Dynamic Loading](/guides/dynamic-loading-catalogs)
 - [Dynamic Import in Vite](https://vitejs.dev/guide/features.html#dynamic-import)

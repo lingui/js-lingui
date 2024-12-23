@@ -1,19 +1,6 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@lingui/conf > config file > extractBabelOptions deprecation > if deprecated extractBabelOptions is defined, we show deprecation message 1`] = `
-● Deprecation Warning:
-
- Option extractBabelOptions was removed. 
-    
-    Please remove it from your config file. 
-
-    You can find more information here: https://lingui.dev/releases/migration-4
-    
-
-Documentation: https://lingui.dev/ref/conf
-`;
-
-exports[`@lingui/conf > should return default config 1`] = `
+exports[`@lingui/conf should return default config 1`] = `
 {
   catalogs: [
     {
@@ -74,7 +61,7 @@ exports[`@lingui/conf > should return default config 1`] = `
 }
 `;
 
-exports[`@lingui/conf > should throw error if config is not discovered 1`] = `
+exports[`@lingui/conf should throw error if config is not discovered 1`] = `
 Lingui was unable to find a config!
 
 Create 'lingui.config.js' file with LinguiJS configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf

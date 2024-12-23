@@ -1,13 +1,13 @@
-import { describe, expect, it, vi } from "vitest";
 import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {
   describe("I18n.load", () => {
     it("should emit event", () => {
       const i18n = setupI18n()
 
-      const cbChange = vi.fn()
+      const cbChange = jest.fn()
       i18n.on("change", cbChange)
       i18n.load("en", { msg: "Message" })
       expect(cbChange).toBeCalled()
@@ -66,7 +66,7 @@ describe("I18n", () => {
         },
       })
 
-      const cbChange = vi.fn()
+      const cbChange = jest.fn()
       i18n.on("change", cbChange)
       i18n.activate("en")
       expect(cbChange).toBeCalled()
@@ -122,9 +122,9 @@ describe("I18n", () => {
       })
 
       mockEnv("production", () => {
-        vi.resetModules()
-        mockConsole(async (console) => {
-          const { setupI18n } = await import("@lingui/core")
+        jest.resetModules()
+        mockConsole((console) => {
+          const { setupI18n } = require("@lingui/core")
           const i18n = setupI18n()
           i18n.activate("xyz")
           expect(console.warn).not.toBeCalled()
@@ -137,7 +137,7 @@ describe("I18n", () => {
     it("should set locale and messages", () => {
       const i18n = setupI18n()
 
-      const cbChange = vi.fn()
+      const cbChange = jest.fn()
       i18n.on("change", cbChange)
 
       i18n.loadAndActivate({
@@ -263,15 +263,14 @@ describe("I18n", () => {
     ).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", () => {
+  it("._ shouldn't compile uncompiled messages in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
     }
 
-    mockEnv("production", async () => {
-      const { setupI18n } = await import("@lingui/core")
-
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
         messages: { fr: messages },
@@ -283,30 +282,89 @@ describe("I18n", () => {
     })
   })
 
-  it("._ shouldn't compiled message from catalogs in development", () => {
+  it("._ should use compiled message in production", () => {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}",
+      "My name is {name}": compileMessage("Je m'appelle {name}"),
     }
 
-    mockEnv("development", async () => {
-      const { setupI18n } = await import("@lingui/core")
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
       const i18n = setupI18n({
         locale: "fr",
         messages: { fr: messages },
       })
 
-      expect(i18n._("My name is {name}")).toEqual("Je m'appelle {name}")
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
     })
   })
 
+  it("._ shouldn't double compile message in development", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": compileMessage("Je m'appelle '{name}'"),
+    }
+
+    const { setupI18n } = require("@lingui/core")
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: messages },
+    })
+
+    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+      "Je m'appelle {name}"
+    )
+  })
+
+  it("setMessagesCompiler should register a message compiler for production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      i18n.setMessagesCompiler(compileMessage)
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("should print warning if uncompiled message is used", () => {
+    expect.assertions(1)
+
+    const messages = {
+      Hello: "Salut",
+    }
+
+    mockEnv("production", () => {
+      mockConsole((console) => {
+        const { setupI18n } = require("@lingui/core")
+        const i18n = setupI18n({
+          locale: "fr",
+          messages: { fr: messages },
+        })
+
+        i18n._("Hello")
+        expect(console.warn).toBeCalled()
+      })
+    })
+  })
   it("._ should emit missing event for missing translation", () => {
     const i18n = setupI18n({
       locale: "en",
       messages: { en: { exists: "exists" } },
     })
 
-    const handler = vi.fn()
+    const handler = jest.fn()
     i18n.on("missing", handler)
     i18n._("exists")
     expect(handler).toHaveBeenCalledTimes(0)
@@ -326,7 +384,7 @@ describe("I18n", () => {
       messages: { en: {} },
     })
 
-    const handler = vi.fn()
+    const handler = jest.fn()
     i18n.on("missing", handler)
     // @ts-expect-error 'id' should be of 'MessageDescriptor' or 'string' type.
     i18n._()
@@ -349,7 +407,7 @@ describe("I18n", () => {
     })
 
     it("._ should call a function with message ID of missing translation", () => {
-      const missing = vi.fn((locale, id) => id.split("").reverse().join(""))
+      const missing = jest.fn((locale, id) => id.split("").reverse().join(""))
       const i18n = setupI18n({
         locale: "en",
         messages: {
@@ -372,5 +430,18 @@ describe("I18n", () => {
     })
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
+  })
+
+  it("._ should throw a meaningful error when locale is not set", () => {
+    const i18n = setupI18n({})
+    expect(() =>
+      i18n._(
+        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}"
+      )
+    ).toThrowErrorMatchingInlineSnapshot(`
+      "Lingui: Attempted to call a translation function without setting a locale.
+      Make sure to call \`i18n.activate(locale)\` before using Lingui functions.
+      This issue may also occur due to a race condition in your initialization logic."
+    `)
   })
 })

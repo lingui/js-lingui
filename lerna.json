@@ -1,10 +1,7 @@
 {
-  "version": "5.0.0-next.1",
-  "packages": [
-    "packages/*"
-  ],
+  "version": "5.1.2",
+  "packages": ["packages/*"],
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "version": {
       "message": "chore(release): published %s [skip ci]",
@@ -19,10 +16,7 @@
       ]
     },
     "publish": {
-      "allowBranch": [
-        "main",
-        "next"
-      ],
+      "allowBranch": ["main", "next"],
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",
@@ -33,5 +27,6 @@
         "test/**"
       ]
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

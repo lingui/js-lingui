@@ -2,7 +2,9 @@
 
 exports[`lingui-loader should compile catalog in json format 1`] = `
 {
-  key: Message,
+  key: [
+    Message,
+  ],
   key2: [
     Hello ,
     [
@@ -14,26 +16,34 @@ exports[`lingui-loader should compile catalog in json format 1`] = `
 
 exports[`lingui-loader should compile catalog in po format 1`] = `
 {
-  ED2Xk0: String from template,
+  ED2Xk0: [
+    String from template,
+  ],
   mVmaLu: [
     My name is ,
     [
       name,
     ],
   ],
-  mY42CM: Hello World,
+  mY42CM: [
+    Hello World,
+  ],
 }
 `;
 
 exports[`lingui-loader should compile catalog with relative path with no warnings 1`] = `
 {
-  ED2Xk0: String from template,
+  ED2Xk0: [
+    String from template,
+  ],
   mVmaLu: [
     My name is ,
     [
       name,
     ],
   ],
-  mY42CM: Hello World,
+  mY42CM: [
+    Hello World,
+  ],
 }
 `;

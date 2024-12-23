@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Table from "cli-table"
 import chalk from "chalk"
@@ -30,6 +31,8 @@ export function printStats(
   })
 
   Object.keys(catalogs).forEach((locale) => {
+    if (locale === config.pseudoLocale) return // skip pseudo locale
+
     const catalog = catalogs[locale]
     // catalog is null if no catalog exists on disk and the locale
     // was not extracted due to a `--locale` filter

@@ -28,7 +28,7 @@ export const babelRe = new RegExp(
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[\/\*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
 )
 
 /**
@@ -160,7 +160,11 @@ export function getBabelParserOptions(
   parserOptions: LinguiConfig["extractorParserOptions"]
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
-  const parserPlugins: ParserPlugin[] = []
+  const parserPlugins: ParserPlugin[] = [
+    "importAttributes", // stage3
+    "explicitResourceManagement", // stage3,
+    "decoratorAutoAccessors", // stage3,
+  ]
 
   if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {
     parserPlugins.push("typescript")

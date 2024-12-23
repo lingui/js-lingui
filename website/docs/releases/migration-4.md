@@ -37,7 +37,7 @@ This includes components provided by Lingui, such as `Trans` or `Plural` and als
 
 If the changes to the `I18nProvider` pose a problem to you, please open an issue and explain what the problem is. Additionally, you can keep using the [v3 implementation](https://github.com/lingui/js-lingui/blob/31dcab5a9a8f88bfa8b3a2c7cd12aa2d908a1d80/packages/react/src/I18nProvider.tsx#L58) by copying it into your code base and using that instead.
 
-No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/docs/ref/react.md#uselingui).
+No migration steps are necessary for components provided by Lingui, such as `Trans` or `Plural`. However, if you rendered translations in React components using the `t` macro, you need to be sure that the `useLingui` hook is called in the component, as seen [here](/ref/react#uselingui).
 
 ### Hash-based message ID generation and Context feature
 
@@ -87,7 +87,7 @@ Enabling this mode will swap the logic, and the formatter will treat all message
 
 You can read more about the motivation behind this change in the [original RFC](https://github.com/lingui/js-lingui/issues/1360)
 
-Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/docs/guides/explicit-vs-generated-ids.md#providing-context-for-a-message).
+Also, we've added a possibility to provide a context for the message. For more details, see the [Providing a context for a message](/guides/explicit-vs-generated-ids#context).
 
 The context feature affects the message ID generation and adds the `msgctxt` parameter in case of the PO catalog format extraction.
 
@@ -117,7 +117,7 @@ You will need to make some changes as this is a misuse of the library that actua
 
 Due to the changes caused by hash-based message ID feature described earlier, this approach will no longer work.
 
-Instead, please use [recommended](/docs/tutorials/react-patterns.md#lazy-translations) pattern for such translations:
+Instead, please use [recommended](/guides/lazy-translations) pattern for such translations:
 
 ```tsx
 import { msg } from "@lingui/macro";

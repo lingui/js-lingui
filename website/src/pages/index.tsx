@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Users from "../components/Users";
 import Code from "../components/Code";
 import PartnerBanner from "../components/PartnerBanner";
+import Workflow from "../components/Workflow";
 
 function Home() {
   const { siteConfig } = useDocusaurusContext();
@@ -13,9 +14,10 @@ function Home() {
   return (
     <Layout title={siteConfig.tagline}>
       <Header />
-      <main className={"main-page-content"}>
+      <main>
         <PartnerBanner />
         <Features />
+        <Workflow />
         <Code />
         <Users />
       </main>

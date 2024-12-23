@@ -2,5 +2,5 @@
   "presets": [
     "next/babel"
   ],
-  "plugins": ["macros"]
+  "plugins": ["@lingui/babel-plugin-lingui-macro"]
 }

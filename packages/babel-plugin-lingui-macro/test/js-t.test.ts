@@ -52,7 +52,7 @@ macroTester({
       name: "Variables with escaped double quotes are correctly formatted",
       code: `
         import { t } from '@lingui/core/macro';
-        t\`Variable \"name\"\`;
+        t\`Variable "name"\`;
     `,
     },
     {
@@ -144,6 +144,30 @@ macroTester({
       `,
     },
     {
+      name: "Should not crash when a variable passed",
+      code: `
+        import { t } from '@lingui/core/macro'
+        const msg = t(msg)
+      `,
+    },
+    {
+      name: "should not crash when no params passed",
+      code: `
+        import { t } from '@lingui/core/macro'
+        const msg = t()
+      `,
+    },
+    {
+      name: "stripMessageField option - message prop is removed if stripMessageField: true",
+      macroOpts: {
+        stripMessageField: true,
+      },
+      code: `
+          import { t } from '@lingui/macro'
+          const msg = t\`Message\`
+        `,
+    },
+    {
       name: "Production - only essential props are kept",
       production: true,
       code: `
@@ -171,7 +195,7 @@ macroTester({
         import { t } from '@lingui/core/macro';
         import { i18n } from './lingui';
         const msg = t(i18n)({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',
@@ -184,12 +208,28 @@ macroTester({
       code: `
         import { t } from '@lingui/core/macro';
         const msg = t({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',
         })
     `,
+    },
+    {
+      name: "Production - message prop is kept if stripMessageField: false",
+      production: true,
+      macroOpts: {
+        stripMessageField: false,
+      },
+      code: `
+          import { t } from '@lingui/macro';
+          const msg = t({
+              message: \`Hello \${name}\`,
+              id: 'msgId',
+              comment: 'description for translators',
+              context: 'My Context',
+          })
+      `,
     },
     {
       name: "Production - all props kept if extract: true",
@@ -200,7 +240,7 @@ macroTester({
       code: `
         import { t } from '@lingui/core/macro';
         const msg = t({
-            message: \`Hello $\{name\}\`,
+            message: \`Hello \${name}\`,
             id: 'msgId',
             comment: 'description for translators',
             context: 'My Context',

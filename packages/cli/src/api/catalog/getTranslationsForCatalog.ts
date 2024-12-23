@@ -18,8 +18,10 @@ export async function getTranslationsForCatalog(
   locale: string,
   options: GetTranslationsOptions
 ) {
-  const catalogs = await catalog.readAll()
-  const template = (await catalog.readTemplate()) || {}
+  const [catalogs, template] = await Promise.all([
+    catalog.readAll(),
+    catalog.readTemplate(),
+  ])
 
   const sourceLocaleCatalog = catalogs[options.sourceLocale] || {}
 
@@ -71,7 +73,7 @@ function getTranslation(
   // -> template message
   // ** last resort **
   // -> id
-  let translation =
+  const translation =
     // Get translation in target locale
     getTranslation(locale) ||
     // We search in fallbackLocales as dependent of each locale
@@ -81,12 +83,10 @@ function getTranslation(
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
   if (!translation) {
-    onMissing &&
-      onMissing({
-        id: key,
-        source:
-          msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
-      })
+    onMissing?.({
+      id: key,
+      source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
+    })
   }
 
   return (

@@ -19,57 +19,35 @@
 >
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
-Lingui is an easy yet powerful internationalization framework for global projects.
+Lingui is an easy yet powerful internationalization (i18n) framework for global projects.
 
-- **Clean and readable** - Keep your code clean and readable, while the library uses
-  battle-tested and powerful **ICU MessageFormat** under the hood.
+- **Clean and readable** - Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
-- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl
-  functionality which works in any JavaScript project while `@lingui/react` offers
-  components to leverage React rendering.
+- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support.
 
-- **Full rich-text support** - Use React components inside localized messages
-  without any limitation. Writing rich-text messages is as easy as writing JSX.
+- **Full rich-text support** - Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX.
 
-- **Powerful tooling** - Manage the whole intl workflow using Lingui [CLI][RefCLI]. It
-  extracts messages from source code, validates messages coming from translators and
-  checks that all messages are translated before shipping to production.
+- **Powerful tooling** - Manage your intl workflow with the Lingui [CLI](https://lingui.dev/ref/cli), [Vite Plugin](https://lingui.dev/ref/vite-plugin), and [ESLint Plugin](https://lingui.dev/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
 
-- **Unopinionated** - Integrate Lingui into your existing workflow. It supports
-  message keys as well as auto-generated messages. Translations are stored either in
-  JSON or standard PO files, which are supported in almost all translation tools.
+- **Unopinionated** - Integrate Lingui into your existing workflow. It supports message keys as well as auto-generated messages. Translations are stored either in JSON or standard PO files, which are supported in almost all translation tools.
 
-- **Lightweight and optimized** - Core library is only [1.5 kB gzipped][BundleCore],
-  React components are an additional [1.3 kBs gzipped][BundleReact]. That's less than Redux
-  for a full-featured intl library.
+- **Lightweight and optimized** - Core library is less than [3 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.4 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
 
-- **Active community** - Join us on [Discord][Discord] to discuss the latest development.
-  At the moment, Lingui is the most active intl project on GitHub.
+- **Active community** - Join the growing [community of developers](https://lingui.dev/community) who are using Lingui to build global products.
 
-- **Compatible with react-intl** - Low-level React API is very similar to react-intl
-  and the message format is the same. It's easy to migrate an existing project.
+- **Compatible with react-intl** - Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate an existing project.
 
 ## Quickstart
 
-### Install
-
-- [React projects][TutorialSetupReact]
-- [Vite project][SetupVite]
+1. [Introduction](https://lingui.dev/introduction)
+2. [Installation and Setup](https://lingui.dev/installation)
 
 ### Tutorials
 
-- [React][TutorialReact]
-- [React Native][TutorialReactNative]
-- [Plain JavaScript][TutorialJavaScript]
-- [Working with Command Line Tool][CLI]
-
-### Plugins
-
-- [SWC Plugin][SWCPlugin]
-- [Vite Plugin][VitePlugin]
-- [ESLint Plugin](ESLintPlugin)
-
-If you're a react-intl user, check out [a comparison of react-intl and Lingui](https://lingui.dev/misc/react-intl).
+- [React](https://lingui.dev/tutorials/react)
+- [React Server Components](https://lingui.dev/tutorials/react-rsc)
+- [React Native](https://lingui.dev/tutorials/react-native)
+- [JavaScript](https://lingui.dev/tutorials/javascript)
 
 ## Example
 
@@ -95,15 +73,16 @@ msgid "msg.docs"
 msgstr "Read the <0>documentation</0> for more info."
 ```
 
-For more example see the [Examples][Examples] directory.
+For more example see the [Examples](https://github.com/lingui/js-lingui/tree/main/examples) directory.
 
 ## Support
 
 If you are having issues, please let us know.
 
-- Join us on [Discord](https://discord.gg/gFWwAYnMtA) to chat with the community.
-- Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=linguijs) and mark it with [Lingui](https://stackoverflow.com/questions/tagged/linguijs) tag.
+- Join us on [Discord][Discord] to chat with the community.
+- Ask questions on [StackOverflow](https://stackoverflow.com/questions/ask?tags=linguijs) and mark it with the [`linguijs`](https://stackoverflow.com/questions/tagged/linguijs) tag.
 - If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
+- You can also [Ask Lingui JS Guru](https://gurubase.io/g/lingui-js), it is a Lingui JS focused AI to answer your questions.
 
 ## Contribute
 
@@ -123,17 +102,7 @@ This project exists thanks to [all the people][Contributors] who contribute. [[C
 The project is licensed under the [MIT][License] license.
 
 [Documentation]: https://lingui.dev
-[TutorialReact]: https://lingui.dev/tutorials/react
-[TutorialReactNative]: https://lingui.dev/tutorials/react-native
-[TutorialJavaScript]: https://lingui.dev/tutorials/javascript
-[CLI]: https://lingui.dev/ref/cli
-[TutorialSetupReact]: https://lingui.dev/tutorials/setup-react
-[SetupVite]: https://lingui.dev/tutorials/setup-vite
-[RefCLI]: https://lingui.dev/ref/cli
 [Examples]: https://github.com/lingui/js-lingui/tree/main/examples
-[SWCPlugin]: https://lingui.dev/ref/swc-plugin
-[VitePlugin]: https://lingui.dev/ref/vite-plugin
-[ESLintPlugin]: https://lingui.dev/ref/eslint-plugin
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
@@ -145,6 +114,4 @@ The project is licensed under the [MIT][License] license.
 [Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
-[BundleReact]: https://bundlephobia.com/result?p=@lingui/react
-[BundleCore]: https://bundlephobia.com/result?p=@lingui/core
 [Discord]: https://discord.gg/gFWwAYnMtA

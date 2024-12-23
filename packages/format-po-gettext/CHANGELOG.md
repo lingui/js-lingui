@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/lingui/js-lingui/compare/v5.1.1...v5.1.2) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+## [5.1.1](https://github.com/lingui/js-lingui/compare/v5.1.0...v5.1.1) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+### Features
+
+- **format-po-gettext:** respect Plural-Forms header ([#2070](https://github.com/lingui/js-lingui/issues/2070)) ([5d0516e](https://github.com/lingui/js-lingui/commit/5d0516e5ee8de5bd4369e8760b4a5c77259853db))
+
+# [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
+
+### Features
+
+- adds custom prefix support for gettext po ([#2004](https://github.com/lingui/js-lingui/issues/2004)) ([25b3bc6](https://github.com/lingui/js-lingui/commit/25b3bc60b6b793cd0ef15c25f760de9fef7a6750))
+
+# [4.12.0](https://github.com/lingui/js-lingui/compare/v4.11.4...v4.12.0) (2024-10-11)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
 ## [4.11.4](https://github.com/lingui/js-lingui/compare/v4.11.3...v4.11.4) (2024-09-02)
 
 **Note:** Version bump only for package @lingui/format-po-gettext
