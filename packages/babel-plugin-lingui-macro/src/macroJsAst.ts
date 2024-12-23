@@ -301,10 +301,6 @@ export function expressionToArgument(
   if (t.isIdentifier(exp)) {
     return exp.name
   }
-
-  if (t.isStringLiteral(exp)) {
-    return exp.value
-  }
   return String(ctx.getExpressionIndex())
 }
 

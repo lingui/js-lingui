@@ -160,6 +160,25 @@ expectType<string>(
   })
 )
 
+// with labeled value
+expectType<string>(
+  plural(
+    { count: 5 },
+    {
+      one: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  plural(ph({ count: 5 }), {
+    one: "...",
+    other: "...",
+  })
+)
+
 expectType<string>(
   plural(5, {
     // @ts-expect-error: should accept only strings
@@ -224,6 +243,25 @@ expectType<string>(
   })
 )
 
+// with labeled value
+expectType<string>(
+  selectOrdinal(
+    { count: 5 },
+    {
+      one: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  selectOrdinal(ph({ count: 5 }), {
+    one: "...",
+    other: "...",
+  })
+)
+
 ///////////////////
 //// Select
 ///////////////////
@@ -248,6 +286,26 @@ expectType<string>(
     male: "he",
     female: "she",
     other: "they",
+  })
+)
+
+// with labeled value
+expectType<string>(
+  select(
+    // @ts-expect-error value could be strings only
+    { count: 5 },
+    {
+      male: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  select(ph({ value: "one" }), {
+    male: "...",
+    other: "...",
   })
 )
 

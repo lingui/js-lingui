@@ -50,6 +50,78 @@ _i18n._(
 
 `;
 
+exports[`Macro with labeled expression as value 1`] = `
+import { plural } from "@lingui/core/macro";
+const a = plural(
+  { count: getCount() },
+  {
+    one: \`# book\`,
+    other: "# books",
+  }
+);
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "esnaQO",
+    message: "{count, plural, one {# book} other {# books}}",
+    values: {
+      count: getCount(),
+    },
+  }
+);
+
+`;
+
+exports[`Macro with labeled expression as value 2`] = `
+import { plural, ph } from "@lingui/core/macro";
+const a = plural(ph({ count: getCount() }), {
+  one: \`# book\`,
+  other: "# books",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "esnaQO",
+    message: "{count, plural, one {# book} other {# books}}",
+    values: {
+      count: getCount(),
+    },
+  }
+);
+
+`;
+
+exports[`Macro with labeled expression with \`as\` expression 1`] = `
+import { plural } from "@lingui/core/macro";
+const a = plural({ count: getCount() } as any, {
+  one: \`# book\`,
+  other: "# books",
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const a = _i18n._(
+  /*i18n*/
+  {
+    id: "esnaQO",
+    message: "{count, plural, one {# book} other {# books}}",
+    values: {
+      count: getCount(),
+    },
+  }
+);
+
+`;
+
 exports[`Macro with offset and exact matches 1`] = `
 import { plural } from "@lingui/core/macro";
 plural(users.length, {

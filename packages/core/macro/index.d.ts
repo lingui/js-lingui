@@ -38,7 +38,7 @@ type MacroMessageDescriptor = (
  * const message = t({
  *   id: "msg.hello",
  *   comment: "Greetings at the homepage",
- *   message: `Hello ${name}`,
+ *   message: `Hello ${{name}}`,
  * });
  * ```
  *
@@ -55,8 +55,11 @@ type MacroMessageDescriptor = (
  */
 export function t(descriptor: MacroMessageDescriptor): string
 
-export type LabeledExpression = Record<string, string | number>
-export type MessagePlaceholder = string | number | LabeledExpression
+export type LabeledExpression<T> = Record<string, T>
+export type MessagePlaceholder =
+  | string
+  | number
+  | LabeledExpression<string | number>
 
 /**
  * Translates a template string using the global I18n instance
@@ -64,7 +67,7 @@ export type MessagePlaceholder = string | number | LabeledExpression
  * @example
  * ```
  * import { t } from "@lingui/core/macro";
- * const message = t`Hello ${name}`;
+ * const message = t`Hello ${{name}}`;
  * ```
  */
 export function t(
@@ -81,9 +84,9 @@ export function t(
  * import { I18n } from "@lingui/core";
  * const i18n = new I18n({
  *   locale: "nl",
- *   messages: { "Hello {name}": "Hallo {name}" },
+ *   messages: { "Hello {{name}}": "Hallo {{name}}" },
  * });
- * const message = t(i18n)`Hello ${name}`;
+ * const message = t(i18n)`Hello ${{name}}`;
  * ```
  *
  * @example
@@ -92,13 +95,13 @@ export function t(
  * import { I18n } from "@lingui/core";
  * const i18n = new I18n({
  *   locale: "nl",
- *   messages: { "Hello {name}": "Hallo {name}" },
+ *   messages: { "Hello {{name}}": "Hallo {{name}}" },
  * });
- * const message = t(i18n)({ message: `Hello ${name}` });
+ * const message = t(i18n)({ message: `Hello ${{name}}` });
  * ```
  *
  * @deprecated in v5, would be removed in v6.
- * Please use `` i18n._(msg`Hello ${name}`) `` instead
+ * Please use `` i18n._(msg`Hello ${{name}}`) `` instead
  *
  */
 export function t(i18n: I18n): {
@@ -112,7 +115,7 @@ export function t(i18n: I18n): {
  * @example
  * ```
  * import { plural } from "@lingui/core/macro";
- * const message = plural(count, {
+ * const message = plural({count}, {
  *   one: "# Book",
  *   other: "# Books",
  * });
@@ -121,7 +124,10 @@ export function t(i18n: I18n): {
  * @param value Determines the plural form
  * @param options Object with available plural forms
  */
-export function plural(value: number | string, options: ChoiceOptions): string
+export function plural(
+  value: number | string | LabeledExpression<number | string>,
+  options: ChoiceOptions
+): string
 
 /**
  * Pluralize a message using ordinal forms
@@ -132,7 +138,7 @@ export function plural(value: number | string, options: ChoiceOptions): string
  * @example
  * ```
  * import { selectOrdinal } from "@lingui/core/macro";
- * const message = selectOrdinal(count, {
+ * const message = selectOrdinal({count}, {
  *    one: "#st",
  *    two: "#nd",
  *    few: "#rd",
@@ -144,7 +150,7 @@ export function plural(value: number | string, options: ChoiceOptions): string
  * @param options Object with available plural forms
  */
 export function selectOrdinal(
-  value: number | string,
+  value: number | string | LabeledExpression<number | string>,
   options: ChoiceOptions
 ): string
 
@@ -164,7 +170,7 @@ type SelectOptions = {
  * @example
  * ```
  * import { select } from "@lingui/core/macro";
- * const message = select(gender, {
+ * const message = select({gender}, {
  *    male: "he",
  *    female: "she",
  *    other: "they",
@@ -174,7 +180,10 @@ type SelectOptions = {
  * @param value The key of choices to use
  * @param choices
  */
-export function select(value: string, choices: SelectOptions): string
+export function select(
+  value: string | LabeledExpression<string>,
+  choices: SelectOptions
+): string
 
 /**
  * Define a message for later use
@@ -187,7 +196,7 @@ export function select(value: string, choices: SelectOptions): string
  * import { defineMessage } from "@lingui/core/macro";
  * const message = defineMessage({
  *    comment: "Greetings on the welcome page",
- *    message: `Welcome, ${name}!`,
+ *    message: `Welcome, ${{name}}!`,
  * });
  * ```
  *
@@ -203,10 +212,10 @@ export function defineMessage(
  * @example
  * ```
  * import { defineMessage, msg } from "@lingui/core/macro";
- * const message = defineMessage`Hello ${name}`;
+ * const message = defineMessage`Hello ${{name}}`;
  *
  * // or using shorter version
- * const message = msg`Hello ${name}`;
+ * const message = msg`Hello ${{name}}`;
  * ```
  */
 export function defineMessage(

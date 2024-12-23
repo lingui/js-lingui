@@ -294,7 +294,7 @@ export class MacroJSX {
       )(attr.node)
     })
 
-    const token: Token = {
+    let token: Token = {
       type: "arg",
       format,
       name: null,
@@ -321,10 +321,12 @@ export class MacroJSX {
         | NodePath<JSXExpressionContainer>
 
       if (name === "value") {
-        const exp = value.isLiteral() ? value : value.get("expression")
-
-        token.name = this.expressionToArgument(exp)
-        token.value = exp.node as Expression
+        token = {
+          ...token,
+          ...this.tokenizeExpression(
+            value.isLiteral() ? value : value.get("expression")
+          ),
+        }
       } else if (format !== "select" && name === "offset") {
         // offset is static parameter, so it must be either string or number
         token.options.offset =
@@ -394,11 +396,7 @@ export class MacroJSX {
       },
     })
 
-    return {
-      type: "arg",
-      name: this.expressionToArgument(exp),
-      value: exp.node,
-    }
+    return this.tokenizeExpression(exp)
   }
 
   tokenizeText = (value: string): TextToken => {
@@ -406,12 +404,6 @@ export class MacroJSX {
       type: "text",
       value,
     }
-  }
-
-  expressionToArgument(path: NodePath<Expression | Node>): string {
-    return path.isIdentifier()
-      ? path.node.name
-      : String(this.ctx.getExpressionIndex())
   }
 
   isLinguiComponent = (
