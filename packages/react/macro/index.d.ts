@@ -11,13 +11,13 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
-type TransChildren = ReactNode | LabeledExpression
+type TransChildren = ReactNode | LabeledExpression<string | number>
 type TransProps = {
   children: TransChildren | TransChildren[]
 } & CommonProps
 
 type PluralChoiceProps = {
-  value: string | number
+  value: string | number | LabeledExpression<string | number>
   /** Offset of value when calculating plural forms */
   offset?: number
   zero?: ReactNode
@@ -33,7 +33,7 @@ type PluralChoiceProps = {
 } & CommonProps
 
 type SelectChoiceProps = {
-  value: string
+  value: string | LabeledExpression<string | number>
   /** Catch-all option */
   other: ReactNode
   [option: `_${string}`]: ReactNode

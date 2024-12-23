@@ -81,6 +81,9 @@ m = <Plural value={5} one={<Trans>...</Trans>} other={<Trans>...</Trans>} />
 // value as string
 m = <Plural value={"5"} one={"..."} other={"..."} />
 
+// with labeled value
+m = <Plural value={{ count: 5 }} one={"..."} other={"..."} />
+
 // @ts-expect-error: `other` should always be present
 m = <Plural value={"5"} one={"..."} />
 
@@ -133,6 +136,8 @@ m = <Select value={gender} _male="..." _female="..." other={"..."} />
 
 // @ts-expect-error: exact cases should be prefixed with underscore
 m = <Select value={gender} male="..." female=".." other={"..."} />
+
+m = <Select value={{ gender }} _male="..." _female=".." other={"..."} />
 
 // should support JSX in props
 m = (
