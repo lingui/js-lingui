@@ -3012,6 +3012,7 @@ __metadata:
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
     "@lingui/jest-mocks": "workspace:^"
+    "@messageformat/date-skeleton": ^1.1.0
     "@messageformat/parser": ^5.0.0
     js-sha256: ^0.10.1
     unbuild: 2.0.0
@@ -3107,6 +3108,13 @@ __metadata:
     vite: ^3 || ^4 || ^5.0.9 || ^6
   languageName: unknown
   linkType: soft
+
+"@messageformat/date-skeleton@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@messageformat/date-skeleton@npm:1.1.0"
+  checksum: 599adc2aba1639b9505420bce61035ce8cbf1a38bf77b39be5de7b9ecb4c4a2290ae3ebc2ee94ba5aabf52d22654b5febb961694dc52d9a4e6fb859d758aaea8
+  languageName: node
+  linkType: hard
 
 "@messageformat/parser@npm:^5.0.0":
   version: 5.0.0
