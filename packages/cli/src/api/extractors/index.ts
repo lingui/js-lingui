@@ -20,7 +20,7 @@ export default async function extract(
 ): Promise<boolean> {
   const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
 
-  for (let ext of extractorsToExtract) {
+  for (const ext of extractorsToExtract) {
     if (!ext.match(filename)) continue
 
     try {

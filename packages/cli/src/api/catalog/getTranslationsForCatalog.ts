@@ -73,7 +73,7 @@ function getTranslation(
   // -> template message
   // ** last resort **
   // -> id
-  let translation =
+  const translation =
     // Get translation in target locale
     getTranslation(locale) ||
     // We search in fallbackLocales as dependent of each locale
@@ -83,12 +83,10 @@ function getTranslation(
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
   if (!translation) {
-    onMissing &&
-      onMissing({
-        id: key,
-        source:
-          msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
-      })
+    onMissing?.({
+      id: key,
+      source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
+    })
   }
 
   return (

@@ -28,7 +28,7 @@ export const babelRe = new RegExp(
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[\/\*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
 )
 
 /**

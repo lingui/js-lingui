@@ -1,5 +1,6 @@
 // use package path instead relative because we want
 // to test it in from /dist folder in integration tests
+// eslint-disable-next-line import/no-extraneous-dependencies
 import linguiMacroPlugin, {
   LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
