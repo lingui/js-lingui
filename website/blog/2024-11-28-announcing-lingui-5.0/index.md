@@ -227,9 +227,7 @@ module.exports = {
   plugins: [
     "macros",
     {
-      lingui: {
-        stripMessageField: true,
-      },
+      stripMessageField: true,
     },
   ],
 };
