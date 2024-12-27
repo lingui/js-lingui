@@ -84,6 +84,10 @@ select(gender, {
 });
 ```
 
+:::caution
+All Core Macros cannot be used at the module level. They must be used within a component or function. See the [Macros](/ref/macro#using-macros) documentation for more information.
+:::
+
 ## See Also
 
 - [Message Extraction Guide](/guides/message-extraction)
