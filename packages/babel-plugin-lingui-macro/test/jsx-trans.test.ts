@@ -66,6 +66,30 @@ macroTester({
       `,
     },
     {
+      name: "Labeled expressions are supported",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans>Hi {{name: getUserName()}}, my name is {{myName: getMyName()}}</Trans>;
+      `,
+    },
+    {
+      name: "Labeled expressions with ph helper",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        import { ph } from '@lingui/core/macro';
+        <Trans>Hi {ph({name: getUserName()})}, my name is {ph({myName: getMyName()})}</Trans>;
+      `,
+    },
+    {
+      useTypescriptPreset: true,
+      name: "Labeled expressions with `as` expression",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        import { ph } from '@lingui/core/macro';
+        <Trans>Hi {{name: getUserName()} as any}, my name is {{myName: getMyName()} as any}</Trans>;
+      `,
+    },
+    {
       name: "Variables are deduplicated",
       code: `
         import { Trans } from '@lingui/react/macro';

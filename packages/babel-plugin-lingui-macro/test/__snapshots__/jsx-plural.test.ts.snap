@@ -261,3 +261,62 @@ import { Trans as _Trans } from "@lingui/react";
 />;
 
 `;
+
+exports[`With labeled expression as value 1`] = `
+import { Plural } from "@lingui/react/macro";
+<Plural
+  value={{ count: getCount() }}
+  one={"oneText"}
+  other={<a href="/more">A lot of them</a>}
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "blU5AK",
+      message: "{count, plural, one {oneText} other {<0>A lot of them</0>}}",
+      values: {
+        count: getCount(),
+      },
+      components: {
+        0: <a href="/more" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`With labeled expression as value with ph 1`] = `
+import { Plural } from "@lingui/react/macro";
+import { ph } from "@lingui/core/macro";
+<Plural
+  value={ph({ count: getCount() })}
+  one={"oneText"}
+  other={<a href="/more">A lot of them</a>}
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "blU5AK",
+      message: "{count, plural, one {oneText} other {<0>A lot of them</0>}}",
+      values: {
+        count: getCount(),
+      },
+      components: {
+        0: <a href="/more" />,
+      },
+    }
+  }
+/>;
+
+`;

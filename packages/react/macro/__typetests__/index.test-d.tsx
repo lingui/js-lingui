@@ -9,8 +9,12 @@ import {
   useLingui,
 } from "@lingui/react/macro"
 import React from "react"
+import { ph } from "@lingui/core/macro"
 
 const gender = "male"
+const user = {
+  name: "John",
+}
 let m: any
 
 ///////////////////
@@ -27,6 +31,29 @@ m = (
 // @ts-expect-error: children are required here
 m = <Trans id="custom.id" comment="comment" context="context" />
 
+m = <Trans>Hello {{ username: user.name }}</Trans>
+
+m = (
+  <Trans>
+    Hello <strong>{ph({ name: user.name })}</strong>
+  </Trans>
+)
+m = (
+  <Trans>
+    Hello <strong>{ph({ name: user.name })}</strong>
+  </Trans>
+)
+m = (
+  <Trans>
+    Hello <strong>{user.name}</strong>
+  </Trans>
+)
+m = (
+  <Trans>
+    {/* @ts-expect-error: use of {} without ph() helper is not possible in the children components */}
+    Hello <strong>{{ name: user.name }}</strong>
+  </Trans>
+)
 ///////////////////
 //// JSX Plural
 ///////////////////
@@ -53,6 +80,9 @@ m = <Plural value={5} one={<Trans>...</Trans>} other={<Trans>...</Trans>} />
 
 // value as string
 m = <Plural value={"5"} one={"..."} other={"..."} />
+
+// with labeled value
+m = <Plural value={{ count: 5 }} one={"..."} other={"..."} />
 
 // @ts-expect-error: `other` should always be present
 m = <Plural value={"5"} one={"..."} />
@@ -106,6 +136,8 @@ m = <Select value={gender} _male="..." _female="..." other={"..."} />
 
 // @ts-expect-error: exact cases should be prefixed with underscore
 m = <Select value={gender} male="..." female=".." other={"..."} />
+
+m = <Select value={{ gender }} _male="..." _female=".." other={"..."} />
 
 // should support JSX in props
 m = (

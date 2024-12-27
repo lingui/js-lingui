@@ -8,14 +8,26 @@ import {
   plural,
   selectOrdinal,
   select,
+  ph,
 } from "@lingui/core/macro"
 
 const name = "Jack"
+const user = { name: "Jack" }
 const i18n: I18n = null
+const numberValue = 2
 
 // simple
 expectType<string>(t`Hello world`)
 expectType<string>(t`Hello ${name}`)
+
+// with labeled expression
+expectType<string>(t`Hello ${{ name: user.name }}`)
+
+// with ph labeled expression
+expectType<string>(t`Hello ${ph({ name: user.name })}`)
+
+// allow numbers
+expectType<string>(t`Hello ${numberValue}`)
 
 // with custom i18n
 expectType<string>(t(i18n)`With custom i18n instance`)
@@ -62,6 +74,26 @@ expectType<string>(
     message: "Hello world",
   })
 )
+
+///
+// defineMessage
+///
+
+// simple
+expectType<MessageDescriptor>(msg`Hello ${name}`)
+expectType<MessageDescriptor>(defineMessage`Hello ${name}`)
+
+// with labeled expression
+expectType<MessageDescriptor>(msg`Hello ${{ name: user.name }}`)
+expectType<MessageDescriptor>(defineMessage`Hello ${{ name: user.name }}`)
+
+// with ph labeled expression
+expectType<MessageDescriptor>(msg`Hello ${ph({ name: user.name })}`)
+expectType<MessageDescriptor>(defineMessage`Hello ${ph({ name: user.name })}`)
+
+// allow numbers
+expectType<MessageDescriptor>(msg`Hello ${numberValue}`)
+expectType<MessageDescriptor>(defineMessage`Hello ${numberValue}`)
 
 expectType<MessageDescriptor>(
   defineMessage({
@@ -123,6 +155,25 @@ expectType<string>(
   plural(5, {
     0: "...",
     1: "...",
+    one: "...",
+    other: "...",
+  })
+)
+
+// with labeled value
+expectType<string>(
+  plural(
+    { count: 5 },
+    {
+      one: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  plural(ph({ count: 5 }), {
     one: "...",
     other: "...",
   })
@@ -192,6 +243,25 @@ expectType<string>(
   })
 )
 
+// with labeled value
+expectType<string>(
+  selectOrdinal(
+    { count: 5 },
+    {
+      one: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  selectOrdinal(ph({ count: 5 }), {
+    one: "...",
+    other: "...",
+  })
+)
+
 ///////////////////
 //// Select
 ///////////////////
@@ -216,6 +286,26 @@ expectType<string>(
     male: "he",
     female: "she",
     other: "they",
+  })
+)
+
+// with labeled value
+expectType<string>(
+  select(
+    // @ts-expect-error value could be strings only
+    { count: 5 },
+    {
+      male: "...",
+      other: "...",
+    }
+  )
+)
+
+// with labeled value with ph helper
+expectType<string>(
+  select(ph({ value: "one" }), {
+    male: "...",
+    other: "...",
   })
 )
 
