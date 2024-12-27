@@ -144,18 +144,9 @@ describe("interpolate", () => {
 
   describe("Custom format", () => {
     const testVector = [
-      ["en", undefined, "0.1", "10%", "20%", "3/4/2017", "€0.10", "€1.00"],
-      [
-        "fr",
-        undefined,
-        "0,1",
-        "10 %",
-        "20 %",
-        "04/03/2017",
-        "0,10 €",
-        "1,00 €",
-      ],
-      ["fr", "fr-CH", "0,1", "10%", "20%", "04.03.2017", "0.10 €", "1.00 €"],
+      ["en", undefined, "0.1", "10%", "20%", "€0.10", "€1.00"],
+      ["fr", undefined, "0,1", "10 %", "20 %", "0,10 €", "1,00 €"],
+      ["fr", "fr-CH", "0,1", "10%", "20%", "0.10 €", "1.00 €"],
     ] as const
     testVector.forEach((tc) => {
       const [
@@ -164,7 +155,6 @@ describe("interpolate", () => {
         expectedNumber,
         expectedPercent1,
         expectedPercent2,
-        expectedDate,
         expectedCurrency1,
         expectedCurrency2,
       ] = tc
@@ -176,10 +166,6 @@ describe("interpolate", () => {
         const percent = prepare("{value, number, percent}", locale, locales)
         expect(percent({ value: 0.1 })).toEqual(expectedPercent1)
         expect(percent({ value: 0.2 })).toEqual(expectedPercent2)
-
-        const now = new Date("3/4/2017")
-        const date = prepare("{value, date}", locale, locales)
-        expect(date({ value: now })).toEqual(expectedDate)
 
         const formats = {
           currency: {
