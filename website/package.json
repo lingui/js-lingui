@@ -15,16 +15,16 @@
     "fixFormat": "prettier --write ."
   },
   "dependencies": {
-    "@docusaurus/core": "3.5.2",
-    "@docusaurus/preset-classic": "3.5.2",
-    "@docusaurus/remark-plugin-npm2yarn": "3.5.2",
-    "@docusaurus/theme-mermaid": "3.5.2",
-    "@mdx-js/react": "3.0.1",
+    "@docusaurus/core": "3.6.3",
+    "@docusaurus/preset-classic": "3.6.3",
+    "@docusaurus/remark-plugin-npm2yarn": "3.6.3",
+    "@docusaurus/theme-mermaid": "3.6.3",
+    "@mdx-js/react": "3.1.0",
     "clsx": "2.1.1",
-    "docusaurus-plugin-sass": "^0.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "sass": "^1.79.3"
+    "docusaurus-plugin-sass": "^0.2.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "sass": "^1.83.0"
   },
   "browserslist": [
     ">0.2%",
@@ -32,20 +32,22 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "3.5.2",
-    "@docusaurus/module-type-aliases": "3.5.2",
-    "@docusaurus/utils": "3.5.2",
+    "@docusaurus/eslint-plugin": "3.6.3",
+    "@docusaurus/module-type-aliases": "3.6.3",
+    "@docusaurus/utils": "3.6.3",
+    "@eslint/js": "^9.17.0",
     "@tsconfig/docusaurus": "2.0.3",
-    "@types/react": "18.3.8",
+    "@types/react": "19.0.2",
     "@types/react-helmet": "6.1.11",
     "@types/react-router-dom": "5.3.3",
-    "@typescript-eslint/eslint-plugin": "7.0.2",
-    "@typescript-eslint/parser": "7.0.2",
-    "editorconfig-checker": "5.1.8",
-    "eslint": "8.57.0",
-    "eslint-plugin-react": "7.36.1",
-    "eslint-plugin-react-hooks": "4.6.2",
-    "prettier": "3.3.3",
+    "@typescript-eslint/eslint-plugin": "8.18.2",
+    "@typescript-eslint/parser": "8.18.2",
+    "editorconfig-checker": "6.0.0",
+    "eslint": "9.17.0",
+    "eslint-plugin-react": "7.37.3",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "globals": "^15.14.0",
+    "prettier": "3.4.2",
     "remark-cli": "12.0.1",
     "remark-heading-id": "^1.0.1",
     "remark-lint-match-punctuation": "0.2.1",
@@ -65,8 +67,11 @@
     "retext-sentence-spacing": "6.0.0",
     "retext-syntax-mentions": "4.0.0",
     "retext-syntax-urls": "4.0.0",
-    "typescript": "5.3.3",
+    "typescript": "5.7.2",
     "typescript-plugin-css-modules": "^5.1.0",
     "unified": "11.0.5"
+  },
+  "resolutions": {
+    "mermaid": "^10.0.0"
   }
 }
