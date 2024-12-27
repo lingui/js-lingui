@@ -101,41 +101,38 @@ msgstr ""
       }
     )
 
-    it(
-      "Should allow empty translation for pseudo locale",
-      async () => {
-        expect.assertions(4)
+    it("Should allow empty translation for pseudo locale", async () => {
+      expect.assertions(4)
 
-        const rootDir = await createFixtures({
-          "/test": {
-            "en.po": `
+      const rootDir = await createFixtures({
+        "/test": {
+          "en.po": `
 msgid "Hello World"
 msgstr "Hello World"
         `,
-            "pl.po": `
+          "pl.po": `
 msgid "Hello World"
 msgstr ""
         `,
-          },
+        },
+      })
+
+      const config = getConfig(rootDir, "pl")
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
         })
+        const actualFiles = readFsToJson(config.rootDir)
 
-        const config = getConfig(rootDir, 'pl')
+        expect(actualFiles["pl.js"]).toBeTruthy()
+        expect(actualFiles["en.js"]).toBeTruthy()
 
-        await mockConsole(async (console) => {
-          const result = await command(config, {
-            allowEmpty: false,
-          })
-          const actualFiles = readFsToJson(config.rootDir)
-
-          expect(actualFiles["pl.js"]).toBeTruthy()
-          expect(actualFiles["en.js"]).toBeTruthy()
-
-          const log = getConsoleMockCalls(console.error)
-          expect(log).toBeUndefined()
-          expect(result).toBeTruthy()
-        })
-      }
-    )
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toBeUndefined()
+        expect(result).toBeTruthy()
+      })
+    })
 
     it("Should show missing messages verbosely when verbose = true", async () => {
       expect.assertions(2)
