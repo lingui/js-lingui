@@ -645,6 +645,10 @@ export default function ImageWithCaption() {
 
 :::
 
+:::caution
+All Core Macros cannot be used at the module level. They must be used within a component or function. See the [Macros](/ref/macro#using-macros) documentation for more information.
+:::
+
 ## Review
 
 After all modifications, the final i18n-ready component looks like this:
