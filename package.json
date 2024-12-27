@@ -16,7 +16,7 @@
     "test:tsd": "jest -c jest.config.types.js",
     "test:all": "yarn test && yarn test:integration && yarn test:e2e && yarn test:tsd",
     "lint:types": "tsc",
-    "lint:eslint": "eslint './packages",
+    "lint:eslint": "eslint ./packages",
     "lint:all": "yarn lint:eslint && yarn lint:types",
     "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",
     "prettier:check": "prettier --check '**/*.{ts,tsx,js,jsx}'",
