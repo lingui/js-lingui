@@ -1180,6 +1180,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/macro@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "@lingui/macro@npm:5.1.2"
+  dependencies:
+    "@lingui/core": ^5.1.2
+    "@lingui/react": ^5.1.2
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.1.2
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
+  checksum: 5161f4cfb4113c75020ce4a8e4a1ecef0c5f2aa5c1214c00861d0c7d2f6bbdcb36ed992137167b81229dfb45de571ad507de5b42aabdb030b79271132d819786
+  languageName: node
+  linkType: hard
+
 "@lingui/message-utils@npm:^5.1.2":
   version: 5.1.2
   resolution: "@lingui/message-utils@npm:5.1.2"
@@ -4986,6 +5004,7 @@ __metadata:
     "@lingui/cli": ^5.1.2
     "@lingui/core": ^5.1.2
     "@lingui/loader": ^5.1.2
+    "@lingui/macro": ^5.1.2
     "@lingui/react": ^5.1.2
     "@lingui/swc-plugin": ^5.0.1
     "@types/negotiator": ^0.6.3

@@ -4,7 +4,6 @@ import { LinguiClientProvider } from '../../components/LinguiClientProvider'
 import { initLingui, PageLangParam } from '../../initLingui'
 import React from 'react'
 import { t } from '@lingui/macro'
-import { setI18n } from '@lingui/react/server'
 
 export async function generateStaticParams() {
   return linguiConfig.locales.map((lang) => ({ lang }))
@@ -18,7 +17,7 @@ export async function generateMetadata(props: PageLangParam) {
   }
 }
 
-export default async function RootLayout({ children, params }) {
+export default async function RootLayout({ children, params }: any) {
   const lang = (await params).lang
   initLingui(lang)
 

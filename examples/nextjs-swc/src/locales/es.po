@@ -38,8 +38,8 @@ msgstr "Serbio"
 msgid "Spanish"
 msgstr "Español"
 
-#: src/app/[lang]/layout.tsx:16
 #: src/components/HomePage.tsx:21
+#: src/app/[lang]/layout.tsx:16
 msgid "Translation Demo"
 msgstr "Demostración de Traducción"
 
