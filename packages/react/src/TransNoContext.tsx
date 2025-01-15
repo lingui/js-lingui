@@ -30,7 +30,6 @@ export type TransProps = {
   components?: { [key: string]: React.ElementType | any }
   formats?: MessageOptions["formats"]
   comment?: string
-  children?: React.ReactNode
 } & TransRenderCallbackOrComponent
 
 /**
