@@ -74,9 +74,6 @@ jobs:
       - name: Test Public Typings
         run: yarn test:tsd
 
-      - name: Integration Testing
-        run: yarn test:integration
-
       - name: E2E Testing
         run: yarn test:e2e
 

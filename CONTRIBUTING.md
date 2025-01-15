@@ -12,7 +12,7 @@ This project and everyone participating in it are governed by the [Code of Condu
 
 The documentation is based on [Docusaurus](https://docusaurus.io/) framework. Source inside the [website](https://github.com/lingui/js-lingui/tree/main/website) directory.
 
-- Go to the `website` directory: 
+- Go to the `website` directory:
 
   ```sh
   cd website
@@ -20,24 +20,24 @@ The documentation is based on [Docusaurus](https://docusaurus.io/) framework. So
 
 - Install dependencies:
 
-   ```sh
-   yarn install
-   ```
+  ```sh
+  yarn install
+  ```
 
 - To build the docs, watch for changes and preview documentation locally at [http://localhost:3000/](http://localhost:3000/):
 
-   ```sh
-   yarn start
-   ```
+  ```sh
+  yarn start
+  ```
 
 - It's also possible to run `yarn build` for single build. Incremental builds are much faster than the first one as only changed files are built.
 
 - Please lint and validate the documentation before submitting any changes:
 
-   ```sh
-   yarn lint
-   yarn checkFormat
-   ```
+  ```sh
+  yarn lint
+  yarn checkFormat
+  ```
 
 ## Contributing the code
 
@@ -68,10 +68,6 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    yarn test
    ```
 
-   > **Note**
-   > If you are using an IDE to run test make sure to use the right Jest config.
-   > For unit tests use `-c jest.config.js`. Integration tests use build packages (created using `yarn release:build`) and config `-c jest.config.integration.js`. See [package.json](./package.json) for more info.
-
 ### Using development version in your project
 
 After you successfully fix a bug or add a new feature, you most probably want to test it in a real-world project as soon as possible.
@@ -84,44 +80,50 @@ There are two documented ways to do this: first is a generic way described in th
 
 1. Run `verdaccio` locally in docker (follow [verdaccio guide](https://verdaccio.org/docs/en/what-is-verdaccio.html) if you don't want to run it in Docker):
 
-    ```sh
-    docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
-    ```
+   ```sh
+   docker run -d -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
+   ```
 
-    > Make sure that your verdaccio user is the same that appears in verdacio-release.js script.
+   > Make sure that your verdaccio user is the same that appears in verdacio-release.js script.
 
 2. Publish local build of packages to registry. Run local release script:
 
-    ```sh
-    yarn verdaccio:release
-    ```
+   ```sh
+   yarn verdaccio:release
+   ```
 
 3. If you enter inside http://0.0.0.0:4873 (verdaccio instance), you will see your packages published, so you're ready to install them.
 
 4. Inside your project, run:
 
-    with NPM:
-    ```sh 
-    # Point to your local registry
-    npm config set registry http://0.0.0.0:4873/
-    # Run update-by-scope will update all @lingui packages
-    npx update-by-scope @lingui
-    ```
-    with Yarn Classic (1.*):
-    ```sh 
-    yarn upgrade --scope @lingui --registry http://0.0.0.0:4873/ --latest
-    ```
-    with Yarn Berry:
-    ```sh 
-    YARN_NPM_REGISTRY_SERVER=http://0.0.0.0:4873/ yarn up "@lingui/*" 
-    ```
+   with NPM:
+
+   ```sh
+   # Point to your local registry
+   npm config set registry http://0.0.0.0:4873/
+   # Run update-by-scope will update all @lingui packages
+   npx update-by-scope @lingui
+   ```
+
+   with Yarn Classic (1.\*):
+
+   ```sh
+   yarn upgrade --scope @lingui --registry http://0.0.0.0:4873/ --latest
+   ```
+
+   with Yarn Berry:
+
+   ```sh
+   YARN_NPM_REGISTRY_SERVER=http://0.0.0.0:4873/ yarn up "@lingui/*"
+   ```
+
 5. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
 
 6. When finished testing, restore default registry (only for NPM)
 
-    ```sh
-    npm config set registry https://registry.npmjs.org/
-    ```
+   ```sh
+   npm config set registry https://registry.npmjs.org/
+   ```
 
 #### Testing changes using the React Native example
 
