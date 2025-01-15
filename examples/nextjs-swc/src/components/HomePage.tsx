@@ -1,7 +1,8 @@
 import React from 'react'
 import { useLingui } from '@lingui/react'
 import Head from 'next/head'
-import { t, Trans } from '@lingui/macro'
+import { t } from "@lingui/core/macro"
+import { Trans } from "@lingui/react/macro"
 import { Switcher } from './Switcher'
 import { AboutText } from './AboutText'
 import Developers from './Developers'
