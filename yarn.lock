@@ -2684,7 +2684,6 @@ __metadata:
     pkg-up: ^3.1.0
     pofile: ^1.1.4
     pseudolocale: ^2.0.0
-    ramda: ^0.27.1
     source-map: ^0.8.0-beta.0
   bin:
     lingui: ./dist/lingui.js
@@ -2775,7 +2774,6 @@ __metadata:
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
     "@lingui/conf": 5.1.2
-    ramda: ^0.28.0
     tsd: ^0.28.0
     unbuild: ^2.0.0
   languageName: unknown
@@ -2934,7 +2932,6 @@ __metadata:
   dependencies:
     "@lingui/core": 4.0.0
     "@lingui/message-utils": 4.0.0
-    ramda: ^0.27.1
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -4315,15 +4312,6 @@ __metadata:
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
   checksum: 5b43b8b15415e1f298243165f1d44390403bb2bd42e662bca3b5b5633fdd39c938e91b7fce3a9483699db0f7a715d08cef220c121f723a634972fdf596aec980
-  languageName: node
-  linkType: hard
-
-"@types/ramda@npm:^0.27.23":
-  version: 0.27.23
-  resolution: "@types/ramda@npm:0.27.23"
-  dependencies:
-    ts-toolbelt: ^6.3.3
-  checksum: cb551b6b44adbb40426ed5fde35104cd05850077e0c78c33bccd555156c3a9768f02186c57576d1806d238b517fcb2b6ef5fb472d43261865562ac9647e997b8
   languageName: node
   linkType: hard
 
@@ -10624,7 +10612,6 @@ __metadata:
     "@types/jest": ^29.4.0
     "@types/mock-fs": ^4.13.1
     "@types/node": 20.14.8
-    "@types/ramda": ^0.27.23
     babel-jest: ^29.7.0
     chalk: ^4.1.0
     cross-env: ^7.0.2
@@ -13453,20 +13440,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ramda@npm:^0.27.1":
-  version: 0.27.2
-  resolution: "ramda@npm:0.27.2"
-  checksum: 28d6735dd1eea1a796c56cf6111f3673c6105bbd736e521cdd7826c46a18eeff337c2dba4668f6eed990d539b9961fd6db19aa46ccc1530ba67a396c0a9f580d
-  languageName: node
-  linkType: hard
-
-"ramda@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "ramda@npm:0.28.0"
-  checksum: 44ea6e5010bba70151b6a92d8114a91915e8b5a16105cce65fae58c9d7386b812c429645e35f21141d7087568550ce383bc10ee1a65cdec951f4b69ea457e6a4
-  languageName: node
-  linkType: hard
-
 "randombytes@npm:^2.1.0":
   version: 2.1.0
   resolution: "randombytes@npm:2.1.0"
@@ -15319,13 +15292,6 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: d60d1e1d80936f6002b1bb27f7e062408bc733141b9d666565503f023c340a3196d506c836a4316c5793af81a5f910ab49bb9c13f66e2dc66de4e0f03851dbca
-  languageName: node
-  linkType: hard
-
-"ts-toolbelt@npm:^6.3.3":
-  version: 6.15.5
-  resolution: "ts-toolbelt@npm:6.15.5"
-  checksum: 24ad00cfd9ce735c76c873a9b1347eac475b94e39ebbdf100c9019dce88dd5f4babed52884cf82bb456a38c28edd0099ab6f704b84b2e5e034852b618472c1f3
   languageName: node
   linkType: hard
 

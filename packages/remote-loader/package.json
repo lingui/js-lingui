@@ -50,8 +50,7 @@
   ],
   "dependencies": {
     "@lingui/core": "4.0.0",
-    "@lingui/message-utils": "4.0.0",
-    "ramda": "^0.27.1"
+    "@lingui/message-utils": "4.0.0"
   },
   "devDependencies": {
     "unbuild": "2.0.0"

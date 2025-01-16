@@ -30,7 +30,7 @@ function cleanAndSort(catalog: CatalogType, clean: boolean, orderBy: OrderBy) {
     catalog = cleanObsolete(catalog)
   }
 
-  return order(orderBy)(catalog) as CatalogType
+  return order(orderBy, catalog) as CatalogType
 }
 
 export async function writeCatalogs(

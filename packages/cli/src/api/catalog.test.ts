@@ -528,7 +528,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("messageId")(catalog)
+    const orderedCatalogs = order("messageId", catalog)
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toMatchSnapshot()
@@ -560,7 +560,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("origin")(catalog)
+    const orderedCatalogs = order("origin", catalog)
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toMatchSnapshot()
@@ -596,7 +596,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("message")(catalog)
+    const orderedCatalogs = order("message", catalog)
 
     // Jest snapshot order the keys automatically, so test that the key order explicitly
     expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`

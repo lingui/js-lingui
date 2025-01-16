@@ -1,15 +1,19 @@
-import * as R from "ramda"
-
-const deserialize = R.map((translation: string) => ({
-  translation,
-  obsolete: false,
-  message: null,
-  origin: [],
-})) as unknown as (minimalCatalog: any) => any
+const deserialize = (minimalCatalog: Record<string, any>) => {
+  const result: Record<string, any> = {}
+  for (const key in minimalCatalog) {
+    result[key] = {
+      translation: minimalCatalog[key],
+      obsolete: false,
+      message: null,
+      origin: [],
+    }
+  }
+  return result
+}
 
 const PARSERS = {
   minimal: <T>(content: Record<string, any> | T) => {
-    return deserialize(content)
+    return deserialize(content as Record<string, any>)
   },
 }
 

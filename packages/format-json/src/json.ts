@@ -1,10 +1,7 @@
-import * as R from "ramda"
-
 import {
   CatalogFormatter,
   CatalogType,
   ExtractedMessageType,
-  MessageType,
 } from "@lingui/conf"
 
 export type JsonFormatterOptions = {
@@ -43,27 +40,50 @@ type NoOriginsCatalogType = {
 
 type MinimalCatalogType = Record<string, string>
 
-const serializeMinimal = R.map(
-  (message: MessageType) => message.translation || ""
-) as unknown as (catalog: CatalogType) => MinimalCatalogType
-
-const deserializeMinimal = R.map((translation: string) => ({
-  translation,
-  obsolete: false,
-  message: null,
-  origin: [],
-})) as unknown as (minimalCatalog: MinimalCatalogType) => CatalogType
-
-const removeOrigins = R.map(({ origin, ...message }) => message) as unknown as (
-  catalog: CatalogType
-) => NoOriginsCatalogType
-
-const removeLineNumbers = R.map((message: ExtractedMessageType) => {
-  if (message.origin) {
-    message.origin = message.origin.map(([file]) => [file])
+const serializeMinimal = (catalog: CatalogType): MinimalCatalogType => {
+  const result: MinimalCatalogType = {}
+  for (const key in catalog) {
+    result[key] = catalog[key].translation || ""
   }
-  return message
-}) as unknown as (catalog: ExtractedMessageType) => NoOriginsCatalogType
+  return result
+}
+
+const deserializeMinimal = (
+  minimalCatalog: MinimalCatalogType
+): CatalogType => {
+  const result: CatalogType = {}
+  for (const key in minimalCatalog) {
+    result[key] = {
+      translation: minimalCatalog[key],
+      obsolete: false,
+      message: null,
+      origin: [],
+    }
+  }
+  return result
+}
+
+const removeOrigins = (catalog: CatalogType): NoOriginsCatalogType => {
+  const result: NoOriginsCatalogType = {}
+  for (const key in catalog) {
+    const { origin, ...message } = catalog[key]
+    result[key] = message
+  }
+  return result
+}
+
+const removeLineNumbers = (
+  catalog: ExtractedMessageType
+): NoOriginsCatalogType => {
+  const result: NoOriginsCatalogType = {}
+  for (const key in catalog) {
+    result[key] = {
+      ...catalog[key],
+      origin: catalog[key].origin?.map(([file]) => [file]),
+    }
+  }
+  return result
+}
 
 export function formatter(
   options: JsonFormatterOptions = {}
