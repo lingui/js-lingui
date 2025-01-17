@@ -1,6 +1,5 @@
-import * as R from "ramda"
 import type { MergeOptions } from "../catalog"
-import { CatalogType, ExtractedCatalogType, MessageType } from "../types"
+import { CatalogType, ExtractedCatalogType } from "../types"
 
 export function mergeCatalog(
   prevCatalog: CatalogType,
@@ -9,49 +8,52 @@ export function mergeCatalog(
   options: MergeOptions
 ): CatalogType {
   const nextKeys = Object.keys(nextCatalog)
+  const prevKeys = Object.keys(prevCatalog || {})
 
-  const prevKeys = R.keys(prevCatalog).map(String)
-
-  const newKeys = R.difference(nextKeys, prevKeys)
-  const mergeKeys = R.intersection(nextKeys, prevKeys)
-  const obsoleteKeys = R.difference(prevKeys, nextKeys)
+  const newKeys = nextKeys.filter((key) => !prevKeys.includes(key))
+  const mergeKeys = nextKeys.filter((key) => prevKeys.includes(key))
+  const obsoleteKeys = prevKeys.filter((key) => !nextKeys.includes(key))
 
   // Initialize new catalog with new keys
-  const newMessages = R.mapObjIndexed(
-    (message: MessageType, key) => ({
-      translation: forSourceLocale ? message.message || key : "",
-      ...message,
-    }),
-    R.pick(newKeys, nextCatalog)
+  const newMessages: CatalogType = Object.fromEntries(
+    newKeys.map((key) => [
+      key,
+      {
+        translation: forSourceLocale ? nextCatalog[key].message || key : "",
+        ...nextCatalog[key],
+      },
+    ])
   )
 
   // Merge translations from previous catalog
-  const mergedMessages = mergeKeys.map((key) => {
-    const updateFromDefaults =
-      forSourceLocale &&
-      (prevCatalog[key].translation === prevCatalog[key].message ||
-        options.overwrite)
+  const mergedMessages = Object.fromEntries(
+    mergeKeys.map((key) => {
+      const updateFromDefaults =
+        forSourceLocale &&
+        (prevCatalog[key].translation === prevCatalog[key].message ||
+          options.overwrite)
 
-    const translation = updateFromDefaults
-      ? nextCatalog[key].message || key
-      : prevCatalog[key].translation
+      const translation = updateFromDefaults
+        ? nextCatalog[key].message || key
+        : prevCatalog[key].translation
 
-    return {
-      [key]: {
-        translation,
-        ...R.omit(["obsolete, translation"], nextCatalog[key]),
-      },
-    }
-  })
+      const { obsolete, ...rest } = nextCatalog[key]
+
+      return [key, { ...rest, translation }]
+    })
+  )
 
   // Mark all remaining translations as obsolete
   // Only if *options.files* is not provided
-  const obsoleteMessages = obsoleteKeys.map((key) => ({
-    [key]: {
-      ...prevCatalog[key],
-      ...(!options.files && { obsolete: true }),
-    },
-  }))
+  const obsoleteMessages = Object.fromEntries(
+    obsoleteKeys.map((key) => [
+      key,
+      {
+        ...prevCatalog[key],
+        ...(options.files ? {} : { obsolete: true }),
+      },
+    ])
+  )
 
-  return R.mergeAll([newMessages, ...mergedMessages, ...obsoleteMessages])
+  return { ...newMessages, ...mergedMessages, ...obsoleteMessages }
 }

@@ -1,4 +1,3 @@
-import R from "ramda"
 import pseudolocale from "pseudolocale"
 
 const delimiter = "%&&&%"
@@ -45,18 +44,14 @@ function addDelimitersVariables(message: string) {
   })
 }
 
-const addDelimiters = R.compose(
-  addDelimitersVariables,
-  addDelimitersMacro,
-  addDelimitersHTMLTags
-)
-
 function removeDelimiters(message: string) {
   return message.replace(new RegExp(delimiter, "g"), "")
 }
 
 export default function (message: string) {
-  message = addDelimiters(message)
+  message = addDelimitersHTMLTags(message)
+  message = addDelimitersMacro(message)
+  message = addDelimitersVariables(message)
   message = pseudolocale(message, {
     delimiter,
     prepend: "",
