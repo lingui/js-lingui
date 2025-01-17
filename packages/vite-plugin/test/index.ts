@@ -2,8 +2,11 @@ import path from "path"
 import { exec as _exec } from "child_process"
 import { mkdtempSync } from "fs"
 import os from "os"
+import { platform } from "node:os"
 
-describe("vite-plugin", () => {
+const skipOnWindows = platform() === "win32" ? describe.skip : describe
+
+skipOnWindows("vite-plugin", () => {
   it("should return compiled catalog", async () => {
     const mod = await runVite(`po-format/vite.config.ts`)
     expect((await mod.load()).messages).toMatchSnapshot()
