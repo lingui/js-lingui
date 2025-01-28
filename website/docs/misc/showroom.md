@@ -5,6 +5,7 @@ Lingui is used by many projects, from small hobby projects to large enterprise a
 Here are some of them:
 
 - [Reactive Resume](https://rxresu.me/) [![Repo stars](https://img.shields.io/github/stars/AmruthPillai/Reactive-Resume?cacheSeconds=86400)](https://github.com/AmruthPillai/Reactive-Resume)
+- [Twenty](https://twenty.com/) [![Repo stars](https://img.shields.io/github/stars/twentyhq/twenty?cacheSeconds=86400)](https://github.com/twentyhq/twenty)
 - [Zipkin](https://zipkin.io/) [![Repo stars](https://img.shields.io/github/stars/openzipkin/zipkin?cacheSeconds=86400)](https://github.com/openzipkin/zipkin)
 - [GDevelop](https://gdevelop.io/) [![Repo stars](https://img.shields.io/github/stars/4ian/GDevelop?cacheSeconds=86400)](https://github.com/4ian/GDevelop)
 - [Linkerd](https://linkerd.io/) [![Repo stars](https://img.shields.io/github/stars/linkerd/linkerd2?cacheSeconds=86400)](https://github.com/linkerd/linkerd2)
@@ -27,7 +28,7 @@ Here are some of them:
 - [KlimaDAO](https://www.klimadao.finance/) [![Repo stars](https://img.shields.io/github/stars/KlimaDAO/klimadao?cacheSeconds=86400)](https://github.com/KlimaDAO/klimadao)
 - [Ansible Hub UI](https://www.redhat.com/en/technologies/management/ansible/automation-hub) [![Repo stars](https://img.shields.io/github/stars/ansible/ansible-hub-ui?cacheSeconds=86400)](https://github.com/ansible/ansible-hub-ui)
 - [MetaMask Snaps Directory](https://snaps.metamask.io/) [![Repo stars](https://img.shields.io/github/stars/MetaMask/snaps-directory?cacheSeconds=86400)](https://github.com/MetaMask/snaps-directory)
-- [Palgakalkulaator](https://www.palgakalkulaator.ee/) [![Repo stars](https://img.shields.io/github/stars/madisvain/palgakalkulaator?cacheSeconds=86400)](https://github.com/madisvain/palgakalkulaator)
+- [Palgakalkulaator](https://www.palgakalkulaator.ee/)
 - [ledgy.com](https://www.ledgy.com/)
 - [MyMusicTaste](https://www.mymusictaste.com/)
 - [Staycation](https://www.staycation.co/)
