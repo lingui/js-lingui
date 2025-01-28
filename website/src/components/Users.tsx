@@ -32,6 +32,11 @@ const USERS: UserDetails[] = [
     link: "https://github.com/MetaMask/snaps-directory",
   },
   {
+    logo: "twenty.png",
+    name: "Twenty",
+    link: "https://github.com/twentyhq/twenty",
+  },
+  {
     logo: "documenso.png",
     name: "Documenso",
     link: "https://github.com/documenso/documenso",
