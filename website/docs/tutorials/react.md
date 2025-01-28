@@ -398,7 +398,7 @@ Dates (as well as numbers) are formatted differently in different languages, but
 The `i18n` object can be accessed with the [`useLingui`](/ref/react#uselingui) hook:
 
 ```jsx title="src/Inbox.js" {4,9}
-import { useLingui } from "@lingui/react";
+import { useLingui, Trans } from "@lingui/react/macro";
 
 export default function Inbox() {
   const { i18n } = useLingui();
