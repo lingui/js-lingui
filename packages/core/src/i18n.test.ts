@@ -215,7 +215,7 @@ describe("I18n", () => {
         id: "My name is {name}",
         message: "Je m'appelle {name}",
       })
-    ).toEqual("Je m'appelle")
+    ).toEqual("Je m'appelle ")
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
@@ -261,6 +261,23 @@ describe("I18n", () => {
         message: "Mi ''nombre'' es '{name}'",
       })
     ).toEqual("Mi 'nombre' es {name}")
+  })
+
+  it("._ should not trim whitespaces in translated messages", () => {
+    const messages = {}
+
+    const i18n = setupI18n({
+      locale: "es",
+      messages: { es: messages },
+    })
+
+    expect(
+      i18n._({
+        id: "msg",
+        /* note the space at the end */
+        message: " Hello ",
+      })
+    ).toEqual(" Hello ")
   })
 
   it("._ shouldn't compile uncompiled messages in production", () => {

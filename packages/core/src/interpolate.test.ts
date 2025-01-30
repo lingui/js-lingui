@@ -44,7 +44,7 @@ describe("interpolate", () => {
     expect(plural({ value: 1 })).toEqual("1 Book")
     expect(plural({ value: 2 })).toEqual("2 Books")
     expect(plural({ value: 4 })).toEqual("Four books")
-    expect(plural({ value: 99 })).toEqual("Books with problems")
+    expect(plural({ value: 99 })).toEqual(" Books with problems ")
 
     const offset = prepare(
       "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books}}"
