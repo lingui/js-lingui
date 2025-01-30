@@ -152,9 +152,9 @@ export function interpolate(
       // convert raw unicode sequences back to normal strings
       // note JSON.parse hack is not working as you might expect https://stackoverflow.com/a/57560631/2210610
       // that's why special library for that purpose is used
-      return unraw(result.trim())
+      return unraw(result)
     }
-    if (isString(result)) return result.trim()
+    if (isString(result)) return result
     return result ? String(result) : ""
   }
 }
