@@ -41,7 +41,7 @@ Pseudolocalization is automatically generated during the [`compile`](/ref/cli#co
 
 You can switch your browser to a pseudolocale either by adjusting the browser settings or by using extensions. Extensions provide flexibility by allowing you to use any locale, while browser settings are usually limited to valid language tags (BCP 47).
 
-In such cases, the pseudolocale must be a standard locale that isn't already used in your application. For example, you could use `zu_ZA` (Zulu - South Africa).
+In such cases, the pseudolocale must be a standard locale that isn't already used in your application. For example, you could use `zu-ZA` (Zulu - South Africa).
 
 Chrome:
 
