@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/lingui/js-lingui/compare/v5.1.2...v5.2.0) (2025-01-31)
+
+### Bug Fixes
+
+* **core:** remove runtime whitespace trimming aligned with v5 ([#2169](https://github.com/lingui/js-lingui/issues/2169)) ([47a1ad7](https://github.com/lingui/js-lingui/commit/47a1ad71ced726b076d65c98537815b60ae8e9c7))
+
+### Features
+
+* add meaningful error when locale is not set ([#2131](https://github.com/lingui/js-lingui/issues/2131)) ([5ae8363](https://github.com/lingui/js-lingui/commit/5ae83630c5afe866b23c5739286eb09fdfe39b95))
+* add ph() and explicit labels for placeholders ([#2092](https://github.com/lingui/js-lingui/issues/2092)) ([2026c83](https://github.com/lingui/js-lingui/commit/2026c83dfa3b969cde30305d52821e561df996cf))
+* support short/default/long/full date time formats ([#2117](https://github.com/lingui/js-lingui/issues/2117)) ([8020427](https://github.com/lingui/js-lingui/commit/802042743c60e28d62571a4b08437a7b275c8237))
+
 ## [5.1.2](https://github.com/lingui/js-lingui/compare/v5.1.1...v5.1.2) (2024-12-16)
 
 **Note:** Version bump only for package @lingui/core
