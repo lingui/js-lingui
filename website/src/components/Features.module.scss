@@ -21,6 +21,10 @@
     height: 0;
     z-index: -1;
 
+    @media (max-width: 768px) {
+      display: none;
+    }
+
     img {
       bottom: -30px;
       position: absolute;
@@ -36,6 +40,10 @@
     grid-column: 1 / -1;
     height: 0;
     z-index: 0;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
 
     img {
       top: -70px;
