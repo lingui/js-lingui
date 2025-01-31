@@ -10,8 +10,19 @@ const nextConfig: NextConfig = {
           as: '*.js'
         }
       }
-    }
-  }
+    },
+  },
+  // turbopack is used for development server only,
+  // so for build we still need webpack configuration
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.po$/,
+      use: {
+        loader: '@lingui/loader',
+      },
+    })
+    return config
+  },
 }
 
 export default nextConfig
