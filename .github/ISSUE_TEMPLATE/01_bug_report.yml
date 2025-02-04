@@ -1,0 +1,72 @@
+name: Bug report
+description: Create a bug report
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please note:
+
+        - For general usage questions, consider asking on [GitHub discussions](https://github.com/lingui/js-lingui/discussions).
+        - Bug reports without reproduction steps may be closed.
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear description of the bug.
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Verifications
+      options:
+        - label: I've checked [the docs](https://lingui.dev) and this isn't covered there.
+          required: true
+        - label: I've searched existing issues on [GitHub](https://github.com/lingui/js-lingui/issues).
+          required: true
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: Steps to reproduce with minimal code sample.
+      value: |
+        ```tsx
+        import { Trans } from "@lingui/react/macro"
+        
+        export default function App() {
+           return <Trans>This should be translated!</Trans>
+        }
+        ```
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Macro Support
+      description: What macro are you using?
+      options:
+        - SWC with @lingui/swc-plugin
+        - Babel with babel-macro-plugin
+        - Not using macro
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Lingui Version
+      description: Output of `lingui --version`
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Babel Version
+      description: Output of `npm list @babel/core`
+  - type: input
+    attributes:
+      label: Framework
+      description: E.g. Create React App, Next.js, Vite
+    validations:
+      required: true

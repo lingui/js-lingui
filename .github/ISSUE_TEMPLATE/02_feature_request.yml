@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest an idea for this project
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion! Before proceeding:
+
+        - Check the [docs](https://lingui.dev) to see if this feature already exists
+        - Search [existing issues](https://github.com/lingui/js-lingui/issues) for similar requests
+  - type: textarea
+    attributes:
+      label: Problem Description
+      description: What problem are you trying to solve? E.g. I'm always frustrated when...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed Solution
+      description: Describe your suggested solution.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives Considered
+      description: What alternative solutions have you considered?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or examples?
