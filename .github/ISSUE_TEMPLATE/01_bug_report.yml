@@ -68,5 +68,3 @@ body:
     attributes:
       label: Framework
       description: E.g. Create React App, Next.js, Vite
-    validations:
-      required: true

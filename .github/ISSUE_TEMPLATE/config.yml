@@ -6,9 +6,6 @@ contact_links:
   - name: Chat on Discord
     url: https://discord.gg/gFWwAYnMtA
     about: Join the Lingui community on Discord
-  - name: Get community support on Stack Overflow
-    url: https://stackoverflow.com/questions/tagged/linguijs
-    about: Post technical questions on Stack Overflow using the 'linguijs' tag
   - name: Ask AI
     url: https://gurubase.io/g/lingui-js
     about: Ask Lingui JS Guru - AI powered Q&A assistant
