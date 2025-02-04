@@ -7,7 +7,6 @@ body:
     attributes:
       value: |
         Thanks for reporting a bug! Please note:
-
         - For general usage questions, consider asking on [GitHub discussions](https://github.com/lingui/js-lingui/discussions).
         - Bug reports without reproduction steps may be closed.
   - type: textarea

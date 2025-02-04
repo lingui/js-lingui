@@ -7,7 +7,6 @@ body:
     attributes:
       value: |
         Thanks for your suggestion! Before proceeding:
-
         - Check the [docs](https://lingui.dev) to see if this feature already exists
         - Search [existing issues](https://github.com/lingui/js-lingui/issues) for similar requests
   - type: textarea
