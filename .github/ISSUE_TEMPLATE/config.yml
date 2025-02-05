@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: View documentation
+    url: https://lingui.dev
+    about: Check the official docs for answers to common questions
+  - name: Chat on Discord
+    url: https://discord.gg/gFWwAYnMtA
+    about: Join the Lingui community on Discord
+  - name: Ask AI
+    url: https://gurubase.io/g/lingui-js
+    about: Ask Lingui JS Guru - AI powered Q&A assistant
