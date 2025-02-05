@@ -46,8 +46,6 @@ or `overrides` for >npm@8.3
 
 ## Usage
 
-### Basic Usage
-
 Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configuration/swcrc) file:
 
 ```json title=".swcrc"
@@ -88,6 +86,8 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
+
+## Additional Configuration
 
 ### Runtime Modules Configuration
 
