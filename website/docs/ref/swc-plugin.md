@@ -109,7 +109,7 @@ For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmo
 
 ### Strip Non-Essential Fields
 
-Lingui strips non-essential fields from builds  if `NODE_ENV` is set to `production`. You can override this behavior by using the `stripNonEssentialFields` option. For example, if you want to keep all fields regardless of the environment, you can set:
+Lingui strips non-essential fields from builds if `NODE_ENV` is set to `production`. You can override this behavior by using the `stripNonEssentialFields` option. For example, if you want to keep all fields regardless of the environment, you can set:
 
 ```json
 [
