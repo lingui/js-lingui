@@ -87,7 +87,9 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### Additional Configuration
+## Additional Configuration
+
+### Runtime Modules Configuration
 
 You can configure the plugin by passing the `runtimeModules` option. This option is an object that maps runtime module names to their corresponding module paths and export names. It is essential for macros, which rely on referencing the global `i18n` object.
 
@@ -105,11 +107,24 @@ You can configure the plugin by passing the `runtimeModules` option. This option
 
 For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
 
-:::info
-If you would like to suggest a new feature or report a bug, please [open an issue](https://github.com/lingui/swc-plugin/issues) on the GitHub repository.
-:::
+### Strip Non-Essential Fields
+
+Lingui strips non-essential fields from builds if `NODE_ENV` is set to `production`. You can override this behavior by using the `stripNonEssentialFields` option. For example, if you want to keep all fields regardless of the environment, you can set:
+
+```json
+[
+  "@lingui/swc-plugin",
+  {
+    "stripNonEssentialFields": false
+  }
+]
+```
 
 ## Examples
 
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
 - [Next.js with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
+
+:::info
+If you would like to suggest a new feature or report a bug, please [open an issue](https://github.com/lingui/swc-plugin/issues) on the GitHub repository.
+:::
