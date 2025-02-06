@@ -125,7 +125,6 @@ Lingui strips non-essential fields from builds  if `NODE_ENV` is set to `product
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
 - [Next.js with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
 
-
 :::info
 If you would like to suggest a new feature or report a bug, please [open an issue](https://github.com/lingui/swc-plugin/issues) on the GitHub repository.
 :::
