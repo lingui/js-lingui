@@ -11,7 +11,10 @@ import { Trans } from "@lingui/react/macro"
 
 function App() {
   return (
-    <Trans id="msg.docs">
+    <Trans
+      id="msg.docs" // Optional message id
+      comment="Docs link on the website" // Comment for translators, optional
+    >
       Read the <a href="https://lingui.dev">documentation</a>
       for more info.
     </Trans>
