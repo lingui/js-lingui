@@ -13,7 +13,7 @@ type CommonProps = TransRenderCallbackOrComponent & {
 
 type TransChildren = ReactNode | LabeledExpression<string | number>
 type TransProps = {
-  children: TransChildren | TransChildren[]
+  children?: TransChildren | TransChildren[]
 } & CommonProps
 
 type PluralChoiceProps = {
