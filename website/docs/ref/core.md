@@ -153,6 +153,7 @@ The core method for translating and formatting messages.
 - `messageId`: a unique message ID which identifies message in catalog.
 - `values`: an object containing variables used in translated message.
 - `options.message`: the default translation (optional). This is mostly used when application doesn't use message IDs in natural language (e.g.: `msg.id` or `Component.title`).
+- `options.formats`: custom format definitions for dates and times (optional). An object where keys are format names and values are either `Intl.DateTimeFormatOptions` or `Intl.NumberFormatOptions`.
 
 ```ts
 import { i18n } from "@lingui/core";
@@ -165,6 +166,21 @@ i18n._("My name is {name}", { name: "Tom" });
 
 // Message with custom messageId
 i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" });
+
+const date = new Date("2014-12-06");
+const time = new Date("2014-12-06T17:40:00Z");
+
+// Short date format
+i18n._("It starts on {someDate, date, short}", { someDate: date });
+
+// Short time format
+i18n._("It starts on {someTime, time, short}", { someTime: time });
+
+// Date skeleton format
+i18n._("It starts on {someDate, date, ::GrMMMdd}", { someDate: date });
+
+// Custom date format
+i18n._("It starts on {someDate, date, myStyle}", { someDate: date }, { formats: { myStyle: { day: "numeric" } } });
 ```
 
 ### `i18n._(messageDescriptor)`
