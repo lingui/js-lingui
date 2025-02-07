@@ -2,14 +2,14 @@
 title: Announcing Lingui 4.0
 authors: andrii-bodnar
 tags: [release]
-image: ./img/social-card.png
+image: ./social-card.png
 ---
 
 Today we are happy to finally announce Lingui 4.0! 🥳️
 
 ---
 
-![social-card image](./img/social-card.png)
+![social-card image](./social-card.png)
 
 ## What is Lingui exactly?
 
