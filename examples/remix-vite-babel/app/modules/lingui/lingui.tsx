@@ -1,5 +1,5 @@
 import { i18n, MessageDescriptor } from "@lingui/core";
-import { msg } from "@lingui/macro";
+import { msg } from "@lingui/core/macro";
 import { useFetcher, useFetchers, useMatches, useRouteLoaderData } from "@remix-run/react";
 import type config from "./config";
 import { ComponentProps } from "react";
