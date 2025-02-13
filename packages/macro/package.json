@@ -51,7 +51,7 @@
     "@lingui/react": "5.2.0"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.2.0",
+    "@lingui/babel-plugin-lingui-macro": "^5.0.0",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {

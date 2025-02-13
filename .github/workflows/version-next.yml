@@ -1,0 +1,40 @@
+name: Version (next)
+
+on:
+  push:
+    branches:
+      - next
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+          scope: '@lingui'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        with:
+          version: yarn version:next
+          publish: yarn release:build && yarn release:next
+          createGithubReleases: false
+          branch: next
+          commit: "chore(release): bump next version [skip ci]"
+          title: "chore(release): bump next version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
