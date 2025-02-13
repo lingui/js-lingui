@@ -137,11 +137,16 @@ Please make sure that all tests pass and linter doesn't report any error before 
 
 - `yarn lint:all` - Linting & Type testing
 - `yarn test` - Quick test suite (sufficient)
-- `yarn release:test` - Full test suite (recommended)
+- `yarn release:build` - Build all packages (recommended)
+- `yarn test:all` - Full test suite (recommended)
 
-`yarn release:test` builds all packages, simulates creating packages for NPM, runs unit tests and finally runs integration tests using production build.
+This project uses [changesets](https://github.com/changesets/changesets) to manage versioning and changelogs. If you're adding a new feature or fixing a bug, be sure to add a changeset that will describe the changes to users. Documentation-only and non-package changes do not need changesets.
 
-Now you can create PR and let CI service do their work!
+```sh
+yarn changeset
+```
+
+The command above will guide you through the process of creating a new changeset. After you've created a changeset, you can commit it to your branch.
 
 > **Note**
 > This project uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages and PR titles.
