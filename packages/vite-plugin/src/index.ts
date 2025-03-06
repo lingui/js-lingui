@@ -4,19 +4,28 @@ import {
   getCatalogs,
   getCatalogForFile,
   getCatalogDependentFiles,
+  createMissingErrorMessage,
 } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
 
 const fileRegex = /(\.po|\?lingui)$/
 
-type LinguiConfigOpts = {
+export type LinguiPluginOpts = {
   cwd?: string
   configPath?: string
   skipValidation?: boolean
+
+  /**
+   * If true would fail compilation on missing translations
+   **/
+  failOnMissing?: boolean
 }
 
-export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
+export function lingui({
+  failOnMissing,
+  ...linguiConfig
+}: LinguiPluginOpts = {}): Plugin[] {
   const config = getConfig(linguiConfig)
 
   return [
@@ -78,13 +87,23 @@ Please check that catalogs.path is filled properly.\n`
           const dependency = await getCatalogDependentFiles(catalog, locale)
           dependency.forEach((file) => this.addWatchFile(file))
 
-          const messages = await catalog.getTranslations(locale, {
-            fallbackLocales: config.fallbackLocales,
-            sourceLocale: config.sourceLocale,
-          })
+          const { messages, missing: missingMessages } =
+            await catalog.getTranslations(locale, {
+              fallbackLocales: config.fallbackLocales,
+              sourceLocale: config.sourceLocale,
+            })
+
+          if (
+            failOnMissing &&
+            locale !== config.pseudoLocale &&
+            missingMessages.length > 0
+          ) {
+            throw new Error(
+              createMissingErrorMessage(locale, missingMessages, "Vite plugin")
+            )
+          }
 
           const compiled = createCompiledCatalog(locale, messages, {
-            strict: false,
             namespace: "es",
             pseudoLocale: config.pseudoLocale,
           })

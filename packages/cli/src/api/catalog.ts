@@ -12,6 +12,7 @@ import { CompiledCatalogNamespace } from "./compile"
 import {
   getTranslationsForCatalog,
   GetTranslationsOptions,
+  TranslationMissingEvent,
 } from "./catalog/getTranslationsForCatalog"
 import { mergeCatalog } from "./catalog/mergeCatalog"
 import { extractFromFiles } from "./catalog/extractFromFiles"
@@ -177,8 +178,23 @@ export class Catalog {
     )
   }
 
-  async getTranslations(locale: string, options: GetTranslationsOptions) {
-    return await getTranslationsForCatalog(this, locale, options)
+  async getTranslations(
+    locale: string,
+    options: Omit<GetTranslationsOptions, "onMissing">
+  ) {
+    const missing: TranslationMissingEvent[] = []
+
+    const messages = await getTranslationsForCatalog(this, locale, {
+      ...options,
+      onMissing: (event) => {
+        missing.push(event)
+      },
+    })
+
+    return {
+      missing,
+      messages,
+    }
   }
 
   async write(

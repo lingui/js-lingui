@@ -7,7 +7,6 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { getCatalogs, getFormat } from "./api"
-import { TranslationMissingEvent } from "./api/catalog/getTranslationsForCatalog"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
 import normalizePath from "normalize-path"
 
@@ -35,15 +34,11 @@ export async function command(
 
   for (const locale of config.locales) {
     for (const catalog of catalogs) {
-      const missingMessages: TranslationMissingEvent[] = []
-
-      const messages = await catalog.getTranslations(locale, {
-        fallbackLocales: config.fallbackLocales,
-        sourceLocale: config.sourceLocale,
-        onMissing: (missing) => {
-          missingMessages.push(missing)
-        },
-      })
+      const { messages, missing: missingMessages } =
+        await catalog.getTranslations(locale, {
+          fallbackLocales: config.fallbackLocales,
+          sourceLocale: config.sourceLocale,
+        })
 
       if (
         !options.allowEmpty &&
