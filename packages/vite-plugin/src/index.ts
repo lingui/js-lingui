@@ -14,6 +14,7 @@ type LinguiConfigOpts = {
   cwd?: string
   configPath?: string
   skipValidation?: boolean
+  strict?: boolean
 }
 
 export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
@@ -84,7 +85,7 @@ Please check that catalogs.path is filled properly.\n`
           })
 
           const compiled = createCompiledCatalog(locale, messages, {
-            strict: false,
+            strict: linguiConfig.strict ?? false,
             namespace: "es",
             pseudoLocale: config.pseudoLocale,
           })
