@@ -2,7 +2,7 @@ import { UserConfig } from "vite"
 import { lingui } from "../src/index"
 import path from "path"
 
-export function createDefaultViteConfig(dirname: string): UserConfig {
+export function createDefaultViteConfig(dirname: string, pluginConfig: Parameters<typeof lingui>[0] = {}): UserConfig {
   return {
     build: {
       lib: {
@@ -15,6 +15,7 @@ export function createDefaultViteConfig(dirname: string): UserConfig {
     plugins: [
       lingui({
         cwd: dirname,
+        ...pluginConfig,
       }),
     ],
   }

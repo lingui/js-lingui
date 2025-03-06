@@ -32,6 +32,16 @@ skipOnWindows("vite-plugin", () => {
     const mod = await runVite(`macro-usage/vite.config.ts`)
     expect(await mod.load()).toMatchSnapshot()
   })
+  it("should report error when in strict mode", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`strict-true/vite.config.ts`)
+    } catch (e) {
+      expect(e.stderr).toContain(
+        'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.'
+      )
+    }
+  })
 })
 
 async function runVite(configPath: string) {
