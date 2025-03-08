@@ -1,7 +1,8 @@
 import React from 'react'
 import { useLingui } from '@lingui/react'
 import Head from 'next/head'
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/react/macro'
+import { msg } from '@lingui/core/macro'
 import { Switcher } from './Switcher'
 import { AboutText } from './AboutText'
 import Developers from './Developers'
@@ -16,9 +17,9 @@ export const HomePage = () => {
         {/*
          The Next Head component is not being rendered in the React
          component tree and React Context is not being passed down to the components placed in the <Head>.
-         That means we cannot use the <Trans> component here and instead have to use `t` macro.
+         That means we cannot use the <Trans> component here and instead have to use lazy translation with a message descriptor.
         */}
-        <title>{t(i18n)`Translation Demo`}</title>
+        <title>{i18n._(msg`Translation Demo`)}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
