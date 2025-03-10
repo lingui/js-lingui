@@ -28,7 +28,6 @@
     "@babel/runtime": "^7.20.13",
     "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
-    "defu": "^6.1.4",
     "jest-validate": "^29.4.3",
     "jiti": "^1.17.1",
     "lodash.get": "^4.4.2"

@@ -71,14 +71,17 @@ type LinguiSymbol = "Trans" | "useLingui" | "i18n"
 const getIdentifierPath = ((path: NodePath, node: Identifier) => {
   let foundPath: NodePath
 
-  path.traverse({
-    Identifier: (path) => {
-      if (path.node === node) {
-        foundPath = path
-        path.stop()
-      }
+  path.traverse(
+    {
+      Identifier: (path) => {
+        if (path.node === node) {
+          foundPath = path
+          path.stop()
+        }
+      },
     },
-  })
+    path.state
+  )
 
   return foundPath
 }) as any

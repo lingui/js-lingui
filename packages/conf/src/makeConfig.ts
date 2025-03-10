@@ -10,7 +10,6 @@ import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
 import { normalizeRuntimeConfigModule } from "./migrations/normalizeRuntimeConfigModule"
 import { ExperimentalExtractorOptions } from "./types"
-import { defu } from "defu"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -18,7 +17,14 @@ export function makeConfig(
     skipValidation?: boolean
   } = {}
 ): LinguiConfigNormalized {
-  let config: LinguiConfig = defu(userConfig, defaultConfig)
+  let config: LinguiConfig = {
+    ...defaultConfig,
+    ...userConfig,
+    macro: {
+      ...defaultConfig.macro,
+      ...userConfig.macro,
+    },
+  }
 
   if (!opts.skipValidation) {
     validate(config, configValidation)

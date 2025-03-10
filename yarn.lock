@@ -2698,7 +2698,6 @@ __metadata:
     "@lingui/jest-mocks": "*"
     chalk: ^4.1.0
     cosmiconfig: ^8.0.0
-    defu: ^6.1.4
     jest-validate: ^29.4.3
     jiti: ^1.17.1
     lodash.get: ^4.4.2
@@ -6741,13 +6740,6 @@ __metadata:
   version: 6.1.2
   resolution: "defu@npm:6.1.2"
   checksum: 2ec0ff8414d5a1ab2b8c7e9a79bbad6d97d23ea7ebf5dcf80c3c7ffd9715c30f84a3cc47b917379ea756b3db0dc4701ce6400e493a1ae1688dffcd0f884233b2
-  languageName: node
-  linkType: hard
-
-"defu@npm:^6.1.4":
-  version: 6.1.4
-  resolution: "defu@npm:6.1.4"
-  checksum: 40e3af6338f195ac1564f53d1887fa2d0429ac7e8c081204bc4d29191180059d3952b5f4e08fe5df8d59eb873aa26e9c88b56d4fac699673d4a372c93620b229
   languageName: node
   linkType: hard
 
