@@ -1,4 +1,5 @@
 import { macroTester } from "./macroTester"
+import { makeConfig } from "@lingui/conf"
 
 describe.skip("", () => {})
 
@@ -308,6 +309,41 @@ macroTester({
         import { plural as plural2, t as t2 } from '@lingui/core/macro'
         t1\`Ola!  \${plural2(count, {one: "1 user", many: "# users"})} Ola!\`
         t2\`Ola! \${plural1(count, {one: "1 user", many: "# users"})} Ola!\`
+      `,
+    },
+    {
+      name: "should respect runtimeConfigModule",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            runtimeConfigModule: {
+              i18n: ["@my/lingui", "myI18n"],
+            },
+          },
+          { skipValidation: true }
+        ),
+      },
+      code: `
+         import { t } from '@lingui/macro'
+         const msg = t\`Message\`
+      `,
+    },
+    {
+      name: "should detects macro imported from config.macro.corePackage",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              corePackage: ["@my-lingui/macro"],
+            },
+          },
+          { skipValidation: true }
+        ),
+      },
+      skipBabelMacroTest: true,
+      code: `
+         import { t } from '@my-lingui/macro'
+         const msg = t\`Message\`
       `,
     },
   ],

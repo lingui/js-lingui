@@ -214,6 +214,40 @@ export type LinguiConfig = {
     | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
   sourceLocale?: string
   service?: CatalogService
+  macro?: {
+    /**
+     * Allows customizing the Core Macro package name that the Lingui macro detects.
+     *
+     * ```ts
+     * // lingui.config
+     * macro.macro.corePackage = ['@lingui/myMacro']
+     *
+     * // app.tsx
+     * import { msg } from '@lingui/myMacro'
+     *
+     * msg`Hello` // <-- would be correctly picked up by macro
+     * ```
+     *
+     * @default ["@lingui/macro", "@lingui/core/macro"]
+     */
+    corePackage?: string[]
+    /**
+     * Allows customizing the React Macro package name that the Lingui macro detects.
+     *
+     * ```ts
+     * // lingui.config
+     * macro.macro.reactPackage = ['@lingui/myMacro']
+     *
+     * // app.tsx
+     * import { Trans } from '@lingui/myMacro'
+     *
+     * <Trans>Hello</Trans> // <-- would be correctly picked up by macro
+     * ```
+     *
+     * @default ["@lingui/macro", "@lingui/react/macro"]
+     */
+    reactPackage?: string[]
+  }
   experimental?: {
     extractor?: ExperimentalExtractorOptions
   }

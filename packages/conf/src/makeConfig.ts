@@ -10,6 +10,7 @@ import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
 import { normalizeRuntimeConfigModule } from "./migrations/normalizeRuntimeConfigModule"
 import { ExperimentalExtractorOptions } from "./types"
+import { defu } from "defu"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -17,10 +18,7 @@ export function makeConfig(
     skipValidation?: boolean
   } = {}
 ): LinguiConfigNormalized {
-  let config: LinguiConfig = {
-    ...defaultConfig,
-    ...userConfig,
-  }
+  let config: LinguiConfig = defu(userConfig, defaultConfig)
 
   if (!opts.skipValidation) {
     validate(config, configValidation)
@@ -66,6 +64,13 @@ export const defaultConfig: LinguiConfig = {
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
+  /**
+   * Allow you to set macro options
+   */
+  macro: {
+    corePackage: ["@lingui/macro", "@lingui/core/macro"],
+    reactPackage: ["@lingui/macro", "@lingui/react/macro"],
+  },
   sourceLocale: "",
   service: { name: "", apiKey: "" },
 }
@@ -88,7 +93,6 @@ export const exampleConfig = {
     flow: false,
     tsExperimentalDecorators: false,
   },
-
   experimental: {
     extractor: {
       entries: [],

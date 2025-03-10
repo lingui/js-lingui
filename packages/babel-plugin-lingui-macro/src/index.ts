@@ -4,12 +4,7 @@ import { Program, Identifier } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
-import {
-  MACRO_CORE_PACKAGE,
-  MACRO_REACT_PACKAGE,
-  MACRO_LEGACY_PACKAGE,
-  JsMacroName,
-} from "./constants"
+import { JsMacroName } from "./constants"
 import {
   type LinguiConfigNormalized,
   getConfig as loadConfig,
@@ -18,9 +13,24 @@ import {
 let config: LinguiConfigNormalized
 
 export type LinguiPluginOpts = {
-  // explicitly set by CLI when running extraction process
+  /*
+   * When set `true` all auxiliary data such as `comment`, `context`,
+   * and default message would be kept regardless of the current environment
+   *
+   * This flag explicitly set by Lingui CLI when running extraction process
+   */
   extract?: boolean
+  /**
+   * Setting `stripMessageField` to `true` will strip messages and comments from both development and production bundles.
+   * Alternatively, set it to `false` to keep the original messages in both environments.
+   *
+   * If not set value would be determined based on `process.env.NODE_ENV === "production"`
+   */
   stripMessageField?: boolean
+
+  /**
+   * Resolved and normalized Lingui Configuration
+   */
   linguiConfig?: LinguiConfigNormalized
 }
 
@@ -110,14 +120,15 @@ export default function ({
   }
 
   function getMacroImports(path: NodePath<Program>) {
+    const linguiPackages = new Set([
+      ...config.macro.corePackage,
+      ...config.macro.reactPackage,
+    ])
+
     return path.get("body").filter((statement) => {
       return (
         statement.isImportDeclaration() &&
-        [
-          MACRO_CORE_PACKAGE,
-          MACRO_REACT_PACKAGE,
-          MACRO_LEGACY_PACKAGE,
-        ].includes(statement.get("source").node.value)
+        linguiPackages.has(statement.get("source").node.value)
       )
     })
   }
@@ -138,11 +149,9 @@ export default function ({
 
     if (macro === JsMacroName.useLingui) {
       if (
-        identPath.referencesImport(
-          MACRO_REACT_PACKAGE,
-          JsMacroName.useLingui
-        ) ||
-        identPath.referencesImport(MACRO_LEGACY_PACKAGE, JsMacroName.useLingui)
+        config.macro.reactPackage.some((moduleSource) =>
+          identPath.referencesImport(moduleSource, JsMacroName.useLingui)
+        )
       ) {
         return true
       }
@@ -151,8 +160,9 @@ export default function ({
       identPath = identPath || getIdentifierPath(path.getFunctionParent(), node)
 
       if (
-        identPath.referencesImport(MACRO_CORE_PACKAGE, macro) ||
-        identPath.referencesImport(MACRO_LEGACY_PACKAGE, macro)
+        config.macro.corePackage.some((moduleSource) =>
+          identPath.referencesImport(moduleSource, macro)
+        )
       ) {
         return true
       }
@@ -164,6 +174,11 @@ export default function ({
     visitor: {
       Program: {
         enter(path, state) {
+          state.set(
+            "linguiConfig",
+            getConfig((state.opts as LinguiPluginOpts).linguiConfig)
+          )
+
           const macroImports = getMacroImports(path)
 
           if (!macroImports.length) {
@@ -171,11 +186,6 @@ export default function ({
           }
 
           state.set("macroImport", macroImports[0])
-
-          state.set(
-            "linguiConfig",
-            getConfig((state.opts as LinguiPluginOpts).linguiConfig)
-          )
 
           state.set("linguiIdentifiers", {
             i18n: path.scope.generateUidIdentifier("i18n"),
