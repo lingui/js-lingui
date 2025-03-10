@@ -36,6 +36,16 @@ exports[`@lingui/conf should return default config 1`] = `
   locales: [
     en-gb,
   ],
+  macro: {
+    corePackage: [
+      @lingui/macro,
+      @lingui/core/macro,
+    ],
+    reactPackage: [
+      @lingui/macro,
+      @lingui/react/macro,
+    ],
+  },
   orderBy: message,
   pseudoLocale: ,
   rootDir: .,
