@@ -5,11 +5,17 @@ import {
   getCatalogs,
   getCatalogForFile,
   getCatalogDependentFiles,
+  createMissingErrorMessage,
 } from "@lingui/cli/api"
-import { LoaderDefinitionFunction } from "webpack"
+import type { LoaderDefinitionFunction } from "webpack"
 
-type LinguiLoaderOptions = {
+export type LinguiLoaderOptions = {
   config?: string
+
+  /**
+   * If true would fail compilation on missing translations
+   **/
+  failOnMissing?: boolean
 }
 
 const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
@@ -49,10 +55,23 @@ Please check that \`catalogs.path\` is filled properly.\n`
   const dependency = await getCatalogDependentFiles(catalog, locale)
   dependency.forEach((file) => this.addDependency(path.normalize(file)))
 
-  const messages = await catalog.getTranslations(locale, {
-    fallbackLocales: config.fallbackLocales,
-    sourceLocale: config.sourceLocale,
-  })
+  const { messages, missing: missingMessages } = await catalog.getTranslations(
+    locale,
+    {
+      fallbackLocales: config.fallbackLocales,
+      sourceLocale: config.sourceLocale,
+    }
+  )
+
+  if (
+    options.failOnMissing &&
+    locale !== config.pseudoLocale &&
+    missingMessages.length > 0
+  ) {
+    throw new Error(
+      createMissingErrorMessage(locale, missingMessages, "loader")
+    )
+  }
 
   // In production, we don't want untranslated strings. It's better to use message
   // keys as a last resort.

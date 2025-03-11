@@ -32,15 +32,20 @@ skipOnWindows("vite-plugin", () => {
     const mod = await runVite(`macro-usage/vite.config.ts`)
     expect(await mod.load()).toMatchSnapshot()
   })
-  it("should report error when in strict mode", async () => {
+
+  it("should report missing error when failOnMissing = true", async () => {
     expect.assertions(1)
     try {
-      await runVite(`strict-true/vite.config.ts`)
+      await runVite(`fail-on-missing/vite.config.ts`)
     } catch (e) {
-      expect(e.stderr).toContain(
-        'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.'
-      )
+      expect(e.stderr).toContain("Missing 1 translation(s):")
     }
+  })
+
+  it("should NOT report missing messages for pseudo locale when failOnMissing = true", async () => {
+    await expect(
+      runVite(`fail-on-missing-pseudo/vite.config.ts`)
+    ).resolves.toBeTruthy()
   })
 })
 

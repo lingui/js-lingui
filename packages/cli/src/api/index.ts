@@ -8,4 +8,5 @@ export {
   extractFromFileWithBabel,
 } from "./extractors/babel"
 export { getCatalogDependentFiles } from "./catalog/getCatalogDependentFiles"
+export { createMissingErrorMessage } from "./missingMessage"
 export * from "./types"
