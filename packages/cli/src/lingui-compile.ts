@@ -89,16 +89,12 @@ export async function command(
         )
 
         if (errors.length) {
-          let message = createCompilationErrorMessage(
-            locale,
-            errors,
-            "ggg",
-            false
-          )
+          let message = createCompilationErrorMessage(locale, errors)
 
           if (options.failOnCompileError) {
             message += `These errors fail command execution because \`--strict\` option passed`
             console.error(chalk.red(message))
+            return false
           } else {
             message += `You can fail command execution on these errors by passing \`--strict\` option`
             console.error(chalk.red(message))

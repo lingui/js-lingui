@@ -162,4 +162,39 @@ msgstr ""
       })
     })
   })
+
+  describe("failOnCompileError = true", () => {
+    it(
+      "Should show error and stop compilation of catalog " +
+        "if message has compilation error",
+      async () => {
+        expect.assertions(3)
+
+        const rootDir = await createFixtures({
+          "/test": {
+            "en.po": `
+msgid "Hello World"
+msgstr "Hello {hello"
+        `,
+          },
+        })
+
+        const config = getConfig(rootDir)
+
+        await mockConsole(async (console) => {
+          const result = await command(config, {
+            failOnCompileError: true,
+            allowEmpty: true,
+          })
+          const actualFiles = readFsToJson(config.rootDir)
+
+          expect(actualFiles["en.js"]).toBeFalsy()
+
+          const log = getConsoleMockCalls(console.error)
+          expect(log).toMatchSnapshot()
+          expect(result).toBeFalsy()
+        })
+      }
+    )
+  })
 })
