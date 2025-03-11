@@ -11,6 +11,7 @@ import { getCatalogForMerge } from "./api/catalog/getCatalogs"
 import normalizePath from "normalize-path"
 
 import nodepath from "path"
+import { Catalog } from "./api/catalog"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -74,75 +75,70 @@ export async function command(
       if (doMerge) {
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
-        const namespace = options.typescript
-          ? "ts"
-          : options.namespace || config.compileNamespace
-        const { source: compiledCatalog, errors } = createCompiledCatalog(
-          locale,
-          messages,
-          {
-            strict: false,
-            namespace,
-            pseudoLocale: config.pseudoLocale,
-            compilerBabelOptions: config.compilerBabelOptions,
-          }
-        )
-
-        if (errors.length) {
-          let message = createCompilationErrorMessage(locale, errors)
-
-          if (options.failOnCompileError) {
-            message += `These errors fail command execution because \`--strict\` option passed`
-            console.error(chalk.red(message))
-            return false
-          } else {
-            message += `You can fail command execution on these errors by passing \`--strict\` option`
-            console.error(chalk.red(message))
-          }
+        if (
+          !(await compileAndWrite(locale, config, options, catalog, messages))
+        ) {
+          return false
         }
-
-        let compiledPath = await catalog.writeCompiled(
-          locale,
-          compiledCatalog,
-          namespace
-        )
-
-        compiledPath = normalizePath(
-          nodepath.relative(config.rootDir, compiledPath)
-        )
-
-        options.verbose &&
-          console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
       }
     }
 
     if (doMerge) {
-      const compileCatalog = await getCatalogForMerge(config)
-      const namespace = options.namespace || config.compileNamespace
-      const { source: compiledCatalog } = createCompiledCatalog(
+      return await compileAndWrite(
         locale,
-        mergedCatalogs,
-        {
-          strict: false,
-          namespace: namespace,
-          pseudoLocale: config.pseudoLocale,
-          compilerBabelOptions: config.compilerBabelOptions,
-        }
+        config,
+        options,
+        await getCatalogForMerge(config),
+        mergedCatalogs
       )
-
-      let compiledPath = await compileCatalog.writeCompiled(
-        locale,
-        compiledCatalog,
-        namespace
-      )
-
-      compiledPath = normalizePath(
-        nodepath.relative(config.rootDir, compiledPath)
-      )
-
-      options.verbose && console.log(chalk.green(`${locale} ⇒ ${compiledPath}`))
     }
   }
+  return true
+}
+
+async function compileAndWrite(
+  locale: string,
+  config: LinguiConfigNormalized,
+  options: CliCompileOptions,
+  catalogToWrite: Catalog,
+  messages: Record<string, string>
+) {
+  const namespace = options.typescript
+    ? "ts"
+    : options.namespace || config.compileNamespace
+  const { source: compiledCatalog, errors } = createCompiledCatalog(
+    locale,
+    messages,
+    {
+      strict: false,
+      namespace,
+      pseudoLocale: config.pseudoLocale,
+      compilerBabelOptions: config.compilerBabelOptions,
+    }
+  )
+
+  if (errors.length) {
+    let message = createCompilationErrorMessage(locale, errors)
+
+    if (options.failOnCompileError) {
+      message += `These errors fail command execution because \`--strict\` option passed`
+      console.error(chalk.red(message))
+      return false
+    } else {
+      message += `You can fail command execution on these errors by passing \`--strict\` option`
+      console.error(chalk.red(message))
+    }
+  }
+
+  let compiledPath = await catalogToWrite.writeCompiled(
+    locale,
+    compiledCatalog,
+    namespace
+  )
+
+  compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
+
+  options.verbose && console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
   return true
 }
 
