@@ -5,6 +5,7 @@ import {
   getCatalogForFile,
   getCatalogDependentFiles,
   createMissingErrorMessage,
+  createCompilationErrorMessage,
 } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
@@ -20,10 +21,16 @@ export type LinguiPluginOpts = {
    * If true would fail compilation on missing translations
    **/
   failOnMissing?: boolean
+
+  /**
+   * If true would fail compilation on message compilation errors
+   **/
+  failOnCompileError?: boolean
 }
 
 export function lingui({
   failOnMissing,
+  failOnCompileError,
   ...linguiConfig
 }: LinguiPluginOpts = {}): Plugin[] {
   const config = getConfig(linguiConfig)
@@ -98,18 +105,43 @@ Please check that catalogs.path is filled properly.\n`
             locale !== config.pseudoLocale &&
             missingMessages.length > 0
           ) {
+            const message = createMissingErrorMessage(
+              locale,
+              missingMessages,
+              "loader"
+            )
             throw new Error(
-              createMissingErrorMessage(locale, missingMessages, "Vite plugin")
+              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`
             )
           }
 
-          const compiled = createCompiledCatalog(locale, messages, {
-            namespace: "es",
-            pseudoLocale: config.pseudoLocale,
-          })
+          const { source: code, errors } = createCompiledCatalog(
+            locale,
+            messages,
+            {
+              namespace: "es",
+              pseudoLocale: config.pseudoLocale,
+            }
+          )
+
+          if (errors.length) {
+            const message = createCompilationErrorMessage(locale, errors)
+
+            if (failOnCompileError) {
+              throw new Error(
+                message +
+                  `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`
+              )
+            } else {
+              console.warn(
+                message +
+                  `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`
+              )
+            }
+          }
 
           return {
-            code: compiled,
+            code,
             map: null, // provide source map if available
           }
         }

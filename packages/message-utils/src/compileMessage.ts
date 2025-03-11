@@ -89,12 +89,19 @@ function compileDateExpression(
   return format
 }
 
+export function compileMessageOrThrow(
+  message: string,
+  mapText: MapTextFn = (v) => v
+): CompiledMessage {
+  return processTokens(parse(message), mapText)
+}
+
 export function compileMessage(
   message: string,
   mapText: MapTextFn = (v) => v
 ): CompiledMessage {
   try {
-    return processTokens(parse(message), mapText)
+    return compileMessageOrThrow(message, mapText)
   } catch (e) {
     console.error(`${(e as Error).message} \n\nMessage: ${message}`)
     return [message]

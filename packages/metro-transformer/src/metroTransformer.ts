@@ -75,9 +75,11 @@ Please check that \`catalogs.path\` is filled properly and restart the Metro ser
 
   const strict = process.env.NODE_ENV !== "production"
 
-  return createCompiledCatalog(locale, messages, {
+  const { source } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: "es",
     pseudoLocale: config.pseudoLocale,
   })
+
+  return source
 }

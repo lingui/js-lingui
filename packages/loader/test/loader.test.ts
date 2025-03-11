@@ -73,6 +73,31 @@ describe("lingui-loader", () => {
     expect(built.stats.warnings).toEqual([])
   })
 
+  it("Should fail build if there are message compilation errors when failOnCompileError = true", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
+      {
+        failOnCompileError: true,
+      }
+    )
+    expect(built.stats.errors[0].message).toContain(
+      "Compilation error for 2 translation(s)"
+    )
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it("Should NOT fail build if there are message compilation errors when failOnCompileError = false", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
+      {
+        failOnCompileError: false,
+      }
+    )
+    expect(built.stats.warnings[0].message).toContain(
+      "Compilation error for 2 translation(s)"
+    )
+    expect(built.stats.errors).toEqual([])
+  })
   it("should trigger webpack recompile on catalog dependency change", async () => {
     const fixtureTempPath = await copyFixture(path.join(__dirname, "po-format"))
 

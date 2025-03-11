@@ -6,6 +6,7 @@ import {
   getCatalogForFile,
   getCatalogDependentFiles,
   createMissingErrorMessage,
+  createCompilationErrorMessage,
 } from "@lingui/cli/api"
 import type { LoaderDefinitionFunction } from "webpack"
 
@@ -16,6 +17,11 @@ export type LinguiLoaderOptions = {
    * If true would fail compilation on missing translations
    **/
   failOnMissing?: boolean
+
+  /**
+   * If true would fail compilation on message compilation errors
+   **/
+  failOnCompileError?: boolean
 }
 
 const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
@@ -68,8 +74,9 @@ Please check that \`catalogs.path\` is filled properly.\n`
     locale !== config.pseudoLocale &&
     missingMessages.length > 0
   ) {
+    const message = createMissingErrorMessage(locale, missingMessages, "loader")
     throw new Error(
-      createMissingErrorMessage(locale, missingMessages, "loader")
+      `${message}\nYou see this error because \`failOnMissing=true\` in Lingui Loader configuration.`
     )
   }
 
@@ -79,11 +86,29 @@ Please check that \`catalogs.path\` is filled properly.\n`
   // of setupI18n (core) and therefore we need to get empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
 
-  return createCompiledCatalog(locale, messages, {
+  const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: this._module.type === "json" ? "json" : "es",
     pseudoLocale: config.pseudoLocale,
   })
+
+  if (errors.length) {
+    const message = createCompilationErrorMessage(locale, errors)
+
+    if (options.failOnCompileError) {
+      throw new Error(
+        `${message} These errors fail build because \`failOnCompileError=true\` in Lingui Loader configuration.`
+      )
+    } else {
+      this.emitWarning(
+        new Error(
+          `${message} You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Loader configuration.`
+        )
+      )
+    }
+  }
+
+  return code
 }
 
 export default loader

@@ -6,14 +6,14 @@ import { platform } from "node:os"
 
 const skipOnWindows = platform() === "win32" ? describe.skip : describe
 
-skipOnWindows("vite-plugin", () => {
+describe("vite-plugin", () => {
   it("should return compiled catalog", async () => {
-    const mod = await runVite(`po-format/vite.config.ts`)
+    const { mod } = await runVite(`po-format/vite.config.ts`)
     expect((await mod.load()).messages).toMatchSnapshot()
   })
 
   it("should return compiled catalog json", async () => {
-    const mod = await runVite(`json-format/vite.config.ts`)
+    const { mod } = await runVite(`json-format/vite.config.ts`)
 
     expect((await mod.load()).messages).toMatchSnapshot()
   })
@@ -29,7 +29,7 @@ skipOnWindows("vite-plugin", () => {
     }
   })
   it("should not report error when macro correctly used", async () => {
-    const mod = await runVite(`macro-usage/vite.config.ts`)
+    const { mod } = await runVite(`macro-usage/vite.config.ts`)
     expect(await mod.load()).toMatchSnapshot()
   })
 
@@ -46,6 +46,23 @@ skipOnWindows("vite-plugin", () => {
     await expect(
       runVite(`fail-on-missing-pseudo/vite.config.ts`)
     ).resolves.toBeTruthy()
+  })
+
+  it("Should fail build if there are message compilation errors when failOnCompileError = true", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`fail-on-compile-errors/vite.config.ts`)
+    } catch (e) {
+      expect(e.stderr).toContain("Compilation error for 2 translation(s)")
+    }
+  })
+
+  it("Should NOT fail build if there are message compilation errors when failOnCompileError = false", async () => {
+    const res = await runVite(
+      `fail-on-compile-errors/failOnCompileErrorFalse.vite.config.ts`
+    )
+
+    expect(res.stderr).toContain("Compilation error for 2 translation(s)")
   })
 })
 
@@ -68,29 +85,38 @@ async function runVite(configPath: string) {
     ` build -c ` +
     path.resolve(__dirname, configPath) +
     ` --emptyOutDir --outDir ${outDir}`
-  await exec(command, path.dirname(path.resolve(__dirname, configPath)))
+  const res = await exec(
+    command,
+    path.dirname(path.resolve(__dirname, configPath))
+  )
 
-  return await import(path.resolve(outDir, "bundle.js"))
+  return {
+    mod: await import(path.resolve(outDir, "bundle.js")),
+    stdout: res.stdout,
+    stderr: res.stderr,
+  }
 }
 
 function exec(cmd: string, cwd: string) {
-  return new Promise((resolve, reject) => {
-    _exec(
-      cmd,
-      {
-        env: process.env,
-        cwd,
-      },
-      (error, stdout, stderr) => {
-        stdout = stdout.trim()
-        stderr = stderr.trim()
+  return new Promise<{ stdout: string; stderr: string; error?: unknown }>(
+    (resolve, reject) => {
+      _exec(
+        cmd,
+        {
+          env: process.env,
+          cwd,
+        },
+        (error, stdout, stderr) => {
+          stdout = stdout.trim()
+          stderr = stderr.trim()
 
-        if (error === null) {
-          resolve({ stdout, stderr })
-        } else {
-          reject({ error, stdout, stderr })
+          if (error === null) {
+            resolve({ stdout, stderr })
+          } else {
+            reject({ error, stdout, stderr })
+          }
         }
-      }
-    )
-  })
+      )
+    }
+  )
 }

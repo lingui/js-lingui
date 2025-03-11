@@ -6,7 +6,7 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
-import { getCatalogs, getFormat } from "./api"
+import { createCompilationErrorMessage, getCatalogs, getFormat } from "./api"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
 import normalizePath from "normalize-path"
 
@@ -15,6 +15,7 @@ import nodepath from "path"
 export type CliCompileOptions = {
   verbose?: boolean
   allowEmpty?: boolean
+  failOnCompileError?: boolean
   typescript?: boolean
   watch?: boolean
   namespace?: string
@@ -76,12 +77,33 @@ export async function command(
         const namespace = options.typescript
           ? "ts"
           : options.namespace || config.compileNamespace
-        const compiledCatalog = createCompiledCatalog(locale, messages, {
-          strict: false,
-          namespace,
-          pseudoLocale: config.pseudoLocale,
-          compilerBabelOptions: config.compilerBabelOptions,
-        })
+        const { source: compiledCatalog, errors } = createCompiledCatalog(
+          locale,
+          messages,
+          {
+            strict: false,
+            namespace,
+            pseudoLocale: config.pseudoLocale,
+            compilerBabelOptions: config.compilerBabelOptions,
+          }
+        )
+
+        if (errors.length) {
+          let message = createCompilationErrorMessage(
+            locale,
+            errors,
+            "ggg",
+            false
+          )
+
+          if (options.failOnCompileError) {
+            message += `These errors fail command execution because \`--strict\` option passed`
+            console.error(chalk.red(message))
+          } else {
+            message += `You can fail command execution on these errors by passing \`--strict\` option`
+            console.error(chalk.red(message))
+          }
+        }
 
         let compiledPath = await catalog.writeCompiled(
           locale,
@@ -101,12 +123,17 @@ export async function command(
     if (doMerge) {
       const compileCatalog = await getCatalogForMerge(config)
       const namespace = options.namespace || config.compileNamespace
-      const compiledCatalog = createCompiledCatalog(locale, mergedCatalogs, {
-        strict: false,
-        namespace: namespace,
-        pseudoLocale: config.pseudoLocale,
-        compilerBabelOptions: config.compilerBabelOptions,
-      })
+      const { source: compiledCatalog } = createCompiledCatalog(
+        locale,
+        mergedCatalogs,
+        {
+          strict: false,
+          namespace: namespace,
+          pseudoLocale: config.pseudoLocale,
+          compilerBabelOptions: config.compilerBabelOptions,
+        }
+      )
+
       let compiledPath = await compileCatalog.writeCompiled(
         locale,
         compiledCatalog,
@@ -177,6 +204,8 @@ if (require.main === module) {
       command(config, {
         verbose: options.watch || options.verbose || false,
         allowEmpty: !options.strict,
+        failOnCompileError: !!options.strict,
+
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
