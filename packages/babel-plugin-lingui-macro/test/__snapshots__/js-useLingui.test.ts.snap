@@ -1,5 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`correctly process indexed placeholders in few t calls 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function Home() {
+  const { t } = useLingui();
+  const user = { name: "John " };
+  return (
+    <main>
+      <button onClick={() => console.log(t\`Hello \${user.name}\`)}>Hello</button>
+
+      <button onClick={() => console.log(t\`Bye \${user.name}\`)}>Bye</button>
+    </main>
+  );
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function Home() {
+  const { _: _t } = _useLingui();
+  const user = {
+    name: "John ",
+  };
+  return (
+    <main>
+      <button
+        onClick={() =>
+          console.log(
+            _t(
+              /*i18n*/
+              {
+                id: "Y7riaK",
+                message: "Hello {0}",
+                values: {
+                  0: user.name,
+                },
+              }
+            )
+          )
+        }
+      >
+        Hello
+      </button>
+
+      <button
+        onClick={() =>
+          console.log(
+            _t(
+              /*i18n*/
+              {
+                id: "vqOLZ6",
+                message: "Bye {0}",
+                values: {
+                  0: user.name,
+                },
+              }
+            )
+          )
+        }
+      >
+        Bye
+      </button>
+    </main>
+  );
+}
+
+`;
+
 exports[`does not crash when no params 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function MyComponent() {
