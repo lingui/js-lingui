@@ -256,16 +256,22 @@ export class MacroJs {
         // parent would be an Expression with this identifier which we are interesting in
         const currentPath = refPath.parentPath
 
+        const _ctx = createMacroJsContext(
+          ctx.isLinguiIdentifier,
+          ctx.stripNonEssentialProps,
+          ctx.stripMessageProp
+        )
+
         // { t } = useLingui()
         // t`Hello!`
         if (currentPath.isTaggedTemplateExpression()) {
-          const tokens = tokenizeTemplateLiteral(currentPath.node, ctx)
+          const tokens = tokenizeTemplateLiteral(currentPath.node, _ctx)
 
           const descriptor = createMessageDescriptorFromTokens(
             tokens,
             currentPath.node.loc,
-            ctx.stripNonEssentialProps,
-            ctx.stripMessageProp
+            _ctx.stripNonEssentialProps,
+            _ctx.stripMessageProp
           )
 
           const callExpr = t.callExpression(
@@ -285,7 +291,7 @@ export class MacroJs {
           const descriptor = processDescriptor(
             (currentPath.get("arguments")[0] as NodePath<ObjectExpression>)
               .node,
-            ctx
+            _ctx
           )
           const callExpr = t.callExpression(
             t.identifier(uniqTIdentifier.name),

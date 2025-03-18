@@ -203,6 +203,32 @@ function MyComponent2() {
 }`,
     },
     {
+      name: "correctly process indexed placeholders in few t calls",
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function Home() {
+  const {t} = useLingui();
+  const user = {name: 'John '}
+  return (
+    <main>
+      <button onClick={() =>
+        console.log(t\`Hello \${user.name}\`)
+      }>
+        Hello
+      </button>
+
+      <button onClick={() =>
+        console.log(t\`Bye \${user.name}\`)
+      }>
+        Bye
+      </button>
+    </main>
+  );
+}
+`,
+    },
+    {
       name: "support configuring runtime module import using LinguiConfig.runtimeConfigModule",
       macroOpts: {
         linguiConfig: makeConfig(
