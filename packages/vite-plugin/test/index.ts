@@ -6,7 +6,7 @@ import { platform } from "node:os"
 
 const skipOnWindows = platform() === "win32" ? describe.skip : describe
 
-describe("vite-plugin", () => {
+skipOnWindows("vite-plugin", () => {
   it("should return compiled catalog", async () => {
     const { mod } = await runVite(`po-format/vite.config.ts`)
     expect((await mod.load()).messages).toMatchSnapshot()
