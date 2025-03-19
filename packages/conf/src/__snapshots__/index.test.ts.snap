@@ -41,7 +41,7 @@ exports[`@lingui/conf should return default config 1`] = `
       @lingui/macro,
       @lingui/core/macro,
     ],
-    reactPackage: [
+    jsxPackage: [
       @lingui/macro,
       @lingui/react/macro,
     ],

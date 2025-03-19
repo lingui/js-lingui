@@ -21,7 +21,7 @@ export function lingui(linguiConfig: LinguiConfigOpts = {}): Plugin[] {
 
   const macroIds = new Set([
     ...config.macro.corePackage,
-    ...config.macro.reactPackage,
+    ...config.macro.jsxPackage,
   ])
 
   return [
