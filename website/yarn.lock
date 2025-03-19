@@ -8548,16 +8548,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"editorconfig-checker@npm:6.0.0":
-  version: 6.0.0
-  resolution: "editorconfig-checker@npm:6.0.0"
-  bin:
-    ec: dist/index.js
-    editorconfig-checker: dist/index.js
-  checksum: 32baee909d87e7f5d72df9e678a846d566e6988fc9597bf29ef97dfafd11888c3addcf9a26190c03a0a205e2dc7dcdf2466133b6e643f423ec4f68132c28a6be
-  languageName: node
-  linkType: hard
-
 "ee-first@npm:1.1.1":
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
@@ -11531,7 +11521,6 @@ __metadata:
     "@typescript-eslint/parser": 8.18.2
     clsx: 2.1.1
     docusaurus-plugin-sass: ^0.2.6
-    editorconfig-checker: 6.0.0
     eslint: 9.17.0
     eslint-plugin-react: 7.37.3
     eslint-plugin-react-hooks: 5.1.0
