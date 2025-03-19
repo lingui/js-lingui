@@ -29,7 +29,6 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
 ) {
   const options = this.getOptions() || {}
 
-  console.log("LINGUI_CONFIG", process.env.LINGUI_CONFIG)
   const config = getConfig({
     configPath: options.config,
     cwd: path.dirname(this.resourcePath),
