@@ -125,7 +125,7 @@ export default function ({
   function getMacroImports(path: NodePath<Program>) {
     const linguiPackages = new Set([
       ...config.macro.corePackage,
-      ...config.macro.reactPackage,
+      ...config.macro.jsxPackage,
     ])
 
     return path.get("body").filter((statement) => {
@@ -152,7 +152,7 @@ export default function ({
 
     if (macro === JsMacroName.useLingui) {
       if (
-        config.macro.reactPackage.some((moduleSource) =>
+        config.macro.jsxPackage.some((moduleSource) =>
           identPath.referencesImport(moduleSource, JsMacroName.useLingui)
         )
       ) {

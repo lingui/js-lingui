@@ -418,7 +418,7 @@ export class MacroJSX {
     ) as LinguiConfigNormalized
     const identifier = path.get("openingElement").get("name")
 
-    return config.macro.reactPackage.some((moduleSource) =>
+    return config.macro.jsxPackage.some((moduleSource) =>
       identifier.referencesImport(moduleSource, name)
     )
   }

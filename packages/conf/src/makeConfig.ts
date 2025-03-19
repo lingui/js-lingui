@@ -70,12 +70,9 @@ export const defaultConfig: LinguiConfig = {
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
-  /**
-   * Allow you to set macro options
-   */
   macro: {
     corePackage: ["@lingui/macro", "@lingui/core/macro"],
-    reactPackage: ["@lingui/macro", "@lingui/react/macro"],
+    jsxPackage: ["@lingui/macro", "@lingui/react/macro"],
   },
   sourceLocale: "",
   service: { name: "", apiKey: "" },

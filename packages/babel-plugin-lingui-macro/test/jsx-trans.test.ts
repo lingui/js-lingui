@@ -336,12 +336,12 @@ macroTester({
       `,
     },
     {
-      name: "should detects macro imported from config.macro.reactPackage",
+      name: "should detects macro imported from config.macro.jsxPackage",
       macroOpts: {
         linguiConfig: makeConfig(
           {
             macro: {
-              reactPackage: ["@my-lingui/macro"],
+              jsxPackage: ["@my-lingui/macro"],
             },
           },
           { skipValidation: true }
