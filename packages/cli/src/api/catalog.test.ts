@@ -638,11 +638,11 @@ describe("writeCompiled", () => {
   ])(
     "Should save namespace $namespace in $extension extension",
     async ({ namespace, extension }) => {
-      const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+      const { source } = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
-      expect(
-        await catalog.writeCompiled("en", compiledCatalog, namespace)
-      ).toMatch(extension)
+      expect(await catalog.writeCompiled("en", source, namespace)).toMatch(
+        extension
+      )
     }
   )
 })

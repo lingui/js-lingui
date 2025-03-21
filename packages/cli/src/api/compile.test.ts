@@ -190,7 +190,7 @@ describe("createCompiledCatalog", () => {
         {
           namespace,
         }
-      )
+      ).source
 
     it("should compile with json", () => {
       expect(getCompiledCatalog("json")).toMatchSnapshot()
@@ -229,7 +229,7 @@ describe("createCompiledCatalog", () => {
         {
           strict,
         }
-      )
+      ).source
 
     it("should return message key as a fallback translation", () => {
       expect(getCompiledCatalog(false)).toMatchSnapshot()
@@ -250,7 +250,7 @@ describe("createCompiledCatalog", () => {
         {
           pseudoLocale,
         }
-      )
+      ).source
 
     it("should return catalog with pseudolocalized messages", () => {
       expect(getCompiledCatalog("ps")).toMatchSnapshot()
@@ -269,7 +269,7 @@ describe("createCompiledCatalog", () => {
           Hello: "Alohà",
         },
         opts
-      )
+      ).source
 
     it("by default should return catalog without ASCII chars", () => {
       expect(getCompiledCatalog()).toMatchSnapshot()
@@ -286,5 +286,31 @@ describe("createCompiledCatalog", () => {
         })
       ).toMatchSnapshot()
     })
+  })
+
+  it("should return list of compile errors", () => {
+    const res = createCompiledCatalog(
+      "ru",
+      {
+        Hello: "{plural,  }",
+        Second: "{bla, }",
+      },
+      {}
+    )
+
+    expect(res.errors).toHaveLength(2)
+    expect(res.errors[0]).toMatchObject({
+      id: "Hello",
+      source: "{plural,  }",
+    })
+
+    expect(res.errors[0].error.message).toContain("invalid syntax at line")
+
+    expect(res.errors[1]).toMatchObject({
+      id: "Second",
+      source: "{bla, }",
+    })
+
+    expect(res.errors[1].error.message).toContain("invalid syntax at line")
   })
 })

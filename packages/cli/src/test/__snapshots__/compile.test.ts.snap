@@ -27,3 +27,19 @@ mY42CM: (Hello World)
 2ZeN02: (Test String)
 
 `;
+
+exports[`CLI Command: Compile failOnCompileError = true Should show error and stop compilation of catalog if message has compilation error 1`] = `
+Failed to compile catalog for locale en!
+
+Compilation error for 1 translation(s):
+
+mY42CM: Hello {hello
+Reason: Unexpected message end at line 1 col 13:
+
+1  Hello {hello
+               ^
+
+These errors fail command execution because \`--strict\` option passed
+`;
+
+exports[`CLI Command: Compile merge Should merge individual catalogs if  catalogsMergePath specified in lingui config 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"Foo Hello World\\"],\\"iWZSiH\\":[\\"Bar Hello World\\"]}")};`;

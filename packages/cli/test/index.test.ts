@@ -6,16 +6,9 @@ import fs from "fs/promises"
 import { sync } from "glob"
 import nodepath from "path"
 import { makeConfig } from "@lingui/conf"
-import { listingToHumanReadable, readFsToJson } from "../src/tests"
+import { compareFolders } from "../src/tests"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import MockDate from "mockdate"
-
-export function compareFolders(pathA: string, pathB: string) {
-  const listingA = listingToHumanReadable(readFsToJson(pathA))
-  const listingB = listingToHumanReadable(readFsToJson(pathB))
-
-  expect(listingA).toBe(listingB)
-}
 
 async function prepare(caseFolderName: string) {
   const rootDir = nodepath.join(__dirname, caseFolderName)
