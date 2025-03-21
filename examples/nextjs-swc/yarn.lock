@@ -1136,6 +1136,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/core@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@lingui/core@npm:5.2.0"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    "@lingui/message-utils": 5.2.0
+    unraw: ^3.0.0
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.2.0
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
+  checksum: 4e00fa9674f521f10bffab16f0f1602a13a356f92a5f0b0a65e49eb4a8e5fcd3dfc162c32b3869463561a27562ca9948c95f25917d03937f500f57acc22544db
+  languageName: node
+  linkType: hard
+
 "@lingui/core@npm:^5.1.2":
   version: 5.1.2
   resolution: "@lingui/core@npm:5.1.2"
@@ -1180,6 +1199,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/macro@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "@lingui/macro@npm:5.2.0"
+  dependencies:
+    "@lingui/core": 5.2.0
+    "@lingui/react": 5.2.0
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.2.0
+    babel-plugin-macros: 2 || 3
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
+  checksum: 3235820d46d185e7278a8f7694c30696ad3809dfac5b15e7c72500b7e971d9475d450f076cfb4478b93a77cb97bd28f43e2e450f82c73c860f6ec265391f9f95
+  languageName: node
+  linkType: hard
+
+"@lingui/message-utils@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@lingui/message-utils@npm:5.2.0"
+  dependencies:
+    "@messageformat/parser": ^5.0.0
+    js-sha256: ^0.10.1
+  checksum: 14b759404de1877551d540d0f046b57e8c3670670fec302fe6b17e602260f43046a6c42132db7c170d726f46a2cc4000e976b9c5c457d8c0e02a11eb339325c8
+  languageName: node
+  linkType: hard
+
 "@lingui/message-utils@npm:^5.1.2":
   version: 5.1.2
   resolution: "@lingui/message-utils@npm:5.1.2"
@@ -1187,6 +1234,25 @@ __metadata:
     "@messageformat/parser": ^5.0.0
     js-sha256: ^0.10.1
   checksum: 49262a9a6a86c1dd7b6e1de3f8adc18b0498f45e2d3708163206ae9907f5e3b9562590a6744e97b696bf003fbbf8f2be5a8cc3b4610f6fd4dc6db30ea8910728
+  languageName: node
+  linkType: hard
+
+"@lingui/react@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@lingui/react@npm:5.2.0"
+  dependencies:
+    "@babel/runtime": ^7.20.13
+    "@lingui/core": 5.2.0
+  peerDependencies:
+    "@lingui/babel-plugin-lingui-macro": 5.2.0
+    babel-plugin-macros: 2 || 3
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@lingui/babel-plugin-lingui-macro":
+      optional: true
+    babel-plugin-macros:
+      optional: true
+  checksum: b7dde030d986529f79b3878ec7866440c5eaff693c01625bd6a228e576d0df9b9806676b52c05f5f45199f922df87fdac08540ac39c497fcb11eea59421bf901
   languageName: node
   linkType: hard
 
@@ -4986,6 +5052,7 @@ __metadata:
     "@lingui/cli": ^5.1.2
     "@lingui/core": ^5.1.2
     "@lingui/loader": ^5.1.2
+    "@lingui/macro": ^5.2.0
     "@lingui/react": ^5.1.2
     "@lingui/swc-plugin": ^5.0.1
     "@types/negotiator": ^0.6.3
