@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/lingui/js-lingui/compare/v5.2.0...v5.3.0) (2025-03-21)
+
+### Bug Fixes
+
+* incorrect index for placeholders in useLingui macro ([#2204](https://github.com/lingui/js-lingui/issues/2204)) ([6688f72](https://github.com/lingui/js-lingui/commit/6688f72688bc93fe5b14802c898ff42ab88940fa))
+
+### Features
+
+* `failOnMissing` & `failOnCompileError` for loaders + compiler ([#2198](https://github.com/lingui/js-lingui/issues/2198)) ([68c29ab](https://github.com/lingui/js-lingui/commit/68c29abf23974d8bffb6cadaacafc88e4760d3cb))
+* **babel-plugin-lingui-macro:** allow to configure macro packages ([#2196](https://github.com/lingui/js-lingui/issues/2196)) ([583dd05](https://github.com/lingui/js-lingui/commit/583dd05578b63f26576cf8ebdead83639afdb4b9))
+
 # [5.2.0](https://github.com/lingui/js-lingui/compare/v5.1.2...v5.2.0) (2025-01-31)
 
 ### Bug Fixes
