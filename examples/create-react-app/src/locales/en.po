@@ -25,6 +25,7 @@ msgstr "Date formatter example:"
 msgid "Decrement"
 msgstr "Decrement"
 
+#. placeholder {0}: i18n.number(1_000_000, { style: "currency", currency: "EUR" })
 #: src/App.tsx:59
 msgid "I have a balance of {0}"
 msgstr "I have a balance of {0}"
@@ -45,6 +46,7 @@ msgstr "Number formatter example:"
 msgid "Plurals example: "
 msgstr "Plurals example: "
 
+#. placeholder {0}: i18n.date(new Date(), {})
 #: src/App.tsx:53
 msgid "Today is {0}"
 msgstr "Today is {0}"

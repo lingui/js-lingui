@@ -23,6 +23,7 @@ msgstr "Příklad formátovače data:"
 msgid "Decrement"
 msgstr "Úbytek"
 
+#. placeholder {0}: i18n.number(1_000_000, { style: "currency", currency: "EUR" })
 #: src/App.tsx:59
 msgid "I have a balance of {0}"
 msgstr "Mám zůstatek {0}"
@@ -43,6 +44,7 @@ msgstr "Příklad formátovače čísel:"
 msgid "Plurals example: "
 msgstr "Příklad množného čísla: "
 
+#. placeholder {0}: i18n.date(new Date(), {})
 #: src/App.tsx:53
 msgid "Today is {0}"
 msgstr "Dnes je {0}"
