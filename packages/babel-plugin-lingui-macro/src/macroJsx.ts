@@ -18,13 +18,7 @@ import type { NodePath } from "@babel/traverse"
 
 import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
-import {
-  JsxMacroName,
-  MACRO_REACT_PACKAGE,
-  MACRO_LEGACY_PACKAGE,
-  MsgDescriptorPropKey,
-  JsMacroName,
-} from "./constants"
+import { JsxMacroName, MsgDescriptorPropKey, JsMacroName } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
 import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
 import {
@@ -32,6 +26,8 @@ import {
   MacroJsContext,
   tokenizeExpression,
 } from "./macroJsAst"
+import { LinguiConfigNormalized } from "@lingui/conf"
+import { PluginPass } from "@babel/core"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -387,14 +383,17 @@ export class MacroJSX {
   tokenizeConditionalExpression = (
     exp: NodePath<ConditionalExpression>
   ): ArgToken => {
-    exp.traverse({
-      JSXElement: (el) => {
-        if (this.isTransComponent(el) || this.isChoiceComponent(el)) {
-          this.replacePath(el)
-          el.skip()
-        }
+    exp.traverse(
+      {
+        JSXElement: (el) => {
+          if (this.isTransComponent(el) || this.isChoiceComponent(el)) {
+            this.replacePath(el)
+            el.skip()
+          }
+        },
       },
-    })
+      exp.state
+    )
 
     return this.tokenizeExpression(exp)
   }
@@ -414,11 +413,13 @@ export class MacroJSX {
       return false
     }
 
+    const config = (path.context.state as PluginPass).get(
+      "linguiConfig"
+    ) as LinguiConfigNormalized
     const identifier = path.get("openingElement").get("name")
 
-    return (
-      identifier.referencesImport(MACRO_REACT_PACKAGE, name) ||
-      identifier.referencesImport(MACRO_LEGACY_PACKAGE, name)
+    return config.macro.jsxPackage.some((moduleSource) =>
+      identifier.referencesImport(moduleSource, name)
     )
   }
 

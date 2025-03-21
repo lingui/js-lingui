@@ -664,6 +664,23 @@ _i18n._(
 
 `;
 
+exports[`should detects macro imported from config.macro.corePackage 1`] = `
+import { t } from "@my-lingui/macro";
+const msg = t\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "xDAtGP",
+    message: "Message",
+  }
+);
+
+`;
+
 exports[`should not crash when no params passed 1`] = `
 import { t } from "@lingui/core/macro";
 const msg = t();
@@ -672,6 +689,23 @@ const msg = t();
 
 import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._();
+
+`;
+
+exports[`should respect runtimeConfigModule 1`] = `
+import { t } from "@lingui/macro";
+const msg = t\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { myI18n as _i18n } from "@my/lingui";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "xDAtGP",
+    message: "Message",
+  }
+);
 
 `;
 

@@ -1,4 +1,5 @@
 import { macroTester } from "./macroTester"
+import { makeConfig } from "@lingui/conf"
 describe.skip("", () => {})
 
 macroTester({
@@ -315,6 +316,41 @@ macroTester({
         import { Trans } from "@lingui/react/macro";
         type X = typeof Trans;
         const cmp = <Trans>Hello</Trans>
+      `,
+    },
+    {
+      name: "should respect runtimeConfigModule",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            runtimeConfigModule: {
+              Trans: ["@my/lingui", "myTrans"],
+            },
+          },
+          { skipValidation: true }
+        ),
+      },
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans>Hello World</Trans>;
+      `,
+    },
+    {
+      name: "should detects macro imported from config.macro.jsxPackage",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPackage: ["@my-lingui/macro"],
+            },
+          },
+          { skipValidation: true }
+        ),
+      },
+      skipBabelMacroTest: true,
+      code: `
+        import { Trans } from '@my-lingui/macro';
+        <Trans>Hello World</Trans>;
       `,
     },
   ],

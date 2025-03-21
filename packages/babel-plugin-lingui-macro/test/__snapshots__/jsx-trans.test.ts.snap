@@ -891,6 +891,44 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`should detects macro imported from config.macro.jsxPackage 1`] = `
+import { Trans } from "@my-lingui/macro";
+<Trans>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
+exports[`should respect runtimeConfigModule 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { myTrans as _Trans } from "@my/lingui";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
 exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
 import { Trans } from "@lingui/macro";
 <Trans id="msg.hello">Hello World</Trans>;

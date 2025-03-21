@@ -4,6 +4,7 @@ import { MacroJSX } from "./macroJsx"
 import { transformSync } from "@babel/core"
 import type { NodePath } from "@babel/traverse"
 import { JsxMacroName } from "./constants"
+import { makeConfig } from "@lingui/conf"
 
 const parseExpression = (expression: string) => {
   let path: NodePath<JSXElement>
@@ -18,8 +19,11 @@ const parseExpression = (expression: string) => {
       "@babel/plugin-syntax-jsx",
       {
         visitor: {
-          JSXElement: (d) => {
+          JSXElement: (d, state) => {
+            state.set("linguiConfig", makeConfig({}, { skipValidation: true }))
+
             path = d
+            path.context.state = state
             d.stop()
           },
         },

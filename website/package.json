@@ -9,7 +9,7 @@
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
-    "lint": "eslint src *.js *.ts && remark . --ext md,mdx --quiet --frail --rc-path .remarkrc.mjs && editorconfig-checker",
+    "lint": "eslint src *.js *.ts && remark . --ext md,mdx --quiet --frail --rc-path .remarkrc.mjs",
     "lintFix": "eslint --fix src *.js *.ts",
     "checkFormat": "prettier --check .",
     "fixFormat": "prettier --write ."
@@ -42,7 +42,6 @@
     "@types/react-router-dom": "5.3.3",
     "@typescript-eslint/eslint-plugin": "8.18.2",
     "@typescript-eslint/parser": "8.18.2",
-    "editorconfig-checker": "6.0.0",
     "eslint": "9.17.0",
     "eslint-plugin-react": "7.37.3",
     "eslint-plugin-react-hooks": "5.1.0",

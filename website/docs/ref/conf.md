@@ -480,3 +480,47 @@ Extractors it's the way to customize which extractor you want for your codebase.
 ```
 
 See the [Custom Extractor](/guides/custom-extractor) guide for instructions on creating your own extractor.
+
+## macro.corePackage
+
+Default value: `["@lingui/macro", "@lingui/core/macro"]`
+
+Allows customizing the Core Macro package name that the Lingui macro detects.
+
+```js
+// lingui.config
+{
+  macro: {
+    corePackage: ["@lingui/myMacro"];
+  }
+}
+
+// app.tsx
+import { msg } from "@lingui/myMacro";
+
+msg`Hello`; // <-- would be correctly picked up by macro
+```
+
+This setting mostly useful for external framework integrations.
+
+## macro.jsxPackage
+
+Default value: `["@lingui/macro", "@lingui/react/macro"]`
+
+Allows customizing the JSX Macro package name that the Lingui macro detects.
+
+```jsx
+// lingui.config
+{
+  macro: {
+    jsxPackage: ["@lingui/myMacro"];
+  }
+}
+
+// app.tsx
+import { Trans } from "@lingui/myMacro";
+
+<Trans>Hello</Trans>; // <-- would be correctly picked up by macro
+```
+
+This setting mostly useful for external framework integrations.
