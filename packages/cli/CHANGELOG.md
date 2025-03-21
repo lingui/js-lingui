@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/lingui/js-lingui/compare/v5.2.0...v5.3.0) (2025-03-21)
+
+### Features
+
+* `failOnMissing` & `failOnCompileError` for loaders + compiler ([#2198](https://github.com/lingui/js-lingui/issues/2198)) ([68c29ab](https://github.com/lingui/js-lingui/commit/68c29abf23974d8bffb6cadaacafc88e4760d3cb))
+
 # [5.2.0](https://github.com/lingui/js-lingui/compare/v5.1.2...v5.2.0) (2025-01-31)
 
 ### Bug Fixes
