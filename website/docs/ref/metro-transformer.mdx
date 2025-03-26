@@ -74,6 +74,44 @@ const config = {
 
 module.exports = mergeConfig(defaultConfig, config);
 ```
+# Expo mutliple babelTransformerPath
+
+When you use with react-native-svg-transformer
+
+```js
+// File: metro.transformer.js
+
+const upstreamTransformer = require("@expo/metro-config/babel-transformer");
+const svgTransformer = require("react-native-svg-transformer/expo");
+const linguiTransformer = require("@lingui/metro-transformer/expo");
+
+module.exports.transform = function ({ src, filename, options }) {
+  if (filename.endsWith(".svg")) {
+    return svgTransformer.transform({ src, filename, options });
+  } else if (filename.endsWith(".po")) {
+    return linguiTransformer.transform({ src, filename, options });
+  }
+  return upstreamTransformer.transform({ src, filename, options });
+};
+```
+```js
+// File : metro.config.js
+
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require("expo/metro-config");
+const config = getDefaultConfig(__dirname);
+const { transformer, resolver } = config;
+
+config.transformer = {
+  ...transformer,
+  babelTransformerPath: require.resolve("./metro.transformer.js")
+};
+config.resolver = {
+  ...resolver,
+  sourceExts: [...resolver.sourceExts, "po", "pot"],
+};
+module.exports = config;
+```
 
 </TabItem>
 </Tabs>
