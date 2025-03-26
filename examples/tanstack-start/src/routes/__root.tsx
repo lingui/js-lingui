@@ -1,4 +1,5 @@
 import { i18n } from '@lingui/core'
+import { Trans } from '@lingui/react/macro'
 import {
   HeadContent,
   Link,
@@ -7,11 +8,27 @@ import {
   createRootRoute,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { createServerFn } from '@tanstack/react-start'
+import { setHeader } from '@tanstack/react-start/server'
+import { serialize } from 'cookie-es'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
+import { locales } from '~/modules/lingui/i18n'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
+
+const updateLanguage = createServerFn({ method: "POST" })
+	.validator((locale: string) => locale)
+	.handler(async ({ data }) => {
+		setHeader(
+			"Set-Cookie",
+			serialize("locale", data, {
+				maxAge: 30 * 24 * 60 * 60,
+				path: "/",
+			}),
+		);
+	});
 
 export const Route = createRootRoute({
   head: () => ({
@@ -86,7 +103,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             }}
             activeOptions={{ exact: true }}
           >
-            Home
+            <Trans>Home</Trans>
           </Link>{' '}
           <Link
             to="/posts"
@@ -94,7 +111,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: 'font-bold',
             }}
           >
-            Posts
+            <Trans>Posts</Trans>
           </Link>{' '}
           <Link
             to="/users"
@@ -102,7 +119,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: 'font-bold',
             }}
           >
-            Users
+            <Trans>Users</Trans>
           </Link>{' '}
           <Link
             to="/route-a"
@@ -110,7 +127,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: 'font-bold',
             }}
           >
-            Pathless Layout
+            <Trans>Pathless Layout</Trans>
           </Link>{' '}
           <Link
             to="/deferred"
@@ -118,7 +135,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: 'font-bold',
             }}
           >
-            Deferred
+            <Trans>Deferred</Trans>
           </Link>{' '}
           <Link
             // @ts-expect-error
@@ -127,8 +144,20 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: 'font-bold',
             }}
           >
-            This Route Does Not Exist
+            <Trans>This Route Does Not Exist</Trans>
           </Link>
+          |
+          {Object.entries(locales).map(([locale, label]) => <button
+            key={locale}
+            className={locale === i18n.locale ? 'font-bold' : ''}
+            onClick={() => {
+              updateLanguage({ data: locale }).then(() => {
+                location.reload();
+              });
+            }}
+          >
+            {label}
+          </button>)}
         </div>
         <hr />
         {children}

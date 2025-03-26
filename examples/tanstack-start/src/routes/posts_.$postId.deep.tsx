@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { fetchPost } from '../utils/posts'
 import { PostErrorComponent } from '~/components/PostError'
@@ -20,7 +21,7 @@ function PostDeepComponent() {
         to="/posts"
         className="block py-1 text-blue-800 hover:text-blue-600"
       >
-        ← All Posts
+        <Trans>← All Posts</Trans>
       </Link>
       <h4 className="text-xl font-bold underline">{post.title}</h4>
       <div className="text-sm">{post.body}</div>

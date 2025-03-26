@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { createFileRoute } from '@tanstack/react-router'
 import axios from 'redaxios'
 import type { User } from '~/utils/users'
@@ -17,7 +18,7 @@ export const Route = createFileRoute('/users/$userId')({
   errorComponent: UserErrorComponent,
   component: UserComponent,
   notFoundComponent: () => {
-    return <NotFound>User not found</NotFound>
+    return <NotFound><Trans>User not found</Trans></NotFound>
   },
 })
 

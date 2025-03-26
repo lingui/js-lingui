@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Await, createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Suspense, useState } from 'react'
@@ -37,7 +38,7 @@ function Deferred() {
       <div data-testid="regular-person">
         {person.name} - {person.randomNumber}
       </div>
-      <Suspense fallback={<div>Loading person...</div>}>
+      <Suspense fallback={<div><Trans>Loading person...</Trans></div>}>
         <Await
           promise={deferredPerson}
           children={(data) => (
@@ -47,15 +48,15 @@ function Deferred() {
           )}
         />
       </Suspense>
-      <Suspense fallback={<div>Loading stuff...</div>}>
+      <Suspense fallback={<div><Trans>Loading stuff...</Trans></div>}>
         <Await
           promise={deferredStuff}
           children={(data) => <h3 data-testid="deferred-stuff">{data}</h3>}
         />
       </Suspense>
-      <div>Count: {count}</div>
+      <div><Trans>Count: {count}</Trans></div>
       <div>
-        <button onClick={() => setCount(count + 1)}>Increment</button>
+        <button onClick={() => setCount(count + 1)}><Trans>Increment</Trans></button>
       </div>
     </div>
   )
