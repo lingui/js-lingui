@@ -29,6 +29,14 @@ msgstr "Deep View"
 msgid "Deferred"
 msgstr "Deferred"
 
+#: src/routes/users.$userId.tsx:16
+msgid "Failed to fetch user"
+msgstr "Failed to fetch user"
+
+#: src/routes/users.route.tsx:14
+msgid "Failed to fetch users"
+msgstr "Failed to fetch users"
+
 #: src/components/NotFound.tsx:15
 msgid "Go back"
 msgstr "Go back"
@@ -78,6 +86,14 @@ msgstr "Loading person..."
 msgid "Loading stuff..."
 msgstr "Loading stuff..."
 
+#: src/routes/posts.route.tsx:17
+msgid "Non-existent Post"
+msgstr "Non-existent Post"
+
+#: src/routes/users.route.tsx:29
+msgid "Non-existent User"
+msgstr "Non-existent User"
+
 #: src/routes/__root.tsx:130
 msgid "Pathless Layout"
 msgstr "Pathless Layout"
@@ -114,7 +130,7 @@ msgstr "This Route Does Not Exist"
 msgid "Try Again"
 msgstr "Try Again"
 
-#: src/routes/users.$userId.tsx:21
+#: src/routes/users.$userId.tsx:22
 msgid "User not found"
 msgstr "User not found"
 

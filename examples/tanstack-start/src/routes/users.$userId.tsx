@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from '@lingui/react/macro'
 import { createFileRoute } from '@tanstack/react-router'
 import axios from 'redaxios'
@@ -12,7 +13,7 @@ export const Route = createFileRoute('/users/$userId')({
       .get<User>(DEPLOY_URL + '/api/users/' + userId)
       .then((r) => r.data)
       .catch(() => {
-        throw new Error('Failed to fetch user')
+        throw new Error(t`Failed to fetch user`)
       })
   },
   errorComponent: UserErrorComponent,

@@ -29,6 +29,14 @@ msgstr "Vue détaillée"
 msgid "Deferred"
 msgstr "Différé"
 
+#: src/routes/users.$userId.tsx:16
+msgid "Failed to fetch user"
+msgstr "Échec du chargement de l'utilisateur"
+
+#: src/routes/users.route.tsx:14
+msgid "Failed to fetch users"
+msgstr "Échec du chargement des utilisateurs"
+
 #: src/components/NotFound.tsx:15
 msgid "Go back"
 msgstr "Retour"
@@ -78,6 +86,14 @@ msgstr "Chargement de la personne..."
 msgid "Loading stuff..."
 msgstr "Chargement de choses..."
 
+#: src/routes/posts.route.tsx:17
+msgid "Non-existent Post"
+msgstr "Article non-existant"
+
+#: src/routes/users.route.tsx:29
+msgid "Non-existent User"
+msgstr "Utilisateur non-existant"
+
 #: src/routes/__root.tsx:130
 msgid "Pathless Layout"
 msgstr "Layout sans chemin"
@@ -114,7 +130,7 @@ msgstr "Cette route n'existe pas"
 msgid "Try Again"
 msgstr "Réessayer"
 
-#: src/routes/users.$userId.tsx:21
+#: src/routes/users.$userId.tsx:22
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
