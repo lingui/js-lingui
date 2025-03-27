@@ -1,12 +1,12 @@
-import { Trans } from '@lingui/react/macro'
+import { Trans } from "@lingui/react/macro"
 import {
   ErrorComponent,
   Link,
   rootRouteId,
   useMatch,
   useRouter,
-} from '@tanstack/react-router'
-import type { ErrorComponentProps } from '@tanstack/react-router'
+} from "@tanstack/react-router"
+import type { ErrorComponentProps } from "@tanstack/react-router"
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter()
@@ -15,7 +15,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
     select: (state) => state.id === rootRouteId,
   })
 
-  console.error('DefaultCatchBoundary Error:', error)
+  console.error("DefaultCatchBoundary Error:", error)
 
   return (
     <div className="min-w-0 flex-1 p-4 flex flex-col items-center justify-center gap-6">

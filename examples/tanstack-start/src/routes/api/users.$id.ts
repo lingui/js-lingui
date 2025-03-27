@@ -1,14 +1,14 @@
-import { json } from '@tanstack/react-start'
-import { createAPIFileRoute } from '@tanstack/react-start/api'
-import axios from 'redaxios'
-import type { User } from '../../utils/users'
+import { json } from "@tanstack/react-start"
+import { createAPIFileRoute } from "@tanstack/react-start/api"
+import axios from "redaxios"
+import type { User } from "../../utils/users"
 
-export const APIRoute = createAPIFileRoute('/api/users/$id')({
+export const APIRoute = createAPIFileRoute("/api/users/$id")({
   GET: async ({ request, params }) => {
     console.info(`Fetching users by id=${params.id}... @`, request.url)
     try {
       const res = await axios.get<User>(
-        'https://jsonplaceholder.typicode.com/users/' + params.id,
+        "https://jsonplaceholder.typicode.com/users/" + params.id
       )
 
       return json({
@@ -18,7 +18,7 @@ export const APIRoute = createAPIFileRoute('/api/users/$id')({
       })
     } catch (e) {
       console.error(e)
-      return json({ error: 'User not found' }, { status: 404 })
+      return json({ error: "User not found" }, { status: 404 })
     }
   },
 })
