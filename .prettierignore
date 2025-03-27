@@ -10,5 +10,6 @@
 coverage/
 website/
 .github
-examples
+/examples/*
+!/examples/tanstack-start
 /.nx/workspace-data
