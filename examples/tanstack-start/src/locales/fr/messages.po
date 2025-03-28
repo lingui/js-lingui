@@ -13,15 +13,30 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
+#. js-lingui-explicit-id
+#: src/routes/users.$userId.tsx:18
+msgid "Failed to fetch user"
+msgstr "Échec du chargement de l'utilisateur"
+
+#. js-lingui-explicit-id
+#: src/routes/users.route.tsx:18
+msgid "Failed to fetch users"
+msgstr "Échec du chargement des utilisateurs"
+
+#. js-lingui-explicit-id
+#: src/routes/api/users.$id.ts:22
+msgid "User not found"
+msgstr "Utilisateur non trouvé"
+
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← Tous les articles"
 
-#: src/routes/deferred.tsx:57
+#: src/routes/deferred.tsx:70
 msgid "Count: {count}"
 msgstr "Compte: {count}"
 
-#: src/routes/posts.$postId.tsx:31
+#: src/routes/posts.$postId.tsx:35
 msgid "Deep View"
 msgstr "Vue détaillée"
 
@@ -29,15 +44,7 @@ msgstr "Vue détaillée"
 msgid "Deferred"
 msgstr "Différé"
 
-#: src/routes/users.$userId.tsx:16
-msgid "Failed to fetch user"
-msgstr "Échec du chargement de l'utilisateur"
-
-#: src/routes/users.route.tsx:14
-msgid "Failed to fetch users"
-msgstr "Échec du chargement des utilisateurs"
-
-#: src/components/NotFound.tsx:15
+#: src/components/NotFound.tsx:19
 msgid "Go back"
 msgstr "Retour"
 
@@ -45,11 +52,11 @@ msgstr "Retour"
 msgid "Go Back"
 msgstr "Retour"
 
-#: src/routes/_pathlessLayout/_nested-layout.tsx:19
+#: src/routes/_pathlessLayout/_nested-layout.tsx:21
 msgid "Go to route A"
 msgstr "Aller à la route A"
 
-#: src/routes/_pathlessLayout/_nested-layout.tsx:27
+#: src/routes/_pathlessLayout/_nested-layout.tsx:29
 msgid "Go to route B"
 msgstr "Aller à la route B"
 
@@ -58,31 +65,31 @@ msgstr "Aller à la route B"
 msgid "Home"
 msgstr "Accueil"
 
-#: src/routes/_pathlessLayout.tsx:11
+#: src/routes/_pathlessLayout.tsx:12
 msgid "I'm a layout"
 msgstr "Je suis un layout"
 
-#: src/routes/_pathlessLayout/_nested-layout.tsx:11
+#: src/routes/_pathlessLayout/_nested-layout.tsx:12
 msgid "I'm a nested layout"
 msgstr "Je suis un layout imbriqué"
 
-#: src/routes/_pathlessLayout/_nested-layout/route-a.tsx:11
+#: src/routes/_pathlessLayout/_nested-layout/route-a.tsx:13
 msgid "I'm A!"
 msgstr "Je suis A !"
 
-#: src/routes/_pathlessLayout/_nested-layout/route-b.tsx:11
+#: src/routes/_pathlessLayout/_nested-layout/route-b.tsx:13
 msgid "I'm B!"
 msgstr "Je suis B !"
 
-#: src/routes/deferred.tsx:59
+#: src/routes/deferred.tsx:74
 msgid "Increment"
 msgstr "Incrémenter"
 
-#: src/routes/deferred.tsx:41
+#: src/routes/deferred.tsx:44
 msgid "Loading person..."
 msgstr "Chargement de la personne..."
 
-#: src/routes/deferred.tsx:51
+#: src/routes/deferred.tsx:60
 msgid "Loading stuff..."
 msgstr "Chargement de choses..."
 
@@ -90,7 +97,7 @@ msgstr "Chargement de choses..."
 msgid "Non-existent Post"
 msgstr "Article non-existant"
 
-#: src/routes/users.route.tsx:29
+#: src/routes/users.route.tsx:33
 msgid "Non-existent User"
 msgstr "Utilisateur non-existant"
 
@@ -98,7 +105,7 @@ msgstr "Utilisateur non-existant"
 msgid "Pathless Layout"
 msgstr "Layout sans chemin"
 
-#: src/routes/posts.$postId.tsx:12
+#: src/routes/posts.$postId.tsx:14
 msgid "Post not found"
 msgstr "Article non trouvé"
 
@@ -106,19 +113,19 @@ msgstr "Article non trouvé"
 msgid "Posts"
 msgstr "Articles"
 
-#: src/routes/posts.index.tsx:9
+#: src/routes/posts.index.tsx:11
 msgid "Select a post."
 msgstr "Sélectionnez un article."
 
-#: src/routes/users.index.tsx:9
+#: src/routes/users.index.tsx:11
 msgid "Select a user."
 msgstr "Sélectionnez un utilisateur."
 
-#: src/components/NotFound.tsx:21
+#: src/components/NotFound.tsx:25
 msgid "Start Over"
 msgstr "Recommencer"
 
-#: src/components/NotFound.tsx:8
+#: src/components/NotFound.tsx:10
 msgid "The page you are looking for does not exist."
 msgstr "La page que vous cherchez n'existe pas."
 
@@ -130,7 +137,7 @@ msgstr "Cette route n'existe pas"
 msgid "Try Again"
 msgstr "Réessayer"
 
-#: src/routes/users.$userId.tsx:22
+#: src/routes/users.$userId.tsx:26
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
@@ -138,6 +145,6 @@ msgstr "Utilisateur non trouvé"
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: src/routes/index.tsx:11
+#: src/routes/index.tsx:12
 msgid "Welcome Home!!!"
 msgstr "Bienvenue à la maison !!!"
