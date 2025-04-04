@@ -154,10 +154,11 @@ export function selectOrdinal(
   options: ChoiceOptions
 ): string
 
-type SelectOptions = {
+type SelectOptions<T extends string = string> = {
   /** Catch-all option */
   other: string
-  [matches: string]: string
+} & {
+  [key in T]: string
 }
 
 /**
@@ -180,9 +181,9 @@ type SelectOptions = {
  * @param value The key of choices to use
  * @param choices
  */
-export function select(
-  value: string | LabeledExpression<string>,
-  choices: SelectOptions
+export function select<T extends string = string>(
+  value: T | LabeledExpression<T>,
+  choices: SelectOptions<T>
 ): string
 
 /**
