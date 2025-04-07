@@ -180,6 +180,8 @@ export function tokenizeChoiceComponent(
     format: format,
     options: {
       offset: undefined,
+      /** Default to fill other with empty value for compatibility with ICU spec */
+      other: "",
     },
   }
 
