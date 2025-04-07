@@ -372,5 +372,34 @@ describe("js macro", () => {
         },
       })
     })
+
+    it("select without other", () => {
+      const exp = parseExpression(
+        `select(gender, {
+          male: "he",
+          female: "she",
+        })`
+      )
+      const tokens = tokenizeChoiceComponent(
+        (exp as NodePath<CallExpression>).node,
+        JsMacroName.select,
+        createMacroCtx()
+      )
+      expect(tokens).toMatchObject({
+        format: "select",
+        name: "gender",
+        options: expect.objectContaining({
+          female: "she",
+          male: "he",
+          offset: undefined,
+          other: "", // <- other should be filled with empty string
+        }),
+        type: "arg",
+        value: {
+          name: "gender",
+          type: "Identifier",
+        },
+      })
+    })
   })
 })

@@ -32,12 +32,25 @@ type PluralChoiceProps = {
   [digit: `_${number}`]: ReactNode
 } & CommonProps
 
-type SelectChoiceProps = {
-  value: string | LabeledExpression<string | number>
+type SelectChoiceOptionsExhaustive<T extends string = string> = {
+  [key in T as `_${key}`]: ReactNode
+}
+
+type SelectChoiceOptionsNonExhaustive<T extends string = string> = {
   /** Catch-all option */
   other: ReactNode
-  [option: `_${string}`]: ReactNode
-} & CommonProps
+} & {
+  [key in T as `_${key}`]?: ReactNode
+}
+
+type SelectChoiceOptions<T extends string = string> =
+  | SelectChoiceOptionsExhaustive<T>
+  | SelectChoiceOptionsNonExhaustive<T>
+
+type SelectChoiceProps<T extends string = string> = {
+  value: T | LabeledExpression<T>
+} & SelectChoiceOptions<T> &
+  CommonProps
 
 /**
  * Trans is the basic macro for static messages,
@@ -105,7 +118,9 @@ export const SelectOrdinal: VFC<PluralChoiceProps>
  * />
  * ```
  */
-export const Select: VFC<SelectChoiceProps>
+export const Select: {
+  <T extends string = string>(props: SelectChoiceProps<T>): React.JSX.Element
+}
 
 declare function _t(descriptor: MacroMessageDescriptor): string
 declare function _t(

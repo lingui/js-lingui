@@ -322,5 +322,33 @@ describe("jsx macro", () => {
         },
       })
     })
+
+    it("Select without other", () => {
+      const macro = createMacro()
+      const exp = parseExpression(
+        `<Select
+          value={gender}
+          male="he"
+          one="heone"
+          female="she"
+        />`
+      )
+      const tokens = macro.tokenizeNode(exp)
+      expect(tokens[0]).toMatchObject({
+        format: "select",
+        name: "gender",
+        options: {
+          female: "she",
+          male: "he",
+          offset: undefined,
+          other: "", // <- other should be filled with empty string
+        },
+        type: "arg",
+        value: {
+          name: "gender",
+          type: "Identifier",
+        },
+      })
+    })
   })
 })
