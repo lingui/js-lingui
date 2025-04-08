@@ -323,7 +323,7 @@ const message = t({
 The `select` macro is used to handle different forms of a message based on a value.
 
 ```ts
-select(value: string | number, options: Object)
+select(value: string, options: Object)
 ```
 
 It works like a switch statement - it selects one of the forms provided in the `options` object based on the `value`:
@@ -348,6 +348,35 @@ const message = i18n._(
   }
 );
 ```
+
+The `select` macro can be strictly exhaustive if the fallback `other` option is not provided and the input `value` is a union type.
+
+```ts
+import { select } from "@lingui/core/macro";
+
+type ValidationError =
+  | "missingValue"
+  | "invalidEmail"
+
+const message = select(validationError, {
+  missingValue: "This field is required",
+  invalidEmail: "Invalid email address",
+});
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "@lingui/core";
+
+const message = i18n._(
+  /*i18n*/ {
+    id: "VRptzI",
+    message: "{validationError, select, missingValue {This field is required} invalidEmail {Invalid email address} other {}}",
+    values: { validationError },
+  }
+);
+```
+
+The `other` option is left empty, for compatibility with [ICU MessageFormat](/guides/message-format).
 
 :::tip
 Use `select` inside [`t`](#t) or [`defineMessage`](#definemessage) macro if you want to add custom `id`, `context` or `comment` for translators.
@@ -692,15 +721,15 @@ import { Select } from "@lingui/react/macro";
 
 Available Props:
 
-| Prop name | Type   | Description                                            |
-| --------- | ------ | ------------------------------------------------------ |
-| `value`   | number | _(required)_ Value determines which form is output     |
-| `other`   | number | _(required)_ Default, catch-all form                   |
-| `_<case>` | string | Form for specific case                                 |
-| `id`      | string | Custom message ID                                      |
-| `comment` | string | Comment for translators                                |
-| `context` | string | Allows to extract the same messages with different IDs |
-| `render`  | func   | Custom render callback to render translation           |
+| Prop name | Type   | Description                                                   |
+| --------- | ------ | ------------------------------------------------------------- |
+| `value`   | number | _(required)_ Value determines which form is output            |
+| `other`   | number | Default, catch-all form, required if cases are not exhaustive |
+| `_<case>` | string | Form for specific case                                        |
+| `id`      | string | Custom message ID                                             |
+| `comment` | string | Comment for translators                                       |
+| `context` | string | Allows to extract the same messages with different IDs        |
+| `render`  | func   | Custom render callback to render translation                  |
 
 The select cases except `other` should be prefixed with underscore: `_male` or `_female`.
 
