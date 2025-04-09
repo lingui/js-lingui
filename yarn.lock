@@ -2714,7 +2714,6 @@ __metadata:
     cosmiconfig: ^8.0.0
     jest-validate: ^29.4.3
     jiti: ^1.17.1
-    lodash.get: ^4.4.2
     tsd: ^0.26.1
     unbuild: ^2.0.0
   languageName: unknown
