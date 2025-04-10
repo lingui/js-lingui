@@ -107,6 +107,22 @@ export function number(
 
   return formatter.format(value)
 }
+
+export function list(
+  locales: Locales,
+  values: string[],
+  format?: Intl.ListFormatOptions
+): string {
+  const _locales = normalizeLocales(locales)
+
+  const formatter = getMemoized(
+    () => cacheKey("list", _locales, format),
+    () => new Intl.ListFormat(_locales, format)
+  )
+
+  return formatter.format(values)
+}
+
 export type PluralOptions = { [key: string]: Intl.LDMLPluralRule } & {
   offset: number
   other: string

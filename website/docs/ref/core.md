@@ -272,6 +272,31 @@ i18n.number(12345.678, { style: "currency", currency: "CZK" });
 // Returns "12 345,68 Kč"
 ```
 
+### `i18n.list(values: string[][, format: Intl.ListFormatOptions])` {#i18n.list}
+
+Format a list using the conventional format for the active language.
+
+- `string[]`: list of strings to be formatted
+- `format`: an optional object that is passed to the `options` argument of the [`Intl.ListFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat/ListFormat) constructor. This allows for customization of the list formatting.
+
+```ts
+import { i18n } from "@lingui/core";
+
+i18n.activate("en");
+i18n.list(["JavaScript", "TypeScript", "React"]);
+// Returns "JavaScript, TypeScript, and React"
+
+i18n.list(["JavaScript", "TypeScript", "React"], { style: "long", type: "disjunction" });
+// Returns "JavaScript, TypeScript, or React"
+
+i18n.activate("cs");
+i18n.list(["JavaScript", "TypeScript", "React"]);
+// Returns "JavaScript, TypeScript a React"
+
+i18n.list(["JavaScript", "TypeScript", "React"], { style: "long", type: "disjunction" });
+// Returns "JavaScript, TypeScript nebo React"
+```
+
 ## `setupI18n([options])` {#setupi18n}
 
 Initialize and return a new `I18n` instance. Typically, you should call this function only once and then use the returned `i18n` object throughout your entire codebase.
