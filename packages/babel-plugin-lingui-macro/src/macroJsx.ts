@@ -297,6 +297,8 @@ export class MacroJSX {
       value: undefined,
       options: {
         offset: undefined,
+        /** Default to fill other with empty value for compatibility with ICU spec */
+        other: "",
       },
     }
 
