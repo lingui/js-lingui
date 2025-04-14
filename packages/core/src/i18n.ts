@@ -1,6 +1,6 @@
 import { interpolate, UNICODE_REGEX } from "./interpolate"
 import { isString, isFunction } from "./essentials"
-import { date, defaultLocale, number } from "./formats"
+import { date, defaultLocale, list, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
@@ -318,6 +318,10 @@ Please compile your catalog first.
 
   number(value: number, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
+  }
+
+  list(values: string[], format?: Intl.ListFormatOptions): string {
+    return list(this._locales || this._locale, values, format)
   }
 }
 
