@@ -1,5 +1,5 @@
-import { expectType } from "tsd"
 import type { I18n } from "@lingui/core"
+import { expect } from "tstyche"
 
 import {
   Trans,
@@ -154,10 +154,9 @@ m = (
 function MyComponent() {
   const { t, i18n } = useLingui()
 
-  expectType<string>(t`Hello world`)
-  expectType<string>(t({ message: "my message" }))
-  // @ts-expect-error: you could not pass a custom instance here
-  t(i18n)({ message: "my message" })
+  expect(t`Hello world`).type.toBe<string>()
+  expect(t({ message: "my message" })).type.toBe<string>()
+  expect(t).type.not.toBeCallableWith(i18n)
 
-  expectType<I18n>(i18n)
+  expect(i18n).type.toBe<I18n>()
 }

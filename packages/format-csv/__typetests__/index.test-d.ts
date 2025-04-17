@@ -1,5 +1,5 @@
 import { CatalogFormatter } from "@lingui/conf"
-import { expectAssignable } from "tsd"
 import { formatter } from "@lingui/format-csv"
+import { expect } from "tstyche"
 
-expectAssignable<CatalogFormatter>(formatter())
+expect(formatter()).type.toBeAssignableTo<CatalogFormatter>()
