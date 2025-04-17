@@ -25,7 +25,6 @@ expect(i18n._).type.not.toBeCallableWith(
   { message: "Hello {name}", comment: "", formats: {} }
 )
 
-
 expect(i18n.t("message.id")).type.toBe<string>()
 expect(
   i18n.t({
@@ -41,7 +40,6 @@ expect(
     { message: "Hello {name}", comment: "", formats: {} }
   )
 ).type.toBe<string>()
-
 
 expect(i18n.t).type.not.toBeCallableWith(
   // cannot use message descriptor together with rest of params

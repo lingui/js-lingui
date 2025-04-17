@@ -153,7 +153,7 @@ m = (
 ////////////////////////
 function MyComponent() {
   const { t, i18n } = useLingui()
-  
+
   expect(t`Hello world`).type.toBe<string>()
   expect(t({ message: "my message" })).type.toBe<string>()
   expect(t).type.not.toBeCallableWith(i18n)

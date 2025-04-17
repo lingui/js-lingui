@@ -85,11 +85,15 @@ expect(defineMessage`Hello ${name}`).type.toBe<MessageDescriptor>()
 
 // with labeled expression
 expect(msg`Hello ${{ name: user.name }}`).type.toBe<MessageDescriptor>()
-expect(defineMessage`Hello ${{ name: user.name }}`).type.toBe<MessageDescriptor>()
+expect(
+  defineMessage`Hello ${{ name: user.name }}`
+).type.toBe<MessageDescriptor>()
 
 // with ph labeled expression
 expect(msg`Hello ${ph({ name: user.name })}`).type.toBe<MessageDescriptor>()
-expect(defineMessage`Hello ${ph({ name: user.name })}`).type.toBe<MessageDescriptor>()
+expect(
+  defineMessage`Hello ${ph({ name: user.name })}`
+).type.toBe<MessageDescriptor>()
 
 // allow numbers
 expect(msg`Hello ${numberValue}`).type.toBe<MessageDescriptor>()
