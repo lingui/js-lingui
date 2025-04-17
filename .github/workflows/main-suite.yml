@@ -72,7 +72,7 @@ jobs:
         run: yarn test:ci:coverage
 
       - name: Test Public Typings
-        run: yarn test:tsd
+        run: yarn test:types
 
       - name: E2E Testing
         run: yarn test:e2e

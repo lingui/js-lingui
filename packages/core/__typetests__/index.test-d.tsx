@@ -1,61 +1,58 @@
-import { expectType } from "tsd"
 import { i18n } from "@lingui/core"
+import { expect } from "tstyche"
 
-expectType<string>(i18n._("message.id"))
-expectType<string>(
+expect(i18n._("message.id")).type.toBe<string>()
+expect(
   i18n._({
     id: "message.id",
     message: "Message",
   })
-)
-expectType<string>(
+).type.toBe<string>()
+expect(
   i18n._(
     "message.id",
     { name: "Tim" },
     { message: "Hello {name}", comment: "", formats: {} }
   )
-)
-expectType<string>(
-  i18n._(
-    // @ts-expect-error you could not use message descriptor together with rest of params
-    {
-      id: "message.id",
-      message: "Message",
-    },
-    { name: "Tim" },
-    { message: "Hello {name}", comment: "", formats: {} }
-  )
+).type.toBe<string>()
+expect(i18n._).type.not.toBeCallableWith(
+  // cannot use message descriptor together with rest of params
+  {
+    id: "message.id",
+    message: "Message",
+  },
+  { name: "Tim" },
+  { message: "Hello {name}", comment: "", formats: {} }
 )
 
-expectType<string>(i18n.t("message.id"))
-expectType<string>(
+
+expect(i18n.t("message.id")).type.toBe<string>()
+expect(
   i18n.t({
     id: "message.id",
     message: "Message",
   })
-)
+).type.toBe<string>()
 
-expectType<string>(
+expect(
   i18n.t(
     "message.id",
     { name: "Tim" },
     { message: "Hello {name}", comment: "", formats: {} }
   )
+).type.toBe<string>()
+
+
+expect(i18n.t).type.not.toBeCallableWith(
+  // cannot use message descriptor together with rest of params
+  {
+    id: "message.id",
+    message: "Message",
+  },
+  { name: "Tim" },
+  { message: "Hello {name}", comment: "", formats: {} }
 )
 
-expectType<string>(
-  i18n.t(
-    // @ts-expect-error you could not use message descriptor together with rest of params
-    {
-      id: "message.id",
-      message: "Message",
-    },
-    { name: "Tim" },
-    { message: "Hello {name}", comment: "", formats: {} }
-  )
-)
-
-i18n.load("cs", {})
-i18n.load({ cs: {} })
-// @ts-expect-error this is an invalid call
-i18n.load({ cs: {} }, {})
+expect(i18n.load).type.toBeCallableWith("cs", {})
+expect(i18n.load).type.toBeCallableWith({ cs: {} })
+expect(i18n.load).type.not.toBeCallableWith({ cs: {} }, {})

@@ -1,4 +1,4 @@
-import { expectType } from "tsd"
+import { expect } from "tstyche"
 import type { MessageDescriptor, I18n } from "@lingui/core"
 
 import {
@@ -17,46 +17,46 @@ const i18n: I18n = null
 const numberValue = 2
 
 // simple
-expectType<string>(t`Hello world`)
-expectType<string>(t`Hello ${name}`)
+expect(t`Hello world`).type.toBe<string>()
+expect(t`Hello ${name}`).type.toBe<string>()
 
 // with labeled expression
-expectType<string>(t`Hello ${{ name: user.name }}`)
+expect(t`Hello ${{ name: user.name }}`).type.toBe<string>()
 
 // with ph labeled expression
-expectType<string>(t`Hello ${ph({ name: user.name })}`)
+expect(t`Hello ${ph({ name: user.name })}`).type.toBe<string>()
 
 // allow numbers
-expectType<string>(t`Hello ${numberValue}`)
+expect(t`Hello ${numberValue}`).type.toBe<string>()
 
 // with custom i18n
-expectType<string>(t(i18n)`With custom i18n instance`)
-expectType<string>(t(i18n)`With custom i18n instance ${name}`)
+expect(t(i18n)`With custom i18n instance`).type.toBe<string>()
+expect(t(i18n)`With custom i18n instance ${name}`).type.toBe<string>()
 
 // with macro message descriptor
-expectType<string>(
+expect(
   t({
     id: "custom.id",
     comment: "Hello",
     context: "context",
     message: "Hello world",
   })
-)
+).type.toBe<string>()
 
 // only id
-expectType<string>(t({ id: "custom.id" }))
+expect(t({ id: "custom.id" })).type.toBe<string>()
 
 // only message
-expectType<string>(t({ message: "my message" }))
+expect(t({ message: "my message" })).type.toBe<string>()
 
-// @ts-expect-error no id or message
-t({ comment: "", context: "" })
+// id or message should be provided
+expect(t).type.not.toBeCallableWith({ comment: "", context: "" })
 
-// @ts-expect-error id or message should be presented
-t({})
+// id or message should be provided
+expect(t).type.not.toBeCallableWith({})
 
-// @ts-expect-error `values` is invalid field for macro message descriptor
-t({
+// `values` is invalid field for macro message descriptor
+expect(t).type.not.toBeCallableWith({
   id: "custom.id",
   comment: "Hello",
   context: "context",
@@ -66,102 +66,100 @@ t({
 })
 
 // message descriptor + custom i18n
-expectType<string>(
+expect(
   t(i18n)({
     id: "custom.id",
     comment: "Hello",
     context: "context",
     message: "Hello world",
   })
-)
+).type.toBe<string>()
 
 ///
 // defineMessage
 ///
 
 // simple
-expectType<MessageDescriptor>(msg`Hello ${name}`)
-expectType<MessageDescriptor>(defineMessage`Hello ${name}`)
+expect(msg`Hello ${name}`).type.toBe<MessageDescriptor>()
+expect(defineMessage`Hello ${name}`).type.toBe<MessageDescriptor>()
 
 // with labeled expression
-expectType<MessageDescriptor>(msg`Hello ${{ name: user.name }}`)
-expectType<MessageDescriptor>(defineMessage`Hello ${{ name: user.name }}`)
+expect(msg`Hello ${{ name: user.name }}`).type.toBe<MessageDescriptor>()
+expect(defineMessage`Hello ${{ name: user.name }}`).type.toBe<MessageDescriptor>()
 
 // with ph labeled expression
-expectType<MessageDescriptor>(msg`Hello ${ph({ name: user.name })}`)
-expectType<MessageDescriptor>(defineMessage`Hello ${ph({ name: user.name })}`)
+expect(msg`Hello ${ph({ name: user.name })}`).type.toBe<MessageDescriptor>()
+expect(defineMessage`Hello ${ph({ name: user.name })}`).type.toBe<MessageDescriptor>()
 
 // allow numbers
-expectType<MessageDescriptor>(msg`Hello ${numberValue}`)
-expectType<MessageDescriptor>(defineMessage`Hello ${numberValue}`)
+expect(msg`Hello ${numberValue}`).type.toBe<MessageDescriptor>()
+expect(defineMessage`Hello ${numberValue}`).type.toBe<MessageDescriptor>()
 
-expectType<MessageDescriptor>(
+expect(
   defineMessage({
     id: "custom.id",
     comment: "Hello",
     context: "context",
     message: "Hello world",
   })
-)
-expectType<MessageDescriptor>(
+).type.toBe<MessageDescriptor>()
+expect(
   msg({
     id: "custom.id",
     comment: "Hello",
     context: "context",
     message: "Hello world",
   })
-)
-expectType<MessageDescriptor>(defineMessage`Message`)
-expectType<MessageDescriptor>(msg`Message`)
+).type.toBe<MessageDescriptor>()
+expect(defineMessage`Message`).type.toBe<MessageDescriptor>()
+expect(msg`Message`).type.toBe<MessageDescriptor>()
 
-// @ts-expect-error id or message should be presented
-expectType<MessageDescriptor>(defineMessage({}))
+// id or message should be provided
+expect(defineMessage).type.not.toBeCallableWith({})
 
 ///////////////////
 //// Plural  //////
 ///////////////////
 
-expectType<string>(
-  plural("5", {
-    // @ts-expect-error extra properties are not allowed
-    incorrect: "",
+expect(plural).type.not.toBeCallableWith("5", {
+  // extra properties are not allowed
+  incorrect: "",
 
-    one: "...",
-    other: "...",
-    few: "...",
-    many: "...",
-    zero: "...",
-  })
-)
+  one: "...",
+  other: "...",
+  few: "...",
+  many: "...",
+  zero: "...",
+})
 
-expectType<string>(
+expect(
   plural(5, {
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
 // with offset
-expectType<string>(
+expect(
   plural(5, {
     one: "...",
     other: "...",
     offset: 5,
   })
-)
+).type.toBe<string>()
 
 // exact choices
-expectType<string>(
+expect(
   plural(5, {
     0: "...",
     1: "...",
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
 // with labeled value
-expectType<string>(
+expect(
   plural(
     { count: 5 },
     {
@@ -169,82 +167,68 @@ expectType<string>(
       other: "...",
     }
   )
-)
+).type.toBe<string>()
 
 // with labeled value with ph helper
-expectType<string>(
+expect(
   plural(ph({ count: 5 }), {
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
-expectType<string>(
-  plural(5, {
-    // @ts-expect-error: should accept only strings
-    one: 5,
-    // @ts-expect-error: should accept only strings
-    other: 5,
-  })
-)
+// should accept only strings
+expect(plural).type.not.toBeCallableWith(5, { one: 5, other: 5 })
 
-// @ts-expect-error: other is required
-expectType<string>(plural(5, { one: "test" }))
+// other is required
+expect(plural).type.not.toBeCallableWith(5, { one: "test" })
 
 ///////////////////
 //// Select Ordinal
 ///////////////////
 
-expectType<string>(
-  selectOrdinal("5", {
-    // @ts-expect-error extra properties are not allowed
-    incorrect: "",
+expect(selectOrdinal).type.not.toBeCallableWith("5", {
+  // extra properties are not allowed
+  incorrect: "",
 
-    one: "...",
-    other: "...",
-    few: "...",
-    many: "...",
-    zero: "...",
-  })
-)
+  one: "...",
+  other: "...",
+  few: "...",
+  many: "...",
+  zero: "...",
+})
 
-expectType<string>(
+expect(
   selectOrdinal(5, {
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
 // with offset
-expectType<string>(
+expect(
   selectOrdinal("5", {
     one: "...",
     other: "...",
     offset: 5,
   })
-)
+).type.toBe<string>()
 
 // exact choices
-expectType<string>(
+expect(
   selectOrdinal(5, {
     0: "...",
     1: "...",
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
-expectType<string>(
-  selectOrdinal(5, {
-    // @ts-expect-error: should accept only strings
-    one: 5,
-    // @ts-expect-error: should accept only strings
-    other: 5,
-  })
-)
+// should accept only strings
+expect(selectOrdinal).type.not.toBeCallableWith(5, { one: 5, other: 5 })
 
 // with labeled value
-expectType<string>(
+expect(
   selectOrdinal(
     { count: 5 },
     {
@@ -252,22 +236,22 @@ expectType<string>(
       other: "...",
     }
   )
-)
+).type.toBe<string>()
 
 // with labeled value with ph helper
-expectType<string>(
+expect(
   selectOrdinal(ph({ count: 5 }), {
     one: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
 ///////////////////
 //// Select
 ///////////////////
 
 const gender = "male"
-expectType<string>(
+expect(
   select(gender, {
     // todo: here is inconsistency between jsx macro and js.
     //   in JSX macro you should prefix exact choices with "_"
@@ -278,42 +262,32 @@ expectType<string>(
     female: "she",
     other: "they",
   })
-)
+).type.toBe<string>()
 
-expectType<string>(
-  // @ts-expect-error value could be strings only
-  select(5, {
-    male: "he",
-    female: "she",
-    other: "they",
-  })
-)
+// value could be strings only
+expect(select).type.not.toBeCallableWith(5, {
+  male: "he",
+  female: "she",
+  other: "they",
+})
 
 // with labeled value
-expectType<string>(
-  select(
-    // @ts-expect-error value could be strings only
-    { count: 5 },
-    {
-      male: "...",
-      other: "...",
-    }
-  )
+expect(select).type.not.toBeCallableWith(
+  // value could be strings only
+  { count: 5 },
+  {
+    male: "...",
+    other: "...",
+  }
 )
 
 // with labeled value with ph helper
-expectType<string>(
+expect(
   select(ph({ value: "one" }), {
     male: "...",
     other: "...",
   })
-)
+).type.toBe<string>()
 
-expectType<string>(
-  select("male", {
-    // @ts-expect-error: should accept only strings
-    male: 5,
-    // @ts-expect-error: should accept only strings
-    other: 5,
-  })
-)
+// should accept only strings
+expect(select).type.not.toBeCallableWith("male", { male: 5, other: 5 })

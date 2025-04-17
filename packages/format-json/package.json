@@ -42,7 +42,6 @@
     "@lingui/conf": "5.3.1"
   },
   "devDependencies": {
-    "tsd": "^0.28.0",
     "unbuild": "^2.0.0"
   }
 }

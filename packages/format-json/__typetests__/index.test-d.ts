@@ -1,8 +1,8 @@
 import { CatalogFormatter } from "@lingui/conf"
-import { expectAssignable } from "tsd"
 import { formatter } from "@lingui/format-json"
+import { expect } from "tstyche"
 
-expectAssignable<CatalogFormatter>(formatter())
-expectAssignable<CatalogFormatter>(
+expect(formatter()).type.toBeAssignableTo<CatalogFormatter>()
+expect(
   formatter({ lineNumbers: true, origins: true })
-)
+).type.toBeAssignableTo<CatalogFormatter>()
