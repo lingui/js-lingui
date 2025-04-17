@@ -42,6 +42,7 @@
   },
   "exports": {
     ".": {
+      "react-native": "./dist.index.cjs",
       "require": {
         "types": "./dist/index.d.cts",
         "react-server": "./dist/index-rsc.cjs",
