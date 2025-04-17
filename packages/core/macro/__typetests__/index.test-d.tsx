@@ -1,5 +1,5 @@
-import { expect } from "tstyche"
 import type { MessageDescriptor, I18n } from "@lingui/core"
+import { expect } from "tstyche"
 
 import {
   t,
