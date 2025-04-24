@@ -187,7 +187,7 @@ msgstr "Hello {hello"
   describe("merge", () => {
     function getConfig(rootDir: string, pseudoLocale?: string) {
       return makeConfig({
-        locales: ["en"],
+        locales: ["en", "pl"],
         sourceLocale: "en",
         pseudoLocale: pseudoLocale,
         rootDir,
@@ -206,7 +206,7 @@ msgstr "Hello {hello"
     }
 
     it("Should merge individual catalogs if  catalogsMergePath specified in lingui config", async () => {
-      expect.assertions(3)
+      expect.assertions(4)
 
       const rootDir = await createFixtures({
         "/components/foo.tsx": "",
@@ -219,6 +219,14 @@ msgstr "Foo Hello World"
 msgid "Bar Hello World"
 msgstr "Bar Hello World"
         `,
+        "/pl/foo.tsx.po": `
+msgid "Foo Hello World"
+msgstr "[PL] Foo Hello World"
+        `,
+        "/pl/bar.tsx.po": `
+msgid "Bar Hello World"
+msgstr "[PL] Bar Hello World"
+        `,
       })
 
       const config = getConfig(rootDir)
@@ -228,6 +236,7 @@ msgstr "Bar Hello World"
 
         const actualFiles = readFsToListing(config.rootDir)
         expect(actualFiles["merged/en.js"]).toMatchSnapshot()
+        expect(actualFiles["merged/pl.js"]).toMatchSnapshot()
 
         const log = getConsoleMockCalls(console.error)
         expect(log).toBeUndefined()

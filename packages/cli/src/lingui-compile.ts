@@ -84,13 +84,17 @@ export async function command(
     }
 
     if (doMerge) {
-      return await compileAndWrite(
+      const result = await compileAndWrite(
         locale,
         config,
         options,
         await getCatalogForMerge(config),
         mergedCatalogs
       )
+
+      if (!result) {
+        return false
+      }
     }
   }
   return true
