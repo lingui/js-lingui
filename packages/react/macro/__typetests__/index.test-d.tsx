@@ -1,5 +1,5 @@
 import type { I18n } from "@lingui/core"
-import { expect } from "tstyche"
+import { expect, test } from "tstyche"
 
 import {
   Trans,
@@ -148,10 +148,7 @@ m = (
   />
 )
 
-////////////////////////
-//// React useLingui()
-////////////////////////
-function MyComponent() {
+test("useLingui", () => {
   const { t, i18n } = useLingui()
 
   expect(t`Hello world`).type.toBe<string>()
@@ -159,4 +156,4 @@ function MyComponent() {
   expect(t).type.not.toBeCallableWith(i18n)
 
   expect(i18n).type.toBe<I18n>()
-}
+})
