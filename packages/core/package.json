@@ -36,6 +36,10 @@
   },
   "exports": {
     ".": {
+      "react-native": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
