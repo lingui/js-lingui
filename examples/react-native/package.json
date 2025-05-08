@@ -11,7 +11,7 @@
     "extract": "lingui extract",
     "compile": "lingui compile",
     "no-dev": "npx expo start -c --no-dev --minify",
-    "fix-deps": "npx expo install --check",
+    "fix-deps": "npx expo install expo@53 --check",
     "bundle": "expo export --dev=true --output-dir=dist --platform=ios --no-minify --no-bytecode"
   },
   "dependencies": {
