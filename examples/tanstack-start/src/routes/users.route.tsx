@@ -4,14 +4,19 @@ import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
 import { DEPLOY_URL } from "../utils/users"
 import type { User } from "../utils/users"
+import { i18n } from "@lingui/core"
 
 export const Route = createFileRoute("/users")({
   loader: async () => {
     return await axios
-      .get<Array<User>>(DEPLOY_URL + "/api/users")
+      .get<Array<User>>(DEPLOY_URL + "/api/users", {
+        headers: {
+          "Accept-Language": i18n.locale,
+        },
+      })
       .then((r) => r.data)
       .catch(() => {
-        throw new Error(t`Failed to fetch users`)
+        throw new Error(i18n._("Failed to fetch users"))
       })
   },
   component: UsersLayoutComponent,

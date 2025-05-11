@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.1](https://github.com/lingui/js-lingui/compare/v5.3.0...v5.3.1) (2025-04-14)
+
+### Bug Fixes
+
+* **cli:** update esbuild ([#2187](https://github.com/lingui/js-lingui/issues/2187)) ([643a604](https://github.com/lingui/js-lingui/commit/643a604991f1a420a5b196b074f0396f89b90ad3))
+
 # [5.3.0](https://github.com/lingui/js-lingui/compare/v5.2.0...v5.3.0) (2025-03-21)
 
 ### Bug Fixes

@@ -318,6 +318,21 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
+    it("should extract files with special characters in the include path", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect/[componentD]")],
+          exclude: [],
+          format,
+        },
+        mockConfig()
+      )
+      const messages = await catalog.collect()
+      expect(messages).toMatchSnapshot()
+    })
+
     it("should throw an error when duplicate identifier with different defaults found", async () => {
       const catalog = new Catalog(
         {

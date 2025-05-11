@@ -10,10 +10,14 @@ import { UserErrorComponent } from "~/components/UserError"
 export const Route = createFileRoute("/users/$userId")({
   loader: async ({ params: { userId } }) => {
     return await axios
-      .get<User>(DEPLOY_URL + "/api/users/" + userId)
+      .get<User>(DEPLOY_URL + "/api/users/" + userId, {
+        headers: {
+          "Accept-Language": i18n.locale,
+        },
+      })
       .then((r) => r.data)
       .catch(() => {
-        throw new Error(i18n._(`Failed to fetch user`))
+        throw new Error(i18n._("Failed to fetch user"))
       })
   },
   errorComponent: UserErrorComponent,
