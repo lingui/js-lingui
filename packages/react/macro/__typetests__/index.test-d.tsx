@@ -11,7 +11,8 @@ import {
 import React from "react"
 import { ph } from "@lingui/core/macro"
 
-const gender = "male"
+type Gender = "male" | "female"
+const gender = "male" as Gender
 const user = {
   name: "John",
 }
@@ -126,8 +127,20 @@ m = (
 // @ts-expect-error: `value` could be string only
 m = <Select value={5} other={"string"} />
 
-// @ts-expect-error: `other` required
-m = <Select value={"male"} />
+// @ts-expect-error: `other` required unless exhaustive
+m = <Select value={gender} />
+
+// @ts-expect-error: `other` required unless exhaustive
+m = <Select value={gender} _male="..." />
+
+// @ts-expect-error: `other` required unless exhaustive
+m = <Select value={gender} _female="..." />
+
+// non-exhaustive okay if other is defined
+m = <Select value={gender} _female="..." other="..." />
+
+// exhaustive okay without other
+m = <Select value={gender} _male="..." _female="..." />
 
 // @ts-expect-error: `value` required
 m = <Select other={"male"} />

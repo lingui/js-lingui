@@ -266,7 +266,9 @@ expectType<string>(
 //// Select
 ///////////////////
 
-const gender = "male"
+type Gender = "male" | "female"
+const gender = "male" as Gender // make the type less specific on purpose
+
 expectType<string>(
   select(gender, {
     // todo: here is inconsistency between jsx macro and js.
@@ -276,6 +278,36 @@ expectType<string>(
     //   type UnderscoreValue = `_${string}`;
     male: "he",
     female: "she",
+    other: "they",
+  })
+)
+
+expectType<string>(
+  // @ts-expect-error: missing required property and other is not supplied
+  select(gender, {
+    male: "he",
+  })
+)
+
+expectType<string>(
+  // missing required property is okay, if other is supplied as fallback
+  select(gender, {
+    male: "he",
+    other: "they",
+  })
+)
+
+expectType<string>(
+  select(gender, {
+    // @ts-expect-error extra properties are not allowed
+    incorrect: "",
+  })
+)
+
+expectType<string>(
+  select(gender, {
+    // @ts-expect-error extra properties are not allowed even with other fallback
+    incorrect: "",
     other: "they",
   })
 )
