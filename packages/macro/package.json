@@ -9,9 +9,6 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "scripts": {
-    "test:tsd": "tsd"
-  },
   "license": "MIT",
   "keywords": [
     "babel-plugin-macros",

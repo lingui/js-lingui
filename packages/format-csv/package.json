@@ -43,7 +43,6 @@
     "papaparse": "^5.4.0"
   },
   "devDependencies": {
-    "tsd": "^0.28.0",
     "unbuild": "2.0.0"
   }
 }
