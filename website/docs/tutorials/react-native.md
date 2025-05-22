@@ -13,7 +13,7 @@ The React Native tutorial is similar to the one for [React](/tutorials/react) an
 If you're looking for a working solution, check out the [React Native example](https://github.com/lingui/js-lingui/tree/main/examples/react-native). This example application shows a complete setup using Lingui and React Native.
 :::
 
-This tutorial assumes you use Lingui >= 4.2 and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
+This tutorial assumes you use Lingui >= 5.0 and React Native >=0.76 or Expo >=52, with the Hermes JavaScript Engine.
 
 `@lingui/core` depends on several APIs exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](#polyfilling-intl-apis).
@@ -22,7 +22,8 @@ If some `Intl` feature is not supported by your runtime, you can [polyfill it](#
 
 1. Follow the [Installation and Setup](/installation?transpiler=babel) page for initial setup (for Babel).
 2. Install the [`@lingui/core`](/ref/core) and [`@lingui/react`](/ref/react) packages.
-3. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/ref/metro-transformer) package that enables Metro to compile `.po` files on the fly.
+3. Only for React Native >= 0.79.0: modify `resolveRequest` as shown in the example's [`metro.config.js`](https://github.com/lingui/js-lingui/blob/main/examples/react-native/metro.config.js), or set `unstable_enablePackageExports` metro config to `false`.
+4. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/ref/metro-transformer) package that enables Metro to compile `.po` files on the fly.
 
 :::caution Warning
 With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx expo start -c` or `npx react-native start --reset-cache` (if you do not use Expo).
