@@ -22,8 +22,7 @@ If some `Intl` feature is not supported by your runtime, you can [polyfill it](#
 
 1. Follow the [Installation and Setup](/installation?transpiler=babel) page for initial setup (for Babel).
 2. Install the [`@lingui/core`](/ref/core) and [`@lingui/react`](/ref/react) packages.
-3. Only for React Native >= 0.79.0: modify `resolveRequest` as shown in the example's [`metro.config.js`](https://github.com/lingui/js-lingui/blob/main/examples/react-native/metro.config.js), or set `unstable_enablePackageExports` metro config to `false`.
-4. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/ref/metro-transformer) package that enables Metro to compile `.po` files on the fly.
+3. _(optional)_ Install and configure the [`@lingui/metro-transformer`](/ref/metro-transformer) package that enables Metro to compile `.po` files on the fly.
 
 :::caution Warning
 With the dependencies installed and set up, before running your app, please clear your Metro bundler cache with `npx expo start -c` or `npx react-native start --reset-cache` (if you do not use Expo).
