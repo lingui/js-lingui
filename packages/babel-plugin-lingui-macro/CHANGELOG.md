@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
+
+
+### Bug Fixes
+
+* **macro:** map injected imports to original statements ([#2252](https://github.com/lingui/js-lingui/issues/2252)) ([73b081e](https://github.com/lingui/js-lingui/commit/73b081e4ba929df00364e7e55883a651bf70d1f7))
+
 ## [5.3.1](https://github.com/lingui/js-lingui/compare/v5.3.0...v5.3.1) (2025-04-14)
 
 **Note:** Version bump only for package @lingui/babel-plugin-lingui-macro

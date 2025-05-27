@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
+
+### Bug Fixes
+
+* **cli:** catalogsMergePath generates only one compiled locale ([#2238](https://github.com/lingui/js-lingui/issues/2238)) ([b1c7aac](https://github.com/lingui/js-lingui/commit/b1c7aac019d2066a8b8801ab72214f48aa5a97ef))
+* **examples:** tanstack-start build issues ([#2248](https://github.com/lingui/js-lingui/issues/2248)) ([cea7d7d](https://github.com/lingui/js-lingui/commit/cea7d7dce7872f97205e531295a7e05efc47f796))
+* **macro:** map injected imports to original statements ([#2252](https://github.com/lingui/js-lingui/issues/2252)) ([73b081e](https://github.com/lingui/js-lingui/commit/73b081e4ba929df00364e7e55883a651bf70d1f7))
+* use makePathRegexSafe with globSync ([#2242](https://github.com/lingui/js-lingui/issues/2242)) ([7a8256c](https://github.com/lingui/js-lingui/commit/7a8256c7b8699b73d1181f6f34bfe3734e9996ac))
+
 ## [5.3.1](https://github.com/lingui/js-lingui/compare/v5.3.0...v5.3.1) (2025-04-14)
 
 ### Bug Fixes
