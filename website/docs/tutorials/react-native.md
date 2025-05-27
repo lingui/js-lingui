@@ -13,7 +13,7 @@ The React Native tutorial is similar to the one for [React](/tutorials/react) an
 If you're looking for a working solution, check out the [React Native example](https://github.com/lingui/js-lingui/tree/main/examples/react-native). This example application shows a complete setup using Lingui and React Native.
 :::
 
-This tutorial assumes you use Lingui >= 4.2 and React Native >=0.71 or Expo >=48, with the Hermes JavaScript Engine.
+This tutorial assumes you use Lingui >= 5.0 and React Native >=0.76 or Expo >=52, with the Hermes JavaScript Engine.
 
 `@lingui/core` depends on several APIs exposed by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). Support of the `Intl` object can vary across React Native and OS versions.
 If some `Intl` feature is not supported by your runtime, you can [polyfill it](#polyfilling-intl-apis).

@@ -42,8 +42,8 @@ const Header = (): React.ReactElement => {
               />
               <h1 className={clsx(styles.heroTitle)}>{siteConfig.tagline}</h1>
               <p className={"margin-bottom--lg"}>
-                JavaScript library for internationalization (i18n) of JavaScript projects. Supports React (including RSC and
-                React Native), Vue, Node.js, and more.
+                JavaScript library for internationalization (i18n) of JavaScript projects. Supports React (including RSC
+                and React Native), Vue, Node.js, and more.
               </p>
 
               <div className={clsx(styles.heroButtons, "name", "margin-vert--md")}>

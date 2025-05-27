@@ -4,41 +4,43 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start -c",
+    "inspectBundle": "EXPO_UNSTABLE_ATLAS=true expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "extract": "lingui extract",
     "compile": "lingui compile",
     "no-dev": "npx expo start -c --no-dev --minify",
-    "inspectBundle": "npx react-native-bundle-visualizer",
-    "fix-deps": "npx expo install --check"
+    "fix-deps": "npx expo install expo@53 --check",
+    "bundle": "expo export --dev=true --output-dir=dist --platform=ios --no-minify --no-bytecode"
   },
   "dependencies": {
     "@formatjs/intl-locale": "^4.0.2",
     "@formatjs/intl-pluralrules": "^5.2.16",
-    "@lingui/core": "^5.0.0-next.3",
-    "@lingui/react": "^5.0.0-next.3",
-    "expo": "~51.0.37",
-    "expo-status-bar": "~1.12.1",
-    "expo-updates": "~0.25.27",
-    "react": "18.2.0",
-    "react-native": "0.74.5",
-    "react-native-web": "~0.19.10"
+    "@lingui/core": "^5.3.1",
+    "@lingui/react": "^5.3.1",
+    "expo": "^53.0.7",
+    "expo-status-bar": "~2.2.3",
+    "expo-updates": "~0.28.12",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@lingui/babel-plugin-lingui-macro": "^5.0.0-next.3",
-    "@lingui/cli": "^5.0.0-next.3",
-    "@lingui/macro": "^5.0.0-next.3",
-    "@lingui/metro-transformer": "^5.0.0-next.3",
+    "@babel/core": "^7.26.0",
+    "@lingui/babel-plugin-lingui-macro": "^5.3.1",
+    "@lingui/cli": "^5.3.1",
+    "@lingui/macro": "^5.3.1",
+    "@lingui/metro-transformer": "^5.3.1",
     "@react-native-community/eslint-config": "^3.2.0",
-    "@types/react": "~18.2.79",
+    "@types/react": "~19.0.10",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-ft-flow": "^2.0.3",
+    "expo-atlas": "^0.4.0",
     "prettier": "^2.8.8",
-    "typescript": "~5.3.3"
+    "typescript": "~5.8.3"
   },
   "private": true
 }
