@@ -50,7 +50,7 @@ export default config(
     },
   },
   {
-    files: ["**/*.tst.{ts,tsx}", "**/*.test.{ts,tsx}", "eslint.config.mjs"],
+    files: ["**/*.test.{ts,tsx}", "**/*.tst.{ts,tsx}", "eslint.config.mjs"],
     rules: {
       "import/no-extraneous-dependencies": "off",
     },
