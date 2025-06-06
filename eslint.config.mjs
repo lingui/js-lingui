@@ -41,7 +41,7 @@ export default config(
           devDependencies: [
             "**/test/**",
             "**/*.test.{ts,tsx}",
-            "**/*.test-d.{ts,tsx}",
+            "**/*.tst.{ts,tsx}",
             "**/vite.config.ts",
           ],
         },
@@ -50,7 +50,7 @@ export default config(
     },
   },
   {
-    files: ["**/*.test-d.{ts,tsx}", "**/*.test.{ts,tsx}", "eslint.config.mjs"],
+    files: ["**/*.tst.{ts,tsx}", "**/*.test.{ts,tsx}", "eslint.config.mjs"],
     rules: {
       "import/no-extraneous-dependencies": "off",
     },
