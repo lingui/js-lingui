@@ -70,7 +70,7 @@
     "strip-ansi": "^6.0.1",
     "swc-node": "^1.0.0",
     "ts-jest": "^29.2.4",
-    "tstyche": "^4.0.0-rc.0",
+    "tstyche": "^4.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
