@@ -10558,7 +10558,7 @@ __metadata:
     strip-ansi: ^6.0.1
     swc-node: ^1.0.0
     ts-jest: ^29.2.4
-    tstyche: ^4.0.0-rc.0
+    tstyche: ^4.0.0
     typescript: ^5.7.2
     typescript-eslint: ^8.18.1
   languageName: unknown
@@ -15215,9 +15215,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tstyche@npm:^4.0.0-rc.0":
-  version: 4.0.0-rc.0
-  resolution: "tstyche@npm:4.0.0-rc.0"
+"tstyche@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "tstyche@npm:4.0.0"
   peerDependencies:
     typescript: ">=4.7"
   peerDependenciesMeta:
@@ -15225,7 +15225,7 @@ __metadata:
       optional: true
   bin:
     tstyche: ./build/bin.js
-  checksum: d0a59cf6a7c209195182a0e40e648ee90fc1b1f0b495793104dcd6f1dd7cf005062a481cd1daa0e79a71f5a0a3abd26f4bd7e39f2f7c1ceb68f2ef437db8ed43
+  checksum: 91407159680f7533a849a988a3daa51fc30d9d79c4603ede0f66cb35a29972ba3e9dbd9a801f3d448b6606276a9fbac1d53cf9361f67d3829043c62600f74efd
   languageName: node
   linkType: hard
 
