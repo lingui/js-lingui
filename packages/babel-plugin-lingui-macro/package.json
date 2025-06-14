@@ -81,9 +81,9 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
+    "@babel/core": "^7.21.0",
+    "@babel/runtime": "^7.21.0",
+    "@babel/types": "^7.21.2",
     "@lingui/conf": "5.3.2",
     "@lingui/core": "5.3.2",
     "@lingui/message-utils": "5.3.2"
@@ -97,10 +97,10 @@
     }
   },
   "devDependencies": {
-    "@babel/parser": "^7.20.15",
+    "@babel/parser": "^7.22.0",
     "@babel/traverse": "^7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
     "prettier": "2.8.3",
-    "unbuild": "2.0.0"
+    "unbuild": "^2.0.0"
   }
 }

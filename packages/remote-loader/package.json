@@ -49,10 +49,10 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "4.0.0",
-    "@lingui/message-utils": "4.0.0"
+    "@lingui/core": "5.3.2",
+    "@lingui/message-utils": "5.3.2"
   },
   "devDependencies": {
-    "unbuild": "2.0.0"
+    "unbuild": "^2.0.0"
   }
 }

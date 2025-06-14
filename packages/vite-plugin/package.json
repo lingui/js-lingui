@@ -48,7 +48,7 @@
   "devDependencies": {
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
-    "unbuild": "2.0.0",
+    "unbuild": "^2.0.0",
     "vite": "6.0.2",
     "vite-plugin-babel-macros": "^1.0.6"
   }

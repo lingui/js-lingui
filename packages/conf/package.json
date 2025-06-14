@@ -25,7 +25,7 @@
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
+    "@babel/runtime": "^7.21.0",
     "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
     "jest-validate": "^29.4.3",

@@ -49,6 +49,6 @@
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
     "mockdate": "^3.0.5",
-    "unbuild": "2.0.0"
+    "unbuild": "^2.0.0"
   }
 }
