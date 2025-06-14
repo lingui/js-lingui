@@ -55,7 +55,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
+    "@babel/runtime": "^7.21.0",
     "@lingui/cli": "5.3.2",
     "@lingui/conf": "5.3.2",
     "memoize-one": "^6.0.0"
@@ -63,7 +63,7 @@
   "devDependencies": {
     "@lingui/format-json": "5.3.2",
     "rimraf": "^6.0.1",
-    "unbuild": "2.0.0"
+    "unbuild": "^2.0.0"
   },
   "peerDependencies": {
     "@expo/metro-config": "*",

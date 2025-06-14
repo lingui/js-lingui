@@ -6,6 +6,13 @@ import importPlugin from "eslint-plugin-import"
 
 export default config(
   { files: ["./packages/**/*.{ts,tsx,js,jsx}"] },
+  {
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
