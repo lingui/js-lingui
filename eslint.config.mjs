@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint"
 import pluginReact from "eslint-plugin-react"
 import { config } from "typescript-eslint"
 import importPlugin from "eslint-plugin-import"
-import pluginReactHooks from "eslint-plugin-react-hooks"
+import reactHooks from "eslint-plugin-react-hooks"
 
 export default config(
   { files: ["./packages/**/*.{ts,tsx,js,jsx}"] },
@@ -59,12 +59,9 @@ export default config(
   },
   {
     files: ["./packages/react/**/*.{ts,tsx,js,jsx}"],
-    plugins: {
-      react: pluginReact,
-      "react-hooks": pluginReactHooks,
-    },
+    ...pluginReact.configs.flat.recommended,
+    ...reactHooks.configs["recommended-latest"],
     rules: {
-      ...pluginReact.configs.flat.recommended.rules,
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "error",
     },
