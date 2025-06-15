@@ -1,6 +1,6 @@
-export function getCookie(key: string): string {
+export function getCookie(key: string): string | undefined {
   if (!key) {
-    return
+    return undefined
   }
 
   // To prevent the for loop in the first place assign an empty array
@@ -29,5 +29,5 @@ export function getCookie(key: string): string {
     }
   }
 
-  return key ? jar[key] : jar
+  return jar[key]
 }
