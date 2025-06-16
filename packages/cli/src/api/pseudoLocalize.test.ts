@@ -2,18 +2,18 @@ import pseudoLocalize from "./pseudoLocalize"
 
 describe("PseudoLocalization", () => {
   it("should pseudolocalize strings", () => {
-    expect(pseudoLocalize("Martin Černý")).toEqual("Màŕţĩń Čēŕńý")
+    expect(pseudoLocalize("Martin Černý")).toEqual("Ḿàŕţĩń Čēŕńý")
   })
 
   it("should not pseudolocalize HTML tags", () => {
     expect(pseudoLocalize('Martin <span id="spanId">Černý</span>')).toEqual(
-      'Màŕţĩń <span id="spanId">Čēŕńý</span>'
+      'Ḿàŕţĩń <span id="spanId">Čēŕńý</span>'
     )
     expect(
       pseudoLocalize("Martin Cerny  123a<span id='id'>Černý</span>")
-    ).toEqual("Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>")
+    ).toEqual("Ḿàŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>")
     expect(pseudoLocalize("Martin <a title='>>'>a</a>")).toEqual(
-      "Màŕţĩń <a title='>>'>à</a>"
+      "Ḿàŕţĩń <a title='>>'>à</a>"
     )
     expect(pseudoLocalize("<a title=TITLE>text</a>")).toEqual(
       "<a title=TITLE>ţēxţ</a>"
@@ -43,7 +43,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}"
         )
       ).toEqual(
-        "{count, plural, offset:1 zero {Ţĥēŕē àŕē ńō mēśśàĝēś} other {Ţĥēŕē àŕē # mēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
+        "{count, plural, offset:1 zero {Ţĥēŕē àŕē ńō ḿēśśàĝēś} other {Ţĥēŕē àŕē # ḿēśśàĝēś ĩń ŷōũŕ ĩńƀōx}}"
       )
     })
 
@@ -53,7 +53,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, zero {There's # <span>message</span>} other {There are # messages}}"
         )
       ).toEqual(
-        "{count, plural, zero {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}}"
+        "{count, plural, zero {Ţĥēŕē'ś # <span>ḿēśśàĝē</span>} other {Ţĥēŕē àŕē # ḿēśśàĝēś}}"
       )
     })
 
@@ -63,7 +63,7 @@ describe("PseudoLocalization", () => {
           "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}}"
         )
       ).toEqual(
-        "{count, plural, =0 {Ţĥēŕē'ś # <span>mēśśàĝē</span>} other {Ţĥēŕē àŕē # mēśśàĝēś}}"
+        "{count, plural, =0 {Ţĥēŕē'ś # <span>ḿēśśàĝē</span>} other {Ţĥēŕē àŕē # ḿēśśàĝēś}}"
       )
     })
   })
@@ -74,7 +74,7 @@ describe("PseudoLocalization", () => {
         "{count, selectordinal, offset:1 one {#st} two {#nd} few {#rd} =4 {4th} many {testMany} other {#th}}"
       )
     ).toEqual(
-      "{count, selectordinal, offset:1 one {#śţ} two {#ńď} few {#ŕď} =4 {4ţĥ} many {ţēśţMàńŷ} other {#ţĥ}}"
+      "{count, selectordinal, offset:1 one {#śţ} two {#ńď} few {#ŕď} =4 {4ţĥ} many {ţēśţḾàńŷ} other {#ţĥ}}"
     )
   })
 

@@ -40,7 +40,7 @@ module.exports = {
       testMatch,
       transformIgnorePatterns,
       moduleNameMapper: tsConfigPathMapping,
-      roots: ["<rootDir>/packages/react"],
+      roots: ["<rootDir>/packages/react", "<rootDir>/packages/detect-locale"],
     },
     {
       displayName: "universal",
