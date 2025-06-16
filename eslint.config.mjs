@@ -62,13 +62,7 @@ export default config(
     ...pluginReact.configs.flat.recommended,
     ...reactHooks.configs["recommended-latest"],
     rules: {
-      "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "error",
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
     },
   }
 )
