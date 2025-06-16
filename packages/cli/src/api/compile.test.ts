@@ -9,7 +9,7 @@ describe("compile", () => {
     const getPSource = (message: string) => compile(message, true)
 
     it("should pseudolocalize strings", () => {
-      expect(getPSource("Martin Černý")).toEqual(["Màŕţĩń Čēŕńý"])
+      expect(getPSource("Martin Černý")).toEqual(["Ḿàŕţĩń Čēŕńý"])
     })
 
     it("should pseudolocalize escaping syntax characters", () => {
@@ -32,13 +32,13 @@ describe("compile", () => {
 
     it("should not pseudolocalize HTML tags", () => {
       expect(getPSource('Martin <span id="spanId">Černý</span>')).toEqual([
-        'Màŕţĩń <span id="spanId">Čēŕńý</span>',
+        'Ḿàŕţĩń <span id="spanId">Čēŕńý</span>',
       ])
       expect(
         getPSource("Martin Cerny  123a<span id='id'>Černý</span>")
-      ).toEqual(["Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"])
+      ).toEqual(["Ḿàŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"])
       expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual([
-        "Màŕţĩń <a title='>>a'>à</a>",
+        "Ḿàŕţĩń <a title='>>a'>à</a>",
       ])
       expect(getPSource("<a title=TITLE>text</a>")).toEqual([
         "<a title=TITLE>ţēxţ</a>",
@@ -82,8 +82,8 @@ describe("compile", () => {
             "plural",
             {
               offset: 1,
-              zero: ["Ţĥēŕē àŕē ńō mēśśàĝēś"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
+              zero: ["Ţĥēŕē àŕē ńō ḿēśśàĝēś"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
             },
           ],
         ])
@@ -99,8 +99,8 @@ describe("compile", () => {
             "count",
             "plural",
             {
-              zero: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+              zero: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -116,8 +116,8 @@ describe("compile", () => {
             "count",
             "plural",
             {
-              0: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+              0: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -139,7 +139,7 @@ describe("compile", () => {
             two: ["#", "ńď"],
             few: ["#", "ŕď"],
             4: ["4ţĥ"],
-            many: ["ţēśţMàńŷ"],
+            many: ["ţēśţḾàńŷ"],
             other: ["#", "ţĥ"],
           },
         ],

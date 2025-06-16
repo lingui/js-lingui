@@ -2561,7 +2561,7 @@ __metadata:
     pathe: ^1.1.0
     pkg-up: ^3.1.0
     pofile: ^1.1.4
-    pseudolocale: 2.0.0
+    pseudolocale: ^2.0.0
     source-map: ^0.8.0-beta.0
   bin:
     lingui: ./dist/lingui.js
@@ -13058,14 +13058,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudolocale@npm:2.0.0":
-  version: 2.0.0
-  resolution: "pseudolocale@npm:2.0.0"
+"pseudolocale@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "pseudolocale@npm:2.1.0"
   dependencies:
     commander: ^10.0.0
   bin:
     pseudolocale: dist/cli.mjs
-  checksum: 971f79536becac26b4224ecfee6485a48143073820bb22f6a0a590867cf9d794955fd9d4bf13cf7f28b577dc82d41c976e7512cde2d57eb587522f152332165b
+  checksum: be75a27b732c7f58a05303ef4181f5e9dc10ac56d77190f5124600ee7b03ae3190e40180ab7546308e9d8d513c13e77b8360dadeeb553aa089ac64c303194fc8
   languageName: node
   linkType: hard
 
