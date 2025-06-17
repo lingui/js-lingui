@@ -71,7 +71,6 @@
     "date-fns": "^3.6.0",
     "esbuild": "^0.25.1",
     "glob": "^11.0.0",
-    "inquirer": "^7.3.3",
     "micromatch": "^4.0.7",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
