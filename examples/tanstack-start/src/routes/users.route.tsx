@@ -1,4 +1,3 @@
-import { t } from "@lingui/core/macro"
 import { useLingui } from "@lingui/react/macro"
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
@@ -15,7 +14,8 @@ export const Route = createFileRoute("/users")({
         },
       })
       .then((r) => r.data)
-      .catch(() => {
+      .catch((e) => {
+        console.error(e)
         throw new Error(i18n._("Failed to fetch users"))
       })
   },
