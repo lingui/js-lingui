@@ -14,14 +14,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: src/routes/users.$userId.tsx:18
-msgid "Failed to fetch user"
-msgstr "Failed to fetch user"
-
-#. js-lingui-explicit-id
-#: src/routes/users.route.tsx:18
+#: src/routes/users.route.tsx:19
 msgid "Failed to fetch users"
 msgstr "Failed to fetch users"
+
+#. js-lingui-explicit-id
+#: src/routes/users.$userId.tsx:20
+msgid "Failed to fetch user"
+msgstr "Failed to fetch user"
 
 #. js-lingui-explicit-id
 #: src/routes/api/users.$id.ts:22
@@ -32,7 +32,7 @@ msgstr "User not found"
 msgid "← All Posts"
 msgstr "← All Posts"
 
-#: src/routes/deferred.tsx:70
+#: src/routes/deferred.tsx:57
 msgid "Count: {count}"
 msgstr "Count: {count}"
 
@@ -40,7 +40,7 @@ msgstr "Count: {count}"
 msgid "Deep View"
 msgstr "Deep View"
 
-#: src/routes/__root.tsx:138
+#: src/routes/__root.tsx:139
 msgid "Deferred"
 msgstr "Deferred"
 
@@ -60,7 +60,7 @@ msgstr "Go to route A"
 msgid "Go to route B"
 msgstr "Go to route B"
 
-#: src/routes/__root.tsx:106
+#: src/routes/__root.tsx:107
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
 msgstr "Home"
@@ -81,15 +81,15 @@ msgstr "I'm A!"
 msgid "I'm B!"
 msgstr "I'm B!"
 
-#: src/routes/deferred.tsx:74
+#: src/routes/deferred.tsx:61
 msgid "Increment"
 msgstr "Increment"
 
-#: src/routes/deferred.tsx:44
+#: src/routes/deferred.tsx:31
 msgid "Loading person..."
 msgstr "Loading person..."
 
-#: src/routes/deferred.tsx:60
+#: src/routes/deferred.tsx:47
 msgid "Loading stuff..."
 msgstr "Loading stuff..."
 
@@ -97,11 +97,11 @@ msgstr "Loading stuff..."
 msgid "Non-existent Post"
 msgstr "Non-existent Post"
 
-#: src/routes/users.route.tsx:33
+#: src/routes/users.route.tsx:34
 msgid "Non-existent User"
 msgstr "Non-existent User"
 
-#: src/routes/__root.tsx:130
+#: src/routes/__root.tsx:131
 msgid "Pathless Layout"
 msgstr "Pathless Layout"
 
@@ -109,7 +109,7 @@ msgstr "Pathless Layout"
 msgid "Post not found"
 msgstr "Post not found"
 
-#: src/routes/__root.tsx:114
+#: src/routes/__root.tsx:115
 msgid "Posts"
 msgstr "Posts"
 
@@ -129,7 +129,7 @@ msgstr "Start Over"
 msgid "The page you are looking for does not exist."
 msgstr "The page you are looking for does not exist."
 
-#: src/routes/__root.tsx:147
+#: src/routes/__root.tsx:148
 msgid "This Route Does Not Exist"
 msgstr "This Route Does Not Exist"
 
@@ -137,11 +137,11 @@ msgstr "This Route Does Not Exist"
 msgid "Try Again"
 msgstr "Try Again"
 
-#: src/routes/users.$userId.tsx:26
+#: src/routes/users.$userId.tsx:28
 msgid "User not found"
 msgstr "User not found"
 
-#: src/routes/__root.tsx:122
+#: src/routes/__root.tsx:123
 msgid "Users"
 msgstr "Users"
 
