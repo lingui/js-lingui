@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
@@ -60,12 +60,12 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("extract")
       )}" to update catalogs with new messages.)`
     )
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("compile")
       )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
     )
@@ -148,12 +148,12 @@ if (require.main === module) {
     hasErrors = true
     console.error("Trying to migrate message catalog to the same format")
     console.error(
-      `Set ${chalk.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${chalk.bold("previous")} format using --convert-from option.`
+      `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
+        ` and ${pico.bold("previous")} format using --convert-from option.`
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
-    console.log(chalk.yellow(helpRun(`extract --convert-from lingui`)))
+    console.log(pico.yellow(helpRun(`extract --convert-from lingui`)))
     process.exit(1)
   }
 
@@ -164,7 +164,7 @@ if (require.main === module) {
 
     if (missingLocale) {
       hasErrors = true
-      console.error(`Locale ${chalk.bold(missingLocale)} does not exist.`)
+      console.error(`Locale ${pico.bold(missingLocale)} does not exist.`)
       console.error()
     }
   }
@@ -208,7 +208,7 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(chalk.bold("Initializing Watch Mode..."))
+    console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
       const catalogs = await getCatalogs(config)
       const paths: string[] = []
@@ -225,7 +225,7 @@ if (require.main === module) {
       })
 
       const onReady = () => {
-        console.info(chalk.green.bold("Watcher is ready!"))
+        console.info(pico.green(pico.bold("Watcher is ready!")))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

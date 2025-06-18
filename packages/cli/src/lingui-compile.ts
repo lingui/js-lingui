@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import chokidar from "chokidar"
 import { program } from "commander"
 
@@ -48,13 +48,13 @@ export async function command(
         missingMessages.length > 0
       ) {
         console.error(
-          chalk.red(
-            `Error: Failed to compile catalog for locale ${chalk.bold(locale)}!`
+          pico.red(
+            `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
           )
         )
 
         if (options.verbose) {
-          console.error(chalk.red("Missing translations:"))
+          console.error(pico.red("Missing translations:"))
           missingMessages.forEach((missing) => {
             const source =
               missing.source || missing.source === missing.id
@@ -65,7 +65,7 @@ export async function command(
           })
         } else {
           console.error(
-            chalk.red(`Missing ${missingMessages.length} translation(s)`)
+            pico.red(`Missing ${missingMessages.length} translation(s)`)
           )
         }
         console.error()
@@ -126,11 +126,11 @@ async function compileAndWrite(
 
     if (options.failOnCompileError) {
       message += `These errors fail command execution because \`--strict\` option passed`
-      console.error(chalk.red(message))
+      console.error(pico.red(message))
       return false
     } else {
       message += `You can fail command execution on these errors by passing \`--strict\` option`
-      console.error(chalk.red(message))
+      console.error(pico.red(message))
     }
   }
 
@@ -142,7 +142,7 @@ async function compileAndWrite(
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
 
-  options.verbose && console.error(chalk.green(`${locale} ⇒ ${compiledPath}`))
+  options.verbose && console.error(pico.green(`${locale} ⇒ ${compiledPath}`))
   return true
 }
 
@@ -224,7 +224,7 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(chalk.bold("Initializing Watch Mode..."))
+    console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
       const format = await getFormat(
         config.format,
@@ -250,7 +250,7 @@ if (require.main === module) {
       })
 
       const onReady = () => {
-        console.info(chalk.green.bold("Watcher is ready!"))
+        console.info(pico.green(pico.bold("Watcher is ready!")))
         watcher
           .on("add", () => dispatchCompile())
           .on("change", () => dispatchCompile())
