@@ -8,7 +8,7 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { getCatalogs, AllCatalogsType } from "./api"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
-import ora from "ora"
+import { createSpinner } from "nanospinner"
 import normalizePath from "normalize-path"
 
 export type CliExtractOptions = {
@@ -31,7 +31,7 @@ export default async function command(
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  const spinner = ora().start()
+  const spinner = createSpinner().start()
 
   for (const catalog of catalogs) {
     const result = await catalog.make({
@@ -47,9 +47,9 @@ export default async function command(
   }
 
   if (commandSuccess) {
-    spinner.succeed()
+    spinner.success()
   } else {
-    spinner.fail()
+    spinner.error()
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
