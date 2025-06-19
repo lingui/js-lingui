@@ -1,4 +1,3 @@
-import { i18n } from "@lingui/core"
 import { Trans } from "@lingui/react/macro"
 import { createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
@@ -6,18 +5,19 @@ import type { User } from "~/utils/users"
 import { DEPLOY_URL } from "~/utils/users"
 import { NotFound } from "~/components/NotFound"
 import { UserErrorComponent } from "~/components/UserError"
+import { AppContext } from "~/router"
 
 export const Route = createFileRoute("/users/$userId")({
-  loader: async ({ params: { userId } }) => {
+  loader: async ({ params: { userId }, context }) => {
     return await axios
       .get<User>(DEPLOY_URL + "/api/users/" + userId, {
         headers: {
-          "Accept-Language": i18n.locale,
+          "Accept-Language": context.i18n.locale,
         },
       })
       .then((r) => r.data)
       .catch(() => {
-        throw new Error(i18n._("Failed to fetch user"))
+        throw new Error(context.i18n._("Failed to fetch user"))
       })
   },
   errorComponent: UserErrorComponent,

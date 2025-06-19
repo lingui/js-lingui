@@ -6,10 +6,16 @@ import { routeTree } from "./routeTree.gen"
 import { DefaultCatchBoundary } from "./components/DefaultCatchBoundary"
 import { NotFound } from "./components/NotFound"
 
+export interface AppContext {
+  i18n: I18n
+}
+
 export function createRouter({ i18n }: { i18n: I18n }) {
   const router = createTanStackRouter({
     routeTree,
-    defaultPreload: "intent",
+    context: {
+      i18n,
+    },
     defaultErrorComponent: DefaultCatchBoundary,
     defaultNotFoundComponent: () => <NotFound />,
     scrollRestoration: true,
@@ -21,8 +27,10 @@ export function createRouter({ i18n }: { i18n: I18n }) {
   return router
 }
 
+type AppRouter = ReturnType<typeof createRouter>;
+
 declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createRouter>
+    router: AppRouter
   }
 }
