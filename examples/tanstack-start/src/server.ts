@@ -8,7 +8,7 @@ import { setupLocaleFromRequest } from "~/modules/lingui/i18n.server";
 import { createRouter } from "./router";
 
 export default requestHandler(async (ctx) => {
-	await setupLocaleFromRequest();
+	await setupLocaleFromRequest(i18n);
 
 	const startHandler = createStartHandler({
 		createRouter: () => {

@@ -7,7 +7,7 @@ import { createRouter } from "./router"
 import { startTransition, StrictMode } from "react"
 
 // The lang should be set by the server
-await dynamicActivate(document.documentElement.lang)
+await dynamicActivate(i18n, document.documentElement.lang)
 
 const router = createRouter({ i18n })
 
