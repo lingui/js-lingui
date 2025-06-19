@@ -1,4 +1,5 @@
-import { i18n } from "@lingui/core"
+/// <reference types="vite/client" />
+import { useLingui } from "@lingui/react"
 import { Trans } from "@lingui/react/macro"
 import {
   HeadContent,
@@ -6,6 +7,8 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  createRootRouteWithContext,
+  useRouter,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 import { createServerFn } from "@tanstack/react-start"
@@ -14,7 +17,8 @@ import { serialize } from "cookie-es"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
 import { NotFound } from "~/components/NotFound"
-import { locales } from "~/modules/lingui/i18n"
+import { dynamicActivate, locales } from "~/modules/lingui/i18n"
+import type { AppContext } from "~/router"
 import appCss from "~/styles/app.css?url"
 import { seo } from "~/utils/seo"
 
@@ -30,7 +34,7 @@ const updateLanguage = createServerFn({ method: "POST" })
     )
   })
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<AppContext>()({
   head: () => ({
     meta: [
       {
@@ -89,6 +93,9 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { i18n } = useLingui()
+  const router = useRouter()
+
   return (
     <html lang={i18n.locale}>
       <head>
@@ -152,8 +159,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               key={locale}
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
-                updateLanguage({ data: locale }).then(() => {
-                  location.reload()
+                updateLanguage({ data: locale }).then(async () => {
+                  await dynamicActivate(i18n, locale);
+
+                  router.invalidate()
                 })
               }}
             >

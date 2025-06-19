@@ -6,31 +6,35 @@ import {
 import { parse, serialize } from "cookie-es"
 
 import { defaultLocale, dynamicActivate, isLocaleValid } from "./i18n"
+import type { I18n } from "@lingui/core"
 
 function getLocaleFromRequest() {
   const request = getWebRequest()
   const headers = getHeaders()
   const cookie = parse(headers.cookie ?? "")
 
-  if (request) {
-    const url = new URL(request.url)
-    const queryLocale = url.searchParams.get("locale") ?? ""
+  const url = new URL(request.url)
+  const queryLocale = url.searchParams.get("locale") ?? ""
 
-    if (isLocaleValid(queryLocale)) {
-      setHeader(
-        "Set-Cookie",
-        serialize("locale", queryLocale, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/",
-        })
-      )
+  if (isLocaleValid(queryLocale)) {
+    setHeader(
+      "Set-Cookie",
+      serialize("locale", queryLocale, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      })
+    )
 
-      return queryLocale
-    }
+    return queryLocale
   }
 
   if (cookie.locale && isLocaleValid(cookie.locale)) {
     return cookie.locale
+  }
+
+  // Mostly used for API requests
+  if (headers["accept-language"] && isLocaleValid(headers["accept-language"])) {
+    return headers["accept-language"]
   }
 
   setHeader(
@@ -44,6 +48,6 @@ function getLocaleFromRequest() {
   return defaultLocale
 }
 
-export async function setupLocaleFromRequest() {
-  await dynamicActivate(getLocaleFromRequest())
+export async function setupLocaleFromRequest(i18n: I18n) {
+  await dynamicActivate(i18n, getLocaleFromRequest())
 }
