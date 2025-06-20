@@ -2689,8 +2689,8 @@ __metadata:
     micromatch: ^4.0.7
     mock-fs: ^5.2.0
     mockdate: ^3.0.5
-    nanospinner: ^1.2.2
     normalize-path: ^3.0.0
+    ora: ^5.1.0
     picocolors: ^1.1.1
     pofile: ^1.1.4
     pseudolocale: ^2.0.0
@@ -11829,15 +11829,6 @@ __metadata:
   dependencies:
     picocolors: ^1.0.0
   checksum: 797f0a7c8b053d6fb5188d73e63bab44dec97ff0e7b67ac3d55e9356c6fe002f5af691a9d1232ca086e1fb19301d11c979dc5b0c56e6700004a96c19dfded8f0
-  languageName: node
-  linkType: hard
-
-"nanospinner@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "nanospinner@npm:1.2.2"
-  dependencies:
-    picocolors: ^1.1.1
-  checksum: 1a5faf20d6e0712c1c2c959c1b84dff8d08a70b59f0b34e54367b247fcc62388f530fa597e240459def1ea97222399d3d1bcaad39d6e90b62f4e588bed381833
   languageName: node
   linkType: hard
 
