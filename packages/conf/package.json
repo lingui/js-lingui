@@ -7,7 +7,11 @@
     "lingui",
     "config"
   ],
-  "repository": "lingui/js-lingui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/conf"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
