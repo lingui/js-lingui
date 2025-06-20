@@ -25,7 +25,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/format-csv"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"

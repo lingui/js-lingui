@@ -18,7 +18,11 @@
     "multilingual",
     "lingui-extractor"
   ],
-  "repository": "lingui/js-lingui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/extractor-vue"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
