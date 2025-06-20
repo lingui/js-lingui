@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -40,7 +40,7 @@ export default async function command(
 
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${chalk.bold(key)}: ${chalk.green(
+      `Catalog statistics for ${pico.bold(key)}: ${pico.green(
         value
       )} messages`
     )

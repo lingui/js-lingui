@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Table from "cli-table"
-import chalk from "chalk"
+import pico from "picocolors"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
 
@@ -39,7 +39,7 @@ export function printStats(
     const [all, translated] = catalog ? getStats(catalog) : ["-", "-"]
 
     if (config.sourceLocale === locale) {
-      table.push({ [`${chalk.bold(locale)} (source)`]: [all, "-"] })
+      table.push({ [`${pico.bold(locale)} (source)`]: [all, "-"] })
     } else {
       table.push({ [locale]: [all, translated] })
     }

@@ -1,6 +1,6 @@
 import { exec as _exec, ExecOptions } from "child_process"
 import ora from "ora"
-import chalk from "chalk"
+import pico from "picocolors"
 
 async function releaseInVerdaccio() {
   const spinner = ora()
@@ -26,7 +26,7 @@ async function releaseInVerdaccio() {
 
   console.log()
   console.log(
-    `Done! Run ${chalk.yellow(
+    `Done! Run ${pico.yellow(
       "npm install --registry http://0.0.0.0:4873 @lingui/[package]"
     )} in target project to install development version of package.`
   )

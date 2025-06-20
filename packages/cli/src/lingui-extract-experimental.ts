@@ -13,7 +13,7 @@ import {
   writeTemplate,
 } from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
-import chalk from "chalk"
+import pico from "picocolors"
 import {
   extractFromFileWithBabel,
   getBabelParserOptions,
@@ -43,7 +43,7 @@ export default async function command(
   }
 
   console.log(
-    chalk.yellow(
+    pico.yellow(
       [
         "You have using an experimental feature",
         "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +

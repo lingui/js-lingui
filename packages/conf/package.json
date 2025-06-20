@@ -26,10 +26,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
     "jest-validate": "^29.4.3",
-    "jiti": "^1.17.1"
+    "jiti": "^1.17.1",
+    "picocolors": "^1.1.1"
   },
   "files": [
     "LICENSE",

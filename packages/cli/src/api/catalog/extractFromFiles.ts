@@ -3,7 +3,7 @@ import type {
   ExtractorType,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import chalk from "chalk"
+import pico from "picocolors"
 import path from "path"
 import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
@@ -60,11 +60,11 @@ export async function extractFromFiles(
 
         if (prev.message && next.message && prev.message !== next.message) {
           throw new Error(
-            `Encountered different default translations for message ${chalk.yellow(
+            `Encountered different default translations for message ${pico.yellow(
               next.id
             )}` +
-              `\n${chalk.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-              `\n${chalk.yellow(prettyOrigin([origin]))} ${next.message}`
+              `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
+              `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
           )
         }
 

@@ -4,7 +4,7 @@ import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import type { JITIOptions } from "jiti/dist/types"
-import chalk from "chalk"
+import pico from "picocolors"
 
 function configExists(path: string) {
   return path && fs.existsSync(path)
@@ -63,9 +63,9 @@ export function getConfig({
   if (!result) {
     console.error("Lingui was unable to find a config!\n")
     console.error(
-      `Create ${chalk.bold(
+      `Create ${pico.bold(
         "'lingui.config.js'"
-      )} file with LinguiJS configuration in root of your project (next to package.json). See ${chalk.underline(
+      )} file with LinguiJS configuration in root of your project (next to package.json). See ${pico.underline(
         "https://lingui.dev/ref/conf"
       )}`
     )
