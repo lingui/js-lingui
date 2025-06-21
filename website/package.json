@@ -1,6 +1,6 @@
 {
   "name": "js-lingui-website",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -15,10 +15,10 @@
     "fixFormat": "prettier --write ."
   },
   "dependencies": {
-    "@docusaurus/core": "3.6.3",
-    "@docusaurus/preset-classic": "3.6.3",
-    "@docusaurus/remark-plugin-npm2yarn": "3.6.3",
-    "@docusaurus/theme-mermaid": "3.6.3",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/remark-plugin-npm2yarn": "^3.8.1",
+    "@docusaurus/theme-mermaid": "^3.8.1",
     "@mdx-js/react": "3.1.0",
     "clsx": "2.1.1",
     "docusaurus-plugin-sass": "^0.2.6",
@@ -26,25 +26,22 @@
     "react-dom": "19.0.0",
     "sass": "^1.83.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ],
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "3.6.3",
-    "@docusaurus/module-type-aliases": "3.6.3",
-    "@docusaurus/utils": "3.6.3",
-    "@eslint/js": "^9.17.0",
-    "@tsconfig/docusaurus": "2.0.3",
-    "@types/react": "19.0.2",
-    "@types/react-helmet": "6.1.11",
-    "@types/react-router-dom": "5.3.3",
-    "@typescript-eslint/eslint-plugin": "8.18.2",
-    "@typescript-eslint/parser": "8.18.2",
-    "eslint": "9.17.0",
-    "eslint-plugin-react": "7.37.3",
-    "eslint-plugin-react-hooks": "5.1.0",
+    "@docusaurus/eslint-plugin": "^3.8.1",
+    "@docusaurus/module-type-aliases": "^3.8.1",
+    "@docusaurus/plugin-content-docs": "^3.8.1",
+    "@docusaurus/tsconfig": "^3.8.1",
+    "@docusaurus/types": "^3.8.1",
+    "@docusaurus/utils": "^3.8.1",
+    "@eslint/js": "^9.29.0",
+    "@types/react": "^19.0.2",
+    "@types/react-helmet": "^6.1.11",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
     "remark-cli": "12.0.1",
@@ -66,11 +63,20 @@
     "retext-sentence-spacing": "6.0.0",
     "retext-syntax-mentions": "4.0.0",
     "retext-syntax-urls": "4.0.0",
-    "typescript": "5.7.2",
+    "typescript": "^5.8.3",
     "typescript-plugin-css-modules": "^5.1.0",
     "unified": "11.0.5"
   },
-  "resolutions": {
-    "mermaid": "^10.0.0"
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
   }
 }

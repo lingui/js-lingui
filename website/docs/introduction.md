@@ -53,7 +53,7 @@ Join the growing [community of developers](/community) who are using Lingui to b
 
 Using Lingui for internationalization is a straightforward process. Here's a high-level overview of the workflow.
 
-![Workflow scheme](/img/docs/lingui-workflow.svg)
+![Workflow scheme](./assets/lingui-workflow.svg)
 
 ### Define Messages
 

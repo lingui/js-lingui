@@ -54,7 +54,8 @@ const config: Config = {
       },
       items: [
         {
-          to: "/introduction",
+          type: "docSidebar",
+          sidebarId: "sidebar",
           label: "Docs",
           position: "left",
         },
@@ -72,6 +73,11 @@ const config: Config = {
           to: "/community",
           label: "Community",
           position: "left",
+        },
+        {
+          type: "docsVersionDropdown",
+          position: "right",
+          dropdownActiveClassDisabled: true,
         },
         {
           href: "https://github.com/lingui/js-lingui",
@@ -175,6 +181,19 @@ const config: Config = {
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true, converters: ["yarn", "pnpm"] }],
           ],
+          lastVersion: "current",
+          includeCurrentVersion: true,
+          versions: {
+            current: {
+              label: "Version 5.x",
+              banner: "none"
+            },
+            "4.x": {
+              label: "Version 4.x",
+              banner: "unmaintained",
+            },
+          },
+          onlyIncludeVersions: ["current", "4.x"],
         },
         blog: {
           showReadingTime: true,

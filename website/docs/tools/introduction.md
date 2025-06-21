@@ -14,7 +14,7 @@ It becomes increasingly difficult and time-consuming to manage the back-and-fort
 
 ### Regular Workflow
 
-![Translation workflow *without* sync and collaboration tool](/img/docs/without-collaboration-tool.svg)
+![Translation workflow *without* sync and collaboration tool](../assets/without-collaboration-tool.svg)
 
 This is the most basic workflow which involves sending the `.po` files to your translators (usually by email) and syncing them back manually into your application.
 
@@ -22,7 +22,7 @@ This workflow is manageable when your application is still quite small, doesn't 
 
 ### Sync & Collaboration Tool Workflow
 
-![Translation workflow *with* sync and collaboration tool](/img/docs/with-collaboration-tool.svg)
+![Translation workflow *with* sync and collaboration tool](../assets/with-collaboration-tool.svg)
 
 When the amount of text to translate increases, and the number of target languages grows, it becomes more efficient to use a sync and collaboration tool to assist you with the management of your team of translators, and co-evolution between your code and the translated files.
 

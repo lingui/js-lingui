@@ -1,8 +1,8 @@
 # Crowdin
 
 <p align="center">
-  <img src="https://support.crowdin.com/assets/logos/crowdin-dark-symbol.png#gh-light-mode-only" alt="Crowdin agile localization for developers" width="150"/>
-  <img src="https://support.crowdin.com/assets/logos/symbol/png/crowdin-symbol-cWhite.png#gh-dark-mode-only" alt="Crowdin agile localization for developers" width="150"/>
+  <img src="https://support.crowdin.co../assets/logos/crowdin-dark-symbol.png#gh-light-mode-only" alt="Crowdin agile localization for developers" width="150"/>
+  <img src="https://support.crowdin.co../assets/logos/symbol/png/crowdin-symbol-cWhite.png#gh-dark-mode-only" alt="Crowdin agile localization for developers" width="150"/>
 </p>
 
 Crowdin is a localization management platform that helps translate your LinguiJS-based product. Automate localization, release several multilingual versions of your app simultaneously, and provide an enhanced experience for your global customers.
@@ -55,17 +55,13 @@ Source strings are pulled automatically and are always up to date for your trans
 
 ![Automatically pull source strings to Crowdin and push translated content to your repository](../assets/Crowdin__js-lingui-vcs.png)
 
-## CLI
+### CLI
 
-Connect cross-platform [Crowdin CLI](https://crowdin.github.io/crowdin-cli/) directly to your code repository and never deal with localization files manually again.
+Easily integrate Crowdin with your CI server, GIT, SVN, Mercurial, etc. Connect cross-platform [Crowdin CLI](https://developer.crowdin.com/cli-tool/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) directly to your code repository and never deal with localization files manually again.
 
-With Crowdin CLI, you can:
+![Manage and synchronize your localization resources with Crowdin CLI](../assets/Crowdin__js-lingui-cli.png)
 
-- Automate the process of updating your source files in your Crowdin project.
-- Download translations from Crowdin and automatically save them in the correct locations.
-- Upload all your existing translations to Crowdin in minutes.
-
-### Create the `crowdin.yml` configuration file
+### 1. Create the `crowdin.yml` configuration file
 
 ```yaml title="crowdin.yml"
 project_id: "123456" # Your Crowdin project ID
@@ -78,15 +74,15 @@ files: # Paths to the source and translation files
     translation: /**/locales/%two_letters_code%/%original_file_name%
 ```
 
-### Install the Crowdin CLI as an npm package
+### 2. Install the Crowdin CLI as an npm package
 
 ```bash npm2yarn
-npm install --save-dev @crowdin/cli
+npm install @crowdin/cli@3
 ```
 
-### Add the synchronization scripts
+### 3. Add the following scripts
 
-Add the following scripts to your `package.json`:
+Add these lines to your `package.json` to make your life easier.
 
 ```json title="package.json"
 {
@@ -99,11 +95,11 @@ Add the following scripts to your `package.json`:
 }
 ```
 
-### Configuration
+### 4. Configuration
 
 Set the `CROWDIN_PERSONAL_TOKEN` env variable on your computer, to allow the CLI to authenticate with the Crowdin API.
 
-#### Usage
+### 5. Usage
 
 Test that you can run the Crowdin CLI:
 
@@ -141,27 +137,25 @@ To see the full list of possible commands and options:
 npm run crowdin -h
 ```
 
-## Over-The-Air Content Delivery
+### Over-The-Air Content Delivery
 
 Over-the-Air Content Delivery is a feature that allows you to instantly update sources and translations in your mobile, server, desktop, or web apps with a single click without preparing a new release.
 
 Visit the following pages to learn more about how to integrate Over-The-Air Content Delivery into your Lingui project:
 
 - [Lingui tutorial - Crowdin OTA JS Client](https://crowdin.github.io/ota-client-js/tutorials/lingui/)
-- [Lingui String Exporter - Crowdin Marketplace](https://store.crowdin.com/lingui-string-exporter?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev)
+- [Lingui String Exporter - Crowdin Marketplace](https://store.crowdin.com/lingui-string-exporter)
 
-## API and Webhooks
+### [API](https://support.crowdin.com/api/v2/) and webhooks
 
 Customize your experience. Automate and scale your localization workflow. Seamlessly add new content for translation to your Crowdin project, check translation status, merge new content, etc.
 
-See the [API](https://support.crowdin.com/developer/api/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) and [Webhooks](https://support.crowdin.com/developer/webhooks/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) documentation for more information.
+### To get started, register a [Crowdin.com](https://accounts.crowdin.com/register?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) or [Crowdin Enterprise](https://accounts.crowdin.com/workspace/create?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) account
 
-## Next Steps
+Once you have signed up, we recommend [creating your localization project](https://support.crowdin.com/creating-project/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
 
-To get started, register a [Crowdin.com](https://accounts.crowdin.com/register?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) or [Crowdin Enterprise](https://accounts.crowdin.com/workspace/create?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev) account. Once you have signed up, [create your localization project](https://support.crowdin.com/creating-project/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
+Depending on the ways you would like to work with Crowdin, we offer such options:
 
-Depending on how you'd like to work with Crowdin, you have the following options:
-
-1. [Integrate Crowdin with GitHub](https://support.crowdin.com/github-integration/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
-2. Manage and synchronize your localization resources with [Crowdin CLI](https://developer.crowdin.com/cli-tool/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
-3. [Upload files for the test via UI](https://support.crowdin.com/uploading-files/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
+1.  [Integrate Crowdin with GitHub](https://support.crowdin.com/github-integration/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
+2.  Manage and synchronize your localization resources with [Crowdin CLI](https://developer.crowdin.com/cli-tool/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).
+3.  [Upload files for the test via UI](https://support.crowdin.com/uploading-files/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev).

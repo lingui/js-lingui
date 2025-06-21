@@ -1,0 +1,156 @@
+{
+  "sidebar": [
+    {
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "label": "Introduction",
+          "id": "introduction"
+        },
+        {
+          "type": "doc",
+          "label": "Installation",
+          "id": "installation"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Tutorials",
+      "items": [
+        {
+          "type": "doc",
+          "label": "React",
+          "id": "tutorials/react"
+        },
+        {
+          "type": "doc",
+          "label": "React Server Components",
+          "id": "tutorials/react-rsc"
+        },
+        {
+          "type": "doc",
+          "label": "React Native",
+          "id": "tutorials/react-native"
+        },
+        {
+          "type": "doc",
+          "label": "JavaScript",
+          "id": "tutorials/javascript"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "items": [
+        {
+          "type": "doc",
+          "label": "Message Extraction",
+          "id": "guides/message-extraction"
+        },
+        {
+          "type": "doc",
+          "label": "Explicit vs Generated IDs",
+          "id": "guides/explicit-vs-generated-ids"
+        },
+        {
+          "type": "doc",
+          "label": "Lazy Translations",
+          "id": "guides/lazy-translations"
+        },
+        {
+          "type": "doc",
+          "label": "Pseudolocalization",
+          "id": "guides/pseudolocalization"
+        },
+        {
+          "type": "doc",
+          "label": "Dynamic Loading",
+          "id": "guides/dynamic-loading-catalogs"
+        },
+        {
+          "type": "doc",
+          "label": "Pluralization",
+          "id": "guides/plurals"
+        },
+        {
+          "type": "doc",
+          "label": "Testing",
+          "id": "guides/testing"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "API Reference",
+      "items": [
+        {
+          "type": "doc",
+          "label": "Configuration",
+          "id": "ref/conf"
+        },
+        {
+          "type": "doc",
+          "label": "Macros",
+          "id": "ref/macro"
+        },
+        {
+          "type": "doc",
+          "label": "@lingui/core",
+          "id": "ref/core"
+        },
+        {
+          "type": "doc",
+          "label": "@lingui/react",
+          "id": "ref/react"
+        },
+        {
+          "type": "doc",
+          "label": "@lingui/cli",
+          "id": "ref/cli"
+        },
+        {
+          "type": "doc",
+          "label": "@lingui/detect-locale",
+          "id": "ref/locale-detector"
+        },
+        {
+          "type": "doc",
+          "label": "Catalog Formats",
+          "id": "ref/catalog-formats"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Tools",
+      "items": [
+        {
+          "type": "doc",
+          "label": "Introduction",
+          "id": "tools/introduction"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Resources",
+      "items": [
+        "misc/resources",
+        "misc/showroom",
+        "misc/react-intl"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Releases",
+      "items": [
+        "releases/migration-4",
+        "releases/migration-3"
+      ]
+    }
+  ]
+}

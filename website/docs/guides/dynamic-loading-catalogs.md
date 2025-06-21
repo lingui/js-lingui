@@ -79,11 +79,11 @@ main.ab4626ef.js
 
 When the page is first loaded, only the main bundle and the bundle for the first language are loaded:
 
-![Requests during the first render](/img/docs/dynamic-loading-catalogs-1.png)
+![Requests during the first render](../assets/dynamic-loading-catalogs-1.png)
 
 After changing the language in the UI, the second language bundle is loaded:
 
-![Requests during the second render](/img/docs/dynamic-loading-catalogs-2.png)
+![Requests during the second render](../assets/dynamic-loading-catalogs-2.png)
 
 ## Dependency Tree Extractor (experimental)
 
