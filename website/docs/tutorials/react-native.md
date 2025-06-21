@@ -222,7 +222,7 @@ Alternatively, you may override the default locally on the i18n components, usin
 
 The [`Trans`](/ref/macro#trans) macro and `Text` component may be nested, for example to achieve the effect shown in the picture. This is thanks to how React Native [handles nested text](https://facebook.github.io/react-native/docs/text#nested-text).
 
-![image](/img/docs/rn-component-nesting.png)
+![image](../assets/rn-component-nesting.png)
 
 This can be achieved by the following code:
 

@@ -62,7 +62,7 @@ That's why plural syntaxes are deconstructed to make translation easier, and the
 
 If the target language has more plural forms than the source language, examples are also provided to the translator, as it may be unclear which plural form the `few` or `other` keyword refers to in that specific target language (for instance, Czech has three plural forms).
 
-![Smart Plural Management on Translation.io](/img/docs/translation-lingui-plural-forms.png)
+![Smart Plural Management on Translation.io](../assets/translation-lingui-plural-forms.png)
 
 ### Efficient Search
 
