@@ -92,7 +92,7 @@ By doing so, it creates a more optimized catalog that only contains the messages
 
 The catalogs would still contain duplicate messages for common components, but it would be much better than the current approach.
 
-![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.svg)
+![Scheme of discovering by dependencies](./extractor-deps-scheme.svg)
 
 :::tip
 See the [Message Extraction](https://lingui.dev/guides/message-extraction) guide to learn more about how message extraction works.
