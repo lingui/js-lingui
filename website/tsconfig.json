@@ -1,7 +1,9 @@
 {
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "extends": "@docusaurus/tsconfig",
   "include": ["src/"],
+  "exclude": [".docusaurus", "build"],
   "compilerOptions": {
+    "baseUrl": ".",
     "jsx": "react",
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "moduleResolution": "node"
