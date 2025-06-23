@@ -5,13 +5,11 @@ import {
 } from "@tanstack/react-start/server"
 import { parse, serialize } from "cookie-es"
 
-import { defaultLocale, dynamicActivate, isLocaleValid } from "./i18n"
-import type { I18n } from "@lingui/core"
+import { defaultLocale, isLocaleValid } from "./i18n"
 
 export function getLocaleFromRequest() {
   const request = getWebRequest()
   const headers = getHeaders()
-  const cookie = parse(headers.cookie ?? "")
 
   const url = new URL(request.url)
   const queryLocale = url.searchParams.get("locale") ?? ""
@@ -28,6 +26,7 @@ export function getLocaleFromRequest() {
     return queryLocale
   }
 
+  const cookie = parse(headers.cookie ?? "")
   if (cookie.locale && isLocaleValid(cookie.locale)) {
     return cookie.locale
   }
