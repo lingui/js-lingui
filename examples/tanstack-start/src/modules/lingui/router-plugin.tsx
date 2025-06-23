@@ -1,7 +1,7 @@
 import { Fragment, type PropsWithChildren } from 'react'
 import { I18nProvider } from "@lingui/react"
 import type { AnyRouter } from '@tanstack/react-router'
-import { setupI18n, type I18n } from '@lingui/core'
+import { type I18n } from '@lingui/core'
 
 type AdditionalOptions = {
   WrapProvider?: (props: { children: any }) => React.JSX.Element
