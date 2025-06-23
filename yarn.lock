@@ -2722,7 +2722,6 @@ __metadata:
     "@lingui/jest-mocks": "*"
     "@lingui/message-utils": 5.3.2
     unbuild: 2.0.0
-    unraw: ^3.0.0
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.3.2
     babel-plugin-macros: 2 || 3
@@ -15565,13 +15564,6 @@ __metadata:
   version: 2.0.0
   resolution: "universalify@npm:2.0.0"
   checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
-  languageName: node
-  linkType: hard
-
-"unraw@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "unraw@npm:3.0.0"
-  checksum: 19eee0bc500ce197d262b79723a2c8c81c1d716baaa2a62c48a4d0d6b9e1fd9d350c5df86262e51343d591ab9c8a47ed150317d0b867b2b65795cdc17ef69873
   languageName: node
   linkType: hard
 

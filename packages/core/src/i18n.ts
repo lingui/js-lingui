@@ -1,9 +1,13 @@
-import { interpolate, UNICODE_REGEX } from "./interpolate"
+import { interpolate } from "./interpolate"
 import { isString, isFunction } from "./essentials"
 import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
+import {
+  decodeEscapeSequences,
+  ESCAPE_SEQUENCE_REGEX,
+} from "./escapeSequences"
 
 export type MessageOptions = {
   message?: string
@@ -295,9 +299,8 @@ Please compile your catalog first.
       }
     }
 
-    // hack for parsing unicode values inside a string to get parsed in react native environments
-    if (isString(translation) && UNICODE_REGEX.test(translation))
-      return JSON.parse(`"${translation}"`) as string
+    if (isString(translation) && ESCAPE_SEQUENCE_REGEX.test(translation))
+      return decodeEscapeSequences(translation)
     if (isString(translation)) return translation
 
     return interpolate(
