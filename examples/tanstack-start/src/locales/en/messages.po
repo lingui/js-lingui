@@ -13,16 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. js-lingui-explicit-id
-#: src/routes/deferred.tsx:10
-msgid "Hello deferred!"
-msgstr "Hello deferred!"
-
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← All Posts"
 
-#: src/routes/deferred.tsx:57
+#: src/routes/deferred.tsx:58
 msgid "Count: {count}"
 msgstr "Count: {count}"
 
@@ -58,6 +53,10 @@ msgstr "Go to route A"
 msgid "Go to route B"
 msgstr "Go to route B"
 
+#: src/routes/deferred.tsx:11
+msgid "Hello deferred!"
+msgstr "Hello deferred!"
+
 #: src/routes/__root.tsx:112
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
@@ -79,15 +78,15 @@ msgstr "I'm A!"
 msgid "I'm B!"
 msgstr "I'm B!"
 
-#: src/routes/deferred.tsx:61
+#: src/routes/deferred.tsx:62
 msgid "Increment"
 msgstr "Increment"
 
-#: src/routes/deferred.tsx:31
+#: src/routes/deferred.tsx:32
 msgid "Loading person..."
 msgstr "Loading person..."
 
-#: src/routes/deferred.tsx:47
+#: src/routes/deferred.tsx:48
 msgid "Loading stuff..."
 msgstr "Loading stuff..."
 
