@@ -57,6 +57,7 @@ msgstr "Aller à la route B"
 msgid "Hello deferred!"
 msgstr "Bonjour différé !"
 
+#: src/routes/users.index.tsx:10
 #: src/routes/__root.tsx:112
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
@@ -106,6 +107,7 @@ msgstr "Layout sans chemin"
 msgid "Post not found"
 msgstr "Article non trouvé"
 
+#: src/routes/users.index.tsx:11
 #: src/routes/__root.tsx:120
 msgid "Posts"
 msgstr "Articles"
@@ -114,7 +116,7 @@ msgstr "Articles"
 msgid "Select a post."
 msgstr "Sélectionnez un article."
 
-#: src/routes/users.index.tsx:11
+#: src/routes/users.index.tsx:22
 msgid "Select a user."
 msgstr "Sélectionnez un utilisateur."
 
@@ -126,13 +128,21 @@ msgstr "Recommencer"
 msgid "The page you are looking for does not exist."
 msgstr "La page que vous cherchez n'existe pas."
 
-#: src/routes/__root.tsx:153
+#: src/routes/__root.tsx:162
 msgid "This Route Does Not Exist"
 msgstr "Cette route n'existe pas"
+
+#: src/routes/$lang/content.tsx:14
+msgid "Translated content from the URL."
+msgstr "Contenu traduit depuis l'URL"
 
 #: src/components/DefaultCatchBoundary.tsx:30
 msgid "Try Again"
 msgstr "Réessayer"
+
+#: src/routes/__root.tsx:153
+msgid "URL"
+msgstr "URL"
 
 #: src/routes/users.$userId.tsx:28
 #: src/routes/api/users.$id.ts:28
