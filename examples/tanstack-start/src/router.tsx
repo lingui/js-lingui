@@ -27,7 +27,7 @@ export function createRouter({ i18n }: { i18n: I18n }) {
   return router
 }
 
-type AppRouter = ReturnType<typeof createRouter>;
+type AppRouter = ReturnType<typeof createRouter>
 
 declare module "@tanstack/react-router" {
   interface Register {

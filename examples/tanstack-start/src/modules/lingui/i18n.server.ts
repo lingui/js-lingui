@@ -8,7 +8,7 @@ import { parse, serialize } from "cookie-es"
 import { defaultLocale, dynamicActivate, isLocaleValid } from "./i18n"
 import type { I18n } from "@lingui/core"
 
-function getLocaleFromRequest() {
+export function getLocaleFromRequest() {
   const request = getWebRequest()
   const headers = getHeaders()
   const cookie = parse(headers.cookie ?? "")
@@ -22,7 +22,7 @@ function getLocaleFromRequest() {
       serialize("locale", queryLocale, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
-      })
+      }),
     )
 
     return queryLocale
@@ -42,12 +42,8 @@ function getLocaleFromRequest() {
     serialize("locale", defaultLocale, {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
-    })
+    }),
   )
 
   return defaultLocale
-}
-
-export async function setupLocaleFromRequest(i18n: I18n) {
-  await dynamicActivate(i18n, getLocaleFromRequest())
 }

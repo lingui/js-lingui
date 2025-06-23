@@ -1,20 +1,24 @@
-import { i18n } from "@lingui/core";
+import { i18n, setupI18n } from "@lingui/core"
 import {
-	createStartHandler,
-	defaultStreamHandler,
-	requestHandler,
-} from "@tanstack/react-start/server";
-import { setupLocaleFromRequest } from "~/modules/lingui/i18n.server";
-import { createRouter } from "./router";
+  createStartHandler,
+  defaultStreamHandler,
+  requestHandler,
+} from "@tanstack/react-start/server"
+import { getLocaleFromRequest } from "~/modules/lingui/i18n.server"
+import { createRouter } from "./router"
+import { dynamicActivate } from "~/modules/lingui/i18n"
 
 export default requestHandler(async (ctx) => {
-	await setupLocaleFromRequest(i18n);
+  const locale = getLocaleFromRequest()
+  const i18n = setupI18n({})
 
-	const startHandler = createStartHandler({
-		createRouter: () => {
-			return createRouter({ i18n });
-		},
-	});
+  await dynamicActivate(i18n, locale)
 
-	return startHandler(defaultStreamHandler)(ctx);
-});
+  const startHandler = createStartHandler({
+    createRouter: () => {
+      return createRouter({ i18n })
+    },
+  })
+
+  return startHandler(defaultStreamHandler)(ctx)
+})

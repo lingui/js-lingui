@@ -13,21 +13,6 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
-#. js-lingui-explicit-id
-#: src/routes/users.route.tsx:19
-msgid "Failed to fetch users"
-msgstr "Échec du chargement des utilisateurs"
-
-#. js-lingui-explicit-id
-#: src/routes/users.$userId.tsx:20
-msgid "Failed to fetch user"
-msgstr "Échec du chargement de l'utilisateur"
-
-#. js-lingui-explicit-id
-#: src/routes/api/users.$id.ts:22
-msgid "User not found"
-msgstr "Utilisateur non trouvé"
-
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← Tous les articles"
@@ -40,9 +25,17 @@ msgstr "Compte: {count}"
 msgid "Deep View"
 msgstr "Vue détaillée"
 
-#: src/routes/__root.tsx:139
+#: src/routes/__root.tsx:145
 msgid "Deferred"
 msgstr "Différé"
+
+#: src/routes/users.$userId.tsx:21
+msgid "Failed to fetch user"
+msgstr ""
+
+#: src/routes/users.route.tsx:19
+msgid "Failed to fetch users"
+msgstr ""
 
 #: src/components/NotFound.tsx:19
 msgid "Go back"
@@ -60,7 +53,7 @@ msgstr "Aller à la route A"
 msgid "Go to route B"
 msgstr "Aller à la route B"
 
-#: src/routes/__root.tsx:107
+#: src/routes/__root.tsx:113
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
 msgstr "Accueil"
@@ -101,7 +94,7 @@ msgstr "Article non-existant"
 msgid "Non-existent User"
 msgstr "Utilisateur non-existant"
 
-#: src/routes/__root.tsx:131
+#: src/routes/__root.tsx:137
 msgid "Pathless Layout"
 msgstr "Layout sans chemin"
 
@@ -109,7 +102,7 @@ msgstr "Layout sans chemin"
 msgid "Post not found"
 msgstr "Article non trouvé"
 
-#: src/routes/__root.tsx:115
+#: src/routes/__root.tsx:121
 msgid "Posts"
 msgstr "Articles"
 
@@ -129,7 +122,7 @@ msgstr "Recommencer"
 msgid "The page you are looking for does not exist."
 msgstr "La page que vous cherchez n'existe pas."
 
-#: src/routes/__root.tsx:148
+#: src/routes/__root.tsx:154
 msgid "This Route Does Not Exist"
 msgstr "Cette route n'existe pas"
 
@@ -137,11 +130,12 @@ msgstr "Cette route n'existe pas"
 msgid "Try Again"
 msgstr "Réessayer"
 
-#: src/routes/users.$userId.tsx:28
+#: src/routes/users.$userId.tsx:29
+#: src/routes/api/users.$id.ts:28
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
-#: src/routes/__root.tsx:123
+#: src/routes/__root.tsx:129
 msgid "Users"
 msgstr "Utilisateurs"
 
