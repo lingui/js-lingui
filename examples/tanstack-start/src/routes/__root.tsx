@@ -6,7 +6,6 @@ import {
   Link,
   Outlet,
   Scripts,
-  createRootRoute,
   createRootRouteWithContext,
   useRouter,
 } from "@tanstack/react-router"
@@ -30,7 +29,7 @@ const updateLanguage = createServerFn({ method: "POST" })
       serialize("locale", data, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
-      })
+      }),
     )
   })
 
@@ -160,9 +159,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
                 updateLanguage({ data: locale }).then(async () => {
-                  await dynamicActivate(i18n, locale);
+                  await dynamicActivate(i18n, locale)
 
-                  router.invalidate()
+                  await router.invalidate()
                 })
               }}
             >

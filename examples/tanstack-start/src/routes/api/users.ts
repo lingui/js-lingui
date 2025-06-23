@@ -6,8 +6,9 @@ import { createServerFileRoute } from "@tanstack/react-start/server"
 export const ServerRoute = createServerFileRoute("/api/users").methods({
   GET: async ({ request }) => {
     console.info("Fetching users... @", request.url)
+
     const res = await axios.get<Array<User>>(
-      "https://jsonplaceholder.typicode.com/users"
+      "https://jsonplaceholder.typicode.com/users",
     )
 
     const list = res.data.slice(0, 10)

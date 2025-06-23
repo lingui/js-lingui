@@ -5,7 +5,7 @@ import type { User } from "~/utils/users"
 import { DEPLOY_URL } from "~/utils/users"
 import { NotFound } from "~/components/NotFound"
 import { UserErrorComponent } from "~/components/UserError"
-import { AppContext } from "~/router"
+import { msg } from "@lingui/core/macro"
 
 export const Route = createFileRoute("/users/$userId")({
   loader: async ({ params: { userId }, context }) => {
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/users/$userId")({
       })
       .then((r) => r.data)
       .catch(() => {
-        throw new Error(context.i18n._("Failed to fetch user"))
+        throw new Error(context.i18n._(msg`Failed to fetch user`))
       })
   },
   errorComponent: UserErrorComponent,

@@ -3,6 +3,7 @@ import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
 import { DEPLOY_URL } from "../utils/users"
 import type { User } from "../utils/users"
+import { msg } from "@lingui/core/macro"
 
 export const Route = createFileRoute("/users")({
   loader: async ({ context }) => {
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/users")({
       .then((r) => r.data)
       .catch((e) => {
         console.error(e)
-        throw new Error(context.i18n._("Failed to fetch users"))
+        throw new Error(context.i18n._(msg`Failed to fetch users`))
       })
   },
   component: UsersLayoutComponent,

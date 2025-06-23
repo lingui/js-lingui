@@ -16,6 +16,5 @@ export const defaultLocale = "en"
  */
 export async function dynamicActivate(i18n: I18n, locale: string) {
   const { messages } = await import(`../../locales/${locale}/messages.po`)
-  i18n.load(locale, messages)
-  i18n.activate(locale)
+  i18n.loadAndActivate({ locale, messages })
 }
