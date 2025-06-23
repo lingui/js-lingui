@@ -13,6 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/routes/deferred.tsx:10
+msgid "Hello deferred!"
+msgstr "Hello deferred!"
+
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← All Posts"
