@@ -13,16 +13,11 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
-#. js-lingui-explicit-id
-#: src/routes/deferred.tsx:10
-msgid "Hello deferred!"
-msgstr "Bonjour différé !"
-
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← Tous les articles"
 
-#: src/routes/deferred.tsx:57
+#: src/routes/deferred.tsx:58
 msgid "Count: {count}"
 msgstr "Compte: {count}"
 
@@ -58,6 +53,10 @@ msgstr "Aller à la route A"
 msgid "Go to route B"
 msgstr "Aller à la route B"
 
+#: src/routes/deferred.tsx:11
+msgid "Hello deferred!"
+msgstr "Bonjour différé !"
+
 #: src/routes/__root.tsx:112
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
@@ -79,15 +78,15 @@ msgstr "Je suis A !"
 msgid "I'm B!"
 msgstr "Je suis B !"
 
-#: src/routes/deferred.tsx:61
+#: src/routes/deferred.tsx:62
 msgid "Increment"
 msgstr "Incrémenter"
 
-#: src/routes/deferred.tsx:31
+#: src/routes/deferred.tsx:32
 msgid "Loading person..."
 msgstr "Chargement de la personne..."
 
-#: src/routes/deferred.tsx:47
+#: src/routes/deferred.tsx:48
 msgid "Loading stuff..."
 msgstr "Chargement de choses..."
 
