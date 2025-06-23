@@ -1,6 +1,6 @@
 import { createMiddleware } from "@tanstack/react-start"
 
-const preLogMiddleware = createMiddleware({ type: 'function'})
+const preLogMiddleware = createMiddleware({ type: "function" })
   .client(async (ctx) => {
     const clientTime = new Date()
 
@@ -25,7 +25,7 @@ const preLogMiddleware = createMiddleware({ type: 'function'})
     })
   })
 
-export const logMiddleware = createMiddleware({ type: 'function'})
+export const logMiddleware = createMiddleware({ type: "function" })
   .middleware([preLogMiddleware])
   .client(async (ctx) => {
     const res = await ctx.next()

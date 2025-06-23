@@ -1,7 +1,7 @@
 import { lingui } from "@lingui/vite-plugin"
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite"
+import { tanstackStart } from "@tanstack/react-start/plugin/vite"
+import { defineConfig } from "vite"
 import tsConfigPaths from "vite-tsconfig-paths"
 
 export default defineConfig({
@@ -9,7 +9,7 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    target: 'esnext'
+    target: "esnext",
   },
   plugins: [
     lingui(),
@@ -18,13 +18,12 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
-      tsr: {
-      },
+      tsr: {},
       react: {
         babel: {
           plugins: ["@lingui/babel-plugin-lingui-macro"],
         },
       },
-    })
+    }),
   ],
 })

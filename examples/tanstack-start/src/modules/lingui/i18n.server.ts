@@ -20,7 +20,7 @@ export function getLocaleFromRequest() {
       serialize("locale", queryLocale, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
-      }),
+      })
     )
 
     return queryLocale
@@ -41,7 +41,7 @@ export function getLocaleFromRequest() {
     serialize("locale", defaultLocale, {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
-    }),
+    })
   )
 
   return defaultLocale

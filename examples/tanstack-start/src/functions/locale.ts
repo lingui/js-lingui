@@ -10,6 +10,6 @@ export const updateLocale = createServerFn({ method: "POST" })
       serialize("locale", data, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
-      }),
+      })
     )
   })

@@ -14,7 +14,7 @@ export const ServerRoute = createServerFileRoute("/api/users/$id").methods(
 
         try {
           const res = await axios.get<User>(
-            "https://jsonplaceholder.typicode.com/users/" + params.id,
+            "https://jsonplaceholder.typicode.com/users/" + params.id
           )
 
           return json({
@@ -26,9 +26,9 @@ export const ServerRoute = createServerFileRoute("/api/users/$id").methods(
           console.error(e)
           return json(
             { error: context.i18n._(msg`User not found`) },
-            { status: 404 },
+            { status: 404 }
           )
         }
       }),
-  }),
+  })
 )

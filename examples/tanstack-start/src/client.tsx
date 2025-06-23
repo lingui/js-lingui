@@ -15,6 +15,6 @@ startTransition(() => {
     document,
     <StrictMode>
       <StartClient router={router} />
-    </StrictMode>,
+    </StrictMode>
   )
 })
