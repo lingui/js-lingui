@@ -1,23 +1,24 @@
-import { Fragment, type PropsWithChildren } from 'react'
+import { Fragment, type PropsWithChildren } from "react"
 import { I18nProvider } from "@lingui/react"
-import type { AnyRouter } from '@tanstack/react-router'
-import { type I18n } from '@lingui/core'
+import type { AnyRouter } from "@tanstack/react-router"
+import { type I18n } from "@lingui/core"
 
 type AdditionalOptions = {
   WrapProvider?: (props: { children: any }) => React.JSX.Element
 }
 
-export type ValidateRouter<TRouter extends AnyRouter> =
-  NonNullable<TRouter['options']['context']> extends {
-    i18n: I18n
-  }
-    ? TRouter
-    : never
+export type ValidateRouter<TRouter extends AnyRouter> = NonNullable<
+  TRouter["options"]["context"]
+> extends {
+  i18n: I18n
+}
+  ? TRouter
+  : never
 
 export function routerWithLingui<TRouter extends AnyRouter>(
   router: ValidateRouter<TRouter>,
   i18n: I18n,
-  additionalOpts?: AdditionalOptions,
+  additionalOpts?: AdditionalOptions
 ): TRouter {
   const ogOptions = router.options
 
@@ -28,8 +29,8 @@ export function routerWithLingui<TRouter extends AnyRouter>(
         ...ogOptions.dehydrate?.(),
         // When critical data is dehydrated, we also dehydrate the i18n messages
         dehydratedI18n: {
-            locale: i18n.locale,
-            messages: i18n.messages,
+          locale: i18n.locale,
+          messages: i18n.messages,
         },
       }
     },
@@ -51,11 +52,13 @@ export function routerWithLingui<TRouter extends AnyRouter>(
       const OuterWrapper = additionalOpts?.WrapProvider || Fragment
       const OGWrap = ogOptions.Wrap || Fragment
 
-      return <OuterWrapper>
+      return (
+        <OuterWrapper>
           <I18nProvider i18n={i18n}>
             <OGWrap>{children}</OGWrap>
           </I18nProvider>
         </OuterWrapper>
+      )
     },
   }
 

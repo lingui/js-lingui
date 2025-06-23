@@ -6,7 +6,8 @@ export const Route = createFileRoute("/$lang/content")({
 })
 
 function Page() {
-    return <div className="p-2">
+  return (
+    <div className="p-2">
       <h3>
         <Trans>Translated content from the URL.</Trans>
       </h3>
@@ -16,20 +17,23 @@ function Page() {
         activeProps={{ className: "font-bold" }}
       >
         French
-    </Link> - {" "}
-    <Link
+      </Link>{" "}
+      -{" "}
+      <Link
         to="."
         params={{ lang: "en" }}
         activeProps={{ className: "font-bold" }}
       >
         English
-        </Link> - {" "}
-    <Link
+      </Link>{" "}
+      -{" "}
+      <Link
         to="."
         params={{ lang: "kl" }}
         activeProps={{ className: "font-bold" }}
       >
         Klingon
-        </Link>
+      </Link>
     </div>
+  )
 }

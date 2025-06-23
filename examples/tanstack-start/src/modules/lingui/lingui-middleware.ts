@@ -14,5 +14,5 @@ export const linguiMiddleware = createMiddleware({ type: "request" }).server(
     return next({
       context: { i18n },
     })
-  },
+  }
 )

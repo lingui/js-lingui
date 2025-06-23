@@ -7,9 +7,9 @@ export const Route = createFileRoute("/users/")({
   loader({ context }) {
     return {
       options: [
-        { label: context.i18n._(msg`Home`), value: 'home' },
-        { label: context.i18n._(msg`Posts`), value: 'posts' },
-      ]
+        { label: context.i18n._(msg`Home`), value: "home" },
+        { label: context.i18n._(msg`Posts`), value: "posts" },
+      ],
     }
   },
 })
@@ -23,7 +23,11 @@ function UsersIndexComponent() {
       <form>
         <input type="text" name="search" />
         <select>
-          {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </form>
     </div>

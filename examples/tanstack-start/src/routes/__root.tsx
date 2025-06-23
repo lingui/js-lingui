@@ -163,7 +163,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
                   if (params.lang) {
                     // Redirect to the new locale path
-                    await router.navigate({ to: ".", params: { lang: locale }})
+                    await router.navigate({ to: ".", params: { lang: locale } })
                   }
 
                   await router.invalidate()
