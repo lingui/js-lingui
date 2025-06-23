@@ -1,4 +1,4 @@
-import { i18n, setupI18n } from "@lingui/core"
+import { setupI18n } from "@lingui/core"
 import {
   createStartHandler,
   defaultStreamHandler,

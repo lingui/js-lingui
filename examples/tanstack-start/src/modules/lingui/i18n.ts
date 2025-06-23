@@ -1,4 +1,4 @@
-import { i18n, type I18n } from "@lingui/core"
+import { type I18n } from "@lingui/core"
 
 export const locales = {
   en: "English",
