@@ -1,7 +1,4 @@
-import {
-  ESCAPE_SEQUENCE_REGEX,
-  decodeEscapeSequences,
-} from "./escapeSequences"
+import { ESCAPE_SEQUENCE_REGEX, decodeEscapeSequences } from "./escapeSequences"
 
 describe("escapeSequences", () => {
   describe("ESCAPE_SEQUENCE_REGEX", () => {

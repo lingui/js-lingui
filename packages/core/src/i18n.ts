@@ -4,10 +4,7 @@ import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
-import {
-  decodeEscapeSequences,
-  ESCAPE_SEQUENCE_REGEX,
-} from "./escapeSequences"
+import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 export type MessageOptions = {
   message?: string

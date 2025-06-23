@@ -9,10 +9,7 @@ import {
 } from "./formats"
 import { isString } from "./essentials"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
-import {
-  decodeEscapeSequences,
-  ESCAPE_SEQUENCE_REGEX,
-} from "./escapeSequences"
+import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 
