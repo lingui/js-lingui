@@ -13,6 +13,11 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
+#. js-lingui-explicit-id
+#: src/routes/deferred.tsx:10
+msgid "Hello deferred!"
+msgstr "Bonjour différé !"
+
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← Tous les articles"
