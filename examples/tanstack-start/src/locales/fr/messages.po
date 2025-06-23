@@ -17,6 +17,28 @@ msgstr ""
 msgid "← All Posts"
 msgstr "← Tous les articles"
 
+#: src/routes/$lang/content-bis.tsx:13
+msgid "Another translated content from the URL."
+msgstr "Un autre contenu traduit depuis l'URL."
+
+#: src/routes/$lang/route.tsx:26
+msgid "Check out other contents:"
+msgstr "Découvrez d'autres contenus:"
+
+#: src/routes/$lang/content.tsx:15
+#: src/routes/$lang/content-bis.tsx:16
+msgid "Check this content in other languages:"
+msgstr "Découvrez ce contenu dans d'autres langues:"
+
+#: src/routes/__root.tsx:144
+#: src/routes/$lang/route.tsx:31
+msgid "Content"
+msgstr "Contenu"
+
+#: src/routes/$lang/route.tsx:38
+msgid "Content Bis"
+msgstr "Contenu bis"
+
 #: src/routes/deferred.tsx:58
 msgid "Count: {count}"
 msgstr "Compte: {count}"
@@ -25,7 +47,7 @@ msgstr "Compte: {count}"
 msgid "Deep View"
 msgstr "Vue détaillée"
 
-#: src/routes/__root.tsx:144
+#: src/routes/__root.tsx:135
 msgid "Deferred"
 msgstr "Différé"
 
@@ -58,7 +80,7 @@ msgid "Hello deferred!"
 msgstr "Bonjour différé !"
 
 #: src/routes/users.index.tsx:10
-#: src/routes/__root.tsx:112
+#: src/routes/__root.tsx:103
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
 msgstr "Accueil"
@@ -99,7 +121,7 @@ msgstr "Article non-existant"
 msgid "Non-existent User"
 msgstr "Utilisateur non-existant"
 
-#: src/routes/__root.tsx:136
+#: src/routes/__root.tsx:127
 msgid "Pathless Layout"
 msgstr "Layout sans chemin"
 
@@ -108,7 +130,7 @@ msgid "Post not found"
 msgstr "Article non trouvé"
 
 #: src/routes/users.index.tsx:11
-#: src/routes/__root.tsx:120
+#: src/routes/__root.tsx:111
 msgid "Posts"
 msgstr "Articles"
 
@@ -128,11 +150,11 @@ msgstr "Recommencer"
 msgid "The page you are looking for does not exist."
 msgstr "La page que vous cherchez n'existe pas."
 
-#: src/routes/__root.tsx:162
+#: src/routes/__root.tsx:153
 msgid "This Route Does Not Exist"
 msgstr "Cette route n'existe pas"
 
-#: src/routes/$lang/content.tsx:14
+#: src/routes/$lang/content.tsx:12
 msgid "Translated content from the URL."
 msgstr "Contenu traduit depuis l'URL"
 
@@ -140,16 +162,12 @@ msgstr "Contenu traduit depuis l'URL"
 msgid "Try Again"
 msgstr "Réessayer"
 
-#: src/routes/__root.tsx:153
-msgid "URL"
-msgstr "URL"
-
 #: src/routes/users.$userId.tsx:28
 #: src/routes/api/users.$id.ts:28
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
-#: src/routes/__root.tsx:128
+#: src/routes/__root.tsx:119
 msgid "Users"
 msgstr "Utilisateurs"
 

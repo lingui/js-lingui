@@ -23,6 +23,7 @@ import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
+import { Route as LangContentBisRouteImport } from './routes/$lang/content-bis'
 import { Route as LangContentRouteImport } from './routes/$lang/content'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
 import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
@@ -91,6 +92,11 @@ const PathlessLayoutNestedLayoutRoute =
     id: '/_nested-layout',
     getParentRoute: () => PathlessLayoutRoute,
   } as any)
+const LangContentBisRoute = LangContentBisRouteImport.update({
+  id: '/content-bis',
+  path: '/content-bis',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const LangContentRoute = LangContentRouteImport.update({
   id: '/content',
   path: '/content',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/$lang/content': typeof LangContentRoute
+  '/$lang/content-bis': typeof LangContentBisRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/$lang/content': typeof LangContentRoute
+  '/$lang/content-bis': typeof LangContentBisRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts': typeof PostsIndexRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/$lang/content': typeof LangContentRoute
+  '/$lang/content-bis': typeof LangContentBisRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/$lang/content'
+    | '/$lang/content-bis'
     | '/posts/$postId'
     | '/users/$userId'
     | '/posts/'
@@ -197,6 +207,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/$lang/content'
+    | '/$lang/content-bis'
     | '/posts/$postId'
     | '/users/$userId'
     | '/posts'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/redirect'
     | '/$lang/content'
+    | '/$lang/content-bis'
     | '/_pathlessLayout/_nested-layout'
     | '/posts/$postId'
     | '/users/$userId'
@@ -345,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteImport
       parentRoute: typeof PathlessLayoutRoute
     }
+    '/$lang/content-bis': {
+      id: '/$lang/content-bis'
+      path: '/content-bis'
+      fullPath: '/$lang/content-bis'
+      preLoaderRoute: typeof LangContentBisRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/content': {
       id: '/$lang/content'
       path: '/content'
@@ -396,10 +415,12 @@ declare module '@tanstack/react-start/server' {
 
 interface LangRouteRouteChildren {
   LangContentRoute: typeof LangContentRoute
+  LangContentBisRoute: typeof LangContentBisRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangContentRoute: LangContentRoute,
+  LangContentBisRoute: LangContentBisRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(

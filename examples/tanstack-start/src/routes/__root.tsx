@@ -141,7 +141,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               className: "font-bold",
             }}
           >
-            <Trans>URL</Trans>
+            <Trans>Content</Trans>
           </Link>{" "}
           <Link
             // @ts-expect-error
