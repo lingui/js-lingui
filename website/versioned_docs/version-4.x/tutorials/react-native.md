@@ -5,7 +5,7 @@ description: Learn how to add internationalization to a React Native application
 
 # Internationalization of React Native Apps
 
-In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](../tutorials/setup-react.mdx?babel-or-swc=babel) (for Babel) for installation and configuration instructions.
+In this tutorial, we'll learn how to add internationalization to an existing application in React Native. Before going further, please follow the [setup guide](./setup-react.mdx) (for Babel) for installation and configuration instructions.
 
 :::caution Warning
 

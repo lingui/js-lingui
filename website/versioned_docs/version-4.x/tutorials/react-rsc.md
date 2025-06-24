@@ -11,7 +11,7 @@ There's a working example available [here](https://github.com/lingui/js-lingui/t
 The example uses both Pages Router and App Router, so you can see how to use Lingui with both in [this commit](https://github.com/lingui/js-lingui/pull/1944/commits/100fc74abb49cff677f4b1cac1dfd5da60262b67).
 :::
 
-Before going further, please follow the [React setup](./setup-react.mdx?babel-or-swc=swc) for installation and configuration instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
+Before going further, please follow the [React setup](./setup-react.mdx) for installation and configuration instructions (for SWC or Babel depending on which you use - most likely it's SWC). You may also need to configure your `tsconfig.json` according to [this visual guide](https://twitter.com/mattpocockuk/status/1724462050288587123). This is so that TypeScript understands the values exported from `@lingui/react` package.
 
 ### Adding i18n support to Next.js
 
@@ -178,9 +178,9 @@ export default function SomePage() {
 }
 ```
 
-Read more about [lazy translation](../tutorials/react-patterns.md#translations-outside-react-components) to see how to handle translation defined on the module level.
+Read more about [lazy translation](./react-patterns.md#translations-outside-react-components) to see how to handle translation defined on the module level.
 
 ## Further reading
 
-- [Common i18n patterns in React](../tutorials/react-patterns.md)
+- [Common i18n patterns in React](./react-patterns.md)
 - [`@lingui/react` reference documentation](../ref/react.md)

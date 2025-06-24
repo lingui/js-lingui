@@ -2,7 +2,7 @@
 
 This guide will help you migrate from Lingui 4.x to 5.x. It covers the most important changes and breaking changes.
 
-Need to upgrade an older project to v4 first? See our [older migration guide](/releases/migration-4).
+Need to upgrade an older project to v4 first? See our [older migration guide](./migration-4.md).
 
 If you're looking for 4.x documentation, you can find it [here](https://js-lingui-m3z8jlqt6-crowdin.vercel.app/).
 
@@ -134,9 +134,9 @@ Simply add `babel-plugin-lingui-macro` to your Babel configuration to get starte
 
 ## Introducing `useLingui` Macro
 
-The new [`useLingui`](/ref/macro#uselingui) macro simplifies handling non-JSX messages within React components.
+The new [`useLingui`](../ref/macro.mdx#uselingui) macro simplifies handling non-JSX messages within React components.
 
-Previously, you had to combine the `t` or `msg` macro with the `i18n` instance returned by the [`useLingui`](/ref/react#uselingui) hook:
+Previously, you had to combine the `t` or `msg` macro with the `i18n` instance returned by the [`useLingui`](../ref/react.md#uselingui) hook:
 
 ```jsx
 import { t, msg } from "@lingui/macro";
@@ -196,7 +196,7 @@ Now:
 msgid "Hello {0} {value}"
 ```
 
-This feature is enabled by default and can be disabled by setting `printPlaceholdersInComments` to `false` in the [configuration](/ref/catalog-formats#po).
+This feature is enabled by default and can be disabled by setting `printPlaceholdersInComments` to `false` in the [configuration](../ref/catalog-formats.md#po).
 
 ## Compiled Messages Structure Changes
 
@@ -229,7 +229,7 @@ The structure of compiled messages has been changed to make them more predictabl
 
 ### Migration
 
-You'll need to re-[`compile`](/ref/cli#compile) your messages in the new format.
+You'll need to re-[`compile`](../ref/cli.md#compile) your messages in the new format.
 
 :::info
 Read more about the motivation and discuss the changes in the related [issue](https://github.com/lingui/js-lingui/issues/2043).

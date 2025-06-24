@@ -5,7 +5,7 @@ description: Learn about the different catalog formats supported by Lingui
 
 # Catalog Formats
 
-Catalog format (configured by the [`format`](/ref/conf#format) option) refers to the offline catalog file format. This format is never used in production, because the catalog is compiled into a JS module.
+Catalog format (configured by the [`format`](./conf.md#format) option) refers to the offline catalog file format. This format is never used in production, because the catalog is compiled into a JS module.
 
 The reason for this build step is that the choice of catalog format depends on the individual internationalization workflow. On the other hand, the runtime catalog should be as simple as possible so that it can be parsed quickly without additional overhead.
 
@@ -78,7 +78,7 @@ msgid "msg.inbox"
 msgstr "Message Inbox"
 ```
 
-Messages with plurals are exported in [ICU MessageFormat](/guides/message-format):
+Messages with plurals are exported in [ICU MessageFormat](../guides/message-format.md):
 
 ```po
 msgid "{count, plural, one {Message} other {Messages}}"
@@ -182,8 +182,8 @@ With this format, plural messages are exported in the following ways, depending 
 
 This format comes with several caveats and should only be used when using ICU plurals in PO files is not an option:
 
-- Nested/multiple plurals in a message as shown in [`plural`](/ref/macro#plural) are not supported because they cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
-- The [`select`](/ref/macro#select) and [`selectOrdinal`](/ref/macro#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still stored in the `msgid`/`msgstr` properties. To disable the warning that this may not be the expected behavior, add `{ disableSelectWarning: true }` to the [`format`](/ref/conf#format) options.
+- Nested/multiple plurals in a message as shown in [`plural`](./macro.mdx#plural) are not supported because they cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
+- The [`select`](./macro.mdx#select) and [`selectOrdinal`](./macro.mdx#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still stored in the `msgid`/`msgstr` properties. To disable the warning that this may not be the expected behavior, add `{ disableSelectWarning: true }` to the [`format`](./conf.md#format) options.
 - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used, as gettext cannot have more than two plurals cases identifying an item (`msgid` and `msgid_plural`).
 - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules for these cases.
 
@@ -293,7 +293,7 @@ msg.common,String for translation
 
 ## See Also
 
-- [Custom Formatter](/guides/custom-formatter)
+- [Custom Formatter](../guides/custom-formatter.md)
 
 [package-po]: https://www.npmjs.com/package/@lingui/format-po
 [package-po-gettext]: https://www.npmjs.com/package/@lingui/format-po-gettext

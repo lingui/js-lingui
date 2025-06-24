@@ -58,7 +58,7 @@ As you can see, it's a simple mailbox application with only one page.
 
 ## Installing Lingui
 
-Follow the [React Project](../tutorials/setup-react.mdx) setup guide.
+Follow the [React Project](./setup-react.mdx) setup guide.
 
 ## Setup
 

@@ -41,10 +41,10 @@ Instead of manually sending and receiving many emails and fixing the inconsisten
 
 ### [Crowdin](https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev)
 
-- Documentation: [Crowdin](../tools/crowdin.md)
+- Documentation: [Crowdin](./crowdin.md)
 - GitHub: https://github.com/crowdin
 
 ### [Translation.io](https://translation.io/lingui)
 
-- Documentation: [translation-io](../tools/translation-io.md)
+- Documentation: [translation-io](./translation-io.md)
 - GitHub: https://github.com/translation/lingui

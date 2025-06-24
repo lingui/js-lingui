@@ -39,5 +39,5 @@ Instead of manually sending and receiving many emails and fixing the inconsisten
 
 ## Available Tools
 
-- [Crowdin](/tools/crowdin)
-- [Translation.io](/tools/translation-io)
+- [Crowdin](./crowdin.md)
+- [Translation.io](./translation-io.md)

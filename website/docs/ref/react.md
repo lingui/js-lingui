@@ -132,12 +132,12 @@ The `useLingui` hook provides access to the Lingui context. It returns an object
 | Key                | Type                  | Description                                                             |
 | ------------------ | --------------------- | ----------------------------------------------------------------------- |
 | `i18n`             | `I18n`                | The `I18n` object instance that you passed to `I18nProvider`            |
-| `_`                | `I18n[_]`             | Reference to the [`i18n._`](/ref/core#i18n._) function, explained below |
+| `_`                | `I18n[_]`             | Reference to the [`i18n._`](./core.md#i18n._) function, explained below |
 | `defaultComponent` | `React.ComponentType` | The same `defaultComponent` you passed to `I18nProvider`, if provided   |
 
-Components that use `useLingui` hook will re-render when locale and / or catalogs change. However, the reference to the `i18n` object is stable and doesn't change between re-renders. This can lead to unexpected behavior with memoization (see [memoization pitfall](/guides/lazy-translations#memoization-pitfall)).
+Components that use `useLingui` hook will re-render when locale and / or catalogs change. However, the reference to the `i18n` object is stable and doesn't change between re-renders. This can lead to unexpected behavior with memoization (see [memoization pitfall](../guides/lazy-translations.md#memoization-pitfall)).
 
-To alleviate the issue, `useLingui` provides the `_` function, which is the same as [`i18n._`](/ref/core#i18n._) but _its reference changes_ with each update of the Lingui context. Thanks to that, you can safely use this `_` function as a hook dependency:
+To alleviate the issue, `useLingui` provides the `_` function, which is the same as [`i18n._`](./core.md#i18n._) but _its reference changes_ with each update of the Lingui context. Thanks to that, you can safely use this `_` function as a hook dependency:
 
 ```jsx
 import React from "react";
@@ -156,7 +156,7 @@ const CurrentLocale = () => {
 ```
 
 :::tip
-There is a [macro version](/ref/macro#uselingui) of the `useLingui` hook which supports all features of the [`t` macro](/ref/macro#t) and uses the runtime `useLingui` hook (from `@lingui/react`) under the hood:
+There is a [macro version](./macro.mdx#uselingui) of the `useLingui` hook which supports all features of the [`t` macro](./macro.mdx#t) and uses the runtime `useLingui` hook (from `@lingui/react`) under the hood:
 
 ```jsx
 import { useLingui } from "@lingui/react/macro";
@@ -177,7 +177,7 @@ You also can safely use the returned `t` function in a dependency array of React
 The `@lingui/react` package provides the `Trans` component for rendering translations in your application. It is a low-level component that allows you to render translations with dynamic values and components.
 
 :::caution
-While this component is available, you will likely find [Macros](/ref/macro) to be more convenient and developer-friendly. Macros simplify the translation process and reduce boilerplate code.
+While this component is available, you will likely find [Macros](./macro.mdx) to be more convenient and developer-friendly. Macros simplify the translation process and reduce boilerplate code.
 :::
 
 This section serves as a reference for those who prefer to use the components directly.
@@ -193,7 +193,7 @@ This section serves as a reference for those who prefer to use the components di
 The `values` and `components` props allow to pass dynamic values and components used for formatting the translation. In addition, the `comment` prop provides context to translators, helping them to understand the intent behind the message.
 
 :::tip
-Import the [`Trans`](/ref/macro#trans) macro instead if you use macros. It will be transformed into the runtime `Trans` component automatically:
+Import the [`Trans`](./macro.mdx#trans) macro instead if you use macros. It will be transformed into the runtime `Trans` component automatically:
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
@@ -240,7 +240,7 @@ const MyComponent = () => {
 
 #### Plurals
 
-If for some reason you cannot use [Macros](/ref/macro), you can render plurals using the simple `Trans` component by passing the [ICU MessageFormat](/guides/message-format) string as the `message` prop:
+If for some reason you cannot use [Macros](./macro.mdx), you can render plurals using the simple `Trans` component by passing the [ICU MessageFormat](../guides/message-format.md) string as the `message` prop:
 
 ```jsx
 import React from "react";

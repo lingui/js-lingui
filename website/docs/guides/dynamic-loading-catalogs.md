@@ -5,9 +5,9 @@ description: Learn how to set up dynamic loading of message catalogs in Lingui t
 
 # Dynamic Loading of Message Catalogs
 
-Internationalization in modern applications requires careful handling of localized messages to avoid bloating the initial bundle size. By default, Lingui makes it easy to load all strings for a single active locale. For even greater efficiency, developers can selectively load only the messages needed on demand using [`i18n.load`](/ref/core#i18n.load), ensuring minimal resource usage.
+Internationalization in modern applications requires careful handling of localized messages to avoid bloating the initial bundle size. By default, Lingui makes it easy to load all strings for a single active locale. For even greater efficiency, developers can selectively load only the messages needed on demand using [`i18n.load`](../ref/core.md#i18n.load), ensuring minimal resource usage.
 
-The [`I18nProvider`](/ref/react#i18nprovider) component doesn't make assumptions about your app's structure, giving you the freedom to load only the necessary messages for the currently selected language.
+The [`I18nProvider`](../ref/react.md#i18nprovider) component doesn't make assumptions about your app's structure, giving you the freedom to load only the necessary messages for the currently selected language.
 
 This guide shows how to set up dynamic loading of message catalogs, ensuring only the needed catalogs are loaded, which reduces bundle size and improves performance.
 
@@ -91,4 +91,4 @@ The Dependency Tree Extractor is an experimental feature designed to improve mes
 
 This allows for a more granular extraction process, resulting in smaller and more relevant message catalogs.
 
-For detailed guidance on message extraction, refer to the [Message Extraction](/guides/message-extraction) guide.
+For detailed guidance on message extraction, refer to the [Message Extraction](./message-extraction.md) guide.

@@ -23,7 +23,7 @@ Keep your code clean and readable, while the library uses battle-tested and powe
 
 ### Universal
 
-Use it everywhere. [`@lingui/core`](/ref/core) provides the essential intl functionality which works in any JavaScript project, while [`@lingui/react`](/ref/react) offers components for leveraging React rendering, including React Server Components (RSC) support.
+Use it everywhere. [`@lingui/core`](./ref/core.md) provides the essential intl functionality which works in any JavaScript project, while [`@lingui/react`](./ref/react.md) offers components for leveraging React rendering, including React Server Components (RSC) support.
 
 ### Full Rich-text Support
 
@@ -31,7 +31,7 @@ Seamlessly use React components within localized messages, without any restricti
 
 ### Powerful Tooling
 
-Manage your intl workflow with the Lingui [CLI](/ref/cli), [Vite Plugin](/ref/vite-plugin), and [ESLint Plugin](/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
+Manage your intl workflow with the Lingui [CLI](./ref/cli.md), [Vite Plugin](./ref/vite-plugin.md), and [ESLint Plugin](./ref/eslint-plugin.md). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
 
 ### Unopinionated
 
@@ -132,4 +132,4 @@ export default function Lingui({ numUsers, name = "You" }) {
 
 ## See Also
 
-- [Installation and Setup](/installation)
+- [Installation and Setup](./installation.mdx)

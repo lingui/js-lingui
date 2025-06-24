@@ -43,7 +43,7 @@ If you use TypeScript, you can add the `--typescript` flag to the `compile` scri
 
 ### `--config <config>`
 
-Path to the configuration file. If not set, the default file is loaded as described in the [Configuration](/ref/conf) reference.
+Path to the configuration file. If not set, the default file is loaded as described in the [Configuration](./conf.md) reference.
 
 ## Commands
 
@@ -64,13 +64,13 @@ The `extract` command scans source files to locate and extract messages, generat
 
 This process involves:
 
-1. Extracting messages from files based on the `include` and `exclude` settings in the [`catalogs`](/ref/conf#catalogs) section of the configuration file.
+1. Extracting messages from files based on the `include` and `exclude` settings in the [`catalogs`](./conf.md#catalogs) section of the configuration file.
 2. Merging the newly extracted messages with any existing message catalogs.
 3. Updating and saving the message catalogs.
 4. Printing extraction statistics for each language, including the total number of messages and any missing translations.
 
 :::tip
-Refer to the [Message Extraction](/guides/message-extraction) guide to learn more about this process and the options available.
+Refer to the [Message Extraction](../guides/message-extraction.md) guide to learn more about this process and the options available.
 :::
 
 #### `files` {#extract-files}
@@ -103,11 +103,11 @@ However, over time, some messages may be removed from the source code. You can u
 
 #### `--overwrite` {#extract-overwrite}
 
-Update translations for [`sourceLocale`](/ref/conf#sourcelocale) from source.
+Update translations for [`sourceLocale`](./conf.md#sourcelocale) from source.
 
 #### `--format <format>` {#extract-format}
 
-Extract message catalogs to the specified file format (see the [`format`](/ref/conf#format) option for more details).
+Extract message catalogs to the specified file format (see the [`format`](./conf.md#format) option for more details).
 
 #### `--locale <locale, [...]>` {#extract-locale}
 
@@ -115,7 +115,7 @@ Extract data for the specified locales only.
 
 #### `--convert-from <format>` {#extract-convert-from}
 
-Convert message catalogs from the previous format (see the [`format`](/ref/conf#format) option for more details).
+Convert message catalogs from the previous format (see the [`format`](./conf.md#format) option for more details).
 
 #### `--verbose` {#extract-verbose}
 
@@ -155,7 +155,7 @@ lingui compile
     [--watch [--debounce <delay>]]
 ```
 
-Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/ref/conf#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
+Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](./conf.md#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
 
 The output looks like this:
 
@@ -172,7 +172,7 @@ Messages added to the compiled file are collected in a specific order:
 3. Translated message from default fallback locale.
 4. Message key.
 
-It is also possible to merge the translated catalogs into a single file per locale by specifying [`catalogsMergePath`](/ref/conf#catalogsmergepath) in the configuration.
+It is also possible to merge the translated catalogs into a single file per locale by specifying [`catalogsMergePath`](./conf.md#catalogsmergepath) in the configuration.
 
 :::tip
 The compiled files can be safely ignored by your version control system, since these files must be created each time you deploy to production. We recommend you to create the compiled catalogs in CI as part of your deployment process. Always remember to **use compiled catalogs** in deployments.
@@ -193,7 +193,7 @@ Fail if a catalog has missing translations.
 
 #### `--format <format>` {#compile-format}
 
-Format of message catalogs (see the [`format`](/ref/conf#format) option for more details).
+Format of message catalogs (see the [`format`](./conf.md#format) option for more details).
 
 #### `--verbose` {#compile-verbose}
 
@@ -201,11 +201,11 @@ Print additional information.
 
 #### `--namespace` {#compile-namespace}
 
-Specify the namespace for compiled message catalogs (see also [`compileNamespace`](/ref/conf#compilenamespace) for global configuration).
+Specify the namespace for compiled message catalogs (see also [`compileNamespace`](./conf.md#compilenamespace) for global configuration).
 
 #### `--typescript` {#compile-typescript}
 
-Is the same as using [`compileNamespace`](/ref/conf#compilenamespace) with the value "ts". Generates a `{compiledFile}.ts` file and the exported object is typed using TS.
+Is the same as using [`compileNamespace`](./conf.md#compilenamespace) with the value "ts". Generates a `{compiledFile}.ts` file and the exported object is typed using TS.
 
 #### `--watch` {#compile-watch}
 
@@ -217,17 +217,17 @@ Delays compilation by `<delay>` milliseconds to avoid multiple compilations for 
 
 ## Configuring the Source Locale
 
-One limitation of checking for missing translations is that the English message catalog typically does not require translations since our source code is in English. This issue can be resolved by configuring the [`sourceLocale`](/ref/conf#sourcelocale) in the configuration file.
+One limitation of checking for missing translations is that the English message catalog typically does not require translations since our source code is in English. This issue can be resolved by configuring the [`sourceLocale`](./conf.md#sourcelocale) in the configuration file.
 
 ## Compiling Catalogs in CI {#compiling-catalogs-in-ci}
 
-If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](/ref/loader), [Vite plugin](/ref/vite-plugin) or [Metro transformer](/ref/metro-transformer).
+If you're using CI, it's a good idea to add the `compile` command to your build process. Alternatively, you can also use a [Webpack loader](./loader.md), [Vite plugin](./vite-plugin.md) or [Metro transformer](./metro-transformer.mdx).
 
-Depending on your localization setup, you might also want to run the `extract` command in CI and upload the extracted messages to a [translation service](/tools/introduction).
+Depending on your localization setup, you might also want to run the `extract` command in CI and upload the extracted messages to a [translation service](../tools/introduction.md).
 
 ## See Also
 
-- [Lingui Configuration](/ref/conf)
-- [Message Extraction](/guides/message-extraction)
-- [Catalog Formats](/ref/catalog-formats)
-- [Custom Extractor](/guides/custom-extractor)
+- [Lingui Configuration](./conf.md)
+- [Message Extraction](../guides/message-extraction.md)
+- [Catalog Formats](./catalog-formats.md)
+- [Custom Extractor](../guides/custom-extractor.md)

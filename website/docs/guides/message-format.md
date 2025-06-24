@@ -57,5 +57,5 @@ Example: `Attachment {name} saved`
 
 ## See Also
 
-- [Pluralization](/guides/plurals)
+- [Pluralization](./plurals.md)
 - [ICU Playground](https://format-message.github.io/icu-message-format-for-translators/editor.html)

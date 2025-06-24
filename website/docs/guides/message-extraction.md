@@ -9,7 +9,7 @@ Message extraction is a key part of the internationalization process. It involve
 
 In practice, developers define messages directly in the source code, and the extraction tool automatically collects these messages and stores them in a message catalog for translation.
 
-Read more about the [`lingui extract`](/ref/cli#extract) command.
+Read more about the [`lingui extract`](../ref/cli.md#extract) command.
 
 ## Supported Patterns
 
@@ -19,7 +19,7 @@ The extractor operates at a static level, meaning that it analyzes the source co
 
 > Macros are JavaScript transformers that run at build time. The value returned by a macro is inlined into the bundle instead of the original function call.
 
-The Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](/guides/message-format) messages at compile time.
+The Lingui Macro provides powerful macros to transform JavaScript objects and JSX elements into [ICU MessageFormat](./message-format.md) messages at compile time.
 
 Extractor supports all macro usage, such as the following examples:
 
@@ -39,7 +39,7 @@ const jsx = <Trans>Hi, my name is {name}</Trans>;
 
 The extractor matches the `t` and `Trans` macro calls and extracts the messages from them.
 
-For more usage examples, see to the [Macros](/ref/macro) reference.
+For more usage examples, see to the [Macros](../ref/macro.mdx) reference.
 
 ### Non-Macros Usage
 
@@ -108,7 +108,7 @@ The extractor can locate source files in two ways: by specifying a glob pattern 
 
 By default, `lingui extract` uses a glob pattern to search for source files containing messages.
 
-The pattern is defined in the [`catalogs`](/ref/conf#catalogs) property of the Lingui configuration file in your project's root directory.
+The pattern is defined in the [`catalogs`](../ref/conf.md#catalogs) property of the Lingui configuration file in your project's root directory.
 
 ![Scheme of discovering by glob pattern](../assets/extractor-glob-scheme.svg)
 
@@ -206,10 +206,10 @@ The extractor supports TypeScript, Flow, and JavaScript (Stage 3) out of the box
 
 If you are using some experimental features (Stage 0 - Stage 2) or frameworks with custom syntax such as Vue.js or Svelte, you may want to implement your own custom extractor.
 
-Visit [Custom Extractor](/guides/custom-extractor) to learn how to create a custom extractor.
+Visit [Custom Extractor](./custom-extractor.md) to learn how to create a custom extractor.
 
 ## See Also
 
-- [Lingui CLI Reference](/ref/cli)
-- [Macros Reference](/ref/macro)
-- [Catalog Formats](/ref/catalog-formats)
+- [Lingui CLI Reference](../ref/cli.md)
+- [Macros Reference](../ref/macro.mdx)
+- [Catalog Formats](../ref/catalog-formats.md)

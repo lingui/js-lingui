@@ -32,5 +32,5 @@ export default defineConfig({
 
 ## See Also
 
-- [Message Extraction](/guides/message-extraction)
-- [Custom Extractor](/guides/custom-extractor)
+- [Message Extraction](../guides/message-extraction.md)
+- [Custom Extractor](../guides/custom-extractor.md)

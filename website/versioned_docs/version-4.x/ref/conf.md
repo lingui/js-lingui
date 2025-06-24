@@ -57,9 +57,9 @@ Default:
 ];
 ```
 
-Defines location of message catalogs and what files are included when [`extract`](../ref/cli.md#extract) is scanning for messages.
+Defines location of message catalogs and what files are included when [`extract`](./cli.md#extract) is scanning for messages.
 
-`path` shouldn't end with slash and it shouldn't include file extension which depends on [`format`](../ref/catalog-formats.md).
+`path` shouldn't end with slash and it shouldn't include file extension which depends on [`format`](./catalog-formats.md).
 `{locale}` token is replaced by catalog locale.
 
 Patterns in `include` and `exclude` are passed to [minimatch](https://github.com/isaacs/minimatch).
@@ -191,7 +191,7 @@ Specify the path to merge translated catalogs into a single file per locale duri
 
 Let's assume we have [separate catalogs for `locales: ["en", "cs"]` per component placed inside shared directory](#separate-catalogs-per-component-placed-inside-shared-directory).
 
-Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](../ref/cli.md#compile):
+Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](./cli.md#compile):
 
 ```diff
 {
@@ -234,7 +234,7 @@ Using `catalogsMergePath`, separate catalogs can be merged during [`compile`](..
 
 Default: `cjs`
 
-Specify namespace for exporting compiled messages. See [`compile`](../ref/cli.md#compile) command.
+Specify namespace for exporting compiled messages. See [`compile`](./cli.md#compile) command.
 
 #### cjs
 
@@ -392,13 +392,13 @@ export default {
 }
 ```
 
-Read more about available formatters in [Catalog Formats](../ref/catalog-formats.md) or create your own [Custom Formatter](../guides/custom-formatter.md).
+Read more about available formatters in [Catalog Formats](./catalog-formats.md) or create your own [Custom Formatter](../guides/custom-formatter.md).
 
 ## locales
 
 Default: `[]`
 
-Locale tags which are used in the project. [`extract`](../ref/cli.md#extract) and [`compile`](../ref/cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
+Locale tags which are used in the project. [`extract`](./cli.md#extract) and [`compile`](./cli.md#compile) writes one catalog for each locale. Each locale should be a valid [BCP-47 code](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html).
 
 ## orderBy
 
@@ -438,7 +438,7 @@ Default: `["@lingui/core", "i18n"]`
 
 Module path with exported i18n object. The first value in array is module path, the second is the import identifier. This value is used in macros, which need to reference the global `i18n` object.
 
-You only need to set this value if you use custom object created using [`setupI18n`](../ref/core.md#setupi18n):
+You only need to set this value if you use custom object created using [`setupI18n`](./core.md#setupi18n):
 
 ```jsx
 // If you import `i18n` object from custom module like this:
@@ -455,7 +455,7 @@ import { myI18n } from "./custom-i18n-config";
 // "runtimeConfigModule": ["./custom-i18n-config", "myI18n"]
 ```
 
-In some advanced cases you may also need to change the module from which [Trans](../ref/macro.mdx#trans) is imported. To do that, pass an object to `runtimeConfigModule`:
+In some advanced cases you may also need to change the module from which [Trans](./macro.mdx#trans) is imported. To do that, pass an object to `runtimeConfigModule`:
 
 ```jsx
 // If you import `i18n` object from custom module like this:

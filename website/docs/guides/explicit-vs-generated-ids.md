@@ -148,7 +148,7 @@ function render() {
 }
 ```
 
-In the example code above, the content of [`Trans`](/ref/macro#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would contain these entries:
+In the example code above, the content of [`Trans`](../ref/macro.mdx#trans) is transformed into a message in MessageFormat syntax. By default, this message is used for generating the ID. Considering the example above, the catalog would contain these entries:
 
 ```js
 const catalog = [
@@ -202,7 +202,7 @@ The messages with IDs `msg.header` and `msg.hello` will be extracted with their 
 
 ### With Core Macro
 
-To use custom IDs in non-JSX macros, call the [`msg`](/ref/macro#definemessage) function with a message descriptor object, passing the ID using the `id` property:
+To use custom IDs in non-JSX macros, call the [`msg`](../ref/macro.mdx#definemessage) function with a message descriptor object, passing the ID using the `id` property:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -212,7 +212,7 @@ msg({ id: "msg.greeting", message: `Hello World` });
 
 Message `msg.greeting` will be extracted with default value `Hello World`.
 
-For all other js macros ([`plural`](/ref/macro#plural), [`select`](/ref/macro#select), [`selectOrdinal`](/ref/macro#selectordinal), use them inside [`msg`](/ref/macro#definemessage) macro to pass ID (in this case, `'msg.caption'`).
+For all other js macros ([`plural`](../ref/macro.mdx#plural), [`select`](../ref/macro.mdx#select), [`selectOrdinal`](../ref/macro.mdx#selectordinal), use them inside [`msg`](../ref/macro.mdx#definemessage) macro to pass ID (in this case, `'msg.caption'`).
 
 ```jsx
 import { msg, plural } from "@lingui/core/macro";
@@ -228,5 +228,5 @@ msg({
 
 ## See Also
 
-- [Message Extraction](/guides/message-extraction)
-- [Macros Reference](/ref/macro)
+- [Message Extraction](./message-extraction.md)
+- [Macros Reference](../ref/macro.mdx)
