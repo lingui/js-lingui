@@ -144,7 +144,7 @@ There's one last caveat: in a real-world app, you will need to localize many pag
 - [Why do nested layouts/pages render before their parent layouts?](https://github.com/vercel/next.js/discussions/53026)
 - [On navigation, layouts preserve state and do not re-render](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts)
 
-This means you need to repeat the `setI18n` in every page and layout. Luckily, you can easily factor it out into a simple function call, or create a HOC with which you'll wrap pages and layouts [as seen here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/withLingui.tsx). Please let us know if there's a known better way.
+This means you need to repeat the `setI18n` in every page and layout. Luckily, you can easily factor it out into a simple function call, or create a HOC with which you'll wrap pages and layouts. Please let us know if there's a known better way.
 
 ### Changing the active language
 
