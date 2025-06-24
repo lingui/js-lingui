@@ -80,7 +80,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

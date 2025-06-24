@@ -12,7 +12,11 @@
     "translation",
     "multilingual"
   ],
-  "repository": "lingui/js-lingui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/cli"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
