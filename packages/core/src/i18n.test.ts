@@ -448,7 +448,7 @@ describe("I18n", () => {
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
   })
-  
+
   it("._ should decode escape sequences in uncompiled string messages", () => {
     const i18n = setupI18n({
       locale: "en",
