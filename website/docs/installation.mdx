@@ -154,6 +154,10 @@ The `@vitejs/plugin-react` plugin uses Babel to transform your code. To use Ling
     });
     ```
 
+:::caution
+If you're using [React Compiler](https://react.dev/learn/react-compiler), make sure that `@lingui/babel-plugin-lingui-macro` comes **before** the React Compiler plugin in the Babel plugins list. This ensures macros are expanded correctly before the compiler processes the code.
+:::
+
 :::info
 The `@vitejs/plugin-react` does not use the Babel config (e.g. `babel.rc`) from your project by default. You have to enable it manually or specify Babel options directly in `vite.config.ts`.
 :::
