@@ -92,7 +92,7 @@
     {
       "path": "./packages/core/dist/index.mjs",
       "import": "{ i18n }",
-      "limit": "3.5 kB"
+      "limit": "2.25 kB"
     },
     {
       "path": "./packages/detect-locale/dist/index.mjs",
@@ -100,7 +100,7 @@
     },
     {
       "path": "./packages/react/dist/index.mjs",
-      "limit": "2.3 kB",
+      "limit": "2 kB",
       "ignore": [
         "react"
       ]
