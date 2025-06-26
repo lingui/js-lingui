@@ -40,9 +40,7 @@ export default async function command(
 
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${pico.bold(key)}: ${pico.green(
-        value
-      )} messages`
+      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`
     )
     console.log()
   })
