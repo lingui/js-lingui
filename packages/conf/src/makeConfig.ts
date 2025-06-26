@@ -3,7 +3,7 @@ import type {
   LinguiConfig,
   LinguiConfigNormalized,
 } from "./types"
-import chalk from "chalk"
+import pico from "picocolors"
 import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
@@ -117,9 +117,9 @@ function validateLocales(config: LinguiConfig) {
   if (!Array.isArray(config.locales) || !config.locales.length) {
     console.error("No locales defined!\n")
     console.error(
-      `Add ${chalk.yellow(
+      `Add ${pico.yellow(
         "'locales'"
-      )} to your configuration. See ${chalk.underline(
+      )} to your configuration. See ${pico.underline(
         "https://lingui.dev/ref/conf#locales"
       )}`
     )

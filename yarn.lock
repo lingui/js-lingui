@@ -2679,7 +2679,6 @@ __metadata:
     "@types/convert-source-map": ^2.0.0
     "@types/micromatch": ^4.0.1
     "@types/normalize-path": ^3.0.0
-    chalk: ^4.1.0
     chokidar: 3.5.1
     cli-table: ^0.3.11
     commander: ^10.0.0
@@ -2692,6 +2691,7 @@ __metadata:
     mockdate: ^3.0.5
     normalize-path: ^3.0.0
     ora: ^5.1.0
+    picocolors: ^1.1.1
     pofile: ^1.1.4
     pseudolocale: ^2.0.0
     source-map: ^0.8.0-beta.0
@@ -2706,10 +2706,10 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
-    chalk: ^4.1.0
     cosmiconfig: ^8.0.0
     jest-validate: ^29.4.3
     jiti: ^1.17.1
+    picocolors: ^1.1.1
     unbuild: ^2.0.0
   languageName: unknown
   linkType: soft
@@ -10500,7 +10500,6 @@ __metadata:
     "@types/mock-fs": ^4.13.1
     "@types/node": 20.14.8
     babel-jest: ^29.7.0
-    chalk: ^4.1.0
     cross-env: ^7.0.2
     eslint: ^9.17.0
     eslint-plugin-import: ^2.31.0
@@ -10516,6 +10515,7 @@ __metadata:
     mock-fs: ^5.2.0
     npm-cli-login: ^0.1.1
     ora: ^5.1.0
+    picocolors: ^1.1.1
     prettier: 2.8.3
     rimraf: ^3.0.2
     semver: ^7.3.2

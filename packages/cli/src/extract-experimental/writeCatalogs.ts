@@ -1,6 +1,6 @@
 import { resolveTemplatePath } from "./resolveTemplatePath"
 import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "../api"
-import chalk from "chalk"
+import pico from "picocolors"
 import { resolveCatalogPath } from "./resolveCatalogPath"
 import { mergeCatalog } from "../api/catalog/mergeCatalog"
 import { printStats } from "../api/stats"
@@ -99,7 +99,7 @@ export async function writeTemplate(
   )
 
   return {
-    statMessage: `${chalk.bold(
+    statMessage: `${pico.bold(
       Object.keys(messages).length
     )} message(s) extracted`,
   }
