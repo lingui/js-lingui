@@ -186,7 +186,7 @@ const config: Config = {
           versions: {
             current: {
               label: "Version 5.x",
-              banner: "none"
+              banner: "none",
             },
             "4.x": {
               label: "Version 4.x",

@@ -56,5 +56,3 @@ website/
 ├── sidebars.ts                     # Current documentation navigation
 └── versions.json                   # Available versions list
 ```
-
-

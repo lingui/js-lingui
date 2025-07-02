@@ -138,19 +138,12 @@
     {
       "type": "category",
       "label": "Resources",
-      "items": [
-        "misc/resources",
-        "misc/showroom",
-        "misc/react-intl"
-      ]
+      "items": ["misc/resources", "misc/showroom", "misc/react-intl"]
     },
     {
       "type": "category",
       "label": "Releases",
-      "items": [
-        "releases/migration-4",
-        "releases/migration-3"
-      ]
+      "items": ["releases/migration-4", "releases/migration-3"]
     }
   ]
 }
