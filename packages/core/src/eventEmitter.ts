@@ -1,36 +1,30 @@
 export class EventEmitter<
-  Events extends { [name: string]: (...args: any[]) => any }
+  Events extends { [name: string]: (...args: any[]) => void }
 > {
-  private readonly _events: {
-    [name in keyof Events]?: Array<Events[name]>
+  private readonly events: {
+    [name in keyof Events]?: Set<Events[name]>
   } = {}
 
   on(event: keyof Events, listener: Events[typeof event]): () => void {
-    this._events[event] ??= []
-    this._events[event]!.push(listener)
+    this.events[event] ??= new Set()
+    this.events[event].add(listener)
 
-    return () => this.removeListener(event, listener)
-  }
+    return () => {
+      const listeners = this.events[event]
+      listeners?.delete(listener)
 
-  removeListener(event: keyof Events, listener: Events[typeof event]): void {
-    const maybeListeners = this._getListeners(event)
-    if (!maybeListeners) return
-
-    const index = maybeListeners.indexOf(listener)
-    if (~index) maybeListeners.splice(index, 1)
+      if (listeners?.size === 0) {
+        delete this.events[event]
+      }
+    }
   }
 
   emit(event: keyof Events, ...args: Parameters<Events[typeof event]>): void {
-    const maybeListeners = this._getListeners(event)
-    if (!maybeListeners) return
+    const listeners = this.events[event]
+    if (!listeners) return
 
-    maybeListeners.map((listener) => listener.apply(this, args))
-  }
-
-  private _getListeners(
-    event: keyof Events
-  ): Array<Events[keyof Events]> | false {
-    const maybeListeners = this._events[event]
-    return Array.isArray(maybeListeners) ? maybeListeners : false
+    for (const listener of [...listeners]) {
+      listener.apply(this, args)
+    }
   }
 }
