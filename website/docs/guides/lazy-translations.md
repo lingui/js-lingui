@@ -5,11 +5,11 @@ description: Lazy translations allow you to defer translation of a message until
 
 # Lazy Translations
 
-Lazy translation allows you to defer translation of a message until it's rendered, giving you flexibility in how and where you define messages in your code. With lazy translation, you can tag a string with the [`msg`](/ref/macro#definemessage) macro to create a _message descriptor_ that can be saved, passed around as a variable, and rendered later.
+Lazy translation allows you to defer translation of a message until it's rendered, giving you flexibility in how and where you define messages in your code. With lazy translation, you can tag a string with the [`msg`](../ref/macro.mdx#definemessage) macro to create a _message descriptor_ that can be saved, passed around as a variable, and rendered later.
 
 ## Usage Example
 
-To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/ref/core#i18n._) method:
+To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](../ref/core.md#i18n._) method:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -24,7 +24,7 @@ export function getTranslatedColorNames() {
 
 ## Usage in React
 
-To render the message descriptor in a React component, pass its `id` to the [`Trans`](/ref/react#trans) component as a value of the `id` prop:
+To render the message descriptor in a React component, pass its `id` to the [`Trans`](../ref/react.md#trans) component as a value of the `id` prop:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -53,7 +53,7 @@ Please note that we import the `<Trans>` component from `@lingui/react` to use t
 
 Sometimes you need to choose between different messages to display depending on the value of a variable. For example, imagine you have a numeric "status" code that comes from an API, and you need to display a message that represents the current status.
 
-An easy way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](/ref/macro#definemessage) macro) and render them as needed with deferred translation:
+An easy way to do this is to create an object that maps the possible values of "status" to message descriptors (tagged with the [`msg`](../ref/macro.mdx#definemessage) macro) and render them as needed with deferred translation:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -76,7 +76,7 @@ export default function StatusDisplay({ statusCode }) {
 
 In the following contrived example, we document how a welcome message will or will not be updated when locale changes. The documented behavior may not be intuitive at first, but it is expected, because of the way the `useMemo` dependencies work.
 
-To avoid bugs with stale translations, use the `t` function returned from the [`useLingui`](/ref/macro#uselingui) macro: it is safe to use with memoization because its reference changes whenever the Lingui context updates.
+To avoid bugs with stale translations, use the `t` function returned from the [`useLingui`](../ref/macro.mdx#uselingui) macro: it is safe to use with memoization because its reference changes whenever the Lingui context updates.
 
 Keep in mind that `useMemo` is primarily a performance optimization tool in React. Because of this, there might be no need to memoize your translations. Additionally, this issue is not present when using the `Trans` component, which we recommend using whenever possible.
 

@@ -15,17 +15,17 @@ Learn how to install Lingui in your project, whether you use JavaScript, React (
 ## Prerequisites
 
 - Make sure you have [Node.js](https://nodejs.org/) installed (v20 or higher).
-- Install [Lingui CLI](/ref/cli) to manage your translations and catalogs.
+- Install [Lingui CLI](./ref/cli.md) to manage your translations and catalogs.
 
 :::tip
-Don't miss the [Lingui ESLint Plugin](/ref/eslint-plugin) which can help you find and prevent common i18n mistakes in your code.
+Don't miss the [Lingui ESLint Plugin](./ref/eslint-plugin.md) which can help you find and prevent common i18n mistakes in your code.
 :::
 
 ## Choosing a Transpiler
 
 > A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more verbose implementations.
 
-Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/guides/message-format) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses.
+Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](./guides/message-format.md) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses.
 
 <Tabs groupId="transpiler" queryString>
 <TabItem value="babel" label="Babel" default>
@@ -61,7 +61,7 @@ When using a preset, first check if it includes the `macros` plugin. If so, then
 
 > SWC is an extensible Rust-based platform for the next generation of fast developer tools.
 
-Lingui supports SWC with a dedicated plugin [`@lingui/swc-plugin`](/ref/swc-plugin). SWC is significantly faster than Babel and is a good choice for large projects.
+Lingui supports SWC with a dedicated plugin [`@lingui/swc-plugin`](./ref/swc-plugin.md). SWC is significantly faster than Babel and is a good choice for large projects.
 
 Follow these steps to set up Lingui with SWC:
 
@@ -71,10 +71,10 @@ Follow these steps to set up Lingui with SWC:
     npm install --save-dev @lingui/swc-plugin
     ```
 
-2.  [Add necessary configurations](/ref/swc-plugin#usage).
+2.  [Add necessary configurations](./ref/swc-plugin.md#usage).
 
 :::caution
-SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed. See the [SWC compatibility](/ref/swc-plugin#swc-compatibility) for more information.
+SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed. See the [SWC compatibility](./ref/swc-plugin.md#swc-compatibility) for more information.
 :::
 
 </TabItem>
@@ -103,13 +103,13 @@ export default defineConfig({
 
 The configuration above specifies the source locale as English and the target locales as Czech and English.
 
-According to this configuration, Lingui will extract messages from source files in the `src` directory and write them to message catalogs in `src/locales` (the English catalog would be in `src/locales/en/messages.po`, for example). See [Configuration](/ref/conf) for a complete reference.
+According to this configuration, Lingui will extract messages from source files in the `src` directory and write them to message catalogs in `src/locales` (the English catalog would be in `src/locales/en/messages.po`, for example). See [Configuration](./ref/conf.md) for a complete reference.
 
 :::note
 Replace `src` with the name of the directory where you have the source files.
 :::
 
-The PO format is the default and recommended format for message catalogs. See the [Catalog Formats](/ref/catalog-formats) for other available formats.
+The PO format is the default and recommended format for message catalogs. See the [Catalog Formats](./ref/catalog-formats.md) for other available formats.
 
 ## Build Tools
 
@@ -117,7 +117,7 @@ The PO format is the default and recommended format for message catalogs. See th
 
 > Vite is a blazing fast frontend build tool powering the next generation of web applications.
 
-Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/ref/vite-plugin). This plugin is responsible for extracting messages from your source code and compiling message catalogs.
+Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](./ref/vite-plugin.md). This plugin is responsible for extracting messages from your source code and compiling message catalogs.
 
 There are two ways to set up Lingui with Vite by using the [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) or [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc). You need to choose the one that fits your project setup.
 
@@ -194,7 +194,7 @@ The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is 
 
 ## See Also
 
-- [React i18n Tutorial](/tutorials/react)
-- [React Server Components Tutorial](/tutorials/react-rsc)
-- [React Native i18n Tutorial](/tutorials/react-native)
-- [JavaScript i18n Tutorial](/tutorials/javascript)
+- [React i18n Tutorial](./tutorials/react.md)
+- [React Server Components Tutorial](./tutorials/react-rsc.md)
+- [React Native i18n Tutorial](./tutorials/react-native.md)
+- [JavaScript i18n Tutorial](./tutorials/javascript.md)

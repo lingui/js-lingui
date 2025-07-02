@@ -53,7 +53,7 @@ Decide who will translate your content:
 
 Source strings are pulled automatically and are always up to date for your translators. Translated content is automatically pushed to your repository as a request.
 
-![Automatically pull source strings to Crowdin and push translated content to your repository](/img/docs/Crowdin__js-lingui-vcs.png)
+![Automatically pull source strings to Crowdin and push translated content to your repository](../assets/Crowdin__js-lingui-vcs.png)
 
 ## CLI
 

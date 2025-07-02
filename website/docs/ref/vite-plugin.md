@@ -20,7 +20,7 @@ Install `@lingui/vite-plugin` as a development dependency:
 npm install --save-dev @lingui/vite-plugin
 ```
 
-For a complete installation guide, see [Installation and Setup](/installation#vite).
+For a complete installation guide, see [Installation and Setup](../installation.mdx#vite).
 
 ## Usage
 
@@ -59,5 +59,5 @@ const { messages } = await import(`./locales/${language}.json?lingui`);
 
 ## See Also
 
-- [Dynamic Loading](/guides/dynamic-loading-catalogs)
+- [Dynamic Loading](../guides/dynamic-loading-catalogs.md)
 - [Dynamic Import in Vite](https://vitejs.dev/guide/features.html#dynamic-import)
