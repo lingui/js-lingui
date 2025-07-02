@@ -29,17 +29,54 @@ describe("@lingui/core/eventEmitter", () => {
     expect(listener).not.toBeCalled()
   })
 
-  it("should do nothing when even doesn't exist", () => {
-    const unknown = jest.fn()
-
+  it("should not throw when interacting with non-existent events or unsubscribing twice", () => {
     const emitter = new EventEmitter()
-    // this should not throw
-    emitter.emit("test", 42)
-    // this should not throw
-    emitter.removeListener("test", unknown)
+    const dummyListener = jest.fn()
 
-    emitter.on("test", jest.fn())
-    // this should not throw
-    emitter.removeListener("test", unknown)
+    expect(() => emitter.emit("test", 42)).not.toThrow()
+
+    const unsubscribe = emitter.on("test", dummyListener)
+
+    unsubscribe()
+
+    expect(() => unsubscribe()).not.toThrow()
+  })
+
+  it("should call a listener even if a preceding listener removes it during the same emit cycle", () => {
+    const emitter = new EventEmitter<{ test: () => void }>()
+
+    const mock = {
+      listenerToRemove: jest.fn(),
+      unsubscribe: () => {},
+    }
+
+    const unsubscribingListener = jest.fn(() => {
+      mock.unsubscribe()
+    })
+
+    emitter.on("test", unsubscribingListener)
+    mock.unsubscribe = emitter.on("test", mock.listenerToRemove)
+    emitter.emit("test")
+
+    expect(unsubscribingListener).toHaveBeenCalledTimes(1)
+    expect(mock.listenerToRemove).toHaveBeenCalledTimes(1)
+
+    emitter.emit("test")
+
+    expect(unsubscribingListener).toHaveBeenCalledTimes(2)
+    expect(mock.listenerToRemove).toHaveBeenCalledTimes(1)
+  })
+
+  it("should not add the same listener function multiple times", () => {
+    const emitter = new EventEmitter<{ test: () => void }>()
+    const listener = jest.fn()
+
+    emitter.on("test", listener)
+    emitter.on("test", listener)
+    emitter.on("test", listener)
+
+    emitter.emit("test")
+
+    expect(listener).toHaveBeenCalledTimes(1)
   })
 })
