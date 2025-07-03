@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactNode } from "react"
+import { ComponentType, ReactNode } from "react"
 
 import { formatElements } from "./format"
 import type { MessageOptions } from "@lingui/core"
@@ -86,7 +86,7 @@ export function TransNoContext(
     })
   }
 
-  const _translation: string =
+  const _translation =
     i18n && typeof i18n._ === "function"
       ? i18n._(id, values, { message, formats })
       : id // i18n provider isn't loaded at all
@@ -126,7 +126,8 @@ export function TransNoContext(
     console.error(
       `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
     )
-    return React.createElement(FallbackComponent, i18nProps, translation)
+
+    return <FallbackComponent {...i18nProps}>{translation}</FallbackComponent>
   }
 
   // Rendering using a render prop
@@ -139,10 +140,10 @@ export function TransNoContext(
   const Component: React.ComponentType<TransRenderProps> =
     component || FallbackComponent
 
-  return React.createElement(Component, i18nProps, translation)
+  return <Component {...i18nProps}>{translation}</Component>
 }
 
 const RenderFragment = ({ children }: TransRenderProps) => {
   // cannot use React.Fragment directly because we're passing in props that it doesn't support
-  return <React.Fragment>{children}</React.Fragment>
+  return <>{children}</>
 }

@@ -1,4 +1,12 @@
-import React, { ComponentType, FunctionComponent } from "react"
+import {
+  ComponentType,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import type { I18n } from "@lingui/core"
 import type { TransRenderProps } from "./TransNoContext"
 
@@ -12,10 +20,10 @@ export type I18nProviderProps = Omit<I18nContext, "_"> & {
   children?: React.ReactNode
 }
 
-export const LinguiContext = React.createContext<I18nContext | null>(null)
+export const LinguiContext = createContext<I18nContext | null>(null)
 
 export const useLinguiInternal = (devErrorMessage?: string): I18nContext => {
-  const context = React.useContext(LinguiContext)
+  const context = useContext(LinguiContext)
 
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
@@ -31,12 +39,12 @@ export function useLingui(): I18nContext {
   return useLinguiInternal()
 }
 
-export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
+export const I18nProvider = ({
   i18n,
   defaultComponent,
   children,
-}) => {
-  const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
+}: I18nProviderProps) => {
+  const latestKnownLocale = useRef<string | undefined>(i18n.locale)
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -48,7 +56,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  const makeContext = React.useCallback(
+  const makeContext = useCallback(
     () => ({
       i18n,
       defaultComponent,
@@ -57,7 +65,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
     [i18n, defaultComponent]
   )
 
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
+  const [context, setContext] = useState<I18nContext>(makeContext())
 
   /**
    * Subscribe for locale/message changes
@@ -66,7 +74,7 @@ export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
    * data (active locale, catalogs). When new messages are loaded or locale is changed
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     const updateContext = () => {
       latestKnownLocale.current = i18n.locale
       setContext(makeContext())
