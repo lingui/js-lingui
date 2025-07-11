@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
+
+### Bug Fixes
+
+* **cli:** remove unused dependency babel-plugin-macros ([#2266](https://github.com/lingui/js-lingui/issues/2266)) ([d6906cc](https://github.com/lingui/js-lingui/commit/d6906cca6bef5e36f91c9b1be8a2764453e68f19))
+* standardize repository field format across all packages ([#2269](https://github.com/lingui/js-lingui/issues/2269)) ([a03a984](https://github.com/lingui/js-lingui/commit/a03a984cdc027ece9902277243f671ca15912adc))
+
 ## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
 
 ### Bug Fixes
