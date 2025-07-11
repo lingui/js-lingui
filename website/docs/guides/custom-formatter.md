@@ -5,7 +5,7 @@ description: Learn how to write a custom localization message formatter for your
 
 # Custom Formatter
 
-If your project requires a message catalog format that Lingui doesn't [natively support](/ref/catalog-formats), you can create a custom formatter to handle it. A custom formatter allows you to define how extracted strings are formatted into a custom catalog format, providing flexibility for specialized workflows and integration with unique file structures.
+If your project requires a message catalog format that Lingui doesn't [natively support](../ref/catalog-formats.md), you can create a custom formatter to handle it. A custom formatter allows you to define how extracted strings are formatted into a custom catalog format, providing flexibility for specialized workflows and integration with unique file structures.
 
 ## Overview
 

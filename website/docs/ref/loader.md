@@ -1,6 +1,6 @@
 # Webpack Loader
 
-The `@lingui/loader` is a Webpack loader for Lingui message catalogs. It offers an alternative to the [`lingui compile`](/ref/cli#compile) and compiles catalogs on the fly.
+The `@lingui/loader` is a Webpack loader for Lingui message catalogs. It offers an alternative to the [`lingui compile`](./cli.md#compile) and compiles catalogs on the fly.
 
 It enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
 
@@ -39,5 +39,5 @@ const { messages } = (await import(`@lingui/loader!./locales/${locale}/messages.
 
 ## See Also
 
-- [Dynamic Loading of Message Catalogs](/guides/dynamic-loading-catalogs)
-- [Catalog Formats](/ref/catalog-formats)
+- [Dynamic Loading of Message Catalogs](../guides/dynamic-loading-catalogs.md)
+- [Catalog Formats](./catalog-formats.md)

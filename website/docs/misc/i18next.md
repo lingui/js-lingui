@@ -58,7 +58,7 @@ document.getElementById("output").innerHTML = t`Hello world`;
 ```
 
 :::tip
-This example uses a macro for the translation. Macros are a powerful feature of Lingui that allows you to write messages directly in your code. Read more about [Macros](/ref/macro).
+This example uses a macro for the translation. Macros are a powerful feature of Lingui that allows you to write messages directly in your code. Read more about [Macros](../ref/macro.mdx).
 :::
 
 If you prefer to define explicit IDs for your messages, you can follow this approach:
@@ -69,7 +69,7 @@ import { t } from "@lingui/core/macro";
 document.getElementById("output").innerHTML = t({ id: "msg.greeting", message: `Hello World` });
 ```
 
-Read more about [Explicit vs Generated Message IDs](/guides/explicit-vs-generated-ids).
+Read more about [Explicit vs Generated Message IDs](../guides/explicit-vs-generated-ids.md).
 
 ## Interpolation
 
@@ -181,7 +181,7 @@ i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
 
 ## Plurals
 
-Lingui uses the [ICU MessageFormat](/guides/message-format) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
+Lingui uses the [ICU MessageFormat](../guides/message-format.md) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
 
 For example:
 
@@ -192,7 +192,7 @@ plural(numBooks, {
 });
 ```
 
-Under the hood, the [`plural`](/ref/macro#plural) macro is replaced with a low-level [`i18n._`](/ref/core#i18n._) call. In production, the example will look like this:
+Under the hood, the [`plural`](../ref/macro.mdx#plural) macro is replaced with a low-level [`i18n._`](../ref/core.md#i18n._) call. In production, the example will look like this:
 
 ```js
 i18n._({
@@ -203,7 +203,7 @@ i18n._({
 });
 ```
 
-When we extract messages from the source code using the [Lingui CLI](/ref/cli), we get:
+When we extract messages from the source code using the [Lingui CLI](../ref/cli.md), we get:
 
 ```icu-message-format
 {numBooks, plural, one {# book} other {# books}}
@@ -264,7 +264,7 @@ i18next can't do this from its plain JSON files.
 
 ## React Integration
 
-Both libraries provide React components for handling translations in React applications. Lingui provides a set of [React Macros](/ref/macro#react-macros) that simplify writing messages directly in your code. i18next provides a `Trans` component to handle translations in JSX.
+Both libraries provide React components for handling translations in React applications. Lingui provides a set of [React Macros](../ref/macro.mdx#react-macros) that simplify writing messages directly in your code. i18next provides a `Trans` component to handle translations in JSX.
 
 i18next sample:
 
@@ -295,7 +295,7 @@ This is a rather brief comparison. Both libraries have quite different concepts,
 - Supports rich-text messages.
 - Provides macros to simplify writing messages directly in your code.
 - Provides a CLI tool for extracting and compiling messages.
-- Supports a number of [Catalog Formats](/ref/catalog-formats), including [Custom Formatters](/guides/custom-formatter).
+- Supports a number of [Catalog Formats](../ref/catalog-formats.md), including [Custom Formatters](../guides/custom-formatter.md).
 - Is small, fast and flexible. It also has a small bundle footprint by stripping unused messages and loading only necessary catalogs.
 - Works with vanilla JS, React (including RSC), Next.js, Node.js, Vue.js etc.
 - Is actively maintained.
