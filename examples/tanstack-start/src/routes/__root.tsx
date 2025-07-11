@@ -1,11 +1,14 @@
-import { i18n } from "@lingui/core"
+/// <reference types="vite/client" />
+import { useLingui } from "@lingui/react"
 import { Trans } from "@lingui/react/macro"
 import {
   HeadContent,
   Link,
   Outlet,
   Scripts,
-  createRootRoute,
+  createRootRouteWithContext,
+  useParams,
+  useRouter,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 import { createServerFn } from "@tanstack/react-start"
@@ -14,23 +17,13 @@ import { serialize } from "cookie-es"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
 import { NotFound } from "~/components/NotFound"
-import { locales } from "~/modules/lingui/i18n"
+import { updateLocale } from "~/functions/locale"
+import { dynamicActivate, locales } from "~/modules/lingui/i18n"
+import type { AppContext } from "~/router"
 import appCss from "~/styles/app.css?url"
 import { seo } from "~/utils/seo"
 
-const updateLanguage = createServerFn({ method: "POST" })
-  .validator((locale: string) => locale)
-  .handler(async ({ data }) => {
-    setHeader(
-      "Set-Cookie",
-      serialize("locale", data, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-      })
-    )
-  })
-
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<AppContext>()({
   head: () => ({
     meta: [
       {
@@ -89,6 +82,10 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { i18n } = useLingui()
+  const router = useRouter()
+  const params = useParams({ strict: false })
+
   return (
     <html lang={i18n.locale}>
       <head>
@@ -138,6 +135,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <Trans>Deferred</Trans>
           </Link>{" "}
           <Link
+            to="/$lang/content"
+            params={{ lang: i18n.locale }}
+            activeProps={{
+              className: "font-bold",
+            }}
+          >
+            <Trans>Content</Trans>
+          </Link>{" "}
+          <Link
             // @ts-expect-error
             to="/this-route-does-not-exist"
             activeProps={{
@@ -152,8 +158,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               key={locale}
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
-                updateLanguage({ data: locale }).then(() => {
-                  location.reload()
+                updateLocale({ data: locale }).then(async () => {
+                  await dynamicActivate(i18n, locale)
+
+                  if (params.lang) {
+                    // Redirect to the new locale path
+                    await router.navigate({ to: ".", params: { lang: locale } })
+                  }
+
+                  await router.invalidate()
                 })
               }}
             >
