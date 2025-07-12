@@ -29,17 +29,17 @@ describe("@lingui/core/eventEmitter", () => {
     expect(listener).not.toBeCalled()
   })
 
-  it("should not throw when interacting with non-existent events or unsubscribing twice", () => {
+  it("should do nothing when even doesn't exist", () => {
+    const unknown = jest.fn()
+
     const emitter = new EventEmitter()
-    const dummyListener = jest.fn()
-
-    expect(() => emitter.emit("test", 42)).not.toThrow()
-
-    const unsubscribe = emitter.on("test", dummyListener)
-
-    unsubscribe()
-
-    expect(() => unsubscribe()).not.toThrow()
+    // this should not throw
+    emitter.emit("test", 42)
+    // this should not throw
+    emitter.removeListener("test", unknown)
+    emitter.on("test", jest.fn())
+    // this should not throw
+    emitter.removeListener("test", unknown)
   })
 
   it("should call a listener even if a preceding listener removes it during the same emit cycle", () => {
