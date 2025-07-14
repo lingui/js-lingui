@@ -1,6 +1,6 @@
 import fs from "fs"
 import { LinguiConfigNormalized } from "./types"
-import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
+import { lilconfigSync, LoaderSync } from "lilconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import type { JITIOptions } from "jiti/dist/types"
@@ -11,7 +11,7 @@ function configExists(path: string) {
 }
 
 function JitiLoader(): LoaderSync {
-  return (filepath, content) => {
+  return (filepath) => {
     const opts: JITIOptions = {
       interopDefault: true,
     }
@@ -22,7 +22,7 @@ function JitiLoader(): LoaderSync {
 
 const moduleName = "lingui"
 
-const configExplorer = cosmiconfigSync(moduleName, {
+const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
@@ -31,8 +31,6 @@ const configExplorer = cosmiconfigSync(moduleName, {
     "package.json",
     `.${moduleName}rc`,
     `.${moduleName}rc.json`,
-    `.${moduleName}rc.yaml`,
-    `.${moduleName}rc.yml`,
     `.${moduleName}rc.ts`,
     `.${moduleName}rc.js`,
   ],
