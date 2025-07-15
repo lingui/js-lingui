@@ -34,17 +34,17 @@ const moduleName = "lingui"
 
 const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
-    `.${moduleName}rc`,
-    `.${moduleName}rc.json`,
-    `.${moduleName}rc.js`,
-    `.${moduleName}rc.ts`,
-    `.${moduleName}rc.yaml`,
-    `.${moduleName}rc.yml`,
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
     `${moduleName}.config.ts`,
     `${moduleName}.config.mjs`,
     "package.json",
+    `.${moduleName}rc`,
+    `.${moduleName}rc.json`,
+    `.${moduleName}rc.yaml`,
+    `.${moduleName}rc.yml`,
+    `.${moduleName}rc.ts`,
+    `.${moduleName}rc.js`,
   ],
   loaders: {
     ".js": JitiLoader(),

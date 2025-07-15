@@ -10,7 +10,7 @@ describe("getConfig", () => {
     it("should find and load .linguirc config file", () => {
       mockConsole((console) => {
         const config = getConfig({
-          cwd: validPath,
+          configPath: path.join(validPath, ".linguirc"),
           skipValidation: true,
         })
         expect(console.error).not.toBeCalled()
@@ -199,7 +199,7 @@ describe("getConfig", () => {
     it("should return default config", () => {
       mockConsole((console) => {
         const config = getConfig({
-          cwd: path.resolve(__dirname, path.join("fixtures", "valid")),
+          cwd: path.resolve(__dirname, path.join("fixtures", "default")),
         })
         expect(console.error).not.toBeCalled()
         expect(console.warn).not.toBeCalled()
