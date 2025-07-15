@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getConfig default config and snapshots should return default config 1`] = `
+{
+  catalogs: [
+    {
+      exclude: [
+        */node_modules/*,
+      ],
+      include: [
+        .,
+      ],
+      path: ./locale/{locale}/messages,
+    },
+  ],
+  catalogsMergePath: ,
+  compileNamespace: cjs,
+  compilerBabelOptions: {
+    jsescOption: {
+      minimal: true,
+    },
+    minified: true,
+  },
+  extractorParserOptions: {
+    flow: false,
+    tsExperimentalDecorators: false,
+  },
+  fallbackLocales: {
+    en-gb: en,
+  },
+  format: po,
+  formatOptions: {
+    lineNumbers: true,
+    origins: true,
+  },
+  locales: [
+    en-gb,
+  ],
+  macro: {
+    corePackage: [
+      @lingui/macro,
+      @lingui/core/macro,
+    ],
+    jsxPackage: [
+      @lingui/macro,
+      @lingui/react/macro,
+    ],
+  },
+  orderBy: message,
+  pseudoLocale: ,
+  rootDir: .,
+  runtimeConfigModule: {
+    Trans: [
+      @lingui/react,
+      Trans,
+    ],
+    i18n: [
+      @lingui/core,
+      i18n,
+    ],
+    useLingui: [
+      @lingui/react,
+      useLingui,
+    ],
+  },
+  service: {
+    apiKey: ,
+    name: ,
+  },
+  sourceLocale: en-gb,
+}
+`;

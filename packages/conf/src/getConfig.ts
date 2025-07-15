@@ -34,15 +34,17 @@ const moduleName = "lingui"
 
 const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
+    `.${moduleName}rc`,
+    `.${moduleName}rc.json`,
+    `.${moduleName}rc.js`,
+    `.${moduleName}rc.ts`,
+    `.${moduleName}rc.yaml`,
+    `.${moduleName}rc.yml`,
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
     `${moduleName}.config.ts`,
     `${moduleName}.config.mjs`,
     "package.json",
-    `.${moduleName}rc`,
-    `.${moduleName}rc.json`,
-    `.${moduleName}rc.ts`,
-    `.${moduleName}rc.js`,
   ],
   loaders: {
     ".js": JitiLoader(),
@@ -66,9 +68,16 @@ export function getConfig({
 
   configPath = configPath || process.env.LINGUI_CONFIG
 
-  const result = configExists(configPath)
-    ? configExplorer.load(configPath)
-    : configExplorer.search(defaultRootDir)
+  let result
+
+  try {
+    result = configExists(configPath)
+      ? configExplorer.load(configPath)
+      : configExplorer.search(defaultRootDir)
+  } catch (error) {
+    // If lilconfig throws an error (e.g., directory doesn't exist), treat it as no config found
+    result = null
+  }
 
   if (!result) {
     console.error("Lingui was unable to find a config!\n")

@@ -1,0 +1,8 @@
+locales:
+  - en
+  - pt
+sourceLocale: en
+catalogs:
+  - path: "<rootDir>/locale/{locale}/messages"
+    include:
+      - "<rootDir>/src"
