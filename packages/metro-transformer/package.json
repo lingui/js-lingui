@@ -70,7 +70,6 @@
     "@expo/metro-config": "*",
     "@react-native/metro-babel-transformer": "*",
     "expo": ">=50.0.0",
-    "metro": "*",
     "react-native": ">=0.73.0"
   },
   "peerDependenciesMeta": {
