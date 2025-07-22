@@ -499,6 +499,35 @@ const message = /*i18n*/ {
 
 :::
 
+### `arg`
+
+The `arg` macro is a utility macro that helps to inject a message variables into the other macro usage without automatically wrapping them in curly brackets.
+
+```ts
+arg(value: string | number)
+```
+
+It can be used to apply custom formatting to a variable inside the other macro call. It is an escape hatch for writing message syntax using [ICU MessageFormat](/guides/message-format) on your own.
+
+```js
+import { t, arg } from "@lingui/core/macro";
+const message = t`Number {${arg(num)}, number, myNumberStyle}`;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "@lingui/core";
+
+const message = i18n._(
+  /*i18n*/ {
+    id: "6HvXd1",
+    message: "Number {num, number, myNumberStyle}",
+    values: { num },
+  }
+);
+```
+
+:::
+
 ## React Macros
 
 React (JSX) Macros are used in JSX elements and are transformed into the [`Trans`](/ref/react#trans) component imported from the [`@lingui/react`](/ref/react) package.

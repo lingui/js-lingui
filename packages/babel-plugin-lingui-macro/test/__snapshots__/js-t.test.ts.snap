@@ -514,6 +514,26 @@ _i18n._(
 
 `;
 
+exports[`Variables with arg macro is not wrapped in curly brackets 1`] = `
+import { t, arg } from "@lingui/core/macro";
+t\`Number {\${arg(num)}, number, myNumberStyle}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "6HvXd1",
+    message: "Number {num, number, myNumberStyle}",
+    values: {
+      num: num,
+    },
+  }
+);
+
+`;
+
 exports[`Variables with escaped double quotes are correctly formatted 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable "name"\`;
