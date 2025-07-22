@@ -55,8 +55,5 @@
     "@lingui/jest-mocks": "workspace:^",
     "@messageformat/date-skeleton": "^1.1.0",
     "unbuild": "2.0.0"
-  },
-  "bundledDependencies": [
-    "@messageformat/date-skeleton"
-  ]
+  }
 }
