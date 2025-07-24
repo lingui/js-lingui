@@ -110,6 +110,13 @@ macroTester({
     `,
     },
     {
+      name: "Variables with arg macro is not wrapped in curly brackets",
+      code: `
+        import { t, arg } from '@lingui/core/macro';
+        t\`Number {\${arg(num)}, number, myNumberStyle}\`;
+      `,
+    },
+    {
       name: "Newlines are preserved",
       code: `
         import { t } from '@lingui/core/macro';
