@@ -24,6 +24,7 @@
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
