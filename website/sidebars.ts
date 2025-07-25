@@ -62,6 +62,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Performance Optimizations",
+        id: "guides/performance-optimizations",
+      },
+      {
+        type: "doc",
         label: "Pseudolocalization",
         id: "guides/pseudolocalization",
       },
