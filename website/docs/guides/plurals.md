@@ -39,7 +39,7 @@ plural(numBooks, {
 
 When `numBooks == 1`, this will render as _1 book_ and for `numBook == 2` it will be _2 books_. Interestingly, for `numBooks == -1`, it will be _-1 book_. This is because the "one" plural form also applies to -1. It is therefore important to remember that the plural forms (such as "one" or "two") do not represent the numbers themselves, but rather _categories_ of numbers.
 
-Under the hood, the [`plural`](/ref/macro#plural) macro is replaced with a low-level [`i18n._`](/ref/core#i18n._) call. In production, the example will look like this:
+Under the hood, the [`plural`](../ref/macro.mdx#plural) macro is replaced with a low-level [`i18n._`](../ref/core.md#i18n._) call. In production, the example will look like this:
 
 ```js
 i18n._({
@@ -50,7 +50,7 @@ i18n._({
 });
 ```
 
-When we extract messages from the source code using the [Lingui CLI](/ref/cli), we get:
+When we extract messages from the source code using the [Lingui CLI](../ref/cli.md), we get:
 
 ```icu-message-format
 {numBooks, plural, one {# book} other {# books}}
