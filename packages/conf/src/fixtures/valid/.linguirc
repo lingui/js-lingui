@@ -1,4 +1,5 @@
 {
   "rootDir": ".",
-  "locales": ["en-gb"]
+  "locales": ["en-gb"],
+  "sourceLocale": "en-gb"
 }

@@ -1,6 +1,7 @@
 import fs from "fs"
 import { LinguiConfigNormalized } from "./types"
-import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
+import { lilconfigSync, LoaderSync } from "lilconfig"
+import yaml from "yaml"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import type { JITIOptions } from "jiti/dist/types"
@@ -11,7 +12,7 @@ function configExists(path: string) {
 }
 
 function JitiLoader(): LoaderSync {
-  return (filepath, content) => {
+  return (filepath) => {
     const opts: JITIOptions = {
       interopDefault: true,
     }
@@ -20,9 +21,18 @@ function JitiLoader(): LoaderSync {
   }
 }
 
+function YamlLoader(): LoaderSync {
+  return (_, content) => {
+    console.warn(
+      "YAML config support is deprecated and will be removed in future versions."
+    )
+    return yaml.parse(content)
+  }
+}
+
 const moduleName = "lingui"
 
-const configExplorer = cosmiconfigSync(moduleName, {
+const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
@@ -40,6 +50,8 @@ const configExplorer = cosmiconfigSync(moduleName, {
     ".js": JitiLoader(),
     ".ts": JitiLoader(),
     ".mjs": JitiLoader(),
+    ".yaml": YamlLoader(),
+    ".yml": YamlLoader(),
   },
 })
 
@@ -56,9 +68,16 @@ export function getConfig({
 
   configPath = configPath || process.env.LINGUI_CONFIG
 
-  const result = configExists(configPath)
-    ? configExplorer.load(configPath)
-    : configExplorer.search(defaultRootDir)
+  let result
+
+  try {
+    result = configExists(configPath)
+      ? configExplorer.load(configPath)
+      : configExplorer.search(defaultRootDir)
+  } catch (error) {
+    // If lilconfig throws an error (e.g., directory doesn't exist), treat it as no config found
+    result = null
+  }
 
   if (!result) {
     console.error("Lingui was unable to find a config!\n")

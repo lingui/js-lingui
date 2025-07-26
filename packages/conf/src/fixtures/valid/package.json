@@ -1,0 +1,14 @@
+{
+  "name": "test-package",
+  "version": "1.0.0",
+  "lingui": {
+    "locales": ["en", "zh"],
+    "sourceLocale": "en",
+    "catalogs": [
+      {
+        "path": "<rootDir>/locale/{locale}/messages",
+        "include": ["<rootDir>/src"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "rootDir": ".",
+  "locales": ["en-gb"],
+  "sourceLocale": "en-gb",
+  "fallbackLocales": {
+    "en-gb": "en"
+  }
+}
