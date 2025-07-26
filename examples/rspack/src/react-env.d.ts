@@ -122,7 +122,7 @@ declare module "*.gif" {
     export default src;
 }
 declare module "*.svg" {
-    const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+    const ReactComponent: (props: React.SVGProps<SVGSVGElement>) => React.ReactNode;
     const content: string;
 
     // export { ReactComponent };
