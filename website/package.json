@@ -20,8 +20,10 @@
     "@docusaurus/remark-plugin-npm2yarn": "3.6.3",
     "@docusaurus/theme-mermaid": "3.6.3",
     "@mdx-js/react": "3.1.0",
+    "@signalwire/docusaurus-plugin-llms-txt": "^1.2.2",
     "clsx": "2.1.1",
     "docusaurus-plugin-sass": "^0.2.6",
+    "prism-react-renderer": "^2.4.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "sass": "^1.83.0"
