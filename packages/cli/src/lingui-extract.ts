@@ -33,18 +33,20 @@ export default async function command(
 
   const spinner = ora().start()
 
-  for (const catalog of catalogs) {
-    const result = await catalog.make({
-      ...(options as CliExtractOptions),
-      orderBy: config.orderBy,
+  await Promise.all(
+    catalogs.map(async (catalog) => {
+      const result = await catalog.make({
+        ...(options as CliExtractOptions),
+        orderBy: config.orderBy,
+      })
+
+      catalogStats[
+        normalizePath(nodepath.relative(config.rootDir, catalog.path))
+      ] = result || {}
+
+      commandSuccess &&= Boolean(result)
     })
-
-    catalogStats[
-      normalizePath(nodepath.relative(config.rootDir, catalog.path))
-    ] = result || {}
-
-    commandSuccess &&= Boolean(result)
-  }
+  )
 
   if (commandSuccess) {
     spinner.succeed()

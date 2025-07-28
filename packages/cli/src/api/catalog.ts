@@ -80,9 +80,12 @@ export class Catalog {
   }
 
   async make(options: MakeOptions): Promise<AllCatalogsType | false> {
-    const nextCatalog = await this.collect({ files: options.files })
+    const [nextCatalog, prevCatalogs] = await Promise.all([
+      this.collect({ files: options.files }),
+      this.readAll(),
+    ])
+
     if (!nextCatalog) return false
-    const prevCatalogs = await this.readAll()
 
     const catalogs = this.merge(prevCatalogs, nextCatalog, {
       overwrite: options.overwrite,

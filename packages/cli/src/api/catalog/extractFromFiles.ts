@@ -35,56 +35,62 @@ export async function extractFromFiles(
   const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
-  for (const filename of paths) {
-    const fileSuccess = await extract(
-      filename,
-      (next: ExtractedMessage) => {
-        if (!messages[next.id]) {
-          messages[next.id] = {
-            message: next.message,
-            context: next.context,
-            placeholders: {},
-            comments: [],
-            origin: [],
+
+  await Promise.all(
+    paths.map(async (filename) => {
+      const fileSuccess = await extract(
+        filename,
+        (next: ExtractedMessage) => {
+          if (!messages[next.id]) {
+            messages[next.id] = {
+              message: next.message,
+              context: next.context,
+              placeholders: {},
+              comments: [],
+              origin: [],
+            }
           }
+
+          const prev = messages[next.id]
+
+          // there might be a case when filename was not mapped from sourcemaps
+          const filename = next.origin[0]
+            ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
+            : ""
+
+          const origin: MessageOrigin = [filename, next.origin[1]]
+
+          if (prev.message && next.message && prev.message !== next.message) {
+            throw new Error(
+              `Encountered different default translations for message ${pico.yellow(
+                next.id
+              )}` +
+                `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
+                `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
+            )
+          }
+
+          messages[next.id] = {
+            ...prev,
+            message: prev.message ?? next.message,
+            comments: next.comment
+              ? [...prev.comments, next.comment]
+              : prev.comments,
+            origin: [...prev.origin, [filename, next.origin[1]]],
+            placeholders: mergePlaceholders(
+              prev.placeholders,
+              next.placeholders
+            ),
+          }
+        },
+        config,
+        {
+          extractors: config.extractors as ExtractorType[],
         }
-
-        const prev = messages[next.id]
-
-        // there might be a case when filename was not mapped from sourcemaps
-        const filename = next.origin[0]
-          ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
-          : ""
-
-        const origin: MessageOrigin = [filename, next.origin[1]]
-
-        if (prev.message && next.message && prev.message !== next.message) {
-          throw new Error(
-            `Encountered different default translations for message ${pico.yellow(
-              next.id
-            )}` +
-              `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-              `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
-          )
-        }
-
-        messages[next.id] = {
-          ...prev,
-          message: prev.message ?? next.message,
-          comments: next.comment
-            ? [...prev.comments, next.comment]
-            : prev.comments,
-          origin: [...prev.origin, [filename, next.origin[1]]],
-          placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
-        }
-      },
-      config,
-      {
-        extractors: config.extractors as ExtractorType[],
-      }
-    )
-    catalogSuccess &&= fileSuccess
-  }
+      )
+      catalogSuccess &&= fileSuccess
+    })
+  )
 
   if (!catalogSuccess) return undefined
 

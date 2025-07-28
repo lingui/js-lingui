@@ -161,6 +161,10 @@ msgstr ""
         const rootDir = await createFixtures({
           "en.po": `
 msgid "Hello World"
+msgstr "Hello {hello}"
+        `,
+          "pl.po": `
+msgid "Hello World"
 msgstr "Hello {hello"
         `,
         })
@@ -174,7 +178,7 @@ msgstr "Hello {hello"
           })
           const actualFiles = readFsToListing(config.rootDir)
 
-          expect(actualFiles["en.js"]).toBeFalsy()
+          expect(actualFiles["pl.js"]).toBeFalsy()
 
           const log = getConsoleMockCalls(console.error)
           expect(log).toMatchSnapshot()
