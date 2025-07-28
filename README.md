@@ -100,6 +100,15 @@ Contribution to open-source project is everything from spreading the word, writi
 
 This project exists thanks to [all the people][Contributors] who contribute. [[Contribute](CONTRIBUTING.md)].
 
+## Docs for LLMs
+
+For developers working with AI and language models, we provide specialized documentation files following the [llms.txt specification](https://llmstxt.org/):
+
+- **[llms.txt](https://lingui.dev/llms.txt)** - Concise documentation optimized for LLM context windows
+- **[llms-full.txt](https://lingui.dev/llms-full.txt)** - Comprehensive documentation including all referenced URLs
+
+These files provide LLM-friendly content in a standardized format, helping language models understand and work with Lingui's documentation at inference time. The format is designed to be both human and LLM readable, with structured information that can be processed programmatically.
+
 ## License
 
 The project is licensed under the [MIT][License] license.
