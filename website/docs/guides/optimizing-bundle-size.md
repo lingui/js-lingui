@@ -68,7 +68,7 @@ Instead of sending that to the browser, Lingui compiles messages **ahead of time
 That's why you need to always compile your catalogs, even if they are in JSON format (not `.po` files). Compilation isn't about converting file formats — it's about transforming messages into a form the runtime can execute.
 
 :::note
-✅ Tip: If you use the `@lingui/vite` or `@lingui/loader`, you don't need to run `lingui compile` manually — these plugins compile your catalogs automatically when you import catalogs.
+✅ Tip: If you use the `@lingui/vite-plugin`, `@lingui/loader` or `@lingui/metro-transformer`, you don't need to run `lingui compile` manually — these plugins compile your catalogs automatically when you import catalogs.
 :::
 
 ## But wait... why does everything still work in development?

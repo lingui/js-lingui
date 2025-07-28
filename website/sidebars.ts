@@ -62,8 +62,8 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "Performance Optimizations",
-        id: "guides/performance-optimizations",
+        label: "Optimizing Bundle Size",
+        id: "guides/optimizing-bundle-size",
       },
       {
         type: "doc",
