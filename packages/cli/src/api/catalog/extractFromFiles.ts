@@ -74,9 +74,11 @@ export async function extractFromFiles(
             ...prev,
             message: prev.message ?? next.message,
             comments: next.comment
-              ? [...prev.comments, next.comment]
+              ? [...prev.comments, next.comment].sort()
               : prev.comments,
-            origin: [...prev.origin, [filename, next.origin[1]]],
+            origin: (
+              [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
+            ).sort((a, b) => a[0].localeCompare(b[0])),
             placeholders: mergePlaceholders(
               prev.placeholders,
               next.placeholders

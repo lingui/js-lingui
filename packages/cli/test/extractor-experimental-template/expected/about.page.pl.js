@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:JSON.parse("{\"u5PTM8\":[\"about page message\"],\"1TzdHc\":[\"aliased module message\"],\"LGGfGX\":[\"header message\"],\"8Pj7KC\":[\"JSX: about page message\"]}")};
+/*eslint-disable*/module.exports={messages:JSON.parse("{\"1TzdHc\":[\"aliased module message\"],\"8Pj7KC\":[\"JSX: about page message\"],\"LGGfGX\":[\"header message\"],\"u5PTM8\":[\"about page message\"]}")};

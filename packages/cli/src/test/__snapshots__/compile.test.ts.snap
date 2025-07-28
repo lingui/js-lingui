@@ -45,6 +45,6 @@ Reason: Unexpected message end at line 1 col 13:
 These errors fail command execution because \`--strict\` option passed
 `;
 
-exports[`CLI Command: Compile merge Should merge individual catalogs if  catalogsMergePath specified in lingui config 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"Foo Hello World\\"],\\"iWZSiH\\":[\\"Bar Hello World\\"]}")};`;
+exports[`CLI Command: Compile merge Should merge individual catalogs if catalogsMergePath specified in lingui config 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"Foo Hello World\\"],\\"iWZSiH\\":[\\"Bar Hello World\\"]}")};`;
 
-exports[`CLI Command: Compile merge Should merge individual catalogs if  catalogsMergePath specified in lingui config 2`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"[PL] Foo Hello World\\"],\\"iWZSiH\\":[\\"[PL] Bar Hello World\\"]}")};`;
+exports[`CLI Command: Compile merge Should merge individual catalogs if catalogsMergePath specified in lingui config 2`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"[PL] Foo Hello World\\"],\\"iWZSiH\\":[\\"[PL] Bar Hello World\\"]}")};`;

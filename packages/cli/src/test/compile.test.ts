@@ -209,7 +209,7 @@ msgstr "Hello {hello"
       })
     }
 
-    it("Should merge individual catalogs if  catalogsMergePath specified in lingui config", async () => {
+    it("Should merge individual catalogs if catalogsMergePath specified in lingui config", async () => {
       expect.assertions(4)
 
       const rootDir = await createFixtures({
