@@ -9,7 +9,7 @@
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
-    "lint": "eslint src *.js *.ts && remark . --ext md,mdx --quiet --frail --rc-path .remarkrc.mjs",
+    "lint": "eslint src *.js *.ts && remark . --ext md,mdx --quiet --frail --rc-path .remarkrc.mjs --ignore-path .gitignore",
     "lintFix": "eslint --fix src *.js *.ts",
     "checkFormat": "prettier --check .",
     "fixFormat": "prettier --write ."
