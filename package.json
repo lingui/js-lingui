@@ -78,6 +78,7 @@
     "packages/*",
     "test/*"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git"

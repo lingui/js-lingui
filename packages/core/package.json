@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "5.3.2",
+  "version": "5.3.3",
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "./dist/index.cjs",
@@ -24,6 +24,7 @@
     "build": "unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -61,14 +62,14 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "5.3.2"
+    "@lingui/message-utils": "5.3.3"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "unbuild": "2.0.0"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.3.2",
+    "@lingui/babel-plugin-lingui-macro": "5.3.3",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {
