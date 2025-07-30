@@ -22,6 +22,8 @@ export type CliCompileOptions = {
   namespace?: string
 }
 
+class ProgramExit extends Error {}
+
 export async function command(
   config: LinguiConfigNormalized,
   options: CliCompileOptions
@@ -30,12 +32,39 @@ export async function command(
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
-  let mergedCatalogs = {}
 
   console.log("Compiling message catalogs…")
 
-  for (const locale of config.locales) {
-    for (const catalog of catalogs) {
+  let errored = false
+
+  await Promise.all(
+    config.locales.map(async (locale) => {
+      try {
+        await compileLocale(locale, catalogs, options, config, doMerge)
+      } catch (err) {
+        if (err instanceof ProgramExit) {
+          errored = true
+        } else {
+          throw err
+        }
+      }
+    })
+  )
+
+  return !errored
+}
+
+async function compileLocale(
+  locale: string,
+  catalogs: Catalog[],
+  options: CliCompileOptions,
+  config: LinguiConfigNormalized,
+  doMerge: boolean
+) {
+  let mergedCatalogs = {}
+
+  await Promise.all(
+    catalogs.map(async (catalog) => {
       const { messages, missing: missingMessages } =
         await catalog.getTranslations(locale, {
           fallbackLocales: config.fallbackLocales,
@@ -69,7 +98,7 @@ export async function command(
           )
         }
         console.error()
-        return false
+        throw new ProgramExit()
       }
 
       if (doMerge) {
@@ -78,26 +107,25 @@ export async function command(
         if (
           !(await compileAndWrite(locale, config, options, catalog, messages))
         ) {
-          return false
+          throw new ProgramExit()
         }
       }
-    }
+    })
+  )
 
-    if (doMerge) {
-      const result = await compileAndWrite(
-        locale,
-        config,
-        options,
-        await getCatalogForMerge(config),
-        mergedCatalogs
-      )
+  if (doMerge) {
+    const result = await compileAndWrite(
+      locale,
+      config,
+      options,
+      await getCatalogForMerge(config),
+      mergedCatalogs
+    )
 
-      if (!result) {
-        return false
-      }
+    if (!result) {
+      throw new ProgramExit()
     }
   }
-  return true
 }
 
 async function compileAndWrite(
@@ -106,7 +134,7 @@ async function compileAndWrite(
   options: CliCompileOptions,
   catalogToWrite: Catalog,
   messages: Record<string, string>
-) {
+): Promise<boolean> {
   const namespace = options.typescript
     ? "ts"
     : options.namespace || config.compileNamespace
