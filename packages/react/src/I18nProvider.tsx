@@ -1,4 +1,4 @@
-import React, { ComponentType, FunctionComponent } from "react"
+import React, { ComponentType } from "react"
 import type { I18n } from "@lingui/core"
 import type { TransRenderProps } from "./TransNoContext"
 
@@ -31,11 +31,11 @@ export function useLingui(): I18nContext {
   return useLinguiInternal()
 }
 
-export const I18nProvider: FunctionComponent<I18nProviderProps> = ({
+export function I18nProvider({
   i18n,
   defaultComponent,
   children,
-}) => {
+}: I18nProviderProps) {
   const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
   /**
    * We can't pass `i18n` object directly through context, because even when locale

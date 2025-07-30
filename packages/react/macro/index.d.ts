@@ -1,4 +1,4 @@
-import type { ReactNode, VFC, FC } from "react"
+import type { ReactNode } from "react"
 import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
 import type {
   MacroMessageDescriptor,
@@ -52,7 +52,7 @@ type SelectChoiceProps = {
  * <Trans id="custom.id">Hello {username}.</Trans>
  * ```
  */
-export const Trans: FC<TransProps>
+export const Trans: (props: TransProps) => ReactNode
 
 /**
  * Props of Plural macro are transformed into plural format.
@@ -67,7 +67,7 @@ export const Trans: FC<TransProps>
  * <Trans id="{numBooks, plural, one {Book} other {Books}}" values={{ numBooks }} />
  * ```
  */
-export const Plural: VFC<PluralChoiceProps>
+export const Plural: (props: PluralChoiceProps) => ReactNode
 /**
  * Props of SelectOrdinal macro are transformed into selectOrdinal format.
  *
@@ -86,7 +86,7 @@ export const Plural: VFC<PluralChoiceProps>
  * />
  * ```
  */
-export const SelectOrdinal: VFC<PluralChoiceProps>
+export const SelectOrdinal: (props: PluralChoiceProps) => ReactNode
 
 /**
  * Props of Select macro are transformed into select format
@@ -105,7 +105,7 @@ export const SelectOrdinal: VFC<PluralChoiceProps>
  * />
  * ```
  */
-export const Select: VFC<SelectChoiceProps>
+export const Select: (props: SelectChoiceProps) => ReactNode
 
 declare function _t(descriptor: MacroMessageDescriptor): string
 declare function _t(
