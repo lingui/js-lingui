@@ -233,3 +233,15 @@ export const msg: typeof defineMessage
  * Helps to define a name for a variable in the message
  */
 export function ph(def: LabeledExpression<string | number>): string
+
+/**
+ * Helps to inject a variable into the other macro usage without automatically wrapping it in curly brackets,
+ * so it can be used with custom formats.
+ *
+ * @example
+ * ```
+ * import { t, arg } from "@lingui/core/macro";
+ * t`Number {${arg(num)}, number, myNumberStyle}`;
+ * ```
+ */
+export function arg(def: string | number): string
