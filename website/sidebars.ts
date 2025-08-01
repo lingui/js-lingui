@@ -62,6 +62,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Optimizing Bundle Size",
+        id: "guides/optimizing-bundle-size",
+      },
+      {
+        type: "doc",
         label: "Pseudolocalization",
         id: "guides/pseudolocalization",
       },
