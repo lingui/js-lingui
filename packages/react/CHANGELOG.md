@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+### Bug Fixes
+
+* remove `VFC`, `FC` type usage ([#2290](https://github.com/lingui/js-lingui/issues/2290)) ([30e5242](https://github.com/lingui/js-lingui/commit/30e5242f132a7e0aa847f45b472330f6113b0168))
+
 ## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
 
 ### Bug Fixes

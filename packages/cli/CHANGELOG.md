@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+### Features
+
+* full concurrency for extract / compile commands ([#2299](https://github.com/lingui/js-lingui/issues/2299)) ([489fb3a](https://github.com/lingui/js-lingui/commit/489fb3a7c999632e57286369e44a0c6e77a3407b))
+
 ## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
 
 ### Bug Fixes
