@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+**Note:** Version bump only for package @lingui/conf
+
+## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
+
+### Bug Fixes
+
+* standardize repository field format across all packages ([#2269](https://github.com/lingui/js-lingui/issues/2269)) ([a03a984](https://github.com/lingui/js-lingui/commit/a03a984cdc027ece9902277243f671ca15912adc))
+
+## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
+
+**Note:** Version bump only for package @lingui/conf
+
+## [5.3.1](https://github.com/lingui/js-lingui/compare/v5.3.0...v5.3.1) (2025-04-14)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [5.3.0](https://github.com/lingui/js-lingui/compare/v5.2.0...v5.3.0) (2025-03-21)
+
+### Features
+
+* **babel-plugin-lingui-macro:** allow to configure macro packages ([#2196](https://github.com/lingui/js-lingui/issues/2196)) ([583dd05](https://github.com/lingui/js-lingui/commit/583dd05578b63f26576cf8ebdead83639afdb4b9))
+
+# [5.2.0](https://github.com/lingui/js-lingui/compare/v5.1.2...v5.2.0) (2025-01-31)
+
+**Note:** Version bump only for package @lingui/conf
+
+## [5.1.2](https://github.com/lingui/js-lingui/compare/v5.1.1...v5.1.2) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/conf
+
+## [5.1.1](https://github.com/lingui/js-lingui/compare/v5.1.0...v5.1.1) (2024-12-16)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+**Note:** Version bump only for package @lingui/conf
+
+## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+**Note:** Version bump only for package @lingui/conf
+
 # [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
 
 **Note:** Version bump only for package @lingui/conf

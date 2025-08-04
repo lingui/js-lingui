@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-csv",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "description": "CSV format for Lingui Catalogs",
   "main": "./dist/csv.cjs",
   "module": "./dist/csv.mjs",
@@ -23,15 +23,17 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/format-csv"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "LICENSE",
@@ -39,11 +41,10 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "4.13.0",
+    "@lingui/conf": "5.4.0",
     "papaparse": "^5.4.0"
   },
   "devDependencies": {
-    "tsd": "^0.28.0",
     "unbuild": "2.0.0"
   }
 }

@@ -1,5 +1,6 @@
 import { setupI18n } from "./i18n"
 import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {
   describe("I18n.load", () => {
@@ -189,7 +190,6 @@ describe("I18n", () => {
   it("._ should format message from catalog", () => {
     const messages = {
       Hello: "Salut",
-      "My name is {name}": "Je m'appelle {name}",
     }
 
     const i18n = setupI18n({
@@ -198,15 +198,24 @@ describe("I18n", () => {
     })
 
     expect(i18n._("Hello")).toEqual("Salut")
-    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-      "Je m'appelle Fred"
-    )
+    expect(
+      i18n._({
+        id: "My name is {name}",
+        message: "Je m'appelle {name}",
+        values: { name: "Fred" },
+      })
+    ).toEqual("Je m'appelle Fred")
 
     // alias
     expect(i18n.t("Hello")).toEqual("Salut")
 
     // missing { name }
-    expect(i18n._("My name is {name}")).toEqual("Je m'appelle")
+    expect(
+      i18n._({
+        id: "My name is {name}",
+        message: "Je m'appelle {name}",
+      })
+    ).toEqual("Je m'appelle ")
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
@@ -239,19 +248,39 @@ describe("I18n", () => {
   })
 
   it("._ allow escaping syntax characters", () => {
-    const messages = {
-      "My ''name'' is '{name}'": "Mi ''nombre'' es '{name}'",
-    }
+    const messages = {}
 
     const i18n = setupI18n({
       locale: "es",
       messages: { es: messages },
     })
 
-    expect(i18n._("My ''name'' is '{name}'")).toEqual("Mi 'nombre' es {name}")
+    expect(
+      i18n._({
+        id: "My ''name'' is '{name}'",
+        message: "Mi ''nombre'' es '{name}'",
+      })
+    ).toEqual("Mi 'nombre' es {name}")
   })
 
-  it("._ shouldn't compile messages in production", () => {
+  it("._ should not trim whitespaces in translated messages", () => {
+    const messages = {}
+
+    const i18n = setupI18n({
+      locale: "es",
+      messages: { es: messages },
+    })
+
+    expect(
+      i18n._({
+        id: "msg",
+        /* note the space at the end */
+        message: " Hello ",
+      })
+    ).toEqual(" Hello ")
+  })
+
+  it("._ shouldn't compile uncompiled messages in production", () => {
     const messages = {
       Hello: "Salut",
       "My name is {name}": "Je m'appelle {name}",
@@ -270,6 +299,82 @@ describe("I18n", () => {
     })
   })
 
+  it("._ should use compiled message in production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": compileMessage("Je m'appelle {name}"),
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("._ shouldn't double compile message in development", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": compileMessage("Je m'appelle '{name}'"),
+    }
+
+    const { setupI18n } = require("@lingui/core")
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: messages },
+    })
+
+    expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+      "Je m'appelle {name}"
+    )
+  })
+
+  it("setMessagesCompiler should register a message compiler for production", () => {
+    const messages = {
+      Hello: "Salut",
+      "My name is {name}": "Je m'appelle {name}",
+    }
+
+    mockEnv("production", () => {
+      const { setupI18n } = require("@lingui/core")
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: messages },
+      })
+
+      i18n.setMessagesCompiler(compileMessage)
+      expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
+        "Je m'appelle Fred"
+      )
+    })
+  })
+
+  it("should print warning if uncompiled message is used", () => {
+    expect.assertions(1)
+
+    const messages = {
+      Hello: "Salut",
+    }
+
+    mockEnv("production", () => {
+      mockConsole((console) => {
+        const { setupI18n } = require("@lingui/core")
+        const i18n = setupI18n({
+          locale: "fr",
+          messages: { fr: messages },
+        })
+
+        i18n._("Hello")
+        expect(console.warn).toBeCalled()
+      })
+    })
+  })
   it("._ should emit missing event for missing translation", () => {
     const i18n = setupI18n({
       locale: "en",
@@ -342,5 +447,219 @@ describe("I18n", () => {
     })
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
+  })
+
+  it("._ should decode escape sequences in uncompiled string messages", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    expect(i18n._("Hello\\u0020World")).toEqual("Hello World")
+    expect(i18n._("Hello\\x20World")).toEqual("Hello World")
+    expect(i18n._("Tab\\x09separated")).toEqual("Tab\tseparated")
+    expect(i18n._("Mixed\\u0020\\x41nd\\u0020escaped")).toEqual(
+      "Mixed And escaped"
+    )
+  })
+
+  it("._ should throw a meaningful error when locale is not set", () => {
+    const i18n = setupI18n({})
+    expect(() =>
+      i18n._(
+        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}"
+      )
+    ).toThrowErrorMatchingInlineSnapshot(`
+      "Lingui: Attempted to call a translation function without setting a locale.
+      Make sure to call \`i18n.activate(locale)\` before using Lingui functions.
+      This issue may also occur due to a race condition in your initialization logic."
+    `)
+  })
+
+  describe("ICU date format", () => {
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: {} },
+    })
+
+    const date = new Date("2014-12-06")
+
+    it("style short", () => {
+      expect(
+        i18n._("It starts on {someDate, date, short}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 06/12/2014"`)
+    })
+
+    it("style full", () => {
+      expect(
+        i18n._("It starts on {someDate, date, full}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on samedi 6 décembre 2014"`)
+    })
+
+    it("style long", () => {
+      expect(
+        i18n._("It starts on {someDate, date, long}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6 décembre 2014"`)
+    })
+
+    it("style default", () => {
+      expect(
+        i18n._("It starts on {someDate, date, default}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6 déc. 2014"`)
+    })
+
+    it("no style", () => {
+      expect(
+        i18n._("It starts on {someDate, date}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6 déc. 2014"`)
+    })
+
+    it("using custom style", () => {
+      expect(
+        i18n._(
+          "It starts on {someDate, date, myStyle}",
+          {
+            someDate: date,
+          },
+          {
+            formats: {
+              myStyle: {
+                day: "numeric",
+              },
+            },
+          }
+        )
+      ).toMatchInlineSnapshot(`"It starts on 6"`)
+    })
+
+    it("using date skeleton", () => {
+      expect(
+        i18n._("It starts on {someDate, date, ::GrMMMdd}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 06 déc. 2014 ap. J.-C."`)
+    })
+
+    it("should respect locale", () => {
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: {}, pl: {} },
+      })
+
+      const msg = "It starts on {someDate, date, long}"
+
+      expect(
+        i18n._(msg, {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6 décembre 2014"`)
+
+      i18n.activate("pl")
+
+      expect(
+        i18n._(msg, {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6 grudnia 2014"`)
+    })
+  })
+  describe("ICU time format", () => {
+    const i18n = setupI18n({
+      locale: "fr",
+      messages: { fr: {} },
+    })
+
+    const date = new Date("2014-12-06::17:40 UTC")
+
+    it("style short", () => {
+      expect(
+        i18n._("It starts on {someDate, time, short}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40"`)
+    })
+
+    it("style full", () => {
+      expect(
+        i18n._("It starts on {someDate, time, full}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
+    })
+
+    it("style long", () => {
+      expect(
+        i18n._("It starts on {someDate, time, long}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
+    })
+
+    it("style default", () => {
+      expect(
+        i18n._("It starts on {someDate, time, default}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40:00"`)
+    })
+
+    it("no style", () => {
+      expect(
+        i18n._("It starts on {someDate, time}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40:00"`)
+    })
+
+    it("using custom style", () => {
+      expect(
+        i18n._(
+          "It starts on {someDate, time, myStyle}",
+          {
+            someDate: date,
+          },
+          {
+            formats: {
+              myStyle: {
+                hour: "numeric",
+              },
+            },
+          }
+        )
+      ).toMatchInlineSnapshot(`"It starts on 17 h"`)
+    })
+
+    it("should respect locale", () => {
+      const i18n = setupI18n({
+        locale: "fr",
+        messages: { fr: {}, "en-US": {} },
+      })
+
+      const msg = "It starts on {someDate, time, long}"
+
+      expect(
+        i18n._(msg, {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
+
+      i18n.activate("en-US")
+
+      expect(
+        i18n._(msg, {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 5:40:00 PM UTC"`)
+    })
   })
 })

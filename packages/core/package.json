@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "./dist/index.cjs",
@@ -24,15 +24,17 @@
     "build": "unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/core"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "exports": {
     ".": {
@@ -45,20 +47,37 @@
         "default": "./dist/index.mjs"
       }
     },
+    "./macro": {
+      "types": "./macro/index.d.ts",
+      "default": "./macro/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "dist/"
+    "dist/",
+    "macro/index.d.ts",
+    "macro/index.js"
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "4.13.0",
-    "unraw": "^3.0.0"
+    "@lingui/message-utils": "5.4.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "unbuild": "2.0.0"
+  },
+  "peerDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "5.4.0",
+    "babel-plugin-macros": "2 || 3"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "babel-plugin-macros": {
+      "optional": true
+    }
   }
 }

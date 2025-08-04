@@ -2,14 +2,14 @@
 title: Announcing Lingui 4.0
 authors: andrii-bodnar
 tags: [release]
-image: ./img/social-card.png
+image: ./social-card.png
 ---
 
 Today we are happy to finally announce Lingui 4.0! 🥳️
 
 ---
 
-![social-card image](./img/social-card.png)
+![social-card image](./social-card.png)
 
 ## What is Lingui exactly?
 
@@ -92,8 +92,7 @@ By doing so, it creates a more optimized catalog that only contains the messages
 
 The catalogs would still contain duplicate messages for common components, but it would be much better than the current approach.
 
-![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.jpg#gh-light-mode-only)
-![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme-dark.jpg#gh-dark-mode-only)
+![Scheme of discovering by dependencies](/img/docs/extractor-deps-scheme.svg)
 
 :::tip
 See the [Message Extraction](https://lingui.dev/guides/message-extraction) guide to learn more about how message extraction works.

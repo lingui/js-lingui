@@ -3,6 +3,109 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+### Bug Fixes
+
+* remove `VFC`, `FC` type usage ([#2290](https://github.com/lingui/js-lingui/issues/2290)) ([30e5242](https://github.com/lingui/js-lingui/commit/30e5242f132a7e0aa847f45b472330f6113b0168))
+* remove metro peer dep from metro-transformer ([#2287](https://github.com/lingui/js-lingui/issues/2287)) ([eb8a429](https://github.com/lingui/js-lingui/commit/eb8a4295bf3ea216a8bc1cba736f28e6b44c9107))
+
+
+### Features
+
+* full concurrency for extract / compile commands ([#2299](https://github.com/lingui/js-lingui/issues/2299)) ([489fb3a](https://github.com/lingui/js-lingui/commit/489fb3a7c999632e57286369e44a0c6e77a3407b))
+
+## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
+
+### Bug Fixes
+
+* **cli:** remove unused dependency babel-plugin-macros ([#2266](https://github.com/lingui/js-lingui/issues/2266)) ([d6906cc](https://github.com/lingui/js-lingui/commit/d6906cca6bef5e36f91c9b1be8a2764453e68f19))
+* remove unraw dependency ([#2271](https://github.com/lingui/js-lingui/issues/2271)) ([494c152](https://github.com/lingui/js-lingui/commit/494c152d89754a1b5359a5420fcc407aac4ed7f5))
+* standardize repository field format across all packages ([#2269](https://github.com/lingui/js-lingui/issues/2269)) ([a03a984](https://github.com/lingui/js-lingui/commit/a03a984cdc027ece9902277243f671ca15912adc))
+
+## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
+
+### Bug Fixes
+
+* **cli:** catalogsMergePath generates only one compiled locale ([#2238](https://github.com/lingui/js-lingui/issues/2238)) ([b1c7aac](https://github.com/lingui/js-lingui/commit/b1c7aac019d2066a8b8801ab72214f48aa5a97ef))
+* **examples:** tanstack-start build issues ([#2248](https://github.com/lingui/js-lingui/issues/2248)) ([cea7d7d](https://github.com/lingui/js-lingui/commit/cea7d7dce7872f97205e531295a7e05efc47f796))
+* **macro:** map injected imports to original statements ([#2252](https://github.com/lingui/js-lingui/issues/2252)) ([73b081e](https://github.com/lingui/js-lingui/commit/73b081e4ba929df00364e7e55883a651bf70d1f7))
+* use makePathRegexSafe with globSync ([#2242](https://github.com/lingui/js-lingui/issues/2242)) ([7a8256c](https://github.com/lingui/js-lingui/commit/7a8256c7b8699b73d1181f6f34bfe3734e9996ac))
+
+## [5.3.1](https://github.com/lingui/js-lingui/compare/v5.3.0...v5.3.1) (2025-04-14)
+
+### Bug Fixes
+
+* **cli:** update esbuild ([#2187](https://github.com/lingui/js-lingui/issues/2187)) ([643a604](https://github.com/lingui/js-lingui/commit/643a604991f1a420a5b196b074f0396f89b90ad3))
+
+# [5.3.0](https://github.com/lingui/js-lingui/compare/v5.2.0...v5.3.0) (2025-03-21)
+
+### Bug Fixes
+
+* incorrect index for placeholders in useLingui macro ([#2204](https://github.com/lingui/js-lingui/issues/2204)) ([6688f72](https://github.com/lingui/js-lingui/commit/6688f72688bc93fe5b14802c898ff42ab88940fa))
+
+### Features
+
+* `failOnMissing` & `failOnCompileError` for loaders + compiler ([#2198](https://github.com/lingui/js-lingui/issues/2198)) ([68c29ab](https://github.com/lingui/js-lingui/commit/68c29abf23974d8bffb6cadaacafc88e4760d3cb))
+* **babel-plugin-lingui-macro:** allow to configure macro packages ([#2196](https://github.com/lingui/js-lingui/issues/2196)) ([583dd05](https://github.com/lingui/js-lingui/commit/583dd05578b63f26576cf8ebdead83639afdb4b9))
+
+# [5.2.0](https://github.com/lingui/js-lingui/compare/v5.1.2...v5.2.0) (2025-01-31)
+
+### Bug Fixes
+
+* Allow empty translations for pseudo locale in compile --strict ([#2129](https://github.com/lingui/js-lingui/issues/2129)) ([8cae5e0](https://github.com/lingui/js-lingui/commit/8cae5e0e5a4ab0ab9406aa1683b60a4796c2d9f2))
+* **core:** remove runtime whitespace trimming aligned with v5 ([#2169](https://github.com/lingui/js-lingui/issues/2169)) ([47a1ad7](https://github.com/lingui/js-lingui/commit/47a1ad71ced726b076d65c98537815b60ae8e9c7))
+* don't use anything from "@babel/types" in runtime ([#2132](https://github.com/lingui/js-lingui/issues/2132)) ([7ebb88d](https://github.com/lingui/js-lingui/commit/7ebb88dc79846839e0826d073cc0d830c09dda27))
+* **react:** remove children property from runtime Trans ([#2151](https://github.com/lingui/js-lingui/issues/2151)) ([7540adb](https://github.com/lingui/js-lingui/commit/7540adb0128f9acbff745251540e2d91f3cd683c))
+
+### Features
+
+* add meaningful error when locale is not set ([#2131](https://github.com/lingui/js-lingui/issues/2131)) ([5ae8363](https://github.com/lingui/js-lingui/commit/5ae83630c5afe866b23c5739286eb09fdfe39b95))
+* add ph() and explicit labels for placeholders ([#2092](https://github.com/lingui/js-lingui/issues/2092)) ([2026c83](https://github.com/lingui/js-lingui/commit/2026c83dfa3b969cde30305d52821e561df996cf))
+* **react:** preserve newlines during string formatting ([#2158](https://github.com/lingui/js-lingui/issues/2158)) ([f0566fb](https://github.com/lingui/js-lingui/commit/f0566fbe56a1e66ebad23c2f205464972902e683))
+* support short/default/long/full date time formats ([#2117](https://github.com/lingui/js-lingui/issues/2117)) ([8020427](https://github.com/lingui/js-lingui/commit/802042743c60e28d62571a4b08437a7b275c8237))
+
+## [5.1.2](https://github.com/lingui/js-lingui/compare/v5.1.1...v5.1.2) (2024-12-16)
+
+**Note:** Version bump only for package js-lingui-workspaces
+
+## [5.1.1](https://github.com/lingui/js-lingui/compare/v5.1.0...v5.1.1) (2024-12-16)
+
+**Note:** Version bump only for package js-lingui-workspaces
+
+# [5.1.0](https://github.com/lingui/js-lingui/compare/v5.0.0...v5.1.0) (2024-12-06)
+
+### Features
+
+- **react:** add support for React 19 ([#2111](https://github.com/lingui/js-lingui/issues/2111)) ([e93b73d](https://github.com/lingui/js-lingui/commit/e93b73d075165d91fa598fa0c579a8ceb5c86845))
+- **vite-plugin:** add support for vite@6 ([#2108](https://github.com/lingui/js-lingui/issues/2108)) ([38a0c6f](https://github.com/lingui/js-lingui/commit/38a0c6f8b7f4d961f1580228310f4ebe959eb5a5))
+
+## [5.0.0](https://github.com/lingui/js-lingui/compare/v4.14.1...v5.0.0) (2024-11-28)
+
+We are pleased to announce the release of Lingui 5.0! This release is a **major milestone** for the project and includes a number of new features, improvements and bug fixes.
+
+Check out the links below for more details:
+
+- [Blog Post: Announcing Lingui 5.0](https://lingui.dev/blog/2024/11/28/announcing-lingui-5.0)
+- [Migration Guide from 4.x to 5.x](https://lingui.dev/releases/migration-5)
+- [Full Changelog](https://github.com/lingui/js-lingui/compare/v4.14.1...v5.0.0)
+
+## [4.14.1](https://github.com/lingui/js-lingui/compare/v4.14.0...v4.14.1) (2024-11-28)
+
+### Bug Fixes
+
+- don't report statistics for pseudo locale ([#2094](https://github.com/lingui/js-lingui/issues/2094)) ([113c05d](https://github.com/lingui/js-lingui/commit/113c05d91dba210b73444f4824c47d2709f8f5cf))
+
+# [4.14.0](https://github.com/lingui/js-lingui/compare/v4.13.0...v4.14.0) (2024-11-07)
+
+### Bug Fixes
+
+- **extract:** when files are used, don't overwrite obsolete ([#1964](https://github.com/lingui/js-lingui/issues/1964)) ([e726b16](https://github.com/lingui/js-lingui/commit/e726b16a2a9299913d386489d92e0daa9c42e40d))
+
+### Features
+
+- **format-po-gettext:** respect Plural-Forms header ([#2070](https://github.com/lingui/js-lingui/issues/2070)) ([5d0516e](https://github.com/lingui/js-lingui/commit/5d0516e5ee8de5bd4369e8760b4a5c77259853db))
+
 # [4.13.0](https://github.com/lingui/js-lingui/compare/v4.12.0...v4.13.0) (2024-10-15)
 
 ### Features

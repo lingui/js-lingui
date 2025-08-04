@@ -24,7 +24,9 @@ export function getCookie(key: string): string {
       if (key === foundKey) {
         break
       }
-    } catch (e) {}
+    } catch (e) {
+      // nothing
+    }
   }
 
   return key ? jar[key] : jar

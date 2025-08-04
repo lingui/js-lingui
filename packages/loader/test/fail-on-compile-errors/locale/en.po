@@ -1,0 +1,5 @@
+msgid "Hello World"
+msgstr "Hello World {var"
+
+msgid "My name is {name}"
+msgstr "My name is {name"

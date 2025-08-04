@@ -68,16 +68,18 @@ Please check that \`catalogs.path\` is filled properly and restart the Metro ser
 
   const { locale, catalog } = catalogFile
 
-  const messages = await catalog.getTranslations(locale, {
+  const { messages } = await catalog.getTranslations(locale, {
     fallbackLocales: config.fallbackLocales,
     sourceLocale: config.sourceLocale,
   })
 
   const strict = process.env.NODE_ENV !== "production"
 
-  return createCompiledCatalog(locale, messages, {
+  const { source } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: "es",
     pseudoLocale: config.pseudoLocale,
   })
+
+  return source
 }

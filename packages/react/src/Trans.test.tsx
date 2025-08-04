@@ -24,7 +24,6 @@ describe("Trans component", () => {
         "My name is {name}": "Jmenuji se {name}",
         Original: "Původní",
         Updated: "Aktualizovaný",
-        "msg.currency": "{value, number, currency}",
         ID: "Translation",
       },
     },
@@ -138,6 +137,38 @@ describe("Trans component", () => {
     })
   })
 
+  it("should follow jsx semantics regarding booleans", () => {
+    expect(
+      html(
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: false,
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span></span> bar")
+
+    expect(
+      html(
+        <Trans
+          id="unknown"
+          message={"foo <0>{0}</0> bar"}
+          values={{
+            0: "lol",
+          }}
+          components={{
+            0: <span />,
+          }}
+        />
+      )
+    ).toEqual("foo <span>lol</span> bar")
+  })
+
   it("should render default string", () => {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
@@ -239,10 +270,10 @@ describe("Trans component", () => {
   })
 
   it("should render nested elements with `asChild` pattern", () => {
-    const ComponentThatExpectsSingleElementChild: React.FC<{
+    function ComponentThatExpectsSingleElementChild(props: {
       asChild: boolean
       children?: React.ReactElement
-    }> = (props) => {
+    }) {
       if (props.asChild && React.isValidElement(props.children)) {
         return props.children
       }
@@ -282,6 +313,7 @@ describe("Trans component", () => {
     const translation = text(
       <Trans
         id="msg.currency"
+        message="{value, number, currency}"
         values={{ value: 1 }}
         formats={{
           currency: {
@@ -293,6 +325,28 @@ describe("Trans component", () => {
       />
     )
     expect(translation).toEqual("1,00 €")
+  })
+
+  it("should render plural", () => {
+    const render = (count: number) =>
+      html(
+        <Trans
+          id={"tYX0sm"}
+          message={
+            "{count, plural, =0 {Zero items} one {# item} other {# <0>A lot of them</0>}}"
+          }
+          values={{
+            count,
+          }}
+          components={{
+            0: <a href="/more" />,
+          }}
+        />
+      )
+
+    expect(render(0)).toEqual("Zero items")
+    expect(render(1)).toEqual("1 item")
+    expect(render(2)).toEqual(`2 <a href="/more">A lot of them</a>`)
   })
 
   describe("rendering", () => {
@@ -329,14 +383,11 @@ describe("Trans component", () => {
         message: "Default",
         translation: "Translation",
         children: "Translation",
-        isTranslated: true,
       })
     })
 
     it("should take defaultComponent prop with a custom component", () => {
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
+      function ComponentFC(props: TransRenderProps) {
         return <div>{props.children}</div>
       }
       const span = render(
@@ -353,9 +404,7 @@ describe("Trans component", () => {
     ])(
       "should ignore defaultComponent when `component` or `render` is null",
       (props) => {
-        const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-          props
-        ) => {
+        function ComponentFC(props: TransRenderProps) {
           return <div>{props.children}</div>
         }
         const translation = render(
@@ -381,9 +430,7 @@ describe("Trans component", () => {
 
     it("should render function component as simple prop", () => {
       const propsSpy = jest.fn()
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
+      function ComponentFC(props: TransRenderProps) {
         propsSpy(props)
         const [state] = React.useState("value")
         return <div id={props.id}>{state}</div>
@@ -393,7 +440,6 @@ describe("Trans component", () => {
       expect(element).toEqual(`<div id="Headline">value</div>`)
       expect(propsSpy).toHaveBeenCalledWith({
         id: "Headline",
-        isTranslated: false,
         message: undefined,
         translation: "Headline",
         children: "Headline",
@@ -402,20 +448,18 @@ describe("Trans component", () => {
   })
 
   describe("I18nProvider defaultComponent accepts render-like props", () => {
-    const DefaultComponent: React.FunctionComponent<TransRenderProps> = (
-      props
-    ) => (
-      <>
-        <div data-testid="children">{props.children}</div>
-        {props.id && <div data-testid="id">{props.id}</div>}
-        {props.message && <div data-testid="message">{props.message}</div>}
-        {props.translation && (
-          <div data-testid="translation">{props.translation}</div>
-        )}
-
-        <div data-testid="is-translated">{String(props.isTranslated)}</div>
-      </>
-    )
+    function DefaultComponent(props: TransRenderProps) {
+      return (
+        <>
+          <div data-testid="children">{props.children}</div>
+          {props.id && <div data-testid="id">{props.id}</div>}
+          {props.message && <div data-testid="message">{props.message}</div>}
+          {props.translation && (
+            <div data-testid="translation">{props.translation}</div>
+          )}
+        </>
+      )
+    }
 
     it("should render defaultComponent with Trans props", () => {
       const markup = render(
@@ -429,21 +473,6 @@ describe("Trans component", () => {
       expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
         "Translation"
       )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("true")
-    })
-
-    it("should pass isTranslated: false if no translation", () => {
-      const markup = render(
-        <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
-          <Trans id="NO_ID" message="Some message" />
-        </I18nProvider>
-      )
-
-      expect(markup.queryByTestId("id")?.innerHTML).toEqual("NO_ID")
-      expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
-        "Some message"
-      )
-      expect(markup.queryByTestId("is-translated")?.innerHTML).toEqual("false")
     })
 
     describe("TransNoContext", () => {

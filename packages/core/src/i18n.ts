@@ -1,9 +1,10 @@
-import { interpolate, UNICODE_REGEX } from "./interpolate"
+import { interpolate } from "./interpolate"
 import { isString, isFunction } from "./essentials"
 import { date, defaultLocale, number } from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
+import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 export type MessageOptions = {
   message?: string
@@ -36,7 +37,8 @@ export type LocaleData = {
  */
 export type AllLocaleData = Record<Locale, LocaleData>
 
-export type Messages = Record<string, CompiledMessage>
+export type UncompiledMessage = string
+export type Messages = Record<string, UncompiledMessage | CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
@@ -79,15 +81,22 @@ type LoadAndActivateOptions = {
   messages: Messages
 }
 
+export type MessageCompiler = (message: string) => CompiledMessage
+
 export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
   private _localeData: AllLocaleData = {}
   private _messages: AllMessages = {}
   private _missing?: MissingHandler
+  private _messageCompiler?: MessageCompiler
 
   constructor(params: I18nProps) {
     super()
+
+    if (process.env.NODE_ENV !== "production") {
+      this.setMessagesCompiler(compileMessage)
+    }
 
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
@@ -126,6 +135,26 @@ export class I18n extends EventEmitter<Events> {
   }
 
   /**
+   * Registers a `MessageCompiler` to enable the use of uncompiled catalogs at runtime.
+   *
+   * In production builds, the `MessageCompiler` is typically excluded to reduce bundle size.
+   * By default, message catalogs should be precompiled during the build process. However,
+   * if you need to compile catalogs at runtime, you can use this method to set a message compiler.
+   *
+   * Example usage:
+   *
+   * ```ts
+   * import { compileMessage } from "@lingui/message-utils/compileMessage";
+   *
+   * i18n.setMessagesCompiler(compileMessage);
+   * ```
+   */
+  setMessagesCompiler(compiler: MessageCompiler) {
+    this._messageCompiler = compiler
+    return this
+  }
+
+  /**
    * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
   public loadLocaleData(allLocaleData: AllLocaleData): void
@@ -136,17 +165,19 @@ export class I18n extends EventEmitter<Events> {
   /**
    * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
    */
-  // @ts-ignore deprecated, so ignore the reported error
-  loadLocaleData(localeOrAllData, localeData?) {
-    if (localeData != null) {
+  loadLocaleData(
+    localeOrAllData: AllLocaleData | Locale,
+    localeData?: LocaleData
+  ) {
+    if (typeof localeOrAllData === "string") {
       // loadLocaleData('en', enLocaleData)
       // Loading locale data for a single locale.
-      this._loadLocaleData(localeOrAllData, localeData)
+      this._loadLocaleData(localeOrAllData, localeData!)
     } else {
       // loadLocaleData(allLocaleData)
       // Loading all locale data at once.
       Object.keys(localeOrAllData).forEach((locale) =>
-        this._loadLocaleData(locale, localeOrAllData[locale])
+        this._loadLocaleData(locale, localeOrAllData[locale]!)
       )
     }
 
@@ -212,6 +243,14 @@ export class I18n extends EventEmitter<Events> {
     values?: Values,
     options?: MessageOptions
   ): string {
+    if (!this.locale) {
+      throw new Error(
+        "Lingui: Attempted to call a translation function without setting a locale.\n" +
+          "Make sure to call `i18n.activate(locale)` before using Lingui functions.\n" +
+          "This issue may also occur due to a race condition in your initialization logic."
+      )
+    }
+
     let message = options?.message
 
     if (!id) {
@@ -239,15 +278,26 @@ export class I18n extends EventEmitter<Events> {
 
     let translation = messageForId || message || id
 
-    if (process.env.NODE_ENV !== "production") {
-      translation = isString(translation)
-        ? compileMessage(translation)
-        : translation
+    // Compiled message is always an array (`["Ola!"]`).
+    // If a message comes as string - it's not compiled, and we need to compile it beforehand.
+    if (isString(translation)) {
+      if (this._messageCompiler) {
+        translation = this._messageCompiler(translation)
+      } else {
+        console.warn(`Uncompiled message detected! Message:
+
+> ${translation}
+
+That means you use raw catalog or your catalog doesn't have a translation for the message and fallback was used.
+ICU features such as interpolation and plurals will not work properly for that message. 
+
+Please compile your catalog first. 
+`)
+      }
     }
 
-    // hack for parsing unicode values inside a string to get parsed in react native environments
-    if (isString(translation) && UNICODE_REGEX.test(translation))
-      return JSON.parse(`"${translation}"`) as string
+    if (isString(translation) && ESCAPE_SEQUENCE_REGEX.test(translation))
+      return decodeEscapeSequences(translation)
     if (isString(translation)) return translation
 
     return interpolate(

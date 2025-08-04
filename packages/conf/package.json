@@ -1,13 +1,18 @@
 {
   "name": "@lingui/conf",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "sideEffects": false,
   "description": "Get lingui configuration from package.json",
   "keywords": [
     "lingui",
     "config"
   ],
-  "repository": "lingui/js-lingui",
+  "homepage": "https://lingui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/conf"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
@@ -18,7 +23,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "rimraf ./dist && unbuild",
@@ -26,11 +31,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
     "jest-validate": "^29.4.3",
     "jiti": "^1.17.1",
-    "lodash.get": "^4.4.2"
+    "picocolors": "^1.1.1"
   },
   "files": [
     "LICENSE",
@@ -39,7 +43,6 @@
   ],
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "tsd": "^0.26.1",
     "unbuild": "^2.0.0"
   }
 }

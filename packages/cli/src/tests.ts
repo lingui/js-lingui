@@ -83,21 +83,17 @@ export function makeNextMessage(message = {}): ExtractedMessageType {
   }
 }
 
-type Listing = { [filename: string]: string | Listing }
+type Listing = { [filename: string]: string }
 
 export function listingToHumanReadable(listing: Listing): string {
   const output: string[] = []
   Object.entries(listing).forEach(([filename, value]) => {
-    if (typeof value === "string") {
-      output.push("#######################")
-      output.push(`Filename: ${filename}`)
-      output.push("#######################")
-      output.push("")
-      output.push(normalizeLineEndings(value))
-      output.push("")
-    } else {
-      output.push(...listingToHumanReadable(value))
-    }
+    output.push("#######################")
+    output.push(`Filename: ${filename}`)
+    output.push("#######################")
+    output.push("")
+    output.push(normalizeLineEndings(value))
+    output.push("")
   })
 
   return output.join("\n")
@@ -106,45 +102,54 @@ export function listingToHumanReadable(listing: Listing): string {
 /**
  * Create fixtures from provided listing in temp folder
  * Alternative for mock-fs which is also mocking nodejs require calls
- * @param listing
+ *
+ * returns a path to tmp directory with fixtures
  */
 export async function createFixtures(listing: Listing) {
   const tmpDir = await fs.promises.mkdtemp(
-    path.join(os.tmpdir(), `lingui-test-${process.pid}`)
+    path.join(os.tmpdir(), `test-${process.pid}`)
   )
 
-  async function create(listing: Listing) {
-    for (const [filename, value] of Object.entries(listing)) {
-      if (typeof value === "string") {
-        await fs.promises.writeFile(path.join(tmpDir, filename), value)
-      } else {
-        await create(value)
-      }
-    }
+  for (const [filename, value] of Object.entries(listing)) {
+    await fs.promises.mkdir(path.join(tmpDir, path.dirname(filename)), {
+      recursive: true,
+    })
+    await fs.promises.writeFile(path.join(tmpDir, filename), value)
   }
-
-  await create(listing)
   return tmpDir
 }
 
-export function readFsToJson(
+/**
+ * Print FS to the listing, handy to use with snapshots
+ */
+export function readFsToListing(
   directory: string,
   filter?: (filename: string) => boolean
-): Listing {
-  const out: Listing = {}
+): Record<string, string> {
+  const out: Record<string, string> = {}
 
-  fs.readdirSync(directory).map((filename) => {
-    const filepath = path.join(directory, filename)
+  function readDirRecursive(currentDir: string, parentPath = ""): void {
+    const entries = fs.readdirSync(currentDir)
 
-    if (fs.lstatSync(filepath).isDirectory()) {
-      out[filename] = readFsToJson(filepath)
-      return out
-    }
+    entries.forEach((entry) => {
+      const filepath = path.join(currentDir, entry)
+      const relativePath = parentPath ? `${parentPath}/${entry}` : entry
 
-    if (!filter || filter(filename)) {
-      out[filename] = fs.readFileSync(filepath).toString()
-    }
-  })
+      if (fs.lstatSync(filepath).isDirectory()) {
+        readDirRecursive(filepath, relativePath)
+      } else if (!filter || filter(entry)) {
+        out[relativePath] = fs.readFileSync(filepath, "utf-8")
+      }
+    })
+  }
 
+  readDirRecursive(directory)
   return out
+}
+
+export function compareFolders(pathA: string, pathB: string) {
+  const listingA = listingToHumanReadable(readFsToListing(pathA))
+  const listingB = listingToHumanReadable(readFsToListing(pathB))
+
+  expect(listingA).toBe(listingB)
 }

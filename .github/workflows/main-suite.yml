@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ["16", "18", "19", "20"]
+        node: ["20", "22"]
         os: [ubuntu-latest, windows-latest]
 
     steps:
@@ -72,10 +72,7 @@ jobs:
         run: yarn test:ci:coverage
 
       - name: Test Public Typings
-        run: yarn test:tsd
-
-      - name: Integration Testing
-        run: yarn test:integration
+        run: yarn test:types
 
       - name: E2E Testing
         run: yarn test:e2e

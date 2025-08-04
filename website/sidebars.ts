@@ -10,13 +10,8 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React Project",
-        id: "tutorials/setup-react",
-      },
-      {
-        type: "doc",
-        label: "Vite Project",
-        id: "tutorials/setup-vite",
+        label: "Installation and Setup",
+        id: "installation",
       },
     ],
   },
@@ -41,11 +36,6 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "React - Common Patterns",
-        id: "tutorials/react-patterns",
-      },
-      {
-        type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
       },
@@ -64,6 +54,16 @@ const sidebar = [
         type: "doc",
         label: "Explicit vs Generated IDs",
         id: "guides/explicit-vs-generated-ids",
+      },
+      {
+        type: "doc",
+        label: "Lazy Translations",
+        id: "guides/lazy-translations",
+      },
+      {
+        type: "doc",
+        label: "Optimizing Bundle Size",
+        id: "guides/optimizing-bundle-size",
       },
       {
         type: "doc",
@@ -103,13 +103,13 @@ const sidebar = [
     items: [
       {
         type: "doc",
-        label: "Lingui Configuration",
+        label: "Configuration",
         id: "ref/conf",
       },
       {
         type: "doc",
-        label: "Catalog Formats",
-        id: "ref/catalog-formats",
+        label: "Macros",
+        id: "ref/macro",
       },
       {
         type: "doc",
@@ -123,17 +123,12 @@ const sidebar = [
       },
       {
         type: "doc",
-        label: "@lingui/macro",
-        id: "ref/macro",
-      },
-      {
-        type: "doc",
         label: "@lingui/cli",
         id: "ref/cli",
       },
       {
         type: "doc",
-        label: "@lingui/locale-detector",
+        label: "@lingui/detect-locale",
         id: "ref/locale-detector",
       },
       {
@@ -150,6 +145,11 @@ const sidebar = [
         type: "doc",
         label: "@lingui/extractor-vue",
         id: "ref/extractor-vue",
+      },
+      {
+        type: "doc",
+        label: "Catalog Formats",
+        id: "ref/catalog-formats",
       },
       {
         type: "category",
@@ -193,17 +193,33 @@ const sidebar = [
   {
     type: "category",
     label: "Sync & Collaboration Tools",
-    items: ["tools/introduction", "tools/crowdin", "tools/translation-io"],
+    items: [
+      {
+        type: "doc",
+        label: "Introduction",
+        id: "tools/introduction",
+      },
+      {
+        type: "doc",
+        label: "Crowdin",
+        id: "tools/crowdin",
+      },
+      {
+        type: "doc",
+        label: "Translation.io",
+        id: "tools/translation-io",
+      },
+    ],
   },
   {
     type: "category",
     label: "Resources",
-    items: ["misc/community", "misc/resources", "misc/tooling", "misc/showroom", "misc/react-intl", "misc/i18next"],
+    items: ["misc/resources", "misc/tooling", "misc/showroom", "misc/react-intl", "misc/i18next"],
   },
   {
     type: "category",
     label: "Releases",
-    items: ["releases/migration-4", "releases/migration-3"],
+    items: ["releases/migration-5", "releases/migration-4", "releases/migration-3"],
   },
 ];
 

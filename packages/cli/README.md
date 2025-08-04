@@ -8,57 +8,7 @@
 
 `@lingui/cli` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
-## Installation
-
-The library can be installed globally or locally using `yarn` or `npm`. The recommended way is installing the package locally. This ensures that everyone who uses the project has the same version and does not need to install additional packages.
-
-```
-npm install --save-dev @lingui/cli
-# or using yarn
-yarn add --dev @lingui/cli
-```
-
-To run the library locally there are three options, with the first one been recommended one.
-
-### 1) Add commands to scripts
-
-Add these scripts to your `package.json`.
-
-```json
-{
-  "scripts": {
-    "extract": "lingui extract",
-    "compile": "lingui compile"
-  }
-}
-```
-
-Then you can use:
-
-```sh
-npm run extract
-npm run compile
-```
-
-### 2) Use NPX
-
-You can run the scripts directly using a tool for executing Node packages `NPX`. `NPX` is included in `NPM` version 5.2 and higher.
-
-```
-npx lingui extract
-npx lingui compile
-```
-
-### 3) Run commands directly
-
-You can run commands directly from `node_modules` folder.
-
-```
-node_modules/.bin/lingui extract
-node_modules/.bin/lingui compile
-```
-
-## Usage
+## Installation & Usage
 
 See the [reference][reference] documentation.
 

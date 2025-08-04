@@ -1,4 +1,3 @@
-import * as R from "ramda"
 import { createBrowserCompiledCatalog } from "./browserCompiler"
 import PARSERS from "./minimalParser"
 
@@ -8,7 +7,7 @@ type RemoteLoaderOpts<T> = {
   messages: string | Record<string, any> | T
 }
 
-function remoteLoader<T>({
+export function remoteLoader<T>({
   format = "minimal",
   fallbackMessages,
   messages,
@@ -35,19 +34,16 @@ function remoteLoader<T>({
       `)
   }
 
-  const mapTranslationsToInterporlatedString = R.mapObjIndexed((_, key) => {
+  const mapTranslationsToInterpolatedString = Object.fromEntries(
     // if there's fallback and translation is empty, return the fallback
-    if (
+    Object.keys(parsedMessages).map((key) => [
+      key,
       parsedMessages[key].translation === "" &&
       parsedFallbackMessages?.[key]?.translation
-    ) {
-      return parsedFallbackMessages[key].translation
-    }
+        ? parsedFallbackMessages[key].translation
+        : parsedMessages[key].translation,
+    ])
+  )
 
-    return parsedMessages[key].translation
-  }, parsedMessages)
-
-  return createBrowserCompiledCatalog(mapTranslationsToInterporlatedString)
+  return createBrowserCompiledCatalog(mapTranslationsToInterpolatedString)
 }
-
-export { remoteLoader }

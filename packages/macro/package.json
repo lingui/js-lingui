@@ -1,19 +1,13 @@
 {
   "name": "@lingui/macro",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "description": "Macro for generating messages in ICU MessageFormat syntax",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "main": "./index.js",
   "types": "./index.d.ts",
   "sideEffects": false,
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
-  },
-  "scripts": {
-    "test:tsd": "tsd",
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
   },
   "license": "MIT",
   "keywords": [
@@ -26,60 +20,45 @@
     "translation",
     "multilingual"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/macro"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "exports": {
     ".": {
-      "require": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./index.d.ts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./node": {
-      "require": {
-        "types": "./dist/index.d.ts"
-      },
-      "import": {
-        "types": "./dist/index.d.ts"
-      }
+      "types": "./index.d.ts",
+      "default": "./index.js"
     }
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/",
-    "index.d.ts"
+    "index.d.ts",
+    "index.js"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@babel/types": "^7.20.7",
-    "@lingui/conf": "4.13.0",
-    "@lingui/core": "4.13.0",
-    "@lingui/message-utils": "4.13.0"
+    "@lingui/core": "5.4.0",
+    "@lingui/react": "5.4.0"
   },
   "peerDependencies": {
-    "@lingui/react": "^4.0.0",
+    "@lingui/babel-plugin-lingui-macro": "5.4.0",
     "babel-plugin-macros": "2 || 3"
   },
-  "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/parser": "^7.20.15",
-    "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
-    "prettier": "2.8.3",
-    "tsd": "^0.26.1",
-    "unbuild": "2.0.0"
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "babel-plugin-macros": {
+      "optional": true
+    }
   }
 }

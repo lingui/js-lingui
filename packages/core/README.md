@@ -8,14 +8,7 @@
 
 `@lingui/core` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
-## Installation
-
-```sh
-npm install --save @lingui/core
-# yarn add @lingui/core
-```
-
-## Usage
+## Installation & Usage
 
 See the [tutorial][tutorial] or [reference][reference] documentation.
 

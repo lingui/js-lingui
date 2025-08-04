@@ -2,19 +2,23 @@ import path from "path"
 import webpack from "webpack"
 import { mkdtempSync } from "fs"
 import os from "os"
+import { LinguiLoaderOptions } from "../src/webpackLoader"
 
 export type BuildResult = {
   loadBundle(): Promise<any>
   stats: webpack.StatsCompilation
 }
 
-export async function build(entryPoint: string): Promise<BuildResult> {
+export async function build(
+  entryPoint: string,
+  loaderOptions: LinguiLoaderOptions = {}
+): Promise<BuildResult> {
   // set cwd() to working path
   const oldCwd = process.cwd()
 
   process.chdir(path.dirname(entryPoint))
 
-  const compiler = getCompiler(entryPoint)
+  const compiler = getCompiler(entryPoint, loaderOptions)
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
@@ -36,8 +40,11 @@ export async function build(entryPoint: string): Promise<BuildResult> {
   })
 }
 
-export function watch(entryPoint: string) {
-  const compiler = getCompiler(entryPoint)
+export function watch(
+  entryPoint: string,
+  loaderOptions: LinguiLoaderOptions = {}
+) {
+  const compiler = getCompiler(entryPoint, loaderOptions)
 
   let deferred = createDeferred<webpack.StatsCompilation>()
 
@@ -59,7 +66,10 @@ export function watch(entryPoint: string) {
   }
 }
 
-export function getCompiler(entryPoint: string) {
+export function getCompiler(
+  entryPoint: string,
+  loaderOptions: LinguiLoaderOptions
+) {
   return webpack({
     mode: "development",
     target: "node",
@@ -68,6 +78,17 @@ export function getCompiler(entryPoint: string) {
       alias: {
         "@lingui/loader": path.resolve(__dirname, "../src/webpackLoader.ts"),
       },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.po$/,
+          use: {
+            loader: "@lingui/loader",
+            options: loaderOptions,
+          },
+        },
+      ],
     },
     output: {
       path: mkdtempSync(path.join(os.tmpdir(), `lingui-test-${process.pid}`)),

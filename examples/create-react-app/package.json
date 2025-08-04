@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@lingui/core": "^4.1.2",
-    "@lingui/react": "^4.1.2",
+    "@lingui/core": "^5.2.0",
+    "@lingui/react": "^5.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -32,9 +32,9 @@
     ]
   },
   "devDependencies": {
-    "@lingui/cli": "^4.1.2",
-    "@lingui/loader": "^4.1.2",
-    "@lingui/macro": "^4.1.2",
+    "@lingui/babel-plugin-lingui-macro": "^5.2.0",
+    "@lingui/cli": "^5.2.0",
+    "@lingui/loader": "^5.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

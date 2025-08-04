@@ -2,10 +2,10 @@
 title: Lingui hits 4k Stars on GitHub ⭐
 authors: andrii-bodnar
 tags: [news, community]
-image: ./img/social-card.png
+image: ./social-card.png
 ---
 
-![social-card image](./img/social-card.png)
+![social-card image](./social-card.png)
 
 We're thrilled to announce that the [Lingui repository](https://github.com/lingui/js-lingui) has reached an important milestone - **4,000** stars! This achievement is a testament to the growing popularity of Lingui as a powerful and flexible internationalization solution for global products.
 

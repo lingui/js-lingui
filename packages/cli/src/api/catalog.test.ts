@@ -20,9 +20,11 @@ import { extractFromFiles } from "./catalog/extractFromFiles"
 import { FormatterWrapper, getFormat } from "./formats"
 
 export const fixture = (...dirs: string[]) =>
-  path.resolve(__dirname, path.join("fixtures", ...dirs)) +
-  // preserve trailing slash
-  (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  (
+    path.resolve(__dirname, path.join("fixtures", ...dirs)) +
+    // preserve trailing slash
+    (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+  ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -93,7 +95,7 @@ describe("Catalog", () => {
       // Everything should be empty
       expect(await catalog.readAll()).toMatchSnapshot()
 
-      await catalog.make({ ...defaultMakeOptions, locale: "en" })
+      await catalog.make({ ...defaultMakeOptions, locale: ["en"] })
       expect(await catalog.readAll()).toMatchSnapshot()
     })
 
@@ -214,6 +216,7 @@ describe("Catalog", () => {
                 15,
               ],
             ],
+            placeholders: {},
           },
         }
       `)
@@ -312,6 +315,21 @@ describe("Catalog", () => {
           fixture("collect/$componentE/index.js"),
         ],
       })
+      expect(messages).toMatchSnapshot()
+    })
+
+    it("should extract files with special characters in the include path", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect/[componentD]")],
+          exclude: [],
+          format,
+        },
+        mockConfig()
+      )
+      const messages = await catalog.collect()
       expect(messages).toMatchSnapshot()
     })
 
@@ -525,7 +543,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("messageId")(catalog)
+    const orderedCatalogs = order("messageId", catalog)
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toMatchSnapshot()
@@ -557,7 +575,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("origin")(catalog)
+    const orderedCatalogs = order("origin", catalog)
 
     // Test that the message content is the same as before
     expect(orderedCatalogs).toMatchSnapshot()
@@ -593,7 +611,7 @@ describe("order", () => {
       }),
     }
 
-    const orderedCatalogs = order("message")(catalog)
+    const orderedCatalogs = order("message", catalog)
 
     // Jest snapshot order the keys automatically, so test that the key order explicitly
     expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`
@@ -635,11 +653,11 @@ describe("writeCompiled", () => {
   ])(
     "Should save namespace $namespace in $extension extension",
     async ({ namespace, extension }) => {
-      const compiledCatalog = createCompiledCatalog("en", {}, { namespace })
+      const { source } = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
-      expect(
-        await catalog.writeCompiled("en", compiledCatalog, namespace)
-      ).toMatch(extension)
+      expect(await catalog.writeCompiled("en", source, namespace)).toMatch(
+        extension
+      )
     }
   )
 })

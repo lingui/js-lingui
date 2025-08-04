@@ -1,4 +1,4 @@
 module.exports = {
   presets: ["@babel/env"],
-  plugins: ["macros"],
+  plugins: ["@lingui/babel-plugin-lingui-macro"],
 }

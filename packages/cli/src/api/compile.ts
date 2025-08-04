@@ -1,8 +1,8 @@
 import * as t from "@babel/types"
 import generate, { GeneratorOptions } from "@babel/generator"
 import {
-  compileMessage,
   CompiledMessage,
+  compileMessageOrThrow,
 } from "@lingui/message-utils/compileMessage"
 import pseudoLocalize from "./pseudoLocalize"
 
@@ -19,11 +19,26 @@ export type CreateCompileCatalogOptions = {
   compilerBabelOptions?: GeneratorOptions
 }
 
+export type MessageCompilationError = {
+  /**
+   * ID of the message in the Catalog
+   */
+  id: string
+  /**
+   * Message itself
+   */
+  source: string
+  /**
+   * Error associated with this message
+   */
+  error: Error
+}
+
 export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
-): string {
+): { source: string; errors: MessageCompilationError[] } {
   const {
     strict = false,
     namespace = "cjs",
@@ -32,18 +47,31 @@ export function createCompiledCatalog(
   } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
-  const compiledMessages = Object.keys(messages).reduce<{
-    [msgId: string]: CompiledMessage
-  }>((obj, key: string) => {
-    // Don't use `key` as a fallback translation in strict mode.
-    const translation = (messages[key] || (!strict ? key : "")) as string
+  const errors: MessageCompilationError[] = []
 
-    obj[key] = compile(translation, shouldPseudolocalize)
-    return obj
-  }, {})
+  const compiledMessages = Object.keys(messages)
+    .sort()
+    .reduce<{
+      [msgId: string]: CompiledMessage
+    }>((obj, key: string) => {
+      // Don't use `key` as a fallback translation in strict mode.
+      const translation = (messages[key] || (!strict ? key : "")) as string
+
+      try {
+        obj[key] = compile(translation, shouldPseudolocalize)
+      } catch (e) {
+        errors.push({
+          id: key,
+          source: translation,
+          error: e as Error,
+        })
+      }
+
+      return obj
+    }, {})
 
   if (namespace === "json") {
-    return JSON.stringify({ messages: compiledMessages })
+    return { source: JSON.stringify({ messages: compiledMessages }), errors }
   }
 
   const ast = buildExportStatement(
@@ -63,7 +91,7 @@ export function createCompiledCatalog(
     ...compilerBabelOptions,
   }).code
 
-  return "/*eslint-disable*/" + code
+  return { source: "/*eslint-disable*/" + code, errors }
 }
 
 function buildExportStatement(
@@ -138,7 +166,7 @@ export function compile(
   message: string,
   shouldPseudolocalize: boolean = false
 ) {
-  return compileMessage(message, (value) =>
+  return compileMessageOrThrow(message, (value) =>
     shouldPseudolocalize ? pseudoLocalize(value) : value
   )
 }

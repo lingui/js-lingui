@@ -4,9 +4,7 @@ import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
 
-const skipOnWindows = os.platform() === "win32" ? describe.skip : describe
-
-skipOnWindows("lingui-loader", () => {
+describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
     const built = await build(path.join(__dirname, "po-format/entrypoint.js"))
 
@@ -52,6 +50,54 @@ skipOnWindows("lingui-loader", () => {
     expect(built.stats.warnings).toEqual([])
   })
 
+  it("should report missing error when failOnMissing = true", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-missing/entrypoint.js"),
+      {
+        failOnMissing: true,
+      }
+    )
+
+    expect(built.stats.errors[0].message).toContain("Missing 1 translation(s):")
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it("should NOT report missing messages for pseudo locale when failOnMissing = true", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-missing-pseudo/entrypoint.js"),
+      {
+        failOnMissing: true,
+      }
+    )
+    expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it("Should fail build if there are message compilation errors when failOnCompileError = true", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
+      {
+        failOnCompileError: true,
+      }
+    )
+    expect(built.stats.errors[0].message).toContain(
+      "Compilation error for 2 translation(s)"
+    )
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it("Should NOT fail build if there are message compilation errors when failOnCompileError = false", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
+      {
+        failOnCompileError: false,
+      }
+    )
+    expect(built.stats.warnings[0].message).toContain(
+      "Compilation error for 2 translation(s)"
+    )
+    expect(built.stats.errors).toEqual([])
+  })
   it("should trigger webpack recompile on catalog dependency change", async () => {
     const fixtureTempPath = await copyFixture(path.join(__dirname, "po-format"))
 
@@ -62,14 +108,18 @@ skipOnWindows("lingui-loader", () => {
     expect((await res.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
       {
-        ED2Xk0: String from template,
+        ED2Xk0: [
+          String from template,
+        ],
         mVmaLu: [
           My name is ,
           [
             name,
           ],
         ],
-        mY42CM: Hello World,
+        mY42CM: [
+          Hello World,
+        ],
       }
     `)
 
@@ -99,8 +149,12 @@ msgstr ""
             name,
           ],
         ],
-        mY42CM: Hello World,
-        wg2uwk: String from template changes!,
+        mY42CM: [
+          Hello World,
+        ],
+        wg2uwk: [
+          String from template changes!,
+        ],
       }
     `)
 

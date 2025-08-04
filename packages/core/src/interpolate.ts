@@ -1,10 +1,15 @@
 import { CompiledMessage, Formats, Locales, Values } from "./i18n"
-import { date, number, plural, type PluralOptions } from "./formats"
+import {
+  date,
+  DateTimeFormatSize,
+  number,
+  plural,
+  type PluralOptions,
+  time,
+} from "./formats"
 import { isString } from "./essentials"
-import { unraw } from "unraw"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
-
-export const UNICODE_REGEX = /\\u[a-fA-F0-9]{4}|\\x[a-fA-F0-9]{2}/
+import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 
@@ -16,10 +21,10 @@ const getDefaultFormats = (
   const locales = passedLocales || locale
 
   const style = <T extends object>(format: string | T): T => {
-    return typeof format === "object"
-      ? (format as any)
-      : formats[format] || { style: format }
+    if (typeof format === "object") return format as T
+    return formats[format] as T
   }
+
   const replaceOctothorpe = (value: number, message: string): string => {
     const numberFormat = Object.keys(formats).length
       ? style("number")
@@ -48,12 +53,20 @@ const getDefaultFormats = (
     number: (
       value: number,
       format: string | Intl.NumberFormatOptions
-    ): string => number(locales, value, style(format)),
+    ): string =>
+      number(
+        locales,
+        value,
+        style(format) || ({ style: format } as Intl.NumberFormatOptions)
+      ),
 
     date: (
       value: string,
-      format: string | Intl.DateTimeFormatOptions
-    ): string => date(locales, value, style(format)),
+      format: Intl.DateTimeFormatOptions | string
+    ): string =>
+      date(locales, value, style(format) || (format as DateTimeFormatSize)),
+    time: (value: string, format: string): string =>
+      time(locales, value, style(format) || (format as DateTimeFormatSize)),
   } as const
 }
 
@@ -133,13 +146,10 @@ export function interpolate(
     }
 
     const result = formatMessage(translation)
-    if (isString(result) && UNICODE_REGEX.test(result)) {
-      // convert raw unicode sequences back to normal strings
-      // note JSON.parse hack is not working as you might expect https://stackoverflow.com/a/57560631/2210610
-      // that's why special library for that purpose is used
-      return unraw(result.trim())
+    if (isString(result) && ESCAPE_SEQUENCE_REGEX.test(result)) {
+      return decodeEscapeSequences(result)
     }
-    if (isString(result)) return result.trim()
+    if (isString(result)) return result
     return result ? String(result) : ""
   }
 }

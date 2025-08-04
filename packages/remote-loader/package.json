@@ -26,15 +26,17 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/remote-loader"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "exports": {
     ".": {
@@ -50,8 +52,7 @@
   ],
   "dependencies": {
     "@lingui/core": "4.0.0",
-    "@lingui/message-utils": "4.0.0",
-    "ramda": "^0.27.1"
+    "@lingui/message-utils": "4.0.0"
   },
   "devDependencies": {
     "unbuild": "2.0.0"

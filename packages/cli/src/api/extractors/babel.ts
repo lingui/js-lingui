@@ -6,13 +6,19 @@ import type {
 } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import type { ExtractorType } from "@lingui/conf"
+import {
+  ExtractorType,
+  LinguiConfig,
+  ExtractedMessage,
+  ExtractorCtx,
+} from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 
-import { LinguiMacroOpts } from "@lingui/macro/node"
-import { ExtractedMessage, ExtractorCtx } from "@lingui/conf"
+import linguiMacroPlugin, {
+  type LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
 
-const babelRe = new RegExp(
+export const babelRe = new RegExp(
   "\\.(" +
     [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
       .map((ext) => ext.slice(1))
@@ -22,7 +28,7 @@ const babelRe = new RegExp(
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[\/\*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
 )
 
 /**
@@ -43,9 +49,10 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
   } else if (code.search(inlineSourceMapsRE) != -1) {
     const { SourceMapConsumer } = await import("source-map")
     const { fromSource } = await import("convert-source-map")
-    sourceMapsConsumer = await new SourceMapConsumer(
-      fromSource(code).toObject()
-    )
+
+    const t = fromSource(code).toObject()
+
+    sourceMapsConsumer = await new SourceMapConsumer(t)
   }
 
   return {
@@ -102,7 +109,8 @@ export async function extractFromFileWithBabel(
   code: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
   ctx: ExtractorCtx,
-  parserOpts: ParserOptions
+  parserOpts: ParserOptions,
+  skipMacroPlugin = false
 ) {
   const mapper = await createSourceMapper(code, ctx?.sourceMaps)
 
@@ -119,20 +127,17 @@ export async function extractFromFileWithBabel(
     parserOpts,
 
     plugins: [
-      [
-        "macros",
-        {
-          // macro plugin uses package `resolve` to find a path of macro file
-          // this will not follow jest pathMapping and will resolve path from ./build
-          // instead of ./src which makes testing & developing hard.
-          // here we override resolve and provide correct path for testing
-          resolvePath: (source: string) => require.resolve(source),
-          lingui: {
-            extract: true,
-            linguiConfig: ctx.linguiConfig,
-          } satisfies LinguiMacroOpts,
-        },
-      ],
+      ...(!skipMacroPlugin
+        ? [
+            [
+              linguiMacroPlugin,
+              {
+                extract: true,
+                linguiConfig: ctx.linguiConfig,
+              } satisfies LinguiPluginOpts,
+            ],
+          ]
+        : []),
       [
         linguiExtractMessages,
         {
@@ -150,6 +155,39 @@ export async function extractFromFileWithBabel(
   mapper.destroy()
 }
 
+export function getBabelParserOptions(
+  filename: string,
+  parserOptions: LinguiConfig["extractorParserOptions"]
+) {
+  // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
+  const parserPlugins: ParserPlugin[] = [
+    "importAttributes", // stage3
+    "explicitResourceManagement", // stage3,
+    "decoratorAutoAccessors", // stage3,
+  ]
+
+  if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {
+    parserPlugins.push("typescript")
+    if (parserOptions.tsExperimentalDecorators) {
+      parserPlugins.push("decorators-legacy")
+    } else {
+      parserPlugins.push("decorators")
+    }
+  } else {
+    parserPlugins.push("decorators")
+
+    if (parserOptions?.flow) {
+      parserPlugins.push("flow")
+    }
+  }
+
+  if ([/\.js$/, /\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
+    parserPlugins.push("jsx")
+  }
+
+  return parserPlugins
+}
+
 const extractor: ExtractorType = {
   match(filename) {
     return babelRe.test(filename)
@@ -158,35 +196,8 @@ const extractor: ExtractorType = {
   async extract(filename, code, onMessageExtracted, ctx) {
     const parserOptions = ctx.linguiConfig.extractorParserOptions
 
-    // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
-    const parserPlugins: ParserPlugin[] = [
-      "importAttributes", // stage3
-      "explicitResourceManagement", // stage3,
-    ]
-
-    if (
-      [/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))
-    ) {
-      parserPlugins.push("typescript")
-      if (parserOptions.tsExperimentalDecorators) {
-        parserPlugins.push("decorators-legacy")
-      } else {
-        parserPlugins.push("decorators")
-      }
-    } else {
-      parserPlugins.push("decorators")
-
-      if (parserOptions?.flow) {
-        parserPlugins.push("flow")
-      }
-    }
-
-    if ([/\.js$/, /\.jsx$/, /\.tsx$/].some((r) => filename.match(r))) {
-      parserPlugins.push("jsx")
-    }
-
     return extractFromFileWithBabel(filename, code, onMessageExtracted, ctx, {
-      plugins: parserPlugins,
+      plugins: getBabelParserOptions(filename, parserOptions),
     })
   },
 }

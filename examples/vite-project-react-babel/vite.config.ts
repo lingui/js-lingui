@@ -7,10 +7,9 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: ["macros"],
+        plugins: ["@lingui/babel-plugin-lingui-macro"],
       },
     }),
-
     lingui(),
   ],
 })

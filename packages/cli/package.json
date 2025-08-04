@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -12,7 +12,12 @@
     "translation",
     "multilingual"
   ],
-  "repository": "lingui/js-lingui",
+  "homepage": "https://lingui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/cli"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
@@ -23,6 +28,10 @@
     "lingui": "./dist/lingui.js"
   },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./api": {
       "types": "./dist/api/index.d.ts",
       "default": "./dist/api/index.js"
@@ -40,7 +49,7 @@
     "build": "rimraf ./dist && tsc -p tsconfig.build.json"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "LICENSE",
@@ -53,36 +62,30 @@
     "@babel/parser": "^7.22.0",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
-    "@lingui/babel-plugin-extract-messages": "4.13.0",
-    "@lingui/conf": "4.13.0",
-    "@lingui/core": "4.13.0",
-    "@lingui/format-po": "4.13.0",
-    "@lingui/message-utils": "4.13.0",
-    "babel-plugin-macros": "^3.0.1",
-    "chalk": "^4.1.0",
+    "@lingui/babel-plugin-extract-messages": "5.4.0",
+    "@lingui/babel-plugin-lingui-macro": "5.4.0",
+    "@lingui/conf": "5.4.0",
+    "@lingui/core": "5.4.0",
+    "@lingui/format-po": "5.4.0",
+    "@lingui/message-utils": "5.4.0",
     "chokidar": "3.5.1",
     "cli-table": "^0.3.11",
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",
-    "esbuild": "^0.17.10",
-    "glob": "^7.1.4",
-    "inquirer": "^7.3.3",
-    "micromatch": "^4.0.2",
+    "esbuild": "^0.25.1",
+    "glob": "^11.0.0",
+    "micromatch": "^4.0.7",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
-    "pathe": "^1.1.0",
-    "pkg-up": "^3.1.0",
+    "picocolors": "^1.1.1",
     "pofile": "^1.1.4",
     "pseudolocale": "^2.0.0",
-    "ramda": "^0.27.1",
     "source-map": "^0.8.0-beta.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "@lingui/macro": "4.13.0",
     "@types/convert-source-map": "^2.0.0",
-    "@types/glob": "^8.1.0",
     "@types/micromatch": "^4.0.1",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",

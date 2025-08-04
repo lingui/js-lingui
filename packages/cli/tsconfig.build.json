@@ -9,7 +9,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "skipLibCheck": true,
-    "moduleResolution": "Node16"
+    "module": "NodeNext",
   },
   "include": ["./src"],
   "exclude": [

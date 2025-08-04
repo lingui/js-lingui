@@ -6,8 +6,7 @@
 
 > Internal package. You probably don't need to use it directly.
 
-`@lingui/message-utils` is part of [LinguiJS][linguijs]. See the [documentation][documentation]
-for all information, tutorials and examples.
+`@lingui/message-utils` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
 
 ## License
 

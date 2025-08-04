@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po",
-  "version": "4.13.0",
+  "version": "5.4.0",
   "description": "Gettext PO format for Lingui Catalogs",
   "main": "./dist/po.cjs",
   "module": "./dist/po.mjs",
@@ -25,15 +25,17 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/format-po"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "LICENSE",
@@ -41,15 +43,14 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "4.13.0",
-    "@lingui/message-utils": "4.13.0",
+    "@lingui/conf": "5.4.0",
+    "@lingui/message-utils": "5.4.0",
     "date-fns": "^3.6.0",
     "pofile": "^1.1.4"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
     "mockdate": "^3.0.5",
-    "tsd": "^0.28.0",
     "unbuild": "2.0.0"
   }
 }

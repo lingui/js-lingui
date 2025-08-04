@@ -24,12 +24,17 @@ const USERS: UserDetails[] = [
   {
     logo: "ansible.png",
     name: "Ansible",
-    link: "https://github.com/ansible/awx",
+    link: "https://github.com/ansible/ansible-hub-ui",
   },
   {
     logo: "metamask.png",
     name: "Metamask",
     link: "https://github.com/MetaMask/snaps-directory",
+  },
+  {
+    logo: "twenty.png",
+    name: "Twenty",
+    link: "https://github.com/twentyhq/twenty",
   },
   {
     logo: "documenso.png",
@@ -97,7 +102,7 @@ const Users = (): React.ReactElement => {
             ))}
           </div>
 
-          <p className="text--secondary">And many more...</p>
+          <a href="/misc/showroom">And many more...</a>
         </div>
       </div>
     </section>

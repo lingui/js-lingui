@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Alert, SafeAreaView } from "react-native";
-import { Plural, SelectOrdinal, t, Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { Plural, SelectOrdinal, Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "./PaddedButton";
 import { Heading } from "./Components";
 
 export const Body = React.memo(() => {
   const [messages, setMessages] = useState<string[]>([]);
-  const { i18n } = useLingui();
+  const { i18n, t } = useLingui();
 
   const markAllAsRead = () => {
     // NOTE - here we're implicitly using the i18n instance that does NOT come from the React context, but from @lingui/core
@@ -65,6 +64,8 @@ const Inbox = ({
   markAsRead: () => void;
   addMessage: () => void;
 }) => {
+  const { t } = useLingui();
+
   const messagesCount = messages.length;
 
   return (

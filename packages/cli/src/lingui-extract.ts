@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
@@ -9,14 +9,14 @@ import { getCatalogs, AllCatalogsType } from "./api"
 import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
 
 export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -33,18 +33,20 @@ export default async function command(
 
   const spinner = ora().start()
 
-  for (let catalog of catalogs) {
-    const result = await catalog.make({
-      ...(options as CliExtractOptions),
-      orderBy: config.orderBy,
+  await Promise.all(
+    catalogs.map(async (catalog) => {
+      const result = await catalog.make({
+        ...(options as CliExtractOptions),
+        orderBy: config.orderBy,
+      })
+
+      catalogStats[
+        normalizePath(nodepath.relative(config.rootDir, catalog.path))
+      ] = result || {}
+
+      commandSuccess &&= Boolean(result)
     })
-
-    catalogStats[
-      normalizeSlashes(nodepath.relative(config.rootDir, catalog.path))
-    ] = result || {}
-
-    commandSuccess &&= Boolean(result)
-  }
+  )
 
   if (commandSuccess) {
     spinner.succeed()
@@ -60,12 +62,12 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("extract")
       )}" to update catalogs with new messages.)`
     )
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("compile")
       )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
     )
@@ -103,7 +105,7 @@ type CliOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string
+  locale: string[]
   prevFormat: string | null
   watch?: boolean
 }
@@ -111,7 +113,16 @@ type CliOptions = {
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
-    .option("--locale <locale>", "Only extract the specified locale")
+    .option(
+      "--locale <locale, [...]>",
+      "Only extract the specified locales",
+      (value) => {
+        return value
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      }
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -139,19 +150,25 @@ if (require.main === module) {
     hasErrors = true
     console.error("Trying to migrate message catalog to the same format")
     console.error(
-      `Set ${chalk.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${chalk.bold("previous")} format using --convert-from option.`
+      `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
+        ` and ${pico.bold("previous")} format using --convert-from option.`
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
-    console.log(chalk.yellow(helpRun(`extract --convert-from lingui`)))
+    console.log(pico.yellow(helpRun(`extract --convert-from lingui`)))
     process.exit(1)
   }
 
-  if (options.locale && !config.locales.includes(options.locale)) {
-    hasErrors = true
-    console.error(`Locale ${chalk.bold(options.locale)} does not exist.`)
-    console.error()
+  if (options.locale) {
+    const missingLocale = options.locale.find(
+      (l) => !config.locales.includes(l)
+    )
+
+    if (missingLocale) {
+      hasErrors = true
+      console.error(`Locale ${pico.bold(missingLocale)} does not exist.`)
+      console.error()
+    }
   }
 
   if (hasErrors) process.exit(1)
@@ -169,7 +186,7 @@ if (require.main === module) {
   }
 
   const changedPaths = new Set<string>()
-  let debounceTimer: NodeJS.Timer
+  let debounceTimer: NodeJS.Timeout
   let previousExtract = Promise.resolve(true)
   const dispatchExtract = (filePath?: string[]) => {
     // Skip debouncing if not enabled but still chain them so no racing issue
@@ -193,11 +210,11 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(chalk.bold("Initializing Watch Mode..."))
+    console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
       const catalogs = await getCatalogs(config)
-      let paths: string[] = []
-      let ignored: string[] = []
+      const paths: string[] = []
+      const ignored: string[] = []
 
       catalogs.forEach((catalog) => {
         paths.push(...catalog.include)
@@ -210,7 +227,7 @@ if (require.main === module) {
       })
 
       const onReady = () => {
-        console.info(chalk.green.bold("Watcher is ready!"))
+        console.info(pico.green(pico.bold("Watcher is ready!")))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

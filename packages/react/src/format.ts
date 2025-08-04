@@ -1,8 +1,7 @@
 import React from "react"
 
 // match <tag>paired</tag> and <tag/> unpaired tags
-const tagRe = /<([a-zA-Z0-9]+)>(.*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
-const nlRe = /(?:\r\n|\r|\n)/g
+const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
 
 // For HTML, certain tags should omit their close tag. We keep a whitelist for
 // those special-case tags.
@@ -37,7 +36,7 @@ function formatElements(
   elements: { [key: string]: React.ReactElement } = {}
 ): string | React.ReactElement | Array<React.ReactElement | string> {
   const uniqueId = makeCounter(0, "$lingui$")
-  const parts = value.replace(nlRe, "").split(tagRe)
+  const parts = value.split(tagRe)
 
   // no inline elements, return
   if (parts.length === 1) return value

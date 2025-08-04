@@ -1,6 +1,8 @@
 # Webpack Loader
 
-The Webpack loader compiles catalogs on the fly. It's an alternative to the [`lingui compile`](/ref/cli#compile) command: the loader enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
+The `@lingui/loader` is a Webpack loader for Lingui message catalogs. It offers an alternative to the [`lingui compile`](/ref/cli#compile) and compiles catalogs on the fly.
+
+It enables you to `import` `.po` files directly, instead of running `lingui compile` and `import`ing the resulting JavaScript (or TypeScript) files.
 
 ## Installation
 
@@ -12,9 +14,9 @@ npm install --save-dev @lingui/loader
 
 ## Usage
 
-Simply prepend `@lingui/loader!` in front of path to message catalog you want to import. Here's an example of dynamic import:
+Simply prepend `@lingui/loader!` in front of path to message catalog you want to import.
 
-The extension is mandatory.
+Here's an example of dynamic import:
 
 ```ts
 export async function dynamicActivate(locale: string) {
@@ -23,6 +25,8 @@ export async function dynamicActivate(locale: string) {
   i18n.activate(locale);
 }
 ```
+
+Remember that the file extension is mandatory.
 
 :::note
 Catalogs with the `.json` extension are treated differently by Webpack. They load as ES module with default export, so your import should look like this:
@@ -33,4 +37,7 @@ const { messages } = (await import(`@lingui/loader!./locales/${locale}/messages.
 
 :::
 
-See the [guide about dynamic loading catalogs](/docs/guides/dynamic-loading-catalogs.md) for more info.
+## See Also
+
+- [Dynamic Loading of Message Catalogs](/guides/dynamic-loading-catalogs)
+- [Catalog Formats](/ref/catalog-formats)

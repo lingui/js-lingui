@@ -1,11 +1,11 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { getCatalogs } from "./api"
 import nodepath from "path"
-import { normalizeSlashes } from "./api/utils"
+import normalizePath from "normalize-path"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -18,7 +18,7 @@ export default async function command(
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
-  const catalogStats: { [path: string]: Number } = {}
+  const catalogStats: { [path: string]: number } = {}
 
   let commandSuccess = true
 
@@ -31,9 +31,7 @@ export default async function command(
 
       if (result) {
         catalogStats[
-          normalizeSlashes(
-            nodepath.relative(config.rootDir, catalog.templateFile)
-          )
+          normalizePath(nodepath.relative(config.rootDir, catalog.templateFile))
         ] = Object.keys(result).length
       }
       commandSuccess &&= Boolean(result)
@@ -42,9 +40,7 @@ export default async function command(
 
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${chalk.bold(key)}: ${chalk.green(
-        value
-      )} messages`
+      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`
     )
     console.log()
   })

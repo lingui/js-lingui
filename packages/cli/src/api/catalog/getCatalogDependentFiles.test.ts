@@ -5,7 +5,7 @@ import { FormatterWrapper } from "../formats"
 import mockFs from "mock-fs"
 import * as process from "process"
 import os from "os"
-const skipOnWindows = os.platform() === "win32" ? it.skip : it
+import path from "node:path"
 
 describe("getCatalogDependentFiles", () => {
   let format: FormatterWrapper
@@ -156,58 +156,60 @@ describe("getCatalogDependentFiles", () => {
   })
 
   // https://github.com/lingui/js-lingui/issues/1705
-  skipOnWindows(
-    "Should return absolute path when relative catalog path is specified",
-    async () => {
-      const oldCwd = process.cwd()
+  it("Should return absolute path when relative catalog path is specified", async () => {
+    const oldCwd = process.cwd()
 
-      process.chdir("/")
+    process.chdir("/")
 
-      mockFs({
-        "/src/locales": {
-          // "messages.pot": "bla",
-          "en.po": "bla",
-          "pl.po": "bla",
-          "es.po": "bla",
-          "pt-PT.po": "bla",
-          "pt-BR.po": "bla",
+    mockFs({
+      "/src/locales": {
+        // "messages.pot": "bla",
+        "en.po": "bla",
+        "pl.po": "bla",
+        "es.po": "bla",
+        "pt-PT.po": "bla",
+        "pt-BR.po": "bla",
+      },
+    })
+
+    const config = makeConfig(
+      {
+        locales: ["en", "pl", "es", "pt-PT", "pt-BR"],
+        sourceLocale: "en",
+        fallbackLocales: {
+          "pt-PT": "pt-BR",
+          default: "en",
         },
-      })
+      },
+      { skipValidation: true }
+    )
 
-      const config = makeConfig(
-        {
-          locales: ["en", "pl", "es", "pt-PT", "pt-BR"],
-          sourceLocale: "en",
-          fallbackLocales: {
-            "pt-PT": "pt-BR",
-            default: "en",
-          },
-        },
-        { skipValidation: true }
-      )
+    const catalog = new Catalog(
+      {
+        name: null,
+        path: "./src/locales/{locale}",
+        include: ["src/"],
+        exclude: [],
+        format,
+      },
+      config
+    )
 
-      const catalog = new Catalog(
-        {
-          name: null,
-          path: "./src/locales/{locale}",
-          include: ["src/"],
-          exclude: [],
-          format,
-        },
-        config
-      )
+    const actual = await getCatalogDependentFiles(catalog, "pt-PT")
+    mockFs.restore()
+    process.chdir(oldCwd)
 
-      const actual = await getCatalogDependentFiles(catalog, "pt-PT")
-      mockFs.restore()
-
-      expect(actual).toMatchInlineSnapshot(`
-      [
-        /src/locales/pt-BR.po,
-        /src/locales/en.po,
-      ]
-    `)
-
-      process.chdir(oldCwd)
+    if (os.platform() === "win32") {
+      const root = path.parse(oldCwd).root
+      expect(actual).toStrictEqual([
+        `${root}src\\locales\\pt-BR.po`,
+        `${root}src\\locales\\en.po`,
+      ])
+    } else {
+      expect(actual).toStrictEqual([
+        "/src/locales/pt-BR.po",
+        "/src/locales/en.po",
+      ])
     }
-  )
+  })
 })

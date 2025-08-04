@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react"
 import * as React from "react"
 import { formatElements } from "./format"
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { mockConsole } from "@lingui/jest-mocks"
 
 describe("formatElements", function () {
@@ -31,6 +30,20 @@ describe("formatElements", function () {
     expect(
       html(formatElements("<0>About</0>", { 0: <a href="/about" /> }))
     ).toEqual('<a href="/about">About</a>')
+  })
+
+  it("should preserve newlines", function () {
+    expect(html(formatElements("<0>Inn\ner</0>", { 0: <strong /> }))).toEqual(
+      "<strong>Inn\ner</strong>"
+    )
+
+    expect(
+      html(formatElements("Before <0>Inn\r\ner</0> After", { 0: <strong /> }))
+    ).toEqual("Before <strong>Inn\r\ner</strong> After")
+
+    expect(
+      html(formatElements("<0>Ab\rout</0>", { 0: <a href="/about" /> }))
+    ).toEqual('<a href="/about">Ab\rout</a>')
   })
 
   it("should preserve named element props", function () {
@@ -70,7 +83,7 @@ describe("formatElements", function () {
         )
       )
     ).toEqual(
-      'Before <a href="/about">Inside <strong>Nested</strong> Between <br> After</a>'
+      'Before \n<a href="/about">Inside <strong>\nNested</strong>\n Between <br> After</a>'
     )
   })
 

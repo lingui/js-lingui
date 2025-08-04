@@ -3,6 +3,7 @@ import PO from "pofile"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import { normalizePlaceholderValue } from "./utils"
 
 type POItem = InstanceType<typeof PO.Item>
 
@@ -69,12 +70,37 @@ export type PoFormatterOptions = {
    * @default false
    */
   explicitIdAsDefault?: boolean
+
   /**
    * Custom attributes to append to the PO file header
    *
    * @default {}
    */
   customHeaderAttributes?: { [key: string]: string }
+
+  /**
+   * Print values for unnamed placeholders as comments for each message.
+   *
+   * This can give more context to translators for better translations.
+   *
+   * By default first 3 placeholders are shown.
+   *
+   * Example:
+   *
+   * ```js
+   * t`Hello ${user.name} ${value}`
+   * ```
+   *
+   * This will be extracted as
+   *
+   * ```po
+   * #. placeholder {0}: user.name
+   * msgid "Hello {0} {value}"
+   * ```
+   *
+   * @default true
+   */
+  printPlaceholdersInComments?: boolean | { limit?: number }
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -144,6 +170,30 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
       }
 
       item.msgid = id
+    }
+
+    if (options.printPlaceholdersInComments !== false) {
+      item.extractedComments = item.extractedComments.filter(
+        (comment) => !comment.startsWith("placeholder ")
+      )
+
+      const limit =
+        typeof options.printPlaceholdersInComments === "object" &&
+        options.printPlaceholdersInComments.limit
+          ? options.printPlaceholdersInComments.limit
+          : 3
+
+      if (message.placeholders) {
+        Object.entries(message.placeholders).forEach(([name, value]) => {
+          if (/^\d+$/.test(name)) {
+            value.slice(0, limit).forEach((entry) => {
+              item.extractedComments.push(
+                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`
+              )
+            })
+          }
+        })
+      }
     }
 
     if (message.context) {

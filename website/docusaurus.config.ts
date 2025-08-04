@@ -12,16 +12,20 @@ const config: Config = {
   onBrokenLinks: "throw",
   onBrokenAnchors: "throw",
   onBrokenMarkdownLinks: "throw",
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
     colorMode: {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     announcementBar: {
-      id: "v5_release",
+      id: "v5_release-available",
       content:
-        'The <b>v5.0.0</b> Pre-Release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=tag%3Av5&expanded=true">discover its new capabilities!</a>',
-      backgroundColor: "#f36c6c",
+        'Lingui <b>v5.0</b> is officially released! <a href="/blog/2024/11/28/announcing-lingui-5.0" target="_blank" rel="noopener noreferrer">Check it out!</a>',
+      backgroundColor: "#89cecf",
       textColor: "#1a1a1a",
     },
     metadata: [
@@ -55,7 +59,7 @@ const config: Config = {
           position: "left",
         },
         {
-          to: "/misc/examples",
+          to: "/examples",
           label: "Examples",
           position: "left",
         },
@@ -65,7 +69,7 @@ const config: Config = {
           position: "left",
         },
         {
-          to: "/misc/community",
+          to: "/community",
           label: "Community",
           position: "left",
         },
@@ -131,16 +135,25 @@ const config: Config = {
               to: "/blog",
             },
             {
+              label: "X",
+              href: "https://x.com/LinguiJS",
+            },
+            {
               label: "GitHub",
               href: "https://github.com/lingui/js-lingui",
             },
+          ],
+        },
+        {
+          title: "Docs for LLMs",
+          items: [
             {
-              label: "Twitter",
-              href: "https://twitter.com/LinguiJS",
+              label: "llms.txt",
+              href: "https://lingui.dev/llms.txt",
             },
             {
-              label: "ICU Playground",
-              href: "https://format-message.github.io/icu-message-format-for-translators/editor.html",
+              label: "llms-full.txt",
+              href: "https://lingui.dev/llms-full.txt",
             },
           ],
         },
@@ -190,7 +203,19 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  plugins: ["docusaurus-plugin-sass"],
+  plugins: [
+    "docusaurus-plugin-sass",
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        content: {
+          enableLlmsFullTxt: true,
+          excludeRoutes: ["/", "/search", "/community", "/misc/*", "/releases/*"],
+        },
+        includeOrder: ["/installation", "/tutorials/**", "/guides/**", "/ref/**", "/examples/**"],
+      },
+    ],
+  ],
 };
 
 export default config;

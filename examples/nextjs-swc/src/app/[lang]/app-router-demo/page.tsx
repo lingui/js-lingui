@@ -1,4 +1,8 @@
 import { HomePage } from '../../../components/HomePage'
-import { withLinguiPage } from '../../../withLingui'
+import {initLingui, PageLangParam} from '../../../initLingui'
 
-export default withLinguiPage(HomePage)
+export default async function Page(props: PageLangParam) {
+  const lang = (await props.params).lang
+  initLingui(lang)
+  return <HomePage />
+}
