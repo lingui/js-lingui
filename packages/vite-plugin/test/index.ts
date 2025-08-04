@@ -64,6 +64,17 @@ skipOnWindows("vite-plugin", () => {
 
     expect(res.stderr).toContain("Compilation error for 2 translation(s)")
   })
+
+  it("should report error when @lingui/macro is dynamically imported", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`dynamic-macro-error/vite.config.ts`)
+    } catch (e) {
+      expect(e.stderr).toContain(
+        'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.'
+      )
+    }
+  })
 })
 
 async function runVite(configPath: string) {
