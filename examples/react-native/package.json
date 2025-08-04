@@ -11,7 +11,7 @@
     "extract": "lingui extract",
     "compile": "lingui compile",
     "no-dev": "npx expo start -c --no-dev --minify",
-    "fix-deps": "npx expo install expo@53 --check",
+    "fix-deps": "npx expo install expo@^53 --check",
     "bundle": "expo export --dev=true --output-dir=dist --platform=ios --no-minify --no-bytecode"
   },
   "dependencies": {
@@ -23,8 +23,8 @@
     "expo-status-bar": "~2.2.3",
     "expo-updates": "~0.28.17",
     "react": "19.0.0",
-    "react-native": "0.80.2",
-    "react-native-web": "^0.21.0"
+    "react-native": "0.79.5",
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
