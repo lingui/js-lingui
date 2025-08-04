@@ -236,7 +236,7 @@ export function ph(def: LabeledExpression<string | number>): string
 
 /**
  * Helps to inject a variable into the other macro usage without automatically wrapping it in curly brackets,
- * so it can be used with custom formats.
+ * so it can be used with custom ICU expressions.
  *
  * @example
  * ```
@@ -244,4 +244,4 @@ export function ph(def: LabeledExpression<string | number>): string
  * t`Number {${arg(num)}, number, myNumberStyle}`;
  * ```
  */
-export function arg(def: string | number): string
+export function arg(def: MessagePlaceholder): string

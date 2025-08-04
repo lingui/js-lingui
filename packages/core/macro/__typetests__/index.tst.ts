@@ -9,6 +9,7 @@ import {
   selectOrdinal,
   select,
   ph,
+  arg,
 } from "@lingui/core/macro"
 
 const name = "Jack"
@@ -295,3 +296,16 @@ expect(
 
 // should accept only strings
 expect(select).type.not.toBeCallableWith("male", { male: 5, other: 5 })
+
+///////////////////
+//// Arg
+///////////////////
+
+// simple
+expect(t`Hello ${arg(name)}`).type.toBe<string>()
+
+// with labeled value
+expect(t`Hello ${arg({ name: user.name })}`).type.toBe<string>()
+
+// with ph labeled value
+expect(t`Hello ${arg(ph({ name: user.name }))}`).type.toBe<string>()

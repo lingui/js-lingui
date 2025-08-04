@@ -534,6 +534,37 @@ _i18n._(
 
 `;
 
+exports[`Variables with arg macro supports named placeholders syntax 1`] = `
+import { t, arg, ph } from "@lingui/core/macro";
+t\`Number {\${arg({ num: getNum() })}, number, myNumberStyle}\`;
+t\`Number {\${arg(ph({ num: getNum() }))}, number, myNumberStyle}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "6HvXd1",
+    message: "Number {num, number, myNumberStyle}",
+    values: {
+      num: getNum(),
+    },
+  }
+);
+_i18n._(
+  /*i18n*/
+  {
+    id: "6HvXd1",
+    message: "Number {num, number, myNumberStyle}",
+    values: {
+      num: getNum(),
+    },
+  }
+);
+
+`;
+
 exports[`Variables with escaped double quotes are correctly formatted 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable "name"\`;
