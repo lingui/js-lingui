@@ -23,6 +23,8 @@ function mergePlaceholders(
     if (!res[key].includes(value)) {
       res[key].push(value)
     }
+
+    res[key].sort()
   })
 
   return res

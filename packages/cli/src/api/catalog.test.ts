@@ -193,6 +193,39 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
+    it("should sort placeholders to keep them stable between runs", async () => {
+      const runA = await extractFromFiles(
+        [
+          fixture("collect-placeholders-sorting/a.ts"),
+          fixture("collect-placeholders-sorting/b.ts"),
+        ],
+        mockConfig()
+      )
+
+      const runB = await extractFromFiles(
+        [
+          fixture("collect-placeholders-sorting/b.ts"),
+          fixture("collect-placeholders-sorting/a.ts"),
+        ],
+        mockConfig()
+      )
+
+      expect(Object.values(runA)[0].placeholders[0]).toStrictEqual(
+        Object.values(runB)[0].placeholders[0]
+      )
+
+      expect(Object.values(runA)[0].placeholders).toMatchInlineSnapshot(`
+        {
+          0: [
+            getUser(),
+            getWorld(),
+          ],
+        }
+      `)
+
+      // expect(messages).toMatchSnapshot()
+    })
+
     it("should support experimental typescript decorators under a flag", async () => {
       const messages = await extractFromFiles(
         [fixture("collect-typescript-jsx/tsx-experimental-decorators.tsx")],
