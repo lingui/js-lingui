@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/lingui/js-lingui/compare/v5.4.0...v5.4.1) (2025-08-11)
+
+### Bug Fixes
+
+* remove @messageformat/date-skeleton from bundledDependencies ([#2293](https://github.com/lingui/js-lingui/issues/2293)) ([9601701](https://github.com/lingui/js-lingui/commit/96017018433310a6ba7a21dc9b6ce1d4f3c6965a))
+
 # [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
 
 **Note:** Version bump only for package @lingui/message-utils
