@@ -257,20 +257,11 @@ export function tokenizeExpression(
   if (t.isTSAsExpression(node)) {
     return tokenizeExpression(node.expression, ctx)
   }
+
   if (t.isObjectExpression(node)) {
     return tokenizeLabeledExpression(node, ctx)
-  } else if (
-    t.isCallExpression(node) &&
-    isLinguiIdentifier(node.callee, JsMacroName.ph, ctx) &&
-    node.arguments.length > 0
-  ) {
-    if (!t.isObjectExpression(node.arguments[0])) {
-      throw new Error(
-        "Incorrect usage of `ph` macro. First argument should be an ObjectExpression"
-      )
-    }
-
-    return tokenizeLabeledExpression(node.arguments[0], ctx)
+  } else if (t.isCallExpression(node) && isPhDecorator(node, ctx)) {
+    return tokenizePhDecorator(node, ctx)
   }
 
   return {
@@ -280,18 +271,24 @@ export function tokenizeExpression(
   }
 }
 
+function tokenizePhDecorator(node: CallExpression, ctx: MacroJsContext) {
+  if (node.arguments.length !== 1 || !t.isObjectExpression(node.arguments[0])) {
+    throw new Error(
+      "Incorrect usage of `ph` macro. Expected exactly one argument as `{variableName: variableValue}`"
+    )
+  }
+
+  return tokenizeLabeledExpression(node.arguments[0], ctx)
+}
+
 export function tokenizeArg(
   node: CallExpression,
   ctx: MacroJsContext
 ): ArgToken {
-  const arg = node.arguments[0] as Expression
+  const token = tokenizeExpression(node.arguments[0] as Expression, ctx)
+  token.raw = true
 
-  return {
-    type: "arg",
-    name: expressionToArgument(arg, ctx),
-    raw: true,
-    value: arg,
-  }
+  return token
 }
 
 export function expressionToArgument(
@@ -304,7 +301,14 @@ export function expressionToArgument(
   return String(ctx.getExpressionIndex())
 }
 
-export function isArgDecorator(node: Node, ctx: MacroJsContext): boolean {
+export function isPhDecorator(node: Node, ctx: MacroJsContext) {
+  return (
+    t.isCallExpression(node) &&
+    isLinguiIdentifier(node.callee, JsMacroName.ph, ctx)
+  )
+}
+
+export function isArgDecorator(node: Node, ctx: MacroJsContext) {
   return (
     t.isCallExpression(node) &&
     isLinguiIdentifier(node.callee, JsMacroName.arg, ctx)
