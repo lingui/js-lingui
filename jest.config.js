@@ -33,6 +33,12 @@ module.exports = {
   ],
   coverageReporters: ["lcov", "text"],
   globalSetup: "./scripts/jest/setupTimezone.js",
+  preset: "ts-jest",
+  transform: {
+    "^.+\\.ts$": ["ts-jest", {
+      isolatedModules: true,
+    }]
+  },
   projects: [
     {
       displayName: "web",

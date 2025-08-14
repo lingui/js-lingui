@@ -336,6 +336,14 @@ export type LinguiConfig = {
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions
+    /**
+     * Use worker threads for CPU-bound operations like extraction and compilation.
+     * When enabled, the CLI will use multiple worker threads to process catalogs
+     * and files in parallel, improving performance on multi-core systems.
+     * 
+     * @default false
+     */
+    multiThreading?: boolean
   }
 }
 

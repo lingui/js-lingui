@@ -33,20 +33,28 @@ export default async function command(
 
   const spinner = ora().start()
 
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const result = await catalog.make({
-        ...(options as CliExtractOptions),
-        orderBy: config.orderBy,
-      })
+  // For extraction, we use sequential processing instead of Promise.all
+  // because user-defined extractors may contain non-serializable functions
+  if (config.experimental?.multiThreading) {
+    console.log("Multi-threading enabled: Using sequential processing for extraction to ensure compatibility with custom extractors")
+  }
 
-      catalogStats[
-        normalizePath(nodepath.relative(config.rootDir, catalog.path))
-      ] = result || {}
-
-      commandSuccess &&= Boolean(result)
+  for (const catalog of catalogs) {
+    const result = await catalog.make({
+      ...(options as CliExtractOptions),
+      orderBy: config.orderBy,
     })
-  )
+
+    catalogStats[
+      normalizePath(nodepath.relative(config.rootDir, catalog.path))
+    ] = result || {}
+
+    commandSuccess &&= Boolean(result)
+
+    if (!result) {
+      break // Exit early if any catalog fails
+    }
+  }
 
   if (commandSuccess) {
     spinner.succeed()

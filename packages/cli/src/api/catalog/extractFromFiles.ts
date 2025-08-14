@@ -38,63 +38,69 @@ export async function extractFromFiles(
 
   let catalogSuccess = true
 
-  await Promise.all(
-    paths.map(async (filename) => {
-      const fileSuccess = await extract(
-        filename,
-        (next: ExtractedMessage) => {
-          if (!messages[next.id]) {
-            messages[next.id] = {
-              message: next.message,
-              context: next.context,
-              placeholders: {},
-              comments: [],
-              origin: [],
-            }
-          }
+  // Check if multi-threading is enabled
+  if (config.experimental?.multiThreading) {
+    // Use single-threaded processing for now since format functions may contain user-defined code
+    // that cannot be serialized to workers
+    console.log("Multi-threading is enabled but extraction uses single-threaded processing for compatibility with custom extractors")
+  }
 
-          const prev = messages[next.id]
-
-          // there might be a case when filename was not mapped from sourcemaps
-          const filename = next.origin[0]
-            ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
-            : ""
-
-          const origin: MessageOrigin = [filename, next.origin[1]]
-
-          if (prev.message && next.message && prev.message !== next.message) {
-            throw new Error(
-              `Encountered different default translations for message ${pico.yellow(
-                next.id
-              )}` +
-                `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-                `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
-            )
-          }
-
+  // Process files sequentially to avoid concurrency issues with user-defined extractors
+  for (const filename of paths) {
+    const fileSuccess = await extract(
+      filename,
+      (next: ExtractedMessage) => {
+        if (!messages[next.id]) {
           messages[next.id] = {
-            ...prev,
-            message: prev.message ?? next.message,
-            comments: next.comment
-              ? [...prev.comments, next.comment].sort()
-              : prev.comments,
-            origin: (
-              [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
-            ).sort((a, b) => a[0].localeCompare(b[0])),
-            placeholders: mergePlaceholders(
-              prev.placeholders,
-              next.placeholders
-            ),
+            message: next.message,
+            context: next.context,
+            placeholders: {},
+            comments: [],
+            origin: [],
           }
-        },
-        config,
-        {
-          extractors: config.extractors as ExtractorType[],
         }
-      )
-      catalogSuccess &&= fileSuccess
-    })
-  )
+
+        const prev = messages[next.id]
+
+        // there might be a case when filename was not mapped from sourcemaps
+        const filename = next.origin[0]
+          ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
+          : ""
+
+        const origin: MessageOrigin = [filename, next.origin[1]]
+
+        if (prev.message && next.message && prev.message !== next.message) {
+          throw new Error(
+            `Encountered different default translations for message ${pico.yellow(
+              next.id
+            )}` +
+              `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
+              `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
+          )
+        }
+
+        messages[next.id] = {
+          ...prev,
+          message: prev.message ?? next.message,
+          comments: next.comment
+            ? [...prev.comments, next.comment].sort()
+            : prev.comments,
+          origin: (
+            [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
+          ).sort((a, b) => a[0].localeCompare(b[0])),
+          placeholders: mergePlaceholders(
+            prev.placeholders,
+            next.placeholders
+          ),
+        }
+      },
+      config,
+      {
+        extractors: config.extractors as ExtractorType[],
+      }
+    )
+    catalogSuccess &&= fileSuccess
+  }
 
   if (!catalogSuccess) return undefined
 

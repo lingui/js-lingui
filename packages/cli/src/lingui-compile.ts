@@ -8,6 +8,7 @@ import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { createCompilationErrorMessage, getCatalogs, getFormat } from "./api"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
+import { compileMessages, MultiThreadCompileTask } from "./api/catalog/workers/compileMultiThread"
 import normalizePath from "normalize-path"
 
 import nodepath from "path"
@@ -37,19 +38,163 @@ export async function command(
 
   let errored = false
 
-  await Promise.all(
-    config.locales.map(async (locale) => {
-      try {
-        await compileLocale(locale, catalogs, options, config, doMerge)
-      } catch (err) {
-        if (err instanceof ProgramExit) {
+  // Check if multi-threading is enabled
+  if (config.experimental?.multiThreading) {
+    // Use multi-threaded compilation for locales
+    const compileTasks: MultiThreadCompileTask[] = []
+    const mergedCatalogs: Record<string, Record<string, string>> = {}
+
+    // Prepare compilation tasks for each locale
+    for (const locale of config.locales) {
+      let localeMergedCatalogs = {}
+
+      for (const catalog of catalogs) {
+        const { messages, missing: missingMessages } =
+          await catalog.getTranslations(locale, {
+            fallbackLocales: config.fallbackLocales,
+            sourceLocale: config.sourceLocale,
+          })
+
+        if (
+          !options.allowEmpty &&
+          locale !== config.pseudoLocale &&
+          missingMessages.length > 0
+        ) {
+          console.error(
+            pico.red(
+              `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
+            )
+          )
+
+          if (options.verbose) {
+            console.error(pico.red("Missing translations:"))
+            missingMessages.forEach((missing) => {
+              const source =
+                missing.source || missing.source === missing.id
+                  ? `: (${missing.source})`
+                  : ""
+
+              console.error(`${missing.id}${source}`)
+            })
+          } else {
+            console.error(
+              pico.red(`Missing ${missingMessages.length} translation(s)`)
+            )
+          }
+          console.error()
           errored = true
+          continue
+        }
+
+        if (doMerge) {
+          localeMergedCatalogs = { ...localeMergedCatalogs, ...messages }
         } else {
-          throw err
+          // Add individual catalog compilation task
+          const namespace = options.typescript
+            ? "ts"
+            : options.namespace || config.compileNamespace
+
+          compileTasks.push({
+            locale,
+            messages,
+            options: {
+              strict: false,
+              namespace,
+              pseudoLocale: config.pseudoLocale,
+              compilerBabelOptions: config.compilerBabelOptions,
+            }
+          })
         }
       }
-    })
-  )
+
+      if (doMerge) {
+        mergedCatalogs[locale] = localeMergedCatalogs
+      }
+    }
+
+    // Handle merged catalogs
+    if (doMerge) {
+      for (const [locale, messages] of Object.entries(mergedCatalogs)) {
+        const namespace = options.typescript
+          ? "ts"
+          : options.namespace || config.compileNamespace
+
+        compileTasks.push({
+          locale,
+          messages,
+          options: {
+            strict: false,
+            namespace,
+            pseudoLocale: config.pseudoLocale,
+            compilerBabelOptions: config.compilerBabelOptions,
+          }
+        })
+      }
+    }
+
+    // Execute compilation tasks
+    if (compileTasks.length > 0) {
+      const results = await compileMessages(compileTasks, true)
+
+      // Process results and write compiled files
+      for (const result of results) {
+        if (!result.success) {
+          errored = true
+          console.error(pico.red(`Failed to compile locale ${result.locale}: ${result.error}`))
+          continue
+        }
+
+        if (result.errors && result.errors.length > 0) {
+          let message = createCompilationErrorMessage(result.locale, result.errors)
+
+          if (options.failOnCompileError) {
+            message += `These errors fail command execution because \`--strict\` option passed`
+            console.error(pico.red(message))
+            errored = true
+            continue
+          } else {
+            message += `You can fail command execution on these errors by passing \`--strict\` option`
+            console.error(pico.red(message))
+          }
+        }
+
+        // Write compiled catalog
+        const catalogToWrite = doMerge 
+          ? await getCatalogForMerge(config)
+          : catalogs.find(c => c.path.includes(result.locale)) || catalogs[0]
+
+        if (catalogToWrite && result.source) {
+          const namespace = options.typescript
+            ? "ts"
+            : options.namespace || config.compileNamespace
+
+          let compiledPath = await catalogToWrite.writeCompiled(
+            result.locale,
+            result.source,
+            namespace
+          )
+
+          compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
+          options.verbose && console.error(pico.green(`${result.locale} ⇒ ${compiledPath}`))
+        }
+      }
+    }
+  } else {
+    // Use original single-threaded approach
+    await Promise.all(
+      config.locales.map(async (locale) => {
+        try {
+          await compileLocale(locale, catalogs, options, config, doMerge)
+        } catch (err) {
+          if (err instanceof ProgramExit) {
+            errored = true
+          } else {
+            throw err
+          }
+        }
+      })
+    )
+  }
 
   return !errored
 }
