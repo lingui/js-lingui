@@ -127,7 +127,7 @@ Please check that catalogs.path is filled properly.\n`
             )
           }
 
-          const { source: code, errors } = createCompiledCatalog(
+          const { source: code, errors } = await createCompiledCatalog(
             locale,
             messages,
             {

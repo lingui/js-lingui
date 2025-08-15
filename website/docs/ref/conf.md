@@ -524,3 +524,23 @@ import { Trans } from "@lingui/myMacro";
 ```
 
 This setting mostly useful for external framework integrations.
+
+## experimental.multiThread
+
+Default value: `false`
+
+Enable multi-threaded compilation. Currently only supported for the [`compile`](/ref/cli#compile) command.
+
+When enabled, the compilation process will use multiple worker threads to compile message catalogs in parallel, which can significantly improve performance for large projects with many messages.
+
+```json
+{
+  "experimental": {
+    "multiThread": true
+  }
+}
+```
+
+:::note
+This is an experimental feature and may have limitations or change in future versions.
+:::
