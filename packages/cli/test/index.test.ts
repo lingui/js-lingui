@@ -117,6 +117,50 @@ describe("E2E Extractor Test", () => {
     compareFolders(actualPath, expectedPath)
   })
 
+  it("Should extract with multiThread enabled", async () => {
+    const { rootDir, actualPath, expectedPath } = await prepare(
+      "extract-po-format"
+    )
+
+    await mockConsole(async (console) => {
+      const result = await extractCommand(
+        makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [
+            {
+              path: "<rootDir>/actual/{locale}",
+              include: ["<rootDir>/fixtures"],
+            },
+          ],
+          experimental: {
+            multiThread: true,
+          },
+        }),
+        {}
+      )
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.error)).toBeFalsy()
+      expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Catalog statistics for actual/{locale}: 
+        ┌─────────────┬─────────────┬─────────┐
+        │ Language    │ Total count │ Missing │
+        ├─────────────┼─────────────┼─────────┤
+        │ en (source) │     10      │    -    │
+        │ pl          │     10      │   10    │
+        └─────────────┴─────────────┴─────────┘
+
+        (Use "yarn extract" to update catalogs with new messages.)
+        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+      `)
+    })
+
+    compareFolders(actualPath, expectedPath)
+  })
+
   describe("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
@@ -152,11 +196,11 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          1 message(s) extracted
-
           Catalog statistics for fixtures/pages/about.page.tsx:
           4 message(s) extracted
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          1 message(s) extracted
 
           Compiling message catalogs…
         `)
@@ -197,14 +241,6 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      2      │    2    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/about.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
@@ -213,12 +249,61 @@ describe("E2E Extractor Test", () => {
           │ pl          │      4      │    3    │
           └─────────────┴─────────────┴─────────┘
 
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      2      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
           Compiling message catalogs…
         `)
       })
 
       compareFolders(actualPath, expectedPath)
     })
+
+    it("should extract with multiThread enabled", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental"
+      )
+
+      await mockConsole(async (console) => {
+        const config = makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          format: "po",
+          catalogs: [],
+          experimental: {
+            multiThread: true,
+            extractor: {
+              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+              output: "<rootDir>/actual/{entryName}.{locale}",
+            },
+          },
+        })
+
+        const result = await extractExperimentalCommand(config, {})
+
+        await compileCommand(config, {
+          allowEmpty: true,
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        // Just verify the basic structure instead of exact inline snapshot
+        const logOutput = getConsoleMockCalls(console.log)
+        expect(logOutput).toContain("You have using an experimental feature")
+        expect(logOutput).toContain("about.page.ts")
+        expect(logOutput).toContain("index.page.ts")
+        expect(logOutput).toContain("Compiling message catalogs…")
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+
     it("should extract and clean obsolete", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental-clean"
@@ -250,20 +335,20 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      1      │    -    │
-          │ pl          │      1      │    1    │
-          └─────────────┴─────────────┴─────────┘
-
           Catalog statistics for fixtures/pages/about.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
           ├─────────────┼─────────────┼─────────┤
           │ en (source) │      2      │    -    │
           │ pl          │      3      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      1      │    -    │
+          │ pl          │      1      │    1    │
           └─────────────┴─────────────┴─────────┘
 
         `)

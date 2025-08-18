@@ -4,7 +4,7 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
-import { extractFromFiles } from "./api/catalog/extractFromFiles"
+import { extractFromFilesExperimental } from "./api/catalog/extractFromFiles"
 import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource"
@@ -14,10 +14,6 @@ import {
 } from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
 import pico from "picocolors"
-import {
-  extractFromFileWithBabel,
-  getBabelParserOptions,
-} from "./api/extractors/babel"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -80,72 +76,77 @@ export default async function command(
     linguiConfig.sourceLocale
   )
 
-  linguiConfig.extractors = [
-    {
-      match(_filename: string) {
-        return true
-      },
+  const outputFiles = Object.keys(bundleResult.metafile.outputs).sort()
 
-      async extract(filename, code, onMessageExtracted, ctx) {
-        const parserOptions = ctx.linguiConfig.extractorParserOptions
+  const results = await Promise.all(
+    outputFiles.map(async (outFile, index) => {
+      const messages = await extractFromFilesExperimental([outFile], linguiConfig)
 
-        return extractFromFileWithBabel(
-          filename,
-          code,
-          onMessageExtracted,
-          ctx,
-          {
-            plugins: getBabelParserOptions(filename, parserOptions),
-          },
-          true
-        )
-      },
-    },
-  ]
+      const { entryPoint } = bundleResult.metafile.outputs[outFile]
 
-  for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-    const messages = await extractFromFiles([outFile], linguiConfig)
+      if (!messages) {
+        return { 
+          success: false, 
+          entry: null, 
+          content: null, 
+          originalIndex: index,
+          entryPoint 
+        }
+      }
 
-    const { entryPoint } = bundleResult.metafile.outputs[outFile]
+      let output: string
 
-    let output: string
+      if (options.template) {
+        output = (
+          await writeTemplate({
+            linguiConfig,
+            clean: options.clean,
+            format,
+            messages,
+            entryPoint,
+            outputPattern: config.output,
+          })
+        ).statMessage
+      } else {
+        output = (
+          await writeCatalogs({
+            locales: options.locales || linguiConfig.locales,
+            linguiConfig,
+            clean: options.clean,
+            format,
+            messages,
+            entryPoint,
+            overwrite: options.overwrite,
+            outputPattern: config.output,
+          })
+        ).statMessage
+      }
 
-    if (!messages) {
-      commandSuccess = false
-      continue
-    }
-
-    if (options.template) {
-      output = (
-        await writeTemplate({
-          linguiConfig,
-          clean: options.clean,
-          format,
-          messages,
-          entryPoint,
-          outputPattern: config.output,
-        })
-      ).statMessage
-    } else {
-      output = (
-        await writeCatalogs({
-          locales: options.locales || linguiConfig.locales,
-          linguiConfig,
-          clean: options.clean,
-          format,
-          messages,
-          entryPoint,
-          overwrite: options.overwrite,
-          outputPattern: config.output,
-        })
-      ).statMessage
-    }
-
-    stats.push({
-      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
-      content: output,
+      return {
+        success: true,
+        entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
+        content: output,
+        originalIndex: index,
+        entryPoint,
+      }
     })
+  )
+
+  results.sort((a, b) => a.originalIndex - b.originalIndex)
+
+  const hasFailures = results.some(result => !result.success)
+  if (hasFailures) {
+    commandSuccess = false
   }
+
+  results.forEach(({ success, entry, content }) => {
+    if (success && entry && content) {
+      stats.push({
+        entry,
+        content,
+      })
+    }
+  })
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })

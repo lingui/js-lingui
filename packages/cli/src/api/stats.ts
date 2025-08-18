@@ -30,7 +30,11 @@ export function printStats(
     },
   })
 
-  Object.keys(catalogs).forEach((locale) => {
+  Object.keys(catalogs).sort((a, b) => {
+    if (a === config.sourceLocale && b !== config.sourceLocale) return -1
+    if (b === config.sourceLocale && a !== config.sourceLocale) return 1
+    return a.localeCompare(b)
+  }).forEach((locale) => {
     if (locale === config.pseudoLocale) return // skip pseudo locale
 
     const catalog = catalogs[locale]

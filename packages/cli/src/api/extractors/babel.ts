@@ -202,4 +202,26 @@ const extractor: ExtractorType = {
   },
 }
 
+// Experimental extractor that skips macro plugin (for lingui-extract-experimental)
+export const experimentalExtractor: ExtractorType = {
+  match(_filename: string) {
+    return true // experimental mode processes all files
+  },
+
+  async extract(filename, code, onMessageExtracted, ctx) {
+    const parserOptions = ctx.linguiConfig.extractorParserOptions
+
+    return extractFromFileWithBabel(
+      filename,
+      code,
+      onMessageExtracted,
+      ctx,
+      {
+        plugins: getBabelParserOptions(filename, parserOptions),
+      },
+      true // skipMacroPlugin=true for experimental mode
+    )
+  },
+}
+
 export default extractor

@@ -337,7 +337,7 @@ export type LinguiConfig = {
   experimental?: {
     extractor?: ExperimentalExtractorOptions
     /**
-     * Enable multi-threaded. Currently only supported for compile command.
+     * Enable multi-threaded.
      *
      * @default false
      */

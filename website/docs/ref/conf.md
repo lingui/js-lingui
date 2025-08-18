@@ -529,9 +529,9 @@ This setting mostly useful for external framework integrations.
 
 Default value: `false`
 
-Enable multi-threaded compilation. Currently only supported for the [`compile`](/ref/cli#compile) command.
+Enable multi-threaded compilation and extraction.
 
-When enabled, the compilation process will use multiple worker threads to compile message catalogs in parallel, which can significantly improve performance for large projects with many messages.
+When enabled, the compilation and extraction processes will use multiple worker threads to process files in parallel, which can significantly improve performance for large projects with many messages. But it's not supported for custom extractors as functions cannot be serialized and passed to worker threads.
 
 ```json
 {

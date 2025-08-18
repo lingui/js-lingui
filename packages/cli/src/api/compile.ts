@@ -37,6 +37,17 @@ export type MessageCompilationError = {
   error: Error
 }
 
+function sortCompiledMessages(messages: { [msgId: string]: CompiledMessage }): { [msgId: string]: CompiledMessage } {
+  const sortedMessages: { [msgId: string]: CompiledMessage } = {}
+  const sortedKeys = Object.keys(messages).sort()
+  
+  for (const key of sortedKeys) {
+    sortedMessages[key] = messages[key]
+  }
+  
+  return sortedMessages
+}
+
 export async function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
@@ -56,16 +67,17 @@ export async function createCompiledCatalog(
   const compiledMessages = pool ? 
     await compileMessagesInParallel(messages, strict, shouldPseudolocalize, errors, pool) :
     compileMessages(messages, strict, shouldPseudolocalize, errors)
+  const sortedCompiledMessages = sortCompiledMessages(compiledMessages)
 
   if (namespace === "json") {
-    return { source: JSON.stringify({ messages: compiledMessages }), errors }
+    return { source: JSON.stringify({ messages: sortedCompiledMessages }), errors }
   }
 
   const ast = buildExportStatement(
     // build JSON.parse(<compiledMessages>) statement
     t.callExpression(
       t.memberExpression(t.identifier("JSON"), t.identifier("parse")),
-      [t.stringLiteral(JSON.stringify(compiledMessages))]
+      [t.stringLiteral(JSON.stringify(sortedCompiledMessages))]
     ),
     namespace
   )
@@ -123,7 +135,6 @@ async function compileMessagesInParallel(
     const translation = (messages[id] || (!strict ? id : "")) as string
 
     const result = await c(translation, shouldPseudolocalize)
-    console.log("got result",JSON.stringify(result,null,2))
     if (result.error) {
       errors.push({
         id,
