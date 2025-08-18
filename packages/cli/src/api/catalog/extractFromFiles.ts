@@ -273,7 +273,7 @@ export async function extractFromFilesExperimental(
     const results: ExtractedFileResult[] = await Promise.all(
       fileContents.map(async ({ filename, content, originalIndex, success }) => {
         if (!success) {
-          return { success: false, originalIndex, filename, messages: [] }
+          return { success: false, originalIndex, filename, messages: [] as ExtractedMessage[] }
         }
 
         const result = await pool.queue(async (extractExperimentalWorker) => {
