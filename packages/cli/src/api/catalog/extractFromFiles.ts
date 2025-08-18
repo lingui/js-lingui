@@ -11,7 +11,8 @@ import { prettyOrigin } from "../utils"
 import fs from "fs/promises"
 import { Pool, spawn, Worker } from "threads"
 import type { ExtractWorkerFunction } from "../../workers/extractWorker"
-import babel from "../extractors/babel"
+import babel, { experimentalExtractor } from "../extractors/babel"
+import { ExtractExperimentalWorkerFunction } from "../../workers/extractExperimentalWorker"
 
 export const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 
@@ -168,10 +169,8 @@ async function extractFromFilesWithWorkers(
   let catalogSuccess = true
 
   try {
-    // Create a serializable version of config without extractors
     const serializableConfig = createSerializableConfig(config)
 
-    // Read all files in parallel, maintaining original order
     const fileContents = await Promise.all(
       paths.map(async (filename, index) => {
         try {
@@ -239,7 +238,6 @@ export async function extractFromFilesExperimental(
   const useMultiThread = config.experimental?.multiThread === true
   
   if (!useMultiThread) {
-    const { experimentalExtractor } = await import("../extractors/babel")
     const experimentalConfig = {
       ...config,
       extractors: [experimentalExtractor],
@@ -247,9 +245,8 @@ export async function extractFromFilesExperimental(
     return extractFromFiles(paths, experimentalConfig)
   }
 
-  const { Pool, spawn, Worker } = await import("threads")
   const pool = Pool(
-    () => spawn(new Worker("../../workers/extractExperimentalWorker"))
+    () => spawn<ExtractExperimentalWorkerFunction>(new Worker("../../workers/extractExperimentalWorker"))
   )
 
   let catalogSuccess = true
