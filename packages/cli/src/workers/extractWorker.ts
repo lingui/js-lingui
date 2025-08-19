@@ -1,47 +1,29 @@
 import { expose } from "threads/worker"
-import type {
-  ExtractedMessage,
-  LinguiConfigNormalized,
-} from "@lingui/conf"
+import { ExtractedMessage, getConfig } from "@lingui/conf"
+import extract from "../api/extractors"
 
-import { DEFAULT_EXTRACTORS } from "../api/catalog/extractFromFiles"
+export type ExtractWorkerFunction = typeof extractWorker
 
-export type ExtractWorkerFunction = (
+const extractWorker = async (
   filename: string,
-  fileContent: string,
-  linguiConfig: Omit<LinguiConfigNormalized, 'extractors'>
-) => Promise<{ messages?: ExtractedMessage[], error?: Error }>
+  linguiConfigPath: string
+): Promise<{ messages?: ExtractedMessage[]; success: boolean }> => {
+  const linguiConfig = getConfig({
+    configPath: linguiConfigPath,
+    skipValidation: true,
+  })
 
-const extractWorker: ExtractWorkerFunction = async (filename, fileContent, linguiConfig) => {
-  try {
-    const messages: ExtractedMessage[] = []
-    
-    const onMessageExtracted = (msg: ExtractedMessage) => {
+  const messages: ExtractedMessage[] = []
+
+  const success = await extract(
+    filename,
+    (msg: ExtractedMessage) => {
       messages.push(msg)
-    }
+    },
+    linguiConfig
+  )
 
-    let hasMatch = false
-    for (const ext of DEFAULT_EXTRACTORS) {
-      if (!ext.match(filename)) continue
-      hasMatch = true
-      
-      try {
-        await ext.extract(filename, fileContent, onMessageExtracted, {
-          linguiConfig: linguiConfig as LinguiConfigNormalized,
-        })
-      } catch (e) {
-        return { error: new Error(`Extractor error for ${filename}: ${(e as Error).message}`) }
-      }
-    }
-
-    if (!hasMatch) {
-      return { messages: [] }
-    }
-
-    return { messages }
-  } catch (error) {
-    return { error: error as Error }
-  }
+  return { success, messages }
 }
 
 expose(extractWorker)

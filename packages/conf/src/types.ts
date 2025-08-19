@@ -351,6 +351,7 @@ export type LinguiConfigNormalized = Omit<
   LinguiConfig,
   "runtimeConfigModule"
 > & {
+  resolvedConfigPath?: string
   fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized

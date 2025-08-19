@@ -49,34 +49,30 @@ export async function writeCatalogs(
 
   const stat: AllCatalogsType = {}
 
-  const sortedLocales = [...locales].sort()
+  for (const locale of locales) {
+    const catalogOutput = resolveCatalogPath(
+      outputPattern,
+      entryPoint,
+      linguiConfig.rootDir,
+      locale,
+      format.getCatalogExtension()
+    )
 
-  await Promise.all(
-    sortedLocales.map(async (locale) => {
-      const catalogOutput = resolveCatalogPath(
-        outputPattern,
-        entryPoint,
-        linguiConfig.rootDir,
-        locale,
-        format.getCatalogExtension()
-      )
+    const catalog = mergeCatalog(
+      await format.read(catalogOutput, locale),
+      messages,
+      locale === linguiConfig.sourceLocale,
+      { overwrite }
+    )
 
-      const catalog = mergeCatalog(
-        await format.read(catalogOutput, locale),
-        messages,
-        locale === linguiConfig.sourceLocale,
-        { overwrite }
-      )
+    await format.write(
+      catalogOutput,
+      cleanAndSort(catalog, clean, linguiConfig.orderBy),
+      locale
+    )
 
-      await format.write(
-        catalogOutput,
-        cleanAndSort(catalog, clean, linguiConfig.orderBy),
-        locale
-      )
-
-      stat[locale] = catalog
-    })
-  )
+    stat[locale] = catalog
+  }
 
   return {
     statMessage: printStats(linguiConfig, stat).toString(),

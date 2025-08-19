@@ -1,39 +1,11 @@
-import type {
-  ExtractedMessage,
-  ExtractorType,
-  LinguiConfigNormalized,
-} from "@lingui/conf"
+import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
 import path from "path"
 import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
-import { prettyOrigin, readFile } from "../utils"
-import fs from "fs/promises"
+import { prettyOrigin } from "../utils"
 import { Pool, spawn, Worker } from "threads"
 import type { ExtractWorkerFunction } from "../../workers/extractWorker"
-import babel, { experimentalExtractor } from "../extractors/babel"
-import { ExtractExperimentalWorkerFunction } from "../../workers/extractExperimentalWorker"
-
-export const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
-
-function isUsingDefaultExtractors(config: LinguiConfigNormalized): boolean {
-  const extractors = config.extractors as ExtractorType[]
-  
-  if (!extractors || extractors.length === 0) return true
-  
-  if (extractors.length !== DEFAULT_EXTRACTORS.length) return false
-  
-  return extractors.every((extractor, index) => 
-    extractor === DEFAULT_EXTRACTORS[index]
-  )
-}
-
-function createSerializableConfig(config: LinguiConfigNormalized): Omit<LinguiConfigNormalized, 'extractors'> {
-  const { extractors, ...serializableConfig } = config
-  return serializableConfig
-}
-
-export { isUsingDefaultExtractors, createSerializableConfig }
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
@@ -68,14 +40,6 @@ export async function extractFromFiles(
   let catalogSuccess = true
 
   if (config.experimental?.multiThread) {
-    if (!isUsingDefaultExtractors(config)) {
-      throw new Error(
-        "multiThread is only supported when using default extractors (babel). " +
-        "Custom extractors cannot be passed to worker threads. " +
-        "Please disable multiThread or remove custom extractors from your configuration."
-      )
-    }
-    
     catalogSuccess = await extractFromFilesWithWorkers(paths, config, messages)
   } else {
     await Promise.all(
@@ -85,10 +49,7 @@ export async function extractFromFiles(
           (next: ExtractedMessage) => {
             processExtractedMessage(next, messages, config)
           },
-          config,
-          {
-            extractors: config.extractors as ExtractorType[],
-          }
+          config
         )
         catalogSuccess &&= fileSuccess
       })
@@ -143,18 +104,8 @@ function processExtractedMessage(
     origin: (
       [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
     ).sort((a, b) => a[0].localeCompare(b[0])),
-    placeholders: mergePlaceholders(
-      prev.placeholders,
-      next.placeholders
-    ),
+    placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
   }
-}
-
-type ExtractedFileResult = {
-  success: boolean
-  originalIndex: number
-  filename: string
-  messages: ExtractedMessage[]
 }
 
 async function extractFromFilesWithWorkers(
@@ -162,66 +113,34 @@ async function extractFromFilesWithWorkers(
   config: LinguiConfigNormalized,
   messages: ExtractedCatalogType
 ): Promise<boolean> {
-  const pool = Pool(
-    () => spawn<ExtractWorkerFunction>(new Worker("../../workers/extractWorker"))
+  const pool = Pool(() =>
+    spawn<ExtractWorkerFunction>(new Worker("../../workers/extractWorker"))
   )
 
   let catalogSuccess = true
 
   try {
-    const serializableConfig = createSerializableConfig(config)
+    if (!config.resolvedConfigPath) {
+      throw new Error(
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+      )
+    }
 
-    const fileContents = await Promise.all(
-      paths.map(async (filename, index) => {
-        try {
-          const content = await readFile(filename)
-          return { filename, content, success: true, originalIndex: index }
-        } catch (error) {
-          console.error(`Cannot read file ${filename}: ${(error as Error).message}`)
-          return { filename, content: "", success: false, originalIndex: index }
-        }
-      })
-    )
-
-    const results: ExtractedFileResult[] = await Promise.all(
-      fileContents.map(({ filename, content, success, originalIndex }) => {
-        if (!success) {
-          catalogSuccess = false
-          return Promise.resolve({ success: false, originalIndex, filename, messages: [] })
-        }
-        
+    await Promise.all(
+      paths.map((filename) => {
         return pool.queue(async (worker) => {
-          const result = await worker(
-            filename,
-            content,
-            serializableConfig
-          )
+          const result = await worker(filename, config.resolvedConfigPath)
 
-          if (result.error) {
-            console.error(`Worker error for ${filename}: ${result.error.message}`)
+          if (!result.success) {
             catalogSuccess = false
-            return { success: false, originalIndex, filename, messages: [] }
-          }
-
-          return {
-            success: true,
-            originalIndex,
-            filename,
-            messages: result.messages || []
+          } else {
+            result.messages.forEach((message) => {
+              processExtractedMessage(message, messages, config)
+            })
           }
         })
       })
     )
-
-    results.sort((a, b) => a.originalIndex - b.originalIndex)
-
-    results.forEach(({ success, messages: extractedMessages }) => {
-      if (success && extractedMessages) {
-        extractedMessages.forEach((message) => {
-          processExtractedMessage(message, messages, config)
-        })
-      }
-    })
 
     await pool.completed(true)
   } finally {
@@ -229,86 +148,4 @@ async function extractFromFilesWithWorkers(
   }
 
   return catalogSuccess
-}
-
-export async function extractFromFilesExperimental(
-  paths: string[],
-  config: LinguiConfigNormalized
-): Promise<ExtractedCatalogType | undefined> {
-  const useMultiThread = config.experimental?.multiThread === true
-  
-  if (!useMultiThread) {
-    const experimentalConfig = {
-      ...config,
-      extractors: [experimentalExtractor],
-    }
-    return extractFromFiles(paths, experimentalConfig)
-  }
-
-  const pool = Pool(
-    () => spawn<ExtractExperimentalWorkerFunction>(new Worker("../../workers/extractExperimentalWorker"))
-  )
-
-  let catalogSuccess = true
-  const messages: ExtractedCatalogType = {}
-
-  try {
-    const serializableConfig = createSerializableConfig(config)
-
-    const fileContents = await Promise.all(
-      paths.map(async (filename, originalIndex) => {
-        try {
-          const content = await readFile(filename)
-          return { filename, content, originalIndex, success: true }
-        } catch (error) {
-          console.error(`Failed to read file ${filename}: ${(error as Error).message}`)
-          return { filename, content: "", originalIndex, success: false }
-        }
-      })
-    )
-
-    const results: ExtractedFileResult[] = await Promise.all(
-      fileContents.map(async ({ filename, content, originalIndex, success }) => {
-        if (!success) {
-          return { success: false, originalIndex, filename, messages: [] as ExtractedMessage[] }
-        }
-
-        const result = await pool.queue(async (extractExperimentalWorker) => {
-          return extractExperimentalWorker(filename, content, serializableConfig)
-        })
-
-        if (result.error) {
-          console.error(`Worker error for ${filename}: ${result.error.message}`)
-          catalogSuccess = false
-          return { success: false, originalIndex, filename, messages: [] }
-        }
-
-        return { 
-          success: true, 
-          originalIndex, 
-          filename, 
-          messages: result.messages || [] 
-        }
-      })
-    )
-
-    results.sort((a, b) => a.originalIndex - b.originalIndex)
-
-    results.forEach(({ success, messages: extractedMessages }) => {
-      if (success && extractedMessages) {
-        extractedMessages.forEach((message) => {
-          processExtractedMessage(message, messages, config)
-        })
-      }
-    })
-
-    await pool.completed(true)
-    await pool.terminate()
-
-    if (!catalogSuccess) return undefined
-    return messages
-  } catch (error) {
-    await pool.terminate()
-    throw error
-  }
 }

@@ -4,7 +4,7 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
-import { extractFromFilesExperimental } from "./api/catalog/extractFromFiles"
+import { extractFromFiles } from "./api/catalog/extractFromFiles"
 import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource"
@@ -14,6 +14,10 @@ import {
 } from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
 import pico from "picocolors"
+import {
+  extractFromFileWithBabel,
+  getBabelParserOptions,
+} from "./api/extractors/babel"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -76,77 +80,76 @@ export default async function command(
     linguiConfig.sourceLocale
   )
 
-  const outputFiles = Object.keys(bundleResult.metafile.outputs).sort()
-
-  const results = await Promise.all(
-    outputFiles.map(async (outFile, index) => {
-      const messages = await extractFromFilesExperimental([outFile], linguiConfig)
-
-      const { entryPoint } = bundleResult.metafile.outputs[outFile]
-
-      if (!messages) {
-        return { 
-          success: false, 
-          entry: null, 
-          content: null, 
-          originalIndex: index,
-          entryPoint 
-        }
-      }
-
-      let output: string
-
-      if (options.template) {
-        output = (
-          await writeTemplate({
-            linguiConfig,
-            clean: options.clean,
-            format,
-            messages,
-            entryPoint,
-            outputPattern: config.output,
-          })
-        ).statMessage
-      } else {
-        output = (
-          await writeCatalogs({
-            locales: options.locales || linguiConfig.locales,
-            linguiConfig,
-            clean: options.clean,
-            format,
-            messages,
-            entryPoint,
-            overwrite: options.overwrite,
-            outputPattern: config.output,
-          })
-        ).statMessage
-      }
-
-      return {
-        success: true,
-        entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
-        content: output,
-        originalIndex: index,
-        entryPoint,
-      }
-    })
-  )
-
-  results.sort((a, b) => a.originalIndex - b.originalIndex)
-
-  const hasFailures = results.some(result => !result.success)
-  if (hasFailures) {
-    commandSuccess = false
+  if (linguiConfig.experimental?.multiThread) {
+    linguiConfig.experimental.multiThread = false
   }
 
-  results.forEach(({ success, entry, content }) => {
-    if (success && entry && content) {
-      stats.push({
-        entry,
-        content,
-      })
+  linguiConfig.extractors = [
+    {
+      match(_filename: string) {
+        return true
+      },
+
+      async extract(filename, code, onMessageExtracted, ctx) {
+        const parserOptions = ctx.linguiConfig.extractorParserOptions
+
+        return extractFromFileWithBabel(
+          filename,
+          code,
+          onMessageExtracted,
+          ctx,
+          {
+            plugins: getBabelParserOptions(filename, parserOptions),
+          },
+          true
+        )
+      },
+    },
+  ]
+
+  for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
+    const messages = await extractFromFiles([outFile], linguiConfig)
+
+    const { entryPoint } = bundleResult.metafile.outputs[outFile]
+
+    let output: string
+
+    if (!messages) {
+      commandSuccess = false
+      continue
     }
-  })
+
+    if (options.template) {
+      output = (
+        await writeTemplate({
+          linguiConfig,
+          clean: options.clean,
+          format,
+          messages,
+          entryPoint,
+          outputPattern: config.output,
+        })
+      ).statMessage
+    } else {
+      output = (
+        await writeCatalogs({
+          locales: options.locales || linguiConfig.locales,
+          linguiConfig,
+          clean: options.clean,
+          format,
+          messages,
+          entryPoint,
+          overwrite: options.overwrite,
+          outputPattern: config.output,
+        })
+      ).statMessage
+    }
+
+    stats.push({
+      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
+      content: output,
+    })
+  }
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })

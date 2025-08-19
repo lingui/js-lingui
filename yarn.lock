@@ -2727,7 +2727,7 @@ __metadata:
     "@lingui/jest-mocks": "*"
     cosmiconfig: ^8.0.0
     jest-validate: ^29.4.3
-    jiti: ^1.17.1
+    jiti: ^2.5.1
     picocolors: ^1.1.1
     unbuild: ^2.0.0
   languageName: unknown
@@ -10541,7 +10541,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.17.1, jiti@npm:^1.19.1, jiti@npm:^1.19.3":
+"jiti@npm:^1.19.1, jiti@npm:^1.19.3":
   version: 1.19.3
   resolution: "jiti@npm:1.19.3"
   bin:
@@ -10556,6 +10556,15 @@ __metadata:
   bin:
     jiti: lib/jiti-cli.mjs
   checksum: c6c30c7b6b293e9f26addfb332b63d964a9f143cdd2cf5e946dbe5143db89f7c1b50ad9223b77fb1f6ddb0b9c5ecef995fea024ecf7d2861d285d779cde66e1e
+  languageName: node
+  linkType: hard
+
+"jiti@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "jiti@npm:2.5.1"
+  bin:
+    jiti: lib/jiti-cli.mjs
+  checksum: db901281e01013c27d46d6c5cde5fa817082f32232c92099043df11e135d00ccd1b4356a9ba356a3293e91855bd7437b6df5ae0ae6ad2c384d9bd59df926633c
   languageName: node
   linkType: hard
 
