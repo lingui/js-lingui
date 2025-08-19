@@ -7,7 +7,7 @@ import pico from "picocolors"
 import path from "path"
 import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
-import { prettyOrigin } from "../utils"
+import { prettyOrigin, readFile } from "../utils"
 import fs from "fs/promises"
 import { Pool, spawn, Worker } from "threads"
 import type { ExtractWorkerFunction } from "../../workers/extractWorker"
@@ -174,7 +174,7 @@ async function extractFromFilesWithWorkers(
     const fileContents = await Promise.all(
       paths.map(async (filename, index) => {
         try {
-          const content = await fs.readFile(filename, "utf8")
+          const content = await readFile(filename)
           return { filename, content, success: true, originalIndex: index }
         } catch (error) {
           console.error(`Cannot read file ${filename}: ${(error as Error).message}`)
@@ -258,7 +258,7 @@ export async function extractFromFilesExperimental(
     const fileContents = await Promise.all(
       paths.map(async (filename, originalIndex) => {
         try {
-          const content = await fs.readFile(filename, "utf8")
+          const content = await readFile(filename)
           return { filename, content, originalIndex, success: true }
         } catch (error) {
           console.error(`Failed to read file ${filename}: ${(error as Error).message}`)
