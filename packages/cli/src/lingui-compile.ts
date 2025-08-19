@@ -12,7 +12,10 @@ import normalizePath from "normalize-path"
 import nodepath from "path"
 import { Catalog } from "./api/catalog"
 import { type CompileWorkerFunction } from "./workers/compileWorker"
-import { type CompileFunctionThread, createCompiledCatalog } from "./api/compile"
+import {
+  type CompileFunctionThread,
+  createCompiledCatalog,
+} from "./api/compile"
 import { Pool, spawn, Worker } from "threads"
 
 export type CliCompileOptions = {
@@ -37,9 +40,11 @@ export async function command(
 
   console.log("Compiling message catalogs…")
 
-  const pool = config.experimental?.multiThread ? Pool(
-    () => spawn<CompileWorkerFunction>(new Worker("./workers/compileWorker"))
-  ) : null
+  const pool = config.experimental?.multiThread
+    ? Pool(() =>
+        spawn<CompileWorkerFunction>(new Worker("./workers/compileWorker"))
+      )
+    : null
 
   let errored = false
 
@@ -119,7 +124,14 @@ async function compileLocale(
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
         if (
-          !(await compileAndWrite(locale, config, options, catalog, messages, pool))
+          !(await compileAndWrite(
+            locale,
+            config,
+            options,
+            catalog,
+            messages,
+            pool
+          ))
         ) {
           throw new ProgramExit()
         }

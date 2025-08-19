@@ -30,7 +30,9 @@ export async function readFile(fileName: string): Promise<string | undefined> {
     const executeRead = async () => {
       activeReadRequests++
       try {
-        const result = (await fs.promises.readFile(fileName, "utf-8")).toString()
+        const result = (
+          await fs.promises.readFile(fileName, "utf-8")
+        ).toString()
         resolve(result)
       } catch (err) {
         if ((err as NodeJS.ErrnoException).code === "ENOENT") {

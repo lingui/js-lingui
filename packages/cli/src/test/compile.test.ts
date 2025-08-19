@@ -252,7 +252,10 @@ msgstr "[PL] Bar Hello World"
   })
 
   describe("experimental multithread", () => {
-    function getConfigWithMultithread(rootDir: string, multiThread: boolean = true) {
+    function getConfigWithMultithread(
+      rootDir: string,
+      multiThread: boolean = true
+    ) {
       return makeConfig({
         locales: ["en", "pl"],
         sourceLocale: "en",

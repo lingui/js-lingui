@@ -182,15 +182,17 @@ describe("compile", () => {
 describe("createCompiledCatalog", () => {
   describe("options.namespace", () => {
     const getCompiledCatalog = async (namespace: CompiledCatalogNamespace) =>
-      (await createCompiledCatalog(
-        "fr",
-        {
-          key: "Hello {name}",
-        },
-        {
-          namespace,
-        }
-      )).source
+      (
+        await createCompiledCatalog(
+          "fr",
+          {
+            key: "Hello {name}",
+          },
+          {
+            namespace,
+          }
+        )
+      ).source
 
     it("should compile with json", async () => {
       expect(await getCompiledCatalog("json")).toMatchSnapshot()
@@ -213,23 +215,27 @@ describe("createCompiledCatalog", () => {
     })
 
     it("should error with invalid value", async () => {
-      expect(getCompiledCatalog("global")).rejects.toThrowErrorMatchingSnapshot()
+      expect(
+        getCompiledCatalog("global")
+      ).rejects.toThrowErrorMatchingSnapshot()
     })
   })
 
   describe("options.strict", () => {
     const getCompiledCatalog = async (strict: boolean) =>
-      (await createCompiledCatalog(
-        "cs",
-        {
-          Hello: "Ahoj",
-          Missing: "",
-          Select: "{id, select, Gen {Genesis} 1John {1 John}  other {____}}",
-        },
-        {
-          strict,
-        }
-      )).source
+      (
+        await createCompiledCatalog(
+          "cs",
+          {
+            Hello: "Ahoj",
+            Missing: "",
+            Select: "{id, select, Gen {Genesis} 1John {1 John}  other {____}}",
+          },
+          {
+            strict,
+          }
+        )
+      ).source
 
     it("should return message key as a fallback translation", async () => {
       expect(await getCompiledCatalog(false)).toMatchSnapshot()
@@ -242,15 +248,17 @@ describe("createCompiledCatalog", () => {
 
   describe("options.pseudoLocale", () => {
     const getCompiledCatalog = async (pseudoLocale: string) =>
-      (await createCompiledCatalog(
-        "ps",
-        {
-          Hello: "Ahoj",
-        },
-        {
-          pseudoLocale,
-        }
-      )).source
+      (
+        await createCompiledCatalog(
+          "ps",
+          {
+            Hello: "Ahoj",
+          },
+          {
+            pseudoLocale,
+          }
+        )
+      ).source
 
     it("should return catalog with pseudolocalized messages", async () => {
       expect(await getCompiledCatalog("ps")).toMatchSnapshot()
@@ -263,13 +271,15 @@ describe("createCompiledCatalog", () => {
 
   describe("options.compilerBabelOptions", () => {
     const getCompiledCatalog = async (opts = {}) =>
-      (await createCompiledCatalog(
-        "ru",
-        {
-          Hello: "Alohà",
-        },
-        opts
-      )).source
+      (
+        await createCompiledCatalog(
+          "ru",
+          {
+            Hello: "Alohà",
+          },
+          opts
+        )
+      ).source
 
     it("by default should return catalog without ASCII chars", async () => {
       expect(await getCompiledCatalog()).toMatchSnapshot()

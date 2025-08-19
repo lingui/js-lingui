@@ -37,14 +37,16 @@ export type MessageCompilationError = {
   error: Error
 }
 
-function sortCompiledMessages(messages: { [msgId: string]: CompiledMessage }): { [msgId: string]: CompiledMessage } {
+function sortCompiledMessages(messages: { [msgId: string]: CompiledMessage }): {
+  [msgId: string]: CompiledMessage
+} {
   const sortedMessages: { [msgId: string]: CompiledMessage } = {}
   const sortedKeys = Object.keys(messages).sort()
-  
+
   for (const key of sortedKeys) {
     sortedMessages[key] = messages[key]
   }
-  
+
   return sortedMessages
 }
 
@@ -64,13 +66,22 @@ export async function createCompiledCatalog(
 
   const errors: MessageCompilationError[] = []
 
-  const compiledMessages = pool ? 
-    await compileMessagesInParallel(messages, strict, shouldPseudolocalize, errors, pool) :
-    compileMessages(messages, strict, shouldPseudolocalize, errors)
+  const compiledMessages = pool
+    ? await compileMessagesInParallel(
+        messages,
+        strict,
+        shouldPseudolocalize,
+        errors,
+        pool
+      )
+    : compileMessages(messages, strict, shouldPseudolocalize, errors)
   const sortedCompiledMessages = sortCompiledMessages(compiledMessages)
 
   if (namespace === "json") {
-    return { source: JSON.stringify({ messages: sortedCompiledMessages }), errors }
+    return {
+      source: JSON.stringify({ messages: sortedCompiledMessages }),
+      errors,
+    }
   }
 
   const ast = buildExportStatement(
@@ -131,25 +142,29 @@ async function compileMessagesInParallel(
   const messageIDs = Object.keys(messages).sort()
   let obj: { [msgId: string]: CompiledMessage } = {}
 
-  messageIDs.map(id => pool.queue(async (c) => {
-    const translation = (messages[id] || (!strict ? id : "")) as string
+  messageIDs.map((id) =>
+    pool.queue(async (c) => {
+      const translation = (messages[id] || (!strict ? id : "")) as string
 
-    const result = await c(translation, shouldPseudolocalize)
-    if (result.error) {
-      errors.push({
-        id,
-        source: translation,
-        error: result.error,
-      })
-      return
-    }
-    obj[id] = result.result!
-  }))
+      const result = await c(translation, shouldPseudolocalize)
+      if (result.error) {
+        errors.push({
+          id,
+          source: translation,
+          error: result.error,
+        })
+        return
+      }
+      obj[id] = result.result!
+    })
+  )
 
   await pool.completed(true)
 
   // sort obj by id
-  obj = Object.fromEntries(Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0])))
+  obj = Object.fromEntries(
+    Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0]))
+  )
 
   return obj
 }
@@ -231,4 +246,7 @@ export function compile(
   )
 }
 
-export type CompileFunctionThread = FunctionThread<Parameters<CompileWorkerFunction>, ReturnType<CompileWorkerFunction>>
+export type CompileFunctionThread = FunctionThread<
+  Parameters<CompileWorkerFunction>,
+  ReturnType<CompileWorkerFunction>
+>
