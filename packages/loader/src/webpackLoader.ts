@@ -86,15 +86,11 @@ Please check that \`catalogs.path\` is filled properly.\n`
   // of setupI18n (core) and therefore we need to get empty translations if missing.
   const strict = process.env.NODE_ENV !== "production"
 
-  const { source: code, errors } = await createCompiledCatalog(
-    locale,
-    messages,
-    {
-      strict,
-      namespace: this._module.type === "json" ? "json" : "es",
-      pseudoLocale: config.pseudoLocale,
-    }
-  )
+  const { source: code, errors } = createCompiledCatalog(locale, messages, {
+    strict,
+    namespace: this._module.type === "json" ? "json" : "es",
+    pseudoLocale: config.pseudoLocale,
+  })
 
   if (errors.length) {
     const message = createCompilationErrorMessage(locale, errors)

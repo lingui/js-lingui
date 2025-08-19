@@ -4,6 +4,7 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
+import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
 import { createCompilationErrorMessage, getCatalogs, getFormat } from "./api"
 import { getCatalogForMerge } from "./api/catalog/getCatalogs"
@@ -11,12 +12,6 @@ import normalizePath from "normalize-path"
 
 import nodepath from "path"
 import { Catalog } from "./api/catalog"
-import { type CompileWorkerFunction } from "./workers/compileWorker"
-import {
-  type CompileFunctionThread,
-  createCompiledCatalog,
-} from "./api/compile"
-import { Pool, spawn, Worker } from "threads"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -40,34 +35,21 @@ export async function command(
 
   console.log("Compiling message catalogs…")
 
-  const pool = config.experimental?.multiThread
-    ? Pool(() =>
-        spawn<CompileWorkerFunction>(new Worker("./workers/compileWorker"))
-      )
-    : null
-
   let errored = false
 
-  try {
-    await Promise.all(
-      config.locales.map(async (locale) => {
-        try {
-          await compileLocale(locale, catalogs, options, config, doMerge, pool)
-        } catch (err) {
-          if (err instanceof ProgramExit) {
-            errored = true
-          } else {
-            throw err
-          }
+  await Promise.all(
+    config.locales.map(async (locale) => {
+      try {
+        await compileLocale(locale, catalogs, options, config, doMerge)
+      } catch (err) {
+        if (err instanceof ProgramExit) {
+          errored = true
+        } else {
+          throw err
         }
-      })
-    )
-  } finally {
-    if (pool) {
-      await pool.settled(true)
-      await pool.terminate()
-    }
-  }
+      }
+    })
+  )
 
   return !errored
 }
@@ -77,8 +59,7 @@ async function compileLocale(
   catalogs: Catalog[],
   options: CliCompileOptions,
   config: LinguiConfigNormalized,
-  doMerge: boolean,
-  pool: Pool<CompileFunctionThread> | null
+  doMerge: boolean
 ) {
   let mergedCatalogs = {}
 
@@ -124,14 +105,7 @@ async function compileLocale(
         mergedCatalogs = { ...mergedCatalogs, ...messages }
       } else {
         if (
-          !(await compileAndWrite(
-            locale,
-            config,
-            options,
-            catalog,
-            messages,
-            pool
-          ))
+          !(await compileAndWrite(locale, config, options, catalog, messages))
         ) {
           throw new ProgramExit()
         }
@@ -145,8 +119,7 @@ async function compileLocale(
       config,
       options,
       await getCatalogForMerge(config),
-      mergedCatalogs,
-      pool
+      mergedCatalogs
     )
 
     if (!result) {
@@ -160,13 +133,12 @@ async function compileAndWrite(
   config: LinguiConfigNormalized,
   options: CliCompileOptions,
   catalogToWrite: Catalog,
-  messages: Record<string, string>,
-  pool: Pool<CompileFunctionThread> | null
+  messages: Record<string, string>
 ): Promise<boolean> {
   const namespace = options.typescript
     ? "ts"
     : options.namespace || config.compileNamespace
-  const { source: compiledCatalog, errors } = await createCompiledCatalog(
+  const { source: compiledCatalog, errors } = createCompiledCatalog(
     locale,
     messages,
     {
@@ -174,7 +146,6 @@ async function compileAndWrite(
       namespace,
       pseudoLocale: config.pseudoLocale,
       compilerBabelOptions: config.compilerBabelOptions,
-      pool,
     }
   )
 

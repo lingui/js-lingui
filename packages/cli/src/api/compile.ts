@@ -5,8 +5,6 @@ import {
   compileMessageOrThrow,
 } from "@lingui/message-utils/compileMessage"
 import pseudoLocalize from "./pseudoLocalize"
-import type { FunctionThread, Pool } from "threads"
-import type { CompileWorkerFunction } from "../workers/compileWorker"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string
 
@@ -19,7 +17,6 @@ export type CreateCompileCatalogOptions = {
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
   compilerBabelOptions?: GeneratorOptions
-  pool?: Pool<CompileFunctionThread>
 }
 
 export type MessageCompilationError = {
@@ -37,80 +34,22 @@ export type MessageCompilationError = {
   error: Error
 }
 
-function sortCompiledMessages(messages: { [msgId: string]: CompiledMessage }): {
-  [msgId: string]: CompiledMessage
-} {
-  const sortedMessages: { [msgId: string]: CompiledMessage } = {}
-  const sortedKeys = Object.keys(messages).sort()
-
-  for (const key of sortedKeys) {
-    sortedMessages[key] = messages[key]
-  }
-
-  return sortedMessages
-}
-
-export async function createCompiledCatalog(
+export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
   options: CreateCompileCatalogOptions
-): Promise<{ source: string; errors: MessageCompilationError[] }> {
+): { source: string; errors: MessageCompilationError[] } {
   const {
     strict = false,
     namespace = "cjs",
     pseudoLocale,
-    pool,
     compilerBabelOptions = {},
   } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
   const errors: MessageCompilationError[] = []
 
-  const compiledMessages = pool
-    ? await compileMessagesInParallel(
-        messages,
-        strict,
-        shouldPseudolocalize,
-        errors,
-        pool
-      )
-    : compileMessages(messages, strict, shouldPseudolocalize, errors)
-  const sortedCompiledMessages = sortCompiledMessages(compiledMessages)
-
-  if (namespace === "json") {
-    return {
-      source: JSON.stringify({ messages: sortedCompiledMessages }),
-      errors,
-    }
-  }
-
-  const ast = buildExportStatement(
-    // build JSON.parse(<compiledMessages>) statement
-    t.callExpression(
-      t.memberExpression(t.identifier("JSON"), t.identifier("parse")),
-      [t.stringLiteral(JSON.stringify(sortedCompiledMessages))]
-    ),
-    namespace
-  )
-
-  const code = generate(ast, {
-    minified: true,
-    jsescOption: {
-      minimal: true,
-    },
-    ...compilerBabelOptions,
-  }).code
-
-  return { source: "/*eslint-disable*/" + code, errors }
-}
-
-function compileMessages(
-  messages: CompiledCatalogType,
-  strict: boolean,
-  shouldPseudolocalize: boolean,
-  errors: MessageCompilationError[]
-): { [msgId: string]: CompiledMessage } {
-  return Object.keys(messages)
+  const compiledMessages = Object.keys(messages)
     .sort()
     .reduce<{
       [msgId: string]: CompiledMessage
@@ -130,43 +69,29 @@ function compileMessages(
 
       return obj
     }, {})
-}
 
-async function compileMessagesInParallel(
-  messages: CompiledCatalogType,
-  strict: boolean,
-  shouldPseudolocalize: boolean,
-  errors: MessageCompilationError[],
-  pool: Pool<CompileFunctionThread>
-) {
-  const messageIDs = Object.keys(messages).sort()
-  let obj: { [msgId: string]: CompiledMessage } = {}
+  if (namespace === "json") {
+    return { source: JSON.stringify({ messages: compiledMessages }), errors }
+  }
 
-  messageIDs.map((id) =>
-    pool.queue(async (c) => {
-      const translation = (messages[id] || (!strict ? id : "")) as string
-
-      const result = await c(translation, shouldPseudolocalize)
-      if (result.error) {
-        errors.push({
-          id,
-          source: translation,
-          error: result.error,
-        })
-        return
-      }
-      obj[id] = result.result!
-    })
+  const ast = buildExportStatement(
+    //build JSON.parse(<compiledMessages>) statement
+    t.callExpression(
+      t.memberExpression(t.identifier("JSON"), t.identifier("parse")),
+      [t.stringLiteral(JSON.stringify(compiledMessages))]
+    ),
+    namespace
   )
 
-  await pool.completed(true)
+  const code = generate(ast, {
+    minified: true,
+    jsescOption: {
+      minimal: true,
+    },
+    ...compilerBabelOptions,
+  }).code
 
-  // sort obj by id
-  obj = Object.fromEntries(
-    Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0]))
-  )
-
-  return obj
+  return { source: "/*eslint-disable*/" + code, errors }
 }
 
 function buildExportStatement(
@@ -245,8 +170,3 @@ export function compile(
     shouldPseudolocalize ? pseudoLocalize(value) : value
   )
 }
-
-export type CompileFunctionThread = FunctionThread<
-  Parameters<CompileWorkerFunction>,
-  ReturnType<CompileWorkerFunction>
->
