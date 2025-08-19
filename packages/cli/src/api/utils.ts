@@ -21,14 +21,38 @@ export function replacePlaceholders(
   })
 }
 
+let activeReadRequests = 0
+const maxConcurrentReads = 300
+const readQueue: Array<() => void> = []
+
 export async function readFile(fileName: string): Promise<string | undefined> {
-  try {
-    return (await fs.promises.readFile(fileName, "utf-8")).toString()
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code != "ENOENT") {
-      throw err
+  return new Promise((resolve, reject) => {
+    const executeRead = async () => {
+      activeReadRequests++
+      try {
+        const result = (await fs.promises.readFile(fileName, "utf-8")).toString()
+        resolve(result)
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+          resolve(undefined)
+        } else {
+          reject(err)
+        }
+      } finally {
+        activeReadRequests--
+        const next = readQueue.shift()
+        if (next) {
+          next()
+        }
+      }
     }
-  }
+
+    if (activeReadRequests < maxConcurrentReads) {
+      executeRead()
+    } else {
+      readQueue.push(executeRead)
+    }
+  })
 }
 
 async function mkdirp(dir: string): Promise<void> {
