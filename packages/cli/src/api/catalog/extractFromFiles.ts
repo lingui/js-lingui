@@ -42,18 +42,16 @@ export async function extractFromFiles(
   if (config.experimental?.multiThread) {
     catalogSuccess = await extractFromFilesWithWorkers(paths, config, messages)
   } else {
-    await Promise.all(
-      paths.map(async (filename) => {
-        const fileSuccess = await extract(
-          filename,
-          (next: ExtractedMessage) => {
-            processExtractedMessage(next, messages, config)
-          },
-          config
-        )
-        catalogSuccess &&= fileSuccess
-      })
-    )
+    for (const filename of paths) {
+      const fileSuccess = await extract(
+        filename,
+        (next: ExtractedMessage) => {
+          mergeExtractedMessage(next, messages, config)
+        },
+        config
+      )
+      catalogSuccess &&= fileSuccess
+    }
   }
 
   if (!catalogSuccess) return undefined
@@ -61,7 +59,7 @@ export async function extractFromFiles(
   return messages
 }
 
-function processExtractedMessage(
+function mergeExtractedMessage(
   next: ExtractedMessage,
   messages: ExtractedCatalogType,
   config: LinguiConfigNormalized
@@ -126,19 +124,17 @@ async function extractFromFilesWithWorkers(
       )
     }
 
-    await Promise.all(
-      paths.map((filename) => {
-        return pool.queue(async (worker) => {
-          const result = await worker(filename, config.resolvedConfigPath)
+    paths.map((filename) =>
+      pool.queue(async (worker) => {
+        const result = await worker(filename, config.resolvedConfigPath)
 
-          if (!result.success) {
-            catalogSuccess = false
-          } else {
-            result.messages.forEach((message) => {
-              processExtractedMessage(message, messages, config)
-            })
-          }
-        })
+        if (!result.success) {
+          catalogSuccess = false
+        } else {
+          result.messages.forEach((message) => {
+            mergeExtractedMessage(message, messages, config)
+          })
+        }
       })
     )
 
