@@ -30,7 +30,8 @@
     "build:docs": "cd website && yarn install && yarn build",
     "size-limit": "size-limit",
     "stub:all": "yarn workspaces foreach -p run stub",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "yarn stub:all"
   },
   "engines": {
     "node": ">=20.0.0"
