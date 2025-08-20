@@ -23,12 +23,12 @@ Missing 1 translation(s)
 `;
 
 exports[`CLI Command: Compile allowEmpty = false Should show missing messages verbosely when verbose = true 1`] = `
+en ⇒ en.js
 Error: Failed to compile catalog for locale pl!
 Missing translations:
 mY42CM: (Hello World)
 2ZeN02: (Test String)
 
-en ⇒ en.js
 `;
 
 exports[`CLI Command: Compile failOnCompileError = true Should show error and stop compilation of catalog if message has compilation error 1`] = `

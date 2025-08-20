@@ -1,5 +1,5 @@
 import { command } from "../lingui-compile"
-import { makeConfig } from "@lingui/conf"
+import { LinguiConfig, makeConfig } from "@lingui/conf"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import { createFixtures, readFsToListing } from "../tests"
 
@@ -252,25 +252,26 @@ msgstr "[PL] Bar Hello World"
   })
 
   describe("experimental multithread", () => {
-    function getConfigWithMultithread(
-      rootDir: string,
-      multiThread: boolean = true
-    ) {
-      return makeConfig({
+    function getConfigText({ multiThread }: { multiThread: boolean }) {
+      const config: LinguiConfig = {
         locales: ["en", "pl"],
         sourceLocale: "en",
-        rootDir: rootDir,
+        format: "po",
         catalogs: [
           {
-            path: "<rootDir>/{locale}",
-            include: ["<rootDir>"],
-            exclude: [],
+            path: "<rootDir>/actual/{locale}",
+            include: ["<rootDir>/fixtures"],
           },
         ],
         experimental: {
           multiThread,
         },
-      })
+      }
+
+      return `
+import { defineConfig } from "@lingui/conf"
+export default defineConfig(${JSON.stringify(config)})
+        `
     }
 
     it("Should compile catalogs successfully with multithread enabled", async () => {
@@ -289,9 +290,10 @@ msgstr "Cześć świat"
 msgid "Welcome {name}"
 msgstr "Witaj {name}"
         `,
+        "lingui.config.ts": getConfigText({ multiThread: true }),
       })
 
-      const config = getConfigWithMultithread(rootDir, true)
+      const config = getConfig(rootDir)
 
       await mockConsole(async (console) => {
         const result = await command(config, {})
@@ -328,12 +330,12 @@ msgstr "{count, plural, one {# element} other {# elementów}}"
 msgid "Select message"
 msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
         `,
+        "lingui.config.ts": getConfigText({ multiThread: false }),
       })
 
       // Compile with multithread disabled
-      const configSingleThread = getConfigWithMultithread(rootDir, false)
       await mockConsole(async () => {
-        await command(configSingleThread, {})
+        await command(getConfig(rootDir), {})
       })
       const singleThreadFiles = readFsToListing(rootDir)
 
@@ -359,12 +361,12 @@ msgstr "{count, plural, one {# element} other {# elementów}}"
 msgid "Select message"
 msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
         `,
+        "lingui.config.ts": getConfigText({ multiThread: true }),
       })
 
       // Compile with multithread enabled
-      const configMultiThread = getConfigWithMultithread(rootDir, true)
       await mockConsole(async () => {
-        await command(configMultiThread, {})
+        await command(getConfig(rootDir), {})
       })
       const multiThreadFiles = readFsToListing(rootDir)
 
@@ -382,16 +384,15 @@ msgstr "Valid message"
 msgid "Invalid syntax"
 msgstr "{plural,  }"
         `,
+        "lingui.config.ts": getConfigText({ multiThread: true }),
       })
 
-      const config = getConfigWithMultithread(rootDir, true)
-
       await mockConsole(async (console) => {
-        const result = await command(config, {
+        const result = await command(getConfig(rootDir), {
           failOnCompileError: true,
         })
 
-        const actualFiles = readFsToListing(config.rootDir)
+        const actualFiles = readFsToListing(rootDir)
         expect(actualFiles["en.js"]).toBeFalsy()
 
         const log = getConsoleMockCalls(console.error)

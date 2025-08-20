@@ -12,7 +12,6 @@ import { CompiledCatalogNamespace } from "./compile"
 import {
   getTranslationsForCatalog,
   GetTranslationsOptions,
-  TranslationMissingEvent,
 } from "./catalog/getTranslationsForCatalog"
 import { mergeCatalog } from "./catalog/mergeCatalog"
 import { extractFromFiles } from "./catalog/extractFromFiles"
@@ -181,23 +180,8 @@ export class Catalog {
     )
   }
 
-  async getTranslations(
-    locale: string,
-    options: Omit<GetTranslationsOptions, "onMissing">
-  ) {
-    const missing: TranslationMissingEvent[] = []
-
-    const messages = await getTranslationsForCatalog(this, locale, {
-      ...options,
-      onMissing: (event) => {
-        missing.push(event)
-      },
-    })
-
-    return {
-      missing,
-      messages,
-    }
+  async getTranslations(locale: string, options: GetTranslationsOptions) {
+    return await getTranslationsForCatalog(this, locale, options)
   }
 
   async write(
@@ -215,29 +199,6 @@ export class Catalog {
   async writeTemplate(messages: CatalogType): Promise<void> {
     const filename = this.templateFile
     await this.format.write(filename, messages, undefined)
-  }
-
-  async writeCompiled(
-    locale: string,
-    compiledCatalog: string,
-    namespace?: CompiledCatalogNamespace
-  ) {
-    let ext: string
-    switch (namespace) {
-      case "es":
-        ext = "mjs"
-        break
-      case "ts":
-      case "json":
-        ext = namespace
-        break
-      default:
-        ext = "js"
-    }
-
-    const filename = `${replacePlaceholders(this.path, { locale })}.${ext}`
-    await writeFile(filename, compiledCatalog)
-    return filename
   }
 
   async read(locale: string): Promise<CatalogType> {
@@ -362,6 +323,30 @@ function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
       ;(acc as any)[key] = messages[key]
       return acc
     }, {} as T)
+}
+
+export async function writeCompiled(
+  path: string,
+  locale: string,
+  compiledCatalog: string,
+  namespace?: CompiledCatalogNamespace
+) {
+  let ext: string
+  switch (namespace) {
+    case "es":
+      ext = "mjs"
+      break
+    case "ts":
+    case "json":
+      ext = namespace
+      break
+    default:
+      ext = "js"
+  }
+
+  const filename = `${replacePlaceholders(path, { locale })}.${ext}`
+  await writeFile(filename, compiledCatalog)
+  return filename
 }
 
 export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
