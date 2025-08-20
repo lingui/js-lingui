@@ -1,10 +1,10 @@
 import { command } from "../lingui-compile"
-import { LinguiConfig, makeConfig } from "@lingui/conf"
+import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import { createFixtures, readFsToListing } from "../tests"
 
 describe("CLI Command: Compile", () => {
-  function getConfig(rootDir: string, pseudoLocale?: string) {
+  function getTestConfig(rootDir: string, pseudoLocale?: string) {
     return makeConfig({
       locales: ["en", "pl"],
       sourceLocale: "en",
@@ -41,11 +41,12 @@ msgstr ""
         `,
         })
 
-        const config = getConfig(rootDir)
+        const config = getTestConfig(rootDir)
 
         await mockConsole(async (console) => {
           const result = await command(config, {
             allowEmpty: false,
+            noWorkers: true,
           })
           const actualFiles = readFsToListing(config.rootDir)
 
@@ -72,11 +73,12 @@ msgstr ""
           "pl.po": ``,
         })
 
-        const config = getConfig(rootDir)
+        const config = getTestConfig(rootDir)
 
         await mockConsole(async (console) => {
           const result = await command(config, {
             allowEmpty: false,
+            noWorkers: true,
           })
 
           const actualFiles = readFsToListing(rootDir)
@@ -109,11 +111,12 @@ msgstr ""
         `,
       })
 
-      const config = getConfig(rootDir, "pl")
+      const config = getTestConfig(rootDir, "pl")
 
       await mockConsole(async (console) => {
         const result = await command(config, {
           allowEmpty: false,
+          noWorkers: true,
         })
         const actualFiles = readFsToListing(config.rootDir)
 
@@ -138,12 +141,13 @@ msgstr ""
         `,
       })
 
-      const config = getConfig(rootDir)
+      const config = getTestConfig(rootDir)
 
       await mockConsole(async (console) => {
         const result = await command(config, {
           allowEmpty: false,
           verbose: true,
+          noWorkers: true,
         })
 
         const log = getConsoleMockCalls(console.error)
@@ -171,12 +175,13 @@ msgstr "Hello {hello"
         `,
         })
 
-        const config = getConfig(rootDir)
+        const config = getTestConfig(rootDir)
 
         await mockConsole(async (console) => {
           const result = await command(config, {
             failOnCompileError: true,
             allowEmpty: true,
+            noWorkers: true,
           })
           const actualFiles = readFsToListing(config.rootDir)
 
@@ -238,7 +243,7 @@ msgstr "[PL] Bar Hello World"
       const config = getConfig(rootDir)
 
       await mockConsole(async (console) => {
-        const result = await command(config, {})
+        const result = await command(config, { noWorkers: true })
 
         const actualFiles = readFsToListing(config.rootDir)
         expect(actualFiles["merged/en.js"]).toMatchSnapshot()
@@ -251,27 +256,22 @@ msgstr "[PL] Bar Hello World"
     })
   })
 
-  describe("experimental multithread", () => {
-    function getConfigText({ multiThread }: { multiThread: boolean }) {
+  describe("using worker pool", () => {
+    function getConfigText() {
       const config: LinguiConfig = {
         locales: ["en", "pl"],
         sourceLocale: "en",
         format: "po",
         catalogs: [
           {
-            path: "<rootDir>/actual/{locale}",
-            include: ["<rootDir>/fixtures"],
+            path: "<rootDir>/{locale}",
+            include: ["<rootDir>"],
+            exclude: [],
           },
         ],
-        experimental: {
-          multiThread,
-        },
       }
 
-      return `
-import { defineConfig } from "@lingui/conf"
-export default defineConfig(${JSON.stringify(config)})
-        `
+      return `export default ${JSON.stringify(config)}`
     }
 
     it("Should compile catalogs successfully with multithread enabled", async () => {
@@ -290,13 +290,13 @@ msgstr "Cześć świat"
 msgid "Welcome {name}"
 msgstr "Witaj {name}"
         `,
-        "lingui.config.ts": getConfigText({ multiThread: true }),
+        "lingui.config.ts": getConfigText(),
       })
 
-      const config = getConfig(rootDir)
+      const config = getConfig({ cwd: rootDir })
 
       await mockConsole(async (console) => {
-        const result = await command(config, {})
+        const result = await command(config, { workers: 2 })
         const actualFiles = readFsToListing(config.rootDir)
 
         expect(actualFiles["en.js"]).toBeTruthy()
@@ -330,12 +330,12 @@ msgstr "{count, plural, one {# element} other {# elementów}}"
 msgid "Select message"
 msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
         `,
-        "lingui.config.ts": getConfigText({ multiThread: false }),
+        "lingui.config.ts": getConfigText(),
       })
 
       // Compile with multithread disabled
       await mockConsole(async () => {
-        await command(getConfig(rootDir), {})
+        await command(getConfig({ cwd: rootDir }), { noWorkers: true })
       })
       const singleThreadFiles = readFsToListing(rootDir)
 
@@ -361,12 +361,12 @@ msgstr "{count, plural, one {# element} other {# elementów}}"
 msgid "Select message"
 msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
         `,
-        "lingui.config.ts": getConfigText({ multiThread: true }),
+        "lingui.config.ts": getConfigText(),
       })
 
       // Compile with multithread enabled
       await mockConsole(async () => {
-        await command(getConfig(rootDir), {})
+        await command(getConfig({ cwd: rootDir }), { workers: 2 })
       })
       const multiThreadFiles = readFsToListing(rootDir)
 
@@ -384,12 +384,13 @@ msgstr "Valid message"
 msgid "Invalid syntax"
 msgstr "{plural,  }"
         `,
-        "lingui.config.ts": getConfigText({ multiThread: true }),
+        "lingui.config.ts": getConfigText(),
       })
 
       await mockConsole(async (console) => {
-        const result = await command(getConfig(rootDir), {
+        const result = await command(getConfig({ cwd: rootDir }), {
           failOnCompileError: true,
+          workers: 2,
         })
 
         const actualFiles = readFsToListing(rootDir)

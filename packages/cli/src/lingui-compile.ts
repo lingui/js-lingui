@@ -8,7 +8,7 @@ import { getCatalogs, getFormat } from "./api"
 import { compileLocale } from "./api/compile/compileLocale"
 import { Pool, spawn, Worker } from "threads"
 import { CompileWorker } from "./workers/compileWorker"
-import { ProgramExit } from "./api/compile/ProgramExit"
+import { resolveWorkerOptions } from "./api/resolveWorkersOptions"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -17,6 +17,8 @@ export type CliCompileOptions = {
   typescript?: boolean
   watch?: boolean
   namespace?: string
+  workers?: number
+  noWorkers?: boolean
 }
 
 export async function command(
@@ -26,17 +28,18 @@ export async function command(
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
 
+  const workerOptions = resolveWorkerOptions(options)
   console.log("Compiling message catalogs…")
 
   let errored = false
 
-  if (!config.experimental?.multiThread) {
+  if (!workerOptions.multiThread) {
     // single threaded
     for (const locale of config.locales) {
       try {
-        await compileLocale(locale, options, config, doMerge)
+        await compileLocale(locale, options, config, doMerge, console)
       } catch (err) {
-        if (err instanceof ProgramExit) {
+        if ((err as Error).name === "ProgramExit") {
           errored = true
         } else {
           throw err
@@ -50,19 +53,35 @@ export async function command(
       )
     }
 
-    const pool = Pool(() =>
-      spawn<CompileWorker>(new Worker("../../workers/compileWorker"))
+    console.log(`Use worker pool of size ${workerOptions.poolSize}`)
+
+    const pool = Pool(
+      () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
+      { size: workerOptions.poolSize }
     )
 
     try {
       for (const locale of config.locales) {
         pool.queue(async (worker) => {
-          await worker.compileLocale(
+          const { logs, error, exitProgram } = await worker.compileLocale(
             locale,
             options,
             doMerge,
             config.resolvedConfigPath
           )
+
+          if (logs.errors) {
+            console.error(logs.errors)
+          }
+
+          if (exitProgram) {
+            errored = true
+            return
+          }
+
+          if (error) {
+            throw error
+          }
         })
       }
 
@@ -88,13 +107,19 @@ type CliOptions = {
 
 if (require.main === module) {
   program
-    .description(
-      "Add compile message catalogs and add language data (plurals) to compiled bundle."
-    )
+    .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
+    .option(
+      "--workers n",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8)"
+    )
+    .option(
+      "--no-workers",
+      "Disable worker threads and run everything in a single process (same as --workers 1)"
+    )
     .option(
       "--namespace <namespace>",
       "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"

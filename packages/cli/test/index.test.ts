@@ -171,6 +171,7 @@ describe("E2E Extractor Test", () => {
 
         await compileCommand(config, {
           allowEmpty: true,
+          noWorkers: true,
         })
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
@@ -216,6 +217,7 @@ describe("E2E Extractor Test", () => {
 
         await compileCommand(config, {
           allowEmpty: true,
+          noWorkers: true,
         })
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()

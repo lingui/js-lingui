@@ -3,79 +3,80 @@ import { LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
 import { getCatalogs, getMergedCatalogPath } from "../catalog/getCatalogs"
 import { CliCompileOptions } from "../../lingui-compile"
-import { ProgramExit } from "./ProgramExit"
+import { ProgramExit } from "../ProgramExit"
 import { createCompiledCatalog } from "../compile"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
 import { createCompilationErrorMessage } from "../messages"
 import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog"
+import { Logger } from "../logger"
 
 export async function compileLocale(
   locale: string,
   options: CliCompileOptions,
   config: LinguiConfigNormalized,
-  doMerge: boolean
+  doMerge: boolean,
+  logger: Logger
 ) {
   const catalogs = await getCatalogs(config)
 
   let mergedCatalogs: Record<string, string> = {}
 
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const { messages, missing: missingMessages } =
-        await getTranslationsForCatalog(catalog, locale, {
-          fallbackLocales: config.fallbackLocales,
-          sourceLocale: config.sourceLocale,
-        })
+  for (const catalog of catalogs) {
+    const { messages, missing: missingMessages } =
+      await getTranslationsForCatalog(catalog, locale, {
+        fallbackLocales: config.fallbackLocales,
+        sourceLocale: config.sourceLocale,
+      })
 
-      if (
-        !options.allowEmpty &&
-        locale !== config.pseudoLocale &&
-        missingMessages.length > 0
-      ) {
-        console.error(
-          pico.red(
-            `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
-          )
+    if (
+      !options.allowEmpty &&
+      locale !== config.pseudoLocale &&
+      missingMessages.length > 0
+    ) {
+      logger.error(
+        pico.red(
+          `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
         )
+      )
 
-        if (options.verbose) {
-          console.error(pico.red("Missing translations:"))
-          missingMessages.forEach((missing) => {
-            const source =
-              missing.source || missing.source === missing.id
-                ? `: (${missing.source})`
-                : ""
+      if (options.verbose) {
+        logger.error(pico.red("Missing translations:"))
+        missingMessages.forEach((missing) => {
+          const source =
+            missing.source || missing.source === missing.id
+              ? `: (${missing.source})`
+              : ""
 
-            console.error(`${missing.id}${source}`)
-          })
-        } else {
-          console.error(
-            pico.red(`Missing ${missingMessages.length} translation(s)`)
-          )
-        }
-        console.error()
+          logger.error(`${missing.id}${source}`)
+        })
+      } else {
+        logger.error(
+          pico.red(`Missing ${missingMessages.length} translation(s)`)
+        )
+      }
+      logger.error()
+      throw new ProgramExit()
+    }
+
+    if (doMerge) {
+      mergedCatalogs = { ...mergedCatalogs, ...messages }
+    } else {
+      if (
+        !(await compileAndWrite(
+          locale,
+          config,
+          options,
+          catalog.path,
+          messages,
+          logger
+        ))
+      ) {
         throw new ProgramExit()
       }
-
-      if (doMerge) {
-        mergedCatalogs = { ...mergedCatalogs, ...messages }
-      } else {
-        if (
-          !(await compileAndWrite(
-            locale,
-            config,
-            options,
-            catalog.path,
-            messages
-          ))
-        ) {
-          throw new ProgramExit()
-        }
-      }
-    })
-  )
+    }
+  }
 
   if (doMerge) {
     const result = await compileAndWrite(
@@ -83,7 +84,8 @@ export async function compileLocale(
       config,
       options,
       await getMergedCatalogPath(config),
-      mergedCatalogs
+      mergedCatalogs,
+      logger
     )
 
     if (!result) {
@@ -97,7 +99,8 @@ async function compileAndWrite(
   config: LinguiConfigNormalized,
   options: CliCompileOptions,
   writePath: string,
-  messages: Record<string, string>
+  messages: Record<string, string>,
+  logger: Logger
 ): Promise<boolean> {
   const namespace = options.typescript
     ? "ts"
@@ -118,11 +121,11 @@ async function compileAndWrite(
 
     if (options.failOnCompileError) {
       message += `These errors fail command execution because \`--strict\` option passed`
-      console.error(pico.red(message))
+      logger.error(pico.red(message))
       return false
     } else {
       message += `You can fail command execution on these errors by passing \`--strict\` option`
-      console.error(pico.red(message))
+      logger.error(pico.red(message))
     }
   }
 
@@ -135,6 +138,6 @@ async function compileAndWrite(
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
 
-  options.verbose && console.error(pico.green(`${locale} ⇒ ${compiledPath}`))
+  options.verbose && logger.error(pico.green(`${locale} ⇒ ${compiledPath}`))
   return true
 }

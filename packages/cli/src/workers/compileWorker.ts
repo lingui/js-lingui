@@ -1,8 +1,9 @@
 import { expose } from "threads/worker"
-import { type CompiledMessage } from "@lingui/message-utils/compileMessage"
 import { compileLocale } from "../api/compile/compileLocale"
 import { CliCompileOptions } from "../lingui-compile"
 import { getConfig } from "@lingui/conf"
+import { SerializedLogs, WorkerLogger } from "../api/workerLogger"
+import { ProgramExit } from "../api/ProgramExit"
 
 const compileWorker = {
   compileLocale: async (
@@ -10,17 +11,29 @@ const compileWorker = {
     options: CliCompileOptions,
     doMerge: boolean,
     linguiConfigPath: string
-  ): Promise<{ result?: CompiledMessage; error?: Error }> => {
+  ): Promise<{
+    logs?: SerializedLogs
+    error?: unknown
+    exitProgram?: boolean
+  }> => {
     const linguiConfig = getConfig({
       configPath: linguiConfigPath,
       skipValidation: true,
     })
 
+    const logger = new WorkerLogger()
+
     try {
-      await compileLocale(locale, options, linguiConfig, doMerge)
+      await compileLocale(locale, options, linguiConfig, doMerge, logger)
     } catch (error) {
-      return { error: error as Error }
+      return {
+        logs: logger.flush(),
+        error,
+        exitProgram: error instanceof ProgramExit,
+      }
     }
+
+    return { logs: logger.flush() }
   },
 }
 
