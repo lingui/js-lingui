@@ -36,9 +36,11 @@ export async function command(
 
   if (!options.workersOptions.poolSize) {
     // single threaded
+    const catalogs = await getCatalogs(config)
+
     for (const locale of config.locales) {
       try {
-        await compileLocale(locale, options, config, doMerge, console)
+        await compileLocale(catalogs, locale, options, config, doMerge, console)
       } catch (err) {
         if ((err as Error).name === "ProgramExit") {
           errored = true

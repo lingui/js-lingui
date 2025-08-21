@@ -1,7 +1,7 @@
-import { writeCompiled } from "../catalog"
+import { Catalog, writeCompiled } from "../catalog"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
-import { getCatalogs, getMergedCatalogPath } from "../catalog/getCatalogs"
+import { getMergedCatalogPath } from "../catalog/getCatalogs"
 import { CliCompileOptions } from "../../lingui-compile"
 import { ProgramExit } from "../ProgramExit"
 import { createCompiledCatalog } from "../compile"
@@ -13,14 +13,13 @@ import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog"
 import { Logger } from "../logger"
 
 export async function compileLocale(
+  catalogs: Catalog[],
   locale: string,
   options: CliCompileOptions,
   config: LinguiConfigNormalized,
   doMerge: boolean,
   logger: Logger
 ) {
-  const catalogs = await getCatalogs(config)
-
   let mergedCatalogs: Record<string, string> = {}
 
   for (const catalog of catalogs) {
