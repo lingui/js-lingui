@@ -54,7 +54,7 @@ export async function extractFromFiles(
   return messages
 }
 
-function mergeExtractedMessage(
+export function mergeExtractedMessage(
   next: ExtractedMessage,
   messages: ExtractedCatalogType,
   config: LinguiConfigNormalized

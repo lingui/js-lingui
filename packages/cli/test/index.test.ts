@@ -168,23 +168,14 @@ describe("E2E Extractor Test", () => {
         "extractor-experimental-template"
       )
 
-      await mockConsole(async (console) => {
-        const config = makeConfig({
-          rootDir: rootDir,
-          locales: ["en", "pl"],
-          sourceLocale: "en",
-          format: "po",
-          catalogs: [],
-          experimental: {
-            extractor: {
-              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-              output: "<rootDir>/actual/{entryName}.{locale}",
-            },
-          },
-        })
+      const config = getConfig({ cwd: rootDir })
 
+      await mockConsole(async (console) => {
         const result = await extractExperimentalCommand(config, {
           template: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
 
         await compileCommand(config, {
@@ -219,21 +210,13 @@ describe("E2E Extractor Test", () => {
       )
 
       await mockConsole(async (console) => {
-        const config = makeConfig({
-          rootDir: rootDir,
-          locales: ["en", "pl"],
-          sourceLocale: "en",
-          format: "po",
-          catalogs: [],
-          experimental: {
-            extractor: {
-              entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
-              output: "<rootDir>/actual/{entryName}.{locale}",
-            },
+        const config = getConfig({ cwd: rootDir })
+
+        const result = await extractExperimentalCommand(config, {
+          workersOptions: {
+            poolSize: 0,
           },
         })
-
-        const result = await extractExperimentalCommand(config, {})
 
         await compileCommand(config, {
           allowEmpty: true,
@@ -248,6 +231,57 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
+          Catalog statistics for fixtures/pages/index.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      2      │    -    │
+          │ pl          │      2      │    2    │
+          └─────────────┴─────────────┴─────────┘
+
+          Catalog statistics for fixtures/pages/about.page.ts:
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │      3      │    -    │
+          │ pl          │      4      │    3    │
+          └─────────────┴─────────────┴─────────┘
+
+          Compiling message catalogs…
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+
+    it("should extract to catalogs with worker pool", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental"
+      )
+
+      await mockConsole(async (console) => {
+        const config = getConfig({ cwd: rootDir })
+
+        const result = await extractExperimentalCommand(config, {
+          workersOptions: {
+            poolSize: 2,
+          },
+        })
+
+        await compileCommand(config, {
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+          Use worker pool of size 2
           Catalog statistics for fixtures/pages/index.page.ts:
           ┌─────────────┬─────────────┬─────────┐
           │ Language    │ Total count │ Missing │
@@ -292,6 +326,9 @@ describe("E2E Extractor Test", () => {
             },
           }),
           {
+            workersOptions: {
+              poolSize: 0,
+            },
             clean: true,
           }
         )
