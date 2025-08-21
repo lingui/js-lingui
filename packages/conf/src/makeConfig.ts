@@ -111,7 +111,6 @@ export const exampleConfig = {
       output: "",
       resolveEsbuildOptions: Function,
     },
-    multiThread: false,
   } as { extractor: ExperimentalExtractorOptions },
 }
 

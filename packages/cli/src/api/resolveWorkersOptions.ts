@@ -1,24 +1,24 @@
 import os from "node:os"
 
-export function resolveWorkerOptions(opts: {
+export type WorkersOptions = { poolSize: number }
+
+export function resolveWorkersOptions(opts: {
   workers?: number
   noWorkers?: boolean
-}): { multiThread: true; poolSize: number } | { multiThread: false } {
+}): WorkersOptions {
   const cores = os.availableParallelism()
 
-  if (opts.noWorkers || opts.workers === 1 || cores === 1) {
-    return { multiThread: false }
+  if (opts.noWorkers || opts.workers <= 1 || cores === 1) {
+    return { poolSize: 0 }
   }
-
-  const multiThread = true
 
   if (!opts.workers) {
     if (cores <= 2) {
-      return { multiThread, poolSize: cores } // on tiny machines, use all
+      return { poolSize: cores } // on tiny machines, use all
     }
     // on big machines cap to 8, to avoid trashing
-    return { multiThread, poolSize: Math.min(cores - 1, 8) }
+    return { poolSize: Math.min(cores - 1, 8) }
   }
 
-  return { multiThread, poolSize: opts.workers }
+  return { poolSize: opts.workers }
 }

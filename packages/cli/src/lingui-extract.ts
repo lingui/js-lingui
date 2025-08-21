@@ -10,6 +10,14 @@ import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
 import normalizePath from "normalize-path"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
+import {
+  createExtractWorkerPool,
+  ExtractWorkerPool,
+} from "./api/extractWorkerPool"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -19,6 +27,7 @@ export type CliExtractOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workersOptions: WorkersOptions
 }
 
 export default async function command(
@@ -33,20 +42,35 @@ export default async function command(
 
   const spinner = ora().start()
 
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const result = await catalog.make({
-        ...(options as CliExtractOptions),
-        orderBy: config.orderBy,
+  let workerPool: ExtractWorkerPool
+
+  if (options.workersOptions.poolSize) {
+    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+
+    workerPool = createExtractWorkerPool()
+  }
+
+  try {
+    await Promise.all(
+      catalogs.map(async (catalog) => {
+        const result = await catalog.make({
+          ...(options as CliExtractOptions),
+          orderBy: config.orderBy,
+          workerPool,
+        })
+
+        catalogStats[
+          normalizePath(nodepath.relative(config.rootDir, catalog.path))
+        ] = result || {}
+
+        commandSuccess &&= Boolean(result)
       })
-
-      catalogStats[
-        normalizePath(nodepath.relative(config.rootDir, catalog.path))
-      ] = result || {}
-
-      commandSuccess &&= Boolean(result)
-    })
-  )
+    )
+  } finally {
+    if (workerPool) {
+      await workerPool.terminate()
+    }
+  }
 
   if (commandSuccess) {
     spinner.succeed()
@@ -97,7 +121,7 @@ export default async function command(
   return commandSuccess
 }
 
-type CliOptions = {
+type CliArgs = {
   verbose: boolean
   config: string
   convertFrom: string
@@ -108,6 +132,8 @@ type CliOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workers?: number
+  noWorkers?: boolean
 }
 
 if (require.main === module) {
@@ -123,6 +149,14 @@ if (require.main === module) {
           .filter(Boolean)
       }
     )
+    .option(
+      "--workers n",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8)"
+    )
+    .option(
+      "--no-workers",
+      "Disable worker threads and run everything in a single process (same as --workers 1)"
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -137,7 +171,7 @@ if (require.main === module) {
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({
     configPath: options.config,
@@ -182,6 +216,7 @@ if (require.main === module) {
       watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,
+      workersOptions: resolveWorkersOptions(options),
     })
   }
 

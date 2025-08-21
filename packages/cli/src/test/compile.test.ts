@@ -46,7 +46,9 @@ msgstr ""
         await mockConsole(async (console) => {
           const result = await command(config, {
             allowEmpty: false,
-            noWorkers: true,
+            workersOptions: {
+              poolSize: 0,
+            },
           })
           const actualFiles = readFsToListing(config.rootDir)
 
@@ -78,7 +80,9 @@ msgstr ""
         await mockConsole(async (console) => {
           const result = await command(config, {
             allowEmpty: false,
-            noWorkers: true,
+            workersOptions: {
+              poolSize: 0,
+            },
           })
 
           const actualFiles = readFsToListing(rootDir)
@@ -116,7 +120,9 @@ msgstr ""
       await mockConsole(async (console) => {
         const result = await command(config, {
           allowEmpty: false,
-          noWorkers: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
         const actualFiles = readFsToListing(config.rootDir)
 
@@ -147,7 +153,9 @@ msgstr ""
         const result = await command(config, {
           allowEmpty: false,
           verbose: true,
-          noWorkers: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
 
         const log = getConsoleMockCalls(console.error)
@@ -181,7 +189,9 @@ msgstr "Hello {hello"
           const result = await command(config, {
             failOnCompileError: true,
             allowEmpty: true,
-            noWorkers: true,
+            workersOptions: {
+              poolSize: 0,
+            },
           })
           const actualFiles = readFsToListing(config.rootDir)
 
@@ -243,7 +253,11 @@ msgstr "[PL] Bar Hello World"
       const config = getConfig(rootDir)
 
       await mockConsole(async (console) => {
-        const result = await command(config, { noWorkers: true })
+        const result = await command(config, {
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
 
         const actualFiles = readFsToListing(config.rootDir)
         expect(actualFiles["merged/en.js"]).toMatchSnapshot()
@@ -296,7 +310,9 @@ msgstr "Witaj {name}"
       const config = getConfig({ cwd: rootDir })
 
       await mockConsole(async (console) => {
-        const result = await command(config, { workers: 2 })
+        const result = await command(config, {
+          workersOptions: { poolSize: 2 },
+        })
         const actualFiles = readFsToListing(config.rootDir)
 
         expect(actualFiles["en.js"]).toBeTruthy()
@@ -335,7 +351,11 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
 
       // Compile with multithread disabled
       await mockConsole(async () => {
-        await command(getConfig({ cwd: rootDir }), { noWorkers: true })
+        await command(getConfig({ cwd: rootDir }), {
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
       })
       const singleThreadFiles = readFsToListing(rootDir)
 
@@ -366,7 +386,11 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
 
       // Compile with multithread enabled
       await mockConsole(async () => {
-        await command(getConfig({ cwd: rootDir }), { workers: 2 })
+        await command(getConfig({ cwd: rootDir }), {
+          workersOptions: {
+            poolSize: 2,
+          },
+        })
       })
       const multiThreadFiles = readFsToListing(rootDir)
 
@@ -390,7 +414,9 @@ msgstr "{plural,  }"
       await mockConsole(async (console) => {
         const result = await command(getConfig({ cwd: rootDir }), {
           failOnCompileError: true,
-          workers: 2,
+          workersOptions: {
+            poolSize: 2,
+          },
         })
 
         const actualFiles = readFsToListing(rootDir)

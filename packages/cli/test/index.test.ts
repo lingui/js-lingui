@@ -57,7 +57,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        {}
+        { workersOptions: { poolSize: 0 } }
       )
 
       expect(result).toBeTruthy()
@@ -90,25 +90,40 @@ describe("E2E Extractor Test", () => {
     })
 
     await mockConsole(async (console) => {
-      const result = await extractTemplateCommand(
-        makeConfig({
-          rootDir: rootDir,
-          locales: ["en", "pl"],
-          sourceLocale: "en",
-          format: "po",
-          catalogs: [
-            {
-              path: "<rootDir>/actual/{locale}",
-              include: ["<rootDir>/fixtures"],
-            },
-          ],
-        }),
-        {}
-      )
+      const result = await extractTemplateCommand(getConfig({ cwd: rootDir }), {
+        workersOptions: { poolSize: 0 },
+      })
 
       expect(result).toBeTruthy()
       expect(getConsoleMockCalls(console.error)).toBeFalsy()
       expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Catalog statistics for actual/messages.pot: 7 messages
+
+      `)
+    })
+
+    compareFolders(actualPath, expectedPath)
+  })
+
+  it("extractTemplate should extract into .pot template with worker pool", async () => {
+    const { rootDir, actualPath, expectedPath } = await prepare(
+      "extract-template-po-format"
+    )
+
+    await fs.rm(actualPath, {
+      recursive: true,
+      force: true,
+    })
+
+    await mockConsole(async (console) => {
+      const result = await extractTemplateCommand(getConfig({ cwd: rootDir }), {
+        workersOptions: { poolSize: 2 },
+      })
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.error)).toBeFalsy()
+      expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Use worker pool of size 2
         Catalog statistics for actual/messages.pot: 7 messages
 
       `)
@@ -123,11 +138,14 @@ describe("E2E Extractor Test", () => {
     )
 
     await mockConsole(async (console) => {
-      const result = await extractCommand(getConfig({ cwd: rootDir }), {})
+      const result = await extractCommand(getConfig({ cwd: rootDir }), {
+        workersOptions: { poolSize: 2 },
+      })
 
       expect(result).toBeTruthy()
       expect(getConsoleMockCalls(console.error)).toBeFalsy()
       expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+        Use worker pool of size 2
         Catalog statistics for actual/{locale}: 
         ┌─────────────┬─────────────┬─────────┐
         │ Language    │ Total count │ Missing │
@@ -171,7 +189,9 @@ describe("E2E Extractor Test", () => {
 
         await compileCommand(config, {
           allowEmpty: true,
-          noWorkers: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
@@ -217,7 +237,9 @@ describe("E2E Extractor Test", () => {
 
         await compileCommand(config, {
           allowEmpty: true,
-          noWorkers: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
@@ -323,6 +345,7 @@ describe("E2E Extractor Test", () => {
       }),
       {
         files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
+        workersOptions: { poolSize: 0 },
       }
     )
 
@@ -347,7 +370,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        {}
+        { workersOptions: { poolSize: 0 } }
       )
 
       expect(result).toBeTruthy()

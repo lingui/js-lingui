@@ -8,7 +8,10 @@ import { getCatalogs, getFormat } from "./api"
 import { compileLocale } from "./api/compile/compileLocale"
 import { Pool, spawn, Worker } from "threads"
 import { CompileWorker } from "./workers/compileWorker"
-import { resolveWorkerOptions } from "./api/resolveWorkersOptions"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -17,8 +20,7 @@ export type CliCompileOptions = {
   typescript?: boolean
   watch?: boolean
   namespace?: string
-  workers?: number
-  noWorkers?: boolean
+  workersOptions: WorkersOptions
 }
 
 export async function command(
@@ -28,12 +30,11 @@ export async function command(
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
 
-  const workerOptions = resolveWorkerOptions(options)
   console.log("Compiling message catalogs…")
 
   let errored = false
 
-  if (!workerOptions.multiThread) {
+  if (!options.workersOptions.poolSize) {
     // single threaded
     for (const locale of config.locales) {
       try {
@@ -53,11 +54,11 @@ export async function command(
       )
     }
 
-    console.log(`Use worker pool of size ${workerOptions.poolSize}`)
+    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = Pool(
       () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
-      { size: workerOptions.poolSize }
+      { size: options.workersOptions.poolSize }
     )
 
     try {
@@ -94,7 +95,7 @@ export async function command(
   return !errored
 }
 
-type CliOptions = {
+type CliArgs = {
   verbose?: boolean
   allowEmpty?: boolean
   typescript?: boolean
@@ -103,6 +104,8 @@ type CliOptions = {
   strict?: string
   config?: string
   debounce?: number
+  workers?: number
+  noWorkers?: boolean
 }
 
 if (require.main === module) {
@@ -143,7 +146,7 @@ if (require.main === module) {
     })
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({ configPath: options.config })
 
@@ -155,7 +158,7 @@ if (require.main === module) {
         verbose: options.watch || options.verbose || false,
         allowEmpty: !options.strict,
         failOnCompileError: !!options.strict,
-
+        workersOptions: resolveWorkersOptions(options),
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used

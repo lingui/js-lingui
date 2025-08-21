@@ -6,10 +6,19 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { getCatalogs } from "./api"
 import nodepath from "path"
 import normalizePath from "normalize-path"
+import {
+  createExtractWorkerPool,
+  ExtractWorkerPool,
+} from "./api/extractWorkerPool"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
   files?: string[]
+  workersOptions: WorkersOptions
 }
 
 export default async function command(
@@ -22,22 +31,38 @@ export default async function command(
 
   let commandSuccess = true
 
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const result = await catalog.makeTemplate({
-        ...(options as CliExtractTemplateOptions),
-        orderBy: config.orderBy,
+  let workerPool: ExtractWorkerPool
+
+  if (options.workersOptions.poolSize) {
+    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+
+    workerPool = createExtractWorkerPool()
+  }
+
+  try {
+    await Promise.all(
+      catalogs.map(async (catalog) => {
+        const result = await catalog.makeTemplate({
+          ...(options as CliExtractTemplateOptions),
+          orderBy: config.orderBy,
+          workerPool,
+        })
+
+        if (result) {
+          catalogStats[
+            normalizePath(
+              nodepath.relative(config.rootDir, catalog.templateFile)
+            )
+          ] = Object.keys(result).length
+        }
+        commandSuccess &&= Boolean(result)
       })
-
-      if (result) {
-        catalogStats[
-          normalizePath(nodepath.relative(config.rootDir, catalog.templateFile))
-        ] = Object.keys(result).length
-      }
-      commandSuccess &&= Boolean(result)
-    })
-  )
-
+    )
+  } finally {
+    if (workerPool) {
+      await workerPool.terminate()
+    }
+  }
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
       `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`
@@ -48,18 +73,28 @@ export default async function command(
   return commandSuccess
 }
 
-type CliOptions = {
+type CliArgs = {
   config?: string
   verbose?: boolean
+  workers?: number
+  noWorkers?: boolean
 }
 
 if (require.main === module) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
+    .option(
+      "--workers n",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8)"
+    )
+    .option(
+      "--no-workers",
+      "Disable worker threads and run everything in a single process (same as --workers 1)"
+    )
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({
     configPath: options.config,
@@ -67,6 +102,7 @@ if (require.main === module) {
 
   const result = command(config, {
     verbose: options.verbose || false,
+    workersOptions: resolveWorkersOptions(options),
   }).then(() => {
     if (!result) process.exit(1)
   })

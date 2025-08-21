@@ -4,8 +4,7 @@ import path from "path"
 import extract from "../extractors"
 import { ExtractedCatalogType, MessageOrigin } from "../types"
 import { prettyOrigin } from "../utils"
-import { Pool, spawn, Worker } from "threads"
-import type { ExtractWorkerFunction } from "../../workers/extractWorker"
+import { ExtractWorkerPool } from "../extractWorkerPool"
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
@@ -39,19 +38,15 @@ export async function extractFromFiles(
 
   let catalogSuccess = true
 
-  if (config.experimental?.multiThread) {
-    catalogSuccess = await extractFromFilesWithWorkers(paths, config, messages)
-  } else {
-    for (const filename of paths) {
-      const fileSuccess = await extract(
-        filename,
-        (next: ExtractedMessage) => {
-          mergeExtractedMessage(next, messages, config)
-        },
-        config
-      )
-      catalogSuccess &&= fileSuccess
-    }
+  for (const filename of paths) {
+    const fileSuccess = await extract(
+      filename,
+      (next: ExtractedMessage) => {
+        mergeExtractedMessage(next, messages, config)
+      },
+      config
+    )
+    catalogSuccess &&= fileSuccess
   }
 
   if (!catalogSuccess) return undefined
@@ -106,26 +101,24 @@ function mergeExtractedMessage(
   }
 }
 
-async function extractFromFilesWithWorkers(
+export async function extractFromFilesWithWorkerPool(
+  workerPool: ExtractWorkerPool,
   paths: string[],
-  config: LinguiConfigNormalized,
-  messages: ExtractedCatalogType
-): Promise<boolean> {
-  const pool = Pool(() =>
-    spawn<ExtractWorkerFunction>(new Worker("../../workers/extractWorker"))
-  )
+  config: LinguiConfigNormalized
+): Promise<ExtractedCatalogType> {
+  const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
 
-  try {
-    if (!config.resolvedConfigPath) {
-      throw new Error(
-        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
-      )
-    }
+  if (!config.resolvedConfigPath) {
+    throw new Error(
+      "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+    )
+  }
 
+  await Promise.all(
     paths.map((filename) =>
-      pool.queue(async (worker) => {
+      workerPool.queue(async (worker) => {
         const result = await worker(filename, config.resolvedConfigPath)
 
         if (!result.success) {
@@ -137,11 +130,9 @@ async function extractFromFilesWithWorkers(
         }
       })
     )
+  )
 
-    await pool.completed(true)
-  } finally {
-    await pool.terminate()
-  }
+  if (!catalogSuccess) return undefined
 
-  return catalogSuccess
+  return messages
 }

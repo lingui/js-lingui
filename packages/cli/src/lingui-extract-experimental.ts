@@ -80,10 +80,6 @@ export default async function command(
     linguiConfig.sourceLocale
   )
 
-  if (linguiConfig.experimental?.multiThread) {
-    linguiConfig.experimental.multiThread = false
-  }
-
   linguiConfig.extractors = [
     {
       match(_filename: string) {

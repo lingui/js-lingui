@@ -336,12 +336,6 @@ export type LinguiConfig = {
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions
-    /**
-     * Enable multi-threaded.
-     *
-     * @default false
-     */
-    multiThread?: boolean
   }
 }
 
