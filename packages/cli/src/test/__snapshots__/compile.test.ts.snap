@@ -31,7 +31,23 @@ mY42CM: (Hello World)
 
 `;
 
-exports[`CLI Command: Compile failOnCompileError = true Should show error and stop compilation of catalog if message has compilation error 1`] = `
+exports[`CLI Command: Compile failOnCompileError Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"lg1L7K\\":[\\"Hello User\\"]}")};`;
+
+exports[`CLI Command: Compile failOnCompileError Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 2`] = `
+Failed to compile catalog for locale pl!
+
+Compilation error for 1 translation(s):
+
+mY42CM: Hello {hello
+Reason: Unexpected message end at line 1 col 13:
+
+1  Hello {hello
+               ^
+
+You can fail command execution on these errors by passing \`--strict\` option
+`;
+
+exports[`CLI Command: Compile failOnCompileError Should show error and stop compilation of catalog if message has compilation error when failOnCompileError = true 1`] = `
 Failed to compile catalog for locale pl!
 
 Compilation error for 1 translation(s):

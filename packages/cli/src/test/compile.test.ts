@@ -21,85 +21,77 @@ describe("CLI Command: Compile", () => {
   }
 
   describe("allowEmpty = false", () => {
-    it(
-      "Should show error and stop compilation of catalog " +
-        "if message doesnt have a translation (no template)",
-      async () => {
-        expect.assertions(4)
+    it("Should show error and stop compilation of catalog if message doesnt have a translation (no template)", async () => {
+      expect.assertions(4)
 
-        const rootDir = await createFixtures({
-          "en.po": `
+      const rootDir = await createFixtures({
+        "en.po": `
 msgid "Hello World"
 msgstr "Hello World"
         `,
-          "pl.po": `
+        "pl.po": `
 msgid "Hello World"
 msgstr "Cześć świat"
 
 msgid "Test String"
 msgstr ""
         `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
+        const actualFiles = readFsToListing(config.rootDir)
 
-        const config = getTestConfig(rootDir)
+        expect(actualFiles["pl.js"]).toBeFalsy()
+        expect(actualFiles["en.js"]).toBeTruthy()
 
-        await mockConsole(async (console) => {
-          const result = await command(config, {
-            allowEmpty: false,
-            workersOptions: {
-              poolSize: 0,
-            },
-          })
-          const actualFiles = readFsToListing(config.rootDir)
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toMatchSnapshot()
+        expect(result).toBeFalsy()
+      })
+    })
 
-          expect(actualFiles["pl.js"]).toBeFalsy()
-          expect(actualFiles["en.js"]).toBeTruthy()
-
-          const log = getConsoleMockCalls(console.error)
-          expect(log).toMatchSnapshot()
-          expect(result).toBeFalsy()
-        })
-      }
-    )
-
-    it(
-      "Should show error and stop compilation of catalog " +
-        "if message doesnt have a translation (with template)",
-      async () => {
-        expect.assertions(3)
-        const rootDir = await createFixtures({
-          "messages.pot": `
+    it("Should show error and stop compilation of catalog if message doesnt have a translation (with template)", async () => {
+      expect.assertions(3)
+      const rootDir = await createFixtures({
+        "messages.pot": `
 msgid "Hello World"
 msgstr ""
         `,
-          "pl.po": ``,
+        "pl.po": ``,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
 
-        const config = getTestConfig(rootDir)
+        const actualFiles = readFsToListing(rootDir)
 
-        await mockConsole(async (console) => {
-          const result = await command(config, {
-            allowEmpty: false,
-            workersOptions: {
-              poolSize: 0,
-            },
-          })
+        expect({
+          pl: actualFiles["pl.js"],
+          en: actualFiles["en.js"],
+        }).toMatchSnapshot()
 
-          const actualFiles = readFsToListing(rootDir)
+        let log = getConsoleMockCalls(console.error)
+        log = log.split("\n\n").sort().join("\n\n")
 
-          expect({
-            pl: actualFiles["pl.js"],
-            en: actualFiles["en.js"],
-          }).toMatchSnapshot()
-
-          let log = getConsoleMockCalls(console.error)
-          log = log.split("\n\n").sort().join("\n\n")
-
-          expect(log).toMatchSnapshot()
-          expect(result).toBeFalsy()
-        })
-      }
-    )
+        expect(log).toMatchSnapshot()
+        expect(result).toBeFalsy()
+      })
+    })
 
     it("Should allow empty translation for pseudo locale", async () => {
       expect.assertions(4)
@@ -165,44 +157,80 @@ msgstr ""
     })
   })
 
-  describe("failOnCompileError = true", () => {
-    it(
-      "Should show error and stop compilation of catalog " +
-        "if message has compilation error",
-      async () => {
-        expect.assertions(3)
+  describe("failOnCompileError", () => {
+    it("Should show error and stop compilation of catalog if message has compilation error when failOnCompileError = true", async () => {
+      expect.assertions(3)
 
-        const rootDir = await createFixtures({
-          "en.po": `
+      const rootDir = await createFixtures({
+        "en.po": `
 msgid "Hello World"
 msgstr "Hello {hello}"
         `,
-          "pl.po": `
+        "pl.po": `
 msgid "Hello World"
 msgstr "Hello {hello"
         `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          failOnCompileError: true,
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
+        const actualFiles = readFsToListing(config.rootDir)
 
-        const config = getTestConfig(rootDir)
+        expect(actualFiles["pl.js"]).toBeFalsy()
 
-        await mockConsole(async (console) => {
-          const result = await command(config, {
-            failOnCompileError: true,
-            allowEmpty: true,
-            workersOptions: {
-              poolSize: 0,
-            },
-          })
-          const actualFiles = readFsToListing(config.rootDir)
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toMatchSnapshot()
+        expect(result).toBeFalsy()
+      })
+    })
 
-          expect(actualFiles["pl.js"]).toBeFalsy()
+    it('Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false"', async () => {
+      expect.assertions(3)
 
-          const log = getConsoleMockCalls(console.error)
-          expect(log).toMatchSnapshot()
-          expect(result).toBeFalsy()
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello {hello}"
+
+msgid "Hello User"
+msgstr "Hello User"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Hello {hello"
+
+msgid "Hello User"
+msgstr "Hello User"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          failOnCompileError: false,
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
         })
-      }
-    )
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["pl.js"]).toMatchSnapshot()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toMatchSnapshot()
+        expect(result).toBeTruthy()
+      })
+    })
   })
 
   describe("merge", () => {
