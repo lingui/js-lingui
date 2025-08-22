@@ -10,7 +10,4 @@ export default defineConfig({
       include: ["<rootDir>/fixtures"],
     },
   ],
-  experimental: {
-    multiThread: true,
-  },
 })
