@@ -5,6 +5,7 @@
   "dependencies": {
     "@lingui/core": "*",
     "@lingui/react": "*",
+    "@lingui/conf": "*",
     "some-package": "*"
   }
 }
