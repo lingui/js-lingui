@@ -15,10 +15,10 @@ describe("resolveWorkerOptions", () => {
     jest.clearAllMocks()
   })
 
-  test("noWorkers forces single-threaded", () => {
+  test("support arg as string", () => {
     setCores(8)
-    expect(resolveWorkersOptions({ workers: false })).toEqual({
-      poolSize: 0,
+    expect(resolveWorkersOptions({ workers: "25" })).toEqual({
+      poolSize: 25,
     })
   })
 
