@@ -2695,6 +2695,7 @@ __metadata:
     "@lingui/message-utils": 5.4.1
     "@types/convert-source-map": ^2.0.0
     "@types/micromatch": ^4.0.1
+    "@types/ms": ^2.1.0
     "@types/normalize-path": ^3.0.0
     chokidar: 3.5.1
     cli-table: ^0.3.11
@@ -2706,6 +2707,7 @@ __metadata:
     micromatch: ^4.0.7
     mock-fs: ^5.2.0
     mockdate: ^3.0.5
+    ms: ^2.1.3
     normalize-path: ^3.0.0
     ora: ^5.1.0
     picocolors: ^1.1.1
@@ -4276,6 +4278,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: a5fcf8212daa270e6aa560019a4bd28a66e6fa49c55c1373746d5894f4aa1aafa5588335194953cf014de3c77df6be67a041fb6638ead7124307370985880b6c
+  languageName: node
+  linkType: hard
+
+"@types/ms@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@types/ms@npm:2.1.0"
+  checksum: 532d2ebb91937ccc4a89389715e5b47d4c66e708d15942fe6cc25add6dc37b2be058230a327dd50f43f89b8b6d5d52b74685a9e8f70516edfc9bdd6be910eff4
   languageName: node
   linkType: hard
 
