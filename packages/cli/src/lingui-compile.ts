@@ -106,7 +106,7 @@ type CliArgs = {
   strict?: string
   config?: string
   debounce?: number
-  workers?: number | false
+  workers?: number
 }
 
 if (require.main === module) {
@@ -118,7 +118,7 @@ if (require.main === module) {
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` or `--no-workers` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
     )
     .option(
       "--namespace <namespace>",
