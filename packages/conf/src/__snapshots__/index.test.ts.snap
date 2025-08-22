@@ -48,6 +48,7 @@ exports[`@lingui/conf should return default config 1`] = `
   },
   orderBy: message,
   pseudoLocale: ,
+  resolvedConfigPath: StringContaining .linguirc,
   rootDir: .,
   runtimeConfigModule: {
     Trans: [

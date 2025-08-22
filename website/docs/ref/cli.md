@@ -58,6 +58,7 @@ lingui extract [files...]
         [--convert-from <format>]
         [--verbose]
         [--watch [--debounce <delay>]]
+        [--workers]
 ```
 
 The `extract` command scans source files to locate and extract messages, generating separate message catalogs for each language.
@@ -129,6 +130,23 @@ Enable watch mode to monitor changes in files located in the paths specified in 
 
 Delay the extraction by `<delay>` milliseconds, bundling multiple file changes together.
 
+#### `--workers` {#extract-workers}
+
+Specifies the number of worker threads to use.
+
+Pass `--workers 1` to disable workers and run everything in a single process.
+
+By default, the tool uses a simple heuristic:
+
+- On machines with more than 2 cores → `cpu.count - 1` workers
+- On 2-core machines → all cores
+
+Use the `--verbose` flag to see the actual pool size.
+
+Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
+
+A larger worker pool also increases memory usage. Adjust this value for your project to achieve the best performance.
+
 ### `extract-template`
 
 ```shell
@@ -153,6 +171,7 @@ lingui compile
     [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
+    [--workers]
 ```
 
 Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/ref/conf#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
@@ -214,6 +233,22 @@ Watch mode. Watches only for changes in locale files in your defined locale cata
 #### `--debounce <delay>` {#compile-debounce}
 
 Delays compilation by `<delay>` milliseconds to avoid multiple compilations for subsequent file changes.
+
+#### `--workers` {#compile-workers}
+
+Specifies the number of worker threads to use.
+Pass `--workers 1` to disable workers and run everything in a single process.
+
+By default, the tool uses a simple heuristic:
+
+- On machines with more than 2 cores → `cpu.count - 1` workers
+- On 2-core machines → all cores
+
+Use the `--verbose` flag to see the actual pool size.
+
+Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
+
+A larger worker pool also increases memory usage. Adjust this value for your project to achieve the best performance.
 
 ## Configuring the Source Locale
 

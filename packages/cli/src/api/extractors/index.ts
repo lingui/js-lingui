@@ -8,17 +8,12 @@ import {
 
 const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 
-type ExtractOptions = {
-  extractors?: ExtractorType[]
-}
-
 export default async function extract(
   filename: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
-  linguiConfig: LinguiConfigNormalized,
-  options: ExtractOptions
+  linguiConfig: LinguiConfigNormalized
 ): Promise<boolean> {
-  const extractorsToExtract = options.extractors ?? DEFAULT_EXTRACTORS
+  const extractorsToExtract = linguiConfig.extractors ?? DEFAULT_EXTRACTORS
 
   for (const ext of extractorsToExtract) {
     if (!ext.match(filename)) continue

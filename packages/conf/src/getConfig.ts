@@ -3,7 +3,7 @@ import { LinguiConfigNormalized } from "./types"
 import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
-import type { JITIOptions } from "jiti/dist/types"
+import { createJiti } from "jiti"
 import pico from "picocolors"
 
 function configExists(path: string) {
@@ -11,12 +11,11 @@ function configExists(path: string) {
 }
 
 function JitiLoader(): LoaderSync {
-  return (filepath, content) => {
-    const opts: JITIOptions = {
-      interopDefault: true,
-    }
-    const jiti = require("jiti")(__filename, opts)
-    return jiti(filepath)
+  return (filepath) => {
+    const jiti = createJiti(__filename)
+
+    const mod = jiti(filepath)
+    return mod?.default ?? mod
   }
 }
 
@@ -81,6 +80,6 @@ export function getConfig({
       rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
       ...userConfig,
     },
-    { skipValidation }
+    { skipValidation, resolvedConfigPath: result.filepath }
   )
 }

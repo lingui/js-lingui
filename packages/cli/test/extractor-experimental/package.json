@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@lingui/core": "*"
+    "@lingui/core": "*",
+    "@lingui/conf": "*"
   }
 }

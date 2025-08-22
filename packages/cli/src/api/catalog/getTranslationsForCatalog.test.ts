@@ -51,17 +51,19 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to fallbackLocales.default", async () => {
@@ -77,21 +79,22 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         default: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-
-    expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: ru: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to single fallbackLocales", async () => {
@@ -107,21 +110,22 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-
-    expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: ru: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to multiple fallbacks and then to default", async () => {
@@ -153,26 +157,25 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: ["de", "es"],
         default: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
     expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      // this fallback to de -> es
-      hashid2: "es: translation: Ipsum",
-      // this fallback to de -> es -> default
-
-      hashid3: "pl: translation: Dolor",
-      // this fallback to de -> es
-      hashid4: "es: translation: Sit",
+      messages: {
+        hashid1: "ru: translation: Lorem",
+        // this fallback to de -> es
+        hashid2: "es: translation: Ipsum",
+        // this fallback to de -> es -> default
+        hashid3: "pl: translation: Dolor",
+        // this fallback to de -> es
+        hashid4: "es: translation: Sit",
+      },
+      missing: [],
     })
   })
 
@@ -188,18 +191,20 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-      const missingSpy = jest.fn()
       const actual = await getTranslationsForCatalog(catalogStub, "en", {
         sourceLocale: "en",
         fallbackLocales: {},
-        onMissing: missingSpy,
       })
 
-      expect(missingSpy).not.toBeCalled()
-      expect(actual).toStrictEqual({
-        hashid1: "Lorem",
-        hashid2: "en: translation: Ipsum",
-      })
+      expect(actual).toMatchInlineSnapshot(`
+        {
+          messages: {
+            hashid1: Lorem,
+            hashid2: en: translation: Ipsum,
+          },
+          missing: [],
+        }
+      `)
     }
   )
 
@@ -215,20 +220,24 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).toBeCalledWith({
-      id: "hashid1",
-      source: "Lorem",
-    })
-    expect(actual).toStrictEqual({
-      hashid1: "Lorem",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should add keys from source locale", async () => {
@@ -246,20 +255,31 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-      hashid3: "Dolor",
-      hashid4: "Sit",
-    })
-    expect(missingSpy).toBeCalledTimes(2)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+          hashid3: Dolor,
+          hashid4: Sit,
+        },
+        missing: [
+          {
+            id: hashid3,
+            source: Dolor,
+          },
+          {
+            id: hashid4,
+            source: Sit,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should not fail if sourceLocale is not set", async () => {
@@ -277,18 +297,20 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: null,
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
-    expect(missingSpy).toBeCalledTimes(0)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should add keys from template", async () => {
@@ -305,20 +327,31 @@ describe("getTranslationsForCatalog", () => {
       message("hashid4", "Sit", true)
     ]).tpl)
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-      hashid3: "Dolor",
-      hashid4: "Sit",
-    })
-    expect(missingSpy).toBeCalledTimes(2)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+          hashid3: Dolor,
+          hashid4: Sit,
+        },
+        missing: [
+          {
+            id: hashid3,
+            source: Dolor,
+          },
+          {
+            id: hashid4,
+            source: Sit,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should not fail if catalog for requested locale does not exists", async () => {
@@ -327,16 +360,23 @@ describe("getTranslationsForCatalog", () => {
       message("hashid1", "Lorem", true),
     ]).tpl)
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "Lorem",
-    })
-    expect(missingSpy).toBeCalledTimes(1)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
   })
 })
