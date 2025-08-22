@@ -34,7 +34,8 @@ export default async function command(
   let workerPool: ExtractWorkerPool
 
   if (options.workersOptions.poolSize) {
-    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
   }

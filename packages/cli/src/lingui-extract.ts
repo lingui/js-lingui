@@ -18,6 +18,7 @@ import {
   createExtractWorkerPool,
   ExtractWorkerPool,
 } from "./api/extractWorkerPool"
+import ms from "ms"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -34,6 +35,7 @@ export default async function command(
   config: LinguiConfigNormalized,
   options: Partial<CliExtractOptions>
 ): Promise<boolean> {
+  const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = await getCatalogs(config)
@@ -42,13 +44,19 @@ export default async function command(
 
   let workerPool: ExtractWorkerPool
 
+  // important to initialize ora before worker pool, otherwise it cause
+  // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+  // when workers >= 10
+  const spinner = ora()
+
   if (options.workersOptions.poolSize) {
-    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
   }
 
-  const spinner = ora().start()
+  spinner.start()
 
   try {
     await Promise.all(
@@ -72,10 +80,12 @@ export default async function command(
     }
   }
 
+  const doneMsg = `Done in ${ms(Date.now() - startTime)}`
+
   if (commandSuccess) {
-    spinner.succeed()
+    spinner.succeed(doneMsg)
   } else {
-    spinner.fail()
+    spinner.fail(doneMsg)
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {

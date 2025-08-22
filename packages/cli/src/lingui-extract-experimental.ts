@@ -80,7 +80,8 @@ export default async function command(
       )
     }
 
-    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = Pool(
       () =>

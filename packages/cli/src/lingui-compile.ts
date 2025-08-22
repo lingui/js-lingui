@@ -12,6 +12,7 @@ import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions"
+import ms from "ms"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -27,6 +28,8 @@ export async function command(
   config: LinguiConfigNormalized,
   options: CliCompileOptions
 ) {
+  const startTime = Date.now()
+
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
 
@@ -56,7 +59,8 @@ export async function command(
       )
     }
 
-    console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = Pool(
       () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
@@ -93,6 +97,8 @@ export async function command(
       await pool.terminate()
     }
   }
+
+  console.log(`Done in ${ms(Date.now() - startTime)}`)
 
   return !errored
 }
@@ -217,8 +223,6 @@ if (require.main === module) {
       if (!results) {
         process.exit(1)
       }
-
-      console.log("Done!")
     })
   }
 }
