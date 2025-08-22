@@ -150,7 +150,7 @@ if (require.main === module) {
       }
     )
     .option(
-      "--workers n",
+      "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8)"
     )
     .option(
