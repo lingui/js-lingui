@@ -157,9 +157,11 @@ export default async function command(
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  stats.forEach(({ entry, content }) => {
-    console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
-  })
+  stats
+    .sort((a, b) => a.entry.localeCompare(b.entry))
+    .forEach(({ entry, content }) => {
+      console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
+    })
 
   return commandSuccess
 }
