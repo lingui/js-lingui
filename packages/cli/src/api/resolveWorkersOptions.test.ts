@@ -17,7 +17,7 @@ describe("resolveWorkerOptions", () => {
 
   test("noWorkers forces single-threaded", () => {
     setCores(8)
-    expect(resolveWorkersOptions({ noWorkers: true })).toEqual({
+    expect(resolveWorkersOptions({ workers: false })).toEqual({
       poolSize: 0,
     })
   })

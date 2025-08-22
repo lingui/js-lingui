@@ -76,8 +76,7 @@ export default async function command(
 type CliArgs = {
   config?: string
   verbose?: boolean
-  workers?: number
-  noWorkers?: boolean
+  workers?: number | false
 }
 
 if (require.main === module) {
@@ -86,11 +85,7 @@ if (require.main === module) {
     .option("--verbose", "Verbose output")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8)"
-    )
-    .option(
-      "--no-workers",
-      "Disable worker threads and run everything in a single process (same as --workers 1)"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` or `--no-workers` to disable worker threads and run everything in a single process"
     )
     .parse(process.argv)
 

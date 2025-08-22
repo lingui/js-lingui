@@ -3,12 +3,11 @@ import os from "node:os"
 export type WorkersOptions = { poolSize: number }
 
 export function resolveWorkersOptions(opts: {
-  workers?: number
-  noWorkers?: boolean
+  workers?: number | false
 }): WorkersOptions {
   const cores = os.availableParallelism()
 
-  if (opts.noWorkers || opts.workers <= 1 || cores === 1) {
+  if (opts.workers === false || opts.workers <= 1 || cores === 1) {
     return { poolSize: 0 }
   }
 
