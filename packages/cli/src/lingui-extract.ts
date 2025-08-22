@@ -40,8 +40,6 @@ export default async function command(
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  const spinner = ora().start()
-
   let workerPool: ExtractWorkerPool
 
   if (options.workersOptions.poolSize) {
@@ -49,6 +47,8 @@ export default async function command(
 
     workerPool = createExtractWorkerPool()
   }
+
+  const spinner = ora().start()
 
   try {
     await Promise.all(
