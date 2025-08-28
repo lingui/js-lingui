@@ -4,7 +4,7 @@ import mockFs from "mock-fs"
 import { mockConsole } from "@lingui/jest-mocks"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
-import { Catalog, cleanObsolete, order } from "./catalog"
+import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog"
 import { createCompiledCatalog } from "./compile"
 
 import {
@@ -688,9 +688,9 @@ describe("writeCompiled", () => {
     async ({ namespace, extension }) => {
       const { source } = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
-      expect(await catalog.writeCompiled("en", source, namespace)).toMatch(
-        extension
-      )
+      expect(
+        await writeCompiled(catalog.path, "en", source, namespace)
+      ).toMatch(extension)
     }
   )
 })

@@ -10,6 +10,15 @@ import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
 import normalizePath from "normalize-path"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
+import {
+  createExtractWorkerPool,
+  ExtractWorkerPool,
+} from "./api/extractWorkerPool"
+import ms from "ms"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -19,39 +28,64 @@ export type CliExtractOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
   options: Partial<CliExtractOptions>
 ): Promise<boolean> {
+  const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  const spinner = ora().start()
+  let workerPool: ExtractWorkerPool
 
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const result = await catalog.make({
-        ...(options as CliExtractOptions),
-        orderBy: config.orderBy,
+  // important to initialize ora before worker pool, otherwise it cause
+  // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+  // when workers >= 10
+  const spinner = ora()
+
+  if (options.workersOptions.poolSize) {
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+
+    workerPool = createExtractWorkerPool(options.workersOptions)
+  }
+
+  spinner.start()
+
+  try {
+    await Promise.all(
+      catalogs.map(async (catalog) => {
+        const result = await catalog.make({
+          ...(options as CliExtractOptions),
+          orderBy: config.orderBy,
+          workerPool,
+        })
+
+        catalogStats[
+          normalizePath(nodepath.relative(config.rootDir, catalog.path))
+        ] = result || {}
+
+        commandSuccess &&= Boolean(result)
       })
+    )
+  } finally {
+    if (workerPool) {
+      await workerPool.terminate()
+    }
+  }
 
-      catalogStats[
-        normalizePath(nodepath.relative(config.rootDir, catalog.path))
-      ] = result || {}
-
-      commandSuccess &&= Boolean(result)
-    })
-  )
+  const doneMsg = `Done in ${ms(Date.now() - startTime)}`
 
   if (commandSuccess) {
-    spinner.succeed()
+    spinner.succeed(doneMsg)
   } else {
-    spinner.fail()
+    spinner.fail(doneMsg)
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
@@ -97,7 +131,7 @@ export default async function command(
   return commandSuccess
 }
 
-type CliOptions = {
+type CliArgs = {
   verbose: boolean
   config: string
   convertFrom: string
@@ -108,6 +142,7 @@ type CliOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workers?: number
 }
 
 if (require.main === module) {
@@ -123,6 +158,10 @@ if (require.main === module) {
           .filter(Boolean)
       }
     )
+    .option(
+      "--workers <n>",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -137,7 +176,7 @@ if (require.main === module) {
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({
     configPath: options.config,
@@ -182,6 +221,7 @@ if (require.main === module) {
       watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,
+      workersOptions: resolveWorkersOptions(options),
     })
   }
 

@@ -21,7 +21,9 @@ describe("@lingui/conf", () => {
       })
       expect(console.error).not.toBeCalled()
       expect(console.warn).not.toBeCalled()
-      expect(config).toMatchSnapshot()
+      expect(config).toMatchSnapshot({
+        resolvedConfigPath: expect.stringContaining(".linguirc"),
+      })
     })
   })
 

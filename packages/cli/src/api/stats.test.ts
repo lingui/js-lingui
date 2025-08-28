@@ -26,8 +26,8 @@ describe("PrintStats", () => {
     const { options, ...table } = printStats(config, catalogs)
     expect(options.head).toEqual(["Language", "Total count", "Missing"])
     expect(Object.values(table)).toStrictEqual([
-      { en: [2, 0] },
       { cs: [2, 2] },
+      { en: [2, 0] },
       2,
     ])
   })

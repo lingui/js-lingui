@@ -7,10 +7,10 @@ export type TranslationMissingEvent = {
   source: string
   id: string
 }
+
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
-  onMissing?: (message: TranslationMissingEvent) => void
 }
 
 export async function getTranslationsForCatalog(
@@ -18,8 +18,14 @@ export async function getTranslationsForCatalog(
   locale: string,
   options: GetTranslationsOptions
 ) {
+  const locales = new Set([
+    locale,
+    options.sourceLocale,
+    ...getFallbackListForLocale(options.fallbackLocales, locale),
+  ])
+
   const [catalogs, template] = await Promise.all([
-    catalog.readAll(),
+    catalog.readAll(Array.from(locales)),
     catalog.readTemplate(),
   ])
 
@@ -27,10 +33,29 @@ export async function getTranslationsForCatalog(
 
   const input = { ...template, ...sourceLocaleCatalog, ...catalogs[locale] }
 
-  return Object.keys(input).reduce<{ [id: string]: string }>((acc, key) => {
-    acc[key] = getTranslation(catalogs, input[key], locale, key, options)
-    return acc
-  }, {})
+  const missing: TranslationMissingEvent[] = []
+
+  const messages = Object.keys(input).reduce<{ [id: string]: string }>(
+    (acc, key) => {
+      acc[key] = getTranslation(
+        catalogs,
+        input[key],
+        locale,
+        key,
+        (event) => {
+          missing.push(event)
+        },
+        options
+      )
+      return acc
+    },
+    {}
+  )
+
+  return {
+    missing,
+    messages,
+  }
 }
 
 function sourceLocaleFallback(catalog: CatalogType, key: string) {
@@ -46,9 +71,10 @@ function getTranslation(
   msg: MessageType,
   locale: string,
   key: string,
+  onMissing: (message: TranslationMissingEvent) => void,
   options: GetTranslationsOptions
 ) {
-  const { fallbackLocales, sourceLocale, onMissing } = options
+  const { fallbackLocales, sourceLocale } = options
 
   const getTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
@@ -83,7 +109,7 @@ function getTranslation(
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
   if (!translation) {
-    onMissing?.({
+    onMissing({
       id: key,
       source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
     })
