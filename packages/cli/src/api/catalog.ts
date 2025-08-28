@@ -225,13 +225,11 @@ export class Catalog {
     return await this.format.read(this.getFilename(locale), locale)
   }
 
-  async readAll(): Promise<AllCatalogsType> {
+  async readAll(locales: string[] = this.locales): Promise<AllCatalogsType> {
     const res: AllCatalogsType = {}
 
     await Promise.all(
-      this.locales.map(
-        async (locale) => (res[locale] = await this.read(locale))
-      )
+      locales.map(async (locale) => (res[locale] = await this.read(locale)))
     )
 
     // statement above will save locales in object in undetermined order

@@ -7,6 +7,7 @@ export type TranslationMissingEvent = {
   source: string
   id: string
 }
+
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
@@ -17,8 +18,14 @@ export async function getTranslationsForCatalog(
   locale: string,
   options: GetTranslationsOptions
 ) {
+  const locales = new Set([
+    locale,
+    options.sourceLocale,
+    ...getFallbackListForLocale(options.fallbackLocales, locale),
+  ])
+
   const [catalogs, template] = await Promise.all([
-    catalog.readAll(),
+    catalog.readAll(Array.from(locales)),
     catalog.readTemplate(),
   ])
 
