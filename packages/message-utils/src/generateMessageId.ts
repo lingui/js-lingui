@@ -7,11 +7,15 @@ export function generateMessageId(msg: string, context = "") {
 }
 
 function hexToBase64(hexStr: string) {
-  let base64 = ""
+  const base64: string[] = []
+
   for (let i = 0; i < hexStr.length; i++) {
-    base64 += !((i - 1) & 1)
-      ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16))
-      : ""
+    base64.push(
+      !((i - 1) & 1)
+        ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16))
+        : ""
+    )
   }
-  return btoa(base64)
+
+  return btoa(base64.join(""))
 }

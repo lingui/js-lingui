@@ -117,6 +117,12 @@ There are two documented ways to do this: first is a generic way described in th
    YARN_NPM_REGISTRY_SERVER=http://0.0.0.0:4873/ yarn up "@lingui/*"
    ```
 
+   with PNPM:
+
+   ```sh
+   pnpm -r up "@lingui/*" --latest --registry=http://0.0.0.0:4873/
+   ```
+
 5. After you make some changes, you need to run the same process. (Releasing + yarn upgrade)
 
 6. When finished testing, restore default registry (only for NPM)

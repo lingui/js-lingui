@@ -3,15 +3,16 @@ import chokidar from "chokidar"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-
-import { createCompiledCatalog } from "./api/compile"
 import { helpRun } from "./api/help"
-import { createCompilationErrorMessage, getCatalogs, getFormat } from "./api"
-import { getCatalogForMerge } from "./api/catalog/getCatalogs"
-import normalizePath from "normalize-path"
-
-import nodepath from "path"
-import { Catalog } from "./api/catalog"
+import { getCatalogs, getFormat } from "./api"
+import { compileLocale } from "./api/compile/compileLocale"
+import { Pool, spawn, Worker } from "threads"
+import { CompileWorker } from "./workers/compileWorker"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
+import ms from "ms"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -20,15 +21,14 @@ export type CliCompileOptions = {
   typescript?: boolean
   watch?: boolean
   namespace?: string
+  workersOptions: WorkersOptions
 }
-
-class ProgramExit extends Error {}
 
 export async function command(
   config: LinguiConfigNormalized,
   options: CliCompileOptions
 ) {
-  const catalogs = await getCatalogs(config)
+  const startTime = Date.now()
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
@@ -37,144 +37,73 @@ export async function command(
 
   let errored = false
 
-  await Promise.all(
-    config.locales.map(async (locale) => {
+  if (!options.workersOptions.poolSize) {
+    // single threaded
+    const catalogs = await getCatalogs(config)
+
+    for (const locale of config.locales) {
       try {
-        await compileLocale(locale, catalogs, options, config, doMerge)
+        await compileLocale(catalogs, locale, options, config, doMerge, console)
       } catch (err) {
-        if (err instanceof ProgramExit) {
+        if ((err as Error).name === "ProgramExit") {
           errored = true
         } else {
           throw err
         }
       }
-    })
-  )
+    }
+  } else {
+    if (!config.resolvedConfigPath) {
+      throw new Error(
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+      )
+    }
+
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+
+    const pool = Pool(
+      () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
+      { size: options.workersOptions.poolSize }
+    )
+
+    try {
+      for (const locale of config.locales) {
+        pool.queue(async (worker) => {
+          const { logs, error, exitProgram } = await worker.compileLocale(
+            locale,
+            options,
+            doMerge,
+            config.resolvedConfigPath
+          )
+
+          if (logs.errors) {
+            console.error(logs.errors)
+          }
+
+          if (exitProgram) {
+            errored = true
+            return
+          }
+
+          if (error) {
+            throw error
+          }
+        })
+      }
+
+      await pool.completed(true)
+    } finally {
+      await pool.terminate()
+    }
+  }
+
+  console.log(`Done in ${ms(Date.now() - startTime)}`)
 
   return !errored
 }
 
-async function compileLocale(
-  locale: string,
-  catalogs: Catalog[],
-  options: CliCompileOptions,
-  config: LinguiConfigNormalized,
-  doMerge: boolean
-) {
-  let mergedCatalogs = {}
-
-  await Promise.all(
-    catalogs.map(async (catalog) => {
-      const { messages, missing: missingMessages } =
-        await catalog.getTranslations(locale, {
-          fallbackLocales: config.fallbackLocales,
-          sourceLocale: config.sourceLocale,
-        })
-
-      if (
-        !options.allowEmpty &&
-        locale !== config.pseudoLocale &&
-        missingMessages.length > 0
-      ) {
-        console.error(
-          pico.red(
-            `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
-          )
-        )
-
-        if (options.verbose) {
-          console.error(pico.red("Missing translations:"))
-          missingMessages.forEach((missing) => {
-            const source =
-              missing.source || missing.source === missing.id
-                ? `: (${missing.source})`
-                : ""
-
-            console.error(`${missing.id}${source}`)
-          })
-        } else {
-          console.error(
-            pico.red(`Missing ${missingMessages.length} translation(s)`)
-          )
-        }
-        console.error()
-        throw new ProgramExit()
-      }
-
-      if (doMerge) {
-        mergedCatalogs = { ...mergedCatalogs, ...messages }
-      } else {
-        if (
-          !(await compileAndWrite(locale, config, options, catalog, messages))
-        ) {
-          throw new ProgramExit()
-        }
-      }
-    })
-  )
-
-  if (doMerge) {
-    const result = await compileAndWrite(
-      locale,
-      config,
-      options,
-      await getCatalogForMerge(config),
-      mergedCatalogs
-    )
-
-    if (!result) {
-      throw new ProgramExit()
-    }
-  }
-}
-
-async function compileAndWrite(
-  locale: string,
-  config: LinguiConfigNormalized,
-  options: CliCompileOptions,
-  catalogToWrite: Catalog,
-  messages: Record<string, string>
-): Promise<boolean> {
-  const namespace = options.typescript
-    ? "ts"
-    : options.namespace || config.compileNamespace
-  const { source: compiledCatalog, errors } = createCompiledCatalog(
-    locale,
-    messages,
-    {
-      strict: false,
-      namespace,
-      pseudoLocale: config.pseudoLocale,
-      compilerBabelOptions: config.compilerBabelOptions,
-    }
-  )
-
-  if (errors.length) {
-    let message = createCompilationErrorMessage(locale, errors)
-
-    if (options.failOnCompileError) {
-      message += `These errors fail command execution because \`--strict\` option passed`
-      console.error(pico.red(message))
-      return false
-    } else {
-      message += `You can fail command execution on these errors by passing \`--strict\` option`
-      console.error(pico.red(message))
-    }
-  }
-
-  let compiledPath = await catalogToWrite.writeCompiled(
-    locale,
-    compiledCatalog,
-    namespace
-  )
-
-  compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
-
-  options.verbose && console.error(pico.green(`${locale} ⇒ ${compiledPath}`))
-  return true
-}
-
-type CliOptions = {
+type CliArgs = {
   verbose?: boolean
   allowEmpty?: boolean
   typescript?: boolean
@@ -183,17 +112,20 @@ type CliOptions = {
   strict?: string
   config?: string
   debounce?: number
+  workers?: number
 }
 
 if (require.main === module) {
   program
-    .description(
-      "Add compile message catalogs and add language data (plurals) to compiled bundle."
-    )
+    .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
+    .option(
+      "--workers <n>",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+    )
     .option(
       "--namespace <namespace>",
       "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
@@ -217,7 +149,7 @@ if (require.main === module) {
     })
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({ configPath: options.config })
 
@@ -229,7 +161,7 @@ if (require.main === module) {
         verbose: options.watch || options.verbose || false,
         allowEmpty: !options.strict,
         failOnCompileError: !!options.strict,
-
+        workersOptions: resolveWorkersOptions(options),
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
@@ -291,8 +223,6 @@ if (require.main === module) {
       if (!results) {
         process.exit(1)
       }
-
-      console.log("Done!")
     })
   }
 }
