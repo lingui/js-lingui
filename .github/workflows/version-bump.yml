@@ -1,11 +1,11 @@
-name: release
+name: version-bump
 
 on:
   workflow_dispatch:
     inputs:
       versionType:
         type: choice
-        description: 'Version type to publish'
+        description: 'Version type to bump'
         options:
         - latest
         - next
@@ -13,11 +13,8 @@ on:
         default: "latest"
 
 jobs:
-  publish:
+  version-bump:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +35,21 @@ jobs:
       - name: Build packages
         run: yarn release:build
 
-      - name: Publishing packages
+      - name: Unit Testing
+        run: yarn test:ci
+
+      - name: Linting & Types
+        run: yarn lint:all
+
+      - name: Prepare Lingui-Bot git account
+        uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          name: 'Lingui Bot'
+          email: 'linguibot@gmail.com'
+          actor: 'lingui-bot'
+          token: '${{ secrets.GH_TOKEN }}'
+
+      - name: Versioning packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn release:${{github.event.inputs.versionType}}
+        run: yarn version:${{github.event.inputs.versionType}}
