@@ -65,6 +65,11 @@ export type I18nProps = {
    */
   localeData?: AllLocaleData
   missing?: MissingHandler
+  /**
+   * Global custom formats to be used in all `i18n._` calls.
+   * Additional passed formats in the `i18n._` call will be merged with the global ones.
+   */
+  formats?: Formats
 }
 
 type Events = {
@@ -89,6 +94,7 @@ export class I18n extends EventEmitter<Events> {
   private _localeData: AllLocaleData = {}
   private _messages: AllMessages = {}
   private _missing?: MissingHandler
+  private _formats: Formats = {}
   private _messageCompiler?: MessageCompiler
 
   constructor(params: I18nProps) {
@@ -104,6 +110,7 @@ export class I18n extends EventEmitter<Events> {
     if (typeof params.locale === "string" || params.locales) {
       this.activate(params.locale ?? defaultLocale, params.locales)
     }
+    if (params.formats != null) this._formats = params.formats
   }
 
   get locale() {
@@ -304,7 +311,7 @@ Please compile your catalog first.
       translation,
       this._locale,
       this._locales
-    )(values, options?.formats)
+    )(values, { ...this._formats, ...options?.formats })
   }
 
   /**
