@@ -38,6 +38,9 @@ jobs:
       - name: Build packages
         run: yarn release:build
 
+      - name: Install npm CLI
+        run: yarn global add npm
+
       - name: Publishing packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
