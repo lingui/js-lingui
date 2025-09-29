@@ -6,8 +6,8 @@ import { makeConfig } from "./makeConfig"
 import { createJiti } from "jiti"
 import pico from "picocolors"
 
-function configExists(path: string) {
-  return path && fs.existsSync(path)
+function configExists(path?: string): path is string {
+  return !!path && fs.existsSync(path)
 }
 
 function JitiLoader(): LoaderSync {
