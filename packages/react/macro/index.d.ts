@@ -9,6 +9,7 @@ type CommonProps = TransRenderCallbackOrComponent & {
   id?: string
   comment?: string
   context?: string
+  [key: string]: any
 }
 
 type TransChildren = ReactNode | LabeledExpression<string | number>
