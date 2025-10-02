@@ -30,6 +30,7 @@ export type TransProps = {
   components?: { [key: string]: React.ElementType | any }
   formats?: MessageOptions["formats"]
   comment?: string
+  [key: string]: any
 } & TransRenderCallbackOrComponent
 
 /**
@@ -50,6 +51,7 @@ export function TransNoContext(
     message,
     formats,
     lingui: { i18n, defaultComponent },
+    ...textProps,
   } = props
 
   const { values, components } = getInterpolationValuesAndComponents(props)
@@ -72,7 +74,8 @@ export function TransNoContext(
   const FallbackComponent: React.ComponentType<TransRenderProps> =
     defaultComponent || RenderFragment
 
-  const i18nProps: TransRenderProps = {
+  const renderProps: TransRenderProps = {
+    ...textProps,
     id,
     message,
     translation,
@@ -94,20 +97,20 @@ export function TransNoContext(
     console.error(
       `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
     )
-    return React.createElement(FallbackComponent, i18nProps, translation)
+    return React.createElement(FallbackComponent, renderProps, translation)
   }
 
   // Rendering using a render prop
   if (typeof render === "function") {
     // Component: render={(props) => <a title={props.translation}>x</a>}
-    return render(i18nProps)
+    return render(renderProps)
   }
 
   // `component` prop has a higher precedence over `defaultComponent`
   const Component: React.ComponentType<TransRenderProps> =
     component || FallbackComponent
 
-  return React.createElement(Component, i18nProps, translation)
+  return React.createElement(Component, renderProps, translation)
 }
 
 const RenderFragment = ({ children }: TransRenderProps) => {
