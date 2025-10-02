@@ -9,6 +9,7 @@ export type TransRenderProps = {
   translation: React.ReactNode
   children: React.ReactNode
   message?: string | null
+  [key: string]: any
 }
 
 export type TransRenderCallbackOrComponent =
@@ -51,7 +52,7 @@ export function TransNoContext(
     message,
     formats,
     lingui: { i18n, defaultComponent },
-    ...textProps,
+    ...textProps
   } = props
 
   const { values, components } = getInterpolationValuesAndComponents(props)
