@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
 # [5.5.0](https://github.com/lingui/js-lingui/compare/v5.4.1...v5.5.0) (2025-09-12)
 
 **Note:** Version bump only for package @lingui/babel-plugin-lingui-macro

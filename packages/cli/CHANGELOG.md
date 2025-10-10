@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
+
+### Bug Fixes
+
+* orderByMessage should also order by context ([#2337](https://github.com/lingui/js-lingui/issues/2337)) ([e84de76](https://github.com/lingui/js-lingui/commit/e84de76e26fb7e0c26a6e0bfa7718a2bd06e36c8))
+
 # [5.5.0](https://github.com/lingui/js-lingui/compare/v5.4.1...v5.5.0) (2025-09-12)
 
 ### Features
