@@ -38,8 +38,10 @@ jobs:
       - name: Build packages
         run: yarn release:build
 
-      - name: Install npm CLI
-        run: yarn global add npm
+      - name: Install latest npm CLI
+        run: |
+          npm install -g npm@latest
+          npm --version
 
       - name: Publishing packages
         env:
