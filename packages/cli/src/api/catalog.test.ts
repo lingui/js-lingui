@@ -617,7 +617,7 @@ describe("order", () => {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
-  it("should order messages by message", () => {
+  it("should order messages by message and then by context", () => {
     const catalog = {
       msg1: makeNextMessage({
         message: "B",
@@ -630,6 +630,7 @@ describe("order", () => {
       msg2: makeNextMessage({
         // message is optional.
         translation: "A",
+        context: "context1",
         origin: [["file2.js", 3]],
       }),
       msg3: makeNextMessage({
@@ -642,6 +643,18 @@ describe("order", () => {
         translation: "C",
         origin: [["file1.js", 1]],
       }),
+      msg5: makeNextMessage({
+        message: "B",
+        translation: "B",
+        context: "context3",
+        origin: [["file2.js", 4]],
+      }),
+      msg6: makeNextMessage({
+        message: "B",
+        translation: "B",
+        context: "context2",
+        origin: [["file2.js", 5]],
+      }),
     }
 
     const orderedCatalogs = order("message", catalog)
@@ -651,6 +664,8 @@ describe("order", () => {
       [
         msg2,
         msg1,
+        msg6,
+        msg5,
         msg4,
         msg3,
       ]

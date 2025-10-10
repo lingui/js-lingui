@@ -376,7 +376,9 @@ export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
     .sort((a, b) => {
       const aMsg = messages[a].message || ""
       const bMsg = messages[b].message || ""
-      return collator.compare(aMsg, bMsg)
+      const aCtxt = messages[a].context || ""
+      const bCtxt = messages[b].context || ""
+      return collator.compare(aMsg, bMsg) || collator.compare(aCtxt, bCtxt)
     })
     .reduce((acc, key) => {
       ;(acc as any)[key] = messages[key]
