@@ -364,6 +364,25 @@ const i18n = setupI18n({ missing });
 i18n._("missing translation"); // Triggers an alert
 ```
 
+### `options.formats`
+
+Custom format definitions for number, dates and times. An object where keys are format names and values are either `Intl.DateTimeFormatOptions` or `Intl.NumberFormatOptions`.
+
+```tsx
+import { setupI18n } from "@lingui/core";
+
+const i18n = setupI18n({
+  formats: {
+    myDateStyle: {
+      day: "numeric",
+    },
+  }
+});
+i18n._("It starts on {someDate, date, myDateStyle}", {
+  someDate: new Date("2014-12-06"),
+}) === "It starts on 6";
+```
+
 ## AllMessages
 
 The `AllMessages` parameter in the [`I18n.load`](#i18n.load) method is of the following type:
