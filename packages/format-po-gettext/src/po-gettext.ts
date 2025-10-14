@@ -306,10 +306,7 @@ const convertPluralsToICU = (
  * Merges duplicate catalog entries that have plural messages with identical strings but different variables
  * This prevents duplicate msgid entries in the generated PO file
  */
-function mergeDuplicatePluralCatalogEntries(
-  catalog: CatalogType,
-  options: PoGettextFormatterOptions
-): CatalogType {
+function mergeDuplicatePluralCatalogEntries(catalog: CatalogType): CatalogType {
   // Group catalog entries by their plural string content (ignoring variable names)
   const pluralGroups = new Map<string, string[]>()
 
@@ -420,7 +417,7 @@ export function formatter(
 
     serialize(catalog, ctx): string {
       // Pre-process catalog to merge duplicate plural entries
-      const mergedCatalog = mergeDuplicatePluralCatalogEntries(catalog, options)
+      const mergedCatalog = mergeDuplicatePluralCatalogEntries(catalog)
 
       const po = PO.parse(formatter.serialize(mergedCatalog, ctx) as string)
 
