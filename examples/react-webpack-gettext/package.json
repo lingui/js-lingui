@@ -7,7 +7,7 @@
   "scripts": {
     "start": "yarn i18n && webpack serve --mode development",
     "build": "yarn i18n && webpack --mode production",
-    "i18n": "lingui extract --locale en && lingui compile",
+    "i18n": "lingui extract && lingui compile",
     "compile": "lingui compile"
   },
   "dependencies": {

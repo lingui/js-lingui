@@ -46,16 +46,16 @@ msgid "Increment"
 msgstr "Přírůstek"
 
 #: src/App.tsx:25
-msgid "Language switcher example: "
-msgstr "Příklad přepínače jazyků: "
+msgid "Language switcher example:"
+msgstr "Příklad přepínače jazyků:"
 
 #: src/App.tsx:74
 msgid "Number formatter example:"
 msgstr "Příklad formátovače čísel:"
 
 #: src/App.tsx:40
-msgid "Plurals example: "
-msgstr "Příklad množného čísla: "
+msgid "Plurals example:"
+msgstr "Příklad množného čísla:"
 
 #: src/App.tsx:21
 msgid "React Webpack Po-Gettext Example"
