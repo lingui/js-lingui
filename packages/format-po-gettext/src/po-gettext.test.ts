@@ -345,7 +345,7 @@ msgstr[3] "# dní"
         },
       }
 
-      const pofile = format.serialize(catalog, defaultSerializeCtx)
+      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
       expect(pofile).toMatchSnapshot()
 
       // The PO file should NOT have duplicate msgid entries
@@ -388,7 +388,7 @@ msgstr[3] "# dní"
         },
       }
 
-      const pofile = format.serialize(catalog, defaultSerializeCtx)
+      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
 
       // Should only have one "one book" entry
       const lines = pofile.split("\n")
