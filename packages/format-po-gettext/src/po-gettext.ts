@@ -302,6 +302,74 @@ const convertPluralsToICU = (
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
 }
 
+/**
+ * Merges duplicate PO items that have the same msgid and msgid_plural
+ * This happens when plural calls have identical strings but different variables
+ */
+function mergeDuplicatePluralEntries(
+  items: POItem[], 
+  options: PoGettextFormatterOptions
+): POItem[] {
+  const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
+  const itemMap = new Map<string, POItem[]>()
+  
+  // Group items by msgid + msgid_plural combination
+  for (const item of items) {
+    // Only merge items that have msgid_plural (i.e., plural entries)
+    if (item.msgid_plural) {
+      const key = `${item.msgid}|||${item.msgid_plural}`
+      if (!itemMap.has(key)) {
+        itemMap.set(key, [])
+      }
+      itemMap.get(key).push(item)
+    } else {
+      // Non-plural items are added as-is
+      if (!itemMap.has(item.msgid)) {
+        itemMap.set(item.msgid, [])
+      }
+      itemMap.get(item.msgid).push(item)
+    }
+  }
+  
+  const mergedItems: POItem[] = []
+  
+  for (const duplicateItems of itemMap.values()) {
+    if (duplicateItems.length === 1) {
+      // No duplicates, add the item as-is
+      mergedItems.push(duplicateItems[0])
+    } else {
+      // Merge duplicate items
+      const mergedItem = duplicateItems[0] // Use first item as base
+      
+      // Merge references (source locations)
+      const allReferences = duplicateItems.flatMap(item => item.references)
+      mergedItem.references = [...new Set(allReferences)].sort()
+      
+      // Merge extracted comments, keeping ICU contexts separate
+      const allComments = duplicateItems.flatMap(item => item.extractedComments)
+      const icuComments = allComments.filter(comment => comment.startsWith(ctxPrefix))
+      const otherComments = allComments.filter(comment => !comment.startsWith(ctxPrefix))
+      
+      // For ICU comments, we want to preserve all the different variable contexts
+      // but use a canonical variable name in the final comment
+      if (icuComments.length > 0) {
+        // Extract the first ICU comment and use it as the canonical one
+        const canonicalComment = icuComments[0]
+        mergedItem.extractedComments = [
+          canonicalComment,
+          ...new Set(otherComments)
+        ]
+      } else {
+        mergedItem.extractedComments = [...new Set(otherComments)]
+      }
+      
+      mergedItems.push(mergedItem)
+    }
+  }
+  
+  return mergedItems
+}
+
 export function formatter(
   options: PoGettextFormatterOptions = {}
 ): CatalogFormatter {
@@ -343,7 +411,7 @@ export function formatter(
     serialize(catalog, ctx): string {
       const po = PO.parse(formatter.serialize(catalog, ctx) as string)
 
-      po.items = po.items.map((item) => {
+      const processedItems = po.items.map((item) => {
         const isGeneratedId = !item.extractedComments.includes(
           "js-lingui-explicit-id"
         )
@@ -353,6 +421,9 @@ export function formatter(
         const message = catalog[id]
         return serializePlurals(item, message, id, isGeneratedId, options)
       })
+
+      // Merge duplicate entries that have the same msgid and msgid_plural
+      po.items = mergeDuplicatePluralEntries(processedItems, options)
 
       return po.toString()
     },
