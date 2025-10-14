@@ -345,9 +345,7 @@ msgstr[3] "# dní"
       }
 
       const pofile = format.serialize(catalog, defaultSerializeCtx)
-      
-      // Debug: let's see what's actually generated
-      console.log("Generated PO file:", pofile)
+      expect(pofile).toMatchSnapshot()
       
       // The PO file should NOT have duplicate msgid entries
       // It should merge entries with identical msgid/msgid_plural
@@ -360,9 +358,6 @@ msgstr[3] "# dní"
       // Count occurrences of "one rock" as msgid  
       const oneRockCount = lines.filter(line => line === 'msgid "one rock"').length
       expect(oneRockCount).toBe(1) // Should be merged into one entry
-      
-      // But the merged entries should contain references to all source locations
-      expect(pofile).toMatch(/src\/App\.tsx:\d+/) // Should have source references
     })
 
     it("should preserve all source locations when merging duplicate entries", () => {
@@ -397,6 +392,7 @@ msgstr[3] "# dní"
       // But should reference both source locations
       expect(pofile).toMatch(/src\/App\.tsx:60/)
       expect(pofile).toMatch(/src\/App\.tsx:66/)
+      expect(pofile).toMatchSnapshot()
     })
   })
 
