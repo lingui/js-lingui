@@ -5,9 +5,9 @@
   "private": true,
   "main": "src/index.tsx",
   "scripts": {
-    "start": "yarn extract && yarn compile && webpack serve --mode development",
-    "build": "yarn extract && yarn compile && webpack --mode production",
-    "extract": "lingui extract",
+    "start": "yarn i18n && webpack serve --mode development",
+    "build": "yarn i18n && webpack --mode production",
+    "i18n": "lingui extract && lingui compile",
     "compile": "lingui compile"
   },
   "dependencies": {

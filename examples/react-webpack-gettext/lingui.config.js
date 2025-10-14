@@ -16,7 +16,7 @@ const config = {
     lineNumbers: true,
     printPlaceholdersInComments: false,
   }),
-  compileNamespace: "window.i18njs",
+  compileNamespace: "window.i18n",
 }
 
 export default config
