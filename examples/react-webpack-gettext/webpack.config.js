@@ -32,7 +32,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/locales/*.js',
+          from: 'src/locales/*.json',
           to: 'locales/[name][ext]',
           noErrorOnMissing: true,
         },

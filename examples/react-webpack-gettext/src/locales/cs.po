@@ -17,48 +17,50 @@ msgstr ""
 #: src/App.tsx:60
 msgid "one book"
 msgid_plural "many books"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "jedna kniha"
+msgstr[1] "nula knih"
+msgstr[2] "mnoho knih"
 
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BThere%27s+one+book%7D+other+%7BThere+are+%23+books%7D%7D&pluralize_on=count
 #: src/App.tsx:52
 msgid "There's one book"
 msgid_plural "There are # books"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Je tu jedna kniha"
+msgstr[1] "Nejsou žádné knihy"
+msgstr[2] "Existuje # knih"
 
 #: src/App.tsx:67
 msgid "Date formatter example:"
-msgstr ""
+msgstr "Příklad formátovače data:"
 
 #: src/App.tsx:47
 msgid "Decrement"
-msgstr ""
+msgstr "Úbytek"
 
 #: src/App.tsx:77
 msgid "I have a balance of {0}"
-msgstr ""
+msgstr "Mám zůstatek {0}"
 
 #: src/App.tsx:44
 msgid "Increment"
-msgstr ""
+msgstr "Přírůstek"
 
 #: src/App.tsx:25
-msgid "Language switcher example:"
-msgstr ""
+msgid "Language switcher example: "
+msgstr "Příklad přepínače jazyků: "
 
 #: src/App.tsx:74
 msgid "Number formatter example:"
-msgstr ""
+msgstr "Příklad formátovače čísel:"
 
 #: src/App.tsx:40
-msgid "Plurals example:"
-msgstr ""
+msgid "Plurals example: "
+msgstr "Příklad množného čísla: "
 
 #: src/App.tsx:21
 msgid "React Webpack Po-Gettext Example"
-msgstr ""
+msgstr "Příklad React Webpacku Po-Gettext"
 
 #: src/App.tsx:70
 msgid "Today is {0}"
-msgstr ""
+msgstr "Dnes je {0}"
