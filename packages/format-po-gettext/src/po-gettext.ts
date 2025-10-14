@@ -307,25 +307,25 @@ const convertPluralsToICU = (
  * This prevents duplicate msgid entries in the generated PO file
  */
 function mergeDuplicatePluralCatalogEntries(
-  catalog: CatalogType, 
+  catalog: CatalogType,
   options: PoGettextFormatterOptions
 ): CatalogType {
   // Group catalog entries by their plural string content (ignoring variable names)
   const pluralGroups = new Map<string, string[]>()
-  
+
   for (const [id, message] of Object.entries(catalog)) {
     if (!message.message) continue
-    
+
     const icuMessage = message.message.replace(/\r?\n/g, " ")
     if (!ICU_PLURAL_REGEX.test(icuMessage)) continue
-    
+
     try {
       const messageAst = parseIcu(message.message)[0] as Select
-      
+
       // Create a canonical key based on the plural cases (ignoring variable names)
       const cases = messageAst.cases.map(stringifyICUCase).join("|||")
       const key = cases
-      
+
       if (!pluralGroups.has(key)) {
         pluralGroups.set(key, [])
       }
@@ -335,11 +335,11 @@ function mergeDuplicatePluralCatalogEntries(
       continue
     }
   }
-  
+
   // Create merged catalog
   const mergedCatalog: CatalogType = {}
   const processedIds = new Set<string>()
-  
+
   for (const ids of pluralGroups.values()) {
     if (ids.length === 1) {
       // No duplicates, add as-is
@@ -350,30 +350,33 @@ function mergeDuplicatePluralCatalogEntries(
       // Merge duplicate entries - use first ID as canonical
       const canonicalId = ids[0]
       const canonicalMessage = catalog[canonicalId]
-      
+
       // Merge origins from all duplicate entries
-      const allOrigins = ids.flatMap(id => catalog[id].origin || [])
+      const allOrigins = ids.flatMap((id) => catalog[id].origin || [])
       const mergedMessage = {
         ...canonicalMessage,
-        origin: [...new Set(allOrigins.map(origin => `${origin[0]}:${origin[1]}`))].sort()
-          .map(ref => {
-            const [file, line] = ref.split(':')
+        origin: [
+          ...new Set(allOrigins.map((origin) => `${origin[0]}:${origin[1]}`)),
+        ]
+          .sort()
+          .map((ref) => {
+            const [file, line] = ref.split(":")
             return [file, parseInt(line, 10)] as [string, number]
-          })
+          }),
       }
-      
+
       mergedCatalog[canonicalId] = mergedMessage
-      ids.forEach(id => processedIds.add(id))
+      ids.forEach((id) => processedIds.add(id))
     }
   }
-  
+
   // Add all non-plural entries as-is
   for (const [id, message] of Object.entries(catalog)) {
     if (!processedIds.has(id)) {
       mergedCatalog[id] = message
     }
   }
-  
+
   return mergedCatalog
 }
 
@@ -418,7 +421,7 @@ export function formatter(
     serialize(catalog, ctx): string {
       // Pre-process catalog to merge duplicate plural entries
       const mergedCatalog = mergeDuplicatePluralCatalogEntries(catalog, options)
-      
+
       const po = PO.parse(formatter.serialize(mergedCatalog, ctx) as string)
 
       po.items = po.items.map((item) => {
