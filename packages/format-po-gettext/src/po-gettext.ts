@@ -303,71 +303,78 @@ const convertPluralsToICU = (
 }
 
 /**
- * Merges duplicate PO items that have the same msgid and msgid_plural
- * This happens when plural calls have identical strings but different variables
+ * Merges duplicate catalog entries that have plural messages with identical strings but different variables
+ * This prevents duplicate msgid entries in the generated PO file
  */
-function mergeDuplicatePluralEntries(
-  items: POItem[], 
+function mergeDuplicatePluralCatalogEntries(
+  catalog: CatalogType, 
   options: PoGettextFormatterOptions
-): POItem[] {
-  const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
-  const itemMap = new Map<string, POItem[]>()
+): CatalogType {
+  // Group catalog entries by their plural string content (ignoring variable names)
+  const pluralGroups = new Map<string, string[]>()
   
-  // Group items by msgid + msgid_plural combination
-  for (const item of items) {
-    // Only merge items that have msgid_plural (i.e., plural entries)
-    if (item.msgid_plural) {
-      const key = `${item.msgid}|||${item.msgid_plural}`
-      if (!itemMap.has(key)) {
-        itemMap.set(key, [])
+  for (const [id, message] of Object.entries(catalog)) {
+    if (!message.message) continue
+    
+    const icuMessage = message.message.replace(/\r?\n/g, " ")
+    if (!ICU_PLURAL_REGEX.test(icuMessage)) continue
+    
+    try {
+      const messageAst = parseIcu(message.message)[0] as Select
+      
+      // Create a canonical key based on the plural cases (ignoring variable names)
+      const cases = messageAst.cases.map(stringifyICUCase).join("|||")
+      const key = cases
+      
+      if (!pluralGroups.has(key)) {
+        pluralGroups.set(key, [])
       }
-      itemMap.get(key).push(item)
-    } else {
-      // Non-plural items are added as-is
-      if (!itemMap.has(item.msgid)) {
-        itemMap.set(item.msgid, [])
-      }
-      itemMap.get(item.msgid).push(item)
+      pluralGroups.get(key).push(id)
+    } catch (e) {
+      // If parsing fails, treat as non-plural message
+      continue
     }
   }
   
-  const mergedItems: POItem[] = []
+  // Create merged catalog
+  const mergedCatalog: CatalogType = {}
+  const processedIds = new Set<string>()
   
-  for (const duplicateItems of itemMap.values()) {
-    if (duplicateItems.length === 1) {
-      // No duplicates, add the item as-is
-      mergedItems.push(duplicateItems[0])
+  for (const ids of pluralGroups.values()) {
+    if (ids.length === 1) {
+      // No duplicates, add as-is
+      const id = ids[0]
+      mergedCatalog[id] = catalog[id]
+      processedIds.add(id)
     } else {
-      // Merge duplicate items
-      const mergedItem = duplicateItems[0] // Use first item as base
+      // Merge duplicate entries - use first ID as canonical
+      const canonicalId = ids[0]
+      const canonicalMessage = catalog[canonicalId]
       
-      // Merge references (source locations)
-      const allReferences = duplicateItems.flatMap(item => item.references)
-      mergedItem.references = [...new Set(allReferences)].sort()
-      
-      // Merge extracted comments, keeping ICU contexts separate
-      const allComments = duplicateItems.flatMap(item => item.extractedComments)
-      const icuComments = allComments.filter(comment => comment.startsWith(ctxPrefix))
-      const otherComments = allComments.filter(comment => !comment.startsWith(ctxPrefix))
-      
-      // For ICU comments, we want to preserve all the different variable contexts
-      // but use a canonical variable name in the final comment
-      if (icuComments.length > 0) {
-        // Extract the first ICU comment and use it as the canonical one
-        const canonicalComment = icuComments[0]
-        mergedItem.extractedComments = [
-          canonicalComment,
-          ...new Set(otherComments)
-        ]
-      } else {
-        mergedItem.extractedComments = [...new Set(otherComments)]
+      // Merge origins from all duplicate entries
+      const allOrigins = ids.flatMap(id => catalog[id].origin || [])
+      const mergedMessage = {
+        ...canonicalMessage,
+        origin: [...new Set(allOrigins.map(origin => `${origin[0]}:${origin[1]}`))].sort()
+          .map(ref => {
+            const [file, line] = ref.split(':')
+            return [file, parseInt(line, 10)] as [string, number]
+          })
       }
       
-      mergedItems.push(mergedItem)
+      mergedCatalog[canonicalId] = mergedMessage
+      ids.forEach(id => processedIds.add(id))
     }
   }
   
-  return mergedItems
+  // Add all non-plural entries as-is
+  for (const [id, message] of Object.entries(catalog)) {
+    if (!processedIds.has(id)) {
+      mergedCatalog[id] = message
+    }
+  }
+  
+  return mergedCatalog
 }
 
 export function formatter(
@@ -409,21 +416,21 @@ export function formatter(
     },
 
     serialize(catalog, ctx): string {
-      const po = PO.parse(formatter.serialize(catalog, ctx) as string)
+      // Pre-process catalog to merge duplicate plural entries
+      const mergedCatalog = mergeDuplicatePluralCatalogEntries(catalog, options)
+      
+      const po = PO.parse(formatter.serialize(mergedCatalog, ctx) as string)
 
-      const processedItems = po.items.map((item) => {
+      po.items = po.items.map((item) => {
         const isGeneratedId = !item.extractedComments.includes(
           "js-lingui-explicit-id"
         )
         const id = isGeneratedId
           ? generateMessageId(item.msgid, item.msgctxt)
           : item.msgid
-        const message = catalog[id]
+        const message = mergedCatalog[id]
         return serializePlurals(item, message, id, isGeneratedId, options)
       })
-
-      // Merge duplicate entries that have the same msgid and msgid_plural
-      po.items = mergeDuplicatePluralEntries(processedItems, options)
 
       return po.toString()
     },

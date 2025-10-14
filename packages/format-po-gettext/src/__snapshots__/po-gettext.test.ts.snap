@@ -129,10 +129,6 @@ msgstr ""
 "Plural-Forms: \\n"
 
 #. js-lingui-explicit-id
-msgid "static"
-msgstr "Static message"
-
-#. js-lingui-explicit-id
 #. js-lingui:pluralize_on=count
 msgid "message_with_id_and_octothorpe"
 msgid_plural "message_with_id_and_octothorpe_plural"
@@ -165,6 +161,10 @@ msgid "Singular automatic id no translation"
 msgid_plural "Plural {count} automatic id no translation"
 msgstr[0] ""
 msgstr[1] ""
+
+#. js-lingui-explicit-id
+msgid "static"
+msgstr "Static message"
 
 `;
 
