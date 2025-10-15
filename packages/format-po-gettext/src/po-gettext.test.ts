@@ -603,173 +603,141 @@ msgstr[1] "# rocks"
         expect(catalogKeys).toHaveLength(4)
       })
 
-//       it("should preserve source locations when expanding merged entries", () => {
-//         const duplicateFormatter = createFormat({ mergePlurals: true })
+      it("should preserve source locations when expanding merged entries", () => {
+        const duplicateFormatter = createFormat({ mergePlurals: true })
         
-//         const poContent = `
-// msgid ""
-// msgstr ""
-// "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-// "MIME-Version: 1.0\\n"
-// "Content-Type: text/plain; charset=utf-8\\n"
-// "Content-Transfer-Encoding: 8bit\\n"
-// "X-Generator: @lingui/cli\\n"
-// "Language: en\\n"
+        const poContent = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
 
-// #: src/App.tsx:60
-// #: src/App.tsx:66
-// #: src/App.tsx:72
-// #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount%2CthirdCount
-// msgid "one book"
-// msgid_plural "many books"
-// msgstr[0] "one book"
-// msgstr[1] "many books"
-// `
+#: src/App.tsx:60
+#: src/App.tsx:66
+#: src/App.tsx:72
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount%2CthirdCount
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+`
 
-//         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
+        const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
         
-//         // Check that origin information is preserved and distributed
-//         const catalogEntries = Object.values(catalog)
-//         const origins = catalogEntries.map(entry => entry.origin).flat()
+        // Check that origin information is preserved and distributed
+        const catalogEntries = Object.values(catalog)
+        const origins = catalogEntries.map(entry => entry.origin).flat()
         
-//         // Should have all three source locations
-//         expect(origins).toContainEqual(["src/App.tsx", 60])
-//         expect(origins).toContainEqual(["src/App.tsx", 66])
-//         expect(origins).toContainEqual(["src/App.tsx", 72])
-        
-//         expect(catalog).toMatchSnapshot()
-//       })
+        // Should have all three source locations
+        expect(origins).toContainEqual(["src/App.tsx", 60])
+        expect(origins).toContainEqual(["src/App.tsx", 66])
+        expect(origins).toContainEqual(["src/App.tsx", 72])
+      })
 
-//       it("should handle single merged entry correctly (no expansion needed)", () => {
-//         const duplicateFormatter = createFormat({ mergePlurals: true })
+      it("should handle single merged entry correctly (no expansion needed)", () => {
+        const duplicateFormatter = createFormat({ mergePlurals: true })
         
-//         const poContent = `
-// msgid ""
-// msgstr ""
-// "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-// "MIME-Version: 1.0\\n"
-// "Content-Type: text/plain; charset=utf-8\\n"
-// "Content-Transfer-Encoding: 8bit\\n"
-// "X-Generator: @lingui/cli\\n"
-// "Language: en\\n"
+        const poContent = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
 
-// #: src/App.tsx:60
-// #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
-// msgid "one book"
-// msgid_plural "many books"
-// msgstr[0] "one book"
-// msgstr[1] "many books"
-// `
+#: src/App.tsx:60
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+`
 
-//         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
+        const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
         
-//         // Should have only 1 entry (no expansion needed)
-//         expect(Object.keys(catalog)).toHaveLength(1)
-//         expect(catalog).toMatchSnapshot()
-//       })
+        // Should have only 1 entry (no expansion needed)
+        expect(Object.keys(catalog)).toHaveLength(1)
+        expect(catalog).toMatchSnapshot()
+      })
 
-//       it("should work with custom prefix", () => {
-//         const duplicateFormatter = createFormat({ 
-//           mergePlurals: true, 
-//           customICUPrefix: "customprefix:" 
-//         })
+      it("should work with custom prefix", () => {
+        const duplicateFormatter = createFormat({ 
+          mergePlurals: true, 
+          customICUPrefix: "customprefix:" 
+        })
         
-//         const poContent = `
-// msgid ""
-// msgstr ""
-// "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-// "MIME-Version: 1.0\\n"
-// "Content-Type: text/plain; charset=utf-8\\n"
-// "Content-Transfer-Encoding: 8bit\\n"
-// "X-Generator: @lingui/cli\\n"
-// "Language: en\\n"
+        const poContent = `
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
 
-// #: src/App.tsx:60
-// #: src/App.tsx:66
-// #. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
-// msgid "one book"
-// msgid_plural "many books"
-// msgstr[0] "one book"
-// msgstr[1] "many books"
-// `
+#: src/App.tsx:60
+#: src/App.tsx:66
+#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+`
 
-//         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
+        const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
         
-//         // Should have 2 entries
-//         expect(Object.keys(catalog)).toHaveLength(2)
-//         expect(catalog).toMatchSnapshot()
-//       })
+        // Should have 2 entries
+        expect(Object.keys(catalog)).toHaveLength(2)
+      })
 
-//       it("should handle parsing regular PO files without merged data", () => {
-//         const duplicateFormatter = createFormat({ mergePlurals: true })
+      it("should handle parsing regular PO files without merged data", () => {
+        const duplicateFormatter = createFormat({ mergePlurals: true })
         
-//         // Use existing fixture file
-//         const pofile = fs
-//           .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
-//           .toString()
+        // Use existing fixture file
+        const pofile = fs
+          .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
+          .toString()
 
-//         const catalog = duplicateFormatter.parse(pofile, defaultParseCtx)
+        const catalog = duplicateFormatter.parse(pofile, defaultParseCtx)
         
-//         // Should parse normally without any expansion
-//         expect(catalog).toMatchSnapshot()
-//       })
+        // Should parse normally without any expansion
+        expect(catalog).toMatchSnapshot()
+      })
 
-//       it("should warn when plural entry is missing context information", () => {
-//         const duplicateFormatter = createFormat({ mergePlurals: true })
+      it("should handle round-trip serialization and parsing", () => {
+        const duplicateFormatter = createFormat({ mergePlurals: true })
         
-//         const poContent = `
-// msgid ""
-// msgstr ""
-// "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-// "MIME-Version: 1.0\\n"
-// "Content-Type: text/plain; charset=utf-8\\n"
-// "Content-Transfer-Encoding: 8bit\\n"
-// "X-Generator: @lingui/cli\\n"
-// "Language: en\\n"
+        // Start with a catalog with duplicate plural entries
+        const originalCatalog = createCatalog([
+          "{count, plural, one {one book} other {many books}}",
+          "{anotherCount, plural, one {one book} other {many books}}",
+          "{count, plural, one {one rock} other {# rocks}}",
+          "{thirdCount, plural, one {one rock} other {# rocks}}",
+        ])
 
-// #: src/App.tsx:60
-// msgid "one book"
-// msgid_plural "many books"
-// msgstr[0] "one book"
-// msgstr[1] "many books"
-// `
-
-//         mockConsole((console) => {
-//           duplicateFormatter.parse(poContent, defaultParseCtx)
-          
-//           expect(console.warn).toHaveBeenCalledWith(
-//             expect.stringContaining("missing context information for expansion")
-//           )
-//         })
-//       })
-
-//       it("should handle round-trip serialization and parsing", () => {
-//         const duplicateFormatter = createFormat({ mergePlurals: true })
+        // Serialize to PO
+        const poContent = duplicateFormatter.serialize(originalCatalog, defaultSerializeCtx) as string
         
-//         // Start with a catalog with duplicate plural entries
-//         const originalCatalog = createCatalog([
-//           "{count, plural, one {one book} other {many books}}",
-//           "{anotherCount, plural, one {one book} other {many books}}",
-//           "{count, plural, one {one rock} other {# rocks}}",
-//           "{thirdCount, plural, one {one rock} other {# rocks}}",
-//         ])
-
-//         // Serialize to PO
-//         const poContent = duplicateFormatter.serialize(originalCatalog, defaultSerializeCtx) as string
+        // Parse back to catalog
+        const parsedCatalog = duplicateFormatter.parse(poContent, defaultParseCtx)
         
-//         // Parse back to catalog
-//         const parsedCatalog = duplicateFormatter.parse(poContent, defaultParseCtx)
+        // Should have the same number of entries as original
+        expect(Object.keys(parsedCatalog)).toHaveLength(Object.keys(originalCatalog).length)
         
-//         // Should have the same number of entries as original
-//         expect(Object.keys(parsedCatalog)).toHaveLength(Object.keys(originalCatalog).length)
+        // Each entry should have the correct message format
+        Object.values(parsedCatalog).forEach(entry => {
+          expect(entry.message).toMatch(/^{(count|anotherCount|thirdCount), plural, one {.*} other {.*}}$/)
+        })
         
-//         // Each entry should have the correct message format
-//         Object.values(parsedCatalog).forEach(entry => {
-//           expect(entry.message).toMatch(/^{(count|anotherCount|thirdCount), plural, one {.*} other {.*}}$/)
-//         })
-        
-//         expect(parsedCatalog).toMatchSnapshot()
-//       })
+        expect(parsedCatalog).toMatchSnapshot()
+      })
     })
   })
 })

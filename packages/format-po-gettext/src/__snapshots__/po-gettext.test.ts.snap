@@ -129,6 +129,275 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
 }
 `;
 
+exports[`po-gettext format merging plurals parsing merged plural entries should handle parsing regular PO files without merged data 1`] = `
+{
+  WGI12K: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+    obsolete: false,
+    origin: [],
+    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  jO/SBZ: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {Singular} other {Plural}},
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  message_with_id: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+  },
+  message_with_id_but_without_translation: {
+    comments: [
+      Comment made by the developers.,
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  static: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: Static message,
+  },
+}
+`;
+
+exports[`po-gettext format merging plurals parsing merged plural entries should handle parsing regular PO files without merged data: messages_plural_gettext_to_icu_parse 1`] = `
+{
+  WGI12K: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+    obsolete: false,
+    origin: [],
+    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  jO/SBZ: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {Singular} other {Plural}},
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  message_with_id: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+  },
+  message_with_id_but_without_translation: {
+    comments: [
+      Comment made by the developers.,
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  static: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: Static message,
+  },
+}
+`;
+
+exports[`po-gettext format merging plurals parsing merged plural entries should handle round-trip serialization and parsing 1`] = `
+{
+  1sDaZ6: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [],
+    translation: {count, plural, one {one book} other {many books}},
+  },
+  1zGN6B: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {anotherCount, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [],
+    translation: {anotherCount, plural, one {one book} other {many books}},
+  },
+  E27ZCO: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {thirdCount, plural, one {one rock} other {# rocks}},
+    obsolete: false,
+    origin: [],
+    translation: {thirdCount, plural, one {one rock} other {# rocks}},
+  },
+  Sv+eOa: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {one rock} other {# rocks}},
+    obsolete: false,
+    origin: [],
+    translation: {count, plural, one {one rock} other {# rocks}},
+  },
+}
+`;
+
+exports[`po-gettext format merging plurals parsing merged plural entries should handle single merged entry correctly (no expansion needed) 1`] = `
+{
+  1sDaZ6: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [
+      [
+        src/App.tsx,
+        60,
+      ],
+    ],
+    translation: {count, plural, one {one book} other {many books}},
+  },
+}
+`;
+
+exports[`po-gettext format merging plurals parsing merged plural entries should preserve source locations when expanding merged entries 1`] = `
+{
+  1sDaZ6: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [
+      [
+        src/App.tsx,
+        60,
+      ],
+    ],
+    translation: {count, plural, one {one book} other {many books}},
+  },
+  1zGN6B: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {anotherCount, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [
+      [
+        src/App.tsx,
+        66,
+      ],
+    ],
+    translation: {anotherCount, plural, one {one book} other {many books}},
+  },
+  LIsyAZ: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {thirdCount, plural, one {one book} other {many books}},
+    obsolete: false,
+    origin: [
+      [
+        src/App.tsx,
+        72,
+      ],
+    ],
+    translation: {thirdCount, plural, one {one book} other {many books}},
+  },
+}
+`;
+
 exports[`po-gettext format merging plurals should add one entry even if there are multiple entries 1`] = `
 msgid ""
 msgstr ""
@@ -362,6 +631,75 @@ msgstr[1] ""
 `;
 
 exports[`po-gettext format should convert gettext plurals to ICU plural messages 1`] = `
+{
+  WGI12K: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+    obsolete: false,
+    origin: [],
+    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+  },
+  jO/SBZ: {
+    comments: [],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    message: {count, plural, one {Singular} other {Plural}},
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  message_with_id: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+  },
+  message_with_id_but_without_translation: {
+    comments: [
+      Comment made by the developers.,
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: ,
+  },
+  static: {
+    comments: [
+      js-lingui-explicit-id,
+    ],
+    context: null,
+    extra: {
+      flags: [],
+      translatorComments: [],
+    },
+    obsolete: false,
+    origin: [],
+    translation: Static message,
+  },
+}
+`;
+
+exports[`po-gettext format should convert gettext plurals to ICU plural messages: messages_plural_gettext_to_icu_parse 1`] = `
 {
   WGI12K: {
     comments: [],
