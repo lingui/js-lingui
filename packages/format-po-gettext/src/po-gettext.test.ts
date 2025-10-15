@@ -307,103 +307,6 @@ msgstr[3] "# dní"
     `)
   })
 
-  describe("duplicate PO entries", () => {
-    it("should merge duplicate plural entries with same msgid/msgid_plural but different variables", () => {
-      // Create messages with different variables but same strings
-      const message1 = "{count, plural, one {one book} other {many books}}"
-      const message2 =
-        "{anotherCount, plural, one {one book} other {many books}}"
-      const message3 = "{count, plural, one {one rock} other {# rocks}}"
-      const message4 = "{thirdCount, plural, one {one rock} other {# rocks}}"
-
-      // Generate IDs for these messages
-      const id1 = generateMessageId(message1)
-      const id2 = generateMessageId(message2)
-      const id3 = generateMessageId(message3)
-      const id4 = generateMessageId(message4)
-
-      const catalog: CatalogType = {
-        // First plural with 'count' variable (generated ID)
-        [id1]: {
-          message: message1,
-          translation: message1,
-        },
-        // Second plural with 'anotherCount' variable but same strings (generated ID)
-        [id2]: {
-          message: message2,
-          translation: message2,
-        },
-        // Third plural with 'count' variable but different strings (generated ID)
-        [id3]: {
-          message: message3,
-          translation: message3,
-        },
-        // Fourth plural with 'thirdCount' variable but same strings as third (generated ID)
-        [id4]: {
-          message: message4,
-          translation: message4,
-        },
-      }
-
-      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
-      expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1) // Should be merged into one entry
-
-      // Count occurrences of "one rock" as msgid
-      const oneRockCount = lines.filter(
-        (line) => line === 'msgid "one rock"'
-      ).length
-      expect(oneRockCount).toBe(1) // Should be merged into one entry
-    })
-
-    it("should preserve all source locations when merging duplicate entries", () => {
-      const message1 = "{count, plural, one {one book} other {many books}}"
-      const message2 =
-        "{anotherCount, plural, one {one book} other {many books}}"
-
-      const id1 = generateMessageId(message1)
-      const id2 = generateMessageId(message2)
-
-      const catalog: CatalogType = {
-        // Entry with origin information
-        [id1]: {
-          message: message1,
-          translation: message1,
-          origin: [["src/App.tsx", 60]],
-        },
-        // Another entry with same strings but different variable and different origin
-        [id2]: {
-          message: message2,
-          translation: message2,
-          origin: [["src/App.tsx", 66]],
-        },
-      }
-
-      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
-
-      // Should only have one "one book" entry
-      const lines = pofile.split("\n")
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1)
-
-      // But should reference both source locations
-      expect(pofile).toMatch(/src\/App\.tsx:60/)
-      expect(pofile).toMatch(/src\/App\.tsx:66/)
-      expect(pofile).toMatchSnapshot()
-    })
-  })
-
   describe("using custom prefix", () => {
     it("parses plurals correctly", () => {
       const defaultProfile = fs
@@ -474,6 +377,165 @@ msgstr[3] "# dní"
 
       const pofile = format.serialize(catalog, defaultSerializeCtx)
 
+      expect(pofile).toMatchSnapshot()
+    })
+  })
+
+  describe("merging plurals", () => {
+    it("should not merge when option is false", () => {
+    })
+
+    it("should merge duplicate plural entries with same msgid/msgid_plural but different variables", () => {
+      const duplicateFormatter = createFormat({ mergePlurals: true })
+      // Create messages with different variables but same strings
+      const message1 = "{count, plural, one {one book} other {many books}}"
+      const message2 =
+        "{anotherCount, plural, one {one book} other {many books}}"
+      const message3 = "{count, plural, one {one rock} other {# rocks}}"
+      const message4 = "{thirdCount, plural, one {one rock} other {# rocks}}"
+
+      // Generate IDs for these messages
+      const id1 = generateMessageId(message1)
+      const id2 = generateMessageId(message2)
+      const id3 = generateMessageId(message3)
+      const id4 = generateMessageId(message4)
+
+      const catalog: CatalogType = {
+        // First plural with 'count' variable (generated ID)
+        [id1]: {
+          message: message1,
+          translation: message1,
+        },
+        // Second plural with 'anotherCount' variable but same strings (generated ID)
+        [id2]: {
+          message: message2,
+          translation: message2,
+        },
+        // Third plural with 'count' variable but different strings (generated ID)
+        [id3]: {
+          message: message3,
+          translation: message3,
+        },
+        // Fourth plural with 'thirdCount' variable but same strings as third (generated ID)
+        [id4]: {
+          message: message4,
+          translation: message4,
+        },
+      }
+
+      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      expect(pofile).toMatchSnapshot()
+
+      // The PO file should NOT have duplicate msgid entries
+      // It should merge entries with identical msgid/msgid_plural
+      const lines = pofile.split("\n")
+
+      // Count occurrences of "one book" as msgid
+      const oneBookCount = lines.filter(
+        (line) => line === 'msgid "one book"'
+      ).length
+      expect(oneBookCount).toBe(1) // Should be merged into one entry
+
+      // Count occurrences of "one rock" as msgid
+      const oneRockCount = lines.filter(
+        (line) => line === 'msgid "one rock"'
+      ).length
+      expect(oneRockCount).toBe(1) // Should be merged into one entry
+    })
+
+    it("should not add comment if there is only one entry", () => {
+      
+      const duplicateFormatter = createFormat({ mergePlurals: true })
+      // Create messages with different variables but same strings
+      const message1 = "{count, plural, one {one book} other {many books}}"
+      const message3 = "{count, plural, one {one rock} other {# rocks}}"
+
+      // Generate IDs for these messages
+      const id1 = generateMessageId(message1)
+      const id3 = generateMessageId(message3)
+
+      const catalog: CatalogType = {
+        // First plural with 'count' variable (generated ID)
+        [id1]: {
+          message: message1,
+          translation: message1,
+        },
+        // Third plural with 'count' variable but different strings (generated ID)
+        [id3]: {
+          message: message3,
+          translation: message3,
+        },
+      }
+
+      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      expect(pofile).toMatchSnapshot()
+
+      // The PO file should NOT have duplicate msgid entries
+      // It should merge entries with identical msgid/msgid_plural
+      const lines = pofile.split("\n")
+
+      // Count occurrences of "one book" as msgid
+      const oneBookCount = lines.filter(
+        (line) => line === 'msgid "one book"'
+      ).length
+      expect(oneBookCount).toBe(1) // Should be merged into one entry
+
+      // Count occurrences of "one rock" as msgid
+      const oneRockCount = lines.filter(
+        (line) => line === 'msgid "one rock"'
+      ).length
+      expect(oneRockCount).toBe(1) // Should be merged into one entry
+
+    })
+
+    it("should add one comment even if there are multiple entries", () => {
+
+    })
+
+    it("should keep comment in one line for long variables", () => {
+
+    })
+
+    it("uses custom prefix when provided", () => {
+      
+    })
+
+    it("should preserve all source locations when merging duplicate entries", () => {
+      const duplicateFormatter = createFormat({ mergePlurals: true })
+      const message1 = "{count, plural, one {one book} other {many books}}"
+      const message2 =
+        "{anotherCount, plural, one {one book} other {many books}}"
+
+      const id1 = generateMessageId(message1)
+      const id2 = generateMessageId(message2)
+
+      const catalog: CatalogType = {
+        // Entry with origin information
+        [id1]: {
+          message: message1,
+          translation: message1,
+          origin: [["src/App.tsx", 60]],
+        },
+        // Another entry with same strings but different variable and different origin
+        [id2]: {
+          message: message2,
+          translation: message2,
+          origin: [["src/App.tsx", 66]],
+        },
+      }
+
+      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+
+      // Should only have one "one book" entry
+      const lines = pofile.split("\n")
+      const oneBookCount = lines.filter(
+        (line) => line === 'msgid "one book"'
+      ).length
+      expect(oneBookCount).toBe(1)
+
+      // But should reference both source locations
+      expect(pofile).toMatch(/src\/App\.tsx:60/)
+      expect(pofile).toMatch(/src\/App\.tsx:66/)
       expect(pofile).toMatchSnapshot()
     })
   })
