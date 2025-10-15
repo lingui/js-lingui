@@ -447,7 +447,6 @@ function expandMergedPluralEntries(
       newCtx.set("pluralize_on", variable)
       newCtx.set("icu", updatedICU)
       newCtx.delete(ALL_PLURALIZE_VARS) // No need to keep this in expanded entries
-      newItem.extractedComments.push(ctxPrefix + newCtx.toString())
 
       // Clean extracted comments - remove merged data and keep original ICU - remove pluralize_on
       newItem.extractedComments = [
