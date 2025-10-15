@@ -72,15 +72,13 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
-#. js-lingui:all_pluralize_on=count%2CanotherCount
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count
-#. js-lingui:all_pluralize_on=count%2CthirdCount
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CthirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -134,8 +132,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
-#. js-lingui:all_pluralize_on=count%2CanotherCount
+#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
 #: src/App.tsx:60
 #: src/App.tsx:66
 msgid "one book"

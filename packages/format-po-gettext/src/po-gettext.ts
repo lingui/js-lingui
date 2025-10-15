@@ -45,6 +45,7 @@ const LINE_ENDINGS = /\r?\n/g
 
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
 const DEFAULT_CTX_PREFIX = "js-lingui:"
+const ALL_PLURALIZE_VARS = "other_pluralize_vars"
 
 function serializePlurals(
   item: POItem,
@@ -339,15 +340,20 @@ function mergeDuplicatePluralEntries(
       const allVariables = duplicateItems.map(item => {
         const contextComment = item.extractedComments
           .find((comment) => comment.startsWith(ctxPrefix))
-          ?.substring(ctxPrefix.length)
-        const ctx = new URLSearchParams(contextComment)
+        const ctx = new URLSearchParams(contextComment?.substring(ctxPrefix.length))
         return ctx.get("pluralize_on") || "count"
       })
 
-      const ctx = new URLSearchParams()
-      ctx.set("all_pluralize_on", allVariables.join(","))
+      const contextComment = mergedItem.extractedComments
+        .find((comment) => comment.startsWith(ctxPrefix))
+      const ctx = new URLSearchParams(contextComment?.substring(ctxPrefix.length))
+      ctx.set(ALL_PLURALIZE_VARS, allVariables.join(","))
 
-      mergedItem.extractedComments.push(ctxPrefix + ctx.toString())
+      // Replace the existing extracted comment (starting with ctxPrefix) with the new one
+      mergedItem.extractedComments = [
+        ...mergedItem.extractedComments.filter(c => c !== contextComment),
+        ctxPrefix + ctx.toString()
+      ]
       // Merge references
       mergedItem.references = Array.from(new Set(duplicateItems.flatMap(item => item.references)))
 
@@ -390,14 +396,7 @@ function expandMergedPluralEntries(
     }
 
     const ctx = new URLSearchParams(contextComment)
-    const allVariables = ctx.get("all_pluralize_on")
-    // if (!allVariables) {
-    //   console.warn(
-    //     `Plural entry with msgid "${item.msgid}" has context information but is missing 'all_pluralize_on' data for expansion.`
-    //   )
-    //   expandedItems.push(item)
-    //   continue
-    // }
+    const allVariables = ctx.get(ALL_PLURALIZE_VARS)
 
     const variableList = allVariables ? allVariables.split(",") : []
     
