@@ -522,7 +522,11 @@ export function formatter(
 
       if (options.mergePlurals) {
         // Merge duplicate entries that have the same msgid and msgid_plural
-        po.items = mergeDuplicatePluralEntries(processedItems, options)
+        // keep original po.items except for plurals that were processed
+        po.items = [
+          ...po.items.filter((item) => !item.msgid_plural),
+          ...mergeDuplicatePluralEntries(processedItems, options)
+        ]
       }
 
       return po.toString()
