@@ -509,7 +509,7 @@ export function formatter(
     serialize(catalog, ctx): string {
       const po = PO.parse(formatter.serialize(catalog, ctx) as string)
 
-      const processedItems = po.items.map((item) => {
+      po.items = po.items.map((item) => {
         const isGeneratedId = !item.extractedComments.includes(
           "js-lingui-explicit-id"
         )
@@ -522,11 +522,29 @@ export function formatter(
 
       if (options.mergePlurals) {
         // Merge duplicate entries that have the same msgid and msgid_plural
-        // keep original po.items except for plurals that were processed
-        po.items = [
-          ...po.items.filter((item) => !item.msgid_plural),
-          ...mergeDuplicatePluralEntries(processedItems, options)
-        ]
+        const mergedPlurals = mergeDuplicatePluralEntries(po.items, options)
+        const newItems = []
+        const processed = new Set<POItem>()
+
+        // adding it this way versus just adding all mergedPlurals preserves order of translations
+
+        po.items.forEach((item) => {
+          if (!item.msgid_plural) {
+            newItems.push(item)
+          } else {
+            const mergedItem = mergedPlurals.find(
+              (merged) =>
+                merged.msgid === item.msgid &&
+                merged.msgid_plural === item.msgid_plural
+            )
+            if (mergedItem && !processed.has(mergedItem)) {
+              processed.add(mergedItem)
+              newItems.push(mergedItem)
+            }
+          }
+        })
+
+        po.items = newItems
       }
 
       return po.toString()
