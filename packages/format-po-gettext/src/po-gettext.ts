@@ -309,12 +309,12 @@ const convertPluralsToICU = (
  * This happens when plural calls have identical strings but different variables
  */
 function mergeDuplicatePluralEntries(
-  items: POItem[], 
+  items: POItem[],
   options: PoGettextFormatterOptions
 ): POItem[] {
   const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
   const itemMap = new Map<string, POItem[]>()
-  
+
   // Group items by msgid + msgid_plural combination
   for (const item of items) {
     // Only merge items that have msgid_plural (i.e., plural entries)
@@ -326,9 +326,9 @@ function mergeDuplicatePluralEntries(
       itemMap.get(key).push(item)
     }
   }
-  
+
   const mergedItems: POItem[] = []
-  
+
   for (const duplicateItems of itemMap.values()) {
     if (duplicateItems.length === 1) {
       // No duplicates, add the item as-is
@@ -337,30 +337,38 @@ function mergeDuplicatePluralEntries(
       // Merge duplicate items
       const mergedItem = duplicateItems[0] // Use first item as base
 
-      const allVariables = duplicateItems.map(item => {
-        const contextComment = item.extractedComments
-          .find((comment) => comment.startsWith(ctxPrefix))
-        const ctx = new URLSearchParams(contextComment?.substring(ctxPrefix.length))
+      const allVariables = duplicateItems.map((item) => {
+        const contextComment = item.extractedComments.find((comment) =>
+          comment.startsWith(ctxPrefix)
+        )
+        const ctx = new URLSearchParams(
+          contextComment?.substring(ctxPrefix.length)
+        )
         return ctx.get("pluralize_on") || "count"
       })
 
-      const contextComment = mergedItem.extractedComments
-        .find((comment) => comment.startsWith(ctxPrefix))
-      const ctx = new URLSearchParams(contextComment?.substring(ctxPrefix.length))
+      const contextComment = mergedItem.extractedComments.find((comment) =>
+        comment.startsWith(ctxPrefix)
+      )
+      const ctx = new URLSearchParams(
+        contextComment?.substring(ctxPrefix.length)
+      )
       ctx.set(ALL_PLURALIZE_VARS, allVariables.join(","))
 
       // Replace the existing extracted comment (starting with ctxPrefix) with the new one
       mergedItem.extractedComments = [
-        ...mergedItem.extractedComments.filter(c => c !== contextComment),
-        ctxPrefix + ctx.toString()
+        ...mergedItem.extractedComments.filter((c) => c !== contextComment),
+        ctxPrefix + ctx.toString(),
       ]
       // Merge references
-      mergedItem.references = Array.from(new Set(duplicateItems.flatMap(item => item.references)))
+      mergedItem.references = Array.from(
+        new Set(duplicateItems.flatMap((item) => item.references))
+      )
 
       mergedItems.push(mergedItem)
     }
   }
-  
+
   return mergedItems
 }
 
@@ -374,7 +382,6 @@ function expandMergedPluralEntries(
 ): POItem[] {
   const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
   const expandedItems: POItem[] = []
-
 
   for (const item of items) {
     if (!item.msgid_plural) {
@@ -399,7 +406,7 @@ function expandMergedPluralEntries(
     const allVariables = ctx.get(ALL_PLURALIZE_VARS)
 
     const variableList = allVariables ? allVariables.split(",") : []
-    
+
     if (variableList.length === 0) {
       // No variables to expand, keep as-is
       expandedItems.push(item)
@@ -410,13 +417,13 @@ function expandMergedPluralEntries(
     for (let i = 0; i < variableList.length; i++) {
       const variable = variableList[i]
       const newItem = new PO.Item()
-      
+
       // Set the msgid to the original ICU message
       newItem.msgid = item.msgid
-      newItem.msgid_plural = item.msgid_plural  // Keep same plural
+      newItem.msgid_plural = item.msgid_plural // Keep same plural
       newItem.msgstr = [...item.msgstr]
       newItem.msgctxt = item.msgctxt
-      
+
       // Assign one reference per item (distribute them)
       if (item.references && item.references.length > i) {
         newItem.references = [item.references[i]]
@@ -424,11 +431,16 @@ function expandMergedPluralEntries(
         // If fewer references than merged items, reuse references
         newItem.references = [item.references[i % item.references.length]]
       }
-      
+
       newItem.comments = [...item.comments]
 
       // get icu comment, replace original variable with current variable
-      const updatedICU = ctx.get("icu").replace(new RegExp(`{${originalVariable}, plural,`), `{${variable}, plural,`)
+      const updatedICU = ctx
+        .get("icu")
+        .replace(
+          new RegExp(`{${originalVariable}, plural,`),
+          `{${variable}, plural,`
+        )
       // also update pluralize_on=<old variable> with new variable
 
       const newCtx = new URLSearchParams(ctx.toString())
@@ -437,21 +449,17 @@ function expandMergedPluralEntries(
       newCtx.delete(ALL_PLURALIZE_VARS) // No need to keep this in expanded entries
       newItem.extractedComments.push(ctxPrefix + newCtx.toString())
 
-
-      
       // Clean extracted comments - remove merged data and keep original ICU - remove pluralize_on
       newItem.extractedComments = [
-        ...item.extractedComments.filter(c => 
-          !c.startsWith(ctxPrefix)
-        ),
+        ...item.extractedComments.filter((c) => !c.startsWith(ctxPrefix)),
         ctxPrefix + newCtx.toString(),
       ]
       newItem.flags = { ...item.flags }
-          
+
       expandedItems.push(newItem)
     }
   }
-  
+
   return expandedItems
 }
 
@@ -513,7 +521,7 @@ export function formatter(
       })
 
       if (options.mergePlurals) {
-      // Merge duplicate entries that have the same msgid and msgid_plural
+        // Merge duplicate entries that have the same msgid and msgid_plural
         po.items = mergeDuplicatePluralEntries(processedItems, options)
       }
 

@@ -432,7 +432,10 @@ msgstr[3] "# dní"
         "{count, plural, one {one rock} other {# rocks}}",
         "{thirdCount, plural, one {one rock} other {# rocks}}",
       ])
-      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
       expect(pofile).toMatchSnapshot()
 
       // The PO file should NOT have duplicate msgid entries
@@ -458,7 +461,10 @@ msgstr[3] "# dní"
         "{count, plural, one {one rock} other {# rocks}}",
       ])
 
-      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
       expect(pofile).toMatchSnapshot()
 
       // The PO file should NOT have duplicate msgid entries
@@ -486,7 +492,10 @@ msgstr[3] "# dní"
         "{manyCount, plural, one {one book} other {many books}}",
         "{superLongVariableNameIsOkayCount, plural, one {one book} other {many books}}",
       ])
-      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
       expect(pofile).toMatchSnapshot()
 
       // The PO file should NOT have duplicate msgid entries
@@ -500,14 +509,19 @@ msgstr[3] "# dní"
       expect(oneBookCount).toBe(1) // Should be merged into one entry
     })
 
-
     it("uses custom prefix when provided", () => {
-      const duplicateFormatter = createFormat({ mergePlurals: true, customICUPrefix: "customprefix:" })
+      const duplicateFormatter = createFormat({
+        mergePlurals: true,
+        customICUPrefix: "customprefix:",
+      })
       const catalog = createCatalog([
         "{count, plural, one {one book} other {many books}}",
         "{anotherCount, plural, one {one book} other {many books}}",
       ])
-      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
       expect(pofile).toMatchSnapshot()
 
       // The PO file should NOT have duplicate msgid entries
@@ -520,7 +534,11 @@ msgstr[3] "# dní"
       ).length
       expect(oneBookCount).toBe(1) // Should be merged into one entry
 
-      expect(lines.includes("#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount")).toBe(true)
+      expect(
+        lines.includes(
+          "#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount"
+        )
+      ).toBe(true)
     })
 
     it("should preserve all source locations when merging duplicate entries", () => {
@@ -547,7 +565,10 @@ msgstr[3] "# dní"
         },
       }
 
-      const pofile = duplicateFormatter.serialize(catalog, defaultSerializeCtx) as string
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx
+      ) as string
 
       // Should only have one "one book" entry
       const lines = pofile.split("\n")
@@ -565,7 +586,7 @@ msgstr[3] "# dní"
     describe("parsing merged plural entries", () => {
       it("should expand merged plural entries back into separate catalog entries", () => {
         const duplicateFormatter = createFormat({ mergePlurals: true })
-        
+
         // Create a PO file with merged plural entries
         const poContent = `
 msgid ""
@@ -605,7 +626,7 @@ msgstr[1] "# rocks"
 
       it("should preserve source locations when expanding merged entries", () => {
         const duplicateFormatter = createFormat({ mergePlurals: true })
-        
+
         const poContent = `
 msgid ""
 msgstr ""
@@ -627,11 +648,11 @@ msgstr[1] "many books"
 `
 
         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-        
+
         // Check that origin information is preserved and distributed
         const catalogEntries = Object.values(catalog)
-        const origins = catalogEntries.map(entry => entry.origin).flat()
-        
+        const origins = catalogEntries.map((entry) => entry.origin).flat()
+
         // Should have all three source locations
         expect(origins).toContainEqual(["src/App.tsx", 60])
         expect(origins).toContainEqual(["src/App.tsx", 66])
@@ -640,7 +661,7 @@ msgstr[1] "many books"
 
       it("should handle single merged entry correctly (no expansion needed)", () => {
         const duplicateFormatter = createFormat({ mergePlurals: true })
-        
+
         const poContent = `
 msgid ""
 msgstr ""
@@ -660,18 +681,18 @@ msgstr[1] "many books"
 `
 
         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-        
+
         // Should have only 1 entry (no expansion needed)
         expect(Object.keys(catalog)).toHaveLength(1)
         expect(catalog).toMatchSnapshot()
       })
 
       it("should work with custom prefix", () => {
-        const duplicateFormatter = createFormat({ 
-          mergePlurals: true, 
-          customICUPrefix: "customprefix:" 
+        const duplicateFormatter = createFormat({
+          mergePlurals: true,
+          customICUPrefix: "customprefix:",
         })
-        
+
         const poContent = `
 msgid ""
 msgstr ""
@@ -692,28 +713,28 @@ msgstr[1] "many books"
 `
 
         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-        
+
         // Should have 2 entries
         expect(Object.keys(catalog)).toHaveLength(2)
       })
 
       it("should handle parsing regular PO files without merged data", () => {
         const duplicateFormatter = createFormat({ mergePlurals: true })
-        
+
         // Use existing fixture file
         const pofile = fs
           .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
           .toString()
 
         const catalog = duplicateFormatter.parse(pofile, defaultParseCtx)
-        
+
         // Should parse normally without any expansion
         expect(catalog).toMatchSnapshot()
       })
 
       it("should handle round-trip serialization and parsing", () => {
         const duplicateFormatter = createFormat({ mergePlurals: true })
-        
+
         // Start with a catalog with duplicate plural entries
         const originalCatalog = createCatalog([
           "{count, plural, one {one book} other {many books}}",
@@ -723,19 +744,29 @@ msgstr[1] "many books"
         ])
 
         // Serialize to PO
-        const poContent = duplicateFormatter.serialize(originalCatalog, defaultSerializeCtx) as string
-        
+        const poContent = duplicateFormatter.serialize(
+          originalCatalog,
+          defaultSerializeCtx
+        ) as string
+
         // Parse back to catalog
-        const parsedCatalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-        
+        const parsedCatalog = duplicateFormatter.parse(
+          poContent,
+          defaultParseCtx
+        )
+
         // Should have the same number of entries as original
-        expect(Object.keys(parsedCatalog)).toHaveLength(Object.keys(originalCatalog).length)
-        
+        expect(Object.keys(parsedCatalog)).toHaveLength(
+          Object.keys(originalCatalog).length
+        )
+
         // Each entry should have the correct message format
-        Object.values(parsedCatalog).forEach(entry => {
-          expect(entry.message).toMatch(/^{(count|anotherCount|thirdCount), plural, one {.*} other {.*}}$/)
+        Object.values(parsedCatalog).forEach((entry) => {
+          expect(entry.message).toMatch(
+            /^{(count|anotherCount|thirdCount), plural, one {.*} other {.*}}$/
+          )
         })
-        
+
         expect(parsedCatalog).toMatchSnapshot()
       })
     })
