@@ -348,6 +348,8 @@ function mergeDuplicatePluralEntries(
       ctx.set("all_pluralize_on", allVariables.join(","))
 
       mergedItem.extractedComments.push(ctxPrefix + ctx.toString())
+      // Merge references
+      mergedItem.references = Array.from(new Set(duplicateItems.flatMap(item => item.references)))
 
       mergedItems.push(mergedItem)
     }
