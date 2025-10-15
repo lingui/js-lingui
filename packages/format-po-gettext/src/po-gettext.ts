@@ -405,9 +405,7 @@ function expandMergedPluralEntries(
       expandedItems.push(item)
       continue
     }
-    // Create a new item for each variable
-    // Assume the order of msgstr corresponds to the order of variables
-    // If there are more variables than msgstr entries, reuse msgstr entries cyclically
+    // Create a new item for each variable after first
     const originalVariable = variableList[0]
     for (let i = 0; i < variableList.length; i++) {
       const variable = variableList[i]
@@ -430,25 +428,23 @@ function expandMergedPluralEntries(
       newItem.comments = [...item.comments]
 
       // get icu comment, replace original variable with current variable
-      const icuComment = item.extractedComments.find(c => c.startsWith(ctxPrefix + "icu="))
-      if (icuComment) {
-        const icuData = icuComment.substring(icuComment.indexOf('=') + 1)
-        const icuCtx = new URLSearchParams(icuData)
-        const storedICU = icuCtx.get("icu")
-        if (storedICU) {
-          const updatedICU = storedICU.replace(new RegExp(`{${originalVariable}, plural,`), `{${variable}, plural,`)
-          // also update pluralize_on=<old variable> with new variable
+      const updatedICU = ctx.get("icu").replace(new RegExp(`{${originalVariable}, plural,`), `{${variable}, plural,`)
+      // also update pluralize_on=<old variable> with new variable
 
-          newItem.extractedComments.push(ctxPrefix + "icu=" + (new URLSearchParams({ icu: updatedICU })).toString())
-        }
-      }
+      const newCtx = new URLSearchParams(ctx.toString())
+      newCtx.set("pluralize_on", variable)
+      newCtx.set("icu", updatedICU)
+      newCtx.delete(ALL_PLURALIZE_VARS) // No need to keep this in expanded entries
+      newItem.extractedComments.push(ctxPrefix + newCtx.toString())
+
 
       
       // Clean extracted comments - remove merged data and keep original ICU - remove pluralize_on
       newItem.extractedComments = [
         ...item.extractedComments.filter(c => 
-          !c.startsWith(ctxPrefix) && !c.includes('all_pluralize_on')
+          !c.startsWith(ctxPrefix)
         ),
+        ctxPrefix + newCtx.toString(),
       ]
       newItem.flags = { ...item.flags }
           
@@ -477,6 +473,11 @@ export function formatter(
     parse(content, ctx): CatalogType {
       const po = PO.parse(content)
 
+      if (options.mergePlurals) {
+        // Expand merged entries back to individual catalog entries BEFORE ICU conversion
+        po.items = expandMergedPluralEntries(po.items, options)
+      }
+
       // .po plurals are numbered 0-N and need to be mapped to ICU plural classes ("one", "few", "many"...). Different
       // languages can have different plural classes (some start with "zero", some with "one"), so read that data from CLDR.
       // `pluralForms` may be `null` if lang is not found. As long as no plural is used, don't report an error.
@@ -493,11 +494,6 @@ export function formatter(
           options.customICUPrefix
         )
       })
-
-      if (options.mergePlurals) {
-        // Expand merged entries back to individual catalog entries
-        po.items = expandMergedPluralEntries(po.items, options)
-      }
 
       return formatter.parse(po.toString(), ctx) as CatalogType
     },
