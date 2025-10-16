@@ -134,7 +134,7 @@ The PO Gettext formatter accepts the following options:
 | `lineNumbers`          | boolean | `true`         | Include line numbers in the origin comments. This makes it easier to locate messages in the source code                                                                  |
 | `disableSelectWarning` | boolean | `false`        | Disable warnings about unsupported `Select` features encountered in catalogs. This can be useful if you're aware of the limitation and want to suppress related warnings |
 | `customICUPrefix`      | string  | `"js-lingui:"` | Override the default prefix for ICU and plural comments in the final PO catalog                                                                                          |
-| `mergePlurals`         | boolean | `false`        | Combine plural entries that have the same content but different variables into a single PO entry.                                                                        |
+| `mergePlurals`         | boolean | `false`        | Combine plural entries that have the same content but different variables into a single PO entry                                                                         |
 
 ### Examples {#po-gettext-examples}
 
@@ -178,7 +178,6 @@ With this format, plural messages are exported in the following ways, depending 
   # customICUPrefix = jsi18n:
   #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
   ```
-
 
 #### Duplicate Plurals
 
