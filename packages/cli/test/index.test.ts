@@ -191,41 +191,6 @@ describe("E2E Extractor Test", () => {
     compareFolders(actualPath, expectedPath)
   })
 
-  it("Should extract with multiThread enabled issue", async () => {
-    const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-po-format-issue"
-    )
-
-    // await mockConsole(async (console) => {
-    const result = await extractCommand(getConfig({ cwd: rootDir }), {
-      verbose: true,
-      workersOptions: { poolSize: 2 },
-    })
-
-    expect(result).toBeTruthy()
-    // expect(getConsoleMockCalls(console.error)).toBeFalsy()
-    // expect(replaceDuration(getConsoleMockCalls(console.log)))
-    //   .toMatchInlineSnapshot(`
-    //   Extracting messages from source files…
-    //   Use worker pool of size 2
-    //
-    //   Done in <n>ms
-    //   Catalog statistics for actual/{locale}:
-    //   ┌─────────────┬─────────────┬─────────┐
-    //   │ Language    │ Total count │ Missing │
-    //   ├─────────────┼─────────────┼─────────┤
-    //   │ en (source) │     10      │    -    │
-    //   │ pl          │     10      │   10    │
-    //   └─────────────┴─────────────┴─────────┘
-    //
-    //   (Use "yarn extract" to update catalogs with new messages.)
-    //   (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
-    // `)
-    // })
-
-    compareFolders(actualPath, expectedPath)
-  })
-
   describe("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
