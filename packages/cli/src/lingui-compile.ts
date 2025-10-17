@@ -94,7 +94,7 @@ export async function command(
 
       await pool.completed(true)
     } finally {
-      await pool.terminate()
+      await pool.terminate(true)
     }
   }
 
