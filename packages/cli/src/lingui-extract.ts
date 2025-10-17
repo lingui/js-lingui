@@ -76,7 +76,7 @@ export default async function command(
     )
   } finally {
     if (workerPool) {
-      await workerPool.terminate()
+      await workerPool.terminate(true)
     }
   }
 

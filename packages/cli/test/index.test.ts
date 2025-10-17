@@ -26,8 +26,8 @@ jest.mock("ora", () => {
   }
 })
 
-function replaceDuration(snaphot: string) {
-  return snaphot.replace(/Done in .+ms/g, "Done in <n>ms")
+function replaceDuration(snapshot: string) {
+  return snapshot.replace(/Done in .+ms/g, "Done in <n>ms")
 }
 async function prepare(caseFolderName: string) {
   const rootDir = nodepath.join(__dirname, caseFolderName)
