@@ -120,7 +120,7 @@ export default async function command(
 
       await pool.completed()
     } finally {
-      await pool.terminate()
+      await pool.terminate(true)
     }
   } else {
     const format = await getFormat(
