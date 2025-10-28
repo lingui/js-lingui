@@ -1,8 +1,10 @@
 import { Content, parse, Token } from "@messageformat/parser"
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   DateFormatError,
   getDateFormatOptions,
 } from "@messageformat/date-skeleton/lib/options"
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { parseDateTokens } from "@messageformat/date-skeleton"
 
 export type CompiledIcuChoices = Record<string, CompiledMessage> & {

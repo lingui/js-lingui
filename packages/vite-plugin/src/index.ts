@@ -54,6 +54,16 @@ export function lingui({
           )
         }
       },
+      resolveDynamicImport(id, importer) {
+        if (macroIds.has(id as string)) {
+          throw new Error(
+            `The macro you imported from "${id}" cannot be dynamically imported. \n` +
+              `Please check the import statement in file "${importer}". \n` +
+              `Please see the documentation for how to configure Vite with Lingui correctly: ` +
+              "https://lingui.dev/tutorials/setup-vite"
+          )
+        }
+      },
     },
     {
       name: "vite-plugin-lingui",

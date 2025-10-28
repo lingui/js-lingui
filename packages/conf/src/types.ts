@@ -106,10 +106,11 @@ export type CatalogConfig = {
   exclude?: string[]
 }
 
-type LocaleObject = {
-  [locale: string]: string[] | string
-  default?: string
-}
+type LocaleObject =
+  | Record<string, string[] | string>
+  | (Record<string, string[] | string> & {
+      default: string
+    })
 
 export type FallbackLocales = LocaleObject
 
@@ -257,7 +258,7 @@ export type LinguiConfig = {
    *
    * Note that using <rootDir> as a string token in any other path-based config settings will refer back to this value.
    *
-   * @defaul: The root of the directory containing your Lingui configuration file or the package.json.
+   * @default: The root of the directory containing your Lingui configuration file or the package.json.
    */
   rootDir?: string
   /**
@@ -345,6 +346,7 @@ export type LinguiConfigNormalized = Omit<
   LinguiConfig,
   "runtimeConfigModule"
 > & {
+  resolvedConfigPath?: string
   fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized

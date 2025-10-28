@@ -1,6 +1,6 @@
 {
   "name": "@lingui/vite-plugin",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "description": "Vite plugin for Lingui message catalogs",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -23,9 +23,11 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/vite-plugin"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
@@ -39,11 +41,11 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "5.3.2",
-    "@lingui/conf": "5.3.2"
+    "@lingui/cli": "5.5.1",
+    "@lingui/conf": "5.5.1"
   },
   "peerDependencies": {
-    "vite": "^3 || ^4 || ^5.0.9 || ^6"
+    "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7"
   },
   "devDependencies": {
     "@lingui/core": "workspace:^",

@@ -446,6 +446,45 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Produce the same ID regardless of CRLF, LF, and CR line endings 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>hello</Trans>;
+<Trans>hello</Trans>;
+<Trans>hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+
+`;
+
 exports[`Production - all props kept if extract: true 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">

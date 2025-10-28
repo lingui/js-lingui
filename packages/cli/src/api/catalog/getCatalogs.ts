@@ -106,7 +106,7 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
 /**
  * Create catalog for merged messages.
  */
-export async function getCatalogForMerge(config: LinguiConfigNormalized) {
+export async function getMergedCatalogPath(config: LinguiConfigNormalized) {
   const format = await getFormat(
     config.format,
     config.formatOptions,
@@ -114,16 +114,7 @@ export async function getCatalogForMerge(config: LinguiConfigNormalized) {
   )
   validateCatalogPath(config.catalogsMergePath, format.getCatalogExtension())
 
-  return new Catalog(
-    {
-      name: getCatalogName(config.catalogsMergePath),
-      path: normalizeRelativePath(config.catalogsMergePath),
-      include: [],
-      exclude: [],
-      format,
-    },
-    config
-  )
+  return normalizeRelativePath(config.catalogsMergePath)
 }
 
 export function getCatalogForFile(file: string, catalogs: Catalog[]) {
@@ -150,6 +141,10 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
  *  Validate that `catalogPath` doesn't end with trailing slash
  */
 function validateCatalogPath(path: string, extension: string) {
+  if (!path.includes(LOCALE_PH)) {
+    throw new Error(`Invalid catalog path: ${LOCALE_PH} variable is missing`)
+  }
+
   if (!path.endsWith(PATHSEP)) {
     return
   }

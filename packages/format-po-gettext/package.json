@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po-gettext",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
   "main": "./dist/po-gettext.cjs",
   "module": "./dist/po-gettext.mjs",
@@ -25,9 +25,11 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/format-po-gettext"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
@@ -41,9 +43,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.3.2",
-    "@lingui/format-po": "5.3.2",
-    "@lingui/message-utils": "5.3.2",
+    "@lingui/conf": "5.5.1",
+    "@lingui/format-po": "5.5.1",
+    "@lingui/message-utils": "5.5.1",
     "@messageformat/parser": "^5.0.0",
     "cldr-core": "^45.0.0",
     "node-gettext": "^3.0.0",

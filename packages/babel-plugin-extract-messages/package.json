@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "description": "Babel plugin for collecting messages from source code for internationalization",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -29,9 +29,11 @@
     "README.md",
     "dist/"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/babel-plugin-extract-messages"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"

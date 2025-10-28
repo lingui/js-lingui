@@ -270,10 +270,10 @@ describe("Trans component", () => {
   })
 
   it("should render nested elements with `asChild` pattern", () => {
-    const ComponentThatExpectsSingleElementChild: React.FC<{
+    function ComponentThatExpectsSingleElementChild(props: {
       asChild: boolean
       children?: React.ReactElement
-    }> = (props) => {
+    }) {
       if (props.asChild && React.isValidElement(props.children)) {
         return props.children
       }
@@ -387,9 +387,7 @@ describe("Trans component", () => {
     })
 
     it("should take defaultComponent prop with a custom component", () => {
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
+      function ComponentFC(props: TransRenderProps) {
         return <div>{props.children}</div>
       }
       const span = render(
@@ -406,9 +404,7 @@ describe("Trans component", () => {
     ])(
       "should ignore defaultComponent when `component` or `render` is null",
       (props) => {
-        const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-          props
-        ) => {
+        function ComponentFC(props: TransRenderProps) {
           return <div>{props.children}</div>
         }
         const translation = render(
@@ -434,9 +430,7 @@ describe("Trans component", () => {
 
     it("should render function component as simple prop", () => {
       const propsSpy = jest.fn()
-      const ComponentFC: React.FunctionComponent<TransRenderProps> = (
-        props
-      ) => {
+      function ComponentFC(props: TransRenderProps) {
         propsSpy(props)
         const [state] = React.useState("value")
         return <div id={props.id}>{state}</div>
@@ -454,18 +448,18 @@ describe("Trans component", () => {
   })
 
   describe("I18nProvider defaultComponent accepts render-like props", () => {
-    const DefaultComponent: React.FunctionComponent<TransRenderProps> = (
-      props
-    ) => (
-      <>
-        <div data-testid="children">{props.children}</div>
-        {props.id && <div data-testid="id">{props.id}</div>}
-        {props.message && <div data-testid="message">{props.message}</div>}
-        {props.translation && (
-          <div data-testid="translation">{props.translation}</div>
-        )}
-      </>
-    )
+    function DefaultComponent(props: TransRenderProps) {
+      return (
+        <>
+          <div data-testid="children">{props.children}</div>
+          {props.id && <div data-testid="id">{props.id}</div>}
+          {props.message && <div data-testid="message">{props.message}</div>}
+          {props.translation && (
+            <div data-testid="translation">{props.translation}</div>
+          )}
+        </>
+      )
+    }
 
     it("should render defaultComponent with Trans props", () => {
       const markup = render(

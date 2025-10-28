@@ -1,13 +1,18 @@
 {
   "name": "@lingui/conf",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "sideEffects": false,
   "description": "Get lingui configuration from package.json",
   "keywords": [
     "lingui",
     "config"
   ],
-  "repository": "lingui/js-lingui",
+  "homepage": "https://lingui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/conf"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
@@ -26,10 +31,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "chalk": "^4.1.0",
     "cosmiconfig": "^8.0.0",
     "jest-validate": "^29.4.3",
-    "jiti": "^1.17.1"
+    "jiti": "^2.5.1",
+    "picocolors": "^1.1.1"
   },
   "files": [
     "LICENSE",

@@ -49,24 +49,26 @@ export function createCompiledCatalog(
 
   const errors: MessageCompilationError[] = []
 
-  const compiledMessages = Object.keys(messages).reduce<{
-    [msgId: string]: CompiledMessage
-  }>((obj, key: string) => {
-    // Don't use `key` as a fallback translation in strict mode.
-    const translation = (messages[key] || (!strict ? key : "")) as string
+  const compiledMessages = Object.keys(messages)
+    .sort()
+    .reduce<{
+      [msgId: string]: CompiledMessage
+    }>((obj, key: string) => {
+      // Don't use `key` as a fallback translation in strict mode.
+      const translation = (messages[key] || (!strict ? key : "")) as string
 
-    try {
-      obj[key] = compile(translation, shouldPseudolocalize)
-    } catch (e) {
-      errors.push({
-        id: key,
-        source: translation,
-        error: e as Error,
-      })
-    }
+      try {
+        obj[key] = compile(translation, shouldPseudolocalize)
+      } catch (e) {
+        errors.push({
+          id: key,
+          source: translation,
+          error: e as Error,
+        })
+      }
 
-    return obj
-  }, {})
+      return obj
+    }, {})
 
   if (namespace === "json") {
     return { source: JSON.stringify({ messages: compiledMessages }), errors }

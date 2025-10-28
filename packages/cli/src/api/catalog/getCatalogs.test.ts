@@ -1,7 +1,7 @@
 import mockFs from "mock-fs"
 import {
   getCatalogForFile,
-  getCatalogForMerge,
+  getMergedCatalogPath,
   getCatalogs,
 } from "./getCatalogs"
 import { Catalog } from "../catalog"
@@ -262,13 +262,7 @@ function cleanCatalog(catalog: Catalog) {
   delete catalog.format
   return catalog
 }
-describe("getCatalogForMerge", () => {
-  let format: FormatterWrapper
-
-  beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
-  })
-
+describe("getMergedCatalogPath", () => {
   afterEach(() => {
     mockFs.restore()
   })
@@ -277,39 +271,15 @@ describe("getCatalogForMerge", () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}",
     })
-    expect(cleanCatalog(await getCatalogForMerge(config))).toEqual(
-      cleanCatalog(
-        new Catalog(
-          {
-            name: null,
-            path: "locales/{locale}",
-            include: [],
-            exclude: [],
-            format,
-          },
-          config
-        )
-      )
-    )
+    expect(await getMergedCatalogPath(config)).toEqual("locales/{locale}")
   })
 
   it("should return catalog with custom name for merged messages", async () => {
     const config = mockConfig({
       catalogsMergePath: "locales/{locale}/my/dir",
     })
-    expect(cleanCatalog(await getCatalogForMerge(config))).toStrictEqual(
-      cleanCatalog(
-        new Catalog(
-          {
-            name: "dir",
-            path: "locales/{locale}/my/dir",
-            include: [],
-            exclude: [],
-            format,
-          },
-          config
-        )
-      )
+    expect(await getMergedCatalogPath(config)).toStrictEqual(
+      "locales/{locale}/my/dir"
     )
   })
 
@@ -319,7 +289,7 @@ describe("getCatalogForMerge", () => {
     })
     expect.assertions(1)
     try {
-      await getCatalogForMerge(config)
+      await getMergedCatalogPath(config)
     } catch (e) {
       expect((e as Error).message).toBe(
         'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".'
@@ -333,7 +303,7 @@ describe("getCatalogForMerge", () => {
     })
     expect.assertions(1)
     try {
-      await getCatalogForMerge(config)
+      await getMergedCatalogPath(config)
     } catch (e) {
       expect((e as Error).message).toBe(
         "Invalid catalog path: {locale} variable is missing"

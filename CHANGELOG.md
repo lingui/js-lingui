@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
+
+### Bug Fixes
+
+* orderByMessage should also order by context ([#2337](https://github.com/lingui/js-lingui/issues/2337)) ([e84de76](https://github.com/lingui/js-lingui/commit/e84de76e26fb7e0c26a6e0bfa7718a2bd06e36c8))
+
+# [5.5.0](https://github.com/lingui/js-lingui/compare/v5.4.1...v5.5.0) (2025-09-12)
+
+### Features
+
+* add babel parser flag for import defer * as q from '...' ([#2309](https://github.com/lingui/js-lingui/issues/2309)) ([a09c973](https://github.com/lingui/js-lingui/commit/a09c973c914e3a1ab406ea6630691feef5b0c0f9))
+* **cli:** support multithreading in all cli commands ([#2320](https://github.com/lingui/js-lingui/issues/2320)) ([86fbcd8](https://github.com/lingui/js-lingui/commit/86fbcd849b82d500f67fabd7c4f6abef7e5914f2))
+
+## [5.4.1](https://github.com/lingui/js-lingui/compare/v5.4.0...v5.4.1) (2025-08-11)
+
+### Bug Fixes
+
+* **extractor:** sort placeholders to keep them stable between runs ([#2307](https://github.com/lingui/js-lingui/issues/2307)) ([decf4cd](https://github.com/lingui/js-lingui/commit/decf4cd0e06e1d913b228018ee77d6d5b83d26c3))
+* remove @messageformat/date-skeleton from bundledDependencies ([#2293](https://github.com/lingui/js-lingui/issues/2293)) ([9601701](https://github.com/lingui/js-lingui/commit/96017018433310a6ba7a21dc9b6ce1d4f3c6965a))
+
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+### Bug Fixes
+
+* remove `VFC`, `FC` type usage ([#2290](https://github.com/lingui/js-lingui/issues/2290)) ([30e5242](https://github.com/lingui/js-lingui/commit/30e5242f132a7e0aa847f45b472330f6113b0168))
+* remove metro peer dep from metro-transformer ([#2287](https://github.com/lingui/js-lingui/issues/2287)) ([eb8a429](https://github.com/lingui/js-lingui/commit/eb8a4295bf3ea216a8bc1cba736f28e6b44c9107))
+
+
+### Features
+
+* full concurrency for extract / compile commands ([#2299](https://github.com/lingui/js-lingui/issues/2299)) ([489fb3a](https://github.com/lingui/js-lingui/commit/489fb3a7c999632e57286369e44a0c6e77a3407b))
+
+## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
+
+### Bug Fixes
+
+* **cli:** remove unused dependency babel-plugin-macros ([#2266](https://github.com/lingui/js-lingui/issues/2266)) ([d6906cc](https://github.com/lingui/js-lingui/commit/d6906cca6bef5e36f91c9b1be8a2764453e68f19))
+* remove unraw dependency ([#2271](https://github.com/lingui/js-lingui/issues/2271)) ([494c152](https://github.com/lingui/js-lingui/commit/494c152d89754a1b5359a5420fcc407aac4ed7f5))
+* standardize repository field format across all packages ([#2269](https://github.com/lingui/js-lingui/issues/2269)) ([a03a984](https://github.com/lingui/js-lingui/commit/a03a984cdc027ece9902277243f671ca15912adc))
+
 ## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
 
 ### Bug Fixes

@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import pico from "picocolors"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
@@ -10,6 +10,15 @@ import { printStats } from "./api/stats"
 import { helpRun } from "./api/help"
 import ora from "ora"
 import normalizePath from "normalize-path"
+import {
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
+import {
+  createExtractWorkerPool,
+  ExtractWorkerPool,
+} from "./api/extractWorkerPool"
+import ms from "ms"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -19,37 +28,64 @@ export type CliExtractOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
   options: Partial<CliExtractOptions>
 ): Promise<boolean> {
+  const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  const spinner = ora().start()
+  let workerPool: ExtractWorkerPool
 
-  for (const catalog of catalogs) {
-    const result = await catalog.make({
-      ...(options as CliExtractOptions),
-      orderBy: config.orderBy,
-    })
+  // important to initialize ora before worker pool, otherwise it cause
+  // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+  // when workers >= 10
+  const spinner = ora()
 
-    catalogStats[
-      normalizePath(nodepath.relative(config.rootDir, catalog.path))
-    ] = result || {}
+  if (options.workersOptions.poolSize) {
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    commandSuccess &&= Boolean(result)
+    workerPool = createExtractWorkerPool(options.workersOptions)
   }
 
+  spinner.start()
+
+  try {
+    await Promise.all(
+      catalogs.map(async (catalog) => {
+        const result = await catalog.make({
+          ...(options as CliExtractOptions),
+          orderBy: config.orderBy,
+          workerPool,
+        })
+
+        catalogStats[
+          normalizePath(nodepath.relative(config.rootDir, catalog.path))
+        ] = result || {}
+
+        commandSuccess &&= Boolean(result)
+      })
+    )
+  } finally {
+    if (workerPool) {
+      await workerPool.terminate(true)
+    }
+  }
+
+  const doneMsg = `Done in ${ms(Date.now() - startTime)}`
+
   if (commandSuccess) {
-    spinner.succeed()
+    spinner.succeed(doneMsg)
   } else {
-    spinner.fail()
+    spinner.fail(doneMsg)
   }
 
   Object.entries(catalogStats).forEach(([key, value]) => {
@@ -60,12 +96,12 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("extract")
       )}" to update catalogs with new messages.)`
     )
     console.log(
-      `(Use "${chalk.yellow(
+      `(Use "${pico.yellow(
         helpRun("compile")
       )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
     )
@@ -95,7 +131,7 @@ export default async function command(
   return commandSuccess
 }
 
-type CliOptions = {
+type CliArgs = {
   verbose: boolean
   config: string
   convertFrom: string
@@ -106,6 +142,7 @@ type CliOptions = {
   locale: string[]
   prevFormat: string | null
   watch?: boolean
+  workers?: number
 }
 
 if (require.main === module) {
@@ -121,6 +158,10 @@ if (require.main === module) {
           .filter(Boolean)
       }
     )
+    .option(
+      "--workers <n>",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+    )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
@@ -135,7 +176,7 @@ if (require.main === module) {
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({
     configPath: options.config,
@@ -148,12 +189,12 @@ if (require.main === module) {
     hasErrors = true
     console.error("Trying to migrate message catalog to the same format")
     console.error(
-      `Set ${chalk.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${chalk.bold("previous")} format using --convert-from option.`
+      `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
+        ` and ${pico.bold("previous")} format using --convert-from option.`
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
-    console.log(chalk.yellow(helpRun(`extract --convert-from lingui`)))
+    console.log(pico.yellow(helpRun(`extract --convert-from lingui`)))
     process.exit(1)
   }
 
@@ -164,7 +205,7 @@ if (require.main === module) {
 
     if (missingLocale) {
       hasErrors = true
-      console.error(`Locale ${chalk.bold(missingLocale)} does not exist.`)
+      console.error(`Locale ${pico.bold(missingLocale)} does not exist.`)
       console.error()
     }
   }
@@ -180,6 +221,7 @@ if (require.main === module) {
       watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
       prevFormat,
+      workersOptions: resolveWorkersOptions(options),
     })
   }
 
@@ -208,7 +250,7 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(chalk.bold("Initializing Watch Mode..."))
+    console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
       const catalogs = await getCatalogs(config)
       const paths: string[] = []
@@ -225,7 +267,7 @@ if (require.main === module) {
       })
 
       const onReady = () => {
-        console.info(chalk.green.bold("Watcher is ready!"))
+        console.info(pico.green(pico.bold("Watcher is ready!")))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

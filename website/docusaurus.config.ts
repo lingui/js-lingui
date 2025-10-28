@@ -144,6 +144,19 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: "Docs for LLMs",
+          items: [
+            {
+              label: "llms.txt",
+              href: "https://lingui.dev/llms.txt",
+            },
+            {
+              label: "llms-full.txt",
+              href: "https://lingui.dev/llms-full.txt",
+            },
+          ],
+        },
       ],
     },
     algolia: {
@@ -190,7 +203,19 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  plugins: ["docusaurus-plugin-sass"],
+  plugins: [
+    "docusaurus-plugin-sass",
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        content: {
+          enableLlmsFullTxt: true,
+          excludeRoutes: ["/", "/search", "/community", "/misc/*", "/releases/*"],
+        },
+        includeOrder: ["/installation", "/tutorials/**", "/guides/**", "/ref/**", "/examples/**"],
+      },
+    ],
+  ],
 };
 
 export default config;

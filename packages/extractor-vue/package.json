@@ -1,6 +1,6 @@
 {
   "name": "@lingui/extractor-vue",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "description": "Custom Vue.js extractor to be used with the CLI tool",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -18,7 +18,12 @@
     "multilingual",
     "lingui-extractor"
   ],
-  "repository": "lingui/js-lingui",
+  "homepage": "https://lingui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/extractor-vue"
+  },
   "bugs": "https://github.com/lingui/js-lingui/issues",
   "license": "MIT",
   "author": {
@@ -38,12 +43,12 @@
     "/dist"
   ],
   "dependencies": {
-    "@lingui/cli": "5.3.2",
-    "@lingui/conf": "5.3.2",
+    "@lingui/cli": "5.5.1",
+    "@lingui/conf": "5.5.1",
     "@vue/compiler-sfc": "^3.2.47"
   },
   "devDependencies": {
-    "@lingui/babel-plugin-extract-messages": "5.3.2",
+    "@lingui/babel-plugin-extract-messages": "5.5.1",
     "unbuild": "2.0.0"
   }
 }

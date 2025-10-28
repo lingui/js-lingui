@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "5.3.2",
+  "version": "5.5.1",
   "description": "Babel plugin for transforming Lingui Macros",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -70,9 +70,11 @@
     "README.md",
     "dist/"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lingui/js-lingui.git"
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/babel-plugin-lingui-macro"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"
@@ -84,9 +86,9 @@
     "@babel/core": "^7.20.12",
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "5.3.2",
-    "@lingui/core": "5.3.2",
-    "@lingui/message-utils": "5.3.2"
+    "@lingui/conf": "5.5.1",
+    "@lingui/core": "5.5.1",
+    "@lingui/message-utils": "5.5.1"
   },
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3"
@@ -100,6 +102,7 @@
     "@babel/parser": "^7.20.15",
     "@babel/traverse": "^7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
+    "babel-plugin-react-compiler": "^1.0.0",
     "prettier": "2.8.3",
     "unbuild": "2.0.0"
   }

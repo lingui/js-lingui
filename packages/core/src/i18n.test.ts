@@ -449,6 +449,20 @@ describe("I18n", () => {
     expect(i18n._("Software development")).toEqual("Software­entwicklung")
   })
 
+  it("._ should decode escape sequences in uncompiled string messages", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    expect(i18n._("Hello\\u0020World")).toEqual("Hello World")
+    expect(i18n._("Hello\\x20World")).toEqual("Hello World")
+    expect(i18n._("Tab\\x09separated")).toEqual("Tab\tseparated")
+    expect(i18n._("Mixed\\u0020\\x41nd\\u0020escaped")).toEqual(
+      "Mixed And escaped"
+    )
+  })
+
   it("._ should throw a meaningful error when locale is not set", () => {
     const i18n = setupI18n({})
     expect(() =>
