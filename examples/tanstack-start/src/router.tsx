@@ -3,10 +3,10 @@ import {
   createRouter as createTanStackRouter,
 } from "@tanstack/react-router"
 import { routeTree } from "./routeTree.gen"
-import { DefaultCatchBoundary } from "./components/DefaultCatchBoundary"
-import { NotFound } from "./components/NotFound"
-import { routerWithLingui } from "./modules/lingui/router-plugin"
-import { getI18n } from "./modules/lingui/i18n"
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
+import { NotFound } from "~/components/NotFound"
+import { routerWithLingui } from "~/modules/lingui/router-plugin"
+import { getI18n } from "~/modules/lingui/i18n"
 
 export interface AppContext {
   i18n: I18n
