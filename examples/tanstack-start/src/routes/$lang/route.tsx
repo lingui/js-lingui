@@ -7,7 +7,7 @@ export const Route = createFileRoute("/$lang")({
   component: Page,
   async loader({ context, params }) {
     if (!Object.keys(locales).includes(params.lang)) {
-      return notFound()
+      throw notFound()
     }
 
     if (context.i18n.locale !== params.lang) {
