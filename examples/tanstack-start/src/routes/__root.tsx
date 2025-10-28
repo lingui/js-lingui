@@ -11,9 +11,6 @@ import {
   useRouter,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
-import { createServerFn } from "@tanstack/react-start"
-import { setHeader } from "@tanstack/react-start/server"
-import { serialize } from "cookie-es"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
 import { NotFound } from "~/components/NotFound"
@@ -24,6 +21,11 @@ import appCss from "~/styles/app.css?url"
 import { seo } from "~/utils/seo"
 
 export const Route = createRootRouteWithContext<AppContext>()({
+  loader({ context }) {
+     return {
+      loaderLocale: context.i18n.locale
+     }
+  },
   head: () => ({
     meta: [
       {
@@ -85,6 +87,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const { i18n } = useLingui()
   const router = useRouter()
   const params = useParams({ strict: false })
+  const { loaderLocale } = Route.useLoaderData()
 
   return (
     <html lang={i18n.locale}>
@@ -158,7 +161,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               key={locale}
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
-                updateLocale({ data: locale }).then(async () => {
+                console.log('clicked', locale)
+
+                // updateLocale({ data: locale })
+                Promise.resolve().then(async () => {
                   await dynamicActivate(i18n, locale)
 
                   if (params.lang) {
@@ -173,6 +179,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               {label}
             </button>
           ))}
+          (loader: {loaderLocale})
         </div>
         <hr />
         {children}

@@ -1,16 +1,17 @@
 import { json } from "@tanstack/react-start"
 import axios from "redaxios"
 import type { User } from "../../utils/users"
-import { createServerFileRoute } from "@tanstack/react-start/server"
+import { createFileRoute } from "@tanstack/react-router"
 import { linguiMiddleware } from "~/modules/lingui/lingui-middleware"
 import { msg } from "@lingui/core/macro"
+import { getI18n } from "~/modules/lingui/i18n"
 
-export const ServerRoute = createServerFileRoute("/api/users/$id").methods(
-  (api) => ({
-    GET: api
-      .middleware([linguiMiddleware])
-      .handler(async ({ request, params, context }) => {
+export const Route = createFileRoute("/api/users/$id")({
+  server: {
+    handlers: {
+      GET: async ({ request, params }) => {
         console.info(`Fetching users by id=${params.id}... @`, request.url)
+        const i18n = getI18n()
 
         try {
           const res = await axios.get<User>(
@@ -25,10 +26,12 @@ export const ServerRoute = createServerFileRoute("/api/users/$id").methods(
         } catch (e) {
           console.error(e)
           return json(
-            { error: context.i18n._(msg`User not found`) },
+            { error: i18n._(msg`User not found`) },
             { status: 404 }
           )
         }
-      }),
-  })
+      }
+    }
+  }
+}
 )

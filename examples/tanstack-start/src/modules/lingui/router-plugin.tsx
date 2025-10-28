@@ -24,24 +24,6 @@ export function routerWithLingui<TRouter extends AnyRouter>(
 
   router.options = {
     ...router.options,
-    dehydrate: () => {
-      return {
-        ...ogOptions.dehydrate?.(),
-        // When critical data is dehydrated, we also dehydrate the i18n messages
-        dehydratedI18n: {
-          locale: i18n.locale,
-          messages: i18n.messages,
-        },
-      }
-    },
-    hydrate: (dehydrated: any) => {
-      ogOptions.hydrate?.(dehydrated)
-      // On the client, hydrate the i18n catalog with the dehydrated data
-      i18n.loadAndActivate({
-        locale: dehydrated.dehydratedI18n.locale,
-        messages: dehydrated.dehydratedI18n.messages,
-      })
-    },
     context: {
       ...ogOptions.context,
       // Pass the query client to the context, so we can access it in loaders
@@ -61,6 +43,30 @@ export function routerWithLingui<TRouter extends AnyRouter>(
       )
     },
   }
+
+	if (router.isServer) {
+		router.options.dehydrate = async () => {
+			const ogDehydrated = await ogOptions.dehydrate?.();
+
+			return {
+				...ogDehydrated,
+				dehydratedI18n: {
+					locale: i18n.locale,
+					messages: i18n.messages,
+				},
+			};
+		};
+	} else {
+		router.options.hydrate = async (dehydrated) => {
+			ogOptions.hydrate?.(dehydrated);
+
+			// On the client, hydrate the i18n catalog with the dehydrated data
+			i18n.loadAndActivate({
+				locale: dehydrated.dehydratedI18n.locale,
+				messages: dehydrated.dehydratedI18n.messages,
+			});
+		};
+	}
 
   return router
 }

@@ -1,4 +1,14 @@
-import { type I18n } from "@lingui/core"
+import { setupI18n, type I18n } from "@lingui/core"
+
+let i18nInstance : I18n | null = null
+
+export function getI18n() {
+	if (!i18nInstance) {
+		i18nInstance = setupI18n();
+	}
+
+	return i18nInstance;
+}
 
 export const locales = {
   en: "English",
