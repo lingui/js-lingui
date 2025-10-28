@@ -30,6 +30,7 @@ type TestCaseCommon = {
   name?: string
   production?: boolean
   useTypescriptPreset?: boolean
+  useReactCompiler?: boolean
   macroOpts?: LinguiPluginOpts
   only?: boolean
   skip?: boolean
@@ -50,8 +51,15 @@ export function macroTester(opts: MacroTesterOptions) {
     prettier.format(value, { parser: "babel-ts" }).replace(/\n+/, "\n")
 
   opts.cases.forEach((testCase, index) => {
-    const { name, production, only, skip, useTypescriptPreset, macroOpts } =
-      testCase
+    const {
+      name,
+      production,
+      only,
+      skip,
+      useTypescriptPreset,
+      useReactCompiler,
+      macroOpts,
+    } = testCase
 
     let group = test
     if (only) group = test.only
@@ -78,14 +86,24 @@ export function macroTester(opts: MacroTesterOptions) {
             .trim()
 
           const actualPlugin = transformFileSync(inputPath, {
-            ...getDefaultBabelOptions("plugin", macroOpts, useTypescriptPreset),
+            ...getDefaultBabelOptions(
+              "plugin",
+              macroOpts,
+              useTypescriptPreset,
+              useReactCompiler
+            ),
             cwd: path.dirname(inputPath),
           })
             .code.replace(/\r/g, "")
             .trim()
 
           const actualMacro = transformFileSync(inputPath, {
-            ...getDefaultBabelOptions("plugin", macroOpts, useTypescriptPreset),
+            ...getDefaultBabelOptions(
+              "plugin",
+              macroOpts,
+              useTypescriptPreset,
+              useReactCompiler
+            ),
             cwd: path.dirname(inputPath),
           })
             .code.replace(/\r/g, "")
@@ -98,13 +116,23 @@ export function macroTester(opts: MacroTesterOptions) {
         } else {
           const actualPlugin = transformSync(
             testCase.code,
-            getDefaultBabelOptions("plugin", macroOpts, useTypescriptPreset)
+            getDefaultBabelOptions(
+              "plugin",
+              macroOpts,
+              useTypescriptPreset,
+              useReactCompiler
+            )
           ).code.trim()
 
           if (!testCase.skipBabelMacroTest) {
             const actualMacro = transformSync(
               testCase.code,
-              getDefaultBabelOptions("macro", macroOpts, useTypescriptPreset)
+              getDefaultBabelOptions(
+                "macro",
+                macroOpts,
+                useTypescriptPreset,
+                useReactCompiler
+              )
             ).code.trim()
 
             // output from plugin transformation should be the same to macro transformation
@@ -130,7 +158,8 @@ export function macroTester(opts: MacroTesterOptions) {
 export const getDefaultBabelOptions = (
   transformType: "plugin" | "macro" = "plugin",
   macroOpts: LinguiPluginOpts = {},
-  isTs: boolean = false
+  isTs = false,
+  useReactCompiler = false
 ): TransformOptions => {
   return {
     filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
@@ -152,6 +181,17 @@ export const getDefaultBabelOptions = (
               resolvePath: (source: string) => require.resolve(source),
             },
           ],
+
+      ...(useReactCompiler
+        ? [
+            [
+              "babel-plugin-react-compiler",
+              {
+                panicThreshold: "critical_errors",
+              },
+            ],
+          ]
+        : []),
     ],
   }
 }

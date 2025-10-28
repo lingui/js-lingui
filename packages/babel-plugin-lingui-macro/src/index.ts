@@ -284,6 +284,7 @@ export default function ({
 
                 try {
                   newNode = macro.replacePath(path)
+                  path.scope.crawl()
                 } catch (e) {
                   reportUnsupportedSyntax(path, e as Error)
                 }
