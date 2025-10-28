@@ -1,8 +1,8 @@
 import { useLingui } from "@lingui/react/macro"
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
-import { DEPLOY_URL } from "../utils/users"
-import type { User } from "../utils/users"
+import { DEPLOY_URL } from "~/utils/users"
+import type { User } from "~/utils/users"
 import { msg } from "@lingui/core/macro"
 
 export const Route = createFileRoute("/users")({

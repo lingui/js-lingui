@@ -163,8 +163,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               onClick={() => {
                 console.log('clicked', locale)
 
-                // updateLocale({ data: locale })
                 Promise.resolve().then(async () => {
+                  await updateLocale({ data: locale })
+
                   await dynamicActivate(i18n, locale)
 
                   if (params.lang) {

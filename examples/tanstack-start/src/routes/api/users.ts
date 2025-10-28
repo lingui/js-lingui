@@ -1,6 +1,6 @@
 import { json } from "@tanstack/react-start"
 import axios from "redaxios"
-import type { User } from "../../utils/users"
+import type { User } from "~/utils/users"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/api/users")({

@@ -1,8 +1,7 @@
 import { json } from "@tanstack/react-start"
 import axios from "redaxios"
-import type { User } from "../../utils/users"
+import type { User } from "~/utils/users"
 import { createFileRoute } from "@tanstack/react-router"
-import { linguiMiddleware } from "~/modules/lingui/lingui-middleware"
 import { msg } from "@lingui/core/macro"
 import { getI18n } from "~/modules/lingui/i18n"
 

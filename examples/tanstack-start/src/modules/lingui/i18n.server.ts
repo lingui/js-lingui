@@ -1,6 +1,5 @@
 import { parse, serialize } from "cookie-es"
-
-import { defaultLocale, isLocaleValid } from "./i18n"
+import { defaultLocale, isLocaleValid } from "~/modules/lingui/i18n"
 
 export function getLocaleFromRequest(request: Request) {
   const headers = request.headers
