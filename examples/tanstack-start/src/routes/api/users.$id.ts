@@ -3,15 +3,14 @@ import axios from "redaxios"
 import type { User } from "~/utils/users"
 import { createFileRoute } from "@tanstack/react-router"
 import { msg } from "@lingui/core/macro"
-import { getI18n } from "~/modules/lingui/i18n"
+import { linguiMiddleware } from "~/modules/lingui/lingui-middleware"
 
 export const Route = createFileRoute("/api/users/$id")({
   server: {
+    middleware: [linguiMiddleware],
     handlers: {
-      GET: async ({ request, params }) => {
+      GET: async ({ request, params, context }) => {
         console.info(`Fetching users by id=${params.id}... @`, request.url)
-        const i18n = getI18n()
-
         try {
           const res = await axios.get<User>(
             "https://jsonplaceholder.typicode.com/users/" + params.id
@@ -25,7 +24,7 @@ export const Route = createFileRoute("/api/users/$id")({
         } catch (e) {
           console.error(e)
           return json(
-            { error: i18n._(msg`User not found`) },
+            { error: context.i18n._(msg`User not found`) },
             { status: 404 }
           )
         }
