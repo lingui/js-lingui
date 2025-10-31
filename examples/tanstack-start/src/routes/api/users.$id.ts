@@ -28,8 +28,7 @@ export const Route = createFileRoute("/api/users/$id")({
             { status: 404 }
           )
         }
-      }
-    }
-  }
-}
-)
+      },
+    },
+  },
+})

@@ -22,9 +22,9 @@ import { seo } from "~/utils/seo"
 
 export const Route = createRootRouteWithContext<AppContext>()({
   loader({ context }) {
-     return {
-      loaderLocale: context.i18n.locale
-     }
+    return {
+      loaderLocale: context.i18n.locale,
+    }
   },
   head: () => ({
     meta: [
@@ -161,7 +161,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               key={locale}
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
-                console.log('clicked', locale)
+                console.log("clicked", locale)
 
                 Promise.resolve().then(async () => {
                   await updateLocale({ data: locale })

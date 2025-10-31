@@ -44,29 +44,29 @@ export function routerWithLingui<TRouter extends AnyRouter>(
     },
   }
 
-	if (router.isServer) {
-		router.options.dehydrate = async () => {
-			const ogDehydrated = await ogOptions.dehydrate?.();
+  if (router.isServer) {
+    router.options.dehydrate = async () => {
+      const ogDehydrated = await ogOptions.dehydrate?.()
 
-			return {
-				...ogDehydrated,
-				dehydratedI18n: {
-					locale: i18n.locale,
-					messages: i18n.messages,
-				},
-			};
-		};
-	} else {
-		router.options.hydrate = async (dehydrated) => {
-			ogOptions.hydrate?.(dehydrated);
+      return {
+        ...ogDehydrated,
+        dehydratedI18n: {
+          locale: i18n.locale,
+          messages: i18n.messages,
+        },
+      }
+    }
+  } else {
+    router.options.hydrate = async (dehydrated) => {
+      ogOptions.hydrate?.(dehydrated)
 
-			// On the client, hydrate the i18n catalog with the dehydrated data
-			i18n.loadAndActivate({
-				locale: dehydrated.dehydratedI18n.locale,
-				messages: dehydrated.dehydratedI18n.messages,
-			});
-		};
-	}
+      // On the client, hydrate the i18n catalog with the dehydrated data
+      i18n.loadAndActivate({
+        locale: dehydrated.dehydratedI18n.locale,
+        messages: dehydrated.dehydratedI18n.messages,
+      })
+    }
+  }
 
   return router
 }
