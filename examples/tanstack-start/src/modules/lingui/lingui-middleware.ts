@@ -1,6 +1,6 @@
 import { createMiddleware } from "@tanstack/react-start"
 import { getLocaleFromRequest } from "~/modules/lingui/i18n.server"
-import { dynamicActivate, initI18n } from "~/modules/lingui/i18n"
+import { dynamicActivate } from "~/modules/lingui/i18n"
 import { setupI18n } from "@lingui/core"
 
 export const linguiMiddleware = createMiddleware({ type: "request" }).server(
@@ -11,18 +11,18 @@ export const linguiMiddleware = createMiddleware({ type: "request" }).server(
     await dynamicActivate(i18n, locale)
 
     const result = await next({
-			context: {
-				locale,
-				i18n,
-			},
-		});
+      context: {
+        locale,
+        i18n,
+      },
+    })
 
-		if (headers) {
-			headers.forEach(({ key, value }) => {
-				result.response.headers.append(key, value);
-			});
-		}
+    if (headers) {
+      headers.forEach(({ key, value }) => {
+        result.response.headers.append(key, value)
+      })
+    }
 
-		return result;
+    return result
   }
 )
