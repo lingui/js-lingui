@@ -17,7 +17,7 @@ describe("@lingui/conf", () => {
   it("should return default config", () => {
     mockConsole((console) => {
       const config = getConfig({
-        cwd: path.resolve(__dirname, path.join("fixtures", "valid")),
+        cwd: path.resolve(import.meta.dirname, path.join("fixtures", "valid")),
       })
       expect(console.error).not.toBeCalled()
       expect(console.warn).not.toBeCalled()
@@ -31,7 +31,7 @@ describe("@lingui/conf", () => {
     mockConsole((console) => {
       const exec = () =>
         getConfig({
-          cwd: path.resolve(__dirname, path.join("fixtures")),
+          cwd: path.resolve(import.meta.dirname, path.join("fixtures")),
         })
 
       expect(exec).toThrow()
@@ -54,7 +54,7 @@ describe("@lingui/conf", () => {
   describe("config file", () => {
     it("searches for a .linguirc config file", () => {
       const config = getConfig({
-        cwd: path.resolve(__dirname, path.join("fixtures", "valid")),
+        cwd: path.resolve(import.meta.dirname, path.join("fixtures", "valid")),
       })
       expect(config.locales).toEqual(["en-gb"])
     })
@@ -62,7 +62,7 @@ describe("@lingui/conf", () => {
     it("allows specific config file to be loaded with configPath parameter", () => {
       const config = getConfig({
         configPath: path.resolve(
-          __dirname,
+          import.meta.dirname,
           path.join("fixtures", "valid", "custom.config.js")
         ),
       })
@@ -72,7 +72,7 @@ describe("@lingui/conf", () => {
     it("loads TypeScript config", () => {
       const config = getConfig({
         configPath: path.resolve(
-          __dirname,
+          import.meta.dirname,
           path.join("fixtures", "valid", "custom.config.ts")
         ),
       })

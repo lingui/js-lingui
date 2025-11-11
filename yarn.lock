@@ -3717,6 +3717,7 @@ __metadata:
     jiti: ^2.5.1
     picocolors: ^1.1.1
     unbuild: ^2.0.0
+    vitest: 3.2.4
   languageName: unknown
   linkType: soft
 

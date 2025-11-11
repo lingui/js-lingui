@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "ES2019",
     "sourceMap": true,
     "noEmit": false,
@@ -10,12 +9,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   },
-  "files": [
-    "./src/index.ts"
-  ],
-  "exclude": [
-    "build",
-    "node_modules"
-  ]
+  "files": ["./src/index.ts"],
+  "exclude": ["build", "node_modules"]
 }

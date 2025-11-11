@@ -3,17 +3,21 @@
   "name": "@lingui/jest-mocks",
   "version": "3.0.3",
   "description": "Mocks for Jest",
-  "main": "index.js",
+  "main": "./index.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
+  "type": "module",
   "license": "MIT",
   "keywords": [
     "jest",
     "testing",
     "mock"
   ],
+  "dependencies": {
+    "vitest": "^3.2.4"
+  },
   "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
@@ -25,10 +29,5 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "index.js"
-  ]
+  }
 }
