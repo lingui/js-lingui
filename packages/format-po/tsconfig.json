@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": false,
+    "module": "es2015",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
+  }
+}

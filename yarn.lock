@@ -3815,9 +3815,9 @@ __metadata:
     "@lingui/jest-mocks": "workspace:^"
     "@lingui/message-utils": 5.5.2
     date-fns: ^3.6.0
-    mockdate: ^3.0.5
     pofile: ^1.1.4
     unbuild: 2.0.0
+    vitest: 3.2.4
   languageName: unknown
   linkType: soft
 
@@ -20076,7 +20076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.2.4":
+"vitest@npm:3.2.4, vitest@npm:^3.2.4":
   version: 3.2.4
   resolution: "vitest@npm:3.2.4"
   dependencies:

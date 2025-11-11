@@ -2,9 +2,9 @@
   "name": "@lingui/format-po",
   "version": "5.5.2",
   "description": "Gettext PO format for Lingui Catalogs",
-  "main": "./dist/po.cjs",
-  "module": "./dist/po.mjs",
+  "main": "./dist/po.mjs",
   "types": "./dist/po.d.ts",
+  "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -21,7 +21,11 @@
     "translation",
     "multilingual"
   ],
+  "exports": {
+    ".": "./dist/po.mjs"
+  },
   "scripts": {
+    "test": "vitest run",
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
@@ -50,7 +54,7 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
-    "mockdate": "^3.0.5",
-    "unbuild": "2.0.0"
+    "unbuild": "2.0.0",
+    "vitest": "3.2.4"
   }
 }
