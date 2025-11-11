@@ -52,7 +52,7 @@ describe("FormatterWrapper", () => {
     })
 
     it("should read file from FS and parse using provided formatter", async () => {
-      const parseMock = jest
+      const parseMock = vi
         .fn()
         .mockImplementation((content: string) => content.split(",") as any)
       const format = new FormatterWrapper(
@@ -141,7 +141,7 @@ describe("FormatterWrapper", () => {
     })
 
     it("should pass context to the formatter", async () => {
-      const serializeMock = jest
+      const serializeMock = vi
         .fn()
         .mockImplementation((catalog) => JSON.stringify(catalog))
 

@@ -1,4 +1,3 @@
-import { expose } from "threads/worker"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { extractFromBundleAndWrite } from "../extractFromBundleAndWrite.js"
 import { FormatterWrapper, getFormat } from "../../api/formats/index.js"
@@ -47,4 +46,4 @@ const extractWorker = async (
   })
 }
 
-expose(extractWorker)
+export { extractWorker }

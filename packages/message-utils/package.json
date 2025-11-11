@@ -6,20 +6,12 @@
   "sideEffects": false,
   "exports": {
     "./generateMessageId": {
-      "require": {
-        "types": "./dist/generateMessageId.d.cts",
-        "default": "./dist/generateMessageId.cjs"
-      },
       "import": {
         "types": "./dist/generateMessageId.d.mts",
         "default": "./dist/generateMessageId.mjs"
       }
     },
     "./compileMessage": {
-      "require": {
-        "types": "./dist/compileMessage.d.cts",
-        "default": "./dist/compileMessage.cjs"
-      },
       "import": {
         "types": "./dist/compileMessage.d.mts",
         "default": "./dist/compileMessage.mjs"

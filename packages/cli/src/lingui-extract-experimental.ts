@@ -86,7 +86,11 @@ export default async function command(
     const pool = Pool(
       () =>
         spawn<ExtractWorkerFunction>(
-          new Worker("./extract-experimental/workers/extractWorker")
+          new Worker(
+            process.env.NODE_ENV === "test"
+              ? "./extract-experimental/workers/extractWorkerWrapper.jiti.js"
+              : "./extract-experimental/workers/extractWorkerWrapper.prod.js"
+          )
         ),
       { size: options.workersOptions.poolSize }
     )

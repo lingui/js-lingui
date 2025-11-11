@@ -1,4 +1,3 @@
-import { expose } from "threads/worker"
 import { compileLocale } from "../api/compile/compileLocale.js"
 import { CliCompileOptions } from "../lingui-compile.js"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -59,5 +58,4 @@ const compileWorker = {
 }
 
 export type CompileWorker = typeof compileWorker
-
-expose(compileWorker)
+export { compileWorker }

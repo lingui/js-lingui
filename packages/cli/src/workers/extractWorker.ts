@@ -1,4 +1,3 @@
-import { expose } from "threads/worker"
 import {
   ExtractedMessage,
   getConfig,
@@ -10,7 +9,7 @@ export type ExtractWorkerFunction = typeof extractWorker
 
 let linguiConfig: LinguiConfigNormalized | undefined
 
-const extractWorker = async (
+export const extractWorker = async (
   filename: string,
   linguiConfigPath: string
 ): Promise<{ messages?: ExtractedMessage[]; success: boolean }> => {
@@ -34,5 +33,3 @@ const extractWorker = async (
 
   return { success, messages }
 }
-
-expose(extractWorker)

@@ -9,20 +9,23 @@ import { getConfig, makeConfig } from "@lingui/conf"
 import { compareFolders } from "../src/tests.js"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import MockDate from "mockdate"
+import { vi } from "vitest"
 
-jest.mock("ora", () => {
-  return () => {
-    return {
-      start(...args: any) {
-        console.log(args)
-      },
-      succeed(...args: any) {
-        console.log(args)
-      },
-      fail(...args: any) {
-        console.log(args)
-      },
-    }
+vi.mock(import("ora"), () => {
+  return {
+    default: () => {
+      return {
+        start(...args: any) {
+          console.log(args)
+        },
+        succeed(...args: any) {
+          console.log(args)
+        },
+        fail(...args: any) {
+          console.log(args)
+        },
+      }
+    },
   }
 })
 

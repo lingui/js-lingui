@@ -1,5 +1,5 @@
 import * as t from "@babel/types"
-import generate, { GeneratorOptions } from "@babel/generator"
+import { GeneratorOptions, generate } from "@babel/generator"
 import {
   CompiledMessage,
   compileMessageOrThrow,

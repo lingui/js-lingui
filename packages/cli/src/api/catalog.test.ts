@@ -303,9 +303,14 @@ describe("Catalog", () => {
       )
 
       const messages = await catalog.collect()
-      expect(messages[Object.keys(messages)[0]].origin).toStrictEqual([
-        ["../../../../../input.tsx", 5],
-      ])
+      expect(messages[Object.keys(messages)[0]].origin).toMatchInlineSnapshot(`
+        [
+          [
+            ../../../input.tsx,
+            5,
+          ],
+        ]
+      `)
     })
 
     it("should extract only files passed on options", async () => {
@@ -496,7 +501,7 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
-    xit("should read file in previous format", async () => {
+    it.skip("should read file in previous format", async () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(

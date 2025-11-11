@@ -63,7 +63,14 @@ export async function command(
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = Pool(
-      () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
+      () =>
+        spawn<CompileWorker>(
+          new Worker(
+            process.env.NODE_ENV === "test"
+              ? "./workers/compileWorkerWrapper.jiti.js"
+              : "./workers/compileWorkerWrapper.prod.js"
+          )
+        ),
       { size: options.workersOptions.poolSize }
     )
 

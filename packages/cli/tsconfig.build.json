@@ -3,13 +3,14 @@
   "compilerOptions": {
     "strict": true,
     "strictNullChecks": false,
+
     "declaration": true,
     "paths": {},
     "noEmit": false,
     "outDir": "./dist",
     "rootDir": "./src",
     "skipLibCheck": true,
-    "module": "NodeNext",
+    "module": "NodeNext"
   },
   "include": ["./src"],
   "exclude": [
