@@ -3922,9 +3922,11 @@ __metadata:
     "@types/react": ^18.2.13
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
+    happy-dom: ^20.0.10
     react: ^18.2.0
     react-dom: ^18.2.0
-    unbuild: 2.0.0
+    unbuild: 3.6.1
+    vitest: 3.2.4
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.5.2
     babel-plugin-macros: 2 || 3
@@ -5925,6 +5927,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.0.0":
+  version: 20.19.24
+  resolution: "@types/node@npm:20.19.24"
+  dependencies:
+    undici-types: ~6.21.0
+  checksum: d532a28d454dfadc7b3af7f39d087f7d9416d2e0cdd4b47c3e00fc303177280a66bd15a86078a9957260a47b1d2bad5ac35096aeb316e56bc0318c904f214cc3
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
@@ -6005,6 +6016,13 @@ __metadata:
   version: 4.0.2
   resolution: "@types/tough-cookie@npm:4.0.2"
   checksum: e055556ffdaa39ad85ede0af192c93f93f986f4bd9e9426efdc2948e3e2632db3a4a584d4937dbf6d7620527419bc99e6182d3daf2b08685e710f2eda5291905
+  languageName: node
+  linkType: hard
+
+"@types/whatwg-mimetype@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@types/whatwg-mimetype@npm:3.0.2"
+  checksum: 30e2599ae02c539a6dd08b58de255aad24a41cdabeebc0293814884f1301f1328443b9915f2e990e4f484fa7f226ca8718991b63d2d387287f898c36390ef856
   languageName: node
   linkType: hard
 
@@ -11377,6 +11395,17 @@ __metadata:
   bin:
     handlebars: bin/handlebars
   checksum: 1e79a43f5e18d15742977cb987923eab3e2a8f44f2d9d340982bcb69e1735ed049226e534d7c1074eaddaf37e4fb4f471a8adb71cddd5bc8cf3f894241df5cee
+  languageName: node
+  linkType: hard
+
+"happy-dom@npm:^20.0.10":
+  version: 20.0.10
+  resolution: "happy-dom@npm:20.0.10"
+  dependencies:
+    "@types/node": ^20.0.0
+    "@types/whatwg-mimetype": ^3.0.2
+    whatwg-mimetype: ^3.0.0
+  checksum: 5403dafcc0e4b93705ae10d8ffa1c9d1d9a07d5a3cad1a942fa287f482148d6ffdadc971ddd31ca2bfbaef6cf12a47f31a0f42e52f135355f44139c36a5de129
   languageName: node
   linkType: hard
 
@@ -19628,6 +19657,13 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 46331c7d6016bf85b3e8f20c159d62f5ae471aba1eb3dc52fff35a0259d58dcc7d592d4cc4f00c5f9243fa738a11cfa48bd20203040d4a9e6bc25e807fab7ab3
   languageName: node
   linkType: hard
 

@@ -3,9 +3,8 @@
   "version": "5.5.2",
   "sideEffects": false,
   "description": "React components for translations",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -27,7 +26,7 @@
     "l10n"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -44,30 +43,17 @@
   },
   "exports": {
     ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "react-server": "./dist/index-rsc.cjs",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "react-server": "./dist/index-rsc.mjs",
-        "default": "./dist/index.mjs"
-      }
+      "types": "./dist/index.d.mts",
+      "react-server": "./dist/index-rsc.mjs",
+      "default": "./dist/index.mjs"
     },
     "./server": {
-      "require": {
-        "types": "./dist/server.d.ts",
-        "default": "./dist/server.cjs"
-      },
-      "import": {
-        "types": "./dist/server.d.ts",
-        "default": "./dist/server.mjs"
-      }
+      "types": "./dist/server.d.mts",
+      "default": "./dist/server.mjs"
     },
     "./macro": {
-      "types": "./macro/index.d.ts",
-      "default": "./macro/index.js"
+      "types": "./macro/index.d.cts",
+      "default": "./macro/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -101,8 +87,10 @@
     "@types/react": "^18.2.13",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "happy-dom": "^20.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
   }
 }
