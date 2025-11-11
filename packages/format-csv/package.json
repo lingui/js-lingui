@@ -2,9 +2,9 @@
   "name": "@lingui/format-csv",
   "version": "5.5.2",
   "description": "CSV format for Lingui Catalogs",
-  "main": "./dist/csv.cjs",
-  "module": "./dist/csv.mjs",
+  "main": "./dist/csv.mjs",
   "types": "./dist/csv.d.ts",
+  "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -20,7 +20,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -45,6 +45,7 @@
     "papaparse": "^5.4.0"
   },
   "devDependencies": {
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
   }
 }
