@@ -4,22 +4,13 @@
   "license": "MIT",
   "keywords": [],
   "sideEffects": false,
+  "type": "module",
   "exports": {
-    "./generateMessageId": {
-      "import": {
-        "types": "./dist/generateMessageId.d.mts",
-        "default": "./dist/generateMessageId.mjs"
-      }
-    },
-    "./compileMessage": {
-      "import": {
-        "types": "./dist/compileMessage.d.mts",
-        "default": "./dist/compileMessage.mjs"
-      }
-    }
+    "./generateMessageId": "./dist/generateMessageId.mjs",
+    "./compileMessage": "./dist/compileMessage.mjs"
   },
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -42,11 +33,14 @@
   ],
   "dependencies": {
     "@messageformat/parser": "^5.0.0",
+    "@messageformat/date-skeleton": "^1.1.0",
     "js-sha256": "^0.10.1"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
-    "@messageformat/date-skeleton": "^1.1.0",
     "unbuild": "2.0.0"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

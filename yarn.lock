@@ -3649,6 +3649,7 @@ __metadata:
     babel-plugin-react-compiler: ^1.0.0
     prettier: 2.8.3
     unbuild: 3.6.1
+    vitest: 3.2.4
   peerDependencies:
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
@@ -3825,6 +3826,8 @@ __metadata:
 "@lingui/jest-mocks@*, @lingui/jest-mocks@workspace:*, @lingui/jest-mocks@workspace:^, @lingui/jest-mocks@workspace:packages/jest-mocks":
   version: 0.0.0-use.local
   resolution: "@lingui/jest-mocks@workspace:packages/jest-mocks"
+  dependencies:
+    vitest: ^3.2.4
   languageName: unknown
   linkType: soft
 

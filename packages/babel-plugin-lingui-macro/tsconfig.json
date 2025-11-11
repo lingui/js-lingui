@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"],
     "strict": true,
-    "strictNullChecks": false,
+    "strictNullChecks": false
   }
 }

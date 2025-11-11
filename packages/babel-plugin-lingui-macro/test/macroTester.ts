@@ -1,13 +1,9 @@
-// use package path instead relative because we want
-// to test it in from /dist folder in integration tests
-// eslint-disable-next-line import/no-extraneous-dependencies
-import linguiMacroPlugin, {
-  LinguiPluginOpts,
-} from "@lingui/babel-plugin-lingui-macro"
+import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
 import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
+import linguiMacro from "../src/macro"
 
 export type TestCase = TestCaseInline | TestCaseFixture
 
@@ -178,7 +174,7 @@ export const getDefaultBabelOptions = (
               // this will not follow jest pathMapping and will resolve path from ./build
               // instead of ./src which makes testing & developing hard.
               // here we override resolve and provide correct path for testing
-              resolvePath: (source: string) => require.resolve(source),
+              require: () => linguiMacro,
             },
           ],
 

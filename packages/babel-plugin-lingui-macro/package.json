@@ -2,8 +2,7 @@
   "name": "@lingui/babel-plugin-lingui-macro",
   "version": "5.5.2",
   "description": "Babel plugin for transforming Lingui Macros",
-  "type": "module",
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
   "contributors": [
     {
       "name": "Timofei Iatsenko",
@@ -29,28 +28,13 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./macro": {
-      "import": {
-        "types": "./dist/macro.d.mts",
-        "default": "./dist/macro.mjs"
-      }
-    },
-    "./ast": {
-      "import": {
-        "types": "./dist/ast.d.mts",
-        "default": "./dist/ast.mjs"
-      }
-    }
+    ".": "./dist/index.cjs",
+    "./macro": "./dist/macro.cjs",
+    "./ast": "./dist/ast.cjs"
   },
   "files": [
     "LICENSE",
@@ -91,6 +75,10 @@
     "@types/babel-plugin-macros": "^2.8.5",
     "babel-plugin-react-compiler": "^1.0.0",
     "prettier": "2.8.3",
-    "unbuild": "3.6.1"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
+  },
+  "unbuild": {
+    "declaration": true
   }
 }
