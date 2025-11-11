@@ -232,7 +232,7 @@ describe("E2E Extractor Test", () => {
         `)
       })
 
-      // compareFolders(actualPath, expectedPath)
+      compareFolders(actualPath, expectedPath)
     })
 
     it("should extract to catalogs and merge with existing", async () => {
