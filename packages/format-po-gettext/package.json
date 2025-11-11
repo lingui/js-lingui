@@ -2,9 +2,9 @@
   "name": "@lingui/format-po-gettext",
   "version": "5.5.2",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
-  "main": "./dist/po-gettext.cjs",
-  "module": "./dist/po-gettext.mjs",
-  "types": "./dist/po-gettext.d.ts",
+  "main": "./dist/po-gettext.mjs",
+  "types": "./dist/po-gettext.d.mts",
+  "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -22,7 +22,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
     "mockdate": "^3.0.5",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest":"3.2.4"
   }
 }

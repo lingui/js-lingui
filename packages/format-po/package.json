@@ -3,7 +3,7 @@
   "version": "5.5.2",
   "description": "Gettext PO format for Lingui Catalogs",
   "main": "./dist/po.mjs",
-  "types": "./dist/po.d.ts",
+  "types": "./dist/po.d.mts",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",

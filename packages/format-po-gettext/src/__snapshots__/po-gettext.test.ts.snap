@@ -1,63 +1,63 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-letter 1`] = `
+exports[`po-gettext format > convertPluralsToIco handle correctly locales with 4-letter 1`] = `
 {
-  WGI12K: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "WGI12K": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
-    obsolete: false,
-    origin: [],
-    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+    "message": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+    "obsolete": false,
+    "origin": [],
+    "translation": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  jO/SBZ: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "jO/SBZ": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: {count, plural, one {Singular} other {Plural}},
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "message": "{count, plural, one {Singular} other {Plural}}",
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
-  message_with_id: {
-    comments: [
-      js-lingui-explicit-id,
+  "message_with_id": {
+    "comments": [
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+    "obsolete": false,
+    "origin": [],
+    "translation": "{someCount, plural, one {Singular case} other {Case number {someCount}}}",
   },
-  message_with_id_but_without_translation: {
-    comments: [
-      Comment made by the developers.,
-      js-lingui-explicit-id,
+  "message_with_id_but_without_translation": {
+    "comments": [
+      "Comment made by the developers.",
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
 }
 `;
 
-exports[`po-gettext format should convert ICU plural messages to gettext plurals 1`] = `
-msgid ""
+exports[`po-gettext format > should convert ICU plural messages to gettext plurals 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -109,80 +109,80 @@ msgid "Singular automatic id no translation"
 msgid_plural "Plural {count} automatic id no translation"
 msgstr[0] ""
 msgstr[1] ""
-
+"
 `;
 
-exports[`po-gettext format should convert gettext plurals to ICU plural messages 1`] = `
+exports[`po-gettext format > should convert gettext plurals to ICU plural messages 1`] = `
 {
-  WGI12K: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "WGI12K": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
-    obsolete: false,
-    origin: [],
-    translation: {anotherCount, plural, one {Singular case} other {Case number {anotherCount}}},
+    "message": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+    "obsolete": false,
+    "origin": [],
+    "translation": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  jO/SBZ: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "jO/SBZ": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: {count, plural, one {Singular} other {Plural}},
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "message": "{count, plural, one {Singular} other {Plural}}",
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
-  message_with_id: {
-    comments: [
-      js-lingui-explicit-id,
+  "message_with_id": {
+    "comments": [
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: {someCount, plural, one {Singular case} other {Case number {someCount}}},
+    "obsolete": false,
+    "origin": [],
+    "translation": "{someCount, plural, one {Singular case} other {Case number {someCount}}}",
   },
-  message_with_id_but_without_translation: {
-    comments: [
-      Comment made by the developers.,
-      js-lingui-explicit-id,
+  "message_with_id_but_without_translation": {
+    "comments": [
+      "Comment made by the developers.",
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
-  static: {
-    comments: [
-      js-lingui-explicit-id,
+  "static": {
+    "comments": [
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: Static message,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Static message",
   },
 }
 `;
 
-exports[`po-gettext format using custom prefix handles custom prefix 1`] = `
-msgid ""
+exports[`po-gettext format > using custom prefix > handles custom prefix 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -210,80 +210,80 @@ msgid "Singular case"
 msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"
 msgstr[1] "Case number {anotherCount}"
-
+"
 `;
 
-exports[`po-gettext format using custom prefix warns and falls back to using count if prefix is not found 1`] = `
+exports[`po-gettext format > using custom prefix > warns and falls back to using count if prefix is not found 1`] = `
 {
-  lO3l+X: {
-    comments: [
-      js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount,
+  "lO3l+X": {
+    "comments": [
+      "js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: Singular case,
-    obsolete: false,
-    origin: [],
-    translation: {count, plural, one {Singular case} other {Case number {anotherCount}}},
+    "message": "Singular case",
+    "obsolete": false,
+    "origin": [],
+    "translation": "{count, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  maCaRp: {
-    comments: [
-      js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular%7D+other+%7BPlural%7D%7D&pluralize_on=count,
+  "maCaRp": {
+    "comments": [
+      "js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular%7D+other+%7BPlural%7D%7D&pluralize_on=count",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: Singular,
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "message": "Singular",
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
-  message_with_id: {
-    comments: [
-      js-lingui:pluralize_on=someCount,
-      js-lingui-explicit-id,
+  "message_with_id": {
+    "comments": [
+      "js-lingui:pluralize_on=someCount",
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: {count, plural, one {Singular case} other {Case number {someCount}}},
+    "obsolete": false,
+    "origin": [],
+    "translation": "{count, plural, one {Singular case} other {Case number {someCount}}}",
   },
-  message_with_id_but_without_translation: {
-    comments: [
-      Comment made by the developers.,
-      js-lingui:pluralize_on=count,
-      js-lingui-explicit-id,
+  "message_with_id_but_without_translation": {
+    "comments": [
+      "Comment made by the developers.",
+      "js-lingui:pluralize_on=count",
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: ,
+    "obsolete": false,
+    "origin": [],
+    "translation": "",
   },
-  static: {
-    comments: [
-      js-lingui-explicit-id,
+  "static": {
+    "comments": [
+      "js-lingui-explicit-id",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: Static message,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Static message",
   },
 }
 `;

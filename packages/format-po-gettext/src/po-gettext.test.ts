@@ -143,17 +143,17 @@ msgstr[2] "# dní"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        Y8Xw2Y: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "Y8Xw2Y": {
+          "comments": [],
+          "context": null,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {#, plural, one {day} other {days}},
-          obsolete: false,
-          origin: [],
-          translation: {#, plural, one {# den} few {# dny} other {# dní}},
+          "message": "{#, plural, one {day} other {days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{#, plural, one {# den} few {# dny} other {# dní}}",
         },
       }
     `)
@@ -251,17 +251,17 @@ msgstr[2] "{count} jours"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        ZETJEQ: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "ZETJEQ": {
+          "comments": [],
+          "context": null,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {0, plural, one {{count} day} other {{count} days}},
-          obsolete: false,
-          origin: [],
-          translation: {0, plural, one {{count} jour} many {{count} jours} other {{count} jours}},
+          "message": "{0, plural, one {{count} day} other {{count} days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{0, plural, one {{count} jour} many {{count} jours} other {{count} jours}}",
         },
       }
     `)
@@ -290,17 +290,17 @@ msgstr[3] "# dní"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        GMnlGy: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "GMnlGy": {
+          "comments": [],
+          "context": null,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
-          obsolete: false,
-          origin: [],
-          translation: {#, plural, one {# den} few {# dny}  other {# dní}},
+          "message": "{count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{#, plural, one {# den} few {# dny}  other {# dní}}",
         },
       }
     `)
