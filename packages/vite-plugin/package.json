@@ -2,9 +2,9 @@
   "name": "@lingui/vite-plugin",
   "version": "5.5.2",
   "description": "Vite plugin for Lingui message catalogs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -20,7 +20,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -50,8 +50,9 @@
   "devDependencies": {
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
-    "unbuild": "2.0.0",
+    "unbuild": "3.6.1",
     "vite": "6.0.2",
-    "vite-plugin-babel-macros": "^1.0.6"
+    "vite-plugin-babel-macros": "^1.0.6",
+    "vitest": "3.2.4"
   }
 }

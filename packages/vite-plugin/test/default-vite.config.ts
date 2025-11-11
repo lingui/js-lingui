@@ -11,7 +11,7 @@ export function createDefaultViteConfig(
       lib: {
         entry: path.resolve(dirname, "entrypoint.js"),
         fileName: "bundle",
-        formats: ["cjs"],
+        formats: ["es"],
       },
     },
 

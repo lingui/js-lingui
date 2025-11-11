@@ -12,7 +12,7 @@ function configExists(path?: string): path is string {
 
 function JitiLoader(): LoaderSync {
   return (filepath) => {
-    const jiti = createJiti(__filename)
+    const jiti = createJiti(import.meta.url)
 
     const mod = jiti(filepath)
     return mod?.default ?? mod

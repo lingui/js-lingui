@@ -3871,7 +3871,7 @@ __metadata:
     "@messageformat/date-skeleton": ^1.1.0
     "@messageformat/parser": ^5.0.0
     js-sha256: ^0.10.1
-    unbuild: 2.0.0
+    unbuild: 3.6.1
   languageName: unknown
   linkType: soft
 
@@ -3954,9 +3954,10 @@ __metadata:
     "@lingui/conf": 5.5.2
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
-    unbuild: 2.0.0
+    unbuild: 3.6.1
     vite: 6.0.2
     vite-plugin-babel-macros: ^1.0.6
+    vitest: 3.2.4
   peerDependencies:
     vite: ^3 || ^4 || ^5.0.9 || ^6 || ^7
   languageName: unknown
