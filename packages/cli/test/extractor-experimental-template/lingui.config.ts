@@ -9,6 +9,7 @@ export default defineConfig({
     extractor: {
       entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
       output: "<rootDir>/actual/{entryName}.{locale}",
+      includeDeps: ["@alias"],
     },
   },
 })

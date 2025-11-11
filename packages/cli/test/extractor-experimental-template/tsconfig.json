@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
+    "module": "NodeNext",
+    "target": "ESNext",
+    "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@alias": [
-        "./fixtures/components/aliased-module.ts"
-      ]
+      "@alias": ["./fixtures/components/aliased-module.ts"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
