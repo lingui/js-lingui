@@ -5,19 +5,19 @@ import nodepath from "path"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs, AllCatalogsType } from "./api"
-import { printStats } from "./api/stats"
-import { helpRun } from "./api/help"
+import { getCatalogs, AllCatalogsType } from "./api/index.js"
+import { printStats } from "./api/stats.js"
+import { helpRun } from "./api/help.js"
 import ora from "ora"
 import normalizePath from "normalize-path"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/extractWorkerPool.js"
 import ms from "ms"
 
 export type CliExtractOptions = {

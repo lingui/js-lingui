@@ -3,7 +3,7 @@ import type { Mock } from "jest-mock"
 jest.mock("node:os", () => ({ availableParallelism: jest.fn() }))
 
 import os from "node:os"
-import { resolveWorkersOptions } from "./resolveWorkersOptions"
+import { resolveWorkersOptions } from "./resolveWorkersOptions.js"
 
 const mockAvail = os.availableParallelism as unknown as Mock<
   typeof os.availableParallelism

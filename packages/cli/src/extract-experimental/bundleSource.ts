@@ -1,6 +1,6 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { BuildOptions } from "esbuild"
-import { pluginLinguiMacro } from "./linguiEsbuildPlugin"
+import { pluginLinguiMacro } from "./linguiEsbuildPlugin.js"
 
 function createExtRegExp(extensions: string[]) {
   return new RegExp("\\.(?:" + extensions.join("|") + ")(?:\\?.*)?$")

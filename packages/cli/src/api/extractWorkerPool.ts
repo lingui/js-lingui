@@ -1,5 +1,5 @@
 import { Pool, spawn, Worker } from "threads"
-import type { ExtractWorkerFunction } from "../workers/extractWorker"
+import type { ExtractWorkerFunction } from "../workers/extractWorker.js"
 
 export type ExtractWorkerPool = ReturnType<typeof createExtractWorkerPool>
 

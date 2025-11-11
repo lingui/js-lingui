@@ -1,5 +1,5 @@
 import fs from "fs/promises"
-import babel from "./babel"
+import babel from "./babel.js"
 import {
   ExtractedMessage,
   ExtractorType,

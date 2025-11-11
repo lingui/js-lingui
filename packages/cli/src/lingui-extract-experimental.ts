@@ -2,20 +2,20 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
-import { getFormat } from "./api/formats"
+import { getFormat } from "./api/formats/index.js"
 import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
-import { bundleSource } from "./extract-experimental/bundleSource"
-import { getEntryPoints } from "./extract-experimental/getEntryPoints"
+import { bundleSource } from "./extract-experimental/bundleSource.js"
+import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
 import pico from "picocolors"
 import { Pool, spawn, Worker } from "threads"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
-import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker"
-import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite"
+} from "./api/resolveWorkersOptions.js"
+import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker.js"
+import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
 
 export type CliExtractTemplateOptions = {
   verbose?: boolean

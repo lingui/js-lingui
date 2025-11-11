@@ -4,7 +4,7 @@ import {
   CompiledMessage,
   compileMessageOrThrow,
 } from "@lingui/message-utils/compileMessage"
-import pseudoLocalize from "./pseudoLocalize"
+import pseudoLocalize from "./pseudoLocalize.js"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string
 

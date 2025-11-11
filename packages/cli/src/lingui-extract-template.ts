@@ -3,17 +3,17 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs } from "./api"
+import { getCatalogs } from "./api/index.js"
 import nodepath from "path"
 import normalizePath from "normalize-path"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/extractWorkerPool.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean

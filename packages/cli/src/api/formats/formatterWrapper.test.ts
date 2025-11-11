@@ -1,4 +1,4 @@
-import { FormatterWrapper } from "./formatterWrapper"
+import { FormatterWrapper } from "./formatterWrapper.js"
 import mockFs from "mock-fs"
 import fs from "fs"
 

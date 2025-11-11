@@ -5,7 +5,7 @@ import https from "https"
 import { globSync } from "glob"
 import { format as formatDate } from "date-fns"
 import { LinguiConfigNormalized } from "@lingui/conf"
-import { CliExtractOptions } from "../lingui-extract"
+import { CliExtractOptions } from "../lingui-extract.js"
 
 type POItem = InstanceType<typeof PO.Item>
 

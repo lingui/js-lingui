@@ -1,7 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "strict": true,
-    "strictNullChecks": false
-  }
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"strict": true,
+		"strictNullChecks": false,
+		"module": "nodenext",
+		"moduleResolution": "nodenext"
+	}
 }

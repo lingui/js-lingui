@@ -3,15 +3,15 @@ import chokidar from "chokidar"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-import { helpRun } from "./api/help"
-import { getCatalogs, getFormat } from "./api"
-import { compileLocale } from "./api/compile/compileLocale"
+import { helpRun } from "./api/help.js"
+import { getCatalogs, getFormat } from "./api/index.js"
+import { compileLocale } from "./api/compile/compileLocale.js"
 import { Pool, spawn, Worker } from "threads"
-import { CompileWorker } from "./workers/compileWorker"
+import { CompileWorker } from "./workers/compileWorker.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 
 export type CliCompileOptions = {

@@ -1,5 +1,5 @@
-import type { MergeOptions } from "../catalog"
-import { CatalogType, ExtractedCatalogType } from "../types"
+import type { MergeOptions } from "../catalog.js"
+import { CatalogType, ExtractedCatalogType } from "../types.js"
 
 export function mergeCatalog(
   prevCatalog: CatalogType,

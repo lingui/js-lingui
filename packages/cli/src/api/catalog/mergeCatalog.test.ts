@@ -2,9 +2,9 @@ import {
   defaultMergeOptions,
   makeNextMessage,
   makePrevMessage,
-} from "../../tests"
-import { mergeCatalog } from "./mergeCatalog"
-import { CatalogType, ExtractedCatalogType } from "../types"
+} from "../../tests.js"
+import { mergeCatalog } from "./mergeCatalog.js"
+import { CatalogType, ExtractedCatalogType } from "../types.js"
 
 describe("mergeCatalog", () => {
   const nextCatalog: ExtractedCatalogType = {

@@ -1,5 +1,5 @@
 import nodepath from "path"
-import { replacePlaceholders } from "../api/utils"
+import { replacePlaceholders } from "../api/utils.js"
 
 export function resolveCatalogPath(
   configOutput: string,

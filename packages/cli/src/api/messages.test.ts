@@ -1,7 +1,7 @@
 import {
   createCompilationErrorMessage,
   createMissingErrorMessage,
-} from "./messages"
+} from "./messages.js"
 
 describe("createMissingErrorMessage", () => {
   it("should print correct missing message", async () => {

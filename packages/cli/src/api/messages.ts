@@ -1,6 +1,6 @@
-import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog"
+import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog.js"
 import pico from "picocolors"
-import { MessageCompilationError } from "./compile"
+import { MessageCompilationError } from "./compile.js"
 
 export function createMissingErrorMessage(
   locale: string,

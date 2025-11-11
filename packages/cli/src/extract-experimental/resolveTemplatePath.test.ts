@@ -1,4 +1,4 @@
-import { resolveTemplatePath } from "./resolveTemplatePath"
+import { resolveTemplatePath } from "./resolveTemplatePath.js"
 import normalizePath from "normalize-path"
 
 describe("resolveTemplateName", () => {

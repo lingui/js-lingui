@@ -1,9 +1,9 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
-import { getEntryPoints } from "./getEntryPoints"
-import { resolveCatalogPath } from "./resolveCatalogPath"
-import { Catalog } from "../api/catalog"
-import { resolveTemplatePath } from "./resolveTemplatePath"
-import { getFormat } from "../api/formats"
+import { getEntryPoints } from "./getEntryPoints.js"
+import { resolveCatalogPath } from "./resolveCatalogPath.js"
+import { Catalog } from "../api/catalog.js"
+import { resolveTemplatePath } from "./resolveTemplatePath.js"
+import { getFormat } from "../api/formats/index.js"
 
 export async function getExperimentalCatalogs(
   linguiConfig: LinguiConfigNormalized

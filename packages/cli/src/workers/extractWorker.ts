@@ -4,7 +4,7 @@ import {
   getConfig,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import extract from "../api/extractors"
+import extract from "../api/extractors/index.js"
 
 export type ExtractWorkerFunction = typeof extractWorker
 

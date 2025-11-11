@@ -2,6 +2,7 @@
   "name": "@lingui/cli",
   "version": "5.5.2",
   "description": "CLI for working wit message catalogs",
+  "type": "module",
   "keywords": [
     "cli",
     "i18n",
@@ -92,7 +93,6 @@
     "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.5",
-    "ts-node": "^10.9.2"
+    "mockdate": "^3.0.5"
   }
 }
