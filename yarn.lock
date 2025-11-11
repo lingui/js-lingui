@@ -3789,7 +3789,8 @@ __metadata:
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
     "@lingui/conf": 5.5.2
-    unbuild: ^2.0.0
+    unbuild: ^3.6.1
+    vitest: 3.2.4
   languageName: unknown
   linkType: soft
 
@@ -19617,7 +19618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unbuild@npm:3.6.1":
+"unbuild@npm:3.6.1, unbuild@npm:^3.6.1":
   version: 3.6.1
   resolution: "unbuild@npm:3.6.1"
   dependencies:

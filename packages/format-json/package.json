@@ -2,8 +2,7 @@
   "name": "@lingui/format-json",
   "version": "5.5.2",
   "description": "JSON format for Lingui Catalogs",
-  "main": "./dist/json.cjs",
-  "module": "./dist/json.mjs",
+  "main": "./dist/json.mjs",
   "types": "./dist/json.d.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -20,7 +19,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
+    "build": "unbuild",
     "stub": "unbuild --stub"
   },
   "homepage": "https://lingui.dev",
@@ -44,6 +43,7 @@
     "@lingui/conf": "5.5.2"
   },
   "devDependencies": {
-    "unbuild": "^2.0.0"
+    "unbuild": "^3.6.1",
+    "vitest": "3.2.4"
   }
 }
