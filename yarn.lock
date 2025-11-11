@@ -3729,7 +3729,8 @@ __metadata:
     "@babel/runtime": ^7.20.13
     "@lingui/jest-mocks": "*"
     "@lingui/message-utils": 5.5.2
-    unbuild: 2.0.0
+    unbuild: 3.6.1
+    vitest: 3.2.4
   peerDependencies:
     "@lingui/babel-plugin-lingui-macro": 5.5.2
     babel-plugin-macros: 2 || 3

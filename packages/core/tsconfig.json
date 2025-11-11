@@ -5,5 +5,8 @@
     "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   }
 }

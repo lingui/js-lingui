@@ -3,9 +3,8 @@
   "version": "5.5.2",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -37,20 +36,8 @@
     "node": ">=20.0.0"
   },
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./macro": {
-      "types": "./macro/index.d.ts",
-      "default": "./macro/index.js"
-    },
+    ".": "./dist/index.mjs",
+    "./macro": "./macro/index.cjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -66,7 +53,8 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
   },
   "peerDependencies": {
     "@lingui/babel-plugin-lingui-macro": "5.5.2",
