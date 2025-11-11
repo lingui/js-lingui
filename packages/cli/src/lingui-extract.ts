@@ -19,6 +19,7 @@ import {
   ExtractWorkerPool,
 } from "./api/extractWorkerPool.js"
 import ms from "ms"
+import esMain from "es-main"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -117,7 +118,7 @@ export default async function command(
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
     try {
-      const module = require(`./services/${moduleName}`)
+      const module = await import(`./services/${moduleName}`)
 
       await module
         .default(config, options)
@@ -145,7 +146,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option(

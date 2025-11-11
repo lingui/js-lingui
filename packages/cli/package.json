@@ -74,6 +74,7 @@
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",
+    "es-main": "^1.4.0",
     "esbuild": "^0.25.1",
     "glob": "^11.0.0",
     "jiti": "^2.6.1",

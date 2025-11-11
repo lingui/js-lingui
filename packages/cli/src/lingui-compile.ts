@@ -13,6 +13,7 @@ import {
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
+import esMain from "es-main"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -122,7 +123,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")

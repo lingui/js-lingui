@@ -14,6 +14,7 @@ import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
+import esMain from "es-main"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -80,7 +81,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
