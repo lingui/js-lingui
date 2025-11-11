@@ -3,6 +3,9 @@
   "compilerOptions": {
     "lib": ["ES2019.Array"],
     "strict": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   }
 }

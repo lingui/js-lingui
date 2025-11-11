@@ -38,7 +38,8 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
-    "unbuild": "3.6.1"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
   },
   "unbuild": {
     "declaration": "node16"
