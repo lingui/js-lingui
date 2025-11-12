@@ -3,6 +3,7 @@ import fs from "node:fs/promises"
 import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
+import { vi } from "vitest"
 
 describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
@@ -107,21 +108,21 @@ describe("lingui-loader", () => {
 
     expect((await res.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
-      {
-        ED2Xk0: [
-          String from template,
-        ],
-        mVmaLu: [
-          My name is ,
-          [
-            name,
+        {
+          "ED2Xk0": [
+            "String from template",
           ],
-        ],
-        mY42CM: [
-          Hello World,
-        ],
-      }
-    `)
+          "mVmaLu": [
+            "My name is ",
+            [
+              "name",
+            ],
+          ],
+          "mY42CM": [
+            "Hello World",
+          ],
+        }
+      `)
 
     // change the dependency
     await fs.writeFile(
@@ -138,25 +139,25 @@ msgstr ""
     )
 
     const stats2 = await watching.build()
-    jest.resetModules()
+    vi.resetModules()
 
     expect((await stats2.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
-      {
-        mVmaLu: [
-          My name is ,
-          [
-            name,
+        {
+          "mVmaLu": [
+            "My name is ",
+            [
+              "name",
+            ],
           ],
-        ],
-        mY42CM: [
-          Hello World,
-        ],
-        wg2uwk: [
-          String from template changes!,
-        ],
-      }
-    `)
+          "mY42CM": [
+            "Hello World",
+          ],
+          "wg2uwk": [
+            "String from template changes!",
+          ],
+        }
+      `)
 
     await watching.stop()
   })

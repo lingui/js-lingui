@@ -4,7 +4,6 @@
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
   "sideEffects": false,
   "author": {
     "name": "Tomáš Ehrlich",
@@ -23,7 +22,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild"
+    "build": "unbuild"
   },
   "homepage": "https://lingui.dev",
   "repository": {
@@ -49,7 +48,9 @@
   },
   "devDependencies": {
     "@lingui/format-json": "5.5.2",
-    "unbuild": "2.0.0",
+    "jiti": "^2.6.1",
+    "unbuild": "3.6.1",
+    "vitest": "^3.2.4",
     "webpack": "^5.76.1"
   },
   "peerDependencies": {
