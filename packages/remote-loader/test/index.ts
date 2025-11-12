@@ -1,7 +1,7 @@
 import { remoteLoader } from "../src"
 import fs from "fs"
 
-xdescribe("remote-loader", () => {
+describe.skip("remote-loader", () => {
   it("should compile correctly JSON messages coming from the fly", async () => {
     const unlink = createConfig("minimal")
     const messages = await simulatedJsonResponse()
