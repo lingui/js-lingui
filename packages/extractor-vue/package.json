@@ -31,8 +31,7 @@
     "email": "christoffer@jahren.it"
   },
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "rimraf ./dist && unbuild"
   },
   "engines": {
     "node": ">=20.0.0"

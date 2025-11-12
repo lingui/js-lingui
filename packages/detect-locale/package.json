@@ -17,8 +17,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "rimraf ./dist && unbuild"
   },
   "author": {
     "name": "Sergio Moreno",

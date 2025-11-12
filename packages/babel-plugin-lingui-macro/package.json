@@ -28,8 +28,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild"
   },
   "exports": {
     ".": "./dist/index.cjs",

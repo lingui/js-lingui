@@ -19,8 +19,7 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild"
   },
   "homepage": "https://lingui.dev",
   "repository": {
