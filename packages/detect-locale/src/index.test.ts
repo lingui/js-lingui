@@ -42,7 +42,7 @@ describe("detect", () => {
 })
 
 describe("multipleDetect", () => {
-  it("returns multiple locales by order of occurence", () => {
+  it("returns multiple locales by order of occurrence", () => {
     const mock: Partial<Navigator> = {
       language: "en",
     }
