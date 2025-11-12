@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "5.5.2",
+  "version": "5.6.0",
   "description": "Babel plugin for transforming Lingui Macros",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -86,9 +86,9 @@
     "@babel/core": "^7.20.12",
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "5.5.2",
-    "@lingui/core": "5.5.2",
-    "@lingui/message-utils": "5.5.2"
+    "@lingui/conf": "5.6.0",
+    "@lingui/core": "5.6.0",
+    "@lingui/message-utils": "5.6.0"
   },
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3"
