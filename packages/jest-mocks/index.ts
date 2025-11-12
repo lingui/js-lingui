@@ -1,12 +1,14 @@
-export function getConsoleMockCalls({ mock }: vi.MockInstance<any, any>) {
+import { vi, Mocked, MockInstance } from "vitest"
+
+export function getConsoleMockCalls({ mock }: MockInstance) {
   if (!mock.calls.length) return
   return mock.calls.map((call) => call[0]).join("\n")
 }
 
-export function mockConsole(
-  testCase: (console: vi.Mocked<Console>) => any,
+export function mockConsole<T>(
+  testCase: (console: Mocked<Console>) => T,
   mock = {}
-) {
+): T {
   function restoreConsole() {
     global.console = originalConsole
   }
@@ -26,7 +28,7 @@ export function mockConsole(
 
   let result
   try {
-    result = testCase(global.console as vi.Mocked<Console>)
+    result = testCase(global.console as Mocked<Console>)
   } catch (e) {
     restoreConsole()
     throw e
@@ -43,7 +45,7 @@ export function mockConsole(
   }
 }
 
-export function mockEnv(env, testCase) {
+export function mockEnv(env: string, testCase: () => void) {
   const oldEnv = process.env.NODE_ENV
   process.env.NODE_ENV = env
 
