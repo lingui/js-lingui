@@ -2,7 +2,9 @@ import { CompiledMessage, Formats, Locales, Values } from "./i18n"
 import {
   date,
   DateTimeFormatSize,
+  type DateTimeFormatValue,
   number,
+  type NumberFormatValue,
   plural,
   type PluralOptions,
   time,
@@ -51,7 +53,7 @@ const getDefaultFormats = (
     select: selectFormatter,
 
     number: (
-      value: number,
+      value: NumberFormatValue,
       format: string | Intl.NumberFormatOptions
     ): string =>
       number(
@@ -61,11 +63,11 @@ const getDefaultFormats = (
       ),
 
     date: (
-      value: string,
+      value: string | DateTimeFormatValue,
       format: Intl.DateTimeFormatOptions | string
     ): string =>
       date(locales, value, style(format) || (format as DateTimeFormatSize)),
-    time: (value: string, format: string): string =>
+    time: (value: string | DateTimeFormatValue, format: string): string =>
       time(locales, value, style(format) || (format as DateTimeFormatSize)),
   } as const
 }

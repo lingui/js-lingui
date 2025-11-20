@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-csv",
-  "version": "5.5.2",
+  "version": "5.6.0",
   "description": "CSV format for Lingui Catalogs",
   "main": "./dist/csv.mjs",
   "types": "./dist/csv.d.ts",
@@ -40,7 +40,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.5.2",
+    "@lingui/conf": "5.6.0",
     "papaparse": "^5.4.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@lingui/metro-transformer",
-  "version": "5.5.2",
+  "version": "5.6.0",
   "description": "Metro bundler transformer for LinguiJS catalogs",
   "exports": {
     "./expo": {
@@ -57,12 +57,12 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "5.5.2",
-    "@lingui/conf": "5.5.2",
+    "@lingui/cli": "5.6.0",
+    "@lingui/conf": "5.6.0",
     "memoize-one": "^6.0.0"
   },
   "devDependencies": {
-    "@lingui/format-json": "5.5.2",
+    "@lingui/format-json": "5.6.0",
     "unbuild": "3.6.1",
     "vitest": "^3.2.4"
   },

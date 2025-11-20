@@ -2,6 +2,9 @@
   "name": "extractor-experimental-template",
   "version": "1.0.0",
   "private": true,
+  "imports": {
+    "#subpath-dep": "./fixtures/components/subpath-import.ts"
+  },
   "dependencies": {
     "@lingui/core": "*",
     "@lingui/react": "*",

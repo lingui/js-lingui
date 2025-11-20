@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "5.5.2",
+  "version": "5.6.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
   "main": "./dist/index.mjs",
@@ -48,7 +48,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "5.5.2"
+    "@lingui/message-utils": "5.6.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
@@ -56,7 +56,7 @@
     "vitest": "3.2.4"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.5.2",
+    "@lingui/babel-plugin-lingui-macro": "5.6.0",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {

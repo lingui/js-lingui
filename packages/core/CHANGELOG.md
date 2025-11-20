@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
+
+### Bug Fixes
+
+* improve type of values accepted by date/time/number formats ([#2359](https://github.com/lingui/js-lingui/issues/2359)) ([c1f2800](https://github.com/lingui/js-lingui/commit/c1f28006632565a0f572eb604f0b3b62ddbe54d2))
+
 ## [5.5.2](https://github.com/lingui/js-lingui/compare/v5.5.1...v5.5.2) (2025-10-30)
 
 **Note:** Version bump only for package @lingui/core
