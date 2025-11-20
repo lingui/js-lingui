@@ -17,7 +17,7 @@ jobs:
       matrix:
         node: ["20", "22"]
         os:
-          - ubuntu-latest,
+          - ubuntu-latest
 #         - windows-latest
 
 
