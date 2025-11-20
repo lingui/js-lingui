@@ -1,5 +1,9 @@
 import { resolveTemplatePath } from "./resolveTemplatePath.js"
-import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "../api/index.js"
+import {
+  AllCatalogsType,
+  CatalogType,
+  ExtractedCatalogType,
+} from "../api/index.js"
 import pico from "picocolors"
 import { resolveCatalogPath } from "./resolveCatalogPath.js"
 import { mergeCatalog } from "../api/catalog/mergeCatalog.js"
