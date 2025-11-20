@@ -4,7 +4,6 @@ import path from "path"
 
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import { formatter as createFormat } from "./po-gettext"
-import MockDate from "mockdate"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -23,11 +22,7 @@ describe("po-gettext format", () => {
   const format = createFormat()
 
   beforeAll(() => {
-    MockDate.set(new Date("2018-08-27T10:00Z"))
-  })
-
-  afterAll(() => {
-    MockDate.reset()
+    vi.setSystemTime(new Date("2018-08-27T10:00Z"))
   })
 
   it("should convert ICU plural messages to gettext plurals", () => {

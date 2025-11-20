@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2019",
     "sourceMap": true,
@@ -12,7 +13,5 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "types": ["vitest/globals"]
-  },
-  "files": ["./src/index.ts"],
-  "exclude": ["build", "node_modules"]
+  }
 }

@@ -75,5 +75,5 @@ exports[`@lingui/conf > should return default config 1`] = `
 exports[`@lingui/conf > should throw error if config is not discovered 1`] = `
 "Lingui was unable to find a config!
 
-Create 'lingui.config.js' file with LinguiJS configuration in root of your project (next to package.json). See https://lingui.dev/ref/conf"
+Create [1m'lingui.config.js'[22m file with LinguiJS configuration in root of your project (next to package.json). See [4mhttps://lingui.dev/ref/conf[24m"
 `;
