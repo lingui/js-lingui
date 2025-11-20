@@ -19,6 +19,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(?:@lingui|@messageformat)/)"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -32,9 +37,9 @@
     ]
   },
   "devDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "^5.2.0",
-    "@lingui/cli": "^5.2.0",
-    "@lingui/loader": "^5.2.0",
+    "@lingui/babel-plugin-lingui-macro": "^5.6.1",
+    "@lingui/cli": "^5.6.1",
+    "@lingui/loader": "^5.6.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
