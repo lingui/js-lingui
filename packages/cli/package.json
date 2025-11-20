@@ -96,9 +96,7 @@
     "@types/micromatch": "^4.0.1",
     "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",
-    "jest": "^30.2.0",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.5",
     "vitest": "^3.2.4"
   }
 }

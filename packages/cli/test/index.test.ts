@@ -8,7 +8,6 @@ import nodepath from "path"
 import { getConfig, makeConfig } from "@lingui/conf"
 import { compareFolders } from "../src/tests.js"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
-import MockDate from "mockdate"
 import { vi } from "vitest"
 
 vi.mock(import("ora"), () => {
@@ -53,11 +52,7 @@ async function prepare(caseFolderName: string) {
 
 describe("E2E Extractor Test", () => {
   beforeAll(() => {
-    MockDate.set(new Date("2023-03-15T10:00Z"))
-  })
-
-  afterAll(() => {
-    MockDate.reset()
+    vi.setSystemTime(new Date("2023-03-15T10:00Z"))
   })
 
   it("Should collect messages from files and write catalog in PO format", async () => {
