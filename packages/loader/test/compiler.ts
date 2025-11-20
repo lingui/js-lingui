@@ -9,6 +9,9 @@ export type BuildResult = {
   stats: webpack.StatsCompilation
 }
 
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 export async function build(
   entryPoint: string,
   loaderOptions: LinguiLoaderOptions = {}
@@ -59,7 +62,10 @@ export function watch(
       const stats = await deferred.promise
 
       return {
-        loadBundle: () => {
+        loadBundle: async () => {
+          // avoid race condition between writing on the disk and reading
+          await delay(100)
+
           // add query param to invalidate import cache
           return import(
             path.join(stats.outputPath, "bundle.js?read=" + readCount++)

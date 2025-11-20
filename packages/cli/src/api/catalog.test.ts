@@ -302,11 +302,16 @@ describe("Catalog", () => {
         mockConfig()
       )
 
+      const oldCwd = process.cwd()
+      process.chdir(import.meta.dirname)
       const messages = await catalog.collect()
+
+      process.chdir(oldCwd)
+
       expect(messages[Object.keys(messages)[0]].origin).toMatchInlineSnapshot(`
         [
           [
-            ../../../input.tsx,
+            ../input.tsx,
             5,
           ],
         ]
