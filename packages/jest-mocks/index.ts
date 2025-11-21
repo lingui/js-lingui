@@ -5,28 +5,19 @@ export function getConsoleMockCalls({ mock }: MockInstance) {
   return mock.calls.map((call) => call[0]).join("\n")
 }
 
-export function mockConsole<T>(
-  testCase: (console: Mocked<Console>) => T,
-  mock = {}
-): T {
+export function mockConsole<T>(testCase: (console: Mocked<Console>) => T): T {
   function restoreConsole() {
     global.console = originalConsole
   }
-
   const originalConsole = global.console
 
-  const defaults = {
+  global.console = {
     log: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
-  }
-
-  global.console = {
-    ...defaults,
-    ...mock,
   } as any
 
-  let result
+  let result: any
   try {
     result = testCase(global.console as Mocked<Console>)
   } catch (e) {
@@ -35,10 +26,15 @@ export function mockConsole<T>(
   }
 
   if (result && typeof result.then === "function") {
-    return result.then(restoreConsole).catch((e) => {
-      restoreConsole()
-      throw e
-    })
+    return result
+      .then((r: T) => {
+        restoreConsole()
+        return r
+      })
+      .catch((e: unknown) => {
+        restoreConsole()
+        throw e
+      })
   } else {
     restoreConsole()
     return result
