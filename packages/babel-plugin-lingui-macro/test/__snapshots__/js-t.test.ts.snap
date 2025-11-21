@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Anything variables except simple identifiers are used as positional arguments 1`] = `
 import { t } from "@lingui/core/macro";

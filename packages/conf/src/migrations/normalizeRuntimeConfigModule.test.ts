@@ -6,17 +6,17 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        Trans: [
-          @lingui/react,
-          Trans,
+        "Trans": [
+          "@lingui/react",
+          "Trans",
         ],
-        i18n: [
-          @lingui/core,
-          i18n,
+        "i18n": [
+          "@lingui/core",
+          "i18n",
         ],
-        useLingui: [
-          @lingui/react,
-          useLingui,
+        "useLingui": [
+          "@lingui/react",
+          "useLingui",
         ],
       }
     `)
@@ -29,17 +29,17 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        Trans: [
-          @lingui/react,
-          Trans,
+        "Trans": [
+          "@lingui/react",
+          "Trans",
         ],
-        i18n: [
-          ../my-i18n,
-          myI18n,
+        "i18n": [
+          "../my-i18n",
+          "myI18n",
         ],
-        useLingui: [
-          @lingui/react,
-          useLingui,
+        "useLingui": [
+          "@lingui/react",
+          "useLingui",
         ],
       }
     `)
@@ -56,17 +56,17 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        Trans: [
-          ./custom-trans,
-          myTrans,
+        "Trans": [
+          "./custom-trans",
+          "myTrans",
         ],
-        i18n: [
-          ./custom-i18n,
-          myI18n,
+        "i18n": [
+          "./custom-i18n",
+          "myI18n",
         ],
-        useLingui: [
-          ./custom-use-lingui,
-          myLingui,
+        "useLingui": [
+          "./custom-use-lingui",
+          "myLingui",
         ],
       }
     `)
@@ -83,17 +83,17 @@ describe("normalizeRuntimeConfigModule", () => {
 
     expect(actual.runtimeConfigModule).toMatchInlineSnapshot(`
       {
-        Trans: [
-          ./custom-trans,
-          Trans,
+        "Trans": [
+          "./custom-trans",
+          "Trans",
         ],
-        i18n: [
-          ./custom-i18n,
-          i18n,
+        "i18n": [
+          "./custom-i18n",
+          "i18n",
         ],
-        useLingui: [
-          ./custom-use-lingui,
-          useLingui,
+        "useLingui": [
+          "./custom-use-lingui",
+          "useLingui",
         ],
       }
     `)

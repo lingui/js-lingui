@@ -1,7 +1,7 @@
 import type { CatalogFormat, CatalogFormatter } from "@lingui/conf"
 import { CatalogFormatOptions } from "@lingui/conf"
-import { FormatterWrapper } from "./formatterWrapper"
-import { makeInstall } from "../utils"
+import { FormatterWrapper } from "./formatterWrapper.js"
+import { makeInstall } from "../utils.js"
 
 type CatalogFormatterFactoryFn = (options: any) => CatalogFormatter
 

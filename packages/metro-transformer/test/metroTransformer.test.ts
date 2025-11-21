@@ -25,7 +25,7 @@ describe("Lingui Metro transformer tests", () => {
     })
 
     expect(result).toMatchInlineSnapshot(
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`
     )
   })
 
@@ -39,7 +39,7 @@ describe("Lingui Metro transformer tests", () => {
     })
 
     expect(result).toMatchInlineSnapshot(
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"]}");`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"]}");"`
     )
   })
 
@@ -52,7 +52,7 @@ describe("Lingui Metro transformer tests", () => {
     })
 
     expect(result).toMatchInlineSnapshot(
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`
     )
   })
 

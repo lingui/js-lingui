@@ -1,19 +1,19 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (no template) 1`] = `
+exports[`CLI Command: Compile > allowEmpty = false > Should show error and stop compilation of catalog if message doesnt have a translation (no template) 1`] = `
 Error: Failed to compile catalog for locale pl!
 Missing 1 translation(s)
 
 `;
 
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (with template) 1`] = `
+exports[`CLI Command: Compile > allowEmpty = false > Should show error and stop compilation of catalog if message doesnt have a translation (with template) 1`] = `
 {
   en: undefined,
   pl: undefined,
 }
 `;
 
-exports[`CLI Command: Compile allowEmpty = false Should show error and stop compilation of catalog if message doesnt have a translation (with template) 2`] = `
+exports[`CLI Command: Compile > allowEmpty = false > Should show error and stop compilation of catalog if message doesnt have a translation (with template) 2`] = `
 Error: Failed to compile catalog for locale en!
 Missing 1 translation(s)
 
@@ -22,7 +22,7 @@ Missing 1 translation(s)
 
 `;
 
-exports[`CLI Command: Compile allowEmpty = false Should show missing messages verbosely when verbose = true 1`] = `
+exports[`CLI Command: Compile > allowEmpty = false > Should show missing messages verbosely when verbose = true 1`] = `
 en ⇒ en.js
 Error: Failed to compile catalog for locale pl!
 Missing translations:
@@ -31,9 +31,9 @@ mY42CM: (Hello World)
 
 `;
 
-exports[`CLI Command: Compile failOnCompileError Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"lg1L7K\\":[\\"Hello User\\"]}")};`;
+exports[`CLI Command: Compile > failOnCompileError > Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"lg1L7K\\":[\\"Hello User\\"]}")};`;
 
-exports[`CLI Command: Compile failOnCompileError Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 2`] = `
+exports[`CLI Command: Compile > failOnCompileError > Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 2`] = `
 Failed to compile catalog for locale pl!
 
 Compilation error for 1 translation(s):
@@ -47,7 +47,7 @@ Reason: Unexpected message end at line 1 col 13:
 You can fail command execution on these errors by passing \`--strict\` option
 `;
 
-exports[`CLI Command: Compile failOnCompileError Should show error and stop compilation of catalog if message has compilation error when failOnCompileError = true 1`] = `
+exports[`CLI Command: Compile > failOnCompileError > Should show error and stop compilation of catalog if message has compilation error when failOnCompileError = true 1`] = `
 Failed to compile catalog for locale pl!
 
 Compilation error for 1 translation(s):
@@ -61,6 +61,6 @@ Reason: Unexpected message end at line 1 col 13:
 These errors fail command execution because \`--strict\` option passed
 `;
 
-exports[`CLI Command: Compile merge Should merge individual catalogs if catalogsMergePath specified in lingui config 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"Foo Hello World\\"],\\"iWZSiH\\":[\\"Bar Hello World\\"]}")};`;
+exports[`CLI Command: Compile > merge > Should merge individual catalogs if catalogsMergePath specified in lingui config 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"Foo Hello World\\"],\\"iWZSiH\\":[\\"Bar Hello World\\"]}")};`;
 
-exports[`CLI Command: Compile merge Should merge individual catalogs if catalogsMergePath specified in lingui config 2`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"[PL] Foo Hello World\\"],\\"iWZSiH\\":[\\"[PL] Bar Hello World\\"]}")};`;
+exports[`CLI Command: Compile > merge > Should merge individual catalogs if catalogsMergePath specified in lingui config 2`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"Z3YTTJ\\":[\\"[PL] Foo Hello World\\"],\\"iWZSiH\\":[\\"[PL] Bar Hello World\\"]}")};`;

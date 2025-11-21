@@ -5,7 +5,7 @@ import pico from "picocolors"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
 
-import { AllCatalogsType, CatalogType } from "./types"
+import { AllCatalogsType, CatalogType } from "./types.js"
 
 type CatalogStats = [number, number]
 

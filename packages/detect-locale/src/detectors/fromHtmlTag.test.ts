@@ -1,18 +1,24 @@
 import { fromHtmlTag } from ".."
-import { JSDOM } from "jsdom"
+import { Browser } from "happy-dom"
 
 describe("htmlTag detector", () => {
   it("should find a locale from a standard html5", () => {
-    const dom = new JSDOM(
-      `<!DOCTYPE html><html lang="es"<p>Hello world</p></html>`
-    )
-    expect(fromHtmlTag("lang", dom.window.document)).toEqual("es")
+    const browser = new Browser()
+    const page = browser.newPage()
+
+    page.content = '<html lang="es"><body><p>Hello world</p></body></html>'
+    expect(
+      fromHtmlTag("lang", page.mainFrame.document as unknown as Document)
+    ).toEqual("es")
   })
 
   it("should find a locale from a xml lang attribute", () => {
-    const dom = new JSDOM(
-      `<!DOCTYPE html><html xml:lang="en"<p>Hello world</p></html>`
-    )
-    expect(fromHtmlTag("xml:lang", dom.window.document)).toEqual("en")
+    const browser = new Browser()
+    const page = browser.newPage()
+
+    page.content = `<html xml:lang="en"><p>Hello world</p></html>`
+    expect(
+      fromHtmlTag("xml:lang", page.mainFrame.document as unknown as Document)
+    ).toEqual("en")
   })
 })

@@ -1,11 +1,15 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { globSync } from "glob"
 import path from "path"
-import { Catalog } from "../catalog"
-import { normalizeRelativePath, PATHSEP, replacePlaceholders } from "../utils"
+import { Catalog } from "../catalog.js"
+import {
+  normalizeRelativePath,
+  PATHSEP,
+  replacePlaceholders,
+} from "../utils.js"
 import micromatch from "micromatch"
-import { getFormat } from "../formats"
-import { getExperimentalCatalogs } from "../../extract-experimental/getExperimentalCatalogs"
+import { getFormat } from "../formats/index.js"
+import { getExperimentalCatalogs } from "../../extract-experimental/getExperimentalCatalogs.js"
 
 const NAME_PH = "{name}"
 const LOCALE_PH = "{locale}"

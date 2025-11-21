@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Production - only essential props are kept 1`] = `
 import { defineMessage } from "@lingui/core/macro";

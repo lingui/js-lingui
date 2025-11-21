@@ -9,6 +9,9 @@ export type BuildResult = {
   stats: webpack.StatsCompilation
 }
 
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 export async function build(
   entryPoint: string,
   loaderOptions: LinguiLoaderOptions = {}
@@ -53,12 +56,21 @@ export function watch(
     deferred = createDeferred<any>()
   })
 
+  let readCount = 0
   return {
     build: async (): Promise<BuildResult> => {
       const stats = await deferred.promise
 
       return {
-        loadBundle: () => import(path.join(stats.outputPath, "bundle.js")),
+        loadBundle: async () => {
+          // avoid race condition between writing on the disk and reading
+          await delay(100)
+
+          // add query param to invalidate import cache
+          return import(
+            path.join(stats.outputPath, "bundle.js?read=" + readCount++)
+          )
+        },
         stats,
       }
     },
@@ -76,7 +88,7 @@ export function getCompiler(
     entry: entryPoint,
     resolveLoader: {
       alias: {
-        "@lingui/loader": path.resolve(__dirname, "../src/webpackLoader.ts"),
+        "@lingui/loader": path.resolve(__dirname, "./loader.cjs"),
       },
     },
     module: {
@@ -91,6 +103,7 @@ export function getCompiler(
       ],
     },
     output: {
+      chunkFormat: false,
       path: mkdtempSync(path.join(os.tmpdir(), `lingui-test-${process.pid}`)),
       filename: "bundle.js",
       libraryTarget: "commonjs",

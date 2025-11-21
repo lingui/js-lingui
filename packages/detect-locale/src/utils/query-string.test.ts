@@ -29,7 +29,7 @@ describe("query-string", function () {
       expect(obj.shizzle).toEqual("mynizzle")
     })
 
-    it("does not overide prototypes", function () {
+    it("does not override prototypes", function () {
       const obj: Record<string, unknown> = parse("?toString&__proto__=lol")
 
       expect(typeof obj).toBe("object")

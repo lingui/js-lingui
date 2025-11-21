@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 
 const packageJson = JSON.parse(
-  readFileSync(path.resolve(__dirname, "../package.json"), "utf8")
+  readFileSync(path.resolve(import.meta.dirname, "../package.json"), "utf8")
 )
 
 program

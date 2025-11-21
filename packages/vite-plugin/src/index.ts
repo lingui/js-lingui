@@ -145,7 +145,7 @@ Please check that catalogs.path is filled properly.\n`
                   `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`
               )
             } else {
-              console.warn(
+              this.warn(
                 message +
                   `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`
               )

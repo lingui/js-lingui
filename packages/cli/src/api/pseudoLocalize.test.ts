@@ -1,4 +1,4 @@
-import pseudoLocalize from "./pseudoLocalize"
+import pseudoLocalize from "./pseudoLocalize.js"
 
 describe("PseudoLocalization", () => {
   it("should pseudolocalize strings", () => {
