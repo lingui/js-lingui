@@ -31,10 +31,10 @@ const transformCode = (
   try {
     const pluginOpts: ExtractPluginOpts = {
       onMessageExtracted(msg: ExtractedMessage) {
-        const filename = path.relative(rootDir, msg.origin[0])
+        const filename = path.relative(rootDir, msg.origin![0])
         messages.push({
           ...msg,
-          origin: [filename, msg.origin[1]],
+          origin: [filename, msg.origin![1]],
         })
       },
     }
@@ -54,7 +54,7 @@ const transformCode = (
       ],
     })
   } finally {
-    process.env.LINGUI_CONFIG = null
+    process.env.LINGUI_CONFIG = undefined
   }
 
   return messages

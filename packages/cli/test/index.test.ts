@@ -10,7 +10,7 @@ import { compareFolders } from "../src/tests.js"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
 import { vi } from "vitest"
 
-vi.mock(import("ora"), () => {
+vi.mock("ora", () => {
   return {
     default: () => {
       return {

@@ -1,12 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "noEmit": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "types": ["vitest/globals"]
   }
 }

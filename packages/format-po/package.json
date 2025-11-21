@@ -26,7 +26,8 @@
   },
   "scripts": {
     "test": "vitest run",
-    "build": "rimraf ./dist && unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "homepage": "https://lingui.dev",
   "repository": {

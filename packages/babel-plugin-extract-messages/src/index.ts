@@ -46,8 +46,8 @@ function collectMessage(
 
   const node: Node = path.node
 
-  const line = node.loc ? node.loc.start.line : null
-  const column = node.loc ? node.loc.start.column : null
+  const line = node.loc ? node.loc.start.line : undefined
+  const column = node.loc ? node.loc.start.column : undefined
 
   ;(ctx.opts as ExtractPluginOpts).onMessageExtracted({
     id: props.id,
@@ -55,7 +55,9 @@ function collectMessage(
     context: props.context,
     comment: props.comment,
     placeholders: props.placeholders || {},
-    origin: [ctx.file.opts.filename, line, column],
+    origin: ctx.file.opts.filename
+      ? ([ctx.file.opts.filename, line, column] as Origin)
+      : undefined,
   })
 }
 
@@ -98,7 +100,7 @@ function getTextFromExpression(
       return ""
     }
 
-    return exp.quasis[0]?.value?.cooked
+    return exp.quasis[0]?.value?.cooked || ""
   }
 
   if (emitErrorOnVariable) {
@@ -110,10 +112,12 @@ function getTextFromExpression(
       ).message
     )
   }
+
+  return ""
 }
 
 function getNodeSource(fileContents: string, node: Node) {
-  return fileContents.slice(node.start, node.end)
+  return fileContents.slice(node.start!, node.end!)
 }
 
 function valuesObjectExpressionToPlaceholdersRecord(
@@ -124,7 +128,7 @@ function valuesObjectExpressionToPlaceholdersRecord(
   const props: Record<string, string> = {}
 
   ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
-    let name: string
+    let name: string | undefined
 
     if (t.isStringLiteral(key) || t.isNumericLiteral(key)) {
       name = key.value.toString()
@@ -141,7 +145,7 @@ function valuesObjectExpressionToPlaceholdersRecord(
     }
 
     if (name) {
-      props[name] = getNodeSource(hub.getCode(), value)
+      props[name] = getNodeSource(hub.getCode()!, value)
     }
   })
 
@@ -181,10 +185,7 @@ function extractFromObjectExpression(
 const I18N_OBJECT = "i18n"
 
 function hasComment(node: Node, comment: string): boolean {
-  return (
-    node.leadingComments &&
-    node.leadingComments.some((comm) => comm.value.trim() === comment)
-  )
+  return !!node.leadingComments?.some((comm) => comm.value.trim() === comment)
 }
 
 function hasIgnoreComment(node: Node): boolean {

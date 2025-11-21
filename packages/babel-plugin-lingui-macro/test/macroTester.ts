@@ -1,5 +1,6 @@
 import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
 import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
+// @ts-expect-error need to update to v3
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
@@ -57,7 +58,7 @@ export function macroTester(opts: MacroTesterOptions) {
       macroOpts,
     } = testCase
 
-    let group = test
+    let group: typeof test.only = test
     if (only) group = test.only
     if (skip) group = test.skip
     const groupName = name != null ? name : `#${index + 1}`

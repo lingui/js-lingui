@@ -1,10 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "noEmit": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "module": "esnext",
     "moduleResolution": "bundler",
     "types": ["vitest/globals"],
-    "strict": true,
-    "strictNullChecks": false
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true
   }
 }

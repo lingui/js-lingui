@@ -28,7 +28,8 @@
     "email": "christoffer@jahren.it"
   },
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "engines": {
     "node": ">=20.0.0"

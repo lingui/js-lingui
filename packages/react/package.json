@@ -26,7 +26,8 @@
     "l10n"
   ],
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "homepage": "https://lingui.dev",
   "repository": {

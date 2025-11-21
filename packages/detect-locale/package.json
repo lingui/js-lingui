@@ -14,7 +14,8 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "author": {
     "name": "Sergio Moreno",

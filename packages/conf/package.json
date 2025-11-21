@@ -26,7 +26,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "rimraf ./dist && unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "exports": {
     ".": "./dist/index.mjs"

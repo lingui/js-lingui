@@ -10,7 +10,8 @@
     "./compileMessage": "./dist/compileMessage.mjs"
   },
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "check-types": "tsc"
   },
   "homepage": "https://lingui.dev",
   "repository": {

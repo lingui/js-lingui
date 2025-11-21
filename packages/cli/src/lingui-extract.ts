@@ -109,16 +109,20 @@ export default async function command(
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
-  if (
-    typeof config.service === "object" &&
-    config.service.name &&
-    config.service.name.length
-  ) {
+  if (config.service?.name?.length) {
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
+    const services: Record<string, any> = {
+      translationIO: () => import(`./services/translationIO.js`),
+    }
+
+    if (!services[moduleName]) {
+      console.error(`Can't load service module ${moduleName}`)
+    }
+
     try {
-      const module = await import(`./services/${moduleName}`)
+      const module = services[moduleName]()
 
       await module
         .default(config, options)

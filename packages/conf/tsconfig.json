@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "ES2019",
     "sourceMap": true,
-    "noEmit": false,
+    "noEmit": true,
     "declaration": true,
     "outDir": "./build",
     "esModuleInterop": true,

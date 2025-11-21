@@ -7,8 +7,7 @@ import {
 import { Catalog } from "../catalog.js"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 import path from "path"
-import { getFormat } from "@lingui/cli/api"
-import { FormatterWrapper } from "../formats/index.js"
+import { FormatterWrapper, getFormat } from "../formats/index.js"
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(

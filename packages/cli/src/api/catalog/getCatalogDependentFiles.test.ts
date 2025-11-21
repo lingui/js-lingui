@@ -1,4 +1,4 @@
-import { getCatalogDependentFiles, getFormat } from "@lingui/cli/api"
+import { getCatalogDependentFiles, getFormat } from "../../api/index.js"
 import { makeConfig } from "@lingui/conf"
 import { Catalog } from "../catalog.js"
 import { FormatterWrapper } from "../formats/index.js"

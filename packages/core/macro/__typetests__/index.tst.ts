@@ -13,7 +13,7 @@ import {
 
 const name = "Jack"
 const user = { name: "Jack" }
-const i18n: I18n = null
+const i18n: I18n = null as any
 const numberValue = 2
 
 // simple
