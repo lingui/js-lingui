@@ -68,8 +68,8 @@ jobs:
       - name: Build packages
         run: yarn release:build
 
-#      - name: Linting & Types
-#        run: yarn lint:all
+      - name: Linting & Types
+        run: yarn lint:all
 
       - name: Unit Testing
         run: yarn test:ci:coverage

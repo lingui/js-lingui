@@ -12,11 +12,5 @@
     "skipLibCheck": true,
     "target": "es2017"
   },
-  "exclude": [
-    "examples/**",
-    "dist",
-    "website",
-    "**/fixtures/**",
-    "**/__typetests__/**"
-  ]
+  "exclude": ["examples/**", "dist", "website", "**/fixtures/**"]
 }

@@ -3,6 +3,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "noEmit": true,
     "skipLibCheck": true,
     "types": ["vitest/globals"],
     "target": "ES2022"

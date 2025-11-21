@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "check-types": "tsc"
+    "check-types": "tsc --noEmit"
   },
   "exports": {
     ".": "./dist/index.cjs",

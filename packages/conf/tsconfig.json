@@ -1,13 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2019",
     "sourceMap": true,
     "noEmit": true,
-    "declaration": true,
-    "outDir": "./build",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "module": "esnext",
