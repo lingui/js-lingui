@@ -2,6 +2,7 @@
   "name": "typescript-nodenext-resolution",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "test:e2e": "tsc -p tsconfig.json"
   },
@@ -11,6 +12,6 @@
     "@lingui/react": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "4.9.5"
+    "typescript": "^5.7.2"
   }
 }
