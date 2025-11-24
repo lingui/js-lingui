@@ -111,7 +111,6 @@ async function runVite(
   }
 
   logger.error = (msg, options) => {
-    console.log(msg)
     warnMsgs.push(msg)
   }
 
