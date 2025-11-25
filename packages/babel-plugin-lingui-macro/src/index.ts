@@ -284,7 +284,6 @@ export default function ({
 
                 try {
                   newNode = macro.replacePath(path)
-                  path.scope.crawl()
                 } catch (e) {
                   reportUnsupportedSyntax(path, e as Error)
                 }
@@ -296,6 +295,11 @@ export default function ({
                     addImport(macroImports, state, "useLingui").reference(
                       newPath
                     )
+
+                    // rebuild scope bindings if useLingui hook was used
+                    // allow further plugins, such as React Compiler to process
+                    // source correctly
+                    path.scope.crawl()
                   }
 
                   if (macro.needsI18nImport) {
