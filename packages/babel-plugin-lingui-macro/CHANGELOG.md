@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
+
+### Bug Fixes
+
+* **macro:** recrawl scope only if useLingui was used ([#2370](https://github.com/lingui/js-lingui/issues/2370)) ([9fd8b84](https://github.com/lingui/js-lingui/commit/9fd8b8455d5d5f4fc2b774155e7c8a457dac40d2))
+
 # [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
 
 **Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
