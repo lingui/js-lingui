@@ -47,7 +47,7 @@ const validCatalogFormat = (config: LinguiConfigNormalized): boolean => {
   if (typeof config.format === "string") {
     return config.format === "po"
   }
-  return config.format.catalogExtension === ".pot"
+  return config.format.catalogExtension === ".po"
 }
 
 // Main sync method, call "Init" or "Sync" depending on the project context
