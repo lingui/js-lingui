@@ -48,7 +48,7 @@ export default async function syncProcess(
   config: LinguiConfigNormalized,
   options: CliExtractOptions
 ) {
-  if (config.format != "po") {
+  if ((config.format?.catalogExtension?.slice(-2) ?? config.format) !== 'po') {
     console.error(
       `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
     )
