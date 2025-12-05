@@ -288,6 +288,40 @@ describe("createCompiledCatalog", () => {
     })
   })
 
+  describe("options.lintDirective", () => {
+    const getCompiledCatalog = (lintDirective?: string) =>
+      createCompiledCatalog(
+        "en",
+        {
+          Hello: "Hello",
+        },
+        {
+          lintDirective,
+        }
+      ).source
+
+    it("should use default eslint-disable directive when not specified", () => {
+      const result = getCompiledCatalog()
+      expect(result).toContain("/*eslint-disable*/")
+    })
+
+    it("should use oxlint-disable directive", () => {
+      const result = getCompiledCatalog("oxlint-disable")
+      expect(result).toContain("/*oxlint-disable*/")
+    })
+
+    it("should use custom lint directive when specified", () => {
+      const result = getCompiledCatalog("biome-ignore lint: auto-generated")
+      expect(result).toContain("/*biome-ignore lint: auto-generated*/")
+      expect(result).not.toContain("eslint-disable")
+    })
+
+    it("should handle empty string directive", () => {
+      const result = getCompiledCatalog("")
+      expect(result).toContain("/**/")
+    })
+  })
+
   it("should return list of compile errors", () => {
     const res = createCompiledCatalog(
       "ru",
