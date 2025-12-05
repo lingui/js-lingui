@@ -270,6 +270,7 @@ lingui compile --lint-directive "biome-ignore lint: auto-generated"
 ```
 
 The generated file header will look like:
+
 ```js
 /*<your-directive>*/export const messages = JSON.parse(...);
 ```
