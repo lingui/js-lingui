@@ -172,6 +172,7 @@ lingui compile
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
     [--workers]
+    [--lint-directive <directive>]
 ```
 
 Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/ref/conf#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
@@ -249,6 +250,29 @@ Use the `--verbose` flag to see the actual pool size.
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
 A larger worker pool also increases memory usage. Adjust this value for your project to achieve the best performance.
+
+#### `--lint-directive <directive>` {#compile-lint-directive}
+
+Customize the lint directive added to the header of compiled message catalogs. By default, Lingui adds `/*eslint-disable*/` to prevent linters from reporting issues in generated files.
+
+This option is useful when using different linters or tools that require specific directive formats.
+
+**Default value:** `eslint-disable`
+
+**Examples:**
+
+```shell
+# For Oxlint
+lingui compile --lint-directive "oxlint-disable"
+
+# For Biome
+lingui compile --lint-directive "biome-ignore lint: auto-generated"
+```
+
+The generated file header will look like:
+```js
+/*<your-directive>*/export const messages = JSON.parse(...);
+```
 
 ## Configuring the Source Locale
 
