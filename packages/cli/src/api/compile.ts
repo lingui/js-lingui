@@ -17,6 +17,7 @@ export type CreateCompileCatalogOptions = {
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
   compilerBabelOptions?: GeneratorOptions
+  fileHeaderDirective?: string
 }
 
 export type MessageCompilationError = {
@@ -44,6 +45,7 @@ export function createCompiledCatalog(
     namespace = "cjs",
     pseudoLocale,
     compilerBabelOptions = {},
+    fileHeaderDirective = "eslint-disable",
   } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
@@ -91,7 +93,7 @@ export function createCompiledCatalog(
     ...compilerBabelOptions,
   }).code
 
-  return { source: "/*eslint-disable*/" + code, errors }
+  return { source: `/*${fileHeaderDirective}*/` + code, errors }
 }
 
 function buildExportStatement(
