@@ -496,6 +496,10 @@ msgstr "Witaj świecie"
 msgid "Test"
 msgstr "Test"
         `,
+        "pl.po": `
+msgid "Test"
+msgstr "Test PL"
+        `,
       })
 
       const config = getTestConfig(rootDir)
