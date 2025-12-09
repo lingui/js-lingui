@@ -1,21 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "ES2019",
     "sourceMap": true,
-    "noEmit": false,
-    "declaration": true,
-    "outDir": "./build",
+    "noEmit": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-  },
-  "files": [
-    "./src/index.ts"
-  ],
-  "exclude": [
-    "build",
-    "node_modules"
-  ]
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
+  }
 }

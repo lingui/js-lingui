@@ -1,16 +1,16 @@
-import { Catalog, writeCompiled } from "../catalog"
+import { Catalog, writeCompiled } from "../catalog.js"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
-import { getMergedCatalogPath } from "../catalog/getCatalogs"
-import { CliCompileOptions } from "../../lingui-compile"
-import { ProgramExit } from "../ProgramExit"
-import { createCompiledCatalog } from "../compile"
+import { getMergedCatalogPath } from "../catalog/getCatalogs.js"
+import { CliCompileOptions } from "../../lingui-compile.js"
+import { ProgramExit } from "../ProgramExit.js"
+import { createCompiledCatalog } from "../compile.js"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
-import { createCompilationErrorMessage } from "../messages"
-import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog"
-import { Logger } from "../logger"
+import { createCompilationErrorMessage } from "../messages.js"
+import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog.js"
+import { Logger } from "../logger.js"
 
 export async function compileLocale(
   catalogs: Catalog[],

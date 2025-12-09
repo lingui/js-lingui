@@ -1,7 +1,7 @@
-import { printStats } from "./stats"
-import { defaultMergeOptions, makeCatalog, makeNextMessage } from "../tests"
+import { printStats } from "./stats.js"
+import { defaultMergeOptions, makeCatalog, makeNextMessage } from "../tests.js"
 import { makeConfig } from "@lingui/conf"
-import { AllCatalogsType } from "./types"
+import { AllCatalogsType } from "./types.js"
 
 describe("PrintStats", () => {
   it("should print correct stats for a basic setup", async () => {

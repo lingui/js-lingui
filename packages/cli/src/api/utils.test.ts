@@ -2,7 +2,7 @@ import {
   makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
-} from "./utils"
+} from "./utils.js"
 import mockFs from "mock-fs"
 
 describe("replacePlaceholders", () => {

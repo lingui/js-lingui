@@ -2,20 +2,21 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
-import { getFormat } from "./api/formats"
+import { getFormat } from "./api/formats/index.js"
 import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
-import { bundleSource } from "./extract-experimental/bundleSource"
-import { getEntryPoints } from "./extract-experimental/getEntryPoints"
+import { bundleSource } from "./extract-experimental/bundleSource.js"
+import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
 import pico from "picocolors"
 import { Pool, spawn, Worker } from "threads"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
-import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker"
-import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite"
+} from "./api/resolveWorkersOptions.js"
+import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker.js"
+import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
+import esMain from "es-main"
 
 export type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -86,7 +87,11 @@ export default async function command(
     const pool = Pool(
       () =>
         spawn<ExtractWorkerFunction>(
-          new Worker("./extract-experimental/workers/extractWorker")
+          new Worker(
+            process.env.NODE_ENV === "test"
+              ? "./extract-experimental/workers/extractWorkerWrapper.jiti.js"
+              : "./extract-experimental/workers/extractWorkerWrapper.prod.js"
+          )
         ),
       { size: options.workersOptions.poolSize }
     )
@@ -177,7 +182,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--template", "Extract to template")

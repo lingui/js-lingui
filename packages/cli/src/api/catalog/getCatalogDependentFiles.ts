@@ -1,5 +1,5 @@
-import { Catalog } from "../catalog"
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import { Catalog } from "../catalog.js"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 import fs from "node:fs/promises"
 
 import path from "node:path"

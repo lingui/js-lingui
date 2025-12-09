@@ -1,7 +1,7 @@
-import { Catalog } from "../catalog"
+import { Catalog } from "../catalog.js"
 import { FallbackLocales } from "@lingui/conf"
-import type { AllCatalogsType, CatalogType, MessageType } from "../types"
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import type { AllCatalogsType, CatalogType, MessageType } from "../types.js"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 
 export type TranslationMissingEvent = {
   source: string

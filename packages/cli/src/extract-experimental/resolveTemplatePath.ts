@@ -1,5 +1,5 @@
-import { resolveCatalogPath, getEntryName } from "./resolveCatalogPath"
-import { DEFAULT_TEMPLATE_NAME, ENTRY_NAME_PH } from "./constants"
+import { resolveCatalogPath, getEntryName } from "./resolveCatalogPath.js"
+import { DEFAULT_TEMPLATE_NAME, ENTRY_NAME_PH } from "./constants.js"
 
 export function resolveTemplatePath(
   entryPoint: string,

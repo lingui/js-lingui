@@ -23,8 +23,7 @@
     "messageformat"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild"
   },
   "homepage": "https://lingui.dev",
   "repository": {
