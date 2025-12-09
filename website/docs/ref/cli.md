@@ -172,7 +172,7 @@ lingui compile
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
     [--workers]
-    [--lint-directive <directive>]
+    [--output-prefix <prefix>]
 ```
 
 Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/ref/conf#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
@@ -251,28 +251,31 @@ Worker threads can significantly improve performance on large projects. However,
 
 A larger worker pool also increases memory usage. Adjust this value for your project to achieve the best performance.
 
-#### `--lint-directive <directive>` {#compile-lint-directive}
+#### `--output-prefix <prefix>` {#compile-output-prefix}
 
-Customize the lint directive added to the header of compiled message catalogs. By default, Lingui adds `/*eslint-disable*/` to prevent linters from reporting issues in generated files.
+Adds a custom string to the beginning of compiled message catalogs (a header/prefix). By default, Lingui adds `/*eslint-disable*/` to prevent linters from reporting issues in generated files.
 
-This option is useful when using different linters or tools that require specific directive formats.
+Use this option for other tools that rely on header directives (e.g., different linters, coverage tools, or formatters). Provide the full prefix exactly as it should appear in the output.
 
-**Default value:** `eslint-disable`
+**Default value:** `/*eslint-disable*/`
 
 **Examples:**
 
 ```shell
 # For Oxlint
-lingui compile --lint-directive "oxlint-disable"
+lingui compile --output-prefix "/*oxlint-disable*/"
 
 # For Biome
-lingui compile --lint-directive "biome-ignore lint: auto-generated"
+lingui compile --output-prefix "/*biome-ignore lint: auto-generated*/"
+
+# For no prefix at all
+lingui compile --output-prefix ""
 ```
 
 The generated file header will look like:
 
 ```js
-/*<your-directive>*/export const messages = JSON.parse(...);
+/*your-prefix-here*/ export const messages = JSON.parse("{}");
 ```
 
 ## Configuring the Source Locale

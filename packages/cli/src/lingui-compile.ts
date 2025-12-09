@@ -22,7 +22,7 @@ export type CliCompileOptions = {
   watch?: boolean
   namespace?: string
   workersOptions: WorkersOptions
-  lintDirective?: string
+  outputPrefix?: string
 }
 
 export async function command(
@@ -114,7 +114,7 @@ type CliArgs = {
   config?: string
   debounce?: number
   workers?: number
-  lintDirective?: string
+  outputPrefix?: string
 }
 
 if (require.main === module) {
@@ -138,8 +138,8 @@ if (require.main === module) {
       "Debounces compilation for given amount of milliseconds"
     )
     .option(
-      "--lint-directive <directive>",
-      "Add custom lint directive to the compiled files. Useful for enforcing linting rules on generated files. Defaults to 'eslint-disable'"
+      "--output-prefix <prefix>",
+      "Add a custom string to the beginning of compiled files (header/prefix). Useful for tools like linters or coverage directives. Defaults to '/*eslint-disable*/'"
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")
@@ -171,7 +171,7 @@ if (require.main === module) {
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
-        lintDirective: options.lintDirective,
+        outputPrefix: options.outputPrefix,
       })
     )
 

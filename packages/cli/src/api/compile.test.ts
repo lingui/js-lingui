@@ -288,15 +288,15 @@ describe("createCompiledCatalog", () => {
     })
   })
 
-  describe("options.lintDirective", () => {
-    const getCompiledCatalog = (lintDirective?: string) =>
+  describe("options.outputPrefix", () => {
+    const getCompiledCatalog = (outputPrefix?: string) =>
       createCompiledCatalog(
         "en",
         {
           Hello: "Hello",
         },
         {
-          lintDirective,
+          outputPrefix,
         }
       ).source
 
@@ -306,19 +306,24 @@ describe("createCompiledCatalog", () => {
     })
 
     it("should use oxlint-disable directive", () => {
-      const result = getCompiledCatalog("oxlint-disable")
+      const result = getCompiledCatalog("/*oxlint-disable*/")
       expect(result).toContain("/*oxlint-disable*/")
     })
 
-    it("should use custom lint directive when specified", () => {
-      const result = getCompiledCatalog("biome-ignore lint: auto-generated")
+    it("should use custom prefix when specified", () => {
+      const result = getCompiledCatalog("/*biome-ignore lint: auto-generated*/")
       expect(result).toContain("/*biome-ignore lint: auto-generated*/")
       expect(result).not.toContain("eslint-disable")
     })
 
-    it("should handle empty string directive", () => {
+    it("should handle empty string prefix (no header)", () => {
       const result = getCompiledCatalog("")
-      expect(result).toContain("/**/")
+      expect(
+        result.startsWith("export") ||
+          result.startsWith("module") ||
+          result.startsWith("window") ||
+          result.startsWith("global")
+      ).toBeTruthy()
     })
   })
 

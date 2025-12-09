@@ -457,8 +457,8 @@ msgstr "{plural,  }"
     })
   })
 
-  describe("lintDirective", () => {
-    it("Should use custom lint directive in compiled files", async () => {
+  describe("outputPrefix", () => {
+    it("Should use custom output prefix in compiled files", async () => {
       const rootDir = await createFixtures({
         "en.po": `
 msgid "Hello World"
@@ -474,7 +474,7 @@ msgstr "Witaj świecie"
 
       await mockConsole(async () => {
         const result = await command(config, {
-          lintDirective: "biome-ignore lint: auto-generated",
+          outputPrefix: "/*biome-ignore lint: auto-generated*/",
           workersOptions: {
             poolSize: 0,
           },
@@ -494,7 +494,7 @@ msgstr "Witaj świecie"
       })
     })
 
-    it("Should use oxlint-disable directive", async () => {
+    it("Should use oxlint-disable prefix directive", async () => {
       const rootDir = await createFixtures({
         "en.po": `
 msgid "Test"
@@ -510,7 +510,7 @@ msgstr "Test PL"
 
       await mockConsole(async () => {
         const result = await command(config, {
-          lintDirective: "oxlint-disable",
+          outputPrefix: "/*oxlint-disable*/",
           workersOptions: {
             poolSize: 0,
           },

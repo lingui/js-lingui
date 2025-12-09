@@ -110,7 +110,7 @@ async function compileAndWrite(
     {
       strict: false,
       namespace,
-      lintDirective: options.lintDirective,
+      outputPrefix: options.outputPrefix,
       pseudoLocale: config.pseudoLocale,
       compilerBabelOptions: config.compilerBabelOptions,
     }
