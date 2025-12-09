@@ -1,6 +1,13 @@
 import fs from "fs"
 import { dirname } from "path"
-import PO, { Item as POItem, type Headers as POHeaders } from "pofile-ts"
+import {
+  parsePo,
+  stringifyPo,
+  createPoFile,
+  createItem,
+  type PoItem,
+  type Headers as POHeaders,
+} from "pofile-ts"
 import https from "https"
 import { globSync } from "glob"
 import { format as formatDate } from "date-fns"
@@ -109,7 +116,7 @@ function init(
   // Create segments from source locale PO items
   paths[sourceLocale].forEach((path) => {
     const raw = fs.readFileSync(path).toString()
-    const po = PO.parse(raw)
+    const po = parsePo(raw)
 
     po.items
       .filter((item) => !item["obsolete"])
@@ -126,7 +133,7 @@ function init(
   targetLocales.forEach((targetLocale) => {
     paths[targetLocale].forEach((path) => {
       const raw = fs.readFileSync(path).toString()
-      const po = PO.parse(raw)
+      const po = parsePo(raw)
 
       po.items
         .filter((item) => !item["obsolete"])
@@ -181,7 +188,7 @@ function sync(
   // Create segments with correct source
   paths[sourceLocale].forEach((path) => {
     const raw = fs.readFileSync(path).toString()
-    const po = PO.parse(raw)
+    const po = parsePo(raw)
 
     po.items
       .filter((item) => !item["obsolete"])
@@ -223,7 +230,7 @@ function sync(
   )
 }
 
-function createSegmentFromPoItem(item: POItem) {
+function createSegmentFromPoItem(item: PoItem) {
   const itemHasExplicitId = item.extractedComments.includes(EXPLICIT_ID_FLAG)
   const itemHasContext = item.msgctxt != null
 
@@ -276,7 +283,7 @@ function createPoItemFromSegment(segment: TranslationIoSegment) {
     EXPLICIT_ID_AND_CONTEXT_FLAG
   )
 
-  const item = new PO.Item()
+  const item = createItem()
 
   if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
     item.msgid = segment.context
@@ -337,10 +344,10 @@ function saveSegmentsToTargetPos(
     )
     const segments = segmentsPerLocale[targetLocale]
 
-    const po = new PO()
+    const po = createPoFile()
     po.headers = getCreateHeaders(targetLocale)
 
-    const items: POItem[] = []
+    const items: PoItem[] = []
 
     segments.forEach((segment: TranslationIoSegment) => {
       const item = createPoItemFromSegment(segment)
@@ -362,7 +369,7 @@ function saveSegmentsToTargetPos(
     /* istanbul ignore next -- @preserve Integration with external Translation.io service */
     fs.promises
       .mkdir(dirname(localePath), { recursive: true })
-      .then(() => fs.promises.writeFile(localePath, po.toString()))
+      .then(() => fs.promises.writeFile(localePath, stringifyPo(po)))
       .catch((err) => {
         console.error("Error while saving target PO files:")
         console.error(err)

@@ -1,5 +1,13 @@
 import { format as formatDate } from "date-fns"
-import PO, { Item as POItem, type Headers as POHeaders } from "pofile-ts"
+import {
+  parsePo,
+  stringifyPo,
+  createPoFile,
+  createItem,
+  type PoFile,
+  type PoItem,
+  type Headers as POHeaders,
+} from "pofile-ts"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
@@ -127,7 +135,7 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
 
-    const item = new PO.Item()
+    const item = createItem()
 
     // The extractedComments array may be modified in this method,
     // so create a new array with the message's elements.
@@ -215,7 +223,7 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
 }
 
 function deserialize(
-  items: POItem[],
+  items: PoItem[],
   options: PoFormatterOptions
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
@@ -260,17 +268,17 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     templateExtension: ".pot",
 
     parse(content): CatalogType {
-      const po = PO.parse(content)
+      const po = parsePo(content)
       return deserialize(po.items, options)
     },
 
     serialize(catalog, ctx): string {
-      let po: PO
+      let po: PoFile
 
       if (ctx.existing) {
-        po = PO.parse(ctx.existing)
+        po = parsePo(ctx.existing)
       } else {
-        po = new PO()
+        po = createPoFile()
         po.headers = getCreateHeaders(
           ctx.locale,
           options.customHeaderAttributes
@@ -280,7 +288,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
       }
 
       po.items = serialize(catalog, options)
-      return po.toString()
+      return stringifyPo(po)
     },
   }
 }
