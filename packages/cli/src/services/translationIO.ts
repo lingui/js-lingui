@@ -1,13 +1,11 @@
 import fs from "fs"
 import { dirname } from "path"
-import PO from "pofile"
+import PO, { Item as POItem, type Headers as POHeaders } from "pofile-ts"
 import https from "https"
 import { globSync } from "glob"
 import { format as formatDate } from "date-fns"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
-
-type POItem = InstanceType<typeof PO.Item>
 
 type TranslationIoSegment = {
   type: string
@@ -26,7 +24,7 @@ type TranslationIoProject = {
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
 
-const getCreateHeaders = (language: string) => ({
+const getCreateHeaders = (language: string): Partial<POHeaders> => ({
   "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
   "MIME-Version": "1.0",
   "Content-Type": "text/plain; charset=utf-8",
@@ -361,15 +359,15 @@ function saveSegmentsToTargetPos(
     })
 
     // Check that localePath directory exists and save PO file
-    fs.promises.mkdir(dirname(localePath), { recursive: true }).then(() => {
-      po.save(localePath, (err) => {
-        if (err) {
-          console.error("Error while saving target PO files:")
-          console.error(err)
-          process.exit(1)
-        }
+    /* istanbul ignore next -- @preserve Integration with external Translation.io service */
+    fs.promises
+      .mkdir(dirname(localePath), { recursive: true })
+      .then(() => fs.promises.writeFile(localePath, po.toString()))
+      .catch((err) => {
+        console.error("Error while saving target PO files:")
+        console.error(err)
+        process.exit(1)
       })
-    })
   })
 }
 

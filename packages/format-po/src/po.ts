@@ -1,11 +1,9 @@
 import { format as formatDate } from "date-fns"
-import PO from "pofile"
+import PO, { Item as POItem, type Headers as POHeaders } from "pofile-ts"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { normalizePlaceholderValue } from "./utils"
-
-type POItem = InstanceType<typeof PO.Item>
 
 const splitOrigin = (origin: string) => {
   const [file, line] = origin.split(":")
@@ -110,7 +108,7 @@ function isGeneratedId(id: string, message: MessageType): boolean {
 function getCreateHeaders(
   language: string,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
-): PO["headers"] {
+): Partial<POHeaders> {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
     "MIME-Version": "1.0",

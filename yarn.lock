@@ -3029,7 +3029,7 @@ __metadata:
     normalize-path: ^3.0.0
     ora: ^5.1.0
     picocolors: ^1.1.1
-    pofile: ^1.1.4
+    pofile-ts: ^2.2.0
     pseudolocale: ^2.0.0
     source-map: ^0.7.6
     threads: ^1.7.0
@@ -3135,7 +3135,7 @@ __metadata:
     mockdate: ^3.0.5
     node-gettext: ^3.0.0
     plurals-cldr: ^2.0.1
-    pofile: ^1.1.4
+    pofile-ts: ^2.2.0
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3149,7 +3149,7 @@ __metadata:
     "@lingui/message-utils": 5.6.1
     date-fns: ^3.6.0
     mockdate: ^3.0.5
-    pofile: ^1.1.4
+    pofile-ts: ^2.2.0
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -13769,10 +13769,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pofile@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "pofile@npm:1.1.4"
-  checksum: 7ef428d2793fcbcf021e4250d36043374ffbd7c8e15268977fae2361536abb894e97ee58525b2c1eeda5688a2b14b274657a271e08816059b12d8c02ac99fde0
+"pofile-ts@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "pofile-ts@npm:2.2.0"
+  checksum: f0d4b6c8b22e2e8ea4be98e8d20794cd0f40969e26dc35b2b0d0668a0a593d467b14145e10b9ebe9abc8b6c969d2b19ab390f26b8e57d79ea23195fa5aa5b958
   languageName: node
   linkType: hard
 

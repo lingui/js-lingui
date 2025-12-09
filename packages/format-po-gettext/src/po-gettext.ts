@@ -1,6 +1,6 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
-import PO from "pofile"
+import PO, { Item as POItem } from "pofile-ts"
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
@@ -8,8 +8,6 @@ import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
 import { getCldrPluralSamples } from "./plural-samples"
-
-type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   disableSelectWarning?: boolean
