@@ -318,8 +318,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
           ctx.locale,
           options.customHeaderAttributes
         )
-        // accessing private property
-        ;(po as any).headerOrder = Object.keys(po.headers)
+        po.headerOrder = Object.keys(po.headers)
       }
 
       po.items = serialize(catalog, options)
