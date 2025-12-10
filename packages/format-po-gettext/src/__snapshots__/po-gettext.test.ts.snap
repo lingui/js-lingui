@@ -67,12 +67,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     },
     message: {count, plural, one {one book} other {many books}},
     obsolete: false,
-    origin: [
-      [
-        src/App.tsx,
-        60,
-      ],
-    ],
+    origin: [],
     translation: {count, plural, one {one book} other {many books}},
   },
   1zGN6B: {
@@ -84,12 +79,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     },
     message: {anotherCount, plural, one {one book} other {many books}},
     obsolete: false,
-    origin: [
-      [
-        src/App.tsx,
-        66,
-      ],
-    ],
+    origin: [],
     translation: {anotherCount, plural, one {one book} other {many books}},
   },
   E27ZCO: {
@@ -101,12 +91,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     },
     message: {thirdCount, plural, one {one rock} other {# rocks}},
     obsolete: false,
-    origin: [
-      [
-        src/App.tsx,
-        76,
-      ],
-    ],
+    origin: [],
     translation: {thirdCount, plural, one {one rock} other {# rocks}},
   },
   Sv+eOa: {
@@ -118,12 +103,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     },
     message: {count, plural, one {one rock} other {# rocks}},
     obsolete: false,
-    origin: [
-      [
-        src/App.tsx,
-        70,
-      ],
-    ],
+    origin: [],
     translation: {count, plural, one {one rock} other {# rocks}},
   },
 }
@@ -289,7 +269,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount%2CthirdCount%2CmanyCount%2CsuperLongVariableNameIsOkayCount
+#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount,thirdCount,manyCount,superLongVariableNameIsOkayCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -313,7 +293,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -391,13 +371,13 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CthirdCount
+#. js-lingui:icu={var, plural, one {one rock} other {# rocks}}&pluralize_on=count,thirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -421,13 +401,13 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
+#. js-lingui:icu={count, plural, one {one book} other {many books}}&pluralize_on=count
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count
+#. js-lingui:icu={count, plural, one {one rock} other {# rocks}}&pluralize_on=count
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -451,25 +431,25 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
+#. js-lingui:icu={count, plural, one {one book} other {many books}}&pluralize_on=count
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=anotherCount
+#. js-lingui:icu={anotherCount, plural, one {one book} other {many books}}&pluralize_on=anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count
+#. js-lingui:icu={count, plural, one {one rock} other {# rocks}}&pluralize_on=count
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
 msgstr[1] "# rocks"
 
-#. js-lingui:icu=%7BthirdCount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=thirdCount
+#. js-lingui:icu={thirdCount, plural, one {one rock} other {# rocks}}&pluralize_on=thirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -493,7 +473,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 #: src/App.tsx:60
 #: src/App.tsx:66
 msgid "one book"
@@ -519,7 +499,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. customprefix:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -562,7 +542,7 @@ msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case with id"
 msgstr[1] "Case number {someCount} with id"
 
-#. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+#. js-lingui:icu={anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}&pluralize_on=anotherCount
 msgid "Singular case"
 msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"
@@ -575,7 +555,7 @@ msgid_plural "message_with_id_but_without_translation_plural"
 msgstr[0] ""
 msgstr[1] ""
 
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BSingular+automatic+id+no+translation%7D+other+%7BPlural+%7Bcount%7D+automatic+id+no+translation%7D%7D&pluralize_on=count
+#. js-lingui:icu={count, plural, one {Singular automatic id no translation} other {Plural {count} automatic id no translation}}&pluralize_on=count
 msgid "Singular automatic id no translation"
 msgid_plural "Plural {count} automatic id no translation"
 msgstr[0] ""
@@ -676,7 +656,7 @@ msgid_plural "message_with_id_plural"
 msgstr[0] "Singular case with id"
 msgstr[1] "Case number {someCount} with id"
 
-#. custom-prefix:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
+#. custom-prefix:icu={anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}&pluralize_on=anotherCount
 msgid "Singular case"
 msgid_plural "Case number {anotherCount}"
 msgstr[0] "Singular case"

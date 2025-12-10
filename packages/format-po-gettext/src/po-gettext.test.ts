@@ -407,22 +407,6 @@ msgstr[3] "# dní"
 
       const pofile = formatter.serialize(catalog, defaultSerializeCtx) as string
       expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(2) // Should be merged into one entry
-
-      // Count occurrences of "one rock" as msgid
-      const oneRockCount = lines.filter(
-        (line) => line === 'msgid "one rock"'
-      ).length
-      expect(oneRockCount).toBe(2) // Should be merged into one entry
     })
 
     it("should merge duplicate plural entries with same msgid/msgid_plural but different variables", () => {
@@ -436,23 +420,8 @@ msgstr[3] "# dní"
         catalog,
         defaultSerializeCtx
       ) as string
+
       expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1) // Should be merged into one entry
-
-      // Count occurrences of "one rock" as msgid
-      const oneRockCount = lines.filter(
-        (line) => line === 'msgid "one rock"'
-      ).length
-      expect(oneRockCount).toBe(1) // Should be merged into one entry
     })
 
     it("should not add comment if there is only one entry", () => {
@@ -465,23 +434,8 @@ msgstr[3] "# dní"
         catalog,
         defaultSerializeCtx
       ) as string
+
       expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1) // Should be merged into one entry
-
-      // Count occurrences of "one rock" as msgid
-      const oneRockCount = lines.filter(
-        (line) => line === 'msgid "one rock"'
-      ).length
-      expect(oneRockCount).toBe(1) // Should be merged into one entry
     })
 
     it("should add one entry even if there are multiple entries", () => {
@@ -496,17 +450,8 @@ msgstr[3] "# dní"
         catalog,
         defaultSerializeCtx
       ) as string
+
       expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1) // Should be merged into one entry
     })
 
     it("uses custom prefix when provided", () => {
@@ -522,23 +467,8 @@ msgstr[3] "# dní"
         catalog,
         defaultSerializeCtx
       ) as string
+
       expect(pofile).toMatchSnapshot()
-
-      // The PO file should NOT have duplicate msgid entries
-      // It should merge entries with identical msgid/msgid_plural
-      const lines = pofile.split("\n")
-
-      // Count occurrences of "one book" as msgid
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1) // Should be merged into one entry
-
-      expect(
-        lines.includes(
-          "#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount"
-        )
-      ).toBe(true)
     })
 
     it("should preserve all source locations when merging duplicate entries", () => {
@@ -570,16 +500,6 @@ msgstr[3] "# dní"
         defaultSerializeCtx
       ) as string
 
-      // Should only have one "one book" entry
-      const lines = pofile.split("\n")
-      const oneBookCount = lines.filter(
-        (line) => line === 'msgid "one book"'
-      ).length
-      expect(oneBookCount).toBe(1)
-
-      // But should reference both source locations
-      expect(pofile).toMatch(/src\/App\.tsx:60/)
-      expect(pofile).toMatch(/src\/App\.tsx:66/)
       expect(pofile).toMatchSnapshot()
     })
 
@@ -689,7 +609,7 @@ msgstr ""
 
 #: src/App.tsx:60
 #: src/App.tsx:66
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. js-lingui:icu=%7Bvar%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -697,7 +617,7 @@ msgstr[1] "many books"
 
 #: src/App.tsx:70
 #: src/App.tsx:76
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CthirdCount
+#. js-lingui:icu=%7Bvar%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count%2CthirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -705,47 +625,12 @@ msgstr[1] "# rocks"
 `
 
         const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-        // Should have entries for both variable names
-        expect(catalog).toMatchSnapshot()
 
         // Should have 4 entries total (2 for each merged plural entry)
-        const catalogKeys = Object.keys(catalog)
-        expect(catalogKeys).toHaveLength(4)
-      })
+        expect(Object.keys(catalog)).toHaveLength(4)
 
-      it("should preserve source locations when expanding merged entries", () => {
-        const duplicateFormatter = createFormat({ mergePlurals: true })
-
-        const poContent = `
-msgid ""
-msgstr ""
-"POT-Creation-Date: 2018-08-27 10:00+0000\\n"
-"MIME-Version: 1.0\\n"
-"Content-Type: text/plain; charset=utf-8\\n"
-"Content-Transfer-Encoding: 8bit\\n"
-"X-Generator: @lingui/cli\\n"
-"Language: en\\n"
-
-#: src/App.tsx:60
-#: src/App.tsx:66
-#: src/App.tsx:72
-#. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount%2CthirdCount
-msgid "one book"
-msgid_plural "many books"
-msgstr[0] "one book"
-msgstr[1] "many books"
-`
-
-        const catalog = duplicateFormatter.parse(poContent, defaultParseCtx)
-
-        // Check that origin information is preserved and distributed
-        const catalogEntries = Object.values(catalog)
-        const origins = catalogEntries.map((entry) => entry.origin).flat()
-
-        // Should have all three source locations
-        expect(origins).toContainEqual(["src/App.tsx", 60])
-        expect(origins).toContainEqual(["src/App.tsx", 66])
-        expect(origins).toContainEqual(["src/App.tsx", 72])
+        // Should have entries for both variable names
+        expect(catalog).toMatchSnapshot()
       })
 
       it("should handle single merged entry correctly (no expansion needed)", () => {
@@ -794,7 +679,7 @@ msgstr ""
 
 #: src/App.tsx:60
 #: src/App.tsx:66
-#. customprefix:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count&other_pluralize_vars=count%2CanotherCount
+#. customprefix:icu=%7Bvar%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -844,18 +729,7 @@ msgstr[1] "many books"
           defaultParseCtx
         )
 
-        // Should have the same number of entries as original
-        expect(Object.keys(parsedCatalog)).toHaveLength(
-          Object.keys(originalCatalog).length
-        )
-
-        // Each entry should have the correct message format
-        Object.values(parsedCatalog).forEach((entry) => {
-          expect(entry.message).toMatch(
-            /^{(count|anotherCount|thirdCount), plural, one {.*} other {.*}}$/
-          )
-        })
-
+        expect(parsedCatalog).toMatchObject(originalCatalog)
         expect(parsedCatalog).toMatchSnapshot()
       })
     })

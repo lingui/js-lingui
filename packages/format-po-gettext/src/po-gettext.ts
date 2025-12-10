@@ -17,6 +17,11 @@ export type PoGettextFormatterOptions = PoFormatterOptions & {
   mergePlurals?: boolean
 }
 
+type PluralizationContext = {
+  icu?: string
+  pluralizeOn: string[]
+}
+
 const cldrSamples = getCldrPluralSamples()
 
 // Attempts to turn a single tokenized ICU plural case back into a string.
@@ -45,7 +50,6 @@ const LINE_ENDINGS = /\r?\n/g
 
 // Prefix that is used to identitify context information used by this module in PO's "extracted comments".
 const DEFAULT_CTX_PREFIX = "js-lingui:"
-const ALL_PLURALIZE_VARS = "other_pluralize_vars"
 
 function serializePlurals(
   item: POItem,
@@ -84,9 +88,9 @@ function serializePlurals(
       }
 
       // Store placeholder that is pluralized upon to allow restoring ICU format later.
-      const ctx = new URLSearchParams({
-        pluralize_on: messageAst.arg,
-      })
+      const ctx: PluralizationContext = {
+        pluralizeOn: [messageAst.arg],
+      }
 
       if (isGeneratedId) {
         // For messages without developer-set ID, use first case as `msgid` and the last case as `msgid_plural`.
@@ -98,14 +102,13 @@ function serializePlurals(
         )
 
         // Since the original msgid is overwritten, store ICU message to allow restoring that ID later.
-        ctx.set("icu", icuMessage)
+        ctx.icu = icuMessage
       } else {
         // For messages with developer-set ID, append `_plural` to the key to generate `msgid_plural`.
         item.msgid_plural = id + "_plural"
       }
 
-      ctx.sort()
-      item.extractedComments.push(ctxPrefix + ctx.toString())
+      item.extractedComments.push(ctxPrefix + serializeContextToComment(ctx))
 
       // If there is a translated value, parse that instead of the original message to prevent overriding localized
       // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
@@ -244,19 +247,17 @@ const convertPluralsToICU = (
     return
   }
 
-  const contextComment = item.extractedComments
-    .find((comment) => comment.startsWith(ctxPrefix))
-    ?.substring(ctxPrefix.length)
-  const ctx = new URLSearchParams(contextComment)
+  const ctx = getContextFromComments(item.extractedComments, ctxPrefix)
 
-  if (contextComment != null) {
+  if (ctx) {
+    // drop the comment
     item.extractedComments = item.extractedComments.filter(
       (comment) => !comment.startsWith(ctxPrefix)
     )
   }
 
   // If an original ICU was stored, use that as `msgid` to match the catalog that was originally exported.
-  const storedICU = ctx.get("icu")
+  const storedICU = ctx?.icu
   if (storedICU != null) {
     item.msgid = storedICU
   }
@@ -292,7 +293,7 @@ const convertPluralsToICU = (
     .join(" ")
 
   // Find out placeholder name from item's message context, defaulting to "count".
-  let pluralizeOn = ctx.get("pluralize_on")
+  let pluralizeOn = ctx?.pluralizeOn?.[0]
   if (!pluralizeOn) {
     console.warn(
       `Unable to determine plural placeholder name for item with key "%s" in language "${lang}" (should be stored in a comment starting with "#. ${ctxPrefix}"), assuming "count".`,
@@ -302,6 +303,64 @@ const convertPluralsToICU = (
   }
 
   item.msgstr = ["{" + pluralizeOn + ", plural, " + pluralClauses + "}"]
+}
+
+const updateContextComment = (
+  item: POItem,
+  contextComment: string,
+  ctxPrefix: string
+) => {
+  item.extractedComments = [
+    ...item.extractedComments.filter((c) => !c.startsWith(ctxPrefix)),
+    ctxPrefix + contextComment,
+  ]
+}
+
+function serializeContextToComment(ctx: PluralizationContext) {
+  const urlParams = new URLSearchParams()
+
+  if (ctx.icu) {
+    urlParams.set("icu", ctx.icu)
+  }
+
+  if (ctx.pluralizeOn) {
+    urlParams.set("pluralize_on", ctx.pluralizeOn.join(","))
+  }
+
+  urlParams.sort()
+  // we don't need strict url encoding in formatter as in the URL
+  // we can relax it a bit to get more readable output
+  return urlParams
+    .toString()
+    .replace(/%7B/g, "{")
+    .replace(/%7D/g, "}")
+    .replace(/%2C/g, ",")
+    .replace(/%23/g, "#")
+    .replace(/\+/g, " ")
+}
+
+function getContextFromComments(
+  extractedComments: string[],
+  ctxPrefix: string
+): PluralizationContext | undefined {
+  const contextComment = extractedComments.find((comment) =>
+    comment.startsWith(ctxPrefix)
+  )
+
+  if (!contextComment) {
+    return undefined
+  }
+
+  const urlParams = new URLSearchParams(
+    contextComment?.substring(ctxPrefix.length)
+  )
+
+  return {
+    icu: urlParams.get("icu"),
+    pluralizeOn: urlParams.get("pluralize_on")
+      ? urlParams.get("pluralize_on").split(",")
+      : [],
+  }
 }
 
 /**
@@ -338,38 +397,42 @@ function mergeDuplicatePluralEntries(
       const mergedItem = duplicateItems[0] // Use first item as base
 
       const allVariables = duplicateItems.map((item) => {
-        const contextComment = item.extractedComments.find((comment) =>
-          comment.startsWith(ctxPrefix)
-        )
-        const ctx = new URLSearchParams(
-          contextComment?.substring(ctxPrefix.length)
-        )
-        return ctx.get("pluralize_on") || "count"
+        const ctx = getContextFromComments(item.extractedComments, ctxPrefix)
+        return ctx?.pluralizeOn[0] || "count"
       })
 
-      const contextComment = mergedItem.extractedComments.find((comment) =>
-        comment.startsWith(ctxPrefix)
+      const ctx = getContextFromComments(
+        mergedItem.extractedComments,
+        ctxPrefix
       )
-      const ctx = new URLSearchParams(
-        contextComment?.substring(ctxPrefix.length)
-      )
-      ctx.set(ALL_PLURALIZE_VARS, allVariables.join(","))
+
+      if (!ctx) {
+        // malformed plural without a comment, skipping
+        continue
+      }
 
       // Replace the existing extracted comment (starting with ctxPrefix) with the new one
-      mergedItem.extractedComments = [
-        ...mergedItem.extractedComments.filter((c) => c !== contextComment),
-        ctxPrefix + ctx.toString(),
-      ]
-      // Merge references
-      mergedItem.references = Array.from(
-        new Set(duplicateItems.flatMap((item) => item.references))
+      updateContextComment(
+        mergedItem,
+        serializeContextToComment({
+          icu: replaceArgInIcu(ctx.icu, allVariables[0], "var"),
+          pluralizeOn: allVariables,
+        }),
+        ctxPrefix
       )
+
+      // Merge references
+      mergedItem.references = duplicateItems.flatMap((item) => item.references)
 
       mergedItems.push(mergedItem)
     }
   }
 
   return mergedItems
+}
+
+function replaceArgInIcu(icu: string, oldVar: string, newVar: string) {
+  return icu.replace(new RegExp(`{${oldVar}, plural,`), `{${newVar}, plural,`)
 }
 
 /**
@@ -390,10 +453,9 @@ function expandMergedPluralEntries(
       continue
     }
 
-    const contextComment = item.extractedComments
-      .find((comment) => comment.startsWith(ctxPrefix))
-      ?.substring(ctxPrefix.length)
-    if (!contextComment) {
+    const ctx = getContextFromComments(item.extractedComments, ctxPrefix)
+
+    if (!ctx) {
       // warn and continue
       console.warn(
         `Plural entry with msgid "${item.msgid}" is missing context information for expansion.`
@@ -402,20 +464,16 @@ function expandMergedPluralEntries(
       continue
     }
 
-    const ctx = new URLSearchParams(contextComment)
-    const allVariables = ctx.get(ALL_PLURALIZE_VARS)
+    const variableList = ctx.pluralizeOn
 
-    const variableList = allVariables ? allVariables.split(",") : []
-
-    if (variableList.length === 0) {
+    if (variableList.length === 1) {
       // No variables to expand, keep as-is
       expandedItems.push(item)
       continue
     }
     // Create a new item for each variable after first
-    const originalVariable = variableList[0]
-    for (let i = 0; i < variableList.length; i++) {
-      const variable = variableList[i]
+    // const originalVariable = variableList[0]
+    for (const variable of variableList) {
       const newItem = new PO.Item()
 
       // Set the msgid to the original ICU message
@@ -424,35 +482,19 @@ function expandMergedPluralEntries(
       newItem.msgstr = [...item.msgstr]
       newItem.msgctxt = item.msgctxt
 
-      // Assign one reference per item (distribute them)
-      if (item.references && item.references.length > i) {
-        newItem.references = [item.references[i]]
-      } else if (item.references && item.references.length > 0) {
-        // If fewer references than merged items, reuse references
-        newItem.references = [item.references[i % item.references.length]]
-      }
-
       newItem.comments = [...item.comments]
 
-      // get icu comment, replace original variable with current variable
-      const updatedICU = ctx
-        .get("icu")
-        .replace(
-          new RegExp(`{${originalVariable}, plural,`),
-          `{${variable}, plural,`
-        )
-      // also update pluralize_on=<old variable> with new variable
+      updateContextComment(
+        item,
+        serializeContextToComment({
+          pluralizeOn: [variable],
+          // get icu comment, replace original variable with current variable
+          icu: replaceArgInIcu(ctx.icu, "var", variable),
+        }),
+        ctxPrefix
+      )
 
-      const newCtx = new URLSearchParams(ctx.toString())
-      newCtx.set("pluralize_on", variable)
-      newCtx.set("icu", updatedICU)
-      newCtx.delete(ALL_PLURALIZE_VARS) // No need to keep this in expanded entries
-
-      // Clean extracted comments - remove merged data and keep original ICU - remove pluralize_on
-      newItem.extractedComments = [
-        ...item.extractedComments.filter((c) => !c.startsWith(ctxPrefix)),
-        ctxPrefix + newCtx.toString(),
-      ]
+      newItem.extractedComments = item.extractedComments
       newItem.flags = { ...item.flags }
 
       expandedItems.push(newItem)
