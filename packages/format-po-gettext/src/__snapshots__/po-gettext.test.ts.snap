@@ -269,7 +269,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount,thirdCount,manyCount,superLongVariableNameIsOkayCount
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount,thirdCount,manyCount,superLongVariableNameIsOkayCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -293,7 +293,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -371,13 +371,13 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
-#. js-lingui:icu={var, plural, one {one rock} other {# rocks}}&pluralize_on=count,thirdCount
+#. js-lingui:icu={$var, plural, one {one rock} other {# rocks}}&pluralize_on=count,thirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -473,7 +473,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. js-lingui:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 #: src/App.tsx:60
 #: src/App.tsx:66
 msgid "one book"
@@ -499,7 +499,7 @@ msgstr ""
 "Language-Team: \\n"
 "Plural-Forms: \\n"
 
-#. customprefix:icu={var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
+#. customprefix:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"

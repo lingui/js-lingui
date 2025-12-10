@@ -609,7 +609,7 @@ msgstr ""
 
 #: src/App.tsx:60
 #: src/App.tsx:66
-#. js-lingui:icu=%7Bvar%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
@@ -617,7 +617,7 @@ msgstr[1] "many books"
 
 #: src/App.tsx:70
 #: src/App.tsx:76
-#. js-lingui:icu=%7Bvar%2C+plural%2C+one+%7Bone+rock%7D+other+%7B%23+rocks%7D%7D&pluralize_on=count%2CthirdCount
+#. js-lingui:icu={$var, plural, one {one rock} other {# rocks}}&pluralize_on=count,thirdCount
 msgid "one rock"
 msgid_plural "# rocks"
 msgstr[0] "one rock"
@@ -679,7 +679,7 @@ msgstr ""
 
 #: src/App.tsx:60
 #: src/App.tsx:66
-#. customprefix:icu=%7Bvar%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
+#. customprefix:icu=%7B$var%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"

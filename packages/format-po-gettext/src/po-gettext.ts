@@ -336,6 +336,7 @@ function serializeContextToComment(ctx: PluralizationContext) {
     .replace(/%7D/g, "}")
     .replace(/%2C/g, ",")
     .replace(/%23/g, "#")
+    .replace(/%24/g, "$")
     .replace(/\+/g, " ")
 }
 
@@ -415,7 +416,7 @@ function mergeDuplicatePluralEntries(
       updateContextComment(
         mergedItem,
         serializeContextToComment({
-          icu: replaceArgInIcu(ctx.icu, allVariables[0], "var"),
+          icu: replaceArgInIcu(ctx.icu, allVariables[0], "$var"),
           pluralizeOn: allVariables,
         }),
         ctxPrefix
@@ -471,8 +472,8 @@ function expandMergedPluralEntries(
       expandedItems.push(item)
       continue
     }
+
     // Create a new item for each variable after first
-    // const originalVariable = variableList[0]
     for (const variable of variableList) {
       const newItem = new PO.Item()
 
@@ -488,8 +489,8 @@ function expandMergedPluralEntries(
         item,
         serializeContextToComment({
           pluralizeOn: [variable],
-          // get icu comment, replace original variable with current variable
-          icu: replaceArgInIcu(ctx.icu, "var", variable),
+          // get icu comment, replace variable placeholder with current variable
+          icu: replaceArgInIcu(ctx.icu, "\\$var", variable),
         }),
         ctxPrefix
       )
