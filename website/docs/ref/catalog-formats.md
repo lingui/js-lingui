@@ -187,11 +187,11 @@ When two calls to `plural` or `<Plural />` are made with identical strings, but 
 plural(count, {
   one: "one book",
   other: "many books",
-})
+});
 plural(anotherCount, {
   one: "one book",
   other: "many books",
-})
+});
 ```
 
 Without `mergePlurals`:
