@@ -46,7 +46,7 @@
     "@lingui/conf": "5.6.1",
     "@lingui/message-utils": "5.6.1",
     "date-fns": "^3.6.0",
-    "pofile-ts": "^3.0.0"
+    "pofile-ts": "^3.1.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",

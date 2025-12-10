@@ -7,6 +7,7 @@ import {
   type PoFile,
   type PoItem,
   type Headers as POHeaders,
+  type SerializeOptions,
 } from "pofile-ts"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
@@ -107,6 +108,40 @@ export type PoFormatterOptions = {
    * @default true
    */
   printPlaceholdersInComments?: boolean | { limit?: number }
+
+  /**
+   * Maximum line width before folding long strings.
+   *
+   * When a string exceeds this length, it will be split across multiple lines.
+   * Set to `0` to disable folding (strings will only break on actual newlines).
+   *
+   * @default 80
+   */
+  foldLength?: number
+
+  /**
+   * Use compact format for multiline strings.
+   *
+   * When `true` (default), multiline strings start with content on the first line:
+   * ```po
+   * msgid "First line\n"
+   * "Second line"
+   * ```
+   *
+   * When `false`, uses GNU gettext's traditional format with an empty first line:
+   * ```po
+   * msgid ""
+   * "First line\n"
+   * "Second line"
+   * ```
+   *
+   * The compact format is recommended as it's compatible with translation
+   * platforms like Crowdin that may strip empty first lines, avoiding
+   * unnecessary diffs.
+   *
+   * @default true
+   */
+  compactMultiline?: boolean
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -288,7 +323,16 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
       }
 
       po.items = serialize(catalog, options)
-      return stringifyPo(po)
+
+      const serializeOptions: SerializeOptions = {}
+      if (options.foldLength !== undefined) {
+        serializeOptions.foldLength = options.foldLength
+      }
+      if (options.compactMultiline !== undefined) {
+        serializeOptions.compactMultiline = options.compactMultiline
+      }
+
+      return stringifyPo(po, serializeOptions)
     },
   }
 }

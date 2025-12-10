@@ -1,6 +1,6 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
-import { parsePo, stringifyPo, createItem, type PoItem } from "pofile-ts"
+import { parsePo, stringifyPo, createItem, type PoItem, type SerializeOptions } from "pofile-ts"
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
@@ -514,6 +514,15 @@ export function formatter(
 
   const formatter = poFormatter(options)
 
+  // Build serialize options from the formatter options
+  const serializeOptions: SerializeOptions = {}
+  if (options.foldLength !== undefined) {
+    serializeOptions.foldLength = options.foldLength
+  }
+  if (options.compactMultiline !== undefined) {
+    serializeOptions.compactMultiline = options.compactMultiline
+  }
+
   return {
     catalogExtension: ".po",
     templateExtension: ".pot",
@@ -543,7 +552,7 @@ export function formatter(
         )
       })
 
-      return formatter.parse(stringifyPo(po), ctx) as CatalogType
+      return formatter.parse(stringifyPo(po, serializeOptions), ctx) as CatalogType
     },
 
     serialize(catalog, ctx): string {
@@ -587,7 +596,7 @@ export function formatter(
         po.items = newItems
       }
 
-      return stringifyPo(po)
+      return stringifyPo(po, serializeOptions)
     },
   }
 }
