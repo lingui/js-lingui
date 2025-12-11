@@ -1,6 +1,12 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import pluralsCldr from "plurals-cldr"
-import { parsePo, stringifyPo, createItem, type PoItem, type SerializeOptions } from "pofile-ts"
+import {
+  parsePo,
+  stringifyPo,
+  createItem,
+  type PoItem,
+  type SerializeOptions,
+} from "pofile-ts"
 import gettextPlurals from "node-gettext/lib/plurals"
 
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
@@ -552,7 +558,10 @@ export function formatter(
         )
       })
 
-      return formatter.parse(stringifyPo(po, serializeOptions), ctx) as CatalogType
+      return formatter.parse(
+        stringifyPo(po, serializeOptions),
+        ctx
+      ) as CatalogType
     },
 
     serialize(catalog, ctx): string {
