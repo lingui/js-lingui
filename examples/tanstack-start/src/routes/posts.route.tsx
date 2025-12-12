@@ -1,5 +1,5 @@
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
-import { fetchPosts } from "../utils/posts"
+import { fetchPosts } from "~/utils/posts"
 import { useLingui } from "@lingui/react/macro"
 
 export const Route = createFileRoute("/posts")({
