@@ -58,7 +58,13 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    yarn
    ```
 
-3. Run tests
+3. Build all packages. This is required before running tests, as some packages depend on the built output of others (e.g., `@lingui/cli`).
+
+   ```sh
+   yarn release:build
+   ```
+
+4. Run tests
 
    ```sh
    # Watch mode
@@ -67,6 +73,8 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    # Single run
    yarn test
    ```
+
+   > **Note**: If tests fail with errors like `Cannot find module '@lingui/cli'`, make sure you've completed step 3.
 
 ### Using development version in your project
 
