@@ -318,6 +318,9 @@ Please compile your catalog first.
    */
   t: I18n["_"] = this._.bind(this)
 
+  /**
+   * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+   */
   date(
     value?: string | DateTimeFormatValue,
     format?: Intl.DateTimeFormatOptions
@@ -325,6 +328,9 @@ Please compile your catalog first.
     return date(this._locales || this._locale, value, format)
   }
 
+  /**
+   * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed in the next major version.
+   */
   number(value: NumberFormatValue, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
   }

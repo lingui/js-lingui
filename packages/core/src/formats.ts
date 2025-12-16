@@ -18,6 +18,9 @@ export type DateTimeFormatSize = "short" | "default" | "long" | "full"
 export type DateTimeFormatValue = Parameters<Intl.DateTimeFormat["format"]>[0]
 export type NumberFormatValue = Parameters<Intl.NumberFormat["format"]>[0]
 
+/**
+ * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+ */
 export function date(
   locales: Locales,
   value: string | DateTimeFormatValue,
@@ -63,6 +66,9 @@ export function date(
   return formatter.format(isString(value) ? new Date(value) : value)
 }
 
+/**
+ * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+ */
 export function time(
   locales: Locales,
   value: string | DateTimeFormatValue,
@@ -98,6 +104,9 @@ export function time(
   return date(locales, value, o)
 }
 
+/**
+ * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed in the next major version.
+ */
 export function number(
   locales: Locales,
   value: NumberFormatValue,
