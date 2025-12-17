@@ -80,7 +80,7 @@
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
     "picocolors": "^1.1.1",
-    "pofile": "^1.1.4",
+    "pofile-ts": "^3.1.0",
     "pseudolocale": "^2.0.0",
     "source-map": "^0.7.6",
     "threads": "^1.7.0"

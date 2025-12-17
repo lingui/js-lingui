@@ -50,7 +50,7 @@
     "cldr-core": "^45.0.0",
     "node-gettext": "^3.0.0",
     "plurals-cldr": "^2.0.1",
-    "pofile": "^1.1.4"
+    "pofile-ts": "^3.1.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
