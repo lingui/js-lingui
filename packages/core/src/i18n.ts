@@ -319,7 +319,7 @@ Please compile your catalog first.
   t: I18n["_"] = this._.bind(this)
 
   /**
-   * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+   * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed.
    */
   date(
     value?: string | DateTimeFormatValue,
@@ -329,7 +329,7 @@ Please compile your catalog first.
   }
 
   /**
-   * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed in the next major version.
+   * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed.
    */
   number(value: NumberFormatValue, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)

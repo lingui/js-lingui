@@ -229,7 +229,7 @@ Format a date using the conventional format for the active language.
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) constructor. This allows for customization of the date formatting.
 
 :::caution Deprecated
-`i18n.date` will be removed in the next major version. Prefer using `Intl.DateTimeFormat` directly, reusing the active locales if needed:
+`i18n.date` will be removed. Prefer using `Intl.DateTimeFormat` directly:
 
 ```ts
 new Intl.DateTimeFormat(i18n.locales ?? i18n.locale, format).format(d)
@@ -264,7 +264,7 @@ Format a number using the conventional format for the active language.
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) constructor. This allows for customization of the date formatting.
 
 :::caution Deprecated
-`i18n.number` will be removed in the next major version. Prefer using `Intl.NumberFormat` directly, reusing the active locales if needed:
+`i18n.number` will be removed. Prefer using `Intl.NumberFormat` directly:
 
 ```ts
 new Intl.NumberFormat(i18n.locales ?? i18n.locale, format).format(value)

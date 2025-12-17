@@ -19,7 +19,7 @@ export type DateTimeFormatValue = Parameters<Intl.DateTimeFormat["format"]>[0]
 export type NumberFormatValue = Parameters<Intl.NumberFormat["format"]>[0]
 
 /**
- * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+ * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed.
  */
 export function date(
   locales: Locales,
@@ -67,7 +67,7 @@ export function date(
 }
 
 /**
- * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed in the next major version.
+ * @deprecated Use `Intl.DateTimeFormat` directly. This helper will be removed.
  */
 export function time(
   locales: Locales,
@@ -105,7 +105,7 @@ export function time(
 }
 
 /**
- * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed in the next major version.
+ * @deprecated Use `Intl.NumberFormat` directly. This helper will be removed.
  */
 export function number(
   locales: Locales,
