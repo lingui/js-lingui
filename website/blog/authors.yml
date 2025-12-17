@@ -14,3 +14,11 @@ vonovak:
   socials:
     x: vonovak
     github: vonovak
+yslpn:
+  name: Yaroslav Slepukhin
+  title: Contributor
+  page: true
+  image_url: https://github.com/yslpn.png
+  socials:
+    x: yslpn
+    github: yslpn
