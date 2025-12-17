@@ -34,55 +34,55 @@ To meet the expectations for a complete helper surface we would need wrappers an
 Pick the same locale precedence (`i18n.locales ?? i18n.locale`) and build your own formatters. Define helpers that read the current locale every time, so locale switches stay in sync:
 
 ```ts
-import { i18n } from "@lingui/core"
+import { i18n } from "@lingui/core";
 
 function getDateFormatter(options?: Intl.DateTimeFormatOptions) {
-  const locales = i18n.locales ?? i18n.locale
-  return new Intl.DateTimeFormat(locales, options)
+  const locales = i18n.locales ?? i18n.locale;
+  return new Intl.DateTimeFormat(locales, options);
 }
 
 function getNumberFormatter(options?: Intl.NumberFormatOptions) {
-  const locales = i18n.locales ?? i18n.locale
-  return new Intl.NumberFormat(locales, options)
+  const locales = i18n.locales ?? i18n.locale;
+  return new Intl.NumberFormat(locales, options);
 }
 
 export function formatOrderSummary(date: Date, total: number) {
-  const dateFormatter = getDateFormatter({ dateStyle: "medium" })
+  const dateFormatter = getDateFormatter({ dateStyle: "medium" });
   const numberFormatter = getNumberFormatter({
     style: "currency",
     currency: "EUR",
-  })
+  });
 
-  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`
+  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`;
 }
 ```
 
 In React you can create small reusable hooks that memoize formatters, accept formatting options, and still react to locale changes:
 
 ```tsx
-import { useLingui } from "@lingui/react"
-import { useMemo } from "react"
+import { useLingui } from "@lingui/react";
+import { useMemo } from "react";
 
 function useDateFormatter(options?: Intl.DateTimeFormatOptions) {
-  const { i18n } = useLingui()
+  const { i18n } = useLingui();
 
   return useMemo(() => {
-    const locales = i18n.locales ?? i18n.locale
-    return new Intl.DateTimeFormat(locales, options)
-  }, [i18n.locales, i18n.locale, options])
+    const locales = i18n.locales ?? i18n.locale;
+    return new Intl.DateTimeFormat(locales, options);
+  }, [i18n.locales, i18n.locale, options]);
 }
 
 function useNumberFormatter(options?: Intl.NumberFormatOptions) {
-  const { i18n } = useLingui()
+  const { i18n } = useLingui();
 
   return useMemo(() => {
-    const locales = i18n.locales ?? i18n.locale
-    return new Intl.NumberFormat(locales, options)
-  }, [i18n.locales, i18n.locale, options])
+    const locales = i18n.locales ?? i18n.locale;
+    return new Intl.NumberFormat(locales, options);
+  }, [i18n.locales, i18n.locale, options]);
 }
 
 function PriceLine({ date, total }: { date: Date; total: number }) {
-  const dateOptions = useMemo(() => ({ dateStyle: "medium" }), [])
+  const dateOptions = useMemo(() => ({ dateStyle: "medium" }), []);
   const numberOptions = useMemo(
     () => ({
       style: "currency",
@@ -90,15 +90,15 @@ function PriceLine({ date, total }: { date: Date; total: number }) {
       minimumFractionDigits: 2,
     }),
     []
-  )
+  );
 
-  const dateFormatter = useDateFormatter(dateOptions)
-  const numberFormatter = useNumberFormatter(numberOptions)
+  const dateFormatter = useDateFormatter(dateOptions);
+  const numberFormatter = useNumberFormatter(numberOptions);
   return (
     <span>
       {dateFormatter.format(date)} - {numberFormatter.format(total)}
     </span>
-  )
+  );
 }
 ```
 
