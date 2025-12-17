@@ -3,7 +3,7 @@ title: Saying goodbye to Lingui's Intl wrappers
 authors: [yslpn]
 tags: [deprecation, intl, api]
 image: ./social-card.jpg
-description: Why we are deprecating i18n.date/time/number and asking everyone to use native Intl APIs.
+description: Why we are deprecating i18n.date/time/number and asking everyone to use native Intl APIs
 ---
 
 We are deprecating Lingui wrappers around `Intl` (`i18n.date`, `i18n.time`, `i18n.number` and the shared helpers) and recommending direct use of native `Intl.*`. This follows [issue #2265](https://github.com/lingui/js-lingui/issues/2265) and [PR #2386](https://github.com/lingui/js-lingui/pull/2386).
