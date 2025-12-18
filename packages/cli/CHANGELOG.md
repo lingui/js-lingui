@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
+
+### Bug Fixes
+
+* **cli:** allow using PO formatter function with Translation.IO ([#2375](https://github.com/lingui/js-lingui/issues/2375)) ([f8b90e2](https://github.com/lingui/js-lingui/commit/f8b90e2ff05657b2af17568cb8c8279eb9484719))
+
+### Features
+
+* **cli:** add --output-prefix option to customize compiled file headers ([#2377](https://github.com/lingui/js-lingui/issues/2377)) ([ef77310](https://github.com/lingui/js-lingui/commit/ef77310e1ec664f8c059bc16179c169c818f1801))
+
 ## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
 
 **Note:** Version bump only for package @lingui/cli
