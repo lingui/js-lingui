@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "5.3.3",
+  "version": "5.6.1",
   "sideEffects": false,
   "description": "Get lingui configuration from package.json",
   "keywords": [
@@ -33,7 +33,7 @@
     "@babel/runtime": "^7.20.13",
     "cosmiconfig": "^8.0.0",
     "jest-validate": "^29.4.3",
-    "jiti": "^1.17.1",
+    "jiti": "^2.5.1",
     "picocolors": "^1.1.1"
   },
   "files": [

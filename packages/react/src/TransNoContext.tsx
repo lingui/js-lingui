@@ -52,39 +52,7 @@ export function TransNoContext(
     lingui: { i18n, defaultComponent },
   } = props
 
-  const values = { ...props.values }
-  const components = { ...props.components }
-
-  if (values) {
-    /*
-      Replace values placeholders with <INDEX /> and add values to `components`.
-      This makes them processed as JSX children and follow JSX semantics.
-
-      Related discussion: https://github.com/lingui/js-lingui/issues/1904
-
-      Another use-case is when React components directly passed as values:
-
-      Example:
-      Translation: 'Hello {name}'
-      Values: { name: <strong>Jane</strong> }
-
-      It'll become "Hello <0 />" with components=[<strong>Jane</strong>]
-
-      Related discussion: https://github.com/lingui/js-lingui/issues/183
-    */
-    Object.keys(values).forEach((key) => {
-      const index = Object.keys(components).length
-
-      // simple scalars should be processed as values to be able to apply formatting
-      if (typeof values[key] === "string" || typeof values[key] === "number") {
-        return
-      }
-
-      // react components, arrays, falsy values, all should be processed as JSX children
-      components[index] = <>{values[key] as ReactNode}</>
-      values[key] = `<${index}/>`
-    })
-  }
+  const { values, components } = getInterpolationValuesAndComponents(props)
 
   const _translation =
     i18n && typeof i18n._ === "function"
@@ -146,4 +114,43 @@ export function TransNoContext(
 const RenderFragment = ({ children }: TransRenderProps) => {
   // cannot use React.Fragment directly because we're passing in props that it doesn't support
   return <>{children}</>
+}
+
+const getInterpolationValuesAndComponents = (props: TransProps) => {
+  if (!props.values) {
+    return {
+      values: undefined,
+      components: props.components,
+    }
+  }
+
+  const values = { ...props.values }
+  const components = { ...props.components }
+  /*
+      Replace values placeholders with <INDEX /> and add values to `components`.
+      This makes them processed as JSX children and follow JSX semantics.
+
+      Related discussion: https://github.com/lingui/js-lingui/issues/1904
+
+      Another use-case is when React components are directly passed as values:
+
+      Example:
+      Translation: 'Hello {name}'
+      Values: { name: <strong>Jane</strong> }
+
+      It'll become "Hello <0 />" with components=[<strong>Jane</strong>]
+
+      Related discussion: https://github.com/lingui/js-lingui/issues/183
+    */
+  Object.entries(props.values).forEach(([key, valueForKey]) => {
+    // simple scalars should be processed as values to be able to apply formatting
+    if (typeof valueForKey === "string" || typeof valueForKey === "number") {
+      return
+    }
+    const index = Object.keys(components).length
+    // react components, arrays, falsy values, all should be processed as JSX children
+    components[index] = <>{valueForKey as ReactNode}</>
+    values[key] = `<${index}/>`
+  })
+  return { values, components }
 }

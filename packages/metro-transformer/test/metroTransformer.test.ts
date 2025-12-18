@@ -15,41 +15,44 @@ describe("Lingui Metro transformer tests", () => {
     process.chdir(priorCwd)
   })
 
-  it.each([
-    [
-      "English PO file",
-      "en",
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Add a message to your inbox\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`,
-    ],
-    [
-      "Czech PO file with fallback to English",
-      "cs",
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`,
-    ],
-  ])(
-    "should transform %s to a JS export",
-    async (_label, langCode, expectedSnapshot) => {
-      const filename = path.relative(
-        testProjectDir,
-        path.join(catalogsDir, langCode, "messages.po")
-      )
-      const result = await transformFile({
-        filename,
-      })
+  it("should transform English PO file to a JS export", async () => {
+    const filename = path.relative(
+      testProjectDir,
+      path.join(catalogsDir, "en", "messages.po")
+    )
+    const result = await transformFile({
+      filename,
+    })
 
-      expect(result).toMatchInlineSnapshot(expectedSnapshot)
-    }
-  )
+    expect(result).toMatchInlineSnapshot(
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");`
+    )
+  })
+
+  it("should transform Czech PO file with fallback to English to a JS export", async () => {
+    const filename = path.relative(
+      testProjectDir,
+      path.join(catalogsDir, "cs", "messages.po")
+    )
+    const result = await transformFile({
+      filename,
+    })
+
+    expect(result).toMatchInlineSnapshot(
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"]}");`
+    )
+  })
 
   it("given a valid absolute path (not relative to lingui config root), transformer will turn it into path relative to lingui config and succeed", async () => {
     // this is not how the `transformFile` function would be called in a real project and covers an implementation detail
     const filename = path.join(catalogsDir, "en", "messages.po")
-    await expect(
-      transformFile({
-        filename,
-      })
-    ).resolves.toMatchInlineSnapshot(
-      `/*eslint-disable*/export const messages=JSON.parse("{\\"p1AaTM\\":[\\"Add a message to your inbox\\"],\\"dEgA5A\\":[\\"Cancel\\"]}");`
+
+    const result = await transformFile({
+      filename,
+    })
+
+    expect(result).toMatchInlineSnapshot(
+      `/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");`
     )
   })
 

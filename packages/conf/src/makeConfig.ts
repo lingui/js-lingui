@@ -15,6 +15,7 @@ export function makeConfig(
   userConfig: Partial<LinguiConfig>,
   opts: {
     skipValidation?: boolean
+    resolvedConfigPath?: string
   } = {}
 ): LinguiConfigNormalized {
   let config: LinguiConfig = {
@@ -36,10 +37,15 @@ export function makeConfig(
   config = normalizeRuntimeConfigModule(config) as any
 
   // `replaceRootDir` should always be the last
-  return replaceRootDir(
+  const out = replaceRootDir(
     config,
     config.rootDir
   ) as unknown as LinguiConfigNormalized
+
+  return {
+    ...out,
+    resolvedConfigPath: opts.resolvedConfigPath,
+  }
 }
 
 export const defaultConfig: LinguiConfig = {

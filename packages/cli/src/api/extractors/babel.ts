@@ -164,6 +164,7 @@ export function getBabelParserOptions(
     "importAttributes", // stage3
     "explicitResourceManagement", // stage3,
     "decoratorAutoAccessors", // stage3,
+    "deferredImportEvaluation", // stage3
   ]
 
   if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {

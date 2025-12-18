@@ -106,10 +106,11 @@ export type CatalogConfig = {
   exclude?: string[]
 }
 
-type LocaleObject = {
-  [locale: string]: string[] | string
-  default?: string
-}
+type LocaleObject =
+  | Record<string, string[] | string>
+  | (Record<string, string[] | string> & {
+      default: string
+    })
 
 export type FallbackLocales = LocaleObject
 
@@ -137,25 +138,25 @@ export type ExperimentalExtractorOptions = {
   entries: string[]
 
   /**
-   * Explicitly include some dependency for extraction.
-   * For example, you can include all monorepo's packages as
-   * ["@mycompany/"]
+   * List of package name patterns to include for extraction.
+   *
+   * For example, to include all packages from your monorepo:
+   *
+   * ["@mycompany"]
+   *
+   * By default, all imports that look like package imports are ignored.
+   * This means imports that do not start with `/`, `./`, `../`, or `#`
+   * (used for subpath imports). TypeScript path aliases are also ignored
+   * because they look like package imports.
+   *
+   * Add here the packages you want to include.
    */
   includeDeps?: string[]
 
   /**
-   * By default all dependencies from package.json would be ecxluded from analyzing.
-   * If something was not properly discovered you can add it here.
-   *
-   * Note: it automatically matches also sub imports
-   *
-   * "next" would match "next" and "next/head"
-   */
-  excludeDeps?: string[]
-
-  /**
-   * svg, jpg and other files which might be imported in application should be exluded from analysis.
-   * By default extractor provides a comprehensive list of extensions. If you feel like somthing is missing in this list please fill an issue on GitHub
+   * svg, jpg and other files which might be imported in application should be excluded from analysis.
+   * By default, extractor provides a comprehensive list of extensions. If you feel like something
+   * is missing in this list please fill an issue on GitHub
    *
    * NOTE: changing this param will override default list of extensions.
    */
@@ -257,7 +258,7 @@ export type LinguiConfig = {
    *
    * Note that using <rootDir> as a string token in any other path-based config settings will refer back to this value.
    *
-   * @defaul: The root of the directory containing your Lingui configuration file or the package.json.
+   * @default: The root of the directory containing your Lingui configuration file or the package.json.
    */
   rootDir?: string
   /**
@@ -345,6 +346,7 @@ export type LinguiConfigNormalized = Omit<
   LinguiConfig,
   "runtimeConfigModule"
 > & {
+  resolvedConfigPath?: string
   fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized

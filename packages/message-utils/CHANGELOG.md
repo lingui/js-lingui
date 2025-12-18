@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
+
+**Note:** Version bump only for package @lingui/message-utils
+
+# [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
+
+**Note:** Version bump only for package @lingui/message-utils
+
+## [5.5.2](https://github.com/lingui/js-lingui/compare/v5.5.1...v5.5.2) (2025-10-30)
+
+**Note:** Version bump only for package @lingui/message-utils
+
+## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
+
+**Note:** Version bump only for package @lingui/message-utils
+
+# [5.5.0](https://github.com/lingui/js-lingui/compare/v5.4.1...v5.5.0) (2025-09-12)
+
+### Features
+
+* **cli:** support multithreading in all cli commands ([#2320](https://github.com/lingui/js-lingui/issues/2320)) ([86fbcd8](https://github.com/lingui/js-lingui/commit/86fbcd849b82d500f67fabd7c4f6abef7e5914f2))
+
+## [5.4.1](https://github.com/lingui/js-lingui/compare/v5.4.0...v5.4.1) (2025-08-11)
+
+### Bug Fixes
+
+* remove @messageformat/date-skeleton from bundledDependencies ([#2293](https://github.com/lingui/js-lingui/issues/2293)) ([9601701](https://github.com/lingui/js-lingui/commit/96017018433310a6ba7a21dc9b6ce1d4f3c6965a))
+
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+**Note:** Version bump only for package @lingui/message-utils
+
 ## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
 
 ### Bug Fixes

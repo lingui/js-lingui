@@ -27,19 +27,19 @@ const voidElementTags = {
 /**
  * `formatElements` - parse string and return tree of react elements
  *
- * `value` is string to be formatted with <tag>Paired<tag/> or <tag/> (unpaired)
- * placeholders. `elements` is a array of react elements which indexes
- * correspond to element indexes in formatted string
+ * `value` is a string to be formatted with <tag>Paired<tag/> or <tag/> (unpaired)
+ * placeholders. `elements` is an array of react elements whose indexes
+ * correspond to element indexes in the formatted string
  */
 function formatElements(
   value: string,
   elements: { [key: string]: React.ReactElement } = {}
 ): string | React.ReactElement | Array<React.ReactElement | string> {
-  const uniqueId = makeCounter(0, "$lingui$")
   const parts = value.split(tagRe)
-
   // no inline elements, return
   if (parts.length === 1) return value
+
+  const uniqueId = makeCounter(0, "$lingui$")
 
   const tree: Array<React.ReactElement | string> = []
 

@@ -13,9 +13,14 @@ function normalizeLocales(locales: Locales): string[] {
 
 export type DateTimeFormatSize = "short" | "default" | "long" | "full"
 
+// These types vary depending on the TypeScript target (e.g., modern ES versions
+// support passing a bigint or string to `Intl.NumberFormat.prototype.format`)
+export type DateTimeFormatValue = Parameters<Intl.DateTimeFormat["format"]>[0]
+export type NumberFormatValue = Parameters<Intl.NumberFormat["format"]>[0]
+
 export function date(
   locales: Locales,
-  value: string | Date,
+  value: string | DateTimeFormatValue,
   format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
 ): string {
   const _locales = normalizeLocales(locales)
@@ -60,7 +65,7 @@ export function date(
 
 export function time(
   locales: Locales,
-  value: string | Date,
+  value: string | DateTimeFormatValue,
   format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
 ): string {
   let o: Intl.DateTimeFormatOptions
@@ -95,7 +100,7 @@ export function time(
 
 export function number(
   locales: Locales,
-  value: number,
+  value: NumberFormatValue,
   format?: Intl.NumberFormatOptions
 ): string {
   const _locales = normalizeLocales(locales)

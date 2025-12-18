@@ -1,6 +1,12 @@
 import { interpolate } from "./interpolate"
 import { isString, isFunction } from "./essentials"
-import { date, defaultLocale, number } from "./formats"
+import {
+  date,
+  type DateTimeFormatValue,
+  defaultLocale,
+  number,
+  type NumberFormatValue,
+} from "./formats"
 import { EventEmitter } from "./eventEmitter"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 import type { CompiledMessage } from "@lingui/message-utils/compileMessage"
@@ -312,11 +318,14 @@ Please compile your catalog first.
    */
   t: I18n["_"] = this._.bind(this)
 
-  date(value: string | Date, format?: Intl.DateTimeFormatOptions): string {
+  date(
+    value?: string | DateTimeFormatValue,
+    format?: Intl.DateTimeFormatOptions
+  ): string {
     return date(this._locales || this._locale, value, format)
   }
 
-  number(value: number, format?: Intl.NumberFormatOptions): string {
+  number(value: NumberFormatValue, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
   }
 }

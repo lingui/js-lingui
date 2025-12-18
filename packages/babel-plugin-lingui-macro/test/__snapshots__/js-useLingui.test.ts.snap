@@ -483,3 +483,42 @@ function MyComponent() {
 }
 
 `;
+
+exports[`works with react compiler 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function MyComponent() {
+  const { t } = useLingui();
+
+  return <p>{t\`hello\`}</p>;
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { c as _c } from "react/compiler-runtime";
+import { useLingui as _useLingui } from "@lingui/react";
+function MyComponent() {
+  const $ = _c(4);
+  const { _: _t } = _useLingui();
+  let t0;
+  if ($[0] !== _t) {
+    t0 = _t({
+      id: "WfCysZ",
+      message: "hello",
+    });
+    $[0] = _t;
+    $[1] = t0;
+  } else {
+    t0 = $[1];
+  }
+  let t1;
+  if ($[2] !== t0) {
+    t1 = <p>{t0}</p>;
+    $[2] = t0;
+    $[3] = t1;
+  } else {
+    t1 = $[3];
+  }
+  return t1;
+}
+
+`;
