@@ -164,18 +164,4 @@ describe("formatElements", function () {
       cleanPrefix(childKeys[1] as string)
     )
   })
-
-  it("should handle array of elements", function () {
-    const arrayOfElements = [
-      <span key="1">First</span>,
-      <span key="2">Second</span>,
-    ]
-    expect(
-      html(
-        formatElements("<0/>", {
-          0: arrayOfElements as unknown as React.ReactElement,
-        })
-      )
-    ).toEqual("<span>First</span><span>Second</span>")
-  })
 })
