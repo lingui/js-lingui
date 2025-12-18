@@ -13,14 +13,14 @@ export type TransRenderProps = {
 
 export type TransRenderCallbackOrComponent =
   | {
-      component?: undefined
+      component?: never
       render?:
         | ((props: TransRenderProps) => React.ReactElement<any, any>)
         | null
     }
   | {
       component?: React.ComponentType<TransRenderProps> | null
-      render?: undefined
+      render?: never
     }
 
 export type TransProps = {
