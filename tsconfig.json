@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noEmit": true,
     "baseUrl": "./",
     "pretty": true,
