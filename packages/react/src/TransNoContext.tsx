@@ -54,7 +54,7 @@ export function TransNoContext(
 
   const { values, components } = getInterpolationValuesAndComponents(props)
 
-  const _translation =
+  const _translation: string =
     i18n && typeof i18n._ === "function"
       ? i18n._(id, values, { message, formats })
       : id // i18n provider isn't loaded at all
