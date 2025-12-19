@@ -70,7 +70,7 @@ export function TransNoContext(
   }
 
   const FallbackComponent: React.ComponentType<TransRenderProps> =
-    defaultComponent || RenderFragment
+    defaultComponent || RenderChildren
 
   const i18nProps: TransRenderProps = {
     id,
@@ -111,9 +111,8 @@ export function TransNoContext(
   return <Component {...i18nProps}>{translation}</Component>
 }
 
-const RenderFragment = ({ children }: TransRenderProps) => {
-  // cannot use React.Fragment directly because we're passing in props that it doesn't support
-  return <>{children}</>
+const RenderChildren = ({ children }: TransRenderProps) => {
+  return children
 }
 
 const getInterpolationValuesAndComponents = (props: TransProps) => {
