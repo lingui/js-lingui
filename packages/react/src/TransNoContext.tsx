@@ -1,8 +1,5 @@
-import { ComponentType, ReactNode } from "react"
-
 import { formatElements } from "./format"
-import type { MessageOptions } from "@lingui/core"
-import { I18n } from "@lingui/core"
+import type { I18n, MessageOptions } from "@lingui/core"
 
 export type TransRenderProps = {
   id: string
@@ -40,7 +37,10 @@ export type TransProps = {
  */
 export function TransNoContext(
   props: TransProps & {
-    lingui: { i18n: I18n; defaultComponent?: ComponentType<TransRenderProps> }
+    lingui: {
+      i18n: I18n
+      defaultComponent?: React.ComponentType<TransRenderProps>
+    }
   }
 ): React.ReactElement<any, any> | null {
   const {
@@ -149,7 +149,7 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
     }
     const index = Object.keys(components).length
     // react components, arrays, falsy values, all should be processed as JSX children
-    components[index] = <>{valueForKey as ReactNode}</>
+    components[index] = <>{valueForKey}</>
     values[key] = `<${index}/>`
   })
   return { values, components }

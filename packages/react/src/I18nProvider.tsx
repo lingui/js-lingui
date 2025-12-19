@@ -1,5 +1,4 @@
 import {
-  ComponentType,
   createContext,
   useCallback,
   useContext,
@@ -13,7 +12,7 @@ import type { TransRenderProps } from "./TransNoContext"
 export type I18nContext = {
   i18n: I18n
   _: I18n["_"]
-  defaultComponent?: ComponentType<TransRenderProps>
+  defaultComponent?: React.ComponentType<TransRenderProps>
 }
 
 export type I18nProviderProps = Omit<I18nContext, "_"> & {
