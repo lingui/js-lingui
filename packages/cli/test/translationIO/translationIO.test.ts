@@ -1236,10 +1236,64 @@ describe("TranslationIO Integration", () => {
       expect(calls).toEqual(["init", "sync"])
       expect(result).toMatchInlineSnapshot(`
 
-                                                ----------
-                                                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-                                                ----------
-                                    `)
+                ----------
+                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                ----------
+            `)
+    })
+
+    it("should call only init if not initialized", async () => {
+      const outputDir = await prepareTestDir("sync-process")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const calls: any[] = []
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          calls.push(request)
+
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [],
+              es: [],
+            },
+          })
+        })
+      )
+
+      const result = await syncProcess(testConfig, options)
+
+      expect(calls).toHaveLength(1)
+      expect(result).toMatchInlineSnapshot(`
+
+        ----------
+        Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+        ----------
+      `)
     })
 
     it("should handle errors with proper error format", async () => {
@@ -1279,10 +1333,10 @@ describe("TranslationIO Integration", () => {
 
       expect(result).toMatchInlineSnapshot(`
 
-                                        ----------
-                                        Synchronization with Translation.io failed: Network error, Connection timeout
-                                        ----------
-                              `)
+        ----------
+        Synchronization with Translation.io failed: Network error, Connection timeout
+        ----------
+      `)
     })
 
     it("should fail for non-po format", async () => {
