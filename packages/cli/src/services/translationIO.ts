@@ -121,7 +121,7 @@ export async function init(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, catalogs, data.segments)
+  await writeSegmentsToCatalogs(config, sourceLocale, catalogs, data.segments)
   return { success: true, project: data.project } as const
 }
 
@@ -170,47 +170,66 @@ export async function sync(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, catalogs, data.segments)
+  await writeSegmentsToCatalogs(config, sourceLocale, catalogs, data.segments)
   return { success: true, project: data.project } as const
 }
 
 export async function writeSegmentsToCatalogs(
   config: LinguiConfigNormalized,
+  sourceLocale: string,
   catalogs: Catalog[],
   segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
 ) {
-  for (const targetLocale of Object.keys(segmentsPerLocale)) {
-    const catalog = catalogs[0]
-    // Remove existing target POs and JS for this target locale
+  // Create segments from source locale PO items
+  for (const catalog of catalogs) {
+    const sourceMessages = await catalog.read(sourceLocale)
 
-    const path = catalog.getFilename(targetLocale)
+    for (const targetLocale of Object.keys(segmentsPerLocale)) {
+      // Remove existing target POs and JS for this target locale
 
-    const jsPath =
-      path.replace(new RegExp(`${catalog.format.getCatalogExtension()}$`), "") +
-      ".js"
+      {
+        const path = catalog.getFilename(targetLocale)
 
-    const dirPath = dirname(path)
+        const jsPath =
+          path.replace(
+            new RegExp(`${catalog.format.getCatalogExtension()}$`),
+            ""
+          ) + ".js"
 
-    // todo: check tests and all these logic, maybe it could be simplified to just drop the folder
-    // Remove PO, JS and empty dir
-    if (fs.existsSync(path)) {
-      await fs.promises.unlink(path)
-    }
-    if (fs.existsSync(jsPath)) {
-      await fs.promises.unlink(jsPath)
-    }
-    if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
-      await fs.promises.rmdir(dirPath)
-    }
+        const dirPath = dirname(path)
 
-    const segments = segmentsPerLocale[targetLocale]
+        // todo: check tests and all these logic, maybe it could be simplified to just drop the folder
+        // Remove PO, JS and empty dir
+        if (fs.existsSync(path)) {
+          await fs.promises.unlink(path)
+        }
+        if (fs.existsSync(jsPath)) {
+          await fs.promises.unlink(jsPath)
+        }
+        if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
+          await fs.promises.rmdir(dirPath)
+        }
+      }
 
-    const messages: CatalogType = Object.fromEntries(
-      segments.map((segment: TranslationIoSegment) =>
-        createLinguiItemFromSegment(segment)
+      const translations = Object.fromEntries(
+        segmentsPerLocale[targetLocale].map((segment) =>
+          createLinguiItemFromSegment(segment)
+        )
       )
-    )
 
-    await catalog.write(targetLocale, order(config.orderBy, messages))
+      const messages: CatalogType = Object.fromEntries(
+        Object.entries(sourceMessages).map(([key, entry]) => {
+          return [
+            key,
+            {
+              ...entry,
+              translation: translations[key]?.translation,
+            },
+          ]
+        })
+      )
+
+      await catalog.write(targetLocale, order(config.orderBy, messages))
+    }
   }
 }
