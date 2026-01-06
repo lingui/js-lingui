@@ -1,6 +1,5 @@
 import syncProcess, {
   init,
-  catalogPathsPerLocale,
   writeSegmentsToCatalogs,
   sync,
 } from "./translationIO"
@@ -13,11 +12,12 @@ import { listingToHumanReadable, readFsToListing } from "../tests"
 import {
   TranslationIoResponse,
   TranslationIoSegment,
-} from "./translationIO/api-client"
+} from "./translationIO/translationio-api"
 import { setupServer } from "msw/node"
 import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
 import { getFormat } from "@lingui/cli/api"
 import { FormatterWrapper } from "../api/formats"
+import { Catalog } from "../api/catalog"
 
 export const mswServer = setupServer()
 
@@ -92,65 +92,7 @@ describe("TranslationIO Integration", () => {
     }
   })
 
-  describe("poPathsPerLocale", () => {
-    it("should return paths for all locales", () => {
-      const paths = catalogPathsPerLocale(makeConfig(config))
-
-      expect(paths).toMatchInlineSnapshot(`
-        {
-          en: [
-            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/src/services/test-output/current/en.po,
-          ],
-          es: [
-            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/src/services/test-output/current/es.po,
-          ],
-          fr: [
-            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/src/services/test-output/current/fr.po,
-          ],
-        }
-      `)
-    })
-
-    it("should handle wildcards in catalog paths", () => {
-      const wildcardConfig = makeConfig({
-        ...config,
-        catalogs: [
-          {
-            path: path.join(testDir, "{locale}", "{name}"),
-            include: [],
-          },
-        ],
-      })
-
-      // Create some test files
-      const testLocaleDir = path.join(testDir, "wildcard-test", "en")
-      fs.mkdirSync(testLocaleDir, { recursive: true })
-      fs.writeFileSync(path.join(testLocaleDir, "messages.po"), "")
-      fs.writeFileSync(path.join(testLocaleDir, "errors.po"), "")
-
-      wildcardConfig.rootDir = path.join(testDir, "wildcard-test")
-      wildcardConfig.catalogs[0].path = path.join(
-        testDir,
-        "wildcard-test",
-        "{locale}",
-        "{name}"
-      )
-
-      const paths = catalogPathsPerLocale(wildcardConfig)
-      expect(paths).toMatchInlineSnapshot(`
-        {
-          en: [
-            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/src/services/test-output/wildcard-test/en/messages.po,
-            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/src/services/test-output/wildcard-test/en/errors.po,
-          ],
-          es: [],
-          fr: [],
-        }
-      `)
-    })
-  })
-
-  describe("saveSegmentsToTargetPos", () => {
+  describe("writeSegmentsToCatalogs", () => {
     it("should save segments to PO files", async () => {
       const outputDir = await prepareTestDir("save-segments")
       const testConfig = makeConfig({
@@ -164,11 +106,17 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      const paths = {
-        en: [path.join(outputDir, "en.po")],
-        fr: [path.join(outputDir, "fr.po")],
-        es: [path.join(outputDir, "es.po")],
-      }
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
 
       const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
         fr: [
@@ -209,12 +157,7 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      await writeSegmentsToCatalogs(
-        testConfig,
-        paths,
-        segmentsPerLocale,
-        format
-      )
+      await writeSegmentsToCatalogs(testConfig, catalogs, segmentsPerLocale)
 
       // Verify content
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -279,14 +222,24 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      const paths = {
-        en: [path.join(outputDir, "en.po")],
-        fr: [path.join(outputDir, "fr.po")],
-      }
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
 
       // Create existing files
-      fs.writeFileSync(paths.fr[0], "old content")
-      fs.writeFileSync(paths.fr[0].replace(".po", ".js"), "old js content")
+      fs.writeFileSync(path.join(outputDir, "fr.po"), "old content")
+      fs.writeFileSync(
+        path.join(outputDir, "fr.po").replace(".po", ".js"),
+        "old js content"
+      )
 
       const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
         fr: [
@@ -301,12 +254,7 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      await writeSegmentsToCatalogs(
-        testConfig,
-        paths,
-        segmentsPerLocale,
-        format
-      )
+      await writeSegmentsToCatalogs(testConfig, catalogs, segmentsPerLocale)
 
       expect(listingToHumanReadable(readFsToListing(outputDir)))
         .toMatchInlineSnapshot(`
@@ -357,6 +305,18 @@ describe("TranslationIO Integration", () => {
           },
         ],
       })
+
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
 
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
@@ -443,7 +403,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await init(testConfig, format)
+      await init(testConfig, catalogs)
 
       expect(apiCalls[0].url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
@@ -595,6 +555,12 @@ describe("TranslationIO Integration", () => {
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
+        "Project-Id-Version: \\n"
+        "Report-Msgid-Bugs-To: \\n"
+        "PO-Revision-Date: \\n"
+        "Last-Translator: \\n"
+        "Language-Team: \\n"
+        "Plural-Forms: \\n"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -629,6 +595,12 @@ describe("TranslationIO Integration", () => {
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
+        "Project-Id-Version: \\n"
+        "Report-Msgid-Bugs-To: \\n"
+        "PO-Revision-Date: \\n"
+        "Last-Translator: \\n"
+        "Language-Team: \\n"
+        "Plural-Forms: \\n"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -678,6 +650,18 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
+
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           // todo: check what real status server return on error
@@ -687,7 +671,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(init(testConfig, format)).resolves.toMatchInlineSnapshot(`
+      await expect(init(testConfig, catalogs)).resolves.toMatchInlineSnapshot(`
         {
           errors: [
             API key is invalid,
@@ -721,13 +705,25 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
+
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
         })
       )
 
-      await expect(init(testConfig, format)).rejects.toThrow()
+      await expect(init(testConfig, catalogs)).rejects.toThrow()
     })
   })
 
@@ -749,6 +745,17 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
       mswServer.use(
@@ -834,7 +841,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await sync(testConfig, options, format)
+      await sync(testConfig, options, catalogs)
 
       // Verify request
       expect(apiCalls[0].url).toMatchInlineSnapshot(
@@ -1018,7 +1025,17 @@ describe("TranslationIO Integration", () => {
           },
         ],
       })
-
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
       const cleanOptions = { ...options, clean: true }
       let capturedRequest: any = null
 
@@ -1039,7 +1056,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await sync(testConfig, cleanOptions, format)
+      await sync(testConfig, cleanOptions, catalogs)
 
       expect(capturedRequest).toHaveProperty("purge", true)
     })
@@ -1060,7 +1077,17 @@ describe("TranslationIO Integration", () => {
           },
         ],
       })
-
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.json<TranslationIoResponse>({
@@ -1069,7 +1096,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      const result = await sync(testConfig, options, format)
+      const result = await sync(testConfig, options, catalogs)
 
       expect(result).toMatchInlineSnapshot(`
         {
@@ -1097,14 +1124,24 @@ describe("TranslationIO Integration", () => {
           },
         ],
       })
-
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
         })
       )
 
-      await expect(sync(testConfig, options, format)).rejects.toThrow()
+      await expect(sync(testConfig, options, catalogs)).rejects.toThrow()
     })
   })
 

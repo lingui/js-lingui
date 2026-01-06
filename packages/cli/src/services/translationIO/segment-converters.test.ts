@@ -4,7 +4,7 @@ import {
   createSegmentFromLinguiItem,
   createLinguiItemFromSegment,
 } from "./segment-converters"
-import { TranslationIoSegment } from "./api-client"
+import { TranslationIoSegment } from "./translationio-api"
 
 describe("Segment Converters", () => {
   describe("createSegmentFromLinguiItem", () => {

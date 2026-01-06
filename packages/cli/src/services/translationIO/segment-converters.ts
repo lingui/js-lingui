@@ -1,6 +1,6 @@
 import { MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import { TranslationIoSegment } from "./api-client"
+import { TranslationIoSegment } from "./translationio-api"
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
