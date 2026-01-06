@@ -1,0 +1,1415 @@
+import syncProcess, {
+  init,
+  sync,
+  createSegmentFromPoItem,
+  createPoItemFromSegment,
+  saveSegmentsToTargetPos,
+  poPathsPerLocale,
+  HttpRequestFunction,
+  TranslationIoSegment,
+  TranslationIoResponse,
+} from "../../src/services/translationIO"
+import { makeConfig, LinguiConfigNormalized } from "@lingui/conf"
+import fs from "fs"
+import path from "path"
+import PO from "pofile"
+import { CliExtractOptions } from "../../src/lingui-extract"
+import MockDate from "mockdate"
+import { listingToHumanReadable, readFsToListing } from "../../src/tests"
+
+const testDir = path.join(__dirname, "test-output")
+const fixturesDir = path.join(__dirname, "fixtures")
+
+// Helper to create a mock HTTP request function
+function createMockHttpRequest(
+  mockResponse: TranslationIoResponse | { error: unknown },
+  captureRequest?: (action: string, request: any, apiKey: string) => void
+): HttpRequestFunction {
+  return (action, request, apiKey, successCallback, failCallback) => {
+    if (captureRequest) {
+      captureRequest(action, request, apiKey)
+    }
+
+    if ("error" in mockResponse) {
+      failCallback(mockResponse.error)
+    } else {
+      successCallback(mockResponse)
+    }
+  }
+}
+
+// Helper to prepare test directory
+async function prepareTestDir(subdir: string) {
+  const dir = path.join(testDir, subdir)
+  if (fs.existsSync(dir)) {
+    fs.rmSync(dir, { recursive: true, force: true })
+  }
+  fs.mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+// Helper to copy fixture files
+function copyFixtures(sourceDir: string, targetDir: string) {
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  const files = fs.readdirSync(sourceDir)
+  files.forEach((file) => {
+    const sourcePath = path.join(sourceDir, file)
+    const targetPath = path.join(targetDir, file)
+
+    if (fs.statSync(sourcePath).isDirectory()) {
+      copyFixtures(sourcePath, targetPath)
+    } else {
+      fs.copyFileSync(sourcePath, targetPath)
+    }
+  })
+}
+
+describe("TranslationIO Integration", () => {
+  let config: LinguiConfigNormalized
+  let options: CliExtractOptions
+
+  beforeAll(() => {
+    MockDate.set(new Date("2023-03-15T10:00Z"))
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+    if (fs.existsSync(testDir)) {
+      fs.rmSync(testDir, { recursive: true, force: true })
+    }
+  })
+
+  beforeEach(async () => {
+    const outputDir = await prepareTestDir("current")
+
+    config = makeConfig({
+      rootDir: outputDir,
+      locales: ["en", "fr", "es"],
+      sourceLocale: "en",
+      format: "po",
+      catalogs: [
+        {
+          path: path.join(outputDir, "{locale}"),
+          include: [],
+        },
+      ],
+      service: {
+        name: "TranslationIO",
+        apiKey: "test-api-key-123",
+      },
+    })
+
+    options = {
+      verbose: false,
+      clean: false,
+      overwrite: false,
+      locale: [],
+      prevFormat: null,
+      workersOptions: { poolSize: 0 },
+    }
+  })
+
+  describe("poPathsPerLocale", () => {
+    it("should return paths for all locales", () => {
+      const paths = poPathsPerLocale(config)
+
+      expect(paths).toMatchInlineSnapshot(`
+        {
+          en: [
+            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/test/translationIO/test-output/current/en.po,
+          ],
+          es: [
+            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/test/translationIO/test-output/current/es.po,
+          ],
+          fr: [
+            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/test/translationIO/test-output/current/fr.po,
+          ],
+        }
+      `)
+    })
+
+    it("should handle wildcards in catalog paths", () => {
+      const wildcardConfig = makeConfig({
+        ...config,
+        catalogs: [
+          {
+            path: path.join(testDir, "{locale}", "{name}"),
+            include: [],
+          },
+        ],
+      })
+
+      // Create some test files
+      const testLocaleDir = path.join(testDir, "wildcard-test", "en")
+      fs.mkdirSync(testLocaleDir, { recursive: true })
+      fs.writeFileSync(path.join(testLocaleDir, "messages.po"), "")
+      fs.writeFileSync(path.join(testLocaleDir, "errors.po"), "")
+
+      wildcardConfig.rootDir = path.join(testDir, "wildcard-test")
+      wildcardConfig.catalogs[0].path = path.join(
+        testDir,
+        "wildcard-test",
+        "{locale}",
+        "{name}"
+      )
+
+      const paths = poPathsPerLocale(wildcardConfig)
+      expect(paths).toMatchInlineSnapshot(`
+        {
+          en: [
+            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/test/translationIO/test-output/wildcard-test/en/messages.po,
+            /Users/timofei.Iatsenko/Projects/js-lingui/packages/cli/test/translationIO/test-output/wildcard-test/en/errors.po,
+          ],
+          es: [],
+          fr: [],
+        }
+      `)
+    })
+  })
+
+  describe("createSegmentFromPoItem", () => {
+    it("should create segment from regular PO item without explicit ID", () => {
+      const item = new PO.Item()
+      item.msgid = "Hello {name}"
+      item.msgstr = [""]
+      item.references = ["src/App.tsx:15"]
+
+      const segment = createSegmentFromPoItem(item)
+
+      expect(segment).toEqual({
+        type: "source",
+        source: "Hello {name}",
+        context: "",
+        references: ["src/App.tsx:15"],
+        comment: "",
+      })
+    })
+
+    it("should create segment from PO item with explicit ID", () => {
+      const item = new PO.Item()
+      item.msgid = "app.welcome"
+      item.msgstr = ["Welcome to our app"]
+      item.extractedComments = ["js-lingui-explicit-id"]
+      item.references = ["src/App.tsx:10"]
+
+      const segment = createSegmentFromPoItem(item)
+
+      expect(segment).toEqual({
+        type: "source",
+        source: "Welcome to our app",
+        context: "app.welcome",
+        references: ["src/App.tsx:10"],
+        comment: "js-lingui-explicit-id",
+      })
+    })
+
+    it("should create segment from PO item with context but no explicit ID", () => {
+      const item = new PO.Item()
+      item.msgid = "Home"
+      item.msgctxt = "navigation"
+      item.msgstr = [""]
+      item.references = ["src/App.tsx:20"]
+
+      const segment = createSegmentFromPoItem(item)
+
+      expect(segment).toEqual({
+        type: "source",
+        source: "Home",
+        context: "navigation",
+        references: ["src/App.tsx:20"],
+        comment: "",
+      })
+    })
+
+    it("should create segment from PO item with explicit ID and context", () => {
+      const item = new PO.Item()
+      item.msgid = "about.title"
+      item.msgctxt = "page.about"
+      item.msgstr = ["About Us"]
+      item.extractedComments = ["js-lingui-explicit-id"]
+      item.references = ["src/About.tsx:5"]
+
+      const segment = createSegmentFromPoItem(item)
+
+      expect(segment).toEqual({
+        type: "source",
+        source: "About Us",
+        context: "about.title",
+        references: ["src/About.tsx:5"],
+        comment: "page.about | js-lingui-explicit-id-and-context",
+      })
+    })
+  })
+
+  describe("createPoItemFromSegment", () => {
+    it("should create PO item from segment without explicit ID", () => {
+      const segment: TranslationIoSegment = {
+        type: "source",
+        source: "Hello {name}",
+        target: "Bonjour {name}",
+        context: "greeting",
+        references: ["src/App.tsx:15"],
+        comment: "",
+      }
+
+      const item = createPoItemFromSegment(segment)
+
+      expect(item).toMatchObject({
+        comments: [],
+        extractedComments: [],
+        flags: {},
+        msgctxt: "greeting",
+        msgid: "Hello {name}",
+        msgstr: ["Bonjour {name}"],
+        references: ["src/App.tsx:15"],
+      })
+    })
+
+    it("should create PO item from segment with explicit ID", () => {
+      const segment: TranslationIoSegment = {
+        type: "source",
+        source: "Welcome to our app",
+        target: "Bienvenue dans notre application",
+        context: "app.welcome",
+        references: ["src/App.tsx:10"],
+        comment: "js-lingui-explicit-id",
+      }
+
+      const item = createPoItemFromSegment(segment)
+
+      expect(item.msgid).toBe("app.welcome")
+      expect(item.msgctxt == null).toBe(true) // Can be null or undefined
+      expect(item.msgstr).toEqual(["Bienvenue dans notre application"])
+      expect(item.extractedComments).toEqual(["js-lingui-explicit-id"])
+    })
+
+    it("should create PO item from segment with explicit ID and context", () => {
+      const segment: TranslationIoSegment = {
+        type: "source",
+        source: "About Us",
+        target: "À propos",
+        context: "about.title",
+        references: ["src/About.tsx:5"],
+        comment: "page.about | js-lingui-explicit-id-and-context",
+      }
+
+      const item = createPoItemFromSegment(segment)
+
+      expect(item.msgid).toBe("about.title")
+      expect(item.msgctxt).toBe("page.about")
+      expect(item.msgstr).toEqual(["À propos"])
+      expect(item.extractedComments).toEqual(["js-lingui-explicit-id"])
+    })
+  })
+
+  describe("saveSegmentsToTargetPos", () => {
+    it("should save segments to PO files", async () => {
+      const outputDir = await prepareTestDir("save-segments")
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const paths = {
+        en: [path.join(outputDir, "en.po")],
+        fr: [path.join(outputDir, "fr.po")],
+        es: [path.join(outputDir, "es.po")],
+      }
+
+      const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
+        fr: [
+          {
+            type: "source",
+            source: "Hello",
+            target: "Bonjour",
+            context: "",
+            references: ["src/App.tsx:1"],
+            comment: "",
+          },
+          {
+            type: "source",
+            source: "World",
+            target: "Monde",
+            context: "",
+            references: ["src/App.tsx:2"],
+            comment: "",
+          },
+        ],
+        es: [
+          {
+            type: "source",
+            source: "Hello",
+            target: "Hola",
+            context: "",
+            references: ["src/App.tsx:1"],
+            comment: "",
+          },
+          {
+            type: "source",
+            source: "World",
+            target: "Mundo",
+            context: "",
+            references: ["src/App.tsx:2"],
+            comment: "",
+          },
+        ],
+      }
+
+      saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
+
+      // Wait for async file operations
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      // Verify content
+      expect(listingToHumanReadable(readFsToListing(outputDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #: src/App.tsx:1
+        msgctxt ""
+        msgid "Hello"
+        msgstr "Hola"
+
+        #: src/App.tsx:2
+        msgctxt ""
+        msgid "World"
+        msgstr "Mundo"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #: src/App.tsx:1
+        msgctxt ""
+        msgid "Hello"
+        msgstr "Bonjour"
+
+        #: src/App.tsx:2
+        msgctxt ""
+        msgid "World"
+        msgstr "Monde"
+
+
+      `)
+    })
+
+    it("should remove existing files before saving", async () => {
+      const outputDir = await prepareTestDir("save-segments-replace")
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const paths = {
+        en: [path.join(outputDir, "en.po")],
+        fr: [path.join(outputDir, "fr.po")],
+      }
+
+      // Create existing files
+      fs.writeFileSync(paths.fr[0], "old content")
+      fs.writeFileSync(paths.fr[0].replace(".po", ".js"), "old js content")
+
+      const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
+        fr: [
+          {
+            type: "source",
+            source: "New message",
+            target: "Nouveau message",
+            context: "",
+            references: [],
+            comment: "",
+          },
+        ],
+      }
+
+      saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
+
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      expect(listingToHumanReadable(readFsToListing(outputDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        msgctxt ""
+        msgid "New message"
+        msgstr "Nouveau message"
+
+
+      `)
+    })
+  })
+
+  describe("init", () => {
+    it("should send init request with source and target segments", async () => {
+      const outputDir = await prepareTestDir("init-test")
+
+      // Copy source files
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      let capturedRequest: any = null
+      let capturedAction = ""
+      let capturedApiKey = ""
+
+      const mockHttpRequest = createMockHttpRequest(
+        {
+          project: {
+            name: "Test Project",
+            url: "https://translation.io/test",
+          },
+          segments: {
+            fr: [
+              {
+                type: "source",
+                source: "Welcome to our app",
+                target: "Bienvenue dans notre application (updated)",
+                context: "app.welcome",
+                references: ["src/App.tsx:10"],
+                comment: "js-lingui-explicit-id",
+              },
+              {
+                type: "source",
+                source: "About Us",
+                target: "À propos (updated)",
+                context: "about.title",
+                references: ["src/About.tsx:5"],
+                comment: "page.about | js-lingui-explicit-id-and-context",
+              },
+              {
+                type: "source",
+                source: "Hello {name}",
+                target: "Bonjour {name} (updated)",
+                context: "",
+                references: ["src/App.tsx:15"],
+                comment: "",
+              },
+              {
+                type: "source",
+                source: "Home",
+                target: "Accueil (updated)",
+                context: "navigation",
+                references: ["src/App.tsx:20"],
+                comment: "",
+              },
+            ],
+            es: [
+              {
+                type: "source",
+                source: "Welcome to our app",
+                target: "Bienvenido a nuestra aplicación",
+                context: "app.welcome",
+                references: ["src/App.tsx:10"],
+                comment: "js-lingui-explicit-id",
+              },
+              {
+                type: "source",
+                source: "About Us",
+                target: "Acerca de",
+                context: "about.title",
+                references: ["src/About.tsx:5"],
+                comment: "page.about | js-lingui-explicit-id-and-context",
+              },
+              {
+                type: "source",
+                source: "Hello {name}",
+                target: "Hola {name}",
+                context: "",
+                references: ["src/App.tsx:15"],
+                comment: "",
+              },
+              {
+                type: "source",
+                source: "Home",
+                target: "Inicio",
+                context: "navigation",
+                references: ["src/App.tsx:20"],
+                comment: "",
+              },
+            ],
+          },
+        },
+        (action, request, apiKey) => {
+          capturedAction = action
+          capturedRequest = request
+          capturedApiKey = apiKey
+        }
+      )
+
+      await new Promise<void>((resolve, reject) => {
+        init(
+          testConfig,
+          options,
+          (project) => {
+            resolve()
+          },
+          (errors) => {
+            reject(new Error(errors.join(", ")))
+          },
+          mockHttpRequest
+        )
+      })
+
+      // Verify request
+      expect(capturedAction).toBe("init")
+      expect(capturedApiKey).toBe("test-api-key-123")
+      expect(capturedRequest).toMatchInlineSnapshot(`
+        {
+          client: lingui,
+          segments: {
+            es: [
+              {
+                comment: js-lingui-explicit-id,
+                context: app.welcome,
+                references: [
+                  src/App.tsx:10,
+                ],
+                source: Welcome to our app,
+                target: ,
+                type: source,
+              },
+              {
+                comment: ,
+                context: ,
+                references: [
+                  src/App.tsx:15,
+                ],
+                source: Hello {name},
+                target: ,
+                type: source,
+              },
+              {
+                comment: ,
+                context: navigation,
+                references: [
+                  src/App.tsx:20,
+                ],
+                source: Home,
+                target: ,
+                type: source,
+              },
+              {
+                comment: page.about | js-lingui-explicit-id-and-context,
+                context: about.title,
+                references: [
+                  src/About.tsx:5,
+                ],
+                source: About Us,
+                target: ,
+                type: source,
+              },
+            ],
+            fr: [
+              {
+                comment: js-lingui-explicit-id,
+                context: app.welcome,
+                references: [
+                  src/App.tsx:10,
+                ],
+                source: Welcome to our app,
+                target: Bienvenue dans notre application,
+                type: source,
+              },
+              {
+                comment: ,
+                context: ,
+                references: [
+                  src/App.tsx:15,
+                ],
+                source: Hello {name},
+                target: Bonjour {name},
+                type: source,
+              },
+              {
+                comment: ,
+                context: navigation,
+                references: [
+                  src/App.tsx:20,
+                ],
+                source: Home,
+                target: Accueil,
+                type: source,
+              },
+              {
+                comment: page.about | js-lingui-explicit-id-and-context,
+                context: about.title,
+                references: [
+                  src/About.tsx:5,
+                ],
+                source: About Us,
+                target: À propos,
+                type: source,
+              },
+            ],
+          },
+          source_language: en,
+          target_languages: [
+            fr,
+            es,
+          ],
+          version: 5.7.0,
+        }
+      `)
+
+      // Wait for file operations
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      // Verify updated files exist
+      expect(listingToHumanReadable(readFsToListing(outputDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Welcome to our app"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr ""
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr ""
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "About Us"
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #: src/App.tsx:15
+        msgctxt ""
+        msgid "Hello {name}"
+        msgstr "Hola {name}"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Inicio"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #: src/App.tsx:15
+        msgctxt ""
+        msgid "Hello {name}"
+        msgstr "Bonjour {name} (updated)"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Accueil (updated)"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos (updated)"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (updated)"
+
+
+      `)
+    })
+
+    it("should handle init errors", async () => {
+      const outputDir = await prepareTestDir("init-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const mockHttpRequest = createMockHttpRequest({
+        errors: ["API key is invalid"],
+      })
+
+      await expect(
+        new Promise<void>((resolve, reject) => {
+          init(
+            testConfig,
+            options,
+            (project) => {
+              resolve()
+            },
+            (errors) => {
+              reject(new Error(errors.join(", ")))
+            },
+            mockHttpRequest
+          )
+        })
+      ).rejects.toThrow("API key is invalid")
+    })
+  })
+
+  describe("sync", () => {
+    it("should send sync request with source segments", async () => {
+      const outputDir = await prepareTestDir("sync-test")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      let capturedRequest: any = null
+      let capturedAction = ""
+
+      const mockHttpRequest = createMockHttpRequest(
+        {
+          project: {
+            name: "Test Project",
+            url: "https://translation.io/test",
+          },
+          segments: {
+            fr: [
+              {
+                type: "source",
+                source: "Welcome to our app",
+                target: "Bienvenue",
+                context: "app.welcome",
+                references: ["src/App.tsx:10"],
+                comment: "js-lingui-explicit-id",
+              },
+              {
+                type: "source",
+                source: "About Us",
+                target: "À propos",
+                context: "about.title",
+                references: ["src/About.tsx:5"],
+                comment: "page.about | js-lingui-explicit-id-and-context",
+              },
+              {
+                type: "source",
+                source: "Hello {name}",
+                target: "Bonjour {name}",
+                context: "",
+                references: ["src/App.tsx:15"],
+                comment: "",
+              },
+              {
+                type: "source",
+                source: "Home",
+                target: "Accueil",
+                context: "navigation",
+                references: ["src/App.tsx:20"],
+                comment: "",
+              },
+            ],
+            es: [
+              {
+                type: "source",
+                source: "Welcome to our app",
+                target: "Bienvenido",
+                context: "app.welcome",
+                references: ["src/App.tsx:10"],
+                comment: "js-lingui-explicit-id",
+              },
+              {
+                type: "source",
+                source: "About Us",
+                target: "Acerca de",
+                context: "about.title",
+                references: ["src/About.tsx:5"],
+                comment: "page.about | js-lingui-explicit-id-and-context",
+              },
+              {
+                type: "source",
+                source: "Hello {name}",
+                target: "Hola {name}",
+                context: "",
+                references: ["src/App.tsx:15"],
+                comment: "",
+              },
+              {
+                type: "source",
+                source: "Home",
+                target: "Inicio",
+                context: "navigation",
+                references: ["src/App.tsx:20"],
+                comment: "",
+              },
+            ],
+          },
+        },
+        (action, request, apiKey) => {
+          capturedAction = action
+          capturedRequest = request
+        }
+      )
+
+      await new Promise<void>((resolve, reject) => {
+        sync(
+          testConfig,
+          options,
+          (project) => {
+            resolve()
+          },
+          (errors) => {
+            reject(new Error(errors.join(", ")))
+          },
+          mockHttpRequest
+        )
+      })
+
+      // Verify request
+      expect(capturedAction).toBe("sync")
+      expect(capturedRequest).toMatchInlineSnapshot(`
+        {
+          client: lingui,
+          purge: false,
+          segments: [
+            {
+              comment: js-lingui-explicit-id,
+              context: app.welcome,
+              references: [
+                src/App.tsx:10,
+              ],
+              source: Welcome to our app,
+              type: source,
+            },
+            {
+              comment: ,
+              context: ,
+              references: [
+                src/App.tsx:15,
+              ],
+              source: Hello {name},
+              type: source,
+            },
+            {
+              comment: ,
+              context: navigation,
+              references: [
+                src/App.tsx:20,
+              ],
+              source: Home,
+              type: source,
+            },
+            {
+              comment: page.about | js-lingui-explicit-id-and-context,
+              context: about.title,
+              references: [
+                src/About.tsx:5,
+              ],
+              source: About Us,
+              type: source,
+            },
+          ],
+          source_language: en,
+          target_languages: [
+            fr,
+            es,
+          ],
+          version: 5.7.0,
+        }
+      `)
+
+      // Wait for file operations
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      // Verify updated files exist
+      expect(listingToHumanReadable(readFsToListing(outputDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Welcome to our app"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr ""
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr ""
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "About Us"
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #: src/App.tsx:15
+        msgctxt ""
+        msgid "Hello {name}"
+        msgstr "Hola {name}"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Inicio"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #: src/App.tsx:15
+        msgctxt ""
+        msgid "Hello {name}"
+        msgstr "Bonjour {name}"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Accueil"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue"
+
+
+      `)
+    })
+
+    it("should include purge option when clean is enabled", async () => {
+      const outputDir = await prepareTestDir("sync-purge")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const cleanOptions = { ...options, clean: true }
+      let capturedRequest: any = null
+
+      const mockHttpRequest = createMockHttpRequest(
+        {
+          project: {
+            name: "Test Project",
+            url: "https://translation.io/test",
+          },
+          segments: {
+            fr: [],
+            es: [],
+          },
+        },
+        (action, request, apiKey) => {
+          capturedRequest = request
+        }
+      )
+
+      await new Promise<void>((resolve, reject) => {
+        sync(
+          testConfig,
+          cleanOptions,
+          (project) => {
+            resolve()
+          },
+          (errors) => {
+            reject(new Error(errors.join(", ")))
+          },
+          mockHttpRequest
+        )
+      })
+
+      expect(capturedRequest).toHaveProperty("purge", true)
+    })
+
+    it("should handle sync errors", async () => {
+      const outputDir = await prepareTestDir("sync-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const mockHttpRequest = createMockHttpRequest({
+        errors: ["Synchronization failed"],
+      })
+
+      await expect(
+        new Promise<void>((resolve, reject) => {
+          sync(
+            testConfig,
+            options,
+            (project) => {
+              resolve()
+            },
+            (errors) => {
+              reject(new Error(errors.join(", ")))
+            },
+            mockHttpRequest
+          )
+        })
+      ).rejects.toThrow("Synchronization failed")
+    })
+  })
+
+  describe("syncProcess", () => {
+    it("should call init first, then sync if already initialized", async () => {
+      const outputDir = await prepareTestDir("sync-process")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const calls: string[] = []
+
+      // Mock the HTTP request to simulate "already initialized" on first call
+      const customMockRequest: HttpRequestFunction = (
+        action,
+        request,
+        apiKey,
+        successCallback,
+        failCallback
+      ) => {
+        calls.push(action)
+        if (calls.length === 1) {
+          // First init call - return error
+          successCallback({
+            errors: ["This project has already been initialized."],
+          })
+        } else {
+          // Second sync call - return success
+          successCallback({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [],
+              es: [],
+            },
+          })
+        }
+      }
+
+      const result = await syncProcess(testConfig, options, customMockRequest)
+
+      expect(calls).toEqual(["init", "sync"])
+      expect(result).toMatchInlineSnapshot(`
+
+                ----------
+                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                ----------
+            `)
+    })
+
+    it("should reject with proper error format", async () => {
+      const outputDir = await prepareTestDir("sync-process-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const mockHttpRequest: HttpRequestFunction = (
+        action,
+        request,
+        apiKey,
+        successCallback,
+        failCallback
+      ) => {
+        successCallback({ errors: ["Network error", "Connection timeout"] })
+      }
+
+      await expect(syncProcess(testConfig, options, mockHttpRequest)).rejects
+        .toMatchInlineSnapshot(`
+
+        ----------
+        Synchronization with Translation.io failed: Network error, Connection timeout
+        ----------
+      `)
+    })
+
+    it("should fail for non-po format", async () => {
+      const outputDir = await prepareTestDir("sync-process-invalid-format")
+
+      const invalidConfig = makeConfig({
+        ...config,
+        format: "json" as any,
+        rootDir: outputDir,
+      })
+
+      // Mock process.exit to prevent test from exiting
+      const originalExit = process.exit
+      const mockExit = jest.fn() as any
+      process.exit = mockExit
+
+      const mockHttpRequest = createMockHttpRequest({
+        project: { name: "Test", url: "https://test.com" },
+        segments: {},
+      })
+
+      try {
+        await syncProcess(invalidConfig, options, mockHttpRequest)
+      } catch (err) {
+        // Expected to fail
+      }
+
+      expect(mockExit).toHaveBeenCalledWith(1)
+
+      // Restore process.exit
+      process.exit = originalExit
+    })
+  })
+
+  describe("Round-trip conversion", () => {
+    it("should maintain data integrity through PO item -> segment -> PO item conversion", () => {
+      const originalItem = new PO.Item()
+      originalItem.msgid = "test.message"
+      originalItem.msgstr = ["Test Message"]
+      originalItem.msgctxt = "context"
+      originalItem.extractedComments = ["js-lingui-explicit-id"]
+      originalItem.references = ["src/test.ts:10"]
+
+      const segment = createSegmentFromPoItem(originalItem)
+      segment.target = "Message de test"
+
+      const newItem = createPoItemFromSegment(segment)
+
+      expect(newItem.msgid).toBe(originalItem.msgid)
+      expect(newItem.extractedComments).toEqual(originalItem.extractedComments)
+      expect(newItem.references).toEqual(originalItem.references)
+    })
+  })
+})
