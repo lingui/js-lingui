@@ -1,7 +1,7 @@
 import fs from "fs"
 import { dirname } from "path"
 import { globSync } from "glob"
-import { CatalogType, LinguiConfigNormalized, MessageType } from "@lingui/conf"
+import { CatalogType, LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
 import {
   tioInit,
@@ -10,11 +10,11 @@ import {
   TranslationIoSegment,
 } from "./translationIO/api-client"
 import { FormatterWrapper, getFormat } from "../api/formats"
-import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { order } from "../api/catalog"
-
-const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
-const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
+import {
+  createSegmentFromLinguiItem,
+  createLinguiItemFromSegment,
+} from "./translationIO/segment-converters"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
@@ -72,7 +72,7 @@ export async function init(
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
-  const paths = poPathsPerLocale(config)
+  const paths = catalogPathsPerLocale(config)
 
   const segments: { [locale: string]: TranslationIoSegment[] } = {}
 
@@ -125,7 +125,7 @@ export async function init(
     return { success: false, errors: data.errors } as const
   }
 
-  await saveSegmentsToTargetPos(config, paths, data.segments, format)
+  await writeSegmentsToCatalogs(config, paths, data.segments, format)
   return { success: true, project: data.project } as const
 }
 
@@ -138,7 +138,7 @@ export async function sync(
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
-  const paths = poPathsPerLocale(config)
+  const paths = catalogPathsPerLocale(config)
 
   const segments: TranslationIoSegment[] = []
 
@@ -175,111 +175,11 @@ export async function sync(
     return { success: false, errors: data.errors } as const
   }
 
-  await saveSegmentsToTargetPos(config, paths, data.segments, format)
+  await writeSegmentsToCatalogs(config, paths, data.segments, format)
   return { success: true, project: data.project } as const
 }
 
-function isGeneratedId(id: string, message: MessageType): boolean {
-  return id === generateMessageId(message.message, message.context)
-}
-
-const joinOrigin = (origin: [file: string, line?: number]): string =>
-  origin.join(":")
-
-const splitOrigin = (origin: string) => {
-  const [file, line] = origin.split(":")
-  return [file, line ? Number(line) : null] as [file: string, line: number]
-}
-
-export function createSegmentFromLinguiItem(key: string, item: MessageType) {
-  const itemHasExplicitId = !isGeneratedId(key, item)
-  const itemHasContext = !!item.context
-
-  const segment: TranslationIoSegment = {
-    type: "source", // No way to edit text for source language (inside code), so not using "key" here
-    source: "",
-    context: "",
-    references: [],
-    comment: "",
-  }
-
-  // For segment.source & segment.context, we must remain compatible with projects created/synced before Lingui V4
-  if (itemHasExplicitId) {
-    segment.source = item.message || item.translation
-    segment.context = key
-  } else {
-    segment.source = item.message || item.translation
-
-    if (itemHasContext) {
-      segment.context = item.context
-    }
-  }
-
-  if (item.origin) {
-    segment.references = item.origin.map(joinOrigin)
-  }
-
-  // Since Lingui v4, when using explicit IDs, Lingui automatically adds 'js-lingui-explicit-id' to the extractedComments array
-  if (item.comments?.length) {
-    segment.comment = item.comments.join(" | ")
-
-    if (itemHasExplicitId && itemHasContext) {
-      // segment.context is already used for the explicit ID, so we need to pass the context (for translators) in segment.comment
-      segment.comment = `${item.context} | ${segment.comment}`
-
-      // Replace the flag to let us know how to recompose a target PO Item that is consistent with the source PO Item
-      segment.comment = segment.comment.replace(
-        EXPLICIT_ID_FLAG,
-        EXPLICIT_ID_AND_CONTEXT_FLAG
-      )
-    }
-  }
-
-  return segment
-}
-
-export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
-  const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
-  const segmentHasExplicitIdAndContext = segment.comment?.includes(
-    EXPLICIT_ID_AND_CONTEXT_FLAG
-  )
-
-  const item: MessageType = {
-    translation: segment.target!,
-    origin: segment.references?.length
-      ? segment.references.map(splitOrigin)
-      : [],
-    message: segment.source,
-    comments: [],
-  }
-
-  let id: string = null
-
-  if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
-    id = segment.context!
-  } else {
-    id = generateMessageId(segment.source, segment.context)
-    item.context = segment.context
-  }
-
-  if (segment.comment) {
-    segment.comment = segment.comment.replace(
-      EXPLICIT_ID_AND_CONTEXT_FLAG,
-      EXPLICIT_ID_FLAG
-    )
-
-    item.comments = segment.comment ? segment.comment.split(" | ") : []
-
-    // We recompose a target PO Item that is consistent with the source PO Item
-    if (segmentHasExplicitIdAndContext) {
-      item.context = item.comments.shift()
-    }
-  }
-
-  return [id, item] as const
-}
-
-export async function saveSegmentsToTargetPos(
+export async function writeSegmentsToCatalogs(
   config: LinguiConfigNormalized,
   paths: { [locale: string]: string[] },
   segmentsPerLocale: { [locale: string]: TranslationIoSegment[] },
@@ -289,9 +189,11 @@ export async function saveSegmentsToTargetPos(
     // Remove existing target POs and JS for this target locale
 
     for (const path of paths[targetLocale]) {
+      // todo: format.getCatalogExtension() instead of hardcoded .po
       const jsPath = path.replace(/\.po?$/, "") + ".js"
       const dirPath = dirname(path)
 
+      // todo: check tests and all these logic, maybe it could be simplified to just drop the folder
       // Remove PO, JS and empty dir
       if (fs.existsSync(path)) {
         await fs.promises.unlink(path)
@@ -322,12 +224,13 @@ export async function saveSegmentsToTargetPos(
   }
 }
 
-export function poPathsPerLocale(config: LinguiConfigNormalized) {
+export function catalogPathsPerLocale(config: LinguiConfigNormalized) {
   const paths: { [locale: string]: string[] } = {}
 
   config.locales.forEach((locale) => {
     paths[locale] = []
 
+    // todo: .po is hardcoded here
     config.catalogs!.forEach((catalog) => {
       const path = "".concat(
         catalog.path.replace(/{locale}/g, locale).replace(/{name}/g, "*"),
