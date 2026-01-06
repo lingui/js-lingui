@@ -822,6 +822,39 @@ describe("TranslationIO Integration", () => {
         }
       `)
     })
+
+    it("should handle network errors during init", async () => {
+      const outputDir = await prepareTestDir("init-network-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          return HttpResponse.error()
+        })
+      )
+
+      await expect(init(testConfig, options)).rejects.toThrow()
+    })
   })
 
   describe("sync", () => {
@@ -1175,6 +1208,32 @@ describe("TranslationIO Integration", () => {
         }
       `)
     })
+
+    it("should handle network errors during sync", async () => {
+      const outputDir = await prepareTestDir("sync-network-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          return HttpResponse.error()
+        })
+      )
+
+      await expect(sync(testConfig, options)).rejects.toThrow()
+    })
   })
 
   describe("syncProcess", () => {
@@ -1337,6 +1396,39 @@ describe("TranslationIO Integration", () => {
         Synchronization with Translation.io failed: Network error, Connection timeout
         ----------
       `)
+    })
+
+    it("should handle network errors during syncProcess", async () => {
+      const outputDir = await prepareTestDir("sync-process-network-error")
+      const sourceDir = path.join(fixturesDir, "source")
+      const enPath = path.join(outputDir, "en.po")
+      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+      // Copy existing translations so init can read them
+      const existingDir = path.join(fixturesDir, "existing")
+      const frPath = path.join(outputDir, "fr.po")
+      const esPath = path.join(outputDir, "es.po")
+      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          return HttpResponse.error()
+        })
+      )
+
+      await expect(syncProcess(testConfig, options)).rejects.toThrow()
     })
 
     it("should fail for non-po format", async () => {
