@@ -1,57 +1,22 @@
 import fs from "fs"
 import { dirname } from "path"
 import PO from "pofile"
-import https from "https"
 import { globSync } from "glob"
 import { format as formatDate } from "date-fns"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
+import {
+  FetchResult,
+  tioInit,
+  tioSync,
+  TranslationIoProject,
+  TranslationIoResponse,
+  TranslationIoSegment,
+  TranslationIoSyncRequest,
+} from "./translationIO/api-client"
+import { writeFile } from "../api/utils"
 
 type POItem = InstanceType<typeof PO.Item>
-
-type TranslationIoSyncRequest = {
-  client: "lingui"
-  version: string
-  source_language: string
-  target_languages: string[]
-  segments: TranslationIoSegment[]
-
-  purge?: boolean
-}
-
-export type TranslationIoSegment = {
-  type: string
-  source: string
-  target?: string
-  context?: string
-  references?: string[]
-  comment?: string
-}
-
-type TranslationIoProject = {
-  name: string
-  url: string
-}
-
-export type TranslationIoResponse = {
-  errors?: string[]
-  project?: TranslationIoProject
-  segments?: { [locale: string]: TranslationIoSegment[] }
-}
-
-// type TranslationIoResponse =
-//   | TranslationIoErrorResponse
-//   | TranslationProjectResponse
-//
-// type TranslationIoErrorResponse = {
-//   errors: string[]
-// }
-//
-// type TranslationProjectResponse = {
-//   errors: null
-//   project: TranslationIoProject
-//   segments: { [locale: string]: TranslationIoSegment[] }
-// }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
@@ -77,14 +42,13 @@ const validCatalogFormat = (config: LinguiConfigNormalized): boolean => {
   if (typeof config.format === "string") {
     return config.format === "po"
   }
-  return config.format.catalogExtension === ".po"
+  return config.format!.catalogExtension === ".po"
 }
 
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default async function syncProcess(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions,
-  httpRequest: HttpRequestFunction = postTio
+  options: CliExtractOptions
 ) {
   if (!validCatalogFormat(config)) {
     console.error(
@@ -93,48 +57,40 @@ export default async function syncProcess(
     process.exit(1)
   }
 
-  return await new Promise<string>((resolve, reject) => {
-    const successCallback = (project: TranslationIoProject) => {
-      resolve(
-        `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
-      )
+  const reportSuccess = (project: TranslationIoProject) => {
+    return `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
+  }
+
+  const reportError = (errors: string[]) => {
+    return `\n----------\nSynchronization with Translation.io failed: ${errors.join(
+      ", "
+    )}\n----------`
+  }
+
+  const { success, project, errors } = await init(config, options)
+
+  if (success) {
+    return reportSuccess(project)
+  }
+
+  if (errors[0] === "This project has already been initialized.") {
+    const { success, project, errors } = await sync(config, options)
+
+    if (success) {
+      return reportSuccess(project)
     }
 
-    const failCallback = (errors: string[]) => {
-      reject(
-        `\n----------\nSynchronization with Translation.io failed: ${errors.join(
-          ", "
-        )}\n----------`
-      )
-    }
+    return reportError(errors)
+  }
 
-    init(
-      config,
-      options,
-      successCallback,
-      (errors) => {
-        if (
-          errors.length &&
-          errors[0] === "This project has already been initialized."
-        ) {
-          sync(config, options, successCallback, failCallback, httpRequest)
-        } else {
-          failCallback(errors)
-        }
-      },
-      httpRequest
-    )
-  })
+  return reportError(errors)
 }
 
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
-export function init(
+export async function init(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions,
-  successCallback: (project: TranslationIoProject) => void,
-  failCallback: (errors: string[]) => void,
-  httpRequest: HttpRequestFunction = postTio
+  options: CliExtractOptions
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -176,42 +132,34 @@ export function init(
     })
   })
 
-  const request: TranslationIoSyncRequest = {
-    client: "lingui",
-    version: require("@lingui/core/package.json").version,
-    source_language: sourceLocale,
-    target_languages: targetLocales,
-    segments: segments,
+  const { data, error } = await tioInit(
+    {
+      client: "lingui",
+      version: require("@lingui/core/package.json").version,
+      source_language: sourceLocale,
+      target_languages: targetLocales,
+      segments: segments,
+    },
+    config.service!.apiKey
+  )
+
+  if (error) {
+    return { success: false, errors: [error.message] as string[] } as const
   }
 
-  httpRequest(
-    "init",
-    request,
-    config.service.apiKey,
-    (response: TranslationIoResponse) => {
-      if (response.errors) {
-        failCallback(response.errors)
-      } else {
-        saveSegmentsToTargetPos(config, paths, response.segments)
-        successCallback(response.project)
-      }
-    },
-    (error) => {
-      console.error(
-        `\n----------\nSynchronization with Translation.io failed: ${error}\n----------`
-      )
-    }
-  )
+  if (data.errors) {
+    return { success: false, errors: data.errors } as const
+  }
+
+  await saveSegmentsToTargetPos(config, paths, data.segments)
+  return { success: true, project: data.project } as const
 }
 
 // Send all source text from PO to Translation.io and create new PO based on received translations
 // Cf. https://translation.io/docs/create-library#synchronization
-export function sync(
+export async function sync(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions,
-  successCallback: (project: TranslationIoProject) => void,
-  failCallback: (errors: string[]) => void,
-  httpRequest: HttpRequestFunction = postTio
+  options: CliExtractOptions
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -233,35 +181,30 @@ export function sync(
       })
   })
 
-  const request: TranslationIoSyncRequest = {
-    client: "lingui",
-    version: require("@lingui/core/package.json").version,
-    source_language: sourceLocale,
-    target_languages: targetLocales,
-    segments: segments,
+  const { data, error } = await tioSync(
+    {
+      client: "lingui",
+      version: require("@lingui/core/package.json").version,
+      source_language: sourceLocale,
+      target_languages: targetLocales,
+      segments: segments,
 
-    // Sync and then remove unused segments (not present in the local application) from Translation.io
-    purge: Boolean(options.clean),
+      // Sync and then remove unused segments (not present in the local application) from Translation.io
+      purge: Boolean(options.clean),
+    },
+    config.service!.apiKey
+  )
+
+  if (error) {
+    return { success: false, errors: [error.message] as string[] } as const
   }
 
-  httpRequest(
-    "sync",
-    request,
-    config.service.apiKey,
-    (response: TranslationIoResponse) => {
-      if (response.errors) {
-        failCallback(response.errors)
-      } else {
-        saveSegmentsToTargetPos(config, paths, response.segments)
-        successCallback(response.project)
-      }
-    },
-    (error) => {
-      console.error(
-        `\n----------\nSynchronization with Translation.io failed: ${error}\n----------`
-      )
-    }
-  )
+  if (data.errors) {
+    return { success: false, errors: data.errors } as const
+  }
+
+  await saveSegmentsToTargetPos(config, paths, data.segments)
+  return { success: true, project: data.project } as const
 }
 
 export function createSegmentFromPoItem(item: POItem) {
@@ -320,13 +263,13 @@ export function createPoItemFromSegment(segment: TranslationIoSegment) {
   const item = new PO.Item()
 
   if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
-    item.msgid = segment.context
+    item.msgid = segment.context!
   } else {
     item.msgid = segment.source
     item.msgctxt = segment.context
   }
 
-  item.msgstr = [segment.target]
+  item.msgstr = [segment.target!]
   item.references =
     segment.references && segment.references.length ? segment.references : []
 
@@ -346,36 +289,36 @@ export function createPoItemFromSegment(segment: TranslationIoSegment) {
   return item
 }
 
-export function saveSegmentsToTargetPos(
+export async function saveSegmentsToTargetPos(
   config: LinguiConfigNormalized,
   paths: { [locale: string]: string[] },
   segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
 ) {
-  Object.keys(segmentsPerLocale).forEach((targetLocale) => {
+  for (const targetLocale of Object.keys(segmentsPerLocale)) {
     // Remove existing target POs and JS for this target locale
-    paths[targetLocale].forEach((path) => {
+
+    for (const path of paths[targetLocale]) {
       const jsPath = path.replace(/\.po?$/, "") + ".js"
       const dirPath = dirname(path)
 
       // Remove PO, JS and empty dir
       if (fs.existsSync(path)) {
-        fs.unlinkSync(path)
+        await fs.promises.unlink(path)
       }
       if (fs.existsSync(jsPath)) {
-        fs.unlinkSync(jsPath)
+        await fs.promises.unlink(jsPath)
       }
       if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
-        fs.rmdirSync(dirPath)
+        await fs.promises.rmdir(dirPath)
       }
-    })
+    }
 
     // Find target path (ignoring {name})
-    const localePath = "".concat(
-      config.catalogs[0].path
-        .replace(/{locale}/g, targetLocale)
-        .replace(/{name}/g, ""),
-      ".po"
-    )
+    const localePath =
+      config
+        .catalogs![0].path.replace(/{locale}/g, targetLocale)
+        .replace(/{name}/g, "") + ".po"
+
     const segments = segmentsPerLocale[targetLocale]
 
     const po = new PO()
@@ -397,16 +340,16 @@ export function saveSegmentsToTargetPos(
     })
 
     // Check that localePath directory exists and save PO file
-    fs.promises.mkdir(dirname(localePath), { recursive: true }).then(() => {
-      po.save(localePath, (err) => {
-        if (err) {
-          console.error("Error while saving target PO files:")
-          console.error(err)
-          process.exit(1)
-        }
-      })
-    })
-  })
+    await fs.promises.mkdir(dirname(localePath), { recursive: true })
+
+    try {
+      await writeFile(localePath, po.toString())
+    } catch (e) {
+      console.error("Error while saving target PO files:")
+      console.error(e)
+      process.exit(1)
+    }
+  }
 }
 
 export function poPathsPerLocale(config: LinguiConfigNormalized) {
@@ -415,7 +358,7 @@ export function poPathsPerLocale(config: LinguiConfigNormalized) {
   config.locales.forEach((locale) => {
     paths[locale] = []
 
-    config.catalogs.forEach((catalog) => {
+    config.catalogs!.forEach((catalog) => {
       const path = "".concat(
         catalog.path.replace(/{locale}/g, locale).replace(/{name}/g, "*"),
         ".po"
@@ -435,49 +378,6 @@ export function poPathsPerLocale(config: LinguiConfigNormalized) {
 
 export type HttpRequestFunction = (
   action: "init" | "sync",
-  request: unknown,
-  apiKey: string,
-  successCallback: (resp: TranslationIoResponse) => void,
-  failCallback: (resp: unknown) => void
-) => void
-
-export function postTio(
-  action: "init" | "sync",
-  request: unknown,
-  apiKey: string,
-  successCallback: (resp: TranslationIoResponse) => void,
-  failCallback: (resp: unknown) => void
-) {
-  const jsonRequest = JSON.stringify(request)
-
-  const options = {
-    hostname: "translation.io",
-    path: `/api/v1/segments/${action}.json?api_key=${apiKey}`,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
-  const req = https.request(options, (res) => {
-    res.setEncoding("utf8")
-
-    let body = ""
-
-    res.on("data", (chunk) => {
-      body = body.concat(chunk)
-    })
-
-    res.on("end", () => {
-      const response = JSON.parse(body)
-      successCallback(response)
-    })
-  })
-
-  req.on("error", (e) => {
-    failCallback(e)
-  })
-
-  req.write(jsonRequest)
-  req.end()
-}
+  request: TranslationIoSyncRequest,
+  apiKey: string
+) => Promise<FetchResult<TranslationIoResponse>>
